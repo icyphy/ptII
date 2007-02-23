@@ -313,11 +313,15 @@ MATLAB_DIR = 	@MATLAB_DIR@
 # Location of Matlab's engine libraries (libeng.so, libmx.so)
 MATLAB_LIBDIR =	@MATLAB_LIBDIR@
 
+# Set to the BSH jar file and used to compile org/mlc
+PTBSH_JAR = @PTBSH_JAR@
+
 # Set to mlc and used in $PTII/org/makefile if Java Bean Shell is found.
 PTBSH_MLC_DIR = @PTBSH_MLC_DIR@
 
-# Set to the BSH jar file and used to compile org/mlc
-PTBSH_JAR = @PTBSH_JAR@
+# PTBSH_RUN_DIR is set to "run" and used in
+# $PTII/ptolemy/actor/gui/makefile if bsh.jar was found.
+PTBSH_RUN_DIR= @PTBSH_RUN_DIR@
 
 # Set to caltrop and used in $PTII/ptolemy/makefile if Cal was found.
 PTCALTROP_DIR = @PTCALTROP_DIR@

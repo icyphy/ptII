@@ -653,7 +653,7 @@ fi
 #--------------------------------------------------------------------
 
 # PTBSH_RUN_DIR is set to run and used in
-# $PTII/ptolemy/actor/gui/makefile if Colt was found.
+# $PTII/ptolemy/actor/gui/makefile if bsh.jar was found.
 PTBSH_RUN_DIR=
 
 # PTBSH_MLC_DIR is set to mlc and used in
@@ -674,6 +674,7 @@ else
         AC_MSG_RESULT($PTII/lib/bsh-2.0b4.jar)
         PTBSH_JAR="$PTII/lib/bsh-2.0b4.jar"
 	PTBSH_MLC_DIR=mlc
+	PTBSH_RUN_DIR=run
 	# PTBSH_PACKAGES is used in ptII/doc/makefile
 	PTBSH_PACKAGES="com.jgoodies.forms.builder com.jgoodies.forms.debug com.jgoodies.forms.factories com.jgoodies.forms.layout com.jgoodies.forms.util com.jgoodies.forms com.jgoodies org.mlc.swing.examples org.mlc.swing.layout"
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
@@ -3518,11 +3519,15 @@ AC_SUBST(PTBACKTRACK_ECLIPSE_PACKAGES)
 # if we found boost/static_assert.hpp (mescal)
 AC_SUBST(PTBOOST_INCLUDE)
 
+# Set to the BSH jar file and used to compile org/mlc
+AC_SUBST(PTBSH_JAR)
+
 # Set to mlc and used in $PTII/org/makefile if Java Bean Shell is found.
 AC_SUBST(PTBSH_MLC_DIR)
 
-# Set to the BSH jar file and used to compile org/mlc
-AC_SUBST(PTBSH_JAR)
+# PTBSH_RUN_DIR is set to run and used in
+# $PTII/ptolemy/actor/gui/makefile if bsh.jar was found.
+AC_SUBST(PTBSH_RUN_DIR)
 
 # Set to the packages that require bsh and used in $PTII/doc/makefile
 AC_SUBST(PTBSH_PACKAGES)
