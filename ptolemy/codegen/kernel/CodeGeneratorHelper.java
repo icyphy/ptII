@@ -1722,8 +1722,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         /** Return the list of identifiers within the scope.
          *  @return The list of variable names within the scope.
-         *  @exception If there is a problem getting the identifier
-         *  set from the variable.
+         *  @exception IllegalActionException If there is a problem
+         *  getting the identifier set from the variable.
          */
         public Set identifierSet() throws IllegalActionException {
             if (_variable != null) {
@@ -2142,6 +2142,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /** Generate a variable name for the NamedObj.
      *  @param namedObj The NamedObj to generate variable name for.
      *  @see ptolemy.codegen.kernel.CodeGenerator#generateVariableName(NamedObj)
+     *  @return The variable name for the NamedObj.
      */
     public String generateVariableName(NamedObj namedObj) {
         return _codeGenerator.generateVariableName(namedObj);

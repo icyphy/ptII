@@ -870,6 +870,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          * does not necessarily support removal operations.
          * In this base class, this returns the same iterator
          * as the nodes(Object) method.
+         * @param composite The composite, which is assumed to be an icon.
+         * @return An iterator of nodes that should be rendered before
+         * the edges.   
          */
         public Iterator nodesBeforeEdges(Object composite) {
             return nodes(composite);
@@ -881,6 +884,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          * does not necessarily support removal operations.
          * In this base class, this returns an iterator over
          * nothing.
+         * @param composite The composite, which is assumed to be an icon.
+         * @return An iterator of nodes that should be rendered after
+         * the edges.   
          */
         public Iterator nodesAfterEdges(Object composite) {
             return (new NullIterator());
