@@ -1343,7 +1343,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public Channel getSourceChannel(IOPort port, int channelNumber)
             throws IllegalActionException {
-        List sourceChannels = new LinkedList();
         Receiver[][] receivers;
 
         if (port.isInput()) {
