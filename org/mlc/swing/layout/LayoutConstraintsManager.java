@@ -596,14 +596,14 @@ public class LayoutConstraintsManager
       if (propertiesNodes.length > 0)
       {
 
-        Object controller = new Object()
-        {
-          public void configureProperty(String componentName, String property,
-              Object value)
-          {
-            containerLayout.setProperty(componentName, property, value);
-          }
-        };
+//        Object controller = new Object()
+//        {
+//          public void configureProperty(String componentName, String property,
+//              Object value)
+//          {
+//            containerLayout.setProperty(componentName, property, value);
+//          }
+//        };
 
         XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(fakeDoc
             .getBytes()));
