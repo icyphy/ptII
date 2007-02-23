@@ -40,8 +40,8 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.ExecuteCommands;
-import ptolemy.util.StringUtilities;
 import ptolemy.util.StreamExec;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// CCodeGeneratorHelper

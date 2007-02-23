@@ -27,13 +27,6 @@
  */
 package ptolemy.actor.lib.test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.actor.lib.Recorder;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;

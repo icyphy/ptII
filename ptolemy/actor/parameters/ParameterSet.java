@@ -37,12 +37,8 @@ import java.net.URLConnection;
 import java.util.Iterator;
 import java.util.Properties;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
-import ptolemy.actor.ExecutionListener;
-import ptolemy.actor.Manager;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -50,14 +46,12 @@ import ptolemy.data.expr.ScopeExtendingAttribute;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.FileUtilities;
-import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParameterSet

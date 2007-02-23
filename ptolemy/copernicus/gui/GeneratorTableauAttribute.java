@@ -29,14 +29,11 @@ package ptolemy.copernicus.gui;
 
 import java.awt.Frame;
 
-import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.actor.gui.TextEffigy;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;

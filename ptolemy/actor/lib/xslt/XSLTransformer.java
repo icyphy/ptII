@@ -31,7 +31,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.Set;
 
 import javax.xml.transform.TransformerException;
 

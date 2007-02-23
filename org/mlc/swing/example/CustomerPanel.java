@@ -1,7 +1,13 @@
 package org.mlc.swing.example;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.LayoutManager;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+
 import org.mlc.swing.layout.LayoutFrame;
 
 /**
