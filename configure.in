@@ -676,7 +676,7 @@ else
 	PTBSH_MLC_DIR=mlc
 	PTBSH_RUN_DIR=run
 	# PTBSH_PACKAGES is used in ptII/doc/makefile
-	PTBSH_PACKAGES="com.jgoodies.forms.builder com.jgoodies.forms.debug com.jgoodies.forms.factories com.jgoodies.forms.layout com.jgoodies.forms.util com.jgoodies.forms com.jgoodies org.mlc.swing.examples org.mlc.swing.layout"
+	PTBSH_PACKAGES="com.jgoodies.forms.builder com.jgoodies.forms.debug com.jgoodies.forms.factories com.jgoodies.forms.layout com.jgoodies.forms.util org.mlc.swing.example org.mlc.swing.layout"
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
 	        <classpathentry kind=\"lib\" path=\"$PTBSH_JAR\"/> "
     else
