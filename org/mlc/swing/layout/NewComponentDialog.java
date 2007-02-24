@@ -326,7 +326,7 @@ public class NewComponentDialog extends JPanel
 
   /**
   * Creates and displays a dialog for editing a component's settings. See
-  * @see doDialog for an example.
+  * {@link #doDialog(JFrame,ComponentDef)} for an example.
   */
   public static NewComponentDialog editDialog(JFrame owner,
       ComponentDef componentDef)
