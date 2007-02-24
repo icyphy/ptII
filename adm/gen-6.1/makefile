@@ -106,6 +106,7 @@ PTII_TOPDIR=	.cshrc \
 		README.txt \
 		bin \
 		com/JLex \
+		com/jgoodies \
 		com/makefile \
 		com/microstar \
 		config \
@@ -118,6 +119,8 @@ PTII_TOPDIR=	.cshrc \
 		lib \
 		makefile \
 		mk \
+		org/makefile \
+		org/mlc \
 		ptolemy \
 		thales \
 		util \
