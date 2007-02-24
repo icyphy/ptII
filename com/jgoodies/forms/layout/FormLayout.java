@@ -502,8 +502,6 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * @throws IllegalStateException  if the column contains components
      *     or if the column is already grouped
      * 
-     * @see com.jgoodies.forms.extras.FormLayoutUtils#columnContainsComponent(Container, int)
-     * @see com.jgoodies.forms.extras.FormLayoutUtils#isGroupedColumn(FormLayout, int)
      */
     public void removeColumn(int columnIndex) {
         if (columnIndex < 1 || columnIndex > getColumnCount()) {
@@ -585,8 +583,6 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * @throws IllegalStateException if the row contains components
      *     or if the row is already grouped
      * 
-     * @see com.jgoodies.forms.extras.FormLayoutUtils#rowContainsComponent(Container, int)
-     * @see com.jgoodies.forms.extras.FormLayoutUtils#isGroupedRow(FormLayout, int)
      */
     public void removeRow(int rowIndex) {
         if (rowIndex < 1 || rowIndex > getRowCount()) {
