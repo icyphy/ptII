@@ -63,6 +63,7 @@ JSRCS = \
 	JTreeComponentBuilder.java \
 	LayoutConstraintsManager.java \
 	LayoutFrame.java \
+	MultiContainerFrame.java \
 	NewComponentDialog.java \
 	SeparatorComponentBuilder.java \
 	TransferableWrapper.java \

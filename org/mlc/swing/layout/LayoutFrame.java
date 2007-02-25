@@ -73,7 +73,7 @@ import com.jgoodies.forms.factories.Borders;
  * @author Michael Connor mlconnor&#064;yahoo.com
  */
 @SuppressWarnings("serial")
-public class LayoutFrame extends JFrame
+public class LayoutFrame extends JFrame implements MultiContainerFrame
 {
   LayoutConstraintsManager constraintsManager;
 

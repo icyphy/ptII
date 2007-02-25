@@ -58,6 +58,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -232,7 +233,7 @@ public class FormEditor extends JPanel
 
   ContainerLayout containerLayout;
 
-  LayoutFrame layoutFrame;
+  MultiContainerFrame layoutFrame;
   DnDTable table = null; 
   JScrollPane tableScrollPane = null;
   JSplitPane constraintsSplitPane = null; 
@@ -250,7 +251,7 @@ public class FormEditor extends JPanel
     this.container = container;
   }
 
-  public FormEditor(LayoutFrame layoutFrame, ContainerLayout layout,
+  public FormEditor(MultiContainerFrame layoutFrame, ContainerLayout layout,
       Container container)
   {
     super();
@@ -1732,7 +1733,7 @@ public class FormEditor extends JPanel
     String name = getComponentName(component);
    
     NewComponentDialog dlg = 
-      NewComponentDialog.editDialog(layoutFrame,componentDef);
+      NewComponentDialog.editDialog((JFrame)layoutFrame,componentDef);
     if (!dlg.succeeded())
       return false;
 

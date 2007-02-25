@@ -53,6 +53,7 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JTable;
 
 import com.jgoodies.forms.layout.CellConstraints;
@@ -74,9 +75,9 @@ class DnDTable extends JTable implements DragSourceListener,
   final static int SCROLL_AMOUNT = 10;
 
   FormEditor parent;
-  LayoutFrame superparent;
+  MultiContainerFrame superparent;
   
-  public DnDTable(LayoutFrame granddaddy, FormEditor daddy)
+  public DnDTable(MultiContainerFrame granddaddy, FormEditor daddy)
   {
     super();
 
@@ -284,7 +285,7 @@ class DnDTable extends JTable implements DragSourceListener,
         {
           ComponentDef componentDef = (ComponentDef) dropObject;
 
-          NewComponentDialog dlg = NewComponentDialog.doDialog(superparent, componentDef);
+          NewComponentDialog dlg = NewComponentDialog.doDialog((JFrame)superparent, componentDef);
           if (dlg.succeeded())
           {
             String componentName = dlg.getComponentName();
