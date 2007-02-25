@@ -55,8 +55,11 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	CustomizableRunFrame.java \
 	CustomizableRunPane.java \
-	InterfaceTableau.java
+	InterfaceTableau.java \
+	LayoutTableau.java \
+	RunLayoutFrame.java
 
 # Files to be included in the jar file
 OTHER_FILES_TO_BE_JARED =

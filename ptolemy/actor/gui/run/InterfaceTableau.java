@@ -26,8 +26,6 @@
  */
 package ptolemy.actor.gui.run;
 
-import java.awt.BorderLayout;
-
 import javax.swing.JFrame;
 
 import ptolemy.actor.CompositeActor;
@@ -36,7 +34,6 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
-import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -83,13 +80,12 @@ public class InterfaceTableau extends Tableau {
                             + " It is: " + model);
         }
 
-        _model = (CompositeActor) model;
-        _manager = _model.getManager();
+        _manager = ((CompositeActor)model).getManager();
         // Create a manager if necessary.
         if (_manager == null) {
             try {
-                _manager = new Manager(_model.workspace(), "manager");
-                _model.setManager(_manager);
+                _manager = new Manager(model.workspace(), "manager");
+                ((CompositeActor)model).setManager(_manager);
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(
                         this,
@@ -102,9 +98,7 @@ public class InterfaceTableau extends Tableau {
             }
         }
 
-        JFrame frame = new TableauFrame(this);
-        frame.getContentPane().setLayout(new BorderLayout());
-        frame.getContentPane().add(new CustomizableRunPane(_model, null), BorderLayout.CENTER);
+        JFrame frame = new CustomizableRunFrame((CompositeActor)model, this);
         setFrame(frame);
     }
     
@@ -113,9 +107,6 @@ public class InterfaceTableau extends Tableau {
     
     /** The manager. */
     private Manager _manager;
-
-    /** The associated model. */
-    private CompositeActor _model;
 
     ///////////////////////////////////////////////////////////////////////////
     ////                             inner classes                         ////

@@ -32,7 +32,9 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -52,7 +54,10 @@ import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.gui.CloseListener;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
@@ -86,15 +91,32 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
         
         _model = model;
         
+        Attribute layoutAttribute = _model.getAttribute("_runLayoutAttribute");
+        if (layoutAttribute instanceof ConfigurableAttribute) {
+            try {
+                xml = ((ConfigurableAttribute)layoutAttribute).value();
+            } catch (IOException e) {
+                throw new InternalErrorException(e);
+            }
+        }
+        
         if (xml == null) {
             xml = _defaultLayout();
         }
         // Parse the XML
-        InputStream stream = new ByteArrayInputStream(xml.toString().getBytes());
+        InputStream stream;
+        try {
+            stream = new ByteArrayInputStream(xml.toString().getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e1) {
+            throw new InternalErrorException(e1);
+        }
         Document dataDocument = null;
         try {
-            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance()
-                  .newDocumentBuilder();
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            // Without the following, then carriage returns in the XML
+            // mess up the parsing, incredibly enough!
+            factory.setIgnoringElementContentWhitespace(true);
+            DocumentBuilder documentBuilder = factory.newDocumentBuilder();
             dataDocument = documentBuilder.parse(stream);
         } catch (Exception e) {
             throw new IllegalActionException(model, e, "Unable to parse layout specification.");
@@ -103,48 +125,61 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
         _layoutConstraintsManager =
                 LayoutConstraintsManager.getLayoutConstraintsManager(root);
         
-        setBorder(com.jgoodies.forms.factories.Borders.DIALOG_BORDER);
-        LayoutManager layout = _layoutConstraintsManager.createLayout("panel", this);
+        LayoutManager layout = _layoutConstraintsManager.createLayout("top", this);
         this.setLayout(layout);
         
         // Walk through the XML, creating an interface as specified in it.
         // This assumes a very specific structure to the XML.
         NodeList components = root.getChildNodes();
-        NodeList nodeList = components.item(0).getChildNodes();
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            Node node = nodeList.item(i);
-            String name = node.getAttributes().getNamedItem("name").getNodeValue();
-            _addComponent(name, this);
-        }
-        // Now go through the subpanels, if any.
-        // If no subpanels were defined at the top level, then skip this.
-        if (components.getLength() > 1 && _subpanels != null) {
-            for (int i = 1; i < components.getLength(); i++) {
-                Node subpanelNode = components.item(i);
-                String subpanelName = subpanelNode.getAttributes().getNamedItem("name").getNodeValue();
+        // Go through the subpanels.
+        for (int i = 0; i < components.getLength(); i++) {
+            Node subpanelNode = components.item(i);
+            if (!subpanelNode.getNodeName().equals("container")) {
+                continue;
+            }
+            String subpanelName = subpanelNode.getAttributes().getNamedItem("name").getNodeValue();
+            if (subpanelName.equals("top")) {
+                NodeList nodeList = components.item(i).getChildNodes();
+                for (int j = 0; j < nodeList.getLength(); j++) {
+                    Node node = nodeList.item(j);
+                    // The attributes will be null if the node represents the contents text.
+                    if (node.getAttributes() != null) {
+                        String name = node.getAttributes().getNamedItem("name").getNodeValue();
+                        _addComponent(name, this);
+                    }
+                }
+            } else {
+                if (_subpanels == null) {
+                    throw new IllegalActionException(_model, 
+                            "Panel 'top' is required to be first. Found instead: " + subpanelName);
+                }
                 JPanel panel = _subpanels.get(subpanelName);
                 if (panel == null) {
                     throw new IllegalActionException(_model, 
                             "No layout matching subpanel: " + subpanelName);
                 }
-                nodeList = subpanelNode.getChildNodes();
+                NodeList nodeList = subpanelNode.getChildNodes();
                 for (int j = 0; j < nodeList.getLength(); j++) {
                     Node node = nodeList.item(j);
-                    String name = node.getAttributes().getNamedItem("name").getNodeValue();
-                    _addComponent(name, panel);
-                }                
+                    // The attributes will be null if the node represents the contents text.
+                    if (node.getAttributes() != null) {
+                        String name = node.getAttributes().getNamedItem("name").getNodeValue();
+                        _addComponent(name, panel);
+                    }
+                }   
             }
         }
-
-        // FIXME: Layout frame to customize the layout.
-        // This should be invocable via the menu, and should record
-        // the changes in an attribute in the model.
-        // LayoutFrame frame = new LayoutFrame(_layoutConstraintsManager);
-        // frame.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Return the layout constraints manager for this pane.
+     *  @return A layout constraints manager.
+     */
+    public LayoutConstraintsManager getLayoutConstraintsManager() {
+        return _layoutConstraintsManager;
+    }
     
     /** If the model has a manager and is executing, then
      *  pause execution by calling the pause() method of the manager.
@@ -362,82 +397,78 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
     
     /** Create a default layout for the associated model. */
     private String _defaultLayout() {
-        
-        // FIXME: This XML specification of the layout should
-        // be stored in an attribute in the model.
-        // Here, we create a default.
-        StringBuffer xml = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-        xml.append("<containers>");
+        StringBuffer xml = new StringBuffer("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+        xml.append("<containers>\n");
         
         // Top-level panel has two columns and one row.
-        xml.append("<container name=\"panel\" " +
+        xml.append("<container name=\"top\" " +
                 "columnSpecs=\"default,3dlu,default:grow\" " +
-                "rowSpecs=\"default\">");
+                "rowSpecs=\"default\">\n");
         xml.append("<cellconstraints name=\"Subpanel:ControlPanel\" gridX=\"1\" gridY=\"1\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" " +
                 "verticalAlignment=\"top\" topInset=\"0\" bottomInset=\"0\" " +
-                "rightInset=\"0\" leftInset=\"0\"/>");
+                "rightInset=\"0\" leftInset=\"0\"/>\n");
         xml.append("<cellconstraints name=\"Subpanel:PlaceablePanel\" gridX=\"3\" gridY=\"1\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" " +
                 "verticalAlignment=\"top\" topInset=\"0\" bottomInset=\"0\" " +
-                "rightInset=\"0\" leftInset=\"0\"/>");
-        xml.append("</container>");
+                "rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("</container>\n");
         
         // Subpanel with the run control buttons, the top-level parameters,
         // and the director parameters.
         xml.append("<container name=\"Subpanel:ControlPanel\" " +
                 "columnSpecs=\"default\" " +
                 "rowSpecs=\"default,5dlu,default,5dlu,default,5dlu,default,5dlu," +
-                "default,5dlu,default,5dlu,default\">");
+                "default,5dlu,default,5dlu,default\">\n");
         xml.append("<cellconstraints name=\"Separator:Run Control\" gridX=\"1\" gridY=\"1\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
-                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>");
+                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
         xml.append("<cellconstraints name=\"Subpanel:Run Control\" gridX=\"1\" gridY=\"3\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"top\" " +
-                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>");
+                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
         // Place a configurer for the top-level settables here.
         xml.append("<cellconstraints name=\"Separator:Top-Level Parameters\" gridX=\"1\" gridY=\"5\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
-                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>");
+                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
         xml.append("<cellconstraints name=\"ConfigureTopLevel\" gridX=\"1\" gridY=\"7\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" " +
                 "verticalAlignment=\"top\" topInset=\"0\" bottomInset=\"0\" " +
-                "rightInset=\"0\" leftInset=\"0\"/>");        
+                "rightInset=\"0\" leftInset=\"0\"/>\n");        
         // Place a configurer for the director settables here.
         xml.append("<cellconstraints name=\"Separator:Director Parameters\" gridX=\"1\" gridY=\"9\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
-                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>");
+                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
         xml.append("<cellconstraints name=\"ConfigureDirector\" gridX=\"1\" gridY=\"11\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" " +
                 "verticalAlignment=\"top\" topInset=\"0\" bottomInset=\"0\" " +
-                "rightInset=\"0\" leftInset=\"0\"/>");        
-        xml.append("</container>");
+                "rightInset=\"0\" leftInset=\"0\"/>\n");        
+        xml.append("</container>\n");
 
         // Subpanel with the run control buttons.
         xml.append("<container name=\"Subpanel:Run Control\" " +
                 "columnSpecs=\"default,3dlu,default,3dlu,default,3dlu,default\" " +
-                "rowSpecs=\"default\">");
+                "rowSpecs=\"default\">\n");
         xml.append("<cellconstraints name=\"GoButton:Execute\" gridX=\"1\" gridY=\"1\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
-                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>");
+                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
         xml.append("<cellconstraints name=\"PauseButton:Pause\" gridX=\"3\" gridY=\"1\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
-                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>");
+                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
         xml.append("<cellconstraints name=\"ResumeButton:Resume\" gridX=\"5\" gridY=\"1\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
-                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>");
+                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
         xml.append("<cellconstraints name=\"StopButton:Stop\" gridX=\"7\" gridY=\"1\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
-                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>");
-        xml.append("</container>");
+                "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
+        xml.append("</container>\n");
 
         // Subpanel for each object that implements Placeable.
         xml.append("<container name=\"Subpanel:PlaceablePanel\" ");
@@ -460,18 +491,18 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
                     constraints.append(row);
                     constraints.append("\" gridWidth=\"1\" gridHeight=\"1\" horizontalAlignment=\"default\" " +
                             "verticalAlignment=\"default\" topInset=\"0\" bottomInset=\"0\" " +
-                            "rightInset=\"0\" leftInset=\"0\"/>");
+                            "rightInset=\"0\" leftInset=\"0\"/>\n");
                     row = row + 2;
                 }
             }
         }
         // End the row specs.
-        xml.append("\">");                        
+        xml.append("\">\n");                        
         // Add the constraints.
         xml.append(constraints);
-        xml.append("</container>");
+        xml.append("</container>\n");
 
-        xml.append("</containers>");
+        xml.append("</containers>\n");
         return xml.toString();
     }
 
