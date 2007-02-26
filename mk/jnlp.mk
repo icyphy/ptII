@@ -280,6 +280,13 @@ PTJACL_JARS =	ptolemy/actor/gui/ptjacl/ptjacl.jar \
 # Do not include PTJACL for size reasons
 PTJACL_JARS =
 
+# Jars for configurable run control panel
+RUN_JARS = \
+	com/jgoodies/jgoodies.jar \
+	lib/bsh-2.0b4.jar \
+	org/mlc/mlc.jar \
+	ptolemy/actor/gui/run/run.jar
+
 WIRELESS_JARS = \
 	ptolemy/domains/wireless/wireless.jar \
 	ptolemy/domains/wireless/demo/demo.jar
@@ -334,6 +341,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/sr/doc/doc.jar \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
+	$(RUN_JARS) \
 	$(WIRELESS_JARS)
 
 FULL_MAIN_JAR = \
