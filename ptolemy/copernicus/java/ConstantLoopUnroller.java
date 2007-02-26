@@ -220,8 +220,8 @@ public class ConstantLoopUnroller extends BodyTransformer {
             }
 
             // Lastly, find the initial value of the loop.
-            List defsList = localDefs.getDefsOfAt(counterLocal,
-                    whilePredecessor.getTail());
+            //List defsList = localDefs.getDefsOfAt(counterLocal,
+            //        whilePredecessor.getTail());
             //DefinitionStmt initializeStmt = (DefinitionStmt) defsList.get(0);
             int initial;
 
