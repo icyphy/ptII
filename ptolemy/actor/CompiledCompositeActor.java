@@ -561,7 +561,7 @@ public class CompiledCompositeActor extends
 
             inline = new Parameter(this, "inline");
             inline.setTypeEquals(BaseType.BOOLEAN);
-            inline.setExpression("true");
+            inline.setExpression("false");
 
             overwriteFiles = new Parameter(this, "overwriteFiles");
             overwriteFiles.setTypeEquals(BaseType.BOOLEAN);

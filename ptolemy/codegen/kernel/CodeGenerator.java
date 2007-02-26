@@ -107,7 +107,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
-        inline.setExpression("true");
+        inline.setExpression("false");
 
         overwriteFiles = new Parameter(this, "overwriteFiles");
         overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
