@@ -27,7 +27,6 @@
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import soot.Body;
@@ -48,8 +47,6 @@ import soot.jimple.toolkits.scalar.Evaluator;
 import soot.toolkits.graph.Block;
 import soot.toolkits.graph.BlockGraph;
 import soot.toolkits.graph.CompleteBlockGraph;
-import soot.toolkits.graph.CompleteUnitGraph;
-import soot.toolkits.scalar.SimpleLocalDefs;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConstantLoopUnroller
@@ -109,10 +106,10 @@ public class ConstantLoopUnroller extends BodyTransformer {
         /*Chain units = */body.getUnits();
 
         BlockGraph graph = new CompleteBlockGraph(body);
-        CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+        //CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 
         // this will help us figure out where locals are defined.
-        SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
+        //SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         //SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
 
         for (Iterator blocks = graph.iterator(); blocks.hasNext();) {
