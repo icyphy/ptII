@@ -370,6 +370,7 @@ The Ptiny pack is required.
         <pack name="Sources" required="no">
             <description>The Ptolemy II sources.</description>
 	    <!-- Can't just copy the directory, need to spec files -->
+	    <!-- If you edit this, also edit PTII_TOPDIR in the makefile. -->
 	    <file src="src/ptII6.1.devel/README.txt" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII6.1.devel/bin" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII6.1.devel/com" targetdir="$INSTALL_PATH"/>
@@ -383,6 +384,7 @@ The Ptiny pack is required.
 	    <file src="src/ptII6.1.devel/lib" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII6.1.devel/makefile" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII6.1.devel/mk" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII6.1.devel/org" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII6.1.devel/ptolemy" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII6.1.devel/thales" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII6.1.devel/util" targetdir="$INSTALL_PATH"/>
