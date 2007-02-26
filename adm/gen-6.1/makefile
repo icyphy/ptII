@@ -99,6 +99,9 @@ PTIIDIST = 	$(PTIIADM)/dists/ptII$(VERSION)
 
 # Directories and files in the top level ptII directory that we should
 # include in the tar file.
+#
+# NOTE: If you edit this, edit ptII$(VERSION)_setup.xml
+#
 PTII_TOPDIR=	.cshrc \
 		.classpath.in \
 		.classpath.default \
