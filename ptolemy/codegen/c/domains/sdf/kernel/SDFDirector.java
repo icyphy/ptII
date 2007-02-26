@@ -30,10 +30,10 @@ package ptolemy.codegen.c.domains.sdf.kernel;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompiledCompositeActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.TypedCompositeActorWithCoSimulation;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.c.actor.sched.StaticSchedulingDirector;
@@ -98,8 +98,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
 
-        ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
-                .getContainer();
+        ptolemy.actor.CompositeActor container 
+                = (ptolemy.actor.CompositeActor) getComponent().getContainer();
         CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
 
         // Generate code for creating external initial production.
@@ -170,9 +170,10 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
-        if (container instanceof TypedCompositeActorWithCoSimulation) {
+        if (container instanceof CompiledCompositeActor) {
 
             Type type = ((TypedIOPort) inputPort).getType();
             String portName = inputPort.getName();
@@ -274,9 +275,10 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
-        if (container instanceof TypedCompositeActorWithCoSimulation) {
+        if (container instanceof CompiledCompositeActor) {
 
             if (_portNumber == 0) {
                 int numberOfOutputPorts = container.outputPortList().size();
@@ -520,8 +522,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                             .iterator();
                     label1: while (sourcePorts.hasNext()) {
                         IOPort sourcePort = (IOPort) sourcePorts.next();
-                        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
-                                .getContainer());
+                        CodeGeneratorHelper helper = (CodeGeneratorHelper) 
+                                _getHelper(sourcePort.getContainer());
                         int width;
                         if (sourcePort.isInput()) {
                             width = sourcePort.getWidthInside();
@@ -592,8 +594,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 .iterator();
                         label2: while (sourcePorts.hasNext()) {
                             IOPort sourcePort = (IOPort) sourcePorts.next();
-                            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
-                                    .getContainer());
+                            CodeGeneratorHelper helper = (CodeGeneratorHelper) 
+                                    _getHelper(sourcePort.getContainer());
                             int width;
                             if (sourcePort.isInput()) {
                                 width = sourcePort.getWidthInside();
@@ -719,14 +721,17 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     protected void _updatePortBufferSize() throws IllegalActionException {
 
-        ptolemy.domains.sdf.kernel.SDFDirector director = (ptolemy.domains.sdf.kernel.SDFDirector) getComponent();
+        ptolemy.domains.sdf.kernel.SDFDirector director 
+                = (ptolemy.domains.sdf.kernel.SDFDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         Iterator actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) 
+                    _getHelper((NamedObj) actor);
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();

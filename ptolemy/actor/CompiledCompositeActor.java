@@ -41,8 +41,6 @@ import java.util.List;
 
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
-import ptolemy.codegen.kernel.CodeGenerator;
-import ptolemy.codegen.kernel.StaticSchedulingCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -55,7 +53,6 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.ExecuteCommands;
@@ -65,21 +62,21 @@ import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-//// TypedCompositeActorWithCoSimulation
+//// CompiledCompositeActor
 
 /**
- A TypedCompositeActorWithCoSimulation is an aggregation of typed actors with 
+ A CompiledCompositeActor is an aggregation of typed actors with 
  cosimulation option.
 
  @author Gang Zhou
  @version $Id$
- @since Ptolemy II 5.2
+ @since Ptolemy II 6.0
  @Pt.ProposedRating red (zgang)
  @Pt.AcceptedRating red (zgang)
  @see ptolemy.actor.TypedCompositeActor
  */
 
-public class TypedCompositeActorWithCoSimulation extends
+public class CompiledCompositeActor extends
         ptolemy.actor.TypedCompositeActor {
     /** Construct a CodeGenerationCompositeActor in the default workspace 
      *  with no container and an empty string as its name. Add the actor to 
@@ -88,7 +85,7 @@ public class TypedCompositeActorWithCoSimulation extends
      *  You should set the container before sending data to it.
      *  Increment the version number of the workspace.
      */
-    public TypedCompositeActorWithCoSimulation() {
+    public CompiledCompositeActor() {
         super();
         _init();
     }
@@ -102,7 +99,7 @@ public class TypedCompositeActorWithCoSimulation extends
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
      */
-    public TypedCompositeActorWithCoSimulation(Workspace workspace) {
+    public CompiledCompositeActor(Workspace workspace) {
         super(workspace);
         _init();
     }
@@ -124,7 +121,7 @@ public class TypedCompositeActorWithCoSimulation extends
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public TypedCompositeActorWithCoSimulation(CompositeEntity container,
+    public CompiledCompositeActor(CompositeEntity container,
             String name) throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
@@ -266,11 +263,12 @@ public class TypedCompositeActorWithCoSimulation extends
                 .booleanValue();
         if (inCoSimulationMode) {
 
-            if (_generatedCodeVersion != _workspace.getVersion()) {
+            // if (_generatedCodeVersion != _workspace.getVersion()) {
+            if (_tempVersion == 0) {
 
                 _sanitizedActorName = StringUtilities.sanitizeName(getName());
-                _generateJavaCode();
-                _generateCCode();
+                _generateandCompileJavaCode();
+                _generateandCompileCCode();
 
                 String jniClassName = "Jni" + _sanitizedActorName;
                 Class jniClass = null;
@@ -321,6 +319,7 @@ public class TypedCompositeActorWithCoSimulation extends
                 }
 
                 _generatedCodeVersion = _workspace.getVersion();
+                _tempVersion++;
 
             }
 
@@ -357,7 +356,7 @@ public class TypedCompositeActorWithCoSimulation extends
                         "Failed to invoke the wrapup method on the wrapper class.");
             }
         }
-        _generatedCodeVersion = _workspace.getVersion();
+        // _generatedCodeVersion = _workspace.getVersion();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -409,77 +408,65 @@ public class TypedCompositeActorWithCoSimulation extends
         _executeCommands.start();
     }
 
-    private void _generateCCode() throws IllegalActionException {
-        // Get all instances of this class contained in this actor
-        List codeGenerators = attributeList(CodeGenerator.class);
-
-        CodeGenerator codeGenerator = null;
+    private void _generateandCompileCCode() throws IllegalActionException {
+        
+        String packageName = generatorPackage.stringValue();
+        String helperClassName 
+                = getClass().getName().replaceFirst("ptolemy", packageName);
+        
+        Class helperClass = null;
         try {
-            if (codeGenerators.size() == 0) {
-                // Add a codeGenerator
-                codeGenerator = new StaticSchedulingCodeGenerator(this,
-                        "CodeGenerator_AutoAdded");
-            } else {
-                // Get the last CodeGenerator in the list, maybe
-                // it was added last?
-                codeGenerator = (CodeGenerator) codeGenerators
-                        .get(codeGenerators.size() - 1);
-            }
-
-            codeGenerator.codeDirectory.setExpression(codeDirectory
-                    .getExpression());
-
-            // FIXME: This should not be necessary, but if we don't
-            // do it, then getBaseDirectory() thinks we are in the current dir.
-            codeGenerator.codeDirectory
-                    .setBaseDirectory(codeGenerator.codeDirectory.asFile()
-                            .toURI());
-
-            codeGenerator.generatorPackage.setExpression(generatorPackage
-                    .getExpression());
-
-            codeGenerator.inline.setExpression(inline.getExpression());
-
-            codeGenerator.overwriteFiles.setExpression(overwriteFiles
-                    .getExpression());
-
-        } catch (NameDuplicationException e) {
-            throw new IllegalActionException(this, e, "Name duplication.");
-        }
-
-        try {
-            codeGenerator.generateCode();
-        } catch (KernelException e) {
+            helperClass = Class.forName(helperClassName);
+        } catch (ClassNotFoundException e) {
             throw new IllegalActionException(this, e,
-                    "Failed to generate code.");
+                    "Cannot find helper class " + helperClassName);
+        }
+        
+        Method generateMethod = null;
+        try {
+            generateMethod = helperClass.getMethod("generateCode", 
+                    new Class[] {getClass()});
+        } catch (NoSuchMethodException e) {
+            throw new IllegalActionException(this, e,
+                    "Cannot find the generateCode method.");
+        }
+        
+        try {
+            generateMethod.invoke(null, new Object[]{this});
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e,
+                    "Failed to invoke the generateCode method.");
         }
     }
 
-    private void _generateJavaCode() throws IllegalActionException {
+    private void _generateandCompileJavaCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         //FIXME: the name must be unique.
         //try {
-        code.append("public class Jni" + _sanitizedActorName + " {\n" + "\n"
-                + "    public native Object[] fire(" + _getArguments() + ");\n"
-                + "    public native void initialize();\n"
-                + "    public native void wrapup();\n" + "    static {\n"
-
-                + "        String library = \"" + _sanitizedActorName + "\";\n"
-                + "        System.loadLibrary(library);\n"
-
-                //    + "        String library = \""
-                //    +                  codeDirectory.asFile().getCanonicalPath() 
-                //    +                  File.separator + _sanitizedActorName + ".dll\";\n"               
-                //   + "        String library = \"" + "C:/Documents and Settings/zgang/codegen/" 
-                //                           + _sanitizedActorName + ".dll\";\n"
-                //   + "        System.load(library);\n"
-                + "    }\n" + "}\n");
+            code.append("public class Jni" + _sanitizedActorName + " {\n"
+                      + "\n"
+                      + "    public native Object[] fire(" + _getArguments() + ");\n"
+                      + "    public native void initialize();\n"
+                      + "    public native void wrapup();\n"
+                      + "    static {\n" 
+      
+        //              + "        String library = \"" + _sanitizedActorName + "\";\n"
+        //              + "        System.loadLibrary(library);\n"
+                      
+        //    + "        String library = \""
+        //    +                  codeDirectory.asFile().getCanonicalPath() 
+        //    +                  File.separator + _sanitizedActorName + ".dll\";\n"               
+         + "        String library = \"" + "C:/Documents and Settings/zgang/codegen/" 
+                                 + _sanitizedActorName + ".dll\";\n"
+         + "        System.load(library);\n"
+         + "    }\n"
+         + "}\n");
 
         //} catch (IOException e) {
         //    throw new IllegalActionException(this, "Cannot generate library path.");
         //}
-
+            
         String codeFileName = "Jni" + _sanitizedActorName + ".java";
 
         // Write the code to a file with the same name as the model into
@@ -712,4 +699,6 @@ public class TypedCompositeActorWithCoSimulation extends
     private String _sanitizedActorName;
 
     private long _generatedCodeVersion = -1;
+    
+    private long _tempVersion = 0;
 }
