@@ -541,7 +541,7 @@ public class CompiledCompositeActor extends
     private void _init() {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
-        setClassName("ptolemy.codegen.c.actor.TypedCompositeActorWithCoSimulation");
+        setClassName("ptolemy.codegen.c.actor.CompiledCompositeActor");
 
         try {
             coSimulation = new Parameter(this, "coSimulation");
