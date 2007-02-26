@@ -42,7 +42,6 @@ public class PtalonScopeChecker extends antlr.TreeParser implements
         return info;
     }
 
-    private String scopeName;
 
     public PtalonScopeChecker() {
         tokenNames = _tokenNames;
