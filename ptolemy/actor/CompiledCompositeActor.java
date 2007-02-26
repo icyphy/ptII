@@ -318,7 +318,6 @@ public class CompiledCompositeActor extends
                             "Cannot find wrapup method in the jni wrapper class.");
                 }
 
-                _generatedCodeVersion = _workspace.getVersion();
                 _tempVersion++;
 
             }
@@ -697,8 +696,6 @@ public class CompiledCompositeActor extends
     private Method _jniWrapupMethod;
 
     private String _sanitizedActorName;
-
-    private long _generatedCodeVersion = -1;
     
     private long _tempVersion = 0;
 }
