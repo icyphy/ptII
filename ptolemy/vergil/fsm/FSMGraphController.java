@@ -54,7 +54,8 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.fsm.modal.ModalTransitionController;
 import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.kernel.PortDialogFactory;
+import ptolemy.vergil.kernel.ConfigureUnitsAction;
+import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
@@ -137,9 +138,14 @@ public class FSMGraphController extends FSMViewerGraphController {
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
 
-        if (_portDialogFactory != null) {
-            _portDialogFactory.setConfiguration(configuration);
+        if (_portDialogAction != null) {
+            _portDialogAction.setConfiguration(configuration);
         }
+
+        if (_configureUnitsAction != null) {
+             _configureUnitsAction.setConfiguration(configuration);
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -176,9 +182,13 @@ public class FSMGraphController extends FSMViewerGraphController {
         /* GraphPane pane = */getGraphPane();
 
         // Add a menu command to configure the ports.
-        _portDialogFactory = new PortDialogFactory();
-        _menuFactory.addMenuItemFactory(_portDialogFactory);
-        _portDialogFactory.setConfiguration(getConfiguration());
+        _portDialogAction = new PortDialogAction("Ports");
+        _portDialogAction.setConfiguration(getConfiguration());
+
+        _configureMenuFactory.addAction(_portDialogAction, "Customize");
+        _configureUnitsAction = new ConfigureUnitsAction("Units Constraints");
+        _configureMenuFactory.addAction(_configureUnitsAction, "Customize");
+        _configureUnitsAction.setConfiguration(getConfiguration());
 
         // Create the interactor that drags new edges.
         _linkCreator = new LinkCreator();
@@ -211,6 +221,8 @@ public class FSMGraphController extends FSMViewerGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    private ConfigureUnitsAction _configureUnitsAction;
 
     /** The interactor that interactively creates edges. */
     private LinkCreator _linkCreator; // For control-click
@@ -310,7 +322,7 @@ public class FSMGraphController extends FSMViewerGraphController {
 
 
     /** The port dialog factory. */
-    private PortDialogFactory _portDialogFactory;
+    private PortDialogAction _portDialogAction;
 
     /** Prototype state for rendering. */
     private static Location _prototypeState;

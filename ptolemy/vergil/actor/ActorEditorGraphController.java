@@ -50,7 +50,8 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.Link;
-import ptolemy.vergil.kernel.PortDialogFactory;
+import ptolemy.vergil.kernel.ConfigureUnitsAction;
+import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.kernel.RelationController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuItemFactory;
@@ -154,8 +155,12 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
 
-        if (_portDialogFactory != null) {
-            _portDialogFactory.setConfiguration(configuration);
+        if (_portDialogAction != null) {
+            _portDialogAction.setConfiguration(configuration);
+        }
+
+        if (_configureUnitsAction != null) {
+             _configureUnitsAction.setConfiguration(configuration);
         }
 
         if (_listenToActorFactory != null) {
@@ -200,9 +205,13 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         GraphPane pane = getGraphPane();
 
         // Add a menu command to configure the ports.
-        _portDialogFactory = new PortDialogFactory();
-        _menuFactory.addMenuItemFactory(_portDialogFactory);
-        _portDialogFactory.setConfiguration(getConfiguration());
+        _portDialogAction = new PortDialogAction("Ports");
+        _portDialogAction.setConfiguration(getConfiguration());
+
+        _configureMenuFactory.addAction(_portDialogAction, "Customize");
+        _configureUnitsAction = new ConfigureUnitsAction("Units Constraints");
+        _configureMenuFactory.addAction(_configureUnitsAction, "Customize");
+        _configureUnitsAction.setConfiguration(getConfiguration());
 
         // Add a menu command to list to the actor.
         _listenToActorFactory = new ListenToActorFactory();
@@ -261,6 +270,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    private ConfigureUnitsAction _configureUnitsAction;
 
     /** The interactors that interactively creates edges. */
     private LinkCreator _linkCreator; // For control-click
@@ -361,7 +372,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                             GUIUtilities.SELECTED_ICON } });
 
     /** The port dialog factory. */
-    private PortDialogFactory _portDialogFactory;
+    private PortDialogAction _portDialogAction;
 
     /** The interactor for creating new relations. */
     private RelationCreator _relationCreator;

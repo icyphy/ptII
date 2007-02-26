@@ -426,6 +426,9 @@ public abstract class BasicGraphController extends AbstractGraphController
     protected static ConfigureAction _configureAction = new ConfigureAction(
             "Configure");
 
+    /** The submenu for configure actions. */
+    protected static MenuActionFactory _configureMenuFactory;
+
     /** The interactor for creating context sensitive menus on the
      *  graph itself.
      */
@@ -573,7 +576,8 @@ public abstract class BasicGraphController extends AbstractGraphController
          */
         public SchematicContextMenuFactory(GraphController controller) {
             super(controller);
-            addMenuItemFactory(new MenuActionFactory(_configureAction));
+            _configureMenuFactory = new MenuActionFactory(_configureAction);
+            addMenuItemFactory(_configureMenuFactory);
         }
 
         protected NamedObj _getObjectFromFigure(Figure source) {
