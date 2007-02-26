@@ -149,9 +149,13 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
         if (inline) {
             code.append(generateFireCode());
         } else {
-            code.append(_INDENT2
-                    + StringUtilities.sanitizeName(model.getFullName()) + "();"
-                    + _eol);
+            if (isTopLevel()) {
+                code.append(_INDENT2
+                        + StringUtilities.sanitizeName(model.getFullName()) 
+                        + "();" + _eol);
+            } else {
+                code.append(generateFireCode());
+            }
         }
 
         // The code generated in generateModeTransitionCode() is executed
