@@ -27,7 +27,6 @@
 package ptolemy.actor.gui.run;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Manager;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.util.IllegalActionException;
