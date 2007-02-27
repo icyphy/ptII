@@ -101,6 +101,7 @@ JSRCS = \
 	ArrayAverage.java \
 	ArrayContains.java \
 	ArrayElement.java \
+	ArrayElementAsMatrix.java \
 	ArrayExtract.java \
 	ArrayLength.java \
 	ArrayLevelCrossing.java \
