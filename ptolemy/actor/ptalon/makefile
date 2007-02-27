@@ -68,17 +68,44 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
-
-
+ANTLR = "$(JAVA)" -classpath "$(ANTLR_DIR)/antlr.jar" antlr.Tool
+# OPTIONAL_JSRCS are created by Antlr
+OPTIONAL_JSRCS = \
+	PtalonRecognizer.java \
+	PtalonLexer.java \
+	PtalonPopulator.java \
+	PtalonScopeChecker.java  
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS)
 
-JCLASS = $(JSRCS:%.java=%.class)
+OPTIONAL_FILES =  \
+	doc \
+	$(OPTIONAL_JSRCS)
 
-all: jclass
-install: jclass jars
+JCLASS = \
+	$(JSRCS:%.java=%.class) \
+	$(OPTIONAL_JSRCS:%.java=%.class)
+
+all: $(OPTIONAL_JSRC) $(JCLASS)
+install: all jars
+
+# Derived java files
+PtalonRecognizer.java: parser.g
+	$(ANTLR) $<
+PtalonLexer.java: parser.g
+	$(ANTLR) $<
+PtalonPopulator.java: populator.g
+	$(ANTLR) $<
+PtalonScopeChecker.java: scopeChecker.g
+	$(ANTLR) $<
+
+# This rule is useful for cvs committing the derived files
+# For example:
+# cvs commit -m "Updated MatrixParser." `make echo_OPTIONAL_JSRCS`
+echo_OPTIONAL_JSRCS:
+	@echo $(OPTIONAL_JSRCS)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
