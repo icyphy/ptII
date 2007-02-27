@@ -59,7 +59,7 @@ PTCLASSALLJARS = \
 # Keep this list alphabetized.
 JSRCS = \
 	CompiledCompositeActor.java \
-	TypedCompositeActor.java \
+	TypedCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED =
 
