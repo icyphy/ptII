@@ -59,6 +59,8 @@ import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
 
@@ -155,8 +157,17 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
                 }
                 JPanel panel = _subpanels.get(subpanelName);
                 if (panel == null) {
-                    throw new IllegalActionException(_model, 
-                            "No layout matching subpanel: " + subpanelName);
+                    // FIXME: FormsLayout has a bug where if a subpanel that contains
+                    // a subpanel is deleted, then the subsubpanel layout is not deleted.
+                    try {
+                        MessageHandler.warning(
+                                "A layout is given for a subpanel named '"
+                                + subpanelName
+                                + "', but there is no instance of this subpanel.");
+                    } catch (CancelException e) {
+                        throw new IllegalActionException(_model, "Canceled");
+                    }
+                    continue;
                 }
                 NodeList nodeList = subpanelNode.getChildNodes();
                 for (int j = 0; j < nodeList.getLength(); j++) {
@@ -375,8 +386,18 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             }
             _subpanels.put(name, subpanel);
         } else {
-            throw new IllegalActionException(_model,
-                    "Unrecognized entry in control panel layout: " + name);
+            // FIXME: When a component is dragged from once
+            // cell to another, the FormsLayout package messes
+            // up and puts in a spurious entry in the XML
+            // with entity name matching the enclosing panel
+            // and layout constraints matching the result of
+            // the drag.  Why?
+            try {
+                MessageHandler.warning(
+                        "Unrecognized entry in control panel layout: " + name);
+            } catch (CancelException e) {
+                throw new IllegalActionException(_model, "Canceled");
+            }
         }
     }
     /** Close any open displays by calling place(null).

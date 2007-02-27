@@ -49,6 +49,7 @@ import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
@@ -90,12 +91,20 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
             ContainerLayout containerLayout = layouts.get(index);
             Container container = constraintsManager.getContainer(containerLayout);
             if (container == null) {
-                throw new IllegalActionException(model,
-                        "A container with name "
-                        + containerLayout.getName()
-                        + " was found in the contstraints file but was not found in the container");
+                // FIXME: FormsLayout has a bug where if a subpanel with a subpanel
+                // is deleted, then the subsubpanel is not deleted from the constraints.
+                // For now, just issue a warning.
+                try {
+                    MessageHandler.warning( "A container with name "
+                            + containerLayout.getName()
+                            + " was found in the contstraints file but was not found in the container");
+                } catch (CancelException ex) {
+                    throw new IllegalActionException(model, "Canceled");
+                }
+                       
+            } else {
+                addContainerLayout(containerLayout, container);
             }
-            addContainerLayout(containerLayout, container);
         }
 
         getContentPane().setLayout(new BorderLayout(3, 3));

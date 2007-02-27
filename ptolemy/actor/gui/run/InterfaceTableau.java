@@ -26,6 +26,8 @@
  */
 package ptolemy.actor.gui.run;
 
+import java.util.List;
+
 import javax.swing.JFrame;
 
 import ptolemy.actor.CompositeActor;
@@ -146,15 +148,16 @@ public class InterfaceTableau extends Tableau {
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
-                // First see whether the effigy already contains a RunTableau.
-                InterfaceTableau tableau = (InterfaceTableau) effigy
-                        .getEntity("interfaceTableau");
-
-                if (tableau == null) {
+                // First see whether the effigy already contains an InterfaceTableau.
+                List<InterfaceTableau> list = effigy.entityList(InterfaceTableau.class);
+                InterfaceTableau tableau;
+                if (list.size() > 0) {
+                    // Return the last one (most recently created) in the list.
+                    tableau = list.get(list.size() - 1);
+                } else {
                     tableau = new InterfaceTableau((PtolemyEffigy) effigy,
-                            "interfaceTableau");
+                            effigy.uniqueName("interfaceTableau"));
                 }
-
                 // Don't call show() here, it is called for us in
                 // TableauFrame.ViewMenuListener.actionPerformed()
                 return tableau;

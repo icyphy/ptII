@@ -68,8 +68,14 @@ public class LayoutTableau extends Tableau {
                     "Cannot run a model that is not a CompositeActor."
                             + " It is: " + model);
         }
-        RunLayoutFrame frame = new RunLayoutFrame(
-                (CompositeActor)model, this, pane.getLayoutConstraintsManager());
-        setFrame(frame);
+        try {
+            RunLayoutFrame frame = new RunLayoutFrame(
+                    (CompositeActor)model, this, pane.getLayoutConstraintsManager());
+            setFrame(frame);
+        } catch (IllegalActionException ex) {
+            // Remove this tableau from its container.
+            setContainer(null);
+            throw(ex);
+        }
     }
 }

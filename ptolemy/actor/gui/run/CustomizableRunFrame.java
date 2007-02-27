@@ -155,19 +155,17 @@ public class CustomizableRunFrame extends TableauFrame {
                             // This must be done in the swing event thread.
                             Runnable reOpen = new Runnable() {
                                 public void run() {
-                                    InterfaceTableau tableau = (InterfaceTableau)getTableau();
+                                    // Create a new tableau.  Closing the old frame
+                                    // also results in removing the tableau.
+                                    PtolemyEffigy effigy = (PtolemyEffigy)getTableau().getContainer();
                                     close();
                                     try {
-                                        JFrame frame = new CustomizableRunFrame(_model, tableau);
-                                        tableau.setFrame(frame);
-                                    } catch (IllegalActionException e) {
+                                        InterfaceTableau tableau = new InterfaceTableau(effigy,
+                                                effigy.uniqueName("interfaceTableau"));
+                                        tableau.show();
+                                    } catch (KernelException e) {
                                         MessageHandler.error("Failed to reopen run window.", e);
                                     }
-                                    tableau.show();
-                                    // FIXME: The above doesn't work.
-                                    // It seems that the new frame appears briefly,
-                                    // then disappears.  Why?  Could it be that we have
-                                    // to create a new tableau?
                                 }
                             };
                             deferIfNecessary(reOpen);
