@@ -2118,11 +2118,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             if (parameter.trim().length() == 0) {
                 return generateVariableName(_component);
             } else {
-                return generateVariableName(_component) + "_" + parameter;
+                return generateVariableName(_component) + "_" + processCode(parameter);
             }
         } else if (macro.equals("actorClass")) {
             return _component.getClassName().replace('.', '_') + "_"
-                    + parameter;
+                    + processCode(parameter);
         } else if (macro.equals("new")) {
             return getNewInvocation(parameter);
         } else if (macro.equals("tokenFunc")) {
