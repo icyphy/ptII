@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Hashtable;
 
 import ptolemy.data.StringToken;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
 import com.microstar.xml.HandlerBase;
@@ -78,6 +79,11 @@ public class PtalonMLHandler extends HandlerBase {
                     && _attributes.containsKey("value")) {
                 PtalonExpressionParameter param = (PtalonExpressionParameter) _actor
                         .getAttribute(_attributes.get("name"));
+                if (param == null) {
+                    throw new IllegalActionException(_actor,
+                            "Failed get parameter \"name\" from actor. "
+                            + "\"name\" attribute was: " + _attributes.get("name"));
+                }
                 param.setExpression(_attributes.get("value"));
                 _actor.attributeChanged(param);
             }
