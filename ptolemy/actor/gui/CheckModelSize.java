@@ -85,8 +85,16 @@ public class CheckModelSize {
             MoMLParser parser = new MoMLParser();
             MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
 
+            RemoveGraphicalClasses removeGraphicalClasses = new RemoveGraphicalClasses();
+
+            // Remove StaticSchedulingCodeGenerator from Butterfly because during the
+            // nightly build the codegenerator is not yet built when the tests in actor.gui
+            // are run.
+            removeGraphicalClasses.put("ptolemy.codegen.kernel.StaticSchedulingCodeGenerator",
+                    null);
+
             // Filter out any graphical classes.
-            MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
+            MoMLParser.addMoMLFilter(removeGraphicalClasses);
 
             if (!(fileName.endsWith(".xml") || fileName.endsWith(".moml"))) {
                 continue;
