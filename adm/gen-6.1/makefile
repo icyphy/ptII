@@ -437,7 +437,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/moml/jxta/JXTALibrary.class \
 	        ptolemy/plot/ptplotlocales \
 		ptolemy/util/test/FileUtilities-1.1.tmp \
-		ptolemy/ptalon \
 		ptolemy/vergil/toolbox/test/alljsimpletests.tcl
 
 
@@ -513,6 +512,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/python \
 		ptolemy/actor/lib/security \
 		ptolemy/actor/lib/xslt \
+		ptolemy/actor/ptalon \
 		ptolemy/codegen \
 		ptolemy/configs/ptiny \
 		ptolemy/configs/jni \
@@ -532,6 +532,7 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 		doc/codeDocVisualSense \
 		doc/codeDocVisualSense.jar \
 		ptolemy/actor/TypedCompositeActorWithCoSimulation.java \
+		ptolemy/actor/ptalon \
 		ptolemy/configs/hyvisual \
 		ptolemy/codegen \
 		ptolemy/domains/ptinyDomains.xml \
@@ -1242,6 +1243,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop/util \
 	$(REMOTE1PTIIDIST)/ptolemy/distributed/domains/sdf/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/actor/ptalon \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/hsif \
 	$(REMOTE1PTIIDIST)/jni \
