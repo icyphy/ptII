@@ -144,9 +144,9 @@ public class Expression extends CCodeGeneratorHelper {
         }
 
         if (result == null) {
-            throw new IllegalActionException(actor,
-                    "Expression yields a null result: "
-                            + actor.expression.getExpression());
+            //throw new IllegalActionException(actor,
+            //        "Expression yields a null result: "
+            //                + actor.expression.getExpression());
         }
 
         return processCode(_cParseTreeCodeGenerator.generatePreinitializeCode());
