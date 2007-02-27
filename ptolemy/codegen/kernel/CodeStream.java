@@ -992,49 +992,61 @@ public class CodeStream {
                 StringBuffer codeBlock = (StringBuffer) codeObject[1]; 
                 List parameters = (List) codeObject[2];
                 
+                String superExpression = 
+                    "(\\$super\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)" +
+                    "|(\\$super\\s*\\(.*\\)\\s*;)";
+
                 String[] subBlocks = 
-                    codeBlock.toString().split("\\$super\\s*\\(.*\\)\\s*;");
-                
-                if (subBlocks.length > 1) {
-                    Pattern pattern = 
-                        Pattern.compile("\\$super\\s*\\(.*\\)\\s*;");
+                    codeBlock.toString().split(superExpression);
+            
+                StringBuffer returnCode = new StringBuffer (subBlocks[0]);
+
+                Pattern pattern = Pattern.compile(superExpression);
+                Matcher matcher = pattern.matcher(codeBlock);
+
+                for (int i = 1; i < subBlocks.length; i++) {
                     
-                    Matcher matcher = pattern.matcher(codeBlock);
                     String superCall = "";
                     
                     if (matcher.find()) {
                         superCall = matcher.group();
                     }
                     
+                    int dotIndex = superCall.indexOf(".");
+                    int openIndex = superCall.indexOf("(");
+                    
+                    boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
+                        
+                    String superBlockName = (isImplicit) ? signature.functionName : 
+                        superCall.substring(dotIndex + 1, openIndex).trim();
+                    
                     List argumentsForSuper = 
                         CodeStream._parseParameterList(new StringBuffer(
                                 superCall), 0, superCall.length() - 2);
 
-                    signature.numParameters = argumentsForSuper.size();
-                    
-                    StringBuffer superBlock = getCode(signature, 
+                    Signature superSignature = 
+                        new Signature(superBlockName, argumentsForSuper.size());
+
+                    StringBuffer superBlock = getCode(superSignature, 
                             argumentsForSuper, scopeList.subList(1, size));
                                         
                     if (superBlock == null) {
                         throw new IllegalActionException(_helper,
-                                "Cannot find super block for " + signature +
+                                "Cannot find super block for " + superSignature +
                                 " in " + codeObject[0]);
                     }
                     
                     //superBlock.insert(0, "///////// Super Block ///////////////\n");
                     //superBlock.append("///////// End of Super Block ////////\n");
                     
-                    codeBlock = new StringBuffer (subBlocks[0]);
-
-                    for (int i = 1; i < subBlocks.length; i++) {
-                        codeBlock.append(superBlock);
-                        codeBlock.append(subBlocks[i]);
-                    }
+                    returnCode.append(superBlock);
+                    returnCode.append(subBlocks[i]);
                 }
-                codeBlock = 
-                    substituteParameters(codeBlock, parameters, arguments);
 
-                return codeBlock;
+                returnCode = 
+                    substituteParameters(returnCode, parameters, arguments);
+
+                return returnCode;
 
             } else {
                 return getCode(signature, arguments, 
