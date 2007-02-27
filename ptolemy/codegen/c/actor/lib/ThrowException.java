@@ -62,7 +62,8 @@ public class ThrowException extends Sink {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.Synchronizer actor = (ptolemy.actor.lib.Synchronizer) getComponent();
+        ptolemy.actor.lib.ThrowException actor = 
+            (ptolemy.actor.lib.ThrowException) getComponent();
 
         ArrayList args = new ArrayList();
         args.add(new Integer(0));

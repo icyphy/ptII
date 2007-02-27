@@ -27,6 +27,7 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,6 +50,30 @@ public class ThrowModelError extends Sink {
      */
     public ThrowModelError(ptolemy.actor.lib.ThrowModelError actor) {
         super(actor);
+    }
+
+    /**
+     * Generate fire code.
+     * Read the <code>fireBlock</code> from ThrowException.c,
+     * replace macros with their values and return the processed code string.
+     * @return The processed code string.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        super.generateFireCode();
+
+        ptolemy.actor.lib.ThrowModelError actor = 
+            (ptolemy.actor.lib.ThrowModelError) getComponent();
+
+        ArrayList args = new ArrayList();
+        args.add(new Integer(0));
+
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            _codeStream.appendCodeBlock("fireBlock", args);
+        }
+        return processCode(_codeStream.toString());
     }
 
     /**

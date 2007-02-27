@@ -72,7 +72,7 @@ public class UpSample extends CCodeGeneratorHelper {
         Type type = actor.input.getType();
         if (!isPrimitive(type)) {
             if (type == BaseType.GENERAL) {
-                args.add("$typeFunc($type(input)::zero())");
+                args.add("$typeFunc($ref(input).type::zero())");
             } else {
                 args.add(codeGenType(type) + "_zero()");
             }
