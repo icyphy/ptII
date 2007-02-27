@@ -27,6 +27,7 @@
 package ptolemy.codegen.c.domains.sdf.lib;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.domains.sdf.lib.FIR. 
@@ -45,5 +46,43 @@ public class FIR extends CCodeGeneratorHelper {
      */
     public FIR(ptolemy.domains.sdf.lib.FIR actor) {
         super(actor);
+    }
+    
+    /**
+     * Generate fire code.
+     * Read the <code>fireBlock</code> and <code>fireBlock0</code> from
+     * FIR.c and replace macros with their values and return the
+     * processed code block.
+     * @return The processed code string.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        
+        code.append(_generateBlockCode("fireBlock0"));
+
+        code.append(super.generateFireCode());
+
+        return processCode(code.toString());
+    }
+    
+    /**
+     * Generate initialize code.
+     * Read the <code>initBlock</code> and <code>initBlock0</code> from
+     * FIR.c and replace macros with their values and return the
+     * processed code block.
+     * @return The processed code string.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        
+        code.append(_generateBlockCode("initBlock0"));
+
+        code.append(super.generateInitializeCode());
+
+        return processCode(code.toString());
     }
 }
