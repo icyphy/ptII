@@ -87,7 +87,7 @@ public class FixTransformer extends TypedAtomicActor {
      * Return the precision string of the given port.
      * @param port The given port.
      * @return The precision string.
-     * @exception IllegalActionException If there is no precision
+     * @throw IllegalActionException Thrown if there is no precision
      *  parameter for the given port. 
      */
     public String getPortPrecision(IOPort port) throws IllegalActionException {
@@ -227,9 +227,16 @@ public class FixTransformer extends TypedAtomicActor {
         _showQuantizationParameters(false, false, false);
     }
 
+    /**
+     * Set the visibility of the precision, overflow and rounding
+     * parameters.
+     * @param showPrecision The visibility of the precision parameter.
+     * @param showOverflow The visibility of the overflow parameter.
+     * @param showRounding The visibility of the precision parameter.
+     */
     protected void _showQuantizationParameters(boolean showPrecision,
-            boolean showOverflow, boolean showRounding)
-            throws IllegalActionException {
+            boolean showOverflow, boolean showRounding) {
+            //throws IllegalActionException {
         Parameter precision = ((Parameter) getAttribute("outputPrecision"));
         precision
                 .setVisibility((showPrecision) ? Settable.FULL : Settable.NONE);
@@ -242,15 +249,14 @@ public class FixTransformer extends TypedAtomicActor {
     }
 
     /**
-     * 
-     * @param precisionString
-     * @param overflowString
-     * @param roundingString
-     * @exception IllegalActionException
+     * Set quantization parameters for the output port.
+     * @param precisionString The given precision expression.
+     * @param overflowString The given overflow expression.
+     * @param roundingString The given rounding expression.
      */
     protected void _setQuantizationParameters(String precisionString,
-            String overflowString, String roundingString)
-            throws IllegalActionException {
+            String overflowString, String roundingString) {
+            //throws IllegalActionException {
         if (precisionString != null) {
             ((Parameter) getAttribute("outputPrecision"))
                     .setExpression(precisionString);

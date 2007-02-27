@@ -1,4 +1,4 @@
-/* A register with one trigger port that accepts read requests.
+/** A counter that counts in fixpoint values.
 
  Copyright (c) 2004-2006 The Regents of the University of California.
  All rights reserved.
@@ -37,16 +37,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.FixPoint;
 
 //////////////////////////////////////////////////////////////////////////
-//// Counter
+//// Fix Counter
 
 /**
 
- @author Edward A. Lee, Haiyang Zheng
+ @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 4.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
- @see ptolemy.domains.de.lib.Sampler
  */
 public class FixCounter extends SynchronousFixTransformer {
     /** Construct an actor with the given container and name.
@@ -97,7 +96,6 @@ public class FixCounter extends SynchronousFixTransformer {
      *  times in one iteration, then only the input read on the last
      *  invocation in the iteration will affect future outputs of the
      *  counter.
-     *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -162,9 +160,19 @@ public class FixCounter extends SynchronousFixTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+
+    /**
+     * Internal memory of the current count.
+     */
     private int _count = 0;
 
+    /**
+     * 
+     */
     private int _latestCount = 0;
 
+    /**
+     * 
+     */
     private boolean _consumed;
 }

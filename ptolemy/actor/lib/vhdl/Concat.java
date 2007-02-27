@@ -82,6 +82,10 @@ public class Concat extends FixTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /**
+     * Input port for fix values to be concatenated. This is a multiport
+     * and have a Fix value type.
+     */
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////

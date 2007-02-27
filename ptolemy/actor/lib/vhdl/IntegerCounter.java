@@ -1,4 +1,4 @@
-/* A register with one trigger port that accepts read requests.
+/** The integer counter.
 
  Copyright (c) 2004-2006 The Regents of the University of California.
  All rights reserved.
@@ -39,16 +39,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.FixPoint;
 
 //////////////////////////////////////////////////////////////////////////
-//// Counter
+//// Integer Counter
 
 /**
 
- @author Edward A. Lee, Haiyang Zheng
+ @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 4.1
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Red (eal)
- @see ptolemy.domains.de.lib.Sampler
+ @since Ptolemy II 6.0
+ @Pt.ProposedRating Yellow (mankit)
+ @Pt.AcceptedRating Red (mankit)
  */
 public class IntegerCounter extends SynchronousFixTransformer {
     /** Construct an actor with the given container and name.
@@ -84,22 +83,20 @@ public class IntegerCounter extends SynchronousFixTransformer {
     ////                     ports and parameters                  ////
 
     /** The enable port. If this input port
-     *  receives a token, then the counter is incremented.  
+     *  receives a true token, then the counter is incremented.  
      */
     public TypedIOPort enable;
 
-    /** The reset 
-     * 
+    /** The reset port. If this port receive a true token,
+     * the counter is reset.
      */
     public TypedIOPort reset;
 
-    /** The width 
-     * 
+    /** The width for this counter. 
      */
     public Parameter width;
 
-    /**
-     * 
+    /** The 
      */
     public Parameter hasEnable;
 
@@ -224,9 +221,14 @@ public class IntegerCounter extends SynchronousFixTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+    
+    /**
+     * The internal state of the previous count.
+     */
     private int _previousCount = 0;
 
+    /**
+     * The internal state of the current count.
+     */
     private int _currentCount = 0;
-
-    //private boolean _consumed;
 }

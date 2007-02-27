@@ -93,18 +93,30 @@ public class Slice extends FixTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /**
+     * The input port.
+     */
     public TypedIOPort input;
 
+    /**
+     * The start index for the portion of the bits to be sliced.
+     */
     public Parameter start;
 
+    /**
+     * The end index for the portion of the bits to be sliced.
+     */
     public Parameter end;
 
+    /**
+     * Whether start and end index assumes LSB or MSB representation.
+     */
     public Parameter lsb;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** output a consecutive subset of the input bits. 
+    /** Output a consecutive subset of the input bits. 
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
