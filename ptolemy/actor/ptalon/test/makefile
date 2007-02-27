@@ -1,10 +1,10 @@
-# Makefile for Java Ptolemy polymorphic actor classes
+# Makefile used to test Ptalon models
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2005 The Regents of the University of California.
+# @Copyright (c) 2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,37 +29,69 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# This directory contains polymorphic actors.
-
-ME =		ptolemy/actor/lib/ptalon/test
+# Location of this directory, relative to the Ptolemy II directory
+ME =		ptolemy/actor/ptalon/test
 
 DIRS =
 
-# Root of the Java directory
+# Root of the Ptolemy II directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)${CLASSPATHSEPARATOR}${ROOT}/ptolemy/actor/ptalon/antlr/antlr.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ANTLR_DIR)/antlr.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Keep this list alphabetized.
-JSRCS = \
-	PtalonTester.java
-	
-EXTRA_SRCS =	$(JSRCS)
+# Tcl sources that are part of the testing infrastructure
+TCL_SRCS = \
+	testDefs.tcl
 
+JSRCS =
 
+# Non-graphical Java tests written in Tcl
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JSIMPLE_TESTS) to EXTRA_SRCS
+JSIMPLE_TESTS = \
+	dummy.tcl
+
+# Graphical Java tests that use Tcl.
+# If there are no tests, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a test, be sure to add
+# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
+JGRAPHICAL_TESTS = \
+	dummy.tcl
+
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	alljtests.tcl \
+	auto
 
-JCLASS = $(JSRCS:%.java=%.class)
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
-all: jclass
-install: jclass jars
+JCLASS =	$(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make tests' to run the tests.
+
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+
+test_java: jclass
+
+# PtolemyII-wide test definitions.
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+
+# These tests do not require a graphics terminal, but do use Jacl and Java
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+	$(JTCLSH) alljtests.tcl
+
+# 'make clean' removes $(KRUFT)
+KRUFT = Const.txt ReadFile1Output.txt
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
