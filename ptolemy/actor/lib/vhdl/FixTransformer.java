@@ -87,7 +87,7 @@ public class FixTransformer extends TypedAtomicActor {
      * Return the precision string of the given port.
      * @param port The given port.
      * @return The precision string.
-     * @throw IllegalActionException Thrown if there is no precision
+     * @exception IllegalActionException Thrown if there is no precision
      *  parameter for the given port. 
      */
     public String getPortPrecision(IOPort port) throws IllegalActionException {
