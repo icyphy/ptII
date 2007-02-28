@@ -87,7 +87,7 @@ public class FixTransformer extends TypedAtomicActor {
      * Return the precision string of the given port.
      * @param port The given port.
      * @return The precision string.
-     * @exception IllegalActionException Thrown if there is no precision
+     * @throws IllegalActionException Thrown if there is no precision
      *  parameter for the given port. 
      */
     public String getPortPrecision(IOPort port) throws IllegalActionException {
@@ -219,8 +219,8 @@ public class FixTransformer extends TypedAtomicActor {
      * @param roundingString The given expression for the rounding parameter.
      */
     protected void _setAndHideQuantizationParameters(String precisionString,
-            String overflowString, String roundingString)
-            throws IllegalActionException {
+            String overflowString, String roundingString) {
+            //throws IllegalActionException {
 
         _setQuantizationParameters(precisionString, overflowString,
                 roundingString);

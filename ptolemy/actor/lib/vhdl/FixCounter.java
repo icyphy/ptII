@@ -40,7 +40,7 @@ import ptolemy.math.FixPoint;
 //// Fix Counter
 
 /**
-
+ A class for a fixpoint value counter.
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 4.1

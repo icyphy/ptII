@@ -42,7 +42,7 @@ import ptolemy.math.FixPoint;
 //// Integer Counter
 
 /**
-
+ A class for a integer counter.
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.0
@@ -92,11 +92,11 @@ public class IntegerCounter extends SynchronousFixTransformer {
      */
     public TypedIOPort reset;
 
-    /** The width for this counter. 
+    /** The bit width for this counter. 
      */
     public Parameter width;
 
-    /** The 
+    /** Specify whether this counter has a enable port.
      */
     public Parameter hasEnable;
 

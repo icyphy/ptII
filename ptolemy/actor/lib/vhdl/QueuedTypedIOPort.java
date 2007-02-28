@@ -100,11 +100,17 @@ public class QueuedTypedIOPort extends TypedIOPort {
 
     }
 
+    /**
+     * Specifies the init token value.
+     */
     public void setInitToken(Token initialValue) {
         initialToken = initialValue;
         _createQueue();
     }
 
+    /**
+     * Create a token queue for the port.
+     */
     private void _createQueue() {
         myQueue.clear();
         _oldToken = initialToken;
@@ -127,6 +133,12 @@ public class QueuedTypedIOPort extends TypedIOPort {
         }
     }
 
+    /**
+     * Resend the token from the given channel index.
+     * @param channelIndex The given channel index.
+     * @exception IllegalActionException If super class throws it.
+     * @exception NoRoomException If super class throws it.
+     */
     public void resend(int channelIndex) throws IllegalActionException,
             NoRoomException {
         if (latency != 0) {
@@ -137,12 +149,24 @@ public class QueuedTypedIOPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /**
+     * The token queue.
+     */
     private LinkedList<Token> myQueue;
 
+    /**
+     * The previous token.
+     */
     private Token _oldToken;
 
+    /**
+     * The latency of the port.
+     */
     private int latency;
 
+    /**
+     * The initial output value of the port.
+     */
     private Token initialToken;
 
 }
