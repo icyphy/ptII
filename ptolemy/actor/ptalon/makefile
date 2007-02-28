@@ -88,7 +88,7 @@ JCLASS = \
 	$(JSRCS:%.java=%.class) \
 	$(OPTIONAL_JSRCS:%.java=%.class)
 
-all: $(OPTIONAL_JSRC) $(JCLASS)
+all: $(OPTIONAL_JSRCS) $(JCLASS)
 install: all jars
 
 # Derived java files
@@ -106,6 +106,23 @@ PtalonScopeChecker.java: scopeChecker.g
 # cvs commit -m "Updated MatrixParser." `make echo_OPTIONAL_JSRCS`
 echo_OPTIONAL_JSRCS:
 	@echo $(OPTIONAL_JSRCS)
+
+# Files to be removed by make distclean
+DISTCLEAN_STUFF = \
+	PtalonTokenTypes.java \
+	PtalonTokenTypes.txt \
+	PtalonLexer.java \
+	PtalonLexer.smap \
+	PtalonRecognizer.java \
+	PtalonRecognizer.smap \
+	PtalonScopeCheckerTokenTypes.java \
+	PtalonScoperCheckerTokenTypes.txt \
+	PtalonScopeChecker.java \
+	PtalonScopeChecker.smap \
+	PtalonPopulatorTokenTypes.java \
+	PtalonPopulatorTokenTypes.txt \
+	PtalonPopulator.java \
+	PtalonPopulator.smap
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
