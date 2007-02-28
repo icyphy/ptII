@@ -67,6 +67,8 @@ import com.microstar.xml.XmlParser;
  <p>
 
  @author Adam Cataldo
+ @version $Id$
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Red (acataldo)
  @Pt.AcceptedRating Red (acataldo)
  */
