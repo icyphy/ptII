@@ -37,7 +37,10 @@ options {
 	buildAST = true;
 	defaultErrorHandler  = false;
 	ASTLabelType = "PtalonAST";
-	k = 2;
+ // http://www.antlr.org:8080/pipermail/antlr-interest/2006-October/018084.html
+ // says:
+ // > Just delete that line.  ANTLR 2 treewalkers are effectively k=1.
+ //	k = 2;
 }
 
 {
