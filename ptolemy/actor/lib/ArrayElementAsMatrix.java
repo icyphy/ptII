@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
  It is required that
  <pre> 
  0 &lt;= <i>x</i> * <i>column</i> + <i>y</i> * <i>yOffset</i>  &lt; <i>N</i>
- <pre> 
+ </pre> 
  where <i>N</i> is the length of the input array, or an exception will
  be thrown by the fire() method.
 

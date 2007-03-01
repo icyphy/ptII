@@ -57,6 +57,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         super(component);
     }
     
+    /** Generate code for a given actor.
+     *  @param actor The actor for which code is generated.
+     *  @exception IllegalActionException If there are problems
+     *  accessing the actor.
+     */.   
     public static void generateCode(
             ptolemy.actor.CompiledCompositeActor actor) 
             throws IllegalActionException {
