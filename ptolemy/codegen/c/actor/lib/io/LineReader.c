@@ -1,6 +1,9 @@
+/*** sharedBlock ***/
+int $actorClass(charRead);
+/**/
+
 /***preinitBlock***/
 FILE * $actorSymbol(filePtr);
-int $actorSymbol(charRead);
 int $actorSymbol(index);
 int $actorSymbol(length) = 128;
 /**/
@@ -17,7 +20,7 @@ $actorSymbol(filePtr) = stdin;
 /***skipLine***/
 // use fgetc() to readLine
 //$actorSymbol(charReturned) = fscanf($actorSymbol(filePtr), "%s", $actorSymbol(line));
-while ( ($actorSymbol(charRead) = fgetc($actorSymbol(filePtr))) != '\n' && $actorSymbol(charRead) != EOF );
+while ( ($actorClass(charRead) = fgetc($actorSymbol(filePtr))) != '\n' && $actorClass(charRead) != EOF );
 $ref(endOfFile) = feof($actorSymbol(filePtr) );    
 /**/
 
@@ -37,7 +40,7 @@ if ($ref(endOfFile)) {
 
 $actorSymbol(index) = 0;
 do {
-    $actorSymbol(charRead) = fgetc($actorSymbol(filePtr));
+    $actorClass(charRead) = fgetc($actorSymbol(filePtr));
     if ($actorSymbol(index) >= $actorSymbol(length)) {
         $actorSymbol(length) *= 2;
         $ref(output) = (char*) realloc ($ref(output), ($actorSymbol(length) + 1) * sizeof(char));
@@ -45,8 +48,8 @@ do {
         /* n chars are copied. */ 
         $ref(output)[$actorSymbol(length)] = '\0';
     }
-    $ref(output)[$actorSymbol(index)++] = $actorSymbol(charRead);
-} while ( $actorSymbol(charRead) != '\n' && $actorSymbol(charRead) != EOF );
+    $ref(output)[$actorSymbol(index)++] = $actorClass(charRead);
+} while ( $actorClass(charRead) != '\n' && $actorClass(charRead) != EOF );
 $ref(endOfFile) = feof($actorSymbol(filePtr) );
 /**/
 
