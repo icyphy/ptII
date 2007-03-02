@@ -57,10 +57,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 //const unsigned char size_of_array = 84;
 //volatile unsigned char array [6][14]; 
 
-const unsigned char number_rows = 5;
-const unsigned char number_columns = 8; 
-const unsigned char size_of_array = 40;
-volatile unsigned char array [5][8]; 
+const unsigned char number_rows = 8;
+const unsigned char number_columns = 10; 
+const unsigned char size_of_array = 80;
+volatile unsigned char array [8][10]; 
 
 /* constants for resetting the values of the GOL array */
 const unsigned char on_next_on = 3;			//current state is on and next state is on
@@ -82,6 +82,8 @@ void initialize_tank_pins_as_output (void)
 	row3_output;
 	row4_output;
 	row5_output;
+	row6_output;
+	row7_output;
 	
 	col0_output;
 	col1_output;
@@ -108,64 +110,64 @@ void row_column_display (unsigned char i, unsigned char j)
     printf("%d %d\n", i, j);
 #else
 	if (i==0)
-		row0_low;
+		row0_high;
 	else
 		if (i==1)
-			row1_low;
+			row1_high;
 	else
 		if (i==2)
-			row2_low;
+			row2_high;
 	else
 		if (i==3)
-			row3_low;
+			row3_high;
 	else
 		if (i==4)
-			row4_low;
+			row4_high;
 	else
 		if (i==5)
-			row5_low;
+			row5_high;
 	else
 		if (i==6)
-			row6_low;
+			row6_high;
 	else
 		if (i==7)
-			row7_low;
+			row7_high;
 	
 	if (j==0)
-		col0_high;
+		col0_low;
 	else
 		if (j==1)
-			col1_high;
+			col1_low;
 	else
 		if (j==2)
-			col2_high;
+			col2_low;
 	else
 		if (j==3)
-			col3_high;
+			col3_low;
 	else
 		if (j==4)
-			col4_high;
+			col4_low;
 	else
 		if (j==5)
-			col5_high;
+			col5_low;
 	else
 		if (j==6)
-			col6_high;
+			col6_low;
 	else
 		if (j==7)
-			col7_high;
+			col7_low;
 	else
 		if (j==8)
-			col8_high;
+			col8_low;
 	else
 		if (j==9)
-			col9_high;
+			col9_low;
 #endif
 	
 #ifdef _DELAY_MS
 	_delay_ms(1000);
 #endif	
-	all_off ();
+	all_on ();
 }
 
 /* given a column value (j), turns on the LEDs in column

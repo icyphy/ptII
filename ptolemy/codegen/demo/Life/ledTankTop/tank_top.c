@@ -38,7 +38,7 @@ int main(void)
 	//initialize LED array with a glider
 	//glider(2,2);
         r_pentomino(1,1);
-	//all_off();
+	all_off();
 	//run the game of life
 #ifdef __AVR__
 	for(;;) {
@@ -46,8 +46,8 @@ int main(void)
         int i;
         for(i = 0; i < 32; i++) { 
 #endif
-            //loop_lights();
-            gol();
+            loop_lights();
+            //gol();
 	}
 	return 0;
 }
