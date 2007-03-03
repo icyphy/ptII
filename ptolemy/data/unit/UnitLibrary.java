@@ -94,11 +94,12 @@ public class UnitLibrary {
                 continue;
             }
 
-            for (int j = 0; j < UnitLibrary.getNumCategories(); j++) {
-                if ((j != catNum) && (ltype[j] != 0)) {
-                    continue;
-                }
-            }
+            // Findbugs says this is useless code.
+            //for (int j = 0; j < UnitLibrary.getNumCategories(); j++) {
+            //    if ((j != catNum) && (ltype[j] != 0)) {
+            //        continue;
+            //    }
+            //}
 
             return lUnit;
         }
