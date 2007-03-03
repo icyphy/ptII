@@ -191,10 +191,12 @@ public class InteractiveShell extends TypedAtomicActor implements Placeable,
         if ((input.numberOfSources() > 0) && input.hasToken(0)) {
             String value = ((StringToken) input.get(0)).stringValue();
 
+            // FIXME: shell will never be null because it is dereferenced
+            // above.  We leave this code for documentation purposes.
             // If window has been dismissed, there is nothing more to do.
-            if (shell == null) {
-                return;
-            }
+            //if (shell == null) {
+            //    return;
+            //}
 
             if (_firstTime) {
                 _firstTime = false;
