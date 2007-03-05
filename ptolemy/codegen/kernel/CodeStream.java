@@ -89,6 +89,7 @@ import ptolemy.util.StringUtilities;
  * @Pt.AcceptedRating Yellow (mankit)
  */
 public class CodeStream {
+
     /**
      * Construct a new code stream associated with the given java actor
      * helper. Each actor should have its own codestream during code
@@ -98,6 +99,7 @@ public class CodeStream {
      */
     public CodeStream(CodeGeneratorHelper helper) {
         _helper = helper;
+        this._codeGenerator = _helper._codeGenerator;
     }
 
     /**
@@ -107,8 +109,9 @@ public class CodeStream {
      *  for example "file:./test/testCodeBlock.c".
      * @param path The given file path.
      */
-    public CodeStream(String path) {
+    public CodeStream(String path, CodeGenerator generator) {
         _filePath = path;
+        this._codeGenerator = generator;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -280,8 +283,6 @@ public class CodeStream {
 
         StringBuffer codeBlock = _declarations.getCode(signature, arguments);
 
-        //List parameters = _declarations.getParameters(signature);
-
         // Cannot find a code block with the matching signature.
         if (codeBlock == null) {
             if (mayNotExist) {
@@ -292,12 +293,12 @@ public class CodeStream {
             }
         }
         
-        //codeBlock = substituteParameters(arguments, signature, codeBlock);
-
         if (indentLevel > 0) {
             codeBlock = new StringBuffer(indent(indentLevel, codeBlock
                     .toString()));
         }
+        
+        
         _stream.append(codeBlock);
     }
 
@@ -324,7 +325,8 @@ public class CodeStream {
             Signature signature = (Signature) allSignatures.next();
             if (signature.numParameters == 0
                     && signature.functionName.matches(nameExpression)) {
-                _stream.append(_declarations.getCode(signature, new ArrayList()));
+                //_stream.append(_declarations.getCode(signature, new ArrayList()));
+                appendCodeBlock(signature.functionName, new ArrayList(), false, _indentLevel);
             }
         }
     }
@@ -437,7 +439,7 @@ public class CodeStream {
     public static void main(String[] args) throws IOException,
             IllegalActionException {
         try {
-            CodeStream code = new CodeStream(args[0]);
+            CodeStream code = new CodeStream(args[0], null);
 
             System.out.println(_eol + "----------Result-----------------------"
                     + _eol);
@@ -842,6 +844,110 @@ public class CodeStream {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+    /** 
+     * A private class for representing a code block signature. 
+     */
+    // FIXME: need to move this class to CodeStream.
+    private class CodeBlock {
+
+        /**
+         * Constructor for a code block signature. It consists of the
+         * code block name and the number of parameters.
+         * @param functionName The given code block name.
+         * @param numParameters The number of parameters.
+         * @throw IllegalActionException Thrown if the given name is null,
+         *  or the number of parameters is less than zero.
+         */
+        public CodeBlock(Object helper, Signature signature, 
+                ArrayList arguments, int order)
+                throws IllegalActionException {
+
+            this.helper = helper;
+            
+            this.signature = signature;
+
+            this.arguments = arguments;
+            
+            this.order = order;
+            
+            this.count = 1;
+            
+            this.isShared = signature.functionName.contains("shared");
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /**
+         * Return true if the given object is equal to this signature.
+         * @param object The given object.
+         */
+        public boolean equals(Object object) {
+            if (object instanceof CodeBlock) {
+                CodeBlock codeBlock = (CodeBlock) object;
+                if (helper instanceof CodeGeneratorHelper) {
+                    return 
+                    helper.getClass().equals(codeBlock.helper.getClass())
+                        && signature.equals(codeBlock.signature)
+                        && arguments.equals(codeBlock.arguments);
+                } 
+                
+                return 
+                helper.equals(codeBlock.helper)
+                    && signature.equals(codeBlock.signature)
+                    && arguments.equals(codeBlock.arguments);
+            }
+            return false;
+        }
+
+        /**
+         * Return the hash code for this channel. Implementing this method
+         * is required for comparing the equality of channels.
+         * @return Hash code for this channel.
+         */
+        public int hashCode() {
+            return helper.hashCode() + 
+            signature.functionName.hashCode() + arguments.size();
+        }
+
+        /**
+         * Return the string format of this code block signature.
+         */
+        public String toString() {
+            String result = signature.functionName + "(";
+            for (int i = 0; i < arguments.size(); i++) {
+                if (i != 0) {
+                    result += ", ";
+                }
+                result += "$";
+            }
+            return result += ")";
+        }
+
+        
+        public Object helper;
+        
+        /**
+         * The code block name.
+         */
+        public Signature signature;
+
+        
+        public ArrayList parameters;
+        
+        /**
+         * The list of arguments.
+         */
+        public ArrayList arguments;
+        
+
+        public boolean isShared;
+        
+        public int order;
+        
+        public int count;
+        
+    }
 
     /**
      * The code block table class. A code block table contains 
@@ -882,7 +988,7 @@ public class CodeStream {
          */
         public StringBuffer getCode(Signature signature, List arguments)
                 throws IllegalActionException {
-            return getCode(signature, arguments, _codeTableList);
+            return _getCode(signature, arguments, _codeTableList);
         }
 
         /**
@@ -910,12 +1016,14 @@ public class CodeStream {
         }
         
         /**
-         * 
-         * @param signature
-         * @return
+         * Get the list of parameters for the code block with the given
+         * signature. This searches the code block from the entire list
+         * of scopes.  
+         * @param signature The given code block signature.
+         * @return The list of parameters strings.
          */
         public List getParameters(Signature signature) {
-            return getParameters(signature, _codeTableList);
+            return _getParameters(signature, _codeTableList);
         }
 
         /**
@@ -975,7 +1083,7 @@ public class CodeStream {
          *  super call cannot be found, or if substituteParameters(
          *  StringBuffer, List, List) throws it.
          */
-        private StringBuffer getCode(Signature signature, List arguments,
+        private StringBuffer _getCode(Signature signature, List arguments,
                 List scopeList) throws IllegalActionException {
             
             int size = scopeList.size();
@@ -991,75 +1099,89 @@ public class CodeStream {
                 StringBuffer codeBlock = (StringBuffer) codeObject[1]; 
                 List parameters = (List) codeObject[2];
                 
-                String superExpression = 
+                String callExpression = 
                     "(\\$super\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)" +
+                    "|(\\$this\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)" +
                     "|(\\$super\\s*\\(.*\\)\\s*;)";
 
                 String[] subBlocks = 
-                    codeBlock.toString().split(superExpression);
+                    codeBlock.toString().split(callExpression);
             
                 StringBuffer returnCode = new StringBuffer (subBlocks[0]);
 
-                Pattern pattern = Pattern.compile(superExpression);
+                Pattern pattern = Pattern.compile(callExpression);
                 Matcher matcher = pattern.matcher(codeBlock);
 
                 for (int i = 1; i < subBlocks.length; i++) {
                     
-                    String superCall = "";
+                    String call = "";
                     
                     if (matcher.find()) {
-                        superCall = matcher.group();
+                        call = matcher.group();
                     }
                     
-                    int dotIndex = superCall.indexOf(".");
-                    int openIndex = superCall.indexOf("(");
+                    int dotIndex = call.indexOf(".");
+                    int openIndex = call.indexOf("(");
                     
+                    boolean isSuper = call.contains("super");
                     boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
                         
-                    String superBlockName = (isImplicit) ? signature.functionName : 
-                        superCall.substring(dotIndex + 1, openIndex).trim();
+                    String blockName = (isImplicit) ? signature.functionName : 
+                        call.substring(dotIndex + 1, openIndex).trim();
                     
-                    List argumentsForSuper = 
+                    List callArguments = 
                         CodeStream._parseParameterList(new StringBuffer(
-                                superCall), 0, superCall.length() - 2);
+                                call), 0, call.length() - 2);
 
-                    Signature superSignature = 
-                        new Signature(superBlockName, argumentsForSuper.size());
+                    Signature callSignature = 
+                        new Signature(blockName, callArguments.size());
 
-                    StringBuffer superBlock = getCode(superSignature, 
-                            argumentsForSuper, scopeList.subList(1, size));
+                    if (!isSuper && callSignature.equals(signature)) {
+                        throw new IllegalActionException(_helper, 
+                                callSignature.toString() + 
+                                " recursively appends itself in "
+                                + codeObject[0]);
+                    }
+                    
+                    StringBuffer callCodeBlock = (!isSuper) ?
+                        getCode(callSignature, callArguments) :
+                        _getCode(callSignature, callArguments, 
+                        scopeList.subList(1, size));
                                         
-                    if (superBlock == null) {
-                        throw new IllegalActionException(_helper,
-                                "Cannot find super block for " + superSignature +
-                                " in " + codeObject[0]);
+                    if (callCodeBlock == null) {
+                        throw new IllegalActionException(_helper, 
+                                "Cannot find " + (isSuper ? "super" : "this")
+                                + " block for " + callSignature + " in "
+                                + codeObject[0]);
                     }
                     
                     //superBlock.insert(0, "///////// Super Block ///////////////\n");
                     //superBlock.append("///////// End of Super Block ////////\n");
                     
-                    returnCode.append(superBlock);
+                    returnCode.append(callCodeBlock);
                     returnCode.append(subBlocks[i]);
                 }
 
                 returnCode = 
-                    substituteParameters(returnCode, parameters, arguments);
+                    _substituteParameters(returnCode, parameters, arguments);
 
+                
                 return returnCode;
 
             } else {
-                return getCode(signature, arguments, 
+                return _getCode(signature, arguments, 
                         scopeList.subList(1, size));
             }
         }
 
         /**
-         * 
-         * @param signature
-         * @param scopeList
-         * @return
+         * Get the parameters for the code block with the given signature.
+         * It search the code block from the given list of scopes.
+         * @param signature The given signature.
+         * @param scopeList The given list of scopes.
+         * @return The list of parameter strings.
          */
-        private List getParameters(Signature signature, List scopeList) {
+        private List _getParameters(Signature signature, List scopeList) {
             
             if (scopeList.isEmpty()) {
                 return new ArrayList();
@@ -1070,7 +1192,7 @@ public class CodeStream {
                 return (List) ((Object[]) currentScope.get(signature))[2];
             
             } else {
-                return getParameters(signature, 
+                return _getParameters(signature, 
                         scopeList.subList(1, scopeList.size()));
             }
         }
@@ -1104,7 +1226,7 @@ public class CodeStream {
          * @exception IllegalActionException Thrown if 
          *  _checkParameterName(String) throws it.
          */
-        private StringBuffer substituteParameters(
+        private StringBuffer _substituteParameters(
                 StringBuffer codeBlock, List parameters, List arguments) 
                     throws IllegalActionException {
             // Text-substitute for each parameters.
@@ -1125,6 +1247,9 @@ public class CodeStream {
         private LinkedList _codeTableList = new LinkedList();
     }
 
+    /** 
+     * A private class for representing a code block signature. 
+     */
     private class Signature {
 
         /**
@@ -1214,6 +1339,10 @@ public class CodeStream {
 
     /** The indent level. */
     private static int _indentLevel = 0;
+
+    /** The code generator associated with this code stream. 
+     */
+    protected CodeGenerator _codeGenerator;
 
     /**
      * The code block table that stores the code blocks information,
