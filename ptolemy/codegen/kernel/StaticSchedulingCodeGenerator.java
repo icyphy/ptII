@@ -152,7 +152,7 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
         } else {
             if (isTopLevel()) {
                 code.append(_INDENT2
-                        + StringUtilities.sanitizeName(model.getFullName()) 
+                        + CodeGeneratorHelper.generateName(_model)
                         + "();" + _eol);
             } else {
                 code.append(generateFireCode());

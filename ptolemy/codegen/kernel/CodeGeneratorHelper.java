@@ -334,11 +334,17 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /** Generate sanitized name for the given named object.
-     *  @param namedObj The named object to generate sanitized name for.
+     *  The name will never have a leading underscore so as to avoid
+     *  conflicts with systems functions.
+     *  @param namedObj The named object for which the name is generated.
      *  @return The sanitized name.
      */
     public static String generateName(NamedObj namedObj) {
-        return StringUtilities.sanitizeName(namedObj.getFullName());
+        String name = StringUtilities.sanitizeName(namedObj.getFullName());
+        if (name.startsWith("_")) {
+            name = name.substring(1, name.length());
+        }
+        return name;
     }
 
     /**

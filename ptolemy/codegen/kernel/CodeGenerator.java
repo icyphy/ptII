@@ -284,7 +284,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // 		actor._analyzeActor();
 
         _codeFileName = null;
-        _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
+        _sanitizedModelName = CodeGeneratorHelper.generateName(_model);
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
 
         // We separate the generation and the appending into 2 phases.
