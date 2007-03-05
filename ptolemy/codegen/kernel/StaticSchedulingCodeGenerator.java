@@ -133,7 +133,6 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
                         .getToken()).intValue();
 
                 if (iterationCount <= 0) {
-                    // FIXME: Only call postfire() if necessary
                     code.append(_eol + _INDENT1 + "while (true) {" + _eol);
                 } else {
                     // Declare iteration outside of the loop to avoid
@@ -166,10 +165,12 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            code.append(_INDENT2 + "if (!postfire()) {" + _eol
-                    + _INDENT3 + "break;" + _eol
-                    + _INDENT2 + "}" + _eol
-                    + _INDENT1 + "}" + _eol);
+            if (_containsCode(_postfireCode)) {
+                code.append(_INDENT2 + "if (!postfire()) {" + _eol
+                        + _INDENT3 + "break;" + _eol
+                        + _INDENT2 + "}" + _eol);
+            }
+            code.append(_INDENT1 + "}" + _eol);
         }
 
         return code.toString();

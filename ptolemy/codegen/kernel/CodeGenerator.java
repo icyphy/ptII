@@ -243,11 +243,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Generate the body code that lies between initialize and wrapup.
      *  In this base class, nothing is generated.
+     *  <p>This method should be called after generatePostfire() so that
+     *  derived classes can optimize away the call to postfire().
+     *
      *  @return The empty string.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generateBodyCode() throws IllegalActionException {
-
         return "";
     }
 
@@ -300,6 +302,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String preinitializeCode = generatePreinitializeCode();
         CodeStream.setIndentLevel(1);
         String initializeCode = generateInitializeCode();
+        // The StaticSchedulingCodeGenerator.generateBodyCode() reads
+        // _postfireCode to see if we should include a call to postfire or 
+        // not, so we need to call generatePostfireCode() before
+        // call generateBodyCode().
+        _postfireCode = generatePostfireCode();
         CodeStream.setIndentLevel(2);
         String bodyCode = generateBodyCode();
         CodeStream.setIndentLevel(0);
@@ -322,7 +329,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             CodeStream.setIndentLevel(0);
         }
         CodeStream.setIndentLevel(1);
-        String postfireCode = generatePostfireCode();
         String wrapupCode = generateWrapupCode();
         CodeStream.setIndentLevel(0);
 
@@ -345,32 +351,42 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             code.append(fireFunctionCode);
         }
 
-        code.append(initializeEntryCode);
-        code.append(variableInitCode);
-        code.append(initializeCode);
-        code.append(initializeExitCode);
+        if (_containsCode(variableInitCode)
+                || _containsCode(initializeCode)) {
+            code.append(initializeEntryCode);
+            code.append(variableInitCode);
+            code.append(initializeCode);
+            code.append(initializeExitCode);
+        }
 
-        code.append(postfireEntryCode);
-        code.append(postfireCode);
-        code.append(postfireExitCode);
+        if (_containsCode(_postfireCode)) {
+            code.append(postfireEntryCode);
+            code.append(_postfireCode);
+            code.append(postfireExitCode);
+        }
 
-        code.append(wrapupEntryCode);
-        code.append(wrapupCode);
-        code.append(wrapupExitCode);
+        if (_containsCode(wrapupCode)) {
+            code.append(wrapupEntryCode);
+            code.append(wrapupCode);
+            code.append(wrapupExitCode);
+        }
 
         code.append(mainEntryCode);
 
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            code.append(initializeProcedureName);
+            if (_containsCode(variableInitCode)
+                    || _containsCode(initializeCode)) {
+                code.append(initializeProcedureName);
+            }
         }
 
         code.append(bodyCode);
 
         // If the container is in the top level, we are generating code 
         // for the whole model.
-        if (isTopLevel()) {
+        if (isTopLevel() && _containsCode(wrapupCode)) {
             code.append(wrapupProcedureName);
         }
 
@@ -951,6 +967,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return castHelperObject;
     }
 
+    /** Return true if the input contains code.
+     *  In this context, code is considered to be anything other
+     *  than comments and whitespace.
+     *  @param code The string to check for code.
+     *  @return True if the string contains anything other than
+     *  white space or comments
+     */
+    public static boolean _containsCode(String code) {
+        return (code.replaceAll("/\\*[^*]*\\*/","").replaceAll("[ \t\n\r]", "").length() > 0);
+    }
+
     /** Write the code to a directory named by the codeDirectory
      *  parameter, with a file name that is a sanitized version of the
      *  model name, and an extension that is the last package of
@@ -1097,6 +1124,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     protected List _macros = new ArrayList(Arrays.asList(new String[] { "ref",
             "val", "size", "type", "targetType", "cgType", "tokenFunc",
             "typeFunc", "actorSymbol", "actorClass", "new" }));
+
+    /** The postfire code.
+     */
+    protected String _postfireCode;
 
     /** 
      * A static list of all primitive types supported by the code generator. 
