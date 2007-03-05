@@ -247,6 +247,7 @@ public class Director implements ActorCodeGenerator {
 
             if (!addedDirectorComment
                     && CodeGenerator.containsCode(helperObjectPreinitializationCode)) {
+                addedDirectorComment = true;
                 code.append(_codeGenerator.comment(0,
                                     "The preinitialization of the director."));
             }
