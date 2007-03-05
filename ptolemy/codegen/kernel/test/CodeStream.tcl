@@ -180,4 +180,8 @@ test CodeStream-10.0 {main} {
 
 ----------Result-----------------------
 
+if ($ref(input) != 3) {
+    $ref(output) = 3;
+}
+
 }}
