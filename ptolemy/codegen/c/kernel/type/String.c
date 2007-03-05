@@ -140,9 +140,7 @@ Token String_convert(Token token, ...) {
 
     default:
         // FIXME: not finished
-#ifndef PT_NOPRINTF
         fprintf(stderr, "String_convert(): Conversion from an unsupported type. (%d)\n", token.type);
-#endif
         break;
     }
     token.payload.String = stringPointer;

@@ -97,9 +97,7 @@ Token Double_multiply(Token this, ...) {
 
         // FIXME: not finished
     default:
-#ifndef PT_NO_PRINTF
         fprintf(stderr, "Double_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
-#endif
         exit(1);
     }
 
@@ -163,9 +161,7 @@ Token Double_convert(Token token, ...) {
 
         // FIXME: not finished
     default:
-#ifndef PT_NO_PRINTF
         fprintf(stderr, "Double_convert(): Conversion from an unsupported type. (%d)\n", token.type);
-#endif
         break;
     }
     token.type = TYPE_Double;

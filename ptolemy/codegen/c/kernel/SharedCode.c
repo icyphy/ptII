@@ -36,7 +36,7 @@ char* InttoString (int i) {
 
 char* LongtoString (long long l) {
     char* string = (char*) malloc(sizeof(char) * 22);
-    sprintf(string, "%lld", l);
+    sprintf(string, "%ld", l);
     return string;       
 }
 
@@ -59,11 +59,7 @@ char* DoubletoString (double d) {
 }
 
 char* BooleantoString (boolean b) {
-#ifdef PT_NO_STRDUP
-    return (b) ? strcpy(malloc(5),"true") : strcpy(malloc(6),"false");
-#else
     return (b) ? strdup("true") : strdup("false");
-#endif
 }
 
 /**/

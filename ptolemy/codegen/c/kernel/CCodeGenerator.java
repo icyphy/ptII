@@ -310,7 +310,7 @@ public class CCodeGenerator extends CodeGenerator {
         // Include the constantsBlock at the top so that sharedBlocks from
         // actors can use true and false etc.  StringMatches needs this.
         CodeStream sharedStream = new CodeStream(
-                "$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
+                "$CLASSPATH/ptolemy/codegen/c/kernel/SharedCode.c", this);
         sharedStream.appendCodeBlock("constantsBlock");
         code.append(sharedStream.toString());
 
@@ -341,8 +341,8 @@ public class CCodeGenerator extends CodeGenerator {
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .c file for each type.
             typeStreams[i] = new CodeStream(
-                    "$CLASSPATH/ptolemy/codegen/kernel/type/" + typesArray[i]
-                            + ".c");
+                    "$CLASSPATH/ptolemy/codegen/c/kernel/type/" + typesArray[i]
+                            + ".c", this);
 
             code.append("#define TYPE_" + typesArray[i] + " " + i + _eol);
 
