@@ -447,8 +447,7 @@ public class CodeStream {
 
             ArrayList codeBlockArgs = new ArrayList();
             codeBlockArgs.add(Integer.toString(3));
-            //code.appendCodeBlock("initBlock", codeBlockArgs, false);
-            code.appendCodeBlock("preinitBlock1");
+            code.appendCodeBlock("initBlock", codeBlockArgs, false);
             System.out.println(code);
         } catch (Exception ex) {
             ex.printStackTrace();
