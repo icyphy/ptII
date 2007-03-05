@@ -694,7 +694,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                                 + "with description: "
                                 + change.getDescription());
                     }
-
                     change.execute();
                 }
             } finally {
@@ -2582,28 +2581,24 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         return result;
     }
 
-    /** Return a string that is identical to the specified string except
-     *  that any trailing characters that are numeric or underscores
-     *  are removed.
+    /** Return a string that is identical to the specified string
+     *  except any trailing digits are removed.
      *  @param string The string to strip of its numeric suffix.
      *  @return A string with no numeric suffix.
      */
     protected static String _stripNumericSuffix(String string) {
-        // NOTE: Perhaps it would be more efficient here to create
-        // a HashSet for these numbers and test the last character for
-        // membership.
         int length = string.length();
         char[] chars = string.toCharArray();
 
         for (int i = length - 1; i >= 0; i--) {
             char current = chars[i];
 
-            if ((current == '0') || (current == '1') || (current == '2')
-                    || (current == '3') || (current == '4') || (current == '5')
-                    || (current == '6') || (current == '7') || (current == '8')
-                    || (current == '9') || (current == '_')) {
+            if (Character.isDigit(current)) {
                 length--;
             } else {
+                //if (current == '_') {
+                //    length--;
+                //}
                 // Found a non-numeric, so we are done.
                 break;
             }
