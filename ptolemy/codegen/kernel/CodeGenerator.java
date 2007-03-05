@@ -1066,6 +1066,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected static String _INDENT2 = StringUtilities.getIndentPrefix(2);
 
+    /** Indent string for indent level 3.
+     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
+     */
+    protected static String _INDENT3 = StringUtilities.getIndentPrefix(3);
+
     /** Set of include command line arguments where each element is 
      *  a string, for example "-I/usr/local/include".
      */
