@@ -138,10 +138,6 @@ public class CCodeGenerator extends CodeGenerator {
 
         if (!isTopLevel()) {
             includingFiles.add("\"Jni" + _sanitizedModelName + ".h\"");
-            // FIXME: This is temporary. Only works on my machine.
-            _includes.add("-I\"C:/Program Files/Java/jdk1.5.0_06/include\"");
-            _includes
-                    .add("-I\"C:/Program Files/Java/jdk1.5.0_06/include/win32\"");
         }
 
         includingFiles.add("<stdarg.h>");
