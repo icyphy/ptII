@@ -228,6 +228,18 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
     }
 
+    /** Return true if the input contains code.
+     *  In this context, code is considered to be anything other
+     *  than comments and whitespace.
+     *  @param code The string to check for code.
+     *  @return True if the string contains anything other than
+     *  white space or comments
+     */
+    public static boolean containsCode(String code) {
+        return (code.replaceAll("/\\*[^*]*\\*/","").replaceAll("[ \t\n\r]", "").length() > 0);
+    }
+
+
     /** Return a formatted comment containing the specified string. In
      *  this base class, the comments is a C-style comment, which
      *  begins with "\/*" and ends with "*\/" followed by the platform
@@ -351,21 +363,21 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             code.append(fireFunctionCode);
         }
 
-        if (_containsCode(variableInitCode)
-                || _containsCode(initializeCode)) {
+        if (containsCode(variableInitCode)
+                || containsCode(initializeCode)) {
             code.append(initializeEntryCode);
             code.append(variableInitCode);
             code.append(initializeCode);
             code.append(initializeExitCode);
         }
 
-        if (_containsCode(_postfireCode)) {
+        if (containsCode(_postfireCode)) {
             code.append(postfireEntryCode);
             code.append(_postfireCode);
             code.append(postfireExitCode);
         }
 
-        if (_containsCode(wrapupCode)) {
+        if (containsCode(wrapupCode)) {
             code.append(wrapupEntryCode);
             code.append(wrapupCode);
             code.append(wrapupExitCode);
@@ -376,8 +388,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            if (_containsCode(variableInitCode)
-                    || _containsCode(initializeCode)) {
+            if (containsCode(variableInitCode)
+                    || containsCode(initializeCode)) {
                 code.append(initializeProcedureName);
             }
         }
@@ -386,7 +398,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // If the container is in the top level, we are generating code 
         // for the whole model.
-        if (isTopLevel() && _containsCode(wrapupCode)) {
+        if (isTopLevel() && containsCode(wrapupCode)) {
             code.append(wrapupProcedureName);
         }
 
@@ -965,17 +977,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         _helperStore.put(component, helperObject);
 
         return castHelperObject;
-    }
-
-    /** Return true if the input contains code.
-     *  In this context, code is considered to be anything other
-     *  than comments and whitespace.
-     *  @param code The string to check for code.
-     *  @return True if the string contains anything other than
-     *  white space or comments
-     */
-    public static boolean _containsCode(String code) {
-        return (code.replaceAll("/\\*[^*]*\\*/","").replaceAll("[ \t\n\r]", "").length() > 0);
     }
 
     /** Write the code to a directory named by the codeDirectory

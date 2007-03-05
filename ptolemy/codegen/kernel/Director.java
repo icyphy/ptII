@@ -232,16 +232,25 @@ public class Director implements ActorCodeGenerator {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(_codeGenerator.comment(0,
-                "The preinitialization of the director."));
-
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
 
+        boolean addedDirectorComment = false;
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            code.append(helperObject.generatePreinitializeCode());
+
+            // If a helper generates preinitialization code, then
+            // print a comment
+            String helperObjectPreinitializationCode =
+                helperObject.generatePreinitializeCode();
+
+            if (!addedDirectorComment
+                    && CodeGenerator.containsCode(helperObjectPreinitializationCode)) {
+                code.append(_codeGenerator.comment(0,
+                                    "The preinitialization of the director."));
+            }
+            code.append(helperObjectPreinitializationCode);
         }
 
         return code.toString();

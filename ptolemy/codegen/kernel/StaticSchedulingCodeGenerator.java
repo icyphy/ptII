@@ -165,7 +165,7 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            if (_containsCode(_postfireCode)) {
+            if (containsCode(_postfireCode)) {
                 code.append(_INDENT2 + "if (!postfire()) {" + _eol
                         + _INDENT3 + "break;" + _eol
                         + _INDENT2 + "}" + _eol);
