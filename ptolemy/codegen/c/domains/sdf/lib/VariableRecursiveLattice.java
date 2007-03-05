@@ -27,11 +27,7 @@
  */
 package ptolemy.codegen.c.domains.sdf.lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.codegen.c.actor.lib.RecursiveLattice;
 
 /**
  * A code generation helper class for
@@ -43,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
  */
-public class VariableRecursiveLattice extends CCodeGeneratorHelper {
+public class VariableRecursiveLattice extends RecursiveLattice {
     /**
      * Constructor method for the VariableRecursiveLattice helper.
      * @param actor The associated actor.
@@ -51,18 +47,5 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
     public VariableRecursiveLattice(
             ptolemy.domains.sdf.lib.VariableRecursiveLattice actor) {
         super(actor);
-    }
-
-    /**
-     * Get the files needed by the code generated for the
-     * VariableRecursiveLattice actor.
-     * @return A set of strings that are names of the header files
-     *  needed by the code generated for the VariableRecursiveLattice actor.
-     * @exception IllegalActionException Not Thrown in this subclass.
-     */
-    public Set getHeaderFiles() throws IllegalActionException {
-        Set files = new HashSet();
-        files.add("\"math.h\"");
-        return files;
     }
 }
