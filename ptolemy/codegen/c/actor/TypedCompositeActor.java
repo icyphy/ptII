@@ -263,6 +263,23 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         directorHelper.generateModeTransitionCode(code);
     }
 
+    /** Generate the postfire code of the associated composite
+     *  actor. It returns the result of generatePostfireCode() method
+     *  of the local director helper.
+     * 
+     *  @return The postfire code of the associated composite actor.
+     *  @exception IllegalActionException If the helper associated with
+     *   an actor throws it while generating postfire code for the actor.
+     */
+    public String generatePostfireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        //code.append(super.generatePostfireCode());
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
+        code.append(directorHelper.generatePostfireCode());
+        return code.toString();
+    }
+
     /** Generate the preinitialize code of the associated composite actor.
      *  It first creates buffer size and offset map for its input ports and 
      *  output ports. It then gets the result of generatePreinitializeCode() 

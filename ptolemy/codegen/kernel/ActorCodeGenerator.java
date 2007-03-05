@@ -94,6 +94,15 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException;
 
+    /** Generate the postfire code of the associated composite actor.
+     *
+     *  @return The postfire code of the associated composite actor.
+     *  @exception IllegalActionException If the helper associated with
+     *   an actor throws it while generating postfire code for the actor
+     *   or while creating buffer size and offset map.
+     */
+    public String generatePostfireCode() throws IllegalActionException;
+
     /** Generate the preinitialize code of the associated composite actor.
      *  It first creates buffer size and offset map for its input ports and 
      *  output ports. It then gets the result of generatePreinitializeCode() 

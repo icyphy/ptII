@@ -31,6 +31,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 #ifdef __AVR__
 
+#include <avr/io.h>
+/* F_CU defines the clock speed of your chip
+   if you change the clock speed of your chip you must change the definition of F_CPU!!!
+   for 8Mhz speed use:
+   #define F_CPU 8000000UL
+   for 1Mhz speed (chip is shipped at 1Mhz) use:
+   #define F_CPU 1000000UL
+*/
+#define F_CPU 8000000UL
+//WinAVR 20040404 does not have util/delay.h, so _delay_ms is not defined
+//#include <avr/delay.h>
+
+#define _DELAY_MS
+#include <util/delay.h>
+
 //MACROS FOR AVR ATmega16
 #define row0_output DDRA|= _BV(PA0)
 #define row1_output DDRA|= _BV(PA1)
@@ -55,6 +70,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define row2_low PORTA &= ~_BV(PA2)
 #define row3_low PORTA &= ~_BV(PA3)
 #define row4_low PORTA &= ~_BV(PA4)
+#define row5_low PORTA &= ~_BV(PA5)
 #define row6_low PORTA &= ~_BV(PA6)
 #define row7_low PORTA &= ~_BV(PA7)
 
@@ -122,88 +138,88 @@ if ($ref(control)) {
 if ($ref(control)) { 
     switch ($ref(row)) {
     case 0:
-        row0_low;
+        row0_high;
         break;
     case 1:
-        row1_low;
+        row1_high;
         break;
     case 2:
-        row2_low;
+        row2_high;
         break;        
     case 3:
-        row3_low;
+        row3_high;
         break;
     case 4:
-        row4_low;
+        row4_high;
         break;
     case 5:
-        row5_low;
+        row5_high;
         break;        
     case 6:
-        row6_low;
+        row6_high;
         break;
     case 7:
-        row7_low;
+        row7_high;
         break;
     }
     switch ($ref(column)) {
     case 0:
-        col0_high;
+        col0_low;
         break;
     case 1:
-        col1_high;
+        col1_low;
         break;
     case 2:
-        col2_high;
+        col2_low;
         break;        
     case 3:
-        col3_high;
+        col3_low;
         break;
     case 4:
-        col4_high;
+        col4_low;
         break;
     case 5:
-        col5_high;
+        col5_low;
         break;        
     case 6:
-        col6_high;
+        col6_low;
         break;
     case 7:
-        col7_high;
+        col7_low;
         break;
     case 8:
-        col8_high;
-        break;        
-    case 8:
-        col9_high;
+        col8_low;
+        break;
+    case 9:
+        col9_low;
         break;
     }
 	
 #ifdef _DELAY_MS
-	_delay_ms(1);
+	_delay_ms(1000);
 #endif	
         /* turns off all the LEDs in the array */
 	//rows high
-	row0_high;
-	row1_high;
-	row2_high;
-	row3_high;
-	row4_high;
-	row5_high;
-	row6_high;
-	row7_high;
+	row0_low;
+	row1_low;
+	row2_low;
+	row3_low;
+	row4_low;
+	row5_low;
+	row6_low;
+	row7_low;
 	
-	//columns low
-	col0_low;
-	col1_low;
-	col2_low;
-	col3_low;
-	col4_low;
-	col5_low;
-	col6_low;
-	col7_low;
-	col8_low;
-	col9_low;
+	//columns hight
+	col0_high;
+	col1_high;
+	col2_high;
+	col3_high;
+	col4_high;
+	col5_high;
+	col6_high;
+	col7_high;
+	col8_high;
+	col9_high;
 }
 #endif /* ! __AVR__ */ 
 

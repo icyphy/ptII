@@ -111,7 +111,9 @@ Token Boolean_convert(Token token, ...) {
     switch (token.type) {
         // FIXME: not finished
     default:
+#ifndef PT_NO_PRINTF
         fprintf(stderr, "Boolean_convert(): Conversion from an unsupported type. (%d)", token.type);
+#endif
         break;
     }
     token.type = TYPE_Boolean;

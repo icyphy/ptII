@@ -308,6 +308,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String initializeEntryCode = generateInitializeEntryCode();
         String initializeExitCode = generateInitializeExitCode();
         String initializeProcedureName = generateInitializeProcedureName();
+        String postfireEntryCode = generatePostfireEntryCode();
+        String postfireExitCode = generatePostfireExitCode();
+        String postfireProcedureName = generatePostfireProcedureName();
         String wrapupEntryCode = generateWrapupEntryCode();
         String wrapupExitCode = generateWrapupExitCode();
         String wrapupProcedureName = generateWrapupProcedureName();
@@ -319,6 +322,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             CodeStream.setIndentLevel(0);
         }
         CodeStream.setIndentLevel(1);
+        String postfireCode = generatePostfireCode();
         String wrapupCode = generateWrapupCode();
         CodeStream.setIndentLevel(0);
 
@@ -345,6 +349,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(variableInitCode);
         code.append(initializeCode);
         code.append(initializeExitCode);
+
+        code.append(postfireEntryCode);
+        code.append(postfireCode);
+        code.append(postfireExitCode);
 
         code.append(wrapupEntryCode);
         code.append(wrapupCode);
@@ -558,6 +566,50 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateMainExitCode() throws IllegalActionException {
 
         return comment("main exit code");
+    }
+
+    /** Generate into the specified code stream the code associated with
+     *  postfiring up the container composite actor. This method calls the
+     *  generatePostfireCode() method of the code generator helper associated
+     *  with the director of this container.
+     *  @return The postfire code of the containing composite actor.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
+     */
+    public String generatePostfireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        //code.append(comment(1, "Postfire " + getContainer().getFullName()));
+
+        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
+        code.append(compositeActorHelper.generatePostfireCode());
+        return code.toString();
+    }
+
+    /** Generate the postfire procedure entry point.
+     *  @return a string for the postfire procedure entry point.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generatePostfireEntryCode() throws IllegalActionException {
+
+        return comment("postfire entry code");
+    }
+
+    /** Generate the postfire procedure exit point.
+     *  @return a string for the postfire procedure exit point.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generatePostfireExitCode() throws IllegalActionException {
+
+        return comment("postfire exit code");
+    }
+
+    /** Generate the postfire procedure name.
+     *  @return a string for the postfire procedure name.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generatePostfireProcedureName() throws IllegalActionException {
+
+        return "";
     }
 
     /** Generate preinitialize code (if there is any).

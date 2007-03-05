@@ -89,7 +89,9 @@ Token Int_multiply(Token this, ...) {
 
         // FIXME: not finished
     default:
+#ifndef PT_NO_PRINTF
         fprintf(stderr, "Int_multiply(): Multiply with an unsupported type. (%d)\n", otherToken.type);
+#endif
         exit(1);
     }
 
@@ -148,7 +150,9 @@ Token Int_convert(Token token, ...) {
 	
         // FIXME: not finished
     default: 
+#ifndef PT_NO_PRINTF
         fprintf(stderr, "Int_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+#endif
         break;
     }    
     token.type = TYPE_Int;

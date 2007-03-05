@@ -33,11 +33,6 @@ if (!($actorSymbol(filePtr) = fopen ("$fileName","r"))) {
 
 /***fireBlock***/
 //$actorSymbol(charReturned) = fscanf($actorSymbol(filePtr), "%s", $ref(output));
-if ($ref(endOfFile)) {
-    // FIXME: This seems wrong, how do we stop execution?
-    break;
-}
-
 $actorSymbol(index) = 0;
 do {
     $actorClass(charRead) = fgetc($actorSymbol(filePtr));
@@ -56,3 +51,10 @@ $ref(endOfFile) = feof($actorSymbol(filePtr) );
 /***closeFile***/
 fclose($actorSymbol(filePtr));
 /**/
+
+/***postfireBlock***/
+if ($ref(endOfFile)) {
+    return false;
+}
+/**/
+

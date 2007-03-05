@@ -103,13 +103,17 @@ public class CCodeGenerator extends CodeGenerator {
                     + "(Token, ...)= {" + _eol);
 
             for (int i = 0; i < types.length; i++) {
-                code.append("\t");
+                code.append("\t{");
                 for (int j = 0; j < functions.length; j++) {
                     code.append(types[i] + "_" + functions[j]);
-                    if ((i != (types.length - 1))
-                            || (j != (functions.length - 1))) {
+                    if (j != (functions.length - 1)) {
                         code.append(", ");
                     }
+                }
+                if (i != (types.length - 1)) {
+                    code.append("},");
+                } else {
+                    code.append("}");
                 }
                 code.append(_eol);
             }
@@ -148,7 +152,11 @@ public class CCodeGenerator extends CodeGenerator {
         while (files.hasNext()) {
             String file = (String) files.next();
 
-            code.append("#include " + file + _eol);
+            // Not all embedded platforms have all .h files.
+            // For example, the AVR does not have time.h
+            code.append("#ifndef PT_NO_" + file.substring(1, file.length() - 3).toUpperCase() + "_H" + _eol
+                    + "#include " + file + _eol
+                    + "#endif" + _eol);
         }
 
         return code.toString();
@@ -163,7 +171,7 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            return _eol + _eol + "initialize() {" + _eol;
+            return _eol + _eol + "void initialize() {" + _eol;
 
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
@@ -205,7 +213,7 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            mainEntryCode.append(_eol + _eol + "main(int argc, char *argv[]) {"
+            mainEntryCode.append(_eol + _eol + "int main(int argc, char *argv[]) {"
                     + _eol);
 
             // If the container is not in the top level, we are generating code 
@@ -239,6 +247,44 @@ public class CCodeGenerator extends CodeGenerator {
             return _INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
                     + _eol;
         }
+    }
+
+    /** Generate the postfire procedure entry point.
+     *  @return a string for the postfire procedure entry point.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generatePostfireEntryCode() throws IllegalActionException {
+
+        // If the container is in the top level, we are generating code 
+        // for the whole model.
+        if (isTopLevel()) {
+            return _eol + _eol + "boolean postfire() {" + _eol;
+
+            // If the container is not in the top level, we are generating code 
+            // for the Java and C co-simulation.
+        } else {
+            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_Jni"
+                    + _sanitizedModelName + "_postfire("
+                    + "JNIEnv *env, jobject obj) {" + _eol;
+        }
+    }
+
+    /** Generate the postfire procedure exit point.
+     *  @return a string for the postfire procedure exit point.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generatePostfireExitCode() throws IllegalActionException {
+
+        return "}" + _eol;
+    }
+
+    /** Generate the postfire procedure name.
+     *  @return a string for the postfire procedure name.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generatePostfireProcedureName() throws IllegalActionException {
+
+        return _INDENT1 + "postfire();" + _eol;
     }
 
     /**
@@ -468,7 +514,7 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            return _eol + _eol + "wrapup() {" + _eol;
+            return _eol + _eol + "void wrapup() {" + _eol;
 
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.

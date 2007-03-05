@@ -49,9 +49,13 @@ import ptolemy.util.StringUtilities;
 /**
  Base class for C code generator helper. 
 
- <p>Actor helpers extend this class and optionally define
- generateFireCode(), generateInitializeCode(), generatePreinitializeCode(),
- and generateWrapupCode() methods.  In derived classes, these methods,
+ <p>Actor helpers extend this class and optionally define the
+ generateFireCode(),
+ generateInitializeCode(), generatePrefireCode(),
+ generatePostfireCode(), generatePreinitializeCode(), and
+ generateWrapupCode() methods.
+
+ <p> In derived classes, these methods,
  if present, make actor specific changes to the corresponding code.
  If these methods are not present, then the parent class will automatically
  read the corresponding .c file and subsitute in the corresponding code

@@ -69,6 +69,7 @@ JSRCS = \
 	ArrayAppend.java \
 	ArrayAverage.java \
 	ArrayElement.java \
+	ArrayElementAsMatrix.java \
 	ArrayExtract.java \
 	ArrayLength.java \
 	ArrayLevelCrossing.java \
@@ -125,6 +126,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ArrayAppend.c \
 	ArrayAverage.c \
 	ArrayElement.c \
+	ArrayElementAsMatrix.c \
 	ArrayExtract.c \
 	ArrayLength.c \
 	ArrayLevelCrossing.c \

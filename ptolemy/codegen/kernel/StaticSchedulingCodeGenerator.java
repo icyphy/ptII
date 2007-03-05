@@ -133,7 +133,8 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
                         .getToken()).intValue();
 
                 if (iterationCount <= 0) {
-                    code.append(_eol + _INDENT1 + "while (true) {" + _eol);
+                    // FIXME: Only call postfire() if necessary
+                    code.append(_eol + _INDENT1 + "while (postfire()) {" + _eol);
                 } else {
                     // Declare iteration outside of the loop to avoid
                     // mode" with gcc-3.3.3
@@ -244,6 +245,21 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
      */
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
+    }
+
+    /** Generate the postfire code of the associated composite actor.
+     *
+     *  @return The postfire code of the associated composite actor.
+     *  @exception IllegalActionException If the helper associated with
+     *   an actor throws it while generating postfire code for the actor
+     *   or while creating buffer size and offset map.
+     */
+    public String generatePostfireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        CompositeEntity model = (CompositeEntity) getContainer();
+        ActorCodeGenerator modelHelper = _getHelper(model);
+        code.append(modelHelper.generatePostfireCode());
+        return code.toString();
     }
 
     /**

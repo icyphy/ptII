@@ -1,6 +1,6 @@
 /* Base class for code generator helper.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2005-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -74,9 +74,9 @@ import ptolemy.util.StringUtilities;
  * Base class for code generator helper.
  *
  * <p>Subclasses should override generateFireCode(),
- * generateInitializeCode(), generatePreinitializeCode(), and
- * generateWrapupCode() methods by appending a corresponding code
- * block.
+ * generateInitializeCode() generatePostfireCode(),
+ * generatePreinitializeCode(), and generateWrapupCode() methods by
+ * appending a corresponding code block.
  *
  * <p>Subclasses should be sure to properly indent the code by
  * either using the code block functionality in methods like
@@ -283,7 +283,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_eol + generateName(getComponent()) + "() {" + _eol);
+        code.append(_eol + "void " + generateName(getComponent()) + "() {" + _eol);
         code.append(generateFireCode());
         code.append(generateTypeConvertFireCode());
         code.append("}" + _eol);
@@ -296,18 +296,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * code of the associated component and append the code to the 
      * given string buffer.
      * @return The initialize code of the containing composite actor.
-     * @exception IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException If thrown while appending to the
+     * the block or processing the macros.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        _codeStream.clear();
-        _codeStream.appendCodeBlock(_defaultBlocks[1], true); // initBlock
-        // There is no need to generate comment for empty code block.
-        if (!_codeStream.isEmpty()) {
-            _codeStream.insert(0, _eol
-                    + CodeStream.indent(_codeGenerator.comment("initialize "
-                            + getComponent().getName())));
-        }
-        return processCode(_codeStream.toString());
+        return _generateBlockByName(_defaultBlocks[1]);
     }
 
     /** Generate the main entry point.
@@ -445,6 +438,19 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
+     * Generate the postfire code. In this base class, do nothing. Subclasses
+     * may extend this method to generate the postfire code of the associated
+     * component and append the code to the given string buffer.
+     *
+     * @return The generated postfire code.
+     * @exception IllegalActionException If thrown while appending to the
+     * the block or processing the macros.
+     */
+    public String generatePostfireCode() throws IllegalActionException {
+        return _generateBlockByName(_defaultBlocks[3]);
+    }
+
+    /**
      * Generate the preinitialize code. In this base class, return an empty
      * string. This method generally does not generate any execution code
      * and returns an empty string. Subclasses may generate code for variable
@@ -455,15 +461,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public String generatePreinitializeCode() throws IllegalActionException {
         _createBufferSizeAndOffsetMap();
 
-        _codeStream.clear();
-        _codeStream.appendCodeBlock(_defaultBlocks[0], true); // preinitBlock
-        // There is no need to generate comment for empty code block.
-        if (!_codeStream.isEmpty()) {
-            _codeStream.insert(0, _eol
-                    + _codeGenerator.comment("preinitialize "
-                            + getComponent().getName()));
-        }
-        return processCode(_codeStream.toString());
+        return _generateBlockByName(_defaultBlocks[0]);
     }
 
     /**
@@ -562,18 +560,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * component and append the code to the given string buffer.
      *
      * @return The generated wrapup code.
-     * @exception IllegalActionException Not thrown in this base class.
+     * @exception IllegalActionException If thrown while appending to the
+     * the block or processing the macros.
      */
     public String generateWrapupCode() throws IllegalActionException {
-        _codeStream.clear();
-        _codeStream.appendCodeBlock(_defaultBlocks[3], true); // wrapupBlock
-        // There is no need to generate comment for empty code block.
-        if (!_codeStream.isEmpty()) {
-            _codeStream.insert(0, _eol
-                    + CodeStream.indent(_codeGenerator.comment("wrapup "
-                            + getComponent().getName())));
-        }
-        return processCode(_codeStream.toString());
+        return _generateBlockByName(_defaultBlocks[4]);
     }
 
     /**
@@ -712,7 +703,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         "Static type function requires at least one argument(s).");
             }
 
-            return "functionTable[" + typeOrToken + "][FUNC_" + functionName
+            return "functionTable[(int)" + typeOrToken + "][FUNC_" + functionName
                     + "](" + argumentList;
 
         } else {
@@ -724,7 +715,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 argumentList = ", " + argumentList;
             }
 
-            return "functionTable[" + typeOrToken + ".type][FUNC_"
+            return "functionTable[(int)" + typeOrToken + ".type][FUNC_"
                     + functionName + "](" + typeOrToken + argumentList;
         }
     }
@@ -2268,6 +2259,30 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return -1;
     }
 
+    /** Generate code for a given block.  The comment includes
+     *  the portion of the blockName parameter up until the string
+     *  "Block".  
+     *  @param blockName The name of the block 
+     *  @return The generated wrapup code.
+     *  @exception IllegalActionException If thrown while appending to the
+     *  the block or processing the macros.
+     */
+    public String _generateBlockByName(String blockName) 
+            throws IllegalActionException {
+        _codeStream.clear();
+        _codeStream.appendCodeBlock(blockName, true);
+        // There is no need to generate comment for empty code block.
+        if (!_codeStream.isEmpty()) {
+            _codeStream.insert(0, _eol
+                    + CodeStream.indent(
+                            _codeGenerator.comment(
+                                    blockName.substring(0,
+                                            blockName.lastIndexOf("Block"))
+                                    + getComponent().getName())));
+        }
+        return processCode(_codeStream.toString());
+
+    }
     /**
      * Get the list of sink channels that the given source channel needs to
      * be type converted to.
@@ -2326,6 +2341,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * with the code block name (String) as key.
      */
     private static final String[] _defaultBlocks = { "preinitBlock",
-            "initBlock", "fireBlock", "wrapupBlock" };
+            "initBlock", "fireBlock", "postfireBlock",
+            "wrapupBlock" };
 
 }
