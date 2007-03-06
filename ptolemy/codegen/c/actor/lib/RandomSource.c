@@ -3,7 +3,10 @@
 // generates the same list of random numbers as the java.util.Random object.
 
 /*** sharedBlock ***/
-
+#ifdef PT_NO_TIME
+/* Atmel AVR does not have time() */
+#define time(x)
+#endif
 int RandomSource_next(int bits, double* seed) {
     *seed = (((long long) *seed * 0x5DEECE66DLL) + 0xBLL) & ((1LL << 48) - 1);
     return (int)((signed long long) *seed >> (48 - bits));
