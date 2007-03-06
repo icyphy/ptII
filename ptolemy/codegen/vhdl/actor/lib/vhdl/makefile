@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2006 The Regents of the University of California
+# @Copyright (c) 2007 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -57,14 +57,15 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	AddSubtract.java \
 	Concat.java \
+	FixComparator.java \
 	FixConst.java \
-	Multiplexor.java
+	IntegerCounter.java \
+	LogicFunction.java \
+	Multiplexor.java \
+	RegisterSR.java
 
 OTHER_FILES_TO_BE_JARED = \
-	AddSubtract.vhdl \
-	Concat.vhdl \
-	FixConst.vhdl \
-	Multiplexor.vhdl
+	$(JSRCS:%.java=%.vhdl)
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
