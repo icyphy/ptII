@@ -2,7 +2,7 @@
 #if PT_NO_RINT
 /* Atmel AVR does not have rint() */
 #define rint(x) (floor((x)+0.5f))
-#endiv
+#endif
 /**/
 
 /*** ceilBlock ***/
