@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/vhdl
 
-DIRS =		kernel actor
+DIRS =		kernel actor core domains
 
 # Root of the Java directory
 ROOT =		../../..
@@ -54,7 +54,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
 	actor/actor.jar \
-	kernel/kernel.jar
+	kernel/kernel.jar \
+	core/core.jar \
+	domains/domains.jar
 
 # Keep this list alphabetized.
 JSRCS =
