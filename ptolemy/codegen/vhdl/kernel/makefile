@@ -48,11 +48,10 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	VHDLCodeGenerator.java \
-	VHDLCodeGeneratorHelper.java
-
+	VHDLCodeGeneratorHelper.java \
+	VHDLParseTreeCodeGenerator.java
 
 OTHER_FILES_TO_BE_JARED =
-
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
