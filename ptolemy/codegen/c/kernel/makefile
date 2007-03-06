@@ -31,7 +31,7 @@
 
 ME =		ptolemy/codegen/c/kernel
 
-DIRS =		test
+DIRS =		type test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -44,7 +44,14 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+# If you change this, change DIRS above
+PTCLASSALLJARS = \
+	type/type.jar
 
 JSRCS = \
 	CCodeGenerator.java \
@@ -52,8 +59,8 @@ JSRCS = \
 	CParseTreeCodeGenerator.java
 
 
-OTHER_FILES_TO_BE_JARED =
-
+OTHER_FILES_TO_BE_JARED = \
+	SharedCode.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -69,7 +76,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: all jars $(PTPACKAGE).jar
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
