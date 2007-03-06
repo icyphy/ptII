@@ -40,7 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
    #define F_CPU 1000000UL
 */
 #define F_CPU 8000000UL
-//WinAVR 20040404 does not have util/delay.h, so _delay_ms is not defined
+//WinAVR 20040404 does not have util/delay.h, so _delay_ms might not be defined
 //#include <avr/delay.h>
 
 #define _DELAY_MS
@@ -113,6 +113,92 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 /* End of LEDMatrix defines */
 
+/* turns off all the LEDs in the array */
+void all_on (void)
+{
+#ifdef __AVR__
+	//rows low
+	row0_low;
+	row1_low;
+	row2_low;
+	row3_low;
+	row4_low;
+	row5_low;
+	row6_low;
+	row7_low;
+	
+	//columns high
+	col0_high;
+	col1_high;
+	col2_high;
+	col3_high;
+	col4_high;
+	col5_high;
+	col6_high;
+	col7_high;
+	col8_high;
+	col9_high;
+#endif /* __AVR__ */ 
+}
+
+/* turns on all the LEDs in the array */
+void all_off (void)
+{
+#ifdef __AVR__
+	//rows high
+	row0_high;
+	row1_high;
+	row2_high;
+	row3_high;
+	row4_high;
+	row5_high;
+	row6_high;
+	row7_high;
+	
+	//columns low
+	col0_low;
+	col1_low;
+	col2_low;
+	col3_low;
+	col4_low;
+	col5_low;
+	col6_low;
+	col7_low;
+	col8_low;
+	col9_low;
+#endif /* __AVR__ */ 
+}
+
+//initializes the pins to be used for the display as outputs
+void initialize_tank_pins_as_output (void) {
+#ifdef __AVR__
+    row0_output;
+    row1_output;
+    row2_output;
+    row3_output;
+    row4_output;
+    row5_output;
+    row6_output;
+    row7_output;
+    
+    col0_output;
+    col1_output;
+    col2_output;
+    col3_output;
+    col4_output;
+    col5_output;
+    col6_output;
+    col7_output;
+    col8_output;
+    col9_output;
+
+    all_off();
+#endif
+}
+/**/
+
+/***initBlock***/
+initialize_tank_pins_as_output();
 /**/
 
 /***fireBlock***/
@@ -194,32 +280,12 @@ if ($ref(control)) {
         col9_low;
         break;
     }
-	
+
 #ifdef _DELAY_MS
 	_delay_ms(1000);
 #endif	
-        /* turns off all the LEDs in the array */
-	//rows high
-	row0_low;
-	row1_low;
-	row2_low;
-	row3_low;
-	row4_low;
-	row5_low;
-	row6_low;
-	row7_low;
-	
-	//columns hight
-	col0_high;
-	col1_high;
-	col2_high;
-	col3_high;
-	col4_high;
-	col5_high;
-	col6_high;
-	col7_high;
-	col8_high;
-	col9_high;
+
+        all_on();
 }
 #endif /* ! __AVR__ */ 
 
