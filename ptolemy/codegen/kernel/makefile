@@ -31,7 +31,7 @@
 
 ME =		ptolemy/codegen/kernel
 
-DIRS = 		test type
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -44,13 +44,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTCLASSJAR =
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	type/type.jar
+PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = \
 	ActorCodeGenerator.java \
@@ -63,9 +57,8 @@ JSRCS = \
 	ParseTreeCodeGenerator.java \
 	StaticSchedulingCodeGenerator.java
 
+OTHER_FILES_TO_BE_JARED =
 
-OTHER_FILES_TO_BE_JARED = \
-	SharedCode.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -77,6 +70,8 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'CodeGeneratorHelper$$VariableScope.class' \
+	'CodeStream$$CodeBlock.class' \
 	'CodeGeneratorHelper$$1.class' \
 	'CodeGeneratorHelper$$Channel.class' \
 	'CodeGeneratorHelper$$HelperScope.class' \
