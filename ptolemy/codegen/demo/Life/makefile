@@ -54,7 +54,12 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	Life.xml \
 	LifeCG.xml \
-	LifeCGAVR.xml
+	LifeCGAVR.xml \
+	CycleLEDs.mk.in \
+	CycleLEDs.xml \
+	LifeCGAVR.mk.in \
+	ModalLEDs.mk.in \
+	ModalLEDs.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
