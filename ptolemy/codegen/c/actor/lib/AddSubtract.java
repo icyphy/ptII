@@ -123,7 +123,7 @@ public class AddSubtract extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
 
         Type type = actor.output.getType();
-        args.add(cType(type));
+        args.add(targetType(type));
 
         if (_codeStream.isEmpty()) {
             _codeStream.append(_eol

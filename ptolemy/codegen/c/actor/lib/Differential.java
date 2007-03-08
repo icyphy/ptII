@@ -94,7 +94,7 @@ public class Differential extends CCodeGeneratorHelper {
 
         Type type = actor.output.getType();
         if (isPrimitive(type)) {
-            args.add(cType(type));
+            args.add(targetType(type));
             _codeStream.appendCodeBlock("CommonPreinitBlock", args);
         } else {
             _codeStream.appendCodeBlock("TokenPreinitBlock");

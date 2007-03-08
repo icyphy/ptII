@@ -103,7 +103,7 @@ public class Ramp extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(cType(actor.output.getType()));
+        args.add(targetType(actor.output.getType()));
 
         if (_codeStream.isEmpty()) {
             _codeStream.append(_eol

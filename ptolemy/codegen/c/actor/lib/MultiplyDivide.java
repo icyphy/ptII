@@ -121,7 +121,7 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
 
         Type type = actor.output.getType();
-        args.add(cType(type));
+        args.add(targetType(type));
         _codeStream.appendCodeBlock("preinitBlock", args);
 
         return processCode(_codeStream.toString());

@@ -65,7 +65,7 @@ public class ArrayMaximum extends CCodeGeneratorHelper {
         ptolemy.actor.lib.ArrayMaximum actor = (ptolemy.actor.lib.ArrayMaximum) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(cType(((ArrayType) actor.input.getType()).getElementType()));
+        args.add(targetType(((ArrayType) actor.input.getType()).getElementType()));
 
         _codeStream.appendCodeBlock("preinitBlock", args);
         return processCode(_codeStream.toString());
