@@ -79,8 +79,7 @@ test Director-3.1 {generateInitializeCode(StringBuffer)} {
 #####
 test Director-4.1 {generatePreinitializeCode(StringBuffer)} {
     list [$cgDirector generatePreinitializeCode]
-} {{/* The preinitialization of the director. */
-}}
+} {{}}
 
 #####
 test Director-5.1 {generateWrapupCode(StringBuffer)} {
