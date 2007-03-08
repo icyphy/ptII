@@ -461,7 +461,7 @@ public class CCodeGenerator extends CodeGenerator {
                 Parameter parameter = (Parameter) modifiedVariables.next();
 
                 code.append("static "
-                        + CodeGeneratorHelper.cType(parameter.getType()) + " "
+                        + CodeGeneratorHelper.targetType(parameter.getType()) + " "
                         + generateVariableName(parameter) + ";" + _eol);
             }
         }

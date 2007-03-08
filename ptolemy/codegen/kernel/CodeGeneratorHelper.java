@@ -194,7 +194,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 while (sinks.hasNext()) {
                     Channel sink = (Channel) sinks.next();
                     TypedIOPort sinkPort = (TypedIOPort) sink.port;
-                    if (!sourcePort.getType().equals(sinkPort.getType())) {
+                    if (!targetType(sourcePort.getType()).equals(
+                            targetType(sinkPort.getType()))) {
                         _markTypeConvert(new Channel(sourcePort, j), sink);
                     }
                 }
@@ -244,7 +245,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param ptType The given Ptolemy type.
      * @return The C data type.
      */
-    public static String cType(Type ptType) {
+    public static String targetType(Type ptType) {
         // FIXME: we may need to add more primitive types.
         return ptType == BaseType.INT ? "int"
                 : ptType == BaseType.STRING ? "char*"
@@ -1106,8 +1107,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                                                     .getTokenProductionRate(sourceChannel.port),
                                             DFUtilities
                                                     .getTokenConsumptionRate(sourceChannel.port));
-                            if (rate > 1) {
-                                result.append("[" + channelAndOffset[1] + "]");
+                            if (rate > 1 && channelAndOffset[1].trim().length() > 0) {
+                                result.append("[" + channelAndOffset[1].trim() + "]");
                             }
                             hasTypeConvertReference = true;
                         } else {
@@ -2091,7 +2092,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 throw new IllegalActionException(parameter
                         + " is not a port. $type macro takes in a port.");
             }
-            return cType(port.getType());
+            return targetType(port.getType());
 
         } else if (macro.equals("type") || macro.equals("cgType")) {
 

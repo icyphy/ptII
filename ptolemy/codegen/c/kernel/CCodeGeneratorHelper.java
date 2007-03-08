@@ -220,7 +220,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
                 continue;
             }
 
-            code.append("static " + cType(inputPort.getType()) + " "
+            code.append("static " + targetType(inputPort.getType()) + " "
                     + generateName(inputPort));
 
             if (inputPort.isMultiport()) {
@@ -256,7 +256,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             // If either the output port is a dangling port or
             // the output port has inside receivers.
             if (outputPort.getWidth() == 0 || outputPort.getWidthInside() != 0) {
-                code.append("static " + cType(outputPort.getType()) + " "
+                code.append("static " + targetType(outputPort.getType()) + " "
                         + generateName(outputPort));
 
                 if (outputPort.isMultiport()) {
@@ -292,7 +292,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
                 // avoid duplicate declaration.
                 if (!_codeGenerator.getModifiedVariables().contains(parameter)) {
-                    code.append("static " + cType(parameter.getType()) + " "
+                    code.append("static " + targetType(parameter.getType()) + " "
                             + generateVariableName(parameter) + ";" + _eol);
                 }
             }
@@ -314,7 +314,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         while (channels.hasNext()) {
             Channel channel = (Channel) channels.next();
             code.append("static ");
-            code.append(cType(((TypedIOPort) channel.port).getType()));
+            code.append(targetType(((TypedIOPort) channel.port).getType()));
             code.append(" " + _getTypeConvertReference(channel));
 
             int bufferSize = Math.max(DFUtilities
