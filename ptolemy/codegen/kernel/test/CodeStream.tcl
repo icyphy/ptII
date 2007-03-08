@@ -60,9 +60,8 @@ test CodeStream-1.1 {Constructor that takes a CodeGeneratorHelper} {
 
 #####
 test CodeStream-1.2 {Constructor that takes a String} {
-
     set codeStream2 [java::new ptolemy.codegen.kernel.CodeStream \
-			"foo"]
+			"foo" $codeGenerator]
     $codeStream2 append "Test 1.2"
     $codeStream2 toString
 } {Test 1.2}
@@ -85,7 +84,7 @@ test CodeStream-3.1 {appendCodeBlock} {
 test CodeStream-3.2 {appendCodeBlock} {
     set fileTestBlock [java::new java.io.File testCodeBlock.c]
     set codeStream3_2 [java::new ptolemy.codegen.kernel.CodeStream \
-			[[$fileTestBlock toURL] toString]]
+			[[$fileTestBlock toURL] toString] $codeGenerator]
 
     set args [java::new java.util.ArrayList]
     $args add [java::call Integer toString 3]
@@ -109,7 +108,7 @@ if ($ref(input) != $arg) {
 test CodeStream-3.3 {appendCodeBlock: wrong number of args} {
     set fileTestBlock [java::new java.io.File testCodeBlock.c]
     set codeStream3_3 [java::new ptolemy.codegen.kernel.CodeStream \
-			[[$fileTestBlock toURL] toString]]
+			[[$fileTestBlock toURL] toString] $codeGenerator]
 
     set args [java::new java.util.ArrayList]
     $args add [java::call Integer toString 3]
@@ -121,7 +120,7 @@ test CodeStream-3.3 {appendCodeBlock: wrong number of args} {
 #####
 test CodeStream-3.4 {appendCodeBlock: arg name does not start with $} {
     set codeStream3_4 [java::new ptolemy.codegen.kernel.CodeStream \
-		"file:./testCodeBlockBadArg.c"]
+		"file:./testCodeBlockBadArg.c" $codeGenerator]
 
     set args [java::new java.util.ArrayList]
     $args add [java::call Integer toString 3]
@@ -134,7 +133,7 @@ Parameter name for code block needs to starts with '$'}}
 test CodeStream-3.5 {appendCodeBlock initBlock} {
     set fileTestBlock [java::new java.io.File testCodeBlock.c]
     set codeStream3_5 [java::new ptolemy.codegen.kernel.CodeStream \
-			[[$fileTestBlock toURL] toString]]
+			[[$fileTestBlock toURL] toString] $codeGenerator]
 
     catch {$codeStream3_5 appendCodeBlock "initBlock"} errMsg
     list $errMsg
@@ -143,7 +142,7 @@ test CodeStream-3.5 {appendCodeBlock initBlock} {
 #####
 test CodeStream-4.0 {appendCodeBlock(nameExpression)} {
     set codeStream4_0 [java::new ptolemy.codegen.kernel.CodeStream \
-		"file:./testCodeBlockNoArg.c"]
+		"file:./testCodeBlockNoArg.c" $codeGenerator]
 
     $codeStream4_0 appendCodeBlock "myBlock"
     # Increase code coverage of if (_declarations) block	
