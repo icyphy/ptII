@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)
  */
-public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
+public class GradientAdaptiveLattice extends Lattice {
     /**
      * Constructor the GradientAdaptiveLattice helper.
      * @param actor the associated actor.
