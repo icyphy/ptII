@@ -12,6 +12,10 @@
     $targetType(input) $actorSymbol(zero) = $zero;
 /**/
 
+/*** sharedBlock ***/
+    $super.arraycopyBlock($targetType(input));
+/**/
+
 /*** initBlock ***/
         if ($val(usePastInputs) && $val(offset) > 0) {            
             // Fill past buffer with zeros.
@@ -79,23 +83,14 @@
                 // Shift older data.
                 $actorSymbol(destination) = $val(offset) - $val(numberToRead);
                 
-				$actorClass(arraycopy)($actorSymbol(_pastBuffer), $val(numberToRead), $actorSymbol(_pastBuffer), 0, $actorSymbol(destination));
+				$targetType(input)_arraycopy($actorSymbol(_pastBuffer), $val(numberToRead), $actorSymbol(_pastBuffer), 0, $actorSymbol(destination));
                 //System.arraycopy(_pastBuffer, _numberToRead, _pastBuffer, 0, destination);
                 
                 $actorSymbol(startCopy) = 0;
                 $actorSymbol(length) = $val(numberToRead);
             }
 
-			$actorClass(arraycopy)(&$ref(input), $actorSymbol(startCopy), $actorSymbol(_pastBuffer), $actorSymbol(destination), $actorSymbol(length));
+			$targetType(input)_arraycopy(&$ref(input), $actorSymbol(startCopy), $actorSymbol(_pastBuffer), $actorSymbol(destination), $actorSymbol(length));
             //System.arraycopy(inBuffer, startCopy, _pastBuffer, destination, length);
         }
-/**/
-
-/*** sharedBlock ***/
-void $actorClass(arraycopy) ($targetType(input) *src, int srcPos, $targetType(input) *dest, int destPos, int length) {
-	int i;
-	for (i = 0; i < length; i++) {
-		dest[destPos + i] = src[srcPos + i];
-	}
-}
 /**/

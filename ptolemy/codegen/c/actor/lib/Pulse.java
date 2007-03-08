@@ -27,7 +27,13 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Pulse
@@ -48,5 +54,59 @@ public class Pulse extends CCodeGeneratorHelper {
      */
     public Pulse(ptolemy.actor.lib.Pulse actor) {
         super(actor);
+    }
+    
+    /**
+     * Generate initialize code.
+     * Reads the <code>preinitBlock</code> from Chop.c,
+     * replace macros with their values and return the processed code string.
+     * @return The processed code string.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateInitializeCode());
+        
+        ArrayList args = new ArrayList();
+        
+        ptolemy.actor.lib.Pulse actor = 
+            (ptolemy.actor.lib.Pulse) getComponent();
+        
+        Type type = ((ArrayToken) actor.values.getToken()).getElementType();
+                
+        if (!isPrimitive(type)) {
+            args.add("\\$tokenFunc(\\$ref(values, 0)::zero())");
+        } else {
+            args.add("0");
+        }
+        
+        code.append(_generateBlockCode("initBlock", args));
+        return code.toString();
+    }
+
+    /**
+     * Generate preinitialize code.
+     * Reads the <code>preinitBlock</code> from Chop.c,
+     * replace macros with their values and return the processed code string.
+     * @return The processed code string.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
+        
+        ArrayList args = new ArrayList();
+        
+        ptolemy.actor.lib.Pulse actor = 
+            (ptolemy.actor.lib.Pulse) getComponent();
+        
+        Type type = ((ArrayToken) actor.values.getToken()).getElementType();
+        
+        args.add(targetType(type));
+        
+        code.append(_generateBlockCode("preinitBlock", args));
+        return code.toString();
     }
 }
