@@ -1,8 +1,9 @@
+/*** initBlock ***/
+    $ref(output) = $new(Complex(0, 0));
+/**/
+
+
 /*** fireBlock ***/
-    $ref(output) = $new(Complex($ref(x), $ref(y)));
+    $ref(output).payload.Complex->real = $ref(x);
+    $ref(output).payload.Complex->imag = $ref(y);
 /**/
-
-/*** fireBlock1 ***/
-    $ref(output) = $new(Complex($ref(x), $ref(y)));
-/**/
-
