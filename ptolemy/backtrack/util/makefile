@@ -31,7 +31,7 @@
 
 ME =		ptolemy/backtrack/util
 
-DIRS = 		java test
+DIRS = 		test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -106,8 +106,12 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass $(PTCLASSJAR)
 
+# Build the .class files in util/java before running the tests
+tests:: jclass
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
 
 gcc: gcc-source transform gcc-compile
 
