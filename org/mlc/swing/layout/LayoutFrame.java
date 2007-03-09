@@ -455,6 +455,18 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame
     ContainerLayout layout = constraintsManager.getContainerLayout(name);
     if (layout == null)
       throw new RuntimeException("Container " + name + " does not exist");
+    // Also have to remove any contained containers!
+    // EAL, 3/3/06.
+    Container container =constraintsManager.getContainer(layout);
+    Component[] components = container.getComponents();
+    for (int i = 0; i < components.length; i++) {
+        if (components[i] instanceof Container) {
+            String componentName = layout.getComponentName(components[i]);
+            if (hasContainer(componentName)) {
+                removeContainer(componentName);
+            }
+        }
+    }
     constraintsManager.removeLayout(layout);
     FormEditor editor = editors.get(layout);
     tabs.remove(editor);
