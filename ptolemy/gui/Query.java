@@ -1388,6 +1388,69 @@ public class Query extends JPanel {
             label.setToolTipText(tip);
         }
     }
+    
+    /** Convert the specified string to a color. The string
+     *  has the form "{r, g, b, a}", where each of the letters
+     *  is a number between 0.0 and 1.0, representing red, green,
+     *  blue, and alpha.
+     *  @param description The description of the color, or white
+     *   if any parse error occurs.
+     */
+    public static Color stringToColor(String description) {
+        String[] specArray = description.split("[{},]");
+        float red = 0f;
+        float green = 0f;
+        float blue = 0f;
+        float alpha = 1.0f;
+
+        // If any exceptions occur during the attempt to parse,
+        // then just use the default color.
+        try {
+            int i = 0;
+
+            // Ignore any blank strings that this simple parsing produces.
+            while (specArray[i].trim().equals("")) {
+                i++;
+            }
+
+            if (specArray.length > i) {
+                red = Float.parseFloat(specArray[i]);
+            }
+
+            i++;
+
+            while (specArray[i].trim().equals("")) {
+                i++;
+            }
+
+            if (specArray.length > i) {
+                green = Float.parseFloat(specArray[i]);
+            }
+
+            i++;
+
+            while (specArray[i].trim().equals("")) {
+                i++;
+            }
+
+            if (specArray.length > i) {
+                blue = Float.parseFloat(specArray[i]);
+            }
+
+            i++;
+
+            while (specArray[i].trim().equals("")) {
+                i++;
+            }
+
+            if (specArray.length > i) {
+                alpha = Float.parseFloat(specArray[i]);
+            }
+        } catch (Exception ex) {
+            // Ignore and use default color.
+        }
+        return new Color(red, green, blue, alpha);
+    }
 
     /** Get the current value in the entry with the given name,
      *  and return as a String.  All entry types support this.
@@ -1631,61 +1694,8 @@ public class Query extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // Read the current color from the text field.
             String spec = getSelectedColor().trim();
-            String[] specArray = spec.split("[{},]");
-            float red = 0f;
-            float green = 0f;
-            float blue = 0f;
-            float alpha = 1.0f;
-
-            // If any exceptions occur during the attempt to parse,
-            // then just use the default color.
-            try {
-                int i = 0;
-
-                // Ignore any blank strings that this simple parsing produces.
-                while (specArray[i].trim().equals("")) {
-                    i++;
-                }
-
-                if (specArray.length > i) {
-                    red = Float.parseFloat(specArray[i]);
-                }
-
-                i++;
-
-                while (specArray[i].trim().equals("")) {
-                    i++;
-                }
-
-                if (specArray.length > i) {
-                    green = Float.parseFloat(specArray[i]);
-                }
-
-                i++;
-
-                while (specArray[i].trim().equals("")) {
-                    i++;
-                }
-
-                if (specArray.length > i) {
-                    blue = Float.parseFloat(specArray[i]);
-                }
-
-                i++;
-
-                while (specArray[i].trim().equals("")) {
-                    i++;
-                }
-
-                if (specArray.length > i) {
-                    alpha = Float.parseFloat(specArray[i]);
-                }
-            } catch (Exception ex) {
-                // Ignore and use default color.
-            }
-
             Color newColor = JColorChooser.showDialog(Query.this,
-                    "Choose Color", new Color(red, green, blue, alpha));
+                    "Choose Color", stringToColor(spec));
 
             if (newColor != null) {
                 float[] components = newColor.getRGBComponents(null);
