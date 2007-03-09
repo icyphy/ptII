@@ -31,7 +31,7 @@
 
 ME =		ptolemy/backtrack/util
 
-DIRS = 		test
+DIRS = 		java test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -74,7 +74,7 @@ GCC_FILES = \
 	java/util/TreeSet.java \
 	java/util/Vector.java \
 	java/util/WeakHashMap.java
-	
+
 GCC_CLASSES = $(GCC_FILES:%.java=%.class)
 
 # Don't use GNU make extensions here
@@ -115,7 +115,7 @@ GCJ_DIR = branches/gcc-4_1-branch/libjava/classpath/
 
 GCC_REPOSITORY = \
 	svn://gcc.gnu.org/svn/gcc/
-	
+
 SOURCE_DATE = 20040418
 
 gcc-source:
