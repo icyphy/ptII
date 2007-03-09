@@ -657,7 +657,7 @@ CRUD=*.o *.so *~ *.bak ,* LOG* *.class \
 
 clean:
 	rm -rf $(CRUD)
-	rm core
+	-rm -f core
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
 		for x do \
