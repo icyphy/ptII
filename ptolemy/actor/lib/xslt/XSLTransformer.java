@@ -30,23 +30,16 @@ package ptolemy.actor.lib.xslt;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
 
 import javax.xml.transform.TransformerException;
 
 import org.w3c.dom.Document;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.XMLToken;
 import ptolemy.data.expr.FileParameter;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -90,21 +83,11 @@ public class XSLTransformer extends Transformer {
         //input.setMultiport(true);
         input.setTypeEquals(BaseType.XMLTOKEN);
 
-        styleSheetParameterPort = new TypedIOPort(this, 
-                "styleSheetParameterPort", true, false);
-        styleSheetParameterPort.setTypeAtMost(new RecordType
-                (new String[0], new Type[0]));
-        
         // Set the type of the output port.
         //output.setMultiport(true);
         output.setTypeEquals(BaseType.STRING);
 
-        styleSheetParameter = new Parameter(this, "styleSheetParameter");
-        styleSheetParameter.setTypeAtMost(new RecordType
-                (new String[0], new Type[0]));
-        styleSheetParameter.setExpression("{}");
-        styleSheetFile = new FileParameter(this, "styleSheetFile");
-        
+        fileOrURL = new FileParameter(this, "fileOrURL");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -114,20 +97,7 @@ public class XSLTransformer extends Transformer {
      *  any form accepted by FileParameter.
      *  @see FileParameter
      */
-    public FileParameter styleSheetFile;
-    
-    /** The parameter to be used in the stylesheet. It is a record type. 
-     *  For example, if the parameter used in the style sheet is named 
-     *  <i>a</i> with type <i>int</i>, then the styleSheetParameter has
-     *  type <i>{a = int}</i>. If the style sheet has multiple parameters,
-     *  then each of them is represented as a field of the record. 
-     */
-    public Parameter styleSheetParameter;
-
-    /** An input port for optionally providing the parameter to the
-     *  style sheet.
-     */
-    public TypedIOPort styleSheetParameterPort;
+    public FileParameter fileOrURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -143,42 +113,17 @@ public class XSLTransformer extends Transformer {
         XSLTransformer newObject = (XSLTransformer) super.clone(workspace);
         newObject.input.setTypeEquals(BaseType.XMLTOKEN);
         newObject.output.setTypeEquals(BaseType.STRING);
-        try {
-            newObject.styleSheetParameterPort.setTypeAtMost(
-                    new RecordType(new String[0], new Type[0]));
-            newObject.styleSheetParameter.setTypeAtMost(
-                    new RecordType(new String[0], new Type[0]));
-        } catch (Exception ex) {
-            throw new CloneNotSupportedException(
-                    "Failed to set styleSheetParameter type: "
-                    + ex.getMessage());
-
-        }
-
         return newObject;
     }
 
     /** Consume an XMLToken from the input and apply the XSL transform
-     *  specified by the styleSheetFile parameter.  If the styleSheetFile parameter
+     *  specified by the fileOrURL parameter.  If the fileOrURL parameter
      *  does not name a file, then the input is copied to the output
      *  without modification.
      *  @exception IllegalActionException If the parent class throws it
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        // If the fileOrURL input port is connected and has data, then
-        // get the file name from there.
-        if (styleSheetParameterPort.getWidth() > 0) {
-            if (styleSheetParameterPort.hasToken(0)) {
-                RecordToken parameters = ((RecordToken) 
-                        styleSheetParameterPort.get(0));
-
-                // Using setExpression() rather than setToken() allows
-                // the string to refer to variables defined in the
-                // scope of this actor.
-                styleSheetParameter.setExpression(parameters.toString());
-            }
-        }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         javax.xml.transform.Result result = new javax.xml.transform.stream.StreamResult(
                 out);
@@ -188,20 +133,6 @@ public class XSLTransformer extends Transformer {
         }
 
         if (_transformer != null) {
-            RecordToken parameters = (RecordToken) 
-            (styleSheetParameter.getToken());
-            Iterator labels = parameters.labelSet().iterator();
-    
-            while(labels.hasNext()){
-                String name = (String) labels.next();
-                Token token = parameters.get(name);
-                if (token instanceof StringToken) {
-                    StringToken s = (StringToken) token; 
-                    _transformer.setParameter(name, s.stringValue());
-                } else {
-                    _transformer.setParameter(name, token.toString());
-                }
-            }
             for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {
                     XMLToken in = (XMLToken) input.get(i);
@@ -257,7 +188,7 @@ public class XSLTransformer extends Transformer {
         }
     }
 
-    /** Open the XSL file named by the styleSheetFile parameter and
+    /** Open the XSL file named by the fileOrURL parameter and
      *  set up the transformer.
      *  @exception IllegalActionException If the TransformFactory
      *  class name does not start with net.sf.saxon.
@@ -269,11 +200,11 @@ public class XSLTransformer extends Transformer {
         try {
             BufferedReader reader;
 
-//          Ignore if the styleSheetFile is blank.
-            if (styleSheetFile.getExpression().trim().equals("")) {
+            // Ignore if the fileOrURL is blank.
+            if (fileOrURL.getExpression().trim().equals("")) {
                 reader = null;
             } else {
-                reader = styleSheetFile.openForReading();
+                reader = fileOrURL.openForReading();
             }
 
             if (reader != null) {
@@ -291,7 +222,7 @@ public class XSLTransformer extends Transformer {
                 _transformerFactory = javax.xml.transform.TransformerFactory
                         .newInstance();
 
-               /* if (!_transformerFactory.getClass().getName().startsWith(
+                if (!_transformerFactory.getClass().getName().startsWith(
                         "net.sf.saxon")) {
                     throw new IllegalActionException(
                             this,
@@ -320,7 +251,7 @@ public class XSLTransformer extends Transformer {
                                     + "META-INF/services/javax.xml.transform.TransformerFactory "
                                     + "\nfile that sets the TransformerFactory "
                                     + "class name start with 'net.sf.saxon'.");
-                }*/
+                }
 
                 _transformer = _transformerFactory.newTransformer(_xsltSource);
 
