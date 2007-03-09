@@ -70,7 +70,7 @@ public class LayoutTableau extends Tableau {
         }
         try {
             RunLayoutFrame frame = new RunLayoutFrame(
-                    (CompositeActor)model, this, pane.getLayoutConstraintsManager());
+                    (CompositeActor)model, this, pane);
             setFrame(frame);
         } catch (IllegalActionException ex) {
             // Remove this tableau from its container.

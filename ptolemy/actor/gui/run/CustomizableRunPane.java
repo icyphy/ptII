@@ -39,10 +39,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.mlc.swing.layout.ContainerLayout;
 import org.mlc.swing.layout.LayoutConstraintsManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -88,17 +90,21 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
      *  @param xml The XML specification of the layout, or null to use the default.
      *  @exception IllegalActionException If the XML to be parsed has errors.
      */
-    public CustomizableRunPane(CompositeActor model, String xml) throws IllegalActionException {
+    public CustomizableRunPane(CompositeActor model, String xml)
+            throws IllegalActionException {
         super();
         
         _model = model;
         
-        Attribute layoutAttribute = _model.getAttribute("_runLayoutAttribute");
-        if (layoutAttribute instanceof ConfigurableAttribute) {
-            try {
-                xml = ((ConfigurableAttribute)layoutAttribute).value();
-            } catch (IOException e) {
-                throw new InternalErrorException(e);
+        // If no XML is specified, then see whether the model has one.
+        if (xml == null) {
+            Attribute layoutAttribute = _model.getAttribute("_runLayoutAttribute");
+            if (layoutAttribute instanceof ConfigurableAttribute) {
+                try {
+                    xml = ((ConfigurableAttribute)layoutAttribute).value();
+                } catch (IOException e) {
+                    throw new InternalErrorException(e);
+                }
             }
         }
         
@@ -127,7 +133,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
         _layoutConstraintsManager =
                 LayoutConstraintsManager.getLayoutConstraintsManager(root);
         
-        LayoutManager layout = _layoutConstraintsManager.createLayout("top", this);
+        ContainerLayout layout = _layoutConstraintsManager.createLayout("top", this);
         this.setLayout(layout);
         
         // Walk through the XML, creating an interface as specified in it.
@@ -144,6 +150,10 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
                 NodeList nodeList = components.item(i).getChildNodes();
                 for (int j = 0; j < nodeList.getLength(); j++) {
                     Node node = nodeList.item(j);
+                    // Skip over nodes that are not cellconstraints.
+                    if (!node.getNodeName().equals("cellconstraints")) {
+                        continue;
+                    }
                     // The attributes will be null if the node represents the contents text.
                     if (node.getAttributes() != null) {
                         String name = node.getAttributes().getNamedItem("name").getNodeValue();
@@ -252,14 +262,6 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
         // Better yet, should use ModelFrame instead of TableauFrame,
         // but then ModelPane needs to be converted to an interface
         // so that this pane can be used instead.
-        if (_directorQuery != null) {
-            _directorQuery.windowClosed(window, button);
-        }
-
-        if (_parameterQuery != null) {
-            _parameterQuery.windowClosed(window, button);
-        }
-
         if (_model != null) {
             _closeDisplays();
         }
@@ -271,20 +273,14 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Add a component with the specified name. The name is of the form
+    /** Return a component with the specified name. The name is of the form
      *  TYPE:DETAIL, where TYPE defines the type of component to add
      *  and DETAIL specifies details.
      *  @param name The name.
-     *  @param panel The panel into which to add the component.
-     *  @exception IllegalActionException If there is an error in the XML.
+     *  @return A component, or null if the specification is not recognized.
+     *  @exception IllegalActionException If there is an error in the name.
      */
-    private void _addComponent(String name, JPanel panel) throws IllegalActionException {
+    protected Component _getComponent(String name) throws IllegalActionException {
         // Figure out what type of component to create.
         if (name.startsWith("Placeable:")) {
             // Display of an actor that implements the Placeable
@@ -299,69 +295,74 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             // Regrettably, it seems we need an intermediate JPanel.
             JPanel dummy = new JPanel();
             ((Placeable) entity).place(dummy);
-            panel.add(dummy, name);
-        } else if (name.startsWith("Separator:")) {
-            // Separator is given with "Separator:TEXT" where
-            // TEXT is the text of the separator.
-            String text = name.substring(10);
-            Component separator = DefaultComponentFactory.getInstance().createSeparator(text);
-            panel.add(separator, name);
-        } else if (name.startsWith("GoButton:")) {
-            // Go button is specified with "GoButton:TEXT", where TEXT
-            // is the text displayed in the button.
-            String text = name.substring(9);
-            JButton goButton = new JButton(text);
+            return dummy;
+        } else if (name.startsWith("Label")) {
+            // Default is the text after the colon in the name, if
+            // there is one.
+            int colon = name.indexOf(":");
+            String label = "Label";
+            if (name.length() > 5 && colon > 4) {
+                label = name.substring(colon + 1);
+            }
+            return new JLabel(label);
+        } else if (name.startsWith("GoButton")) {
+            // Go button is specified with "GoButton", where the label
+            // on the button is given by either the "label" or "text"
+            // Java Bean property, or if there is none, by the default
+            // label "Go".
+            JButton goButton = new JButton("Go");
             goButton.setToolTipText("Execute the model");
-            panel.add(goButton, name);
             goButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
                     startRun();
                 }
             });
-        } else if (name.startsWith("PauseButton:")) {
-            // Pause button is specified with "PauseButton:TEXT", where TEXT
-            // is the text displayed in the button.
-            String text = name.substring(12);
-            JButton pauseButton = new JButton(text);
+            return goButton;
+        } else if (name.startsWith("PauseButton")) {
+            // Button is specified with "PauseButton", where the label
+            // on the button is given by either the "label" or "text"
+            // Java Bean property, or if there is none, by the default
+            // label "Pause".
+            JButton pauseButton = new JButton("Pause");
             pauseButton.setToolTipText("Pause the model");
-            panel.add(pauseButton, name);
             pauseButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
                     pauseRun();
                 }
             });
-        } else if (name.startsWith("ResumeButton:")) {
-            // Resume button is specified with "ResumeButton:TEXT", where TEXT
-            // is the text displayed in the button.
-            String text = name.substring(13);
-            JButton button = new JButton(text);
+            return pauseButton;
+        } else if (name.startsWith("ResumeButton")) {
+            // Button is specified with "ResumeButton", where the label
+            // on the button is given by either the "label" or "text"
+            // Java Bean property, or if there is none, by the default
+            // label "Resume".
+            JButton button = new JButton("Resume");
             button.setToolTipText("Resume the model");
-            panel.add(button, name);
             button.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
                     resumeRun();
                 }
             });
-        } else if (name.startsWith("StopButton:")) {
-            // Stop button is specified with "StopButton:TEXT", where TEXT
-            // is the text displayed in the button.
-            String text = name.substring(11);
-            JButton button = new JButton(text);
+            return button;
+        } else if (name.startsWith("StopButton")) {
+            // Button is specified with "StopButton", where the label
+            // on the button is given by either the "label" or "text"
+            // Java Bean property, or if there is none, by the default
+            // label "Stop".
+            JButton button = new JButton("Stop");
             button.setToolTipText("Stop the model");
-            panel.add(button, name);
             button.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent event) {
                     stopRun();
                 }
             });
+            return button;
         } else if (name.equals("ConfigureTopLevel")) {
             // A parameter editor for top-level parameters
-            _parameterQuery = new Configurer(_model);
-            panel.add(_parameterQuery, name);
+            return new Configurer(_model);
         } else if (name.equals("ConfigureDirector")) {
             // A parameter editor for the director
-            _directorQuery = new Configurer(_model.getDirector());
-            panel.add(_directorQuery, name);
+            return new Configurer(_model.getDirector());
         } else if (name.startsWith("ConfigureEntity:")) {
             // A parameter editor for an entity is specified with
             // "ConfigureEntity:NAME", where NAME is the name of
@@ -372,19 +373,18 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
                 throw new IllegalActionException(_model,
                         "Nonexistent entity: " + entityName);
             }
-            Configurer configurer = new Configurer(entity);
-            panel.add(configurer, name);
+            return new Configurer(entity);
         } else if (name.startsWith("Subpanel:")) {
             // Subpanel is specified with "Subpanel:NAME", where NAME
             // is the name of the the subpanel.
             JPanel subpanel = new JPanel();
             LayoutManager layout = _layoutConstraintsManager.createLayout(name, subpanel);
             subpanel.setLayout(layout);
-            panel.add(subpanel, name);
             if (_subpanels == null) {
                 _subpanels = new HashMap<String,JPanel>();
             }
             _subpanels.put(name, subpanel);
+            return subpanel;
         } else {
             // FIXME: When a component is dragged from once
             // cell to another, the FormsLayout package messes
@@ -398,8 +398,33 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
             } catch (CancelException e) {
                 throw new IllegalActionException(_model, "Canceled");
             }
+            return null;
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The associated model. */
+    protected CompositeActor _model;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Add a component with the specified name. The name is of the form
+     *  TYPE:DETAIL, where TYPE defines the type of component to add
+     *  and DETAIL specifies details.
+     *  @param name The name.
+     *  @param panel The panel into which to add the component.
+     *  @exception IllegalActionException If there is an error in the XML.
+     */
+    private void _addComponent(String name, JPanel panel) throws IllegalActionException {
+        Component component = _getComponent(name);
+        if (component != null) {
+            panel.add(component, name);
+        }
+    }
+
     /** Close any open displays by calling place(null).
      */
     private void _closeDisplays() {
@@ -441,7 +466,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
                 "columnSpecs=\"default\" " +
                 "rowSpecs=\"default,5dlu,default,5dlu,default,5dlu,default,5dlu," +
                 "default,5dlu,default,5dlu,default\">\n");
-        xml.append("<cellconstraints name=\"Separator:Run Control\" gridX=\"1\" gridY=\"1\" " +
+        xml.append("<cellconstraints name=\"Label:Run Control\" gridX=\"1\" gridY=\"1\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
                 "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
@@ -450,7 +475,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
                 "horizontalAlignment=\"default\" verticalAlignment=\"top\" " +
                 "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
         // Place a configurer for the top-level settables here.
-        xml.append("<cellconstraints name=\"Separator:Top-Level Parameters\" gridX=\"1\" gridY=\"5\" " +
+        xml.append("<cellconstraints name=\"Label:Top-Level Parameters\" gridX=\"1\" gridY=\"5\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
                 "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
@@ -459,7 +484,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
                 "verticalAlignment=\"top\" topInset=\"0\" bottomInset=\"0\" " +
                 "rightInset=\"0\" leftInset=\"0\"/>\n");        
         // Place a configurer for the director settables here.
-        xml.append("<cellconstraints name=\"Separator:Director Parameters\" gridX=\"1\" gridY=\"9\" " +
+        xml.append("<cellconstraints name=\"Label:Director Parameters\" gridX=\"1\" gridY=\"9\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
                 "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
@@ -473,19 +498,19 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
         xml.append("<container name=\"Subpanel:Run Control\" " +
                 "columnSpecs=\"default,3dlu,default,3dlu,default,3dlu,default\" " +
                 "rowSpecs=\"default\">\n");
-        xml.append("<cellconstraints name=\"GoButton:Execute\" gridX=\"1\" gridY=\"1\" " +
+        xml.append("<cellconstraints name=\"GoButton\" gridX=\"1\" gridY=\"1\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
                 "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
-        xml.append("<cellconstraints name=\"PauseButton:Pause\" gridX=\"3\" gridY=\"1\" " +
+        xml.append("<cellconstraints name=\"PauseButton\" gridX=\"3\" gridY=\"1\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
                 "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
-        xml.append("<cellconstraints name=\"ResumeButton:Resume\" gridX=\"5\" gridY=\"1\" " +
+        xml.append("<cellconstraints name=\"ResumeButton\" gridX=\"5\" gridY=\"1\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
                 "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
-        xml.append("<cellconstraints name=\"StopButton:Stop\" gridX=\"7\" gridY=\"1\" " +
+        xml.append("<cellconstraints name=\"StopButton\" gridX=\"7\" gridY=\"1\" " +
                 "gridWidth=\"1\" gridHeight=\"1\" " +
                 "horizontalAlignment=\"default\" verticalAlignment=\"default\" " +
                 "topInset=\"0\" bottomInset=\"0\" rightInset=\"0\" leftInset=\"0\"/>\n");
@@ -530,18 +555,9 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The query box for the director parameters. */
-    private Configurer _directorQuery;
-
     /** The layout constraint manager. */
     private LayoutConstraintsManager _layoutConstraintsManager;
 
-    /** The associated model. */
-    private CompositeActor _model;
-    
-    /** The query box for the top-level parameters. */
-    private Configurer _parameterQuery;
-    
     /** A collection of subpanels. */
     private HashMap<String,JPanel> _subpanels;
 }

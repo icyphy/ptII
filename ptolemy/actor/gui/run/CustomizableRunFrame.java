@@ -31,7 +31,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
@@ -88,7 +87,8 @@ public class CustomizableRunFrame extends TableauFrame {
 
         JMenuItem[] customizeMenuItems = {
                 new JMenuItem("Customize Layout", KeyEvent.VK_C),
-                new JMenuItem("Revert to Default", KeyEvent.VK_R), };
+                new JMenuItem("Revert to Default", KeyEvent.VK_R),
+                new JMenuItem("New Layout", KeyEvent.VK_N)};
 
         // NOTE: This has to be initialized here rather than
         // statically because this method is called by the constructor
@@ -173,6 +173,39 @@ public class CustomizableRunFrame extends TableauFrame {
                     };
                     _model.requestChange(request);
                     // FIXME: Should also close the RunLayoutFrame, if it is open.
+                }
+            } else if (actionCommand.equals("New Layout")) {
+                // Layout frame to create a new layout.
+                try {
+                    // Remove the existing layout.
+                    getContentPane().remove(_pane);
+                    // Define a default layout in XML.
+                    String xml = "<containers>" +
+                            "<container name=\"top\" " +
+                            "columnSpecs=\"default\" " +
+                            "rowSpecs=\"default\"> " +
+                            "</container></containers>";
+                    _pane = new CustomizableRunPane(_model, xml);
+                    getContentPane().add(_pane, BorderLayout.CENTER);
+                    pack();
+                    repaint();
+
+                    // Open the customization panel.
+                    Effigy effigy = getEffigy();
+                    LayoutTableau tableau = (LayoutTableau)effigy.getEntity("Layout Run Panel");
+                    if (tableau == null) {
+                        tableau = new LayoutTableau(
+                                (PtolemyEffigy)effigy, "Layout Run Panel", _pane);
+                    }
+                    tableau.show();
+                    
+                    // Get this on top, since it is smaller, and will be obscured.
+                    setVisible(true);
+                } catch (KernelException ex) {
+                    try {
+                        MessageHandler.warning("Failed to create layout customization frame: " + ex);
+                    } catch (CancelException exception) {
+                    }
                 }
             }
         }

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<containers>
+<!--         columnSpecs="right:max(30dlu;pref),3dlu,pref,10dlu,right:max(30dlu;pref),3dlu,40dlu,7dlu,right:max(30dlu;pref),3dlu,40dlu,7dlu,right:max(30dlu;pref),3dlu,pref,1dlu:grow" -->
+    <container name="mainLayout"
+        columnSpecs="right:max(30dlu;pref),3dlu,40dlu,7dlu,right:max(30dlu;pref),3dlu,40dlu,7dlu,right:max(30dlu;pref),3dlu,pref,1dlu:grow"
+        rowSpecs="pref,3dlu,pref,3dlu,pref,7dlu,10dlu,3dlu,pref,7dlu,250px:grow,3dlu,pref">
+        <cellconstraints name="rowSpanLabel" gridX="1" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="verticalAlignmentCombo" gridX="7" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="insetsPanel" gridX="12" gridY="3" gridWidth="1" gridHeight="3" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="positionsSeparator" gridX="1" gridY="7" gridWidth="12" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="columnSpanLabel" gridX="1" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="horizontalAlignmentCombo" gridX="7" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="constraintsSplitPane" gridX="1" gridY="11" gridWidth="12" gridHeight="1" horizontalAlignment="fill" verticalAlignment="fill" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="verticalAlignmentLabel" gridX="5" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="columnSpanSpinner" gridX="3" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="constraintsSeparator" gridX="1" gridY="1" gridWidth="12" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="horizontalAlignmentLabel" gridX="5" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="insetsLabel" gridX="9" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="rowSpanSpinner" gridX="3" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>      
+        <cellconstraints name="toolbar" gridX="1" gridY="9" gridWidth="12" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" leftInset="0" rightInset="0"/>        
+        <cellconstraints name="palette" gridX="1" gridY="13" gridWidth="12" gridHeight="1" horizontalAlignment="fill" verticalAlignment="default" topInset="0" bottomInset="0" leftInset="0" rightInset="0"/>
+    </container>
+    
+    <container name="positionLayout"
+        columnSpecs="pref,3dlu,pref,3dlu,pref"
+        rowSpecs="12px,8px,4px,8px,12px">
+        <cellconstraints name="showComponentLabel" gridX="1" gridY="9" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" leftInset="0" rightInset="0"/>
+        <cellconstraints name="moveRightButton" gridX="5" gridY="2" gridWidth="1" gridHeight="3"/>
+        <cellconstraints name="moveDownButton" gridX="3" gridY="4" gridWidth="1" gridHeight="2"/>
+        <cellconstraints name="moveLeftButton" gridX="1" gridY="2" gridWidth="1" gridHeight="3"/>
+        <cellconstraints name="moveUpButton" gridX="3" gridY="1" gridWidth="1" gridHeight="2"/>
+    </container>
+
+    <container name="insetsLayout"
+        columnSpecs="30dlu,3dlu,30dlu,3dlu,30dlu"
+        rowSpecs="8dlu,6dlu,2dlu,6dlu,8dlu">
+        <cellconstraints name="rightInsetSpinner" gridX="5" gridY="2" gridWidth="1" gridHeight="3" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="bottomInsetSpinner" gridX="3" gridY="4" gridWidth="1" gridHeight="2" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="leftInsetSpinner" gridX="1" gridY="2" gridWidth="1" gridHeight="3" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="topInsetSpinner" gridX="3" gridY="1" gridWidth="1" gridHeight="2" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+    </container>
+    
+    <container name="propertiesLayout"
+        columnSpecs="3dlu,120px:grow"
+        rowSpecs="pref,2dlu,50px:grow">
+        <cellconstraints name="componentPaletteLabel" gridX="2" gridY="1" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" leftInset="0" rightInset="0"/>
+        <cellconstraints name="componentPaletteScrollPane" gridX="2" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="fill" verticalAlignment="fill" topInset="0" bottomInset="0" leftInset="0" rightInset="0"/>                        
+    </container>                
+    
+    <container name="newComponentContent"
+               columnSpecs="right:max(30dlu;pref),7dlu,pref,1dlu:grow"
+               rowSpecs="pref,3dlu,pref,3dlu,pref:grow,7dlu,pref">
+        <cellconstraints name="nameLabel" gridX="1" gridY="1" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="newComponentPanel" gridX="1" gridY="7" gridWidth="4" gridHeight="1" horizontalAlignment="fill" verticalAlignment="bottom" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="typeLabel" gridX="1" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="nameField" gridX="3" gridY="1" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="typeCombo" gridX="3" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="propertyScrollPane" gridX="1" gridY="5" gridWidth="4" gridHeight="1" horizontalAlignment="fill" verticalAlignment="bottom" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>        
+        <cellconstraints name="buttonPanel" gridX="1" gridY="7" gridWidth="4" gridHeight="1" horizontalAlignment="fill" verticalAlignment="bottom" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+    </container>
+    
+    <container name="newComponentPanel"
+               columnSpecs="right:max(30dlu;pref),3dlu,100dlu,80dlu:grow"
+               rowSpecs="pref,10dlu,pref,3dlu,pref,3dlu,pref,3dlu,pref,3dlu,pref,10dlu,100dlu,10dlu,pref:grow">
+        <cellconstraints name="componentNameTextField" gridX="3" gridY="1" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="componentNameLabel" gridX="1" gridY="1" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="default" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="importsLabel" gridX="1" gridY="3" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="panel" gridX="3" gridY="11" gridWidth="2" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="declarationsLabel" gridX="1" gridY="5" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="configureLabel" gridX="1" gridY="7" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="configureComponent" gridX="3" gridY="7" gridWidth="2" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="declarationsComponent" gridX="3" gridY="5" gridWidth="2" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="importsComponent" gridX="3" gridY="3" gridWidth="2" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="addToContainerLabel" gridX="1" gridY="9" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="addToContainerComponent" gridX="3" gridY="9" gridWidth="2" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="removeFromContainerLabel" gridX="1" gridY="11" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="removeFromContainerComponent" gridX="3" gridY="11" gridWidth="2" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="previewLabel" gridX="1" gridY="13" gridWidth="1" gridHeight="1" horizontalAlignment="default" verticalAlignment="top" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="previewComponent" gridX="3" gridY="13" gridWidth="2" gridHeight="1" horizontalAlignment="fill" verticalAlignment="fill" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+        <cellconstraints name="buttonBar" gridX="1" gridY="15" gridWidth="4" gridHeight="1" horizontalAlignment="default" verticalAlignment="bottom" topInset="0" bottomInset="0" rightInset="0" leftInset="0"/>
+    </container>  
+    
+</containers>

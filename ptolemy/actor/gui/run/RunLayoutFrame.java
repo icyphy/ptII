@@ -27,6 +27,7 @@
 package ptolemy.actor.gui.run;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +37,6 @@ import java.util.Map;
 import javax.swing.JTabbedPane;
 
 import org.mlc.swing.layout.ContainerLayout;
-import org.mlc.swing.layout.FormEditor;
 import org.mlc.swing.layout.LayoutConstraintsManager;
 import org.mlc.swing.layout.LayoutFrame;
 import org.mlc.swing.layout.MultiContainerFrame;
@@ -63,7 +63,7 @@ import ptolemy.util.MessageHandler;
  @see LayoutFrame
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 6.2
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
@@ -75,25 +75,25 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
      *  enclosing tableau.
      *  @param model The model to put in this frame, or null if none.
      *  @param tableau The tableau responsible for this frame.
+     *  @param pane The run pane whose layout is being edited.
      *  @throws IllegalActionException If the XML to be parsed has errors.
      */
     public RunLayoutFrame(
             CompositeActor model,
             Tableau tableau,
-            LayoutConstraintsManager constraintsManager)
+            CustomizableRunPane pane)
             throws IllegalActionException {
         super(tableau);
         _model = model;
-        _constraintsManager = constraintsManager;
+        _constraintsManager = pane.getLayoutConstraintsManager();
+        _pane = pane;
 
-        List<ContainerLayout> layouts = constraintsManager.getLayouts();
+        List<ContainerLayout> layouts = _constraintsManager.getLayouts();
         for (int index = 0; index < layouts.size(); index++) {
             ContainerLayout containerLayout = layouts.get(index);
-            Container container = constraintsManager.getContainer(containerLayout);
+            Container container = _constraintsManager.getContainer(containerLayout);
             if (container == null) {
-                // FIXME: FormsLayout has a bug where if a subpanel with a subpanel
-                // is deleted, then the subsubpanel is not deleted from the constraints.
-                // For now, just issue a warning.
+                // If data is malformed, issue a warning and proceed.
                 try {
                     MessageHandler.warning( "A container with name "
                             + containerLayout.getName()
@@ -143,7 +143,7 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
     }
 
     /** Remove the container with the specified name.
-     *  This may throw a RuntimeException if the container does not exist.
+     *  This may throw an InternalErrorException if the container does not exist.
      *  @param name The name of the container.
      */
     public void removeContainer(String name) {
@@ -151,8 +151,19 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
         if (layout == null) {
             throw new InternalErrorException("Container " + name + " does not exist");
         }
+        // Also have to remove any contained containers!
+        Container container =_constraintsManager.getContainer(layout);
+        Component[] components = container.getComponents();
+        for (int i = 0; i < components.length; i++) {
+            if (components[i] instanceof Container) {
+                String componentName = layout.getComponentName(components[i]);
+                if (hasContainer(componentName)) {
+                    removeContainer(componentName);
+                }
+            }
+        }
         _constraintsManager.removeLayout(layout);
-        FormEditor editor = _editors.get(layout);
+        PtolemyFormEditor editor = _editors.get(layout);
         _tabs.remove(editor);
         _newLayouts.remove(layout);
     }
@@ -195,19 +206,22 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
     
+    /** The run pane whose layout is being edited. */
+    protected CustomizableRunPane _pane;
+
     /** The associated model. */
     protected CompositeActor _model;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Add an instance of FormEditor for the specified containerLayout
+    /** Add an instance of PtolemyFormEditor for the specified containerLayout
      *  to the specified container.
      *  @param containerLayout The layout to edit.
      *  @param container The container into which to put the editor.
      */
     private void addContainerLayout(ContainerLayout containerLayout, Container container) {
-        FormEditor formEditor = new FormEditor(this, containerLayout, container);
+        PtolemyFormEditor formEditor = new PtolemyFormEditor(this, containerLayout, container);
         _editors.put(containerLayout, formEditor);
         _tabs.addTab(containerLayout.getName(), formEditor);
     }
@@ -219,11 +233,11 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
     private LayoutConstraintsManager _constraintsManager;
 
     /** Set of editors indexed by layout. */
-    Map<ContainerLayout, FormEditor> _editors = new HashMap<ContainerLayout, FormEditor>();
+    private Map<ContainerLayout, PtolemyFormEditor> _editors = new HashMap<ContainerLayout, PtolemyFormEditor>();
 
     /** A list of new layouts. */
-    List<ContainerLayout> _newLayouts = new ArrayList<ContainerLayout>();
-
+    private List<ContainerLayout> _newLayouts = new ArrayList<ContainerLayout>();
+    
     /** Tabbed pane for showing nested layouts. */
     private JTabbedPane _tabs = new JTabbedPane();
 }

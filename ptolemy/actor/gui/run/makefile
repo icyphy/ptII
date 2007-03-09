@@ -58,12 +58,24 @@ JSRCS = \
 	CustomizableRunFrame.java \
 	CustomizableRunPane.java \
 	InterfaceTableau.java \
+	LayoutTable.java \
 	LayoutTableau.java \
+	PaletteList.java \
+	PtolemyFormEditor.java \
 	RunLayoutFrame.java
 
 # Files to be included in the jar file
-OTHER_FILES_TO_BE_JARED =
-
+OTHER_FILES_TO_BE_JARED = \
+	ColumnDelete24.gif \
+	ColumnInsertAfter24.gif \
+	ColumnInsertBefore24.gif \
+	editableLayoutConstraints.xml \
+	Pack.gif \
+	Remove24.gif \
+	RowDelete24.gif \
+	RowInsertAfter24.gif \
+	RowInsertBefore24.gif
+	
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
