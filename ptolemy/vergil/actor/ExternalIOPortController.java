@@ -54,8 +54,11 @@ import diva.canvas.connector.PerimeterSite;
 import diva.canvas.connector.TerminalFigure;
 import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.LabelFigure;
+import diva.canvas.toolbox.PaintedFigure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
+import diva.util.java2d.PaintedList;
+import diva.util.java2d.PaintedPath;
 import diva.util.java2d.Polygon2D;
 
 //////////////////////////////////////////////////////////////////////////
@@ -342,9 +345,9 @@ public class ExternalIOPortController extends AttributeController {
                         } else if (ioport.isInput()) {
                             polygon.lineTo(0, 4);
                             polygon.lineTo(0, 9);
-                            polygon.lineTo(6, 4);
+                            //polygon.lineTo(6, 4);
                             polygon.lineTo(12, 0);
-                            polygon.lineTo(6, -4);
+                            //polygon.lineTo(6, -4);
                             polygon.lineTo(0, -9);
                             polygon.lineTo(0, -4);
                             polygon.lineTo(-8, -4);
@@ -355,7 +358,35 @@ public class ExternalIOPortController extends AttributeController {
                     }
                 }
                 polygon.closePath();
-                figure = new BasicFigure(polygon, fill, (float) 1.5);
+
+                if (port instanceof ParameterPort) {
+                    // Create a PaintedList that has two PaintedPaths,
+                    // the usual icon and the > shape.
+                    PaintedList paintedList = new PaintedList();
+                    paintedList.add(new PaintedPath(polygon, (float) 1.5, fill));
+                    Polygon2D.Double polygon2 = new Polygon2D.Double();
+                    //polygon2.moveTo(-15,-15);
+                    //polygon2.lineTo(-3,-5);
+                    //polygon2.lineTo(-16,-5);
+
+                    polygon2.moveTo(5, 9);
+                    polygon2.lineTo(17, 0);
+                    polygon2.lineTo(5, -9);
+
+                    polygon2.lineTo(5, -9);
+                    polygon2.lineTo(17, 0);
+                    polygon2.lineTo(5, 9);
+
+                    //polygon2.lineTo(5, -9);
+                    //polygon2.lineTo(17, 0);
+                    //polygon2.lineTo(5, 9);
+
+                    polygon2.closePath();
+                    paintedList.add(new PaintedPath(polygon2, (float) 1.0, Color.black));
+                    figure = new PaintedFigure(paintedList);
+                } else {
+                    figure = new BasicFigure(polygon, fill, (float) 1.5);
+                }
 
                 if (!(port instanceof IOPort)) {
                     direction = SwingConstants.NORTH;
