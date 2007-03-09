@@ -649,7 +649,7 @@ checkjunk:
 ##############
 # Rules for cleaning
 
-CRUD=*.o *.so core *~ *.bak ,* LOG* *.class \
+CRUD=*.o *.so *~ *.bak ,* LOG* *.class \
 	config.cache config.log config.status manifest.tmp \
 	$(JCLASS) $(PTCLASSJAR) $(PTAUXJAR) \
 	$(PTCLASSALLJAR) $(PTAUXALLJAR) \
@@ -657,6 +657,7 @@ CRUD=*.o *.so core *~ *.bak ,* LOG* *.class \
 
 clean:
 	rm -rf $(CRUD)
+	rm core
 	@if [ "x$(DIRS)" != "x" ]; then \
 		set $(DIRS); \
 		for x do \
