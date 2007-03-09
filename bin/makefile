@@ -145,8 +145,15 @@ ptinvoke: ptinvoke.in ../config.status
 # zip might not get the permissions of configure right, so we run /bin/sh.
 # Pass --exec-prefix and --prefix to configure so as to avoid:
 # Avoid "configure: error: expected an absolute directory name for --exec_prefix: NONE"
+# The problem here is that in /bin/sh, the pwd command returns with
+# a trailing "\r".  The workaround is to run configure with bash.
 ../config.status: ../configure
-	-(cd ..; /bin/sh ./configure --exec-prefix=${PTII} --prefix=${PTII})
+	-(cd ..; \
+		/bin/bash ./configure \
+			--exec-prefix=${PTII} --prefix=${PTII} \
+	        || \
+		/bin/sh ./configure \
+			--exec-prefix=${PTII} --prefix=${PTII})
 
 install: all
 fast: all
