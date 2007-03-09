@@ -44,7 +44,7 @@ import javax.swing.JList;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
-class DndList extends JList implements DragSourceListener,
+public class DndList extends JList implements DragSourceListener,
     DragGestureListener
 {
   /**
