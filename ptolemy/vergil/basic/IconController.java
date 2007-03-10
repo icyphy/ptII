@@ -26,12 +26,15 @@
  */
 package ptolemy.vergil.basic;
 
+import java.awt.Color;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
@@ -191,19 +194,39 @@ public class IconController extends ParameterizedNodeController {
             // attributes that specify its color or an explanation.
             if (object instanceof ComponentEntity) {
                 ComponentEntity ce = (ComponentEntity) object;
-                StringAttribute _colorAttr = (StringAttribute) (ce
-                        .getAttribute("_color"));
-                if (_colorAttr != null) {
-                    String _color = _colorAttr.getExpression();
-                    AnimationRenderer _animationRenderer = new AnimationRenderer(
-                            SVGUtilities.getColor(_color));
-                    _animationRenderer.renderSelected(result);
+                // Old way to specify a color.
+                try {
+                    StringAttribute colorAttr = (StringAttribute) (ce
+                            .getAttribute("_color", StringAttribute.class));
+                    if (colorAttr != null) {
+                        String color = colorAttr.getExpression();
+                        AnimationRenderer _animationRenderer = new AnimationRenderer(
+                                SVGUtilities.getColor(color));
+                        _animationRenderer.renderSelected(result);
+                    }
+                } catch (IllegalActionException e) {
+                    // Ignore
                 }
-                StringAttribute _explAttr = (StringAttribute) (ce
-                        .getAttribute("_explanation"));
-
-                if (_explAttr != null) {
-                    result.setToolTipText(_explAttr.getExpression());
+                // New way to specify a highlight color.
+                try {
+                    ColorAttribute highlightAttribute = (ColorAttribute) (ce
+                            .getAttribute("_highlightColor", ColorAttribute.class));
+                    if (highlightAttribute != null) {
+                        Color color = highlightAttribute.asColor();
+                        AnimationRenderer _animationRenderer = new AnimationRenderer(color);
+                        _animationRenderer.renderSelected(result);
+                    }
+                } catch (IllegalActionException e) {
+                    // Ignore.
+                }
+                try {
+                    StringAttribute explanationAttribute = (StringAttribute) (ce
+                            .getAttribute("_explanation", StringAttribute.class));
+                    if (explanationAttribute != null) {
+                        result.setToolTipText(explanationAttribute.getExpression());
+                    }
+                } catch (IllegalActionException e) {
+                    // Ignore.
                 }
             }
 
