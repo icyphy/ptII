@@ -70,7 +70,6 @@ import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
 import org.mlc.swing.layout.ComponentDef;
-import org.mlc.swing.layout.DndList;
 import org.mlc.swing.layout.TransferableWrapper;
 
 //////////////////////////////////////////////////////////////////////////
@@ -81,7 +80,6 @@ This is a customized version of the DndList class by
 Michael Connor (mlconnor&#064;yahoo.com). The only reason for
 customization is to require a PtolemyFormEditor constructor argument.
 
-@see DndList
 @author Michael Connor and Edward A. Lee
 @version $Id$
 @since Ptolemy II 6.2
