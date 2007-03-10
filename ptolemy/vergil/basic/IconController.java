@@ -193,19 +193,17 @@ public class IconController extends ParameterizedNodeController {
                 ComponentEntity ce = (ComponentEntity) object;
                 StringAttribute _colorAttr = (StringAttribute) (ce
                         .getAttribute("_color"));
-
                 if (_colorAttr != null) {
                     String _color = _colorAttr.getExpression();
                     AnimationRenderer _animationRenderer = new AnimationRenderer(
                             SVGUtilities.getColor(_color));
                     _animationRenderer.renderSelected(result);
+                }
+                StringAttribute _explAttr = (StringAttribute) (ce
+                        .getAttribute("_explanation"));
 
-                    StringAttribute _explAttr = (StringAttribute) (ce
-                            .getAttribute("_explanation"));
-
-                    if (_explAttr != null) {
-                        result.setToolTipText(_explAttr.getExpression());
-                    }
+                if (_explAttr != null) {
+                    result.setToolTipText(_explAttr.getExpression());
                 }
             }
 
