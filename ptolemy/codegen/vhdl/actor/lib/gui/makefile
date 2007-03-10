@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/vhdl/actor/lib/gui
 
-DIRS =		test
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../../../..
