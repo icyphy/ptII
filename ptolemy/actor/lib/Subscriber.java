@@ -29,9 +29,7 @@ package ptolemy.actor.lib;
 
 import java.util.Iterator;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
@@ -42,7 +40,6 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -142,19 +139,8 @@ public class Subscriber extends TypedAtomicActor {
                 // within instances. Otherwise, we could end up creating
                 // a link between a class definition and an instance.
                 if (!isWithinClassDefinition()) {
-                    Nameable container = getContainer();
-                    Manager manager = ((CompositeActor) container).getManager();
-                    if (manager != null && manager.getState() == Manager.IDLE) {
-                        // We were calling _updateLinks() even if the model
-                        // is not running.  _updateLinks() calls
-                        // _findPublisher().  We should only do this if
-                        // the model is running by checking the Manager.
-                        _updateLinks();
-                    } else {
-                        // Update the links in preinitialize()
-                        _updatedLinks = false;
-                    }
-                } 
+                    _updateLinks();
+                }
             }
         } else {
             super.attributeChanged(attribute);
@@ -245,12 +231,6 @@ public class Subscriber extends TypedAtomicActor {
     ////                       protected methods                   ////
 
     /** Update the connection to the publisher, if there is one.
-     *  Note that this method is computationally intensive for large
-     *  models as it traverses the model by searching
-     *  up the hierarchy for the nearest opaque container
-     *  or the top level and then traverses the contained entities.
-     *  Thus, avoid calling this method except when the model
-     *  is running.   
      *  @exception IllegalActionException If creating the link
      *   triggers an exception.
      */
