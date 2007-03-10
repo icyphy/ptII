@@ -1949,14 +1949,13 @@ public class DEDirector extends Director implements TimedDirector {
                 if (nextEvent.hasTheSameTagAndDepthAs(lastFoundEvent)) {
                     // Consume the event from the queue and discard it.
                     _eventQueue.take();
-                } else if (actorToFire == getContainer()) {
+                } else if (nextEvent.hasTheSameTagAs(lastFoundEvent)) {
                     // The actor to be fired is the container, we remove all 
                     // the trigger events with the same tag from the event
                     // queue such that the executive director of this DE model
                     // can react to these events.
                     Actor actor = nextEvent.actor();
-                    if (actor == actorToFire
-                            && nextEvent.hasTheSameTagAs(lastFoundEvent)) {
+                    if (actor == actorToFire) {
                         _eventQueue.take();
                     } else {
                         // Next event has a future tag or a different destination.
