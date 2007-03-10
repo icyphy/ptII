@@ -144,7 +144,7 @@ public class Subscriber extends TypedAtomicActor {
                 if (!isWithinClassDefinition()) {
                     Nameable container = getContainer();
                     Manager manager = ((CompositeActor) container).getManager();
-                    if (manager != null & manager.getState() == Manager.IDLE) {
+                    if (manager != null && manager.getState() == Manager.IDLE) {
                         // We were calling _updateLinks() even if the model
                         // is not running.  _updateLinks() calls
                         // _findPublisher().  We should only do this if
