@@ -53,8 +53,7 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
-	NewtonsCradle.htm \
-	NewtonsCradleVergil.htm
+	NewtonsCradle.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -77,13 +76,13 @@ install: all
 
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer NewtonsCradle.xml NewtonsCradleAnimated.xml 
+	CLASSPATH="$(CLASSPATH)" appletviewer NewtonsCradle.xml
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" NewtonsCradle.xml NewtonsCradleAnimated.xml 
+	"$(PTII)/bin/ptolemy" NewtonsCradle.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" NewtonsCradle.xml NewtonsCradleAnimated.xml 
+	"$(PTII)/bin/vergil" NewtonsCradle.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
