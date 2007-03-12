@@ -1285,6 +1285,7 @@ remote1distjsall_1:
 	@echo "# To add to the list of directories, edit "
 	@echo "# ~ptII/adm/gen-latest/makefile"
 	@echo "#"
+	@echo "$@ `df -k $(REMOTE1PTIIDIST)`" 
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	@echo "Setting up javax.comm.properties so that we can build under solaris"
@@ -1343,6 +1344,7 @@ remote1distjsrestore:
 	@echo "# Now running make jsrestore in $(REMOTE1PTIIDIST)"
 	@echo "# on  `hostname`"
 	@echo "#"
+	@echo "$@ `df -k $(REMOTE1PTIIDIST)`" 
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	@if [ "x$(JSALLDIRS)" != "x" ]; then \
@@ -1396,6 +1398,7 @@ remote1distnonjsall:
 	@echo "# To add to the list of directories, edit "
 	@echo "# ~ptII/adm/gen-latest/makefile"
 	@echo "#"
+	@echo "$@ `df -k $(REMOTE1PTIIDIST)`" 
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	@echo "# Run make in the non javascope core directories"
