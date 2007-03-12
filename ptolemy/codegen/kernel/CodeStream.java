@@ -1233,9 +1233,18 @@ public class CodeStream {
             for (int i = 0; i < arguments.size(); i++) {
                 String replaceString = arguments.get(i).toString();
                 
-                codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
-                        _checkParameterName(parameters.get(i).toString()),
+                String parameterName = _checkParameterName(parameters.get(i).toString());
+                try {
+                    codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
+                        parameterName,
                         replaceString));
+                } catch (Exception ex) {
+                    throw new IllegalActionException(null, ex,
+                            "Failed to replace \"" 
+                            + parameterName
+                            + "\" with \""
+                            + replaceString + "\"");
+                }
             }
             return codeBlock;
         }
