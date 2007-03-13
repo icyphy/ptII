@@ -4,7 +4,7 @@
 <entity name="UnsignedFixConst" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={147, 94, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={55, 40, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -13,6 +13,8 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 150.0]">
         </property>
     </property>
@@ -24,20 +26,31 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 240.0]">
         </property>
     </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={277, 209, 330, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 320.0]">
+        </property>
+    </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{fix(0,1,1)}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 250.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 185.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <vertex name="vertex1" value="[240.0, 250.0]">
+        </vertex>
     </relation>
-    <link port="Unsigned.output" relation="relation"/>
-    <link port="Test.input" relation="relation"/>
+    <link port="Unsigned.output" relation="relation2"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
 </entity>
