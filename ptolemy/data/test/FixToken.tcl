@@ -651,5 +651,39 @@ test FixToken-14.0 {Test getType} {
     catch {set result [[$t getType] toString]} msg
     list $msg
 } {fixedpoint(8,4)}
+
+
+test FixToken-15.0 {Create an array} {
+    set t1 [java::new {ptolemy.data.FixToken java.lang.String} "fix(1.0,8,4)"]
+    set t2 [java::new {ptolemy.data.FixToken java.lang.String} "fix(1.0,8,4)"]
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $t1 $t2]]
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+    $valToken toString
+} {{fix(1.0,8,4), fix(1.0,8,4)}}
+
+test FixToken-15.1 {Create an unsigned FixToken} {
+    set p0 [java::new ptolemy.math.Precision "U1.0" ]
+    set c0 [java::call ptolemy.math.Quantizer \
+	    {round double ptolemy.math.Precision } \
+	    0.0 $p0]
+    set p [java::new ptolemy.data.FixToken $c0 ]
+   $p toString
+} {fix(0,1,1)}
+
+test FixToken-15.2 {Create an array of unsigned FixTokens using the single arg ctor w/o specifying the type} {
+    # Used 15.1 above
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $p $p]]
+    catch {set valToken [java::new {ptolemy.data.ArrayToken} $valArray]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FixToken 'fix(0,1,1)' to the type fixedpoint(1,1).}}
+
+test FixToken-15.3 {Create an array of unsigned FixTokens using the two arg ctor } {
+    # Used 15.1 above
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $p $p]]
+    set valToken [java::new \
+		      {ptolemy.data.ArrayToken ptolemy.data.type.Type ptolemy.data.Token[]} \
+		      [$p getType] $valArray]
+    $valToken toString
+} {{fix(0,1,1), fix(0,1,1)}}
     
 
