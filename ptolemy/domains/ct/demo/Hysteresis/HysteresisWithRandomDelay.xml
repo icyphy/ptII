@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HysteresisWithRandomDelay" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -249,6 +249,8 @@ second refinement called "wait" that triggers an event after a specified time.</
             <entity name="high" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="constant">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 325.0]">
@@ -257,12 +259,16 @@ second refinement called "wait" that triggers an event after a specified time.</
             <entity name="low" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="constant">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 245.0]">
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 425.0]">
@@ -271,6 +277,8 @@ second refinement called "wait" that triggers an event after a specified time.</
             <entity name="wait1" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="constant, wait">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 325.0]">
@@ -278,6 +286,8 @@ second refinement called "wait" that triggers an event after a specified time.</
             </entity>
             <entity name="wait2" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="constant, wait">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
@@ -307,7 +317,7 @@ second refinement called "wait" that triggers an event after a specified time.</
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-3.09888027530522">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -460,7 +470,7 @@ second refinement called "wait" that triggers an event after a specified time.</
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 15.0]">
                 </property>
             </property>
-            <property name="time" class="ptolemy.data.expr.Parameter" value="0.8420813436183">
+            <property name="time" class="ptolemy.data.expr.Parameter" value="0.7183726405078">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -518,9 +528,31 @@ second refinement called "wait" that triggers an event after a specified time.</
             </entity>
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                        </property>
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                        </property>
+                        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                        </property>
+                    </property>
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+                    </property>
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+                    </property>
+                    <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+                        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/lib/integral.gif">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
+                        </property>
                     </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 150.0]">
@@ -532,9 +564,79 @@ second refinement called "wait" that triggers an event after a specified time.</
                 <property name="direction" class="ptolemy.data.expr.StringParameter" value="rising">
                 </property>
                 <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="4.0, 0.0">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="67.0">
+                        </property>
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                        </property>
+                        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="ParameterValue" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
+                        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+                        </property>
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="level">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[-13.0, 1.0]">
+                        </property>
+                    </property>
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+                    </property>
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+                    </property>
+                    <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[-22.0, 0.0]">
+                        </property>
+                        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+                        </property>
+                        <property name="x" class="ptolemy.data.expr.Parameter" value="50">
+                        </property>
+                        <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
+                    <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[-27.0, 13.0]">
+                        </property>
+                        <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                        </property>
+                        <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
+                    <property name="line4" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[-17.0, 13.0]">
+                        </property>
+                        <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                        </property>
+                        <property name="y" class="ptolemy.data.expr.Parameter" value="-25.0">
+                        </property>
+                    </property>
+                    <property name="line5" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[-7.0, -12.0]">
+                        </property>
+                        <property name="x" class="ptolemy.data.expr.Parameter" value="10.0">
+                        </property>
+                        <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
+                    <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+                        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+                        </property>
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="direction">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="7">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[-6.0, -14.0]">
+                        </property>
                     </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 150.0]">
