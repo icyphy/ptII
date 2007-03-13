@@ -19,7 +19,7 @@
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;0 (1:0)&quot;, &quot;0 (1:0)&quot;, &quot;1 (U1:0)&quot;, &quot;2 (U1:0)&quot;, &quot;3 (U1:0)&quot;, &quot;0 (U1:0)&quot;, &quot;1 (U1:0)&quot;, &quot;2 (U1:0)&quot;, &quot;3 (U1:0)&quot;, &quot;0 (U1:0)&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;1 (U1:0)&quot;, &quot;2 (U1:0)&quot;, &quot;1 (U1:0)&quot;, &quot;2 (U1:0)&quot;, &quot;3 (U1:0)&quot;, &quot;0 (U1:0)&quot;, &quot;1 (U1:0)&quot;, &quot;2 (U1:0)&quot;, &quot;3 (U1:0)&quot;, &quot;0 (U1:0)&quot;}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0">
         </property>
