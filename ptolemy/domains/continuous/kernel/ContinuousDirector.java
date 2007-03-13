@@ -901,6 +901,10 @@ public class ContinuousDirector extends FixedPointDirector implements
                 ContinuousStepSizeController actor = (ContinuousStepSizeController) stepSizeControlActors
                         .next();
                 double suggestedStepSize = actor.suggestedStepSize();
+                if (_debugging) {
+                    _debug("step size controller: " + ((NamedObj)actor).getFullName()
+                            + " suggests next step size = " + suggestedStepSize);
+                }
                 if (suggestedStep > suggestedStepSize) {
                     if (_debugging) {
                         _debug("----- Revising step size due to "
@@ -1329,16 +1333,31 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     private boolean _postfireWithEnclosingContinuousDirector()
             throws IllegalActionException {
-
-        // If time exceeds the stop time, then either we failed
-        // to execute at the stop time, or the return value of
-        // false was ignored, or the return value of false in
-        // prefire() was ignored. All of these conditions are bugs.
-        if (_currentTime.compareTo(_stopTime) > 0) {
+        boolean postfireResult = true;
+        int comparison = _currentTime.compareTo(_stopTime);
+        if (comparison > 0) {
+            // If time exceeds the stop time, then either we failed
+            // to execute at the stop time, or the return value of
+            // false was ignored, or the return value of false in
+            // prefire() was ignored. All of these conditions are bugs.
             throw new IllegalActionException(this,
                     "Current time exceeds the specified stopTime.");
+        } else if (comparison == 0) {
+            // Reached the stop time. Assume that the execution will end.
+            postfireResult = false;
+            // If there is no pending breakpoint 
+            // happening at the current time with a bigger index,
+            // return false to indicate no firing is necessary.
+            if (_breakpoints.size() > 0) {
+                SuperdenseTime nextBreakpoint = 
+                    (SuperdenseTime) _breakpoints.first();
+                Time breakpointTime = nextBreakpoint.timestamp();
+                if (breakpointTime.equals(_currentTime)) {
+                    postfireResult = true;
+                }
+            }
         }
-        return _commit();
+        return _commit() && postfireResult;
     }
 
     /** Postfire method when the enclosing director
