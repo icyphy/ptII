@@ -247,20 +247,28 @@ public class ModalDirector extends FSMDirector {
         if (_debugging) {
             _debug("Postfire called at time: " + getModelTime());
         }
+        boolean postfireResult = true;
         // Postfire all the actors that were fired in this iteration.
         Iterator actors = _actorsFired.iterator();
         while (actors.hasNext()) {
             Actor actor = ((Actor) actors.next());
             if (!actor.postfire()) {
                 _disabledActors.add(actor);
+                postfireResult = false;
             }
         }
-        _actorsFired.clear();
+        
+        // We cannot clear the _actorsFired list here because
+        // the suggestedStepSize() method of the derived class,
+        // HybridModalDirector needs this list to query the suggested step size.
+        // Defer the following method to the prefire() method of 
+        // the next iteration.
+        // _actorsFired.clear();
 
         // Postfire the controller.
         FSMActor controller = getController();
         State previousState = controller.currentState();
-        boolean result = controller.postfire();
+        postfireResult = controller.postfire() && postfireResult;
         State newState = controller.currentState();
 
         if (previousState != newState) {
@@ -298,7 +306,16 @@ public class ModalDirector extends FSMDirector {
             }
         }
 
-        return result && !_stopRequested;
+        return postfireResult && !_stopRequested;
+    }
+
+    /** Override the prefire() method of the super class to clear
+     *  local variables.
+     *  @return What the super.prefire() returns.
+     */
+    public boolean prefire() throws IllegalActionException {
+        _actorsFired.clear();
+        return super.prefire();
     }
 
     /** Initialize this director.
