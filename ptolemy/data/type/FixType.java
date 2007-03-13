@@ -120,7 +120,7 @@ public class FixType extends StructuredType implements Serializable {
         }
 
         throw new IllegalActionException(Token.notSupportedConversionMessage(
-                token, toString()));
+                                                 token, toString()));
     }
 
     /** Return a new type which represents the type that results from
@@ -380,18 +380,20 @@ public class FixType extends StructuredType implements Serializable {
         Precision precision = ((FixType) type).getPrecision();
         if (_precision.equals(precision)) {
             return CPO.SAME;
-        } else if (_precision.getFractionBitLength() <= precision
+        } else if (_precision.getFractionBitLength() < precision
                 .getFractionBitLength()
-                && _precision.getIntegerBitLength() <= precision
+                && _precision.getIntegerBitLength() < precision
                         .getIntegerBitLength()) {
             return CPO.LOWER;
-        } else if (_precision.getFractionBitLength() >= precision
+        } else if (_precision.getFractionBitLength() > precision
                 .getFractionBitLength()
-                && _precision.getIntegerBitLength() >= precision
+                && _precision.getIntegerBitLength() > precision
                         .getIntegerBitLength()) {
             return CPO.HIGHER;
+        } else if (_precision.isSigned() && !precision.isSigned()) {
+            return CPO.HIGHER;
         } else {
-            return CPO.INCOMPARABLE;
+            return CPO.LOWER;
         }
     }
 
