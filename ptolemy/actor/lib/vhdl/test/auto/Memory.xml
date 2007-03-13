@@ -15,11 +15,11 @@
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 100.0]">
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;1 (U1:0)&quot;, &quot;2 (U1:0)&quot;, &quot;1 (U1:0)&quot;, &quot;2 (U1:0)&quot;, &quot;3 (U1:0)&quot;, &quot;0 (U1:0)&quot;, &quot;1 (U1:0)&quot;, &quot;2 (U1:0)&quot;, &quot;3 (U1:0)&quot;, &quot;0 (U1:0)&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;0 (U1:0)&quot;, &quot;0 (U1:0)&quot;, &quot;1 (U1:0)&quot;, &quot;2 (U1:0)&quot;, &quot;3 (U1:0)&quot;, &quot;0 (U1:0)&quot;, &quot;1 (U1:0)&quot;, &quot;2 (U1:0)&quot;, &quot;3 (U1:0)&quot;, &quot;0 (U1:0)&quot;}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -68,6 +68,12 @@
         <vertex name="vertex1" value="[260.0, 305.0]">
         </vertex>
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[140.0, 260.0]">
+        </vertex>
+    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -75,12 +81,6 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <vertex name="vertex1" value="[140.0, 260.0]">
-        </vertex>
     </relation>
     <link port="Test.input" relation="relation3"/>
     <link port="FixCounter.output" relation="relation4"/>
