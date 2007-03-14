@@ -20,7 +20,7 @@
 FFT is {
 	parameter N;
 	actor gain = ptolemy.actor.lib.Scale;
-	actor adder = ptolemy.actor.ptalon.demo.ComplexAddSubtract;
+	actor adder = ptolemy.actor.ptalon.lib.ComplexAddSubtract;
 	if [[ (N >= 2) && ((N % 2) == 0) ]] {
 		inport[] x;
 		outport[] X;

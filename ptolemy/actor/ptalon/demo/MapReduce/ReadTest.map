@@ -1,0 +1,28 @@
+key1
+the input keys are arbitrary in this example
+key2
+in other examples they might not be
+key3
+the purpose of this test
+key4
+is to show how map reduce works
+key5
+this data set is for the word count example
+key6
+the first line is a key
+key7
+if you start with zero as the first line
+key8
+then even line numbers are keys in the map file
+key9
+odd line numbers are values in the map file
+key10
+in the word count example
+key11
+values are sequences of words seperated by spaces
+key12
+you can try your own data set to play with this demo
+key13
+the data will be written as key value pairs in files of type red
+key14
+red is short for reduce

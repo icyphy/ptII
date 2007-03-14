@@ -1,7 +1,7 @@
 /*
  * A discrete-event Map Reduce model.  To use this, provide
  * a name for a Java class that extends 
- * ptolemy.actor.ptalon.demo.MapReduceAlgorithm for the className
+ * ptolemy.actor.ptalon.lib.MapReduceAlgorithm for the className
  * parameter.  In this class, you provide the basic map and reduce
  * methods, which you are required to implement to extend
  * MapReduceAlgorithm.  If the qualified name for this class is

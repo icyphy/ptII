@@ -19,7 +19,7 @@
 danglingPortsOkay;
 
 Reduce is {
-	actor worker = ptolemy.actor.ptalon.demo.ReduceWorker;
+	actor worker = ptolemy.actor.ptalon.lib.ReduceWorker;
 	actor writer = ptolemy.actor.lib.io.ExpressionWriter;
 	actor converter = ptolemy.actor.lib.ElementsToArray;
 	

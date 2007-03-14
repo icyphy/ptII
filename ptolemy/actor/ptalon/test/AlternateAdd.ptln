@@ -1,7 +1,7 @@
 danglingPortsOkay;
 
 AlternateAdd is {
-	actor adder = ptolemy.actor.ptalon.demo.ComplexAddSubtract;
+	actor adder = ptolemy.actor.ptalon.lib.ComplexAddSubtract;
 	inport[] x;
 	outport out1;
 	outport out2;

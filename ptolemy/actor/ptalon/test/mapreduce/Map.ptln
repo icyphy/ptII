@@ -16,8 +16,8 @@
 danglingPortsOkay;
 
 Map is {
-	actor worker = ptolemy.actor.ptalon.demo.MapWorker;
-	actor storage = ptolemy.actor.ptalon.demo.MapFileStorage;
+	actor worker = ptolemy.actor.ptalon.lib.MapWorker;
+	actor storage = ptolemy.actor.ptalon.lib.MapFileStorage;
 	
 	inport inputKey;
 	inport inputValue;

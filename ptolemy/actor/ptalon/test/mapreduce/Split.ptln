@@ -15,8 +15,8 @@ danglingPortsOkay;
 
 Split is {
 	actor clock = ptolemy.actor.lib.Clock;
-	actor reader = ptolemy.actor.ptalon.demo.SplitReader;
-	actor converter = ptolemy.actor.ptalon.demo.StringToKeyValue;
+	actor reader = ptolemy.actor.ptalon.lib.SplitReader;
+	actor converter = ptolemy.actor.ptalon.lib.StringToKeyValue;
 	
 	outport[] keys;
 	outport[] values;

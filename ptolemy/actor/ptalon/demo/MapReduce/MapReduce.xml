@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="mapreduce" class="ptolemy.actor.TypedCompositeActor">
+<entity name="MapReduce" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 25, 889, 551}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 25, 890, 553}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[674, 435]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.923406413797">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{256.4948120117186, 184.8343811035154}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{256.4948120117185, 184.8343811035154}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
@@ -19,7 +19,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="MapReduce is a Ptalon actor that models the Google MapReduce system.  It is used&#10;to perform distributed computation on a data set, based on user supplied methods&#10;called map and reduce.  This demo shows an example using word count.  To make &#10;the demo work, you need to set the fileNamePrefix parameter to a String&#10;that points this model to the file $PTII/ptolemy/actor/ptalon/demo/ReadTest.map, &#10;an input data set for this demo.  Be sure to leave off the &quot;.map&quot; &#10;at the end of the file name. The outputs will be stored in &#10;$PTII/ptolemy/actor/ptalon/demo/ReadTest0.red,&#10;$PTII/ptolemy/actor/ptalon/demo/ReadTest1.red, etc.  The files show the counts of&#10;various words in the input files.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="MapReduce is a Ptalon actor that models the Google MapReduce system.  It is used&#10;to perform distributed computation on a data set, based on user supplied methods&#10;called map and reduce.  This demo shows an example using word count.  To make &#10;the demo work, you need to set the fileNamePrefix parameter to a String&#10;that points this model to the file $PTII/ptolemy/actor/ptalon/demo/MapReduce/ReadTest.map, &#10;an input data set for this demo.  Be sure to leave off the &quot;.map&quot; &#10;at the end of the file name. The outputs will be stored in &#10;$PTII/ptolemy/actor/ptalon/demo/MapReduce/ReadTest0.red,&#10;$PTII/ptolemy/actor/ptalon/demo/MapReduce/ReadTest1.red, etc.  The files show the counts of&#10;various words in the input files.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 20.0]">
         </property>
@@ -32,6 +32,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 220.0]">
         </property>
     </property>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 304, 532, 226}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 172]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, -10.0]">
+        </property>
+    </entity>
     <entity name="MapReduce" class="ptolemy.actor.ptalon.PtalonActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, -10.0]">
         </property>
@@ -43,18 +51,10 @@
             </ptalon>
         </configure>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;, &quot;finished&quot;}">
-        </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[298.61328125, -10.380859375]">
-        </property>
-    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <link port="Display.input" relation="relation"/>
     <link port="MapReduce.status" relation="relation"/>
-    <link port="Test.input" relation="relation"/>
 </entity>
