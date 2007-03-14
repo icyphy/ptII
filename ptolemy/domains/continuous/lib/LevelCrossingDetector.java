@@ -286,13 +286,6 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         }
     }
 
-    /** Return true if there is an event at the current time.
-     *  @return True if there is an event at the current time.
-     */
-    public boolean hasCurrentEvent() {
-        return _eventNow;
-    }
-
     /** Initialize the execution.
      *  @exception IllegalActionException If thrown by the super class.
      */
