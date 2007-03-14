@@ -56,6 +56,7 @@ JSRCS = \
 	MapReduceAlgorithm.java \
 	MapWorker.java \
 	ReduceWorker.java \
+	ReverseLink.java \
 	SplitReader.java \
 	StringToKeyValue.java \
 	WordCount.java
