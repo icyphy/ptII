@@ -63,7 +63,24 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
+	AlternateAdd.ptln \
+	Combine.ptln \
+	Encapsulator.ptln \
+	IterativeParallel.ptln \
+	IterativeSeries.ptln \
+	Link.ptln \
+	MultiInputAdder.ptln \
+	NamingTest.ptln \
+	NestedForTest.ptln \
+	Parallel.ptln \
+	ScopeTest.ptln \
+	Series.ptln \
+	SeriesOfScales.ptln \
+	ThisTest.ptln \
+	adder \
+	ptalonexample.xml \
+	test.xml #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
