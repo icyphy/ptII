@@ -61,12 +61,29 @@ JSRCS = \
 	PtalonRuntimeException.java \
 	PtalonScopeChecker.java \
 	PtalonScopeException.java \
-	PtalonTokenTypes.java 
+	PtalonTokenTypes.java \
+	PtalonExpressionParameter.java \
+	PtalonPopulatorTokenTypes.java \
+	PtalonScopeCheckerTokenTypes.java \
+	Tester.java
 
 OTHER_FILES_TO_BE_JARED = \
 	ptalon.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
+	PtalonLexer.smap \
+	PtalonPopulator.smap \
+	PtalonPopulatorTokenTypes.txt \
+	PtalonRecognizer.smap \
+	PtalonScopeChecker.smap \
+	PtalonScopeCheckerTokenTypes.txt \
+	PtalonTokenTypes.txt \
+	antlr \
+	data.txt \
+	parser.g \
+	populator.g \
+	scopeChecker.g \
+	startantlr
 
 ANTLR = "$(JAVA)" -classpath "$(ANTLR_DIR)/antlr.jar" antlr.Tool
 # OPTIONAL_JSRCS are created by Antlr
