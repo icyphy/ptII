@@ -88,7 +88,7 @@ JCLASS = \
 	$(JSRCS:%.java=%.class) \
 	$(OPTIONAL_JSRCS:%.java=%.class)
 
-all: $(OPTIONAL_JSRCS) $(JCLASS)
+all: $(OPTIONAL_JSRCS) jclass
 install: all jars
 
 # Derived java files
