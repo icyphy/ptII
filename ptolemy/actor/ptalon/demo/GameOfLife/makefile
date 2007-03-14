@@ -50,6 +50,7 @@ JSRCS =
 # is not very interesting.
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	GameOfLife.ptln \
 	GameOfLife.xml
 
 #	GameOfLife.htm

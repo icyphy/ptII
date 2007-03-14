@@ -50,6 +50,7 @@ JSRCS =
 # is not very interesting.
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	NonlinearStateSpace.ptln \
 	Unicycle.xml
 
 #	Unicycle.htm

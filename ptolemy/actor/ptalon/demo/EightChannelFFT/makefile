@@ -50,7 +50,8 @@ JSRCS =
 # is not very interesting.
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	EightChannelFFT.xml
+	EightChannelFFT.xml \
+	FFT.ptln
 
 #	EightChannelFFT.htm
 
