@@ -141,7 +141,7 @@ public class GetDocumentationAction extends FigureAction {
         if(keplerDocumentationAttribute != null) {
           //use the KeplerDocumentationAttribute
           DocAttribute docAtt = keplerDocumentationAttribute.getDocAttribute(target);
-          System.out.println("docAttribute: " + docAtt.exportMoML());
+          //System.out.println("docAttribute: " + docAtt.exportMoML());
           if(docAtt != null)
           {
             showDocAttributeTableau(docAtt, target);
