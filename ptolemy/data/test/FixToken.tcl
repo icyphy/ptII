@@ -673,9 +673,9 @@ test FixToken-15.1 {Create an unsigned FixToken} {
 test FixToken-15.2 {Create an array of unsigned FixTokens using the single arg ctor w/o specifying the type} {
     # Used 15.1 above
     set valArray [java::new {ptolemy.data.Token[]} 2 [list $p $p]]
-    catch {set valToken [java::new {ptolemy.data.ArrayToken} $valArray]} errMsg
-    list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FixToken 'fix(0,1,1)' to the type fixedpoint(1,1).}}
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+    $valToken toString
+} {{fix(0,1,1), fix(0,1,1)}}
 
 test FixToken-15.3 {Create an array of unsigned FixTokens using the two arg ctor } {
     # Used 15.1 above
