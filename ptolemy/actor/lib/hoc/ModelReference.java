@@ -160,6 +160,9 @@ import ptolemy.moml.MoMLParser;
  There are currently some limitations:
  <ul>
  <li>
+ The referenced model cannot create any displays. Use the subclass
+ VisualModelReference to do that.
+ <li>
  FIXME: Pausing the referring model doesn't pause the referenced model.
  <li>
  FIXME: Need options for error handling.
