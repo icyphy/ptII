@@ -50,5 +50,5 @@ Reduce is {
 		this(inputValue := workerInValue);
 	} next [[a + 1]]
 	
-	writer(input := converterOut, fileName := [[file]]);
+	writer(input := converterOut, fileName := [[file]], confirmOverwrite := [[false]]);
 }
