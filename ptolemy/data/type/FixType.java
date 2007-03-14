@@ -377,24 +377,59 @@ public class FixType extends StructuredType implements Serializable {
             throw new IllegalArgumentException("FixType._compare: "
                     + "The argument is not a FixType.");
         }
+
         Precision precision = ((FixType) type).getPrecision();
+
+        int fractionBits1 = _precision.getFractionBitLength();
+        int fractionBits2 = precision.getFractionBitLength();
+        int integerBits1 = _precision.getFractionBitLength();
+        int integerBits2 = precision.getFractionBitLength();
+        boolean signBit1 = _precision.isSigned();
+        boolean signBit2 = precision.isSigned();
+        int compareBits1, compareBits2;
+        
         if (_precision.equals(precision)) {
             return CPO.SAME;
-        } else if (_precision.getFractionBitLength() < precision
-                .getFractionBitLength()
-                && _precision.getIntegerBitLength() < precision
-                        .getIntegerBitLength()) {
-            return CPO.LOWER;
-        } else if (_precision.getFractionBitLength() > precision
-                .getFractionBitLength()
-                && _precision.getIntegerBitLength() > precision
-                        .getIntegerBitLength()) {
-            return CPO.HIGHER;
-        } else if (_precision.isSigned() && !precision.isSigned()) {
-            return CPO.HIGHER;
+        } else if (signBit1 == signBit2) {
+            if (fractionBits1 < fractionBits2 &&
+                integerBits1 < integerBits2) {
+                return CPO.LOWER;
+        
+            } else if (fractionBits1 > fractionBits2 &&
+                    integerBits1 > integerBits2) {
+                return CPO.HIGHER;
+    
+            } else if (integerBits1 == integerBits2) {
+                compareBits1 = fractionBits1;
+                compareBits2 = fractionBits2;
+            } else {
+                compareBits1 = integerBits1;
+                compareBits2 = integerBits2;
+            }
+        
+            if (compareBits1 < compareBits2) {
+                return CPO.LOWER;
+            } else if (compareBits1 > compareBits2) {
+                return CPO.HIGHER;
+            } else if (signBit1 && !signBit2) {
+                return CPO.HIGHER;
+            } else if (signBit1 == signBit2){
+                return CPO.SAME;
+            } else {
+                return CPO.LOWER;
+            }
+        } else if (signBit1 && !signBit2) {
+            if (fractionBits1 >= fractionBits2 &&
+                    integerBits1 >= integerBits2) {
+                return CPO.HIGHER;
+            }
         } else {
-            return CPO.LOWER;
+            if (fractionBits1 <= fractionBits2 &&
+                    integerBits1 <= integerBits2) {
+                    return CPO.LOWER;            
+            }
         }
+        return CPO.INCOMPARABLE;
     }
 
     /** Return a static instance of this structured type. The return
