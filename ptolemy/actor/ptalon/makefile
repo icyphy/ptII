@@ -99,7 +99,7 @@ MISC_FILES =	$(DIRS)
 
 OPTIONAL_FILES =  \
 	doc \
-	$(OPTIONAL_JSRCS)
+	$(OPTIONAL_JSRCS) \
 	'CodeManager$$IfTree.class' \
 	'CodeManager$$PtalonExpressionScope.class' \
 	'NestedActorManager$$ActorTree.class'
