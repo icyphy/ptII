@@ -41,6 +41,7 @@ import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.DocBuilderEffigy;
 import ptolemy.vergil.actor.DocBuilderTableau;
@@ -68,6 +69,16 @@ import ptolemy.vergil.toolbox.FigureAction;
  */
 public class GetDocumentationAction extends FigureAction {
 
+    /** construct an instance and give a preference for whether the 
+     * KeplerDocumentationAttribute or the docAttribute should be displayed
+     * if both exist.
+     * @param docPreference 0 for docAttribute, 1 for KeplerDocumentationAttribute
+     */
+    public GetDocumentationAction(int docPreference) {
+      super("Get Documentation");
+      this.docPreference = docPreference;
+    }
+    
     /** Construct an instance of this action. */
     public GetDocumentationAction() {
         super("Get Documentation");
@@ -109,8 +120,42 @@ public class GetDocumentationAction extends FigureAction {
         // For backward compatibility, if neither of these is found,
         // then we open the Javadoc file, if it is found.
         List docAttributes = target.attributeList(DocAttribute.class);
-        // Get the last doc attribute.
-        if (docAttributes.size() == 0) {
+        //check for the KeplerDocumentation attribute
+        KeplerDocumentationAttribute keplerDocumentationAttribute = 
+          (KeplerDocumentationAttribute)target.getAttribute("KeplerDocumentation");
+        int docAttributeSize = docAttributes.size();
+        
+        if(docAttributes.size() != 0 && keplerDocumentationAttribute != null) {
+          //if there is both a docAttribute and a KeplerDocumentationAttribute
+          //use the preference passed in to the constructor
+          if(docPreference == 0)
+          {
+            keplerDocumentationAttribute = null;
+          }
+          else if(docPreference == 1)
+          {
+            docAttributeSize = 0;
+          }
+        } 
+        
+        if(keplerDocumentationAttribute != null) {
+          //use the KeplerDocumentationAttribute
+          DocAttribute docAtt = keplerDocumentationAttribute.getDocAttribute(target);
+          System.out.println("docAttribute: " + docAtt.exportMoML());
+          if(docAtt != null)
+          {
+            showDocAttributeTableau(docAtt, target);
+          }
+          else
+          {
+            throw new InternalErrorException("Error building Kepler documentation");
+          }
+        } else if(docAttributeSize != 0) {
+            // Have a doc attribute. Use that.
+            DocAttribute docAttribute = (DocAttribute) docAttributes
+                    .get(docAttributes.size() - 1);
+            showDocAttributeTableau(docAttribute, target);
+        } else {
             // No doc attribute. Try for a doc file.
             String className = target.getClass().getName();
             Effigy context = Configuration.findEffigy(target);
@@ -124,47 +169,6 @@ public class GetDocumentationAction extends FigureAction {
                         + target.getFullName());
             }
             getDocumentation(_configuration, className, context);
-        } else {
-            // Have a doc attribute. Use that.
-            DocAttribute docAttribute = (DocAttribute) docAttributes
-                    .get(docAttributes.size() - 1);
-            // Need to create an effigy and tableau.
-            Effigy context = Configuration.findEffigy(target);
-            if (context == null) {
-                context = Configuration.findEffigy(target.getContainer());
-                if (context == null) {
-                    MessageHandler.error("Cannot find an effigy for "
-                            + target.getFullName());
-                }
-            }
-            ComponentEntity effigy = context.getEntity("DocEffigy");
-            if (effigy == null) {
-                try {
-                    effigy = new DocEffigy(context, "DocEffigy");
-                } catch (KernelException exception) {
-                    throw new InternalErrorException(exception);
-                }
-            }
-            if (!(effigy instanceof DocEffigy)) {
-                MessageHandler.error("Found an effigy named DocEffigy that "
-                        + "is not an instance of DocEffigy!");
-            }
-            ((DocEffigy) effigy).setDocAttribute(docAttribute);
-            ComponentEntity tableau = ((Effigy) effigy).getEntity("DocTableau");
-            if (tableau == null) {
-                try {
-                    tableau = new DocTableau((DocEffigy) effigy, "DocTableau");
-                    ((DocTableau) tableau).setTitle("Documentation for "
-                            + target.getFullName());
-                } catch (KernelException exception) {
-                    throw new InternalErrorException(exception);
-                }
-            }
-            if (!(tableau instanceof DocTableau)) {
-                MessageHandler.error("Found a tableau named DocTableau that "
-                        + "is not an instance of DocTableau!");
-            }
-            ((DocTableau) tableau).show();
         }
     }
 
@@ -322,6 +326,59 @@ public class GetDocumentationAction extends FigureAction {
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ///////             private methods                   /////////////
+    
+    /**
+     * find and show the tableau for a given DocAttribute
+     * @param docAttribute the attribute to show
+     * @param taget the target of the documentation viewing
+     */
+    private void showDocAttributeTableau(DocAttribute docAttribute, NamedObj target)
+    {
+      // Need to create an effigy and tableau.
+      Effigy context = Configuration.findEffigy(target);
+      if (context == null) {
+          context = Configuration.findEffigy(target.getContainer());
+          if (context == null) {
+              MessageHandler.error("Cannot find an effigy for "
+                      + target.getFullName());
+          }
+      }
+      ComponentEntity effigy = context.getEntity("DocEffigy");
+      if (effigy == null) {
+          try {
+              effigy = new DocEffigy(context, "DocEffigy");
+          } catch (KernelException exception) {
+              throw new InternalErrorException(exception);
+          }
+      }
+      if (!(effigy instanceof DocEffigy)) {
+          MessageHandler.error("Found an effigy named DocEffigy that "
+                  + "is not an instance of DocEffigy!");
+      }
+      ((DocEffigy) effigy).setDocAttribute(docAttribute);
+      ComponentEntity tableau = ((Effigy) effigy).getEntity("DocTableau");
+      if (tableau == null) {
+          try {
+              tableau = new DocTableau((DocEffigy) effigy, "DocTableau");
+            
+            if(tableau == null)
+              System.out.println("tableau is null.");
+            
+            ((DocTableau) tableau).setTitle("Documentation for "
+                      + target.getFullName());
+          } catch (KernelException exception) {
+              throw new InternalErrorException(exception);
+          }
+      }
+      if (!(tableau instanceof DocTableau)) {
+          MessageHandler.error("Found a tableau named DocTableau that "
+                  + "is not an instance of DocTableau!");
+      }
+      ((DocTableau) tableau).show();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -337,4 +394,11 @@ public class GetDocumentationAction extends FigureAction {
      *  remoteDocumentationURLBase is set, we print a little more information.
      */
     private static String _lastClassName = null;
+    
+    /**
+     * Defines a preference for whether to display kepler documentation or 
+     * ptolemy documentation.  This can be set in the constructor and it
+     * default to ptolemy.  0 is ptolemy, 1 is kepler.
+     */
+    private int docPreference = 0;
 }

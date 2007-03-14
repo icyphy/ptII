@@ -48,6 +48,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// DocAttribute
@@ -95,6 +96,23 @@ public class DocAttribute extends SingletonAttribute {
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
+    }
+    
+    /**
+     * Construct an empty DocAttribute
+     */
+    public DocAttribute()
+    {
+      super();
+    }
+    
+    /**
+     * Construct a DocAttribute in a given workspace
+     * @param workspace the workspace to construct the docAttribute in
+     */
+    public DocAttribute(Workspace workspace)
+    {
+      super(workspace);
     }
 
     ///////////////////////////////////////////////////////////////////
