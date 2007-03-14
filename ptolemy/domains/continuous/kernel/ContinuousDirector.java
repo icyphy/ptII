@@ -690,7 +690,15 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
-            _debug("ContinuousDirector: Called postfire().");
+            _debug("ContinuousDirector: Calling postfire().");
+        }
+        // If time exceeds the stop time, then either we failed
+        // to execute at the stop time, or the return value of
+        // false was ignored, or the return value of false in
+        // prefire() was ignored. All of these conditions are bugs.
+        if (_currentTime.compareTo(_stopTime) > 0) {
+            throw new IllegalActionException(this,
+                    "Current time exceeds the specified stopTime.");
         }
         // This code is sufficiently confusion that, at the expense
         // of code duplication, we completely separate three cases.
@@ -1255,14 +1263,6 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @return True if it is OK to fire again.
      */
     private boolean _postfireAtTopLevel() throws IllegalActionException {
-        // If time exceeds the stop time, then either we failed
-        // to execute at the stop time, or the return value of
-        // false was ignored. Either condition is a bug.
-        if (_currentTime.compareTo(_stopTime) > 0) {
-            throw new IllegalActionException(this,
-                    "Current time exceeds the specified stopTime.");
-        }
-
         // Postfire the contained actors.
         // This must be done before refining the step size and
         // before updating _index because the actors may call fireAt()
@@ -1334,15 +1334,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     private boolean _postfireWithEnclosingContinuousDirector()
             throws IllegalActionException {
         boolean postfireResult = true;
-        int comparison = _currentTime.compareTo(_stopTime);
-        if (comparison > 0) {
-            // If time exceeds the stop time, then either we failed
-            // to execute at the stop time, or the return value of
-            // false was ignored, or the return value of false in
-            // prefire() was ignored. All of these conditions are bugs.
-            throw new IllegalActionException(this,
-                    "Current time exceeds the specified stopTime.");
-        } else if (comparison == 0) {
+        if (_currentTime.equals(_stopTime)) {
             // Reached the stop time. Assume that the execution will end.
             postfireResult = false;
             // If there is no pending breakpoint 
@@ -1357,7 +1349,16 @@ public class ContinuousDirector extends FixedPointDirector implements
                 }
             }
         }
-        return _commit() && postfireResult;
+        postfireResult = _commit() && postfireResult;
+        // request a refiring at a future time, 
+        // the current time + suggested step size
+        if (_currentStepSize == 0) {
+            Actor container = (Actor)getContainer();
+            Director enclosingDirector = container.getExecutiveDirector();
+            enclosingDirector.fireAt(container, _currentTime);
+        }
+
+        return postfireResult;
     }
 
     /** Postfire method when the enclosing director
@@ -1366,16 +1367,6 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     private boolean _postfireWithEnclosingNonContinuousDirector()
             throws IllegalActionException {
-
-        // If time exceeds the stop time, then either we failed
-        // to execute at the stop time, or the return value of
-        // false was ignored, or the return value of false in
-        // prefire() was ignored. All of these conditions are bugs.
-        if (_currentTime.compareTo(_stopTime) > 0) {
-            throw new IllegalActionException(this,
-                    "Current time exceeds the specified stopTime.");
-        }
-
         Director enclosingDirector = ((Actor) getContainer())
                 .getExecutiveDirector();
         int comparison = _currentTime.compareTo(enclosingDirector
