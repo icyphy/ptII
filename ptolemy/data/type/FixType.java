@@ -411,12 +411,8 @@ public class FixType extends StructuredType implements Serializable {
                 return CPO.LOWER;
             } else if (compareBits1 > compareBits2) {
                 return CPO.HIGHER;
-            } else if (signBit1 && !signBit2) {
-                return CPO.HIGHER;
-            } else if (signBit1 == signBit2){
+            } else { // (signBit1 == signBit2)
                 return CPO.SAME;
-            } else {
-                return CPO.LOWER;
             }
         } else if (signBit1 && !signBit2) {
             if (fractionBits1 >= fractionBits2 &&
