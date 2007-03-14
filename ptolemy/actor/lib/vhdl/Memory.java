@@ -181,6 +181,7 @@ public class Memory extends SynchronousFixTransformer {
      * 
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         _storage = new FixToken[_capacity];
     }
 
