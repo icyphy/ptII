@@ -57,11 +57,14 @@ OTHER_FILES_TO_BE_JARED = \
 	MapReduceNew.ptln \
 	Reduce.ptln \
 	Split.ptln \
-	WaitingStop.ptln
+	WaitingStop.ptln \
+	ReadTest.map
 
 #	MapReduce.htm
 
 EXTRA_SRCS = \
+	LinkGraph.map \
+	MapReduceLinkGraph.xml \
 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -94,6 +97,9 @@ demo_vergil:
 	"$(PTII)/bin/vergil" MapReduce.xml
 
 KRUFT = \
+	LinkGraph0.red \
+	LinkGraph1.red \
+	LinkGraph2.red \
 	ReadTest0.red \
 	ReadTest1.red \
 	ReadTest2.red 
