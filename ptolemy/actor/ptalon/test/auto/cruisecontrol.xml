@@ -27,7 +27,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To create your own LinearStateSpace actor (in Ptalon), go to More Libraries...&#10;Ptalon and drag out a PtalonActor.  Set its ptalonCodeLocation FileParameter&#10;to $PTII/ptolemy/actor/ptalon/test/LinearStateSpace.ptln.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To create your own LinearStateSpace actor (in Ptalon), go to More Libraries...&#10;Ptalon and drag out a PtalonActor.  Set its ptalonCodeLocation FileParameter&#10;to $PTII/ptolemy/actor/ptalon/demo/CruiseControl/LinearStateSpace.ptln.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 255.0]">
         </property>
@@ -57,7 +57,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 65.0]">
         </property>
         <configure>
-            <ptalon file="ptolemy.actor.ptalon.test.LinearStateSpace">
+            <ptalon file="ptolemy.actor.ptalon.demo.CruiseControl.LinearStateSpace">
                 <ptalonExpressionParameter name="A" value="[0.0, 1.0; 0.0, -1.0]"/>
                 <ptalonExpressionParameter name="B" value="[0.0; 1.0]"/>
                 <ptalonExpressionParameter name="C" value="[1.0, 0.0]"/>

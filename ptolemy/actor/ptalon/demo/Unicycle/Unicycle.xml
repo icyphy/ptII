@@ -78,7 +78,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 85.0]">
         </property>
         <configure>
-            <ptalon file="ptolemy.actor.ptalon.test.NonlinearStateSpace">
+            <ptalon file="ptolemy.actor.ptalon.demo.Unicycle.NonlinearStateSpace">
                 <ptalonExpressionParameter name="numberOfInputs" value="2"/>
                 <ptalonExpressionParameter name="numberOfStates" value="3"/>
                 <ptalonExpressionParameter name="numberOfOutputs" value="2"/>

@@ -35,7 +35,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To create your own FFT actor (in Ptalon), go to More Libraries...&#10;Ptalon and drag out a PtalonActor.  Set it's ptalonCodeLocation FileParameter&#10;to $PTII/ptolemy/actor/ptalon/test/FFT.ptln.  You can then set the parameter&#10;N to some positive power of 2 to create the FFT.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To create your own FFT actor (in Ptalon), go to More Libraries...&#10;Ptalon and drag out a PtalonActor.  Set its ptalonCodeLocation FileParameter&#10;to $PTII/ptolemy/actor/ptalon/demo/EightChannelFFT/FFT.ptln.  You can then set the parameter&#10;N to some positive power of 2 to create the FFT.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 135.0]">
         </property>
@@ -154,7 +154,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 350.0]">
         </property>
         <configure>
-            <ptalon file="ptolemy.actor.ptalon.test.FFT">
+            <ptalon file="ptolemy.actor.ptalon.demo.FFT">
                 <ptalonExpressionParameter name="N" value="8"/>
             </ptalon>
         </configure>
