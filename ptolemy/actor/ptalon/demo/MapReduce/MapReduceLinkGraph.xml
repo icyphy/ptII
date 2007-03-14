@@ -44,7 +44,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, -10.0]">
         </property>
         <configure>
-            <ptalon file="ptolemy.actor.ptalon.demo.Mapreduce.MapReduce">
+            <ptalon file="ptolemy.actor.ptalon.demo.MapReduce.MapReduce">
                 <ptalonExpressionParameter name="fileNamePrefix" value="&quot;LinkGraph&quot;"/>
                 <ptalonExpressionParameter name="className" value="&quot;ptolemy.actor.ptalon.lib.ReverseLink&quot;"/>
                 <ptalonExpressionParameter name="numberOfMachines" value="5"/>
