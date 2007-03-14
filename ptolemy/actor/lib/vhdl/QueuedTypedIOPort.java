@@ -100,6 +100,12 @@ public class QueuedTypedIOPort extends TypedIOPort {
 
     }
 
+    /** Clear the queue.
+     */
+    public void clear () {
+        myQueue.clear();
+    }
+    
     /**
      * Specifies the init token value.
      */
