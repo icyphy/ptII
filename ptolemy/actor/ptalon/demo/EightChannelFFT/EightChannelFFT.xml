@@ -154,7 +154,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 350.0]">
         </property>
         <configure>
-            <ptalon file="ptolemy.actor.ptalon.demo.FFT">
+            <ptalon file="ptolemy.actor.ptalon.demo.EightChannelFFT.FFT">
                 <ptalonExpressionParameter name="N" value="8"/>
             </ptalon>
         </configure>
