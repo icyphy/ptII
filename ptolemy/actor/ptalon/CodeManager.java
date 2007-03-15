@@ -91,7 +91,7 @@ public class CodeManager {
     public void addActorParameter(String name) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
         try {
-            PtalonParameter parameter = new PtalonParameter(_actor, uniqueName);
+            /*PtalonParameter parameter =*/ new PtalonParameter(_actor, uniqueName);
             _currentIfTree.setStatus(name, true);
             if (_inNewWhileIteration()) {
                 if (_currentIfTree.isForStatement) {
@@ -274,7 +274,7 @@ public class CodeManager {
     public void addParameter(String name) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
         try {
-            PtalonExpressionParameter parameter = new PtalonExpressionParameter(
+            /*PtalonExpressionParameter parameter =*/ new PtalonExpressionParameter(
                     _actor, uniqueName);
             _currentIfTree.setStatus(name, true);
             if (_inNewWhileIteration()) {
@@ -411,7 +411,7 @@ public class CodeManager {
     public void addRelation(String name) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
         try {
-            TypedIORelation relation = new TypedIORelation(_actor, uniqueName);
+            /*TypedIORelation relation =*/ new TypedIORelation(_actor, uniqueName);
             _currentIfTree.setStatus(name, true);
             if (_inNewWhileIteration()) {
                 if (_currentIfTree.isForStatement) {
