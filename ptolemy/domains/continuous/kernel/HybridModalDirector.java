@@ -657,14 +657,10 @@ public class HybridModalDirector extends ModalDirector implements
                 ((ContinuousStatefulComponent) actor)
                         .rollBackToCommittedState();
             } else if (actor instanceof CompositeActor) {
-                Iterator insideActors = ((CompositeActor) actor)
-                        .deepEntityList().iterator();
-                while (insideActors.hasNext()) {
-                    Actor insideActor = (Actor) insideActors.next();
-                    if (insideActor instanceof ContinuousStatefulComponent) {
-                        ((ContinuousStatefulComponent) insideActor)
-                                .rollBackToCommittedState();
-                    }
+                // Delegate to the director.
+                Director director = actor.getDirector();
+                if (director instanceof ContinuousDirector) {
+                    ((ContinuousDirector) director).rollBackToCommittedState();
                 }
             }
         }
