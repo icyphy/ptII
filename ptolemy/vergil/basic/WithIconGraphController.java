@@ -162,7 +162,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
          */
         public NewPortAction(IOPort prototype, String description,
                 int mnemonicKey) {
-            // null as the fourth arg means get the figure from the 
+            // null as the fourth arg means get the figure from the
             // _portController
             this(prototype, description, mnemonicKey, null);
         }
@@ -183,8 +183,8 @@ public abstract class WithIconGraphController extends BasicGraphController {
          *  consists of two Strings, the absolute URL of the icon
          *  and the key that represents the role of the icon.  The keys
          *  are usually static fields from this class, such as
-         *  {@link diva.gui.GUIUtilities#LARGE_ICON}, 
-         *  {@link diva.gui.GUIUtilities#ROLLOVER_ICON}, 
+         *  {@link diva.gui.GUIUtilities#LARGE_ICON},
+         *  {@link diva.gui.GUIUtilities#ROLLOVER_ICON},
          *  {@link diva.gui.GUIUtilities#ROLLOVER_SELECTED_ICON} or
          *  {@link diva.gui.GUIUtilities#SELECTED_ICON}.
          *  If this parameter is null, then the icon comes from

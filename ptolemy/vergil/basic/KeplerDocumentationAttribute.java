@@ -1,33 +1,29 @@
-/**
- *    '$RCSfile$'
- *
- *     '$Author$'
- *       '$Date$'
- *   '$Revision$'
- *
- *  For Details: http://kepler.ecoinformatics.org
- *
- * Copyright (c) 2003 The Regents of the University of California.
- * All rights reserved.
- *
- * Permission is hereby granted, without written agreement and without
- * license or royalty fees, to use, copy, modify, and distribute this
- * software and its documentation for any purpose, provided that the
- * above copyright notice and the following two paragraphs appear in
- * all copies of this software.
- *
- * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- * FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- * ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN
- * IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY
- * OF SUCH DAMAGE.
- *
- * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- * PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY
- * OF CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
- * UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+/* A documentation attribute for Kepler.
+
+ Copyright (c) 2007 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
  */
 
 package ptolemy.vergil.basic;
@@ -39,18 +35,21 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.expr.StringParameter;
 
 /**
- *  This implements a KeplerDocumentationAttribute for kepler actors
- *
- *@author     berkley
- *@created    March 14, 2007
- */
+ A Documentation attribute for actors.
+ This class is used by Kepler
+ @author Chad Berkley
+ @version $Id$
+ @since Ptolemy II 6.1
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (johnr)
+
+*/
 public class KeplerDocumentationAttribute extends Attribute implements Configurable
 {
-  
-  ///////////////////////////////////////////////////////////////////////////
-  //////////////////// Public Methods ///////////////////////////////////////
-  
-  /** Constructor */
+
+
+
+  /** Construct a Kepler documentation attribute.  */
   public KeplerDocumentationAttribute()
   {
     super();
@@ -79,10 +78,15 @@ public class KeplerDocumentationAttribute extends Attribute implements Configura
   {
     super(workspace);
   }
-  
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
   /**
-   * populates the members of KeplerDocumentationAttribute from another given DA
-   * @param da the DocumentationAttribute to take the members from
+   * Populates the members of KeplerDocumentationAttribute from
+   * another given KeplerDccumentationAtttribute.
+   * @param da The DocumentationAttribute from which to copy attributes.
    */
   public void createInstanceFromExisting(KeplerDocumentationAttribute da)
   {
@@ -123,12 +127,18 @@ public class KeplerDocumentationAttribute extends Attribute implements Configura
       }
     }
   }
-  
-  /**
-   * returnt the moml representation of this attribute
-   */
+
+
+   /** Write a MoML description of this object with the specified
+     *  indentation depth and with the specified name substituting
+     *  for the name of this object.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use in the exported MoML.
+     *  @exception IOException If an I/O error occurs.
+    */
   public void exportMoML(Writer output, int depth, String name)
-    throws IOException 
+    throws IOException
   {
     createInstanceFromExisting(this);
     StringBuffer sb = new StringBuffer();
@@ -138,19 +148,19 @@ public class KeplerDocumentationAttribute extends Attribute implements Configura
     sb.append("<property name=\"description\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">");
     sb.append("<configure>" + description + "</configure>");
     sb.append("</property>\n");
-    
+
     sb.append("<property name=\"author\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">");
     sb.append("<configure>" + author + "</configure>");
     sb.append("</property>\n");
-    
+
     sb.append("<property name=\"version\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">");
     sb.append("<configure>" + version + "</configure>");
     sb.append("</property>\n");
-    
+
     sb.append("<property name=\"userLevelDocumentation\" class=\"ptolemy.kernel.util.ConfigurableAttribute\">");
     sb.append("<configure>" + userLevelDocumentation + "</configure>");
     sb.append("</property>\n");
-    
+
     Enumeration portKeys = portHash.keys();
     while(portKeys.hasMoreElements())
     {
@@ -160,7 +170,7 @@ public class KeplerDocumentationAttribute extends Attribute implements Configura
       sb.append("<configure>" + val + "</configure>");
       sb.append("</property>\n");
     }
-    
+
     Enumeration propKeys = propHash.keys();
     while(propKeys.hasMoreElements())
     {
@@ -170,13 +180,14 @@ public class KeplerDocumentationAttribute extends Attribute implements Configura
       sb.append("<configure>" + val + "</configure>");
       sb.append("</property>\n");
     }
-    
+
     sb.append("</property>");
     output.write(sb.toString());
   }
-  
+
   /**
-   * exports this documentation attribute as docml
+   * Exports this documentation attribute as docML.
+   * @return The docML
    */
   public String toDocML()
   {
@@ -188,7 +199,7 @@ public class KeplerDocumentationAttribute extends Attribute implements Configura
     sb.append("<doc name=\"" + docName + "\" class=\"" + docClass + "\">\n");
     sb.append("<description>\n" + userLevelDocumentation + "\n</description>\n");
     sb.append("<author>" + author + "</author>\n");
-    
+
     Enumeration portItt = portHash.keys();
     while(portItt.hasMoreElements())
     {
@@ -197,7 +208,7 @@ public class KeplerDocumentationAttribute extends Attribute implements Configura
       sb.append("<port name=\"" + name + "\">");
       sb.append(desc).append("</port>\n");
     }
-    
+
     Enumeration propItt = propHash.keys();
     while(propItt.hasMoreElements())
     {
@@ -206,14 +217,17 @@ public class KeplerDocumentationAttribute extends Attribute implements Configura
       sb.append("<property name=\"" + name + "\">");
       sb.append(desc).append("</property>\n");
     }
-    
+
     sb.append("</doc>\n");
     return sb.toString();
   }
-  
+
   /**
-   * returns a docAttribute with the available kepler documentation.  returns 
-   * null if an error prevents the doc attribute from being created
+   * Return a docAttribute with the available kepler documentation.
+   * Returns null if an error prevents the doc attribute from being
+   * created.
+   * @param target The container for the DocAttribute
+   * @return The DocAttribute.
    */
   public DocAttribute getDocAttribute(NamedObj target)
   {
@@ -231,7 +245,7 @@ public class KeplerDocumentationAttribute extends Attribute implements Configura
       da.since.setExpression("");
       da.description = new StringParameter(da, "description");
       da.description.setExpression(userLevelDocumentation);
-      
+
       //add ports and params
       Enumeration portItt = portHash.keys();
       while(portItt.hasMoreElements())
@@ -241,7 +255,7 @@ public class KeplerDocumentationAttribute extends Attribute implements Configura
         StringAttribute sa = new StringAttribute(da, name + " (port)");
         sa.setExpression(desc);
       }
-      
+
       Enumeration propItt = propHash.keys();
       while(propItt.hasMoreElements())
       {
@@ -250,8 +264,8 @@ public class KeplerDocumentationAttribute extends Attribute implements Configura
         StringParameter sp = new StringParameter(da, name + " (parameter)");
         sp.setExpression(desc);
       }
-      
-      
+
+
       return da;
     }
     catch(Exception e)
@@ -260,93 +274,93 @@ public class KeplerDocumentationAttribute extends Attribute implements Configura
       e.printStackTrace();
       return null;
     }
-    
+
   }
-  
+
   /**
-   * method for configurable
+   * Method for configurable
    */
   public void updateContent() throws InternalErrorException
   {
     //do nothing
   }
-  
+
   ////////////////////////////////////////////////////////////////////////
   ///////////////////// Getters and Setters //////////////////////////////
-  
+
   public void setDocName(String name)
   {
     this.docName = name;
   }
-  
+
   public void setDocClass(String className)
   {
     this.docClass = className;
   }
-  
+
   public void setDescription(String desc)
   {
     this.description = desc;
   }
-  
+
   public void setAuthor(String author)
   {
     this.author = author;
   }
-  
+
   public void setVersion(String version)
   {
     this.version = version;
   }
-  
+
   public void setUserLevelDocumentation(String uld)
   {
     this.userLevelDocumentation = uld;
   }
-  
+
   public void setPortHash(Hashtable portHash)
   {
     this.portHash = portHash;
   }
-  
+
   public void addPort(String name, String val)
   {
     portHash.put(name, val);
   }
-  
+
   public void setPropertyHash(Hashtable propHash)
   {
     this.propHash = propHash;
   }
-  
+
   public void addProperty(String name, String val)
   {
     propHash.put(name, val);
   }
-  
+
   public void configure(java.net.URL base, String source, String text)
   {
     this.source = source;
     this.text = text;
   }
-  
+
   public String getConfigureSource()
   {
     return source;
   }
-  
+
   public String getConfigureText()
   {
     return text;
   }
-  
+
   //////////////////////////////////////////////////////////////////////
   ///////////                    Private Members                ////////
-  
+
   //members for Configurable
   private String source;
   private String text;
-  
+
   //members for DocumenationAttribute
   private String docName;
   private String docClass;

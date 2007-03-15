@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  An attribute containing documentation for a Ptolemy II object.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.2
@@ -97,7 +97,7 @@ public class DocAttribute extends SingletonAttribute {
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
     }
-    
+
     /**
      * Construct an empty DocAttribute
      */
@@ -105,7 +105,7 @@ public class DocAttribute extends SingletonAttribute {
     {
       super();
     }
-    
+
     /**
      * Construct a DocAttribute in a given workspace
      * @param workspace the workspace to construct the docAttribute in

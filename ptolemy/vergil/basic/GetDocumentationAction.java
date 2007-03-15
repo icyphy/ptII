@@ -69,7 +69,7 @@ import ptolemy.vergil.toolbox.FigureAction;
  */
 public class GetDocumentationAction extends FigureAction {
 
-    /** construct an instance and give a preference for whether the 
+    /** construct an instance and give a preference for whether the
      * KeplerDocumentationAttribute or the docAttribute should be displayed
      * if both exist.
      * @param docPreference 0 for docAttribute, 1 for KeplerDocumentationAttribute
@@ -78,7 +78,7 @@ public class GetDocumentationAction extends FigureAction {
       super("Get Documentation");
       this.docPreference = docPreference;
     }
-    
+
     /** Construct an instance of this action. */
     public GetDocumentationAction() {
         super("Get Documentation");
@@ -121,10 +121,10 @@ public class GetDocumentationAction extends FigureAction {
         // then we open the Javadoc file, if it is found.
         List docAttributes = target.attributeList(DocAttribute.class);
         //check for the KeplerDocumentation attribute
-        KeplerDocumentationAttribute keplerDocumentationAttribute = 
+        KeplerDocumentationAttribute keplerDocumentationAttribute =
           (KeplerDocumentationAttribute)target.getAttribute("KeplerDocumentation");
         int docAttributeSize = docAttributes.size();
-        
+
         if(docAttributes.size() != 0 && keplerDocumentationAttribute != null) {
           //if there is both a docAttribute and a KeplerDocumentationAttribute
           //use the preference passed in to the constructor
@@ -136,8 +136,8 @@ public class GetDocumentationAction extends FigureAction {
           {
             docAttributeSize = 0;
           }
-        } 
-        
+        }
+
         if(keplerDocumentationAttribute != null) {
           //use the KeplerDocumentationAttribute
           DocAttribute docAtt = keplerDocumentationAttribute.getDocAttribute(target);
@@ -172,7 +172,7 @@ public class GetDocumentationAction extends FigureAction {
         }
     }
 
-    /** Get the documentation for a particular class.  
+    /** Get the documentation for a particular class.
      *  <p>If the configuration has a parameter _docApplicationSpecializer
      *  and that parameter names a class that that implements the
      *  DocApplicationSpecializer interface, then we call
@@ -326,10 +326,10 @@ public class GetDocumentationAction extends FigureAction {
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ///////             private methods                   /////////////
-    
+
     /**
      * find and show the tableau for a given DocAttribute
      * @param docAttribute the attribute to show
@@ -363,10 +363,10 @@ public class GetDocumentationAction extends FigureAction {
       if (tableau == null) {
           try {
               tableau = new DocTableau((DocEffigy) effigy, "DocTableau");
-            
+
             if(tableau == null)
               System.out.println("tableau is null.");
-            
+
             ((DocTableau) tableau).setTitle("Documentation for "
                       + target.getFullName());
           } catch (KernelException exception) {
@@ -394,9 +394,9 @@ public class GetDocumentationAction extends FigureAction {
      *  remoteDocumentationURLBase is set, we print a little more information.
      */
     private static String _lastClassName = null;
-    
+
     /**
-     * Defines a preference for whether to display kepler documentation or 
+     * Defines a preference for whether to display kepler documentation or
      * ptolemy documentation.  This can be set in the constructor and it
      * default to ptolemy.  0 is ptolemy, 1 is kepler.
      */

@@ -100,7 +100,7 @@ public class EditorDropTarget extends DropTarget {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return true if the feature is enabled that a a drop onto an
      *  instance of NamedObj results in that NamedObj containing the
      *  dropped object. Otherwise, return false.
@@ -139,7 +139,7 @@ public class EditorDropTarget extends DropTarget {
 
     /** Flag indicating whether drop into is enabled. */
     private boolean _dropIntoEnabled = true;
-    
+
     /** Vector to contain additional listeners. */
     private Vector _additionalListeners = new Vector();
 
@@ -166,7 +166,7 @@ public class EditorDropTarget extends DropTarget {
                   _additionalListeners.elementAt(i);
                 l.dragEnter(dtde);
             }
-           
+
             if (dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
                 dtde.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
             } else {
