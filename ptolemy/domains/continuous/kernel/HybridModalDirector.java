@@ -454,7 +454,7 @@ public class HybridModalDirector extends ModalDirector implements
 
     /** Return false. The transferInputs() method checks whether
      *  the inputs are known before calling hasToken().
-     *  Thus this derictor tolerate unknown inputs.
+     *  Thus this director tolerate unknown inputs.
      *  
      *  @return False.
      */
@@ -565,7 +565,7 @@ public class HybridModalDirector extends ModalDirector implements
         
         boolean result = true;
         // if any actor is not ready to fire, stop prefiring the 
-        // remaining actors, call super.perfire(), and return false;
+        // remaining actors, call super.prefire(), and return false;
         State st = getController().currentState();
         Actor[] actors = st.getRefinement();
         if (actors != null) {
@@ -761,7 +761,7 @@ public class HybridModalDirector extends ModalDirector implements
     ////                       protected methods                   ////
 
     /** Return the enclosing continuous director, or null if there
-     *  is none.  The enclosing continous director is a director
+     *  is none.  The enclosing continuous director is a director
      *  above this in the hierarchy, possibly separated by composite
      *  actors with other foreign directors.
      *  @return The enclosing ContinuousDirector, or null if there is none.

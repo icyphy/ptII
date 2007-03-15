@@ -243,7 +243,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
         // Prefire() resets receivers, also each firing of this actor changes
         // the _tentativeState variable, therefore the following statements
-        // may broadcast the newly calcualted _tentativeState at a wrong time. 
+        // may broadcast the newly calculated _tentativeState at a wrong time. 
         // For example, an opaque composite actor containing an integrator is 
         // scheduled to run multiple times during the same round. 
 
@@ -369,7 +369,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** Return false. This actor can produce some outputs even the inputs
      *  are unknown. This actor is crucial at breaking feedback loops during
-     *  simuation.
+     *  simulation.
      *  
      *  @return False.
      */
@@ -385,7 +385,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         _state = _tentativeState;
         _lastRound = -1;
         if (_debugging) {
-            _debug("Commiting the state: " + _state);
+            _debug("Committing the state: " + _state);
         }
         return true;
     }

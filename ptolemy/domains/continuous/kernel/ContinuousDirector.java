@@ -193,7 +193,7 @@ import ptolemy.kernel.util.Settable;
  This director is based on the CTDirector by Jie Liu and Haiyang Zheng,
  but it has a much simpler scheduler.
 
-FIXME: the design of clone method should be examined and reimplented.
+FIXME: the design of clone method should be examined and reimplemented.
 All Continuous files need this.
 
  @author Haiyang Zheng and Edward A. Lee
@@ -470,7 +470,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
     }
 
-    /** Handle firing requests from the contained actors by registrating
+    /** Handle firing requests from the contained actors by registering
      *  breakpoints. If the specified time is earlier than the current time, 
      *  throw an exception. Otherwise, insert the specified time into the 
      *  breakpoint table.
@@ -973,7 +973,7 @@ public class ContinuousDirector extends FixedPointDirector implements
 //    }
 //
     /** Override the base class to do nothing. The fire() method of
-     *  this director handles transfering outputs.
+     *  this director handles transferring outputs.
      *  @param port The port to transfer tokens from.
      *  @return False.
      *  @exception IllegalActionException Not thrown in this base class.
