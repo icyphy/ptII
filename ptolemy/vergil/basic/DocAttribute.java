@@ -99,19 +99,17 @@ public class DocAttribute extends SingletonAttribute {
     }
 
     /**
-     * Construct an empty DocAttribute
+     * Construct an empty DocAttribute.
      */
-    public DocAttribute()
-    {
+    public DocAttribute() {
       super();
     }
 
     /**
-     * Construct a DocAttribute in a given workspace
-     * @param workspace the workspace to construct the docAttribute in
+     * Construct a DocAttribute in a given workspace.
+     * @param workspace The workspace in which to construct the DocAttribute.
      */
-    public DocAttribute(Workspace workspace)
-    {
+    public DocAttribute(Workspace workspace) {
       super(workspace);
     }
 

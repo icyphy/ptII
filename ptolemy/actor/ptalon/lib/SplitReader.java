@@ -45,25 +45,30 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// LineReader
+//// SplitReader
 
 /**
- This actor reads a file or URL, one line at a time, and outputs each line
- as a string.  It has multiple outputs, and emits blocks of lines to each
- output at each firing, splitting the lines as chuncks of data for
- distributed processing.
+ Read a file a file or URL, one line at a time, and output each line
+ as a string.  This actor has multiple outputs, and emits blocks of
+ lines to each output at each firing, splitting the lines as chuncks
+ of data for distributed processing.
+
  <p>
- The file or URL is specified using any form acceptable
- to FileParameter. Before an end of file is reached, the <i>endOfFile</i>
- output produces <i>false</i>.   The <i>blockSize</i> and <i>numberOfOutputs</i> 
- parameters determine how many lines are written to each output on each firing, and 
- how many outputs to write to.  If both of these are set to 1, this actor behaves
- exactly like the LineReader actor.  In the iteration where the last line of the file is read 
- and produced on an <i>output</i> port channel, this actor produces <i>true</i> 
- on the <i>endOfFile</i> port. In that iteration, postfire() returns false.  If 
- the actor is iterated again, after the end of file, then prefire() and 
- postfire() will both return false, <i>output</i> will produce the string 
- "EOF", and <i>endOfFile</i> will produce <i>true</i>.
+
+ The file or URL is specified using any form acceptable to
+ FileParameter. Before an end of file is reached, the <i>endOfFile</i>
+ output produces <i>false</i>.  The <i>blockSize</i> and
+ <i>numberOfOutputs</i> parameters determine how many lines are
+ written to each output on each firing, and how many outputs to write
+ to.  If both of these are set to 1, this actor behaves exactly like
+ the LineReader actor.  In the iteration where the last line of the
+ file is read and produced on an <i>output</i> port channel, this
+ actor produces <i>true</i> on the <i>endOfFile</i> port. In that
+ iteration, postfire() returns false.  If the actor is iterated again,
+ after the end of file, then prefire() and postfire() will both return
+ false, <i>output</i> will produce the string "EOF", and
+ <i>endOfFile</i> will produce <i>true</i>.
+
  <p>
  In some domains (such as SDF), returning false in postfire()
  causes the model to cease executing.
@@ -92,7 +97,7 @@ import ptolemy.kernel.util.Workspace;
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
- @see LineReader
+ @see ptolemy.actor.lib.io.LineReader
  */
 public class SplitReader extends Source {
     /** Construct an actor with the given container and name.

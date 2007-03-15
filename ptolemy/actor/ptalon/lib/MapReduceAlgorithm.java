@@ -68,11 +68,11 @@ public abstract class MapReduceAlgorithm extends Thread {
      * last value put on the queue may be the empty string.  If
      * this is the case, just discard it.
      * @param key The key to reduce over.
-     * @param value The queue of values in reduction.
+     * @param values The queue of values in reduction.
      * @return The reduced list of valeus.
      */
-    public abstract List<String> reduce(String key, BlockingQueue<String> values)
-            throws InterruptedException;
+    public abstract List<String> reduce(String key,
+            BlockingQueue<String> values) throws InterruptedException;
 
     /**
      * This is used to call the reduce algorithm.

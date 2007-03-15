@@ -311,7 +311,9 @@ public class ModalDirector extends FSMDirector {
 
     /** Override the prefire() method of the super class to clear
      *  local variables.
-     *  @return What the super.prefire() returns.
+     *  @return Whatever super.prefire() returns (true if the director
+     *  is ready to fire.   
+     *  @exception IllegalActionException If throw by the parent class.
      */
     public boolean prefire() throws IllegalActionException {
         _actorsFired.clear();

@@ -1395,6 +1395,7 @@ public class Query extends JPanel {
      *  blue, and alpha.
      *  @param description The description of the color, or white
      *   if any parse error occurs.
+     *  @return A string representing the color.
      */
     public static Color stringToColor(String description) {
         String[] specArray = description.split("[{},]");

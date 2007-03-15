@@ -108,6 +108,7 @@ public class CodeStream {
      * {@link ptolemy.util.FileUtilities#openForReading(String, URI, ClassLoader)},
      *  for example "file:./test/testCodeBlock.c".
      * @param path The given file path.
+     * @param generator The generator associated with this CodeStream.
      */
     public CodeStream(String path, CodeGenerator generator) {
         _filePath = path;

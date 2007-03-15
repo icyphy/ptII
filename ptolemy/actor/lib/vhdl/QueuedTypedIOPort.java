@@ -84,6 +84,8 @@ public class QueuedTypedIOPort extends TypedIOPort {
 
     /** Set the size of the queue.  This operation will clear whatever
      *  is currently enqueued and create a queue of the new size.
+     *  @param size The size of the queue.
+     *  @param initialValue The initial value of the queue.
      */
     public void setSize(int size, Token initialValue) {
         latency = size;
@@ -93,6 +95,7 @@ public class QueuedTypedIOPort extends TypedIOPort {
 
     /** Set the size of the queue.  This operation will clear whatever
      *  is currently enqueued and create a queue of the new size.
+     *  @param size The size of the queue.
      */
     public void resize(int size) {
         latency = size;
@@ -107,9 +110,14 @@ public class QueuedTypedIOPort extends TypedIOPort {
     }
     
     /**
-     * Specifies the init token value.
+     * Set the initial token value.
+     * @param initialValue The initial value of the token.
      */
     public void setInitToken(Token initialValue) {
+
+        // FIXME: rename this to setInitialToken() so as to follow
+        // naming convention.
+
         initialToken = initialValue;
         _createQueue();
     }
@@ -126,7 +134,9 @@ public class QueuedTypedIOPort extends TypedIOPort {
     }
 
     /** Enqueue the token that is being sent and send to the parent whatever
-     *  is at the end of the queue
+     *  is at the end of the queue.
+     *  @param channelIndex The channel on which to send the token.
+     *  @param token The token to be sent.
      */
     public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
