@@ -826,9 +826,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         _inputTokenMap.clear();
 
-        // Have to reset to the initial state here rather than in
-        // initialize() because the FunctionDependency analysis
-        // needs to know the currentState.
+        // We aave to reset to the initial state here rather than in
+        // the initialize() method because the FunctionDependency analysis
+        // needs to know the current active state of the FSM actor.
         // In DE/ModalModel, reset() happening in the initialize method
         // is too late. hyzheng 1/7/2004
         reset();
