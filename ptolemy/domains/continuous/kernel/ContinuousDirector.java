@@ -193,6 +193,9 @@ import ptolemy.kernel.util.Settable;
  This director is based on the CTDirector by Jie Liu and Haiyang Zheng,
  but it has a much simpler scheduler.
 
+FIXME: the design of clone method should be examined and reimplented.
+All Continuous files need this.
+
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.0
