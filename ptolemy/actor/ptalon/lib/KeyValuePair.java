@@ -56,14 +56,14 @@ public class KeyValuePair {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
+    /** The key of this KeyValuePair.
      * @return The key of this KeyValuePair.
      */
     public String getKey() {
         return _key;
     }
 
-    /**
+    /** The value of this KeyValuePair.
      * @return The value of this KeyValuePair.
      */
     public String getValue() {
@@ -73,13 +73,9 @@ public class KeyValuePair {
     ///////////////////////////////////////////////////////////////////
     ////                        private members                    ////
 
-    /**
-     * The key.
-     */
+    /** The key. */
     private String _key;
 
-    /**
-     * The value.
-     */
+    /** The value. */
     private String _value;
 }

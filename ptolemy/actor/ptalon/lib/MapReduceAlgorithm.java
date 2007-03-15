@@ -33,7 +33,9 @@ import java.util.concurrent.BlockingQueue;
 
 import ptolemy.kernel.util.IllegalActionException;
 
-/** The MapReduce Algorithm
+/** The MapReduce Algorithm.
+
+  <p>See <a href="http://labs.google.com/papers/mapreduce.html">MapReduce: Simplified Data Processing on Large Clusters</a>
 
  @author Adam Cataldo
  @version $Id$
@@ -43,6 +45,9 @@ import ptolemy.kernel.util.IllegalActionException;
 */
 public abstract class MapReduceAlgorithm extends Thread {
 
+    /** Return true if the reduce is finished.
+     *  @return Return true if the reduce is finished.
+     */ 
     public synchronized boolean isReduceFinished()
             throws IllegalActionException {
         if (_threadError) {
@@ -61,7 +66,7 @@ public abstract class MapReduceAlgorithm extends Thread {
     public abstract List<KeyValuePair> map(String key, String value);
 
     /**
-     * Sublcasses should implement their reduce method here,
+     * Subcasses should implement their reduce method here,
      * calling the take method of the BlockingQueue to get 
      * the next value, and checking the parameter noMoreInputs
      * to test if no more values can be put on the queue.  The
@@ -70,6 +75,7 @@ public abstract class MapReduceAlgorithm extends Thread {
      * @param key The key to reduce over.
      * @param values The queue of values in reduction.
      * @return The reduced list of valeus.
+     * @exception InterruptedException If thrown while reducing.
      */
     public abstract List<String> reduce(String key,
             BlockingQueue<String> values) throws InterruptedException;
@@ -112,7 +118,7 @@ public abstract class MapReduceAlgorithm extends Thread {
      */
     public List<String> reduceOutput;
 
-    /**
+    /** Return true if no more elements will be added to the list.
      * @return true if no more elements will be added to the list.
      */
     protected synchronized boolean isQueueEmpty() {

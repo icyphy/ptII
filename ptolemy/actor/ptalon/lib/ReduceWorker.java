@@ -48,28 +48,29 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  A ReduceWorker actor, as a subsystem of the MapReduce system.
- <p>
- This actor has a parameter <i>classNameForReduce</i> which is
- the qualified name for a Java class that extends 
- ptolemy.actor.ptalon.lib.MapReduceAlgorithm.  It must also
- have a no argument constructor.  By extending this
- abstract class, it will implement a method named <i>reduce</i>
- with type signature:
- <p>
- <code>public List<String> reduce(String key, BlockingQueue<String> value)</code>
- <p>
- This method defines the Reduce algorithm for the MapReduce system.  At each
- call, it should return a list of Strings, which is a reduction of the
- list of input values.  At each firing, this actor inputs all avaiable
- input keys and values.  It outputs the value tokens when its <i>doneReading</i>
- port recieves a true value.  This should only happen after all inputs
- have been sent to the system.
- <p>
- When implementing a custom reduce method in a subclass of MapReduceAlgorithm,
- note to use the take method to get values from the queue.  Call the
- <i>isQueueEmpty</i> of MapReduceAlgorithm to test if this actor has stopped
- putting values on the queue and that all values have been taken from the queue.
- The last element of the queue will allways be the empty string.  Ignore this value.
+ 
+ <p> This actor has a parameter <i>classNameForReduce</i> which is the
+ qualified name for a Java class that extends
+ ptolemy.actor.ptalon.lib.MapReduceAlgorithm.  It must also have a no
+ argument constructor.  By extending this abstract class, it will
+ implement a method named <i>reduce</i> with type signature:
+ 
+ <p> <code>public List&lt;String&gt; reduce(String key,
+ BlockingQueue&lt;String&gt; value)</code>
+
+ <p> This method defines the Reduce algorithm for the MapReduce
+ system.  At each call, it should return a list of Strings, which is a
+ reduction of the list of input values.  At each firing, this actor
+ inputs all avaiable input keys and values.  It outputs the value
+ tokens when its <i>doneReading</i> port recieves a true value.  This
+ should only happen after all inputs have been sent to the system.
+
+ <p> When implementing a custom reduce method in a subclass of
+ MapReduceAlgorithm, note to use the take method to get values from
+ the queue.  Call the <i>isQueueEmpty</i> of MapReduceAlgorithm to
+ test if this actor has stopped putting values on the queue and that
+ all values have been taken from the queue.  The last element of the
+ queue will allways be the empty string.  Ignore this value.
 
  @author Adam Cataldo
  @version $Id$

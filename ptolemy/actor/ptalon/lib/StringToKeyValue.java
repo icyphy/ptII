@@ -97,6 +97,7 @@ public class StringToKeyValue extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace.
+     *  @param workspace The workspace into which the object is cloned.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
