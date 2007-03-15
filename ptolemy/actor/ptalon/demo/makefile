@@ -28,7 +28,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/ptalon/deno
+ME =		ptolemy/actor/ptalon/demo
 
 # Keep these alphabetical please.
 DIRS = 		CruiseControl EightChannelFFT GameOfLife MapReduce Unicycle
