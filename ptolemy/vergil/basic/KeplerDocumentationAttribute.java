@@ -284,55 +284,100 @@ public class KeplerDocumentationAttribute extends Attribute implements
     ////////////////////////////////////////////////////////////////////////
     ///////////////////// Getters and Setters //////////////////////////////
 
+    /** Set the name of this document.
+     *  @param name The name of this document.
+     */   
     public void setDocName(String name) {
         this.docName = name;
     }
 
+    /** Set the name of this docClass.
+     *  @param className The name of this docClass.
+     */   
     public void setDocClass(String className) {
         this.docClass = className;
     }
 
-    public void setDescription(String desc) {
-        this.description = desc;
+    /** Set the description.
+     *  @param description The description.
+     */   
+    public void setDescription(String description) {
+        this.description = description;
     }
 
+    /** Set the author.
+     *  @param author The author.
+     */   
     public void setAuthor(String author) {
         this.author = author;
     }
 
+    /** Set the version.
+     *  @param version The version.
+     */   
     public void setVersion(String version) {
         this.version = version;
     }
 
-    public void setUserLevelDocumentation(String uld) {
-        this.userLevelDocumentation = uld;
+    /** Set the user level documentation.
+     *  @param userLevelDocumentation The user level documentation.
+     */   
+    public void setUserLevelDocumentation(String userLevelDocumentation) {
+        this.userLevelDocumentation = userLevelDocumentation;
     }
 
+    /** Set the port hash.
+     *  @param portHash The port hash.
+     */   
     public void setPortHash(Hashtable portHash) {
         this.portHash = portHash;
     }
 
-    public void addPort(String name, String val) {
-        portHash.put(name, val);
+
+    /** Add port to the port hashtable.
+     *  @param name The name of the port.
+     *  @param value A String representing the port.
+     */   
+   public void addPort(String name, String value) {
+        portHash.put(name, value);
     }
 
+ 
+    /** Set the property hashtable.
+     *  @param setPropertyHash The property hashtable.
+     */
     public void setPropertyHash(Hashtable propHash) {
         this.propHash = propHash;
     }
 
-    public void addProperty(String name, String val) {
-        propHash.put(name, val);
+    /** Add a property to the property hashtable.
+     *  @param name The name of the property.
+     *  @param value A string representing the propety.
+     */   
+    public void addProperty(String name, String value) {
+        propHash.put(name, value);
     }
 
+    /** Configure this documentation attribute.
+     *  @param base Currently ignored.
+     *  @param source The source of this configuration.
+     *  @param text The configuration text.
+     */   
     public void configure(java.net.URL base, String source, String text) {
         this.source = source;
         this.text = text;
     }
 
+    /** Get the configuration source.
+     *  @return The configuration source.
+     */   
     public String getConfigureSource() {
         return source;
     }
 
+    /** Get the configuration text
+     *  @return The configuration text
+     */   
     public String getConfigureText() {
         return text;
     }
