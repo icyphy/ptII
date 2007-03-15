@@ -93,9 +93,10 @@ OPTIONAL_JSRCS = \
 	PtalonPopulator.java \
 	PtalonScopeChecker.java  
 
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =	lib test
 
 OPTIONAL_FILES =  \
 	doc \
