@@ -65,6 +65,7 @@ JSRCS = \
 	ExtendedGraphFrame.java \
 	GetDocumentationAction.java \
 	IconController.java \
+	KeplerDocumentationAttribute.java \
 	LocatableNodeController.java \
 	LocatableNodeDragInteractor.java \
 	NamedObjController.java \
