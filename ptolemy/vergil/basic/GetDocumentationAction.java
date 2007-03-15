@@ -41,7 +41,6 @@ import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.DocBuilderEffigy;
 import ptolemy.vergil.actor.DocBuilderTableau;

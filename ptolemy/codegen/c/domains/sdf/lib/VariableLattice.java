@@ -26,11 +26,7 @@
  */
 package ptolemy.codegen.c.domains.sdf.lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ptolemy.codegen.c.actor.lib.Lattice;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.domains.sdf.lib.VariableLattice. 

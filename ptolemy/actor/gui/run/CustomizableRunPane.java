@@ -64,8 +64,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 
-import com.jgoodies.forms.factories.DefaultComponentFactory;
-
 //////////////////////////////////////////////////////////////////////////
 //// CustomizableRunPane
 
