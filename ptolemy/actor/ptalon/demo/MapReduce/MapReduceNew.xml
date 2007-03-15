@@ -45,9 +45,13 @@
         </property>
         <configure>
             <ptalon file="ptolemy.actor.ptalon.demo.MapReduce.MapReduce">
-                <ptalonExpressionParameter name="fileNamePrefix" value="&quot;ReadTest&quot;"/>
+                <ptalonParameter name="map" value="ptolemy.actor.ptalon.demo.MapReduce.Map"/>
+                <ptalonExpressionParameter name="numberOfMaps" value="2"/>
+
+                <ptalonParameter name="reduce" value="ptolemy.actor.ptalon.demo.MapReduce.Reduce"/>
+                <ptalonExpressionParameter name="numberOfReduces" value="3"/>
+                <ptalonExpressionParameter name="fileName" value="&quot;ReadTest&quot;"/>
                 <ptalonExpressionParameter name="className" value="&quot;ptolemy.actor.ptalon.lib.WordCount&quot;"/>
-                <ptalonExpressionParameter name="numberOfMachines" value="5"/>
             </ptalon>
         </configure>
     </entity>

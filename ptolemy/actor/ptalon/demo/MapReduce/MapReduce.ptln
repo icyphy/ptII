@@ -28,50 +28,58 @@
 danglingPortsOkay;
 
 MapReduce is {
-	actor split = ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.Split;
-	actor map = ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.Map;
-	actor reduce = ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.Reduce;
-	actor stop = ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.WaitingStop;
-		
-	outport status;
-	
-	parameter className;
-	parameter numberOfMachines;
-	parameter fileNamePrefix;
-	
-	transparent relation splitKeys;
-	transparent relation splitValues;
-	relation splitFinished;
-	split(keys := splitKeys, values := splitValues, doneReading := splitFinished,
-			file := [[fileNamePrefix + ".map"]], numberOfOutputs := 
-			[[numberOfMachines / 2]]);
-			
-	transparent relation stopInput;
-	stop(input := stopInput, numberOfInputs := 
-			[[numberOfMachines - numberOfMachines / 2]], status := status);
-	
-	for a initially [[0]] [[a < numberOfMachines - numberOfMachines / 2]] {
-		transparent relation reduceInKey[[a]];
-		transparent relation reduceInValue[[a]];
-		reduce(inputKey := reduceInKey[[a]], inputValue := reduceInValue[[a]], 
-				doneReceiving := splitFinished, file := 
-				[[fileNamePrefix + a.toString + ".red"]], className := 
-				[[className]], numberOfInputs := [[numberOfMachines / 2]]);
-	} next [[a + 1]]
+    actor split = ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.Split;
+    actor map = ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.Map;
+    actor reduce = ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.Reduce;
+    actor stop = ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.WaitingStop;
+        
+    outport status;
+    
+    parameter className;
+    parameter numberOfMachines;
+    parameter fileNamePrefix;
+    
+    transparent relation splitKeys;
+    transparent relation splitValues;
+    relation splitFinished;
+    split(           keys := splitKeys, 
+                   values := splitValues, 
+              doneReading := splitFinished,
+                     file := [[fileNamePrefix + ".map"]], 
+          numberOfOutputs := [[numberOfMachines / 2]]);
+            
+    transparent relation stopInput;
+    stop(         input := stopInput, 
+         numberOfInputs := [[numberOfMachines - numberOfMachines / 2]], 
+                 status := status);
+    
+    for a initially [[0]] [[a < numberOfMachines - numberOfMachines / 2]] {
+        transparent relation reduceInKey[[a]];
+        transparent relation reduceInValue[[a]];
+        reduce(      inputKey := reduceInKey[[a]], 
+                   inputValue := reduceInValue[[a]], 
+                doneReceiving := splitFinished, 
+                         file := [[fileNamePrefix + a.toString + ".red"]], 
+                    className := [[className]], 
+               numberOfInputs := [[numberOfMachines / 2]]);
+    } next [[a + 1]]
 
-	for a initially [[0]] [[a < numberOfMachines / 2]] {
-		transparent relation mapOutKeys[[a]];
-		transparent relation mapOutValues[[a]];
-		relation mapFinished[[a]];
-		map(inputKey := splitKeys, inputValue := splitValues, outputKeys := 
-				mapOutKeys[[a]], outputValues := mapOutValues[[a]], 
-				doneReceiving := splitFinished,	doneEmitting := mapFinished[[a]],
-				className := [[className]], numberOfReduceOutputs :=
-				[[numberOfMachines - numberOfMachines / 2]]);
-		this(stopInput := mapFinished[[a]]);
-		for b initially [[0]] [[b < numberOfMachines - numberOfMachines / 2]] {
-			this(reduceInKey[[b]] := mapOutKeys[[a]]);
-			this(reduceInValue[[b]] := mapOutValues[[a]]);
-		} next [[b + 1]]
-	} next [[a + 1]]
+    for a initially [[0]] [[a < numberOfMachines / 2]] {
+        transparent relation mapOutKeys[[a]];
+        transparent relation mapOutValues[[a]];
+        relation mapFinished[[a]];
+        map(             inputKey := splitKeys, 
+                       inputValue := splitValues, 
+                       outputKeys := mapOutKeys[[a]], 
+                     outputValues := mapOutValues[[a]], 
+                    doneReceiving := splitFinished, 
+                     doneEmitting := mapFinished[[a]],
+                        className := [[className]], 
+            numberOfReduceOutputs := [[numberOfMachines - numberOfMachines / 2]]);
+        this(stopInput := mapFinished[[a]]);
+        for b initially [[0]] [[b < numberOfMachines - numberOfMachines / 2]] {
+            this(reduceInKey[[b]] := mapOutKeys[[a]]);
+            this(reduceInValue[[b]] := mapOutValues[[a]]);
+        } next [[b + 1]]
+    } next [[a + 1]]
 }

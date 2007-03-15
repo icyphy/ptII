@@ -26,49 +26,59 @@
  */
 
 MapReduce is {
-	actor split = ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.Split;
-	actor stop = ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.WaitingStop;
-		
-	outport status;
+    actor split = ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.Split;
+    actor stop = ptalonActor:ptolemy.actor.ptalon.demo.MapReduce.WaitingStop;
+        
+    outport status;
 
-	actorparameter map;
-	parameter numberOfMaps;
-	actorparameter reduce;
-	parameter numberOfReduces;
-	parameter fileName;
-	
-	port reference splitKeys;
-	port reference splitValues;
-	relation splitFinished;
-	split(keys := splitKeys, values := splitValues, doneReading := splitFinished,
-			file := [[fileName + ".map"]], numberOfOutputs := 
-			[[numberOfMaps]]);
-			
-	port reference stopInput;
-	stop(input := stopInput, numberOfInputs := [[numberOfMaps]], 
-			status := status);
-	
-	for a initially [[0]] [[a < numberOfReduces]] {
-		port reference reduceInKey[[a]];
-		port reference reduceInValue[[a]];
-		reduce(inputKey := reduceInKey[[a]], inputValue := reduceInValue[[a]], 
-				doneReceiving := splitFinished, file := 
-				[[fileName + a.toString + ".red"]], 
-				numberOfInputs := [[numberOfMaps]]);
-	} next [[a + 1]]
+    actorparameter map;
+    parameter numberOfMaps;
+    actorparameter reduce;
+    parameter numberOfReduces;
+    parameter fileName;
+    parameter className;
+    
+    port reference splitKeys;
+    port reference splitValues;
+    relation splitFinished;
+    split(           keys := splitKeys, 
+                   values := splitValues, 
+              doneReading := splitFinished,
+                     file := [[fileName + ".map"]], 
+          numberOfOutputs := [[numberOfMaps]]);
+            
+    port reference stopInput;
+    stop(         input := stopInput, 
+         numberOfInputs := [[numberOfMaps]], 
+                 status := status);
+    
+    for a initially [[0]] [[a < numberOfReduces]] {
+        port reference reduceInKey[[a]];
+        port reference reduceInValue[[a]];
+        reduce(     inputKey := reduceInKey[[a]], 
+                  inputValue := reduceInValue[[a]], 
+               doneReceiving := splitFinished, 
+                        file := [[fileName + a.toString + ".red"]], 
+                   className := [[className]], 
+              numberOfInputs := [[numberOfMaps]]);
+    } next [[a + 1]]
 
-	for a initially [[0]] [[a < numberOfMaps]] {
-		port reference mapOutKeys[[a]];
-		port reference mapOutValues[[a]];
-		relation mapFinished[[a]];
-		map(inputKey := splitKeys, inputValue := splitValues, outputKeys := 
-				mapOutKeys[[a]], outputValues := mapOutValues[[a]], 
-				doneReceiving := splitFinished,	doneEmitting := mapFinished[[a]],
-				numberOfReduceOutputs := [[numberOfReduces]]);
-		this(stopInput := mapFinished[[a]]);
-		for b initially [[0]] [[b < numberOfReduces]] {
-			this(reduceInKey[[b]] := mapOutKeys[[a]]);
-			this(reduceInValue[[b]] := mapOutValues[[a]]);
-		} next [[b + 1]]
-	} next [[a + 1]]
+    for a initially [[0]] [[a < numberOfMaps]] {
+        port reference mapOutKeys[[a]];
+        port reference mapOutValues[[a]];
+        relation mapFinished[[a]];
+        map(             inputKey := splitKeys, 
+                       inputValue := splitValues, 
+                       outputKeys := mapOutKeys[[a]], 
+                     outputValues := mapOutValues[[a]], 
+                    doneReceiving := splitFinished, 
+                     doneEmitting := mapFinished[[a]],
+                        className := [[className]], 
+            numberOfReduceOutputs := [[numberOfReduces]]);
+        this(stopInput := mapFinished[[a]]);
+        for b initially [[0]] [[b < numberOfReduces]] {
+            this(reduceInKey[[b]] := mapOutKeys[[a]]);
+            this(reduceInValue[[b]] := mapOutValues[[a]]);
+        } next [[b + 1]]
+    } next [[a + 1]]
 }
