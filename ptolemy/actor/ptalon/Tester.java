@@ -14,9 +14,9 @@ public class Tester {
 
     public static String[] _parseActorExpression(String expression) {
         expression = expression.replaceAll("\\)(\\p{Blank})*\\(", ",");
-        String[] actorSeperated = expression.split("\\(", 2);
-        String actor = actorSeperated[0];
-        String remains = actorSeperated[1];
+        String[] actorSeparated = expression.split("\\(", 2);
+        String actor = actorSeparated[0];
+        String remains = actorSeparated[1];
         remains = remains.trim().substring(0, remains.length() - 1);
         LinkedList<Integer> markers = new LinkedList<Integer>();
         int parenthesis = 0;

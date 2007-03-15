@@ -16,7 +16,7 @@ import java.util.List;
 public abstract class NamedTree<TreeType extends NamedTree> {
 
     /**
-     * Create a new tree with the specifed parent.  This
+     * Create a new tree with the specified parent.  This
      * is null if the tree to create is a root.  
      * @param parent The parent for this tree.
      */

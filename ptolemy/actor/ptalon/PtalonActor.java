@@ -132,7 +132,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     }
 
     /** React to a change in an attribute.  This method is called by
-     *  a contained attribute when its value changes.  This initally responds
+     *  a contained attribute when its value changes.  This initially responds
      *  to changes in the <i>ptalonCode</i> parameter.  Later it responds
      *  to changes in parameters specified in the Ptalon code itself.
      *  @exception IllegalActionException If the change is not acceptable
@@ -225,8 +225,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      * Create a nested actor with respect to this code manager's
      * actor.
      * @param container The actor that will contain the created actor, which
-     * should be a decendant of this code manager's actor.
-     * @param uniqueName The unqique name for the nested actor declaration
+     * should be a descendent of this code manager's actor.
+     * @param uniqueName The unique name for the nested actor declaration
      * this actor refers to.
      * @return The created actor.
      * @exception PtalonRuntimeException If there is any trouble creating this actor.
@@ -360,7 +360,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 prefix = prefix + "_" + depth + "_";
             }
         } catch (IllegalActionException e) {
-            // Derivation invariant is not satisified.
+            // Derivation invariant is not satisfied.
             throw new InternalErrorException(e);
         }
 
@@ -526,7 +526,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     }
 
     /**
-     * A list of all ptalon paramters who have been assinged a value.
+     * A list of all ptalon parameters who have been assinged a value.
      */
     private List<PtalonParameter> _assignedPtalonParameters = new LinkedList<PtalonParameter>();
 
@@ -558,7 +558,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     private List<PtalonParameter> _ptalonParameters = new LinkedList<PtalonParameter>();
 
     /**
-     * A list of all ptalon paramters who are not settable by the user.
+     * A list of all ptalon parameters who are not settable by the user.
      */
     private List<PtalonParameter> _unsettablePtalonParameters = new LinkedList<PtalonParameter>();
 

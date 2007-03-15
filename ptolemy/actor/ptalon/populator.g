@@ -382,7 +382,7 @@ assignment throws PtalonRuntimeException
 
 /**
  * This is for a top level actor declaration, which 
- * requires seperate treatement from a nested actor
+ * requires separate treatement from a nested actor
  * declaration.
  */
 actor_declaration throws PtalonRuntimeException

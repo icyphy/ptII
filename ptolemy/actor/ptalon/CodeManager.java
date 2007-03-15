@@ -442,8 +442,8 @@ public class CodeManager {
     }
 
     /**
-     * Add a symbol with the given name and type to the sybol table
-     * at the current level of the if-tree hierachy.
+     * Add a symbol with the given name and type to the symbol table
+     * at the current level of the if-tree hierarchy.
      * @param name The symbol name.
      * @param type The symbol type.
      * @exception PtalonScopeException If a symbol with this name has already
@@ -713,19 +713,22 @@ public class CodeManager {
      * in the containing scope have been assigned values, and when in
      * a branch of an if-block or for-block that is active.  
      * @return true if the current for-block scope is ready to be entered.
-     * @exception PtalonRuntimeException If it is thrown trying to access a parameter.
+     * @exception PtalonRuntimeException If it is thrown trying to access
+     * a parameter.
      */
     public boolean isForReady() throws PtalonRuntimeException {
         return isIfReady();
     }
 
     /**
-     * Return true if the current peice of code is ready to be
+     * Return true if the current piece of code is ready to be
      * entered.  This is used by port, parameter, and relation
-     * declarations only.  It is ready when all ports, parameters, and relations
-     * in the containing scope have been created, when all parameters
-     * in the containing scope have been assigned values, and when in
-     * a branch of an if-block that is active.  
+     * declarations only.  It is ready when all ports, parameters, and
+     * relations in the containing scope have been created, when all
+     * parameters in the containing scope have been assigned values,
+     * and when in a branch of an if-block that is active.
+
+
      * @return true if the current if-block scope is ready to be entered.
      * @exception PtalonRuntimeException If it is thrown trying to access a parameter.
      */
@@ -1007,7 +1010,7 @@ public class CodeManager {
 
     /**
      * @return The next symbol of form "_ifN" where
-     * N is 0 if this funciton has not been called and
+     * N is 0 if this function has not been called and
      * N is n if this is the nth call to this function.
      */
     private String _getNextIfSymbol() {
@@ -1038,7 +1041,7 @@ public class CodeManager {
      * Get the value associated with the specified parameter.
      * @param param The parameter's name in the Ptalon code.
      * @return It's unique value.
-     * @exception PtalonRuntimeException If the paramter does not exist. 
+     * @exception PtalonRuntimeException If the parameter does not exist. 
      */
     private Token _getValueOf(String param) throws PtalonRuntimeException {
         try {
@@ -1065,7 +1068,7 @@ public class CodeManager {
      * Get the type associated with the specified parameter.
      * @param param The parameter's name in the Ptalon code.
      * @return It's type.
-     * @exception PtalonRuntimeException If the paramter does not exist. 
+     * @exception PtalonRuntimeException If the parameter does not exist. 
      */
     private Type _getTypeOf(String param) throws PtalonRuntimeException {
         try {
@@ -1083,7 +1086,7 @@ public class CodeManager {
      * Get the type term associated with the specified parameter.
      * @param param The parameter's name in the Ptalon code.
      * @return It's type.
-     * @exception PtalonRuntimeException If the paramter does not exist. 
+     * @exception PtalonRuntimeException If the parameter does not exist. 
      */
     private InequalityTerm _getTypeTermOf(String param)
             throws PtalonRuntimeException {
@@ -1102,8 +1105,7 @@ public class CodeManager {
     ////                       private members                     ////
 
     /**
-     * A counter used to associate a unqiue
-     * number with each if-block.
+     * A counter used to associate a unique number with each if-block.
      */
     private int _counter;
 
@@ -1159,7 +1161,7 @@ public class CodeManager {
 
         /**
          * Add a symbol to the scope of this if statement.
-         * @param symbol The sybmol to add.
+         * @param symbol The symbol to add.
          * @param type Its corresponding type.
          */
         public void addSymbol(String symbol, String type) {
@@ -1176,9 +1178,9 @@ public class CodeManager {
 
         /**
          * Add a symbol to the scope of this if statement.
-         * @param symbol The sybmol to add.
+         * @param symbol The symbol to add.
          * @param type Its corresponding type.
-         * @param status It's statust, that is whether it has been loaded or not.
+         * @param status Its status, that is whether it has been loaded or not.
          * @param uniqueName The unique name of this 
          */
         public void addSymbol(String symbol, String type, boolean status,
