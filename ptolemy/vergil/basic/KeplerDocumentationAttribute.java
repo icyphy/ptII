@@ -118,7 +118,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
                 String propName = attName.substring(attName.indexOf(":") + 1,
                         attName.length());
                 String propDesc = att.getConfigureText();
-                propHash.put(propName, propDesc);
+                propertyHash.put(propName, propDesc);
             }
         }
     }
@@ -170,10 +170,10 @@ public class KeplerDocumentationAttribute extends Attribute implements
             sb.append("</property>\n");
         }
 
-        Enumeration propKeys = propHash.keys();
+        Enumeration propKeys = propertyHash.keys();
         while (propKeys.hasMoreElements()) {
             String key = (String) propKeys.nextElement();
-            String val = (String) propHash.get(key);
+            String val = (String) propertyHash.get(key);
             sb
                     .append("<property name=\"prop:"
                             + key
@@ -212,10 +212,10 @@ public class KeplerDocumentationAttribute extends Attribute implements
             sb.append(desc).append("</port>\n");
         }
 
-        Enumeration propItt = propHash.keys();
+        Enumeration propItt = propertyHash.keys();
         while (propItt.hasMoreElements()) {
             String name = (String) propItt.nextElement();
-            String desc = (String) propHash.get(name);
+            String desc = (String) propertyHash.get(name);
             sb.append("<property name=\"" + name + "\">");
             sb.append(desc).append("</property>\n");
         }
@@ -255,10 +255,10 @@ public class KeplerDocumentationAttribute extends Attribute implements
                 sa.setExpression(desc);
             }
 
-            Enumeration propItt = propHash.keys();
+            Enumeration propItt = propertyHash.keys();
             while (propItt.hasMoreElements()) {
                 String name = (String) propItt.nextElement();
-                String desc = (String) propHash.get(name);
+                String desc = (String) propertyHash.get(name);
                 StringParameter sp = new StringParameter(da, name
                         + " (parameter)");
                 sp.setExpression(desc);
@@ -344,10 +344,10 @@ public class KeplerDocumentationAttribute extends Attribute implements
 
  
     /** Set the property hashtable.
-     *  @param setPropertyHash The property hashtable.
+     *  @param propertyHash The property hashtable.
      */
-    public void setPropertyHash(Hashtable propHash) {
-        this.propHash = propHash;
+    public void setPropertyHash(Hashtable propertyHash) {
+        this.propertyHash = propertyHash;
     }
 
     /** Add a property to the property hashtable.
@@ -355,7 +355,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
      *  @param value A string representing the propety.
      */   
     public void addProperty(String name, String value) {
-        propHash.put(name, value);
+        propertyHash.put(name, value);
     }
 
     /** Configure this documentation attribute.
@@ -405,5 +405,5 @@ public class KeplerDocumentationAttribute extends Attribute implements
 
     private Hashtable portHash = new Hashtable();
 
-    private Hashtable propHash = new Hashtable();
+    private Hashtable propertyHash = new Hashtable();
 }
