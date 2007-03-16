@@ -73,6 +73,7 @@ JSIMPLE_TESTS = \
 	Minimum.tcl \
 	MultiplyDivide.tcl \
 	OrderedMerge.tcl \
+	Publisher.tcl \
 	Pulse.tcl \
 	Ramp.tcl \
 	RecordAssembler.tcl \
