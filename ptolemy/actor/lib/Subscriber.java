@@ -1,6 +1,6 @@
 /* A subscriber that transparently receives tunneled messages from publishers.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,8 +29,11 @@ package ptolemy.actor.lib;
 
 import java.util.Iterator;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.data.BooleanToken;
@@ -40,7 +43,9 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Subscriber
@@ -139,8 +144,23 @@ public class Subscriber extends TypedAtomicActor {
                 // within instances. Otherwise, we could end up creating
                 // a link between a class definition and an instance.
                 if (!isWithinClassDefinition()) {
-                    _updateLinks();
-                }
+                    Nameable container = getContainer();
+                    if ((container instanceof TypedCompositeActor)) {
+                        // If the container is not a typed composite actor, then don't create
+                        // a relation. Probably the container is a library.
+                        Manager manager = ((CompositeActor) container).getManager();
+                        if (manager != null && manager.getState() != Manager.IDLE) {
+                            // We were calling _updateLinks() even if the model
+                            // is not running.  _updateLinks() calls
+                            // _findPublisher().  We should only do this if
+                            // the model is running by checking the Manager.
+                            _updateLinks();
+                        } else {
+                            // Update the links in preinitialize()
+                            _updatedLinks = false;
+                        }
+                    }
+                } 
             }
         } else {
             super.attributeChanged(attribute);
@@ -231,6 +251,12 @@ public class Subscriber extends TypedAtomicActor {
     ////                       protected methods                   ////
 
     /** Update the connection to the publisher, if there is one.
+     *  Note that this method is computationally intensive for large
+     *  models as it traverses the model by searching
+     *  up the hierarchy for the nearest opaque container
+     *  or the top level and then traverses the contained entities.
+     *  Thus, avoid calling this method except when the model
+     *  is running.   
      *  @exception IllegalActionException If creating the link
      *   triggers an exception.
      */
@@ -249,7 +275,17 @@ public class Subscriber extends TypedAtomicActor {
             _relation = null;
         }
         if (publisher != null) {
+            if (publisher._relation == null) {
+                if (!publisher._updatedLinks) {
+                    // If we call Subscriber.preinitialize()
+                    // before we call Publisher.preinitialize(),
+                    // then the publisher will not have created
+                    // its relation.
+                    publisher._updateLinks();
+                }
+            }
             _relation = publisher._relation;
+
             input.liberalLink(_relation);
         }
         Director director = getDirector();
@@ -275,7 +311,7 @@ public class Subscriber extends TypedAtomicActor {
     /** Find the publisher, if there is one.
      *  @return A publisher, or null if none is found.
      */
-    private Publisher _findPublisher() {
+    private Publisher _findPublisher() throws IllegalActionException {
         // Find the nearest opaque container above in the hierarchy.
         CompositeEntity container = (CompositeEntity) getContainer();
         while (container != null && !container.isOpaque()) {

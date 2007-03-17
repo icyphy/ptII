@@ -1,6 +1,6 @@
 /* A publisher that transparently tunnels messages to subscribers.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -31,7 +31,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -47,7 +49,10 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Publisher
@@ -152,7 +157,22 @@ public class Publisher extends TypedAtomicActor {
                 // within instances. Otherwise, we could end up creating
                 // a link between a class definition and an instance.
                 if (!isWithinClassDefinition()) {
-                    _updateLinks();
+                    Nameable container = getContainer();
+                    if ((container instanceof TypedCompositeActor)) {
+                        // If the container is not a typed composite actor, then don't create
+                        // a relation. Probably the container is a library.
+                        Manager manager = ((CompositeActor) container).getManager();
+                        if (manager != null && manager.getState() != Manager.IDLE) {
+                            // We were calling _updateLinks() even if the model
+                            // is not running.  _updateLinks() calls
+                            // _findPublisher().  We should only do this if
+                            // the model is running by checking the Manager.
+                            _updateLinks();
+                        } else {
+                            // Update the links in preinitialize()
+                            _updatedLinks = false;
+                        }
+                    }
                 }
             }
         } else {
@@ -238,13 +258,80 @@ public class Publisher extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected method                    ////
+
+    /** Update connections to subscribers.
+     *  @exception IllegalActionException If there is already a publisher
+     *   publishing on the same channel.
+     */
+    protected void _updateLinks() throws IllegalActionException {
+        // If the channel has not been set, then there is nothing
+        // to do.  This is probably the first setContainer() call,
+        // before the object is fully constructed.
+        if (_channel == null) {
+            return;
+        }
+
+        // Do this before making any changes to the model in case
+        // it throws an exception.
+        Iterator subscribers = _findSubscribers().iterator();
+
+        // Remove the previous relation, if necessary.
+        if (_relation != null) {
+            try {
+                _relation.setContainer(null);
+            } catch (NameDuplicationException e) {
+                throw new InternalErrorException(e);
+            }
+            _relation = null;
+        }
+
+        NamedObj container = getContainer();
+        if (container instanceof TypedCompositeActor) {
+            // If the container is not a typed composite actor, then don't create
+            // a relation. Probably the container is a library.
+            try {
+                _relation = new TypedIORelation(
+                        (TypedCompositeActor) container, container
+                        .uniqueName("publisherRelation"));
+                // Prevent the relation and its links from being exported.
+                _relation.setPersistent(false);
+                // Prevent the relation from showing up in vergil.
+                new Parameter(_relation, "_hide", BooleanToken.TRUE);
+                // Set the width of the relation to match the
+                // width of the input.
+                _relation.setWidth(input.getWidth());
+            } catch (NameDuplicationException e) {
+                throw new InternalErrorException(e);
+            }
+            output.link(_relation);
+
+            // Link to the subscribers.
+            while (subscribers.hasNext()) {
+                Subscriber subscriber = (Subscriber) subscribers.next();
+                subscriber.input.liberalLink(_relation);
+            }
+        }
+
+        Director director = getDirector();
+        if (director != null) {
+            director.invalidateSchedule();
+            director.invalidateResolvedTypes();
+        }
+        _updatedLinks = true;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
+
+    /** Cached channel name. */
+    protected String _channel;
 
     /** The relation used to link to subscribers. */
     protected TypedIORelation _relation;
 
-    /** Cached channel name. */
-    protected String _channel;
+    /** An indicator that _updateLinks has been called at least once. */
+    protected boolean _updatedLinks = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -319,70 +406,9 @@ public class Publisher extends TypedAtomicActor {
         return "channel" + suffix;
     }
 
-    /** Update connections to subscribers.
-     *  @exception IllegalActionException If there is already a publisher
-     *   publishing on the same channel.
-     */
-    private void _updateLinks() throws IllegalActionException {
-        // If the channel has not been set, then there is nothing
-        // to do.  This is probably the first setContainer() call,
-        // before the object is fully constructed.
-        if (_channel == null) {
-            return;
-        }
-        // Do this before making any changes to the model in case
-        // it throws an exception.
-        Iterator subscribers = _findSubscribers().iterator();
-
-        // Remove the previous relation, if necessary.
-        if (_relation != null) {
-            try {
-                _relation.setContainer(null);
-            } catch (NameDuplicationException e) {
-                throw new InternalErrorException(e);
-            }
-            _relation = null;
-        }
-        // If the container is not a typed composite actor, then don't create
-        // a relation. Probably the container is a library.
-        NamedObj container = getContainer();
-        if (container instanceof TypedCompositeActor) {
-            try {
-                _relation = new TypedIORelation(
-                        (TypedCompositeActor) container, container
-                                .uniqueName("publisherRelation"));
-                // Prevent the relation and its links from being exported.
-                _relation.setPersistent(false);
-                // Prevent the relation from showing up in vergil.
-                new Parameter(_relation, "_hide", BooleanToken.TRUE);
-                // Set the width of the relation to match the
-                // width of the input.
-                _relation.setWidth(input.getWidth());
-            } catch (NameDuplicationException e) {
-                throw new InternalErrorException(e);
-            }
-            output.link(_relation);
-
-            // Link to the subscribers.
-            while (subscribers.hasNext()) {
-                Subscriber subscriber = (Subscriber) subscribers.next();
-                subscriber.input.liberalLink(_relation);
-            }
-        }
-        Director director = getDirector();
-        if (director != null) {
-            director.invalidateSchedule();
-            director.invalidateResolvedTypes();
-        }
-        _updatedLinks = true;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
     /** An indicator that connectionsChanged() has been called. */
     private boolean _inConnectionsChanged = false;
-
-    /** An indicator that _updateLinks has been called at least once. */
-    private boolean _updatedLinks = false;
 }
