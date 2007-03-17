@@ -65,18 +65,18 @@ import ptolemy.util.MessageHandler;
  toplevel iteration.  This helps ensure that users of value of the
  variable will see changes to the value deterministically
  (independent of the schedule of execution of the actors).
+ However, there is a substantial performance penalty associated
+ with this when running within Vergil because change requests
+ trigger repainting the Vergil window.
 
  </p><p> If <it>delayed</it> is false, then the change to the value of
  the variable is performed immediately.  This allows more frequent
  reconfiguration, and can mimic the operation of PGM's graph
- variables.
-
- </p><p>
- Note that the variable name is observed during preinitialize().
- If it is changed after that, the change will not take effect
- until the next time the model is executed. Moreover, the
- type of the variable is constrained in preinitialize()
- to be at least that of the input port for this actor.
+ variables. However, this can result in nondeterminism if
+ the variable values are observed by any other actor in
+ the system. If you are trying to communicate with another
+ actor without wiring, use the Publisher and Subscriber
+ actors instead.
 
  </p><p>
  The variable can be either any attribute that implements
@@ -93,6 +93,8 @@ import ptolemy.util.MessageHandler;
  top level.</p>
 
  @author Edward A. Lee, Steve Neuendorffer, Contributor: Blanc
+ @see Publisher
+ @see Subscriber
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Red (yuhong)
@@ -180,6 +182,9 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      *  @return The attribute modified by this actor.
      */
     public Attribute getModifiedVariable() throws IllegalActionException {
+        if (_workspace.getVersion() == _attributeVersion) {
+            return _attribute;
+        }
         NamedObj container = getContainer();
 
         if (container == null) {
@@ -187,32 +192,32 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         }
 
         String variableNameValue = variableName.getExpression();
-        Attribute attribute = null;
+        _attribute = null;
 
         // Look for the variableName anywhere in the hierarchy
-        while ((attribute == null) && (container != null)) {
-            attribute = container.getAttribute(variableNameValue);
+        while ((_attribute == null) && (container != null)) {
+            _attribute = container.getAttribute(variableNameValue);
 
-            if (attribute == null) {
+            if (_attribute == null) {
                 container = container.getContainer();
             }
         }
 
-        if (attribute == null) {
+        if (_attribute == null) {
             try {
                 workspace().getWriteAccess();
 
                 // container might be null, so create the variable
                 // in the container of this actor.
-                attribute = new Variable(getContainer(), variableNameValue);
+                _attribute = new Variable(getContainer(), variableNameValue);
             } catch (NameDuplicationException ex) {
                 throw new InternalErrorException(ex);
             } finally {
                 workspace().doneWriting();
             }
         }
-
-        return attribute;
+        _attributeVersion = _workspace.getVersion();
+        return _attribute;
     }
 
     /** Return a list of variables that this entity modifies.  The
@@ -281,6 +286,10 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    /** Set the value of the associated container's variable.
+     *  @param value The new value.
+     */
     private void _setValue(Token value) throws IllegalActionException {
         Attribute variable = getModifiedVariable();
 
@@ -302,4 +311,13 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
                             + variableName.getExpression());
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
+    /** Cached reference to the associated variable. */
+    private Attribute _attribute;
+    
+    /** Workspace version for the cached attribute reference. */
+    private long _attributeVersion = -1;
 }
