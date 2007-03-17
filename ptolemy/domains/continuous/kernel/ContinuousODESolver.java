@@ -126,15 +126,6 @@ public abstract class ContinuousODESolver {
      */
     protected abstract int _getRound();
 
-    /** Increment the round and return the time increment associated
-     *  with the round. The time increment is a factor that will be
-     *  multiplied by the step size. It is less than or equal to one.
-     *  @return The time increment associated with the next round.
-     *  @exception IllegalActionException If there is a problem incrementing
-     *  the round.
-     */
-    protected abstract double _incrementRound() throws IllegalActionException;
-
     /** Return true if debugging is turned on in the director.
      *  @return True if debugging is turned on.
      */

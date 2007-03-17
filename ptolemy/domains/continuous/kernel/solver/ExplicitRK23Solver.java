@@ -194,40 +194,15 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
         return _roundCount;
     }
 
-    /** Get the current round factor. If the
-     *  step is finished, then return 1.0.
-     *  @see #_isStepFinished()
+    /** Get the current round factor. 
      */
     protected final double _getRoundTimeIncrement() {
-        if (_isStepFinished()) {
-            return 1.0;
-        } else {
-            return _TIME_INCREMENTS[_roundCount];
-        }
-    }
-
-    /** Increment the round and return the time increment associated
-     *  with the round. The time increment is a factor that will be
-     *  multiplied by the step size. In this solver, this method
-     *  returns { 0.5, 0.75, 1.0, 1.0 }, in each 4 successive
-     *  calls. This method should only be called if _isStepFinished()
-     *  returns true or it will throw an ArrayOutOfBoundsException.
-     *  This method should only be called if _isStepFinished()
-     *  returns true. The _reset() method starts the sequence over.
-     *  @see #_isStepFinished()
-     *  @see #_reset()
-     *  @return The time increment associated with the next round.
-     */
-    protected final double _incrementRound() {
-        double result = _TIME_INCREMENTS[_roundCount];
-        _roundCount++;
-        return result;
+        return _TIME_INCREMENTS[_roundCount];
     }
 
     /** Return true if the current integration step is finished.
      *  This method will return true if _incrementRound() has been
      *  called 4 or more times since _reset().
-     *  @see #_incrementRound()
      *  @see #_reset()
      */
     protected final boolean _isStepFinished() {
