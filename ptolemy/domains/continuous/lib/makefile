@@ -52,9 +52,11 @@ JSRCS = \
 	EventSource.java \
 	Integrator.java \
 	LevelCrossingDetector.java \
+	ZeroCrossingDetector.java \
 	ZeroOrderHold.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ContinuousSinewave.xml \
 	continuousentities.xml \
 	dynamics.xml \
 	eventgenerators.xml \
@@ -62,7 +64,8 @@ OTHER_FILES_TO_BE_JARED = \
 	integral.gif \
 	IntegratorIcon.xml \
 	LevelCrossingDetectorIcon.xml \
-	wavegenerators.xml 
+	wavegenerators.xml \
+	ZeroCrossingDetector.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

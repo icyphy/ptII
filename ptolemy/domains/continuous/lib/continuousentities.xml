@@ -10,6 +10,8 @@
 
 <entity name="DiscreteClock"
                 class="ptolemy.domains.continuous.lib.DiscreteClock"/>
+<entity name="ContinuousSinewave"
+                class="ptolemy.domains.continuous.lib.ContinuousSinewave"/>
 
 <input source="ptolemy/domains/continuous/lib/dynamics.xml"/>
 <input source="ptolemy/domains/continuous/lib/eventgenerators.xml"/>
