@@ -132,7 +132,7 @@ public class ArrayElementAsMatrix extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayElement newObject = (ArrayElement) super.clone(workspace);
+        ArrayElementAsMatrix newObject = (ArrayElementAsMatrix) super.clone(workspace);
         try {
             newObject.output.setTypeAtLeast(ArrayType
                     .elementType(newObject.input));
