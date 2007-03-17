@@ -188,8 +188,20 @@ public class SubscriptionAggregator extends Subscriber {
         Iterator publishers = _findPublishers().iterator();
         while (publishers.hasNext()) {
             Publisher publisher = (Publisher) publishers.next();
+            if (publisher._relation == null) {
+                if (!publisher._updatedLinks) {
+                    // If we call Subscriber.preinitialize()
+                    // before we call Publisher.preinitialize(),
+                    // then the publisher will not have created
+                    // its relation.
+                    publisher._updateLinks();
+                }
+            }
             ComponentRelation relation = publisher._relation;
-            input.liberalLink(relation);
+            if (!input.isLinked(relation)) {
+                // The Publisher._updateLinks() may have already linked us.
+                input.liberalLink(relation);
+            }
             _relations.add(relation);
         }
         Director director = getDirector();
