@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="ContinuousSinewave" extends="ptolemy.domains.ct.kernel.CTCompositeActor">
+<class name="ContinuousSinewave" extends="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <doc>This composite actor generates a timed sine wave.</doc>
