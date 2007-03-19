@@ -104,13 +104,14 @@ test Publisher-1.3 {Convert CompositeActor of our first model to an instance } {
 		     $workspace $model $moml]
 
     # This should not cause an error
-    catch {$model requestChange $request} errMsg
-    #set manager [java::new ptolemy.actor.Manager $workspace "pubManager"]
-    #$model setManager $manager 
-    #$manager execute
+    $model requestChange $request
+    set manager [java::new ptolemy.actor.Manager $workspace "pubManager"]
+    $model setManager $manager 
+    $manager execute
+    list [$model getName] \
+	[[$model getEntity CompositeActor] isClassDefinition]
 
-    list $errMsg
-} {}
+} {PublisherSubscriber2 1}
 
 test Publisher-1.4 {Read in the model created in 1.2 with the class definition} {
     set workspace [java::new ptolemy.kernel.util.Workspace "pubWS"]
