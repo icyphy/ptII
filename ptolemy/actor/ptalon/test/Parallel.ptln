@@ -1,7 +1,7 @@
 attachDanglingPorts;
 
 Parallel is {
-	actor repeater;
+	actorparameter repeater;
 	parameter n;
 	if [[n <= 1]] {
 		repeater();

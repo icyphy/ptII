@@ -4,7 +4,7 @@
  * specified by the user
  */
 IterativeSeries is {
-	actor transformer;
+	actorparameter transformer;
 	parameter n;
 	inport input;
 	outport output;
