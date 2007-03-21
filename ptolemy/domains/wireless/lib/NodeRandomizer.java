@@ -102,6 +102,11 @@ public class NodeRandomizer extends TypedAtomicActor {
         randomizeInPreinitialize.setExpression("false");
         randomizeInPreinitialize.setTypeEquals(BaseType.BOOLEAN);
 
+        resetSeed = new Parameter(this,
+                "resetSeed");
+        resetSeed.setExpression("true");
+        resetSeed.setTypeEquals(BaseType.BOOLEAN);
+        
         range = new Parameter(this, "range");
 
         Type rangeType = new ArrayType(new ArrayType(BaseType.DOUBLE));
@@ -131,6 +136,11 @@ public class NodeRandomizer extends TypedAtomicActor {
      */
     public Parameter range;
 
+    /** If set to true, reset the seed value for each run.  The
+     *  default value is true.
+     */
+    public Parameter resetSeed;
+    
     /** The seed that controls the random number generation to use when
      *  randomizing.
      *  A seed of zero is interpreted to mean that no seed is specified,
@@ -168,10 +178,12 @@ public class NodeRandomizer extends TypedAtomicActor {
         requestChange(doRandomize);
     }
 
-    /** Override the base class to randomize the positions of the nodes
-     *  if <i>randomizeInPreinitialize</i> is set to true. Also initialize
-     *  the random number generator so that if a nonzero seed is provided,
-     *  then the results are repeatable.
+    /** Override the base class to randomize the positions of the
+     *  nodes if <i>randomizeInPreinitialize</i> is set to true. Also
+     *  initialize the random number generator so that if a nonzero
+     *  seed is provided, then the results are repeatable.  If
+     *  <i>resetSeed</i> is set to true (default value), then the seed
+     *  is reset for each run.
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it, or if the range parameter
      *   is malformed.
@@ -188,7 +200,9 @@ public class NodeRandomizer extends TypedAtomicActor {
         if (_random == null) {
             _random = new Random(seedValue);
         } else {
-            _random.setSeed(seedValue);
+            if (((BooleanToken) resetSeed.getToken()).booleanValue()) {
+                _random.setSeed(seedValue);
+            }
         }
 
         if (((BooleanToken) randomizeInPreinitialize.getToken()).booleanValue()) {

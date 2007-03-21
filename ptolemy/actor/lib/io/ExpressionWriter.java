@@ -1,4 +1,4 @@
-/* An actor that writes input tokens as expressiong to the specified file.
+/* An actor that writes input tokens as expressions to the specified file.
 
  @Copyright (c) 2002-2005 The Regents of the University of California.
  All rights reserved.
