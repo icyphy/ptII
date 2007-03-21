@@ -37,6 +37,7 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.lib.hoc.ModelReference;
 import ptolemy.data.expr.StringParameter;
@@ -86,15 +87,7 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
  </ul>
 
  </ul>
- <p>
- Limitations:
- <ul>
- <li>
- FIXME: Supporting full-screen operation creates a dependence on vergil.
- Without that, this actor could be in the actor package.  Need to figure
- out how to remove this dependence.
- </ul>
- <P>
+ 
 
  @author Edward A. Lee
  @version $Id$
@@ -141,6 +134,9 @@ public class VisualModelReference extends ModelReference implements
         closeOnPostfire.setExpression("do nothing");
         closeOnPostfire.addChoice("do nothing");
         closeOnPostfire.addChoice("close Vergil graph");
+        
+        // Create a tableau factory to override look inside behavior.
+        new LookInside(this, "_lookInsideOverride");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -432,4 +428,24 @@ public class VisualModelReference extends ModelReference implements
 
     // Tableau that has been created (if any).
     private Tableau _tableau;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** A tableau factory to override the look inside behavior to open
+     *  the referenced model, if there is one.
+     */
+    public class LookInside extends TableauFactory {
+        public LookInside(NamedObj container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+        }
+        public Tableau createTableau(Effigy effigy) throws Exception {
+            if (_model == null) {
+                throw new IllegalActionException(VisualModelReference.this, "No model referenced.");
+            }
+            Configuration configuration = (Configuration)effigy.toplevel();
+            return configuration.openInstance(_model, effigy);
+        }
+    }
 }
