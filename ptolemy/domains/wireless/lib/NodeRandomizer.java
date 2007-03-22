@@ -74,7 +74,7 @@ import ptolemy.moml.MoMLChangeRequest;
  distributed between <i>x1</i> and <i>x2</i>, and that the Y value is
  uniformly distributed between <i>y1</i> and <i>y2</i>.
 
- @author Sanjeev Kohli, N. Vinay Krishnan, Cheng Tien Ee, Edward Lee and Xiaojun Liu
+ @author Sanjeev Kohli, N. Vinay Krishnan, Cheng Tien Ee, Edward Lee, Xiaojun Liu and Elaine Cheong.
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Yellow (eal)
