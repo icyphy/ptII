@@ -102,11 +102,9 @@ public class NodeRandomizer extends TypedAtomicActor {
         randomizeInPreinitialize.setExpression("false");
         randomizeInPreinitialize.setTypeEquals(BaseType.BOOLEAN);
 
-        resetSeed = new Parameter(this,
-                "resetSeed");
+        resetSeed = new Parameter(this, "resetSeed");
         resetSeed.setExpression("true");
-        resetSeed.setTypeEquals(BaseType.BOOLEAN);
-        
+
         range = new Parameter(this, "range");
 
         Type rangeType = new ArrayType(new ArrayType(BaseType.DOUBLE));

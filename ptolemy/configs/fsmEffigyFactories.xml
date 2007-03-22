@@ -12,7 +12,7 @@
             	    class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here.  Create transitions by holding 
 the control key and dragging from one state to another.  
 Right click to configure the properties of this model, including 
-setting the initial state.  Then delete this annotation.</text>
+setting the final state(s).  Then delete this annotation.</text>
 </svg></configure></property>
 	       <property name="_location"
            	     	class="ptolemy.kernel.util.Location" value="120.0, 5.0"/>
@@ -39,7 +39,7 @@ setting the initial state.  Then delete this annotation.</text>
 create refinements for the states.  Create transitions
 by holding the control key and dragging from one state
 to another.  Right click to configure the properties 
-of this model, including setting the initial state.
+of this model, including setting the final state(s).
 Then delete this annotation.</text>
 </svg></configure></property>
       <property name="_location"

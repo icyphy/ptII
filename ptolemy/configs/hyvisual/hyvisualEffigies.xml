@@ -40,7 +40,7 @@ Create a state machine here (and ports, if needed) and
 create refinements for the states.  Create transitions
 by holding the control key and dragging from one state
 to another.  Right click to configure the properties 
-of this model, including setting the initial state.
+of this model, including setting the final state(s).
 Then delete this annotation.</text>
 </svg></configure></property>
             <property name="_location"
