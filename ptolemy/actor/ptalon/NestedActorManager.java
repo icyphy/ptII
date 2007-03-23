@@ -1087,11 +1087,7 @@ public class NestedActorManager extends CodeManager {
                             ParseTreeWriter writer = new ParseTreeWriter();
                             String outputExpression = writer
                                     .printParseTree(parseTree);
-                            // Use setToken(String) rather than setExpression(String)
-                            // because this forces the parameter to be validated
-                            // (attributeChanged() is called and value dependents
-                            // are notified).
-                            parameter.setToken(outputExpression);
+                            parameter.setExpression(outputExpression);
                         }
                     } catch (ClassCastException e) {
                         Settable parameter = (Settable) actor
