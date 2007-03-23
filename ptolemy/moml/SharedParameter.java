@@ -1,6 +1,6 @@
 /* A parameter that is shared globally in a model.
 
- Copyright (c) 2004-2006 The Regents of the University of California.
+ Copyright (c) 2004-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -33,6 +33,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import ptolemy.actor.ApplicationConfigurer;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Executable;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -80,13 +83,13 @@ import ptolemy.kernel.util.NamedObj;
  models in the same Java virtual machine, not just within a
  single model.
 
- @author Edward A. Lee
+ @author Edward A. Lee, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 4.1
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (acataldo)
  */
-public class SharedParameter extends Parameter {
+public class SharedParameter extends Parameter implements Executable {
     /** Construct a parameter with the given container and name.
      *  The container class will be used to determine which other
      *  instances of SharedParameter are shared with this one.
@@ -142,13 +145,35 @@ public class SharedParameter extends Parameter {
         if (containerClass == null) {
             containerClass = container.getClass();
         }
-
+        if (_delayValidation) {
+            _suppressingPropagation = true; 
+            setLazy(true);
+        }
         _containerClass = containerClass;
         inferValueFromContext(defaultValue);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    public Token getToken() throws IllegalActionException {
+        if (_delayValidation) {
+            boolean previousSuppressing = _suppressingPropagation;
+            try {
+                _suppressingPropagation = false;
+                validate();
+                return super.getToken();
+            } finally {
+                _suppressingPropagation = previousSuppressing;
+            }
+        } else {
+            return super.getToken();
+        }
+    }
+
+    /** Do nothing.
+     */
+    public void fire() throws IllegalActionException {}
 
     /** Return the top level of the containment hierarchy, unless
      *  one of the containers is an instance of EntityLibrary,
@@ -205,6 +230,24 @@ public class SharedParameter extends Parameter {
         }
     }
 
+    /** Do nothing.
+     */
+    public void initialize() {}
+
+    /** Return true.
+     *  @return True.
+     */
+    public boolean isFireFunctional() {
+        return true;
+    }
+
+    /** Return false.
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
+    }
+
     /** Return true if this instance is suppressing propagation.
      *  Unless setSuppressingPropagation() has been called, this
      *  returns false.
@@ -213,6 +256,70 @@ public class SharedParameter extends Parameter {
      */
     public boolean isSuppressingPropagation() {
         return _suppressingPropagation;
+    }
+
+    /** Do nothing.
+     *  @param count The number of iterations to perform, ignored by this
+     *  method.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  @return Executable.COMPLETED.
+     */
+    public int iterate(int count) throws IllegalActionException {
+        return Executable.COMPLETED;
+    }
+
+    /** Do nothing.
+     *  @return True.
+     */
+    public boolean postfire() {
+        return true;
+    }
+    
+    /** Do nothing.
+     *  @return True.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public boolean prefire() throws IllegalActionException {
+        return true;
+    }
+
+    /** Traverse the model and update values
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void preinitialize() throws IllegalActionException {
+        if (_delayValidation) { 
+            _suppressingPropagation = false;
+            validate();
+        }
+    }
+
+    /** Override the base class to register as a piggyback with the
+     *  nearest opaque composite actor above in the hierarchy.
+
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace.
+     *  @exception NameDuplicationException If the container already has
+     *   an entity with the name of this entity.
+     */
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
+        if (container != getContainer()) {
+            // May need to unregister as a piggyback with the previous container.
+            NamedObj previousContainer = getContainer();
+            if (previousContainer instanceof CompositeActor) {
+                ((CompositeActor)previousContainer).removePiggyback(this);
+            }
+        }
+        super.setContainer(container);
+        while (container != null) {
+            if (container instanceof CompositeActor && ((CompositeActor)container).isOpaque()) {
+                ((CompositeActor)container).addPiggyback(this);
+                break;
+            }
+            container = container.getContainer();
+        }
     }
 
     /** Override the base class to also set the expression of shared
@@ -282,6 +389,39 @@ public class SharedParameter extends Parameter {
         return _sharedParameterSet;
     }
 
+    /** Supress propagation.
+     */
+    public void stop() {
+        if (_delayValidation) { 
+            _suppressingPropagation = true;
+        }
+    }
+
+    /** Supress propagation.
+     */
+    public void stopFire() {
+        if (_delayValidation) { 
+            _suppressingPropagation = true;
+        }
+    }
+
+    /** Supress propagation.
+     */
+    public void terminate() {
+        if (_delayValidation) { 
+            _suppressingPropagation = true;
+        }
+    }
+
+    /** Supress propagation.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void wrapup() throws IllegalActionException {
+        if (_delayValidation) {
+            _suppressingPropagation = true;
+        }
+    }
+
     /** Override the base class to also validate the shared instances.
      *  @return A Collection of all the shared parameters within the same
      *   model as this parameter, see {@link #sharedParameterSet}.
@@ -308,6 +448,8 @@ public class SharedParameter extends Parameter {
         }
 
         if (!_suppressingPropagation) {
+        System.out.println("SharedParameter.validate(): " + _suppressingPropagation);
+
             Iterator sharedParameters = sharedParameterSet().iterator();
             while (sharedParameters.hasNext()) {
                 SharedParameter sharedParameter = (SharedParameter) sharedParameters
@@ -393,6 +535,12 @@ public class SharedParameter extends Parameter {
 
     /** The container class. */
     private Class _containerClass;
+
+    /** True if we are delaying validation.
+     *  FIXME: This variable is only present for testing and development.
+     *  To try out the delay of validation, set it to true and recompile.
+     */
+    private static final boolean _delayValidation = false;
 
     /** Cached version of the shared parameter set. */
     private HashSet _sharedParameterSet;
