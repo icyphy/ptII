@@ -448,8 +448,6 @@ public class SharedParameter extends Parameter implements Executable {
         }
 
         if (!_suppressingPropagation) {
-        System.out.println("SharedParameter.validate(): " + _suppressingPropagation);
-
             Iterator sharedParameters = sharedParameterSet().iterator();
             while (sharedParameters.hasNext()) {
                 SharedParameter sharedParameter = (SharedParameter) sharedParameters
