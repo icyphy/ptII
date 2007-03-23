@@ -134,8 +134,16 @@ public class NodeRandomizer extends TypedAtomicActor {
      */
     public Parameter range;
 
-    /** If set to true, reset the seed value for each run.  The
-     *  default value is true.
+    /** If set to true, reset the random number generator with the
+     *  seed value each time preintialize() is invoked.  The default
+     *  value is true, which means that if the seed value is non-zero,
+     *  the node layout will be the same each time this model is run.
+     *  When the value is false and the seed value is non-zero, the
+     *  random number generator will not be reset, and the node layout
+     *  will be different each time this model is run within the same
+     *  session (within the lifetime of the JVM), although the overall
+     *  pattern of node layouts will be the same across different JVM
+     *  sessions.
      */
     public Parameter resetSeed;
     
