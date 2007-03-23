@@ -41,6 +41,7 @@ import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
+import ptolemy.actor.parameters.LocationParameter;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -53,8 +54,8 @@ import ptolemy.data.expr.ParseTreeWriter;
 import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 
 /**
@@ -175,7 +176,11 @@ public class NestedActorManager extends CodeManager {
                         }
                         Parameter param = (Parameter) ptalonActor
                                 .getAttribute(lhs);
-                        param.setExpression(rhs);
+                        // Use setToken(String) rather than setExpression(String)
+                        // because this forces the parameter to be validated
+                        // (attributeChanged() is called and value dependents
+                        // are notified).
+                        param.setToken(rhs);
                     }
                     _currentActorTree.assignPtalonParameters(ptalonActor);
                     _currentActorTree.makeConnections(ptalonActor);
@@ -195,7 +200,12 @@ public class NestedActorManager extends CodeManager {
                             rhs = rhs.substring(1, rhs.length() - 2);
                         }
                         Parameter param = (Parameter) entity.getAttribute(lhs);
-                        param.setExpression(rhs);
+                        // Use setToken(String) rather than setExpression(String)
+                        // because this forces the parameter to be validated
+                        // (attributeChanged() is called and value dependents
+                        // are notified).
+                        // FIXME: Will get a null pointer exception if param is null.
+                        param.setToken(rhs);
                     }
                     _currentActorTree.makeConnections(entity);
                     _currentActorTree.assignNonPtalonParameters(entity);
@@ -998,6 +1008,9 @@ public class NestedActorManager extends CodeManager {
                     Token result = _parseTreeEvaluator.evaluateParseTree(
                             _parseTree, _scope);
                     parameter.setToken(result);
+                    // Validate the parameter to ensure that any value
+                    // dependents are notified.
+                    parameter.validate();
                 }
             } catch (Exception e) {
                 throw new PtalonRuntimeException("Trouble making connections",
@@ -1032,12 +1045,29 @@ public class NestedActorManager extends CodeManager {
                                 .getAttribute(boolParam);
                         if (parameter == null) {
                             String uniqueName = actor.uniqueName(boolParam);
-                            parameter = new Parameter(actor, uniqueName);
+                            // FIXME: Ptalon assumes that any parameter we
+                            // give that is not predefined in the actor should
+                            // be an instance of Parameter. This is not always
+                            // the case. Ptalon syntax needs to be extended
+                            // to specify new parameters of a specified class.
+                            // For now, we intercept parameters with name "_location"
+                            // since these are particularly useful for graphical
+                            // demos.
+                            if (uniqueName.equals("_location")) {
+                                parameter = new LocationParameter(actor, uniqueName);
+                            } else {
+                                parameter = new Parameter(actor, uniqueName);
+                            }
                         }
                         try {
                             Token result = _parseTreeEvaluator
                                     .evaluateParseTree(parseTree, _scope);
                             parameter.setToken(result);
+                            // We have to validate the parameter so that
+                            // value dependents (if any) are notified of
+                            // the new value, and so that attributeChanged()
+                            // is called on the actor.
+                            parameter.validate();
                         } catch (IllegalActionException e) {
                             ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
                             Set expressionVariables = collector
@@ -1057,10 +1087,14 @@ public class NestedActorManager extends CodeManager {
                             ParseTreeWriter writer = new ParseTreeWriter();
                             String outputExpression = writer
                                     .printParseTree(parseTree);
-                            parameter.setExpression(outputExpression);
+                            // Use setToken(String) rather than setExpression(String)
+                            // because this forces the parameter to be validated
+                            // (attributeChanged() is called and value dependents
+                            // are notified).
+                            parameter.setToken(outputExpression);
                         }
                     } catch (ClassCastException e) {
-                        AbstractSettableAttribute parameter = (AbstractSettableAttribute) actor
+                        Settable parameter = (Settable) actor
                                 .getAttribute(boolParam);
                         ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
                         Set expressionVariables = collector
