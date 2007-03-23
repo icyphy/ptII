@@ -168,7 +168,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     ////                         public methods                    ////
     
     /** Add the specified object to the list of objects whose action
-     *  methods should be invoked upon invovocation of the corresponding
+     *  methods should be invoked upon invocation of the corresponding
      *  actions methods of this object.
      *  @param piggyback The piggyback object.
      *  @see #removePiggyback(Executable)
