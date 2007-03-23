@@ -380,9 +380,12 @@ public abstract class ColtRandomSource extends Source {
         }
 
         seedValue = value + "L";
-        seed.setSuppressingPropagation(true);
-        seed.setExpression(seedValue);
-        seed.setSuppressingPropagation(false);
+        try {
+            seed.setSuppressingPropagation(true);
+            seed.setExpression(seedValue);
+        } finally {
+            seed.setSuppressingPropagation(false);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
