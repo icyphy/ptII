@@ -1,6 +1,6 @@
 /* A subscriber that aggregates messages from multiple publishers.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,9 +27,13 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ptolemy.actor.Director;
 import ptolemy.data.Token;
@@ -52,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  that matches the regular expression are aggregated using the
  operation given by the <i>operation</i> parameter.
  
- @author Edward A. Lee, Raymond A. Cardillo
+ @author Edward A. Lee, Raymond A. Cardillo, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Green (cxh)
@@ -109,6 +113,9 @@ public class SubscriptionAggregator extends Subscriber {
             } else {
                 _addOperation = false;
             }
+        } else if (attribute == channel) {
+            _channelPattern = Pattern.compile(channel.stringValue());
+            super.attributeChanged(attribute);
         } else {
             super.attributeChanged(attribute);
         }
@@ -122,11 +129,35 @@ public class SubscriptionAggregator extends Subscriber {
      *  @return True if this subscriber subscribes to the specified channel.
      */
     protected boolean channelMatches(String channelName) {
+        // It turns out that Java regex is computational intensive.
+        // For an analysis, see http://swtch.com/~rsc/regexp/regexp1.html
         if (_channel != null && channelName != null) {
-            return channelName.matches(_channel);
-        } else {
-            return false;
+            if (_channelMatches.contains(channelName)) {
+                // If we've already been asked about this channel and returned
+                // true, then return true again.
+                return true;
+            }
+            if (_channelDoesNotMatch.contains(channelName)) {
+                // If we've already been asked about this channel and returned
+                // false, then return false again.
+                return false;
+            }
+            if (_channelPattern == null) {
+                // We call channelMatches() many times, so cache the compiled
+                // pattern.
+                _channelPattern = Pattern.compile(_channel);
+            }
+            Matcher matcher = _channelPattern.matcher(channelName);
+            if (matcher.matches()) {
+                _channelMatches.add(channelName);
+                return true;
+            }
+            // FIXME: this might end up consuming lots of space in large
+            // graphs.  We could store the hash of the channelName
+            // and if the hash is present, then do the comparison. 
+            _channelDoesNotMatch.add(channelName);
         }
+        return false;
     }
 
     /** Read at most one input token from each input
@@ -244,6 +275,15 @@ public class SubscriptionAggregator extends Subscriber {
 
     /** Indicator that the operation is "add" rather than "multiply". */
     private boolean _addOperation = true;
+
+    /** Set of channel names that have already not been matched. */ 
+    private Set _channelDoesNotMatch = new HashSet();
+
+    /** Set of channel names that have already matched. */ 
+    private Set _channelMatches = new HashSet();
+
+    /** Regex Pattern for _channelName. */
+    private Pattern _channelPattern;
 
     /** The list of relations used to link to subscribers. */
     private List _relations = new LinkedList();
