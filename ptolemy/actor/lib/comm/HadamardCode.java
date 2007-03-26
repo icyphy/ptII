@@ -121,6 +121,7 @@ public class HadamardCode extends Source {
      *  calculate the new Hadamard sequence; if it is <i>index</i>,
      *  then verify that is non-negative and check if it is different
      *  from the previous value.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If <i>index</i> is negative
      *   or <i>log2Length</i> is not strictly positive.
      */

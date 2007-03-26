@@ -177,6 +177,7 @@ public class PoissonClock extends TimedSource implements Rollbackable {
     /**     
      * If the argument is the meanTime parameter, check that it is
      * positive.
+     * @param attribute The attribute that changed. 
      * @exception IllegalActionException If the meanTime value is
      * not positive.
      */

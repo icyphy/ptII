@@ -149,6 +149,7 @@ public class Interpolator extends SequenceSource {
     ////                         public methods                    ////
 
     /** Check the validity of the parameter.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the argument is the
      *   <i>values</i> parameter and it does not contain an one dimensional
      *   array; or the argument is the <i>indexes</i> parameter and it does

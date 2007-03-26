@@ -118,6 +118,7 @@ public class HammingDecoder extends Transformer {
     /** If the attribute being changed is <i>uncodedRate</i> or
      *  <i>uncodedRate</i>, then verify that it is a positive integer.
      *  Set the tokenConsumptionRate and tokenProductionRate.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If <i>initialState</i> is negative
      *  or <i>uncodedRate</i> is non-positive or any element of
      *  <i>polynomialArray</i> is non-positive.

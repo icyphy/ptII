@@ -440,6 +440,9 @@ public class DatagramReader extends TypedAtomicActor {
      *  to, when possible, permit prompt changes (such as to the
      *  socket number being monitored for incoming datagrams), while
      *  at the same time maintaining consistency.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not
+     *   allowed.  
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {

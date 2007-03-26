@@ -101,6 +101,7 @@ public class XYScope extends XYPlotter {
     /** Notify this that an attribute has changed.  If either parameter
      *  is changed, then this actor updates the configuration of the
      *  visible plot.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the expression of the
      *  attribute cannot be parsed or cannot be evaluated.
      */

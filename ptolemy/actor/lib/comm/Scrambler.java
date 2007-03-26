@@ -205,6 +205,7 @@ public class Scrambler extends Transformer {
 
     /** If the attribute being changed is <i>polynomial</i>, then
      *  verify that is a positive integer and the lower-order bit is 1.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If <i>polynomial</i> is
      *  non-positive or the lower-order bit is not 1.
      */

@@ -184,6 +184,7 @@ public class HuffmanBasic extends Transformer {
 
     /** If the attribute being changed is <i>pmf</i>, then verify
      *  all the elements are positive and their sum is 1.0.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If any element in <i>pmf</i>
      *  is non-positive or the sum is not 1.0.
      */

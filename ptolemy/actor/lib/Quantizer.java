@@ -113,6 +113,7 @@ public class Quantizer extends Transformer {
     /** If the argument is the levels parameter, check that the array
      *  is increasing and has the right dimension.  Recompute the
      *  quantization thresholds.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the levels array is not
      *   increasing.
      */

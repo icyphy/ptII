@@ -120,6 +120,7 @@ public class MatrixViewer extends AbstractPlaceableActor {
 
     /** Notification that an attribute has changed.  If the attribute is
      *  width or height then read the value of the attribute.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the expression of the
      *   attribute cannot be parsed or cannot be evaluated.
      */

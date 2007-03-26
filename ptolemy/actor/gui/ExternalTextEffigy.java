@@ -90,6 +90,7 @@ public class ExternalTextEffigy extends TextEffigy {
      *  text editor in one transaction. NOTE: This depends on
      *  TextEditorTableau.createTableau(effigy) setting the identifier
      *  expression after newTextEffigy(container, text).
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the base class throws it.
      */
     public void attributeChanged(Attribute attribute)

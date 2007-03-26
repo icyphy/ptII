@@ -203,6 +203,7 @@ public class HoverLinearizer extends TypedAtomicActor {
 
     /** Update the parameter if they have been changed.
      *  The new parameter will be used only after this method is called.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException  Not thrown in this base class.
      */
     public void attributeChanged(Attribute att) throws IllegalActionException {

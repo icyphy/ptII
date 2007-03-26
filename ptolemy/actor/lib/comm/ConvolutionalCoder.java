@@ -230,6 +230,7 @@ public class ConvolutionalCoder extends Transformer {
      *  <i>polynomialArray</i>, then verify that each of its elements is
      *  a positive integer and find the maximum value among them, which
      *  is used to compute the highest order among all polynomials.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If <i>uncodedRate</i> is
      *  non-positive or any element of <i>polynomialArray</i> is non-positive.
      */

@@ -182,6 +182,7 @@ public abstract class ColtRandomSource extends Source {
 
     /** If the attribute is <i>generatorClass</i> or <i>seed</i>
      *  then create the base random number generator.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */

@@ -98,6 +98,7 @@ public class Plotter extends PlotterBase {
     ////                         public methods                    ////
 
     /** If the attribute is <i>startingDataset</i>, then check its validity.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>startingDataset</i> and its value is negative, or if the
      *   superclass throws it.

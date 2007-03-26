@@ -148,6 +148,7 @@ public class Pulse extends SequenceSource {
 
     /** If the attribute being changed is <i>indexes</i>, then check
      *  that it is increasing and nonnegative.
+     *  @param attribute The attribute that changed. 
      *  @exception IllegalActionException If the indexes vector is not
      *   increasing and nonnegative, or the indexes is not a row vector.
      */

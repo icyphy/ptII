@@ -104,6 +104,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
     ////                         public methods                    ////
 
     /** Update the local cache of the sampling period if it has been changed.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the sampling period is
      *  less than or equal to 0.
      */

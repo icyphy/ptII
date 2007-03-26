@@ -110,6 +110,7 @@ public class TimedSource extends Source implements TimedActor {
      *  than zero and greater than the current time, then ask the director
      *  to fire this actor at that time.  If the new value is less than
      *  the current time, then request refiring at the current time.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void attributeChanged(Attribute attribute)
