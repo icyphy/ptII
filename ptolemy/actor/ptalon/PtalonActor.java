@@ -135,15 +135,16 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  a contained attribute when its value changes.  This initially responds
      *  to changes in the <i>ptalonCode</i> parameter.  Later it responds
      *  to changes in parameters specified in the Ptalon code itself.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
-    public void attributeChanged(Attribute att) throws IllegalActionException {
-        super.attributeChanged(att);
-        if (att == ptalonCodeLocation) {
+    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+        super.attributeChanged(attribute);
+        if (attribute == ptalonCodeLocation) {
             _initializePtalonCodeLocation();
-        } else if (att instanceof PtalonParameter) {
-            PtalonParameter p = (PtalonParameter) att;
+        } else if (attribute instanceof PtalonParameter) {
+            PtalonParameter p = (PtalonParameter) attribute;
             if ((p.hasValue())
                     && (!p.getVisibility().equals(Settable.NOT_EDITABLE))) {
                 try {
@@ -396,14 +397,15 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     /**
      * Add the attribute, and if attribute is a PtalonParameter,
      * add it to a list of Ptalon parameters.
+     * @param attribute The attribute to be added.
      * @exception NameDuplicationException If the superclass throws it.
      * @throws IllegalActionException If the superclass throws it.
      */
-    protected void _addAttribute(Attribute p) throws NameDuplicationException,
-            IllegalActionException {
-        super._addAttribute(p);
-        if (p instanceof PtalonParameter) {
-            _ptalonParameters.add((PtalonParameter) p);
+    protected void _addAttribute(Attribute attribute)
+            throws NameDuplicationException, IllegalActionException {
+        super._addAttribute(attribute);
+        if (attribute instanceof PtalonParameter) {
+            _ptalonParameters.add((PtalonParameter) attribute);
         }
     }
 
