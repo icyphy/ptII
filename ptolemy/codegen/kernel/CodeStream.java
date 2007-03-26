@@ -494,6 +494,15 @@ public class CodeStream {
         return name.trim();
     }
 
+    private static String _checkArgumentName(String name)
+            throws IllegalActionException {
+        if (name.startsWith("$")) {
+            return '\\' + name;
+        } else {
+            return name;
+        }
+}
+    
     /**
      * Type check the parameter name.
      * Check if the given string starts with '$'. Insert '\' before '$'. 
@@ -1128,8 +1137,9 @@ public class CodeStream {
                     throws IllegalActionException {
             // Text-substitute for each parameters.
             for (int i = 0; i < arguments.size(); i++) {
-                String replaceString = arguments.get(i).toString();
-                
+                            
+                //String replaceString = arguments.get(i).toString();
+                String replaceString = _checkArgumentName(arguments.get(i).toString());
                 String parameterName = _checkParameterName(parameters.get(i).toString());
                 try {
                     codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
