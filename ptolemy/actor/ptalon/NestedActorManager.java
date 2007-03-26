@@ -55,7 +55,10 @@ import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.ParserAttribute;
 import ptolemy.util.StringUtilities;
 
 /**
@@ -186,6 +189,43 @@ public class NestedActorManager extends CodeManager {
                     _currentActorTree.makeConnections(ptalonActor);
                     _currentActorTree.removeDynamicLeftHandSides();
                 } else {
+                    // Actors declared in .ptln code may be defined in
+                    // MoML.  Using code from
+                    // ptolemy.moml.MoMLChangeRequest._execute() to
+                    // create a MoMLParser to parse a MoML description
+                    // containing a declaration of the actor.
+                    
+                    // The context in which to execute the request.
+                    NamedObj context = _actor;
+                                        
+                    // The MoMLParser.
+                    MoMLParser momlParser = null;
+                    
+                    // Check to see whether there is a parser...
+                    if (context != null) {
+                        momlParser = ParserAttribute.getParser(context);
+                        momlParser.reset();
+                    }
+
+                    if (momlParser == null) {
+                        // There is no previously associated parser (can only
+                        // happen if context is null).
+                        momlParser = new MoMLParser();
+                    }
+
+                    if (context != null) {
+                        momlParser.setContext(context);
+                    }
+
+                    // MoML description for actor declaration.
+                    String description = "<entity name =\"" +
+                        uniqueName + "\" class =\"" + actor + "\"/>";
+                    momlParser.parse(null, description);
+                    ComponentEntity entity = _actor.getEntity(uniqueName);
+                    if (entity == null) {
+                        throw new PtalonRuntimeException("Could not create new actor.");
+                    }
+                    /*
                     Class<?> genericClass = Class.forName(actor);
                     Class<? extends ComponentEntity> entityClass = genericClass
                             .asSubclass(ComponentEntity.class);
@@ -193,6 +233,7 @@ public class NestedActorManager extends CodeManager {
                             .getConstructor(CompositeEntity.class, String.class);
                     ComponentEntity entity = entityConstructor.newInstance(
                             _actor, uniqueName);
+                     */
                     for (int i = 1; i < parsedExpression.length; i = i + 2) {
                         String lhs = parsedExpression[i];
                         String rhs = parsedExpression[i + 1];
