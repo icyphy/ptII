@@ -105,8 +105,10 @@ public class Expression extends CCodeGeneratorHelper {
      * @return The processed code string.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-        return processCode(_cParseTreeCodeGenerator.generateInitializeCode());
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateInitializeCode());
+        code.append(processCode(_cParseTreeCodeGenerator.generateInitializeCode()));
+        return code.toString();
     }
 
     /**
@@ -118,7 +120,8 @@ public class Expression extends CCodeGeneratorHelper {
      * @return The processed code string.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
 
         if (_cParseTreeCodeGenerator == null) {
             // FIXME: why does this need to be done here?
@@ -148,8 +151,8 @@ public class Expression extends CCodeGeneratorHelper {
             //        "Expression yields a null result: "
             //                + actor.expression.getExpression());
         }
-
-        return processCode(_cParseTreeCodeGenerator.generatePreinitializeCode());
+        code.append(processCode(_cParseTreeCodeGenerator.generatePreinitializeCode()));
+        return code.toString();
     }
 
     /**
@@ -182,7 +185,7 @@ public class Expression extends CCodeGeneratorHelper {
      */
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        super.generateWrapupCode();
+        code.append(super.generateWrapupCode());
         code.append(processCode(_cParseTreeCodeGenerator.generateWrapupCode()));
 
         // Free up memory
@@ -230,7 +233,7 @@ public class Expression extends CCodeGeneratorHelper {
                 if (name.equals("time")) {
                     return new ObjectToken("time(NULL)");
                 } else if (name.equals("iteration")) {
-                    return new ObjectToken("(iteration + 1)");
+                    return new ObjectToken("$actorSymbol(iterationCount)");
                 }
 
                 for (int i = 0; i < _actor.inputPortList().size(); i++) {
