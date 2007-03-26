@@ -9,23 +9,6 @@ $type $actorSymbol(_zero);
 $actorSymbol(_zero) = $zero;
 /**/
 
-/*** postfireBlock ***/
-if ($actorSymbol(iterationCount) <= $ref(indexes, $size(indexes) - 1)) {
-    $actorSymbol(iterationCount) ++;
-}
-
-if ($actorSymbol(match)) {
-    $actorSymbol(indexColCount) ++;
-    $actorSymbol(match) = 0;
-}
-
-if ($actorSymbol(indexColCount) >= $size(indexes) && $val(repeat)) {
-    $actorSymbol(iterationCount) = 0;
-    $actorSymbol(indexColCount) = 0;
-}   
-/**/
-
-
 /*** fireBlock ***/
 if ($actorSymbol(indexColCount) < $size(indexes) 
         && $actorSymbol(iterationCount)
@@ -39,7 +22,19 @@ if ($actorSymbol(indexColCount) < $size(indexes)
     $ref(output) = $actorSymbol(_zero);             
 }
     
-$this.postfireBlock();
+if ($actorSymbol(iterationCount) <= $ref(indexes, $size(indexes) - 1)) {
+    $actorSymbol(iterationCount) ++;
+}
+
+if ($actorSymbol(match)) {
+    $actorSymbol(indexColCount) ++;
+    $actorSymbol(match) = 0;
+}
+
+if ($actorSymbol(indexColCount) >= $size(indexes) && $val(repeat)) {
+    $actorSymbol(iterationCount) = 0;
+    $actorSymbol(indexColCount) = 0;
+}
 /**/
 
 
