@@ -152,3 +152,72 @@ Called fire()
 Called postfire()
 Called wrapup()
 } {1 1 1 1 1}}
+
+
+test SubscriptionAggregator-4.0 {7*9*11 SubscriptionAggregators} {
+    set e3 [sdfModel 5]
+
+    set ramp [java::new ptolemy.actor.lib.Ramp $e3 ramp]
+    set publisher [java::new ptolemy.actor.lib.Publisher $e3 publisher]
+    set channelP [getParameter $publisher channel]
+    $channelP setExpression "channel42"
+    $publisher attributeChanged $channelP
+
+    $e3 connect \
+	[java::field [java::cast ptolemy.actor.lib.Source $ramp] \
+	     output] \
+	[java::field $publisher input]
+
+    set rec [java::new ptolemy.actor.lib.Recorder $e3 rec]
+
+    for {set k 0} {$k < 7} {incr k} {
+	set ek [java::new ptolemy.actor.TypedCompositeActor $e3 ek-$k]        
+
+	# Create an output port
+	set pk [java::new ptolemy.actor.TypedIOPort $ek Pk false true]
+	$pk setMultiport true
+
+	for {set j 0} {$j < 9} {incr j} {
+   	    puts -nonewline .
+
+	    set ej [java::new ptolemy.actor.TypedCompositeActor $ek ej-$j]        
+	    # Create an output port
+	    set pj [java::new ptolemy.actor.TypedIOPort $ej Pj false true]
+	    $pj setMultiport true
+
+	    for {set i 0} {$i < 11} {incr i} {
+		set subAgg [java::new ptolemy.actor.lib.SubscriptionAggregator \
+				$ej subagg-$i]
+		set channelS [getParameter $subAgg channel]
+		$channelS setExpression "channel.*"
+		$subAgg attributeChanged $channelS
+
+		set operation [getParameter $subAgg operation]
+		$operation setExpression "multiply"
+		$subAgg attributeChanged $operation
+
+		$ej connect \
+		    [java::field [java::cast ptolemy.actor.lib.Subscriber $subAgg] \
+			 output] \
+		    $pj
+
+	    }
+	    $ek connect \
+		$pj \
+		$pk
+	}
+	$e3 connect \
+		$pk \
+		[java::field [java::cast ptolemy.actor.lib.Sink $rec] input] 
+    }
+
+    [$e3 getManager] execute
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" output
+    set count [$rec getCount]
+    list $count \
+	[enumToTokenValues [$rec getRecord 0]] \
+	[enumToTokenValues [$rec getRecord [expr {$count/5 - 1}]]] \
+	[enumToTokenValues [$rec getRecord [expr {$count/5}]]]
+} {35 {0 1 2 3 4} {0 1 2 3 4} {{"_"} {"_"} {"_"} {"_"} {"_"}}} 
