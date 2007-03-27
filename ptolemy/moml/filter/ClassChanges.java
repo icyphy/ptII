@@ -244,6 +244,10 @@ public class ClassChanges implements MoMLFilter {
         _classChanges.put("ptolemy.data.expr.ParameterSet",
                 "ptolemy.actor.parameters.ParameterSet");
 
+        // ColtSeedParameter is obsolete
+        _classChanges.put("ptolemy.actor.lib.colt.ColtSeedParameter",
+                "ptolemy.moml.SharedParameter");
+
         // Look for Kepler's NamedObjId, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open
         // Kepler models in Ptolemy.
