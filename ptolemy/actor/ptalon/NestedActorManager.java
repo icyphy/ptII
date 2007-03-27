@@ -31,8 +31,6 @@ package ptolemy.actor.ptalon;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.Constructor;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -53,7 +51,6 @@ import ptolemy.data.expr.ParseTreeSpecializer;
 import ptolemy.data.expr.ParseTreeWriter;
 import ptolemy.data.expr.PtParser;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -226,15 +223,7 @@ public class NestedActorManager extends CodeManager {
                     if (entity == null) {
                         throw new PtalonRuntimeException("Could not create new actor.");
                     }
-                    /*
-                    Class<?> genericClass = Class.forName(actor);
-                    Class<? extends ComponentEntity> entityClass = genericClass
-                            .asSubclass(ComponentEntity.class);
-                    Constructor<? extends ComponentEntity> entityConstructor = entityClass
-                            .getConstructor(CompositeEntity.class, String.class);
-                    ComponentEntity entity = entityConstructor.newInstance(
-                            _actor, uniqueName);
-                     */
+
                     for (int i = 1; i < parsedExpression.length; i = i + 2) {
                         String lhs = parsedExpression[i];
                         String rhs = parsedExpression[i + 1];
@@ -278,34 +267,6 @@ public class NestedActorManager extends CodeManager {
         } catch (Exception e) {
             throw new PtalonRuntimeException("Unable to add actor " + name, e);
         }
-    }
-
-    /**
-     * Set the given parameter in the current nested actor declaration to
-     * have the specified expression label.  This label will be
-     * used to reference the arithmetic value of the expression
-     * assigned during runtime.
-     * @param paramName The parameter name.
-     * @param expressionLabel The arithmetic expression label.
-     * @exception PtalonScopeException If not in an actor declaration.
-     */
-    public void addArithParam(String paramName, String expressionLabel)
-            throws PtalonScopeException {
-        _currentActorTree.addArithParam(paramName, expressionLabel);
-    }
-
-    /**
-     * Set the given parameter in the current nested actor declaration to
-     * have the specified expression label.  This label will be
-     * used to reference the boolean value of the expression
-     * assigned during runtime.
-     * @param paramName The parameter name.
-     * @param expressionLabel The boolean expression label.
-     * @exception PtalonScopeException If not in an actor declaration.
-     */
-    public void addBoolParam(String paramName, String expressionLabel)
-            throws PtalonScopeException {
-        _currentActorTree.addBoolParam(paramName, expressionLabel);
     }
 
     /**
@@ -397,37 +358,6 @@ public class NestedActorManager extends CodeManager {
      */
     public void addUnknownLeftSide(String prefix, String expression) {
         _currentActorTree.addUnknownLeftSide(prefix, expression);
-    }
-
-    /**
-     * Create a nested actor with respect to this code manager's
-     * actor.
-     * @param container The actor that will contain the created actor, which
-     * should be a descendent of this code manager's actor.
-     * @param uniqueName The unique name for the nested actor declaration
-     * this actor refers to.
-     * @return The created actor.
-     * @exception PtalonRuntimeException If there is any trouble creating this actor.
-     */
-    public ComponentEntity createNestedActor(PtalonActor container,
-            String uniqueName) throws PtalonRuntimeException {
-        ActorTree descendent = null;
-        for (ActorTree tree : _trees) {
-            if (tree.getActorTree(uniqueName) != null) {
-                descendent = tree.getActorTree(uniqueName);
-                break;
-            }
-        }
-        if (descendent == null) {
-            throw new PtalonRuntimeException("No object with name "
-                    + uniqueName);
-        }
-        try {
-            return descendent.createNestedActor(container);
-        } catch (Exception e) {
-            throw new PtalonRuntimeException("Unable to create " + uniqueName,
-                    e);
-        }
     }
 
     /**
@@ -524,8 +454,7 @@ public class NestedActorManager extends CodeManager {
     }
 
     /**
-     * Pop into Push an actor name onto the current tree, or create a new
-     * tree if entering a new nested actor declaration.
+     * Pop an actor off of the current tree and return the name.
      * 
      * @return The unique name of the actor declaration being popped from.
      * @exception PtalonScopeException If not inside an actor declaration.
@@ -558,87 +487,6 @@ public class NestedActorManager extends CodeManager {
             _currentActorTree = _currentActorTree.addChild(uniqueName);
         }
         _currentActorTree.setSymbol(actorName);
-    }
-
-    /**
-     * Push an actor name onto the current tree, or create a new
-     * tree if entering a new nested actor declaration.  This is
-     * called when loading an existing Ptalon actor from
-     * a PtalonML description.  After this is called 
-     * setCurrentSymbol should also get called.
-     * 
-     * @param actorName The unique name of the actor.
-     * @exception PtalonScopeException If actorName is not a valid
-     * parameter or import in the current scope.
-     */
-    public void pushUniqueActorDeclaration(String actorName)
-            throws PtalonScopeException {
-        if (_currentActorTree == null) {
-            _currentActorTree = new ActorTree(null, actorName);
-            _trees.add(_currentActorTree);
-        } else {
-            _currentActorTree = _currentActorTree.addChild(actorName);
-        }
-    }
-
-    /**
-     * Puts the specified boolean parameter in the scope of the current
-     * nested actor declaration, if there is any.
-     * @param param The parameter name.
-     */
-    public void putBoolParamInScope(String param) {
-        if (_currentActorTree == null) {
-            return;
-        }
-        _currentActorTree.putBoolParamInScope(param);
-    }
-
-    /**
-     * Puts the specified integer parameter in the scope of the current
-     * nested actor declaration, if there is any.
-     * @param param The parameter name.
-     */
-    public void putIntParamInScope(String param) {
-        if (_currentActorTree == null) {
-            return;
-        }
-        _currentActorTree.putIntParamInScope(param);
-    }
-
-    /**
-     * Sets the current actor's symbol, which should be a symbol
-     * name in the Ptalon code for a parameter or import.
-     * @param name The symbol.
-     * @exception PtalonRuntimeException If not in the scope of an actor declaration.
-     */
-    public void setCurrentSymbol(String name) throws PtalonRuntimeException {
-        if (_currentActorTree != null) {
-            _currentActorTree.setSymbol(name);
-        } else {
-            throw new PtalonRuntimeException("Not in an actor declaration.");
-        }
-    }
-
-    /**
-     * Set the given named arithmetic expression to have the specified
-     * value.  This will be called at runtime to set the value
-     * of an arithmetic expression. 
-     * @param expressionName The name of the arithmetic expression.
-     * @param value The value to set it to.
-     */
-    public void setArithExpr(String expressionName, int value) {
-        _arithmeticExpressions.put(expressionName, value);
-    }
-
-    /**
-     * Set the given named boolean expression to have the specified
-     * value.  This will be called at runtime to set the value
-     * of an boolean expression. 
-     * @param expressionName The name of the boolean expression.
-     * @param value The value to set it to.
-     */
-    public void setBoolExpr(String expressionName, boolean value) {
-        _booleanExpressions.put(expressionName, value);
     }
 
     /**
@@ -788,20 +636,6 @@ public class NestedActorManager extends CodeManager {
     ////                        private members                    ////
 
     /**
-     * Each key is an arithmetic expression label, such as
-     * "_arithmetic2", and it's value is what it evaluates
-     * to in the current runtime environment.
-     */
-    private Map<String, Integer> _arithmeticExpressions = new Hashtable<String, Integer>();
-
-    /**
-     * Each key is a boolean expression label, such as
-     * "_boolean2", and it's value is what it evaluates
-     * to in the current runtime environment.
-     */
-    private Map<String, Boolean> _booleanExpressions = new Hashtable<String, Boolean>();
-
-    /**
      * This represents the current point in the scope
      * of a nested actor declaration.  It is null
      * when not inside an actor declaration.
@@ -863,30 +697,6 @@ public class NestedActorManager extends CodeManager {
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
-
-        /**
-         * Set the given parameter in this nested actor declaration to
-         * have the specified expression label.  This label will be
-         * used to reference the arithmetic value of the expression
-         * assigned during runtime.
-         * @param paramName The parameter name.
-         * @param expressionLabel The arithmetic expression label.
-         */
-        public void addArithParam(String paramName, String expressionLabel) {
-            _arithmeticLabels.put(paramName, expressionLabel);
-        }
-
-        /**
-         * Set the given parameter in this nested actor declaration to
-         * have the specified expression label.  This label will be
-         * used to reference the boolean value of the expression
-         * assigned during runtime.
-         * @param paramName The parameter name.
-         * @param expressionLabel The boolean expression label.
-         */
-        public void addBoolParam(String paramName, String expressionLabel) {
-            _booleanLabels.put(paramName, expressionLabel);
-        }
 
         /**
          * Create a new child tree to this tree with the specified
@@ -1161,58 +971,6 @@ public class NestedActorManager extends CodeManager {
             }
         }
 
-        public ComponentEntity createNestedActor(PtalonActor container)
-                throws PtalonRuntimeException {
-            ComponentEntity entity;
-            try {
-                String uniqueName = container.uniqueName(_symbol);
-                if (_getType(_symbol).equals("import")) {
-                    PtalonActor actor = new PtalonActor(container, uniqueName);
-                    FileParameter location = actor.ptalonCodeLocation;
-                    File file = _imports.get(_symbol);
-                    location.setToken(new StringToken(file.toString()));
-                    actor.setNestedDepth(container.getNestedDepth() + 1);
-                    assignPtalonParameters(actor);
-                    entity = actor;
-                } else if (_getType(_symbol).equals("actorparameter")) {
-                    PtalonParameter parameter = (PtalonParameter) _actor
-                            .getAttribute(getMappedName(_symbol));
-                    if (!parameter.hasValue()) {
-                        throw new PtalonRuntimeException(
-                                "Parameter has no value");
-                    }
-                    String expression = parameter.getExpression();
-                    if (expression.startsWith("ptalonActor:")) {
-                        File file = new File(_parameterToImport(expression));
-                        PtalonActor ptalonActor = new PtalonActor(container,
-                                uniqueName);
-                        ptalonActor.ptalonCodeLocation
-                                .setToken(new StringToken(file.toString()));
-                        ptalonActor
-                                .setNestedDepth(container.getNestedDepth() + 1);
-                        assignPtalonParameters(ptalonActor);
-                        entity = ptalonActor;
-                    } else {
-                        Class<?> genericClass = Class.forName(expression);
-                        Class<? extends ComponentEntity> entityClass = genericClass
-                                .asSubclass(ComponentEntity.class);
-                        Constructor<? extends ComponentEntity> entityConstructor = entityClass
-                                .getConstructor(CompositeEntity.class,
-                                        String.class);
-                        entity = entityConstructor.newInstance(container,
-                                uniqueName);
-                    }
-                } else { // type of name not "import" or "actorparameter".
-                    throw new PtalonRuntimeException("Invalid type for "
-                            + _symbol);
-                }
-            } catch (Exception e) {
-                throw new PtalonRuntimeException(
-                        "Unable to add nested actor to " + container, e);
-            }
-            return entity;
-        }
-
         /**
          * Get the name of the actor parameter, or throw an exception if
          * there is none.
@@ -1365,24 +1123,6 @@ public class NestedActorManager extends CodeManager {
                 throw new PtalonRuntimeException(
                         "Unable to check if this actor declaration is ready.");
             }
-        }
-
-        /**
-         * Puts the specified boolean parameter in the scope of the current
-         * nested actor declaration.
-         * @param param The parameter name.
-         */
-        public void putBoolParamInScope(String param) {
-            _boolParams.add(param);
-        }
-
-        /**
-         * Puts the specified integer parameter in the scope of the current
-         * nested actor declaration.
-         * @param param The parameter name.
-         */
-        public void putIntParamInScope(String param) {
-            _intParams.add(param);
         }
 
         /**
@@ -1897,34 +1637,6 @@ public class NestedActorManager extends CodeManager {
          * param := ...
          */
         private String _actorParameter = null;
-
-        /**
-         * Each key represents a parameter name for this part of the actor
-         * declaration, and it's value is its corresponding arithmetic expression
-         * label.
-         */
-        private Map<String, String> _arithmeticLabels = new Hashtable<String, String>();
-
-        /**
-         * Each key represents a parameter name for this part of the actor
-         * declaration, and it's value is its corresponding boolean expression
-         * label.
-         */
-        private Map<String, String> _booleanLabels = new Hashtable<String, String>();
-
-        /**
-         * Each member of this set is a boolean parameter,
-         * which must have it's value before this actor declaration
-         * is ready to be created.
-         */
-        private Set<String> _boolParams = new HashSet<String>();
-
-        /**
-         * Each member of this set is an integer parameter,
-         * which must have it's value before this actor declaration
-         * is ready to be created.
-         */
-        private Set<String> _intParams = new HashSet<String>();
 
         /**
          * Each key is a parameter in this actor declaration, and each value

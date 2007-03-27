@@ -222,21 +222,6 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         }
     }
 
-    /**
-     * Create a nested actor with respect to this code manager's
-     * actor.
-     * @param container The actor that will contain the created actor, which
-     * should be a descendent of this code manager's actor.
-     * @param uniqueName The unique name for the nested actor declaration
-     * this actor refers to.
-     * @return The created actor.
-     * @exception PtalonRuntimeException If there is any trouble creating this actor.
-     */
-    public ComponentEntity createNestedActor(PtalonActor container,
-            String uniqueName) throws PtalonRuntimeException {
-        return _codeManager.createNestedActor(container, uniqueName);
-    }
-
     /** Return the input source that was specified the last time the configure
      *  method was called.
      *  @return The string representation of the input URL, or null if the
