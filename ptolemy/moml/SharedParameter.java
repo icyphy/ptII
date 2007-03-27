@@ -212,14 +212,13 @@ public class SharedParameter extends Parameter implements Executable {
      *  @param defaultValue The default parameter value to use.
      */
     public void inferValueFromContext(String defaultValue) {
-        Iterator sharedParameters = sharedParameterSet().iterator();
-        while (sharedParameters.hasNext()) {
-            SharedParameter candidate = (SharedParameter) sharedParameters
-                    .next();
-            if (candidate != this) {
-                defaultValue = candidate.getExpression();
-                break;
-            }
+        SharedParameter candidate = null;
+        NamedObj toplevel = getRoot();
+        if (toplevel != null) {
+            candidate = _getOneSharedParameter(toplevel);
+        }
+        if (candidate != null) {
+            defaultValue = candidate.getExpression();
         }
         boolean previousSuppressing = _suppressingPropagation;
         try {
@@ -327,6 +326,12 @@ public class SharedParameter extends Parameter implements Executable {
      *  @param expression The expression.
      */
     public void setExpression(String expression) {
+        // The expression may have already been inferred from context,
+        // in which case we don't want to set it again. This prevents
+        // spurious replication of the parameter in the MoML file.
+        if (expression != null && expression.equals(getExpression())) {
+            return;
+        }
         super.setExpression(expression);
 
         if (!_suppressingPropagation) {
@@ -487,6 +492,43 @@ public class SharedParameter extends Parameter implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Find and return one shared parameter deeply contained by
+     *  the specified container.  If there is no such parameter, then
+     *  return null.
+     *  A shared parameter is one that is an instance of SharedParameter,
+     *  has the same name as this one, and is contained by the container
+     *  class specified in the constructor.
+     *  @param container The container.
+     *  @param set The list to update.
+     */
+    private SharedParameter _getOneSharedParameter(NamedObj container) {
+        // First check all the attributes of the specified container.
+        if (_containerClass.isInstance(container)) {
+            // If the attribute is not of the right class, get an exception.
+            try {
+                SharedParameter candidate = (SharedParameter) container
+                        .getAttribute(getName(), SharedParameter.class);
+
+                if (candidate != null && candidate != this) {
+                    return candidate;
+                }
+            } catch (IllegalActionException ex) {
+                // Ignore. Candidate doesn't match.
+            }
+        }
+        // Perform a depth-first search of the contained objects.
+        // FIXME: Breadth-first would probably be better.
+        Iterator containedObjects = container.containedObjectsIterator();
+        while (containedObjects.hasNext()) {
+            NamedObj candidateContainer = (NamedObj) containedObjects.next();
+            SharedParameter candidate = _getOneSharedParameter(candidateContainer);
+            if (candidate != null && candidate != this) {
+                return candidate;
+            }
+        }
+        return null;
+    }
 
     /** Populate the specified list with
      *  all the shared parameters deeply contained by
