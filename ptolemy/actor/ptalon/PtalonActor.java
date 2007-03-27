@@ -44,7 +44,6 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
@@ -66,7 +65,7 @@ import com.microstar.xml.XmlParser;
  and it is loaded during initialization.
  <p>
 
- @author Adam Cataldo
+ @author Adam Cataldo, Elaine Cheong
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (acataldo)
