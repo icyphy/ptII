@@ -57,7 +57,7 @@ import antlr.RecognitionException;
  A helper class to store information, like variable
  scope info, about the compiler.
 
- @author Adam Cataldo
+ @author Adam Cataldo, Elaine Cheong
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh)
@@ -464,12 +464,13 @@ public class CodeManager {
     }
 
     /**
-     * Add a transparent to the PtalonActor
-     * with the specified name.  A transparent relation is not 
-     * really a relation.  Instead, it provides a means for connecting
-     * multiple ports to an input port.  It is transparent in that
-     * it provides an invisible means to connect to the specified 
-     * 
+     * Add a transparent relation to the PtalonActor with the
+     * specified name.  A transparent relation is not the same as a
+     * relation.  Rather, it provides a means for connecting multiple
+     * ports to an input port.  It is transparent in that if this
+     * transparent relation is connected to an input port I, then any
+     * connections made to the transparent relation will be as if they
+     * were connected directly to I, instead of through a relation.
      * @param name The name of the relation.
      */
     public void addTransparentRelation(String name)
