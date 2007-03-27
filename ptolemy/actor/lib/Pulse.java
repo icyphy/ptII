@@ -228,7 +228,9 @@ public class Pulse extends SequenceSource {
             if (val.length() != _indexes.length) {
                 throw new IllegalActionException(this,
                         "Parameters values and indexes have "
-                                + "different lengths.");
+                                + "different lengths.  Length of values = "
+                        + val.length() + ". Length of indexes = "
+                        + _indexes.length + ".");
             }
 
             currentIndex = _indexes[_indexColCount];
