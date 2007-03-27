@@ -69,7 +69,7 @@ import ptolemy.util.StringUtilities;
  so this class is separated simply to make the code
  a bit more digestable.
 
- @author Adam Cataldo
+ @author Adam Cataldo, Elaine Cheong
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh)
@@ -91,6 +91,7 @@ public class NestedActorManager extends CodeManager {
             addSymbol("this", "this");
         } catch (PtalonScopeException e) {
             //This should never happen.
+            e.printStackTrace();
         }
         _currentIfTree.setStatus("this", true);
     }
