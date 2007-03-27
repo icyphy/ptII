@@ -159,19 +159,18 @@ public class Publisher extends TypedAtomicActor {
                 if (!isWithinClassDefinition()) {
                     Nameable container = getContainer();
                     if ((container instanceof TypedCompositeActor)) {
-                        // If the container is not a typed composite actor, then don't create
-                        // a relation. Probably the container is a library.
-                        Manager manager = ((CompositeActor) container).getManager();
-                        if (manager != null && manager.getState() != Manager.IDLE) {
-                            // We were calling _updateLinks() even if the model
-                            // is not running.  _updateLinks() calls
-                            // _findPublisher().  We should only do this if
-                            // the model is running by checking the Manager.
-                            _updateLinks();
-                        } else {
-                            // Update the links in preinitialize()
-                            _updatedLinks = false;
-                        }
+                        // NOTE: There used to be some logic here to call
+                        // _updateLinks() only if the manager indicates we
+                        // are running, and otherwise to set _updatedLinks
+                        // to false. This is no longer necessary as
+                        // the attributeChanged() method is called at
+                        // appropriate times, and tests show it is called
+                        // exactly once per publisher. Moreover, it really
+                        // isn't correct to defer this, as _updateLinks()
+                        // handles connectivity information. If we want to,
+                        // for example, highlight dependents before a model
+                        // has been run, this has to be done here.
+                        _updateLinks();
                     }
                 }
             }
@@ -227,33 +226,6 @@ public class Publisher extends TypedAtomicActor {
         // was called, so we must do it now.
         if (!_updatedLinks) {
             _updateLinks();
-        }
-    }
-
-    /** Override the base class to create an associated relation,
-     *  and to remove any previous relation.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace.
-     *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this entity.
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        if (container != getContainer()) {
-            super.setContainer(container);
-            // Update the links.
-            // If we are within a class definition, then we should
-            // not create any links.  The links should only exist
-            // within instances. Otherwise, we could end up creating
-            // a link between a class definition and an instance.
-            // Note that if we are within an instantiate of a
-            // containing class, then we will not update links
-            // because this is (temporarily) within a class definition.
-            if (!isWithinClassDefinition()) {
-                _updateLinks();
-            }
         }
     }
 
