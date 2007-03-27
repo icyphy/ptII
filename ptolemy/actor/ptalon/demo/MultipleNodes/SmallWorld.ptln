@@ -1,0 +1,21 @@
+/*attachDanglingPorts; */
+
+SmallWorld is {
+    actor node = ptolemy.domains.wireless.demo.SmallWorld.RelayNode;
+    actor channel = ptolemy.domains.wireless.lib.LimitedRangeChannel;
+    actor initiator = ptolemy.actor.ptalon.demo.MultipleNodes.Initiator;
+
+    channel(defaultProperties := [[{range=range}]], lossProbability := [[1.0 - probability]]);
+    channel(name := [["Bob"]]);
+
+    initiator();
+
+    parameter n;
+    for i initially [[ 1 ]] [[ i <= n ]] {
+        node(nodePropagationDelay := [[nodePropagationDelay]], 
+                            range := [[range]], 
+                        haloColor := [[{0.0, 0.5, 0.5, probability*visualDensity}]], 
+                        randomize := [[randomize]], 
+                        _location := [[ [10*i, 10*i] ]]);
+    } next [[ i + 1 ]]
+}
