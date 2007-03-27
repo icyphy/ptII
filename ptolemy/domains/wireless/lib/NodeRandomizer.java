@@ -58,7 +58,7 @@ import ptolemy.moml.MoMLChangeRequest;
  This actor, when fired, randomizes the locations of all actors in the
  same container that contain an attribute named "randomize" with value
  true.  It can also optionally perform the randomization in its
- preinitialize() method. In both cases, the randomization is
+ initialize() method. In both cases, the randomization is
  performed in a change request, so it will take effect after the
  current iteration.
  <p>
@@ -73,7 +73,13 @@ import ptolemy.moml.MoMLChangeRequest;
  indicating that the X value of the location is uniformly
  distributed between <i>x1</i> and <i>x2</i>, and that the Y value is
  uniformly distributed between <i>y1</i> and <i>y2</i>.
-
+ <p>
+ If the <i>resetOnEachRun</i> parameter is true (the default value),
+ then each run resets the random number generator. If the seed is
+ non-zero, then this makes each run identical.  This is useful for
+ constructing tests. If the seed is zero, then a new seed is generated
+ on each run (using the current time and the hash code of this object).
+   
  @author Sanjeev Kohli, N. Vinay Krishnan, Cheng Tien Ee, Edward Lee, Xiaojun Liu and Elaine Cheong.
  @version $Id$
  @since Ptolemy II 4.0
@@ -97,13 +103,13 @@ public class NodeRandomizer extends TypedAtomicActor {
     public NodeRandomizer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        randomizeInPreinitialize = new Parameter(this,
-                "randomizeInPreinitialize");
-        randomizeInPreinitialize.setExpression("false");
-        randomizeInPreinitialize.setTypeEquals(BaseType.BOOLEAN);
+        randomizeInInitialize = new Parameter(this,
+                "randomizeInInitialize");
+        randomizeInInitialize.setExpression("false");
+        randomizeInInitialize.setTypeEquals(BaseType.BOOLEAN);
 
-        resetSeed = new Parameter(this, "resetSeed");
-        resetSeed.setExpression("true");
+        resetOnEachRun = new Parameter(this, "resetOnEachRun");
+        resetOnEachRun.setExpression("true");
 
         range = new Parameter(this, "range");
 
@@ -121,10 +127,10 @@ public class NodeRandomizer extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** If set to true, randomly distribute nodes in preinitialize().
+    /** If set to true, randomly distribute nodes in initialize().
      *  The default value is false.
      */
-    public Parameter randomizeInPreinitialize;
+    public Parameter randomizeInInitialize;
 
     /** The range of values for locations to be set when randomizing.
      *  This is an array of arrays that defaults to
@@ -145,7 +151,7 @@ public class NodeRandomizer extends TypedAtomicActor {
      *  pattern of node layouts will be the same across different JVM
      *  sessions.
      */
-    public Parameter resetSeed;
+    public Parameter resetOnEachRun;
     
     /** The seed that controls the random number generation to use when
      *  randomizing.
@@ -185,17 +191,17 @@ public class NodeRandomizer extends TypedAtomicActor {
     }
 
     /** Override the base class to randomize the positions of the
-     *  nodes if <i>randomizeInPreinitialize</i> is set to true. Also
+     *  nodes if <i>randomizeInInitialize</i> is set to true. Also
      *  initialize the random number generator so that if a nonzero
      *  seed is provided, then the results are repeatable.  If
-     *  <i>resetSeed</i> is set to true (default value), then the seed
+     *  <i>resetOnEachRun</i> is set to true (default value), then the seed
      *  is reset for each run.
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it, or if the range parameter
      *   is malformed.
      */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
+    public void initialize() throws IllegalActionException {
+        super.initialize();
 
         long seedValue = ((LongToken) (seed.getToken())).longValue();
 
@@ -206,12 +212,12 @@ public class NodeRandomizer extends TypedAtomicActor {
         if (_random == null) {
             _random = new Random(seedValue);
         } else {
-            if (((BooleanToken) resetSeed.getToken()).booleanValue()) {
+            if (((BooleanToken) resetOnEachRun.getToken()).booleanValue()) {
                 _random.setSeed(seedValue);
             }
         }
 
-        if (((BooleanToken) randomizeInPreinitialize.getToken()).booleanValue()) {
+        if (((BooleanToken) randomizeInInitialize.getToken()).booleanValue()) {
             _randomize();
         }
     }
