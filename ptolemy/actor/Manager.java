@@ -1,6 +1,6 @@
 /* A Manager governs the execution of a model.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 1997-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -318,6 +318,10 @@ public class Manager extends NamedObj implements Runnable {
         try {
             try {
                 initialize();
+                if (System.currentTimeMillis() - startTime > 60000) {
+                    System.out.println("Manager.initialize() finished: "
+                            + timeAndMemory(startTime));
+                }
 
                 // Call iterate() until finish() is called or postfire()
                 // returns false.
@@ -569,7 +573,12 @@ public class Manager extends NamedObj implements Runnable {
             // but rather only executed when executeChangeRequests() is called.
             setDeferringChangeRequests(true);
 
+            long startTime = (new Date()).getTime();
             preinitializeAndResolveTypes();
+            if (System.currentTimeMillis() - startTime > 60000) {
+                System.out.println("preinitialize() finished: "
+                        + timeAndMemory(startTime));
+            }
 
             _setState(INITIALIZING);
             _container.initialize();
@@ -622,6 +631,7 @@ public class Manager extends NamedObj implements Runnable {
 
         boolean result = true;
 
+        long startTime = (new Date()).getTime();
         try {
             _workspace.getReadAccess();
             executeChangeRequests();
@@ -643,6 +653,10 @@ public class Manager extends NamedObj implements Runnable {
                      */
                 }
             }
+            if (System.currentTimeMillis() - startTime > 60000) {
+                System.out.println("Manager.iterate(): preinitialize() finished: "
+                        + timeAndMemory(startTime));
+            }
 
             if (!_typesResolved) {
                 resolveTypes();
@@ -651,7 +665,6 @@ public class Manager extends NamedObj implements Runnable {
 
             _iterationCount++;
             _setState(ITERATING);
-
             // Perform domain-specific initialization on the actor.
             if (_actorsToInitialize.size() > 0) {
                 Iterator actors = _actorsToInitialize.iterator();
