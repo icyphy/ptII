@@ -79,7 +79,6 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 	SeriesOfScales.ptln \
 	ThisTest.ptln \
 	adder \
-	ptalonexample.xml \
 	test.xml #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
