@@ -8,7 +8,7 @@
 </head>
 <body bgcolor="#ffffff">
 <h1>Ptolemy II Installation</h1>
-See the <a href="ptII6.0.release.htm">Ptolemy II 6.0.beta release notes</a>
+See the <a href="ptII6.0.release.htm">Ptolemy II 6.0 release notes</a>
 for details about this release.
 
 The instructions on this page concern installing rebuilding Ptolemy II
@@ -27,7 +27,7 @@ from sources.
 
 <ol>
 
-<li> Install JDK1.4.0 or later, add the jdk bin directory to your path
+<li> Install JDK1.5 or later, add the jdk bin directory to your path
 so that <CODE>javac</CODE> and <CODE>java</CODE> are available,
 and have the <code>make</code> command available.
 
@@ -36,7 +36,7 @@ that is the directory above this directory
 	<dl>
 	<dt> bash
 	<dd> <pre>
-export PTII=c:/Ptolemy/ptII6.0.beta
+export PTII=c:/Ptolemy/ptII6.1.devel
 </pre>
 
 <dt> csh
@@ -78,12 +78,11 @@ the <a href="#Unix">Unix</a> and <a href="#Windows">Windows</a>
 sections below.
 
 <h3><a name="java">Java</a></h3>
-Ptolemy II has been developed under Java 1.4.2, which Sun calls
-J2SE 1.4.2.  Ptolemy II will also work under Java 1.5, which Sun
+Ptolemy II has been developed under Java 1.5.0_11, which Sun calls
 calls J2SE 5.0.  J2SE 5.0
 is available from
 <a href="http://java.sun.com/j2se/1.5/" target="_top"><CODE>http://java.sun.com/j2se/1.5/</CODE></a>.
-Locally, we used Java 1.4.2_06 and Java 1.5.0_06.
+Locally, we used Java 1.5.0_11.
 
 
 <p>The Java download is available in several formats.
@@ -103,7 +102,7 @@ the <CODE>javac</CODE> and <CODE>java</CODE> commands are available.
 
 <h3><a name="Plugin">Java Plug-in</a></h3>
  <!-- Note: the plug-in is called "The Java Plug-in", not "The JDK Plugin"-->
-The applet tags have been configured to require JDK1.4, so to run the applets
+The applet tags have been configured to require JDK1.5, so to run the applets
 in Mozilla 1.x, Netscape 4.7 or Internet Explorer 6.0 under Windows, you will need to use
 the Java Plug-in from
 <a href="http://java.sun.com/products/plugin/" target="_top"><CODE>http://java.sun.com/products/plugin/</CODE></a>
@@ -264,10 +263,10 @@ The <a name="codeDoc/ptolemy/actor/lib/jai/package-summary.html">Java Advanced I
 
 <p>Note that under Web Start, we had to install the JAI jar files
 by hand in
-<code>c:/Program Files/java/j2re1.4.1_02/lib/ext</code>
+<code>c:/Program Files/Java/jre1.5.0_11/lib/ext</code>
 by copying <code>jai_codec.jar</code>, <code>jai_core.jar</code>,
 and <code>mlibwrapper_jai.jar</code> from the 
-<code>c:/j2sdk1.4.1_02/jre/lib/ext</code>
+<code>c:/Program Files/Java/jdk1.5.0_11/lib/ext</code>
 Web Start users might want to try the
 "Windows Auto-installation for Java Plug-in"
 
@@ -420,7 +419,7 @@ This drops <code>QTJava.zip</code> into the lib/ext of all your installed JREs.
 Then you have to copy this zip file to the jre/lib/ext directory
 of your SDK, for example:
 <pre>
-cp c:/Program\ Files/java/j2re1.4.2_08/lib/ext/QTJava.zip c:/j2sdk1.4.2_08/jre/lib/ext
+cp c:/Program\ Files/Java/jre1.5.0_11/lib/ext/QTJava.zip c:/Program\ Files/Java/jdk1.5.0_11/jre/lib/ext
 </pre>
 
 <h3>X10</h3>
@@ -531,8 +530,8 @@ Windows '98 we recommend upgrading Windows XP.
 
 <p>To build Ptolemy II under Windows XP:
 <ol>
-<li>Install JDK 1.4 from
-<a href="http://java.sun.com/j2se/1.4/" target="_top"><CODE>http://java.sun.com/j2se/1.4/</CODE></a>
+<li>Install JDK 1.5 from
+<a href="http://java.sun.com/j2se/1.5/" target="_top"><CODE>http://java.sun.com/j2se/1.5/</CODE></a>
 
  <p>Be sure to add the <CODE>bin</CODE> directory
 to your path so that <CODE>javac</CODE> and <CODE>java</CODE>
@@ -732,7 +731,7 @@ instead.  Note that the configure script checks for this sort of thing.
 </table>
 </blockquote>
 
-<li> In the Environment tab, you should also set your path to include the location of the JDK bin directory (i.e. <CODE>C:\j2sdk1.4.1_01\bin</CODE>)
+<li> In the Environment tab, you should also set your path to include the location of the JDK bin directory (i.e. <CODE>C:\Program Files\Java\jdk1.5.0_11\bin</CODE>)
 
  <p>When you run cygwin.bat, your path
 should be set to include the Cygwin tools.  You can test this
