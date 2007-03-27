@@ -398,7 +398,12 @@ public class CompositeEntity extends ComponentEntity {
                             if (rel.getContainer() != this) {
                                 throw new CloneNotSupportedException(
                                         "Cannot clone a CompositeEntity with "
-                                                + "level crossing transitions.");
+                                                + "level crossing transitions."
+                                                + "  The relation was: " + rel
+                                                + ", its container was: " 
+                                                + rel.getContainer()
+                                                + ", which is not equal to "
+                                                + this);
                             }
 
                             ComponentRelation newRelation = newEntity
