@@ -59,7 +59,7 @@ import ptolemy.util.StringUtilities;
 
 /**
  <p>Execute a command as a separately running subprocess. A command
- is a single executable.  To get the get the effect of executing
+ is a single executable.  To get the effect of executing
  a command provided in a shell interpreter, you can set
  <i>command</i> to "cmd" (Windows) or "sh" (Windows with Cygwin
  or Linux), and then provide commands at the <i>input</i> port.
