@@ -501,7 +501,8 @@ test SharedParameter-15.3 {Changing container of parameter depends on scope.} {
 
 test SharedParameter-15.4 {Changing container of parameter that depends on scope to an invalid scope.} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
-    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    # e2 has to be of the same class as e1 for the parameters to be shared.
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1 "e2"]
     $e1 setModelErrorHandler \
             [java::new ptolemy.kernel.util.BasicModelErrorHandler]
 
@@ -517,7 +518,7 @@ test SharedParameter-15.4 {Changing container of parameter that depends on scope
     $p2 setExpression "7"
     $p3 setExpression "p"
     
-    catch {set msg1 [[$p3 getToken] toString]} msg1
+    set msg1 [[$p3 getToken] toString]
 
     catch {$p3 setContainer $e3} msg2
 
@@ -779,6 +780,8 @@ test SharedParameter-18.0 {simple setExpression} {
 } {1 1 2 2 3 3}
 
 test SharedParameter-18.1.1 {simple setExpression with TestSharedParameter} {
+	# FIXME: This test seems to mainly count how many times methods are called.
+	# Why does this matter?
     set c18 [java::new ptolemy.kernel.CompositeEntity] 
     set c18_1 [java::new ptolemy.kernel.CompositeEntity $c18 c18_1] 
     set c18_2 [java::new ptolemy.kernel.CompositeEntity $c18 c18_2] 

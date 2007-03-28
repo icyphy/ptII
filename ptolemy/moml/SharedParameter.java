@@ -28,9 +28,12 @@
  */
 package ptolemy.moml;
 
+import java.lang.ref.WeakReference;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import ptolemy.actor.ApplicationConfigurer;
 import ptolemy.actor.CompositeActor;
@@ -40,6 +43,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// SharedParameter
@@ -129,6 +133,8 @@ public class SharedParameter extends Parameter implements Executable {
      *  @param container The container.
      *  @param name The name of the parameter.
      *  @param containerClass The class used to determine shared instances.
+     *   An argument of null means simply to use the class of the container,
+     *   whatever that happens to be.
      *  @param defaultValue The default value to use if the container's
      *   model has no shared parameters.
      *  @exception IllegalActionException If the parameter is not of an
@@ -151,6 +157,7 @@ public class SharedParameter extends Parameter implements Executable {
         }
         _containerClass = containerClass;
         inferValueFromContext(defaultValue);
+        _constructionFinished = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -185,11 +192,6 @@ public class SharedParameter extends Parameter implements Executable {
 
         while (result.getContainer() != null) {
             result = result.getContainer();
-
-            // FIXME: this means that ptolemy.moml depends on
-            // ptolemy.actor.gui.  We could either do instanceof
-            // or else create ptolemy.kernel.ConfigurationBase
-            // and have Configuration extend it.
             if (result instanceof ApplicationConfigurer) {
                 // If the results is a Configuration, then go no higher.
                 // If we do go higher, then we end up expanding the actor
@@ -214,7 +216,8 @@ public class SharedParameter extends Parameter implements Executable {
     public void inferValueFromContext(String defaultValue) {
         SharedParameter candidate = null;
         NamedObj toplevel = getRoot();
-        if (toplevel != null) {
+
+        if (toplevel != null && toplevel != this) {
             candidate = _getOneSharedParameter(toplevel);
         }
         if (candidate != null) {
@@ -294,7 +297,6 @@ public class SharedParameter extends Parameter implements Executable {
 
     /** Override the base class to register as a piggyback with the
      *  nearest opaque composite actor above in the hierarchy.
-
      *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
@@ -307,17 +309,45 @@ public class SharedParameter extends Parameter implements Executable {
         if (container != getContainer()) {
             // May need to unregister as a piggyback with the previous container.
             NamedObj previousContainer = getContainer();
-            if (previousContainer instanceof CompositeActor) {
-                ((CompositeActor)previousContainer).removePiggyback(this);
+            while (previousContainer != null) {
+                if (previousContainer instanceof CompositeActor
+                        && ((CompositeActor)previousContainer).isOpaque()) {
+                    ((CompositeActor)previousContainer).removePiggyback(this);
+                    break;
+                }
+                previousContainer = previousContainer.getContainer();
             }
         }
         super.setContainer(container);
-        while (container != null) {
-            if (container instanceof CompositeActor && ((CompositeActor)container).isOpaque()) {
-                ((CompositeActor)container).addPiggyback(this);
+        NamedObj piggybackContainer = container;
+        while (piggybackContainer != null) {
+            if (piggybackContainer instanceof CompositeActor 
+                    && ((CompositeActor)piggybackContainer).isOpaque()) {
+                ((CompositeActor)piggybackContainer).addPiggyback(this);
                 break;
             }
-            container = container.getContainer();
+            piggybackContainer = piggybackContainer.getContainer();
+        }
+    }
+
+    /** Override the base class to register as a shared parameter in the workspace.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace.
+     *  @exception NameDuplicationException If the container already has
+     *   an entity with the name of this entity.
+     */
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
+        if (name != null && !name.equals(getName())) {
+            SharedParameterRegistry registry = _getSharedParameterRegistry(workspace());
+            // Unregister under previous name.
+            if (getName() != null && !getName().equals("")) {
+                registry.unregister(this);
+            }
+            super.setName(name);
+            registry.register(this);
         }
     }
 
@@ -370,22 +400,36 @@ public class SharedParameter extends Parameter implements Executable {
     /** Return a collection of all the shared parameters within the
      *  same model as this parameter.  If there are no such parameters
      *  or if this parameter is deeply contained within an EntityLibrary, then
-     *  return an empty collection. The list will include this instance if
-     *  this instance.
+     *  return an empty collection. Otherwise, the list will include this
+     *  instance if this instance has a container. If this instance has
+     *  no container, then return an empty collection.
      *  A shared parameter is one that is an instance of SharedParameter,
      *  has the same name as this one, and is contained by the container
      *  class specified in the constructor.
-     *  @return A list of parameters.
+     *  @return A collection of parameters.
      */
     public synchronized Collection sharedParameterSet() {
         if (workspace().getVersion() != _sharedParameterSetVersion) {
             try {
                 workspace().getReadAccess();
-                _sharedParameterSet = new HashSet();
+                _sharedParameterSet = new HashSet<SharedParameter>();
                 _sharedParameterSetVersion = workspace().getVersion();
-                NamedObj toplevel = getRoot();
-                if (toplevel != null) {
-                    _sharedParameterSet(toplevel, _sharedParameterSet);
+                NamedObj root = getRoot();
+                if (root != null) {
+                    SharedParameterRegistry registry = _getSharedParameterRegistry(workspace());
+                    for (WeakReference<SharedParameter> reference : registry.getSharedParametersWithName(getName())) {
+                        if (reference != null) {
+                            SharedParameter parameter = reference.get();
+                            if (parameter != null) {
+                                // Have a candidate. See if the roots match and if
+                                // the container classes match.
+                                if (parameter.getRoot() == root
+                                         && parameter._containerClass == _containerClass) {
+                                    _sharedParameterSet.add(parameter);
+                                }
+                            }
+                        }
+                    }
                 }
             } finally {
                 workspace().doneReading();
@@ -448,7 +492,7 @@ public class SharedParameter extends Parameter implements Executable {
         // in fact the value of this shared parameter will be inferred
         // from those instances if there are any. So in that case, we
         // just return.
-        if (_containerClass == null) {
+        if (!_constructionFinished) {
             return result;
         }
 
@@ -501,78 +545,59 @@ public class SharedParameter extends Parameter implements Executable {
      *  class specified in the constructor.
      *  @param container The container.
      *  @param set The list to update.
+     *  @return A shared parameter different from this one, or null if
+     *   there is none.
      */
     private SharedParameter _getOneSharedParameter(NamedObj container) {
-        // First check all the attributes of the specified container.
-        if (_containerClass.isInstance(container)) {
-            // If the attribute is not of the right class, get an exception.
+        if (workspace().getVersion() != _sharedParameterVersion) {
             try {
-                SharedParameter candidate = (SharedParameter) container
-                        .getAttribute(getName(), SharedParameter.class);
-
-                if (candidate != null && candidate != this) {
-                    return candidate;
+                workspace().getReadAccess();
+                _sharedParameter = null;
+                _sharedParameterVersion = workspace().getVersion();
+                NamedObj root = getRoot();
+                if (root != null) {
+                    SharedParameterRegistry registry = _getSharedParameterRegistry(workspace());
+                    for (WeakReference<SharedParameter> reference : registry.getSharedParametersWithName(getName())) {
+                        if (reference != null) {
+                            SharedParameter parameter = reference.get();
+                            if (parameter != null) {
+                                // Have a candidate. See if the roots match and if
+                                // the container classes match.
+                                if (parameter != this
+                                        && parameter.getRoot() == root
+                                        && parameter._containerClass == _containerClass) {
+                                    _sharedParameter = parameter;
+                                    // Successful match. No need to search further.
+                                    return _sharedParameter;
+                                }
+                            }
+                        }
+                    }
                 }
-            } catch (IllegalActionException ex) {
-                // Ignore. Candidate doesn't match.
+            } finally {
+                workspace().doneReading();
             }
         }
-        // Perform a depth-first search of the contained objects.
-        // FIXME: Breadth-first would probably be better.
-        Iterator containedObjects = container.containedObjectsIterator();
-        while (containedObjects.hasNext()) {
-            NamedObj candidateContainer = (NamedObj) containedObjects.next();
-            SharedParameter candidate = _getOneSharedParameter(candidateContainer);
-            if (candidate != null && candidate != this) {
-                return candidate;
-            }
-        }
-        return null;
+        return _sharedParameter;
     }
-
-    /** Populate the specified list with
-     *  all the shared parameters deeply contained by
-     *  the specified container.  If there are no such parameters, then
-     *  return an unmodified list. The list will include this instance if
-     *  this instance is deeply contained by the specified container.
-     *  A shared parameter is one that is an instance of SharedParameter,
-     *  has the same name as this one, and is contained by the container
-     *  class specified in the constructor.
-     *  @param container The container.
-     *  @param set The list to update.
+    
+    /** Return the shared parameter registry associated with this workspace.
      */
-    private void _sharedParameterSet(NamedObj container, HashSet set) {
-        // First check all the attributes of the specified container.
-        if (_containerClass.isInstance(container)) {
-            // If the attribute is not of the right class, get an exception.
-            try {
-                SharedParameter candidate = (SharedParameter) container
-                        .getAttribute(getName(), SharedParameter.class);
-
-                if (candidate != null) {
-                    set.add(candidate);
-                    // To avoid recronstructing the list again for each
-                    // of the other shared parameters, we set its cache
-                    // as well now.  It is for this reason that the calling
-                    // method must be synchronized.
-                    candidate._sharedParameterSet = set;
-                    candidate._sharedParameterSetVersion = workspace()
-                            .getVersion();
-                }
-            } catch (IllegalActionException ex) {
-                // Ignore. Candidate doesn't match.
-            }
+    private static synchronized SharedParameterRegistry _getSharedParameterRegistry(Workspace workspace) {
+        SharedParameterRegistry result = _REGISTRY.get(workspace);
+        if (result == null) {
+            result = new SharedParameterRegistry();
+            _REGISTRY.put(workspace, result);
         }
-        Iterator containedObjects = container.containedObjectsIterator();
-        while (containedObjects.hasNext()) {
-            NamedObj candidateContainer = (NamedObj) containedObjects.next();
-            _sharedParameterSet(candidateContainer, set);
-        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Indicator that the constructor has reached the end. */
+    private boolean _constructionFinished = false;
+    
     /** The container class. */
     private Class _containerClass;
 
@@ -582,12 +607,65 @@ public class SharedParameter extends Parameter implements Executable {
      */
     private static final boolean _delayValidation = false;
 
+    /** Empty list. */
+    private static Collection<WeakReference<SharedParameter>> _EMPTY_LIST = new LinkedList<WeakReference<SharedParameter>>();
+
+    /** Cached version of a shared parameter. */
+    private SharedParameter _sharedParameter;
+
+    /** Version for the cache. */
+    private long _sharedParameterVersion = -1L;
+
     /** Cached version of the shared parameter set. */
-    private HashSet _sharedParameterSet;
+    private HashSet<SharedParameter> _sharedParameterSet;
 
     /** Version for the cache. */
     private long _sharedParameterSetVersion = -1L;
+    
+    /** Registry by workspace. */
+    private static HashMap<Workspace, SharedParameterRegistry> _REGISTRY
+            = new HashMap<Workspace, SharedParameterRegistry>();
 
     /** Indicator to suppress propagation. */
     private boolean _suppressingPropagation = false;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Registery of shared parameters. This is a data structure
+     *  that registers all shared parameters in a workspace. This is
+     *  more efficient than searching through a model to find all the
+     *  shared parameters. It stores one collection of shared parameters
+     *  for each name.
+     */
+    private static class SharedParameterRegistry {
+        /** Return all shared parameters with the specified name.
+         *  This returns a collection of weak references.
+         */
+        public synchronized Collection<WeakReference<SharedParameter>> getSharedParametersWithName(String name) {
+            Collection<WeakReference<SharedParameter>> set = _sharedParametersByName.get(name);
+            if (set == null) {
+                return _EMPTY_LIST;
+            } else {
+                return set;
+            }
+        }
+        /** Register the specified shared parameter. */
+        public synchronized void register(SharedParameter parameter) {
+            Collection<WeakReference<SharedParameter>> set = _sharedParametersByName.get(parameter.getName());
+            if (set == null) {
+                set = new LinkedList<WeakReference<SharedParameter>>();
+                _sharedParametersByName.put(parameter.getName(), set);
+            }
+            set.add(new WeakReference<SharedParameter>(parameter));
+        }
+        public synchronized void unregister(SharedParameter parameter) {
+            Collection<WeakReference<SharedParameter>> set = _sharedParametersByName.get(parameter.getName());
+            if (set != null) {
+                set.remove(new WeakReference<SharedParameter>(parameter));
+            }
+        }
+        private HashMap<String,Collection<WeakReference<SharedParameter>>>
+                _sharedParametersByName = new HashMap<String,Collection<WeakReference<SharedParameter>>>();
+    }
 }
