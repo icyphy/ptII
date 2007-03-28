@@ -160,7 +160,7 @@ test Pulse-3.3 {test values and indexes of different dimensions} {
         [$e0 getManager] execute
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Parameters values and indexes have different lengths.
+} {{ptolemy.kernel.util.IllegalActionException: Parameters values and indexes have different lengths.  Length of values = 1. Length of indexes = 3.
   in .top.pulse}}
 
 ######################################################################
