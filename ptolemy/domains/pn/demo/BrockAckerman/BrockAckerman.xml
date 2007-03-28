@@ -2,11 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BrockAckerman" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 225.0]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -1, 731, 624}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 731, 624}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[516, 506]">
     </property>
@@ -19,7 +19,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the well-known Brock-Ackerman anomaly.&#10;The two composite actors ActorA and ActorB implement exactly the same&#10;(nondeterministic) input/output function. That is, given any two input&#10;sequences at the two input ports, the possible output sequences from each&#10;actor are the same.  However, when wired as shown into two feedback loops,&#10;the two actors do not behave the same way.  In particular, the upper&#10;feedback loop has more possible outputs than the bottom one.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the well-known Brock-Ackerman anomaly.&#10;The two composite actors ActorA and ActorB implement exactly the same&#10;(nondeterministic) input/output relation. That is, given any two input&#10;sequences at the two input ports, the possible output sequences from each&#10;actor are the same.  However, when wired as shown into two feedback loops,&#10;the two actors do not behave the same way.  In particular, the upper&#10;feedback loop has more possible outputs than the bottom one.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 310.0]">
         </property>
@@ -39,6 +39,20 @@
             <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 30.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={131, 239, 815, 518}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Sleep actor implements an identity function (the input&#10;equals stream equals the output stream), but affects the thread&#10;scheduling by delaying delivery of each token. By varying the&#10;amount of delay, you can affect the likelihood of getting different&#10;outputs from this composite compared to the other composite.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 265.0]">
             </property>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
@@ -85,7 +99,7 @@
             </property>
             <property name="numberToWrite" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 185.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 185.0]">
             </property>
         </entity>
         <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
@@ -560,6 +574,18 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 235.0}">
             </property>
         </entity>
+        <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
+            <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="3L">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 235.0]">
+            </property>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -572,10 +598,6 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -584,11 +606,19 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
         <link port="in" relation="relation"/>
         <link port="out" relation="relation6"/>
         <link port="in2" relation="relation2"/>
         <link port="NondeterministicMerge.input" relation="relation3"/>
-        <link port="NondeterministicMerge.input" relation="relation4"/>
+        <link port="NondeterministicMerge.input" relation="relation7"/>
         <link port="NondeterministicMerge.output" relation="relation5"/>
         <link port="BlockedIdentity.input" relation="relation5"/>
         <link port="BlockedIdentity.output" relation="relation6"/>
@@ -596,6 +626,8 @@
         <link port="Repeat.output" relation="relation3"/>
         <link port="Repeat2.input" relation="relation2"/>
         <link port="Repeat2.output" relation="relation4"/>
+        <link port="Sleep.input" relation="relation4"/>
+        <link port="Sleep.output" relation="relation7"/>
     </entity>
     <entity name="Starver" class="ptolemy.domains.pn.lib.Starver">
         <property name="limit" class="ptolemy.data.expr.Parameter" value="2">
@@ -619,9 +651,11 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={730, 0, 170, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[162, 182]">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 130.0]">
         </property>
@@ -1200,9 +1234,11 @@
         </port>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={730, 239, 170, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[162, 182]">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 280.0]">
         </property>
