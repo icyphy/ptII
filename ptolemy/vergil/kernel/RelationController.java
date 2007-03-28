@@ -34,11 +34,13 @@ import java.awt.geom.Line2D;
 import javax.swing.SwingConstants;
 
 import ptolemy.actor.IORelation;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel;
@@ -154,17 +156,31 @@ public class RelationController extends ParameterizedNodeController {
             if (node != null) {
                 ActorGraphModel model = (ActorGraphModel) getController()
                         .getGraphModel();
-                figure
-                        .setToolTipText(relation.getName(model
+                figure.setToolTipText(relation.getName(model
                                 .getPtolemyModel()));
+                // Old way to set the color.
+                try {
+                    StringAttribute colorAttr = (StringAttribute) (relation
+                            .getAttribute("_color", StringAttribute.class));
 
-                StringAttribute colorAttr = (StringAttribute) (relation
-                        .getAttribute("_color"));
-
-                if (colorAttr != null) {
-                    String color = colorAttr.getExpression();
-                    ((BasicFigure) figure).setFillPaint(SVGUtilities
-                            .getColor(color));
+                    if (colorAttr != null) {
+                        String color = colorAttr.getExpression();
+                        ((BasicFigure) figure).setFillPaint(SVGUtilities
+                                .getColor(color));
+                    }
+                } catch (IllegalActionException e) {
+                    // Ignore.
+                }
+                // New way to set the color
+                try {
+                    ColorAttribute colorAttr = (ColorAttribute) (relation
+                            .getAttribute("_color", ColorAttribute.class));
+                    if (colorAttr != null) {
+                        Color color = colorAttr.asColor();
+                        ((BasicFigure) figure).setFillPaint(color);
+                    }
+                } catch (IllegalActionException e) {
+                    // Ignore.
                 }
             }
 
