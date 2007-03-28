@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DiscreteRandomSource" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
@@ -27,7 +27,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{4, 1, 0, 1, 2, 3, 2, 2, 3, 2}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 1, 1, 2, 2, 0, 0, 1, 0}">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
@@ -35,13 +35,15 @@
         </property>
     </entity>
     <entity name="DiscreteRandomSource" class="ptolemy.actor.lib.DiscreteRandomSource">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="seed" class="ptolemy.moml.SharedParameter" value="5489">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 165.0]">
         </property>
     </entity>
     <entity name="DiscreteRandomSource2" class="ptolemy.actor.lib.DiscreteRandomSource">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="seed" class="ptolemy.moml.SharedParameter" value="5489">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.moml.SharedParameter" value="true">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2, 3}">
         </property>
@@ -49,19 +51,19 @@
         </property>
     </entity>
     <entity name="DiscreteRandomSource3" class="ptolemy.actor.lib.DiscreteRandomSource">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="-1323081">
+        <property name="seed" class="ptolemy.moml.SharedParameter" value="5489">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 335.0]">
         </property>
     </entity>
     <entity name="DiscreteRandomSource4" class="ptolemy.actor.lib.DiscreteRandomSource">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="32809432">
+        <property name="seed" class="ptolemy.moml.SharedParameter" value="5489">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 220.0}">
         </property>
     </entity>
     <entity name="DiscreteRandomSource5" class="ptolemy.actor.lib.DiscreteRandomSource">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="5489">
+        <property name="seed" class="ptolemy.moml.SharedParameter" value="5489">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 275.0]">
         </property>
