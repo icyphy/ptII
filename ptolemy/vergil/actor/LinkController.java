@@ -27,12 +27,16 @@
  */
 package ptolemy.vergil.actor;
 
+import java.awt.Color;
+
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
@@ -216,8 +220,9 @@ public class LinkController extends BasicEdgeController {
     public static class LinkRenderer implements EdgeRenderer {
 
         /** Render a visual representation of the given edge. If the
-         *  StringAttribute _color of the edge is set then use that
-         *  color to highlight the node. If the StringAttribute
+         *  StringAttribute or ColorAttribute named
+         *  _color of the edge is set then use that
+         *  color to draw the line. If the StringAttribute
          *  _explanation of the edge is set then use it to set the
          *  tooltip.
          *  @param edge The edge.
@@ -250,13 +255,31 @@ public class LinkController extends BasicEdgeController {
                 }
                 connector.setToolTipText(tipText);
 
-                // FIXME: This isn't quite right for relation groups.
-                StringAttribute _colorAttr = (StringAttribute) (relation
-                        .getAttribute("_color"));
+                try {
+                    // FIXME: This isn't quite right for relation groups.
+                    StringAttribute colorAttribute = (StringAttribute) (relation
+                            .getAttribute("_color", StringAttribute.class));
 
-                if (_colorAttr != null) {
-                    String _color = _colorAttr.getExpression();
-                    connector.setStrokePaint(SVGUtilities.getColor(_color));
+                    if (colorAttribute != null) {
+                        String color = colorAttribute.getExpression();
+                        if (color != null && !color.trim().equals("")) {
+                            connector.setStrokePaint(SVGUtilities.getColor(color));
+                        }
+                    }
+                } catch (IllegalActionException e) {
+                    // Ignore;
+                }
+                try {
+                    // FIXME: This isn't quite right for relation groups.
+                    ColorAttribute colorAttribute = (ColorAttribute) (relation
+                            .getAttribute("color", ColorAttribute.class));
+
+                    if (colorAttribute != null) {
+                        Color color = colorAttribute.asColor();
+                        connector.setStrokePaint(color);
+                    }
+                } catch (IllegalActionException e) {
+                    // Ignore;
                 }
 
                 StringAttribute _explAttr = (StringAttribute) (relation
