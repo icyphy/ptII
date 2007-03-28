@@ -104,7 +104,7 @@ public class XSLTransformer extends Transformer {
         styleSheetParameter.setTypeAtMost(new RecordType
                 (new String[0], new Type[0]));
         styleSheetParameter.setExpression("{}");
-        styleSheetFile = new FileParameter(this, "stylesheetFile");
+        styleSheetFile = new FileParameter(this, "styleSheetFile");
         
     }
 
