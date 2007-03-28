@@ -84,6 +84,8 @@ test Gaussian-2.1 {test without seed set} {
 test Gaussian-2.2 {test with seed set} {
     set seed [getParameter $g seed]
     $seed setExpression {2l}   
+    set resetOnEachRun [getParameter $g resetOnEachRun]
+    $resetOnEachRun setExpression {true}
     [$e0 getManager] execute
     set first [enumToTokenValues [$rec getRecord 0]]
     [$e0 getManager] execute
