@@ -67,9 +67,6 @@ import ptolemy.moml.SharedParameter;
 
  <p> This parameter is always of type int.
 
- <p> This parameter is based on ColtSeedParameter.
- @see ptolemy.actor.lib.colt.ColtSeedParameter
- 
  @author Elaine Cheong
  @version $Id$
  @Pt.ProposedRating Yellow (celaine)
