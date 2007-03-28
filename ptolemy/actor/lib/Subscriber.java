@@ -45,6 +45,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Subscriber
@@ -176,6 +177,26 @@ public class Subscriber extends TypedAtomicActor {
             return false;
         }
         return _channel.equals(channelName);
+    }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then set the filename public member.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Subscriber newObject = (Subscriber) super.clone(workspace);
+        try {
+            newObject._updatedLinks = false;
+            //newObject._updateLinks();
+        } catch (Throwable throwable) {
+            CloneNotSupportedException exception = new CloneNotSupportedException();
+            exception.initCause(throwable);
+            throw exception;
+        }
+        return newObject;
     }
 
     /** Read at most one input token from each input

@@ -179,6 +179,26 @@ public class Publisher extends TypedAtomicActor {
         }
     }
 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then set the filename public member.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Publisher newObject = (Publisher) super.clone(workspace);
+        try {
+            newObject._updatedLinks = false;
+            //newObject._updateLinks();
+        } catch (Throwable throwable) {
+            CloneNotSupportedException exception = new CloneNotSupportedException();
+            exception.initCause(throwable);
+            throw exception;
+        }
+        return newObject;
+    }
+
     /** Override the base class to update the width of the hidden link.
      *  @param port The port that has connection changes.
      */
