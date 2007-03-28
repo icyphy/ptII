@@ -833,7 +833,7 @@ test CompositeEntity-11.6 {Test full description} {
 test CompositeEntity-11.8 {Test that clone fails with level-cross xsitions} {
     catch {set ne0 [$e0 clone]} msg
     list $msg
-} {{java.lang.CloneNotSupportedException: Cannot clone a CompositeEntity with level crossing transitions.}}
+} {{java.lang.CloneNotSupportedException: Cannot clone a CompositeEntity with level crossing transitions.  The relation was: ptolemy.kernel.ComponentRelation {.E0.E3.R6}, its container was: ptolemy.kernel.CompositeEntity {.E0.E3}, which is not equal to ptolemy.kernel.CompositeEntity {.E0.E3.E4}}
 
 ######################################################################
 ####
