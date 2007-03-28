@@ -51,8 +51,6 @@ JSRCS = \
 	NestedActorManager.java \
 	PtalonActor.java \
 	PtalonAST.java \
-	PtalonBoolParameter.java \
-	PtalonIntParameter.java \
 	PtalonLexer.java \
 	PtalonMLHandler.java \
 	PtalonParameter.java \
