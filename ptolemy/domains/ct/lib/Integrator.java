@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  <p>An integrator in the continuous time (CT) domain.
  This actor has one input port and one output port. Conceptually,
- the input is the derivative of the output w.r.t. time. So an ordinary
+ the input is the derivative of the output with regard to time. So an ordinary
  differential equation dx/dt = f(x, t) can be built by:</p>
  <pre>
                      +---------------+
