@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Gaussian" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
@@ -25,7 +25,9 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="seed" class="ptolemy.moml.SharedParameter" value="1">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.moml.SharedParameter" value="true">
         </property>
         <property name="mean" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
@@ -206,7 +208,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.561581040189, -0.6081826070069, -1.0912278829447, -0.6245401364066, -1.1182832102556, -1.6583217791337, -1.8821643777572, 0.0592554944257, -0.4084113286637, 0.2877095029911, 0.4452322425599, -0.9558118873968, -0.3351465361213, -0.9912505454192, 0.6113509486615, 0.957185029713, -0.1896357718232, 0.0088635884319, 0.426499953285, -0.625766427653}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0739201562705, -0.8393621101458, 0.0557145173528, -1.3434265961732, -0.3974592356069, -0.1872237287045, 0.3892804610641, -1.3689171072465, -0.0477672461675, -0.6415565850695, -1.1700829857298, 0.4465619213528, 0.4672297019093, 0.9162973934847, -1.7095903925064, 0.7765225737707, 0.5707106236715, 0.1123780030673, 1.2883219513949, -0.7851189665237}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
