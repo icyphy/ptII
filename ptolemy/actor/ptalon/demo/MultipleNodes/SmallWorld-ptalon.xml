@@ -3,7 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SmallWorld-ptalon" class="ptolemy.actor.TypedCompositeActor">
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 15.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="352.0">
         </property>
@@ -115,48 +115,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 80.0">
         </property>
     </property>
-    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This demo shows a sensor network where
-each node rebroadcasts the first message
-it receives.  An "initiator" component
-broadcasts a message, and the model keeps
-track of the number of nodes that receive
-the message after one hop, after two
-hops, etc., and plots a histogram.
-
-If you increase the range above the
-"sureRange", then the probability of
-delivery drops according to the formula
-shown, which keeps the expected number
-of recipients roughly constant.  It was
-shown by Franceschetti et al. (2003)
-that on average, fewer hops are
-needed when the range increases.
-
-When you run the demo, the initiator
-will broadcast a message. A node turns to be
-red if it receives the message in one hop;
-it turn to be green if it receives it 
-more than one hop.  It stays white if
-it never receives the message.</text></svg></configure>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 210.0]">
-        </property>
-    </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -251,7 +209,7 @@ it never receives the message.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.75, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.75, 190.0]">
         </property>
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
@@ -262,6 +220,74 @@ it never receives the message.</text></svg></configure>
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{441.7154947916667, 316.78662109375}">
     </property>
+    <property name="channelName" class="ptolemy.data.expr.StringParameter" value="Channel">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 145.0]">
+        </property>
+    </property>
+    <property name="reportChannelName" class="ptolemy.data.expr.StringParameter" value="ReportChannel">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 165.0]">
+        </property>
+    </property>
+    <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 240.0]">
+        </property>
+        <property name="width" class="ptolemy.data.expr.Parameter" value="352.0">
+        </property>
+        <property name="height" class="ptolemy.data.expr.Parameter" value="205.0">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
+    <property name="annotation4" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Data analysis module.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.75, 415.0]">
+        </property>
+    </property>
     <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -271,7 +297,7 @@ it never receives the message.</text></svg></configure>
         </property>
         <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 55.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -288,7 +314,7 @@ it never receives the message.</text></svg></configure>
         </configure>
     </entity>
     <entity name="Average" class="ptolemy.actor.lib.Average">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 110.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -320,11 +346,11 @@ it never receives the message.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 110.0]">
         </property>
     </entity>
     <entity name="Counter" class="ptolemy.actor.lib.Counter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 170.0]">
         </property>
     </entity>
     <entity name="NumberOfLinks" class="ptolemy.actor.lib.MonitorValue">
@@ -337,7 +363,7 @@ it never receives the message.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 170.0]">
         </property>
     </entity>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
@@ -366,7 +392,7 @@ parameter.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 570.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 816, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={151, 197, 816, 518}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -381,6 +407,8 @@ parameter.</text></svg></configure>
         </port>
         <entity name="Channel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
             <property name="defaultProperties" class="ptolemy.data.expr.Parameter" value="{range=range}">
+            </property>
+            <property name="name" class="ptolemy.data.expr.NameParameter" value="$channelName">
             </property>
             <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="1.0 - probability">
             </property>
@@ -465,7 +493,7 @@ parameter.</text></svg></configure>
         <link port="WirelessToWired.payload" relation="relation"/>
     </entity>
     <entity name="SmallWorld" class="ptolemy.actor.ptalon.PtalonActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 295.0]">
         </property>
         <configure>
             <ptalon file="ptolemy.actor.ptalon.demo.MultipleNodes.SmallWorld">
@@ -473,13 +501,99 @@ parameter.</text></svg></configure>
             </ptalon>
         </configure>
     </entity>
+    <entity name="HistogramPlotter2" class="ptolemy.actor.lib.gui.HistogramPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 86, 245, 353}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[237, 298]">
+        </property>
+        <property name="binOffset" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 280.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Histogram</title>
+<xLabel>Number of Hops</xLabel>
+<yLabel>Number of Nodes</yLabel>
+<xRange min="1.0" max="10.5"/>
+<yRange min="0.0" max="20.0"/>
+<barGraph width="0.5" offset="0.15"/>
+<bin width="1.0" offset="0.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Average2" class="ptolemy.actor.lib.Average">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 335.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+        <port name="reset" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+    </entity>
+    <entity name="AverageNumberOfHops2" class="ptolemy.actor.lib.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="Counter2" class="ptolemy.actor.lib.Counter">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 395.0]">
+        </property>
+    </entity>
+    <entity name="NumberOfLinks2" class="ptolemy.actor.lib.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 395.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[595.0, 45.0]">
+        <vertex name="vertex1" value="[595.0, 55.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[595.0, 280.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="HistogramPlotter.input" relation="relation2"/>
     <link port="Average.input" relation="relation2"/>
@@ -489,4 +603,12 @@ parameter.</text></svg></configure>
     <link port="Counter.output" relation="relation3"/>
     <link port="NumberOfLinks.input" relation="relation3"/>
     <link port="CompositeActor.port" relation="relation2"/>
+    <link port="SmallWorld.output" relation="relation4"/>
+    <link port="HistogramPlotter2.input" relation="relation4"/>
+    <link port="Average2.input" relation="relation4"/>
+    <link port="Average2.output" relation="relation5"/>
+    <link port="AverageNumberOfHops2.input" relation="relation5"/>
+    <link port="Counter2.increment" relation="relation4"/>
+    <link port="Counter2.output" relation="relation6"/>
+    <link port="NumberOfLinks2.input" relation="relation6"/>
 </entity>

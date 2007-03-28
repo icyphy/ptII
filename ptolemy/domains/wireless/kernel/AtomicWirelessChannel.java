@@ -39,6 +39,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.NameParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -114,6 +115,8 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         super(container, name);
 
         defaultProperties = new Parameter(this, "defaultProperties");
+        
+        this.name = new NameParameter(this, "name");
 
         // Force this to be a record type without specifying the fields.
         // NOTE: This doesn't actually work because the type remains
@@ -140,6 +143,11 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  FIXME: need a mechanism to deal with empty record tokens.
      */
     public Parameter defaultProperties;
+    
+    /** When set to a non-empty value, this NameParameter will cause
+     *  the name of this channel to be set to this value.
+     */
+    public NameParameter name;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
