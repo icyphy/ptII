@@ -50,10 +50,10 @@ double RandomSource_nextGaussian(double* seed, boolean* haveNextNextGaussian, do
 $actorSymbol(seed) = $actorSymbol(seed) = time (NULL) + $hashCode;
 /**/
 
-/*** setSeedBlock1 ***/
+/*** setSeedBlock1($hashCode) ***/
 /* see documentation from http://java.sun.com/j2se/1.4.2/docs/api/java/util/Random.html#setSeed(long) */
 //this.seed = (seed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
-$actorSymbol(seed) = ((long long) $val(seed) ^ 0x5DEECE66DLL)  & ((1LL << 48) - 1);
+$actorSymbol(seed) = (((long long) $val(seed) + $hashCode) ^ 0x5DEECE66DLL)  & ((1LL << 48) - 1);
 /**/
 
 /*** preinitBlock ***/

@@ -83,15 +83,17 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
 
         long seedValue = ((LongToken) (actor.seed.getToken())).longValue();
 
+        ArrayList args = new ArrayList();
+         
         if (seedValue == 0) {
 
-            ArrayList args = new ArrayList();
             args.add(new Integer(actor.hashCode()));
-
             _codeStream.appendCodeBlock("setSeedBlock0", args);
 
-        } else { // Use fixed seed.
-            _codeStream.appendCodeBlock("setSeedBlock1");
+        } else { // Use fixed seed + actorName.hashCode().
+            
+            args.add(new Integer(actor.getFullName().hashCode()));
+            _codeStream.appendCodeBlock("setSeedBlock1", args);
         }
 
         return processCode(_codeStream.toString());
