@@ -830,10 +830,14 @@ test CompositeEntity-11.6 {Test full description} {
 ######################################################################
 ####
 # NOTE:  Uses the setup constructed in 11.1.
-test CompositeEntity-11.8 {Test that clone fails with level-cross xsitions} {
-    catch {set ne0 [$e0 clone]} msg
-    list $msg
-} {{java.lang.CloneNotSupportedException: Cannot clone a CompositeEntity with level crossing transitions.  The relation was: ptolemy.kernel.ComponentRelation {.E0.E3.R6}, its container was: ptolemy.kernel.CompositeEntity {.E0.E3}, which is not equal to ptolemy.kernel.CompositeEntity {.E0.E3.E4}}
+test CompositeEntity-11.8 {Test that clone fails with level-cross transitions. This used to fail but Publisher and Subscriber no longer } {
+    #catch {set ne0 [$e0 clone]} msg
+    #list $msg
+    set ne0 [$e0 clone]
+    set e0description [$e0 description [java::field ptolemy.kernel.util.NamedObj COMPLETE]]
+    set ne0description [$e0 description [java::field ptolemy.kernel.util.NamedObj COMPLETE]]
+    list [expr {$e0description == $ne0description}]
+} {1}
 
 ######################################################################
 ####
