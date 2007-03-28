@@ -1,0 +1,6 @@
+This package demonstrates how to customize various aspects of
+the Ptolemy II user interface. It contains a set of classes
+the support the construction of an interactive Vergil diagram
+representing a curriculum. Courses in the curriculum are
+represented by actors, and interconnections between them
+represent dependencies.
