@@ -142,7 +142,7 @@ public abstract class RandomSource extends Source {
             long seedValue = ((LongToken) (seed.getToken())).longValue();
 
             if (seedValue != _generatorSeed) {
-                _createGenerator();
+                _needNewGenerator = true;
             }
         } else {
             super.attributeChanged(attribute);
@@ -159,12 +159,11 @@ public abstract class RandomSource extends Source {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         RandomSource newObject = (RandomSource) (super.clone(workspace));
 
-        // Get an independent random number generator.
-        try {
-            newObject._createGenerator();
-        } catch (IllegalActionException e) {
-            throw new CloneNotSupportedException("Invalid seed.");
-        }
+        // It is too soon to generate the new generator because
+        // all clones will have the same actor name, which results
+        // in the same seed.
+        newObject._needNewGenerator = true;
+
         return newObject;
     }
 
@@ -174,6 +173,9 @@ public abstract class RandomSource extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        if (_needNewGenerator) {
+            _createGenerator();
+        }
 
         if (_needNew) {
             _generateRandomNumber();
@@ -221,6 +223,7 @@ public abstract class RandomSource extends Source {
             seedValue = seedValue + getFullName().hashCode();
         }
         _random = new Random(seedValue);
+        _needNewGenerator = false;
         _needNew = true;
     }
     
@@ -240,6 +243,9 @@ public abstract class RandomSource extends Source {
 
     /** Indicator that a new random number is needed. */
     protected boolean _needNew = false;
+    
+    /** Indicator that a new generator is needed. */
+    protected boolean _needNewGenerator = true;
 
     /** The Random object. */
     protected Random _random;

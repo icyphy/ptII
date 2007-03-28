@@ -129,7 +129,7 @@ public abstract class ColtRandomSource extends RandomSource {
 
             if ((generatorClassValue != null)
                     && !generatorClassValue.equals(_generatorClassName)) {
-                _createGenerator();
+                _needNewGenerator = true;
             }
         } else {
             super.attributeChanged(attribute);
@@ -179,6 +179,8 @@ public abstract class ColtRandomSource extends RandomSource {
         // will re-run this method. We don't want this, so even though
         // we don't need it, we create an instance of Random.
         _random = new Random();
+        _needNewGenerator = false;
+        _needNew = true;
 
         _createdNewRandomNumberGenerator();
     }
