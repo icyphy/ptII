@@ -338,7 +338,7 @@ test SharedParameter-13.0 {Test exportMoML} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="A" class="ptolemy.kernel.util.NamedObj">
-    <property name="A1" class="ptolemy.moml.SharedParameter" value="">
+    <property name="A1" class="ptolemy.moml.SharedParameter">
     </property>
 </entity>
 }
@@ -811,13 +811,7 @@ test SharedParameter-18.1.1 {simple setExpression with TestSharedParameter} {
 } {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
-sharedParameterSetCount: 2
-validateCount: 0
-propagateValueCount: 0} {
-} {inferValueFromContextCount: 1
-isSuppressingPropagationCount: 0
-setExpressionCount: 3
-sharedParameterSetCount: 2
+sharedParameterSetCount: 1
 validateCount: 0
 propagateValueCount: 0} {
 } {inferValueFromContextCount: 1
@@ -825,8 +819,13 @@ isSuppressingPropagationCount: 0
 setExpressionCount: 3
 sharedParameterSetCount: 1
 validateCount: 0
-propagateValueCount: 0}}
-
+propagateValueCount: 0} {
+} {inferValueFromContextCount: 1
+isSuppressingPropagationCount: 0
+setExpressionCount: 3
+sharedParameterSetCount: 0
+validateCount: 0
+propagateValueCount: 0}} 
 
 test SharedParameter-18.1.2 {call validateSettables} {
     # Uses 18.1 above
@@ -855,37 +854,37 @@ test SharedParameter-18.1.2 {call validateSettables} {
 } {r1= {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
-sharedParameterSetCount: 2
+sharedParameterSetCount: 1
 validateCount: 0
 propagateValueCount: 0} {
 r2=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
-sharedParameterSetCount: 2
+sharedParameterSetCount: 1
 validateCount: 0
 propagateValueCount: 0} {
 r3=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
-sharedParameterSetCount: 1
+sharedParameterSetCount: 0
 validateCount: 0
 propagateValueCount: 0} {
 ...
 r4=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
-sharedParameterSetCount: 3
+sharedParameterSetCount: 2
 validateCount: 1
 propagateValueCount: 0} {
 r5=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
-sharedParameterSetCount: 2
+sharedParameterSetCount: 1
 validateCount: 1
 propagateValueCount: 0} {
 r6=} {inferValueFromContextCount: 1
 isSuppressingPropagationCount: 0
 setExpressionCount: 3
-sharedParameterSetCount: 1
+sharedParameterSetCount: 0
 validateCount: 1
 propagateValueCount: 0}}
