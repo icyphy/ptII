@@ -1220,7 +1220,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             }
 
             // if (presentFiring == null) {
-            if (connectedActor == model) {
+            // Make sure to check for presentFiring == null here so that
+            // we avoid a NullPointerException if the model is ill formed.
+            // I had problems here with a bug in Publisher.clone() and
+            // Subscriber.clone() where presentFiring was null.
+            // Getting a NullPointerException is bad, we should check
+            // for null and try to give a better message.
+            if (connectedActor == model || presentFiring == null) {
                 // We've gotten out to an external port.
                 // Temporarily create the entry in the firing table.
                 // This is possibly rather fragile.
