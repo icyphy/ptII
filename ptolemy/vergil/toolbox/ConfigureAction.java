@@ -91,7 +91,7 @@ public class ConfigureAction extends FigureAction {
             // Create a dialog for configuring the object.
             // First, identify the top parent frame.
             Frame parent = getFrame();
-            openDialog(parent, target);
+            _openDialog(parent, target, e);
         } catch (Throwable throwable) {
             // Giotto code generator on giotto/demo/Hierarchy/Hierarchy.xml
             // was throwing an exception here that was not being displayed
@@ -108,9 +108,28 @@ public class ConfigureAction extends FigureAction {
      *  @param target The object whose parameters are to be edited.
      */
     public void openDialog(Frame parent, NamedObj target) {
-        List attributeList = target.attributeList(EditorFactory.class);
+        _openDialog(parent, target, null);
+    }
 
-        if (attributeList.size() > 0) {
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Open an edit parameters dialog.  This is a modal dialog, so
+     *  this method returns only after the dialog has been dismissed.
+     *  @param parent A frame to serve as a parent for the dialog, or
+     *  null if there is none.
+     *  @param target The object whose parameters are to be edited.
+     *  @param event The action event that triggered this, or null if
+     *   none.
+     */
+    private void _openDialog(Frame parent, NamedObj target, ActionEvent event) {
+        List attributeList = target.attributeList(EditorFactory.class);
+        // Use the EditorFactory only if the alt key is not pressed.
+        boolean altKeyPressed = false;
+        if (event != null) {
+            altKeyPressed = (event.getModifiers() & ActionEvent.ALT_MASK) != 0;
+        }
+        if (attributeList.size() > 0 && !altKeyPressed) {
             EditorFactory factory = (EditorFactory) attributeList.get(0);
             factory.createEditor(target, parent);
         } else {
