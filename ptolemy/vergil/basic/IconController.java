@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -190,44 +189,42 @@ public class IconController extends ParameterizedNodeController {
 
             result.setToolTipText(object.getClassName());
 
-            // If the object is a ComponentEntity then check to see if it has
+            // Check to see if it has
             // attributes that specify its color or an explanation.
-            if (object instanceof ComponentEntity) {
-                ComponentEntity ce = (ComponentEntity) object;
-                // Old way to specify a color.
-                try {
-                    StringAttribute colorAttr = (StringAttribute) (ce
-                            .getAttribute("_color", StringAttribute.class));
-                    if (colorAttr != null) {
-                        String color = colorAttr.getExpression();
-                        AnimationRenderer _animationRenderer = new AnimationRenderer(
-                                SVGUtilities.getColor(color));
-                        _animationRenderer.renderSelected(result);
-                    }
-                } catch (IllegalActionException e) {
-                    // Ignore
+            // Old way to specify a color.
+            try {
+                StringAttribute colorAttr = (StringAttribute) (object
+                        .getAttribute("_color", StringAttribute.class));
+                if (colorAttr != null) {
+                    String color = colorAttr.getExpression();
+                    AnimationRenderer animationRenderer = new AnimationRenderer(
+                            SVGUtilities.getColor(color));
+                    animationRenderer.renderSelected(result);
                 }
-                // New way to specify a highlight color.
-                try {
-                    ColorAttribute highlightAttribute = (ColorAttribute) (ce
-                            .getAttribute("_highlightColor", ColorAttribute.class));
-                    if (highlightAttribute != null) {
-                        Color color = highlightAttribute.asColor();
-                        AnimationRenderer _animationRenderer = new AnimationRenderer(color);
-                        _animationRenderer.renderSelected(result);
-                    }
-                } catch (IllegalActionException e) {
-                    // Ignore.
+            } catch (IllegalActionException e) {
+                // Ignore
+            }
+            // New way to specify a highlight color.
+            try {
+                ColorAttribute highlightAttribute = (ColorAttribute) (object
+                        .getAttribute("_highlightColor", ColorAttribute.class));
+                if (highlightAttribute != null
+                        && !highlightAttribute.getExpression().trim().equals("")) {
+                    Color color = highlightAttribute.asColor();
+                    AnimationRenderer animationRenderer = new AnimationRenderer(color);
+                    animationRenderer.renderSelected(result);
                 }
-                try {
-                    StringAttribute explanationAttribute = (StringAttribute) (ce
-                            .getAttribute("_explanation", StringAttribute.class));
-                    if (explanationAttribute != null) {
-                        result.setToolTipText(explanationAttribute.getExpression());
-                    }
-                } catch (IllegalActionException e) {
-                    // Ignore.
+            } catch (IllegalActionException e) {
+                // Ignore.
+            }
+            try {
+                StringAttribute explanationAttribute = (StringAttribute) (object
+                        .getAttribute("_explanation", StringAttribute.class));
+                if (explanationAttribute != null) {
+                    result.setToolTipText(explanationAttribute.getExpression());
                 }
+            } catch (IllegalActionException e) {
+                // Ignore.
             }
 
             return result;
