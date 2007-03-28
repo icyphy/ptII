@@ -470,7 +470,7 @@ public class Entity extends InstantiableNamedObj {
      *  @exception IllegalActionException If the argument is true and
      *   this entity contains ports with links.
      */
-    public final void setClassDefinition(boolean isClass)
+    public /*final*/ void setClassDefinition(boolean isClass)
             throws IllegalActionException {
         if (isClass && !isClassDefinition()) {
             // Converting from an instance to a class.
