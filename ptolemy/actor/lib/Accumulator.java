@@ -29,6 +29,7 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -47,6 +48,10 @@ import ptolemy.kernel.util.Workspace;
  inputs and outputs can be any token type that supports addition.
  The output type is constrained to be greater than or
  equal to the input type and the type of the <i>init</i> parameter.
+ <p>
+ If the input and <i>init</i> data type are scalars, then you can
+ also set the <i>lowerBound</i> and <i>upperBound</i> parameters to
+ limit the range of the accumulated value.
 
  @author Edward A. Lee
  @version $Id$
@@ -76,6 +81,12 @@ public class Accumulator extends Transformer {
         init = new Parameter(this, "init");
         init.setExpression("0");
 
+        lowerBound = new Parameter(this, "lowerBound");
+        lowerBound.setTypeSameAs(init);
+
+        upperBound = new Parameter(this, "upperBound");
+        upperBound.setTypeSameAs(init);
+
         // set the type constraints.
         output.setTypeAtLeast(init);
         output.setTypeAtLeast(input);
@@ -83,6 +94,13 @@ public class Accumulator extends Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    /** The lower bound. If this is set, then its type must be the
+     *  same as that of the <i>init</i> parameter, and the output
+     *  will be constrained to never drop below the lower bound.
+     *  By default, this is not set, so there is no lower bound.
+     */
+    public Parameter lowerBound;
 
     /** The value produced by the actor on its first iteration.
      *  The default value of this parameter is the integer 0.
@@ -94,6 +112,13 @@ public class Accumulator extends Transformer {
      *  This is a multiport and has type boolean.
      */
     public TypedIOPort reset;
+
+    /** The upper bound. If this is set, then its type must be the
+     *  same as that of the <i>init</i> parameter, and the output
+     *  will be constrained to never rise above the upper bound.
+     *  By default, this is not set, so there is no upper bound.
+     */
+    public Parameter upperBound;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -144,6 +169,31 @@ public class Accumulator extends Transformer {
             if (input.hasToken(i)) {
                 Token in = input.get(i);
                 _latestSum = _latestSum.add(in);
+            }
+        }
+        // Check the bounds.
+        Token lowerBoundValue = lowerBound.getToken();
+        if (lowerBoundValue != null) {
+            if (lowerBoundValue instanceof ScalarToken) {
+                if (((ScalarToken)lowerBoundValue).isGreaterThan((ScalarToken)_latestSum).booleanValue()) {
+                    _latestSum = lowerBoundValue;
+                }
+            } else {
+                throw new IllegalActionException(this,
+                        "lowerBound parameter only works with scalar values. Value given was: "
+                        + lowerBoundValue);
+            }
+        }
+        Token upperBoundValue = upperBound.getToken();
+        if (upperBoundValue != null) {
+            if (upperBoundValue instanceof ScalarToken) {
+                if (((ScalarToken)upperBoundValue).isLessThan((ScalarToken)_latestSum).booleanValue()) {
+                    _latestSum = upperBoundValue;
+                }
+            } else {
+                throw new IllegalActionException(this,
+                        "upperBound parameter only works with scalar values. Value given was: "
+                        + upperBoundValue);
             }
         }
 
