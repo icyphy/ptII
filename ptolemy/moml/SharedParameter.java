@@ -331,12 +331,11 @@ public class SharedParameter extends Parameter implements Executable {
     }
 
     /** Override the base class to register as a shared parameter in the workspace.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace.
-     *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this entity.
+     *  @param name The proposed name.
+     *  @exception IllegalActionException If the name contains a period
+     *   or if this variable is referenced in some other expression.
+     *  @exception NameDuplicationException If there is already an
+     *       attribute with the same name in the container.
      */
     public void setName(String name)
             throws IllegalActionException, NameDuplicationException {
