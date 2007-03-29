@@ -1,4 +1,4 @@
-/***plotterBasePreinitBlock***/
+/***preinitBlock***/
 #ifndef _JAVA_INVOCATION_INTERFACE_PREINIT
 #define _JAVA_INVOCATION_INTERFACE_PREINIT
 JavaVM* jvm;
@@ -35,7 +35,7 @@ JNI_CreateJavaVM(&jvm, (void **)&env, &args);
 #endif
 /**/
 
-/***plotterBaseInitBlock***/           
+/***initBlock***/           
 $actorSymbol(plotClass) = (*env)->FindClass(env, "ptolemy/plot/Plot");
 $actorSymbol(plotConstructor) = (*env)->GetMethodID
         (env, $actorSymbol(plotClass), "<init>", "()V");
