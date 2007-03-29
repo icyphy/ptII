@@ -497,7 +497,9 @@ parameter.</text></svg></configure>
         </property>
         <configure>
             <ptalon file="ptolemy.actor.ptalon.demo.MultipleNodes.SmallWorld">
-                <ptalonExpressionParameter name="n" value="3"/>
+                <ptalonExpressionParameter name="n" value="4"/>
+                <ptalonExpressionParameter name="channelName" value="channelName"/>
+                <ptalonExpressionParameter name="reportChannelName" value="reportChannelName"/>
             </ptalon>
         </configure>
     </entity>

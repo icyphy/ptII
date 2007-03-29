@@ -6,12 +6,15 @@ SmallWorld is {
     actor initiator = ptolemy.actor.ptalon.demo.MultipleNodes.Initiator;
     actor wirelessToWired = ptolemy.domains.wireless.lib.WirelessToWired;
 
+    parameter channelName;
+    parameter reportChannelName;
+
     outport output;
 
-    channel(defaultProperties := [[{range=range}]], lossProbability := [[1.0 - probability]], name := [["$channelName"]]);
-    channel(name := [["$reportChannelName"]]);
+    channel(defaultProperties := [[{range=range}]], lossProbability := [[1.0 - probability]], name := [[channelName]]);
+    channel(name := [[reportChannelName]]);
 
-    wirelessToWired(payload := output);
+    wirelessToWired(inputChannelName := [[reportChannelName]], payload := output);
 
     initiator();
 
