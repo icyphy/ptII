@@ -1,4 +1,5 @@
 /***preinitBlock***/
+$super();
 jdouble $actorSymbol(xValue);
 /**/
 
