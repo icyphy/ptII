@@ -1,6 +1,6 @@
 /* A CompositeEntity is a cluster in a clustered graph.
 
- Copyright (c) 1997-2007 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -110,7 +110,7 @@ import ptolemy.kernel.util.Workspace;
  Moreover, they cannot be deleted as long as there are either
  subclasses or instances present.
 
- @author John S. Davis II, Edward A. Lee, contributor: Christopher Brooks
+ @author John S. Davis II, Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (eal)
@@ -296,11 +296,18 @@ public class CompositeEntity extends ComponentEntity {
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
+     *  NOTE: This will not work if there are level-crossing transitions.
+     *  The result is an entity with clones of the ports of the original
+     *  entity, the contained entities, and the contained relations.
+     *  The ports of the returned entity are not connected to anything.
+     *  The connections of the relations are duplicated in the new entity,
+     *  unless they cross levels, in which case an exception is thrown.
      *  This method gets read access on the workspace associated with
      *  this object.
      *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *  cannot be cloned.
+     *  @exception CloneNotSupportedException If the entity contains
+     *   level crossing transitions so that its connections cannot be cloned,
+     *   or if one of the attributes cannot be cloned.
      *  @return A new CompositeEntity.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
@@ -388,16 +395,16 @@ public class CompositeEntity extends ComponentEntity {
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
                         if (rel != null) {
-//                             if (rel.getContainer() != this) {
-//                                 throw new CloneNotSupportedException(
-//                                         "Cannot clone a CompositeEntity with "
-//                                                 + "level crossing transitions."
-//                                                 + "  The relation was: " + rel
-//                                                 + ", its container was: " 
-//                                                 + rel.getContainer()
-//                                                 + ", which is not equal to "
-//                                                 + this);
-//                             }
+                            if (rel.getContainer() != this) {
+                                throw new CloneNotSupportedException(
+                                        "Cannot clone a CompositeEntity with "
+                                                + "level crossing transitions."
+                                                + "  The relation was: " + rel
+                                                + ", its container was: " 
+                                                + rel.getContainer()
+                                                + ", which is not equal to "
+                                                + this);
+                            }
 
                             ComponentRelation newRelation = newEntity
                                     .getRelation(rel.getName());
@@ -1271,75 +1278,6 @@ public class CompositeEntity extends ComponentEntity {
             _workspace.doneWriting();
         }
     }
-
-    /** Specify whether this object is a class definition.
-     *  If the argument is true and this entity is not a class
-     *  definition, then all level crossing relations that
-     *  This method overrides the base class to check that if the
-     *  argument is true, then this entity contains no ports with links.
-     *  This method is write synchronized on the workspace.
-     *  @param isClass True to make this object a class definition.
-     *  @exception IllegalActionException If the argument is true and
-     *   this entity contains ports with links.
-     */
-    public void setClassDefinition(boolean isClass)
-            throws IllegalActionException {
-        // The situation is that an AO class definition is not allowed to have
-        // any connections to other things.  Thus, if an instance is converted
-        // to a class, it should be first disconnected. However, a Subscriber
-        // has a "hidden" connection.  This connection may or may not cross
-        // the boundary of the class definition. It should only be disconnected
-        // if it does.
-
-        // We need to disconnect upon invocation of
-        // setClassDefinition().
-        // It does have to traverse the whole tree below the actor being
-        // converted to a class and disconnect any level-crossing link that
-        // traverses to outside the class definition.
-
-        // We also need to worry about the converse: When a class is converted
-        // to an instance, we need to find all inside Publisher/Subscriber actors
-        // and call _updateLinks().  (FIXME: this is not done)
-
-        if (isClass && !isClassDefinition()) {
-            // Converting from an instance to a class.
-
-            // Look for relations with level crossing links.
-            Iterator entities = allAtomicEntityList().iterator();
-
-            while (entities.hasNext()) {
-                ComponentEntity entity = (ComponentEntity) entities.next();
-
-                // Keep a list of ports to be unlinked
-                List portsToBeUnlinked = new LinkedList();
-                Iterator ports = entity.portList().iterator();
-
-                while (ports.hasNext()) {
-                    ComponentPort port = (ComponentPort) ports.next();
-                    Enumeration linkedRelations = port.linkedRelations();
-
-                    while (linkedRelations.hasMoreElements()) {
-                        ComponentRelation rel = (ComponentRelation) linkedRelations
-                            .nextElement();
-                        if (rel != null) {
-                            // FIXME: really, we only want to unlink
-                            // ports that are contained outside the class
-                            if (rel.getContainer() != this) {
-                                portsToBeUnlinked.add(port);
-                            }
-                        }
-                    }
-                }
-                ports = portsToBeUnlinked.iterator();            
-                while (ports.hasNext()) {
-                    ComponentPort port = (ComponentPort) ports.next();
-                    port.unlinkAll();
-                }
-            }
-        }
-        super.setClassDefinition(isClass);
-    }
-
 
     /** Return a string describing how many actors, parameters,
      * ports, and relations it has.
