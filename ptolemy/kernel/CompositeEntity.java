@@ -1300,48 +1300,46 @@ public class CompositeEntity extends ComponentEntity {
         // We also need to worry about the converse: When a class is converted
         // to an instance, we need to find all inside Publisher/Subscriber actors
         // and call _updateLinks().  (FIXME: this is not done)
+
         if (isClass && !isClassDefinition()) {
-            try {
-                workspace().getWriteAccess();
-                // Converting from an instance to a class.
-                _unlinkLevelCrossingLinksToOutside(this);
-            } finally {
-                workspace().doneWriting();
+            // Converting from an instance to a class.
+
+            // Look for relations with level crossing links.
+            Iterator entities = allAtomicEntityList().iterator();
+
+            while (entities.hasNext()) {
+                ComponentEntity entity = (ComponentEntity) entities.next();
+
+                // Keep a list of ports to be unlinked
+                List portsToBeUnlinked = new LinkedList();
+                Iterator ports = entity.portList().iterator();
+
+                while (ports.hasNext()) {
+                    ComponentPort port = (ComponentPort) ports.next();
+                    Enumeration linkedRelations = port.linkedRelations();
+
+                    while (linkedRelations.hasMoreElements()) {
+                        ComponentRelation rel = (ComponentRelation) linkedRelations
+                            .nextElement();
+                        if (rel != null) {
+                            // FIXME: really, we only want to unlink
+                            // ports that are contained outside the class
+                            if (rel.getContainer() != this) {
+                                portsToBeUnlinked.add(port);
+                            }
+                        }
+                    }
+                }
+                ports = portsToBeUnlinked.iterator();            
+                while (ports.hasNext()) {
+                    ComponentPort port = (ComponentPort) ports.next();
+                    port.unlinkAll();
+                }
             }
         }
         super.setClassDefinition(isClass);
     }
 
-    /** Override the base class so that if the argument is null, all
-     *  level-crossing links from inside this composite to outside this
-     *  composite are removed.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace, or
-     *   if the protected method _checkContainer() throws it, or if
-     *   a contained Settable becomes invalid and the error handler
-     *   throws it.
-     *  @exception NameDuplicationException If the name of this entity
-     *   collides with a name already in the container.
-     *  @see #getContainer()
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        if (container == null) {
-            // This composite is being removed from the model.
-            // Remove level-crossing links.
-            try {
-                _workspace.getWriteAccess();
-                _unlinkLevelCrossingLinksToOutside(this);
-                super.setContainer(container);
-            } finally {
-                _workspace.doneWriting();
-            }
-        } else {
-            super.setContainer(container);
-        }
-    }
 
     /** Return a string describing how many actors, parameters,
      * ports, and relations it has.
@@ -1846,53 +1844,6 @@ public class CompositeEntity extends ComponentEntity {
     ////                         private methods                   ////
     private void _addIcon() {
         _attachText("_iconDescription", _defaultIcon);
-    }
-
-    /** Remove all level-crossing links from relations contained
-     *  by the specified entity to ports or relations outside this composite entity,
-     *  and from ports contained by entities contained by the specified
-     *  entity to relations outside this composite entity.
-     *  @param entity The entity in which to look for relations or
-     *   (if it is an instance of CompositeEntity), entities with ports.
-     */
-    private void _unlinkLevelCrossingLinksToOutside(CompositeEntity entity) {
-        // Look for relations with level crossing links first.
-        Iterator relations = entity.relationList().iterator();
-        while (relations.hasNext()) {
-            ComponentRelation relation = (ComponentRelation)relations.next();
-            Iterator linkedObjects = relation.linkedObjectsList().iterator();
-            while (linkedObjects.hasNext()) {
-                Object linkedObject = linkedObjects.next();
-                if (linkedObject instanceof Relation) {
-                    relation.unlink((Relation)linkedObject);
-                } else {
-                    // Must be a port.
-                    ((Port)linkedObject).unlink(relation);
-                }
-            }
-        }
-        // Next look for ports with level-crossing links.
-        Iterator entities = entity.entityList().iterator();
-        while (entities.hasNext()) {
-            ComponentEntity containedEntity = (ComponentEntity) entities.next();
-            // If the contained entity is a composite entity, then unlink
-            // anything inside it as well.
-            if (containedEntity instanceof CompositeEntity) {
-                _unlinkLevelCrossingLinksToOutside((CompositeEntity)containedEntity);
-            }
-            // Now unlink its ports.
-            Iterator ports = containedEntity.portList().iterator();
-            while (ports.hasNext()) {
-                ComponentPort port = (ComponentPort) ports.next();
-                Iterator linkedRelations = port.linkedRelationList().iterator();
-                while (linkedRelations.hasNext()) {
-                    ComponentRelation rel = (ComponentRelation) linkedRelations.next();
-                    if (rel != null && !deepContains(rel)) {
-                        port.unlink(rel);
-                    }
-                }
-            }
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
