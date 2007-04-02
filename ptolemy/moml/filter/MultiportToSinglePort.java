@@ -134,8 +134,14 @@ public class MultiportToSinglePort implements MoMLFilter {
                     .containsKey(attributeValue)) {
                 // We found a class with a property class change.
                 _currentlyProcessingActorWithPropertyClassChanges = true;
-                _currentActorFullName = container.getFullName() + "."
+                if (container == null) {
+                    // Under certain circumstances, we can parse something
+                    // that has no container
+                    _currentActorFullName = "." + _lastNameSeen;
+                } else {
+                    _currentActorFullName = container.getFullName() + "."
                         + _lastNameSeen;
+                }
                 _portName = (String) _actorsWithMultiPortToSinglePortChanges
                         .get(attributeValue);
 
