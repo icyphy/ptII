@@ -4,7 +4,7 @@
 <entity name="XSLTransformerTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 139, 761, 471}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 139, 761, 470}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[546, 354]">
     </property>
@@ -77,7 +77,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;&lt;entity name=\&quot;Const\&quot; class=\&quot;ptolemy.actor.lib.Const\&quot;/&gt;&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;?xml version='1.0' encoding='UTF-8'?&gt;\n &lt;Actors&gt;\n &lt;Actor&gt; &lt;name&gt;Const&lt;/name&gt;\n &lt;class&gt;ptolemy.actor.lib.Const&lt;/class&gt;\n &lt;/Actor&gt;\n &lt;/Actors&gt;&quot;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
             </property>
         </property>
