@@ -61,6 +61,7 @@ JSIMPLE_TESTS = \
 	MoMLChangeRequest.tcl \
 	MoMLParser.tcl \
 	MoMLUndoChangeRequest.tcl \
+	MoMLUtilities.tcl \
 	SharedParameter.tcl \
 	StreamErrorHandler.tcl \
 	UndoContext.tcl \

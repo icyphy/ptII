@@ -663,6 +663,18 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         return tokenString;
     }
 
+    /** Look up and return the attribute with the specified name in the
+     *  scope. Return null if such an attribute does not exist.
+     *  @return The attribute with the specified name in the scope.
+     *  @exception IllegalActionException If a value in the scope
+     *  exists with the given name, but cannot be evaluated.
+     */
+    public Variable getVariable(String name)
+            throws IllegalActionException {
+        // FIXME: this is not a safe cast because we have setParserScope()
+        return ((VariableScope)getParserScope()).getVariable(name);
+    }
+
     /** Get the visibility of this variable, as set by setVisibility().
      *  The visibility is set by default to EXPERT.
      *  @return The visibility of this variable.
@@ -1425,7 +1437,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             // NOTE: We could use exception chaining here to report
             // the cause, but this leads to very verbose error
             // error messages that are not very friendly.
-            throw new IllegalActionException(message.toString());
+            throw new IllegalActionException(this, message.toString());
         }
 
         // NOTE: The call to _propagate() above has already done
@@ -2220,47 +2232,11 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          */
         public ptolemy.data.Token get(String name)
                 throws IllegalActionException {
-            if (_variablesDependentOn == null) {
-                _variablesDependentOn = new HashMap();
-            } else {
-                // Variable might be cached.
-                if (_variablesDependentOnVersion == workspace().getVersion()) {
-                    // Cache is valid. Look up the variable.
-                    Variable result = (Variable) _variablesDependentOn
-                            .get(name);
-
-                    if (result != null) {
-                        return result.getToken();
-                    }
-                } else {
-                    // Cache is invalid.  Clear it.
-                    _variablesDependentOn.clear();
-                }
+            Variable results = getVariable(name);
+            if (results != null) {
+                return results.getToken();
             }
-
-            // Either cache is not valid, or the variable is not in the cache.
-            _variablesDependentOnVersion = workspace().getVersion();
-
-            NamedObj reference = _reference;
-
-            if (_reference == null) {
-                reference = Variable.this.getContainer();
-            }
-
-            Variable result = getScopedVariable(Variable.this, reference, name);
-
-            if (result != null) {
-                // If the variable is not in the cache, then we also
-                // may not be a value listener for it.
-                if (!_variablesDependentOn.containsValue(result)) {
-                    result.addValueListener(Variable.this);
-                    _variablesDependentOn.put(name, result);
-                }
-
-                return result.getToken();
-            } else {
-                return null;
-            }
+            return null;
         }
 
         /** Look up and return the type of the attribute with the
@@ -2307,6 +2283,57 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
             if (result != null) {
                 return result.getTypeTerm();
+            } else {
+                return null;
+            }
+        }
+
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         *  @exception IllegalActionException If a value in the scope
+         *  exists with the given name, but cannot be evaluated.
+         */
+        public Variable getVariable(String name)
+                throws IllegalActionException {
+            if (_variablesDependentOn == null) {
+                _variablesDependentOn = new HashMap();
+            } else {
+                // Variable might be cached.
+                if (_variablesDependentOnVersion == workspace().getVersion()) {
+                    // Cache is valid. Look up the variable.
+                    Variable result = (Variable) _variablesDependentOn
+                            .get(name);
+
+                    if (result != null) {
+                        return result;
+                    }
+                } else {
+                    // Cache is invalid.  Clear it.
+                    _variablesDependentOn.clear();
+                }
+            }
+
+            // Either cache is not valid, or the variable is not in the cache.
+            _variablesDependentOnVersion = workspace().getVersion();
+
+            NamedObj reference = _reference;
+
+            if (_reference == null) {
+                reference = Variable.this.getContainer();
+            }
+
+            Variable result = getScopedVariable(Variable.this, reference, name);
+
+            if (result != null) {
+                // If the variable is not in the cache, then we also
+                // may not be a value listener for it.
+                if (!_variablesDependentOn.containsValue(result)) {
+                    result.addValueListener(Variable.this);
+                    _variablesDependentOn.put(name, result);
+                }
+
+                return result;
             } else {
                 return null;
             }

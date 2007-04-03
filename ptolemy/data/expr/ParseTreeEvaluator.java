@@ -541,8 +541,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             return;
         }
 
-        throw new IllegalActionException("The ID " + node.getName()
-                + " is undefined.");
+        throw new UndefinedConstantOrIdentifierException(node.getName());
     }
 
     /** Evaluate a logical AND or OR on the children of the specified node.

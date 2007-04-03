@@ -107,6 +107,7 @@ JSRCS = \
         StringParameter.java \
         TemporaryVariable.java \
 	TokenMgrError.java \
+	UndefinedConstantOrIdentifierException.java \
 	UnknownResultException.java \
 	UtilityFunctions.java \
 	UnknownToken.java \

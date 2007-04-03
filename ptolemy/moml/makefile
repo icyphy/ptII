@@ -67,6 +67,7 @@ JSRCS =	Documentation.java \
 	MoMLFilter.java \
 	MoMLParser.java \
 	MoMLUndoEntry.java \
+	MoMLUtilities.java \
 	ParserAttribute.java \
 	SharedParameter.java \
 	StreamErrorHandler.java \
