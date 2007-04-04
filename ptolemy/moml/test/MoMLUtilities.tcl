@@ -227,3 +227,42 @@ test MoMLUtilties-1.4.2 {Simulate paste with the myParam variable defined} {
 	
     list [$value toString]
 } {3}
+
+
+######################################################################
+####
+# 
+
+
+set paramCopySubscriber1_5 {
+    <entity name="Subscriber" class="ptolemy.actor.lib.Subscriber">
+        <property name="channel" class="ptolemy.data.expr.StringParameter" value="$myParam">
+        </property>
+    </entity>
+}
+
+test MoMLUtilties-1.5.1 {copy a Subscriber that refers to a channel via a var} {
+    set moml1_5 "$header $entityStart $myParam $paramCopySubscriber1_5 </entity>"
+    set toplevel1_5 [parseMoML $moml1_5 w1_5]
+
+    set copyMoML1_5 [java::call ptolemy.moml.MoMLUtilities \
+		      checkCopy "$paramCopySubscriber1_5" $toplevel1_5]
+    list $copyMoML1_5
+} {{<property name="myParam" class="ptolemy.data.expr.Parameter" value="1">
+</property>
+}}
+######################################################################
+####
+#
+test MoMLUtilties-1.5.2 {Simulate paste with the myParam variable defined} {
+    set moml1_5_2 "$header $entityStart  </entity>"
+    set toplevel1_5_2 [parseMoML $moml1_5_2 w1_5_2]
+
+    # Uses copyMoML1_5 from 1.4.1 above
+    set clipBoard  "<group name=\"auto\">$copyMoML1_5 $paramCopySubscriber1_5\n</group>"
+    set value [changeAndGetToken $toplevel1_5_2 \
+		   $clipBoard \
+		   Subscriber]
+	
+    list [$value toString]
+} {3}
