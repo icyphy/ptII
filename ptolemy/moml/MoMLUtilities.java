@@ -33,6 +33,7 @@ import ptolemy.actor.TypedCompositeActor;
 
 import ptolemy.data.expr.UndefinedConstantOrIdentifierException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.ErrorHandler;
 import ptolemy.moml.MoMLParser;
 import java.io.StringWriter;
 import java.util.Enumeration;
@@ -128,8 +129,10 @@ public class MoMLUtilities {
         // add it to the moml and reparse.
         boolean doParse = true;
         while (doParse) {
+            ErrorHandler handler = MoMLParser.getErrorHandler();
+            MoMLParser.setErrorHandler(null);
             try {
-
+                
                 // Parse the momlToBeChecked.
                 parsedContainer = (TypedCompositeActor) parser.parse(
                         "<entity name=\"auto\" class=\"ptolemy.actor.TypedCompositeActor\">"
@@ -148,6 +151,8 @@ public class MoMLUtilities {
             } catch (Exception ex3) {
                 throw new IllegalActionException(container, ex3,
                         "Failed to parse contents of copy buffer.");
+            } finally {
+            MoMLParser.setErrorHandler(handler);                
             }
         }
 
@@ -211,10 +216,12 @@ public class MoMLUtilities {
             }
         }
 
+        // System.out.println("MoMLUtilities: idException: " + idException);
         if (idException == null) {
             // The exception or the cause was not an
             // UndefinedConstantOrIdentifierException, so we cannot do
             // anything.
+            // System.out.println("MoMLUtilities: returning false");
             return false;
         }
 
@@ -228,19 +235,29 @@ public class MoMLUtilities {
 
         Attribute masterAttribute = container.getAttribute(variableName);
 
+        // System.out.println("MoMLUtilities: variableName: " + variableName
+        //        + " masterAttr: " + masterAttribute);
         if (masterAttribute instanceof Variable) {
             Variable masterVariable = (Variable)masterAttribute;
             ParserScope parserScope = masterVariable.getParserScope();
+            // System.out.println("MoMLUtilities: parserScope: " + parserScope);
             if (parserScope instanceof ModelScope) {
                 if (masterVariable != null) {
                     Variable node = masterVariable.getVariable(idException.nodeName());
+                    // System.out.println("MoMLUtilities: node: " + node
+                    //        + " _previousNode: " + _previousNode);
                     if (node == _previousNode) {
                         // We've already seen this node, so stop
                         // looping through the getToken() loop.
+                        // System.out.println("MoMLUtilities: returning false!");
                         return false;
                     }
                     _previousNode = node;
+
                     try {
+                        // System.out.println("MoMLUtilities: about to export"
+                        //        + " for " + node);
+
                         String moml = node.exportMoML();
 
                         // Insert the new variable so that other
@@ -267,6 +284,7 @@ public class MoMLUtilities {
                 }
             }
         }
+        // System.out.println("MoMLUtilities: returning " + doRerun);
         return doRerun;
     }
 
