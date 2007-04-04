@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Nameable;
  unknown constant or identifier.
 
  <p>This exception is used to catch missing constants or identifiers
- during cut and paste operations by {@link ptolemy.data.expr.ParseTreeEvaluator#visitLeafeNode(ptolemy.data.expr.ASTPtLeafNode)}.
+ during cut and paste operations by {@link ptolemy.data.expr.ParseTreeEvaluator#visitLeafNode(ptolemy.data.expr.ASTPtLeafNode)}.
 
  @author Christopher Brooks
  @version $Id$
