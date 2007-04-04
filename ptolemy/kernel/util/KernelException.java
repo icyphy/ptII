@@ -100,6 +100,8 @@ public class KernelException extends Exception {
      */
     public KernelException(Nameable object1, Nameable object2, Throwable cause,
             String detail) {
+        _object1 = object1;
+        _object2 = object2;
         _setMessage(generateMessage(object1, object2, cause, detail));
         _setCause(cause);
     }
@@ -338,6 +340,23 @@ public class KernelException extends Exception {
         }
     }
 
+    /** Get the first Nameable, if any, that was passed as an argument.
+     *  @return The first Nameable that was passed in.  If no Nameable
+     *  was passed in, then return null.
+     */
+    public Nameable getNameable1() {
+        return _object1;
+    }
+
+    /** Get the second Nameable, if any, that was passed as an argument.
+     *  @return The second Nameable that was passed in.  If no Nameable
+     *  was passed in, then return null.
+     */
+    public Nameable getNameable2() {
+        return _object2;
+    }
+
+
     /** Print a stack trace message to stderr including
      *  this exception, its stack trace and if the cause
      *  exception is known, print the cause exception and the
@@ -433,8 +452,15 @@ public class KernelException extends Exception {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     // The detail message
     private String _message;
+
+    // The first nameable, if any, that was passed in.
+    private Nameable _object1;
+
+    // The second nameable, if any, that was passed in.
+    private Nameable _object2;
 
     // The cause of this exception.
     private Throwable _cause;
