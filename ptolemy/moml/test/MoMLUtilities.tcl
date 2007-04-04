@@ -42,9 +42,40 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 
+# Parse the moml in a workspace with the given name.
+# Return the toplevel
+proc parseMoML {moml workspaceName } {
+    set w [java::new ptolemy.kernel.util.Workspace $workspaceName]
+    set parser [java::new ptolemy.moml.MoMLParser $w]
+
+    set toplevel [java::cast ptolemy.actor.CompositeActor \
+		      [$parser parse $moml]]
+    return $toplevel
+}
+
+# Invoke a change request and get a token.
+# This proc is used to test cut and paste.
+proc changeAndGetToken {toplevel changeRequestString \
+			    {entityName {Const}} {attributeName {value}}} {
+    set changeRequest [java::new ptolemy.moml.MoMLChangeRequest \
+			   $toplevel $toplevel $changeRequestString]
+    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] \
+		     "myManager"]
+    $toplevel setManager $manager
+    $manager requestChange $changeRequest
+    set const [$toplevel getEntity $entityName]
+    set value [java::cast ptolemy.data.expr.Variable \
+		   [$const getAttribute $attributeName]]
+    return [$value getToken]
+}
+
+
+# Below are MoML fragments that are used for testing.
+
 set header {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
+
 
 set entityStart {
 <entity name="paramCopy" class="ptolemy.actor.TypedCompositeActor">
@@ -67,30 +98,6 @@ set baseModel2 {<?xml version="1.0" standalone="no"?>
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
 </entity>
-}
-
-proc parseMoML {moml workspaceName } {
-    set w [java::new ptolemy.kernel.util.Workspace $workspaceName]
-    set parser [java::new ptolemy.moml.MoMLParser $w]
-
-    set toplevel [java::cast ptolemy.actor.CompositeActor \
-		      [$parser parse $moml]]
-    return $toplevel
-}
-
-# Invoke a change request and get a token.
-# This proc is used to test cut and paste.
-proc changeAndGetToken {toplevel changeRequestString {entityName {Const}}} {
-    set changeRequest [java::new ptolemy.moml.MoMLChangeRequest \
-			   $toplevel $toplevel $changeRequestString]
-    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] \
-		     "myManager"]
-    $toplevel setManager $manager
-    $manager requestChange $changeRequest
-    set const [$toplevel getEntity $entityName]
-    set value [java::cast ptolemy.data.expr.Variable \
-		   [$const getAttribute value]]
-    return [$value getToken]
 }
 
 ######################################################################
@@ -261,8 +268,7 @@ test MoMLUtilties-1.5.2 {Simulate paste with the myParam variable defined} {
     # Uses copyMoML1_5 from 1.4.1 above
     set clipBoard  "<group name=\"auto\">$copyMoML1_5 $paramCopySubscriber1_5\n</group>"
     set value [changeAndGetToken $toplevel1_5_2 \
-		   $clipBoard \
-		   Subscriber]
+		   $clipBoard  Subscriber channel]
 	
     list [$value toString]
-} {3}
+} {{"1"}}
