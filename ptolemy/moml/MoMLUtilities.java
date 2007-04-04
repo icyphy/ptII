@@ -28,7 +28,9 @@
 package ptolemy.moml;
 
 
+import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
+
 import ptolemy.data.expr.UndefinedConstantOrIdentifierException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
@@ -115,12 +117,14 @@ public class MoMLUtilities {
      */
     public static String checkCopy(String momlToBeChecked,
             NamedObj container) throws IllegalActionException {
+        
         StringWriter variableBuffer = new StringWriter();
         Workspace workspace = new Workspace("copyWorkspace");
         MoMLParser parser = new MoMLParser(workspace);
-        TypedCompositeActor parsed = null;
+        TypedCompositeActor parsedContainer = null;
         try {
-            parsed = (TypedCompositeActor) parser.parse(
+            // Parse the momlToBeChecked.
+            parsedContainer = (TypedCompositeActor) parser.parse(
                     "<entity name=\"auto\" class=\"ptolemy.actor.TypedCompositeActor\">" +
                     momlToBeChecked
                     + "</entity>");
@@ -128,8 +132,13 @@ public class MoMLUtilities {
             throw new IllegalActionException(container, ex,
                     "Failed to parse.");
         }
+
+        // Iterate through all the entities, find the attributes
+        // that are variables, validate the variables and look for
+        // errors.
+
         // FIXME: what about classes?
-        Iterator entities = parsed.allAtomicEntityList().iterator();
+        Iterator entities = parsedContainer.allAtomicEntityList().iterator();
         while (entities.hasNext()) {
             Entity entity = (Entity) entities.next();
             Enumeration attributes = entity.getAttributes();
@@ -137,47 +146,88 @@ public class MoMLUtilities {
                 Attribute attribute = (Attribute) attributes.nextElement();
                 if (attribute instanceof Variable) {
                     Variable variable = (Variable) attribute;
-                    variable.validate();
-                    try {
-                        variable.getToken();
-                    } catch (IllegalActionException ex) {
-                        if (ex.getCause() instanceof
-                                UndefinedConstantOrIdentifierException) {
-                            UndefinedConstantOrIdentifierException cause = (UndefinedConstantOrIdentifierException)ex.getCause();
+                    Variable oldNode = null;
+                    boolean doGetToken = true;
+                    while(doGetToken) {
+                        doGetToken = false;
+                        variable.validate();
+                        try {
+                            variable.getToken();
+                        } catch (IllegalActionException ex) {
+                            // Ok, we have a variable that might have an
+                            // appropriate undefined constant or identifier.
 
-                            // Find the variable in the object we are
-                            // copying
+                            // If the current exception is appropriate, or
+                            // its cause is appropriate, then we look for
+                            // the missing variable.  If the exception or
+                            // its cause does not have the node name, then
+                            // we can't do anything.
 
-                            // Get the name of the variable without the
-                            // .auto.
-                            String variableName = variable.getFullName().substring(variable.toplevel().getName().length()+2);
+                            UndefinedConstantOrIdentifierException idException = null;
+                            if (ex instanceof 
+                                    UndefinedConstantOrIdentifierException) {
+                                idException = (UndefinedConstantOrIdentifierException) ex;
+                            } else {
+                                if (ex.getCause() instanceof
+                                        UndefinedConstantOrIdentifierException) {
+                                    idException = (UndefinedConstantOrIdentifierException)ex.getCause();
+                                }
+                            }
+
+                            if (idException != null) {
+                                // We have an exception that has the name
+                                // of the missing variable.
+                                
+                                // Find the variable in the object we are
+                                // copying
+
+                                // Get the name of the variable without the
+                                // .auto.
+                                String variableName = variable.getFullName().substring(variable.toplevel().getName().length()+2);
                                     
-                            Attribute masterAttribute = container.getAttribute(variableName);
+                                Attribute masterAttribute = container.getAttribute(variableName);
 
-                            if (masterAttribute instanceof Variable) {
-                                Variable masterVariable = (Variable)masterAttribute;
-                                ParserScope parserScope = masterVariable.getParserScope();
-                                if (parserScope instanceof ModelScope) {
-                                    if (masterVariable != null) {
-                                        Variable node = masterVariable.getVariable(cause.nodeName());
-                                        if (node == null) {
-                                            ex.printStackTrace();
-                                        }
+                                if (masterAttribute instanceof Variable) {
+                                    Variable masterVariable = (Variable)masterAttribute;
+                                    ParserScope parserScope = masterVariable.getParserScope();
+                                    if (parserScope instanceof ModelScope) {
+                                        if (masterVariable != null) {
+                                            Variable node = masterVariable.getVariable(idException.nodeName());
+                                            if (node == oldNode) {
+                                                // We've already seen this
+                                                // node
+                                                continue;
+                                            }
+                                            oldNode = node;
+                                            try {
+                                                String moml = node.exportMoML();
+                                                // Insert the new
+                                                // variable so that
+                                                // other variables may
+                                                // use it.
+                                                MoMLChangeRequest change = new MoMLChangeRequest(parsedContainer,
+                                                        parsedContainer,
+                                                        moml);
 
-                                        try {
-                                            variableBuffer.append(node.exportMoML());
-                                        } catch (Throwable ex2) {
-
-                                            // Ignore and hope the
-                                            // user pastes into a
-                                            // location where the
-                                            // variable is defined
+                                                parsedContainer.requestChange(change);
+                                                
+                                                variableBuffer.append(moml);
+                                                // rerun the getToken() call
+                                                // in case there are other
+                                                // problem variables.
+                                                doGetToken = true;
+                                            } catch (Throwable ex2) {
+                                                // Ignore and hope the
+                                                // user pastes into a
+                                                // location where the
+                                                // variable is defined
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                    }
+                    };
                 }
             }
         }

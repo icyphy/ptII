@@ -46,8 +46,11 @@ set header {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
-set paramCopy {
+set entityStart {
 <entity name="paramCopy" class="ptolemy.actor.TypedCompositeActor">
+}
+
+set myParam {
     <property name="myParam" class="ptolemy.data.expr.Parameter" value="1">
     </property>
 }
@@ -57,25 +60,12 @@ set paramCopyConst {
         <property name="value" class="ptolemy.data.expr.Parameter" value="myParam">
         </property>
     </entity>
- <entity name="Recorder" class="ptolemy.actor.lib.Recorder">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 255.0]">
-        </property>
-    </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <link port="Const.output" relation="relation"/>
-    <link port="Recorder.input" relation="relation"/>
 }
 
 set baseModel2 {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" value="2"/>
-    </property>
 </entity>
 }
 
@@ -90,14 +80,14 @@ proc parseMoML {moml workspaceName } {
 
 # Invoke a change request and get a token.
 # This proc is used to test cut and paste.
-proc changeAndGetToken {toplevel changeRequestString} {
+proc changeAndGetToken {toplevel changeRequestString {entityName {Const}}} {
     set changeRequest [java::new ptolemy.moml.MoMLChangeRequest \
 			   $toplevel $toplevel $changeRequestString]
     set manager [java::new ptolemy.actor.Manager [$toplevel workspace] \
 		     "myManager"]
     $toplevel setManager $manager
     $manager requestChange $changeRequest
-    set const [$toplevel getEntity Const]
+    set const [$toplevel getEntity $entityName]
     set value [java::cast ptolemy.data.expr.Variable \
 		   [$const getAttribute value]]
     return [$value getToken]
@@ -123,7 +113,7 @@ The ID myParam is undefined.}}
 ####
 #
 test MoMLUtilties-1.2.1 {copy a const that refers another parameter } {
-    set moml1_2 "$header $paramCopy $paramCopyConst </entity>"
+    set moml1_2 "$header $entityStart $myParam $paramCopyConst </entity>"
     set toplevel1_2 [parseMoML $moml1_2 w1_2]
 
     set copyMoML [java::call ptolemy.moml.MoMLUtilities \
@@ -136,7 +126,104 @@ test MoMLUtilties-1.2.1 {copy a const that refers another parameter } {
 ####
 #
 test MoMLUtilties-1.2.2 {Simulate paste with the myParam variable defined} {
+    # no myParam here
+    set moml1_3 "$header $entityStart</entity>"
+    set toplevel1_3 [parseMoML $moml1_3 w1_3]
+
     # Uses 1.2.1 above
-    set value [changeAndGetToken $toplevel1_2 "<group name=\"auto\">$copyMoML $paramCopyConst\n</group>"]
+    set value [changeAndGetToken $toplevel1_3 "<group name=\"auto\">$copyMoML $paramCopyConst\n</group>"]
     list [$value toString]
 } {1}
+
+
+######################################################################
+####
+# 
+
+set myOtherParam1_3 {
+    <property name="myOtherParam" class="ptolemy.data.expr.Parameter" value="2">
+    </property>
+}
+
+set paramCopyConst1_3 {
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="myParam + myOtherParam">
+        </property>
+    </entity>
+}
+
+test MoMLUtilties-1.3.1 {copy a const that refers another parameter } {
+    set moml1_3 "$header $entityStart $myParam $myOtherParam1_3 $paramCopyConst1_3 </entity>"
+    set toplevel1_3 [parseMoML $moml1_3 w1_3]
+
+    set copyMoML1_3 [java::call ptolemy.moml.MoMLUtilities \
+		      checkCopy $paramCopyConst1_3 $toplevel1_3]
+    list $copyMoML1_3
+} {{<property name="myParam" class="ptolemy.data.expr.Parameter" value="1">
+</property>
+<property name="myOtherParam" class="ptolemy.data.expr.Parameter" value="2">
+</property>
+}}
+
+
+######################################################################
+####
+#
+test MoMLUtilties-1.3.2 {Simulate paste with the myParam variable defined} {
+    set moml1_3_2 "$header $entityStart  </entity>"
+    set toplevel1_3_2 [parseMoML $moml1_3_2 w1_3_2]
+
+    # Uses copyMoML1_3 from 1.3.1 above
+    set value [changeAndGetToken $toplevel1_3_2 \
+		   "<group name=\"auto\">$copyMoML1_3 $paramCopyConst1_3\n</group>"]
+    list [$value toString]
+} {3}
+
+######################################################################
+####
+# 
+
+set innerEntity1_4 {
+<entity name="innerParamCopy" class="ptolemy.actor.TypedCompositeActor">
+}
+
+set myOtherParam {
+    <property name="myOtherParam" class="ptolemy.data.expr.Parameter" value="2">
+    </property>
+}
+
+set paramCopyConst1_4 {
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="myParam + myOtherParam">
+        </property>
+    </entity>
+}
+
+test MoMLUtilties-1.4.1 {copy a const that refers two parameters, one of which is in the container} {
+    set moml1_4 "$header $entityStart $myParam $innerEntity1_4 $myOtherParam $paramCopyConst1_4 </entity> </entity>"
+    set toplevel1_4 [parseMoML $moml1_4 w1_4]
+
+    set copyMoML1_4 [java::call ptolemy.moml.MoMLUtilities \
+		      checkCopy "$innerEntity1_4 $paramCopyConst1_4 </entity>" $toplevel1_4]
+    list $copyMoML1_4
+} {{<property name="myParam" class="ptolemy.data.expr.Parameter" value="1">
+</property>
+<property name="myOtherParam" class="ptolemy.data.expr.Parameter" value="2">
+</property>
+}}
+
+######################################################################
+####
+#
+test MoMLUtilties-1.4.2 {Simulate paste with the myParam variable defined} {
+    set moml1_4_2 "$header $entityStart  </entity>"
+    set toplevel1_4_2 [parseMoML $moml1_4_2 w1_4_2]
+
+    # Uses copyMoML1_4 from 1.4.1 above
+    set clipBoard  "<group name=\"auto\">$copyMoML1_4 $innerEntity1_4 $paramCopyConst1_4 </entity>\n</group>"
+    set value [changeAndGetToken $toplevel1_4_2 \
+		   $clipBoard \
+		   innerParamCopy.Const]
+	
+    list [$value toString]
+} {3}
