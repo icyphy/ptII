@@ -53,11 +53,13 @@ import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -76,6 +78,7 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.PtolemyFrame;
@@ -88,7 +91,12 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ExpertParameter;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.UndefinedConstantOrIdentifierException;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -111,6 +119,7 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLUndoEntry;
+import ptolemy.moml.MoMLUtilities;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -476,7 +485,19 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // a bug in the JDK that should be fixed as of jdk1.3.1.  The bug
             // is that cut and paste through the system clipboard to native
             // applications doesn't work unless you use string selection.
-            clipboard.setContents(new StringSelection(buffer.toString()), this);
+            String momlToBeCopied = buffer.toString();
+            String variablesToBePrepended = "";
+            try {
+                variablesToBePrepended =
+                    MoMLUtilities.checkCopy(momlToBeCopied, container);
+            } catch (IllegalActionException ex) {
+                // Ignore, maybe the missing symbols will work out
+                // in the pasted context.
+            }
+            clipboard.setContents(new StringSelection(
+                                          variablesToBePrepended
+                                          + momlToBeCopied), this);
+
         } catch (IOException ex) {
             MessageHandler.error("Copy failed", ex);
         }
@@ -810,7 +831,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // System.out.println(moml.toString());
 
             MoMLChangeRequest request = null;
-            System.out.println("BasicGraphFrame moml: " + moml.toString());
             request = new MoMLChangeRequest(this, container, moml.toString());
             request.setUndoable(true);
 
