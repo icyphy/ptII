@@ -67,10 +67,7 @@ proc setTokenProductionRate {port rate} {
 test SDFSchedulerErrors-1.0 {} {
     catch {createAndExecute "rateConsistency.xml"} foo
     list $foo
-} {{ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
-  in .rateConsistency.SDF Director
-Because:
-No solution exists for the balance equations.
+} {{ptolemy.actor.sched.NotSchedulableException: No solution exists for the balance equations.
 Graph is not consistent under the SDF domain detected on external port .rateConsistency.actor.port2}}
 
 test SDFSchedulerErrors-1.1 {} {
@@ -94,12 +91,8 @@ The SDF rate parameter may change. This is not allowed in SDF models that will b
 test SDFSchedulerErrors-2.1 {} {
     catch {createAndExecute "partiallyConnected.xml"} foo
     list $foo
-} {{ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
-  in .partiallyConnected.SDF Director
-Because:
-Actors remain that cannot be scheduled!
-Scheduled actors:
-.partiallyConnected.Const
+} {{ptolemy.actor.sched.NotSchedulableException: Actors remain that cannot be scheduled!
 Unscheduled actors:
-.partiallyConnected.Const2
-}}
+.partiallyConnected.Const2 
+Scheduled actors:
+.partiallyConnected.Const }}
