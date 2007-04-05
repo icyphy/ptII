@@ -732,24 +732,36 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             + "indicates an error.  If this is not an error, try "
                             + "setting the SDFDirector parameter "
                             + "allowDisconnectedGraphs to true.\n"
-                            + "Reached Actors:\n");
+                            + "Unreached Actors:\n");
+
+
+
+            // Only display the first 100 connected or disconnected actors.
+            int count = 0;
+            for (Iterator unreachedActors = remainingActors.iterator();
+                     unreachedActors.hasNext() && count < 100; count++) {
+                NamedObj unreachedActor = (NamedObj) (unreachedActors.next());
+                messageBuffer.append(unreachedActor.getFullName() + " ");
+            }
+
+            if (count >= 99) {
+                messageBuffer.append("...");
+            }
+            messageBuffer.append("\nReached Actors:\n");
+
             List reachedActorList = new LinkedList();
             reachedActorList.addAll(actorList);
             reachedActorList.removeAll(remainingActors);
 
-            for (Iterator actors = reachedActorList.iterator(); actors
-                    .hasNext();) {
+            count = 0;
+            for (Iterator actors = reachedActorList.iterator();
+                 actors.hasNext() && count < 100 ; count++) {
                 Entity entity = (Entity) actors.next();
-                messageBuffer.append(entity.getFullName() + "\n");
+                messageBuffer.append(entity.getFullName() + " ");
             }
 
-            messageBuffer.append("Unreached Actors:\n");
-
-            Iterator unreachedActors = remainingActors.iterator();
-
-            while (unreachedActors.hasNext()) {
-                NamedObj unreachedActor = (NamedObj) (unreachedActors.next());
-                messageBuffer.append(unreachedActor.getFullName() + " ");
+            if (count >= 99) {
+                messageBuffer.append("...");
             }
 
             throw new NotSchedulableException(messageBuffer.toString());
