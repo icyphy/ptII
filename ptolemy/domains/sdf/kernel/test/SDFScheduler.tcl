@@ -529,14 +529,11 @@ test SDFScheduler-8.7 {input Multiport with no connections - disconnected graph}
     catch { _initialize $toplevel
     set sched1 [_getSchedule $scheduler]} s1
     list $sched1 $s1
-} {{} {ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
-  in .Toplevel.Director
-Because:
-SDF scheduler found disconnected actors! Usually, disconnected actors in an SDF model indicates an error.  If this is not an error, try setting the SDFDirector parameter allowDisconnectedGraphs to true.
-Reached Actors:
-.Toplevel.Consumer1
+} {{} {ptolemy.actor.sched.NotSchedulableException: SDF scheduler found disconnected actors! Usually, disconnected actors in an SDF model indicates an error.  If this is not an error, try setting the SDFDirector parameter allowDisconnectedGraphs to true.
 Unreached Actors:
-.Toplevel.Consumer2 }}
+.Toplevel.Consumer2 
+Reached Actors:
+.Toplevel.Consumer1 }}
 
 test SDFScheduler-8.7.1 {input Multiport with no connections - disconnected graph permitted} {
     set manager [java::new ptolemy.actor.Manager $w Manager]
@@ -569,6 +566,31 @@ test SDFScheduler-8.7.1 {input Multiport with no connections - disconnected grap
     set sched1 [_getSchedule $scheduler]} s1
     list $sched1 $s1
 } {{{Consumer2 Consumer1}} {{Consumer2 Consumer1}}}
+
+test SDFScheduler-8.7.2 {test with lots of disconected actors} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
+
+    for {set i 0} { $i < 120} {incr i} {
+	set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer-$i]
+    }
+    $scheduler setValid false
+
+    set sched1 {}
+    catch { _initialize $toplevel
+    set sched1 [_getSchedule $scheduler]} s1
+    list $sched1 $s1
+
+} {{} {ptolemy.actor.sched.NotSchedulableException: SDF scheduler found disconnected actors! Usually, disconnected actors in an SDF model indicates an error.  If this is not an error, try setting the SDFDirector parameter allowDisconnectedGraphs to true.
+Unreached Actors:
+.Toplevel.Consumer-1 .Toplevel.Consumer-2 .Toplevel.Consumer-3 .Toplevel.Consumer-4 .Toplevel.Consumer-5 .Toplevel.Consumer-6 .Toplevel.Consumer-7 .Toplevel.Consumer-8 .Toplevel.Consumer-9 .Toplevel.Consumer-10 .Toplevel.Consumer-11 .Toplevel.Consumer-12 .Toplevel.Consumer-13 .Toplevel.Consumer-14 .Toplevel.Consumer-15 .Toplevel.Consumer-16 .Toplevel.Consumer-17 .Toplevel.Consumer-18 .Toplevel.Consumer-19 .Toplevel.Consumer-20 .Toplevel.Consumer-21 .Toplevel.Consumer-22 .Toplevel.Consumer-23 .Toplevel.Consumer-24 .Toplevel.Consumer-25 .Toplevel.Consumer-26 .Toplevel.Consumer-27 .Toplevel.Consumer-28 .Toplevel.Consumer-29 .Toplevel.Consumer-30 .Toplevel.Consumer-31 .Toplevel.Consumer-32 .Toplevel.Consumer-33 .Toplevel.Consumer-34 .Toplevel.Consumer-35 .Toplevel.Consumer-36 .Toplevel.Consumer-37 .Toplevel.Consumer-38 .Toplevel.Consumer-39 .Toplevel.Consumer-40 .Toplevel.Consumer-41 .Toplevel.Consumer-42 .Toplevel.Consumer-43 .Toplevel.Consumer-44 .Toplevel.Consumer-45 .Toplevel.Consumer-46 .Toplevel.Consumer-47 .Toplevel.Consumer-48 .Toplevel.Consumer-49 .Toplevel.Consumer-50 .Toplevel.Consumer-51 .Toplevel.Consumer-52 .Toplevel.Consumer-53 .Toplevel.Consumer-54 .Toplevel.Consumer-55 .Toplevel.Consumer-56 .Toplevel.Consumer-57 .Toplevel.Consumer-58 .Toplevel.Consumer-59 .Toplevel.Consumer-60 .Toplevel.Consumer-61 .Toplevel.Consumer-62 .Toplevel.Consumer-63 .Toplevel.Consumer-64 .Toplevel.Consumer-65 .Toplevel.Consumer-66 .Toplevel.Consumer-67 .Toplevel.Consumer-68 .Toplevel.Consumer-69 .Toplevel.Consumer-70 .Toplevel.Consumer-71 .Toplevel.Consumer-72 .Toplevel.Consumer-73 .Toplevel.Consumer-74 .Toplevel.Consumer-75 .Toplevel.Consumer-76 .Toplevel.Consumer-77 .Toplevel.Consumer-78 .Toplevel.Consumer-79 .Toplevel.Consumer-80 .Toplevel.Consumer-81 .Toplevel.Consumer-82 .Toplevel.Consumer-83 .Toplevel.Consumer-84 .Toplevel.Consumer-85 .Toplevel.Consumer-86 .Toplevel.Consumer-87 .Toplevel.Consumer-88 .Toplevel.Consumer-89 .Toplevel.Consumer-90 .Toplevel.Consumer-91 .Toplevel.Consumer-92 .Toplevel.Consumer-93 .Toplevel.Consumer-94 .Toplevel.Consumer-95 .Toplevel.Consumer-96 .Toplevel.Consumer-97 .Toplevel.Consumer-98 .Toplevel.Consumer-99 .Toplevel.Consumer-100 ...
+Reached Actors:
+.Toplevel.Consumer-0 }}
 
 
 test SDFScheduler-8.11 {output Multiport, Multirate Scheduling tests} {
@@ -1263,15 +1285,11 @@ test SDFScheduler-13.1 {connected graph, disconnected relation} {
     catch { _initialize $toplevel
     set sched1 [_getSchedule $scheduler]} err1
     list $sched1 $err1
-} {{} {ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
-  in .Toplevel.Director
-Because:
-Actors remain that cannot be scheduled!
-Scheduled actors:
-.Toplevel.Ramp2
+} {{} {ptolemy.actor.sched.NotSchedulableException: Actors remain that cannot be scheduled!
 Unscheduled actors:
-.Toplevel.Consumer
-}}
+.Toplevel.Consumer 
+Scheduled actors:
+.Toplevel.Ramp2 }}
 
 test SDFScheduler-13.2 {Output External port connected } {
     set manager [java::new ptolemy.actor.Manager $w Manager]
@@ -1382,16 +1400,11 @@ test SDFScheduler-13.4 {Error message for transparent hierarchy multiport discon
     } err
 
     list $sched1 $err
-} {{{Ramp Cont Consumer}} {ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
-  in .Toplevel.Director
-Because:
-Actors remain that cannot be scheduled!
-Scheduled actors:
-.Toplevel.Ramp1
-.Toplevel.Cont.Consumer
+} {{{Ramp Cont Consumer}} {ptolemy.actor.sched.NotSchedulableException: Actors remain that cannot be scheduled!
 Unscheduled actors:
-.Toplevel.Cont.Consumer2
-}}
+.Toplevel.Cont.Consumer2 
+Scheduled actors:
+.Toplevel.Ramp1 .Toplevel.Cont.Consumer }}
 
 test SDFScheduler-13.5 {Error message for opaque hierarchy multiport disconnected} {
     set manager [java::new ptolemy.actor.Manager $w Manager]

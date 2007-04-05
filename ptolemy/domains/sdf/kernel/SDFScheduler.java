@@ -1622,25 +1622,37 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         if (unscheduledActorList.size() > 0) {
             StringBuffer message = new StringBuffer(
                     "Actors remain that cannot be scheduled!\n"
-                            + "Scheduled actors:\n");
+                            + "Unscheduled actors:\n");
 
+            // Only display the first 100 connected or disconnected actors.
+            int count = 0;
+            for (Iterator actors = unscheduledActorList.iterator(); actors
+                    .hasNext() && count < 100; count++) {
+                Entity entity = (Entity) actors.next();
+                message.append(entity.getFullName() + " ");
+            }
+
+            if (count >= 99) {
+                message.append("...");
+            }
+            message.append("\nScheduled actors:\n");
             List scheduledActorList = new LinkedList();
             scheduledActorList.addAll(actorList);
             scheduledActorList.removeAll(unscheduledActorList);
 
+            count = 0;
+
             for (Iterator actors = scheduledActorList.iterator(); actors
-                    .hasNext();) {
+                    .hasNext() && count < 100; count++) {
                 Entity entity = (Entity) actors.next();
-                message.append(entity.getFullName() + "\n");
+                message.append(entity.getFullName() + " ");
             }
 
-            message.append("Unscheduled actors:\n");
-
-            for (Iterator actors = unscheduledActorList.iterator(); actors
-                    .hasNext();) {
-                Entity entity = (Entity) actors.next();
-                message.append(entity.getFullName() + "\n");
+            if (count >= 99) {
+                message.append("...");
             }
+
+
 
             throw new NotSchedulableException(message.toString());
         }
