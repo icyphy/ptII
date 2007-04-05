@@ -541,7 +541,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         try {
             scheduler.getSchedule();
         } catch (NotSchedulableException ex) {
-            // Capt. Robbins suggested that we show which actors are conected
+            // Capt. Robbins suggested that we show which actors are connected
             // or disconnected at the top, rather than burying it.
             throw ex;
         } catch (Exception ex) {
