@@ -175,9 +175,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                         _ast = (PtalonAST) populator.getAST();
                         _codeManager.assignInternalParameters();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new IllegalActionException(this, e, e.getMessage());
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, ex, ex.getMessage());
 
                 }
             }
