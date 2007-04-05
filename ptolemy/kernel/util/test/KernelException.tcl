@@ -174,7 +174,9 @@ test KernelException-7.9 {Create a KernelException with a named NamedObj \
 	        [$stream toString] "\n" output
 
     list [$pe getMessage] [[$pe getCause] toString] "\n\n" \
-	    [string range $output 0 108]
+	    [string range $output 0 108] \
+	[[$pe getNameable1] getFullName] \
+	[[$pe getNameable2] getFullName]
 } {{Detail Message
   in .NamedObj 1 and .NamedObj 2
 Because:
@@ -183,7 +185,7 @@ Cause Exception} {java.lang.Exception: Cause Exception} {
 } {ptolemy.kernel.util.KernelException: Detail Message
   in .NamedObj 1 and .NamedObj 2
 Because:
-Cause Exception}}
+Cause Exception} {.NamedObj 1} {.NamedObj 2}}
 
 
 test KernelException-8.0 {printStackTrace()} {
