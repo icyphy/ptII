@@ -170,7 +170,7 @@ test FSMActor-5.2 {test handling port name change} {
     $dir iterate 1
     $dir wrapup
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: The ID p1 is undefined.}}
+} {{ptolemy.data.expr.UndefinedConstantOrIdentifierException: The ID p1 is undefined.}}
   
 ######################################################################
 ####

@@ -633,7 +633,7 @@ test ParseTreeEvaluator-26.1 {Test record operations} {
 test ParseTreeEvaluator-27.0 {Test Error message} {
     catch {list [evaluate {1.0+im}]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: The ID im is undefined.}}
+} {{ptolemy.data.expr.UndefinedConstantOrIdentifierException: The ID im is undefined.}}
 
 ####################################################################
 

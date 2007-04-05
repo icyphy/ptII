@@ -722,5 +722,5 @@ test ParseTreeTypeInference-17.3 {Test nested function definitions.} {
 test ParseTreeTypeInference-27.0 {Test Error message} {
     catch {list [evaluate {1.0+im}]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: The ID im is undefined.}}
+} {{ptolemy.data.expr.UndefinedConstantOrIdentifierException: The ID im is undefined.}}
 
