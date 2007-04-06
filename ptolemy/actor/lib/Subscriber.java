@@ -233,10 +233,21 @@ public class Subscriber extends TypedAtomicActor {
         if (!_updatedLinks) {
             _updateLinks();
         }
-        int width = input.getWidth();
-        if (width == 0) {
-            throw new IllegalActionException(this,
-                    "Subscriber has no matching Publisher.");
+        if (input.getWidth() == 0) {
+            // If we are converting back and forth from class to
+            // instance, then there is a chance that we have not
+            // called _updateLinks() recently.  See Publisher-1.6 in
+            // test/Publisher.tcl. A better fix clear _updateLinks
+            // when the relation was deleted by
+            // CompositeEntity.setClassDefinition().  Another idea is
+            // to compare the workspace version number against the
+            // version number when we set _updatedLinks.  However,
+            // this could result in poor performance.
+            _updateLinks();
+            if (input.getWidth() == 0) {
+                throw new IllegalActionException(this,
+                        "Subscriber has no matching Publisher.");
+            }                
         }
     }
 
@@ -268,14 +279,13 @@ public class Subscriber extends TypedAtomicActor {
             _relation = null;
         }
         if (publisher != null) {
-            if (publisher._relation == null) {
-                if (!publisher._updatedLinks) {
-                    // If we call Subscriber.preinitialize()
-                    // before we call Publisher.preinitialize(),
-                    // then the publisher will not have created
-                    // its relation.
-                    publisher._updateLinks();
-                }
+            if (publisher._relation == null
+                    || !publisher._updatedLinks) {
+                // If we call Subscriber.preinitialize()
+                // before we call Publisher.preinitialize(),
+                // then the publisher will not have created
+                // its relation.
+                publisher._updateLinks();
             }
             _relation = publisher._relation;
 
