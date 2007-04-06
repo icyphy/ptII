@@ -1333,3 +1333,104 @@ test CompositeEntity-21.5 {test exportLinks with filtering} {
     $e1 exportLinks 0 $filter
 } {}
 
+######################################################################
+####
+# 
+test CompositeEntity-22.1 {setClassDefinition} {
+    set e0 [java::new ptolemy.kernel.CompositeEntity]
+    $e0 setName E0
+    set e1 [java::new ptolemy.kernel.ComponentEntity $e0 E1]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e0 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set r1 [$e0 connect $p1 $p2 R1]
+    set result1 [enumToNames [[$e0 getRelation R1] linkedPorts ]]
+
+    # e0 is not a class, but we want to cover the block that checks
+    # if we are changing from instance to instance
+    $e0 setClassDefinition false
+
+    set result2 [enumToNames [[$e0 getRelation R1] linkedPorts ]]
+    $e0 setClassDefinition true
+    set result3 [enumToNames [[$e0 getRelation R1] linkedPorts ]]
+
+    # e0 is a class, but we want to cover the block that checks
+    # if we are changing from class to class
+    $e0 setClassDefinition true
+
+    set result4 [enumToNames [[$e0 getRelation R1] linkedPorts ]]
+    $e0 setClassDefinition false
+    set result5 [enumToNames [[$e0 getRelation R1] linkedPorts ]]
+
+    list $result1 $result2 $result3 $result4 $result5
+} {{P1 P2} {P1 P2} {P1 P2} {P1 P2} {P1 P2}}
+
+######################################################################
+####
+# 
+test CompositeEntity-22.2.1 {setClassDefinition on the sample example} {
+    # Create the example system from the design doc.
+    source ExampleSystem.tcl
+
+    set isClass0 [$e0 isClassDefinition]
+    set p [$e0 getPort E3.E4.E2.P3]
+    set description0 [$p description]
+
+    # Make it a class definition
+    $e0 setClassDefinition true
+    set isClass1 [$e0 isClassDefinition]
+    set p [$e0 getPort E3.E4.E2.P3]
+
+    set description1 [$p description]
+
+    # Note that .E0.E3.E4.E2.P3 in the class definition does not have
+    # .E0.E3.R6, which was a level crossing link
+    list $isClass0 $isClass1 "\n" $description0 "\n" $description1
+} {0 1 {
+} {ptolemy.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
+} links {
+    {ptolemy.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
+    }}
+    {ptolemy.kernel.ComponentRelation {.E0.E3.R6} attributes {
+    }}
+} insidelinks {
+}} {
+} {ptolemy.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
+} links {
+    {ptolemy.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
+    }}
+} insidelinks {
+}}}
+
+######################################################################
+####
+# 
+test CompositeEntity-22.2.2 {setClassDefinition on the sample example} {
+    # Uses 22.2.1 above
+
+    # $e0 now has no level crossing links because it is a class
+    set isClass1 [$e0 isClassDefinition]
+    set description1 \
+	[$e0 description \
+		  [java::field ptolemy.kernel.util.NamedObj COMPLETE]]
+
+    # Make it an instance
+    $e0 setClassDefinition false
+    set isClass2 [$e0 isClassDefinition]
+    set description2 \
+	[$e0 description \
+		  [java::field ptolemy.kernel.util.NamedObj COMPLETE]]
+
+    # Make it a class
+    $e0 setClassDefinition true
+    set isClass3 [$e0 isClassDefinition]
+    set description3 \
+	[$e0 description \
+		  [java::field ptolemy.kernel.util.NamedObj COMPLETE]]
+
+    # Compare the instance and class descriptions
+    list \
+	$isClass1 $isClass2 $isClass3 \
+	[diffText $description1 $description2] \
+	[diffText $description1 $description3]
+} {1 0 1 {} {}}

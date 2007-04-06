@@ -1,6 +1,6 @@
 /* A CompositeEntity is a cluster in a clustered graph.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 1997-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,6 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -110,7 +111,7 @@ import ptolemy.kernel.util.Workspace;
  Moreover, they cannot be deleted as long as there are either
  subclasses or instances present.
 
- @author John S. Davis II, Edward A. Lee
+ @author John S. Davis II, Edward A. Lee, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (eal)
@@ -296,18 +297,11 @@ public class CompositeEntity extends ComponentEntity {
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
-     *  NOTE: This will not work if there are level-crossing transitions.
-     *  The result is an entity with clones of the ports of the original
-     *  entity, the contained entities, and the contained relations.
-     *  The ports of the returned entity are not connected to anything.
-     *  The connections of the relations are duplicated in the new entity,
-     *  unless they cross levels, in which case an exception is thrown.
      *  This method gets read access on the workspace associated with
      *  this object.
      *  @param workspace The workspace for the cloned object.
-     *  @exception CloneNotSupportedException If the entity contains
-     *   level crossing transitions so that its connections cannot be cloned,
-     *   or if one of the attributes cannot be cloned.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *  cannot be cloned.
      *  @return A new CompositeEntity.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
@@ -395,16 +389,16 @@ public class CompositeEntity extends ComponentEntity {
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
                         if (rel != null) {
-                            if (rel.getContainer() != this) {
-                                throw new CloneNotSupportedException(
-                                        "Cannot clone a CompositeEntity with "
-                                                + "level crossing transitions."
-                                                + "  The relation was: " + rel
-                                                + ", its container was: " 
-                                                + rel.getContainer()
-                                                + ", which is not equal to "
-                                                + this);
-                            }
+//                             if (rel.getContainer() != this) {
+//                                 throw new CloneNotSupportedException(
+//                                         "Cannot clone a CompositeEntity with "
+//                                                 + "level crossing transitions."
+//                                                 + "  The relation was: " + rel
+//                                                 + ", its container was: " 
+//                                                 + rel.getContainer()
+//                                                 + ", which is not equal to "
+//                                                 + this);
+//                             }
 
                             ComponentRelation newRelation = newEntity
                                     .getRelation(rel.getName());
@@ -1279,6 +1273,77 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** Specify whether this object is a class definition.
+     *  If the argument is true and this entity is not a class
+     *  definition, then all level crossing relations that
+     *  This method overrides the base class to check that if the
+     *  argument is true, then this entity contains no ports with links.
+     *  This method is write synchronized on the workspace.
+     *  @param isClass True to make this object a class definition.
+     *  @exception IllegalActionException If the argument is true and
+     *   this entity contains ports with links.
+     */
+    public void setClassDefinition(boolean isClass)
+            throws IllegalActionException {
+        // The situation is that an AO class definition is not allowed to have
+        // any connections to other things.  Thus, if an instance is converted
+        // to a class, it should be first disconnected. However, a Subscriber
+        // has a "hidden" connection.  This connection may or may not cross
+        // the boundary of the class definition. It should only be disconnected
+        // if it does.
+
+        // We need to disconnect upon invocation of
+        // setClassDefinition().
+        // It does have to traverse the whole tree below the actor being
+        // converted to a class and disconnect any level-crossing link that
+        // traverses to outside the class definition.
+
+        // We also need to worry about the converse: When a class is converted
+        // to an instance, we need to find all inside Publisher/Subscriber actors
+        // and call _updateLinks().  (FIXME: this is not done)
+        if (isClass && !isClassDefinition()) {
+            try {
+                workspace().getWriteAccess();
+                // Converting from an instance to a class.
+                _unlinkLevelCrossingLinksToOutside(this);
+            } finally {
+                workspace().doneWriting();
+            }
+        }
+        super.setClassDefinition(isClass);
+    }
+
+    /** Override the base class so that if the argument is null, all
+     *  level-crossing links from inside this composite to outside this
+     *  composite are removed.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace, or
+     *   if the protected method _checkContainer() throws it, or if
+     *   a contained Settable becomes invalid and the error handler
+     *   throws it.
+     *  @exception NameDuplicationException If the name of this entity
+     *   collides with a name already in the container.
+     *  @see #getContainer()
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        if (container == null) {
+            // This composite is being removed from the model.
+            // Remove level-crossing links.
+            try {
+                _workspace.getWriteAccess();
+                _unlinkLevelCrossingLinksToOutside(this);
+                super.setContainer(container);
+            } finally {
+                _workspace.doneWriting();
+            }
+        } else {
+            super.setContainer(container);
+        }
+    }
+
     /** Return a string describing how many actors, parameters,
      * ports, and relations it has.
      * @param className If non-null and non-empty, then also
@@ -1782,6 +1847,67 @@ public class CompositeEntity extends ComponentEntity {
     ////                         private methods                   ////
     private void _addIcon() {
         _attachText("_iconDescription", _defaultIcon);
+    }
+
+    /** Remove all level-crossing links from relations contained by
+     *  the specified entity to ports or relations outside this
+     *  composite entity, and from ports contained by entities
+     *  contained by the specified entity to relations outside this
+     *  composite entity.
+     *  @param entity The entity in which to look for relations or
+     *   (if it is an instance of CompositeEntity), entities with ports.
+     */
+    private void _unlinkLevelCrossingLinksToOutside(CompositeEntity entity) {
+        // Look for relations with level crossing links first.
+        Iterator relations = entity.relationList().iterator();
+        while (relations.hasNext()) {
+            ComponentRelation relation = (ComponentRelation)relations.next();
+            Iterator linkedObjects = relation.linkedObjectsList().iterator();
+            while (linkedObjects.hasNext()) {
+                Object linkedObject = linkedObjects.next();
+                
+                Nameable relationContainer = relation.getContainer();
+                if (linkedObject instanceof Relation) {
+
+                    Relation linkedRelation = (Relation)linkedObject;
+                    Nameable linkedObjectContainer = linkedRelation.getContainer();
+                    if (relationContainer != linkedObjectContainer
+                            && linkedObjectContainer.getContainer() != relationContainer) {
+                        relation.unlink(linkedRelation);
+                    }
+                } else {
+                    // Must be a port.
+                    Port linkedPort = (Port)linkedObject;
+                    Nameable linkedObjectContainer = linkedPort.getContainer();
+                    if (relationContainer != linkedObjectContainer
+                            && linkedObjectContainer.getContainer() != relationContainer) {
+                        linkedPort.unlink(relation);
+                    }
+                }
+            }
+        }
+        // Next look for ports with level-crossing links.
+        Iterator entities = entity.entityList().iterator();
+        while (entities.hasNext()) {
+            ComponentEntity containedEntity = (ComponentEntity) entities.next();
+            // If the contained entity is a composite entity, then unlink
+            // anything inside it as well.
+            if (containedEntity instanceof CompositeEntity) {
+                _unlinkLevelCrossingLinksToOutside((CompositeEntity)containedEntity);
+            }
+            // Now unlink its ports.
+            Iterator ports = containedEntity.portList().iterator();
+            while (ports.hasNext()) {
+                ComponentPort port = (ComponentPort) ports.next();
+                Iterator linkedRelations = port.linkedRelationList().iterator();
+                while (linkedRelations.hasNext()) {
+                    ComponentRelation relation = (ComponentRelation) linkedRelations.next();
+                    if (relation != null && !deepContains(relation)) {
+                        port.unlink(relation);
+                    }
+                }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
