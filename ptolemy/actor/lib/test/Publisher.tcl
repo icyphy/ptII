@@ -99,7 +99,8 @@ test Publisher-1.3 {Convert CompositeActor of our first model to an instance } {
     # (see test 1.5) then things work?
 
     set compositeActor [$model getEntity CompositeActor]
-    set moml "<group name=\"auto\"><entity name=\"InstanceOf[$compositeActor getName]\" class=\"[$compositeActor getName]\"/></group>"
+    #set moml "<group name=\"auto\"><entity name=\"InstanceOf[$compositeActor getName]\" class=\"[$compositeActor getName]\"/></group>"
+    set moml "<entity name=\"InstanceOf[$compositeActor getName]\" class=\"[$compositeActor getName]\"/>"
     set request [java::new ptolemy.moml.MoMLChangeRequest \
 		     $workspace $model $moml]
 
@@ -113,8 +114,7 @@ test Publisher-1.3 {Convert CompositeActor of our first model to an instance } {
 
 } {PublisherSubscriber2 1}
 
-test Publisher-1.4 {Read in the model created in 1.2 with the class definition} {
-    set workspace [java::new ptolemy.kernel.util.Workspace "pubWS"]
+proc readModel {workspace} {
     set parser [java::new ptolemy.moml.MoMLParser $workspace]
     $parser setMoMLFilters [java::null]
     $parser addMoMLFilters \
@@ -127,9 +127,16 @@ test Publisher-1.4 {Read in the model created in 1.2 with the class definition} 
     set model [java::cast ptolemy.actor.TypedCompositeActor \
 		   [$parser {parse java.net.URL java.net.URL} \
 			[java::null] $url]]
+    return $model
+}
+
+test Publisher-1.4 {Read in the model created in 1.2 with the class definition} {
+    set workspace [java::new ptolemy.kernel.util.Workspace "pubWS"]
+    set model [readModel $workspace]
     list [$model getName] \
 	[[$model getEntity CompositeActor] isClassDefinition]
 } {PublisherSubscriber2class 1}
+
 
 test Publisher-1.5 {Convert CompositeActor to an instance } {
     # Uses 1.1 and 1.2 above
@@ -142,4 +149,43 @@ test Publisher-1.5 {Convert CompositeActor to an instance } {
     set manager [java::new ptolemy.actor.Manager $workspace "pubManager"]
     $model setManager $manager 
     $manager execute
+} {}
+
+#set fileWriter [java::new java.io.FileWriter foo2.xml]
+#$model exportMoML $fileWriter 0 "[$model getName]"
+#$fileWriter close
+
+test Publisher-1.6 {Convert CompositeActor to a class } {
+    # Uses 1.1, 1.2, 1.3
+
+    set workspace [java::new ptolemy.kernel.util.Workspace "pubWS"]
+    set model [readModel $workspace]
+
+    for {set x 0} {$x < 3} {incr x} {   
+
+	# Convert to class, see vergil/actor/ActorInstanceController.java
+	set compositeActor [$model getEntity CompositeActor]
+	set moml "<class name=\"[$compositeActor getName]\"/>"
+	set request [java::new ptolemy.moml.MoMLChangeRequest \
+			 $workspace $model $moml]
+
+	$model requestChange $request
+	set manager [java::new ptolemy.actor.Manager $workspace "pubManager"]
+	$model setManager $manager 
+	$manager execute
+
+	# Convert to instance, see vergil/actor/ClassDefinitionController.java
+	set moml "<entity name=\"[$compositeActor getName]\"/>"
+	set request [java::new ptolemy.moml.MoMLChangeRequest \
+		     $workspace $model $moml]
+
+	set manager [java::new ptolemy.actor.Manager $workspace "pubManager"]
+	$model setManager $manager 
+	$model requestChange $request
+
+	# This used to cause
+	#   ptolemy.kernel.util.IllegalActionException: 
+	#   Subscriber has no matching Publisher.
+	$manager execute
+    }
 } {}
