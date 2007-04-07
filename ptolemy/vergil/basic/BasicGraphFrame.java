@@ -1048,38 +1048,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             moml.append("</group>\n");
 
-            MoMLChangeRequest change = new MoMLChangeRequest(this, container,
-                    moml.toString()) {
-                // Override this method to offset the locations of pasted objects.
-                protected void _postParse(MoMLParser parser) {
-                    Iterator topObjects = parser.topObjectsCreated().iterator();
-                    while (topObjects.hasNext()) {
-                        NamedObj topObject = (NamedObj) topObjects.next();
-                        try {
-                            Iterator locations = topObject.attributeList(
-                                    Locatable.class).iterator();
-                            while (locations.hasNext()) {
-                                Locatable location = (Locatable) locations
-                                        .next();
-                                double[] locationValue = location.getLocation();
-                                for (int i = 0; i < locationValue.length; i++) {
-                                    locationValue[i] += _PASTE_OFFSET;
-                                }
-                                location.setLocation(locationValue);
-                            }
-                        } catch (IllegalActionException e) {
-                            MessageHandler.error("Paste failed", e);
-                        }
-                    }
-                    parser.clearTopObjectsList();
-                }
-
-                // Override this method to clear the list of top objects.
-                protected void _preParse(MoMLParser parser) {
-                    super._preParse(parser);
-                    parser.clearTopObjectsList();
-                }
-            };
+            MoMLChangeRequest change = new OffsetMoMLChangeRequest(this,
+                    container, moml.toString());
             change.setUndoable(true);
             container.requestChange(change);
         } catch (Exception ex) {
@@ -1893,9 +1863,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** List of references to graph frames that are open. */
     private static LinkedList _openGraphFrames = new LinkedList();
-
-    /** Offset used when pasting objects. */
-    private static int _PASTE_OFFSET = 10;
 
     /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();

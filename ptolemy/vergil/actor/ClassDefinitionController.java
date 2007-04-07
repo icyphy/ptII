@@ -44,6 +44,7 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.OffsetMoMLChangeRequest;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.canvas.CompositeFigure;
@@ -224,7 +225,7 @@ public class ClassDefinitionController extends ActorController {
 
             moml.append("</group>");
 
-            MoMLChangeRequest request = new MoMLChangeRequest(this, container,
+            MoMLChangeRequest request = new OffsetMoMLChangeRequest(this, container,
                     moml.toString());
             container.requestChange(request);
         }

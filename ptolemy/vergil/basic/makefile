@@ -71,6 +71,7 @@ JSRCS = \
 	NamedObjController.java \
 	NamedObjNodeModel.java \
 	NodeControllerFactory.java \
+	OffsetMoMLChangeRequest.java \
 	ParameterizedNodeController.java \
 	PopupMouseFilter.java \
 	RemoveCustomDocumentationAction.java \
