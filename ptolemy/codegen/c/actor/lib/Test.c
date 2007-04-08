@@ -150,10 +150,13 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 
 /***TokenBlock($channel)***/
 $actorSymbol(numberOfTokensSeen)++;
+/* If the type of the input is an array, then cast the input to 
+ * the type of the elements of the elements of correctValues. */
 if (($type(input) != TYPE_Array
-            && !$tokenFunc($ref(input#$channel)::equals($ref(correctValues, $actorSymbol(numberOfTokensSeen)))).payload.Boolean)
+            && !$tokenFunc($ref(input#$channel)::equals($ref(correctValues, $actorSymbol(numberOfTokensSeen)))).payload.Boolean) 
         || ($type(input) == TYPE_Array
-                && !$tokenFunc($ref(input#$channel)::equals(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0))).payload.Boolean)) {
+                && !$tokenFunc($typeFunc(TYPE_Array::convert($ref(input#$channel), Array_get(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), 0).type))::equals(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0))).payload.Boolean)) {
+
     printf("\nTest $actorSymbol($channel) fails in interation %d.\n Value was: %s. Should have been: %s.\n",
             $actorSymbol(numberOfTokensSeen),
             $tokenFunc($ref(input#$channel)::toString()).payload.String,
