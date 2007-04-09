@@ -270,8 +270,8 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePostfireExitCode() throws IllegalActionException {
-
-        return "}" + _eol;
+        return _INDENT1 + "return true;" + _eol
+            + "}" + _eol;
     }
 
     /** Generate the postfire procedure name.
@@ -358,14 +358,25 @@ public class CCodeGenerator extends CodeGenerator {
 
         Object[] functionsArray = functions.toArray();
 
+        
+        // True if we have a delete function that needs to return a Token
+        boolean defineEmptyToken = false;
+
         // Generate function map.
         for (int i = 0; i < functionsArray.length; i++) {
 
             code.append("#define FUNC_" + functionsArray[i] + " " + i + _eol);
+            if (functionsArray[i].equals("delete")) {
+                defineEmptyToken = true;
+            }
         }
 
         code.append("typedef struct token Token;" + _eol);
-
+        if (defineEmptyToken) {
+            code.append("Token emptyToken; "
+                    + comment("Used by *_delete().")
+                    + _eol);
+        }
         // Generate type and function definitions.
         for (int i = 0; i < typesArray.length; i++) {
             // The "declareBlock" contains all necessary declarations for the
