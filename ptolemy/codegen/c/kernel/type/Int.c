@@ -30,7 +30,12 @@ Token Int_equals(Token this, ...) {
 /**/
 
 /***deleteBlock***/
-Token Int_delete(Token token, ...) {}    
+Token Int_delete(Token token, ...) {
+    /* We need to return something here because all the methods are declared
+     * as returning a Token so we can use them in a table of functions.
+     */
+    return emptyToken; 
+}    
 /**/
 
 /***printBlock***/

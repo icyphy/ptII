@@ -18,7 +18,12 @@ Token Boolean_new(boolean b) {
 
 
 /***deleteBlock***/
-Token Boolean_delete(Token token, ...) {}    
+Token Boolean_delete(Token token, ...) {
+    /* We need to return something here because all the methods are declared
+     * as returning a Token so we can use them in a table of functions.
+     */
+    return emptyToken; 
+}    
 /**/
 
 /***equalsBlock***/

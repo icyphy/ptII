@@ -80,6 +80,10 @@ Token Array_delete(Token token, ...) {
     }
     free(token.payload.Array->elements);
     free(token.payload.Array);
+    /* We need to return something here because all the methods are declared
+     * as returning a Token so we can use them in a table of functions.
+     */
+    return emptyToken; 
 }
 /**/
 
