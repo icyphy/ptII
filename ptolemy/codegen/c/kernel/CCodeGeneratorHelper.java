@@ -253,9 +253,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         while (outputPorts.hasNext()) {
             TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
 
-            // If either the output port is a dangling port or
-            // the output port has inside receivers.
-            if (outputPort.getWidth() == 0 || outputPort.getWidthInside() != 0) {
+            // The output port has inside receivers.
+            // We don't print declarations for ports that have width == 0
+            if (outputPort.getWidthInside() != 0) {
                 code.append("static " + targetType(outputPort.getType()) + " "
                         + generateName(outputPort));
 
