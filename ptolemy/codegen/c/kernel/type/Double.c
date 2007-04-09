@@ -157,6 +157,16 @@ Token Double_clone(Token this, ...) {
 /***convertBlock***/
 Token Double_convert(Token token, ...) {
     switch (token.type) {
+#ifdef TYPE_String
+    case TYPE_String:
+        // FIXME: Is this safe?
+        token.type = TYPE_Double;
+        if (sscanf(token.payload.String, "%lg", &token.payload.Double) != 1) {
+            fprintf(stderr, "Double_convert(): failed to convert \"%s\" to a Double\n", token.payload.String);
+            exit(-1);
+        }
+        break;
+#endif
 #ifdef TYPE_Int
     case TYPE_Int:
         token.type = TYPE_Double;
@@ -167,6 +177,7 @@ Token Double_convert(Token token, ...) {
         // FIXME: not finished
     default:
         fprintf(stderr, "Double_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+        exit(-1);
         break;
     }
     token.type = TYPE_Double;
