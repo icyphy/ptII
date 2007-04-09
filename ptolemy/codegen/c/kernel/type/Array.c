@@ -57,7 +57,7 @@ Token Array_new(int size, int given, ...) {
             // convert the elements if needed.
             for (i = 0; i < given; i++) {
                 if (Array_get(result, i).type != elementType) {
-                    result.payload.Array->elements[i] = functionTable[elementType][FUNC_convert](Array_get(result, i));
+                    result.payload.Array->elements[i] = functionTable[(int)elementType][FUNC_convert](Array_get(result, i));
                 }
             }    
         }
@@ -76,7 +76,7 @@ Token Array_delete(Token token, ...) {
     // Delete each elements.
     for (i = 0; i < token.payload.Array->size; i++) {
     	element = Array_get(token, i);
-        functionTable[element.type][FUNC_delete](element);
+        functionTable[(int)element.type][FUNC_delete](element);
     }
     free(token.payload.Array->elements);
     free(token.payload.Array);
@@ -100,7 +100,7 @@ Token Array_equals(Token this, ...) {
         return Boolean_new(false);
     }
     for (i = 0; i < this.payload.Array->size; i++) {
-        if (!functionTable[Array_get(this, i).type][FUNC_equals](Array_get(this, i), Array_get(otherToken, i)).payload.Boolean) {
+        if (!functionTable[(int)Array_get(this, i).type][FUNC_equals](Array_get(this, i), Array_get(otherToken, i)).payload.Boolean) {
             return Boolean_new(false);
         }
     }
@@ -122,7 +122,7 @@ Token Array_print(Token this, ...) {
         if (i != 0) {
             printf(", ");
         }
-        functionTable[this.payload.Array->elements[i].type][FUNC_print](this.payload.Array->elements[i]);
+        functionTable[(int)this.payload.Array->elements[i].type][FUNC_print](this.payload.Array->elements[i]);
     }
     printf("}");
 }
@@ -145,7 +145,7 @@ Token Array_toString(Token this, ...) {
         if (i != 0) {
             strcat(string, ", ");
         }
-        elementString = functionTable[this.payload.Array->elements[i].type][FUNC_toString](this.payload.Array->elements[i]);
+        elementString = functionTable[(int)this.payload.Array->elements[i].type][FUNC_toString](this.payload.Array->elements[i]);
         currentSize += strlen(elementString.payload.String);
         if (currentSize > allocatedSize) {
             allocatedSize *= 2;
@@ -175,7 +175,7 @@ Token Array_add(Token this, ...) {
     result = Array_new(this.payload.Array->size, 0);
 	
     for (i = 0; i < this.payload.Array->size; i++) {
-        result.payload.Array->elements[i] = functionTable[Array_get(this, i).type][FUNC_add](Array_get(this, i), Array_get(otherToken, i));
+        result.payload.Array->elements[i] = functionTable[(int)Array_get(this, i).type][FUNC_add](Array_get(this, i), Array_get(otherToken, i));
     }
 
     va_end(argp);
@@ -199,7 +199,7 @@ Token Array_substract(Token this, ...) {
     result = Array_new(this.payload.Array->size, 0);
 	
     for (i = 0; i < this.payload.Array->size; i++) {
-        result.payload.Array->elements[i] = functionTable[Array_get(this, i).type][FUNC_substract](Array_get(this, i), Array_get(otherToken, i));
+        result.payload.Array->elements[i] = functionTable[(int)Array_get(this, i).type][FUNC_substract](Array_get(this, i), Array_get(otherToken, i));
     }
 
     va_end(argp);
@@ -223,7 +223,7 @@ Token Array_multiply(Token this, ...) {
     result = Array_new(this.payload.Array->size, 0);
 	
     for (i = 0; i < this.payload.Array->size; i++) {
-        result.payload.Array->elements[i] = functionTable[Array_get(this, i).type][FUNC_multiply](Array_get(this, i), Array_get(otherToken, i));
+        result.payload.Array->elements[i] = functionTable[(int)Array_get(this, i).type][FUNC_multiply](Array_get(this, i), Array_get(otherToken, i));
     }
 
     va_end(argp);
@@ -248,7 +248,7 @@ Token Array_divide(Token this, ...) {
 	
     for (i = 0; i < this.payload.Array->size; i++) {
     	element = Array_get(this, i);
-        result.payload.Array->elements[i] = functionTable[element.type][FUNC_divide](element, Array_get(otherToken, i));
+        result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_divide](element, Array_get(otherToken, i));
     }
 
     va_end(argp);
@@ -265,7 +265,7 @@ Token Array_negate(Token this, ...) {
     result = Array_new(this.payload.Array->size, 0);
 
     for (i = 0; i < this.payload.Array->size; i++) {
-        result.payload.Array->elements[i] = functionTable[Array_get(this, i).type][FUNC_negate](Array_get(this, i));
+        result.payload.Array->elements[i] = functionTable[(int)Array_get(this, i).type][FUNC_negate](Array_get(this, i));
     }
     return result;
 }
@@ -280,7 +280,7 @@ Token Array_zero(Token token, ...) {
     result = Array_new(token.payload.Array->size, 0);
     for (i = 0; i < token.payload.Array->size; i++) {
         element = Array_get(token, i);
-        result.payload.Array->elements[i] = functionTable[element.type][FUNC_zero](element);
+        result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_zero](element);
     }
     return result;
 }
@@ -295,7 +295,7 @@ Token Array_one(Token token, ...) {
     result = Array_new(token.payload.Array->size, 0);
     for (i = 0; i < token.payload.Array->size; i++) {
         element = Array_get(token, i);
-        result.payload.Array->elements[i] = functionTable[element.type][FUNC_one](element);
+        result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_one](element);
     }
     return result;
 }
@@ -311,7 +311,7 @@ Token Array_clone(Token token, ...) {
     result = Array_new(token.payload.Array->size, 0);
     for (i = 0; i < token.payload.Array->size; i++) {
         element = Array_get(token, i);
-        result.payload.Array->elements[i] = functionTable[element.type][FUNC_clone](element);
+        result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_clone](element);
     }
     return result;	
 }
@@ -342,7 +342,7 @@ Token Array_convert(Token token, ...) {
     for (i = 0; i < token.payload.Array->size; i++) {
         element = Array_get(token, i);
         if (targetType != element.type) {
-            result.payload.Array->elements[i] = functionTable[targetType][FUNC_convert](element);
+            result.payload.Array->elements[i] = functionTable[(int)targetType][FUNC_convert](element);
         } else {
             result.payload.Array->elements[i] = element;
         }    
