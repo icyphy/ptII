@@ -372,11 +372,7 @@ public class CCodeGenerator extends CodeGenerator {
         }
 
         code.append("typedef struct token Token;" + _eol);
-        if (defineEmptyToken) {
-            code.append("Token emptyToken; "
-                    + comment("Used by *_delete().")
-                    + _eol);
-        }
+
         // Generate type and function definitions.
         for (int i = 0; i < typesArray.length; i++) {
             // The "declareBlock" contains all necessary declarations for the
@@ -392,6 +388,12 @@ public class CCodeGenerator extends CodeGenerator {
             args.add(typeMembers);
             sharedStream.clear();
             sharedStream.appendCodeBlock("tokenDeclareBlock", args);
+
+            if (defineEmptyToken) {
+                code.append("Token emptyToken; "
+                        + comment("Used by *_delete() and others.")
+                        + _eol);
+            }
         }
 
         // Append type-polymorphic functions included in the function table. 
