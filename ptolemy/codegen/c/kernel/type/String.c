@@ -43,6 +43,7 @@ Token String_equals(Token this, ...) {
 /***printBlock***/
 Token String_print(Token this, ...) {
     printf("\"%s\"", this.payload.String);
+    return emptyToken;
 }
 /**/
 
@@ -74,6 +75,7 @@ Token String_add(Token this, ...) {
 Token String_substract(Token this, ...) {
     fprintf(stderr, "String_substract not supported");
     exit(1);
+    return emptyToken;
 }
 /**/
 
@@ -81,6 +83,7 @@ Token String_substract(Token this, ...) {
 Token String_multiply(Token this, ...) {
     fprintf(stderr, "String_multiply not supported");
     exit(1);
+    return emptyToken;
 }
 /**/
 
@@ -88,11 +91,13 @@ Token String_multiply(Token this, ...) {
 Token String_divide(Token this, ...) {
     fprintf(stderr, "String_divide not supported");
     exit(1);
+    return emptyToken;
 }
 /**/
 
 /***negateBlock***/
 Token String_negate(Token this, ...) {
+    return emptyToken;
 }	
 /**/
 
@@ -106,6 +111,7 @@ Token String_zero(Token token, ...) {
 Token String_one(Token this, ...) {
     fprintf(stderr, "String_one not supported");
     exit(1);
+    return emptyToken;
 }
 /**/
 
