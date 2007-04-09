@@ -30,6 +30,9 @@ package ptolemy.codegen.c.actor.lib.conversions;
 
 import java.util.ArrayList;
 
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -66,12 +69,29 @@ public class TokenToExpression extends CCodeGeneratorHelper {
 
         ptolemy.actor.lib.conversions.TokenToExpression actor = (ptolemy.actor.lib.conversions.TokenToExpression) getComponent();
 
-        if (isPrimitive(actor.input.getType())) {
+        Type inputType = actor.input.getType();
+        if (isPrimitive(inputType)) {
             ArrayList args = new ArrayList();
-            args.add(codeGenType(actor.input.getType()));
+            args.add(codeGenType(inputType));
             _codeStream.appendCodeBlock("FireBlock", args);
         } else {
-            _codeStream.appendCodeBlock("TokenFireBlock");
+            if (inputType instanceof ArrayType) {
+                ArrayList args = new ArrayList();
+
+                Type elementType = ((ArrayType) inputType).getElementType();
+
+                if (elementType instanceof BaseType.ScalarType) {
+                    // test/auto/AddSubtract4.xml needs this.
+                    _codeStream.appendCodeBlock("TokenFireBlock");
+                } else {
+                    // test/auto/Commutator.xml needs this.
+                    ArrayList args2 = new ArrayList();
+                    args2.add("TYPE_" + codeGenType(elementType));
+                    _codeStream.appendCodeBlock("TokenArrayFireBlock", args2);
+                }
+            } else {
+                _codeStream.appendCodeBlock("TokenFireBlock");
+            }
         }
         return processCode(_codeStream.toString());
     }
