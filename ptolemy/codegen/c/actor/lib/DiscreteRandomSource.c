@@ -1,4 +1,6 @@
 /*** sharedBlock2 ***/
+double RandomSource_nextDouble(double* seed);
+
 double DiscreteRandomSource_rand(double* seed, Token pmf, Token values) {
     int i;
     double randomValue;
