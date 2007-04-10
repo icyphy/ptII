@@ -1,7 +1,7 @@
 /*** sharedBlock ***/
 char* myStrtrim(char* result, char *str) {
 	int length;
-	if (!str) return;
+	if (!str) return 0;
 	char *end = str + strlen(str);
 	
 	while(end-- > str)	{
