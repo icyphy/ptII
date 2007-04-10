@@ -103,11 +103,11 @@ if ($channel == 0) {
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) =
 $ref(correctValues, $actorSymbol(numberOfTokensSeen));
-if (($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && ((!Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean
-                    && $ref(input#$channel)))
-                || (Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean
-                        && !$ref(input#$channel)))) {
+if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
+    && (((!Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean
+	  && $ref(input#$channel)))
+	|| (Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean
+	    && !$ref(input#$channel)))) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a boolean of value: %s. Should have been a boolean of value: %s\n",
             $actorSymbol(numberOfTokensSeen),
             BooleantoString($ref(input#$channel)),
