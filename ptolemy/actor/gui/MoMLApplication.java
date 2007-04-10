@@ -235,341 +235,352 @@ public class MoMLApplication implements ExecutionListener {
                 }
             }
         } catch (Throwable ex) {
-            // Make sure that we do not eat the exception if there are
-            // problems parsing.  For example, "ptolemy -FOO bar bif.xml"
-            // will crash if bar is not a variable.  Instead, use
-            // "ptolemy -FOO \"bar\" bif.xml"
-            // Accumulate the arguments into a StringBuffer
-            StringBuffer argsStringBuffer = new StringBuffer();
+             // Make sure that we do not eat the exception if there are
+             // problems parsing.  For example, "ptolemy -FOO bar bif.xml"
+             // will crash if bar is not a variable.  Instead, use
+             // "ptolemy -FOO \"bar\" bif.xml"
+            throwArgsException(ex, args);
+         }
+     }
 
-            try {
-                for (int i = 0; i < args.length; i++) {
-                    if (argsStringBuffer.length() > 0) {
-                        argsStringBuffer.append(" ");
-                    }
+     ///////////////////////////////////////////////////////////////////
+     ////                         public methods                    ////
 
-                    argsStringBuffer.append(args[i]);
-                }
-            } catch (Exception ex2) {
-                //Ignored
-            }
+     /** Reduce the count of executing models by one.  If the number of
+      *  executing models drops to zero, then notify threads that might
+      *  be waiting for this event.
+      *  @param manager The manager calling this method.
+      *  @param throwable The throwable being reported.
+      */
+     public synchronized void executionError(Manager manager, Throwable throwable) {
+         _activeCount--;
 
-            // Make sure we throw an exception if one is caught.
-            // If we don't, then running vergil -foo will just exit.
-            throw new Exception("Failed to parse \""
-                    + argsStringBuffer.toString() + "\"", ex);
-        }
-    }
+         if (_activeCount == 0) {
+             notifyAll();
+         }
+     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+     /**  Reduce the count of executing models by one.  If the number of
+      *  executing models drops ot zero, then notify threads that might
+      *  be waiting for this event.
+      *  @param manager The manager calling this method.
+      */
+     public synchronized void executionFinished(Manager manager) {
+         _activeCount--;
 
-    /** Reduce the count of executing models by one.  If the number of
-     *  executing models drops to zero, then notify threads that might
-     *  be waiting for this event.
-     *  @param manager The manager calling this method.
-     *  @param throwable The throwable being reported.
-     */
-    public synchronized void executionError(Manager manager, Throwable throwable) {
-        _activeCount--;
+         if (_activeCount == 0) {
+             notifyAll();
+         }
+     }
 
-        if (_activeCount == 0) {
-            notifyAll();
-        }
-    }
+     /** Create a new instance of this application, passing it the
+      *  command-line arguments.
+      *  @param args The command-line arguments.
+      */
+     public static void main(String[] args) {
+         try {
+             new MoMLApplication(args);
+         } catch (Throwable throwable) {
+             MessageHandler.error("Command failed", throwable);
+             // Be sure to print the stack trace so that 
+             // "$PTII/bin/moml -foo" prints something.
+             System.err.print(KernelException.stackTraceToString(throwable));
+             System.exit(1);
+         }
 
-    /**  Reduce the count of executing models by one.  If the number of
-     *  executing models drops ot zero, then notify threads that might
-     *  be waiting for this event.
-     *  @param manager The manager calling this method.
-     */
-    public synchronized void executionFinished(Manager manager) {
-        _activeCount--;
+         // If the -test arg was set, then exit after 2 seconds.
+         if (_test) {
+             try {
+                 Thread.sleep(2000);
+             } catch (InterruptedException e) {
+             }
 
-        if (_activeCount == 0) {
-            notifyAll();
-        }
-    }
+             System.exit(0);
+         }
+     }
 
-    /** Create a new instance of this application, passing it the
-     *  command-line arguments.
-     *  @param args The command-line arguments.
-     */
-    public static void main(String[] args) {
-        try {
-            new MoMLApplication(args);
-        } catch (Throwable throwable) {
-            MessageHandler.error("Command failed", throwable);
-            // Be sure to print the stack trace so that 
-            // "$PTII/bin/moml -foo" prints something.
-            System.err.print(KernelException.stackTraceToString(throwable));
-            System.exit(1);
-        }
+     /** Do nothing.
+      *  @param manager The manager calling this method.
+      */
+     public void managerStateChanged(Manager manager) {
+     }
 
-        // If the -test arg was set, then exit after 2 seconds.
-        if (_test) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-            }
+     /** Return a list of the Ptolemy II models that were created by processing
+      *  the command-line arguments.
+      *  @return A list of instances of NamedObj.
+      */
+     public List models() {
+         LinkedList result = new LinkedList();
 
-            System.exit(0);
-        }
-    }
+         if (_configuration == null) {
+             return result;
+         }
 
-    /** Do nothing.
-     *  @param manager The manager calling this method.
-     */
-    public void managerStateChanged(Manager manager) {
-    }
+         ModelDirectory directory = (ModelDirectory) _configuration
+                 .getEntity(Configuration._DIRECTORY_NAME);
+         Iterator effigies = directory.entityList().iterator();
 
-    /** Return a list of the Ptolemy II models that were created by processing
-     *  the command-line arguments.
-     *  @return A list of instances of NamedObj.
-     */
-    public List models() {
-        LinkedList result = new LinkedList();
+         while (effigies.hasNext()) {
+             Effigy effigy = (Effigy) effigies.next();
 
-        if (_configuration == null) {
-            return result;
-        }
+             if (effigy instanceof PtolemyEffigy) {
+                 NamedObj model = ((PtolemyEffigy) effigy).getModel();
+                 result.add(model);
+             }
+         }
 
-        ModelDirectory directory = (ModelDirectory) _configuration
-                .getEntity(Configuration._DIRECTORY_NAME);
-        Iterator effigies = directory.entityList().iterator();
+         return result;
+     }
 
-        while (effigies.hasNext()) {
-            Effigy effigy = (Effigy) effigies.next();
+     /** Read a Configuration from the URL given by the specified string.
+      *  The URL may absolute, or relative to the Ptolemy II tree root,
+      *  or in the classpath.  To convert a String to a URL suitable for
+      *  use by this method, call specToURL(String).
+      *  <p>If there is an _applicationInitializer parameter, then
+      *  instantiate the class named by that parameter.  The
+      *  _applicationInitializer parameter contains a string that names
+      *  a class to be initialized.
+      *  <p>If the configuration has already been read in, then the old
+      *  configuration will be deleted.  Note that this may exit the application.
+      *  @param specificationURL A string describing a URL.
+      *  @return A configuration.
+      *  @exception Exception If the configuration cannot be opened, or
+      *   if the contents of the URL is not a configuration.
+      */
+     public static Configuration readConfiguration(URL specificationURL)
+             throws Exception {
+         if (_initialSpecificationURL == null) {
+             _initialSpecificationURL = specificationURL;
+         }
+         MoMLParser parser = new MoMLParser();
+         parser.reset();
 
-            if (effigy instanceof PtolemyEffigy) {
-                NamedObj model = ((PtolemyEffigy) effigy).getModel();
-                result.add(model);
-            }
-        }
+         Configuration configuration = (Configuration) parser.parse(
+                 specificationURL, specificationURL);
 
-        return result;
-    }
+         // If the toplevel model is a configuration containing a directory,
+         // then create an effigy for the configuration itself, and put it
+         // in the directory.
+         ComponentEntity directory = configuration.getEntity("directory");
 
-    /** Read a Configuration from the URL given by the specified string.
-     *  The URL may absolute, or relative to the Ptolemy II tree root,
-     *  or in the classpath.  To convert a String to a URL suitable for
-     *  use by this method, call specToURL(String).
-     *  <p>If there is an _applicationInitializer parameter, then
-     *  instantiate the class named by that parameter.  The
-     *  _applicationInitializer parameter contains a string that names
-     *  a class to be initialized.
-     *  <p>If the configuration has already been read in, then the old
-     *  configuration will be deleted.  Note that this may exit the application.
-     *  @param specificationURL A string describing a URL.
-     *  @return A configuration.
-     *  @exception Exception If the configuration cannot be opened, or
-     *   if the contents of the URL is not a configuration.
-     */
-    public static Configuration readConfiguration(URL specificationURL)
-            throws Exception {
-        if (_initialSpecificationURL == null) {
-            _initialSpecificationURL = specificationURL;
-        }
-        MoMLParser parser = new MoMLParser();
-        parser.reset();
+         if (directory instanceof ModelDirectory) {
+             PtolemyEffigy effigy = null;
+             try {
+                 effigy = new PtolemyEffigy((ModelDirectory) directory,
+                         configuration.getName());
+             } catch (NameDuplicationException ex) {
+                 // Try deleting the old configuration
+                 PtolemyEffigy oldEffigy = (PtolemyEffigy) ((ModelDirectory) directory)
+                         .getEntity(configuration.getName());
+                 oldEffigy.setContainer(null);
+                 effigy = new PtolemyEffigy((ModelDirectory) directory,
+                         configuration.getName());
+             }
 
-        Configuration configuration = (Configuration) parser.parse(
-                specificationURL, specificationURL);
+             effigy.setModel(configuration);
+             effigy.identifier.setExpression(specificationURL.toExternalForm());
+         }
 
-        // If the toplevel model is a configuration containing a directory,
-        // then create an effigy for the configuration itself, and put it
-        // in the directory.
-        ComponentEntity directory = configuration.getEntity("directory");
+         // If there is an _applicationInitializer parameter, then
+         // construct it.  The _applicationInitializer parameter contains
+         // a string that names a class to be initialized.
+         StringParameter applicationInitializerParameter = (StringParameter) configuration
+                 .getAttribute("_applicationInitializer", Parameter.class);
 
-        if (directory instanceof ModelDirectory) {
-            PtolemyEffigy effigy = null;
-            try {
-                effigy = new PtolemyEffigy((ModelDirectory) directory,
-                        configuration.getName());
-            } catch (NameDuplicationException ex) {
-                // Try deleting the old configuration
-                PtolemyEffigy oldEffigy = (PtolemyEffigy) ((ModelDirectory) directory)
-                        .getEntity(configuration.getName());
-                oldEffigy.setContainer(null);
-                effigy = new PtolemyEffigy((ModelDirectory) directory,
-                        configuration.getName());
-            }
+         if (applicationInitializerParameter != null) {
+             String applicationInitializerClassName = applicationInitializerParameter
+                     .stringValue();
+             try {
+                 Class applicationInitializer = Class
+                         .forName(applicationInitializerClassName);
+                 applicationInitializer.newInstance();
+             } catch (Throwable throwable) {
+                 throw new Exception("Failed to call application initializer "
+                         + "class \"" + applicationInitializerClassName
+                         + "\".  Perhaps the configuration file \""
+                         + specificationURL + "\" has a problem?", throwable);
+             }
+         }
 
-            effigy.setModel(configuration);
-            effigy.identifier.setExpression(specificationURL.toExternalForm());
-        }
+         return configuration;
+     }
 
-        // If there is an _applicationInitializer parameter, then
-        // construct it.  The _applicationInitializer parameter contains
-        // a string that names a class to be initialized.
-        StringParameter applicationInitializerParameter = (StringParameter) configuration
-                .getAttribute("_applicationInitializer", Parameter.class);
+     /** Start the models running, each in a new thread, then return.
+      *  @exception IllegalActionException If the manager throws it.
+      */
+     public void runModels() throws IllegalActionException {
+         Iterator models = models().iterator();
 
-        if (applicationInitializerParameter != null) {
-            String applicationInitializerClassName = applicationInitializerParameter
-                    .stringValue();
-            try {
-                Class applicationInitializer = Class
-                        .forName(applicationInitializerClassName);
-                applicationInitializer.newInstance();
-            } catch (Throwable throwable) {
-                throw new Exception("Failed to call application initializer "
-                        + "class \"" + applicationInitializerClassName
-                        + "\".  Perhaps the configuration file \""
-                        + specificationURL + "\" has a problem?", throwable);
-            }
-        }
+         while (models.hasNext()) {
+             NamedObj model = (NamedObj) models.next();
 
-        return configuration;
-    }
+             if (model instanceof CompositeActor) {
+                 CompositeActor actor = (CompositeActor) model;
 
-    /** Start the models running, each in a new thread, then return.
-     *  @exception IllegalActionException If the manager throws it.
-     */
-    public void runModels() throws IllegalActionException {
-        Iterator models = models().iterator();
+                 // Create a manager if necessary.
+                 Manager manager = actor.getManager();
 
-        while (models.hasNext()) {
-            NamedObj model = (NamedObj) models.next();
+                 if (manager == null) {
+                     manager = new Manager(actor.workspace(), "manager");
+                     actor.setManager(manager);
+                 }
 
-            if (model instanceof CompositeActor) {
-                CompositeActor actor = (CompositeActor) model;
+                 manager.addExecutionListener(this);
+                 _activeCount++;
 
-                // Create a manager if necessary.
-                Manager manager = actor.getManager();
+                 // Run the model in a new thread.
+                 manager.startRun();
+             }
+         }
+     }
 
-                if (manager == null) {
-                    manager = new Manager(actor.workspace(), "manager");
-                    actor.setManager(manager);
-                }
+     /** Given the name of a file or a URL, convert it to a URL.
+      *  This first attempts to do that directly by invoking a URL constructor.
+      *  If that fails, then it tries to interpret the spec as a file name
+      *  on the local file system.  If that fails, then it tries to interpret
+      *  the spec as a resource accessible to the class loader, which uses
+      *  the classpath to find the resource.  If that fails, then it throws
+      *  an exception.  The specification can give a file name relative to
+      *  current working directory, or the directory in which this application
+      *  is started up.
+      *  @param spec The specification.
+      *  @return the URL.
+      *  @exception IOException If it cannot convert the specification to
+      *   a URL.
+      */
+     public static URL specToURL(String spec) throws IOException {
+         // FIXME: There is a bit of a design flaw here because
+         // we open a stream to the url (which is probably expensive)
+         // and then close it.  The reason for opening the stream
+         // is that we want to be sure that the URL is valid,
+         // and if it is not, we check the local file system
+         // and the classpath.
+         // One solution would be to have a method that returned a
+         // URLConnection because we can open a stream with a
+         // URLConnection and still get the original URL if necessary
+         URL specURL = null;
 
-                manager.addExecutionListener(this);
-                _activeCount++;
+         try {
+             // First argument is null because we are only
+             // processing absolute URLs this way.  Relative
+             // URLs are opened as ordinary files.
+             specURL = new URL(null, spec);
 
-                // Run the model in a new thread.
-                manager.startRun();
-            }
-        }
-    }
+             // Make sure that the specURL actually exists
+             InputStream urlStream = specURL.openStream();
+             urlStream.close();
+             return specURL;
+         } catch (Exception ex) {
+             try {
+                 // Try as a regular file
+                 File file = new File(spec);
 
-    /** Given the name of a file or a URL, convert it to a URL.
-     *  This first attempts to do that directly by invoking a URL constructor.
-     *  If that fails, then it tries to interpret the spec as a file name
-     *  on the local file system.  If that fails, then it tries to interpret
-     *  the spec as a resource accessible to the class loader, which uses
-     *  the classpath to find the resource.  If that fails, then it throws
-     *  an exception.  The specification can give a file name relative to
-     *  current working directory, or the directory in which this application
-     *  is started up.
-     *  @param spec The specification.
-     *  @return the URL.
-     *  @exception IOException If it cannot convert the specification to
-     *   a URL.
-     */
-    public static URL specToURL(String spec) throws IOException {
-        // FIXME: There is a bit of a design flaw here because
-        // we open a stream to the url (which is probably expensive)
-        // and then close it.  The reason for opening the stream
-        // is that we want to be sure that the URL is valid,
-        // and if it is not, we check the local file system
-        // and the classpath.
-        // One solution would be to have a method that returned a
-        // URLConnection because we can open a stream with a
-        // URLConnection and still get the original URL if necessary
-        URL specURL = null;
+                 // Oddly, under Windows file.exists() might return even
+                 // though the file does not exist if we changed user.dir.
+                 // See
+                 // http://forum.java.sun.com/thread.jsp?forum=31&thread=328939
+                 // One hack is to convert to an absolute path first
+                 File absoluteFile = file.getAbsoluteFile();
 
-        try {
-            // First argument is null because we are only
-            // processing absolute URLs this way.  Relative
-            // URLs are opened as ordinary files.
-            specURL = new URL(null, spec);
+                 try {
+                     if (!absoluteFile.exists()) {
+                         throw new IOException("File '" + absoluteFile
+                                 + "' does not exist.");
+                     }
+                 } catch (java.security.AccessControlException accessControl) {
+                     IOException exception = new IOException(
+                             "AccessControlException while "
+                                     + "trying to read '" + absoluteFile + "'");
 
-            // Make sure that the specURL actually exists
-            InputStream urlStream = specURL.openStream();
-            urlStream.close();
-            return specURL;
-        } catch (Exception ex) {
-            try {
-                // Try as a regular file
-                File file = new File(spec);
+                     // IOException does not have a cause argument constructor.
+                     exception.initCause(accessControl);
+                     throw exception;
+                 }
 
-                // Oddly, under Windows file.exists() might return even
-                // though the file does not exist if we changed user.dir.
-                // See
-                // http://forum.java.sun.com/thread.jsp?forum=31&thread=328939
-                // One hack is to convert to an absolute path first
-                File absoluteFile = file.getAbsoluteFile();
+                 specURL = absoluteFile.getCanonicalFile().toURL();
 
-                try {
-                    if (!absoluteFile.exists()) {
-                        throw new IOException("File '" + absoluteFile
-                                + "' does not exist.");
-                    }
-                } catch (java.security.AccessControlException accessControl) {
-                    IOException exception = new IOException(
-                            "AccessControlException while "
-                                    + "trying to read '" + absoluteFile + "'");
+                 //InputStream urlStream = specURL.openStream();
+                 //urlStream.close();
+                 return specURL;
+             } catch (Exception ex2) {
+                 try {
+                     // Try one last thing, using the classpath.
+                     // Need a class context, and this is a static method, so...
+                     // we can't use this.getClass().getClassLoader()
+                     // NOTE: There doesn't seem to be any way to convert
+                     // this a canonical name, so if a model is opened this
+                     // way, and then later opened as a file, the model
+                     // directory will think it has two different files.
+                     //Class refClass = Class.forName(
+                     //        "ptolemy.kernel.util.NamedObj");
+                     //specURL = refClass.getClassLoader().getResource(spec);
+                     // This works in Web Start, see
+                     // http://java.sun.com/products/javawebstart/faq.html#54
+                     specURL = Thread.currentThread().getContextClassLoader()
+                             .getResource(spec);
 
-                    // IOException does not have a cause argument constructor.
-                    exception.initCause(accessControl);
-                    throw exception;
-                }
+                     if (specURL == null) {
+                         throw new Exception("getResource(\"" + spec
+                                 + "\") returned null.");
+                     } else {
+                         // If we have a jar URL, convert spaces to %20
+                         // so as to avoid multiple windows with the
+                         // same file.  Web Start needs this if the Web
+                         // Start cache is in a directory that has
+                         // spaces in the path, which is the default
+                         // under Windows.
+                         specURL = JNLPUtilities.canonicalizeJarURL(specURL);
 
-                specURL = absoluteFile.getCanonicalFile().toURL();
+                         // Verify that it can be opened
+                         InputStream urlStream = specURL.openStream();
+                         urlStream.close();
+                         return specURL;
+                     }
+                 } catch (Exception ex3) {
+                     // Use a very verbose message in case opening
+                     // the configuration fails under Web Start.
+                     // Without this error message, users will
+                     // have no hope of telling us why Web Start failed.
+                     IOException exception = new IOException("File not found: '"
+                             + spec + "'\n caused by:\n" + ex + "\n AND:\n"
+                             + ex2 + "\n AND:\n" + ex3);
 
-                //InputStream urlStream = specURL.openStream();
-                //urlStream.close();
-                return specURL;
-            } catch (Exception ex2) {
-                try {
-                    // Try one last thing, using the classpath.
-                    // Need a class context, and this is a static method, so...
-                    // we can't use this.getClass().getClassLoader()
-                    // NOTE: There doesn't seem to be any way to convert
-                    // this a canonical name, so if a model is opened this
-                    // way, and then later opened as a file, the model
-                    // directory will think it has two different files.
-                    //Class refClass = Class.forName(
-                    //        "ptolemy.kernel.util.NamedObj");
-                    //specURL = refClass.getClassLoader().getResource(spec);
-                    // This works in Web Start, see
-                    // http://java.sun.com/products/javawebstart/faq.html#54
-                    specURL = Thread.currentThread().getContextClassLoader()
-                            .getResource(spec);
+                     // IOException does not have a cause argument
+                     exception.initCause(ex3);
+                     throw exception;
+                 }
+             }
+         }
+     }
 
-                    if (specURL == null) {
-                        throw new Exception("getResource(\"" + spec
-                                + "\") returned null.");
-                    } else {
-                        // If we have a jar URL, convert spaces to %20
-                        // so as to avoid multiple windows with the
-                        // same file.  Web Start needs this if the Web
-                        // Start cache is in a directory that has
-                        // spaces in the path, which is the default
-                        // under Windows.
-                        specURL = JNLPUtilities.canonicalizeJarURL(specURL);
+     /** Throw an exception that includes the elements of the args parameter.
+      *  @param cause The throwable that caused the problem.
+      *  @param args An array of Strings.
+      *  @exception Exception Always thrown
+      */
+     public static void throwArgsException(Throwable cause, String [] args) 
+             throws Exception {
 
-                        // Verify that it can be opened
-                        InputStream urlStream = specURL.openStream();
-                        urlStream.close();
-                        return specURL;
-                    }
-                } catch (Exception ex3) {
-                    // Use a very verbose message in case opening
-                    // the configuration fails under Web Start.
-                    // Without this error message, users will
-                    // have no hope of telling us why Web Start failed.
-                    IOException exception = new IOException("File not found: '"
-                            + spec + "'\n caused by:\n" + ex + "\n AND:\n"
-                            + ex2 + "\n AND:\n" + ex3);
+         // Accumulate the arguments into a StringBuffer
+         StringBuffer argsStringBuffer = new StringBuffer();
 
-                    // IOException does not have a cause argument
-                    exception.initCause(ex3);
-                    throw exception;
-                }
-            }
-        }
-    }
+         try {
+             for (int i = 0; i < args.length; i++) {
+                 if (argsStringBuffer.length() > 0) {
+                     argsStringBuffer.append(" ");
+                 }
+
+                 argsStringBuffer.append(args[i]);
+             }
+         } catch (Exception ex2) {
+             //Ignored
+         }
+
+         // Make sure we throw an exception if one is caught.
+         // If we don't, then running vergil -foo will just exit.
+         throw new Exception("Failed to parse \""
+                 + argsStringBuffer.toString() + "\"", cause);
+     }
 
     /** Wait for all executing runs to finish, then return.
      */
