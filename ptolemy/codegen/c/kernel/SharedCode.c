@@ -1,7 +1,14 @@
 /***constantsBlock***/
 #define MISSING 0
 #define boolean unsigned char
+
+#ifdef linux
+/* Linux tends to have NAN. */
+#define NaN (__builtin_nanf (""))
+#else /*linux*/
 #define NaN nanf(0)
+#endif /*linux*/
+
 #define false 0
 #define true 1
 /**/
