@@ -11,10 +11,6 @@ import ptolemy.kernel.util.NamedObj;
  * @see PtalonActor
  *
  */
-/**
- * @author acataldo
- *
- */
 public class PtalonParameter extends Parameter {
 
     /** Construct a parameter with the given name contained by the specified
@@ -43,7 +39,7 @@ public class PtalonParameter extends Parameter {
     ////                         public methods                    ////
 
     /**
-     * @return True if this this parameter's value has been set.
+     * @return True if this parameter's value has been set.
      */
     public boolean hasValue() {
         return _hasValue;
@@ -60,6 +56,10 @@ public class PtalonParameter extends Parameter {
             return;
         }
         _hasValue = true;
+        
+        // celaine working here 4/10/07
+        this.valueChanged = true;
+        
         super.setExpression(expr);
     }
 
@@ -72,6 +72,10 @@ public class PtalonParameter extends Parameter {
      */
     public void setToken(Token token) throws IllegalActionException {
         _hasValue = true;
+        
+        // celaine working here 4/10/07
+        this.valueChanged = true;
+        
         super.setToken(token);
     }
 
@@ -87,9 +91,18 @@ public class PtalonParameter extends Parameter {
             return;
         }
         _hasValue = true;
+        
+        // celaine working here 4/10/07
+        this.valueChanged = true;
+        
         super.setToken(expression);
     }
 
+
+    // celaine working here 4/10/07
+    public boolean attributeChangedProcessed = false;
+    public boolean valueChanged = false;
+    
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 

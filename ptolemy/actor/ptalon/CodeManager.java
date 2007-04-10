@@ -1,5 +1,7 @@
-/*
- @Copyright (c) 1998-2006 The Regents of the University of California.
+/* A helper class to store information, like variable scope info, about
+ the compiler.
+   
+ Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -23,7 +25,6 @@
 
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
-
 
  */
 package ptolemy.actor.ptalon;
@@ -52,10 +53,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 import antlr.RecognitionException;
+import antlr.TreeParser;
 
 /**
- A helper class to store information, like variable
- scope info, about the compiler.
+ A helper class to store information, like variable scope info, about
+ the compiler.
 
  @author Adam Cataldo, Elaine Cheong
  @version $Id$
@@ -68,9 +70,8 @@ public class CodeManager {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Create a new CodeManager in the specified actor.
-     * @param actor The actor to manage the code for.
+    /** Create a new CodeManager in the specified actor.
+     *  @param actor The actor to manage the code for.
      */
     public CodeManager(PtalonActor actor) {
         _actor = actor;
@@ -80,13 +81,13 @@ public class CodeManager {
         _currentIfTree = _root;
     }
 
-    /**
-     * Add a PtalonParameter to the PtalonActor
-     * with the specified name.
-     * @param name The name of the parameter.
-     * @exception PtalonRuntimeException If the symbol does not exist, or if
-     * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
-     * trying to create the parameter.
+    /** Add a PtalonParameter to the PtalonActor with the specified
+     *  name.
+     *  @param name The name of the parameter.
+     *  @exception PtalonRuntimeException If the symbol does not
+     *  exist, or if the symbol already has a parameter associated
+     *  with it, or if an IllegalActionException is thrown trying to
+     *  create the parameter.
      */
     public void addActorParameter(String name) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
@@ -121,14 +122,14 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Add an invisible PtalonParameter to the PtalonActor
-     * with the specified name.
-     * @param name The name of the parameter.
-     * @param expression The expression representing the parameter.
-     * @exception PtalonRuntimeException If the symbol does not exist, or if
-     * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
-     * trying to create the parameter.
+    /** Add an invisible PtalonParameter to the PtalonActor with the
+     *  specified name.
+     *  @param name The name of the parameter.
+     *  @param expression The expression representing the parameter.
+     *  @exception PtalonRuntimeException If the symbol does not
+     *  exist, or if the symbol already has a parameter associated
+     *  with it, or if an IllegalActionException is thrown trying to
+     *  create the parameter.
      */
     public void addActorParameter(String name, String expression)
             throws PtalonRuntimeException {
@@ -167,13 +168,13 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Add a TypedIOPort to the PtalonActor
-     * with the specified name, and input flow type
-     * @param name The name of the port.
-     * @exception PtalonRuntimeException If the symbol does not exist, or if
-     * the symbol already has a port associated with it, or if an IllegalActionException is thrown
-     * trying to create the port.
+    /** Add a TypedIOPort to the PtalonActor with the specified name,
+     *  and input flow type
+     *  @param name The name of the port.
+     *  @exception PtalonRuntimeException If the symbol does not
+     *  exist, or if the symbol already has a port associated with it,
+     *  or if an IllegalActionException is thrown trying to create
+     *  the port.
      */
     public void addInPort(String name) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
@@ -215,13 +216,13 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Add a TypedIOPort to the PtalonActor
-     * with the specified name, and output flow type
-     * @param name The name of the port.
-     * @exception PtalonRuntimeException If the symbol does not exist, or if
-     * the symbol already has a port associated with it, or if an IllegalActionException is thrown
-     * trying to create the port.
+    /** Add a TypedIOPort to the PtalonActor with the specified name,
+     *  and output flow type
+     *  @param name The name of the port.
+     *  @exception PtalonRuntimeException If the symbol does not
+     *  exist, or if the symbol already has a port associated with it,
+     *  or if an IllegalActionException is thrown trying to create
+     *  the port.
      */
     public void addOutPort(String name) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
@@ -263,13 +264,12 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Add a Parameter to the PtalonActor
-     * with the specified name.
-     * @param name The name of the parameter.
-     * @exception PtalonRuntimeException If the symbol does not exist, or if
-     * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
-     * trying to create the parameter.
+    /** Add a Parameter to the PtalonActor with the specified name.
+     *  @param name The name of the parameter.
+     *  @exception PtalonRuntimeException If the symbol does not
+     * exist, or if the symbol already has a parameter associated with
+     * it, or if an IllegalActionException is thrown trying to create
+     * the parameter.
      */
     public void addParameter(String name) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
@@ -306,13 +306,13 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Add an invisible Parameter to the PtalonActor
-     * with the specified name and the given expression as its value.
-     * @param name The name of the parameter.
-     * @exception PtalonRuntimeException If the symbol does not exist, or if
-     * the symbol already has a parameter associated with it, or if an IllegalActionException is thrown
-     * trying to create the parameter.
+    /** Add an invisible Parameter to the PtalonActor with the
+     *  specified name and the given expression as its value.
+     *  @param name The name of the parameter.
+     *  @exception PtalonRuntimeException If the symbol does not
+     *  exist, or if the symbol already has a parameter associated
+     *  with it, or if an IllegalActionException is thrown trying to
+     *  create the parameter.
      */
     public void addParameter(String name, String expression)
             throws PtalonRuntimeException {
@@ -352,13 +352,12 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Add a TypedIOPort to the PtalonActor
-     * with the specified name.
-     * @param name The name of the port.
-     * @exception PtalonRuntimeException If the symbol does not exist, or if
-     * the symbol already has a port associated with it, or if an IllegalActionException is thrown
-     * trying to create the port.
+    /** Add a TypedIOPort to the PtalonActor with the specified name.
+     *  @param name The name of the port.
+     *  @exception PtalonRuntimeException If the symbol does not
+     *  exist, or if the symbol already has a port associated with it,
+     *  or if an IllegalActionException is thrown trying to create
+     *  the port.
      */
     public void addPort(String name) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
@@ -400,13 +399,13 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Add a TypedIORelation to the PtalonActor
-     * with the specified name.
-     * @param name The name of the relation.
-     * @exception PtalonRuntimeException If the symbol does not exist, or if
-     * the symbol already has a relation associated with it, or if an IllegalActionException is thrown
-     * trying to create the relation.
+    /** Add a TypedIORelation to the PtalonActor with the specified
+     *  name.
+     *  @param name The name of the relation.
+     *  @exception PtalonRuntimeException If the symbol does not
+     *  exist, or if the symbol already has a relation associated with
+     *  it, or if an IllegalActionException is thrown trying to
+     *  create the relation.
      */
     public void addRelation(String name) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
@@ -441,13 +440,12 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Add a symbol with the given name and type to the symbol table
-     * at the current level of the if-tree hierarchy.
-     * @param name The symbol name.
-     * @param type The symbol type.
-     * @exception PtalonScopeException If a symbol with this name has already
-     * been added somewhere in the current scope.
+    /** Add a symbol with the given name and type to the symbol table
+     *  at the current level of the if-tree hierarchy.
+     *  @param name The symbol name.
+     *  @param type The symbol type.
+     *  @exception PtalonScopeException If a symbol with this name has
+     *  already been added somewhere in the current scope.
      */
     public void addSymbol(String name, String type) throws PtalonScopeException {
         List<IfTree> ancestors = _currentIfTree.getAncestors();
@@ -463,15 +461,17 @@ public class CodeManager {
         _currentIfTree.addSymbol(name, type);
     }
 
-    /**
-     * Add a transparent relation to the PtalonActor with the
-     * specified name.  A transparent relation is not the same as a
-     * relation.  Rather, it provides a means for connecting multiple
-     * ports to an input port.  It is transparent in that if this
-     * transparent relation is connected to an input port I, then any
-     * connections made to the transparent relation will be as if they
-     * were connected directly to I, instead of through a relation.
-     * @param name The name of the relation.
+    /** Add a transparent relation to the PtalonActor with the
+     *  specified name.  A transparent relation is not the same as a
+     *  relation.  Rather, it provides a means for connecting multiple
+     *  ports to an input port.  It is transparent in that if this
+     *  transparent relation is connected to an input port I, then any
+     *  connections made to the transparent relation will be as if
+     *  they were connected directly to I, instead of through a
+     *  relation.
+     *  @param name The name of the relation.
+     *  @exception PtalonRuntimeException If in a new for iteration
+     *  but no containing for block is found.
      */
     public void addTransparentRelation(String name)
             throws PtalonRuntimeException {
@@ -497,10 +497,9 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Assign any internal parameters in the order they were set.
-     * @throws PtalonRuntimeException If there is any trouble assigning
-     * parameter values.
+    /** Assign any internal parameters in the order they were set.
+     *  @throws PtalonRuntimeException If there is any trouble
+     *  assigning parameter values.
      */
     public void assignInternalParameters() throws PtalonRuntimeException {
         try {
@@ -515,10 +514,9 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Enter the named subscope.
-     * @param scope The named subscope.
-     * @exception PtalonRuntimeException If the subscope does not exist.
+    /** Enter the named subscope.
+     *  @param scope The named subscope.
+     *  @exception PtalonRuntimeException If the subscope does not exist.
      */
     public void enterIfScope(String scope) throws PtalonRuntimeException {
         boolean exists = false;
@@ -535,27 +533,27 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Enter the named for-block subscope.
-     * @param scope The named subscope.
-     * @param forBlock The AST for the subscope.
-     * @param populator The PtalonPopulator that called this statement. 
-     * @exception PtalonRuntimeException If the subscope does not exist.
+    /** Enter the named for-block subscope.
+     *  @param scope The named subscope.
+     *  @param forBlock The AST for the subscope.
+     *  @param populator The PtalonPopulator that called this statement. 
+     *  @exception PtalonRuntimeException If the subscope does not exist.
      */
+    // celaine working here 4/10/07
     public void enterForScope(String scope, PtalonAST forBlock,
-            PtalonPopulator populator) throws PtalonRuntimeException {
+            TreeParser populator) throws PtalonRuntimeException {
+            //PtalonPopulator populator) throws PtalonRuntimeException {
         enterIfScope(scope);
         _currentIfTree.forBlock = forBlock;
         _currentIfTree.populator = populator;
     }
 
-    /**
-     * Evaluate the given expression and return its boolean value.
-     * The expression should return a boolean value, otherwise
-     * an exception is thrown.
-     * @param expression The expression to evaluate.
-     * @return The boolean result of evaluation.
-     * @throws PtalonRuntimeException If the result is not a boolean.
+    /** Evaluate the given expression and return its boolean value.
+     *  The expression should return a boolean value, otherwise
+     *  an exception is thrown.
+     *  @param expression The expression to evaluate.
+     *  @return The boolean result of evaluation.
+     *  @throws PtalonRuntimeException If the result is not a boolean.
      */
     public boolean evaluateBoolean(String expression)
             throws PtalonRuntimeException {
@@ -567,11 +565,10 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Evaluate the given expression and return the corresponding token.
-     * @param expression The expression to evaluate.
-     * @return The result of evaluation.
-     * @throws PtalonRuntimeException If unable to evaluate the expression.
+    /** Evaluate the given expression and return the corresponding token.
+     *  @param expression The expression to evaluate.
+     *  @return The result of evaluation.
+     *  @throws PtalonRuntimeException If unable to evaluate the expression.
      */
     public Token evaluateExpression(String expression)
             throws PtalonRuntimeException {
@@ -589,11 +586,9 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Evaluate the current for block, assuming there is
-     * one.
-     * @throws PtalonRuntimeException If there is
-     * any trouble evaluating this for block.
+    /** Evaluate the current for block, assuming there is one.
+     *  @throws PtalonRuntimeException If there is any trouble
+     *  evaluating this for block.
      */
     public void evaluateForScope() throws PtalonRuntimeException {
         if (!_currentIfTree.isForStatement) {
@@ -602,12 +597,11 @@ public class CodeManager {
         _currentIfTree.evaluateForScope();
     }
 
-    /**
-     * Evaluate the given input expression and return a string
-     * representation of it, or null, if there is some reason
-     * it cannot be evaluated.
-     * @param expression The input expression.
-     * @return The evaluated value, or null if there is not.
+    /** Evaluate the given input expression and return a string
+     *  representation of it, or null, if there is some reason it
+     *  cannot be evaluated.
+     *  @param expression The input expression.
+     *  @return The evaluated value, or null if there is not.
      */
     public String evaluateString(String expression) {
         try {
@@ -625,9 +619,9 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Exit the current if scope.
-     * @exception PtalonRuntimeException If already at the top-level if scope.
+    /** Exit the current if scope.
+     *  @exception PtalonRuntimeException If already at the top-level
+     *  if scope.
      */
     public void exitIfScope() throws PtalonRuntimeException {
         if (_currentIfTree.getParent() == null) {
@@ -636,9 +630,8 @@ public class CodeManager {
         _currentIfTree = _currentIfTree.getParent();
     }
 
-    /**
-     * Exit the current for scope.
-     * @exception PtalonRuntimeException If not in a for-block scope.
+    /** Exit the current for scope.
+     *  @exception PtalonRuntimeException If not in a for-block scope.
      */
     public void exitForScope() throws PtalonRuntimeException {
         if (!_currentIfTree.isForStatement) {
@@ -647,11 +640,10 @@ public class CodeManager {
         exitIfScope();
     }
 
-    /**
-     * Get the unique name for the symbol in the PtalonActor. 
-     * @param symbol The symbol to test.
-     * @return The unique name.
-     * @exception PtalonRuntimeException If no such symbol exists.
+    /** Get the unique name for the symbol in the PtalonActor. 
+     *  @param symbol The symbol to test.
+     *  @return The unique name.
+     *  @exception PtalonRuntimeException If no such symbol exists.
      */
     public String getMappedName(String symbol) throws PtalonRuntimeException {
         for (IfTree tree : _currentIfTree.getAncestors()) {
@@ -665,10 +657,9 @@ public class CodeManager {
                 + symbol);
     }
 
-    /**
-     * Return true if the given symbol exists in the current scope.
-     * @param symbol The symbol to test.
-     * @return true if the given symbol exists in the current scope.
+    /** Return true if the given symbol exists in the current scope.
+     *  @param symbol The symbol to test.
+     *  @return true if the given symbol exists in the current scope.
      */
     public boolean inScope(String symbol) {
         List<IfTree> ancestors = _currentIfTree.getAncestors();
@@ -680,14 +671,15 @@ public class CodeManager {
         return _currentIfTree.inDeepScope(symbol);
     }
 
-    /**
-     * Return true if the boolean for the current conditional is ready to be
-     * entered.  It is ready when all ports, parameters, and relations
-     * in the containing scope have been created, when all parameters
-     * in the containing scope have been assigned values, and when in
-     * a branch of an if-block that is active.  
-     * @return true if the current if-block scope is ready to be entered.
-     * @exception PtalonRuntimeException If it is thrown trying to access a parameter.
+    /** Return true if the boolean for the current conditional is
+     *  ready to be entered.  It is ready when all ports, parameters,
+     *  and relations in the containing scope have been created,
+     *  when all parameters in the containing scope have been
+     *  assigned values, and when in a branch of an if-block that is
+     *  active.
+     *  @return true if the current if-block scope is ready to be entered.
+     *  @exception PtalonRuntimeException If it is thrown trying to
+     *  access a parameter.
      */
     public boolean isIfReady() throws PtalonRuntimeException {
         IfTree parent = _currentIfTree.getParent();
@@ -707,31 +699,30 @@ public class CodeManager {
         return true;
     }
 
-    /**
-     * Return true if the boolean for the current conditional is ready to be
-     * entered.  It is ready when all ports, parameters, and relations
-     * in the containing scope have been created, when all parameters
-     * in the containing scope have been assigned values, and when in
-     * a branch of an if-block or for-block that is active.  
-     * @return true if the current for-block scope is ready to be entered.
-     * @exception PtalonRuntimeException If it is thrown trying to access
-     * a parameter.
+    /** Return true if the boolean for the current conditional is
+     *  ready to be entered.  It is ready when all ports, parameters,
+     *  and relations in the containing scope have been created,
+     *  when all parameters in the containing scope have been
+     *  assigned values, and when in a branch of an if-block or
+     *  for-block that is active.
+     *  @return true if the current for-block scope is ready to be entered.
+     *  @exception PtalonRuntimeException If it is thrown trying to
+     *  access a parameter.
      */
     public boolean isForReady() throws PtalonRuntimeException {
         return isIfReady();
     }
 
-    /**
-     * Return true if the current piece of code is ready to be
-     * entered.  This is used by port, parameter, and relation
-     * declarations only.  It is ready when all ports, parameters, and
-     * relations in the containing scope have been created, when all
-     * parameters in the containing scope have been assigned values,
-     * and when in a branch of an if-block that is active.
-
-
-     * @return true if the current if-block scope is ready to be entered.
-     * @exception PtalonRuntimeException If it is thrown trying to access a parameter.
+    /** Return true if the current piece of code is ready to be
+     *  entered.  This is used by port, parameter, and relation
+     *  declarations only.  It is ready when all ports, parameters,
+     *  and relations in the containing scope have been created,
+     *  when all parameters in the containing scope have been
+     *  assigned values, and when in a branch of an if-block that is
+     *  active.
+     *  @return true if the current if-block scope is ready to be entered.
+     *  @exception PtalonRuntimeException If it is thrown trying to
+     *  access a parameter.
      */
     public boolean isReady() throws PtalonRuntimeException {
         IfTree parent = _currentIfTree.getParent();
@@ -751,13 +742,13 @@ public class CodeManager {
                 .getCurrentBranch());
     }
 
-    /** 
-     * Return true if an entity was created in PtalonActor for the given 
-     * symbol.  This symbol is assumed to be in the current scope.
-     * @param symbol The symbol to test.
-     * @return true if an entity was created for this symbol.
-     * @exception PtalonRuntimeException If the symbol is not in the current
-     * scope.
+    /** Return true if an entity was created in PtalonActor for the
+     *  given symbol.  This symbol is assumed to be in the current
+     *  scope.
+     *  @param symbol The symbol to test.
+     *  @return true if an entity was created for this symbol.
+     *  @exception PtalonRuntimeException If the symbol is not in the
+     *  current scope.
      */
     public boolean isCreated(String symbol) throws PtalonRuntimeException {
         if (_inNewWhileIteration()) {
@@ -799,12 +790,11 @@ public class CodeManager {
         return false;
     }
 
-    /**
-     * Pop out of the scope of the current if statement and into
-     * its container block's scope.
-     * @return The unique name of the if-statement block being exited.
-     * @exception PtalonScopeException If the current scope is already
-     * the outermost scope.
+    /** Pop out of the scope of the current if statement and into its
+     *  container block's scope.
+     *  @return The unique name of the if-statement block being exited.
+     *  @exception PtalonScopeException If the current scope is
+     *  already the outermost scope.
      */
     public String popIfStatement() throws PtalonScopeException {
         String name = _currentIfTree.getName();
@@ -816,33 +806,30 @@ public class CodeManager {
         return name;
     }
 
-    /**
-     * Pop out of the scope of the current for statement and into
-     * its container block's scope.
-     * @return The unique name of the for-statement block being exited.
-     * @exception PtalonScopeException If the current scope is already
-     * the outermost scope.
+    /** Pop out of the scope of the current for statement and into its
+     *  container block's scope.
+     *  @return The unique name of the for-statement block being exited.
+     *  @exception PtalonScopeException If the current scope is
+     *  already the outermost scope.
      */
     public String popForStatement() throws PtalonScopeException {
         return popIfStatement();
     }
 
-    /**
-     * Push into the scope of a new if statement contained as
-     * a sublock of the current if statement.
+    /** Push into the scope of a new if statement contained as a
+     *  sublock of the current if statement.
      */
     public void pushIfStatement() {
         String name = _getNextIfSymbol();
         _currentIfTree = _currentIfTree.addChild(name);
     }
 
-    /**
-     * Push into the scope of a new for statement contained
-     * @param variable The variable associated with the for statement.
-     * @param initExpr The expression representing the initial value for the 
-     * variable. 
-     * @param satExpr The expression evaluated before executing the for statement 
-     * body.
+    /** Push into the scope of a new for statement contained
+     *  @param variable The variable associated with the for statement.
+     *  @param initExpr The expression representing the initial value
+     *  for the variable.
+     *  @param satExpr The expression evaluated before executing the
+     *  for statement body.
      */
     public void pushForStatement(String variable, String initExpr,
             String satExpr) {
@@ -854,22 +841,21 @@ public class CodeManager {
         _currentIfTree.satExpr = satExpr;
     }
 
-    /**
-     * Set the active branch for the current if statement.
-     * @param branch The branch to set.
+    /** Set the active branch for the current if statement.
+     *  @param branch The branch to set.
      */
     public void setActiveBranch(boolean branch) {
         _currentIfTree.setActiveBranch(branch);
         _currentIfTree.entered += 1;
     }
 
-    /**
-     * Set the symbol in the PtalonCode which represents this
-     * CodeManager's actor.
+    /** Set the symbol in the PtalonCode which represents this
+     *  CodeManager's actor.
      * 
-     * @param symbol The name of this actor in the Ptalon file.
-     * @exception PtalonScopeException If the symbol has been added already,
-     * or if there is some problem accessing its associated file.
+     *  @param symbol The name of this actor in the Ptalon file.
+     *  @exception PtalonScopeException If the symbol has been added
+     *  already, or if there is some problem accessing its associated
+     *  file.
      */
     public void setActorSymbol(String symbol) throws PtalonScopeException {
         _root.addSymbol(symbol, "import");
@@ -886,29 +872,25 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Set the current branch that's being walked.
-     * @param branch True if the true branch is being walked.
+    /** Set the current branch that's being walked.
+     *  @param branch True if the true branch is being walked.
      */
     public void setCurrentBranch(boolean branch) {
         _currentIfTree.setCurrentBranch(branch);
     }
 
-    /**
-     * Set the next expression for the current for
-     * statement scope, assuming the current scope
-     * is a for statement and not an if statement.
-     * @param nextExpr The expression to represent
-     * the next statement.
+    /** Set the next expression for the current for statement scope,
+     *  assuming the current scope is a for statement and not an if
+     *  statement.
+     *  @param nextExpr The expression to represent the next
+     * statement.
      */
     public void setNextExpression(String nextExpr) {
         _currentIfTree.nextExpr = nextExpr;
     }
 
-    /**
-     * Prepare the compiler to start at the outermost scope 
-     * of the Ptalon program during run time.
-     *
+    /** Prepare the compiler to start at the outermost scope of the
+     *  Ptalon program during run time.
      */
     public void startAtTop() {
         _currentIfTree = _root;
@@ -926,19 +908,21 @@ public class CodeManager {
         return StringUtilities.getIndentPrefix(level);
     }
 
-    /**
-     * @return The number of times the current if tree
-     * has been entered.
+    /** Return the number of times the current if tree has been
+     *  entered.
+     *  @return The number of times the current if tree has been
+     *  entered.
      */
     protected int _getTimesEntered() {
         return _currentIfTree.entered;
     }
 
-    /**
-     * Return the type associated with the given symbol in the current scope.
-     * @param symbol The symbol under test.
-     * @return The type associated with the given symbol.
-     * @exception PtalonScopeException If the symbol is not in the current scope.
+    /** Return the type associated with the given symbol in the
+     *  current scope.
+     *  @param symbol The symbol under test.
+     *  @return The type associated with the given symbol.
+     *  @exception PtalonScopeException If the symbol is not in the
+     *  current scope.
      */
     protected String _getType(String symbol) throws PtalonScopeException {
         List<IfTree> ancestors = _currentIfTree.getAncestors();
@@ -955,21 +939,22 @@ public class CodeManager {
                 + " not in current scope.");
     }
 
-    /**
-     * Return the type associated with the given symbol in the current scope.
-     * This is the same as getType, but it is used to avoid a name conflict
-     * in NestedActorManager.PtalonExpressionScope
-     * @param symbol The symbol under test.
-     * @return The type associated with the given symbol.
-     * @exception PtalonScopeException If the symbol is not in the current scope.
+    /** Return the type associated with the given symbol in the
+     *  current scope.  This is the same as getType, but it is used to
+     *  avoid a name conflict in
+     *  NestedActorManager.PtalonExpressionScope
+     *  @param symbol The symbol under test.
+     *  @return The type associated with the given symbol.
+     *  @exception PtalonScopeException If the symbol is not in the
+     *  current scope.
      */
     protected String _getTypeForScope(String symbol)
             throws PtalonScopeException {
         return _getType(symbol);
     }
 
-    /**
-     * @return true if in a new iteration of a while block.
+    /** Return true if in a new iteration of a while block.
+     *  @return true if in a new iteration of a while block.
      */
     protected boolean _inNewWhileIteration() {
         return _currentIfTree.inNewWhileIteration();
@@ -978,31 +963,27 @@ public class CodeManager {
     ///////////////////////////////////////////////////////////////////
     ////                      protected members                    ////
 
-    /**
-     * The actor in which this PtalonCompilerInfo is used.
+    /** The actor in which this PtalonCompilerInfo is used.
      */
     protected PtalonActor _actor;
 
-    /**
-     * Some descendent of the root tree to which new input symbols
-     * should be added.
+    /** Some descendent of the root tree to which new input symbols
+     *  should be added.
      */
     protected IfTree _currentIfTree;
 
-    /**
-     * A list of the import symbols and their corresponding
-     * files.
+    /** A list of the import symbols and their corresponding
+     *  files.
      */
     protected Hashtable<String, File> _imports;
 
-    /**
-     * The expression scope for this code manager.
+    /** The expression scope for this code manager.
      */
     protected PtalonExpressionScope _scope = new PtalonExpressionScope();
 
-    /**
-     * Maps names of transparent relations to ports, which should be
-     * multiports.  A key may map to null if no port has been assigned to it.
+    /** Maps names of transparent relations to ports, which should be
+     *  multiports.  A key may map to null if no port has been
+     *  assigned to it.
      */
     protected Map<String, TypedIOPort> _transparentRelations = new Hashtable<String, TypedIOPort>();
 
@@ -1010,9 +991,9 @@ public class CodeManager {
     ////                       private methods                     ////
 
     /**
-     * @return The next symbol of form "_ifN" where
-     * N is 0 if this function has not been called and
-     * N is n if this is the nth call to this function.
+     *  @return The next symbol of form "_ifN" where
+     *  N is 0 if this function has not been called and
+     *  N is n if this is the nth call to this function.
      */
     private String _getNextIfSymbol() {
         String symbol = "_if";
@@ -1022,9 +1003,9 @@ public class CodeManager {
     }
 
     /**
-     * @return The parameters in the current scope.
-     * @throws PtalonScopeException If there is any problem getting
-     * the type of a symbol.
+     *  @return The parameters in the current scope.
+     *  @throws PtalonScopeException If there is any problem getting
+     *  the type of a symbol.
      */
     private Set<String> _getParameters() throws PtalonScopeException {
         Set<String> output = new HashSet<String>();
@@ -1038,11 +1019,11 @@ public class CodeManager {
         return output;
     }
 
-    /**
-     * Get the value associated with the specified parameter.
-     * @param param The parameter's name in the Ptalon code.
-     * @return It's unique value.
-     * @exception PtalonRuntimeException If the parameter does not exist. 
+    /** Get the value associated with the specified parameter.
+     *  @param param The parameter's name in the Ptalon code.
+     *  @return Its unique value.
+     *  @exception PtalonRuntimeException If the parameter does not
+     *  exist.
      */
     private Token _getValueOf(String param) throws PtalonRuntimeException {
         try {
@@ -1065,11 +1046,11 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Get the type associated with the specified parameter.
-     * @param param The parameter's name in the Ptalon code.
-     * @return It's type.
-     * @exception PtalonRuntimeException If the parameter does not exist. 
+    /** Get the type associated with the specified parameter.
+     *  @param param The parameter's name in the Ptalon code.
+     *  @return Its type.
+     *  @exception PtalonRuntimeException If the parameter does not
+     *  exist.
      */
     private Type _getTypeOf(String param) throws PtalonRuntimeException {
         try {
@@ -1083,11 +1064,11 @@ public class CodeManager {
         }
     }
 
-    /**
-     * Get the type term associated with the specified parameter.
-     * @param param The parameter's name in the Ptalon code.
-     * @return It's type.
-     * @exception PtalonRuntimeException If the parameter does not exist. 
+    /** Get the type term associated with the specified parameter.
+     *  @param param The parameter's name in the Ptalon code.
+     *  @return Its type.
+     *  @exception PtalonRuntimeException If the parameter does not
+     *  exist.
      */
     private InequalityTerm _getTypeTermOf(String param)
             throws PtalonRuntimeException {
@@ -1105,36 +1086,38 @@ public class CodeManager {
     ///////////////////////////////////////////////////////////////////
     ////                       private members                     ////
 
-    /**
-     * A counter used to associate a unique number with each if-block.
+    /** A counter used to associate a unique number with each
+     *  if-block.
      */
     private int _counter;
 
-    /**
-     * The root of the tree containing the symbol tables for each level
-     * of the if-statement hierarchy.
+    /** The root of the tree containing the symbol tables for each
+     *  level of the if-statement hierarchy.
      */
     private IfTree _root;
 
-    /**
-     * These two lists are used to store parameters which need to be set
-     * by Ptalon; i.e. constant parameters.  The first list are the parameters,
-     * and the second list are the expressions to assign to the parameters.
+    /** These two lists are used to store parameters which need to be
+     *  set by Ptalon; i.e. constant parameters.  The first list are
+     *  the parameters, and the second list are the expressions to
+     *  assign to the parameters.
      */
-    private List<PtalonParameter> _unassignedParameters = new LinkedList<PtalonParameter>();
+    private List<PtalonParameter> _unassignedParameters =
+            new LinkedList<PtalonParameter>();
 
-    private List<String> _unassignedParameterValues = new LinkedList<String>();
+    private List<String> _unassignedParameterValues =
+            new LinkedList<String>();
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected classes                     ////
 
+    /** FIXME comment
+     */
     protected class IfTree extends NamedTree<IfTree> {
 
-        /**
-         * Create a new if tree.
-         * @param name The name to give this if tree.
-         * @param parent The parent to this tree, which may be null
-         * if this is the root of a tree.
+        /** Create a new if tree.
+         *  @param name The name to give this if tree.
+         *  @param parent The parent to this tree, which may be null
+         *  if this is the root of a tree.
          */
         public IfTree(IfTree parent, String name) {
             super(parent, name);
@@ -1146,13 +1129,12 @@ public class CodeManager {
             _falseSymbols = new Hashtable<String, String>();
         }
 
-        /**
-         * Create a new child tree to this tree with the specified
-         * name and return it.
-         *  Subclasses should override this if it's not the case.
+        /** Create a new child tree to this tree with the specified
+         *  name and return it.  Subclasses should override this if
+         *  it's not the case.
          *  
-         * @param name The name of the child.
-         * @return The child IfTree.
+         *  @param name The name of the child.
+         *  @return The child IfTree.
          */
         public IfTree addChild(String name) {
             IfTree child = new IfTree(this, name);
@@ -1160,10 +1142,9 @@ public class CodeManager {
             return child;
         }
 
-        /**
-         * Add a symbol to the scope of this if statement.
-         * @param symbol The symbol to add.
-         * @param type Its corresponding type.
+        /** Add a symbol to the scope of this if statement.
+         *  @param symbol The symbol to add.
+         *  @param type Its corresponding type.
          */
         public void addSymbol(String symbol, String type) {
             if (_currentBranch || isForStatement) {
@@ -1177,12 +1158,12 @@ public class CodeManager {
             }
         }
 
-        /**
-         * Add a symbol to the scope of this if statement.
-         * @param symbol The symbol to add.
-         * @param type Its corresponding type.
-         * @param status Its status, that is whether it has been loaded or not.
-         * @param uniqueName The unique name of this 
+        /** Add a symbol to the scope of this if statement.
+         *  @param symbol The symbol to add.
+         *  @param type Its corresponding type.
+         *  @param status Its status, that is whether it has been
+         *  loaded or not.
+         *  @param uniqueName The unique name of this 
          */
         public void addSymbol(String symbol, String type, boolean status,
                 String uniqueName) {
@@ -1197,11 +1178,9 @@ public class CodeManager {
             }
         }
 
-        /**
-         * Evaluate this for block, assuming this is
-         * a for block.
-         * @throws PtalonRuntimeException If there is
-         * any trouble evaluating this for block.
+        /** Evaluate this for block, assuming this is a for block.
+         *  @throws PtalonRuntimeException If there is any trouble
+         *  evaluating this for block.
          */
         public void evaluateForScope() throws PtalonRuntimeException {
             if (getParent().isForStatement) {
@@ -1213,7 +1192,15 @@ public class CodeManager {
             _inNewWhileIteration = true;
             while (evaluateBoolean(satExpr)) {
                 try {
-                    populator.iterative_statement_evaluator(forBlock);
+                    // celaine working here 4/10/07
+                    if (populator instanceof PtalonPopulator) {
+                        ((PtalonPopulator) populator).iterative_statement_evaluator(forBlock);
+                    } else if (populator instanceof PtalonDepopulator) {
+                        ((PtalonDepopulator) populator).iterative_statement_evaluator(forBlock);
+                    } else {
+                        throw new PtalonRuntimeException ("Don't know type of tree parser (populator)");
+                    }
+                    //populator.iterative_statement_evaluator(forBlock);
                 } catch (RecognitionException e) {
                     throw new PtalonRuntimeException(
                             "Could not recognize for block", e);
@@ -1226,17 +1213,16 @@ public class CodeManager {
             _currentBranch = false;
         }
 
-        /**
-         * Return the active branch, which may be null if it has not
-         * yet been set.
-         * @return the active branch
+        /** Return the active branch, which may be null if it has not
+         *  yet been set.
+         *  @return the active branch
          */
         public Boolean getActiveBranch() {
             return _activeBranch;
         }
 
-        /**
-         * @return The ancestors of this tree, including this tree.
+        /** Return the ancestors of this tree, including this tree.
+         *  @return The ancestors of this tree, including this tree.
          */
         public List<IfTree> getAncestors() {
             List<IfTree> list = getProperAncestors();
@@ -1244,16 +1230,20 @@ public class CodeManager {
             return list;
         }
 
+        /** Return true if we are in the main scope or the true part
+         *  of a true branch.
+         *  @return true if in main scope or true part of a true branch.
+         */
         public boolean getCurrentBranch() {
             return _currentBranch;
         }
 
-        /**
-         * Get the unique name for the symbol in the PtalonActor,
-         * looking deep into for loops for potential matches. 
-         * @param symbol The symbol to test.
-         * @return The unique name.
-         * @exception PtalonRuntimeException If no such symbol exists.
+        /** Get the unique name for the symbol in the PtalonActor,
+         *  looking deep into for loops for potential matches.
+         *  @param symbol The symbol to test.
+         *  @return The unique name.
+         *  @exception PtalonRuntimeException If no such symbol
+         *  exists.
          */
         public String getDeepMappedName(String symbol)
                 throws PtalonRuntimeException {
@@ -1275,13 +1265,12 @@ public class CodeManager {
             throw new PtalonRuntimeException(message);
         }
 
-        /**
-         * Return the type associated with the given symbol, looking
-         * deep into for loops that might add symbols to this scope.
-         * @param symbol The symbol under test.
-         * @return The type associated with the given symbol.
-         * @exception PtalonScopeException If the symbol is not in the scope
-         * of the if statement associated with this IfTree.
+        /** Return the type associated with the given symbol, looking
+         *  deep into for loops that might add symbols to this scope.
+         *  @param symbol The symbol under test.
+         *  @return The type associated with the given symbol.
+         *  @exception PtalonScopeException If the symbol is not in
+         *  the scope of the if statement associated with this IfTree.
          */
         public String getDeepType(String symbol) throws PtalonScopeException {
             try {
@@ -1302,6 +1291,10 @@ public class CodeManager {
             throw new PtalonScopeException(message);
         }
 
+        /** Get the iteration (number of times this if/for block has
+         *  been entered) in which this symbol is created.
+         *  @param symbol The symbol created.
+         */
         public int getEnteredIteration(String symbol) {
             Integer entered = _createdIteration.get(symbol);
             if (entered == null) {
@@ -1310,11 +1303,10 @@ public class CodeManager {
             return entered;
         }
 
-        /**
-         * Get the unique name for the symbol in the PtalonActor. 
-         * @param symbol The symbol to test.
-         * @return The unique name.
-         * @exception PtalonRuntimeException If no such symbol exists.
+        /** Get the unique name for the symbol in the PtalonActor. 
+         *  @param symbol The symbol to test.
+         *  @return The unique name.
+         *  @exception PtalonRuntimeException If no such symbol exists.
          */
         public String getMappedName(String symbol)
                 throws PtalonRuntimeException {
@@ -1331,13 +1323,13 @@ public class CodeManager {
             return output;
         }
 
-        /**
-         * Return true if an entity was created in PtalonActor for the given 
-         * symbol.  This symbol is assumed to be in the current scope.
-         * @param symbol The symbol to test.
-         * @return true if an entity was created for this symbol.
-         * @exception PtalonRuntimeException If the symbol is not in the current
-         * scope.
+        /** Return true if an entity was created in PtalonActor for
+         *  the given symbol.  This symbol is assumed to be in the
+         *  current scope.
+         *  @param symbol The symbol to test.
+         *  @return true if an entity was created for this symbol.
+         *  @exception PtalonRuntimeException If the symbol is not in
+         *  the current scope.
          */
         public boolean isCreated(String symbol) throws PtalonRuntimeException {
             Boolean status;
@@ -1352,11 +1344,10 @@ public class CodeManager {
             return status;
         }
 
-        /**
-         * Return true if the given symbol is in this scope, or
-         * deeply in this scope through some for loop.
-         * @param symbol The symbol to test.
-         * @return true if symbol is in the right scope.
+        /** Return true if the given symbol is in this scope, or
+         *  deeply in this scope through some for loop.
+         *  @param symbol The symbol to test.
+         *  @return true if symbol is in the right scope.
          */
         public boolean inDeepScope(String symbol) {
             if ((_currentBranch || isForStatement)
@@ -1376,8 +1367,9 @@ public class CodeManager {
             return false;
         }
 
-        /**
-         * @return All symbols in the scope of the if-block.
+        /** Return a set of strings representing all symbols in the
+         *  scope of the if-block.
+         *  @return All symbols in the scope of the if-block.
          */
         public Set<String> getSymbols() {
             if (_currentBranch || isForStatement) {
@@ -1387,12 +1379,11 @@ public class CodeManager {
             }
         }
 
-        /**
-         * Return the type associated with the given symbol.
-         * @param symbol The symbol under test.
-         * @return The type associated with the given symbol.
-         * @exception PtalonScopeException If the symbol is not in the scope
-         * of the if statement associated with this IfTree.
+        /** Return the type associated with the given symbol.
+         *  @param symbol The symbol under test.
+         *  @return The type associated with the given symbol.
+         *  @exception PtalonScopeException If the symbol is not in
+         *  the scope of the if statement associated with this IfTree.
          */
         public String getType(String symbol) throws PtalonScopeException {
             String value;
@@ -1408,18 +1399,15 @@ public class CodeManager {
             return value;
         }
 
-        /**
-         * Return true if all the symbols in this if block
-         * have been assigned a value.  A symbol has been 
-         * assigned a value if a corresponding entity for the
-         * symbol has been created in the PtalonActor, and in the
-         * case of parameters, that the user has provided a value
-         * for the parameter.
-         * 
-         * @return True if all the symbols in this if block
-         * have been assigned a value. 
-         * @exception PtalonRuntimeException If there is any problem accessing
-         * a parameter.
+        /** Return true if all the symbols in this if block have been
+         *  assigned a value.  A symbol has been assigned a value if
+         *  a corresponding entity for the symbol has been created
+         *  in the PtalonActor, and in the case of parameters, that
+         *  the user has provided a value for the parameter.
+         *  @return True if all the symbols in this if block have been
+         *  assigned a value.
+         *  @exception PtalonRuntimeException If there is any problem
+         *  accessing a parameter.
          */
         public boolean isFullyAssigned() throws PtalonRuntimeException {
             if (_currentBranch || isForStatement) {
@@ -1464,6 +1452,9 @@ public class CodeManager {
             }
         }
 
+        /** Return true if in a new iteration of a while block.
+         *  @return true if in a new iteration of a while block.
+         */
         public boolean inNewWhileIteration() {
             if (isForStatement) {
                 return _inNewWhileIteration;
@@ -1474,12 +1465,12 @@ public class CodeManager {
             return _parent.inNewWhileIteration();
         }
 
-        /**
-         * Map a name of a symbol from a Ptalon program to a name in the
-         * PtalonActor which creates it.
-         * @param symbol The name for the symbol in the Ptalon program.
-         * @param uniqueName The unique name for the symbol in the PtalonActor.
-         * @exception PtalonRuntimeException If the symbol does not exist.
+        /** Map a name of a symbol from a Ptalon program to a name in
+         *  the PtalonActor which creates it.
+         *  @param symbol The name for the symbol in the Ptalon program.
+         *  @param uniqueName The unique name for the symbol in the
+         *  PtalonActor.
+         *  @exception PtalonRuntimeException If the symbol does not exist.
          */
         public void mapName(String symbol, String uniqueName)
                 throws PtalonRuntimeException {
@@ -1501,37 +1492,33 @@ public class CodeManager {
             }
         }
 
-        /**
-         * Set the active branch to true or false.
-         * @param branch The branch to set it to.
+        /** Set the active branch to true or false.
+         *  @param branch The branch to set it to.
          */
         public void setActiveBranch(boolean branch) {
             _activeBranch = new Boolean(branch);
         }
 
-        /**
-         * Set the current branch that's being walked.
-         * @param branch True if the true branch is being walked.
+        /** Set the current branch that's being walked.
+         *  @param branch True if the true branch is being walked.
          */
         public void setCurrentBranch(boolean branch) {
             _currentBranch = branch;
         }
 
-        /**
-         * Set the iteration (number of times this if/for block has been
-         * entered) in which this symbol is created.
-         * @param symbol The symbol created.
-         * @param iteration The iteration of the symbol.
+        /** Set the iteration (number of times this if/for block has
+         *  been entered) in which this symbol is created.
+         *  @param symbol The symbol created.
+         *  @param iteration The iteration of the symbol.
          */
         public void setEnteredIteration(String symbol, int iteration) {
             _createdIteration.put(symbol, iteration);
         }
 
-        /**
-         * Set the status of the symbol to true, if the symbol
-         * is ready, and false otherwise.
-         * @param symbol The symbol.
-         * @param status The status.
+        /** Set the status of the symbol to true, if the symbol is
+         *  ready, and false otherwise.
+         *  @param symbol The symbol.
+         *  @param status The status.
          */
         public void setStatus(String symbol, boolean status) {
             if (_currentBranch || isForStatement) {
@@ -1541,8 +1528,7 @@ public class CodeManager {
             }
         }
 
-        /**
-         * Enumerate the info from this scope.
+        /** Enumerate the info from this scope.
          */
         public String toString() {
             String output = "Scope: " + getName() + ":\n\n";
@@ -1560,133 +1546,118 @@ public class CodeManager {
             return output;
         }
 
-        /**
-         * The number of times the if/for tree has been entered.
+        /** The number of times the if/for tree has been entered.
          */
         public int entered = 0;
 
-        /**
-         * This is the AST for this for block, if this is a 
-         * for block.
+        /** This is the AST for this for block, if this is a for
+         *  block.
          */
         public PtalonAST forBlock = null;
 
-        /**
-         * This is the initially expression for the for statement,
-         * if this is a for statement.
+        /** This is the initially expression for the for statement, if
+         *  this is a for statement.
          */
         public String initExpr = "";
 
-        /**
-         * This is true if this if statement is actually used
-         * to represent a for statement.
+        /** This is true if this if statement is actually used to
+         *  represent a for statement.
          */
         public boolean isForStatement = false;
 
-        /**
-         * This is the next expression for the for statement,
-         * if this is a for statement.
+        /** This is the next expression for the for statement, if this
+         *  is a for statement.
          */
         public String nextExpr = "";
 
-        /**
-         * This is the PtalonPopulator that accesses this
-         * for statement, if this is a for statement.
+        /** This is the PtalonPopulator that accesses this for
+         *  statement, if this is a for statement.
          */
-        public PtalonPopulator populator = null;
+        // celaine working here 4/10/07
+        public TreeParser populator = null;
+        //public PtalonPopulator populator = null;
 
-        /**
-         * This is the satisfies expression for the for statement,
-         * if this is a for statement.
+        /** This is the satisfies expression for the for statement, if
+         *  this is a for statement.
          */
         public String satExpr = "";
 
-        /**
-         * This is the variable for the for statement, if this
-         * is a for statement.
+        /** This is the variable for the for statement, if this is a
+         *  for statement.
          */
         public String variable = "";
 
-        /**
-         * This is true when the active branch for this if statement
-         * is true, false when it is false, and null when it is unknown.
+        /** This is true when the active branch for this if statement
+         *  is true, false when it is false, and null when it is
+         *  unknown.
          */
         private Boolean _activeBranch = null;
 
-        /**
-         * This is true if we are in the main scope
-         * or the true part of a true branch.
+        /** This is true if we are in the main scope or the true part
+         *  of a true branch.
          */
         private boolean _currentBranch = true;
 
+        /** The number of iterations (number of times the if/for block
+         *  has been entered) for each symbol created.
+         */
         private Hashtable<String, Integer> _createdIteration = new Hashtable<String, Integer>();
 
-        /**
-         * Each symbol gets mapped to its unique name in the
-         * Ptalon Actor.  This is for the false branch of this
-         * if tree.
+        /** Each symbol gets mapped to its unique name in the Ptalon
+         *  Actor.  This is for the false branch of this if tree.
          */
         private Hashtable<String, String> _falseNameMappings;
 
-        /**
-         * A symbol maps to false if it has been set to some
-         * value or false otherwise.  This is for the false branch of this
-         * if tree.
+        /** A symbol maps to false if it has been set to some value or
+         *  false otherwise.  This is for the false branch of this
+         *  if tree.
          */
         private Hashtable<String, Boolean> _falseSetStatus;
 
-        /**
-         * The symbol table for this level of the if hierarchy.
-         * This is for the false branch of this
-         * if tree.
+        /** The symbol table for this level of the if hierarchy.  This
+         *  is for the false branch of this if tree.
          */
         private Hashtable<String, String> _falseSymbols;
 
-        /**
-         * This is true if in a new iteration of a while block.
+        /** This is true if in a new iteration of a while block.
          */
         private boolean _inNewWhileIteration = false;
 
-        /**
-         * Each symbol gets mapped to its unique name in the
-         * Ptalon Actor.  This is for the true branch of this
-         * if tree.
+        /** Each symbol gets mapped to its unique name in the Ptalon
+         *  Actor.  This is for the true branch of this if tree.
          */
         private Hashtable<String, String> _trueNameMappings;
 
-        /**
-         * A symbol maps to true if it has been set to some
-         * value or false otherwise.  This is for the true branch of this
-         * if tree.
+        /** A symbol maps to true if it has been set to some value or
+         *  false otherwise.  This is for the true branch of this if
+         *  tree.
          */
         private Hashtable<String, Boolean> _trueSetStatus;
 
-        /**
-         * The symbol table for this level of the if hierarchy.
-         * This is for the true branch of this
-         * if tree.
+        /** The symbol table for this level of the if hierarchy.  This
+         *  is for the true branch of this if tree.
          */
         private Hashtable<String, String> _trueSymbols;
 
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                       private classes                     ////
-
+    /** FIXME comment
+     */
     protected class PtalonExpressionScope implements ParserScope {
 
-        /**
-         * Add the specified variable with the given value.
-         * @param name The variable name.
-         * @param value The variable's value.
+        /** Add the specified variable with the given value.
+         *  @param name The variable name.
+         *  @param value The variable's value.
          */
         public void addVariable(String name, Token value) {
             _variables.put(name, value);
         }
 
-        /** Look up and return the value with the specified name in the
-         *  scope. Return null if the name is not defined in this scope.
-         *  @return The token associated with the given name in the scope.
+        /** Look up and return the value with the specified name in
+         *  the scope. Return null if the name is not defined in this
+         *  scope.
+         *  @return The token associated with the given name in the
+         *  scope.
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
@@ -1696,7 +1667,8 @@ public class CodeManager {
                     return _variables.get(name);
                 }
                 if (!_getTypeForScope(name).equals("parameter")) {
-                    throw new IllegalActionException(name + " not a parameter.");
+                    throw new IllegalActionException(name +
+                            " not a parameter.");
                 }
                 return _getValueOf(name);
             } catch (PtalonScopeException e) {
@@ -1706,21 +1678,22 @@ public class CodeManager {
             }
         }
 
-        /** Look up and return the type of the value with the specified
-         *  name in the scope. Return null if the name is not defined in
-         *  this scope.
-         *  @return The token associated with the given name in the scope.
+        /** Look up and return the type of the value with the
+         *  specified name in the scope. Return null if the name is
+         *  not defined in this scope.
+         *  @return The token associated with the given name in the
+         *  scope.
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
-
         public Type getType(String name) throws IllegalActionException {
             try {
                 if (_variables.containsKey(name)) {
                     return _variables.get(name).getType();
                 }
                 if (!_getTypeForScope(name).equals("parameter")) {
-                    throw new IllegalActionException(name + " not a parameter.");
+                    throw new IllegalActionException(name +
+                            " not a parameter.");
                 }
                 return _getTypeOf(name);
             } catch (PtalonScopeException e) {
@@ -1730,11 +1703,11 @@ public class CodeManager {
             }
         }
 
-        /** Look up and return the type term for the specified name
-         *  in the scope. Return null if the name is not defined in this
+        /** Look up and return the type term for the specified name in
+         *  the scope. Return null if the name is not defined in this
          *  scope, or is a constant type.
-         *  @return The InequalityTerm associated with the given name in
-         *  the scope.
+         *  @return The InequalityTerm associated with the given name
+         *  in the scope.
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
@@ -1745,7 +1718,8 @@ public class CodeManager {
                     return null;
                 }
                 if (!_getTypeForScope(name).equals("parameter")) {
-                    throw new IllegalActionException(name + " not a parameter.");
+                    throw new IllegalActionException(name +
+                            " not a parameter.");
                 }
                 return _getTypeTermOf(name);
             } catch (PtalonScopeException e) {
@@ -1756,17 +1730,17 @@ public class CodeManager {
         }
 
         /** Return a list of names corresponding to the identifiers
-         *  defined by this scope.  If an identifier is returned in this
-         *  list, then get() and getType() will return a value for the
-         *  identifier.  Note that generally speaking, this list is
-         *  extremely expensive to compute, and users should avoid calling
-         *  it.  It is primarily used for debugging purposes.
-         *  @exception IllegalActionException If constructing the list causes
-         *  it.
+         *  defined by this scope.  If an identifier is returned in
+         *  this list, then get() and getType() will return a value
+         *  for the identifier.  Note that generally speaking, this
+         *  list is extremely expensive to compute, and users should
+         *  avoid calling it.  It is primarily used for debugging
+         *  purposes.
+         *  @exception IllegalActionException If constructing the list
+         *  causes it.
          */
         public Set identifierSet() throws IllegalActionException {
             try {
-                ;
                 Set<String> out = _getParameters();
                 out.addAll(_variables.keySet());
                 return out;
@@ -1775,19 +1749,15 @@ public class CodeManager {
             }
         }
 
-        /**
-         * Remove the specified variable from this scope.
-         * @param name The name of this variable.
+        /** Remove the specified variable from this scope.
+         *  @param name The name of this variable.
          */
         public void removeVariable(String name) {
             _variables.remove(name);
         }
 
-        /**
-         * A map from variables to Tokens.
+        /** A map from variables to Tokens.
          */
         private Map<String, Token> _variables = new Hashtable<String, Token>();
-
     }
-
 }

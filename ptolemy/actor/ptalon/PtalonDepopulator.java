@@ -1,7 +1,7 @@
-// $ANTLR 2.7.7 (2006-11-01): "populator.g" -> "PtalonPopulator.java"$
-/* ANTLR TreeParser that populates a PtalonActor using a NestedActorManager.
+// $ANTLR 2.7.7 (2006-11-01): "depopulator.g" -> "PtalonDepopulator.java"$
+/* ANTLR TreeParser that depopulates a PtalonActor using a NestedActorManager.
 
- Copyright (c) 2006-2007 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,15 +41,16 @@ import antlr.ASTPair;
 import antlr.collections.impl.ASTArray;
 
 /** 
-  PtalonPopulator.java generated from populator.g by ANTLR.
+  PtalonDepopulator.java generated from depopulator.g by ANTLR.
+  @see populator.g
 
-  @author Adam Cataldo, Elaine Cheong
+  @author Elaine Cheong
   @Pt.ProposedRating Red (celaine)
   @Pt.AcceptedRating Red (celaine)
 */
 
 
-public class PtalonPopulator extends antlr.TreeParser       implements PtalonPopulatorTokenTypes
+public class PtalonDepopulator extends antlr.TreeParser       implements PtalonDepopulatorTokenTypes
  {
 
 	private NestedActorManager info;
@@ -60,7 +61,7 @@ public class PtalonPopulator extends antlr.TreeParser       implements PtalonPop
 	
 	private String scopeName;
 	
-public PtalonPopulator() {
+public PtalonDepopulator() {
 	tokenNames = _tokenNames;
 }
 
@@ -1526,9 +1527,13 @@ public PtalonPopulator() {
 		} while (true);
 		}
 		
+		// celaine working here
+		info.resetActor();
+		/*
 				if (info.isActorReady()) {
 					info.addActor(a.getText());
 				}
+		*/
 				info.exitActorDeclaration();
 			
 		currentAST = __currentAST48;

@@ -1,6 +1,6 @@
-header {/* ANTLR TreeParser that populates a PtalonActor using a NestedActorManager.
+header {/* ANTLR TreeParser that depopulates a PtalonActor using a NestedActorManager.
 
- Copyright (c) 2006-2007 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -30,14 +30,15 @@ package ptolemy.actor.ptalon;
 
 {
 /** 
-  PtalonPopulator.java generated from populator.g by ANTLR.
+  PtalonDepopulator.java generated from depopulator.g by ANTLR.
+  @see populator.g
 
-  @author Adam Cataldo, Elaine Cheong
+  @author Elaine Cheong
   @Pt.ProposedRating Red (celaine)
   @Pt.AcceptedRating Red (celaine)
 */
 }
-class PtalonPopulator extends TreeParser;
+class PtalonDepopulator extends TreeParser;
 options {
 	importVocab = Ptalon;
 	buildAST = true;
@@ -402,9 +403,13 @@ actor_declaration throws PtalonRuntimeException
 	}
 	(b:assignment)*
 	{
+        // celaine working here 4/10/07
+        info.resetActor();
+        /*
 		if (info.isActorReady()) {
 			info.addActor(a.getText());
 		}
+        */
 		info.exitActorDeclaration();
 	}
 	)

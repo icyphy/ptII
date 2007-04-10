@@ -297,7 +297,7 @@ expression!
  * Parse statements of one of form:
  * <p><i>ID</i>(<i>assignment</i>, <i>assignment</i>, ...)
  * <p>Generate tree:
- * <p>#(ACTOR_DELCARATION <i>assignment</i> <i>assignment</i> ...)
+ * <p>#(ACTOR_DECLARATION <i>assignment</i> <i>assignment</i> ...)
  * <p>where the text for token ACTOR_DECLARATION is the leftmost
  * <i>ID</i> in the statement, or the name of the declared actor.
  */

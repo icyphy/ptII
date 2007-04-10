@@ -1,7 +1,7 @@
-// $ANTLR 2.7.7 (2006-11-01): "populator.g" -> "PtalonPopulator.java"$
-/* ANTLR TreeParser that populates a PtalonActor using a NestedActorManager.
+// $ANTLR 2.7.7 (2006-11-01): "depopulator.g" -> "PtalonDepopulator.java"$
+/* ANTLR TreeParser that depopulates a PtalonActor using a NestedActorManager.
 
- Copyright (c) 2006-2007 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -28,7 +28,7 @@
  */
 package ptolemy.actor.ptalon;
 
-public interface PtalonPopulatorTokenTypes {
+public interface PtalonDepopulatorTokenTypes {
 	int EOF = 1;
 	int NULL_TREE_LOOKAHEAD = 3;
 	int PORT = 4;

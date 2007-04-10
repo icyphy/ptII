@@ -1,6 +1,6 @@
 /* An aggregation of typed actors, specified by a Ptalon model.
 
- @Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -25,9 +25,6 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-
-
-
  */
 package ptolemy.actor.ptalon;
 
@@ -37,14 +34,19 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
@@ -126,7 +128,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             throw new PtalonRuntimeException("Not able to set parameter "
                     + paramName + " to actor " + actorName, e);
         }
-        param.setVisibility(Settable.NOT_EDITABLE);
+        // celaine working here 4/10/07
+        //param.setVisibility(Settable.NOT_EDITABLE);
         return "";
     }
 
@@ -145,10 +148,15 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         } else if (attribute instanceof PtalonParameter) {
             PtalonParameter p = (PtalonParameter) attribute;
             if ((p.hasValue())
-                    && (!p.getVisibility().equals(Settable.NOT_EDITABLE))) {
+                    && (!p.attributeChangedProcessed || p.valueChanged)) {
+                    // celaine working here 4/10/07
+                    //&& (!p.getVisibility().equals(Settable.NOT_EDITABLE))) {
                 try {
-                    if (p.getVisibility().equals(Settable.FULL)) {
-                        p.setVisibility(Settable.NOT_EDITABLE);
+                    if (!p.attributeChangedProcessed) {
+                    //if (p.getVisibility().equals(Settable.FULL)) {
+                        // celaine working here 4/10/07
+                        //p.setVisibility(Settable.NOT_EDITABLE);
+                        p.attributeChangedProcessed = true;
                     } else if (p.getVisibility().equals(Settable.NONE)) {
                         if (_unsettablePtalonParameters.contains(p)) {
                             return;
@@ -156,24 +164,92 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                             _unsettablePtalonParameters.add(p);
                         }
                     }
+                    
+                    // celaine working here 4/10/07
+                    if (p.valueChanged) {
+                        p.valueChanged = false;
+                    }
+                    
+                    // celaine: what if already in list?
+                    // celaine: what is difference between _assignedPtalonParameters and _ptalonParameters ?
                     _assignedPtalonParameters.add(p);
+                    
+                    // celaine working here 4/10/07
+                    boolean myValueChanged = false;
+                    _assignedPtalonParametersCopy.add((PtalonParameter)p.clone(null));
+                    if (!_assignedPtalonParametersCopy2.containsKey(p.getName())) {
+                        // FIXME: can optimize, since put returns previous value
+                        _assignedPtalonParametersCopy2.put(p.getName(), (PtalonParameter)p.clone(null));
+                    } else {
+                        // Value previously assigned.  Check to see if value has actually changed.
+                        PtalonParameter oldParameter = _assignedPtalonParametersCopy2.get(p.getName());
+                        Token token = oldParameter.getToken();
+                        BooleanToken booleanToken = token.isEqualTo(p.getToken());
+                        if (booleanToken.booleanValue()) {
+                            // Value is same as before.  Do nothing.
+                        } else {
+                            // Value has changed!
+                            _assignedPtalonParametersCopy2.put(p.getName(), (PtalonParameter)p.clone(null));
+                            
+                            // Delete the inside of this PtalonActor
+                            
+                            // FIXME: what order should this be in?
+                            this.removeAllEntities();
+                            
+                            // Let's say that you cannot change the
+                            //external ports of the PtalonActor.
+                            
+                            //this.removeAllPorts();
+
+                            //this.removeAllRelations();
+                            
+                            Iterator relations =
+                                this.relationList().iterator();
+                            while (relations.hasNext()) {
+                                Relation relation =
+                                    (Relation) relations.next();
+                                relation.unlinkAll();
+                            }
+
+                            myValueChanged = true;
+                        }
+                        
+                    }
+                    
+                    // FIXME: What is below for?
                     if ((_ast == null) || (_codeManager == null)) {
                         return;
                     }
                     boolean ready = true;
+                    // Check to see if all of the PtalonParameters for
+                    // this actor have been assigned values.
                     for (PtalonParameter param : _ptalonParameters) {
                         if (!param.hasValue()) {
+                            // There is a PtalonParameter whose value
+                            // is unassigned.
                             ready = false;
                             break;
                         }
                     }
                     if (ready) {
+                        // celaine working here 4/10/07
+                        if (myValueChanged) {
+                            PtalonDepopulator depopulator = new PtalonDepopulator();
+                            depopulator.setASTNodeClass(
+                                    "ptolemy.actor.ptalon.PtalonAST");
+                            depopulator.actor_definition(_ast, _codeManager);
+                            _ast = (PtalonAST) depopulator.getAST();
+                            _codeManager.assignInternalParameters(); 
+                        } //else {
+                        
                         PtalonPopulator populator = new PtalonPopulator();
-                        populator
-                                .setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
+                        populator.setASTNodeClass(
+                                "ptolemy.actor.ptalon.PtalonAST");
                         populator.actor_definition(_ast, _codeManager);
                         _ast = (PtalonAST) populator.getAST();
                         _codeManager.assignInternalParameters();
+                        // celaine working here 4/10/07
+                        //}
                     }
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex, ex.getMessage());
@@ -511,10 +587,18 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     }
 
     /**
-     * A list of all ptalon parameters who have been assinged a value.
+     * A list of all ptalon parameters that have been assigned a value.
      */
     private List<PtalonParameter> _assignedPtalonParameters = new LinkedList<PtalonParameter>();
 
+    /**
+     * A list of copies of all ptalon parameters that have been assigned a value.
+     * Can use this to compare newly assigned values against previously assigned values.
+     * celaine working here 4/10/07
+     */
+    private List<PtalonParameter> _assignedPtalonParametersCopy = new LinkedList<PtalonParameter>();
+    private Hashtable<String, PtalonParameter> _assignedPtalonParametersCopy2 = new Hashtable<String, PtalonParameter>();
+    
     /**
      * The abstract syntax tree for the PtalonActor.
      */

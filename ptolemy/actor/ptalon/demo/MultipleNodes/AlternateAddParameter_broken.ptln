@@ -1,0 +1,15 @@
+danglingPortsOkay;
+
+AlternateAddParameter is {
+	actor adder = ptolemy.actor.ptalon.lib.ComplexAddSubtract;
+	parameter numberOfAdders;
+	inport[] x;
+	transparent relation xIn;
+	this(x := xIn);
+	for a initially [[1]] [[a <= numberOfAdders]] {
+                transparent relation plus[[a]];
+                adder(plus := plus[[a]]);
+                this(xIn := plus[[a]]);
+	} next [[a + 1]]
+}
+

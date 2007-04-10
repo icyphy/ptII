@@ -28,18 +28,24 @@
  */
 package ptolemy.actor.ptalon;
 
+import antlr.TokenBuffer;
+import antlr.TokenStreamException;
+import antlr.TokenStreamIOException;
+import antlr.ANTLRException;
+import antlr.LLkParser;
+import antlr.Token;
+import antlr.TokenStream;
+import antlr.RecognitionException;
+import antlr.NoViableAltException;
+import antlr.MismatchedTokenException;
+import antlr.SemanticException;
+import antlr.ParserSharedInputState;
+import antlr.collections.impl.BitSet;
+import antlr.collections.AST;
+import java.util.Hashtable;
 import antlr.ASTFactory;
 import antlr.ASTPair;
-import antlr.NoViableAltException;
-import antlr.ParserSharedInputState;
-import antlr.RecognitionException;
-import antlr.Token;
-import antlr.TokenBuffer;
-import antlr.TokenStream;
-import antlr.TokenStreamException;
-import antlr.collections.AST;
 import antlr.collections.impl.ASTArray;
-import antlr.collections.impl.BitSet;
 
 public class PtalonRecognizer extends antlr.LLkParser       implements PtalonTokenTypes
  {
@@ -1178,7 +1184,7 @@ inputState.guessing--;
  * Parse statements of one of form:
  * <p><i>ID</i>(<i>assignment</i>, <i>assignment</i>, ...)
  * <p>Generate tree:
- * <p>#(ACTOR_DELCARATION <i>assignment</i> <i>assignment</i> ...)
+ * <p>#(ACTOR_DECLARATION <i>assignment</i> <i>assignment</i> ...)
  * <p>where the text for token ACTOR_DECLARATION is the leftmost
  * <i>ID</i> in the statement, or the name of the declared actor.
  */

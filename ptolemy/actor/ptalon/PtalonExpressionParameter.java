@@ -9,10 +9,6 @@ import ptolemy.kernel.util.NamedObj;
  * @see PtalonActor
  *
  */
-/**
- * @author acataldo
- *
- */
 public class PtalonExpressionParameter extends PtalonParameter {
 
     /** Construct a parameter with the given name contained by the specified
