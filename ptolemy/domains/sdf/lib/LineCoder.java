@@ -109,19 +109,6 @@ public class LineCoder extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to allow type changes on
-     *  <i>initialOutputs</i>.
-     *  @exception IllegalActionException If type changes are not
-     *   allowed on the specified attribute.
-     */
-    public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute != table) {
-            // The base class will probably throw an exception.
-            super.attributeTypeChanged(attribute);
-        }
-    }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then resets the type constraints.
      *  @param workspace The workspace for the new object.
