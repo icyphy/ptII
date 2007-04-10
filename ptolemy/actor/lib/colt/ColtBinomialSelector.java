@@ -64,6 +64,10 @@ import cern.jet.random.Binomial;
  @see ptolemy.actor.lib.colt.ColtBinomial
  @see cern.jet.random.Binomial
  @author Raymond A. Cardillo, Matthew J. Robbins
+ @version $Id$
+ @since Ptolemy II 6.0
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class ColtBinomialSelector extends ColtRandomSource {
 
