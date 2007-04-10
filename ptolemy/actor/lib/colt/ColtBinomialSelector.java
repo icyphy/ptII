@@ -138,7 +138,8 @@ public class ColtBinomialSelector extends ColtRandomSource {
      *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
-        // pull out the source values, make sure they're valid, and calculate the total         
+        // Pull out the source values, make sure they're valid, and
+        // calculate the total.
         long[] sourceValues = new long[populations.getWidth()];
         long sourceTotal = 0;
         for (int i = 0; i < sourceValues.length; i++) {
@@ -151,7 +152,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
             sourceTotal += sourceValues[i];
         }
 
-        // process the binomial selections 
+        // Process the binomial selections.
         int trialsRemaining = ((IntToken) trials.getToken()).intValue();
         long sourcePool = sourceTotal;
         _current = new IntToken[sourceValues.length];
