@@ -74,19 +74,20 @@ if [ file isdirectory auto/knownFailedTests ] {
     }
 }
 
-foreach file [glob auto/*.xml] {
+proc CGC_test {file inline} {
+    global PTII	
     set relativeFilename \
 	    [java::call ptolemy.util.StringUtilities substituteFilePrefix \
 	    $PTII $file {$PTII}]
 
-    puts "------------------ CGC testing $relativeFilename"
+    puts "------------------ CGC inline=$inline testing $relativeFilename"
     test "Auto" "Automatic CGC test in file $relativeFilename" {
 	    # FIXME: we should use $relativeFilename here, but it
 	    # might have backslashes under Windows, which causes no end
 	    # of trouble.
         set application [createAndExecute $file]
-	set args [java::new {String[]} 1 \
-			  [list $file]]
+	set args [java::new {String[]} 3 \
+			  [list "-inline" $inline $file]]
 
 	set timeout 60000
 	puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
@@ -104,6 +105,11 @@ foreach file [glob auto/*.xml] {
 	}
 	list $returnValue
     } {0}
+}
+
+foreach file [glob auto/*.xml] {
+    CGC_test $file true
+    CGC_test $file false
 }
 
 # Print out stats
