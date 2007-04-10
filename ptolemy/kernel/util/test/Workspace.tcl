@@ -53,6 +53,7 @@ if {[info procs enumToObjects] == "" } then {
 test Workspace-2.1 {Create a Workspace, set the name, change it} {
     set w [java::new ptolemy.kernel.util.Workspace]
     set result1 [$w getName]
+    set result1_1 [$w getDisplayName]
     # Workspace.getName(NamedObj relativeTo) returns the same as getName
     set result1_2 [$w getName [java::null]]
     $w setName A
@@ -65,9 +66,10 @@ test Workspace-2.1 {Create a Workspace, set the name, change it} {
     set result4 [$w getName]
     set result4_2 [$w getName [java::null]]
     list \
+        $result1_2 \
 	[list $result1 $result2 $result3 $result4] \
 	[list $result1_2 $result2_2 $result3_2 $result4_2]
-} {{{} A B {}} {{} A B {}}}
+} {{} {{} A B {}} {{} A B {}}}
 
 ######################################################################
 ####
