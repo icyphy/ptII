@@ -115,8 +115,8 @@ test SDFDirector-5.1 {Test action methods} {
     _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
 
     $manager run
-    list [$a2 getHistory]
-} {{0
+    list [[$d3 getModelNextIterationTime] toString] [$a2 getHistory]
+} {0.0 {0
 1
 2
 3
@@ -499,8 +499,8 @@ test SDFDirector-9.3 {SynchronizeToRealTimeConstructor test} {
     # _testSetToken is defined in $PTII/util/testsuite/testParams.tcl
     _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
     $manager run
-    list [$a2 getHistory]
-} {{0
+    list [[$d9 getModelNextIterationTime] toString] [$a2 getHistory]
+} {0.05 {0
 1
 2
 3
