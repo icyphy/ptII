@@ -154,15 +154,15 @@ test ConfigurableAttribute-3.1 {getVisibility, setVisibility, getBase} {
 	    [expr {[$c1 getBase] == [java::null]}] 
 } {1 1 1}
 
-test ConfigurableAttribute-4.1 {setExpression, getExpression} {
+test ConfigurableAttribute-4.1 {setExpression, getExpression, getValueAsString} {
     set c1 [java::new ptolemy.kernel.util.ConfigurableAttribute]
     set s1 [java::new ptolemy.kernel.util.StringAttribute $c1 "_s1"]
     set s2 [java::new ptolemy.kernel.util.StringAttribute $c1 "_s2"]
     $c1 configure [java::null] [java::null] {My Test String}
     set r1 [$c1 getExpression]
     $c1 setExpression "Another Test String"
-    list $r1 [$c1 getExpression]
-} {{My Test String} {Another Test String}}
+    list $r1 [$c1 getExpression] [$c1 getValueAsString]
+} {{My Test String} {Another Test String} {Another Test String}}
 
 test ConfigurableAttribute-4.1.1 {value, getConfigureText, getConfigureSource} {
     # Uses 4.1 above, testing that the StringAttributes don't show up

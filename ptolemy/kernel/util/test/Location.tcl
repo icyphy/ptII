@@ -143,8 +143,8 @@ test Location-4.1 {getDefaultExpression} {
     set result3 [$s1 getDefaultExpression]
     set result4 [$s1 getExpression]
 
-    list $result1 $result2 $result3 $result4		
-} {{} {{0.0, 0.0}} {a string 4_1} {a string 4_1}}
+    list $result1 $result2 $result3 $result4 [$s1 getValueAsString]
+} {{} {{0.0, 0.0}} {a string 4_1} {a string 4_1} {a string 4_1}}
 
 test Location-5.1 {getDisplayName, getName} {
     set n [java::new ptolemy.kernel.util.NamedObj "my NamedObj"]
