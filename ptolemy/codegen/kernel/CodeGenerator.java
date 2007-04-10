@@ -1,28 +1,28 @@
 /* Base class for code generators.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2005-2006 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
  */
 package ptolemy.codegen.kernel;
@@ -37,10 +37,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
@@ -48,11 +51,14 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
@@ -159,7 +165,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** If true, generate file with no functions.  If false, generate
      *  file with functions. The default value is a parameter with the 
-     *  value true.
+     *  value false.
      */
     public Parameter inline;
 
@@ -222,7 +228,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String comment(int indentLevel, String comment) {
         if (generateComment.getExpression().equals("true")) {
             return StringUtilities.getIndentPrefix(indentLevel)
-                    + formatComment(comment);
+                + formatComment(comment);
         } else {
             return "";
         }
@@ -423,79 +429,100 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception Exception If any error occurs.
      */
     public static int generateCode(String[] args) throws Exception {
-        if (args.length == 0) {
-            System.err.println("Usage: java -classpath $PTII "
-                    + "ptolemy.codegen.kernel.CodeGenerator model.xml "
-                    + "[model.xml . . .]" + _eol
-                    + "  The arguments name MoML files containing models");
-            return -1;
-        }
-
-        CodeGenerator codeGenerator = null;
-
-        // See MoMLSimpleApplication for similar code
-        MoMLParser parser = new MoMLParser();
-        MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
-        MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
-
-        for (int i = 0; i < args.length; i++) {
-            // Note: the code below uses explicit try catch blocks
-            // so we can provide very clear error messages about what
-            // failed to the end user.  The alternative is to wrap the
-            // entire body in one try/catch block and say
-            // "Code generation failed for foo", which is not clear.
-            URL modelURL;
-
-            try {
-                modelURL = new File(args[i]).toURL();
-            } catch (Exception ex) {
-                throw new Exception("Could not open \"" + args[i] + "\"", ex);
+        try{ 
+            if (args.length == 0) {
+                System.err.println("Usage: java -classpath $PTII "
+                        + "ptolemy.codegen.kernel.CodeGenerator model.xml "
+                        + "[model.xml . . .]" + _eol
+                        + "  The arguments name MoML files containing models");
+                return -1;
             }
 
-            CompositeActor toplevel = null;
+            CodeGenerator codeGenerator = null;
 
-            try {
+            // See MoMLSimpleApplication for similar code
+            MoMLParser parser = new MoMLParser();
+            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
+            MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
+
+            for (int i = 0; i < args.length; i++) {
+                _parseArg(args[i]);
+                if (args[i].trim().startsWith("-")) {
+                    if (i >= (args.length - 1)) {
+                        throw new IllegalActionException("Cannot set "
+                                + "parameter " + args[i] + " when no value is "
+                                + "given.");
+                    }
+
+                    // Save in case this is a parameter name and value.
+                    _parameterNames.add(args[i].substring(1));
+                    _parameterValues.add(args[i + 1]);
+                    i++;
+                    continue;
+                }
+                // Note: the code below uses explicit try catch blocks
+                // so we can provide very clear error messages about what
+                // failed to the end user.  The alternative is to wrap the
+                // entire body in one try/catch block and say
+                // "Code generation failed for foo", which is not clear.
+                URL modelURL;
+
                 try {
-                    toplevel = (CompositeActor) parser.parse(null, modelURL);
+                    modelURL = new File(args[i]).toURL();
                 } catch (Exception ex) {
-                    throw new Exception("Failed to parse \"" + args[i] + "\"",
-                            ex);
+                    throw new Exception("Could not open \"" + args[i] + "\"", ex);
                 }
 
-                // Get all instances of this class contained in the model
-                List codeGenerators = toplevel
+                CompositeActor toplevel = null;
+
+                try {
+                    try {
+                        toplevel = (CompositeActor) parser.parse(null, modelURL);
+                    } catch (Exception ex) {
+                        throw new Exception("Failed to parse \"" + args[i] + "\"",
+                                ex);
+                    }
+
+                    // Get all instances of this class contained in the model
+                    List codeGenerators = toplevel
                         .attributeList(CodeGenerator.class);
 
-                if (codeGenerators.size() == 0) {
-                    // Add a codeGenerator
-                    codeGenerator = new StaticSchedulingCodeGenerator(toplevel,
-                            "CodeGenerator_AutoAdded");
-                } else {
-                    // Get the last CodeGenerator in the list, maybe
-                    // it was added last?
-                    codeGenerator = (CodeGenerator) codeGenerators
+                    if (codeGenerators.size() == 0) {
+                        // Add a codeGenerator
+                        codeGenerator = new StaticSchedulingCodeGenerator(toplevel,
+                                "CodeGenerator_AutoAdded");
+                    } else {
+                        // Get the last CodeGenerator in the list, maybe
+                        // it was added last?
+                        codeGenerator = (CodeGenerator) codeGenerators
                             .get(codeGenerators.size() - 1);
-                }
+                    }
 
-                try {
-                    codeGenerator.generateCode();
-                } catch (KernelException ex) {
-                    throw new Exception("Failed to generate code for \""
-                            + args[i] + "\"", ex);
-                }
-            } finally {
-                // Destroy the top level so that we avoid
-                // problems with running the model after generating code
-                if (toplevel != null) {
-                    toplevel.setContainer(null);
+                    //codeGenerator._parseArgs(args);
+                    codeGenerator._updateParameters(toplevel);
+                    try {
+                        codeGenerator.generateCode();
+                    } catch (KernelException ex) {
+                        throw new Exception("Failed to generate code for \""
+                                + args[i] + "\"", ex);
+                    }
+                } finally {
+                    // Destroy the top level so that we avoid
+                    // problems with running the model after generating code
+                    if (toplevel != null) {
+                        toplevel.setContainer(null);
+                    }
                 }
             }
-        }
-        if (codeGenerator != null) {
-            return codeGenerator.getExecuteCommands()
+            if (codeGenerator != null) {
+                return codeGenerator.getExecuteCommands()
                     .getLastSubprocessReturnCode();
+            }
+            return -2;
+        } catch (Throwable ex) {
+            MoMLApplication.throwArgsException(ex, args);
         }
-        return -2;
+        return -1;
     }
 
     /** Return the copyright for this code.
@@ -720,7 +747,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     + comment("Generate shared code for "
                             + getContainer().getName()));
             code.append(comment("Finished generating shared code for "
-                    + getContainer().getName()));
+                                + getContainer().getName()));
         }
 
         return code.toString();
@@ -924,7 +951,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if ((container != null) && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
                     "CodeGenerator can only be contained"
-                            + " by CompositeEntity");
+                    + " by CompositeEntity");
         }
 
         super.setContainer(container);
@@ -973,12 +1000,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         try {
             constructor = helperClass.getConstructor(new Class[] { component
-                    .getClass() });
+                                                                   .getClass() });
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this, e,
                     "There is no constructor in " + helperClassName
-                            + " which accepts an instance of "
-                            + componentClassName + " as the argument.");
+                    + " which accepts an instance of "
+                    + componentClassName + " as the argument.");
         }
 
         Object helperObject = null;
@@ -993,8 +1020,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (!(helperObject instanceof ActorCodeGenerator)) {
             throw new IllegalActionException(this,
                     "Cannot generate code for this component: " + component
-                            + ". Its helper class does not"
-                            + " implement ActorodeGenerator.");
+                    + ". Its helper class does not"
+                    + " implement ActorodeGenerator.");
         }
 
         ActorCodeGenerator castHelperObject = (ActorCodeGenerator) helperObject;
@@ -1004,6 +1031,63 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         _helperStore.put(component, helperObject);
 
         return castHelperObject;
+    }
+
+    /** Parse a command-line argument.
+     *  @param arg The command-line argument to be parsed.
+     *  @return True if the argument is understood, false otherwise.
+     *  @exception Exception If something goes wrong.
+     */
+    protected static boolean _parseArg(String arg) throws Exception {
+        if (arg.equals("-help")) {
+            System.out.println(_usage());
+
+            // NOTE: This means the test suites cannot test -help
+            StringUtilities.exit(0);
+        } else if (arg.equals("-version")) {
+            System.out.println("Version "
+                            + VersionAttribute.CURRENT_VERSION.getExpression()
+                            + ", Build $Id$");
+
+            // NOTE: This means the test suites cannot test -version
+            StringUtilities.exit(0);
+        } else if (arg.equals("")) {
+            // Ignore blank argument.
+        }
+        // Argument not recognized.
+        return false;
+    }
+
+
+    /** Parse the command-line arguments.
+     *  @param args The command-line arguments to be parsed.
+     *  @exception Exception If an argument is not understood or triggers
+     *   an error.
+     */
+    protected void _parseArgs(String[] args) throws Exception {
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+
+            if (_parseArg(arg) == false) {
+                if (arg.trim().startsWith("-")) {
+
+                } else {
+                    // Unrecognized option.
+                    throw new IllegalActionException("Unrecognized option: "
+                            + arg);
+                }
+            }
+        }
+    }
+
+
+    /** Return a string summarizing the command-line arguments.
+     *  @return A usage string.
+     */
+    protected static String _usage() {
+        // Call the static method that generates the usage strings.
+        return StringUtilities.usageString(_commandTemplate, _commandOptions,
+                _commandFlags);
     }
 
     /** Write the code to a directory named by the codeDirectory
@@ -1053,7 +1137,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 // this method from a script.  If the question is
                 // asked, the build will hang.
                 if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
-                        + " exists. OK to overwrite?")) {
+                            + " exists. OK to overwrite?")) {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
                 }
@@ -1092,6 +1176,23 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  If no file was written, then the value is null.
      */
     protected String _codeFileName = null;
+
+    /** The command-line options that are either present or not. */
+    protected static String[] _commandFlags = { "-help", "-version", };
+
+    /** The command-line options that take arguments. */
+    protected static String[][] _commandOptions = {
+            { "-codeDirectory",
+              "<directory in which to put code (default: $HOME/codegen)>" },
+            { "-compile", "        true|false (default: true)" },
+            { "-generateComment", "true|false (default: true)" },
+            { "-inline", "         true|false (default: false)" },
+            { "-overwriteFiles", " true|false (default: true)" },
+            { "-run", "            true|false (default: true)" },
+            { "-<parameter name>", "<parameter value>" } };
+
+    /** The form of the command line. */
+    protected static String _commandTemplate = "ptcg [ options ] [file ...]";
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line charactor so that the files we generate
@@ -1150,8 +1251,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      * A static list of all macros supported by the code generator. 
      */
     protected List _macros = new ArrayList(Arrays.asList(new String[] { "ref",
-            "val", "size", "type", "targetType", "cgType", "tokenFunc",
-            "typeFunc", "actorSymbol", "actorClass", "new" }));
+                                                                        "val", "size", "type", "targetType", "cgType", "tokenFunc",
+                                                                        "typeFunc", "actorSymbol", "actorClass", "new" }));
 
     /** The postfire code.
      */
@@ -1161,7 +1262,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      * A static list of all primitive types supported by the code generator. 
      */
     protected static final List _primitiveTypes = Arrays.asList(new String[] {
-            "Int", "Double", "String", "Long", "Boolean" });
+        "Int", "Double", "String", "Long", "Boolean" });
 
     /** The sanitized model name. */
     protected String _sanitizedModelName;
@@ -1178,6 +1279,66 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected HashSet _typeFuncUsed = new HashSet();
 
+    /** Update the parameters in the model.
+     *  @param model The model in which to update parameters.
+     */
+    private void _updateParameters(NamedObj model) {
+        // Check saved options to see whether any is setting an attribute.
+        Iterator names = _parameterNames.iterator();
+        Iterator values = _parameterValues.iterator();
+
+        while (names.hasNext() && values.hasNext()) {
+            String name = (String) names.next();
+            String value = (String) values.next();
+
+
+            // System.out.println("model = " + model.getFullName());
+            Attribute attribute = model.getAttribute(name);
+            if (attribute instanceof Settable) {
+
+                // Use a MoMLChangeRequest so that visual rendition (if
+                // any) is updated and listeners are notified.
+                String moml = "<property name=\"" + name
+                    + "\" value=\"" + value + "\"/>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this,
+                        model, moml);
+                model.requestChange(request);
+            } else {
+                attribute = getAttribute(name);
+                if (attribute instanceof Settable) {
+                    // Use a MoMLChangeRequest so that visual rendition (if
+                    // any) is updated and listeners are notified.
+                    String moml = "<property name=\"" + name
+                        + "\" value=\"" + value + "\"/>";
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            this, moml);
+                    model.requestChange(request);
+                }
+            }
+
+            if (model instanceof CompositeActor) {
+                Director director = ((CompositeActor) model)
+                    .getDirector();
+
+                if (director != null) {
+                    attribute = director.getAttribute(name);
+
+                    if (attribute instanceof Settable) {
+
+                        // Use a MoMLChangeRequest so that
+                        // visual rendition (if any) is
+                        // updated and listeners are notified.
+                        String moml = "<property name=\"" + name
+                            + "\" value=\"" + value + "\"/>";
+                        MoMLChangeRequest request = new MoMLChangeRequest(
+                                this, director, moml);
+                        director.requestChange(request);
+                    }
+                }
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1186,4 +1347,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     private HashMap _helperStore = new HashMap();
 
+    // List of parameter names seen on the command line.
+    private static List _parameterNames = new LinkedList();
+
+    // List of parameter values seen on the command line.
+    private static List _parameterValues = new LinkedList();
 }
