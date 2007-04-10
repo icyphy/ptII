@@ -47,7 +47,7 @@ double RandomSource_nextGaussian(double* seed, boolean* haveNextNextGaussian, do
 /**/
 
 /*** setSeedBlock0($hashCode) ***/
-$actorSymbol(seed) = $actorSymbol(seed) = time (NULL) + $hashCode;
+$actorSymbol(seed) = time (NULL) + $hashCode;
 /**/
 
 /*** setSeedBlock1($hashCode) ***/
