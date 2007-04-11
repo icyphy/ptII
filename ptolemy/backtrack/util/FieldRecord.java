@@ -103,7 +103,7 @@ public class FieldRecord {
      *  @see #add(int[], boolean, long)
      */
     public void add(boolean value, long timestamp) {
-        _addRecord(0, new Record(null, new Boolean(value), timestamp));
+        _addRecord(0, new Record(null, value, timestamp));
     }
 
     /** Add an old value to the records, associated with a timestamp. This
@@ -193,7 +193,7 @@ public class FieldRecord {
      */
     public void add(int[] indices, boolean value, long timestamp) {
         _addRecord((indices == null) ? 0 : indices.length, new Record(indices,
-                new Boolean(value), timestamp));
+                value, timestamp));
     }
 
     /** Add an old value to the specified indices of the records, and
