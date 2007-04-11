@@ -235,7 +235,7 @@ public class X10Interface extends TypedAtomicActor {
         synchronized (_serialNameToController) {
             // If the port is not in the HashMap, then opening it failed.
             if (_serialNameToController.containsKey(portName)) {
-                _serialNameToUserCount.put(portName, new Integer(
+                _serialNameToUserCount.put(portName, Integer.valueOf(
                         ((Integer) _serialNameToUserCount.get(portName))
                                 .intValue() - 1));
 
@@ -276,9 +276,9 @@ public class X10Interface extends TypedAtomicActor {
                             new CM17ASerialController(portName));
                 }
 
-                _serialNameToUserCount.put(portName, new Integer(1));
+                _serialNameToUserCount.put(portName, Integer.valueOf(1));
             } else {
-                _serialNameToUserCount.put(portName, new Integer(
+                _serialNameToUserCount.put(portName, Integer.valueOf(
                         1 + ((Integer) _serialNameToUserCount.get(portName))
                                 .intValue()));
             }
