@@ -384,9 +384,9 @@ public class JShadePane extends JPanel {
         Component _component;
 
         Shade(JShadePane parent, JButton button, Component component) {
-            setAccessibleParent(_parent);
             _button = button;
             _parent = parent;
+            setAccessibleParent(_parent);
             _component = component;
 
             if (_component instanceof Accessible) {
