@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -812,15 +813,17 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
         // Go through the ports and normalize the external production
         // and consumption rates by the same factor.
-        for (Iterator ports = externalRates.keySet().iterator(); ports
-                .hasNext();) {
-            Object port = ports.next();
-            Fraction rate = (Fraction) externalRates.get(port);
+        // Use entrySet here for performance reasons
+        for (Iterator portMapEntries = externalRates.entrySet().iterator();
+             portMapEntries.hasNext();) {
+            Map.Entry ports = (Map.Entry) portMapEntries.next();
+            Object port = ports.getKey();
+            Fraction rate = (Fraction) ports.getValue();
             rate = rate.multiply(lcmFraction);
 
             // FIXME: Doing the conversion to Integer here is bizarre,
             // since they are integers coming in.
-            externalRates.put(port, new Integer(rate.getNumerator()));
+            ports.setValue(new Integer(rate.getNumerator()));
         }
     }
 
