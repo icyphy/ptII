@@ -497,9 +497,6 @@ public class Transformer {
     protected void _parse() throws IOException, ASTMalformedException {
         if (_fileName != null) {
             _ast = ASTBuilder.parse(_fileName);
-        } else {
-            _ast = ASTBuilder.parse(_source);
-        }
     }
 
     /** Start the transformation by first parsing the source with
@@ -636,10 +633,6 @@ public class Transformer {
     /** The root directory of the Java source output.
      */
     private static String _rootPath;
-
-    /** The Java source, if not <tt>null</tt>
-     */
-    private char[] _source;
 
     /** The visitor used to traverse the AST.
      */
