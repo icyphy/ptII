@@ -65,12 +65,12 @@ public class KeplerDocumentationAttribute extends Attribute implements
     }
 
     /**
-     * Constructor
+     * Construct a Kepler documentation attribute.
      *
-     *@param  container                     Description of the Parameter
-     *@param  name                          Description of the Parameter
-     *@exception  IllegalActionException    Description of the Exception
-     *@exception  NameDuplicationException  Description of the Exception
+     *@param container The container.
+     *@param name The name of the Kepler documentation attribute.
+     *@exception IllegalActionException If thrown by the superclass.
+     *@exception NameDuplicationException  If thrown by the superclass.
      */
     public KeplerDocumentationAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -78,9 +78,9 @@ public class KeplerDocumentationAttribute extends Attribute implements
     }
 
     /**
-     * Constructor
+     * Construct a Kepler documentation attribute.
      *
-     *@param  workspace  Description of the Parameter
+     *@param workspace The workspace in which the object is created.
      */
     public KeplerDocumentationAttribute(Workspace workspace) {
         super(workspace);
@@ -275,7 +275,8 @@ public class KeplerDocumentationAttribute extends Attribute implements
     }
 
     /**
-     * Method for configurable
+     * Method for configurable.
+     * In this class, we do nothing.
      */
     public void updateContent() throws InternalErrorException {
         //do nothing
@@ -375,7 +376,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
         return source;
     }
 
-    /** Get the configuration text
+    /** Get the configuration text.
      *  @return The configuration text
      */   
     public String getConfigureText() {

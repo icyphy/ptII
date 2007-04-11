@@ -119,7 +119,7 @@ public class MapWorker extends TypedAtomicActor {
     /** The qualifed class name for a Java class containing a method
      *  with signature:
      *  <p>
-     *  <code>public static List<String[]> map(String key, String value)</code>
+     *  <code>public static List&lt;String[]&gt; map(String key, String value)</code>
      *  <p>
      *  Each element of each returned list should be a length two array of
      *  Strings. 

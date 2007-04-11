@@ -212,7 +212,10 @@ public abstract class RandomSource extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the random number generator using current parameter values. */
+    /** Create the random number generator using current parameter values.
+     *  @exception IllegalActionException If thrown while reading the
+     *  seed Token.
+     */
     protected void _createGenerator() throws IllegalActionException {
         long seedValue = ((LongToken) (seed.getToken())).longValue();
         _generatorSeed = seedValue;

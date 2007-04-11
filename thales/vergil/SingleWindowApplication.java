@@ -48,7 +48,7 @@ import thales.actor.gui.SingleWindowHTMLViewer;
  */
 public class SingleWindowApplication extends VergilApplication {
 
-    /** Construct a single window appliation
+    /** Construct a single window application.
      * @param args Arguments to pass to
      * {@link ptolemy.vergil.VergilApplication#VergilApplication(String[])}.
      * @exception Exception

@@ -436,10 +436,24 @@ public class VisualModelReference extends ModelReference implements
      *  the referenced model, if there is one.
      */
     public class LookInside extends TableauFactory {
+        /**
+         * Construct a VisualModelReference$LookInside object.
+         *
+         * @param container The container of the LookInside to be constructed.
+         * @param name The name of the LookInside to be constructed.
+         * @throws IllegalActionException If thrown by the superclass.
+         * @throws NameDuplicationException If thrown by the superclass.
+         */
         public LookInside(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
+
+        /** Open an instance of the model.
+         *  @param effigy The effigy with which we open the model.
+         *  @exception Exception If there is a problem opening the
+         *  model.
+         */   
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (_model == null) {
                 throw new IllegalActionException(VisualModelReference.this, "No model referenced.");

@@ -285,7 +285,7 @@ public class SharedParameter extends Parameter implements Executable {
         return true;
     }
 
-    /** Traverse the model and update values
+    /** Traverse the model and update values.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void preinitialize() throws IllegalActionException {

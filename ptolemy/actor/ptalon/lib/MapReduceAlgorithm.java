@@ -47,6 +47,7 @@ public abstract class MapReduceAlgorithm extends Thread {
 
     /** Return true if the reduce is finished.
      *  @return Return true if the reduce is finished.
+     *  @exception IllegalActionException If there was a thread error.
      */ 
     public synchronized boolean isReduceFinished()
             throws IllegalActionException {

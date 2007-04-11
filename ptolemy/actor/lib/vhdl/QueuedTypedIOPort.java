@@ -137,8 +137,11 @@ public class QueuedTypedIOPort extends TypedIOPort {
      *  is at the end of the queue.
      *  @param channelIndex The channel on which to send the token.
      *  @param token The token to be sent.
+     *  @exception IllegalActionException If thrown while sending to the
+     *  channel.
+     *  @exception NoRoomException If thrown while sending to the channel.
      */
-    public void send(int channelIndex, Token token)
+    public void send(int channelIndex, Token token) 
             throws IllegalActionException, NoRoomException {
         if (latency == 0) {
             super.send(channelIndex, token);
