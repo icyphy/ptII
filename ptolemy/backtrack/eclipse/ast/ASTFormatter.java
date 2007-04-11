@@ -2382,7 +2382,10 @@ public class ASTFormatter extends ASTVisitor {
             if (_sourceStreamPosition < startPosition) {
                 int skipLength = startPosition - _sourceStreamPosition;
                 skipContent = new byte[skipLength];
-                _sourceStream.read(skipContent);
+                if (_sourceStream.read(skipContent) != skipLength) {
+                    throw new IOException("Failed to read "
+                            + skipLength + " bytes from source stream");
+                }
             } else {
                 skipContent = new byte[0];
             }
