@@ -894,7 +894,7 @@ public class XmlParser {
 
                 // See if it was specified.
                 for (int i = 0; i < tagAttributePos; i++) {
-                    if (tagAttributes[i] == aname) {
+                    if (tagAttributes[i].equals(aname)) {
                         continue loop;
                     }
                 }
@@ -1013,7 +1013,7 @@ public class XmlParser {
         String name;
         name = readNmtoken(true);
 
-        if (name != currentElement) {
+        if (!name.equals(currentElement)) {
             error("mismatched end tag", name, currentElement);
         }
 
