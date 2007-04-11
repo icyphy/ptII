@@ -75,6 +75,7 @@ import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.*;
+import ptolemy.util.StringUtilities;
 
 import java.io.*;
 import java.util.*;
@@ -350,7 +351,7 @@ public class CircuitTransformer extends SceneTransformer {
         } catch (IllegalActionException e) {
             System.err.println("Error " + e);
             e.printStackTrace();
-            System.exit(1);
+            StringUtilities.exit(1);
         }
 
         PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
