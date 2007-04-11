@@ -347,11 +347,11 @@ public class ConversionUtilities {
         if (token instanceof DoubleToken) {
             returnValue = new Double(((DoubleToken) token).doubleValue());
         } else if (token instanceof IntToken) {
-            returnValue = new Integer(((IntToken) token).intValue());
+            returnValue = Integer.valueOf(((IntToken) token).intValue());
         } else if (token instanceof UnsignedByteToken) {
-            returnValue = new Byte(((UnsignedByteToken) token).byteValue());
+            returnValue = Byte.valueOf(((UnsignedByteToken) token).byteValue());
         } else if (token instanceof LongToken) {
-            returnValue = new Long(((LongToken) token).longValue());
+            returnValue = Long.valueOf(((LongToken) token).longValue());
         } else if (token instanceof StringToken) {
             returnValue = ((StringToken) token).stringValue();
         } else if (token instanceof BooleanToken) {

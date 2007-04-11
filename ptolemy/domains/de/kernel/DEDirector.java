@@ -1304,7 +1304,7 @@ public class DEDirector extends Director implements TimedDirector {
             if (depth == -1) {
                 depth = defaultActorDepth;
             }
-            _actorToDepth.put(actor, new Integer(depth));
+            _actorToDepth.put(actor, Integer.valueOf(depth));
             // Increment the default depth value for the next actor.
             defaultActorDepth++;
         }
@@ -1387,7 +1387,7 @@ public class DEDirector extends Director implements TimedDirector {
             }
 
             // Insert the hashtable entry.
-            _portToDepth.put(ioPort, new Integer(depth));
+            _portToDepth.put(ioPort, Integer.valueOf(depth));
             if (_debugging && _verbose) {
                 _debug(((Nameable) ioPort).getFullName(), "depth: " + depth);
             }
@@ -1496,7 +1496,7 @@ public class DEDirector extends Director implements TimedDirector {
                         }
 
                         // Insert the hashtable entry.
-                        _portToDepth.put(input, new Integer(maximumPortDepth));
+                        _portToDepth.put(input, Integer.valueOf(maximumPortDepth));
                     }
                 }
             }
@@ -1543,7 +1543,7 @@ public class DEDirector extends Director implements TimedDirector {
                 }
 
                 // Insert the hashtable entry.
-                _portToDepth.put(input, new Integer(maximumPortDepth));
+                _portToDepth.put(input, Integer.valueOf(maximumPortDepth));
             }
         }
 

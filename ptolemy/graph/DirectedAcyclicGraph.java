@@ -476,8 +476,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
                     break;
 
                 case INCOMPARABLE:
-                    incomparables.addLast(new Integer(ids[i - 2]));
-                    incomparables.addLast(new Integer(ids[i - 1]));
+                    incomparables.addLast(Integer.valueOf(ids[i - 2]));
+                    incomparables.addLast(Integer.valueOf(ids[i - 1]));
                     numberOfRemovedElements += 2;
                     break;
 

@@ -217,7 +217,7 @@ public class FixedPointScheduler extends Scheduler {
                 depth = defaultActorDepth;
             }
             
-            _actorToDepth.put(actor, new Integer(depth));
+            _actorToDepth.put(actor, Integer.valueOf(depth));
             // Increment the default depth value for the next actor.
             defaultActorDepth++;
         }
@@ -269,7 +269,7 @@ public class FixedPointScheduler extends Scheduler {
             }
     
             // Insert the hashtable entry.
-            _portToDepth.put(ioPort, new Integer(depth));
+            _portToDepth.put(ioPort, Integer.valueOf(depth));
             if (_debugging && verbose) {
                 _debug(((Nameable) ioPort).getFullName(), "depth: " + depth);
             }
@@ -379,7 +379,7 @@ public class FixedPointScheduler extends Scheduler {
                             "depth is adjusted to: " + maximumPortDepth);
                 }
                 // Insert the port the hashtable entry.
-                _portToDepth.put(input, new Integer(maximumPortDepth));
+                _portToDepth.put(input, Integer.valueOf(maximumPortDepth));
             }
         }
         if (_debugging) {

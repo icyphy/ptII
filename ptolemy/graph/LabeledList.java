@@ -111,7 +111,7 @@ public class LabeledList implements List {
             throw new IllegalArgumentException("Attempt to insert a duplicate "
                     + "element." + _elementDump(element));
         } else {
-            _labels.put(element, new Integer(_elements.size()));
+            _labels.put(element, Integer.valueOf(_elements.size()));
             _elements.add(element);
             return true;
         }
@@ -467,7 +467,7 @@ public class LabeledList implements List {
      */
     private void _labelElements(int startIndex) {
         for (int i = startIndex; i < _elements.size(); i++) {
-            _labels.put(_elements.get(i), new Integer(i));
+            _labels.put(_elements.get(i), Integer.valueOf(i));
         }
     }
 

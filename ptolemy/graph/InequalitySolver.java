@@ -99,7 +99,7 @@ public class InequalitySolver {
      */
     public void addInequality(Inequality ineq) {
         // put ineq. to _Ilist
-        Integer indexWrap = new Integer(_Ilist.size());
+        Integer indexWrap = Integer.valueOf(_Ilist.size());
         Info info = new Info(ineq);
         _Ilist.add(info);
 
@@ -406,7 +406,7 @@ public class InequalitySolver {
                 if (info._ineq.isSatisfied(_cpo)) {
                     info._inserted = false;
                 } else { // insert to _NS
-                    _NS.addLast(new Integer(i));
+                    _NS.addLast(Integer.valueOf(i));
                     info._inserted = true;
                 }
             }
@@ -486,7 +486,7 @@ public class InequalitySolver {
                     if (info._ineq.isSatisfied(_cpo)) {
                         info._inserted = false;
                     } else { // insert to _NS
-                        _NS.addLast(new Integer(i));
+                        _NS.addLast(Integer.valueOf(i));
                         info._inserted = true;
                         allSatisfied = false;
                     }

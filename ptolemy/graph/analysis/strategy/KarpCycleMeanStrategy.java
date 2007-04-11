@@ -265,7 +265,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
 
                 if (cycleMeanValue > testValue) {
                     cycleMean.put(node, new Double(testValue));
-                    cycleMeanLevel.put(node, new Integer(k));
+                    cycleMeanLevel.put(node, Integer.valueOf(k));
                 }
             }
 

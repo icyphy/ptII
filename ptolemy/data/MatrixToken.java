@@ -1316,7 +1316,7 @@ public abstract class MatrixToken extends Token {
             for (int j = 0; j < columnCount; j++) {
                 // Handle nil token
                 if (_nils != null
-                        && _nils.contains(new Integer((i * columnCount) + j))) {
+                        && _nils.contains(Integer.valueOf((i * columnCount) + j))) {
                     sb.append("nil");
                 } else {
                     sb.append(getElementAsToken(i, j).toString());
@@ -1472,7 +1472,7 @@ public abstract class MatrixToken extends Token {
         if (_nils == null) {
             _nils = new HashSet();
         }
-        _nils.add(new Integer(element));
+        _nils.add(Integer.valueOf(element));
     }
 
     /** Return a new token whose elements are the modulo of

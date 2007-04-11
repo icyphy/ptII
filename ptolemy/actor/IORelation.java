@@ -266,10 +266,7 @@ public class IORelation extends ComponentRelation {
                             occurrence++;
                         }
 
-                        // FindBugs: Use Integer.valueOf() instead of
-                        // new Integer().  However Integer.valueOf(int)
-                        // is not in Java 1.4
-                        seen.put(p, new Integer(occurrence));
+                        seen.put(p, Integer.valueOf(occurrence));
 
                         receivers = p._getReceiversLinkedToGroup(this,
                                 occurrence);
