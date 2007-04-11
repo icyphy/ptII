@@ -206,7 +206,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         stmt.getLeftOp().apply(this);
 
         StringBuffer code = new StringBuffer();
-        String indent = new String();
+        String indent = null;
 
         if (indentLevel == 1) {
             indent = "    ";
@@ -680,20 +680,20 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                     + v.getBaseType().getClass().getName());
         }
 
-        String sizeCode = new String();
+        StringBuffer sizeCode = new StringBuffer();
         Iterator sizes = v.getSizes().iterator();
 
         while (sizes.hasNext()) {
             ((Value) sizes.next()).apply(this);
-            sizeCode += _pop();
+            sizeCode.append(_pop());
 
             if (sizes.hasNext()) {
-                sizeCode += ", ";
+                sizeCode.append(", ");
             }
         }
 
         _push(_generateArrayAllocation(v.getBaseType(), v.getSizeCount(),
-                sizeCode));
+                sizeCode.toString()));
     }
 
     /* FIXME : Is this replaced by something else?
@@ -751,7 +751,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     public void caseReturnStmt(ReturnStmt stmt) {
         stmt.getOp().apply(this);
 
-        String indent = new String();
+        String indent = null;
 
         if (indentLevel == 1) {
             indent = "    ";
@@ -1072,7 +1072,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      *  @param stmt The statement.
      */
     public void caseThrowStmt(ThrowStmt stmt) {
-        String indent = new String();
+        String indent = null;
 
         if (indentLevel == 1) {
             indent = "    ";
@@ -1276,8 +1276,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
             ((Value) args.next()).apply(this);
 
-            String cast = new String("(" + CNames.typeNameOf(expectedParamType)
-                    + ") ");
+            String cast = "(" + CNames.typeNameOf(expectedParamType)
+                    + ") ";
 
             code.append(cast + _pop());
         }
@@ -1337,9 +1337,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         expression.getOp2().apply(this);
         expression.getOp1().apply(this);
 
-        String cast = new String();
-
-        cast = "(" + CNames.typeNameOf(expression.getOp1().getType()) + ")";
+        String cast = "(" + CNames.typeNameOf(expression.getOp1().getType())
+            + ")";
 
         _push(_pop().append(" " + operator + " " + cast).append(_pop()));
     }
@@ -1393,11 +1392,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         code = new StringBuffer(instanceName + "->class->methods."
                 + CNames.methodNameOf(method));
 
-        String cast = new String();
-
         // Default cast is used only if the declaring class does not seem
         // to inherit this method.
-        cast = "(" + CNames.instanceNameOf(declaringClass)
+        String cast = "(" + CNames.instanceNameOf(declaringClass)
                 + "/* default cast */)";
 
         Iterator inheritedMethods = MethodListGenerator.getInheritedMethods(
