@@ -1365,7 +1365,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 result.add(ineq);
             }
         } catch (Exception e) {
-            // expression cannot be evaluated at this time.
+            // Ignored: expression cannot be evaluated at this time.
             // do nothing.
         }
 
