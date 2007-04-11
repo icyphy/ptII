@@ -152,10 +152,10 @@ public class PortClassChanges implements MoMLFilter {
 
             while (portsMapEntries.hasNext()) {
                 Map.Entry ports = (Map.Entry)portsMapEntries.next();
-                String port = (String) ports.getValue();
+                String port = (String) ports.getKey();
                 results.append(port + "\n");
 
-                HashMap classMap = (HashMap) ports.getKey();
+                HashMap classMap = (HashMap) ports.getValue();
                 Iterator classChangesMapEntries = classMap.entrySet().iterator();
                 while (classChangesMapEntries.hasNext()) {
                     Map.Entry classChanges = (Map.Entry)classChangesMapEntries.next();
