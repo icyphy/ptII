@@ -29,7 +29,6 @@ package ptolemy.actor.ptalon;
 }
 
 {
-	import java.util.LinkedList;
 /** 
   PtalonScopeChecker.java generated from populator.g by ANTLR.
 
