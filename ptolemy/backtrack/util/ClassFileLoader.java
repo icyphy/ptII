@@ -89,13 +89,15 @@ public class ClassFileLoader extends URLClassLoader {
      */
     public Class loadClass(File classFile) throws FileNotFoundException,
             IOException, LinkageError, ClassNotFoundException {
-        FileInputStream inputStream = new FileInputStream(classFile);
-        byte[] buffer = new byte[inputStream.available()];
-        inputStream.read(buffer);
-
+        FileInputStream inputStream = null;
         try {
-            return defineClass(null, buffer, 0, buffer.length);
-        } catch (IllegalAccessError e) {
+            inputStream = new FileInputStream(classFile);
+            byte[] buffer = new byte[inputStream.available()];
+            inputStream.read(buffer);
+
+            try {
+                return defineClass(null, buffer, 0, buffer.length);
+            } catch (IllegalAccessError e) {
             String errorPrefix = "class ";
             String message = e.getMessage();
 
@@ -130,6 +132,16 @@ public class ClassFileLoader extends URLClassLoader {
                     String path = message.substring(startIndex + 1, endIndex);
                     String classFullName = path.replace('/', '.');
                     return loadClass(classFullName);
+                }
+            }
+        }
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (Exception ex) {
+                    System.out.println("Failed to close " + classFile);
+                    ex.printStackTrace();
                 }
             }
         }
