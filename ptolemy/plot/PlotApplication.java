@@ -362,22 +362,24 @@ public class PlotApplication extends PlotFrame {
                 { "-width", "<pixels>" }, };
 
         String[] commandFlags = { "-help", "-test", "-version", "-", };
-        String result = "Usage: ptplot [ options ] [file ...]\n\n"
-                + "Options that take values:\n";
+        StringBuffer result = new StringBuffer(
+                "Usage: ptplot [ options ] [file ...]\n\n"
+                + "Options that take values:\n");
 
         int i;
 
         for (i = 0; i < commandOptions.length; i++) {
-            result += (" " + commandOptions[i][0] + " " + commandOptions[i][1] + "\n");
+            result.append(" " + commandOptions[i][0] + " "
+                    + commandOptions[i][1] + "\n");
         }
 
-        result += "\nBoolean flags:\n";
+        result.append("\nBoolean flags:\n");
 
         for (i = 0; i < commandFlags.length; i++) {
-            result += (" " + commandFlags[i]);
+            result.append(" " + commandFlags[i]);
         }
 
-        return result;
+        return result.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

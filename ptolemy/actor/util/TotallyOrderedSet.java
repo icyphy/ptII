@@ -244,14 +244,14 @@ public class TotallyOrderedSet {
      *  @return The string description of the set.
      */
     public String toString() {
-        String result = "";
+        StringBuffer result = new StringBuffer();
         Iterator elements = elementList().iterator();
 
         while (elements.hasNext()) {
-            result = result + (elements.next()).toString() + " ";
+            result.append(elements.next().toString() + " ");
         }
 
-        return result;
+        return result.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

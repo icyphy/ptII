@@ -699,7 +699,7 @@ public class FixPoint implements Cloneable, Serializable {
         int _frac_bits = -_precision.getExponent();
 
         BigInteger integerPart = _value.shiftRight(_frac_bits);
-        String ln = integerPart.toString(2);
+        StringBuffer ln = new StringBuffer(integerPart.toString(2));
 
         if (_frac_bits > 0) {
             // The the toString(2) method of BigInteger removes the most
@@ -712,19 +712,19 @@ public class FixPoint implements Cloneable, Serializable {
             BigInteger fractionPart = _value.and(fractionMask);
             int minFracBits = fractionPart.bitLength();
             int extraLeadingFracBits = _frac_bits - minFracBits;
-            ln += ".";
+            ln.append(".");
 
             // Append the zeros
             for (int i = 0; i < extraLeadingFracBits; i++) {
-                ln += "0";
+                ln.append("0");
             }
 
             if (minFracBits > 0) {
-                ln += fractionPart.toString(2);
+                ln.append(fractionPart.toString(2));
             }
         }
 
-        return ln;
+        return ln.toString();
     }
 
     /** Return a string representation of this number.

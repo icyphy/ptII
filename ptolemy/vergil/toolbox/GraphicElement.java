@@ -177,21 +177,21 @@ public class GraphicElement {
      * Return a string this representing this GraphicElement.
      */
     public String toString() {
-        String result = "{";
-        result += (getClass().getName() + " {" + _type + "}");
-        result += " attributes {";
+        StringBuffer result = new StringBuffer("{");
+        result.append(getClass().getName() + " {" + _type + "}"
+                + " attributes {");
 
         Set attributeSet = attributeNameSet();
         Iterator names = attributeSet.iterator();
 
         while (names.hasNext()) {
             String p = (String) names.next();
-            result += (" {" + p + "=" + getAttribute(p) + "}");
+            result.append(" {" + p + "=" + getAttribute(p) + "}");
         }
 
-        result += ("} label {" + getLabel() + "}}");
+        result.append("} label {" + getLabel() + "}}");
 
-        return result;
+        return result.toString();
     }
 
     // The painted object that is returned if an error occurs.

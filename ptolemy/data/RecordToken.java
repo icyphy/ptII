@@ -373,20 +373,20 @@ public class RecordToken extends AbstractNotConvertibleToken {
         }
 
         // construct the string representation of this token.
-        String stringRepresentation = "{";
+        StringBuffer stringRepresentation = new StringBuffer("{");
 
         for (int i = 0; i < size; i++) {
             String label = (String) labelsObjects[i];
             String value = get(label).toString();
 
             if (i != 0) {
-                stringRepresentation += ", ";
+                stringRepresentation.append(", ");
             }
 
-            stringRepresentation += (label + " = " + value);
+            stringRepresentation.append(label + " = " + value);
         }
 
-        return stringRepresentation + "}";
+        return stringRepresentation.toString() + "}";
     }
 
     /** Returns a new RecordToken representing the additive identity.
