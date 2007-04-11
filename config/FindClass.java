@@ -74,9 +74,8 @@ public class FindClass {
                     longJarFile.indexOf("!/"));
             URL jarFileURL = new URL(shortJarFile);
 
-            File jarFileURLFile = new File(jarFileURL.getFile().toString()
-                                                             .replaceAll("%20",
-                                " "));
+            File jarFileURLFile = new File(jarFileURL.getFile()
+                    .replaceAll("%20", " "));
 
             // If the jar file is in the jre directory, then don't
             // report it.  The reason is that we should not add things
