@@ -78,7 +78,7 @@ public class LongToDouble extends Converter {
     public void fire() throws IllegalActionException {
         super.fire();
         LongToken inputToken = (LongToken) input.get(0);
-        Long inputValue = new Long(inputToken.longValue());
+        Long inputValue = Long.valueOf(inputToken.longValue());
         DoubleToken result = new DoubleToken(inputValue.doubleValue());
 
         output.send(0, result);
