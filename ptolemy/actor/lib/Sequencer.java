@@ -155,7 +155,7 @@ public class Sequencer extends Transformer implements SequenceActor {
 
             _fireProducedOutput = false;
         } else {
-            _pending.put(new Integer(_sequenceNumberOfInput), _nextToken);
+            _pending.put(Integer.valueOf(_sequenceNumberOfInput), _nextToken);
         }
 
         return super.postfire();
