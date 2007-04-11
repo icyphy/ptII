@@ -1,6 +1,6 @@
 /* A panel for editing the layout of a customizable run control panel.
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -73,6 +73,7 @@ import java.awt.event.MouseEvent;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -115,6 +116,7 @@ import ptolemy.actor.gui.Placeable;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.FileUtilities;
 
 import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.factories.DefaultComponentFactory;
@@ -551,6 +553,28 @@ public class PtolemyFormEditor extends JPanel {
         }
     }
 
+    /** Put an icon onto an AbstractAction.  */
+    private void _putValue(AbstractAction abstractAction,
+            String iconName) {
+        String iconDirectory = "$CLASSPATH/ptolemy/actor/gui/run/";
+        try {
+            // We use nameToURL() here so that this code will work
+            // in webstart.
+            // FIXME: we should use rollover icons like what is in
+            // vergil.basic.BasicGraphFrame, where we call 
+            // diva.util.GUIUtilities.
+            abstractAction.putValue(Action.SMALL_ICON,
+                    new ImageIcon(
+                            FileUtilities.nameToURL(
+                                    iconDirectory
+                                    + iconName, null, null)));
+        } catch (IOException ex) {
+            System.out.println("Failed to open " + iconDirectory
+                    + iconName);
+            ex.printStackTrace();
+        }
+    }
+
     /** Specify the cell in the table that is selected. */
     private void _setSelectedCell(int columnIndex, int rowIndex,
             boolean forceVisible) {
@@ -834,8 +858,7 @@ public class PtolemyFormEditor extends JPanel {
             super();
             putValue(Action.SHORT_DESCRIPTION, "Deletes the selected column");
             putValue(Action.LONG_DESCRIPTION, "Deletes the selected column");
-            putValue(Action.SMALL_ICON, new ImageIcon(PtolemyFormEditor.class
-                    .getResource("ColumnDelete24.gif")));
+            _putValue(this, "ColumnDelete24.gif");
             putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_C));
         }
 
@@ -871,8 +894,7 @@ public class PtolemyFormEditor extends JPanel {
             super();
             putValue(Action.SHORT_DESCRIPTION, "Deletes the selected row");
             putValue(Action.LONG_DESCRIPTION, "Deletes the selected row");
-            putValue(Action.SMALL_ICON, new ImageIcon(PtolemyFormEditor.class
-                    .getResource("RowDelete24.gif")));
+            _putValue(this, "RowDelete24.gif");
             putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_D));
         }
 
@@ -984,8 +1006,7 @@ public class PtolemyFormEditor extends JPanel {
             super();
             putValue(Action.SHORT_DESCRIPTION, "Inserts a column after the selected column");
             putValue(Action.LONG_DESCRIPTION, "Inserts a column after the selected column");
-            putValue(Action.SMALL_ICON, new ImageIcon(PtolemyFormEditor.class
-                    .getResource("ColumnInsertAfter24.gif")));
+            _putValue(this, "ColumnInsertAfter24.gif");
             putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_L));
         }
         public void actionPerformed(ActionEvent e) {
@@ -1001,8 +1022,7 @@ public class PtolemyFormEditor extends JPanel {
             super();
             putValue(Action.SHORT_DESCRIPTION, "Inserts a column before the selected column");
             putValue(Action.LONG_DESCRIPTION, "Inserts a column before the selected column");
-            putValue(Action.SMALL_ICON, new ImageIcon(PtolemyFormEditor.class
-                    .getResource("ColumnInsertBefore24.gif")));
+            _putValue(this, "ColumnInsertBefore24.gif");
             putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_K));
         }
 
@@ -1019,8 +1039,7 @@ public class PtolemyFormEditor extends JPanel {
             super();
             putValue(Action.SHORT_DESCRIPTION, "Inserts a row after the selected row");
             putValue(Action.LONG_DESCRIPTION, "Inserts a row after the selected row");
-            putValue(Action.SMALL_ICON, new ImageIcon(PtolemyFormEditor.class
-                    .getResource("RowInsertAfter24.gif")));
+            _putValue(this, "RowInsertAfter24.gif");
             putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_O));
         }
 
@@ -1037,8 +1056,7 @@ public class PtolemyFormEditor extends JPanel {
             super();
             putValue(Action.SHORT_DESCRIPTION, "Inserts a row before the selected row");
             putValue(Action.LONG_DESCRIPTION, "Inserts a row before the selected row");
-            putValue(Action.SMALL_ICON, new ImageIcon(PtolemyFormEditor.class
-                    .getResource("RowInsertBefore24.gif")));
+            _putValue(this, "RowInsertBefore24.gif");
             putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_I));
         }
 
@@ -1055,8 +1073,7 @@ public class PtolemyFormEditor extends JPanel {
             super();
             putValue(Action.SHORT_DESCRIPTION, "Pack the run control panel");
             putValue(Action.LONG_DESCRIPTION, "Pack the run control panel");
-            putValue(Action.SMALL_ICON, new ImageIcon(PtolemyFormEditor.class
-                    .getResource("Pack.gif")));
+            _putValue(this, "Pack.gif");
             putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_P, 0));
             putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_P));
@@ -1086,8 +1103,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.SHORT_DESCRIPTION, "Delete the component");
             putValue(Action.LONG_DESCRIPTION, "Delete the selected component. " +
                     "A component must be selected for this to be enabled.");
-            putValue(Action.SMALL_ICON, new ImageIcon(PtolemyFormEditor.class
-                    .getResource("Remove24.gif")));
+            _putValue(this, "Remove24.gif");
             putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_DELETE, 0));
             putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_D));
