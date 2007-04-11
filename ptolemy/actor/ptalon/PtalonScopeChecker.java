@@ -40,7 +40,6 @@ import antlr.collections.impl.BitSet;
 import antlr.ASTPair;
 import antlr.collections.impl.ASTArray;
 
-	import java.util.LinkedList;
 /** 
   PtalonScopeChecker.java generated from populator.g by ANTLR.
 

@@ -1,7 +1,7 @@
 
 SOFTWARE RIGHTS
 
-ANTLR 1989-2005 Developed by Terence Parr
+ANTLR 1989-2006 Developed by Terence Parr
 Partially supported by University of San Francisco & jGuru.com
 
 We reserve no legal rights to the ANTLR--it is fully in the
