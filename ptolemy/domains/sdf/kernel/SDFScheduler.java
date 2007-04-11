@@ -808,7 +808,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
             // FIXME: Doing the conversion to Integer here is bizarre,
             // since they are integers coming in.
-            actors.setValue(new Integer(repetitions.getNumerator()));
+            actors.setValue(Integer.valueOf(repetitions.getNumerator()));
         }
 
         // Go through the ports and normalize the external production
@@ -823,7 +823,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
             // FIXME: Doing the conversion to Integer here is bizarre,
             // since they are integers coming in.
-            ports.setValue(new Integer(rate.getNumerator()));
+            ports.setValue(Integer.valueOf(rate.getNumerator()));
         }
     }
 
@@ -1526,8 +1526,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
                 // Update the firingsRemainingVector for this actor.
                 firingsRemaining -= numberOfFirings;
-                firingsRemainingVector.put(currentActor, new Integer(
-                        firingsRemaining));
+                firingsRemainingVector.put(currentActor,
+                        Integer.valueOf(firingsRemaining));
 
                 if (_debugging && VERBOSE) {
                     _debug(currentActor.getName() + " should fire "
