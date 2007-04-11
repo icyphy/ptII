@@ -348,12 +348,23 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                         StringWriter buffer = new StringWriter();
                         _cachedLib.exportMoML(buffer);
 
-                        FileOutputStream file = new FileOutputStream(_Dir + "/"
-                                + _DISCOVERED_ACTORS);
-                        PrintStream out = new PrintStream(file);
-                        out.println(buffer);
-                        out.flush();
-                        file.close();
+                        PrintStream out = null;
+                        try {
+                            out = new PrintStream(new FileOutputStream(
+                                                          _Dir + "/"
+                                                          + _DISCOVERED_ACTORS));
+                            out.println(buffer);
+                            out.flush();
+                        } finally {
+                            if (out != null) {
+                                try {
+                                    out.close();
+                                } catch (Exception ex) {
+                                    System.out.println("Failed to close "
+                                            + _Dir + "/" + _DISCOVERED_ACTORS);
+                                }
+                            }
+                        }
                     } catch (Exception e) {
                     }
                 } catch (java.lang.NullPointerException e) {
@@ -585,8 +596,9 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
         StringBuffer queryTextBuffer = new StringBuffer();
 
+        BufferedReader fileReader = null;
         try {
-            BufferedReader fileReader = new BufferedReader(new FileReader(
+            fileReader = new BufferedReader(new FileReader(
                     _configDir + "/" + pipeAdvFile));
             String newline = System.getProperty("line.separator");
             queryTextBuffer = queryTextBuffer.append("<PtolemyInputPipe>\n");
@@ -610,6 +622,15 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         } catch (IOException ex) {
             System.out.println("Warning: error reading pipeAdv file.\n"
                     + ex.getMessage());
+        } finally {
+            if (fileReader != null) {
+                try {
+                    fileReader.close();
+                } catch (Exception ex) {
+                    System.out.println("Failed to close "
+                            + _configDir + "/" + pipeAdvFile);
+                }
+            }
         }
 
         _pipeAdvMessage = new ResolverQuery(_ACTOR_QUERY_HANDLER_NAME, null,
@@ -681,8 +702,9 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         System.out.println("### the directory is : " + _configDir + "\n");
         _properties = new Properties(System.getProperties());
 
+        InputStream configProperties = null;
         try {
-            InputStream configProperties = new FileInputStream(_configDir + "/"
+            configProperties = new FileInputStream(_configDir + "/"
                     + _CONFIG_FILE);
             _properties.load(configProperties);
         } catch (FileNotFoundException ex) {
@@ -691,7 +713,17 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         } catch (IOException ex) {
             System.out.println("Warning: error reading configuration file.\n"
                     + ex.getMessage());
+        } finally {
+            if (configProperties != null) {
+                try {
+                    configProperties.close();
+                } catch (Exception ex) {
+                    System.out.println("Failed to close "
+                            + _configDir + "/" + _CONFIG_FILE);
+                }
+            }
         }
+
     }
 
     private void _sendMsg() {
