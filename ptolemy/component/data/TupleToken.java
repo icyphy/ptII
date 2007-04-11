@@ -1,4 +1,4 @@
-/* A token that contains an array of tokens.
+* A token that contains an array of tokens.
 
  Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
@@ -84,6 +84,9 @@ public class TupleToken extends Token {
      *   and the elements are equal to that of this token.
      */
     public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
         // This test rules out instances of a subclass.
         if (object.getClass() != getClass()) {
             return false;
