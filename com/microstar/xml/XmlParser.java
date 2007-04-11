@@ -3473,7 +3473,7 @@ public class XmlParser {
             while (entities.hasMoreElements()) {
                 String e = (String) entities.nextElement();
 
-                if (e == ename) {
+                if (e.equals(ename)) {
                     error("recursive reference to entity", ename, null);
                 }
             }
