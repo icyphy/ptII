@@ -31,6 +31,7 @@ package ptolemy.apps.fullscreen;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Sink;
+import ptolemy.actor.lib.image.Transform;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;

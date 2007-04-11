@@ -30,7 +30,7 @@ COPYRIGHTENDKEY
 package ptolemy.apps.fullscreen.test;
 
 import ptolemy.apps.fullscreen.MultiBuffer;
-import ptolemy.apps.fullscreen.Transform;
+import ptolemy.actor.lib.image.Transform;
 
 import java.awt.AlphaComposite;
 import java.awt.BufferCapabilities;
