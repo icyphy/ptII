@@ -456,20 +456,20 @@ public class UnionType extends StructuredType {
         }
 
         // construct the string representation of this token.
-        String s = "{|";
+        StringBuffer results = new StringBuffer("{|");
 
         for (int i = 0; i < size; i++) {
             String label = (String) labelArray[i];
             String type = this.get(label).toString();
 
             if (i != 0) {
-                s += ", ";
+                results.append(", ");
             }
 
-            s += (label + " = " + type);
+            results.append(label + " = " + type);
         }
 
-        return s + "|}";
+        return results.toString() + "|}";
     }
 
     /** Update this Type to the specified UnionType.
