@@ -497,6 +497,7 @@ public class Transformer {
     protected void _parse() throws IOException, ASTMalformedException {
         if (_fileName != null) {
             _ast = ASTBuilder.parse(_fileName);
+        }
     }
 
     /** Start the transformation by first parsing the source with
