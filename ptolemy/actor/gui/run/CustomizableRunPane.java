@@ -112,7 +112,7 @@ public class CustomizableRunPane extends JPanel implements CloseListener {
         // Parse the XML
         InputStream stream;
         try {
-            stream = new ByteArrayInputStream(xml.toString().getBytes("UTF-8"));
+            stream = new ByteArrayInputStream(xml.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e1) {
             throw new InternalErrorException(e1);
         }
