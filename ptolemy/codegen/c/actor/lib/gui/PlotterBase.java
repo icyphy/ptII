@@ -129,7 +129,7 @@ public class PlotterBase extends CCodeGeneratorHelper {
             try {
                 while ((line = reader.readLine()) != null) {
                     line = line.trim();
-                    if (line != "") {
+                    if (!line.equals("")) {
                         line = line.replace("\"", "\\\\\"");
                         result.append("\"" + line + "\\\\n\"" + "\n");
                     }
