@@ -423,7 +423,7 @@ public class Copernicus {
             new Copernicus(args);
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
-            System.exit(1);
+            StringUtilities.exit(1);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
