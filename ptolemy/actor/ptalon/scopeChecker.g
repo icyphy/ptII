@@ -1,6 +1,6 @@
 header {/* 
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -30,6 +30,13 @@ package ptolemy.actor.ptalon;
 
 {
 	import java.util.LinkedList;
+/** 
+  PtalonScopeChecker.java generated from populator.g by ANTLR.
+
+  @author Adam Cataldo, Elaine Cheong
+  @Pt.ProposedRating Red (celaine)
+  @Pt.AcceptedRating Red (celaine)
+*/
 }
 class PtalonScopeChecker extends TreeParser;
 options {

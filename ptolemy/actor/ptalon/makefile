@@ -51,8 +51,6 @@ JSRCS = \
 	NestedActorManager.java \
 	PtalonActor.java \
 	PtalonAST.java \
-	PtalonDepopulator.java \
-	PtalonDepopulatorTokenTypes.java \
 	PtalonExpressionParameter.java \
 	PtalonLexer.java \
 	PtalonMLHandler.java \
@@ -71,8 +69,6 @@ OTHER_FILES_TO_BE_JARED = \
 	ptalon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
-	PtalonDepopulator.smap \
-	PtalonDepopulatorTokenTypes.txt \
 	PtalonLexer.smap \
 	PtalonPopulator.smap \
 	PtalonPopulatorTokenTypes.txt \
@@ -82,7 +78,6 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
 	PtalonTokenTypes.txt \
 	antlr \
 	data.txt \
-	depopulator.g \
 	parser.g \
 	populator.g \
 	scopeChecker.g \
@@ -93,7 +88,6 @@ ANTLR = "$(JAVA)" -classpath "$(ANTLR_DIR)/antlr.jar" antlr.Tool
 OPTIONAL_JSRCS = \
 	PtalonRecognizer.java \
 	PtalonLexer.java \
-	PtalonDepopulator.java \
 	PtalonPopulator.java \
 	PtalonScopeChecker.java  
 
@@ -121,8 +115,6 @@ PtalonRecognizer.java: parser.g
 	$(ANTLR) $<
 PtalonLexer.java: parser.g
 	$(ANTLR) $<
-PtalonDepopulator.java: depopulator.g
-	$(ANTLR) $<
 PtalonPopulator.java: populator.g
 	$(ANTLR) $<
 PtalonScopeChecker.java: scopeChecker.g
@@ -146,10 +138,6 @@ DISTCLEAN_STUFF = \
 	PtalonScoperCheckerTokenTypes.txt \
 	PtalonScopeChecker.java \
 	PtalonScopeChecker.smap \
-	PtalonDepopulatorTokenTypes.java \
-	PtalonDepopulatorTokenTypes.txt \
-	PtalonDepopulator.java \
-	PtalonDepopulator.smap \
 	PtalonPopulatorTokenTypes.java \
 	PtalonPopulatorTokenTypes.txt \
 	PtalonPopulator.java \

@@ -1,7 +1,7 @@
 // $ANTLR 2.7.7 (2006-11-01): "parser.g" -> "PtalonLexer.java"$
-/* 
+/* Lexer/Parser for Ptalon.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -51,6 +51,14 @@ import antlr.ANTLRHashString;
 import antlr.LexerSharedInputState;
 import antlr.collections.impl.BitSet;
 import antlr.SemanticException;
+
+/** 
+  PtalonLexer.java generated from populator.g by ANTLR.
+
+  @author Adam Cataldo, Elaine Cheong
+  @Pt.ProposedRating Red (celaine)
+  @Pt.AcceptedRating Red (celaine)
+*/
 
 public class PtalonLexer extends antlr.CharScanner implements PtalonTokenTypes, TokenStream
  {

@@ -32,7 +32,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -87,9 +86,9 @@ public class NestedActorManager extends CodeManager {
         _instanceNumbers.put("this", 0);
         try {
             addSymbol("this", "this");
-        } catch (PtalonScopeException e) {
+        } catch (PtalonScopeException ex) {
             //This should never happen.
-            e.printStackTrace();
+            ex.printStackTrace();
         }
         _currentIfTree.setStatus("this", true);
     }
@@ -269,8 +268,9 @@ public class NestedActorManager extends CodeManager {
             } else { // type of name not "import" or "parameter".
                 throw new PtalonRuntimeException("Invalid type for " + name);
             }
-        } catch (Exception e) {
-            throw new PtalonRuntimeException("Unable to add actor " + name, e);
+        } catch (Exception ex) {
+            throw new PtalonRuntimeException(
+                    "Unable to add actor " + name, ex);
         }
     }
 
@@ -495,90 +495,6 @@ public class NestedActorManager extends CodeManager {
         _currentActorTree.setSymbol(actorName);
     }
 
-    /** celaine working here 4/10/07
-     *
-     *  Reset the created and createdIteration flags so that we can
-     *  run the PtalonPopulator over the tree again.
-     *  @see addActor(String)
-     *  @see isActorReady()
-     *  @exception PtalonRuntimeException If there is no actor
-     *   declaration to reset.
-     */
-    public void resetActor() throws PtalonRuntimeException {
-        if (_currentActorTree == null) {
-            throw new PtalonRuntimeException("No actor to reset.");
-        }
-        _currentActorTree.created = false;
-
-        // Remove transparent relations from _transparentRelations if
-        // their containers no longer belong to this model
-        // (transparent relations are actually ports, and all entities
-        // containing the ports have already been removed in
-        // attributeChanged()).
-        for (Iterator<TypedIOPort> iterator =
-                 _transparentRelations.values().iterator();
-             iterator.hasNext(); ) {
-            TypedIOPort port = iterator.next();
-
-            // Split the full name of _actor around the periods.
-            String _actorFullName = _actor.getFullName();
-            String[] _actorNameArray = _actorFullName.split("\\.");
-
-            // Split the full name of port around the periods.
-            String portFullName = port.getFullName();
-            String[] portNameArray = portFullName.split("\\.");
-            
-            // ...NameArray[0] is null because all FullName's start
-            // with a period.  ...NameArray[1] contains the first real
-            // string.
-            if (!_actorNameArray[1].equals(portNameArray[1])) {
-                iterator.remove();
-            } else {
-                System.out.println("keep it!");
-            }
-        }
-        /*
-        if ((_currentActorTree.created)) {
-            if (_inNewWhileIteration()) {
-                if (_currentIfTree.isForStatement) {
-                    int iteration = _currentActorTree.createdIteration;
-                    if ((iteration == 0)
-                            || (iteration == _currentIfTree.entered)) {
-                        // Just go to the the next thing after the out
-                        // if in this case.
-                    } else {
-                        return false;
-                    }
-                } else {
-                    IfTree tree = _currentIfTree;
-                    while (!tree.isForStatement) {
-                        tree = tree.getParent();
-                        if (tree == null) {
-                            throw new PtalonRuntimeException(
-                                    "In a new for iteration, "
-                                    + "but there is no containing "
-                                    + "for block.");
-                        }
-                    }
-                    int iteration = _currentActorTree.createdIteration;
-                    if ((iteration == 0) || (iteration == tree.entered)) {
-                        // Just go to the the next thing after the out
-                        // if in this case.
-                    } else {
-                        return false;
-                    }
-                }
-            } else {
-                return false;
-            }
-        }
-        if (isReady()) {
-            return _currentActorTree.isReady();
-        }
-        return false;
-         */
-    }
-
     /**
      * Set whether or not dangling ports are okay.  If this input
      * is false, then dangling ports will be connected to the outside
@@ -716,9 +632,9 @@ public class NestedActorManager extends CodeManager {
             _instanceNumbers.put(symbol, number);
             String output = "_" + symbol + "_" + number;
             return output;
-        } catch (Exception e) {
+        } catch (Exception ex) {
             throw new PtalonScopeException("Unable to get unique name for "
-                    + symbol, e);
+                    + symbol, ex);
         }
     }
 
@@ -853,8 +769,9 @@ public class NestedActorManager extends CodeManager {
                 try {
                     portType = _getType(portName);
                     transparent = true;
-                } catch (PtalonScopeException e) {
-
+                } catch (PtalonScopeException ex) {
+                    // FIXME: is it ok to do nothing here?
+                    ex.printStackTrace();
                 }
                 if (transparent && portType.equals("transparent")) {
                     if (_getType(connectPoint).equals("relation")) {
@@ -884,16 +801,18 @@ public class NestedActorManager extends CodeManager {
             }
         }
 
-        /**
-         * Add an assignment of the specified port of this actor
-         * declaration to the containing Ptalon actor connection point,
-         * which is either a port or a relation. Here 
-         *  
-         * @param portName The name of the port in this 
-         * @param connectPointPrefix The name of the container's port or relation.
-         * @param connectPointExpression The name of the container's port or relation.
-         * @exception PtalonScopeException If this is not a top-level actor declaration with respect
-         * to the assignment, or if connectPoint is not a port or relation.
+        // FIXME comment
+        /** Add an assignment of the specified port of this actor
+         *  declaration to the containing Ptalon actor connection
+         *  point, which is either a port or a relation. Here
+         *  @param portName The name of the port in this 
+         *  @param connectPointPrefix The name of the container's port
+         *  or relation.
+         *  @param connectPointExpression The name of the container's
+         *  port or relation.
+         *  @exception PtalonScopeException If this is not a top-level
+         *  actor declaration with respect to the assignment, or if
+         *  connectPoint is not a port or relation.
          */
         public void addPortAssign(String portName, String connectPointPrefix,
                 String connectPointExpression) throws PtalonScopeException {
@@ -905,22 +824,21 @@ public class NestedActorManager extends CodeManager {
             _unknownExpressions.put(portName, connectPointExpression);
         }
 
-        /**
-         * Add the unknown left side to this actor declaration.
-         * @param prefix The prefix for the unknown left side.
-         * @param expression The suffix expression for the unknown left side.
+        /** Add the unknown left side to this actor declaration.
+         *  @param prefix The prefix for the unknown left side.
+         *  @param expression The suffix expression for the unknown
+         *  left side.
          */
         public void addUnknownLeftSide(String prefix, String expression) {
             _unknownLeftSides.put(prefix, expression);
         }
 
-        /**
-         * Assign all Ptalon paramters of the specified actor
-         * their corresponding value.
-         * @param actor The actor that contains these parameters.
-         * @exception PtalonRuntimeException If thrown trying to
-         * access the parameter, or if unable to set the token for the
-         * corresponding parameter.
+        /** Assign all Ptalon paramters of the specified actor their
+         *  corresponding value.
+         *  @param actor The actor that contains these parameters.
+         *  @exception PtalonRuntimeException If thrown trying to
+         *  access the parameter, or if unable to set the token for
+         *  the corresponding parameter.
          */
         public void assignPtalonParameters(PtalonActor actor)
                 throws PtalonRuntimeException {
@@ -929,9 +847,9 @@ public class NestedActorManager extends CodeManager {
                 PtalonParameter param = actor.getPtalonParameter(paramName);
                 try {
                     param.setToken(new StringToken(child.getExpression()));
-                } catch (IllegalActionException e) {
+                } catch (IllegalActionException ex) {
                     throw new PtalonRuntimeException(
-                            "Unable to set token for name " + paramName, e);
+                            "Unable to set token for name " + paramName, ex);
                 }
             }
             try {
@@ -962,31 +880,32 @@ public class NestedActorManager extends CodeManager {
                     // dependents are notified.
                     parameter.validate();
                 }
-            } catch (Exception e) {
-                throw new PtalonRuntimeException("Trouble making connections",
-                        e);
+            } catch (Exception ex) {
+                throw new PtalonRuntimeException(
+                        "Trouble making connections",
+                        ex);
             }
         }
 
-        /**
-         * Assign all non-Ptalon parameters of the specified non-Ptalon actor
-         * their corresponding value.
-         * @param actor The actor that contains these parameters.
-         * @exception PtalonRuntimeException If thrown trying to
-         * access the parameter, or if unable to set the token for the
-         * corresponding parameter.
+        /** Assign all non-Ptalon parameters of the specified
+         *  non-Ptalon actor their corresponding value.
+         *  @param actor The actor that contains these parameters.
+         *  @exception PtalonRuntimeException If thrown trying to
+         *  access the parameter, or if unable to set the token for
+         *  the corresponding parameter.
          */
         public void assignNonPtalonParameters(ComponentEntity actor)
                 throws PtalonRuntimeException {
             try {
                 PtParser parser = new PtParser();
-                ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
+                ParseTreeEvaluator _parseTreeEvaluator =
+                    new ParseTreeEvaluator();
                 for (String parameterName : _parameters.keySet()) {
                     String expression = _parameters.get(parameterName);
                     if (expression == null) {
                         throw new PtalonRuntimeException(
                                 "Unable to find expression label for parameter "
-                                        + parameterName);
+                                + parameterName);
                     }
                     ASTPtRootNode parseTree = parser
                             .generateParseTree(expression);
@@ -994,17 +913,23 @@ public class NestedActorManager extends CodeManager {
                         Parameter parameter = (Parameter) actor
                                 .getAttribute(parameterName);
                         if (parameter == null) {
-                            String uniqueName = actor.uniqueName(parameterName);
-                            // FIXME: Ptalon assumes that any parameter we
-                            // give that is not predefined in the actor should
-                            // be an instance of Parameter. This is not always
-                            // the case. Ptalon syntax needs to be extended
-                            // to specify new parameters of a specified class.
-                            // For now, we intercept parameters with name "_location"
-                            // since these are particularly useful for graphical
+                            String uniqueName =
+                                actor.uniqueName(parameterName);
+                            
+                            // FIXME: Ptalon assumes that any
+                            // parameter we give that is not
+                            // predefined in the actor should be an
+                            // instance of Parameter. This is not
+                            // always the case. Ptalon syntax needs to
+                            // be extended to specify new parameters
+                            // of a specified class.  For now, we
+                            // intercept parameters with name
+                            // "_location" since these are
+                            // particularly useful for graphical
                             // demos.
                             if (uniqueName.equals("_location")) {
-                                parameter = new LocationParameter(actor, uniqueName);
+                                parameter =
+                                    new LocationParameter(actor, uniqueName);
                             } else {
                                 parameter = new Parameter(actor, uniqueName);
                             }
@@ -1018,8 +943,9 @@ public class NestedActorManager extends CodeManager {
                             // the new value, and so that attributeChanged()
                             // is called on the actor.
                             parameter.validate();
-                        } catch (IllegalActionException e) {
-                            ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
+                        } catch (IllegalActionException ex) {
+                            ParseTreeFreeVariableCollector collector =
+                                new ParseTreeFreeVariableCollector();
                             Set expressionVariables = collector
                                     .collectFreeVariables(parseTree);
                             Set scopeVariables = _scope.identifierSet();
@@ -1031,7 +957,8 @@ public class NestedActorManager extends CodeManager {
                                     }
                                 }
                             }
-                            ParseTreeSpecializer specializer = new ParseTreeSpecializer();
+                            ParseTreeSpecializer specializer =
+                                new ParseTreeSpecializer();
                             parseTree = specializer.specialize(parseTree,
                                     excludedVariables, _scope);
                             ParseTreeWriter writer = new ParseTreeWriter();
@@ -1039,10 +966,11 @@ public class NestedActorManager extends CodeManager {
                                     .printParseTree(parseTree);
                             parameter.setExpression(outputExpression);
                         }
-                    } catch (ClassCastException e) {
+                    } catch (ClassCastException ex) {
                         Settable parameter = (Settable) actor
                                 .getAttribute(parameterName);
-                        ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
+                        ParseTreeFreeVariableCollector collector =
+                            new ParseTreeFreeVariableCollector();
                         Set expressionVariables = collector
                                 .collectFreeVariables(parseTree);
                         Set scopeVariables = _scope.identifierSet();
@@ -1054,7 +982,8 @@ public class NestedActorManager extends CodeManager {
                                 }
                             }
                         }
-                        ParseTreeSpecializer specializer = new ParseTreeSpecializer();
+                        ParseTreeSpecializer specializer =
+                            new ParseTreeSpecializer();
                         parseTree = specializer.specialize(parseTree,
                                 excludedVariables, _scope);
                         ParseTreeWriter writer = new ParseTreeWriter();
@@ -1063,41 +992,41 @@ public class NestedActorManager extends CodeManager {
                         parameter.setExpression(outputExpression);
                     }
                 }
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 throw new PtalonRuntimeException("Trouble making connections",
-                        e);
+                        ex);
             }
         }
 
-        /**
-         * Get the name of the actor parameter, or throw an exception if
-         * there is none.
-         * @return The name of the actor parameter.
-         * @exception PtalonRuntimeException If no parameter name has been
-         * assigned to this actor.
+        /** Get the name of the actor parameter, or throw an exception
+         *  if there is none.
+         *  @return The name of the actor parameter.
+         *  @exception PtalonRuntimeException If no parameter name has
+         *  been assigned to this actor.
          */
         public String getActorParameter() throws PtalonRuntimeException {
             if (_actorParameter == null) {
-                throw new PtalonRuntimeException("Not assigned a parameter name");
+                throw new PtalonRuntimeException(
+                        "Not assigned a parameter name");
             }
             return _actorParameter;
         }
 
-        /**
-         * Get an expression representing this actor tree, like
-         * a := b(c := d())(n := <2/>)
-         * @return
-         * @throws PtalonRuntimeException
+        /** Get an expression representing this actor tree, like
+         *  a := b(c := d())(n := <2/>)
+         *  @return A string containing the expression.
+         *  @throws PtalonRuntimeException
          */
         public String getExpression() throws PtalonRuntimeException {
             if (_actorParameter == null) {
-                throw new PtalonRuntimeException("Not assigned a parameter name");
+                throw new PtalonRuntimeException(
+                        "Not assigned a parameter name");
             }
             String type = "";
             try {
                 type = _getType(_symbol);
-            } catch (PtalonScopeException e) {
-                throw new PtalonRuntimeException("Scope Exception", e);
+            } catch (PtalonScopeException ex) {
+                throw new PtalonRuntimeException("Scope Exception", ex);
             }
             String output = "";
             if (type.equals("import")) {
@@ -1106,7 +1035,8 @@ public class NestedActorManager extends CodeManager {
                 Parameter parameter = _actor.getPtalonParameter(_symbol);
                 output += parameter.getExpression();
             } else {
-                throw new PtalonRuntimeException("Not assigned a parameter name");
+                throw new PtalonRuntimeException(
+                        "Not assigned a parameter name");
             }
             for (ActorTree child : _children) {
                 output += "(" + child.getExpression() + ")";
@@ -1117,14 +1047,11 @@ public class NestedActorManager extends CodeManager {
             return output;
         }
 
-        /**
-         * Get the first actor tree descendent of this
-         * actor tree with the specified name.  This
-         * should be unique, as each subtree should have
-         * a unique name.
-         * @param uniqueName
-         * @return The descendent, or null if there is none.
-         * 
+        /** Get the first actor tree descendent of this actor tree
+         *  with the specified name.  This should be unique, as each 
+         *  subtree should have a unique name.
+         *  @param uniqueName Unique name of the actor tree to get.
+         *  @return The descendent, or null if there is none.
          */
         public ActorTree getActorTree(String uniqueName) {
             if (_name.equals(uniqueName)) {
@@ -1138,19 +1065,17 @@ public class NestedActorManager extends CodeManager {
             return null;
         }
 
-        /**
-         * @return The CodeManager symbol
-         * for this actor declaration.
+        /** Get the CodeManager symbol.
+         *  @return The CodeManager symbol for this actor declaration.
          */
         public String getSymbol() {
             return _symbol;
         }
 
-        /**
-         * @return True if this nested actor is ready to 
-         * be created.
-         * @exception PtalonRuntimeException If there is
-         * problem accessing any parameters.
+        /** Return true if this nested actor is ready to be created.
+         *  @return True if this nested actor is ready to be created.
+         *  @exception PtalonRuntimeException If there is problem
+         *  accessing any parameters.
          */
         public boolean isReady() throws PtalonRuntimeException {
             for (String portName : _unknownLeftSides.keySet()) {
@@ -1164,7 +1089,7 @@ public class NestedActorManager extends CodeManager {
                         String portType = "";
                         try {
                             portType = _getType(evaluation);
-                        } catch (PtalonScopeException e) {
+                        } catch (PtalonScopeException ex) {
                             continue;
                         }
                         if (portType.equals("transparent")) {
@@ -1173,8 +1098,8 @@ public class NestedActorManager extends CodeManager {
                             }
                         }
                     }
-                } catch (PtalonScopeException e) {
-                    throw new PtalonRuntimeException("scope exception", e);
+                } catch (PtalonScopeException ex) {
+                    throw new PtalonRuntimeException("scope exception", ex);
                 }
             }
             for (String portName : _unknownExpressions.keySet()) {
@@ -1190,7 +1115,7 @@ public class NestedActorManager extends CodeManager {
                 try {
                     connectType = _getType(_transparentLeftHandSides
                             .get(transparency));
-                } catch (PtalonScopeException e) {
+                } catch (PtalonScopeException ex) {
                     continue;
                 }
                 if (connectType.equals("transparent")
@@ -1217,17 +1142,17 @@ public class NestedActorManager extends CodeManager {
                     }
                 }
                 return true;
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 throw new PtalonRuntimeException(
                         "Unable to check if this actor declaration is ready.");
             }
         }
 
-        /**
-         * Make all connections for this nested actor.
-         * @param actor The actor for to connect to others.
-         * @exception PtalonRuntimeException If thrown trying to access the parameter,
-         * or if unable to set the token for the corresponding parameter.
+        /** Make all connections for this nested actor.
+         *  @param actor The actor for to connect to others.
+         *  @exception PtalonRuntimeException If thrown trying to
+         *  access the parameter, or if unable to set the token for
+         *  the corresponding parameter.
          */
         public void makeConnections(ComponentEntity actor)
                 throws PtalonRuntimeException {
@@ -1244,7 +1169,8 @@ public class NestedActorManager extends CodeManager {
                         inner: for (Object connection : relation
                                 .linkedPortList()) {
                             if (connection instanceof TypedIOPort) {
-                                TypedIOPort testPort = (TypedIOPort) connection;
+                                TypedIOPort testPort =
+                                    (TypedIOPort) connection;
                                 if (testPort.getContainer().equals(_actor)) {
                                     if (testPort.isInput()) {
                                         port.setInput(true);
@@ -1281,8 +1207,10 @@ public class NestedActorManager extends CodeManager {
                             inner: for (Object connection : rel
                                     .linkedPortList()) {
                                 if (connection instanceof TypedIOPort) {
-                                    TypedIOPort testPort = (TypedIOPort) connection;
-                                    if (testPort.getContainer().equals(_actor)) {
+                                    TypedIOPort testPort =
+                                        (TypedIOPort) connection;
+                                    if (testPort.getContainer().
+                                            equals(_actor)) {
                                         if (testPort.isInput()) {
                                             port.setInput(true);
                                         }
@@ -1378,8 +1306,10 @@ public class NestedActorManager extends CodeManager {
                             inner: for (Object connection : relation
                                     .linkedPortList()) {
                                 if (connection instanceof TypedIOPort) {
-                                    TypedIOPort testPort = (TypedIOPort) connection;
-                                    if (testPort.getContainer().equals(_actor)) {
+                                    TypedIOPort testPort =
+                                        (TypedIOPort) connection;
+                                    if (testPort.getContainer().
+                                            equals(_actor)) {
                                         if (testPort.isInput()) {
                                             port.setInput(true);
                                         }
@@ -1405,7 +1335,8 @@ public class NestedActorManager extends CodeManager {
                         if (_transparentRelations.containsKey(name)) {
                             TypedIOPort connectionPoint = _transparentRelations
                                     .get(name);
-                            String relationName = _actor.uniqueName("relation");
+                            String relationName =
+                                _actor.uniqueName("relation");
                             TypedIORelation rel = new TypedIORelation(_actor,
                                     relationName);
                             port.link(rel);
@@ -1415,9 +1346,10 @@ public class NestedActorManager extends CodeManager {
                                 inner: for (Object connection : rel
                                         .linkedPortList()) {
                                     if (connection instanceof TypedIOPort) {
-                                        TypedIOPort testPort = (TypedIOPort) connection;
-                                        if (testPort.getContainer().equals(
-                                                _actor)) {
+                                        TypedIOPort testPort =
+                                            (TypedIOPort) connection;
+                                        if (testPort.getContainer().
+                                                equals(_actor)) {
                                             if (testPort.isInput()) {
                                                 port.setInput(true);
                                             }
@@ -1488,17 +1420,17 @@ public class NestedActorManager extends CodeManager {
                         }
                     }
                 }
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 throw new PtalonRuntimeException("Trouble making connections",
-                        e);
+                        ex);
             }
         }
 
-        /**
-         * Make all connections for this nested actor.
-         * @param actor The actor for to connect to others.
-         * @exception PtalonRuntimeException If thrown trying to access the parameter,
-         * or if unable to set the token for the corresponding parameter.
+        /** Make all connections for this nested actor.
+         *  @param actor The actor for to connect to others.
+         *  @exception PtalonRuntimeException If thrown trying to
+         *  access the parameter, or if unable to set the token for
+         *  the corresponding parameter.
          */
         public void makeThisConnections() throws PtalonRuntimeException {
             try {
@@ -1606,11 +1538,13 @@ public class NestedActorManager extends CodeManager {
                         if (_transparentRelations.containsKey(name)) {
                             TypedIOPort connectionPoint = _transparentRelations
                                     .get(name);
-                            String relationName = _actor.uniqueName("relation");
-                            TypedIORelation rel = new TypedIORelation(_actor,
-                                    relationName);
+                            String relationName =
+                                _actor.uniqueName("relation");
+                            TypedIORelation rel =
+                                new TypedIORelation(_actor, relationName);
                             if (port == null) {
-                                if (_transparentRelations.containsKey(portName)) {
+                                if (_transparentRelations.
+                                        containsKey(portName)) {
                                     port = _transparentRelations.get(portName);
                                 } else {
                                     throw new PtalonRuntimeException(
@@ -1631,14 +1565,13 @@ public class NestedActorManager extends CodeManager {
                                 + " not a port or relation");
                     }
                 }
-            } catch (Exception e) {
-                throw new PtalonRuntimeException("Trouble making connections",
-                        e);
+            } catch (Exception ex) {
+                throw new PtalonRuntimeException(
+                        "Trouble making connections", ex);
             }
         }
 
-        /**
-         * Clean up any dynamic left hand sides added.
+        /** Clean up any dynamic left hand sides added.
          */
         public void removeDynamicLeftHandSides() {
             for (String prefix : _unknownLeftSides.keySet()) {
@@ -1668,32 +1601,29 @@ public class NestedActorManager extends CodeManager {
             }
         }
 
-        /**
-         * Set the parameter name for the current actor declaration, if
-         * any, to the given parameter name. 
-         * @param paramName The name of the parameter.
+        /** Set the parameter name for the current actor declaration,
+         *  if any, to the given parameter name.
+         *  @param paramName The name of the parameter.
          */
         public void setActorParameter(String paramName)
                 throws PtalonScopeException {
             _actorParameter = paramName;
         }
 
-        /**
-         * Set the symbol in the CodeManager
-         * this actor declaration refers to.
-         * It should have type "actorparameter" or
-         * "import".
-         * @param symbol The symbol to set.
+        /** Set the symbol in the CodeManager this actor declaration
+         *  refers to.  It should have type "actorparameter" or
+         *  "import".
+         *  @param symbol The symbol to set.
          */
         public void setSymbol(String symbol) {
             _symbol = symbol;
         }
 
-        /**
-         * Write an xml version of this actor to the given output.
-         * @param output The writer to send the output to.
-         * @param depth The depth of indents to start with.
-         * @exception IOException If there is a problem writing to the output.
+        /** Write an xml version of this actor to the given output.
+         *  @param output The writer to send the output to.
+         *  @param depth The depth of indents to start with.
+         *  @exception IOException If there is a problem writing to
+         *  the output.
          */
         public void xmlSerialize(Writer output, int depth) throws IOException {
             String text;
@@ -1715,84 +1645,75 @@ public class NestedActorManager extends CodeManager {
         ///////////////////////////////////////////////////////////////////
         ////                         public members                    ////
 
-        /**
-         * This becomes true after the this actor declaration has been
-         * created.
+        /** This becomes true after the this actor declaration has
+         *  been created.
          */
         public boolean created = false;
 
-        /**
-         * This takes a nonzero value in the iteration
-         * it gets set.
+        /** This takes a nonzero value in the iteration it gets set.
          */
         public int createdIteration = 0;
 
         ///////////////////////////////////////////////////////////////////
         ////                        private members                    ////        
 
-        /**
-         * The left hand side in the Ptalon expression
-         * param := ...
+        /** The left hand side in the Ptalon expression
+         *  param := ...
          */
         private String _actorParameter = null;
 
-        /**
-         * Each key is a parameter in this actor declaration, and each value
-         * is an expression to be passed to the parameter.
+        /** Each key is a parameter in this actor declaration, and
+         *  each value is an expression to be passed to the parameter.
          */
         private Map<String, String> _parameters = new Hashtable<String, String>();
 
-        /**
-         * Each key is a port in this actor declaration, and each value
-         * is a port in its container to be connected to at runtime.
+        /** Each key is a port in this actor declaration, and each
+         *  value is a port in its container to be connected to at
+         *  runtime.
          */
         private Map<String, String> _ports = new Hashtable<String, String>();
 
-        /**
-         * Each key is a port in this actor declaration, and each value
-         * is a relation in its container to be connected to at runtime.
+        /** Each key is a port in this actor declaration, and each
+         *  value is a relation in its container to be connected to at
+         *  runtime.
          */
         private Map<String, String> _relations = new Hashtable<String, String>();
 
-        /**
-         * This is the symbol stored with the CodeManager
-         * that this actor declaration refers 
-         * to.  It's either a "actorparameter", "import", or "this" symbol.
+        /** This is the symbol stored with the CodeManager that this
+         *  actor declaration refers to.  It's either a
+         *  "actorparameter", "import", or "this" symbol.
          */
         private String _symbol;
 
-        /**
-         * Each key is a port in this actor declaration, and each value
-         * is a transparent relation in its container to be connected to at runtime.
+        /** Each key is a port in this actor declaration, and each
+         *  value is a transparent relation in its container to be
+         *  connected to at runtime.
          */
         private Map<String, String> _transparencies = new Hashtable<String, String>();
 
-        /**
-         * Each member of this set is a transparent relation assigned
-         * a value in a this statement, like
-         * this(transparentRelation := someOtherRelation);
+        /** Each member of this set is a transparent relation assigned
+         *  a value in a this statement, like
+         *  this(transparentRelation := someOtherRelation);
          */
         private Map<String, String> _transparentLeftHandSides = new Hashtable<String, String>();
 
-        /**
-         * The _unknownPrefixes maps port names in this actor
-         * declaration instance to prefixes of unknown 
-         * connection points, and _unknownExpressions maps the
-         * same keys to the expressions for these unknown connection points.
+        /** The _unknownPrefixes maps port names in this actor
+         *  declaration instance to prefixes of unknown connection
+         *  points, and _unknownExpressions maps the same keys to
+         *  the expressions for these unknown connection points.
          */
         private Map<String, String> _unknownPrefixes = new Hashtable<String, String>();
 
-        /**
-         * The _unknownPrefixes maps port names in this actor
-         * declaration instance to prefixes of unknown 
-         * connection points, and _unknownExpressions maps the
-         * same keys to the expressions for these unknown connection points.
+        /** The _unknownPrefixes maps port names in this actor
+         *  declaration instance to prefixes of unknown connection
+         *  points, and _unknownExpressions maps the same keys to
+         *  the expressions for these unknown connection points.
          */
         private Map<String, String> _unknownExpressions = new Hashtable<String, String>();
 
-        /**
-         * Each key is a prefix and value is an expression corresponding to
-         * a left hand side of an assignment which may change dynamically.
+        /** Each key is a prefix and value is an expression
+         *  corresponding to a left hand side of an assignment which
+         *  may change dynamically.
          */
         private Map<String, String> _unknownLeftSides = new Hashtable<String, String>();
 

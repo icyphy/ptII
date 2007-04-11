@@ -35,18 +35,14 @@ import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
@@ -73,7 +69,6 @@ import com.microstar.xml.XmlParser;
  @Pt.ProposedRating Red (acataldo)
  @Pt.AcceptedRating Red (acataldo)
  */
-
 public class PtalonActor extends TypedCompositeActor implements Configurable {
 
     /** Construct a PtalonActor with a name and a container.
@@ -95,22 +90,21 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     public PtalonActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        _initializePtalonActor();
+        
         setClassName("ptolemy.actor.ptalon.PtalonActor");
         ptalonCodeLocation = new FileParameter(this, "ptalonCodeLocation");
-        astCreated = false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Set the parameter with paramName to have value
-     * actorName.
-     * 
-     * @param paramName The parameter name.
-     * @param actorName The contained actor name.
-     * @throws PtalonRuntimeException If the parameter or actor
-     * do not exist.
+    /** Set the parameter with paramName to have value actorName.
+     *  @param paramName The parameter name.
+     *  @param actorName The contained actor name.
+     *  @throws PtalonRuntimeException If the parameter or actor
+     *  does not exist.
      */
     public String addActorParameter(String paramName, String actorName)
             throws PtalonRuntimeException {
@@ -124,40 +118,34 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         }
         try {
             param.setToken(new StringToken(actorName));
-        } catch (IllegalActionException e) {
+        } catch (IllegalActionException ex) {
             throw new PtalonRuntimeException("Not able to set parameter "
-                    + paramName + " to actor " + actorName, e);
+                    + paramName + " to actor " + actorName, ex);
         }
-        // celaine working here 4/10/07
-        //param.setVisibility(Settable.NOT_EDITABLE);
         return "";
     }
 
-    /** React to a change in an attribute.  This method is called by
-     *  a contained attribute when its value changes.  This initially responds
-     *  to changes in the <i>ptalonCode</i> parameter.  Later it responds
-     *  to changes in parameters specified in the Ptalon code itself.
+    /** React to a change in an attribute.  This method is called by a
+     *  contained attribute when its value changes.  This initially
+     *  responds to changes in the <i>ptalonCode</i> parameter.  Later
+     *  it responds to changes in parameters specified in the Ptalon
+     *  code itself.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         super.attributeChanged(attribute);
+        
         if (attribute == ptalonCodeLocation) {
             _initializePtalonCodeLocation();
         } else if (attribute instanceof PtalonParameter) {
             PtalonParameter p = (PtalonParameter) attribute;
-            if ((p.hasValue())
-                    && (!p.attributeChangedProcessed || p.valueChanged)) {
-                    // celaine working here 4/10/07
-                    //&& (!p.getVisibility().equals(Settable.NOT_EDITABLE))) {
+            if (p.hasValue() && p.isValueChanged()) {
+                p.setValueChanged(false);
                 try {
-                    if (!p.attributeChangedProcessed) {
-                    //if (p.getVisibility().equals(Settable.FULL)) {
-                        // celaine working here 4/10/07
-                        //p.setVisibility(Settable.NOT_EDITABLE);
-                        p.attributeChangedProcessed = true;
-                    } else if (p.getVisibility().equals(Settable.NONE)) {
+                    if (p.getVisibility().equals(Settable.NONE)) {
                         if (_unsettablePtalonParameters.contains(p)) {
                             return;
                         } else {
@@ -165,64 +153,53 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                         }
                     }
                     
-                    // celaine working here 4/10/07
-                    if (p.valueChanged) {
-                        p.valueChanged = false;
-                    }
-                    
-                    // celaine: what if already in list?
-                    // celaine: what is difference between _assignedPtalonParameters and _ptalonParameters ?
-                    _assignedPtalonParameters.add(p);
-                    
-                    // celaine working here 4/10/07
-                    boolean myValueChanged = false;
-                    _assignedPtalonParametersCopy.add((PtalonParameter)p.clone(null));
-                    if (!_assignedPtalonParametersCopy2.containsKey(p.getName())) {
-                        // FIXME: can optimize, since put returns previous value
-                        _assignedPtalonParametersCopy2.put(p.getName(), (PtalonParameter)p.clone(null));
+                    // Check if the parameter was not previously assigned.
+                    if (!_assignedPtalonParametersCopy.containsKey(
+                                p.getName())) {
+                        // The value of the parameter was not
+                        // previously assigned, so add it to
+                        // _assignedPtalonParameters and save a copy
+                        // by creating a clone.
+                        _assignedPtalonParameters.add(p);
+                        _assignedPtalonParametersCopy.put(p.getName(),
+                                (PtalonParameter)p.clone(null));
                     } else {
-                        // Value previously assigned.  Check to see if value has actually changed.
-                        PtalonParameter oldParameter = _assignedPtalonParametersCopy2.get(p.getName());
-                        Token token = oldParameter.getToken();
-                        BooleanToken booleanToken = token.isEqualTo(p.getToken());
-                        if (booleanToken.booleanValue()) {
-                            // Value is same as before.  Do nothing.
-                        } else {
-                            // Value has changed!
-                            _assignedPtalonParametersCopy2.put(p.getName(), (PtalonParameter)p.clone(null));
+                        // The value of the parameter was previously
+                        // assigned.  Check to see if value has
+                        // actually changed.
+                        PtalonParameter oldParameter =
+                            _assignedPtalonParametersCopy.get(p.getName());
+                        if (!oldParameter.getToken().isEqualTo(p.getToken()).
+                                booleanValue()) {
+                            // The value has changed.  Create a new
+                            // copy of the parameter.
+                            _assignedPtalonParametersCopy.put(p.getName(),
+                                    (PtalonParameter)p.clone(null));
                             
                             // Delete the inside of this PtalonActor
-                            
-                            // FIXME: what order should this be in?
+                            // by removing all entities and relations.
+                            // We do not remove ports, but they become
+                            // unlinked when the attached entities and
+                            // relations are removed.
                             this.removeAllEntities();
-                            
-                            // Let's say that you cannot change the
-                            //external ports of the PtalonActor.
-                            
-                            //this.removeAllPorts();
+                            this.removeAllRelations();
 
-                            //this.removeAllRelations();
-                            
-                            Iterator relations =
-                                this.relationList().iterator();
-                            while (relations.hasNext()) {
-                                Relation relation =
-                                    (Relation) relations.next();
-                                relation.unlinkAll();
-                            }
-
-                            myValueChanged = true;
+                            // Reset this PtalonActor and reparse the
+                            // Ptalon code.
+                            _initializePtalonActor();
+                            _initializePtalonCodeLocation();
+                            return;
                         }
-                        
                     }
                     
-                    // FIXME: What is below for?
+                    // FIXME: What is the code below for?
                     if ((_ast == null) || (_codeManager == null)) {
                         return;
                     }
-                    boolean ready = true;
+
                     // Check to see if all of the PtalonParameters for
                     // this actor have been assigned values.
+                    boolean ready = true;
                     for (PtalonParameter param : _ptalonParameters) {
                         if (!param.hasValue()) {
                             // There is a PtalonParameter whose value
@@ -232,28 +209,16 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                         }
                     }
                     if (ready) {
-                        // celaine working here 4/10/07
-                        if (myValueChanged) {
-                            PtalonDepopulator depopulator = new PtalonDepopulator();
-                            depopulator.setASTNodeClass(
-                                    "ptolemy.actor.ptalon.PtalonAST");
-                            depopulator.actor_definition(_ast, _codeManager);
-                            _ast = (PtalonAST) depopulator.getAST();
-                            _codeManager.assignInternalParameters(); 
-                        } //else {
-                        
                         PtalonPopulator populator = new PtalonPopulator();
                         populator.setASTNodeClass(
                                 "ptolemy.actor.ptalon.PtalonAST");
                         populator.actor_definition(_ast, _codeManager);
                         _ast = (PtalonAST) populator.getAST();
                         _codeManager.assignInternalParameters();
-                        // celaine working here 4/10/07
-                        //}
                     }
                 } catch (Exception ex) {
-                    throw new IllegalActionException(this, ex, ex.getMessage());
-
+                    throw new
+                        IllegalActionException(this, ex, ex.getMessage());
                 }
             }
         }
@@ -290,9 +255,9 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 parser.parse(_configureSource, null, new StringReader(text));
                 _removeEntity(null);
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
             //e.printStackTrace();
-            throw e;
+            throw ex;
         }
     }
 
@@ -322,39 +287,36 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         return null;
     }
 
-    /**
-     * Get the unique name for the symbol in the PtalonActor. 
-     * @param ptalonName The symbol to test.
-     * @return The unique name.
-     * @exception PtalonRuntimeException If no such symbol exists.
+    /** Get the unique name for the symbol in the PtalonActor. 
+     *  @param ptalonName The symbol to test.
+     *  @return The unique name.
+     *  @exception PtalonRuntimeException If no such symbol exists.
      */
     public String getMappedName(String ptalonName)
             throws PtalonRuntimeException {
         return _codeManager.getMappedName(ptalonName);
     }
 
-    /**
-     * Return the depth of this actor declaration
-     * with respect to its creator.  If this is 
-     * not created by another PtalonActor's code, then the
-     * depth will be zero.  If however, this actor is named
-     * Bar in some PtalonCode, and it is created with
-     * Foo(a := Bar()), then it's depth will be 2, and the
-     * corresponding Foo container will have depth 1.
-     * @return The depth of this actor declaration
-     * with respect to its creator. 
+    /** Return the depth of this actor declaration with respect to its
+     *  creator.  If this is not created by another PtalonActor's
+     *  code, then the depth will be zero.  If however, this actor
+     *  is named Bar in some PtalonCode, and it is created with
+     *  Foo(a := Bar()), then it's depth will be 2, and the
+     *  corresponding Foo container will have depth 1.
+     *  @return The depth of this actor declaration with respect to
+     *  its creator.
      */
     public int getNestedDepth() {
         return _nestedDepth;
     }
 
-    /**
-     * Get the PtalonParameter with the name specified in
-     * the Ptalon code.
-     * @param name The name of the parameter in the Ptalon code,
-     * which may be a prefix of the actual parameter's name.
-     * @return The PtalonParameter
-     * @exception PtalonRuntimeException If no such PtalonParameter exists.
+    /** Get the PtalonParameter with the name specified in the Ptalon
+     *  code.
+     *  @param name The name of the parameter in the Ptalon code,
+     *  which may be a prefix of the actual parameter's name.
+     *  @return The PtalonParameter
+     *  @exception PtalonRuntimeException If no such PtalonParameter
+     *  exists.
      */
     public PtalonParameter getPtalonParameter(String name)
             throws PtalonRuntimeException {
@@ -362,40 +324,39 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             String uniqueName = _codeManager.getMappedName(name);
             PtalonParameter param = (PtalonParameter) getAttribute(uniqueName);
             return param;
-        } catch (Exception e) {
+        } catch (Exception ex) {
             throw new PtalonRuntimeException("Unable to access parameter "
-                    + name, e);
+                    + name, ex);
         }
     }
 
-    /**
-     * Set the depth of this actor declaration
-     * with respect to its creator.  If this is 
-     * not created by another PtalonActor's code, then the
-     * depth will be zero.  If however, this actor is named
-     * Bar in some PtalonCode, and it is created with
-     * Foo(a := Bar()), then it's depth will be 2, and the
-     * corresponding Foo container will have depth 1.
-     * @param depth The of this actor declaration
-     * with respect to its creator. 
+    /** Set the depth of this actor declaration with respect to its
+     *  creator.  If this is not created by another PtalonActor's
+     *  code, then the depth will be zero.  If however, this actor is
+     *  named Bar in some PtalonCode, and it is created with Foo(a :=
+     *  Bar()), then it's depth will be 2, and the corresponding Foo
+     *  container will have depth 1.
+     *  @param depth The of this actor declaration with respect to its
+     *  creator.
      */
     public void setNestedDepth(int depth) {
         _nestedDepth = depth;
     }
 
-    /** Return a name that is guaranteed to not be the name of
-     *  any contained attribute, port, class, entity, or relation.
-     *  In this implementation, the argument
-     *  is stripped of any numeric suffix, and then a numeric suffix
-     *  is appended and incremented until a name is found that does not
-     *  conflict with a contained attribute, port, class, entity, or relation.
-     *  If this composite entity or any composite entity that it contains
-     *  defers its MoML definition (i.e., it is an instance of a class or
-     *  a subclass), then the prefix gets appended with "_<i>n</i>_",
-     *  where <i>n</i> is the depth of this deferral. That is, if the object
-     *  deferred to also defers, then <i>n</i> is incremented.  This differs
-     *  from the superclass in that the first "_<i>n</i>_" appended to the
-     *  prefix is "1" rather than "2".
+    /** Return a name that is guaranteed to not be the name of any
+     *  contained attribute, port, class, entity, or relation.  In
+     *  this implementation, the argument is stripped of any numeric
+     *  suffix, and then a numeric suffix is appended and incremented
+     *  until a name is found that does not conflict with a contained
+     *  attribute, port, class, entity, or relation.  If this
+     *  composite entity or any composite entity that it contains
+     *  defers its MoML definition (i.e., it is an instance of a class
+     *  or a subclass), then the prefix gets appended with
+     *  "_<i>n</i>_", where <i>n</i> is the depth of this
+     *  deferral. That is, if the object deferred to also defers, then
+     *  <i>n</i> is incremented.  This differs from the superclass in
+     *  that the first "_<i>n</i>_" appended to the prefix is "1"
+     *  rather than "2".
      *  @param prefix A prefix for the name.
      *  @return A unique name.
      */
@@ -406,22 +367,22 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
 
         String candidate = prefix;
 
-        // NOTE: The list returned by getPrototypeList() has
-        // length equal to the number of containers of this object
-        // that return non-null to getParent(). That number is
-        // assured to be at least one greater than the corresponding
-        // number for any of the parents returned by getParent().
-        // Hence, we can use that number to minimize the likelyhood
-        // of inadvertent capture.
+        // NOTE: The list returned by getPrototypeList() has length
+        // equal to the number of containers of this object that
+        // return non-null to getParent(). That number is assured to
+        // be at least one greater than the corresponding number for
+        // any of the parents returned by getParent().  Hence, we can
+        // use that number to minimize the likelyhood of inadvertent
+        // capture.
         try {
             int depth = getPrototypeList().size();
 
             if (depth > 0) {
                 prefix = prefix + "_" + depth + "_";
             }
-        } catch (IllegalActionException e) {
+        } catch (IllegalActionException ex) {
             // Derivation invariant is not satisfied.
-            throw new InternalErrorException(e);
+            throw new InternalErrorException(ex);
         }
 
         int uniqueNameIndex = 1;
@@ -439,26 +400,22 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     ///////////////////////////////////////////////////////////////////
     ////                        public members                     ////
 
-    /**
-     * An boolean whose value is true if the 
-     * AST has been created.
+    /** An boolean whose value is true if the AST has been created.
      */
     public boolean astCreated;
 
-    /**
-     * The location of the Ptalon code.
+    /** The location of the Ptalon code.
      */
     public FileParameter ptalonCodeLocation;
 
     ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                    ////
+    ////                        protected methods                  ////
 
-    /**
-     * Add the attribute, and if attribute is a PtalonParameter,
-     * add it to a list of Ptalon parameters.
-     * @param attribute The attribute to be added.
-     * @exception NameDuplicationException If the superclass throws it.
-     * @throws IllegalActionException If the superclass throws it.
+    /** Add the attribute, and if attribute is a PtalonParameter, add
+     *  it to a list of Ptalon parameters.
+     *  @param attribute The attribute to be added.
+     *  @exception NameDuplicationException If the superclass throws it.
+     *  @throws IllegalActionException If the superclass throws it.
      */
     protected void _addAttribute(Attribute attribute)
             throws NameDuplicationException, IllegalActionException {
@@ -469,9 +426,10 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     }
 
     /** Write a MoML description of the contents of this object, which
-     *  in this class is the configuration information. This method is called
-     *  by exportMoML().  Each description is indented according to the
-     *  specified depth and terminated with a newline character.
+     *  in this class is the configuration information. This method is
+     *  called by exportMoML().  Each description is indented
+     *  according to the specified depth and terminated with a newline
+     *  character.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
@@ -489,7 +447,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 String filename;
                 try {
                     filename = ptalonCodeLocation.asFile().toURI().toString();
-                } catch (IllegalActionException e) {
+                } catch (IllegalActionException ex) {
                     throw new IOException("Unable to get valid file name.");
                 }
                 if (filename.startsWith("file:/")) {
@@ -537,21 +495,21 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 output.write(_getIndentPrefix(depth) + "</configure>\n");
             }
 
-        } catch (IOException e) {
+        } catch (IOException ex) {
             //e.printStackTrace();
-            throw e;
+            throw ex;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
-    /**
-     * This helper method is used to begin the Ptalon compiler
-     * if the ptalonCodeLocation attribute has been updated.
+    /** This helper method is used to begin the Ptalon compiler if the
+     *  ptalonCodeLocation attribute has been updated.
      * @exception IllegalActionException If any exception is thrown.
      */
-    private void _initializePtalonCodeLocation() throws IllegalActionException {
+    private void _initializePtalonCodeLocation()
+            throws IllegalActionException {
         try {
             if (astCreated) {
                 ptalonCodeLocation.setVisibility(Settable.NONE);
@@ -580,55 +538,67 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             astCreated = true;
             ptalonCodeLocation.setVisibility(Settable.NOT_EDITABLE);
             _codeManager.assignInternalParameters();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalActionException(this, e, e.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new IllegalActionException(this, ex, ex.getMessage());
         }
     }
 
-    /**
-     * A list of all ptalon parameters that have been assigned a value.
+    /** Initialize this PtalonActor.  This method may be called when
+     *  the PtalonActor is first constructed or if any of its
+     *  parameter values are changed, so we only initialize
+     *  variables that do not need to be saved when reparsing the
+     *  Ptalon file.
      */
-    private List<PtalonParameter> _assignedPtalonParameters = new LinkedList<PtalonParameter>();
-
-    /**
-     * A list of copies of all ptalon parameters that have been assigned a value.
-     * Can use this to compare newly assigned values against previously assigned values.
-     * celaine working here 4/10/07
-     */
-    private List<PtalonParameter> _assignedPtalonParametersCopy = new LinkedList<PtalonParameter>();
-    private Hashtable<String, PtalonParameter> _assignedPtalonParametersCopy2 = new Hashtable<String, PtalonParameter>();
+    private void _initializePtalonActor() {
+        astCreated = false;
+        _ast = null;
+        _codeManager = null;
+        _nestedDepth = 0;
+    }
     
-    /**
-     * The abstract syntax tree for the PtalonActor.
+    /** A list of all ptalon parameters that have been assigned a
+     *  value.  This is a subset of _ptalonParameters.
+     */
+    private List<PtalonParameter> _assignedPtalonParameters =
+            new LinkedList<PtalonParameter>();
+
+    /** A table of copies of all the elements in
+     *  _assignedPtalonParameters.  In each entry of this table, the
+     *  value is a copy of an element in _assignedPtalonParameters (a
+     *  PtalonParameter) and the key is the name returned by
+     *  getName().  This table is used to compare newly assigned
+     *  values against previously assigned values.
+     */
+    private Hashtable<String, PtalonParameter> _assignedPtalonParametersCopy =
+        new Hashtable<String, PtalonParameter>();
+    
+    /** The abstract syntax tree for the PtalonActor.
      */
     private PtalonAST _ast;
 
-    /**
-     * Information generated about the Ptalon code that is used by the
-     * compiler.
+    /** Information generated about the Ptalon code that is used by
+     *  the compiler.
      */
     private NestedActorManager _codeManager;
 
-    /**
-     * The text representation of the URL for this object.
+    /** The text representation of the URL for this object.
      */
     private String _configureSource;
 
-    /**
-     * The depth for this actor with respect to nested
-     * actor declarations.
+    /** The depth for this actor with respect to nested actor
+     *  declarations.
      */
-    private int _nestedDepth = 0;
+    private int _nestedDepth;
 
-    /**
-     * A list of all ptalon parameters for this actor.
+    /** A list of all ptalon parameters for this actor.
      */
-    private List<PtalonParameter> _ptalonParameters = new LinkedList<PtalonParameter>();
+    private List<PtalonParameter> _ptalonParameters =
+        new LinkedList<PtalonParameter>();
 
-    /**
-     * A list of all ptalon parameters who are not settable by the user.
+    /** A list of all ptalon parameters who are not settable by the
+     *  user.  This is a subset of _ptalonParameters.
      */
-    private List<PtalonParameter> _unsettablePtalonParameters = new LinkedList<PtalonParameter>();
-
+    private List<PtalonParameter> _unsettablePtalonParameters =
+        new LinkedList<PtalonParameter>();;
 }

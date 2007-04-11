@@ -48,12 +48,13 @@ import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
 import antlr.RecognitionException;
-import antlr.TreeParser;
 
 /**
  A helper class to store information, like variable scope info, about
@@ -90,9 +91,28 @@ public class CodeManager {
      *  create the parameter.
      */
     public void addActorParameter(String name) throws PtalonRuntimeException {
-        String uniqueName = _actor.uniqueName(name);
         try {
-            /*PtalonParameter parameter =*/ new PtalonParameter(_actor, uniqueName);
+            String uniqueName = null;
+            
+            // If the parameter already exists and was assigned a
+            // value, then use it.
+            Attribute attribute = _actor.getAttribute(name);
+            if (attribute != null) {
+                if (attribute instanceof PtalonParameter) {
+                    PtalonParameter parameter =
+                        (PtalonParameter) attribute;
+                    if (parameter.hasValue()) {
+                        uniqueName = name;
+                    }
+                }
+            }
+            
+            // If attribute was not found above, create a new one.
+            if (uniqueName == null) {
+                uniqueName = _actor.uniqueName(name);
+                new PtalonParameter(_actor, uniqueName);
+            }            
+
             _currentIfTree.setStatus(name, true);
             if (_inNewWhileIteration()) {
                 if (_currentIfTree.isForStatement) {
@@ -105,7 +125,7 @@ public class CodeManager {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                            + "but there is no containing for block.");
+                                    + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -115,10 +135,10 @@ public class CodeManager {
                         .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
-        } catch (NameDuplicationException e) {
-            throw new PtalonRuntimeException("NameDuplicationException", e);
-        } catch (IllegalActionException e) {
-            throw new PtalonRuntimeException("IllegalActionException", e);
+        } catch (NameDuplicationException ex) {
+            throw new PtalonRuntimeException("NameDuplicationException", ex);
+        } catch (IllegalActionException ex) {
+            throw new PtalonRuntimeException("IllegalActionException", ex);
         }
     }
 
@@ -133,9 +153,28 @@ public class CodeManager {
      */
     public void addActorParameter(String name, String expression)
             throws PtalonRuntimeException {
-        String uniqueName = _actor.uniqueName(name);
         try {
-            PtalonParameter parameter = new PtalonParameter(_actor, uniqueName);
+            String uniqueName = null;
+            PtalonParameter parameter = null;
+            
+            // If the parameter already exists and was assigned a
+            // value, then use it.
+            Attribute attribute = _actor.getAttribute(name);
+            if (attribute != null) {
+                if (attribute instanceof PtalonParameter) {
+                    parameter = (PtalonParameter) attribute;
+                    if (parameter.hasValue()) {
+                        uniqueName = name;
+                    }
+                }
+            }
+            
+            // If attribute was not found above, create a new one.
+            if (uniqueName == null) {
+                uniqueName = _actor.uniqueName(name);
+                parameter = new PtalonParameter(_actor, uniqueName);
+            } 
+
             parameter.setVisibility(Settable.NONE);
             _currentIfTree.setStatus(name, true);
             if (_inNewWhileIteration()) {
@@ -149,7 +188,7 @@ public class CodeManager {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                            + "but there is no containing for block.");
+                                    + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -161,15 +200,15 @@ public class CodeManager {
             _currentIfTree.mapName(name, uniqueName);
             _unassignedParameters.add(parameter);
             _unassignedParameterValues.add(expression);
-        } catch (NameDuplicationException e) {
-            throw new PtalonRuntimeException("NameDuplicationException", e);
-        } catch (IllegalActionException e) {
-            throw new PtalonRuntimeException("IllegalActionException", e);
+        } catch (NameDuplicationException ex) {
+            throw new PtalonRuntimeException("NameDuplicationException", ex);
+        } catch (IllegalActionException ex) {
+            throw new PtalonRuntimeException("IllegalActionException", ex);
         }
     }
 
     /** Add a TypedIOPort to the PtalonActor with the specified name,
-     *  and input flow type
+     *  and input flow type.
      *  @param name The name of the port.
      *  @exception PtalonRuntimeException If the symbol does not
      *  exist, or if the symbol already has a port associated with it,
@@ -177,9 +216,20 @@ public class CodeManager {
      *  the port.
      */
     public void addInPort(String name) throws PtalonRuntimeException {
-        String uniqueName = _actor.uniqueName(name);
         try {
-            TypedIOPort port = new TypedIOPort(_actor, uniqueName);
+            String uniqueName = null;
+            TypedIOPort port = null;
+
+            // If the port already exists, then use it.
+            Port oldPort = _actor.getPort(name);
+            if (oldPort != null && oldPort instanceof TypedIOPort) {
+                uniqueName = name;
+                port = (TypedIOPort) oldPort;
+            } else {
+                // If port was not found above, create a new one.
+                uniqueName = _actor.uniqueName(name);  
+                port = new TypedIOPort(_actor, uniqueName);
+            }
             port.setInput(true);
             port.setOutput(false);
             if (_currentIfTree.getType(name).equals("multiinport")) {
@@ -197,7 +247,7 @@ public class CodeManager {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                            + "but there is no containing for block.");
+                                    + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -207,17 +257,17 @@ public class CodeManager {
                         .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
-        } catch (NameDuplicationException e) {
-            throw new PtalonRuntimeException("NameDuplicationException", e);
-        } catch (IllegalActionException e) {
-            throw new PtalonRuntimeException("IllegalActionException", e);
-        } catch (PtalonScopeException e) {
-            throw new PtalonRuntimeException("Couldn't find symbol " + name, e);
+        } catch (NameDuplicationException ex) {
+            throw new PtalonRuntimeException("NameDuplicationException", ex);
+        } catch (IllegalActionException ex) {
+            throw new PtalonRuntimeException("IllegalActionException", ex);
+        } catch (PtalonScopeException ex) {
+            throw new PtalonRuntimeException("Couldn't find symbol " + name, ex);
         }
     }
 
     /** Add a TypedIOPort to the PtalonActor with the specified name,
-     *  and output flow type
+     *  and output flow type.
      *  @param name The name of the port.
      *  @exception PtalonRuntimeException If the symbol does not
      *  exist, or if the symbol already has a port associated with it,
@@ -225,9 +275,20 @@ public class CodeManager {
      *  the port.
      */
     public void addOutPort(String name) throws PtalonRuntimeException {
-        String uniqueName = _actor.uniqueName(name);
         try {
-            TypedIOPort port = new TypedIOPort(_actor, uniqueName);
+            String uniqueName = null;
+            TypedIOPort port = null;
+       
+            // If the port already exists, then use it.
+            Port oldPort = _actor.getPort(name);
+            if (oldPort != null && oldPort instanceof TypedIOPort) {
+                uniqueName = name;
+                port = (TypedIOPort) oldPort;
+            } else {
+                // If port was not found above, create a new one.
+                uniqueName = _actor.uniqueName(name);  
+                port = new TypedIOPort(_actor, uniqueName);
+            }
             port.setInput(false);
             port.setOutput(true);
             if (_currentIfTree.getType(name).equals("multioutport")) {
@@ -245,7 +306,7 @@ public class CodeManager {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                            + "but there is no containing for block.");
+                                    + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -255,27 +316,45 @@ public class CodeManager {
                         .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
-        } catch (NameDuplicationException e) {
-            throw new PtalonRuntimeException("NameDuplicationException", e);
-        } catch (IllegalActionException e) {
-            throw new PtalonRuntimeException("IllegalActionException", e);
-        } catch (PtalonScopeException e) {
-            throw new PtalonRuntimeException("Couldn't find symbol " + name, e);
+        } catch (NameDuplicationException ex) {
+            throw new PtalonRuntimeException("NameDuplicationException", ex);
+        } catch (IllegalActionException ex) {
+            throw new PtalonRuntimeException("IllegalActionException", ex);
+        } catch (PtalonScopeException ex) {
+            throw new PtalonRuntimeException("Couldn't find symbol " + name, ex);
         }
     }
 
     /** Add a Parameter to the PtalonActor with the specified name.
      *  @param name The name of the parameter.
      *  @exception PtalonRuntimeException If the symbol does not
-     * exist, or if the symbol already has a parameter associated with
-     * it, or if an IllegalActionException is thrown trying to create
-     * the parameter.
+     *  exist, or if the symbol already has a parameter associated
+     *  with it, or if an IllegalActionException is thrown trying to
+     *  create the parameter.
      */
     public void addParameter(String name) throws PtalonRuntimeException {
-        String uniqueName = _actor.uniqueName(name);
         try {
-            /*PtalonExpressionParameter parameter =*/ new PtalonExpressionParameter(
-                    _actor, uniqueName);
+            String uniqueName = null;
+
+            // If the parameter already exists and was assigned a
+            // value, then use it.
+            Attribute attribute = _actor.getAttribute(name);
+            if (attribute != null) {
+                if (attribute instanceof PtalonExpressionParameter) {
+                    PtalonExpressionParameter parameter =
+                        (PtalonExpressionParameter) attribute;
+                    if (parameter.hasValue()) {
+                        uniqueName = name;
+                    }
+                }
+            }
+            
+            // If attribute was not found above, create a new one.
+            if (uniqueName == null) {
+                uniqueName = _actor.uniqueName(name);
+                new PtalonExpressionParameter(_actor, uniqueName);
+            }
+            
             _currentIfTree.setStatus(name, true);
             if (_inNewWhileIteration()) {
                 if (_currentIfTree.isForStatement) {
@@ -288,7 +367,7 @@ public class CodeManager {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                            + "but there is no containing for block.");
+                                    + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -299,10 +378,10 @@ public class CodeManager {
             }
 
             _currentIfTree.mapName(name, uniqueName);
-        } catch (NameDuplicationException e) {
-            throw new PtalonRuntimeException("NameDuplicationException", e);
-        } catch (IllegalActionException e) {
-            throw new PtalonRuntimeException("IllegalActionException", e);
+        } catch (NameDuplicationException ex) {
+            throw new PtalonRuntimeException("NameDuplicationException", ex);
+        } catch (IllegalActionException ex) {
+            throw new PtalonRuntimeException("IllegalActionException", ex);
         }
     }
 
@@ -316,10 +395,29 @@ public class CodeManager {
      */
     public void addParameter(String name, String expression)
             throws PtalonRuntimeException {
-        String uniqueName = _actor.uniqueName(name);
         try {
-            PtalonExpressionParameter parameter = new PtalonExpressionParameter(
-                    _actor, uniqueName);
+            String uniqueName = null;
+            PtalonExpressionParameter parameter = null;
+            
+            // If the parameter already exists and was assigned a
+            // value, then use it.
+            Attribute attribute = _actor.getAttribute(name);
+            if (attribute != null) {
+                if (attribute instanceof PtalonExpressionParameter) {
+                    parameter =
+                        (PtalonExpressionParameter) attribute;
+                    if (parameter.hasValue()) {
+                        uniqueName = name;
+                    }
+                }
+            }
+            
+            // If attribute was not found above, create a new one.
+            if (uniqueName == null) {
+                uniqueName = _actor.uniqueName(name);
+                parameter = new PtalonExpressionParameter(_actor, uniqueName);
+            }
+
             parameter.setVisibility(Settable.NONE);
             _currentIfTree.setStatus(name, true);
             if (_inNewWhileIteration()) {
@@ -333,7 +431,7 @@ public class CodeManager {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                            + "but there is no containing for block.");
+                                    + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -345,10 +443,10 @@ public class CodeManager {
             _currentIfTree.mapName(name, uniqueName);
             _unassignedParameters.add(parameter);
             _unassignedParameterValues.add(expression);
-        } catch (NameDuplicationException e) {
-            throw new PtalonRuntimeException("NameDuplicationException", e);
-        } catch (IllegalActionException e) {
-            throw new PtalonRuntimeException("IllegalActionException", e);
+        } catch (NameDuplicationException ex) {
+            throw new PtalonRuntimeException("NameDuplicationException", ex);
+        } catch (IllegalActionException ex) {
+            throw new PtalonRuntimeException("IllegalActionException", ex);
         }
     }
 
@@ -360,9 +458,20 @@ public class CodeManager {
      *  the port.
      */
     public void addPort(String name) throws PtalonRuntimeException {
-        String uniqueName = _actor.uniqueName(name);
         try {
-            TypedIOPort port = new TypedIOPort(_actor, uniqueName);
+            String uniqueName = null;
+            TypedIOPort port = null;
+
+            // If the port already exists, then use it.
+            Port oldPort = _actor.getPort(name);
+            if (oldPort != null && oldPort instanceof TypedIOPort) {
+                uniqueName = name;
+                port = (TypedIOPort) oldPort;
+            } else {
+                // If port was not found above, create a new one.
+                uniqueName = _actor.uniqueName(name);            
+                port = new TypedIOPort(_actor, uniqueName);
+            }
             port.setInput(true);
             port.setOutput(true);
             if (_currentIfTree.getType(name).equals("multiport")) {
@@ -380,7 +489,7 @@ public class CodeManager {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                            + "but there is no containing for block.");
+                                    + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -390,12 +499,14 @@ public class CodeManager {
                         .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
-        } catch (NameDuplicationException e) {
-            throw new PtalonRuntimeException("NameDuplicationException", e);
-        } catch (IllegalActionException e) {
-            throw new PtalonRuntimeException("IllegalActionException", e);
-        } catch (PtalonScopeException e) {
-            throw new PtalonRuntimeException("Couldn't find symbol " + name, e);
+        } catch (NameDuplicationException ex) {
+            throw new PtalonRuntimeException("NameDuplicationException", ex);
+        } catch (IllegalActionException ex) {
+            throw new PtalonRuntimeException("IllegalActionException", ex);
+        } catch (PtalonScopeException ex) {
+            throw new PtalonRuntimeException(
+                    "Couldn't find symbol " + name,
+                    ex);
         }
     }
 
@@ -410,7 +521,11 @@ public class CodeManager {
     public void addRelation(String name) throws PtalonRuntimeException {
         String uniqueName = _actor.uniqueName(name);
         try {
-            /*TypedIORelation relation =*/ new TypedIORelation(_actor, uniqueName);
+            // In the event that this actor is being reparsed, we
+            // don't have to check for a pre-existing relation with
+            // this name because we already removed all of the
+            // relations in attributeChanged().
+            new TypedIORelation(_actor, uniqueName);
             _currentIfTree.setStatus(name, true);
             if (_inNewWhileIteration()) {
                 if (_currentIfTree.isForStatement) {
@@ -423,7 +538,7 @@ public class CodeManager {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                            + "but there is no containing for block.");
+                                    + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -433,10 +548,10 @@ public class CodeManager {
                         .setEnteredIteration(name, _currentIfTree.entered);
             }
             _currentIfTree.mapName(name, uniqueName);
-        } catch (NameDuplicationException e) {
-            throw new PtalonRuntimeException("NameDuplicationException", e);
-        } catch (IllegalActionException e) {
-            throw new PtalonRuntimeException("IllegalActionException", e);
+        } catch (NameDuplicationException ex) {
+            throw new PtalonRuntimeException("NameDuplicationException", ex);
+        } catch (IllegalActionException ex) {
+            throw new PtalonRuntimeException("IllegalActionException", ex);
         }
     }
 
@@ -447,14 +562,18 @@ public class CodeManager {
      *  @exception PtalonScopeException If a symbol with this name has
      *  already been added somewhere in the current scope.
      */
-    public void addSymbol(String name, String type) throws PtalonScopeException {
+    public void addSymbol(String name, String type)
+            throws PtalonScopeException {
         List<IfTree> ancestors = _currentIfTree.getAncestors();
         for (IfTree tree : ancestors) {
             for (String symbol : tree.getSymbols()) {
                 if (symbol.equals(name)) {
-                    throw new PtalonScopeException("Cannot add " + type + " "
-                            + name + " because symbol " + name
-                            + " already exists in scope " + tree.getName());
+                    throw new PtalonScopeException("Cannot add "
+                            + type + " "
+                            + name + " because symbol "
+                            + name
+                            + " already exists in scope "
+                            + tree.getName());
                 }
             }
         }
@@ -487,7 +606,7 @@ public class CodeManager {
                     if (tree == null) {
                         throw new PtalonRuntimeException(
                                 "In a new for iteration, "
-                                        + "but there is no containing for block.");
+                                + "but there is no containing for block.");
                     }
                 }
                 _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -509,8 +628,8 @@ public class CodeManager {
                 String expression = _unassignedParameterValues.remove(0);
                 parameter.setToken(expression);
             }
-        } catch (Exception e) {
-            throw new PtalonRuntimeException("Trouble assigning parameter", e);
+        } catch (Exception ex) {
+            throw new PtalonRuntimeException("Trouble assigning parameter", ex);
         }
     }
 
@@ -539,10 +658,8 @@ public class CodeManager {
      *  @param populator The PtalonPopulator that called this statement. 
      *  @exception PtalonRuntimeException If the subscope does not exist.
      */
-    // celaine working here 4/10/07
     public void enterForScope(String scope, PtalonAST forBlock,
-            TreeParser populator) throws PtalonRuntimeException {
-            //PtalonPopulator populator) throws PtalonRuntimeException {
+            PtalonPopulator populator) throws PtalonRuntimeException {
         enterIfScope(scope);
         _currentIfTree.forBlock = forBlock;
         _currentIfTree.populator = populator;
@@ -558,9 +675,10 @@ public class CodeManager {
     public boolean evaluateBoolean(String expression)
             throws PtalonRuntimeException {
         try {
-            BooleanToken result = (BooleanToken) evaluateExpression(expression);
+            BooleanToken result =
+                (BooleanToken) evaluateExpression(expression);
             return result.booleanValue();
-        } catch (ClassCastException e) {
+        } catch (ClassCastException ex) {
             throw new PtalonRuntimeException("Not a boolean token.");
         }
     }
@@ -580,9 +698,9 @@ public class CodeManager {
             Token result = _parseTreeEvaluator.evaluateParseTree(_parseTree,
                     _scope);
             return result;
-        } catch (Exception e) {
+        } catch (Exception ex) {
             throw new PtalonRuntimeException("Unable to evaluate expression\n"
-                    + expression, e);
+                    + expression, ex);
         }
     }
 
@@ -614,7 +732,7 @@ public class CodeManager {
                 return ((StringToken) result).stringValue();
             }
             return result.toString();
-        } catch (IllegalActionException e) {
+        } catch (IllegalActionException ex) {
             return null;
         }
     }
@@ -650,7 +768,7 @@ public class CodeManager {
             try {
                 String output = tree.getDeepMappedName(symbol);
                 return output;
-            } catch (PtalonRuntimeException e) {
+            } catch (PtalonRuntimeException ex) {
             }
         }
         throw new PtalonRuntimeException("Could not find mapped name for"
@@ -768,7 +886,7 @@ public class CodeManager {
                     if (tree == null) {
                         throw new PtalonRuntimeException(
                                 "In a new for iteration, "
-                                        + "but there is no containing for block.");
+                                + "but there is no containing for block.");
                     }
                 }
                 int iteration = tree.getEnteredIteration(symbol);
@@ -866,9 +984,9 @@ public class CodeManager {
                 String uniqueName = _actor.getContainer().uniqueName(symbol);
                 _actor.setName(uniqueName);
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
             throw new PtalonScopeException("Unable to access file for "
-                    + symbol, e);
+                    + symbol, ex);
         }
     }
 
@@ -930,7 +1048,7 @@ public class CodeManager {
             try {
                 String type = tree.getDeepType(symbol);
                 return type;
-            } catch (PtalonScopeException e) {
+            } catch (PtalonScopeException ex) {
                 //Do nothing here, just go on to check the next if-block
                 //sub-scope
             }
@@ -985,7 +1103,8 @@ public class CodeManager {
      *  multiports.  A key may map to null if no port has been
      *  assigned to it.
      */
-    protected Map<String, TypedIOPort> _transparentRelations = new Hashtable<String, TypedIOPort>();
+    protected Map<String, TypedIOPort> _transparentRelations =
+        new Hashtable<String, TypedIOPort>();
 
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
@@ -1040,9 +1159,9 @@ public class CodeManager {
              * exception went away.
              */
             return att.getToken();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             throw new PtalonRuntimeException("Unable to access int value for "
-                    + param, e);
+                    + param, ex);
         }
     }
 
@@ -1058,9 +1177,9 @@ public class CodeManager {
             PtalonParameter att = (PtalonParameter) _actor
                     .getAttribute(uniqueName);
             return att.getType();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             throw new PtalonRuntimeException("Unable to access int value for "
-                    + param, e);
+                    + param, ex);
         }
     }
 
@@ -1077,9 +1196,9 @@ public class CodeManager {
             PtalonParameter att = (PtalonParameter) _actor
                     .getAttribute(uniqueName);
             return att.getTypeTerm();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             throw new PtalonRuntimeException("Unable to access int value for "
-                    + param, e);
+                    + param, ex);
         }
     }
 
@@ -1108,7 +1227,7 @@ public class CodeManager {
             new LinkedList<String>();
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected classes                     ////
+    ////                       protected classes                   ////
 
     /** FIXME comment
      */
@@ -1192,18 +1311,10 @@ public class CodeManager {
             _inNewWhileIteration = true;
             while (evaluateBoolean(satExpr)) {
                 try {
-                    // celaine working here 4/10/07
-                    if (populator instanceof PtalonPopulator) {
-                        ((PtalonPopulator) populator).iterative_statement_evaluator(forBlock);
-                    } else if (populator instanceof PtalonDepopulator) {
-                        ((PtalonDepopulator) populator).iterative_statement_evaluator(forBlock);
-                    } else {
-                        throw new PtalonRuntimeException ("Don't know type of tree parser (populator)");
-                    }
-                    //populator.iterative_statement_evaluator(forBlock);
-                } catch (RecognitionException e) {
+                    populator.iterative_statement_evaluator(forBlock);
+                } catch (RecognitionException ex) {
                     throw new PtalonRuntimeException(
-                            "Could not recognize for block", e);
+                            "Could not recognize for block", ex);
                 }
                 Token nextValue = evaluateExpression(nextExpr);
                 _scope.addVariable(variable, nextValue);
@@ -1250,14 +1361,14 @@ public class CodeManager {
             try {
                 String name = getMappedName(symbol);
                 return name;
-            } catch (PtalonRuntimeException e) {
+            } catch (PtalonRuntimeException ex) {
             }
             for (IfTree child : _children) {
                 if (child.isForStatement) {
                     try {
                         String name = child.getDeepMappedName(symbol);
                         return name;
-                    } catch (PtalonRuntimeException e) {
+                    } catch (PtalonRuntimeException ex) {
                     }
                 }
             }
@@ -1276,14 +1387,14 @@ public class CodeManager {
             try {
                 String type = getType(symbol);
                 return type;
-            } catch (PtalonScopeException e) {
+            } catch (PtalonScopeException ex) {
             }
             for (IfTree child : _children) {
                 if (child.isForStatement) {
                     try {
                         String type = child.getDeepType(symbol);
                         return type;
-                    } catch (PtalonScopeException e) {
+                    } catch (PtalonScopeException ex) {
                     }
                 }
             }
@@ -1422,9 +1533,9 @@ public class CodeManager {
                             if (!param.hasValue()) {
                                 return false;
                             }
-                        } catch (Exception e) {
+                        } catch (Exception ex) {
                             throw new PtalonRuntimeException(
-                                    "Could not access parameter " + symbol, e);
+                                    "Could not access parameter " + symbol, ex);
                         }
                     }
                 }
@@ -1442,9 +1553,9 @@ public class CodeManager {
                             if (!param.hasValue()) {
                                 return false;
                             }
-                        } catch (Exception e) {
+                        } catch (Exception ex) {
                             throw new PtalonRuntimeException(
-                                    "Could not access parameter " + symbol, e);
+                                    "Could not access parameter " + symbol, ex);
                         }
                     }
                 }
@@ -1535,7 +1646,7 @@ public class CodeManager {
             for (String s : getSymbols()) {
                 try {
                     output += s + "\t" + getType(s) + "\n";
-                } catch (PtalonScopeException e) {
+                } catch (PtalonScopeException ex) {
 
                 }
             }
@@ -1573,9 +1684,7 @@ public class CodeManager {
         /** This is the PtalonPopulator that accesses this for
          *  statement, if this is a for statement.
          */
-        // celaine working here 4/10/07
-        public TreeParser populator = null;
-        //public PtalonPopulator populator = null;
+        public PtalonPopulator populator = null;
 
         /** This is the satisfies expression for the for statement, if
          *  this is a for statement.
@@ -1601,7 +1710,8 @@ public class CodeManager {
         /** The number of iterations (number of times the if/for block
          *  has been entered) for each symbol created.
          */
-        private Hashtable<String, Integer> _createdIteration = new Hashtable<String, Integer>();
+        private Hashtable<String, Integer> _createdIteration =
+            new Hashtable<String, Integer>();
 
         /** Each symbol gets mapped to its unique name in the Ptalon
          *  Actor.  This is for the false branch of this if tree.
@@ -1671,9 +1781,9 @@ public class CodeManager {
                             " not a parameter.");
                 }
                 return _getValueOf(name);
-            } catch (PtalonScopeException e) {
+            } catch (PtalonScopeException ex) {
                 return null;
-            } catch (PtalonRuntimeException e) {
+            } catch (PtalonRuntimeException ex) {
                 return null;
             }
         }
@@ -1696,9 +1806,9 @@ public class CodeManager {
                             " not a parameter.");
                 }
                 return _getTypeOf(name);
-            } catch (PtalonScopeException e) {
+            } catch (PtalonScopeException ex) {
                 return null;
-            } catch (PtalonRuntimeException e) {
+            } catch (PtalonRuntimeException ex) {
                 return null;
             }
         }
@@ -1722,9 +1832,9 @@ public class CodeManager {
                             " not a parameter.");
                 }
                 return _getTypeTermOf(name);
-            } catch (PtalonScopeException e) {
+            } catch (PtalonScopeException ex) {
                 return null;
-            } catch (PtalonRuntimeException e) {
+            } catch (PtalonRuntimeException ex) {
                 return null;
             }
         }
@@ -1744,8 +1854,10 @@ public class CodeManager {
                 Set<String> out = _getParameters();
                 out.addAll(_variables.keySet());
                 return out;
-            } catch (PtalonScopeException e) {
-                throw new IllegalActionException("Trouble constructing list");
+            } catch (PtalonScopeException ex) {
+                ex.printStackTrace();
+                throw new IllegalActionException("Trouble constructing list: "
+                        + ex.getMessage());
             }
         }
 
