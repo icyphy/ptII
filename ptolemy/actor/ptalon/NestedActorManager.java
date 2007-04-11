@@ -949,11 +949,11 @@ public class NestedActorManager extends CodeManager {
                             Set expressionVariables = collector
                                     .collectFreeVariables(parseTree);
                             Set scopeVariables = _scope.identifierSet();
-                            List excludedVariables = new LinkedList();
+                            List<String> excludedVariables = new LinkedList<String>();
                             for (Object variable : expressionVariables) {
                                 if (variable instanceof String) {
                                     if (!scopeVariables.contains(variable)) {
-                                        excludedVariables.add(variable);
+                                        excludedVariables.add((String)variable);
                                     }
                                 }
                             }
@@ -974,11 +974,11 @@ public class NestedActorManager extends CodeManager {
                         Set expressionVariables = collector
                                 .collectFreeVariables(parseTree);
                         Set scopeVariables = _scope.identifierSet();
-                        List excludedVariables = new LinkedList();
+                        List<String> excludedVariables = new LinkedList<String>();
                         for (Object variable : expressionVariables) {
                             if (variable instanceof String) {
                                 if (!scopeVariables.contains(variable)) {
-                                    excludedVariables.add(variable);
+                                    excludedVariables.add((String)variable);
                                 }
                             }
                         }
