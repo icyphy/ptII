@@ -431,9 +431,10 @@ public class Copernicus {
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
+                // Ignored.
             }
 
-            System.exit(0);
+            StringUtilities.exit(1);
         }
 
         // We need to call exit here if we are running codegen on
