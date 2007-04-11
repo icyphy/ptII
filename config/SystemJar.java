@@ -50,8 +50,8 @@ public class SystemJar {
     // Return the path name to the system jar file, usually rt.jar.
     private static File _getSystemJar()
         throws IOException, FileNotFoundException {
-        String systemJarPathName = new String(System.getProperty("java.home")
-                + File.separator + "lib" + File.separator + "rt.jar");
+        String systemJarPathName = System.getProperty("java.home")
+                + File.separator + "lib" + File.separator + "rt.jar";
 
         File systemJar = new File(systemJarPathName);
 

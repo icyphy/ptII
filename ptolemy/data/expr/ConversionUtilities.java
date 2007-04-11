@@ -353,7 +353,7 @@ public class ConversionUtilities {
         } else if (token instanceof LongToken) {
             returnValue = new Long(((LongToken) token).longValue());
         } else if (token instanceof StringToken) {
-            returnValue = new String(((StringToken) token).stringValue());
+            returnValue = ((StringToken) token).stringValue();
         } else if (token instanceof BooleanToken) {
 
             // FindBugs: "Creating new instances of java.lang.Boolean
