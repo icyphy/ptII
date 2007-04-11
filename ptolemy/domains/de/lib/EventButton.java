@@ -144,7 +144,7 @@ public class EventButton extends Source implements Placeable {
             System.out.println("Container is null");
 
             // place the button in its own frame.
-            JFrame _frame = new JFrame(getFullName());
+            _frame = new JFrame(getFullName());
             _frame.getContentPane().add(_button);
         } else {
             _container.add(_button);
