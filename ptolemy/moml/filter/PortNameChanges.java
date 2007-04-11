@@ -29,6 +29,8 @@ package ptolemy.moml.filter;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
@@ -207,11 +209,12 @@ public class PortNameChanges implements MoMLFilter {
             results.append("\t" + actor + "\n");
 
             HashMap portMap = (HashMap) _actorsWithPortNameChanges.get(actor);
-            Iterator ports = portMap.keySet().iterator();
+            Iterator portMapEntries = portMap.entrySet().iterator();
 
-            while (ports.hasNext()) {
-                String oldPort = (String) ports.next();
-                String newPort = (String) portMap.get(oldPort);
+            while (portMapEntries.hasNext()) {
+                Map.Entry ports = (Map.Entry)portMapEntries.next();
+                String oldPort = (String) ports.getKey();
+                String newPort = (String) ports.getValue();
                 results.append("\t\t" + oldPort + "\t -> " + newPort + "\n");
             }
         }

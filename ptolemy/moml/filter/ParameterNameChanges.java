@@ -29,6 +29,8 @@ package ptolemy.moml.filter;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
@@ -197,11 +199,12 @@ public class ParameterNameChanges implements MoMLFilter {
 
             HashMap propertyMap = (HashMap) _classesWithParameterNameChanges
                     .get(actor);
-            Iterator properties = propertyMap.keySet().iterator();
+            Iterator propertiesMapEntries = propertyMap.entrySet().iterator();
 
-            while (properties.hasNext()) {
-                String oldProperty = (String) properties.next();
-                String newProperty = (String) propertyMap.get(oldProperty);
+            while (propertiesMapEntries.hasNext()) {
+                Map.Entry properties = (Map.Entry)propertiesMapEntries.next();
+                String oldProperty = (String) properties.getKey();
+                String newProperty = (String) properties.getValue();
                 results.append("\t\t" + oldProperty + "\t -> " + newProperty
                         + "\n");
             }

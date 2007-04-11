@@ -29,6 +29,8 @@ package ptolemy.moml.filter;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
@@ -170,11 +172,12 @@ public class RemoveProperties implements MoMLFilter {
 
             HashMap propertyMap = (HashMap) _propertiesToBeRemoved
                     .get(propertyToBeRemoved);
-            Iterator attributes = propertyMap.keySet().iterator();
+            Iterator attributeMapEntries = propertyMap.entrySet().iterator();
 
-            while (attributes.hasNext()) {
-                String oldAttribute = (String) attributes.next();
-                String newAttribute = (String) propertyMap.get(oldAttribute);
+            while (attributeMapEntries.hasNext()) {
+                Map.Entry attributes = (Map.Entry)attributeMapEntries.next();
+                String oldAttribute = (String) attributes.getKey();
+                String newAttribute = (String) attributes.getValue();
                 results.append("\t\t" + oldAttribute + "\t -> " + newAttribute
                         + "\n");
             }

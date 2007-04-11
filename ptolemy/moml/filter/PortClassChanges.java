@@ -29,6 +29,8 @@ package ptolemy.moml.filter;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
@@ -146,18 +148,19 @@ public class PortClassChanges implements MoMLFilter {
             results.append("\t" + actor + ".");
 
             HashMap portMap = (HashMap) _actorsWithPortClassChanges.get(actor);
-            Iterator ports = portMap.keySet().iterator();
+            Iterator portsMapEntries = portMap.entrySet().iterator();
 
-            while (ports.hasNext()) {
-                String port = (String) ports.next();
+            while (portsMapEntries.hasNext()) {
+                Map.Entry ports = (Map.Entry)portsMapEntries.next();
+                String port = (String) ports.getValue();
                 results.append(port + "\n");
 
-                HashMap classMap = (HashMap) portMap.get(port);
-                Iterator classChanges = classMap.keySet().iterator();
-
-                while (classChanges.hasNext()) {
-                    String oldClass = (String) classChanges.next();
-                    String newClass = (String) classMap.get(oldClass);
+                HashMap classMap = (HashMap) ports.getKey();
+                Iterator classChangesMapEntries = classMap.entrySet().iterator();
+                while (classChangesMapEntries.hasNext()) {
+                    Map.Entry classChanges = (Map.Entry)classChangesMapEntries.next();
+                    String oldClass = (String) classChanges.getKey();
+                    String newClass = (String) classChanges.getValue();
                     results.append("\t\t" + oldClass + "\t -> " + newClass
                             + "\n");
                 }
