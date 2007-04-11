@@ -45,6 +45,7 @@ import ptolemy.data.LongToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ConversionUtilities;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -254,23 +255,8 @@ public class ClassWrapper extends TypedAtomicActor {
 
                 if (argTypes[i].isAssignableFrom(arg.getClass())) {
                     argValues[i] = arg;
-                } else if (arg instanceof DoubleToken) {
-                    argValues[i] = new Double(((DoubleToken) arg).doubleValue());
-                } else if (arg instanceof IntToken) {
-                    argValues[i] = new Integer(((IntToken) arg).intValue());
-                } else if (arg instanceof LongToken) {
-                    argValues[i] = new Long(((LongToken) arg).longValue());
-                } else if (arg instanceof StringToken) {
-                    argValues[i] = ((StringToken) arg).stringValue();
-                } else if (arg instanceof BooleanToken) {
-                    argValues[i] = Boolean.valueOf(((BooleanToken) arg)
-                            .booleanValue());
-                } else if (arg instanceof ComplexToken) {
-                    argValues[i] = ((ComplexToken) arg).complexValue();
-                } else if (arg instanceof FixToken) {
-                    argValues[i] = ((FixToken) arg).fixValue();
                 } else {
-                    argValues[i] = arg;
+                    argValues[i] = ConversionUtilities.convertTokenToJavaType(arg);
                 }
             }
         }
