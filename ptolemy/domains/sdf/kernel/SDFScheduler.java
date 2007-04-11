@@ -798,22 +798,22 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
         Fraction lcmFraction = new Fraction(vectorizationFactor);
 
-        for (Iterator actors = entityToFiringsPerIteration.keySet().iterator(); actors
-                .hasNext();) {
-            Object actor = actors.next();
-            Fraction repetitions = (Fraction) entityToFiringsPerIteration
-                    .get(actor);
+        // Use entrySet here for performance reasons.
+        for (Iterator actorMapEntries = entityToFiringsPerIteration.entrySet().iterator();
+             actorMapEntries.hasNext();) {
+            Map.Entry actors =(Map.Entry) actorMapEntries.next();
+            Object actor = actors.getKey();
+            Fraction repetitions = (Fraction) actors.getValue();
             repetitions = repetitions.multiply(lcmFraction);
 
             // FIXME: Doing the conversion to Integer here is bizarre,
             // since they are integers coming in.
-            entityToFiringsPerIteration.put(actor, new Integer(repetitions
-                    .getNumerator()));
+            actors.setValue(new Integer(repetitions.getNumerator()));
         }
 
         // Go through the ports and normalize the external production
         // and consumption rates by the same factor.
-        // Use entrySet here for performance reasons
+        // Use entrySet here for performance reasons.
         for (Iterator portMapEntries = externalRates.entrySet().iterator();
              portMapEntries.hasNext();) {
             Map.Entry ports = (Map.Entry) portMapEntries.next();
