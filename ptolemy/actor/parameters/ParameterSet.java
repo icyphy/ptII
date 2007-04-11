@@ -35,6 +35,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 import ptolemy.actor.CompositeActor;
@@ -310,10 +312,12 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
 
         // Iterate through all the properties and either create new parameters
         // or set current parameters.
-        Iterator attributeNames = properties.keySet().iterator();
-        while (attributeNames.hasNext()) {
-            String attributeName = (String) attributeNames.next();
-            String attributeValue = (String) properties.get(attributeName);
+        // Use entrySet for performance reasons.
+        Iterator attributeMapEntries = properties.entrySet().iterator();
+        while (attributeMapEntries.hasNext()) {
+            Map.Entry attributeNames = (Map.Entry) attributeMapEntries.next();
+            String attributeName = (String) attributeNames.getKey();
+            String attributeValue = (String) attributeNames.getValue();
             Variable variable = (Variable) getAttribute(attributeName);
             if (variable == null) {
                 variable = new Variable(this, attributeName);
