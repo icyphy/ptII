@@ -39,6 +39,7 @@ import ptolemy.graph.*;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
+import ptolemy.util.StringUtilities;
 
 import java.util.*;
 
@@ -75,7 +76,7 @@ public class ActorModelGraph extends ModelGraph {
         } catch (IllegalActionException e) {
             System.err.println("Error " + e);
             e.printStackTrace();
-            System.exit(1);
+            StringUtilities.exit(1);
         }
 
         PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
