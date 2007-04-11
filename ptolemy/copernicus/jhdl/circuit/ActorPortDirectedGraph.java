@@ -37,6 +37,7 @@ import ptolemy.copernicus.jhdl.util.*;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.util.StringUtilities;
 
 import java.util.*;
 
@@ -78,7 +79,7 @@ public class ActorPortDirectedGraph extends PortDirectedGraph {
         } catch (IllegalActionException e) {
             System.err.println("Error " + e);
             e.printStackTrace();
-            System.exit(1);
+            StringUtilities.exit(1);
         }
 
         PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
