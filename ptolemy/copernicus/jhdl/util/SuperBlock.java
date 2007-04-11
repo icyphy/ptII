@@ -383,9 +383,9 @@ OUTER:
                                 //Add appropriate arcs for new mux
                                 graph.addNodeWeight(mux);
                                 graph.addEdge(first, mux,
-                                    new Boolean(lowest.branch()).toString());
+                                        lowest.branch());
                                 graph.addEdge(second, mux,
-                                    new Boolean(!lowest.branch()).toString());
+                                        (!lowest.branch()));
                                 graph.addEdge(lowest.getSuperBlock(), mux,
                                     ((IfStmt) lowest.getSuperBlock()._block
                                              .getTail()).getCondition()
@@ -476,8 +476,8 @@ OUTER:
 
             //Add appropriate arcs for new mux
             graph.addNodeWeight(mux);
-            graph.addEdge(first, mux, new Boolean(low1.branch()).toString());
-            graph.addEdge(second, mux, new Boolean(!low1.branch()).toString());
+            graph.addEdge(first, mux, low1.branch());
+            graph.addEdge(second, mux, !low1.branch());
             graph.addEdge(low1.getSuperBlock(), mux,
                 ((IfStmt) low1.getSuperBlock()._block.getTail()).getCondition()
                          .toString());
