@@ -155,7 +155,7 @@ public class JAIConstant extends Source {
             Byte[] byteValues = new Byte[values.length];
 
             for (int i = 0; i < values.length; i++) {
-                byteValues[i] = new Byte((byte) (((ScalarToken) values[i])
+                byteValues[i] = Byte.valueOf((byte) (((ScalarToken) values[i])
                         .intValue()));
             }
 
@@ -182,7 +182,7 @@ public class JAIConstant extends Source {
             Integer[] intValues = new Integer[values.length];
 
             for (int i = 0; i < values.length; i++) {
-                intValues[i] = new Integer(((ScalarToken) values[i]).intValue());
+                intValues[i] = Integer.valueOf(((ScalarToken) values[i]).intValue());
             }
 
             parameters.add(intValues);
@@ -190,7 +190,7 @@ public class JAIConstant extends Source {
             Short[] shortValues = new Short[values.length];
 
             for (int i = 0; i < values.length; i++) {
-                shortValues[i] = new Short((short) (((ScalarToken) values[i])
+                shortValues[i] = Short.valueOf((short) (((ScalarToken) values[i])
                         .intValue()));
             }
 
