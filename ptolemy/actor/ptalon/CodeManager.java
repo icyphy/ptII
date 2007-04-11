@@ -1607,7 +1607,7 @@ public class CodeManager {
          *  @param branch The branch to set it to.
          */
         public void setActiveBranch(boolean branch) {
-            _activeBranch = new Boolean(branch);
+            _activeBranch = branch;
         }
 
         /** Set the current branch that's being walked.
