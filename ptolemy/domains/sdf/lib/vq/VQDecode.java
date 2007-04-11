@@ -42,6 +42,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.math.IntegerMatrixMath;
+import ptolemy.util.FileUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// VQDecode
@@ -182,7 +183,8 @@ public class VQDecode extends Transformer {
         try {
             if (filename != null) {
                 try {
-                    URL dataurl = getClass().getResource(filename);
+                    URL dataurl = FileUtilities.nameToURL(filename,
+                            null, null);
                     _debug("VQDecode: codebook = " + dataurl);
                     source = dataurl.openStream();
                 } catch (MalformedURLException e) {
