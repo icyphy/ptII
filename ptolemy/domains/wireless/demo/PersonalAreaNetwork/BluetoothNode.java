@@ -302,7 +302,7 @@ public class BluetoothNode extends TypedAtomicActor {
         super.initialize();
 
         double[] location = _getLocation();
-        DoubleToken[] _parentLocation = new DoubleToken[location.length];
+        _parentLocation = new DoubleToken[location.length];
 
         for (int i = 0; i < location.length; i++) {
             _parentLocation[i] = new DoubleToken(location[i]);
