@@ -97,7 +97,7 @@ public class ConstructorTransformer extends AbstractTransformer implements
      */
     public void enter(FieldDeclaration node, TypeAnalyzerState state) {
         _isStaticField
-                .push(new Boolean(Modifier.isStatic(node.getModifiers())));
+                .push(Modifier.isStatic(node.getModifiers()));
     }
 
     /** Enter a method declaration.
