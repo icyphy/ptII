@@ -904,11 +904,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** This flag will be set to false if any actor returns false from
-     *  its postfire().
-     */
-    protected boolean _postfireReturns = true;
-
     /** The real starting time in term of system millisecond counts.
      */
     protected long _timeBase;
@@ -1005,4 +1000,5 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
     private double _suggestedNextStepSize;
 
     private double _valueResolution;
+
 }
