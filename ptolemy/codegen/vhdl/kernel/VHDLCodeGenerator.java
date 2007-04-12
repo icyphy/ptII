@@ -154,7 +154,9 @@ public class VHDLCodeGenerator extends CodeGenerator {
 
         for (_generateFile = 0; _generateFile < 2; _generateFile++) {
             _signals.clear();
-            code = new StringBuffer();
+            // FIXME: FindBugs noticed that code was being overwritten.
+            // This seems wrong?
+            //code = new StringBuffer();
 
             String includeFiles = generateIncludeFiles();
 
