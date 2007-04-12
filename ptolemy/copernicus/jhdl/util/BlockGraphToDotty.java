@@ -63,8 +63,7 @@ public class BlockGraphToDotty extends GraphToDotty {
         while (it.hasNext()) {
             Block currentBlock = (Block) it.next();
             m.put(currentBlock.getHead(),
-                "Block "
-                + (new Integer(currentBlock.getIndexInMethod()).toString()));
+                    "Block "  + currentBlock.getIndexInMethod());
         }
 
         int count = 0;
