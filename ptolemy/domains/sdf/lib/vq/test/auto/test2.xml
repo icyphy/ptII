@@ -75,7 +75,7 @@
         </port>
     </entity>
     <entity name="HTVQEncode1" class="ptolemy.domains.sdf.lib.vq.HTVQEncode">
-        <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;/ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
+        <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;$CLASSPATH/ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
         </property>
         <property name="blockCount" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -97,7 +97,7 @@
         </port>
     </entity>
     <entity name="VQDecode2" class="ptolemy.domains.sdf.lib.vq.VQDecode">
-        <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;/ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
+        <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;$CLASSPATH/ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
         </property>
         <property name="blockCount" class="ptolemy.data.expr.Parameter" value="1">
         </property>
