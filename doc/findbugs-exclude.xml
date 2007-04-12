@@ -1,4 +1,6 @@
 <FindBugsFilter>
+    <!-- ApplianceTest is part of the x10 sources in vendors/ -->
+    <Match classregex="ApplianceTest">
     <Match classregex="ptolemy.data..*Parser.*"/>
     <Match classregex="ptolemy.data.unit.UParser"/>
     <Match classregex="ptolemy.data.unit.UParserTokenManager"/>
