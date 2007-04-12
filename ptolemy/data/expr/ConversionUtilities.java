@@ -202,7 +202,7 @@ public class ConversionUtilities {
 
             returnValue = new ArrayToken(temp);
         } else if (object instanceof boolean[]) {
-            BooleanToken[] temp = new BooleanToken[((long[]) object).length];
+            BooleanToken[] temp = new BooleanToken[((boolean[]) object).length];
 
             for (int j = 0; j < temp.length; j++) {
                 temp[j] = new BooleanToken(((boolean[]) object)[j]);
