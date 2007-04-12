@@ -368,9 +368,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return "";
         }
 
-        String result = "";
+        String result = null;
         Object offsetObject;
-        String temp;
+
 
         // Get the offset index.
         if (isWrite) {
@@ -382,6 +382,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         if (!offsetString.equals("")) {
             // Specified offset.
 
+            String temp;
             if (offsetObject instanceof Integer && _isInteger(offsetString)) {
 
                 int offset = ((Integer) offsetObject).intValue()
@@ -421,7 +422,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         + ")%" + modulo;
             }
 
-            result += "[" + temp + "]";
+            result = "[" + temp + "]";
 
         } else {
             // Did not specify offset, so the receiver buffer
@@ -432,14 +433,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
                 offset %= getBufferSize(port, channel);
 
-                temp = new Integer(offset).toString();
+                result = Integer.toString(offset);
             } else {
 
                 int modulo = getBufferSize(port, channel) - 1;
 
-                temp = (String) offsetObject + "&" + modulo;
+                result = offsetObject + "&" + modulo;
             }
-            result += "[" + temp + "]";
         }
         return result;
     }
