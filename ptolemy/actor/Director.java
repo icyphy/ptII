@@ -191,8 +191,10 @@ public class Director extends Attribute implements Executable {
             double newResolution = ((DoubleToken) timeResolution.getToken())
                     .doubleValue();
 
-            // Don't directly compare doubles with !=, instead use abs() 
-            if (Math.abs(newResolution - _timeResolution) > Complex.EPSILON) {
+            // FindBugs reports this comparison as a problem, but it
+            // is not an issue because we usually don't calculate
+            // _timeResolution, we set it.
+            if (newResolution != _timeResolution) {
                 NamedObj container = getContainer();
 
                 if (container instanceof Actor) {
