@@ -440,7 +440,7 @@ public class Copernicus {
         // We need to call exit here if we are running codegen on
         // a model that uses Swing.  Useful models that use the
         // plotter fall in this category.
-        System.exit(0);
+        StringUtilities.exit(0);
     }
 
     /** Given a NamedObj, generate a HashMap containing String key/value
@@ -658,8 +658,7 @@ public class Copernicus {
             System.out.println(_usage());
             System.out.println(_help());
 
-            // NOTE: This means the test suites cannot test -help
-            System.exit(0);
+            StringUtilities.exit(0);
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-verbose")) {
@@ -670,8 +669,7 @@ public class Copernicus {
                             + VersionAttribute.CURRENT_VERSION.getExpression()
                             + ", Build $Id$");
 
-            // NOTE: This means the test suites cannot test -version
-            System.exit(0);
+            StringUtilities.exit(0);
         } else if (arg.equals("")) {
             // Ignore blank argument.
         } else if (!arg.startsWith("-")) {
