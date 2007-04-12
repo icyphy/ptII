@@ -105,7 +105,7 @@ public class CSPSource extends Source {
         try {
             int limit = ((IntToken) tokenLimit.getToken()).intValue();
 
-            while ((_value < limit) || (limit < 0)) {
+            while (_value < limit || limit < 0) {
                 Token t = new IntToken(_value);
                 output.send(0, t);
                 _value++;
