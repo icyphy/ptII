@@ -48,6 +48,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.Complex;
 import ptolemy.math.ExtendedMath;
 import ptolemy.moml.SharedParameter;
 
@@ -190,7 +191,8 @@ public class Director extends Attribute implements Executable {
             double newResolution = ((DoubleToken) timeResolution.getToken())
                     .doubleValue();
 
-            if (newResolution != _timeResolution) {
+            // Don't directly compare doubles with !=, instead use abs() 
+            if (Math.abs(newResolution - _timeResolution) > Complex.EPSILON) {
                 NamedObj container = getContainer();
 
                 if (container instanceof Actor) {
