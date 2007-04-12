@@ -292,7 +292,7 @@ public class SingleWindowConfiguration extends Configuration {
                     String entityName = parentEffigy.identifier.getExpression();
                     String separator = "#";
 
-                    if (entityName.indexOf("#") > 0) {
+                    if (entityName.indexOf("#") >= 0) {
                         separator = ".";
                     }
 

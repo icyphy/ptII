@@ -777,7 +777,7 @@ public class Configuration extends CompositeEntity implements
         String entityName = parentEffigy.identifier.getExpression();
         String separator = "#";
 
-        if (entityName.indexOf("#") > 0) {
+        if (entityName.indexOf("#") >= 0) {
             separator = ".";
         }
 
