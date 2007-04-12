@@ -403,8 +403,13 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
             if (date == 0L || date != _date) {
                 read();
             }
-        } catch (Exception e) {
-            throw new IllegalActionException(this, e, "Failed to re-read parameter set.");
+        } catch (NameDuplicationException ex) {
+            // Two separate exceptions to get FindBugs to shut up.
+            throw new IllegalActionException(this, ex,
+                    "Failed to re-read parameter set, problem with dupliate names.");
+        } catch (IOException ex2) {
+            throw new IllegalActionException(this, ex2,
+                    "Failed to re-read parameter set.");
         }
     }
     
