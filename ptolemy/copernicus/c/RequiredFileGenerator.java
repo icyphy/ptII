@@ -290,8 +290,7 @@ public class RequiredFileGenerator {
         CNames.setup();
 
         // Make changes in the filename.
-        String fileName = new String();
-        fileName = CNames.classNameToFileName(className);
+        String fileName = CNames.classNameToFileName(className);
 
         boolean verbose = Options.v().getBoolean("verbose");
 
