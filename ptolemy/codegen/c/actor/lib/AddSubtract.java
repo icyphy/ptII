@@ -72,12 +72,12 @@ public class AddSubtract extends CCodeGeneratorHelper {
         boolean minusOnly = actor.plus.getWidth() == 0;
 
         ArrayList args = new ArrayList();
-        args.add(new Integer(0));
+        args.add(Integer.valueOf(0));
 
         if (type == BaseType.STRING) {
             _codeStream.appendCodeBlock("StringPreFireBlock", false);
             for (int i = 0; i < actor.plus.getWidth(); i++) {
-                args.set(0, new Integer(i));
+                args.set(0, Integer.valueOf(i));
                 _codeStream.appendCodeBlock("StringLengthBlock", args, false);
             }
             _codeStream.appendCodeBlock("StringAllocBlock", false);
@@ -92,12 +92,12 @@ public class AddSubtract extends CCodeGeneratorHelper {
         String blockType = isPrimitive(type) ? codeGenType(type) : "Token";
 
         for (int i = 1; i < actor.plus.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             _codeStream.appendCodeBlock(blockType + "AddBlock", args, false);
         }
 
         for (int i = minusOnly ? 1 : 0; i < actor.minus.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             _codeStream.appendCodeBlock(blockType + "MinusBlock", args, false);
         }
 

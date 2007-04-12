@@ -320,7 +320,7 @@ public class CSP extends AbstractDDI implements DDI {
 
                 if (numNeeded > 0) {
                     inputProfile.put(new ChannelID(inputPattern.getPortname(),
-                            0), new Integer(numNeeded));
+                            0), Integer.valueOf(numNeeded));
                 }
             }
 
@@ -360,7 +360,7 @@ public class CSP extends AbstractDDI implements DDI {
 
             if (numNeeded > 0) {
                 inputProfile.put(new ChannelID(inputPattern.getPortname(), 0),
-                        new Integer(numNeeded));
+                        Integer.valueOf(numNeeded));
             }
         }
 
@@ -481,9 +481,9 @@ public class CSP extends AbstractDDI implements DDI {
                 Integer needSoFar = (Integer) profile.get(chID);
 
                 if (needSoFar == null) {
-                    profile.put(chID, new Integer(numNeeded - numHave));
+                    profile.put(chID, Integer.valueOf(numNeeded - numHave));
                 } else {
-                    profile.put(chID, new Integer(Math.max(numNeeded - numHave,
+                    profile.put(chID, Integer.valueOf(Math.max(numNeeded - numHave,
                             needSoFar.intValue())));
                 }
             }
@@ -645,7 +645,7 @@ class CSPTokenReader {
                 .hasNext();) {
             ChannelID chID = (ChannelID) iterator.next();
             _indexToChannelID[i] = chID;
-            _channelIDToIndex.put(chID, new Integer(i));
+            _channelIDToIndex.put(chID, Integer.valueOf(i));
             i++;
         }
 
@@ -869,7 +869,7 @@ class CSPTokenWriter {
         for (Iterator iterator = data.keySet().iterator(); iterator.hasNext();) {
             ChannelID chID = (ChannelID) iterator.next();
             _indexToChannelID[i] = chID;
-            _channelIDToIndex.put(chID, new Integer(i));
+            _channelIDToIndex.put(chID, Integer.valueOf(i));
             i++;
         }
     }

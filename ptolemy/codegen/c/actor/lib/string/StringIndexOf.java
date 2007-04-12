@@ -68,9 +68,9 @@ public class StringIndexOf extends CCodeGeneratorHelper {
         code.append(super.generateFireCode());
         ArrayList args = new ArrayList();
         if (((BooleanToken) actor.searchForwards.getToken()).booleanValue()) {
-            args.add(new Integer(1));
+            args.add(Integer.valueOf(1));
         } else {
-            args.add(new Integer(-1));
+            args.add(Integer.valueOf(-1));
         }
 
         if (((BooleanToken) actor.ignoreCase.getToken()).booleanValue()) {

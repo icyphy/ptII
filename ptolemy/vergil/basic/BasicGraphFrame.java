@@ -1900,7 +1900,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_C, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_C));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_C));
         }
 
         /** Copy the current selection. */
@@ -1921,7 +1921,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_X, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_T));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_T));
         }
 
         /** Copy and delete the current selection. */
@@ -1939,7 +1939,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         public EditPreferencesAction() {
             super("Edit Preferences");
             putValue("tooltip", "Change the Vergil preferences");
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_E));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -2017,7 +2017,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
     //                    KeyEvent.VK_G, Toolkit.getDefaultToolkit()
     //                            .getMenuShortcutKeyMask()));
-    //            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_G));
+    //            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_G));
     //        }
     //
     //        /** Open a run control window. */
@@ -2045,7 +2045,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_B, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_B));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_B));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -2087,7 +2087,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_F, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_F));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -2129,7 +2129,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_V, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_P));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
         }
 
         /** Paste the current contents of the clipboard into
@@ -2363,7 +2363,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             };
 
             action.putValue("tooltip", "Open library for editing.");
-            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
+            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
                     KeyEvent.VK_O));
             return menu.add(action, (String) action.getValue(Action.NAME));
         }
@@ -2386,7 +2386,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, KeyStroke
                     .getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
                     KeyEvent.VK_R));
         }
 
@@ -2417,7 +2417,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, KeyStroke
                     .getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
                     KeyEvent.VK_U));
         }
 
@@ -2466,7 +2466,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     KeyEvent.VK_EQUALS, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()
                             | Event.SHIFT_MASK));
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_Z));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_Z));
         }
 
         /** Zoom in by a factor of 1.25.
@@ -2509,7 +2509,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_M, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_M));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_M));
         }
 
         /** Reset the zoom.
@@ -2551,7 +2551,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()
                             | Event.SHIFT_MASK));
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_F));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
         /** Zoom so that the entire graph is visible.
@@ -2592,7 +2592,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_MINUS, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_U));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_U));
         }
 
         /** Zoom out by a factor of 1/1.25.

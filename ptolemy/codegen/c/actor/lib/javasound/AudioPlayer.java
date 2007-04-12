@@ -69,7 +69,7 @@ public class AudioPlayer extends AudioSDLActor {
         // FIXME: not sure if this is really right.  How do we handle
         // multiple ports?
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             String codeBlock;
             if (Integer.parseInt(actor.bitsPerSample.getExpression()) == 8) {
                 codeBlock = "fireBlock_8";

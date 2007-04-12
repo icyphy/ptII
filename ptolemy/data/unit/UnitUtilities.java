@@ -279,7 +279,7 @@ public class UnitUtilities {
             if (index != null) {
                 return;
             } else {
-                index = new Integer(_categories);
+                index = Integer.valueOf(_categories);
                 _indexTable.put(categoryName, index);
                 ++_categories;
                 _categoryList.add(categoryName);

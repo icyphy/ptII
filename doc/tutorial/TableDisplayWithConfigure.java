@@ -27,7 +27,7 @@ public class TableDisplayWithConfigure extends TableDisplay {
                 TableModel dataModel = new AbstractTableModel() {
                     public int getColumnCount() { return 10; }
                     public int getRowCount() { return 10;}
-                    public Object getValueAt(int row, int col) { return new Integer(row*col); }
+                    public Object getValueAt(int row, int col) { return Integer.valueOf(row*col); }
                 };
                 _table = new JTable(dataModel);
             }

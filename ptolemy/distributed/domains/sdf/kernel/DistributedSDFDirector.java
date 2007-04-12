@@ -424,7 +424,7 @@ public class DistributedSDFDirector extends SDFDirector {
                         .get(actor);
                 clientThread.setIterationCount(firing.getIterationCount());
                 commandsMap
-                        .put(clientThread, new Integer(ClientThread.ITERATE));
+                        .put(clientThread, Integer.valueOf(ClientThread.ITERATE));
             }
 
             int aux = levelNumber - iterationsValue;
@@ -631,7 +631,7 @@ public class DistributedSDFDirector extends SDFDirector {
         for (Iterator actorsIterator = actorsThreadsMap.keySet().iterator(); actorsIterator
                 .hasNext();) {
             Object auxActor = actorsIterator.next();
-            commands.put(actorsThreadsMap.get(auxActor), new Integer(
+            commands.put(actorsThreadsMap.get(auxActor), Integer.valueOf(
                     ClientThread.EXIT));
         }
 
@@ -842,7 +842,7 @@ public class DistributedSDFDirector extends SDFDirector {
                         .get(actor);
                 clientThread.setIterationCount(firing.getIterationCount());
                 commandsMap
-                        .put(clientThread, new Integer(ClientThread.ITERATE));
+                        .put(clientThread, Integer.valueOf(ClientThread.ITERATE));
             }
 
             synchronizer.setCommands(commandsMap);

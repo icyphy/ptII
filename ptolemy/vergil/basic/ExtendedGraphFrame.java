@@ -240,7 +240,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
 
             putValue("tooltip", description);
 
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_S));
         }
 
         /** If we are in full-screen mode, then revert; otherwise, go

@@ -648,13 +648,13 @@ public class SootUtilities {
         if (value instanceof NullConstant) {
             return null;
         } else if (value instanceof IntConstant) {
-            return new Integer(((IntConstant) value).value);
+            return Integer.valueOf(((IntConstant) value).value);
         } else if (value instanceof LongConstant) {
-            return new Long(((LongConstant) value).value);
+            return Long.valueOf(((LongConstant) value).value);
         } else if (value instanceof StringConstant) {
             return ((StringConstant) value).value;
         } else if (value instanceof DoubleConstant) {
-            return new Double(((DoubleConstant) value).value);
+            return Double.valueOf(((DoubleConstant) value).value);
         } else {
             throw new RuntimeException("unrecognized constant value = " + value);
         }

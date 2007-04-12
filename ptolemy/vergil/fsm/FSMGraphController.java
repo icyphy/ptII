@@ -421,7 +421,7 @@ public class FSMGraphController extends FSMViewerGraphController {
             FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
             putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             putValue("tooltip", "New State");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
                     KeyEvent.VK_W));
         }
 

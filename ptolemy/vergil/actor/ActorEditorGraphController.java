@@ -525,7 +525,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             }
             putValue("tooltip", "Control-click to create a new relation");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
                     KeyEvent.VK_R));
         }
 

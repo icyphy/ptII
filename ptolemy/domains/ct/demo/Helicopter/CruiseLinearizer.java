@@ -227,7 +227,7 @@ public class CruiseLinearizer extends TypedAtomicActor {
 
             while (stokens.hasMoreTokens() && (index < 5)) {
                 String valueToken = stokens.nextToken();
-                _alphaP[index++] = (new Double(valueToken)).doubleValue();
+                _alphaP[index++] = (Double.valueOf(valueToken)).doubleValue();
             }
 
             taps = ((StringToken) paramAlphaV.getToken()).stringValue();
@@ -241,7 +241,7 @@ public class CruiseLinearizer extends TypedAtomicActor {
 
             while (stokens.hasMoreTokens() && (index < 4)) {
                 String valueToken = stokens.nextToken();
-                _alphaV[index++] = (new Double(valueToken)).doubleValue();
+                _alphaV[index++] = (Double.valueOf(valueToken)).doubleValue();
             }
         } else if (att == paramCVx) {
             _cVx = ((DoubleToken) paramCVx.getToken()).doubleValue();

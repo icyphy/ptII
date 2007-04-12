@@ -260,7 +260,7 @@ public final class ConstantSize implements Size, Serializable {
      * @see     java.util.Hashtable
      */
     public int hashCode() {
-        return new Double(value).hashCode() + 37 * unit.hashCode();
+        return Double.valueOf(value).hashCode() + 37 * unit.hashCode();
     }
     
     /**

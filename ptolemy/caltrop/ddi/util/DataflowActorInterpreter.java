@@ -324,7 +324,7 @@ public class DataflowActorInterpreter {
      repeatValue = context.intValue(eval.evaluate(repeatExpr));
      }
      profile.put(new ChannelID(outputExpression.getPortname(), 0),
-     new Integer(repeatValue * expressions.length));
+     Integer.valueOf(repeatValue * expressions.length));
      }
      return profile;
      }*/

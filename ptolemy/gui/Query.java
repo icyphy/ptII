@@ -816,7 +816,7 @@ public class Query extends JPanel {
                     + "calling getDoubleValue() on a password field is "
                     + "not permitted.  Instead, call getCharArrayValue()");
         } else if (result instanceof JTextField) {
-            return (new Double(((JTextField) result).getText())).doubleValue();
+            return (Double.valueOf(((JTextField) result).getText())).doubleValue();
         } else {
             throw new IllegalArgumentException("Item named \"" + name
                     + "\" is not a text line, and hence cannot be converted "
@@ -857,7 +857,7 @@ public class Query extends JPanel {
                     + "calling getIntValue() on a password field is "
                     + "not permitted.  Instead, call getCharArrayValue()");
         } else if (result instanceof JTextField) {
-            return (new Integer(((JTextField) result).getText())).intValue();
+            return (Integer.valueOf(((JTextField) result).getText())).intValue();
         } else if (result instanceof JSlider) {
             return ((JSlider) result).getValue();
         } else if (result instanceof JComboBox) {
@@ -1082,7 +1082,7 @@ public class Query extends JPanel {
             Boolean flag = Boolean.valueOf(value);
             setBoolean(name, flag.booleanValue());
         } else if (result instanceof JSlider) {
-            Integer parsed = new Integer(value);
+            Integer parsed = Integer.valueOf(value);
             ((JSlider) result).setValue(parsed.intValue());
         } else if (result instanceof JComboBox) {
             ((JComboBox) result).setSelectedItem(value);

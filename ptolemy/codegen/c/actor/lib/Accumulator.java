@@ -70,13 +70,13 @@ public class Accumulator extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Accumulator actor = (ptolemy.actor.lib.Accumulator) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(new Integer(0));
+        args.add(Integer.valueOf(0));
         String type = codeGenType(actor.output.getType());
 
         if (actor.reset.getWidth() > 0) {
             _codeStream.appendCodeBlock("initReset");
             for (int i = 1; i < actor.reset.getWidth(); i++) {
-                args.set(0, new Integer(i));
+                args.set(0, Integer.valueOf(i));
                 _codeStream.appendCodeBlock("readReset", args);
             }
             _codeStream.appendCodeBlock("ifReset");
@@ -90,7 +90,7 @@ public class Accumulator extends CCodeGeneratorHelper {
             type = "Token";
         }
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             _codeStream.appendCodeBlock(type + "FireBlock", args);
         }
         _codeStream.appendCodeBlock("sendBlock");

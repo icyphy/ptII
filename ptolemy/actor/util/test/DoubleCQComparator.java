@@ -112,7 +112,7 @@ public class DoubleCQComparator implements CQComparator {
     public void setBinWidth(Object[] entryArray) {
         if (entryArray == null) {
             // Reset to default.
-            _binWidth = new Double(1.0);
+            _binWidth = Double.valueOf(1.0);
             return;
         }
 
@@ -145,7 +145,7 @@ public class DoubleCQComparator implements CQComparator {
         }
 
         effAverage = effAverage / nEffSamples;
-        _binWidth = new Double(3.0 * effAverage);
+        _binWidth = Double.valueOf(3.0 * effAverage);
     }
 
     /** Set the zero reference, to be used in calculating the virtual
@@ -160,8 +160,8 @@ public class DoubleCQComparator implements CQComparator {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     // The bin width.
-    private Double _binWidth = new Double(1.0);
+    private Double _binWidth = Double.valueOf(1.0);
 
     // The zero reference.
-    private Double _zeroReference = new Double(0.0);
+    private Double _zeroReference = Double.valueOf(0.0);
 }

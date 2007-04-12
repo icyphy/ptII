@@ -481,7 +481,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                 Object readOffset = getReadOffset(port, i);
                 if (readOffset instanceof Integer) {
                     // Read offset is a number.
-                    setReadOffset(port, i, new Integer(0));
+                    setReadOffset(port, i, Integer.valueOf(0));
                 } else {
                     // Read offset is a variable.
                     code.append(CodeStream.indent(((String) readOffset)
@@ -490,7 +490,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                 Object writeOffset = getWriteOffset(port, i);
                 if (writeOffset instanceof Integer) {
                     // Write offset is a number.
-                    setWriteOffset(port, i, new Integer(0));
+                    setWriteOffset(port, i, Integer.valueOf(0));
                 } else {
                     // Write offset is a variable.
                     code.append(CodeStream.indent(((String) writeOffset)
@@ -586,8 +586,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             _writeOffsets.put(port, writeOffsets);
 
             for (int i = 0; i < length; i++) {
-                setReadOffset(port, i, new Integer(0));
-                setWriteOffset(port, i, new Integer(0));
+                setReadOffset(port, i, Integer.valueOf(0));
+                setWriteOffset(port, i, Integer.valueOf(0));
             }
         }
     }

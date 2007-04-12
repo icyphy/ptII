@@ -226,7 +226,7 @@ public class AccelerLinearizer extends TypedAtomicActor {
 
             while (stokens.hasMoreTokens() && (index < 5)) {
                 String valueToken = stokens.nextToken();
-                _alphaP[index++] = (new Double(valueToken)).doubleValue();
+                _alphaP[index++] = (Double.valueOf(valueToken)).doubleValue();
             }
 
             taps = ((StringToken) paramAlphaA.getToken()).stringValue();
@@ -240,7 +240,7 @@ public class AccelerLinearizer extends TypedAtomicActor {
 
             while (stokens.hasMoreTokens() && (index < 3)) {
                 String valueToken = stokens.nextToken();
-                _alphaA[index++] = (new Double(valueToken)).doubleValue();
+                _alphaA[index++] = (Double.valueOf(valueToken)).doubleValue();
             }
         } else if (att == paramCAx) {
             _cAx = ((DoubleToken) paramCAx.getToken()).doubleValue();

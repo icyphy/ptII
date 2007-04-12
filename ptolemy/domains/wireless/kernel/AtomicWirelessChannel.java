@@ -835,7 +835,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         }
 
         _receiversInRangeCache.put(sourcePort, receiversInRangeList);
-        _receiversInRangeCacheVersion.put(sourcePort, new Long(workspace()
+        _receiversInRangeCacheVersion.put(sourcePort, Long.valueOf(workspace()
                 .getVersion()));
         _receiversInRangeCacheValid = true;
         return receiversInRangeList;

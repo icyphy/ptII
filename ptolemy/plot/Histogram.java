@@ -576,11 +576,11 @@ public class Histogram extends PlotBox {
                 }
 
                 try {
-                    Double bwidth = new Double(barwidth);
+                    Double bwidth = Double.valueOf(barwidth);
                     double boffset = _baroffset;
 
                     if (baroffset != null) {
-                        boffset = (new Double(baroffset)).doubleValue();
+                        boffset = (Double.valueOf(baroffset)).doubleValue();
                     }
 
                     setBars(bwidth.doubleValue(), boffset);
@@ -593,7 +593,7 @@ public class Histogram extends PlotBox {
                 String binwidth = (line.substring(9)).trim();
 
                 try {
-                    Double bwidth = new Double(binwidth);
+                    Double bwidth = Double.valueOf(binwidth);
                     setBinWidth(bwidth.doubleValue());
                 } catch (NumberFormatException e) {
                     // ignore if format is bogus.
@@ -604,7 +604,7 @@ public class Histogram extends PlotBox {
                 String binoffset = (line.substring(10)).trim();
 
                 try {
-                    Double boffset = new Double(binoffset);
+                    Double boffset = Double.valueOf(binoffset);
                     setBinOffset(boffset.doubleValue());
                 } catch (NumberFormatException e) {
                     // ignore if format is bogus.
@@ -644,7 +644,7 @@ public class Histogram extends PlotBox {
             if (fieldsplit == -1) {
                 // Have just one number per line
                 try {
-                    Double xpt = new Double(line);
+                    Double xpt = Double.valueOf(line);
                     addPoint(_currentdataset, xpt.doubleValue());
                     return true;
                 } catch (NumberFormatException e) {
@@ -654,7 +654,7 @@ public class Histogram extends PlotBox {
                 String y = (line.substring(fieldsplit + 1)).trim();
 
                 try {
-                    Double ypt = new Double(y);
+                    Double ypt = Double.valueOf(y);
                     addPoint(_currentdataset, ypt.doubleValue());
                     return true;
                 } catch (NumberFormatException e) {
@@ -703,7 +703,7 @@ public class Histogram extends PlotBox {
 
         // Calculate the bin number.
         int bin = (int) (Math.round((value - _binOffset) / _binWidth));
-        Integer binobj = new Integer(bin);
+        Integer binobj = Integer.valueOf(bin);
 
         // Add to the appropriate bin
         Hashtable bins = (Hashtable) _histogram.elementAt(dataset);
@@ -712,11 +712,11 @@ public class Histogram extends PlotBox {
         if (bins.containsKey(binobj)) {
             // increase the count
             count = 1 + ((Integer) bins.get(binobj)).intValue();
-            bins.put(binobj, new Integer(count));
+            bins.put(binobj, Integer.valueOf(count));
         } else {
             // start a new entry.
             count = 1;
-            bins.put(binobj, new Integer(count));
+            bins.put(binobj, Integer.valueOf(count));
         }
 
         // For auto-ranging, keep track of min and max.
@@ -739,7 +739,7 @@ public class Histogram extends PlotBox {
         _yBottom = 0.0;
 
         Vector pts = (Vector) _points.elementAt(dataset);
-        pts.addElement(new Double(value));
+        pts.addElement(Double.valueOf(value));
 
         // Draw the point on the screen only if the plot is showing.
         // Need to check that graphics is not null because plot may have

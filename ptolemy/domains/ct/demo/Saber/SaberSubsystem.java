@@ -516,44 +516,44 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
         double number;
 
         if ((locm > begpt) && (locm <= endpt)) {
-            number = new Double(text.substring(begpt, locm)).doubleValue();
+            number = Double.valueOf(text.substring(begpt, locm)).doubleValue();
             number *= 0.001;
         } else {
             locu = text.indexOf('u', begpt);
 
             if ((locu > begpt) && (locu <= endpt)) {
-                number = new Double(text.substring(begpt, locu)).doubleValue();
+                number = Double.valueOf(text.substring(begpt, locu)).doubleValue();
                 number *= (0.001 * 0.001);
             } else {
                 locn = text.indexOf('n', begpt);
 
                 if ((locn > begpt) && (locn <= endpt)) {
-                    number = new Double(text.substring(begpt, locn))
+                    number = Double.valueOf(text.substring(begpt, locn))
                                 .doubleValue();
                     number *= (0.001 * 0.001 * 0.001);
                 } else {
                     locn = text.indexOf('p', begpt);
 
                     if ((locn > begpt) && (locn <= endpt)) {
-                        number = new Double(text.substring(begpt, locn))
+                        number = Double.valueOf(text.substring(begpt, locn))
                                     .doubleValue();
                         number *= (0.001 * 0.001 * 0.001 * 0.001);
                     } else {
                         locn = text.indexOf('f', begpt);
 
                         if ((locn > begpt) && (locn <= endpt)) {
-                            number = new Double(text.substring(begpt, locn))
+                            number = Double.valueOf(text.substring(begpt, locn))
                                         .doubleValue();
                             number *= (0.001 * 0.001 * 0.001 * 0.001 * 0.001);
                         } else {
                             locn = text.indexOf('a', begpt);
 
                             if ((locn > begpt) && (locn <= endpt)) {
-                                number = new Double(text.substring(begpt, locn))
+                                number = Double.valueOf(text.substring(begpt, locn))
                                             .doubleValue();
                                 number *= 1e-18;
                             } else {
-                                number = new Double(text.substring(begpt, endpt))
+                                number = Double.valueOf(text.substring(begpt, endpt))
                                             .doubleValue();
                             }
                         }

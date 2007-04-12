@@ -115,7 +115,7 @@ public class JAIConstant extends Source {
             //_bandValues = new Double[values.length];
             //for (int i = 0; i < values.length; i++) {
             //    _bandValues[i] =
-            //        new Double(((DoubleToken)values[i]).doubleValue());
+            //        Double.valueOf(((DoubleToken)values[i]).doubleValue());
             //}
         } else if (attribute == height) {
             _height = ((IntToken) height.getToken()).intValue();
@@ -164,7 +164,7 @@ public class JAIConstant extends Source {
             Double[] doubleValues = new Double[values.length];
 
             for (int i = 0; i < values.length; i++) {
-                doubleValues[i] = new Double(((ScalarToken) values[i])
+                doubleValues[i] = Double.valueOf(((ScalarToken) values[i])
                         .doubleValue());
             }
 

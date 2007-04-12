@@ -782,10 +782,10 @@ public class FormEditor extends JPanel
           .getAlignment(constraints.vAlign));
       horizontalAlignmentCombo.setSelectedItem(LayoutConstraintsManager
           .getAlignment(constraints.hAlign));
-      topInsetSpinnerModel.setValue(new Integer(constraints.insets.top));
-      bottomInsetSpinnerModel.setValue(new Integer(constraints.insets.bottom));
-      rightInsetSpinnerModel.setValue(new Integer(constraints.insets.right));
-      leftInsetSpinnerModel.setValue(new Integer(constraints.insets.left));
+      topInsetSpinnerModel.setValue(Integer.valueOf(constraints.insets.top));
+      bottomInsetSpinnerModel.setValue(Integer.valueOf(constraints.insets.bottom));
+      rightInsetSpinnerModel.setValue(Integer.valueOf(constraints.insets.right));
+      leftInsetSpinnerModel.setValue(Integer.valueOf(constraints.insets.left));
     }
 
     verticalAlignmentCombo.setEnabled(constraints != null);
@@ -875,7 +875,7 @@ public class FormEditor extends JPanel
       if (constraints == null)
         return null;
       Integer next = constraints.gridX + constraints.gridWidth - 1 < containerLayout
-          .getColumnCount() ? new Integer(constraints.gridWidth + 1) : null;
+          .getColumnCount() ? Integer.valueOf(constraints.gridWidth + 1) : null;
       return next;
     }
 
@@ -885,7 +885,7 @@ public class FormEditor extends JPanel
         return null;
       else
       {
-        Integer previous = constraints.gridWidth > 1 ? new Integer(
+        Integer previous = constraints.gridWidth > 1 ? Integer.valueOf(
             constraints.gridWidth - 1) : null;
         return previous;
       }
@@ -896,7 +896,7 @@ public class FormEditor extends JPanel
       if (constraints == null)
         return "";
       else
-        return new Integer(constraints.gridWidth);
+        return Integer.valueOf(constraints.gridWidth);
     }
 
     public void setValue(Object value)
@@ -949,7 +949,7 @@ public class FormEditor extends JPanel
       else
       {
         Integer next = constraints.gridY + constraints.gridHeight - 1 < containerLayout
-            .getRowCount() ? new Integer(constraints.gridHeight + 1) : null;
+            .getRowCount() ? Integer.valueOf(constraints.gridHeight + 1) : null;
         return next;
       }
     }
@@ -960,7 +960,7 @@ public class FormEditor extends JPanel
         return null;
       else
       {
-        Integer previous = constraints.gridHeight > 1 ? new Integer(
+        Integer previous = constraints.gridHeight > 1 ? Integer.valueOf(
             constraints.gridHeight - 1) : null;
         return previous;
       }
@@ -971,7 +971,7 @@ public class FormEditor extends JPanel
       if (constraints == null)
         return "";
       else
-        return new Integer(constraints.gridHeight);
+        return Integer.valueOf(constraints.gridHeight);
     }
 
     public void setValue(Object value)
@@ -1393,7 +1393,7 @@ public class FormEditor extends JPanel
       putValue(Action.LONG_DESCRIPTION, "Create a new component (Alt+N)");
       putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
           .getResource("New24.gif")));
-      putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_N));
+      putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_N));
     }
 
     public void actionPerformed(ActionEvent e)
@@ -1480,7 +1480,7 @@ public class FormEditor extends JPanel
       putValue(Action.LONG_DESCRIPTION, "Inserts a row before the selected row");
       putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
           .getResource("RowInsertBefore24.gif")));
-      putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_I));
+      putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
     }
 
     public void actionPerformed(ActionEvent e)
@@ -1501,7 +1501,7 @@ public class FormEditor extends JPanel
       putValue(Action.LONG_DESCRIPTION, "Inserts a row after the selected row");
       putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
           .getResource("RowInsertAfter24.gif")));
-      putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_O));
+      putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_O));
     }
 
     public void actionPerformed(ActionEvent e)
@@ -1524,7 +1524,7 @@ public class FormEditor extends JPanel
           "Inserts a column before the selected column");
       putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
           .getResource("ColumnInsertBefore24.gif")));
-      putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_K));
+      putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_K));
     }
 
     public void actionPerformed(ActionEvent e)
@@ -1547,7 +1547,7 @@ public class FormEditor extends JPanel
           "Inserts a column after the selected column");
       putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
           .getResource("ColumnInsertAfter24.gif")));
-      putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_L));
+      putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
     }
 
     public void actionPerformed(ActionEvent e)
@@ -1568,7 +1568,7 @@ public class FormEditor extends JPanel
       putValue(Action.LONG_DESCRIPTION, "Deletes the selected row");
       putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
           .getResource("RowDelete24.gif")));
-      putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_D));
+      putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
     }
 
     public void actionPerformed(ActionEvent e)
@@ -1617,7 +1617,7 @@ public class FormEditor extends JPanel
       putValue(Action.LONG_DESCRIPTION, "Deletes the selected column");
       putValue(Action.SMALL_ICON, new ImageIcon(FormEditor.class
           .getResource("ColumnDelete24.gif")));
-      putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_C));
+      putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_C));
     }
 
     public void actionPerformed(ActionEvent e)

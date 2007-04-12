@@ -70,7 +70,7 @@ public class Quantizer extends CCodeGeneratorHelper {
         ArrayList arguments = new ArrayList();
         StringTokenizer tokenizer = new StringTokenizer(actor.levels
                 .getExpression(), ",");
-        arguments.add(new Integer(tokenizer.countTokens()));
+        arguments.add(Integer.valueOf(tokenizer.countTokens()));
 
         _codeStream.appendCodeBlock("fireBlock", arguments);
         return processCode(_codeStream.toString());
@@ -92,7 +92,7 @@ public class Quantizer extends CCodeGeneratorHelper {
         ArrayList arguments = new ArrayList();
         StringTokenizer tokenizer = new StringTokenizer(actor.levels
                 .getExpression(), ",");
-        arguments.add(new Integer(tokenizer.countTokens()));
+        arguments.add(Integer.valueOf(tokenizer.countTokens()));
 
         _codeStream.appendCodeBlock("initBlock", arguments);
         return processCode(_codeStream.toString());

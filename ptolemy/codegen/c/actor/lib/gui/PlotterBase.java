@@ -79,7 +79,7 @@ public class PlotterBase extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
         for (int i = width - 1; i >= 0; i--) {
             args.clear();
-            args.add(new Integer(i));
+            args.add(Integer.valueOf(i));
             code.append(_generateBlockCode("plotBlock", args));
         }
 

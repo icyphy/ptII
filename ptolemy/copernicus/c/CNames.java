@@ -120,7 +120,7 @@ public class CNames {
             // Hash the type signature to avoid naming conflicts associated
             // with names that are longer than the number of significant
             // characters in a C identifier.
-            Integer prefixCode = new Integer(field.getSubSignature().hashCode());
+            Integer prefixCode = Integer.valueOf(field.getSubSignature().hashCode());
             name = _sanitize("f" + prefixCode + "_" + field.getName());
             _nameMap.put(field, name);
         }
@@ -143,7 +143,7 @@ public class CNames {
                  */
                 String prefixBase = method.getDeclaringClass().getName()
                         + method.getSubSignature();
-                Integer prefixCode = new Integer(prefixBase.hashCode());
+                Integer prefixCode = Integer.valueOf(prefixBase.hashCode());
                 name = _sanitize("n" + prefixCode + "_" + method.getName());
 
                 //f for function,  n for native
@@ -152,7 +152,7 @@ public class CNames {
                 // avoid naming conflicts.
                 String prefixBase = method.getDeclaringClass().getName()
                         + method.getSubSignature();
-                Integer prefixCode = new Integer(prefixBase.hashCode());
+                Integer prefixCode = Integer.valueOf(prefixBase.hashCode());
                 name = _sanitize("f" + prefixCode + "_" + method.getName());
             }
 
@@ -204,7 +204,7 @@ public class CNames {
         if ((name = (String) (_initializerMap.get(source))) == null) {
             final String suffix = "_init";
             String base = instanceNameOf(source) + suffix;
-            Integer prefixCode = new Integer(base.hashCode());
+            Integer prefixCode = Integer.valueOf(base.hashCode());
             name = _sanitize("f" + prefixCode + suffix);
             _initializerMap.put(source, name);
         }
@@ -282,7 +282,7 @@ public class CNames {
         if ((name = (String) (_nameMap.get(method))) == null) {
             // Hash the type signature to avoid naming conflicts for overloaded
             // methods.
-            Integer prefixCode = new Integer(method.getSubSignature()
+            Integer prefixCode = Integer.valueOf(method.getSubSignature()
                     .hashCode());
             name = _sanitize("m" + prefixCode + "_" + method.getName());
             _nameMap.put(method, name);
@@ -424,7 +424,7 @@ public class CNames {
             // The choice of 'i' as the first letter stands for "instance."
             String className = (name.indexOf(".") < 0) ? name : name
                     .substring(name.lastIndexOf(".") + 1);
-            Integer prefixCode = new Integer(name.hashCode());
+            Integer prefixCode = Integer.valueOf(name.hashCode());
             CClassName = _sanitize("i" + prefixCode.toString() + "_"
                     + className);
         }

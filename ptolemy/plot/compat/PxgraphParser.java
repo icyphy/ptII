@@ -655,7 +655,7 @@ public class PxgraphParser {
                 } else if ((arg.length() > 1) && (arg.charAt(0) == '-')) {
                     // Process '-<digit> <datasetname>'
                     try {
-                        Integer datasetnumberint = new Integer(arg.substring(1));
+                        Integer datasetnumberint = Integer.valueOf(arg.substring(1));
                         int datasetnumber = datasetnumberint.intValue();
 
                         if (datasetnumber >= 0) {

@@ -283,7 +283,7 @@ public abstract class AbstractActionsAttribute extends Action implements
                         openParen + 1, closeParen);
 
                 try {
-                    _numbers.add(new Integer(channelSpec));
+                    _numbers.add(Integer.valueOf(channelSpec));
                 } catch (NumberFormatException ex) {
                     throw new IllegalActionException(this,
                             "Malformed action: expected destination = "

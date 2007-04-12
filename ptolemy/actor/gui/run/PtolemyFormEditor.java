@@ -398,13 +398,13 @@ public class PtolemyFormEditor extends JPanel {
                     .getAlignment(constraints.vAlign));
             _horizontalAlignmentCombo.setSelectedItem(LayoutConstraintsManager
                     .getAlignment(constraints.hAlign));
-            _topInsetSpinnerModel.setValue(new Integer(constraints.insets.top));
-            _bottomInsetSpinnerModel.setValue(new Integer(
+            _topInsetSpinnerModel.setValue(Integer.valueOf(constraints.insets.top));
+            _bottomInsetSpinnerModel.setValue(Integer.valueOf(
                     constraints.insets.bottom));
-            _rightInsetSpinnerModel.setValue(new Integer(
+            _rightInsetSpinnerModel.setValue(Integer.valueOf(
                     constraints.insets.right));
             _leftInsetSpinnerModel
-                    .setValue(new Integer(constraints.insets.left));
+                    .setValue(Integer.valueOf(constraints.insets.left));
         }
 
         _verticalAlignmentCombo.setEnabled(constraints != null);
@@ -732,7 +732,7 @@ public class PtolemyFormEditor extends JPanel {
             if (constraints == null)
                 return null;
             Integer next = constraints.gridX + constraints.gridWidth - 1 < _containerLayout
-                    .getColumnCount() ? new Integer(constraints.gridWidth + 1)
+                    .getColumnCount() ? Integer.valueOf(constraints.gridWidth + 1)
                     : null;
             return next;
         }
@@ -741,7 +741,7 @@ public class PtolemyFormEditor extends JPanel {
             if (constraints == null)
                 return null;
             else {
-                Integer previous = constraints.gridWidth > 1 ? new Integer(
+                Integer previous = constraints.gridWidth > 1 ? Integer.valueOf(
                         constraints.gridWidth - 1) : null;
                 return previous;
             }
@@ -751,7 +751,7 @@ public class PtolemyFormEditor extends JPanel {
             if (constraints == null)
                 return "";
             else
-                return new Integer(constraints.gridWidth);
+                return Integer.valueOf(constraints.gridWidth);
         }
 
         public void setValue(Object value) {
@@ -859,7 +859,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.SHORT_DESCRIPTION, "Deletes the selected column");
             putValue(Action.LONG_DESCRIPTION, "Deletes the selected column");
             _putValue(this, "ColumnDelete24.gif");
-            putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_C));
+            putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_C));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -895,7 +895,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.SHORT_DESCRIPTION, "Deletes the selected row");
             putValue(Action.LONG_DESCRIPTION, "Deletes the selected row");
             _putValue(this, "RowDelete24.gif");
-            putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_D));
+            putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -1007,7 +1007,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.SHORT_DESCRIPTION, "Inserts a column after the selected column");
             putValue(Action.LONG_DESCRIPTION, "Inserts a column after the selected column");
             _putValue(this, "ColumnInsertAfter24.gif");
-            putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_L));
+            putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
         }
         public void actionPerformed(ActionEvent e) {
             int column = _table.getSelectedColumn();
@@ -1023,7 +1023,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.SHORT_DESCRIPTION, "Inserts a column before the selected column");
             putValue(Action.LONG_DESCRIPTION, "Inserts a column before the selected column");
             _putValue(this, "ColumnInsertBefore24.gif");
-            putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_K));
+            putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_K));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -1040,7 +1040,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.SHORT_DESCRIPTION, "Inserts a row after the selected row");
             putValue(Action.LONG_DESCRIPTION, "Inserts a row after the selected row");
             _putValue(this, "RowInsertAfter24.gif");
-            putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_O));
+            putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_O));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -1057,7 +1057,7 @@ public class PtolemyFormEditor extends JPanel {
             putValue(Action.SHORT_DESCRIPTION, "Inserts a row before the selected row");
             putValue(Action.LONG_DESCRIPTION, "Inserts a row before the selected row");
             _putValue(this, "RowInsertBefore24.gif");
-            putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_I));
+            putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -1076,7 +1076,7 @@ public class PtolemyFormEditor extends JPanel {
             _putValue(this, "Pack.gif");
             putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_P, 0));
-            putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_P));
+            putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_P));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -1106,7 +1106,7 @@ public class PtolemyFormEditor extends JPanel {
             _putValue(this, "Remove24.gif");
             putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_DELETE, 0));
-            putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_D));
+            putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_D));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -1150,7 +1150,7 @@ public class PtolemyFormEditor extends JPanel {
                 return null;
             else {
                 Integer next = constraints.gridY + constraints.gridHeight - 1 < _containerLayout
-                        .getRowCount() ? new Integer(constraints.gridHeight + 1)
+                        .getRowCount() ? Integer.valueOf(constraints.gridHeight + 1)
                         : null;
                 return next;
             }
@@ -1160,7 +1160,7 @@ public class PtolemyFormEditor extends JPanel {
             if (constraints == null)
                 return null;
             else {
-                Integer previous = constraints.gridHeight > 1 ? new Integer(
+                Integer previous = constraints.gridHeight > 1 ? Integer.valueOf(
                         constraints.gridHeight - 1) : null;
                 return previous;
             }
@@ -1170,7 +1170,7 @@ public class PtolemyFormEditor extends JPanel {
             if (constraints == null)
                 return "";
             else
-                return new Integer(constraints.gridHeight);
+                return Integer.valueOf(constraints.gridHeight);
         }
 
         public void setValue(Object value) {

@@ -454,7 +454,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     private void _updateProgressBar(final int i) {
         Runnable doSetProgressBarValue = new Runnable() {
             public void run() {
-                //_jTextArea.append(new Integer(i).toString());
+                //_jTextArea.append(Integer.valueOf(i).toString());
                 _progressBar.setValue(i);
             }
         };

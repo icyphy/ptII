@@ -71,7 +71,7 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
         boolean divideOnly = actor.multiply.getWidth() == 0;
 
         ArrayList args = new ArrayList();
-        args.add(new Integer(0));
+        args.add(Integer.valueOf(0));
 
         String blockType = isPrimitive(type) ? "" : "Token";
 
@@ -86,12 +86,12 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
         }
 
         for (int i = 1; i < actor.multiply.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             _codeStream.appendCodeBlock(blockType + "MultiplyBlock", args);
         }
 
         for (int i = 1; i < actor.divide.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             _codeStream.appendCodeBlock(blockType + "DivideBlock", args);
         }
 

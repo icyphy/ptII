@@ -74,7 +74,7 @@ public class Test extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(new Integer(0));
+        args.add(Integer.valueOf(0));
         String multiChannel = "";
         String inputType = "";
 
@@ -84,7 +84,7 @@ public class Test extends CCodeGeneratorHelper {
             //args.add(codeGenType(actor.input.getType()));
         }
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             if (CodeGeneratorHelper.isPrimitive(actor.input.getType())) {
                 inputType = CodeGeneratorHelper.codeGenType(actor.input
                         .getType());
@@ -111,9 +111,9 @@ public class Test extends CCodeGeneratorHelper {
 
         if (actor.input.getWidth() > 1) {
             ArrayList args = new ArrayList();
-            args.add(new Integer(0));
+            args.add(Integer.valueOf(0));
             for (int i = 0; i < actor.input.getWidth(); i++) {
-                args.set(0, new Integer(i));
+                args.set(0, Integer.valueOf(i));
                 _codeStream.appendCodeBlock("TokenPreinitBlock", args);
             }
         }

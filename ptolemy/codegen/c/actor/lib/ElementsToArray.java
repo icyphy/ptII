@@ -66,10 +66,10 @@ public class ElementsToArray extends CCodeGeneratorHelper {
                 = (ptolemy.actor.lib.ElementsToArray) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(new Integer(0));
+        args.add(Integer.valueOf(0));
 
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             code.append(_generateBlockCode("fillArray", args));
         }
         code.append(_generateBlockCode("sendOutput"));

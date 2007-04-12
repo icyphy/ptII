@@ -1234,7 +1234,7 @@ public class FloatMatrixMath {
         }
 
         return new Object[] { orthogonalMatrix, dotProductMatrix,
-                oneOverNormSquaredArray, new Integer(nullity) };
+                oneOverNormSquaredArray, Integer.valueOf(nullity) };
     }
 
     /** Return the number of rows of a matrix.

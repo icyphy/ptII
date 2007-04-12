@@ -214,7 +214,7 @@ public class HoverLinearizer extends TypedAtomicActor {
 
             while (stokens.hasMoreTokens() && (index < 5)) {
                 String valueToken = stokens.nextToken();
-                _alphaP[index++] = (new Double(valueToken)).doubleValue();
+                _alphaP[index++] = (Double.valueOf(valueToken)).doubleValue();
             }
         } else if (att == paramCPx) {
             _cPx = ((DoubleToken) paramCPx.getToken()).doubleValue();

@@ -540,7 +540,7 @@ public class Director implements ActorCodeGenerator {
                 if (helper.getBufferSize(port, j) != 0) {
                     offset = (offset + rate) % helper.getBufferSize(port, j);
                 }
-                helper.setReadOffset(port, j, new Integer(offset));
+                helper.setReadOffset(port, j, Integer.valueOf(offset));
             } else { // If offset is a variable.
                 int modulo = helper.getBufferSize(port, j) - 1;
                 String offsetVariable = (String) helper.getReadOffset(port, j);
@@ -599,7 +599,7 @@ public class Director implements ActorCodeGenerator {
                         offset = (offset + rate) % bufferSize;
                     }
                     helper.setWriteOffset(sinkPort, sinkChannelNumber,
-                            new Integer(offset));
+                            Integer.valueOf(offset));
                 } else { // If offset is a variable. 
                     int modulo = helper.getBufferSize(sinkPort,
                             sinkChannelNumber) - 1;

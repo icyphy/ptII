@@ -182,7 +182,7 @@ public class SoundWriter {
 
             // Add new audio data to the file buffer array.
             for (int i = 0; i < _data.length; i++) {
-                _toFileBuffer.add(new Byte(_data[i]));
+                _toFileBuffer.add(Byte.valueOf(_data[i]));
             }
         } else {
             throw new IllegalStateException("SoundWriter: "

@@ -240,7 +240,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
         for (Iterator relations = container.relationList().iterator(); relations
                 .hasNext();) {
             Relation relation = (Relation) relations.next();
-            minimumBufferSize.put(relation, new Integer(0));
+            minimumBufferSize.put(relation, Integer.valueOf(0));
         }
 
         // First solve the balance equations
@@ -589,7 +589,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
                 // Update the firingsRemainingVector for this actor.
                 firingsRemaining -= numberOfFirings;
-                firingsRemainingVector.put(currentActor, new Integer(
+                firingsRemainingVector.put(currentActor, Integer.valueOf(
                         firingsRemaining));
 
                 if (_debugging && VERBOSE) {

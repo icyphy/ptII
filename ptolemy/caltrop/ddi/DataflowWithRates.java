@@ -306,11 +306,11 @@ public class DataflowWithRates extends Dataflow {
         }
 
         public void addInputRate(String portname, int rate) {
-            inputRates.put(portname, new Integer(rate));
+            inputRates.put(portname, Integer.valueOf(rate));
         }
 
         public void addOutputRate(String portname, int rate) {
-            outputRates.put(portname, new Integer(rate));
+            outputRates.put(portname, Integer.valueOf(rate));
         }
 
         public Map getInputRates() {

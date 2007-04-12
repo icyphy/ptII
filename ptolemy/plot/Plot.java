@@ -737,8 +737,8 @@ public class Plot extends PlotBox {
         for (int i = 0; i < numSets; i++) {
             _points.addElement(new Vector());
             _formats.addElement(new Format());
-            _prevx.addElement(new Long(0));
-            _prevy.addElement(new Long(0));
+            _prevx.addElement(Long.valueOf(0));
+            _prevy.addElement(Long.valueOf(0));
         }
     }
 
@@ -959,8 +959,8 @@ public class Plot extends PlotBox {
         while (dataset >= _points.size()) {
             _points.addElement(new Vector());
             _formats.addElement(new Format());
-            _prevx.addElement(new Long(0));
-            _prevy.addElement(new Long(0));
+            _prevx.addElement(Long.valueOf(0));
+            _prevy.addElement(Long.valueOf(0));
         }
     }
 
@@ -1588,11 +1588,11 @@ public class Plot extends PlotBox {
                     }
 
                     try {
-                        Double bwidth = new Double(barwidth);
+                        Double bwidth = Double.valueOf(barwidth);
                         double boffset = _barOffset;
 
                         if (baroffset != null) {
-                            boffset = (new Double(baroffset)).doubleValue();
+                            boffset = (Double.valueOf(baroffset)).doubleValue();
                         }
 
                         setBars(bwidth.doubleValue(), boffset);
@@ -1660,8 +1660,8 @@ public class Plot extends PlotBox {
                 }
 
                 try {
-                    Double xpt = new Double(x);
-                    Double ypt = new Double(y);
+                    Double xpt = Double.valueOf(x);
+                    Double ypt = Double.valueOf(y);
 
                     if (fieldsplit2 > 0) {
                         // There was one separator after the y value, now
@@ -1681,8 +1681,8 @@ public class Plot extends PlotBox {
                             String yl = (line.substring(0, fieldsplit3)).trim();
                             String yh = (line.substring(fieldsplit3 + 1))
                                     .trim();
-                            Double yLowEB = new Double(yl);
-                            Double yHighEB = new Double(yh);
+                            Double yLowEB = Double.valueOf(yl);
+                            Double yHighEB = Double.valueOf(yh);
                             connected = _addLegendIfNecessary(connected);
                             addPointWithErrorBars(_currentdataset, xpt
                                     .doubleValue(), ypt.doubleValue(), yLowEB
@@ -2247,8 +2247,8 @@ public class Plot extends PlotBox {
 
             // Save the current point as the "previous" point for future
             // line drawing.
-            _prevx.setElementAt(new Long(xpos), dataset);
-            _prevy.setElementAt(new Long(ypos), dataset);
+            _prevx.setElementAt(Long.valueOf(xpos), dataset);
+            _prevy.setElementAt(Long.valueOf(ypos), dataset);
 
             // Draw decorations that may be specified on a per-dataset basis
             Format fmt = (Format) _formats.elementAt(dataset);

@@ -81,7 +81,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
             throw new CorbaIllegalActionException("No input data.");
         }
 
-        _output = new Double(Math.atan(_input.doubleValue()));
+        _output = Double.valueOf(Math.atan(_input.doubleValue()));
         _input = null;
     }
 
@@ -373,7 +373,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
         }
 
         try {
-            _input = new Double(tokenValue);
+            _input = Double.valueOf(tokenValue);
         } catch (NumberFormatException ex) {
             _input = null;
             throw new CorbaIllegalValueException(ex.getMessage());

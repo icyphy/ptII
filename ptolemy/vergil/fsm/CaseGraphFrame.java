@@ -253,7 +253,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
         /** Create a case action with label "Add Case". */
         public AddCaseAction() {
             super("Add Case");
-            putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_A));
+            putValue(MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_A));
         }
 
         ///////////////////////////////////////////////////////////////////////////////
@@ -348,7 +348,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
         /** Create a case action with label "Add Case". */
         public RemoveCaseAction() {
             super("Remove Case");
-            putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_R));
+            putValue(MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_R));
         }
 
         ///////////////////////////////////////////////////////////////////////////////

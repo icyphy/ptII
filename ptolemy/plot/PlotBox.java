@@ -284,7 +284,7 @@ public class PlotBox extends JPanel implements Printable {
         }
 
         _legendStrings.addElement(legend);
-        _legendDatasets.addElement(new Integer(dataset));
+        _legendDatasets.addElement(Integer.valueOf(dataset));
     }
 
     /** Specify a tick mark for the X axis.  The label given is placed
@@ -304,7 +304,7 @@ public class PlotBox extends JPanel implements Printable {
             _xticklabels = new Vector();
         }
 
-        _xticks.addElement(new Double(position));
+        _xticks.addElement(Double.valueOf(position));
         _xticklabels.addElement(label);
     }
 
@@ -325,7 +325,7 @@ public class PlotBox extends JPanel implements Printable {
             _yticklabels = new Vector();
         }
 
-        _yticks.addElement(new Double(position));
+        _yticks.addElement(Double.valueOf(position));
         _yticklabels.addElement(label);
     }
 
@@ -645,7 +645,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @return The legend label, or null if there is none.
      */
     public synchronized String getLegend(int dataset) {
-        int idx = _legendDatasets.indexOf(new Integer(dataset), 0);
+        int idx = _legendDatasets.indexOf(Integer.valueOf(dataset), 0);
 
         if (idx != -1) {
             return (String) _legendStrings.elementAt(idx);
@@ -1138,7 +1138,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @see #addLegend(int, String)
      */
     public synchronized void renameLegend(int dataset, String newName) {
-        int index = _legendDatasets.indexOf(new Integer(dataset), 0);
+        int index = _legendDatasets.indexOf(Integer.valueOf(dataset), 0);
 
         if (index != -1) {
             _legendStrings.setElementAt(newName, index);
@@ -2571,8 +2571,8 @@ public class PlotBox extends JPanel implements Printable {
                 String max = (line.substring(comma + 1)).trim();
 
                 try {
-                    Double dmin = new Double(min);
-                    Double dmax = new Double(max);
+                    Double dmin = Double.valueOf(min);
+                    Double dmax = Double.valueOf(max);
                     setXRange(dmin.doubleValue(), dmax.doubleValue());
                 } catch (NumberFormatException e) {
                     // ignore if format is bogus.
@@ -2588,8 +2588,8 @@ public class PlotBox extends JPanel implements Printable {
                 String max = (line.substring(comma + 1)).trim();
 
                 try {
-                    Double dmin = new Double(min);
-                    Double dmax = new Double(max);
+                    Double dmin = Double.valueOf(min);
+                    Double dmax = Double.valueOf(max);
                     setYRange(dmin.doubleValue(), dmax.doubleValue());
                 } catch (NumberFormatException e) {
                     // ignore if format is bogus.
@@ -3184,7 +3184,7 @@ public class PlotBox extends JPanel implements Printable {
         // grid marks.
         Vector grid = new Vector(10);
 
-        //grid.addElement(new Double(0.0));
+        //grid.addElement(Double.valueOf(0.0));
         double ratio = Math.pow(10.0, step);
         int ngrid = 1;
 
@@ -3248,13 +3248,13 @@ public class PlotBox extends JPanel implements Printable {
                     if (Math.abs(((Double) oldgrid.elementAt(oldgridi))
                             .doubleValue()
                             - logval) > 0.00001) {
-                        grid.addElement(new Double(logval));
+                        grid.addElement(Double.valueOf(logval));
                     }
                 } else {
-                    grid.addElement(new Double(logval));
+                    grid.addElement(Double.valueOf(logval));
                 }
             } else {
-                grid.addElement(new Double(logval));
+                grid.addElement(Double.valueOf(logval));
             }
         }
 

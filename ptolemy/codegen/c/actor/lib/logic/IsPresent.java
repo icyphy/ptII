@@ -65,9 +65,9 @@ public class IsPresent extends CCodeGeneratorHelper {
         ptolemy.actor.lib.logic.IsPresent actor = (ptolemy.actor.lib.logic.IsPresent) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(new Integer(0));
+        args.add(Integer.valueOf(0));
         for (int i = 0; i < actor.output.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             _codeStream.appendCodeBlock("outputBlock", args);
         }
         return processCode(_codeStream.toString());

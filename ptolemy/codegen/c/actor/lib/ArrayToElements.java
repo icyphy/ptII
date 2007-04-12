@@ -66,11 +66,11 @@ public class ArrayToElements extends CCodeGeneratorHelper {
         ptolemy.actor.lib.ArrayToElements actor = (ptolemy.actor.lib.ArrayToElements) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(new Integer(0));
+        args.add(Integer.valueOf(0));
 
         boolean isOutputPrimitive = isPrimitive(actor.output.getType());
         for (int i = 0; i < actor.output.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             if (isOutputPrimitive) {
                 _codeStream.appendCodeBlock("PrimitiveFireBlock", args);
             } else {

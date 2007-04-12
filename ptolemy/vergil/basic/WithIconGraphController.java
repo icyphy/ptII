@@ -215,7 +215,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
                 putValue(GUIUtilities.LARGE_ICON, icon);
             }
             putValue("tooltip", description);
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(mnemonicKey));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(mnemonicKey));
         }
 
         /** Create a new port. */

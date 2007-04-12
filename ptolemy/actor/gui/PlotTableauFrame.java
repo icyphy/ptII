@@ -309,7 +309,7 @@ public class PlotTableauFrame extends TableauFrame {
         public FormatAction() {
             super("Format");
             putValue("tooltip", "Open a dialog to format the plot.");
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_F));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_F));
         }
 
         public void actionPerformed(ActionEvent e) {

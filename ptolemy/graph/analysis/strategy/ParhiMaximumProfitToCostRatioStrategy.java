@@ -171,17 +171,17 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
 
                     Edge addedEdge = graphPlusDelaysAsNodes.addEdge(source,
                             addedNode);
-                    edgeProfitsMap.put(addedEdge, new Double(0.0));
+                    edgeProfitsMap.put(addedEdge, Double.valueOf(0.0));
                     source = addedNode;
                 }
 
                 Edge lastAddedEdge = graphPlusDelaysAsNodes.addEdge(source,
                         sink);
-                edgeProfitsMap.put(lastAddedEdge, new Double(_edgeProfits
+                edgeProfitsMap.put(lastAddedEdge, Double.valueOf(_edgeProfits
                         .toDouble(edge)));
             } else {
                 edgeProfitsMap.put(edge,
-                        new Double(_edgeProfits.toDouble(edge)));
+                        Double.valueOf(_edgeProfits.toDouble(edge)));
             }
         }
 
@@ -256,7 +256,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                 if (_firstOrderLongestPathMatrix[i][j] >= 0) {
                     if (!((source == sink) && (_firstOrderLongestPathMatrix[i][j] == 0))) {
                         Edge addedEdge = delayGraph.addEdge(source, sink);
-                        delayGraphEdgeProfits.put(addedEdge, new Double(
+                        delayGraphEdgeProfits.put(addedEdge, Double.valueOf(
                                 _firstOrderLongestPathMatrix[i][j]));
                     }
                 }
@@ -302,7 +302,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
             }
         }
 
-        return new Double(result);
+        return Double.valueOf(result);
     }
 
     ///////////////////////////////////////////////////////////////////

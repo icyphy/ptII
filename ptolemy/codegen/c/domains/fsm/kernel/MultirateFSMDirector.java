@@ -403,7 +403,7 @@ public class MultirateFSMDirector extends FSMDirector {
                             int offset = ((Integer) offsetObject).intValue();
                             offset = (offset + rate)
                                     % helper.getBufferSize(sinkPort, i);
-                            helper.setWriteOffset(sinkPort, i, new Integer(
+                            helper.setWriteOffset(sinkPort, i, Integer.valueOf(
                                     offset));
                         } else {
                             int modulo = helper.getBufferSize(sinkPort, i) - 1;

@@ -113,7 +113,7 @@ public class DistributedSDFReceiver extends SDFReceiver {
      */
     private void init() {
         ID = lastID;
-        lastID = new Integer(lastID.intValue() + 1);
+        lastID = Integer.valueOf(lastID.intValue() + 1);
 
         if (VERBOSE) {
             System.out.println("Created Receiver: " + ID);
@@ -128,7 +128,7 @@ public class DistributedSDFReceiver extends SDFReceiver {
 
     /** Static member that contains the next ID value to be assigned to
      * the next receiver constructed. */
-    private static Integer lastID = new Integer(1);
+    private static Integer lastID = Integer.valueOf(1);
 
     /** ID of the receiver. */
     private Integer ID;

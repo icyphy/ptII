@@ -146,7 +146,7 @@ public class ArrayIndex {
      @param aKey the key.
      */
     public void store(double aValue, String aKey) {
-        _map.put(aKey, new Double(aValue));
+        _map.put(aKey, Double.valueOf(aValue));
     }
 
     /** Read in a matrix with a given name and store it into a
@@ -164,7 +164,7 @@ public class ArrayIndex {
                 for (int j = 0; j < 16; j++) {
                     String key = atKey(i + 1, j + 1);
                     _map
-                            .put(key, new Double(
+                            .put(key, Double.valueOf(
                                     SourceMatrix.sourcematrix_0[i][j]));
                 }
             }
@@ -173,7 +173,7 @@ public class ArrayIndex {
             for (int i = 0; i < 64; i++) {
                 for (int j = 0; j < 64; j++) {
                     String key = atKey(i, j);
-                    _map.put(key, new Double(0.0));
+                    _map.put(key, Double.valueOf(0.0));
                 }
             }
         }

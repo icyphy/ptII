@@ -416,7 +416,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             //        KeyStroke.getKeyStroke(KeyEvent.VK_H,
             //       Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             //putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-            //        new Integer(KeyEvent.VK_H));
+            //        Integer.valueOf(KeyEvent.VK_H));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -433,7 +433,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         public ImportLibraryAction() {
             super("Import Library");
             putValue("tooltip", "Import a library into the Palette");
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_M));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_M));
         }
 
         /** Import a library by first opening a file chooser dialog and
@@ -487,7 +487,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         public InstantiateAttributeAction() {
             super("Instantiate Attribute");
             putValue("tooltip", "Instantiate an attribute by class name");
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_A));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_A));
         }
 
         /** Instantiate a class by first opening a dialog to get
@@ -547,7 +547,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         public InstantiateEntityAction() {
             super("Instantiate Entity");
             putValue("tooltip", "Instantiate an entity by class name");
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_E));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
         }
 
         /** Instantiate a class by first opening a dialog to get
@@ -620,7 +620,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_T, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_L));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
         }
 
         /** Lay out the graph. */
@@ -642,7 +642,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         public SaveInLibraryAction() {
             super("Save In Library");
             putValue("tooltip", "Save as a Component in Library");
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_S));
         }
 
         /** Create a new instance of the current model in the

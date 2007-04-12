@@ -144,9 +144,9 @@ public class NodeRendererTutorial {
     public MutableGraphModel makeTypedModel() {
         BasicGraphModel model = new BasicGraphModel();
         ArrayList set0 = new ArrayList();
-        Object o1 = new Integer(5);
-        Object o2 = new Integer(6);
-        Object o3 = new Integer(10);
+        Object o1 = Integer.valueOf(5);
+        Object o2 = Integer.valueOf(6);
+        Object o3 = Integer.valueOf(10);
         Object o4 = "foo";
         Object o5 = "bar";
         set0.add(o1);
@@ -182,8 +182,8 @@ public class NodeRendererTutorial {
 
         // another cluster
         ArrayList set1 = new ArrayList();
-        Object o11 = new Integer(15);
-        Object o12 = new Integer(15);
+        Object o11 = Integer.valueOf(15);
+        Object o12 = Integer.valueOf(15);
         Node s1 = model.createNode(set1);
         Node n11 = model.createNode(o11);
         Node n12 = model.createNode(o12);

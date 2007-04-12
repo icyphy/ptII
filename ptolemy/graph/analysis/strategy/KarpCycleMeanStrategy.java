@@ -182,7 +182,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
             result = -maximumResult;
         }
 
-        return new Double(result);
+        return Double.valueOf(result);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -213,11 +213,11 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
 
             while (nodes.hasNext()) {
                 Node node = (Node) nodes.next();
-                maximumPathLength[k].put(node, new Double(-Double.MAX_VALUE));
+                maximumPathLength[k].put(node, Double.valueOf(-Double.MAX_VALUE));
             }
         }
 
-        maximumPathLength[0].put(startingNode, new Double(0));
+        maximumPathLength[0].put(startingNode, Double.valueOf(0));
         predecessor[0].put(startingNode, null);
 
         // Body
@@ -241,7 +241,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
 
                     if (dKOfV < cost) {
                         predecessor[k].put(node, nodePredecessor);
-                        maximumPathLength[k].put(node, new Double(cost));
+                        maximumPathLength[k].put(node, Double.valueOf(cost));
                     }
                 }
             }
@@ -252,7 +252,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
 
         while (nodes.hasNext()) {
             Node node = (Node) nodes.next();
-            cycleMean.put(node, new Double(Double.MAX_VALUE));
+            cycleMean.put(node, Double.valueOf(Double.MAX_VALUE));
 
             for (int k = 0; k < n; k++) {
                 double maximumPathLengthToLevelK = ((Double) maximumPathLength[k]
@@ -264,7 +264,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
                 double testValue = ((maximumPathLengthToLevelN - maximumPathLengthToLevelK) / (n - k));
 
                 if (cycleMeanValue > testValue) {
-                    cycleMean.put(node, new Double(testValue));
+                    cycleMean.put(node, Double.valueOf(testValue));
                     cycleMeanLevel.put(node, Integer.valueOf(k));
                 }
             }

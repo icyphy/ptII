@@ -281,7 +281,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             }
         }
 
-        return new Object[] { new Double(maxElement), new Integer(maxIndex) };
+        return new Object[] { Double.valueOf(maxElement), Integer.valueOf(maxIndex) };
     }
 
     /** Return the arithmetic mean of the elements in the array.
@@ -327,7 +327,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
             }
         }
 
-        return new Object[] { new Double(minElement), new Integer(minIndex) };
+        return new Object[] { Double.valueOf(minElement), Integer.valueOf(minIndex) };
     }
 
     /** Return the product of all of the elements in the array.

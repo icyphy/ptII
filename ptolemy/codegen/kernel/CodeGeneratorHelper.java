@@ -386,7 +386,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             if (offsetObject instanceof Integer && _isInteger(offsetString)) {
 
                 int offset = ((Integer) offsetObject).intValue()
-                        + (new Integer(offsetString)).intValue();
+                        + (Integer.valueOf(offsetString)).intValue();
 
                 offset %= getBufferSize(port, channel);
                 temp = Integer.toString(offset);
@@ -909,7 +909,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
                 if (token instanceof ArrayToken) {
                     Token element = ((ArrayToken) token)
-                            .getElement(new Integer(offset).intValue());
+                            .getElement(Integer.valueOf(offset).intValue());
 
                     return _generateTypeConvertMethod(element.toString(),
                             castType, codeGenType(element.getType()));
@@ -1051,7 +1051,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
             int channelNumber = 0;
             if (!channelAndOffset[0].equals("")) {
-                channelNumber = (new Integer(channelAndOffset[0])).intValue();
+                channelNumber = (Integer.valueOf(channelAndOffset[0])).intValue();
             }
 
             // To support modal model, we need to check the following condition
@@ -1483,14 +1483,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             for (int i = 0; i < port.getWidth(); i++) {
                 Object readOffset = getReadOffset(port, i);
                 if (readOffset instanceof Integer) {
-                    setReadOffset(port, i, new Integer(0));
+                    setReadOffset(port, i, Integer.valueOf(0));
                 } else {
                     code.append(CodeStream.indent(((String) readOffset)
                             + " = 0;" + _eol));
                 }
                 Object writeOffset = getWriteOffset(port, i);
                 if (writeOffset instanceof Integer) {
-                    setWriteOffset(port, i, new Integer(0));
+                    setWriteOffset(port, i, Integer.valueOf(0));
                 } else {
                     code.append(CodeStream.indent(((String) writeOffset)
                             + " = 0;" + _eol));
@@ -1798,8 +1798,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             _writeOffsets.put(port, writeOffsets);
 
             for (int i = 0; i < length; i++) {
-                setReadOffset(port, i, new Integer(0));
-                setWriteOffset(port, i, new Integer(0));
+                setReadOffset(port, i, Integer.valueOf(0));
+                setWriteOffset(port, i, Integer.valueOf(0));
             }
         }
     }

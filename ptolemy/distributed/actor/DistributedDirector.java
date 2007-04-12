@@ -121,7 +121,7 @@ public class DistributedDirector extends Director {
                         + ID);
             }
         } else {
-            ID = new Integer(lastId);
+            ID = Integer.valueOf(lastId);
             lastId += 1;
             receiver = new DistributedSDFReceiver(ID);
         }

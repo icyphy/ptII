@@ -221,7 +221,7 @@ public class ClimbLinearizer extends TypedAtomicActor {
 
             while (stokens.hasMoreTokens() && (index < 4)) {
                 String valueToken = stokens.nextToken();
-                _alphaV[index++] = (new Double(valueToken)).doubleValue();
+                _alphaV[index++] = (Double.valueOf(valueToken)).doubleValue();
             }
         } else if (att == paramCVx) {
             _cVx = ((DoubleToken) paramCVx.getToken()).doubleValue();

@@ -308,7 +308,7 @@ class CSpec {
 
         /* Initialize hashtable for lexer states. */
         m_states = new Hashtable();
-        m_states.put("YYINITIAL", new Integer(m_states.size()));
+        m_states.put("YYINITIAL", Integer.valueOf(m_states.size()));
 
         /* Initialize hashtable for lexical macros. */
         m_macros = new Hashtable();
@@ -1126,7 +1126,7 @@ class CEmit {
         m_outstream.writeBytes("\tprivate int yy_cmap[] = {\n\t\t");
 
         for (i = 0; i < m_spec.m_col_map.length; ++i) {
-            m_outstream.writeBytes((new Integer(m_spec.m_col_map[i]))
+            m_outstream.writeBytes((Integer.valueOf(m_spec.m_col_map[i]))
                     .toString());
 
             if (i < (m_spec.m_col_map.length - 1)) {
@@ -1145,7 +1145,7 @@ class CEmit {
         m_outstream.writeBytes("\tprivate int yy_rmap[] = {\n\t\t");
 
         for (i = 0; i < m_spec.m_row_map.length; ++i) {
-            m_outstream.writeBytes((new Integer(m_spec.m_row_map[i]))
+            m_outstream.writeBytes((Integer.valueOf(m_spec.m_row_map[i]))
                     .toString());
 
             if (i < (m_spec.m_row_map.length - 1)) {
@@ -1176,9 +1176,9 @@ class CEmit {
         int previousInt = -20; // RL - Bogus -20 state.
 
         // RL - Output matrix size
-        m_outstream.writeBytes((new Integer(size)).toString());
+        m_outstream.writeBytes((Integer.valueOf(size)).toString());
         m_outstream.writeBytes(",");
-        m_outstream.writeBytes((new Integer(m_spec.m_dtrans_ncols)).toString());
+        m_outstream.writeBytes((Integer.valueOf(m_spec.m_dtrans_ncols)).toString());
         m_outstream.writeBytes(",");
         m_outstream.writeBytes("\n\"");
 
@@ -1194,7 +1194,7 @@ class CEmit {
                     if (sequenceStarted) {
                         sequenceLength++;
                     } else {
-                        m_outstream.writeBytes((new Integer(writeInt))
+                        m_outstream.writeBytes((Integer.valueOf(writeInt))
                                 .toString());
                         m_outstream.writeBytes(":");
                         sequenceLength = 2;
@@ -1203,14 +1203,14 @@ class CEmit {
                 } else // RL - no sequence or end sequence
                 {
                     if (sequenceStarted) {
-                        m_outstream.writeBytes((new Integer(sequenceLength))
+                        m_outstream.writeBytes((Integer.valueOf(sequenceLength))
                                 .toString());
                         m_outstream.writeBytes(",");
                         sequenceLength = 0;
                         sequenceStarted = false;
                     } else {
                         if (previousInt != -20) {
-                            m_outstream.writeBytes((new Integer(previousInt))
+                            m_outstream.writeBytes((Integer.valueOf(previousInt))
                                     .toString());
                             m_outstream.writeBytes(",");
                         }
@@ -1222,9 +1222,9 @@ class CEmit {
         }
 
         if (sequenceStarted) {
-            m_outstream.writeBytes((new Integer(sequenceLength)).toString());
+            m_outstream.writeBytes((Integer.valueOf(sequenceLength)).toString());
         } else {
-            m_outstream.writeBytes((new Integer(previousInt)).toString());
+            m_outstream.writeBytes((Integer.valueOf(previousInt)).toString());
         }
 
         m_outstream.writeBytes("\");\n");
@@ -1475,7 +1475,7 @@ class CEmit {
             accept = (CAccept) m_spec.m_accept_vector.elementAt(elem);
 
             if (null != accept) {
-                m_outstream.writeBytes(tabs + "case " + elem /*+ (new Integer(elem)).toString()*/
+                m_outstream.writeBytes(tabs + "case " + elem /*+ (Integer.valueOf(elem)).toString()*/
                         + ":\n");
                 m_outstream.writeBytes(tabs + "\t");
                 m_outstream.writeBytes(new String(accept.m_action, 0,
@@ -4276,20 +4276,20 @@ class CLexGen {
 
             /* Initialize character hash table. */
             m_tokens = new Hashtable();
-            m_tokens.put(new Character('$'), new Integer(AT_EOL));
-            m_tokens.put(new Character('('), new Integer(OPEN_PAREN));
-            m_tokens.put(new Character(')'), new Integer(CLOSE_PAREN));
-            m_tokens.put(new Character('*'), new Integer(CLOSURE));
-            m_tokens.put(new Character('+'), new Integer(PLUS_CLOSE));
-            m_tokens.put(new Character('-'), new Integer(DASH));
-            m_tokens.put(new Character('.'), new Integer(ANY));
-            m_tokens.put(new Character('?'), new Integer(OPTIONAL));
-            m_tokens.put(new Character('['), new Integer(CCL_START));
-            m_tokens.put(new Character(']'), new Integer(CCL_END));
-            m_tokens.put(new Character('^'), new Integer(AT_BOL));
-            m_tokens.put(new Character('{'), new Integer(OPEN_CURLY));
-            m_tokens.put(new Character('|'), new Integer(OR));
-            m_tokens.put(new Character('}'), new Integer(CLOSE_CURLY));
+            m_tokens.put(new Character('$'), Integer.valueOf(AT_EOL));
+            m_tokens.put(new Character('('), Integer.valueOf(OPEN_PAREN));
+            m_tokens.put(new Character(')'), Integer.valueOf(CLOSE_PAREN));
+            m_tokens.put(new Character('*'), Integer.valueOf(CLOSURE));
+            m_tokens.put(new Character('+'), Integer.valueOf(PLUS_CLOSE));
+            m_tokens.put(new Character('-'), Integer.valueOf(DASH));
+            m_tokens.put(new Character('.'), Integer.valueOf(ANY));
+            m_tokens.put(new Character('?'), Integer.valueOf(OPTIONAL));
+            m_tokens.put(new Character('['), Integer.valueOf(CCL_START));
+            m_tokens.put(new Character(']'), Integer.valueOf(CCL_END));
+            m_tokens.put(new Character('^'), Integer.valueOf(AT_BOL));
+            m_tokens.put(new Character('{'), Integer.valueOf(OPEN_CURLY));
+            m_tokens.put(new Character('|'), Integer.valueOf(OR));
+            m_tokens.put(new Character('}'), Integer.valueOf(CLOSE_CURLY));
 
             /* Initialize spec structure. */
             m_spec = new CSpec(this);
@@ -5055,7 +5055,7 @@ class CLexGen {
 
         index = m_spec.m_nfa_states.indexOf(state);
 
-        return ((new Integer(index)).toString());
+        return ((Integer.valueOf(index)).toString());
     }
 
     /***************************************************************
@@ -5691,7 +5691,7 @@ class CLexGen {
 
             /* Enter new state name, along with unique index. */
             m_spec.m_states.put(new String(m_input.m_line, start_state,
-                    count_state), new Integer(m_spec.m_states.size()));
+                    count_state), Integer.valueOf(m_spec.m_states.size()));
 
             /* Skip comma. */
             if (',' == m_input.m_line[m_input.m_line_index]) {

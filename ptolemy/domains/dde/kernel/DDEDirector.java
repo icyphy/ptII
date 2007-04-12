@@ -219,7 +219,7 @@ public class DDEDirector extends CompositeProcessDirector implements
                 _initialTimeTable = new Hashtable();
             }
 
-            _initialTimeTable.put(actor, new Double(time.getDoubleValue()));
+            _initialTimeTable.put(actor, Double.valueOf(time.getDoubleValue()));
             return;
         }
 

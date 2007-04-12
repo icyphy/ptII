@@ -67,11 +67,11 @@ public class Distributor extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Distributor actor = (ptolemy.actor.lib.Distributor) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(new Integer(0));
+        args.add(Integer.valueOf(0));
         Type inputType = actor.input.getType();
         args.add(inputType);
         for (int i = 0; i < actor.output.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
 
             String codeBlock = "";
             if (isPrimitive(inputType) && !isPrimitive(actor.output.getType())) {

@@ -70,7 +70,7 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis {
             while (it.hasNext()) {
                 Object s = it.next();
 
-                indexMap.put(s, new Integer(index++));
+                indexMap.put(s, Integer.valueOf(index++));
                 changedUnitsSet.add(s);
 
                 unitToBeforeFlow.put(s, newInitialFlow());

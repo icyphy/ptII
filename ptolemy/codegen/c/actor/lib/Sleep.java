@@ -69,7 +69,7 @@ public class Sleep extends CCodeGeneratorHelper {
         for (int i = 0; i < actor.input.getWidth(); i++) {
             if (i < actor.output.getWidth()) {
                 args.clear();
-                args.add(new Integer(i));
+                args.add(Integer.valueOf(i));
                 code.append(_generateBlockCode("transferBlock", args));
             }
         }

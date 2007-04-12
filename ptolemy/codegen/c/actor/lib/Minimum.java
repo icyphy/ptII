@@ -69,17 +69,17 @@ public class Minimum extends CCodeGeneratorHelper {
         // FIXME: we need to resolve other ScalarTokens like Complex.
         for (int i = 1; i < actor.input.getWidth(); i++) {
             ArrayList args = new ArrayList();
-            args.add(new Integer(i));
+            args.add(Integer.valueOf(i));
             _codeStream.appendCodeBlock("findBlock", args);
         }
         for (int i = 0; i < actor.minimumValue.getWidth(); i++) {
             ArrayList args = new ArrayList();
-            args.add(new Integer(i));
+            args.add(Integer.valueOf(i));
             _codeStream.appendCodeBlock("sendBlock1", args);
         }
         for (int i = 0; i < actor.channelNumber.getWidth(); i++) {
             ArrayList args = new ArrayList();
-            args.add(new Integer(i));
+            args.add(Integer.valueOf(i));
             _codeStream.appendCodeBlock("sendBlock2", args);
         }
         return processCode(_codeStream.toString());

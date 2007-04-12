@@ -66,15 +66,15 @@ public class ArrayAppend extends CCodeGeneratorHelper {
         ptolemy.actor.lib.ArrayAppend actor = (ptolemy.actor.lib.ArrayAppend) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(new Integer(0));
+        args.add(Integer.valueOf(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             _codeStream.appendCodeBlock("getTotalLength", args);
         }
         _codeStream.appendCodeBlock("allocNewArray");
 
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, new Integer(i));
+            args.set(0, Integer.valueOf(i));
             _codeStream.appendCodeBlock("fillArray", args);
         }
 

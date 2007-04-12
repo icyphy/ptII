@@ -81,8 +81,8 @@ public class SampleDelay extends CCodeGeneratorHelper {
                     .getElement(i);
             if (element instanceof ArrayToken) {
                 ArrayList args = new ArrayList();
-                args.add(new Integer(i));
-                args.add(new Integer(((ArrayToken) element).length()));
+                args.add(Integer.valueOf(i));
+                args.add(Integer.valueOf(((ArrayToken) element).length()));
                 // Indent one level
                 _codeStream.appendCodeBlock("allocNewArray", args, 1);
             } else {

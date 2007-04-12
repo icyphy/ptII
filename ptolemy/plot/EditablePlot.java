@@ -141,7 +141,7 @@ public class EditablePlot extends Plot {
         }
 
         Object[] save = new Object[2];
-        save[0] = new Integer(_dataset);
+        save[0] = Integer.valueOf(_dataset);
         save[1] = getData(_dataset);
         _undoStack.push(save);
 
@@ -189,7 +189,7 @@ public class EditablePlot extends Plot {
         }
 
         Object[] save = new Object[2];
-        save[0] = new Integer(_dataset);
+        save[0] = Integer.valueOf(_dataset);
         save[1] = getData(_dataset);
         _redoStack.push(save);
 
@@ -212,7 +212,7 @@ public class EditablePlot extends Plot {
 
         // Save for undo.
         Object[] save = new Object[2];
-        save[0] = new Integer(_dataset);
+        save[0] = Integer.valueOf(_dataset);
         save[1] = getData(_dataset);
 
         // FIXME: Need a way to notify menus to enable items...
