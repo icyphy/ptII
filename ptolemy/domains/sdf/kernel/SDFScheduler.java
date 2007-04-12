@@ -802,7 +802,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         for (Iterator actorMapEntries = entityToFiringsPerIteration.entrySet().iterator();
              actorMapEntries.hasNext();) {
             Map.Entry actors =(Map.Entry) actorMapEntries.next();
-            Object actor = actors.getKey();
             Fraction repetitions = (Fraction) actors.getValue();
             repetitions = repetitions.multiply(lcmFraction);
 
@@ -817,7 +816,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         for (Iterator portMapEntries = externalRates.entrySet().iterator();
              portMapEntries.hasNext();) {
             Map.Entry ports = (Map.Entry) portMapEntries.next();
-            Object port = ports.getKey();
             Fraction rate = (Fraction) ports.getValue();
             rate = rate.multiply(lcmFraction);
 
@@ -1141,9 +1139,10 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         if (currentPort.getContainer() == container) {
             // Find all the ports that are deeply connected to
             // current port on the inside.
-            connectedPorts = currentPort.deepInsidePortList().iterator();
 
             if (_debugging && VERBOSE) {
+                // Move this inside and avoid FindBugs Dead Local Store
+                connectedPorts = currentPort.deepInsidePortList().iterator();
                 _debug("deepInsidePortList of " + currentPort);
 
                 while (connectedPorts.hasNext()) {
