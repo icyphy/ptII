@@ -261,21 +261,21 @@ public class Schedule extends ScheduleElement {
      * Output a string representation of this Schedule.
      */
     public String toString() {
-        String result = "Execute Schedule{\n";
-        Iterator i = iterator();
+        StringBuffer result = new StringBuffer("Execute Schedule{\n");
 
+        Iterator i = iterator();
         while (i.hasNext()) {
-            ScheduleElement e = (ScheduleElement) i.next();
-            result += (e + "\n");
+            ScheduleElement element = (ScheduleElement) i.next();
+            result.append(element + "\n");
         }
 
-        result += "}";
+        result.append("}");
 
         if (getIterationCount() > 1) {
-            result += (" " + getIterationCount() + " times");
+            result.append(" " + getIterationCount() + " times");
         }
 
-        return result;
+        return result.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
