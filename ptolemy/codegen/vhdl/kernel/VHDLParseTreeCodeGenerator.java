@@ -368,13 +368,14 @@ public class VHDLParseTreeCodeGenerator extends AbstractParseTreeVisitor
                         + " which does not support bitwise operations.");
             }
 
-            if (node.isBitwiseAnd()) {
-                //bitwiseResult = bitwiseResult.bitwiseAnd(nextToken);
-            } else if (node.isBitwiseOr()) {
-                //bitwiseResult = bitwiseResult.bitwiseOr(nextToken);
-            } else {
-                //bitwiseResult = bitwiseResult.bitwiseXor(nextToken);
-            }
+
+//             if (node.isBitwiseAnd()) {
+//                 //bitwiseResult = bitwiseResult.bitwiseAnd(nextToken);
+//             } else if (node.isBitwiseOr()) {
+//                 //bitwiseResult = bitwiseResult.bitwiseOr(nextToken);
+//             } else {
+//                 //bitwiseResult = bitwiseResult.bitwiseXor(nextToken);
+//             }
         }
 
         _fireCode.append(")");
