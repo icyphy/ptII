@@ -14,5 +14,7 @@
     <Match classregex=".*" >
        <!-- Exclude Serializable warnings -->
        <BugCode name="Se" />
+       <!-- Exclude class is Serializable; consider declaring a serialVersionUID -->
+       <BugCode name="SnVI" />
     </Match>
 </FindBugsFilter>
