@@ -2666,19 +2666,6 @@ public class AssignmentTransformer extends AbstractTransformer implements
      *  Extra methods and fields for these field accesses will be added to
      *  class declarations later when the traversal on the class finishes.
      *
-     *  @param className The name of the current class.
-     *  @param fieldName The field name.
-     *  @param indices The number of indices.
-     */
-    private void _recordAccessedField(String className, String fieldName,
-            int indices) {
-        _recordField(_accessedFields, className, fieldName, indices);
-    }
-
-    /** Record an accessed field (and possible indices after it) in a list.
-     *  Extra methods and fields for these field accesses will be added to
-     *  class declarations later when the traversal on the class finishes.
-     *
      *  @param table The hash table to be used.
      *  @param className The name of the current class.
      *  @param fieldName The field name.
