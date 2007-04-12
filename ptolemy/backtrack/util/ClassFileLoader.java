@@ -1,30 +1,30 @@
 /* Class loader that tries to load a class from the given file.
 
- Copyright (c) 2005 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2005 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
- */
+*/
 package ptolemy.backtrack.util;
 
 import java.io.File;
@@ -38,20 +38,20 @@ import java.net.URLClassLoader;
 //// ClassFileLoader
 
 /**
- Class loader that tries to load a class from the given file. This class
- loader, unlike other class loaders that accept class names and load classes
- with those names, accepts class file names and loads them as classes. It
- uses {@link URLClassLoader#defineClass(java.lang.String, sun.misc.Resource)}
- to define the class with the contents in the given file. If error occurs, it
- falls back to traditional class loading with the class name in the exception
- message.
+   Class loader that tries to load a class from the given file. This class
+   loader, unlike other class loaders that accept class names and load classes
+   with those names, accepts class file names and loads them as classes. It
+   uses {@link URLClassLoader#defineClass(java.lang.String, sun.misc.Resource)}
+   to define the class with the contents in the given file. If error occurs, it
+   falls back to traditional class loading with the class name in the exception
+   message.
 
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class ClassFileLoader extends URLClassLoader {
     /** Construct a class loader with no special class path. This class
      *  loader can only load Java built-in classes indirectly, when they are
@@ -92,49 +92,57 @@ public class ClassFileLoader extends URLClassLoader {
         FileInputStream inputStream = null;
         try {
             inputStream = new FileInputStream(classFile);
-            byte[] buffer = new byte[inputStream.available()];
-            inputStream.read(buffer);
+            int bytesAvailable = inputStream.available();
+            byte[] buffer = new byte[bytesAvailable];
+            int bytesRead;
+            if ((bytesRead = inputStream.read(buffer))
+                    != bytesAvailable) {
+                throw new IOException("Failed to read \""
+                        + classFile + "\", read only " + bytesRead
+                        + " bytes, expected to read "
+                        + bytesAvailable + " bytes"); 
+            };
 
             try {
                 return defineClass(null, buffer, 0, buffer.length);
             } catch (IllegalAccessError e) {
-            String errorPrefix = "class ";
-            String message = e.getMessage();
+                String errorPrefix = "class ";
+                String message = e.getMessage();
 
-            if (message.startsWith(errorPrefix)) {
-                String className = message.substring(errorPrefix.length());
-                int pos;
+                if (message.startsWith(errorPrefix)) {
+                    String className = message.substring(errorPrefix.length());
+                    int pos;
 
-                if ((pos = className.indexOf(' ')) >= 0) {
-                    className = className.substring(0, pos);
+                    if ((pos = className.indexOf(' ')) >= 0) {
+                        className = className.substring(0, pos);
+                    }
+
+                    return loadClass(className);
+                } else {
+                    throw e;
                 }
-
-                return loadClass(className);
-            } else {
-                throw e;
-            }
-        } catch (LinkageError e) {
-            // Class already loaded.
-            // FIXME: Any better solution here?
-            String message = e.getMessage();
-            int slashIndex = message.indexOf('/');
-            if (slashIndex < 0) {
-                throw e;
-            } else {
-                int startIndex = message.lastIndexOf(' ', slashIndex);
-                if (startIndex < 0) {
+            } catch (LinkageError e) {
+                // Class already loaded.
+                // FIXME: Any better solution here?
+                String message = e.getMessage();
+                int slashIndex = message.indexOf('/');
+                if (slashIndex < 0) {
                     throw e;
                 } else {
-                    int endIndex = message.indexOf(' ', slashIndex);
-                    if (endIndex < 0) {
-                        endIndex = message.length();
+                    int startIndex = message.lastIndexOf(' ', slashIndex);
+                    if (startIndex < 0) {
+                        throw e;
+                    } else {
+                        int endIndex = message.indexOf(' ', slashIndex);
+                        if (endIndex < 0) {
+                            endIndex = message.length();
+                        }
+                        String path = message.substring(startIndex + 1, endIndex);
+                        String classFullName = path.replace('/', '.');
+                        return loadClass(classFullName);
                     }
-                    String path = message.substring(startIndex + 1, endIndex);
-                    String classFullName = path.replace('/', '.');
-                    return loadClass(classFullName);
                 }
             }
-        }
         } finally {
             if (inputStream != null) {
                 try {
