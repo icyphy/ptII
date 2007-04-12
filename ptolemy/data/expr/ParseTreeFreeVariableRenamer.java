@@ -178,7 +178,7 @@ public class ParseTreeFreeVariableRenamer extends AbstractParseTreeVisitor {
         while (items.hasNext()) {
             Object item = items.next();
             if (collection2.contains(item)) {
-                result.add(result);
+                result.add(items);
             }
         }
         return result;
