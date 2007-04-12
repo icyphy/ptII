@@ -146,7 +146,10 @@ public abstract class BaseSDFScheduler extends Scheduler {
                 declaration = new DependencyDeclaration(variable,
                         "_SDFRateDependencyDeclaration");
             } catch (NameDuplicationException ex) {
-                // Ignore... should not happen.
+                // We used to ignore this, but FindBugs would complain
+                // that declaration could still be null.
+                throw new InternalErrorException("Failed to construct "
+                        + "_SDFRateDependencyDeclaration");
             }
         }
 
