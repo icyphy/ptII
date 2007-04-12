@@ -91,7 +91,7 @@ public class HideAnnotationNames implements MoMLFilter {
         }
 
         if (_currentlyProcessingAnnotation
-                && (container != null)
+                && container != null
                 && !container.getFullName().equals(_currentAnnotationFullName)
                 && ((_currentAnnotationFullName == null) || ((_currentAnnotationFullName != null) && !_currentAnnotationFullName
                         .startsWith(container.getFullName())))
