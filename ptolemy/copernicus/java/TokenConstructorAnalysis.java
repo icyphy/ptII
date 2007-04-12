@@ -26,6 +26,7 @@
  */
 package ptolemy.copernicus.java;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -107,8 +108,10 @@ public class TokenConstructorAnalysis {
 
     private Token _evaluateInitializer(InvokeExpr invokeExpr,
             SootMethod invokedMethod) {
-        Value[] argValues = (Value[]) invokeExpr.getArgs()
-                .toArray(new Value[0]);
+        Collection invokeExprArgs = invokeExpr.getArgs();
+
+        Value[] argValues = (Value[]) invokeExprArgs
+                .toArray(new Value[invokeExprArgs.size()]);
 
         for (int i = 0; i < argValues.length; i++) {
             if (Evaluator.isValueConstantValued(argValues[i])) {

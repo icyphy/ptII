@@ -283,7 +283,7 @@ public class HTMLAbout {
             Set modelSet = new HashSet(modelList);
             newURL = _temporaryHTMLFile("checkModelSizes", ".htm",
                     CheckModelSize.checkModelSize((String[]) modelSet
-                            .toArray(new String[0])));
+                            .toArray(new String[modelSet.size()])));
         } else if (event.getDescription().equals("about:copyright")) {
             // Note that if we have a link that is
             // <a href="about:copyright">about:copyright</a>
