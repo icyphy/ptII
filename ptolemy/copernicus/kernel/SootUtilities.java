@@ -1080,6 +1080,9 @@ public class SootUtilities {
             return derivesFrom(class1, class2);
         } else if (type1 instanceof Type && type2 instanceof RefType) {
             Type elementType1 = ((ArrayType) type1).baseType;
+
+            // FIXME: FindBugs: Impossible cast from soot.RefType to
+            // soot.ArrayType
             Type elementType2 = ((ArrayType) type2).baseType;
             return isSubtypeOf(elementType1, elementType2);
         } else {
