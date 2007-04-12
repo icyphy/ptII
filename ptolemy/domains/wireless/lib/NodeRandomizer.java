@@ -311,9 +311,29 @@ public class NodeRandomizer extends TypedAtomicActor {
      */
     protected String _getLocationSetMoML(CompositeEntity container,
             Entity node, double[] location) throws IllegalActionException {
-        return "<property name=\"" + node.getName(container) + "._location\" "
-                + "class=\"ptolemy.kernel.util.Location\" value=\"["
+        // First figure out the name of the class of the _location
+        // attribute.  Usually, it is ptolemy.kernel.util.Location,
+        // but another possibility is
+        // ptolemy.actor.parameters.LocationParameter.
+        Attribute locationAttribute = node.getAttribute("_location");
+        String className = null;
+        if (locationAttribute != null) {
+            className = locationAttribute.getClass().getName();
+            return "<property name=\""
+                + node.getName(container) + "._location\" "
+                + "class=\"" + className
+                + "\" value=\"["
                 + location[0] + ", " + location[1] + "]\"/>\n";
+        } else {
+            // The _location attribute does not exist.
+            // FIXME: We could make a new attribute first instead of
+            // throwing an exception here.
+            throw new IllegalActionException(
+                    "The _location attribute does not exist for node = "
+                    + node
+                    + "with container = "
+                    + container);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
