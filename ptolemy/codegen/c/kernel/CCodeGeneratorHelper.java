@@ -152,7 +152,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      *  @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getJVMHeaderFiles() throws IllegalActionException {
-        if(!_printedJVMWarning) {
+        if (!_printedJVMWarning) {
             // We only print this once.
             _printedJVMWarning = true;
             ExecuteCommands executeCommands = getCodeGenerator()

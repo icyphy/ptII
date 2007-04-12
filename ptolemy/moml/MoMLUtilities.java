@@ -171,7 +171,7 @@ public class MoMLUtilities {
                     Variable variable = (Variable) attribute;
 
                     boolean doGetToken = true;
-                    while(doGetToken) {
+                    while (doGetToken) {
                         doGetToken = false;
                         try {
                             variable.getToken();

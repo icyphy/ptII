@@ -142,7 +142,7 @@ public class HighlightEntities extends Attribute {
                     ArrayToken names = (ArrayToken)entityNames.getToken();
                     if (names != null && names.length() > 0) {
                         StringBuffer moml = new StringBuffer("<group>");
-                        for(int i = 0; i < names.length(); i++) {
+                        for (int i = 0; i < names.length(); i++) {
                             String name = ((StringToken)names.getElement(i)).stringValue();
                             ComponentEntity entity = ((CompositeEntity)container).getEntity(name);
                             if (entity != null) {

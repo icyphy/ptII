@@ -411,7 +411,7 @@ public class FixedPointScheduler extends Scheduler {
                 continue;
             }
             actor = (Actor) ioPort.getContainer();
-            if (previouslySeenActor == actor){
+            if (previouslySeenActor == actor) {
                 if (ioPort.isOutput()) {
                     continue;
                 }

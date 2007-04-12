@@ -113,7 +113,7 @@ public class ZeroOrderHold extends Transformer {
         super.fire();
         if (input.isKnown() && input.hasToken(0)) {
             _lastToken = input.get(0);
-            if(_debugging) {
+            if (_debugging) {
                 _debug(getFullName() + " receives an event with token "
                         + _lastToken.toString());
             }

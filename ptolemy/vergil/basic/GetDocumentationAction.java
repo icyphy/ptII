@@ -124,24 +124,24 @@ public class GetDocumentationAction extends FigureAction {
           (KeplerDocumentationAttribute)target.getAttribute("KeplerDocumentation");
         int docAttributeSize = docAttributes.size();
 
-        if(docAttributes.size() != 0 && keplerDocumentationAttribute != null) {
+        if (docAttributes.size() != 0 && keplerDocumentationAttribute != null) {
           //if there is both a docAttribute and a KeplerDocumentationAttribute
           //use the preference passed in to the constructor
-          if(docPreference == 0)
+          if (docPreference == 0)
           {
             keplerDocumentationAttribute = null;
           }
-          else if(docPreference == 1)
+          else if (docPreference == 1)
           {
             docAttributeSize = 0;
           }
         }
 
-        if(keplerDocumentationAttribute != null) {
+        if (keplerDocumentationAttribute != null) {
           //use the KeplerDocumentationAttribute
           DocAttribute docAtt = keplerDocumentationAttribute.getDocAttribute(target);
           //System.out.println("docAttribute: " + docAtt.exportMoML());
-          if(docAtt != null)
+          if (docAtt != null)
           {
             showDocAttributeTableau(docAtt, target);
           }
@@ -149,7 +149,7 @@ public class GetDocumentationAction extends FigureAction {
           {
             throw new InternalErrorException("Error building Kepler documentation");
           }
-        } else if(docAttributeSize != 0) {
+        } else if (docAttributeSize != 0) {
             // Have a doc attribute. Use that.
             DocAttribute docAttribute = (DocAttribute) docAttributes
                     .get(docAttributes.size() - 1);
@@ -363,7 +363,7 @@ public class GetDocumentationAction extends FigureAction {
           try {
               tableau = new DocTableau((DocEffigy) effigy, "DocTableau");
 
-            if(tableau == null)
+            if (tableau == null)
               System.out.println("tableau is null.");
 
             ((DocTableau) tableau).setTitle("Documentation for "

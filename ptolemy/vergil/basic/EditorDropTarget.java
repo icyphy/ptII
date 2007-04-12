@@ -161,7 +161,7 @@ public class EditorDropTarget extends DropTarget {
          */
         public void dragEnter(DropTargetDragEvent dtde) {
             //notify additionalListeners
-            for(int i=0; i<_additionalListeners.size(); i++) {
+            for (int i=0; i<_additionalListeners.size(); i++) {
                 DropTargetListener l = (DropTargetListener)
                   _additionalListeners.elementAt(i);
                 l.dragEnter(dtde);
@@ -182,7 +182,7 @@ public class EditorDropTarget extends DropTarget {
          */
         public void dragExit(DropTargetEvent dtde) {
             //notify additionalListeners
-            for(int i=0; i<_additionalListeners.size(); i++) {
+            for (int i=0; i<_additionalListeners.size(); i++) {
                 DropTargetListener l = (DropTargetListener)
                   _additionalListeners.elementAt(i);
                 l.dragExit(dtde);
@@ -204,7 +204,7 @@ public class EditorDropTarget extends DropTarget {
          */
         public void dragOver(DropTargetDragEvent dtde) {
             //notify additionalListeners
-            for(int i=0; i<_additionalListeners.size(); i++) {
+            for (int i=0; i<_additionalListeners.size(); i++) {
                 DropTargetListener l = (DropTargetListener)
                   _additionalListeners.elementAt(i);
                 l.dragOver(dtde);
@@ -250,7 +250,7 @@ public class EditorDropTarget extends DropTarget {
          */
         public void drop(DropTargetDropEvent dtde) {
             //notify additionalListeners
-            for(int i=0; i<_additionalListeners.size(); i++) {
+            for (int i=0; i<_additionalListeners.size(); i++) {
                 DropTargetListener l = (DropTargetListener)
                   _additionalListeners.elementAt(i);
                 l.drop(dtde);
@@ -359,7 +359,7 @@ public class EditorDropTarget extends DropTarget {
          */
         public void dropActionChanged(DropTargetDragEvent dtde) {
             //notify additionalListeners
-            for(int i=0; i<_additionalListeners.size(); i++) {
+            for (int i=0; i<_additionalListeners.size(); i++) {
                 DropTargetListener l = (DropTargetListener)
                   _additionalListeners.elementAt(i);
                 l.dropActionChanged(dtde);

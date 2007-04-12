@@ -429,7 +429,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception Exception If any error occurs.
      */
     public static int generateCode(String[] args) throws Exception {
-        try{ 
+        try { 
             if (args.length == 0) {
                 System.err.println("Usage: java -classpath $PTII "
                         + "ptolemy.codegen.kernel.CodeGenerator model.xml "

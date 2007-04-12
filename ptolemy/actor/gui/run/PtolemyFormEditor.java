@@ -680,7 +680,7 @@ public class PtolemyFormEditor extends JPanel {
                     int col = _table.columnAtPoint(p);
                     // support double-click:
                     Component component = _table.getSelectedControl();
-                    if (component == null){
+                    if (component == null) {
                         return;
                     }
 

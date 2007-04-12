@@ -183,7 +183,7 @@ public class XSLTransformer extends Transformer {
             (styleSheetParameter.getToken());
             Iterator labels = parameters.labelSet().iterator();
     
-            while(labels.hasNext()){
+            while (labels.hasNext()) {
                 String name = (String) labels.next();
                 Token token = parameters.get(name);
                 if (token instanceof StringToken) {

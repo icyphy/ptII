@@ -186,7 +186,7 @@ private static InputStream getCompFile()
       JarFile jf = new JarFile("formLayoutMakerx.jar");
       JarEntry je = null;
       Enumeration entries = jf.entries();
-      while(entries.hasMoreElements()) 
+      while (entries.hasMoreElements()) 
       {
           je = (JarEntry) entries.nextElement();    
           if (je.getName().equals("components.xml")) 
