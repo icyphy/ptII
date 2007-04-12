@@ -95,6 +95,9 @@ public class GraphException extends RuntimeException {
      *  @return A text string dump of the weight and graph.
      */
     static public String weightDump(Object weight) {
+        if (weight == null) {
+            return "\nThe weight was null?";
+        }
         String dump = "\nThe weight is of class " + weight.getClass().getName()
                 + " and its description follows:\n" + weight.toString();
         return dump;
