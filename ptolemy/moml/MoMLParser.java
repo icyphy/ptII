@@ -5901,7 +5901,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             currentName = _current.getFullName();
         }
 
-        if ((_current != null) && name.startsWith(currentName)) {
+        if (_current != null && name.startsWith(currentName)) {
             int prefix = currentName.length();
 
             if (name.length() > prefix) {
