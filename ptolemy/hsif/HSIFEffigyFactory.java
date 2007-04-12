@@ -116,7 +116,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
             }
         }
 
-        if (_isHSIF(input)) {
+        if (input != null && _isHSIF(input)) {
             try {
                 _inCreateEffigy = true;
 
