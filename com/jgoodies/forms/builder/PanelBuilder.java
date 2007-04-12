@@ -301,7 +301,7 @@ public class PanelBuilder extends AbstractFormBuilder {
      * @param component             the component to add
      * @param componentConstraints  the component's cell constraints
      * @return the added label
-     * @throws IllegalArgumentException if the same cell constraints instance
+     * @exception IllegalArgumentException if the same cell constraints instance
      *     is used for the label and the component
      * 
      * @see JLabel#setLabelFor(java.awt.Component)
@@ -375,7 +375,7 @@ public class PanelBuilder extends AbstractFormBuilder {
      * @param component             the component to add
      * @param componentConstraints  the component's cell constraints
      * @return the added label
-     * @throws IllegalArgumentException if the same cell constraints instance
+     * @exception IllegalArgumentException if the same cell constraints instance
      *     is used for the label and the component
      * 
      * @see JLabel#setLabelFor(java.awt.Component)

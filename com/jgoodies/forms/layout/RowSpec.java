@@ -100,7 +100,7 @@ public final class RowSpec extends FormSpec {
      * @param defaultAlignment  the row's default alignment
      * @param size              constant size, component size, or bounded size
      * @param resizeWeight      the row's non-negative resize weight
-     * @throws IllegalArgumentException if the size is invalid or 
+     * @exception IllegalArgumentException if the size is invalid or 
      *      the resize weight is negative
      */
     public RowSpec(DefaultAlignment defaultAlignment,
@@ -114,7 +114,7 @@ public final class RowSpec extends FormSpec {
      * default alignment, and no resizing.
      * 
      * @param size             constant size, component size, or bounded size
-     * @throws IllegalArgumentException if the size is invalid
+     * @exception IllegalArgumentException if the size is invalid
      */
     public RowSpec(Size size) {
         super(DEFAULT, size, NO_GROW);
@@ -151,7 +151,7 @@ public final class RowSpec extends FormSpec {
      * 
      * @param encodedRowSpecs     comma separated encoded row specifications
      * @return an array of decoded row specifications
-     * @throws NullPointerException if the encoded row specifications string 
+     * @exception NullPointerException if the encoded row specifications string 
      *     is <code>null</code>
      * 
      * @see RowSpec#RowSpec(String)

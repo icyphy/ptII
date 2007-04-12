@@ -65,7 +65,7 @@ public class CustomizableRunFrame extends TableauFrame {
      *  enclosing tableau.
      *  @param model The model to put in this frame, or null if none.
      *  @param tableau The tableau responsible for this frame.
-     *  @throws IllegalActionException If the XML to be parsed has errors.
+     *  @exception IllegalActionException If the XML to be parsed has errors.
      */
     public CustomizableRunFrame(
             CompositeActor model, InterfaceTableau tableau)

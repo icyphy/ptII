@@ -131,7 +131,7 @@ public class StaticALU extends TypedAtomicActor {
      *      2 - Subtraction (A - B)
      *      3 - Multiplication (A * B)
      *      4 - Division (A / B)
-     *  @throws IllegalActionException If the input operation code 
+     *  @exception IllegalActionException If the input operation code 
      *  is not supported.
      */
     public void fire() throws IllegalActionException {

@@ -175,7 +175,7 @@ public class I15dPanelBuilder extends PanelBuilder {
      * @param component             the component to add
      * @param componentConstraints  the component's cell constraints
      * @return the added label
-     * @throws IllegalArgumentException if the same cell constraints instance
+     * @exception IllegalArgumentException if the same cell constraints instance
      *     is used for the label and the component
      * @see JLabel#setLabelFor(java.awt.Component)
      */
@@ -244,7 +244,7 @@ public class I15dPanelBuilder extends PanelBuilder {
      * @param resourceKey  the key to look for in the resource bundle
      * @return the associated internationalized string, or the resource key
      *     itself in case of a missing resource 
-     * @throws IllegalStateException  if no <code>ResourceBundle</code>
+     * @exception IllegalStateException  if no <code>ResourceBundle</code>
      *     has been set
      */
     protected String getI15dString(String resourceKey) {

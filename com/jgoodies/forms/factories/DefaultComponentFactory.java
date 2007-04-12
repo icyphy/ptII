@@ -211,7 +211,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
      * 
      * @param label       the title label component
      * @return a separator with title label
-     * @throws NullPointerException if the label is <code>null</code> 
+     * @exception NullPointerException if the label is <code>null</code> 
      * 
      * @since 1.0.6
      */

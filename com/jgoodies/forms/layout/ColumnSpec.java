@@ -106,7 +106,7 @@ public final class ColumnSpec extends FormSpec {
      * @param defaultAlignment the column's default alignment
      * @param size             constant, component size or bounded size
      * @param resizeWeight     the column's non-negative resize weight      
-     * @throws IllegalArgumentException if the size is invalid or 
+     * @exception IllegalArgumentException if the size is invalid or 
      *      the resize weight is negative
      */
     public ColumnSpec(DefaultAlignment defaultAlignment, 
@@ -121,7 +121,7 @@ public final class ColumnSpec extends FormSpec {
      * default alignment, and no resizing.
      * 
      * @param size             constant size, component size, or bounded size
-     * @throws IllegalArgumentException if the size is invalid
+     * @exception IllegalArgumentException if the size is invalid
      */
     public ColumnSpec(Size size) {
         super(DEFAULT, size, NO_GROW);
@@ -161,7 +161,7 @@ public final class ColumnSpec extends FormSpec {
      * 
      * @param encodedColumnSpecs  comma separated encoded column specifications
      * @return an array of decoded column specifications
-     * @throws NullPointerException if the encoded column specifications string
+     * @exception NullPointerException if the encoded column specifications string
      *     is <code>null</code>
      * 
      * @see ColumnSpec#ColumnSpec(String)

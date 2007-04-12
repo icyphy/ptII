@@ -440,8 +440,8 @@ public class VisualModelReference extends ModelReference {
          *
          * @param container The container of the LookInside to be constructed.
          * @param name The name of the LookInside to be constructed.
-         * @throws IllegalActionException If thrown by the superclass.
-         * @throws NameDuplicationException If thrown by the superclass.
+         * @exception IllegalActionException If thrown by the superclass.
+         * @exception NameDuplicationException If thrown by the superclass.
          */
         public LookInside(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {

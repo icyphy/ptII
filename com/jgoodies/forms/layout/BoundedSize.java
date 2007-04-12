@@ -73,7 +73,7 @@ final class BoundedSize implements Size, Serializable {
      * @param basis  the base size
      * @param lowerBound  the lower bound size
      * @param upperBound  the upper bound size
-     * @throws NullPointerException if the basis is null
+     * @exception NullPointerException if the basis is null
      */
     BoundedSize(Size basis, Size lowerBound, Size upperBound) {
         if (basis == null) 

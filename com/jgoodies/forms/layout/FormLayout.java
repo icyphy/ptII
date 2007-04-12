@@ -285,7 +285,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * </pre> See the class comment for more examples.
      * 
      * @param encodedColumnSpecs  comma separated encoded column specifications
-     * @throws NullPointerException  if encodedColumnSpecs is <code>null</code>
+     * @exception NullPointerException  if encodedColumnSpecs is <code>null</code>
      */
     public FormLayout(String encodedColumnSpecs) {
         this(ColumnSpec.decodeSpecs(encodedColumnSpecs), new RowSpec[0]);
@@ -318,7 +318,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * 
      * @param encodedColumnSpecs  comma separated encoded column specifications
      * @param encodedRowSpecs     comma separated encoded row specifications
-     * @throws NullPointerException  if encodedColumnSpecs or encodedRowSpecs 
+     * @exception NullPointerException  if encodedColumnSpecs or encodedRowSpecs 
      *     is <code>null</code>
      */
     public FormLayout(String encodedColumnSpecs, String encodedRowSpecs) {
@@ -332,7 +332,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * 
 	 * @param colSpecs	an array of column specifications.
      * @param rowSpecs	an array of row specifications.
-     * @throws NullPointerException if colSpecs or rowSpecs is null
+     * @exception NullPointerException if colSpecs or rowSpecs is null
      */
     public FormLayout(ColumnSpec[] colSpecs, RowSpec[] rowSpecs) {
         if (colSpecs == null)
@@ -379,7 +379,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * 
      * @param columnIndex   the column index of the requested <code>ColumnSpec</code>
      * @return the <code>ColumnSpec</code> at the specified column
-     * @throws IndexOutOfBoundsException if the column index is out of range
+     * @exception IndexOutOfBoundsException if the column index is out of range
      */
     public ColumnSpec getColumnSpec(int columnIndex) {
         return (ColumnSpec) colSpecs.get(columnIndex - 1);
@@ -391,8 +391,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * 
      * @param columnIndex   the index of the column to be changed
      * @param columnSpec    the <code>ColumnSpec</code> to be set
-     * @throws NullPointerException if the column specification is null
-     * @throws IndexOutOfBoundsException if the column index is out of range
+     * @exception NullPointerException if the column specification is null
+     * @exception IndexOutOfBoundsException if the column index is out of range
      */
     public void setColumnSpec(int columnIndex, ColumnSpec columnSpec) {
         if (columnSpec == null) {
@@ -407,7 +407,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * 
      * @param rowIndex   the row index of the requested <code>RowSpec</code>
      * @return the <code>RowSpec</code> at the specified row
-     * @throws IndexOutOfBoundsException if the row index is out of range
+     * @exception IndexOutOfBoundsException if the row index is out of range
      */
     public RowSpec getRowSpec(int rowIndex) {
         return (RowSpec) rowSpecs.get(rowIndex - 1);
@@ -418,8 +418,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * 
      * @param rowIndex   the index of the row to be changed
      * @param rowSpec    the <code>RowSpec</code> to be set
-     * @throws NullPointerException if the row specification is null
-     * @throws IndexOutOfBoundsException if the row index is out of range
+     * @exception NullPointerException if the row specification is null
+     * @exception IndexOutOfBoundsException if the row index is out of range
      */
     public void setRowSpec(int rowIndex, RowSpec rowSpec) {
         if (rowSpec == null) {
@@ -434,7 +434,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * columns.
      * 
      * @param columnSpec the column specification to be added 
-     * @throws NullPointerException if the column specification is null
+     * @exception NullPointerException if the column specification is null
      */
     public void appendColumn(ColumnSpec columnSpec) {
         if (columnSpec == null) {
@@ -458,7 +458,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * 
      * @param columnIndex  index of the column to be inserted
      * @param columnSpec   specification of the column to be inserted
-     * @throws IndexOutOfBoundsException if the column index is out of range
+     * @exception IndexOutOfBoundsException if the column index is out of range
      */
     public void insertColumn(int columnIndex, ColumnSpec columnSpec) {
         if (columnIndex < 1 || columnIndex > getColumnCount()) {
@@ -498,8 +498,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * <code>#isGroupedColumn(FormLayout, int)</code>.
      * 
      * @param columnIndex  index of the column to remove
-     * @throws IndexOutOfBoundsException if the column index is out of range
-     * @throws IllegalStateException  if the column contains components
+     * @exception IndexOutOfBoundsException if the column index is out of range
+     * @exception IllegalStateException  if the column contains components
      *     or if the column is already grouped
      * 
      */
@@ -518,7 +518,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * Appends the given row specification to the bottom of all rows.
      * 
      * @param rowSpec  the row specification to be added to the form layout
-     * @throws NullPointerException if the rowSpec is null
+     * @exception NullPointerException if the rowSpec is null
      */
     public void appendRow(RowSpec rowSpec) {
         if (rowSpec == null) {
@@ -542,7 +542,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * 
      * @param rowIndex  index of the row to be inserted
      * @param rowSpec   specification of the row to be inserted
-     * @throws IndexOutOfBoundsException if the row index is out of range
+     * @exception IndexOutOfBoundsException if the row index is out of range
      */
     public void insertRow(int rowIndex, RowSpec rowSpec) {
         if (rowIndex < 1 || rowIndex > getRowCount()) {
@@ -579,8 +579,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * <code>#isGroupedRow(FormLayout, int)</code>.
      *  
      * @param rowIndex  index of the row to remove
-     * @throws IndexOutOfBoundsException if the row index is out of range
-     * @throws IllegalStateException if the row contains components
+     * @exception IndexOutOfBoundsException if the row index is out of range
+     * @exception IllegalStateException if the row contains components
      *     or if the row is already grouped
      * 
      */
@@ -602,7 +602,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * 
      * @param columnIndex  index of the column to remove
      * @param remove  		true for remove, false for insert
-     * @throws IllegalStateException if a removed column contains components
+     * @exception IllegalStateException if a removed column contains components
      */
     private void shiftComponentsHorizontally(int columnIndex, boolean remove) {
         final int offset = remove ? -1 : 1;
@@ -631,7 +631,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * 
      * @param rowIndex      index of the row to remove
      * @param remove        true for remove, false for insert
-     * @throws IllegalStateException if a removed column contains components
+     * @exception IllegalStateException if a removed column contains components
      */
     private void shiftComponentsVertically(int rowIndex, boolean remove) {
         final int offset = remove ? -1 : 1;
@@ -661,7 +661,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * @param allGroupIndices   the groups to be adjusted
      * @param modifiedIndex     the modified column or row index
      * @param remove			true for remove, false for add
-     * @throws IllegalStateException if we remove and the index is grouped
+     * @exception IllegalStateException if we remove and the index is grouped
      */
     private void adjustGroupIndices(int[][] allGroupIndices, 
                                      int modifiedIndex, boolean remove) {
@@ -689,7 +689,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * 
      * @param component    the component to be queried
      * @return the <code>CellConstraints</code> for the specified component
-     * @throws NullPointerException if component is <code>null</code> or 
+     * @exception NullPointerException if component is <code>null</code> or 
      *     has not been added to the container
      */
     public CellConstraints getConstraints(Component component) {
@@ -709,7 +709,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * 
      * @param component     the component to be modified
      * @param constraints   the constraints to be applied
-     * @throws NullPointerException   if the component or constraints object
+     * @exception NullPointerException   if the component or constraints object
      *     is <code>null</code>
      */
     public void setConstraints(Component component, CellConstraints constraints) {
@@ -760,8 +760,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * </pre>
      * 
      * @param colGroupIndices	a two-dimensional array of column groups indices
-     * @throws	IndexOutOfBoundsException if an index is outside the grid
-     * @throws IllegalArgumentException if a column index is used twice
+     * @exception	IndexOutOfBoundsException if an index is outside the grid
+     * @exception IllegalArgumentException if a column index is used twice
      */
     public void setColumnGroups(int[][] colGroupIndices) {
         int maxColumn = getColumnCount();
@@ -831,7 +831,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * </pre>
      * 
      * @param rowGroupIndices a two-dimensional array of row group indices.
-     * @throws IndexOutOfBoundsException if an index is outside the grid
+     * @exception IndexOutOfBoundsException if an index is outside the grid
      */
     public void setRowGroups(int[][] rowGroupIndices) {
         int rowCount = getRowCount();
@@ -886,7 +886,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      *
      * @param name         indicates entry's position and anchor
      * @param component    component to add
-     * @throws UnsupportedOperationException always
+     * @exception UnsupportedOperationException always
      */
     public void addLayoutComponent(String name, Component component) {
         throw new UnsupportedOperationException(
@@ -900,8 +900,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
      *
      * @param comp         the component to be added
      * @param constraints  the component's cell constraints
-     * @throws NullPointerException if <code>constraints</code> is <code>null</code>
-     * @throws IllegalArgumentException if <code>constraints</code> is not a
+     * @exception NullPointerException if <code>constraints</code> is <code>null</code>
+     * @exception IllegalArgumentException if <code>constraints</code> is not a
      * <code>CellConstraints</code> or a String that cannot be used to construct
      * a <code>CellConstraints</code>
      */

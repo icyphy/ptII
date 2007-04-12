@@ -181,8 +181,8 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * </ul>
      * 
      * @param newTestString   the test string to be used
-     * @throws IllegalArgumentException if the test string is empty
-     * @throws NullPointerException     if the test string is <code>null</code>
+     * @exception IllegalArgumentException if the test string is empty
+     * @exception NullPointerException     if the test string is <code>null</code>
      */
     public void setAverageCharacterWidthTestString(String newTestString) {
         if (newTestString == null)

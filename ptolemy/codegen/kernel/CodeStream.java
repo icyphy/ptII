@@ -904,7 +904,7 @@ public class CodeStream {
          * @param signature The given code block signature.
          * @return The file path of the code template file that contains
          * the given code block signature.
-         * @throws IllegalActionException Thrown if there is no scopes that
+         * @exception IllegalActionException Thrown if there is no scopes that
          *  contains the given signature. 
          */
         public String getFilePath(Signature signature)
@@ -955,7 +955,7 @@ public class CodeStream {
          * given signature as the key.
          * @param signature The given signature.
          * @param parameters The given list of parameters.
-         * @throws IllegalActionException Thrown if the given signature
+         * @exception IllegalActionException Thrown if the given signature
          *  already exists in the current scope. 
          */
         public void putParameters(Signature signature, List parameters) 
@@ -985,7 +985,7 @@ public class CodeStream {
          * @param arguments The given list of arguments.
          * @param scopeList The given list of scopes.
          * @return The code block content of the given signature.
-         * @throws IllegalActionException Thrown if the code block for a
+         * @exception IllegalActionException Thrown if the code block for a
          *  super call cannot be found, or if substituteParameters(
          *  StringBuffer, List, List) throws it.
          */

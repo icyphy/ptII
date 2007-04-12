@@ -76,7 +76,7 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
      *  @param model The model to put in this frame, or null if none.
      *  @param tableau The tableau responsible for this frame.
      *  @param pane The run pane whose layout is being edited.
-     *  @throws IllegalActionException If the XML to be parsed has errors.
+     *  @exception IllegalActionException If the XML to be parsed has errors.
      */
     public RunLayoutFrame(
             CompositeActor model,

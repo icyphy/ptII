@@ -300,9 +300,9 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param hAlign		the component's horizontal alignment
      * @param vAlign		the component's vertical alignment
      * @param insets		the component's display area <code>Insets</code>
-     * @throws IndexOutOfBoundsException if the grid origin or extent is negative
-     * @throws NullPointerException if the horizontal or vertical alignment is null
-     * @throws IllegalArgumentException if an alignment orientation is invalid
+     * @exception IndexOutOfBoundsException if the grid origin or extent is negative
+     * @exception NullPointerException if the horizontal or vertical alignment is null
+     * @exception IllegalArgumentException if an alignment orientation is invalid
      */
     public CellConstraints(int gridX, int gridY, int gridWidth, int gridHeight, 
                             Alignment hAlign, Alignment vAlign, Insets insets) {
@@ -383,7 +383,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param row                the new row index
      * @param encodedAlignments  describes the horizontal and vertical alignments
      * @return this
-     * @throws IllegalArgumentException if an alignment orientation is invalid
+     * @exception IllegalArgumentException if an alignment orientation is invalid
      */
     public CellConstraints xy(int col, int row, String encodedAlignments) {
         return xywh(col, row, 1, 1, encodedAlignments);
@@ -446,7 +446,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param colSpan            the column span or grid width
      * @param encodedAlignments  describes the horizontal and vertical alignments
      * @return this
-     * @throws IllegalArgumentException if an alignment orientation is invalid
+     * @exception IllegalArgumentException if an alignment orientation is invalid
      */
     public CellConstraints xyw(int col, int row, int colSpan,  
                                  String encodedAlignments) {
@@ -470,7 +470,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param colAlign  horizontal component alignment
      * @param rowAlign  vertical component alignment     
      * @return this
-     * @throws IllegalArgumentException if an alignment orientation is invalid
+     * @exception IllegalArgumentException if an alignment orientation is invalid
      */
     public CellConstraints xyw(int col, int row, int colSpan, 
                                  Alignment colAlign, Alignment rowAlign) {
@@ -514,7 +514,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param rowSpan            the row span or grid height
      * @param encodedAlignments  describes the horizontal and vertical alignments
      * @return this
-     * @throws IllegalArgumentException if an alignment orientation is invalid
+     * @exception IllegalArgumentException if an alignment orientation is invalid
      */
     public CellConstraints xywh(int col, int row, int colSpan, int rowSpan, 
                                  String encodedAlignments) {
@@ -540,7 +540,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param colAlign  horizontal component alignment
      * @param rowAlign  vertical component alignment     
      * @return this
-     * @throws IllegalArgumentException if an alignment orientation is invalid
+     * @exception IllegalArgumentException if an alignment orientation is invalid
      */
     public CellConstraints xywh(int col, int row, int colSpan, int rowSpan, 
                                  Alignment colAlign, Alignment rowAlign) {
@@ -569,7 +569,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * </pre> 
      * 
      * @param encodedConstraints represents horizontal and vertical alignment
-     * @throws IllegalArgumentException if the encoded constraints do not
+     * @exception IllegalArgumentException if the encoded constraints do not
      *     follow the constraint syntax
      */
     private void initFromConstraints(String encodedConstraints) {
@@ -645,7 +645,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * "d, t" is on top of the cell and uses the column's default alignment.<p>
      *
      * @param encodedAlignments represents horizontal and vertical alignment
-     * @throws IllegalArgumentException if an alignment orientation is invalid
+     * @exception IllegalArgumentException if an alignment orientation is invalid
      */
     private void setAlignments(String encodedAlignments) {
         StringTokenizer tokenizer = new StringTokenizer(encodedAlignments, " ,");
@@ -689,7 +689,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * 
      * @param colCount  number of columns in the grid
      * @param rowCount  number of rows in the grid
-     * @throws IndexOutOfBoundsException if the display area described
+     * @exception IndexOutOfBoundsException if the display area described
      *     by this constraints object is not inside the grid
      */
     void ensureValidGridBounds(int colCount, int rowCount) {
@@ -730,7 +730,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * 
      * @param horizontalAlignment  the horizontal alignment
      * @param verticalAlignment    the vertical alignment
-     * @throws IllegalArgumentException if an alignment is invalid
+     * @exception IllegalArgumentException if an alignment is invalid
      */
     private void ensureValidOrientations(Alignment horizontalAlignment, Alignment verticalAlignment) {
         if (!horizontalAlignment.isHorizontal())

@@ -136,7 +136,7 @@ public abstract class FormSpec implements Serializable {
      * @param defaultAlignment the spec's default alignment
      * @param size             a constant, component or bounded size
      * @param resizeWeight     the spec resize weight      
-     * @throws IllegalArgumentException if the resize weight is negative
+     * @exception IllegalArgumentException if the resize weight is negative
      */
     protected FormSpec(DefaultAlignment defaultAlignment, 
                         Size size, 
@@ -209,7 +209,7 @@ public abstract class FormSpec implements Serializable {
      * The encoded description must be in lower case.
      * 
      * @param encodedDescription   the FormSpec in an encoded format
-     * @throws IllegalArgumentException if the string is empty, has no size,
+     * @exception IllegalArgumentException if the string is empty, has no size,
      * or is otherwise invalid
      */
     private void parseAndInitValues(String encodedDescription) {
@@ -315,7 +315,7 @@ public abstract class FormSpec implements Serializable {
      * 
      * @param token	the encoded resize weight
      * @return the decoded resize weight
-     * @throws IllegalArgumentException if the string description is an
+     * @exception IllegalArgumentException if the string description is an
      *     invalid string representation
      */
     private double decodeResize(String token) {

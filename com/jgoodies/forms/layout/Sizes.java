@@ -184,7 +184,7 @@ public final class Sizes {
      * @param lowerBound  	the lower bound size
      * @param upperBound  	the upper bound size
      * @return a <code>BoundedSize</code> for the given basis and bounds
-     * @throws NullPointerException if basis is null
+     * @exception NullPointerException if basis is null
      */
     public static Size bounded(Size basis, Size lowerBound, Size upperBound) {
         return new BoundedSize(basis, lowerBound, upperBound);

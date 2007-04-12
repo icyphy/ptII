@@ -152,7 +152,7 @@ public final class FormDebugUtils {
      * if the container's layout is a <code>FormLayout</code>.
      * 
      * @param container   the container to inspect
-     * @throws IllegalArgumentException   if the layout is not FormLayout
+     * @exception IllegalArgumentException   if the layout is not FormLayout
      */
     public static void dumpGridBounds(Container container) {
         System.out.println("GRID BOUNDS");
@@ -249,7 +249,7 @@ public final class FormDebugUtils {
      * 
      * @param container   the layout container to inspect
      * @return an object that comprises the cell origins and extents
-     * @throws IllegalArgumentException   if the layout is not FormLayout
+     * @exception IllegalArgumentException   if the layout is not FormLayout
      */
     public static FormLayout.LayoutInfo getLayoutInfo(Container container) {
         if (!(container.getLayout() instanceof FormLayout)) {

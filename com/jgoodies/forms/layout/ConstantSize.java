@@ -137,7 +137,7 @@ public final class ConstantSize implements Size, Serializable {
      * @param encodedValueAndUnit  the size's value and unit as string
      * @param horizontal			true for horizontal, false for vertical
      * @return a constant size for the given encoding and unit description
-     * @throws IllegalArgumentException   if the unit requires integer
+     * @exception IllegalArgumentException   if the unit requires integer
      *    but the value is not an integer
      */
     static ConstantSize valueOf(String encodedValueAndUnit, boolean horizontal) {
@@ -330,7 +330,7 @@ public final class ConstantSize implements Size, Serializable {
          * @param str   the encoded unit
          * @param horizontal  true for a horizontal unit, false for vertical
          * @return the corresponding Unit
-         * @throws IllegalArgumentException if no Unit exists for the string
+         * @exception IllegalArgumentException if no Unit exists for the string
          */
         static Unit valueOf(String str, boolean horizontal) {
             String lowerCase = str.toLowerCase(Locale.ENGLISH);

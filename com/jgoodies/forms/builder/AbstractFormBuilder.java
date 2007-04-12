@@ -101,7 +101,7 @@ public abstract class AbstractFormBuilder {
      * @param layout     the {@link FormLayout} to use
      * @param container  the layout container
      * 
-     * @throws NullPointerException if the layout or container is null
+     * @exception NullPointerException if the layout or container is null
      */
     public AbstractFormBuilder(FormLayout layout, Container container) {
         if (layout == null) 
