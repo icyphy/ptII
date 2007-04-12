@@ -345,7 +345,7 @@ public class ConversionUtilities {
         Object returnValue;
 
         if (token instanceof DoubleToken) {
-            returnValue = new Double(((DoubleToken) token).doubleValue());
+            returnValue = Double.valueOf(((DoubleToken) token).doubleValue());
         } else if (token instanceof IntToken) {
             returnValue = Integer.valueOf(((IntToken) token).intValue());
         } else if (token instanceof UnsignedByteToken) {
