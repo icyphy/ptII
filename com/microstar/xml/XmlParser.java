@@ -12,6 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Stack;
 
 /**
@@ -455,7 +456,7 @@ public class XmlParser {
      */
     void error(String message, char textFound, String textExpected)
             throws java.lang.Exception {
-        error(message, new Character(textFound).toString(), textExpected);
+        error(message, Character.toString(textFound), textExpected);
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -666,7 +667,8 @@ public class XmlParser {
      */
     void checkEncoding(String encodingName, boolean ignoreEncoding)
             throws java.lang.Exception {
-        encodingName = encodingName.toUpperCase();
+        // FindBugs suggests using toUpperCase(Locale)
+        encodingName = encodingName.toUpperCase(Locale.getDefault());
 
         if (ignoreEncoding) {
             return;
@@ -1550,7 +1552,7 @@ public class XmlParser {
                 case 'f':
                 case 'F':
                     value *= 16;
-                    value += Integer.parseInt(new Character(c).toString(), 16);
+                    value += Integer.parseInt(Character.toString(c), 16);
                     break;
 
                 case ';':
@@ -1577,7 +1579,7 @@ public class XmlParser {
                 case '8':
                 case '9':
                     value *= 10;
-                    value += Integer.parseInt(new Character(c).toString(), 10);
+                    value += Integer.parseInt(Character.toString(c), 10);
                     break;
 
                 case ';':
@@ -2114,7 +2116,7 @@ public class XmlParser {
             }
         } catch (EOFException e) {
             error("end of input while looking for delimiter (started on line "
-                    + startLine + ')', null, new Character(delim).toString());
+                    + startLine + ')', null, Character.toString(delim));
         }
 
         // Normalise whitespace if necessary.
@@ -2312,7 +2314,7 @@ public class XmlParser {
         char c = readCh();
 
         if (c != delim) {
-            error("expected character", c, new Character(delim).toString());
+            error("expected character", c, Character.toString(delim));
         }
     }
 
@@ -2662,7 +2664,9 @@ public class XmlParser {
                 pushString(null, (char) 0 + (String) attribute[1] + (char) 0);
                 attribute[4] = readLiteral(LIT_NORMALIZE | LIT_CHAR_REF
                         | LIT_ENTITY_REF);
-            } catch (Exception e) {
+            } catch (Exception ex) {
+                // We could ignore this and return but instead return here.
+                return (String) attribute[4];
             }
         }
 
@@ -3109,7 +3113,7 @@ public class XmlParser {
         if (readBufferPos > 0) {
             readBuffer[--readBufferPos] = c;
         } else {
-            pushString(null, new Character(c).toString());
+            pushString(null, Character.toString(c));
         }
     }
 
@@ -3184,7 +3188,8 @@ public class XmlParser {
         } else if (baseURI != null) {
             try {
                 systemId = new URL(new URL(baseURI), systemId).toString();
-            } catch (Exception e) {
+            } catch (Throwable throwable) {
+                // Ignore this and stick with the old systemId
             }
         }
 
