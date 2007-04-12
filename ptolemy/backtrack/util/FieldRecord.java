@@ -145,7 +145,7 @@ public class FieldRecord {
      *  @see #add(int[], double, long)
      */
     public void add(double value, long timestamp) {
-        _addRecord(0, new Record(null, new Double(value), timestamp));
+        _addRecord(0, new Record(null, Double.valueOf(value), timestamp));
     }
 
     /** Add an old value to the records, associated with a timestamp. This
@@ -159,7 +159,7 @@ public class FieldRecord {
      *  @see #add(int[], float, long)
      */
     public void add(float value, long timestamp) {
-        _addRecord(0, new Record(null, new Float(value), timestamp));
+        _addRecord(0, new Record(null, Float.valueOf(value), timestamp));
     }
 
     /** Add an old value to the records, associated with a timestamp. This
@@ -173,7 +173,7 @@ public class FieldRecord {
      *  @see #add(int[], int, long)
      */
     public void add(int value, long timestamp) {
-        _addRecord(0, new Record(null, new Integer(value), timestamp));
+        _addRecord(0, new Record(null, Integer.valueOf(value), timestamp));
     }
 
     /** Add an old value to the specified indices of the records, and
@@ -253,7 +253,7 @@ public class FieldRecord {
      */
     public void add(int[] indices, double value, long timestamp) {
         _addRecord((indices == null) ? 0 : indices.length, new Record(indices,
-                new Double(value), timestamp));
+                Double.valueOf(value), timestamp));
     }
 
     /** Add an old value to the specified indices of the records, and
