@@ -149,10 +149,6 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
 
     protected UpAction _upAction = new UpAction();
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    protected ActorEditorGraphController _controller;
-
     // The navigation tree.
     private NavigationPTree _tree;
 
