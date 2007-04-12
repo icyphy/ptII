@@ -12,6 +12,7 @@
     <Match classregex="com.izforge.*"/>
     <Match classregex="com.centralnexus.input.*"/>
     <Match classregex="com.coi.tools.os.win.*"/>
+    <Match classregex="net.tinyos.*"/>
     <Match classregex=".*" >
        <!-- Exclude Serializable warnings -->
        <!-- Exclude class is Serializable; consider declaring a serialVersionUID -->
