@@ -181,11 +181,7 @@ public class FloydWarshallAllPairShortestPathStrategy extends
             for (int j = 0; j < n; j++) {
                 _predecessors[0][i][j] = -1;
 
-                if (i != j) {
-                    _allPairShortestPath[0][i][j] = Double.MAX_VALUE;
-                } else {
-                    _allPairShortestPath[0][i][j] = Double.MAX_VALUE;
-                }
+                _allPairShortestPath[0][i][j] = Double.MAX_VALUE;
             }
 
             Node node = graph().node(i);
