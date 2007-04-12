@@ -302,7 +302,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         // In ptolemy model, for simulation, time is double with unit
         // Second however, for giotto code, we need integer and its
         // unit is microSecond
-        return (new Double(_periodValue * 1000)).intValue();
+        return (int)(_periodValue * 1000);
     }
 
     /** Return the next time that this director expects activity.
