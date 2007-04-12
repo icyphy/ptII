@@ -576,6 +576,7 @@ public class CompiledCompositeActor extends
     private Object _transferInputs(IOPort port) throws IllegalActionException {
 
         int rate = DFUtilities.getTokenConsumptionRate(port);
+        // FIXME: FindBugs indicates that this cast might not be safe.
         Type type = ((TypedIOPort) port).getType();
         Object tokenHolder = null;
 
@@ -659,6 +660,7 @@ public class CompiledCompositeActor extends
 
         int rate = DFUtilities.getTokenProductionRate(port);
 
+        // FIXME: FindBugs indicates that this cast might not be safe.
         Type type = ((TypedIOPort) port).getType();
         if (type == BaseType.INT) {
 
