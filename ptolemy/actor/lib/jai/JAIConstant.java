@@ -173,7 +173,7 @@ public class JAIConstant extends Source {
             Float[] floatValues = new Float[values.length];
 
             for (int i = 0; i < values.length; i++) {
-                floatValues[i] = new Float((float) (((ScalarToken) values[i])
+                floatValues[i] = Float.valueOf((float) (((ScalarToken) values[i])
                         .doubleValue()));
             }
 
