@@ -97,7 +97,7 @@ public class CSPSink extends Sink {
         try {
             int limit = ((IntToken) tokenLimit.getToken()).intValue();
 
-            while ((count < limit) || (limit < 0)) {
+            while (count < limit || limit < 0) {
                 Token t = input.get(0);
                 System.out.println(getName() + " received Token: "
                         + t.toString());
