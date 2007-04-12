@@ -98,8 +98,7 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
  @see ptolemy.data.expr.Parameter
  @see ptolemy.kernel.util.Settable
  */
-public class VisualModelReference extends ModelReference implements
-        ExecutionListener {
+public class VisualModelReference extends ModelReference {
     /** Construct a VisualModelReference with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the

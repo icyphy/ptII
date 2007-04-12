@@ -65,8 +65,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red
 
  */
-public abstract class AbstractConvertibleToken extends Token implements
-        Serializable {
+public abstract class AbstractConvertibleToken extends Token {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

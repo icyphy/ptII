@@ -51,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Yellow (cxh) nil token
  @Pt.AcceptedRating Red (cxh)
  */
-public class BooleanToken extends ScalarToken implements BitwiseOperationToken {
+public class BooleanToken extends ScalarToken {
     /** Construct a token with value false.
      */
     public BooleanToken() {

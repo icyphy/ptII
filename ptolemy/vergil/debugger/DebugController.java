@@ -62,8 +62,7 @@ import diva.canvas.Figure;
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */
-public class DebugController extends SingletonConfigurableAttribute implements
-        DebugListener {
+public class DebugController extends SingletonConfigurableAttribute {
     /** Construct a debug listener with the given container and name.
      *  @param container The container.
      *  @param name The name.
