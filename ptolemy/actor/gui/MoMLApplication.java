@@ -677,6 +677,8 @@ public class MoMLApplication implements ExecutionListener {
                         if (!configurationName.equals("jxta")) {
                             URL specificationURL = specToURL(configurationFileName);
                             Configuration configuration;
+                            // URL.equals() is very expensive?  See:
+                            //http://michaelscharf.blogspot.com/2006/11/javaneturlequals-and-hashcode-make.html
                             if (specificationURL
                                     .equals(_initialSpecificationURL)) {
                                 // Avoid rereading the configuration, which will result

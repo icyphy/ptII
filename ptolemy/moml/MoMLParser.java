@@ -5967,6 +5967,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 URL sourceURL = fileNameToURL(source, _base);
                 URL candidateSourceURL = fileNameToURL(candidateSource, _base);
 
+                // FIXME: URL.equals() is very expensive?  See:
+                // http://michaelscharf.blogspot.com/2006/11/javaneturlequals-and-hashcode-make.html
                 if (sourceURL.equals(candidateSourceURL)) {
                     return candidate;
                 }
