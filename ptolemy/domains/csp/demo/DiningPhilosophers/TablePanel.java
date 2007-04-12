@@ -161,23 +161,23 @@ class TablePanel extends Panel {
     private Coordinate origin = new Coordinate(100, 100);
 
     // Radius of the philosophers
-    private final int pR = 10;
+    private static final int pR = 10;
 
     // Polar position of the philosophers
-    private final double r1 = 70d;
+    private static final double r1 = 70d;
 
     // Polar position of the chopsticks
-    private final double r2 = 25d;
+    private static final double r2 = 25d;
 
     // Polar position of the chopsticks from the philosophers when in use
-    private final double r3 = 15d;
+    private static final double r3 = 15d;
 
     // Length of the chopsticks
-    private final double l = 10d;
+    private static final double l = 10d;
 
-    private final int tableGap = 30;
+    private static final int tableGap = 30;
 
-    private final int tableR = (int) r1 - tableGap;
+    private static final int tableR = (int) r1 - tableGap;
 
     /**
      * Sets all the coordinates of the chopsticks and philosophers.

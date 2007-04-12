@@ -432,5 +432,5 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
     private String _templateDirectory;
 
     // Initial default for _templateDirectory;
-    private final String TEMPLATE_DIRECTORY_DEFAULT = "ptolemy/copernicus/kernel/";
+    private static final String TEMPLATE_DIRECTORY_DEFAULT = "ptolemy/copernicus/kernel/";
 }

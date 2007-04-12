@@ -268,8 +268,8 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
 
         final String _lineName;
 
-        // Default value of time to sleep.
-        final int _millisToSleep = 500;
+        /** Default value of time to sleep. */
+        final static int _millisToSleep = 500;
     }
 
     ///////////////////////////////////////////////////////////////////
