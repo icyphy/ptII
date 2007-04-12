@@ -389,7 +389,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         + (new Integer(offsetString)).intValue();
 
                 offset %= getBufferSize(port, channel);
-                temp = new Integer(offset).toString();
+                temp = Integer.toString(offset);
                 /*
                  int divisor = getBufferSize(sinkPort,
                  sinkChannelNumber);

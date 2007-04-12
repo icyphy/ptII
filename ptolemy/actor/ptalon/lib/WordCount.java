@@ -63,7 +63,7 @@ public class WordCount extends MapReduceAlgorithm {
             result += Integer.parseInt(value);
         }
         List<String> output = new LinkedList<String>();
-        output.add((new Integer(result)).toString());
+        output.add(Integer.toString(result));
         return output;
     }
 
