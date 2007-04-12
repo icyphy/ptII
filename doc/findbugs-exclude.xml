@@ -3,6 +3,7 @@
     <Match classregex="ApplianceTest"/>
     <Match classregex="LightTest"/>
     <Match classregex="MasterTest"/>
+    <Match classregex="X10SerialServer"/>
     <Match classregex="X10SerialServerTest"/>
 
     <Match classregex="ptolemy.data..*Parser.*"/>
