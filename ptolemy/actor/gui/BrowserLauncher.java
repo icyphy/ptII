@@ -247,7 +247,7 @@ public class BrowserLauncher {
             }
         }
 
-        if (StringUtilities.getProperty("ptolemy.ptII.browser") != "") {
+        if (!StringUtilities.getProperty("ptolemy.ptII.browser").equals("")) {
             Runtime
                     .getRuntime()
                     .exec(

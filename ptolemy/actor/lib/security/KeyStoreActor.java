@@ -433,7 +433,7 @@ public class KeyStoreActor extends TypedAtomicActor {
         storePassword.update();
         _storePassword = ((StringToken) storePassword.getToken()).stringValue();
 
-        if (storePassword.getExpression() != _storePassword) {
+        if (!storePassword.getExpression().equals(_storePassword)) {
             _loadKeyStoreNeeded = true;
         }
 

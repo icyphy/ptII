@@ -277,7 +277,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
         if (!ptIIUserDirectoryFile.isDirectory()
                 || !ptIIUserDirectoryFile.canWrite()
                 || ((JNLPUtilities.isRunningUnderWebStart() || (StringUtilities
-                        .getProperty("lax.user.dir").length() > 0)) && (ptIIUserDirectory == ptII))) {
+                        .getProperty("lax.user.dir").length() > 0)) && (ptIIUserDirectory.equals(ptII)))) {
             if (!ptIIUserDirectoryFile.isDirectory()) {
                 System.out
                         .println("AppletWriter: WARNING: ptIIUserDirectory = '"

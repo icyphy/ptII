@@ -698,7 +698,7 @@ public class PtinyOSDirector extends Director {
         // If this is the toplevel PtinyOSDirector, generate makefile
         // and compile the generated code.
         if (_isTopLevelNC()) {
-            if (target.stringValue() != "") {
+            if (!target.stringValue().equals("")) {
                 _generateLoader();
 
                 String makefileName = null;
@@ -2280,7 +2280,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         String objName = obj.getFullName();
         objName = StringUtilities.sanitizeName(objName);
 
-        if (objName == "") {
+        if (objName.equals("")) {
             objName = _unnamed;
         }
 

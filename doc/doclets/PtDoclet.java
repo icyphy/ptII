@@ -468,7 +468,7 @@ public class PtDoclet {
         String fileBaseName = className.replace('.', File.separatorChar)
                 + ".xml";
 
-        if (StringUtilities.getProperty("KEPLER") != "") {
+        if (!StringUtilities.getProperty("KEPLER").equals("")) {
             // If we are running in Kepler, the put the output somewhere else.
             fileBaseName = className.substring(className.lastIndexOf('.') + 1)
                     + ".doc.xml";
