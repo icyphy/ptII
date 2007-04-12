@@ -30,6 +30,7 @@ package ptolemy.vergil.icon;
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
@@ -196,7 +197,8 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setDashArray(float[] dashArray) {
         // Avoid calling swing if things haven't actually changed.
-        if ((_dashArray != null) && _dashArray.equals(dashArray)) {
+        if ((_dashArray != null) && 
+                Arrays.equals(_dashArray, dashArray)) {
             return;
         }
 
