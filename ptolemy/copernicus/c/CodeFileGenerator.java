@@ -141,7 +141,7 @@ public class CodeFileGenerator extends CodeGenerator {
                 bodyCode.append(methodCode);
             }
 
-            if (methodCode.length() != 0) {
+            if (methodCode != null) {
                 bodyCode.append("\n");
             }
         }
