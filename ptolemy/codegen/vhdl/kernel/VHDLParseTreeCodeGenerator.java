@@ -687,11 +687,7 @@ public class VHDLParseTreeCodeGenerator extends AbstractParseTreeVisitor
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            if (_evaluatedChildToken instanceof FixToken) {
-                _fireCode.append(_evaluatedChildToken.toString());
-            } else {
-                _fireCode.append(_evaluatedChildToken.toString());
-            }
+            _fireCode.append(_evaluatedChildToken.toString());
             return;
         }
 
