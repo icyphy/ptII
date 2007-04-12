@@ -383,7 +383,9 @@ public class MethodCodeGenerator {
 
         if (!method.isStatic()) {
             parameterAndThisLocals.add(body.getThisLocal());
-            thisLocalName = CNames.localNameOf(body.getThisLocal());
+            if (thisLocalName == null) {
+                thisLocalName = CNames.localNameOf(body.getThisLocal());
+            }
             code.append(CNames.instanceNameOf(method.getDeclaringClass()) + " "
                     + thisLocalName);
             parameterCount++;
