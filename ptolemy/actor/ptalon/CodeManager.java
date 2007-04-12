@@ -1115,8 +1115,7 @@ public class CodeManager {
      *  N is n if this is the nth call to this function.
      */
     private String _getNextIfSymbol() {
-        String symbol = "_if";
-        symbol += (new Integer(_counter)).toString();
+        String symbol = "_if" + _counter;
         _counter++;
         return symbol;
     }
