@@ -89,24 +89,24 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _assert(node.isBitwiseAnd() ^ node.isBitwiseOr() ^ node.isBitwiseXor(),
                 node, "Invalid operation");
 
-        String statement = nodeName + " = "
-                + _nodeToLocalName.get(node.jjtGetChild(0));
+        StringBuffer statement = new StringBuffer(nodeName + " = "
+                + _nodeToLocalName.get(node.jjtGetChild(0)));
 
         for (int i = 1; i < numChildren; i++) {
             if (node.isBitwiseAnd()) {
-                statement += "&";
+                statement.append("&");
             } else if (node.isBitwiseOr()) {
-                statement += "|";
+                statement.append("|");
             } else if (node.isBitwiseXor()) {
-                statement += "^";
+                statement.append("^");
             } else {
                 throw new RuntimeException("Unrecognized node");
             }
 
-            statement += _nodeToLocalName.get(node.jjtGetChild(i));
+            statement.append(_nodeToLocalName.get(node.jjtGetChild(i)));
         }
 
-        System.out.println(statement);
+        System.out.println(statement.toString());
     }
 
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
@@ -758,22 +758,22 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _nodeToLocalName.put(node, nodeName);
 
         // Note: doesn't ensure short circuit
-        String statement = nodeName + " = "
-                + _nodeToLocalName.get(node.jjtGetChild(0));
+        StringBuffer statement = new StringBuffer(nodeName + " = "
+                + _nodeToLocalName.get(node.jjtGetChild(0)));
 
         for (int i = 1; i < numChildren; i++) {
             if (node.isLogicalAnd()) {
-                statement += "&&";
+                statement.append("&&");
             } else if (node.isLogicalOr()) {
-                statement += "||";
+                statement.append("||");
             } else {
                 throw new RuntimeException("Unrecognized node");
             }
 
-            statement += _nodeToLocalName.get(node.jjtGetChild(i));
+            statement.append(_nodeToLocalName.get(node.jjtGetChild(i)));
         }
 
-        System.out.println(statement);
+        System.out.println(statement.toString());
     }
 
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
@@ -1049,14 +1049,14 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        String statement = nodeName + " = "
-                + _nodeToLocalName.get(node.jjtGetChild(0));
+        StringBuffer statement = new StringBuffer(nodeName + " = "
+                + _nodeToLocalName.get(node.jjtGetChild(0)));
 
         for (int i = 1; i < numChildren; i++) {
-            statement += ("^" + _nodeToLocalName.get(node.jjtGetChild(i)));
+            statement.append("^" + _nodeToLocalName.get(node.jjtGetChild(i)));
         }
 
-        System.out.println(statement);
+        System.out.println(statement.toString());
     }
 
     public void visitProductNode(ASTPtProductNode node)
@@ -1075,26 +1075,26 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        String statement = nodeName + " = "
-                + _nodeToLocalName.get(node.jjtGetChild(0));
+        StringBuffer statement = new StringBuffer(nodeName + " = "
+                + _nodeToLocalName.get(node.jjtGetChild(0)));
 
         for (int i = 1; i < numChildren; i++) {
             Token operator = (Token) lexicalTokenList.get(i - 1);
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
-                statement += "*";
+                statement.append("*");
             } else if (operator.kind == PtParserConstants.DIVIDE) {
-                statement += "/";
+                statement.append("/");
             } else if (operator.kind == PtParserConstants.MODULO) {
-                statement += "%";
+                statement.append("%");
             } else {
                 _assert(false, node, "Invalid operation");
             }
 
-            statement += _nodeToLocalName.get(node.jjtGetChild(i));
+            statement.append(_nodeToLocalName.get(node.jjtGetChild(i)));
         }
 
-        System.out.println(statement);
+        System.out.println(statement.toString());
     }
 
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
@@ -1115,28 +1115,28 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         Token operator = node.getOperator();
 
-        String statement = nodeName + " = "
-                + _nodeToLocalName.get(node.jjtGetChild(0));
+        StringBuffer statement = new StringBuffer(nodeName + " = "
+                + _nodeToLocalName.get(node.jjtGetChild(0)));
 
         if (operator.kind == PtParserConstants.EQUALS) {
-            statement += "==";
+            statement.append("==");
         } else if (operator.kind == PtParserConstants.NOTEQUALS) {
-            statement += "!=";
+            statement.append("!=");
         } else if (operator.kind == PtParserConstants.GTE) {
-            statement += ">=";
+            statement.append(">=");
         } else if (operator.kind == PtParserConstants.GT) {
-            statement += ">";
+            statement.append(">");
         } else if (operator.kind == PtParserConstants.LTE) {
-            statement += "<=";
+            statement.append("<=");
         } else if (operator.kind == PtParserConstants.LT) {
-            statement += "<";
+            statement.append("<");
         } else {
             throw new IllegalActionException("Invalid operation "
                     + operator.image);
         }
 
-        statement += _nodeToLocalName.get(node.jjtGetChild(1));
-        System.out.println(statement);
+        statement.append(_nodeToLocalName.get(node.jjtGetChild(1)));
+        System.out.println(statement.toString());
     }
 
     public void visitShiftNode(ASTPtShiftNode node)
@@ -1151,21 +1151,21 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        String statement = nodeName + " = "
-                + _nodeToLocalName.get(node.jjtGetChild(0));
+        StringBuffer statement = new StringBuffer(nodeName + " = "
+                + _nodeToLocalName.get(node.jjtGetChild(0)));
 
         if (operator.kind == PtParserConstants.SHL) {
-            statement += "<<";
+            statement.append("<<");
         } else if (operator.kind == PtParserConstants.SHR) {
-            statement += ">>";
+            statement.append(">>");
         } else if (operator.kind == PtParserConstants.LSHR) {
-            statement += "<";
+            statement.append("<");
         } else {
             _assert(false, node, "Invalid operation");
         }
 
-        statement += _nodeToLocalName.get(node.jjtGetChild(1));
-        System.out.println(statement);
+        statement.append(_nodeToLocalName.get(node.jjtGetChild(1)));
+        System.out.println(statement.toString());
     }
 
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
@@ -1183,24 +1183,24 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        String statement = nodeName + " = "
-                + _nodeToLocalName.get(node.jjtGetChild(0));
+        StringBuffer statement = new StringBuffer(nodeName + " = "
+                + _nodeToLocalName.get(node.jjtGetChild(0)));
 
         for (int i = 1; i < numChildren; i++) {
             Token operator = (Token) lexicalTokenList.get(i - 1);
 
             if (operator.kind == PtParserConstants.PLUS) {
-                statement += "+";
+                statement.append("+");
             } else if (operator.kind == PtParserConstants.MINUS) {
-                statement += "-";
+                statement.append("-");
             } else {
                 _assert(false, node, "Invalid operation");
             }
 
-            statement += _nodeToLocalName.get(node.jjtGetChild(i));
+            statement.append(_nodeToLocalName.get(node.jjtGetChild(i)));
         }
 
-        System.out.println(statement);
+        System.out.println(statement.toString());
     }
 
     public void visitUnaryNode(ASTPtUnaryNode node)
@@ -1212,20 +1212,20 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        String statement = nodeName + " = ";
+        StringBuffer statement = new StringBuffer(nodeName + " = ");
 
         if (node.isMinus()) {
             // Note: not quite ptolemy semantics.
-            statement += ("-" + _nodeToLocalName.get(node.jjtGetChild(0)));
+            statement.append("-" + _nodeToLocalName.get(node.jjtGetChild(0)));
         } else if (node.isNot()) {
-            statement += ("!" + _nodeToLocalName.get(node.jjtGetChild(0)));
+            statement.append("!" + _nodeToLocalName.get(node.jjtGetChild(0)));
         } else if (node.isBitwiseNot()) {
-            statement += ("~" + _nodeToLocalName.get(node.jjtGetChild(0)));
+            statement.append("~" + _nodeToLocalName.get(node.jjtGetChild(0)));
         } else {
             _assert(false, node, "Unrecognized unary node");
         }
 
-        System.out.println(statement);
+        System.out.println(statement.toString());
     }
 
     ///////////////////////////////////////////////////////////////////
