@@ -1,4 +1,4 @@
-* A token that contains an array of tokens.
+/* A token that contains an array of tokens.
 
  Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
