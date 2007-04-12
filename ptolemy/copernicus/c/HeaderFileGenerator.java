@@ -181,7 +181,7 @@ public class HeaderFileGenerator extends CodeGenerator {
 
             headerCode.append("#include ");
 
-            String fileName = new String((String) includeFiles.next());
+            String fileName = (String) includeFiles.next();
 
             fileName = CNames.sanitize(fileName.substring(0,
                     fileName.length() - 3))

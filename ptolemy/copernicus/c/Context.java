@@ -161,7 +161,7 @@ public class Context {
         String name;
 
         if ((name = (String) (_stringConstantMap.get(value))) == null) {
-            name = new String("PCCG__string" + _stringConstantCount++);
+            name = "PCCG__string" + _stringConstantCount++;
             _stringConstantMap.put(value, name);
         }
 

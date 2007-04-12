@@ -61,9 +61,9 @@ public class SystemJar {
         // The code works with Sun JDK1.2 and 1.3 and IBM JDK1.3.
         if (!systemJar.isFile()) {
             // Try this for IBM JDK 1.4.1
-            String systemJarPathName2 = new String(System.getProperty(
+            String systemJarPathName2 = System.getProperty(
                         "java.home") + File.separator + "lib" + File.separator
-                    + "core.jar");
+                    + "core.jar";
             systemJar = new File(systemJarPathName2);
 
 

@@ -87,7 +87,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
         }
 
         if (DEBUG) {
-            String filename = new String(toShortString() + "graph");
+            String filename = toShortString() + "graph";
             PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
             dgToDotty.writeDotFile(".", filename, this);
         }

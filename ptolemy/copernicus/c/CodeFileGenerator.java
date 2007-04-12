@@ -134,7 +134,7 @@ public class CodeFileGenerator extends CodeGenerator {
 
         while (methods.hasNext()) {
             SootMethod thisMethod = (SootMethod) methods.next();
-            String methodCode = new String();
+            String methodCode = null;
 
             if (RequiredFileGenerator.isRequired(thisMethod)) {
                 methodCode = methodCodeGenerator.generate(thisMethod);

@@ -234,7 +234,7 @@ public class ClassStructureGenerator extends CodeGenerator {
 
             return fieldCode.toString();
         } else {
-            return new String();
+            return "";
         }
     }
 
