@@ -445,14 +445,15 @@ public class Location extends SingletonAttribute implements Locatable {
             _location = new double[location.length];
         }
 
-        if (location != null) {
-            // Copy location array into member array _location.
-            // Just referencing _location to location isn't enough, we need
-            // to maintain a local copy of the double array.
-            for (int i = 0; i < location.length; i++) {
-                _location[i] = location[i];
-            }
+        // FindBugs: _location cannot be null here, so don't check.
+
+        // Copy location array into member array _location.
+        // Just referencing _location to location isn't enough, we need
+        // to maintain a local copy of the double array.
+        for (int i = 0; i < location.length; i++) {
+            _location[i] = location[i];
         }
+    
 
         NamedObj container = getContainer();
 
