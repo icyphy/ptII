@@ -89,18 +89,18 @@ public abstract class CodeGenerator {
      * the arrays needed.
      */
     protected String _generateArrayInstanceDeclarations() {
-        Iterator i = _context.getArrayInstances().iterator();
-        String code = new String();
+        StringBuffer code = new StringBuffer(); 
 
+        Iterator i = _context.getArrayInstances().iterator();
         while (i.hasNext()) {
             String name = i.next().toString();
 
-            code = code + "#ifndef A_DEF_" + name + "\n" + "#define A_DEF_"
+            code.append("#ifndef A_DEF_" + name + "\n" + "#define A_DEF_"
                     + name + "\n" + "typedef PCCG_ARRAY_INSTANCE_PTR " + name
-                    + ";\n" + "#endif\n";
+                    + ";\n" + "#endif\n");
         }
 
-        return code;
+        return code.toString();
     }
 
     /** Generate include directives for all types that are required for the
