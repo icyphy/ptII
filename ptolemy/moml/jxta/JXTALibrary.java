@@ -289,16 +289,24 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             if (tag.equals(_TAG)) {
                 System.out.println("get an actor class from remote peer ");
 
+                InputStream inputStream = null;
                 try {
-                    InputStream is = elm.getStream();
-                    int len = elm.getLength();
-                    byte[] buff = new byte[len];
-                    is.read(buff);
+                    inputStream = elm.getStream();
+                    int length = elm.getLength();
+                    byte[] buffer = new byte[length];
+                    int bytesRead;
+                    if ((bytesRead = inputStream.read(buffer)) != length) {
+                        throw new IOException("While reading " + elm
+                                + ", read only " + bytesRead
+                                + " bytes, expected to read " + length
+                                + " bytes.");
+                    }
 
-                    Class cls = classLoader.myDefineClass(null, buff, 0, len);
+                    Class cls = classLoader.myDefineClass(null, buffer, 0,
+                            length);
 
                     try {
-                        _saveClass(cls, buff);
+                        _saveClass(cls, buffer);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -345,15 +353,15 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                         System.out.println("discoveredActors.xml has been "
                                 + "changed.\n");
 
-                        StringWriter buffer = new StringWriter();
-                        _cachedLib.exportMoML(buffer);
+                        StringWriter stringWriter = new StringWriter();
+                        _cachedLib.exportMoML(stringWriter);
 
                         PrintStream out = null;
                         try {
                             out = new PrintStream(new FileOutputStream(
                                                           _Dir + "/"
                                                           + _DISCOVERED_ACTORS));
-                            out.println(buffer);
+                            out.println(stringWriter);
                             out.flush();
                         } finally {
                             if (out != null) {
@@ -373,7 +381,17 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                 } catch (java.io.IOException e) {
                     System.out.println("Warning: cannot creat/open the file.\n"
                             + e.getMessage());
+                } finally {
+                    if (inputStream != null) {
+                        try {
+                            inputStream.close();
+                        } catch (IOException ex) {
+                            System.out.println("Failed to close " + elm);
+                            ex.printStackTrace();
+                        }
+                    }
                 }
+                
             }
         }
     }
