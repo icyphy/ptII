@@ -249,8 +249,7 @@ public class RequiredFileGenerator {
         CNames.setup();
 
         // Make changes in the filename.
-        String fileName = new String();
-        fileName = CNames.classNameToFileName(className);
+        String fileName = CNames.classNameToFileName(className);
 
         // Generate the .c file.
         if (Options.v().get("compileMode").equals("full")) {
