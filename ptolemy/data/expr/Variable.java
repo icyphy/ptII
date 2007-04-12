@@ -999,15 +999,13 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 Iterator listeners = changed.iterator();
                 while (listeners.hasNext()) {
                     Variable listener = (Variable) listeners.next();
-                    if (listener instanceof Variable) {
-                        // The listener could be referencing this variable.
-                        ParseTreeFreeVariableRenamer renamer = new ParseTreeFreeVariableRenamer();
-                        renamer.renameVariables(listener._parseTree, listener,
-                                this, previousName);
-                        ParseTreeWriter writer = new ParseTreeWriter();
-                        listener.setExpression(writer
-                                .parseTreeToExpression(listener._parseTree));
-                    }
+                    // The listener could be referencing this variable.
+                    ParseTreeFreeVariableRenamer renamer = new ParseTreeFreeVariableRenamer();
+                    renamer.renameVariables(listener._parseTree, listener,
+                            this, previousName);
+                    ParseTreeWriter writer = new ParseTreeWriter();
+                    listener.setExpression(writer
+                            .parseTreeToExpression(listener._parseTree));
                 }
                 // Make sure to re-evaluate dependent variables.
                 validate();
