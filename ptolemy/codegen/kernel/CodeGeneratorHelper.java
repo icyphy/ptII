@@ -433,12 +433,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
                 offset %= getBufferSize(port, channel);
 
-                result = Integer.toString(offset);
+                result = "[" + offset + "]";
             } else {
 
                 int modulo = getBufferSize(port, channel) - 1;
 
-                result = offsetObject + "&" + modulo;
+                result = "[" + offsetObject + "&" + modulo + "]";
             }
         }
         return result;
