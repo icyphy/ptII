@@ -28,6 +28,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{750.0, 115.0}">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Please note that every time the demo is run several parameters need to be&#10;changed inside the composite actor.  The parameters are specified inside.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 355.0}">
+        </property>
+    </property>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 305.0]">
         </property>
@@ -63,6 +69,12 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 80.0}">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The array length inside the ArrayToSequence actor and &#10;the factor inside the Downsample actor needs to be changed &#10;to NumofFiles.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 440.0]">
             </property>
         </property>
         <port name="NumOfFiles" class="ptolemy.actor.parameters.ParameterPort">
