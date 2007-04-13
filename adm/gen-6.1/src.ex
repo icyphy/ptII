@@ -99,6 +99,8 @@ diva/build.xml
 doc/design/src
 doc/design/html
 doc/doccheck
+doc/findbugs.xml
+doc/findbugs.htm
 doc/img/PtolemyIISplash.psd
 doc/uml
 doc/uml/*
