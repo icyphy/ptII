@@ -740,7 +740,9 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         if (location == null) {
             throw new IllegalActionException(
                     "Cannot determine location for port " + port.getName()
-                            + ".");
+                    + " with container\n"
+                    + container
+                    + ".");
         }
 
         // NOTE: We assume here that the implementation
