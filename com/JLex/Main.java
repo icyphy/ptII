@@ -5083,7 +5083,7 @@ class CLexGen {
             return "\\ ";
 
         default:
-            return Character.toString((char) i));
+            return Character.toString((char) i);
         }
     }
 
