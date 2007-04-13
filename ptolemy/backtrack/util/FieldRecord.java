@@ -273,7 +273,7 @@ public class FieldRecord {
      */
     public void add(int[] indices, float value, long timestamp) {
         _addRecord((indices == null) ? 0 : indices.length, new Record(indices,
-                new Float(value), timestamp));
+                Float.valueOf(value), timestamp));
     }
 
     /** Add an old value to the specified indices of the records, and
