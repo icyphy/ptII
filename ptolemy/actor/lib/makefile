@@ -110,6 +110,7 @@ JSRCS = \
 	ArrayPeakSearch.java \
 	ArrayRemoveElement.java \
 	ArraySort.java \
+	ArraySum.java \
 	ArrayToElements.java \
 	Average.java \
 	Bernoulli.java \

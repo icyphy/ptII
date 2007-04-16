@@ -20,6 +20,7 @@
 <entity name="ArrayPeakSearch" class="ptolemy.actor.lib.ArrayPeakSearch"/>
 <entity name="ArrayRemoveElement" class="ptolemy.actor.lib.ArrayRemoveElement"/>
 <entity name="ArraySort" class="ptolemy.actor.lib.ArraySort"/>
+<entity name="ArraySum" class="ptolemy.actor.lib.ArraySum"/>
 <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements"/>
 <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence"/>
 <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray"/>
