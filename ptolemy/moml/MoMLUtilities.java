@@ -164,9 +164,9 @@ public class MoMLUtilities {
         Iterator entities = parsedContainer.allAtomicEntityList().iterator();
         while (entities.hasNext()) {
             Entity entity = (Entity) entities.next();
-            Enumeration attributes = entity.getAttributes();
-            while (attributes.hasMoreElements()) {
-                Attribute attribute = (Attribute) attributes.nextElement();
+            Iterator attributes = entity.attributeList().iterator();
+            while (attributes.hasNext()) {
+                Attribute attribute = (Attribute) attributes.next();
                 if (attribute instanceof Variable) {
                     Variable variable = (Variable) attribute;
 
