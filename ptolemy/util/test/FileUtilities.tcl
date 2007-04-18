@@ -270,8 +270,11 @@ test FileUtilities-9.2 {extractJarFile in subdirectory} {
     set r0 [list [file exists extractJarFileTestDir/a/1] \
 		[file exists extractJarFileTestDir/a/b/2] \
 		[file isdirectory extractJarFileTestDir/a/c]]
-    java::call ptolemy.util.FileUtilities extractJarFile \
-		  extractJarFileTest.jar extractJarFileTestDir
+
+    # Call FileUtilties.main() for increased code coverage
+    set args [java::new {String[]} {2} {extractJarFileTest.jar extractJarFileTestDir}]
+    java::call ptolemy.util.FileUtilities main $args
+
     set r1 [list [file exists extractJarFileTestDir/a/1] \
 		[file exists extractJarFileTestDir/a/b/2] \
 		[file isdirectory extractJarFileTestDir/a/c]]
