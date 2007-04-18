@@ -61,8 +61,8 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-JAVAC =		/cygdrive/c/j2sdk1.4.0-beta3/bin/javac
-JAVA =		/cygdrive/c/j2sdk1.4.0-beta3/bin/java
+JAVAC =		/cygdrive/c/Program Files/Java/jdk1.5.0_11/bin/javac
+JAVA =		/cygdrive/c/Program Files/Java/jdk1.5.0_11/bin/java
 
 all: jclass
 	@echo "To run the demo, run 'make demo'"
@@ -72,28 +72,28 @@ install: all
 
 demo: demo1 demo2 demo3 demo4 demo5
 demo1: CapabilitiesTest.class
-	$(JAVA) -classpath . CapabilitiesTest
+	"$(JAVA)" -classpath . CapabilitiesTest
 
 demo2: DisplayModeTest.class
-	$(JAVA) -classpath . DisplayModeTest
+	"$(JAVA)" -classpath . DisplayModeTest
 
 demo3: MultiBufferTest.class
-	$(JAVA) -classpath . MultiBufferTest
+	"$(JAVA)" -classpath . MultiBufferTest
 
 demo4: GraphicsConfigurationTest.class
-	$(JAVA) -classpath . GraphicsConfigurationTest
+	"$(JAVA)" -classpath . GraphicsConfigurationTest
 
 #See http://java.sun.com/products/jfc/tsc/articles/timer/
 #demo5: FadeDemo.class
-#	$(JAVA) -classpath . FadeDemo
+#	"$(JAVA)" -classpath . FadeDemo
 
 # http://java.sun.com/products/java-media/2D/samples/suite/Composite/FadeAnim.java
 demo6: FadeAnim.class
-	$(JAVA) -classpath . FadeAnim
+	"$(JAVA)" -classpath . FadeAnim
 
 #See http://java.sun.com/docs/books/tutorial/2d/display/compositing.html 
 demo7: Composite.class
-	$(JAVA) -classpath . Composite
+	"$(JAVA)" -classpath . Composite
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
