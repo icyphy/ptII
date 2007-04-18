@@ -32,6 +32,7 @@ package ptolemy.apps.fullscreen;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Sink;
 import ptolemy.actor.lib.image.Transform;
+import ptolemy.data.AWTImageToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
@@ -138,7 +139,15 @@ public class FullScreenImageDisplay extends Sink {
         }
 
         for (int i = 0; i < inputWidth; i++) {
-            ObjectToken objectToken = (ObjectToken) input.get(i);
+            AWTImageToken objectToken;
+            try {
+                objectToken = (AWTImageToken) input.get(i);
+            } catch (ClassCastException ex) {
+                ClassCastException ex2 = new ClassCastException("Failed to cast " + input.get(i)
+                        + "to an AWTImageToken");
+                ex2.initCause(ex);
+                throw ex2;
+            }
             Image image = (Image) objectToken.getValue();
 
             if ((image.getWidth(null) == -1) || (image.getHeight(null) == -1)) {
