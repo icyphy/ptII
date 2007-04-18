@@ -1462,47 +1462,47 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         return _evaluatedChildToken;
     }
 
-    /** Evaluate the Matrix index operation represented by the given node.
-     *  @param node The node that caused this method to be called.
-     *  @param value The token that is being indexed into, which must
-     *   be a MatrixToken.
-     *  @param rowIndex The row index, which must be an integer token.
-     *  @param columnIndex The column index, which must be an integer token.
-     *  @return The element of the given token at the given index.
-     *  @exception IllegalActionException If an parse error occurs.
-     */
-    protected ptolemy.data.Token _evaluateMatrixIndex(ASTPtRootNode node,
-            ptolemy.data.Token value, ptolemy.data.Token rowIndex,
-            ptolemy.data.Token columnIndex) throws IllegalActionException {
-        if (!(value instanceof MatrixToken)) {
-            throw new IllegalActionException(
-                    "Matrix indexing cannot be applied to '" + value.toString()
-                            + "' because its value is not a matrix.");
-        }
+//     /** Evaluate the Matrix index operation represented by the given node.
+//      *  @param node The node that caused this method to be called.
+//      *  @param value The token that is being indexed into, which must
+//      *   be a MatrixToken.
+//      *  @param rowIndex The row index, which must be an integer token.
+//      *  @param columnIndex The column index, which must be an integer token.
+//      *  @return The element of the given token at the given index.
+//      *  @exception IllegalActionException If an parse error occurs.
+//      */
+//     protected ptolemy.data.Token _evaluateMatrixIndex(ASTPtRootNode node,
+//             ptolemy.data.Token value, ptolemy.data.Token rowIndex,
+//             ptolemy.data.Token columnIndex) throws IllegalActionException {
+//         if (!(value instanceof MatrixToken)) {
+//             throw new IllegalActionException(
+//                     "Matrix indexing cannot be applied to '" + value.toString()
+//                             + "' because its value is not a matrix.");
+//         }
 
-        if (!(rowIndex instanceof IntToken)) {
-            throw new IllegalActionException(
-                    "Matrix row index must be an integer. Got: " + rowIndex);
-        }
+//         if (!(rowIndex instanceof IntToken)) {
+//             throw new IllegalActionException(
+//                     "Matrix row index must be an integer. Got: " + rowIndex);
+//         }
 
-        if (!(columnIndex instanceof IntToken)) {
-            throw new IllegalActionException(
-                    "Matrix column index must be an integer. Got: "
-                            + columnIndex);
-        }
+//         if (!(columnIndex instanceof IntToken)) {
+//             throw new IllegalActionException(
+//                     "Matrix column index must be an integer. Got: "
+//                             + columnIndex);
+//         }
 
-        int integerRowIndex = ((IntToken) rowIndex).intValue();
-        int integerColumnIndex = ((IntToken) columnIndex).intValue();
+//         int integerRowIndex = ((IntToken) rowIndex).intValue();
+//         int integerColumnIndex = ((IntToken) columnIndex).intValue();
 
-        try {
-            return ((MatrixToken) value).getElementAsToken(integerRowIndex,
-                    integerColumnIndex);
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new IllegalActionException("The index (" + rowIndex + ","
-                    + columnIndex + ") is out of bounds on the matrix '"
-                    + value + "'.");
-        }
-    }
+//         try {
+//             return ((MatrixToken) value).getElementAsToken(integerRowIndex,
+//                     integerColumnIndex);
+//         } catch (ArrayIndexOutOfBoundsException ex) {
+//             throw new IllegalActionException("The index (" + rowIndex + ","
+//                     + columnIndex + ") is out of bounds on the matrix '"
+//                     + value + "'.");
+//         }
+//     }
 
     /** Add a record to the current trace corresponding to the given message.
      *  If the trace is null, do nothing.
