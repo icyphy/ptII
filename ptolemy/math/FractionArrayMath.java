@@ -36,12 +36,17 @@ package ptolemy.math;
 //// FractionArrayMath
 
 /**
- This class provides a library for mathematical operations on Fraction arrays.
- unless explicitly noted otherwise, all array arguments are assumed to be
+ A library for mathematical operations on Fraction arrays.
+ 
+ <p>Unless explicitly noted otherwise, all array arguments are assumed to be
  non-null. If a null array is passed to a method, a NullPointerException
  will be thrown in the method or called methods.
+
  @author Adam Cataldo
+ @version $Id$
+ @since Ptolemy II 5.0
  @Pt.ProposedRating Red (acataldo)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class FractionArrayMath {
     // Protected constructor prevents construction of this class.

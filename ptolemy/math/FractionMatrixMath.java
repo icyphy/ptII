@@ -32,15 +32,17 @@ package ptolemy.math;
 //// FractionMatrixMath
 
 /**
- This class provides a library for mathematical operations on
- matrices of Fractions.
+ A library for mathematical operations on matrices of Fractions.
 
- Rows and column numbers of matrices are specified with zero-based indices.
+ <p>Rows and column numbers of matrices are specified with zero-based indices.
  All calls expect matrix arguments to be non-null. In addition, all
  rows of the matrix are expected to have the same number of columns.
 
  @author Adam Cataldo
+ @version $Id$
+ @since Ptolemy II 5.0
  @Pt.ProposedRating Red (acataldo)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class FractionMatrixMath {
     // private constructor prevents construction of this class.
