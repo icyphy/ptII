@@ -54,6 +54,7 @@ JSIMPLE_TESTS = \
 	FFT.tcl \
 	ArrayToSequence.tcl \
 	BitsToInt.tcl \
+	DelayLine.tcl \
 	IntToBits.tcl \
 	Repeat.tcl \
 	SampleDelay.tcl \
