@@ -30,6 +30,7 @@ package ptolemy.domains.curriculum;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.curriculum.DependencyHighlighter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -75,18 +76,23 @@ public class Course extends TypedAtomicActor {
         new NameIcon(this, "_icon");
         
         DependencyHighlighter controller = new DependencyHighlighter(this, "_controller");
+        
+        units = new Parameter(this, "units");
+        units.setTypeEquals(BaseType.INT);
+        units.setExpression("4");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The postrequisites port.
-     */
+    /** The postrequisites port. */
     public TypedIOPort postrequisites = null;
 
-    /** The prerequisites port.
-     */
+    /** The prerequisites port. */
     public TypedIOPort prerequisites = null;
+    
+    /** The number of units. This is an integer with default value 4. */
+    public Parameter units;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
