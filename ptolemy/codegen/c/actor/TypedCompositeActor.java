@@ -159,9 +159,6 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             }
         }
 
-        // Generate the type conversion code before fire code.
-        code.append(generateTypeConvertFireCode(true));
-
         // Generate the fire code by the director helper.
         code.append(directorHelper.generateFireCode());
 

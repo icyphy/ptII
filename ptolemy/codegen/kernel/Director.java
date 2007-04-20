@@ -316,6 +316,9 @@ public class Director implements ActorCodeGenerator {
             }
         }
 
+        // Generate the type conversion code before fire code.
+        code.append(_compositeActorHelper.generateTypeConvertFireCode(true));
+
         // The offset of the input port itself is updated by outside director.
         _updateConnectedPortsOffset(inputPort, code, 1);
     }

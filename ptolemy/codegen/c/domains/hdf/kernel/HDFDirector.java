@@ -600,6 +600,9 @@ public class HDFDirector extends SDFDirector {
                 }
             }
 
+            // Generate the type conversion code before fire code.
+            code.append(containerHelper.generateTypeConvertFireCode(true));
+
             // The offset of the input port itself is updated by
             // outside director.
             _updateConnectedPortsOffset(inputPort, code, rate);
