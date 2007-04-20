@@ -562,6 +562,18 @@ testMatrix allocCopy $types
 
 ######################################################################
 ####
+#  Test out: xxx[] allocCopy(xxx[])
+
+set types [list \
+	[list Double double double {{2.0 -1.0}}] \
+	[list Integer int int {{2 -1}}] \
+	[list Long long long {{2 -1}}] \
+        [list Fraction ptolemy.math.Fraction fraction {{2/1 1/2}}]]
+
+testArrayMathArray allocCopy $types
+
+######################################################################
+####
 #  *ArrayMath Test out: xxx[] append(xxx[], xxx[]) with 0 length array
 
 set types [list \
