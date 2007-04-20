@@ -30,6 +30,11 @@
 
 # Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
+# Load up the test definitions.
+if {[string compare test [info procs test]] == 1} then { 
+    source testDefs.tcl
+} {}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -110,6 +115,12 @@ test FractionArrayMath-11.2 {dotProduct} {
 } {113/16} 
 
 ####################################################################
+test FractionArrayMath-11.2.5 {negative} {
+    set ar [java::call ptolemy.math.FractionArrayMath negative $a]
+    set s [java::call ptolemy.math.FractionArrayMath toString $ar]
+} {{3/2, -1/2, -7/1, 1/1}}
+
+####################################################################
 test FractionArrayMath-11.3 {multiply} {
     set ar [java::call ptolemy.math.FractionArrayMath multiply $a $b]
     set s [java::call ptolemy.math.FractionArrayMath toString $ar]
@@ -140,3 +151,11 @@ test FractionArrayMath-14.3.2 {equals} {
 	set b3 [java::call ptolemy.math.FractionArrayMath equals $a $c]
 	concat $b1 $b2 $b3
 } {1 0 0}
+
+####################################################################
+test FractionArrayMath-15.1 {toDoubleArray} {
+    set doubleArray [java::call ptolemy.math.FractionArrayMath toDoubleArray $a]
+    set emptyArray [java::call ptolemy.math.FractionArrayMath toDoubleArray $c]
+    list [jdkPrintArray $doubleArray] \
+	[jdkPrintArray $emptyArray]
+} {{-1.5 0.5 7.0 -1.0} {}}
