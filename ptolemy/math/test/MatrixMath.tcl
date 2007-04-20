@@ -130,6 +130,19 @@ set floatBinaryOperation \
 set floatUnaryOperation \
 	[java::new ptolemy.math.test.TestFloatUnaryOperation]
 
+# Fraction numbers to be used
+set fraction0 [java::new ptolemy.math.Fraction 0 1]
+set fraction1 [java::new ptolemy.math.Fraction 2 1]
+set fraction2 [java::new ptolemy.math.Fraction 1 2]
+set fraction3 [java::new ptolemy.math.Fraction -1 -2]
+set fraction4 [java::new ptolemy.math.Fraction 0 1]
+set fraction2array [java::new {ptolemy.math.Fraction[]} {2} \
+	[list $fraction1 $fraction2]]
+set fraction2_2 [java::new {ptolemy.math.Fraction[][]} {2} [list \
+	[list $fraction1 $fraction2] \
+	[list $fraction3 $fraction4]]]
+
+
 set int0 0
 set int1 2
 set int2 4
@@ -269,6 +282,9 @@ proc testMatrixMath {op types matrixSize opSignature \
 		    set resultsBaseType Complex
 		}
 
+		if {"$resultsBaseType" == "ptolemy.math.Fraction" } {
+		    set resultsBaseType Fraction
+		}
 		if {"$resultsBaseType" == "int" } {
 		    set resultsBaseType Integer
 		}
@@ -940,7 +956,8 @@ set types [list \
 	[list Double double double {{2.0 -1.0 1.0 0.0}}] \
 	[list Float float float {{2.0 -1.0 1.0 0.0}}] \
 	[list Integer int int {{2 -1 1 0}}] \
-	[list Long long long {{2 -1 1 0}}]]
+	[list Long long long {{2 -1 1 0}}] \
+        [list Fraction ptolemy.math.Fraction fraction {{2/1 1/2 1/2 0/1}}]]
 
 testMatrix fromMatrixToArray $types
 
@@ -954,7 +971,8 @@ set types [list \
 	[list Double double double {{2.0 -1.0}}] \
 	[list Float float float {{2.0 -1.0}}] \
 	[list Integer int int {{2 -1}}] \
-	[list Long long long {{2 -1}}]]
+	[list Long long long {{2 -1}}] \
+        [list Fraction ptolemy.math.Fraction fraction {{2/1 1/2}}]]
 
 testMatrixIntInt fromMatrixToArray $types 2_2 1 2
 
@@ -963,8 +981,10 @@ set types [list \
 	{{2.0 - 2.0i -1.0 - 1.0i}}] \
 	[list Double double double {{2.0 1.0}}] \
 	[list Float float float {{2.0 1.0}}] \
-	[list Integer int int {{2 1}}] \
-	[list Long long long {{2 1}}]]
+        [list Integer int int {{2 1}}] \
+	[list Long long long {{2 1}}] \
+        [list Fraction ptolemy.math.Fraction fraction {{2/1 1/2}}]]
+
 
 testMatrixIntInt fromMatrixToArray $types 2_2 2 1
 
@@ -1198,8 +1218,8 @@ set types [list \
 	[list Double double double {{{4.0 1.0} {1.0 0.0}}}] \
 	[list Float float float {{{4.0 1.0} {1.0 0.0}}}] \
 	[list Integer int int {{{4 1} {1 0}}}] \
-	[list Long long long {{{4 1} {1 0}}}]]
-
+	[list Long long long {{{4 1} {1 0}}}] \
+        [list Fraction ptolemy.math.Fraction fraction {{{4/1 1/4} {1/4 0/1}}}]]
 
 testMatrixMatrix multiplyElements $types
 
@@ -1213,7 +1233,8 @@ set types [list \
 	[list Double double double {{-2.0 1.0}}] \
 	[list Float float float {{-2.0 1.0}}] \
 	[list Integer int int {{-2 1}}] \
-	[list Long long long {{-2 1}}]]
+	[list Long long long {{-2 1}}] \
+        [list Fraction ptolemy.math.Fraction fraction {{-2/1 -1/2}}]]
 
 testArrayMathArray negative $types
 
