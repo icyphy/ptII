@@ -4,7 +4,7 @@
 <entity name="XSLTransformerTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 139, 761, 470}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 139, 761, 472}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[546, 354]">
     </property>
@@ -23,7 +23,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Currently, record token cannot be empty&#10;(containing no field at all), so in the&#10;styleSheetParameter parameter of&#10;XSLTransformer, we arbitrarily put {a=0}.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Currently, record token cannot be empty&#10;(containing no field at all), so in the&#10;styleSheetParameters parameter of&#10;XSLTransformer, we arbitrarily put {a=0}.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 10.0]">
         </property>
@@ -124,7 +124,7 @@
         </port>
     </entity>
     <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
-        <property name="styleSheetParameter" class="ptolemy.data.expr.Parameter" value="{a=0}">
+        <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="emptyRecord()">
         </property>
         <property name="stylesheetFile" class="ptolemy.data.expr.FileParameter" value="XmlQueryToMoml.xsl">
         </property>
