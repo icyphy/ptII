@@ -518,6 +518,8 @@ test Overflow-2.2.5x {minusInfinity} {
 [[ $overflow_to_zero minusInfinity $quant_3_0 ] toString]
 [ $overflow_trap minusInfinity $quant_3_0 ]
 [ $overflow_wrap minusInfinity $quant_3_0 ]
+[ $overflow_minimize minusInfinity $quant_3_0 ]
+[ $overflow_shrink minusInfinity $quant_3_0 ]
 "
 } {{
 -4
@@ -526,6 +528,8 @@ java0x0
 -4
 java0x0
 0
+java0x0
+java0x0
 java0x0
 java0x0
 }}
@@ -543,6 +547,8 @@ test Overflow-2.2.5x {plusInfinity} {
 [[ $overflow_to_zero plusInfinity $quant_3_0 ] toString]
 [ $overflow_trap plusInfinity $quant_3_0 ]
 [ $overflow_wrap plusInfinity $quant_3_0 ]
+[ $overflow_minimize plusInfinity $quant_3_0 ]
+[ $overflow_shrink plusInfinity $quant_3_0 ]
 "
 } {{
 3
@@ -553,5 +559,8 @@ java0x0
 0
 java0x0
 java0x0
+java0x0
+java0x0
 }}
+
 
