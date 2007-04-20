@@ -28,6 +28,16 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
+# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
+
+# Load up the test definitions.
+if {[string compare test [info procs test]] == 1} then { 
+    source testDefs.tcl
+} {}
+
+# Uncomment this to get a full report, or set in your Tcl shell window.
+# set VERBOSE 1
+
 # Fractions to be used
 set c0 [java::new ptolemy.math.Fraction 1 2]
 set c1 [java::new ptolemy.math.Fraction 3 2]
