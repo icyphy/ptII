@@ -5,16 +5,6 @@
 # @Version: $Id$
 #
 # @Copyright (c) 1998-2005 The Regents of the University of California.
-# All rights reserved.
-# 
-# Permission is hereby granted, without written agreement and without
-# license or royalty fees, to use, copy, modify, and distribute this
-# software 
-# @Author: Jeff Tsay
-#
-# @Version: $Id$
-#
-# @Copyright (c) 1998-2005 The Regents of the University of California.
 # All rigand its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
@@ -416,17 +406,3 @@ test DoubleMatrixMath-12.4 {within double[][] double[][] double false case} {
    set ok [java::call ptolemy.math.DoubleMatrixMath \
    {within double[][] double[][] double} $m12_1 $m12_2 .09]
 } {0}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
