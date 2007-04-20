@@ -124,7 +124,7 @@
                 </property>
             </entity>
             <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
-                <property name="styleSheetParameter" class="ptolemy.data.expr.Parameter" value="{URLparam = &quot;C:/Documents and Settings/Armineh/workspace/ptII.cvs/ptolemy/actor/lib/xslt/test/MOMLFileTransformationDemo/momlFilesForDemo/SampleMOMLFile6.xml&quot;}">
+                <property name="styleSheetParameters" class="ptolemy.data.expr.Parameter" value="{URLparam = &quot;C:/Documents and Settings/Armineh/workspace/ptII.cvs/ptolemy/actor/lib/xslt/test/MOMLFileTransformationDemo/momlFilesForDemo/SampleMOMLFile6.xml&quot;}">
                 </property>
                 <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RemoveRedundancy.xsl">
                 </property>
@@ -132,7 +132,7 @@
                 </property>
             </entity>
             <entity name="XSLTransformer2" class="ptolemy.actor.lib.xslt.XSLTransformer">
-                <property name="styleSheetParameter" class="ptolemy.data.expr.Parameter" value="{className = &quot;xzy&quot;}">
+                <property name="styleSheetParameters" class="ptolemy.data.expr.Parameter" value="{className = &quot;xzy&quot;}">
                 </property>
                 <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RemoveRepetition.xsl">
                 </property>
@@ -191,7 +191,7 @@
             <link port="StringReplace2.output" relation="relation8"/>
             <link port="XSLTransformer.input" relation="relation5"/>
             <link port="XSLTransformer.output" relation="relation"/>
-            <link port="XSLTransformer.styleSheetParameterPort" relation="relation6"/>
+            <link port="XSLTransformer.styleSheetParameters" relation="relation6"/>
             <link port="XSLTransformer2.input" relation="relation7"/>
             <link port="XSLTransformer2.output" relation="relation4"/>
         </entity>
@@ -247,7 +247,7 @@
         </property>
     </entity>
     <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
-        <property name="styleSheetParameter" class="ptolemy.data.expr.Parameter" value="{URLparam = &quot;xyz&quot;}">
+        <property name="styleSheetParameters" class="ptolemy.data.expr.Parameter" value="{URLparam = &quot;xyz&quot;}">
         </property>
         <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RearrangeHierarchy.xsl">
         </property>
