@@ -27,12 +27,12 @@ COPYRIGHTENDKEY
 */
 package ptolemy.actor.lib.xslt;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.XMLToken;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -64,8 +64,8 @@ public class XMLInclusion extends Transformer{
        input.setTypeEquals(new ArrayType(BaseType.XMLTOKEN));
        input.setMultiport(true);
        
-       template = new TypedIOPort(this, "template", true, false);
-       template.setTypeEquals(BaseType.STRING);
+       template = new PortParameter(this, "template");
+       template.setStringMode(true);
         
        headerParameter = new StringParameter(this, "headerParameter");
        headerParameter.setExpression("<?xml version=\"1.0\" standalone=\"no\"?>");
@@ -79,23 +79,16 @@ public class XMLInclusion extends Transformer{
 
    /*
     */
-   public TypedIOPort template;
+   public PortParameter template;
    public StringParameter headerParameter;
 
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
    
-   /*public Object clone(Workspace workspace) throws CloneNotSupportedException{
-       XMLInclusion newObject = (XMLInclusion) super.clone(workspace);
-       newObject.input.setTypeEquals(BaseType.XMLTOKEN);
-       newObject.input.setMultiport(true); //not sure?
-       newObject.output.setTypeEquals(BaseType.XMLTOKEN);
-       newObject.template.setTypeEquals(BaseType.STRING);
-       return newObject;
-   }*/
-   
    public void fire() throws IllegalActionException{ 
-       String outputString = removeHeader(template.get(0));
+       super.fire();
+       template.update();
+       String outputString = removeHeader(template.getToken());
        String all="";
        for (int j=0; j <input.getWidth(); j++) {
            ArrayToken a = (ArrayToken) input.get(j);

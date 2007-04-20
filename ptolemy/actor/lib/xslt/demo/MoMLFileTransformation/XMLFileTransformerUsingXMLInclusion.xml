@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1688, 1024}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1473, 898]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 658]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{736.5, 449.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 329.0}">
     </property>
     <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
         <doc>Iterate a contained actor over input arrays</doc>
@@ -28,7 +28,7 @@
         </property>
         <property name="_tableauFactory" class="ptolemy.actor.gui.LevelSkippingTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 190.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 150.0]">
         </property>
         <port name="File Names" class="ptolemy.actor.lib.hoc.IterateOverArray$IteratePort">
             <property name="input"/>
@@ -90,7 +90,7 @@
                 </property>
             </entity>
             <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="C:\Documents and Settings\Armineh\workspace\ptII.cvs\ptolemy\actor\lib\xslt\test\MOMLFileTransformationDemo\momlFilesForDemo\SampleMOMLFile6.xml">
+                <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="C:\ptII\ptolemy\actor\lib\xslt\demo\MoMLFileTransformation\momlFilesForDemo\SampleMOMLFile6.xml">
                 </property>
                 <doc>Read an entire file and output as a string</doc>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 210.0}">
@@ -115,7 +115,7 @@
                 </port>
             </entity>
             <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
-                <property name="styleSheetParameters" class="ptolemy.data.expr.Parameter" value="{URLparam = &quot;C:/Documents and Settings/Armineh/workspace/ptII.cvs/ptolemy/actor/lib/xslt/test/MOMLFileTransformationDemo/momlFilesForDemo/SampleMOMLFile6.xml&quot;}">
+                <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{URLparam = &quot;C:/Documents and Settings/Armineh/workspace/ptII.cvs/ptolemy/actor/lib/xslt/test/MOMLFileTransformationDemo/momlFilesForDemo/SampleMOMLFile6.xml&quot;}">
                 </property>
                 <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RemoveRedundancy.xsl">
                 </property>
@@ -123,7 +123,7 @@
                 </property>
             </entity>
             <entity name="XSLTransformer2" class="ptolemy.actor.lib.xslt.XSLTransformer">
-                <property name="styleSheetParameters" class="ptolemy.data.expr.Parameter" value="{className = &quot;xzy&quot;}">
+                <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{className = &quot;xzy&quot;}">
                 </property>
                 <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RemoveRepetition2.xsl">
                 </property>
@@ -198,11 +198,27 @@
         </property>
         <property name="listOnlyFiles" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 150.0]">
         </property>
     </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;&lt;?xml version=\&quot;1.0\&quot; standalone=\&quot;no\&quot;?&gt;&#10;  &lt;entities&gt;&#10;    $input0&#10;  &lt;/entities&gt;&#10;&quot;">
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1024, 721]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[910.0, 180.0]">
+        </property>
+    </entity>
+    <entity name="XSLTransformer4" class="ptolemy.actor.lib.xslt.XSLTransformer">
+        <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{URLparam = &quot;xyz&quot;}">
+        </property>
+        <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RearrangeHierarchy.xsl">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 180.0]">
+        </property>
+    </entity>
+    <entity name="XMLInclusion" class="ptolemy.actor.lib.xslt.XMLInclusion">
+        <property name="template" class="ptolemy.actor.parameters.PortParameter" value="&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;&#10;  &lt;entities&gt;&#10;    $$input0&#10;  &lt;/entities&gt;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -210,46 +226,19 @@
                 </property>
             </property>
         </property>
-        <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 285.0]">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1688, 1024}, maximized=true}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1680, 961]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1220.0, 220.0]">
-        </property>
-    </entity>
-    <entity name="XSLTransformer4" class="ptolemy.actor.lib.xslt.XSLTransformer">
-        <property name="styleSheetParameters" class="ptolemy.data.expr.Parameter" value="{URLparam = &quot;xyz&quot;}">
-        </property>
-        <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RearrangeHierarchy.xsl">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1090.0, 220.0]">
-        </property>
-    </entity>
-    <entity name="XMLInclusion" class="ptolemy.actor.lib.xslt.XMLInclusion">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 160.0]">
         </property>
     </entity>
     <entity name="XSLTransformer3" class="ptolemy.actor.lib.xslt.XSLTransformer">
-        <property name="styleSheetParameters" class="ptolemy.data.expr.Parameter" value="{URLparam = &quot;xyz&quot;}">
+        <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{URLparam = &quot;xyz&quot;}">
         </property>
         <property name="styleSheetFile" class="ptolemy.data.expr.FileParameter" value="RemoveOneLayer.xsl">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[795.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 170.0]">
         </property>
     </entity>
     <entity name="StringToXML" class="ptolemy.actor.lib.conversions.StringToXML">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[960.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 170.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -257,10 +246,6 @@
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
@@ -283,13 +268,11 @@
     <link port="IterateOverArray.File Names" relation="relation"/>
     <link port="IterateOverArray.port2" relation="relation3"/>
     <link port="DirectoryListing.output" relation="relation"/>
-    <link port="Const.output" relation="relation4"/>
     <link port="Display.input" relation="relation5"/>
     <link port="XSLTransformer4.input" relation="relation7"/>
     <link port="XSLTransformer4.output" relation="relation5"/>
     <link port="XMLInclusion.input" relation="relation3"/>
     <link port="XMLInclusion.output" relation="relation2"/>
-    <link port="XMLInclusion.template" relation="relation4"/>
     <link port="XSLTransformer3.input" relation="relation2"/>
     <link port="XSLTransformer3.output" relation="relation6"/>
     <link port="StringToXML.input" relation="relation6"/>
