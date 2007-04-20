@@ -1066,8 +1066,8 @@ testArrayMathArrayScalar modulo $types
 
 set types [list \
 	[list Integer int int {{{0 -1} {1 1}}} ] \
-	[list Long long long {{{0 -1} {1 1}}}]]
-
+	[list Long long long {{{0 -1} {1 1}}}] \
+	[list Double double double {{{0.0 -1.0} {1.0 1.0}}}]]
 
 testMatrixScalar modulo $types 2_2nonzero
 
