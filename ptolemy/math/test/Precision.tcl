@@ -242,6 +242,16 @@ test Precision-1.3 {constructors-int-int} {
 (1.7) 8 -7 1 }}
 
 ####################################################################
+test Precison-1.5 {clone} {
+    set clone [$p0 clone]
+    list \
+	[$clone equals $p0] \
+	[expr {[$clone hashCode] == [$p0 hashCode]}] \
+	[$clone equals $p1] \
+	[expr {[$clone hashCode] == [$p1 hashCode]}]
+} {1 1 0 0}
+
+####################################################################
 test Precision-2.0 {findMaximum-findMinimum} {
 
     list "
