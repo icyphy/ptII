@@ -67,6 +67,35 @@ test FractionArrayMath-2.1 {add} {
 } {{-5/4, 7/8, 31/4, -3/1}}
 
 ####################################################################
+test FractionArrayMath-2.1.1 {add, first arg is null} {
+    catch {java::call ptolemy.math.FractionArrayMath \
+	       {add ptolemy.math.Fraction[] ptolemy.math.Fraction[]} \
+	       [java::null] $b} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.FractionArrayMath.add() : first input array is null.}}
+
+####################################################################
+test FractionArrayMath-2.1.2 {add, second arg is null} {
+    catch {java::call ptolemy.math.FractionArrayMath \
+	       {add ptolemy.math.Fraction[] ptolemy.math.Fraction[]} \
+	       $a [java::null]} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.FractionArrayMath.add() : second input array is null.}}
+
+####################################################################
+test FractionArrayMath-2.1.3 {add, different length args} {
+    catch {java::call ptolemy.math.FractionArrayMath \
+	       add $a $c} errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.FractionArrayMath.add() : input arrays must have the same length, but the first array has length 4 and the second array has length 0.}}
+
+####################################################################
+test FractionArrayMath-2.1.4 {add, zero length arrays} {
+    set ar [java::call ptolemy.math.FractionArrayMath add $c $c]
+    set s [java::call ptolemy.math.FractionArrayMath toString $ar]
+} {{}}
+
+####################################################################
 test FractionArrayMath-2.2 {add scalar} {
     set ar [java::call ptolemy.math.FractionArrayMath add $a $c0]
     set s [java::call ptolemy.math.FractionArrayMath toString $ar]
