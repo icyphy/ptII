@@ -234,6 +234,13 @@ public class UtilityFunctions {
         return Constants.constants();
     }
 
+    /** Return an empty record.
+     *  @return An empty record.
+     */
+    public static RecordToken emptyRecord() throws IllegalActionException {
+        return new RecordToken(new String[0], new Token[0]);
+    }
+
     /** Return an empty array with its element type matching
      *  the specified token.
      *  @param prototype A token specifying the element type.

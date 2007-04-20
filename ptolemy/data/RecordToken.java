@@ -67,11 +67,11 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  The labels and values arrays must have the same length, and have one
      *  to one correspondence with each other.  That is, the i'th entry in
      *  the labels array is the label for the i'th value in the values array.
-     *  Both arrays must be non-empty.
+     *  If both arrays are empty, this creates an empty record token.
      *  @param labels An array of labels.
      *  @param values An array of Tokens.
      *  @exception IllegalActionException If the labels or the values array
-     *   do not have the same length, or is empty, or contains null element,
+     *   do not have the same length, or contains null element,
      *   or the labels array contains duplicate elements.
      */
     public RecordToken(String[] labels, Token[] values)
