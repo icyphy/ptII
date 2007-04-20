@@ -54,6 +54,16 @@ set m [java::new {ptolemy.math.Fraction[][]} 2 [list [list $c0 $c1] [list $c2 $c
 set n [java::new {ptolemy.math.Fraction[][]} 2 [list [list $d0 $d1] [list $d2 $d3]]]
 set o [java::new {ptolemy.math.Fraction[][]} 2 [list [list $c0 $c1] [list $c2 $d2]]]
 
+set fourxtwo [java::new {ptolemy.math.Fraction[][]} 2 \
+		   [list [list $c0 $c1 $c2 $c3] \
+			[list $d0 $d1 $d2 $d3]]]
+
+set fourxfour [java::new {ptolemy.math.Fraction[][]} 4 \
+		   [list [list $c0 $c1 $c2 $c3] \
+			[list $d0 $d1 $d2 $d3] \
+			[list $c0 $c1 $c2 $c3] \
+			[list $d0 $d1 $d2 $d3]]]
+
 #Create a length 2 Fraction array
 set a [java::new {ptolemy.math.Fraction[]} 2 [list $c0 $c1]]
 
@@ -66,6 +76,14 @@ test FractionMatrixMath-1 {add Fraction[][] 2x2 Fraction} {
 	set s1 [java::call ptolemy.math.FractionMatrixMath toString $m1]
 	set s1
 } {{{1/1, 2/1}, {-3/2, 7/6}}}
+
+####################################################################
+test FractionMatrixMath-1.1 {add Fraction[][] with diff. size matrices} {
+    catch {java::call ptolemy.math.FractionMatrixMath \
+	       {add ptolemy.math.Fraction[][] ptolemy.math.Fraction[][]} \
+	       $m $fourxfour} errMsg
+        list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.FractionMatrixMath.add() : one matrix [2 x 2] is not the same size as another matrix [4 x 4].}}
 
 ####################################################################
 test FractionMatrixMath-2 {add Fraction[][] 2x2 Fraction[][] 2x2} {
@@ -144,11 +162,36 @@ test FractionMatrixMath-9.2 {multiply Fraction[] 2 Fraction[][] 2x2} {
 } {{-11/4, 7/4}}
 
 ####################################################################
+test FractionMatrixMath-9.4 {multiply Fraction[][] fractions w/ diff. sizes} {
+        catch {java::call ptolemy.math.FractionMatrixMath \
+		   multiply \
+		   $m $fourxfour} errMsg
+        list $errMsg
+} {{java.lang.ArithmeticException: Number of columns (2) of matrix1 does note equal number of rows (4) of matrix2.}}
+
+
+####################################################################
 test FractionMatrixMath-10 {multiply Fraction[][] 2x2 Fraction[][] 2x2} {
 	set m10 [java::call ptolemy.math.FractionMatrixMath multiply $m $n]
 	set s10 [java::call ptolemy.math.FractionMatrixMath toString $m10]
 	set s10
 } {{{1/4, -2/3}, {-13/3, -16/9}}}
+
+####################################################################
+test FractionMatrixMath-10.2 {multiply Fraction[][], Fraction [] w/ diff. sizes} {
+        catch {java::call ptolemy.math.FractionMatrixMath \
+		   multiply \
+		   $m $b} errMsg
+        list $errMsg
+} {{java.lang.IllegalArgumentException: postMultiply() : array does not have the same number of elements (4) as the number of columns of the matrix (2)}}
+
+####################################################################
+test FractionMatrixMath-10.3 {multiply Fraction[][], Fraction [][] w/ diff. sizes} {
+        catch {java::call ptolemy.math.FractionMatrixMath \
+		   multiply \
+		   $m $fourxfour} errMsg
+        list $errMsg
+} {{java.lang.ArithmeticException: Number of columns (2) of matrix1 does note equal number of rows (4) of matrix2.}}
 
 ####################################################################
 test FractionMatrixMath-11 {negative Fraction[][] 2x2} {
@@ -189,6 +232,12 @@ test FractionMatrixMath-16 {trace Fraction[][] 2x2} {
 	set m16 [java::call ptolemy.math.FractionMatrixMath trace $m]
 	list [$m16 toString]
 } {7/6}
+
+####################################################################
+test FractionMatrixMath-16.2 {trace Fraction[][] 2x4} {
+    catch {java::call ptolemy.math.FractionMatrixMath trace $fourxtwo] errMsg}
+	list $errMsg
+} {{java.lang.ArithmeticException: Number of columns (2) of matrix1 does note equal number of rows (4) of matrix2.}}
 
 ####################################################################
 test FractionMatrixMath-17 {transpose Fraction[][] 2x2} {
