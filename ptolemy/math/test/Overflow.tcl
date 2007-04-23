@@ -121,6 +121,52 @@ test Overflow-1.1 {isOutOfRange} {
 } {1 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 1 1}
 
 ####################################################################
+test Overflow-1.1.1 {quantize} {
+
+    set big_100 [java::new java.math.BigInteger "100" ]
+    set big_99 [java::new java.math.BigInteger "99" ]
+    set big_5 [java::new java.math.BigInteger "5" ]
+    set big_4 [java::new java.math.BigInteger "4" ]
+    set big_3 [java::new java.math.BigInteger "3" ]
+    set big_1 [java::new java.math.BigInteger "1" ]
+    set big_0 [java::new java.math.BigInteger "0" ]
+    set big__1 [java::new java.math.BigInteger "-1" ]
+    set big__3 [java::new java.math.BigInteger "-3" ]
+    set big__4 [java::new java.math.BigInteger "-4" ]
+    set big__5 [java::new java.math.BigInteger "-5" ]
+    set big__99 [java::new java.math.BigInteger "-99" ]
+
+    set p_s3_0 [java::new ptolemy.math.Precision "s3.0" ]
+    set p_u3_0 [java::new ptolemy.math.Precision "u3.0" ]
+
+    #catch { $overflow_minimize quantize $big__3 $p_s3_0} msg1
+    #catch { $overflow_minimize quantize $big__4 $p_s3_0} msg2
+    catch { $overflow_minimize quantize $big__3 $p_u3_0} msg7
+    catch { $overflow_minimize quantize $big__4 $p_u3_0} msg8
+    catch { $overflow_minimize quantize $big__5 $p_u3_0} msg9
+    catch { $overflow_minimize quantize $big__99 $p_u3_0} msg10
+    list \
+	[[$overflow_minimize quantize $big_99 $p_s3_0] toString]\
+	[[$overflow_minimize quantize $big_5 $p_s3_0] toString] \
+	[[$overflow_minimize quantize $big_4 $p_s3_0] toString] \
+	[[$overflow_minimize quantize $big_3 $p_s3_0] toString] \
+	[[$overflow_minimize quantize $big_0 $p_s3_0] toString] \
+	[[$overflow_minimize quantize $big__3 $p_s3_0] toString] \
+	[[$overflow_minimize quantize $big__4 $p_s3_0] toString] \
+	[[$overflow_minimize quantize $big__5 $p_s3_0] toString] \
+	[[$overflow_minimize quantize $big__99 $p_s3_0] toString] \
+	[[$overflow_minimize quantize $big_99 $p_u3_0] toString] \
+	[[$overflow_minimize quantize $big_5 $p_u3_0] toString] \
+	[[$overflow_minimize quantize $big_4 $p_u3_0] toString] \
+	[[$overflow_minimize quantize $big_3 $p_u3_0] toString] \
+	[[$overflow_minimize quantize $big_0 $p_u3_0] toString] \
+	$msg7 \
+        $msg8 \
+	$msg9 \
+	$msg10
+} {99 5 4 3 0 -3 -4 -5 -99 99 5 4 3 0 {java.lang.ArithmeticException: Precision (U2.0) not sufficient to represent -3} {java.lang.ArithmeticException: Precision (U2.0) not sufficient to represent -4} {java.lang.ArithmeticException: Precision (U3.0) not sufficient to represent -5} {java.lang.ArithmeticException: Precision (U7.0) not sufficient to represent -99}}
+
+####################################################################
 test Overflow-1.1 {isOverflow} {
 
     list \
