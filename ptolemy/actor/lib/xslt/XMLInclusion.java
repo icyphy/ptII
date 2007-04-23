@@ -50,7 +50,10 @@ Combine multiply XMLTokens into one XMLToken.
 more comments to come soon
 
 @author Christine Avanessians, Edward Lee, Thomas Feng
-
+@version $Id$
+@since Ptolemy II 6.0.2
+@Pt.ProposedRating Red (cavaness)
+@Pt.AcceptedRating Red (cavaness)
 */
 public class XMLInclusion extends Transformer{
    
