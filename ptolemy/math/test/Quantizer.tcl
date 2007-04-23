@@ -238,6 +238,39 @@ test Quantizer-2.3 {the truncate function} {
 -10.00000000000000 -2.0 
 -1.000000000000000 -1.0 }}
 
+test Quantizer-2.4 {The truncate function} {
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set p1 [java::new ptolemy.math.Precision "(4.32)" ]
+
+    set ctor_double {ptolemy.math.FixPoint double ptolemy.math.Quantization}
+    set q_20_32 [java::new ptolemy.math.FixPointQuantization "20.32,saturate,nearest"]
+    set fixPoint [java::new $ctor_double 5.5734 $q_20_32]
+
+    set overflow_saturate [java::call ptolemy.math.Overflow forName "saturate"];
+
+    set c0 [java::call ptolemy.math.Quantizer \
+	    {truncate ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} \
+	$fixPoint $p0 $overflow_saturate]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {truncate ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} \
+	$fixPoint $p1 $overflow_saturate]
+
+    set fixPoint [java::new $ctor_double -4.23  $q_20_32]
+    set c2 [java::call ptolemy.math.Quantizer \
+	    {truncate ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} $fixPoint  $p0 $overflow_saturate]
+    set c3 [java::call ptolemy.math.Quantizer \
+	    {truncate ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} $fixPoint  $p1 $overflow_saturate]
+    list "
+[$c0 toBitString] [ $c0 toString ] 
+[$c1 toBitString] [ $c1 toString ] 
+[$c2 toBitString] [ $c2 toString ] 
+[$c3 toBitString] [ $c3 toString ] "
+} {{
+101.100100101100 5.5732421875 
+101.10010010110010100101011110101000 5.57340000011026859283447265625 
+-101.110001010001 -4.230224609375 
+-101.11000101000111101011100001010010 -4.2299999999813735485076904296875 }}
+
 ####################################################################
 
 test Quantizer-3.0 {The roundToZero function} {
@@ -336,6 +369,39 @@ test Quantizer-3.3 {the roundToZero function} {
 -100.0000000000000 -4.0 
 -10.00000000000000 -2.0 
 -1.000000000000000 -1.0 }}
+
+test Quantizer-3.4 {The roundToZero function} {
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set p1 [java::new ptolemy.math.Precision "(4.32)" ]
+
+    set ctor_double {ptolemy.math.FixPoint double ptolemy.math.Quantization}
+    set q_20_32 [java::new ptolemy.math.FixPointQuantization "20.32,saturate,nearest"]
+    set fixPoint [java::new $ctor_double 5.5734 $q_20_32]
+
+    set overflow_saturate [java::call ptolemy.math.Overflow forName "saturate"];
+
+    set c0 [java::call ptolemy.math.Quantizer \
+	    {roundToZero ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} \
+	$fixPoint $p0 $overflow_saturate]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {roundToZero ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} \
+	$fixPoint $p1 $overflow_saturate]
+
+    set fixPoint [java::new $ctor_double -4.23  $q_20_32]
+    set c2 [java::call ptolemy.math.Quantizer \
+	    {roundToZero ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} $fixPoint  $p0 $overflow_saturate]
+    set c3 [java::call ptolemy.math.Quantizer \
+	    {roundToZero ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} $fixPoint  $p1 $overflow_saturate]
+    list "
+[$c0 toBitString] [ $c0 toString ] 
+[$c1 toBitString] [ $c1 toString ] 
+[$c2 toBitString] [ $c2 toString ] 
+[$c3 toBitString] [ $c3 toString ] "
+} {{
+101.100100101100 5.5732421875 
+101.10010010110010100101011110101000 5.57340000011026859283447265625 
+-101.110001010010 -4.22998046875 
+-101.11000101000111101011100001010010 -4.2299999999813735485076904296875 }}
 
 ####################################################################
 
@@ -436,6 +502,40 @@ test Quantizer-4.3 {the roundUp function} {
 -10.00000000000000 -2.0 
 -1.000000000000000 -1.0 }}
 
+test Quantizer-4.4 {The roundUp function} {
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set p1 [java::new ptolemy.math.Precision "(4.32)" ]
+
+    set ctor_double {ptolemy.math.FixPoint double ptolemy.math.Quantization}
+    set q_20_32 [java::new ptolemy.math.FixPointQuantization "20.32,saturate,nearest"]
+    set fixPoint [java::new $ctor_double 5.5734 $q_20_32]
+
+    set overflow_saturate [java::call ptolemy.math.Overflow forName "saturate"];
+
+    set c0 [java::call ptolemy.math.Quantizer \
+	    {roundUp ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} \
+	$fixPoint $p0 $overflow_saturate]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {roundUp ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} \
+	$fixPoint $p1 $overflow_saturate]
+
+    set fixPoint [java::new $ctor_double -4.23  $q_20_32]
+    set c2 [java::call ptolemy.math.Quantizer \
+	    {roundUp ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} $fixPoint  $p0 $overflow_saturate]
+    set c3 [java::call ptolemy.math.Quantizer \
+	    {roundUp ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} $fixPoint  $p1 $overflow_saturate]
+    list "
+[$c0 toBitString] [ $c0 toString ] 
+[$c1 toBitString] [ $c1 toString ] 
+[$c2 toBitString] [ $c2 toString ] 
+[$c3 toBitString] [ $c3 toString ] "
+} {{
+101.100100101101 5.573486328125 
+101.10010010110010100101011110101000 5.57340000011026859283447265625 
+-101.110001010001 -4.230224609375 
+-101.11000101000111101011100001010010 -4.2299999999813735485076904296875 }}
+
+
 ####################################################################
 
 test Quantizer-5.0 {The roundDown function} {
@@ -535,6 +635,40 @@ test Quantizer-5.3 {the roundDown function} {
 -10.00000000000000 -2.0 
 -1.000000000000000 -1.0 }}
 
+test Quantizer-5.4 {The roundDown function} {
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set p1 [java::new ptolemy.math.Precision "(4.32)" ]
+
+    set ctor_double {ptolemy.math.FixPoint double ptolemy.math.Quantization}
+    set q_20_32 [java::new ptolemy.math.FixPointQuantization "20.32,saturate,nearest"]
+    set fixPoint [java::new $ctor_double 5.5734 $q_20_32]
+
+    set overflow_saturate [java::call ptolemy.math.Overflow forName "saturate"];
+
+    set c0 [java::call ptolemy.math.Quantizer \
+	    {roundDown ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} \
+	$fixPoint $p0 $overflow_saturate]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {roundDown ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} \
+	$fixPoint $p1 $overflow_saturate]
+
+    set fixPoint [java::new $ctor_double -4.23  $q_20_32]
+    set c2 [java::call ptolemy.math.Quantizer \
+	    {roundDown ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} $fixPoint  $p0 $overflow_saturate]
+    set c3 [java::call ptolemy.math.Quantizer \
+	    {roundDown ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} $fixPoint  $p1 $overflow_saturate]
+    list "
+[$c0 toBitString] [ $c0 toString ] 
+[$c1 toBitString] [ $c1 toString ] 
+[$c2 toBitString] [ $c2 toString ] 
+[$c3 toBitString] [ $c3 toString ] "
+} {{
+101.100100101100 5.5732421875 
+101.10010010110010100101011110101000 5.57340000011026859283447265625 
+-101.110001010010 -4.22998046875 
+-101.11000101000111101011100001010010 -4.2299999999813735485076904296875 }}
+
+
 ####################################################################
 
 test Quantizer-6.0 {The roundNearestEven function} {
@@ -633,3 +767,36 @@ test Quantizer-6.3 {the roundNearestEven function} {
 -100.0000000000000 -4.0 
 -10.00000000000000 -2.0 
 -1.000000000000000 -1.0 }}
+
+test Quantizer-6.4 {The roundNearestEven function} {
+    set p0 [java::new ptolemy.math.Precision "(16/4)" ]
+    set p1 [java::new ptolemy.math.Precision "(4.32)" ]
+
+    set ctor_double {ptolemy.math.FixPoint double ptolemy.math.Quantization}
+    set q_20_32 [java::new ptolemy.math.FixPointQuantization "20.32,saturate,nearest"]
+    set fixPoint [java::new $ctor_double 5.5734 $q_20_32]
+
+    set overflow_saturate [java::call ptolemy.math.Overflow forName "saturate"];
+
+    set c0 [java::call ptolemy.math.Quantizer \
+	    {roundNearestEven ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} \
+	$fixPoint $p0 $overflow_saturate]
+    set c1 [java::call ptolemy.math.Quantizer \
+	    {roundNearestEven ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} \
+	$fixPoint $p1 $overflow_saturate]
+
+    set fixPoint [java::new $ctor_double -4.23  $q_20_32]
+    set c2 [java::call ptolemy.math.Quantizer \
+	    {roundNearestEven ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} $fixPoint  $p0 $overflow_saturate]
+    set c3 [java::call ptolemy.math.Quantizer \
+	    {roundNearestEven ptolemy.math.FixPoint ptolemy.math.Precision ptolemy.math.Overflow} $fixPoint  $p1 $overflow_saturate]
+    list "
+[$c0 toBitString] [ $c0 toString ] 
+[$c1 toBitString] [ $c1 toString ] 
+[$c2 toBitString] [ $c2 toString ] 
+[$c3 toBitString] [ $c3 toString ] "
+} {{
+101.100100101101 5.573486328125 
+101.10010010110010100101011110101000 5.57340000011026859283447265625 
+-101.110001010010 -4.22998046875 
+-101.11000101000111101011100001010010 -4.2299999999813735485076904296875 }}
