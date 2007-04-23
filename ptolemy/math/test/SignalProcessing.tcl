@@ -226,6 +226,18 @@ test SignalProcessing-4.1 {toDecibels} {
 } {}
 
 ####################################################################
+test SignalProcessing-4.1.5 {decibels} {
+    epsilonDiff \
+	    [list \
+	    [java::call ptolemy.math.SignalProcessing {decibel double} -10.0] \
+	    [java::call ptolemy.math.SignalProcessing {decibel double} 0.0] \
+	    [java::call ptolemy.math.SignalProcessing {decibel double} 0.1] \
+	    [java::call ptolemy.math.SignalProcessing {decibel double} 1.0] \
+	    [java::call ptolemy.math.SignalProcessing {decibel double} 10.0] \
+	    ] {NaN -Infinity -20 0.0 20 }
+} {}
+
+####################################################################
 test SignalProcessing-4.2 {decibel array: empty array} {
     set dbresults [java::call ptolemy.math.SignalProcessing \
 	    {decibel double[]} $a0]
