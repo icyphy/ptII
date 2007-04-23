@@ -48,7 +48,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 /*
 Combine multiply XMLTokens into one XMLToken.  
 more comments to come soon
-modifications to come soon
 
 @author Christine Avanessians, Edward Lee, Thomas Feng
 
@@ -93,16 +92,19 @@ public class XMLInclusion extends Transformer{
        for (int j=0; j <input.getWidth(); j++) {
            ArrayToken a = (ArrayToken) input.get(j);
            String allInArray="";
-           for (int i=0; i < a.length(); i++) {
-               String out=removeHeader(a.getElement(i));
+           int i;
+           for (i=0; i < a.length(); i++) {
+               String elemInArray=removeHeader(a.getElement(i));
                if (i==0) {
-                   allInArray=allInArray.concat(out);
+                   allInArray=allInArray.concat(elemInArray);
                }else {
-                   allInArray=allInArray.concat('\n'+out);
+                   allInArray=allInArray.concat('\n'+ elemInArray);
                }
+               String elemTag = "$input" + Integer.toString(j) + ',' + Integer.toString(i);
+               outputString = outputString.replace(elemTag, elemInArray);
            }
-               String s = "$input" + Integer.toString(j);
-               outputString = outputString.replace(s, allInArray);
+               String arrayTag = "$input" + Integer.toString(j) + ",n";
+               outputString = outputString.replace(arrayTag, allInArray);
           if(j==0) {
               all=all.concat(allInArray); 
           }else {
@@ -111,7 +113,6 @@ public class XMLInclusion extends Transformer{
        }   
        outputString =outputString.replace("$inputn", all);
        String ADDheader = headerParameter.stringValue() + "\n"; 
-       //how do I get parameter value?
        ADDheader = ADDheader.concat(outputString);
        try{
        XMLToken out = new XMLToken(ADDheader);
