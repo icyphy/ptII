@@ -435,18 +435,22 @@ public class DocManager extends HandlerBase {
             if (toRead == null && lookForJavadoc) {
                 // If the class does not extend NamedObj, try to open
                 // the javadoc .html
-                Class targetClass = Class.forName(className);
-                if (!_namedObjClass.isAssignableFrom(targetClass)
-                        || !lookForPtDoc) {
+                try {
+                    Class targetClass = Class.forName(className);
+                    if (!_namedObjClass.isAssignableFrom(targetClass)
+                            || !lookForPtDoc) {
 
-                    // Look in the Application specific codeDoc directory.
-                    docNameList.add(docNames[2]);
-                    toRead = referenceClassLoader.getResource(docNames[2]);
-                    if (toRead == null) {
-                        // Try looking in the documentation for vergil.
-                        docNameList.add(docNames[3]);
-                        toRead = referenceClassLoader.getResource(docNames[3]);
+                        // Look in the Application specific codeDoc directory.
+                        docNameList.add(docNames[2]);
+                        toRead = referenceClassLoader.getResource(docNames[2]);
+                        if (toRead == null) {
+                            // Try looking in the documentation for vergil.
+                            docNameList.add(docNames[3]);
+                            toRead = referenceClassLoader.getResource(docNames[3]);
+                        }
                     }
+                } catch (ClassNotFoundException ex) {
+                    // Ignore, we could have the Sinewave Actor oriented class.
                 }
             }
 
