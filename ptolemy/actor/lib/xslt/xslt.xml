@@ -8,10 +8,9 @@
 
 <entity name="StringToXML" class="ptolemy.actor.lib.conversions.StringToXML"/>
 <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer"/>
+<entity name="XMLInclusion" class="ptolemy.actor.lib.xslt.XMLInclusion"/>
 
       </group>
     ?>
   </configure>
 </entity>
-
-
