@@ -48,6 +48,7 @@ TCL_SRCS = \
 JSRCS = \
 	MoMLParserLeak.java \
 	RecorderErrorHandler.java \
+	TestLibraryBuilder.java \
 	TestSharedParameter.java
 
 # Non-graphical Java tests written in Tcl
@@ -56,6 +57,7 @@ JSIMPLE_TESTS = \
 	EntityLibrary.tcl \
 	ImportAttribute.tcl \
 	LibraryAttribute.tcl \
+	LibraryBuilder.tcl \
 	Location.tcl \
 	MoMLAttribute.tcl \
 	MoMLChangeRequest.tcl \
