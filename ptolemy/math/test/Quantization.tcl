@@ -56,6 +56,7 @@ test Quantization-1.0 {gets} {
 [$q0 getNumberOfLevels]
 [$q0 getMaximumValue]
 [$q0 getMinimumValue]
+[[$q0 getModuloUnscaledValue] toString]
 [[$q0 getOverflow] toString]
 [[$q0 getRounding] toString]
 [$q0 getTinyValue] "
@@ -71,6 +72,7 @@ test Quantization-1.0 {gets} {
 8.0
 1.5
 -2.0
+8
 modulo
 half_ceiling
 0.5 }}
