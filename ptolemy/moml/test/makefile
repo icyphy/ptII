@@ -62,6 +62,7 @@ JSIMPLE_TESTS = \
 	MoMLAttribute.tcl \
 	MoMLChangeRequest.tcl \
 	MoMLParser.tcl \
+	MoMLUndoEntry.tcl \
 	MoMLUndoChangeRequest.tcl \
 	MoMLUtilities.tcl \
 	SharedParameter.tcl \
