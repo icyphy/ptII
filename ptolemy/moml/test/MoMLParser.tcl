@@ -123,6 +123,10 @@ test MoMLParser-0.9 {parse a file in two different workspaces.  Note use of setC
 } .top .top {ptolemy.kernel.util.Workspace {w3}} {
 } .top .top {ptolemy.kernel.util.Workspace {w4}}}
 
+# call purgeModelRecord in case we run this twice
+$parser1 purgeModelRecord $url1
+$parser1 purgeModelRecord $url2
+
 ######################################################################
 ####
 #
@@ -3839,14 +3843,15 @@ ptolemy.moml.MoMLChangeRequest} {java.lang.Exception: MoMLParser26.1 testExcepti
 test MoMLParser-27.1 {getIconLoader(), setIconLoader()} {
     set w27 [java::new ptolemy.kernel.util.Workspace w27]
     set parser27 [java::new ptolemy.moml.MoMLParser $w27]
+    $parser27 reset
     list [java::isnull [$parser27 getIconLoader]]
-} {}
+} {1}
 
 ######################################################################
 ####
 #
 
-set body27 {
+set body28 {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="b" class="ptolemy.moml.test.testClass">
         <property name="prop" value="1"/>
@@ -3855,20 +3860,21 @@ set body27 {
 </entity>
 }
 
-set moml27 "$header $body27"
+set moml28 "$header $body28"
 
-test MoMLParser-27.2 {setIconLoader()} {
+test MoMLParser-28.1 {setIconLoader()} {
     # Get a little better coverage of _loadIconForClass()
-    set w27 [java::new ptolemy.kernel.util.Workspace w27]
-    set parser27 [java::new ptolemy.moml.MoMLParser $w27]
-    $parser27 reset
-    $parser27 setIconLoader [java::new ptolemy.moml.test.TestIconLoader]
-    set toplevel [java::cast ptolemy.kernel.CompositeEntity \
-            [$parser27 parse $moml27]]
+    set w28 [java::new ptolemy.kernel.util.Workspace w28]
+    set parser28 [java::new ptolemy.moml.MoMLParser $w28]
+    $parser28 reset
+    $parser28 setIconLoader [java::new ptolemy.moml.test.TestIconLoader]
+    set toplevel28 [java::cast ptolemy.kernel.CompositeEntity \
+            [$parser28 parse $moml28]]
     list \
-	[[$parser27 getIconLoader] loadIconForClass testClass $toplevel] \
-	[[$parser27 getIconLoader] loadIconForClass testClassFoo $toplevel]
+	[[$parser28 getIconLoader] loadIconForClass \
+	     ptolemy.moml.test.testClass $toplevel28] \
+	[[$parser28 getIconLoader] loadIconForClass testClassFoo $toplevel28]
 } {1 0}
 
-
-
+# Reset the iconLoader in case we run this twice
+$parser28 setIconLoader [java::null]
