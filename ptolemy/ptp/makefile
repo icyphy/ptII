@@ -31,7 +31,7 @@
 
 ME =            ptolemy/ptp
 
-DIRS =		demo lib test
+DIRS =		demo test
 
 # Root of the Java directory
 ROOT =          ../..
