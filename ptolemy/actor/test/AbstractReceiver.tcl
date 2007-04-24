@@ -54,6 +54,7 @@ test AbstractReceiver-1.1 {Check clear and getCurrentTime} {
     set port [java::new ptolemy.actor.TypedIOPort $actor p1]
     set receiver [java::new ptolemy.actor.test.TestAbstractReceiver $port]
     catch {$receiver clear} msg
-    list $msg [$receiver getCurrentTime]
+    list $msg [$receiver getCurrentTime] "\n" [$receiver toString]
 } {{ptolemy.kernel.util.IllegalActionException: Receiver class ptolemy.actor.test.TestAbstractReceiver does not support clear().
-  in .<Unnamed Object>.p1} -Infinity}
+  in .<Unnamed Object>.p1} -Infinity {
+} {ptolemy.actor.test.TestAbstractReceiver {..p1.receiver }}}
