@@ -152,5 +152,5 @@ foreach i $configs {
 		}
 	    }
     list $results	
-    } {}
+    } {{}}
 }
