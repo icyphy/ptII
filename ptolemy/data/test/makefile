@@ -72,6 +72,7 @@ JSIMPLE_TESTS = \
 	StringToken.tcl \
 	Token.tcl \
 	UnsignedByteToken.tcl \
+	UnsizedArrayToken.tcl \
 	XMLToken.tcl
 
 # Graphical Java tests that use Tcl.
