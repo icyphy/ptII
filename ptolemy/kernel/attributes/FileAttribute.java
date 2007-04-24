@@ -265,6 +265,7 @@ public class FileAttribute extends StringAttribute {
         FileAttribute newObject = (FileAttribute) super.clone(workspace);
         newObject._baseDirectory = null;
         newObject._reader = null;
+        newObject._writer = null;
         return newObject;
     }
 
