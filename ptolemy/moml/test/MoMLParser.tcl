@@ -649,6 +649,15 @@ test MoMLParser-1.11.3 {test link errors to cover UnlinkRequest.toString() } {
 unlink C from Foo
 com.microstar.xml.XmlException: No relation named "Foo" in .foo}}
 
+test MoMLParser-1.11.2 {test topObjectsCreated, clearTopObjectsList} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    set r1 [$parser topObjectsCreated]
+    $parser clearTopObjectsList
+    set r2 [$parser topObjectsCreated]
+    list [java::isnull $r1] [java::isnull $r2]
+} {1 0}
+
 ######################################################################
 ####
 #
@@ -1283,6 +1292,84 @@ test MoMLParser-1.18.9.1 {test unlink inside by relation} {
     </entity>
 </entity>
 }
+
+######################################################################
+####
+#
+set body {
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <entity name="master" class="ptolemy.actor.CompositeActor">
+        <relation name="r1" class="ptolemy.actor.IORelation"/>
+        <relation name="r2" class="ptolemy.actor.IORelation"/>
+        <link relation1="r1" relation2="r2"/>
+        <unlink relation1="r1" relation2="r2"/>
+    </entity>
+</entity>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.9.1.1 {test unlink with two relations} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <entity name="master" class="ptolemy.actor.CompositeActor">
+        <relation name="r1" class="ptolemy.actor.IORelation">
+        </relation>
+        <relation name="r2" class="ptolemy.actor.IORelation">
+        </relation>
+    </entity>
+</entity>
+}
+
+
+######################################################################
+####
+#
+set body {
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <entity name="master" class="ptolemy.actor.CompositeActor">
+        <relation name="r1" class="ptolemy.actor.IORelation"/>
+        <relation name="r2" class="ptolemy.actor.IORelation"/>
+        <link relation2="r1" relation="r2"/>
+    </entity>
+</entity>}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.9.1.2 {test unlink without relation1 relation2} {
+    $parser reset
+    catch {$parser parse $moml} errMsg
+    list $errMsg
+} {{com.microstar.xml.XmlException: Element link requires two relations. in file:C:/cxh/ptII/ptolemy/moml/test/ at line 9 and column 8}}
+
+######################################################################
+####
+#
+set body {
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <entity name="master" class="ptolemy.actor.CompositeActor">
+        <relation name="r1" class="ptolemy.actor.IORelation"/>
+        <relation name="r2" class="ptolemy.actor.IORelation"/>
+        <link relation2="r1" relation1="r2"/>
+        <unlink relation1="r1" relation="r2"/>
+
+    </entity>
+</entity>}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.9.1.3 {test link without relation1 relation2} {
+    $parser reset
+    catch {$parser parse $moml} errMsg
+    list $errMsg
+} {{com.microstar.xml.XmlException: Element unlink requires two relations. in file:C:/cxh/ptII/ptolemy/moml/test/ at line 11 and column 8}}
 
 ######################################################################
 ####
