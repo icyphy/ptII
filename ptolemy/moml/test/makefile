@@ -96,6 +96,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	p1.moml \
 	p2.moml \
 	testClass.xml \
+	testClassIcon.xml \
 	testClass2.xml \
 	testClass2DotMoml.moml \
 	testdir.moml \
