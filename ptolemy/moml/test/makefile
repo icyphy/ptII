@@ -48,6 +48,7 @@ TCL_SRCS = \
 JSRCS = \
 	MoMLParserLeak.java \
 	RecorderErrorHandler.java \
+	TestIconLoader.java \
 	TestLibraryBuilder.java \
 	TestSharedParameter.java
 
