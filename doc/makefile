@@ -246,6 +246,7 @@ HYVISUALPACKAGES = \
 	ptolemy.actor.parameters \
 	ptolemy.domains.continuous.kernel \
 	ptolemy.domains.continuous.kernel.solver \
+	ptolemy.domains.continuous.lib \
 	ptolemy.domains.ct.kernel \
 	ptolemy.domains.ct.kernel.solver \
 	ptolemy.domains.ct.lib \
@@ -276,7 +277,8 @@ PTINYPACKAGES = \
 	$(HYVISUALPACKAGES) \
 	ptolemy.domains.csp.kernel \
 	ptolemy.domains.csp.lib \
-	ptolemy.domains.pn.kernel
+	ptolemy.domains.pn.kernel \
+	ptolemy.domains.pn.lib
 
 # Packages for the SUPERB classes
 #SUPERBPACKAGES = \
