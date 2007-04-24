@@ -35,6 +35,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[string compare test [info procs jdkCaptureErr]] == 1} then {
+   source [file join $PTII util testsuite jdktools.tcl]
+} {}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -640,15 +644,6 @@ test MoMLParser-1.11.3 {test link errors to cover UnlinkRequest.toString() } {
 } {{RecorderErrorHandler: Error encountered in:
 unlink C from Foo
 com.microstar.xml.XmlException: No relation named "Foo" in .foo}}
-
-#test MoMLParser-1.11.2 {test topObjectsCreated, clearTopObjectsList} {
-#    $parser reset
-#    set toplevel [$parser parse $moml]
-#    set r1 [$parser topObjectsCreated]
-#    $parser clearTopObjectsList
-#    set r2 [$parser topObjectsCreated]
-#    list [java::isnull $r1] [java::isnull $r2]
-#} {}
 
 ######################################################################
 ####
@@ -3802,4 +3797,78 @@ test MoMLParser-25.1 {Replicated the problems I was having with adding a Sinewav
 		     failed: com.microstar.xml.XmlException: Property cannot be assigned a value: .testUserActorLibrary_OK_2_DELETE.CompositeActor.DocViewerAttribute._hideName (instance of class ptolemy.kernel.util.SingletonAttribute)
  in [external stream] at line 6 and column 72
 } {}}
+
+######################################################################
+####
+#
+test MoMLParser-26.1 {changeExecuted} {
+    set w26 [java::new ptolemy.kernel.util.Workspace w26]
+    set parser26 [java::new ptolemy.moml.MoMLParser $w26]
+    # changeExecuted does nothing
+    $parser26 changeExecuted [java::null]
+} {}
+
+######################################################################
+####
+#
+test MoMLParser-26.2 {changeFailed} {
+    # Uses MoMLParser26.1 above
+    set toplevel26 [java::new ptolemy.kernel.CompositeEntity $w26]
+    set change26 [java::new ptolemy.moml.MoMLChangeRequest \
+		    $toplevel26 $toplevel26 {
+        <entity name="B26" class="ptolemy.actor.TypedAtomicActor"/>
+    }]
+
+    set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
+    $parser26 setErrorHandler $recorderErrorHandler
+    $parser26 changeFailed $change26 [java::new Exception {MoMLParser26.1 testException}]
+    $parser26 setErrorHandler [java::null]
+    
+    jdkCaptureErr {
+	$parser26 changeFailed $change26 [java::new Exception {MoMLParser26.1 testException}]
+    } errMsg
+    list [string range [$recorderErrorHandler getMessages] 0 73] \
+	[string range $errMsg 0 48]
+
+} {{RecorderErrorHandler: Error encountered in:
+ptolemy.moml.MoMLChangeRequest} {java.lang.Exception: MoMLParser26.1 testException}}
+
+######################################################################
+####
+#
+test MoMLParser-27.1 {getIconLoader(), setIconLoader()} {
+    set w27 [java::new ptolemy.kernel.util.Workspace w27]
+    set parser27 [java::new ptolemy.moml.MoMLParser $w27]
+    list [java::isnull [$parser27 getIconLoader]]
+} {}
+
+######################################################################
+####
+#
+
+set body27 {
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
+    <entity name="b" class="ptolemy.moml.test.testClass">
+        <property name="prop" value="1"/>
+    </entity>
+<property name="xxx"/>
+</entity>
+}
+
+set moml27 "$header $body27"
+
+test MoMLParser-27.2 {setIconLoader()} {
+    # Get a little better coverage of _loadIconForClass()
+    set w27 [java::new ptolemy.kernel.util.Workspace w27]
+    set parser27 [java::new ptolemy.moml.MoMLParser $w27]
+    $parser27 reset
+    $parser27 setIconLoader [java::new ptolemy.moml.test.TestIconLoader]
+    set toplevel [java::cast ptolemy.kernel.CompositeEntity \
+            [$parser27 parse $moml27]]
+    list \
+	[[$parser27 getIconLoader] loadIconForClass testClass $toplevel] \
+	[[$parser27 getIconLoader] loadIconForClass testClassFoo $toplevel]
+} {1 0}
+
+
 
