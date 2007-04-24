@@ -147,5 +147,8 @@ test FileAttribute-5.1 {setBaseDirectory, getBaseDirectory} {
     set r1 [$f5 getBaseDirectory]
     set uri [java::new java.net.URI [$f5 getExpression]]
     $f5 setBaseDirectory $uri
-    list [java::isnull $r1] [$uri equals [$f5 getBaseDirectory]]
-} {1 1}
+    set f5clone [java::cast ptolemy.kernel.attributes.FileAttribute [$f5 clone]]
+    set r3 [$f5clone getBaseDirectory]
+    list [java::isnull $r1] [$uri equals [$f5 getBaseDirectory]] \
+	[java::isnull $r3]
+} {1 1 1}
