@@ -84,3 +84,16 @@ test TransientSingletonConfigurableAttribute-1.2 {test replacement of setContain
 <entity name="N0" class="ptolemy.kernel.util.NamedObj">
 </entity>
 }
+
+test TransientSingletonConfigurableAttribute-2.1 {test ctor that takes a workspace.} {
+    set n3 [java::new ptolemy.kernel.util.NamedObj]
+    $n3 setName N3
+    set p3 [java::new ptolemy.kernel.util.TransientSingletonConfigurableAttribute [$n3 workspace]]
+    $p3 configure [java::null] [java::null] {My Test String}
+    $n3 exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="N3" class="ptolemy.kernel.util.NamedObj">
+</entity>
+} 
