@@ -547,6 +547,21 @@ test PetiteToken-14.0 {absolute} {
 
 ######################################################################
 ####
+# 
+test PetiteToken-14.1 {Test bitwise ops} {
+    set token [java::new ptolemy.data.PetiteToken]
+    catch {$token bitwiseAnd $token} errMsg
+    catch {$token bitwiseOr $token} errMsg1
+    catch {$token bitwiseXor $token} errMsg2
+    catch {$token bitwiseNot} errMsg3
+    list "$errMsg\n $errMsg1\n $errMsg2\n $errMsg3"
+} {{ptolemy.kernel.util.IllegalActionException: bitwiseAnd operation not supported between ptolemy.data.PetiteToken '0.0p' and ptolemy.data.PetiteToken '0.0p'
+ ptolemy.kernel.util.IllegalActionException: bitwiseOr operation not supported between ptolemy.data.PetiteToken '0.0p' and ptolemy.data.PetiteToken '0.0p'
+ ptolemy.kernel.util.IllegalActionException: bitwiseXor operation not supported between ptolemy.data.PetiteToken '0.0p' and ptolemy.data.PetiteToken '0.0p'
+ ptolemy.kernel.util.IllegalActionException: bitwiseNot operation not supported between ptolemy.data.PetiteToken '0.0p' and ptolemy.data.PetiteToken '0.0p'}}
+
+######################################################################
+####
 ######################################################################
 ####
 test PetiteToken-15.0 {isLessThan} {
