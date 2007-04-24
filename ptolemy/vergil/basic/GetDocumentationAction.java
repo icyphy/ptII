@@ -71,11 +71,12 @@ public class GetDocumentationAction extends FigureAction {
     /** construct an instance and give a preference for whether the
      * KeplerDocumentationAttribute or the docAttribute should be displayed
      * if both exist.
-     * @param docPreference 0 for docAttribute, 1 for KeplerDocumentationAttribute
+     * @param docPreference 0 for docAttribute, 1 for
+     * KeplerDocumentationAttribute
      */
     public GetDocumentationAction(int docPreference) {
-      super("Get Documentation");
-      this.docPreference = docPreference;
+        super("Get Documentation");
+        this.docPreference = docPreference;
     }
 
     /** Construct an instance of this action. */
@@ -138,17 +139,13 @@ public class GetDocumentationAction extends FigureAction {
         }
 
         if (keplerDocumentationAttribute != null) {
-          //use the KeplerDocumentationAttribute
-          DocAttribute docAtt = keplerDocumentationAttribute.getDocAttribute(target);
-          //System.out.println("docAttribute: " + docAtt.exportMoML());
-          if (docAtt != null)
-          {
-            showDocAttributeTableau(docAtt, target);
-          }
-          else
-          {
-            throw new InternalErrorException("Error building Kepler documentation");
-          }
+            //use the KeplerDocumentationAttribute
+            DocAttribute docAtt = keplerDocumentationAttribute.getDocAttribute(target);
+            if (docAtt != null) {
+                showDocAttributeTableau(docAtt, target);
+            } else {
+                throw new InternalErrorException("Error building Kepler documentation");
+            }
         } else if (docAttributeSize != 0) {
             // Have a doc attribute. Use that.
             DocAttribute docAttribute = (DocAttribute) docAttributes
@@ -200,10 +197,8 @@ public class GetDocumentationAction extends FigureAction {
 
             // Look for the PtDoc .xml file or the javadoc.
             // Don't look for the source or the index.
-            System.out.println("classname: " + className);
             URL toRead = DocManager.docClassNameToURL(configuration, className,
                     true, true, false, false);
-            System.out.println("url to read: " + toRead);
             if (toRead != null) {
                 _lastClassName = null;
                 configuration.openModel(null, toRead, toRead.toExternalForm());
@@ -334,49 +329,46 @@ public class GetDocumentationAction extends FigureAction {
      * @param docAttribute the attribute to show
      * @param taget the target of the documentation viewing
      */
-    private void showDocAttributeTableau(DocAttribute docAttribute, NamedObj target)
-    {
-      // Need to create an effigy and tableau.
-      Effigy context = Configuration.findEffigy(target);
-      if (context == null) {
-          context = Configuration.findEffigy(target.getContainer());
-          if (context == null) {
-              MessageHandler.error("Cannot find an effigy for "
-                      + target.getFullName());
-          }
-      }
-      ComponentEntity effigy = context.getEntity("DocEffigy");
-      if (effigy == null) {
-          try {
-              effigy = new DocEffigy(context, "DocEffigy");
-          } catch (KernelException exception) {
-              throw new InternalErrorException(exception);
-          }
-      }
-      if (!(effigy instanceof DocEffigy)) {
-          MessageHandler.error("Found an effigy named DocEffigy that "
-                  + "is not an instance of DocEffigy!");
-      }
-      ((DocEffigy) effigy).setDocAttribute(docAttribute);
-      ComponentEntity tableau = ((Effigy) effigy).getEntity("DocTableau");
-      if (tableau == null) {
-          try {
-              tableau = new DocTableau((DocEffigy) effigy, "DocTableau");
+    private void showDocAttributeTableau(DocAttribute docAttribute,
+            NamedObj target) {
+        // Need to create an effigy and tableau.
+        Effigy context = Configuration.findEffigy(target);
+        if (context == null) {
+            context = Configuration.findEffigy(target.getContainer());
+            if (context == null) {
+                MessageHandler.error("Cannot find an effigy for "
+                        + target.getFullName());
+            }
+        }
+        ComponentEntity effigy = context.getEntity("DocEffigy");
+        if (effigy == null) {
+            try {
+                effigy = new DocEffigy(context, "DocEffigy");
+            } catch (KernelException exception) {
+                throw new InternalErrorException(exception);
+            }
+        }
+        if (!(effigy instanceof DocEffigy)) {
+            MessageHandler.error("Found an effigy named DocEffigy that "
+                    + "is not an instance of DocEffigy!");
+        }
+        ((DocEffigy) effigy).setDocAttribute(docAttribute);
+        ComponentEntity tableau = ((Effigy) effigy).getEntity("DocTableau");
+        if (tableau == null) {
+            try {
+                tableau = new DocTableau((DocEffigy) effigy, "DocTableau");
 
-            if (tableau == null)
-              System.out.println("tableau is null.");
-
-            ((DocTableau) tableau).setTitle("Documentation for "
-                      + target.getFullName());
-          } catch (KernelException exception) {
-              throw new InternalErrorException(exception);
-          }
-      }
-      if (!(tableau instanceof DocTableau)) {
-          MessageHandler.error("Found a tableau named DocTableau that "
-                  + "is not an instance of DocTableau!");
-      }
-      ((DocTableau) tableau).show();
+                ((DocTableau) tableau).setTitle("Documentation for "
+                        + target.getFullName());
+            } catch (KernelException exception) {
+                throw new InternalErrorException(exception);
+            }
+        }
+        if (!(tableau instanceof DocTableau)) {
+            MessageHandler.error("Found a tableau named DocTableau that "
+                    + "is not an instance of DocTableau!");
+        }
+        ((DocTableau) tableau).show();
     }
 
     ///////////////////////////////////////////////////////////////////
