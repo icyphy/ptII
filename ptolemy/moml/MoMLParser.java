@@ -483,19 +483,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
     }
 
-    /** Clear the top objects list. The top objects list
-     *  is a list of top-level objects that this parser has
-     *  created.
-     *  @see #topObjectsCreated()
-     */
-    public void clearTopObjectsList() {
-        if (_topObjectsCreated == null) {
-            _topObjectsCreated = new LinkedList();
-        } else {
-            _topObjectsCreated.clear();
-        }
-    }
-
     /** If a public ID is given, and is not that of MoML,
      *  then throw a CancelException, which causes the parse to abort
      *  and return null.  Note that the version number is not checked,
