@@ -66,6 +66,14 @@ test AtomicActor-2.1 {Constructor tests} {
 ######################################################################
 ####
 #
+test AtomicActor-2.2 {Test isFireFunctional} {
+    # NOTE: Uses the setup above
+    list [$e1 isFireFunctional]
+} {1}
+
+######################################################################
+####
+#
 test AtomicActor-3.1 {Test getDirector} {
     # NOTE: Uses the setup above
     list [expr {[$e1 getDirector] == [java::null]}] \
