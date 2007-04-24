@@ -88,6 +88,12 @@ test CodeGenerator-5.1 {getCodeFileName} {
 } {}
 
 #####
+test CodeGenerator-5.5 {generateFunctionTable} {
+    list [$codeGenerator generateFunctionTable [java::null] [java::null] ] \
+	[$codeGenerator generateIncludeFiles] 
+} {{} {}}
+
+#####
 test CodeGenerator-6.1 {generateMainEntryCode, generateMainExitCode} {
     list [$codeGenerator generateMainEntryCode] \
 	[$codeGenerator generateMainExitCode] 
@@ -98,8 +104,32 @@ test CodeGenerator-6.1 {generateMainEntryCode, generateMainExitCode} {
 #####
 test CodeGenerator-7.1 {generateInitializeEntryCode, generateInitializeExitCode} {
     list [$codeGenerator generateInitializeEntryCode] \
-	[$codeGenerator generateInitializeExitCode] 
+	[$codeGenerator generateInitializeExitCode] \
+	[$codeGenerator generateInitializeProcedureName] 
 } {{/* initialization entry code */
 } {/* initialization exit code */
-}}
+} {}}
+
+#####
+test CodeGenerator-8.1 {generatePostfire* methods} {
+    list [$codeGenerator generatePostfireEntryCode] \
+	[$codeGenerator generatePostfireExitCode] \
+	[$codeGenerator generatePostfireProcedureName] 
+} {{/* postfire entry code */
+} {/* postfire exit code */
+} {}}
+
+#####
+test CodeGenerator-9.1 {generateTypeConvertCode} {
+    list [$codeGenerator generateTypeConvertCode]
+} {{}}
+
+#####
+test CodeGenerator-10.1 {generateWrapup* methods} {
+    list [$codeGenerator generateWrapupEntryCode] \
+	[$codeGenerator generateWrapupExitCode] \
+	[$codeGenerator generateWrapupProcedureName] 
+} {{/* wrapup entry code */
+} {/* wrapup exit code */
+} {}}
 
