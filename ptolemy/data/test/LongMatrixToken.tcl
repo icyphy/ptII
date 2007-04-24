@@ -119,6 +119,14 @@ test LongMatrixToken-2.5 {Test additive identity} {
 ######################################################################
 ####
 # 
+test LongMatrixToken-2.5.1 {Test oneRight} {
+    set token [$p oneRight] 
+    list [$token toString]
+} {{[1L, 0L; 0L, 1L]}}
+
+######################################################################
+####
+# 
 test LongMatrixToken-2.6 {Test multiplicative identity} {
     set token [$p one]
     list [$token toString]
