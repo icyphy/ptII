@@ -1252,7 +1252,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/configs 
 
-
 # Directories we run make in before running make in the NONJSALLDIRS
 NONJSALLCOREDIRS = \
 	ptolemy/copernicus/kernel \
@@ -1378,6 +1377,11 @@ remote1doc:
 	#@echo "Removing vendors/sun/commapi so that we can build under solaris"
 	#-rm $(REMOTE1PTIIDIST)/vendors/sun/commapi/*
 	(cd $(REMOTE1PTIIDIST)/doc; PTII=$(REMOTE1PTIIDIST) $(MAKE) install)
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
+	@echo "# Running make in $(REMOTE1PTIIDIST)/doc/test"
+	(cd $(REMOTE1PTIIDIST)/doc/test; PTII=$(REMOTE1PTIIDIST) $(MAKE))
 
 # Remove the JavaScope instrumentation
 remote1build:
