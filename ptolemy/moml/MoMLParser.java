@@ -483,6 +483,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
     }
 
+    /** Clear the top objects list. The top objects list
+     *  is a list of top-level objects that this parser has
+     *  created.
+     *  @see #topObjectsCreated()
+     */
+    public void clearTopObjectsList() {
+        if (_topObjectsCreated == null) {
+            _topObjectsCreated = new LinkedList();
+        } else {
+            _topObjectsCreated.clear();
+        }
+    }
+
     /** If a public ID is given, and is not that of MoML,
      *  then throw a CancelException, which causes the parse to abort
      *  and return null.  Note that the version number is not checked,
@@ -3167,6 +3180,18 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // HTML file for the first external entity, rather than
         // XML file.  So error messages typically refer to the wrong file.
         _externalEntities.push(systemID);
+    }
+
+    /** Get the top objects list. The top objects list
+     *  is a list of top-level objects that this parser has
+     *  created.
+     *  @return The list of top objects created since
+     *   clearTopObjectsList() was called, or null if it has
+     *   not been called.
+     *  @see #clearTopObjectsList()
+     */
+    public List topObjectsCreated() {
+        return _topObjectsCreated;
     }
 
     ///////////////////////////////////////////////////////////////////
