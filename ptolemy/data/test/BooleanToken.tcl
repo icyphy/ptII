@@ -274,6 +274,13 @@ test BooleanToken-10.0 {Test subtraction of booleans} {
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.BooleanToken 'false' and ptolemy.data.BooleanToken 'false'}}
 
+test BooleanToken-11.1 {Test isLessThan} {
+    set btrue [java::new ptolemy.data.BooleanToken true]
+    set bfalse [java::new ptolemy.data.BooleanToken false]
+    catch {$btrue isLessThan $bfalse} $errMsg1
+    list $errMsg1
+} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.BooleanToken 'false' and ptolemy.data.BooleanToken 'true'}}
+
 test BooleanToken-11.0 {Test reverse subtraction of booleans} {
     catch {set r1 [$falseToken subtract $falseToken]} errMsg
     list $errMsg
@@ -395,6 +402,15 @@ test BooleanToken-13.9 {Test convert from Token} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.Token 'present' to the type boolean because the type of the token is higher or incomparable with the given type.}}
     
+
+test BooleanToken-14.0 {absoluteValue} {
+    set u [java::field ptolemy.data.BooleanToken NIL]
+    set u2 [java::new ptolemy.data.BooleanToken true]
+    set u3 [java::new ptolemy.data.BooleanToken false]
+    list [[$u absolute] isNil] \
+	[[$u2 absolute] equals $u2] \
+	[[$u3 absolute] equals $u3]
+} {1 1 1}
 
 test BooleanToken-14.0 {Test bitwiseAnd} {
     set binaryOperation bitwiseAnd
