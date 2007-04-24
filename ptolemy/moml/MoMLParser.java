@@ -3169,18 +3169,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _externalEntities.push(systemID);
     }
 
-    /** Get the top objects list. The top objects list
-     *  is a list of top-level objects that this parser has
-     *  created.
-     *  @return The list of top objects created since
-     *   clearTopObjectsList() was called, or null if it has
-     *   not been called.
-     *  @see #clearTopObjectsList()
-     */
-    public List topObjectsCreated() {
-        return _topObjectsCreated;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
 
