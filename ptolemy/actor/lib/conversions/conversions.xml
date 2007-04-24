@@ -7,6 +7,9 @@
       <group>
 <doc>Conversion actors</doc>
 
+  <entity name="AnythingToDouble"
+          class="ptolemy.actor.lib.conversions.AnythingToDouble">
+  </entity>
   <entity name="BooleanToAnything"
           class="ptolemy.actor.lib.conversions.BooleanToAnything">
   </entity>
