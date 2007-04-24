@@ -1248,7 +1248,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/hsif \
 	$(REMOTE1PTIIDIST)/jni \
 	$(REMOTE1PTIIDIST)/jni/gui \
-	$(REMOTE1PTIIDIST)/ptolemy/ptp/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/configs 
 
