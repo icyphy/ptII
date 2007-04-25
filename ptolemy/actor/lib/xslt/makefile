@@ -31,6 +31,8 @@
 
 ME =		ptolemy/actor/lib/xslt
 
+DIRS = 		test
+
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
