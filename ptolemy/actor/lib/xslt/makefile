@@ -48,6 +48,7 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
+	XMLInclusion.java \
 	XSLTransformer.java
 
 OTHER_FILES_TO_BE_JARED = \
