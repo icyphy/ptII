@@ -1346,8 +1346,8 @@ set moml "$header $body"
 test MoMLParser-1.18.9.1.2 {test unlink without relation1 relation2} {
     $parser reset
     catch {$parser parse $moml} errMsg
-    list $errMsg
-} {{com.microstar.xml.XmlException: Element link requires two relations. in file:C:/cxh/ptII/ptolemy/moml/test/ at line 9 and column 8}}
+    list [string range $errMsg 0 67]
+} {{com.microstar.xml.XmlException: Element link requires two relations.}}
 
 ######################################################################
 ####
@@ -1368,8 +1368,8 @@ set moml "$header $body"
 test MoMLParser-1.18.9.1.3 {test link without relation1 relation2} {
     $parser reset
     catch {$parser parse $moml} errMsg
-    list $errMsg
-} {{com.microstar.xml.XmlException: Element unlink requires two relations. in file:C:/cxh/ptII/ptolemy/moml/test/ at line 11 and column 8}}
+    list [string range $errMsg 0 69]
+} {{com.microstar.xml.XmlException: Element unlink requires two relations.}}
 
 ######################################################################
 ####
