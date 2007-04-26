@@ -386,7 +386,8 @@ AC_MSG_CHECKING([the Java compiler with a simple compile])
 JVERSION=unknown
 # We need to run javac in the config directory so that javac from jdk1.1.6
 # under NT and cygwin works properly
-startdir="`pwd`"
+startdir="$PTII"
+
 cd "$srcdir/config"
 if "$JAVAC" confTest.java ; then
     AC_MSG_RESULT(ok)
@@ -484,7 +485,7 @@ fi
 # Under Cygwin, PTJAVA_DIR _will_ contain /cygdrive/c
 # We need to run javac in the config directory so that javac from
 # jdk1.1.6 under NT and cygwin works properly
-startdir="`pwd`"
+startdir=$PTII
 cd "$srcdir/config"
 AC_MSG_CHECKING([for java.home property by compiling a test program ])
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
@@ -1244,7 +1245,7 @@ changequote([, ])dnl
             if test ! -z "$eclipsejarpath"; then 
                 AC_MSG_RESULT([ok])
 
-	        startdir="`pwd`"
+	        startdir=$PTII
 	        cd "$srcdir/config"
 	        AC_MSG_CHECKING([for ITreeSelection from Eclipse])
 	        if "$JAVAC" -classpath "$PTBACKTRACK_ECLIPSE_DOC_JARS" EclipseITreeSelection.java ; then
@@ -1429,7 +1430,7 @@ else
 	fi
 
 	PTGMP_OK=no
-	startdir="`pwd`"
+	startdir=$PTII
 	# Make sure that we check for CXX before cding in to config
 	AC_PROG_CXX
         cd "$srcdir/config"
@@ -1496,7 +1497,7 @@ else
     AC_MSG_CHECKING([for Java Advanced Imaging (JAI) API])
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
-    startdir="`pwd`"
+    startdir=$PTII
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" JAITest.java ; then
@@ -1629,7 +1630,7 @@ else
     AC_MSG_CHECKING([for Java Media Framework (JMF)])
     # We need to run javac in the config directory so that javac
     # from jdk1.1.6 under NT and cygwin works properly
-    startdir="`pwd`"
+    startdir=$PTII
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" JMFTest.java ; then
@@ -2075,7 +2076,7 @@ else
     AC_MSG_CHECKING([for Java 3D])
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
-    startdir="`pwd`"
+    startdir=$PTII
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" java3dTest.java ; then
@@ -2487,7 +2488,7 @@ else
     If Matlab is not present, then the Ptolemy II/Matlab interface in
     \$PTII/ptolemy/matlab will not be usable.]);
 	else 
-	    startdir="`pwd`"
+	    startdir=$PTII
 	    cd "$srcdir/config"
 	    if "$JAVAC" MatlabRootDirectory.java ; then
 		AC_MSG_CHECKING([the value of the Matlab root directory ])
@@ -2556,7 +2557,9 @@ changequote([, ])dnl
 		    AC_PATH_PROG(PTMATLAB_CC, cl)
 		    if test "${PTMATLAB_CC:-none}" != "none"; then
 		        PTMATLAB_DIR=matlab
-			PTMATLAB_LD_ARGS="/Tpptmatlab.cc /Feptmatlab.dll /link /dll /libpath:\"${MATLAB_DIR}/extern/lib/win32/microsoft/msvc70\" libeng.lib libmx.lib"
+			MATLAB_LIBPATH_DIR="${MATLAB_DIR}/extern/lib/win32/microsoft"
+			MATLAB_LIBPATH=`echo "$MATLAB_LIBPATH_DIR" | sed 's/ /\\\\\ /'`
+			PTMATLAB_LD_ARGS="/Tpptmatlab.cc /Feptmatlab.dll /link /dll /libpath:\\\"${MATLAB_LIBPATH}\\\" libeng.lib libmx.lib"
 
 	            else    
 			AC_MSG_WARN([Failed to find cl])
@@ -2728,7 +2731,7 @@ else
     AC_MSG_CHECKING([for Quicktime for Java])
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
-    startdir="`pwd`"
+    startdir=$PTII
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     # Use -classpath here because that is what we use when we compile
@@ -2883,7 +2886,7 @@ else
 	JAVA_SYSTEM_JAR=$withval,
 	JAVA_SYSTEM_JAR='$(PTJAVA_HOME)/lib/rt.jar')
 
-    startdir="`pwd`"
+    startdir=$PTII
     cd "$srcdir/config"
     if "$JAVAC" SystemJar.java ; then
 	AC_MSG_RESULT(ok)
