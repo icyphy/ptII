@@ -737,8 +737,8 @@ public class Plot extends PlotBox {
         for (int i = 0; i < numSets; i++) {
             _points.addElement(new Vector());
             _formats.addElement(new Format());
-            _prevx.addElement(Long.valueOf(0));
-            _prevy.addElement(Long.valueOf(0));
+            _prevx.addElement(_initialPreviousValue);
+            _prevy.addElement(_initialPreviousValue);
         }
     }
 
@@ -959,8 +959,8 @@ public class Plot extends PlotBox {
         while (dataset >= _points.size()) {
             _points.addElement(new Vector());
             _formats.addElement(new Format());
-            _prevx.addElement(Long.valueOf(0));
-            _prevy.addElement(Long.valueOf(0));
+            _prevx.addElement(_initialPreviousValue);
+            _prevy.addElement(_initialPreviousValue);
         }
     }
 
@@ -1217,6 +1217,22 @@ public class Plot extends PlotBox {
      */
     protected synchronized void _drawPlot(Graphics graphics,
             boolean clearfirst, Rectangle drawRectangle) {
+        if (_graphics == null) {
+            _graphics = graphics;
+        } else if (graphics != _graphics) {
+            // If the graphics has changed, then we don't care about
+            // the previous values.  Exporting to EPS uses a different
+            // graphics, see test/onePointStem.plt for an example that
+            // requires this change.
+            _graphics = graphics;
+            _prevx = new Vector();
+            _prevy = new Vector();
+            for (int dataset = 0; dataset < _points.size(); dataset++) {
+                _prevx.addElement(_initialPreviousValue);
+                _prevy.addElement(_initialPreviousValue);
+            }
+        }
+
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
         // so that _xscale and _yscale are set.
         super._drawPlot(graphics, clearfirst, drawRectangle);
@@ -2569,6 +2585,16 @@ public class Plot extends PlotBox {
 
     /** @serial Format information on a per data set basis. */
     private Vector _formats = new Vector();
+
+    /** Initial value for elements in _prevx and _prevy that indicate
+     *  we have not yet seen data.
+     */
+    private static final Long _initialPreviousValue = Long.MIN_VALUE;
+
+    /** Cached copy of graphics, needed to reset when we are exporting
+     *  to EPS.
+     */   
+    private Graphics _graphics = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
