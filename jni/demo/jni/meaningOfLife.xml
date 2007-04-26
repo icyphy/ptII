@@ -42,9 +42,7 @@
         <doc> An actor able to call a native function </doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 195.0]">
         </property>
-        <property name="foo" class="jni.Argument" value="false,false,true,double" >
-        </property>
-        <port name="foo" class="ptolemy.actor.TypedIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
@@ -61,9 +59,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex" value="[225.0, 230.0]">
-        </vertex>
     </relation>
-    <link port="meaningOfLifeImeaningOfLife.foo" relation="relation"/>
+    <link port="meaningOfLifeImeaningOfLife.output" relation="relation"/>
     <link port="Display.input" relation="relation"/>
 </entity>
