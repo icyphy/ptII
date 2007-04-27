@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE property PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<property name="NonpreemptiveTimerIcon" class="ptolemy.vergil.icon.EditorIcon">
+<property name="TimerIcon" class="ptolemy.vergil.icon.EditorIcon">
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
         </property>
@@ -15,7 +15,7 @@
         </property>
     </property>
     <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1.0, 1.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[2.0, 1.0]">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="30">
         </property>
@@ -27,7 +27,7 @@
         </property>
     </property>
     <property name="rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-4.0, -12.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[6.0, -12.0]">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -43,13 +43,13 @@
         </property>
     </property>
     <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, -11.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[11.0, -11.0]">
         </property>
         <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="2.0">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.8,1.0}">
         </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="9.0">
+        <property name="x" class="ptolemy.data.expr.Parameter" value="-9.0">
         </property>
         <property name="y" class="ptolemy.data.expr.Parameter" value="12.0">
         </property>
@@ -68,7 +68,7 @@
         <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={134, 202, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
