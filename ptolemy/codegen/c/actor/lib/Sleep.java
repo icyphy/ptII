@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import ptolemy.util.StringUtilities;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -40,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  A helper class for ptolemy.actor.lib.Sleep.
 
- @author Gang Zhou
+ @author Gang Zhou, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Red (zgang) 
@@ -79,6 +80,8 @@ public class Sleep extends CCodeGeneratorHelper {
 
     /** Get the header files needed by the code generated for the
      *  Sleep actor.
+     *  If we are generating code under SunOS, we add -lrt to the
+     *  list of libraries.
      *  @return A set of strings that are names of the header files
      *   needed by the code generated for the Sleep actor.
      *  @exception IllegalActionException Not Thrown in this subclass.
@@ -86,6 +89,11 @@ public class Sleep extends CCodeGeneratorHelper {
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
         files.add("<time.h>");
+
+        if (StringUtilities.getProperty("os.name").equals("SunOS")) {
+            _codeGenerator.addLibrary(" -lrt");
+        }
+
         return files;
     }
 }
