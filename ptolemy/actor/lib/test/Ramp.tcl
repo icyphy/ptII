@@ -77,8 +77,9 @@ test Ramp-2.1 {test with the default output values} {
             [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
-} {0 1 2 3 4}
+    # Cover recorder.getCount() here
+    list [enumToTokenValues [$rec getRecord 0]] [$rec getCount]
+} {{0 1 2 3 4} 5}
 
 test Ramp-2.1 {test with strings} {
     set init [getParameter $ramp init]
@@ -287,7 +288,7 @@ proc manyScales {numberOfScaleActors {factor 1.1} } {
     set e0 [sdfModel 5]
     puts "$numberOfScaleActors actors"
     puts "[time {set rec [createManyScales $e0 $numberOfScaleActors $factor]}] to create"
-    puts [$e0 exportMoML]
+    #puts [$e0 exportMoML]
     [$e0 getManager] execute
     [$e0 getManager] execute
     [$e0 getManager] execute
