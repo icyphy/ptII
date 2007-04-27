@@ -1021,7 +1021,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             throw new IllegalActionException(this,
                     "Cannot generate code for this component: " + component
                     + ". Its helper class does not"
-                    + " implement ActorodeGenerator.");
+                    + " implement ActorCodeGenerator.");
         }
 
         ActorCodeGenerator castHelperObject = (ActorCodeGenerator) helperObject;
