@@ -498,7 +498,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                             .get(codeGenerators.size() - 1);
                     }
 
-                    //codeGenerator._parseArgs(args);
                     codeGenerator._updateParameters(toplevel);
                     try {
                         codeGenerator.generateCode();
@@ -1057,29 +1056,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Argument not recognized.
         return false;
     }
-
-
-    /** Parse the command-line arguments.
-     *  @param args The command-line arguments to be parsed.
-     *  @exception Exception If an argument is not understood or triggers
-     *   an error.
-     */
-    protected void _parseArgs(String[] args) throws Exception {
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-
-            if (_parseArg(arg) == false) {
-                if (arg.trim().startsWith("-")) {
-
-                } else {
-                    // Unrecognized option.
-                    throw new IllegalActionException("Unrecognized option: "
-                            + arg);
-                }
-            }
-        }
-    }
-
 
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
