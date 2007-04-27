@@ -62,7 +62,7 @@ public class Stop extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.Synchronizer actor = (ptolemy.actor.lib.Synchronizer) getComponent();
+        ptolemy.actor.lib.Stop actor = (ptolemy.actor.lib.Stop) getComponent();
 
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0));
