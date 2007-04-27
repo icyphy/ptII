@@ -78,6 +78,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p>FIXME: Reader should read in expressions and serialized tokens
 
  @author  Jie Liu
+ @deprecated Use ExpressionReader instead.
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Red (liuj)
@@ -182,7 +183,7 @@ public class Reader extends Source {
      */
     public void initialize() throws IllegalActionException {
         System.out.println("actor.lib.Reader is obsolete, "
-                + "use actor.lib.DoubleReader instead");
+                + "use actor.lib.io.ExpressionReader instead");
         _dataSize = output.getWidth();
         _data = new double[_dataSize];
         attributeChanged(sourceURL);
