@@ -1,6 +1,6 @@
 /* An actor that outputs the sum of the elements of an input array.
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,8 +50,8 @@ import ptolemy.kernel.util.Workspace;
  data types that do not support division by an integer.
 
  @author Edward A. Lee, Christine Avanessians
- @version $ID: ArraySum.java,v0.1 2003/07/01
- @since Ptolemy II 4.0
+ @version $Id$
+ @since Ptolemy II 6.1
  @see ArrayAverage
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
