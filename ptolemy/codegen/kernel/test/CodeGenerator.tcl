@@ -133,3 +133,18 @@ test CodeGenerator-10.1 {generateWrapup* methods} {
 } {/* wrapup exit code */
 } {}}
 
+#####
+test CodeGenerator-10.1 {generateWrapup* methods} {
+    list [$codeGenerator generateWrapupEntryCode] \
+	[$codeGenerator generateWrapupExitCode] \
+	[$codeGenerator generateWrapupProcedureName] 
+} {{/* wrapup entry code */
+} {/* wrapup exit code */
+} {}}
+
+#####
+test CodeGenerator-11.1 {getModifiedVariables methods} {
+    list [java::isnull [$codeGenerator getModifiedVariables]]
+} {1}
+
+
