@@ -49,7 +49,8 @@ TCL_SRCS = \
 
 JSRCS = \
 	RecorderGeneral.java \
-	SleepFireTwice.java
+	SleepFireTwice.java \
+	TestOrderedMerge.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \

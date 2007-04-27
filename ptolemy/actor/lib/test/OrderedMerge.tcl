@@ -51,7 +51,7 @@ test OrderedMerge-2.1 {Two ramps with an OrderedMerge } {
 	[java::new ptolemy.kernel.util.StreamListener]
 
 
-    set orderedMerge [java::new ptolemy.actor.lib.OrderedMerge $e0 OrderedMerge]
+    set orderedMerge [java::new ptolemy.actor.lib.test.TestOrderedMerge $e0 OrderedMerge]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 Ramp]
     set firingCountLimit [getParameter $ramp firingCountLimit]
     $firingCountLimit setExpression 10
@@ -82,9 +82,12 @@ test OrderedMerge-2.1 {Two ramps with an OrderedMerge } {
     set r3 [java::new ptolemy.actor.TypedIORelation $e0 relation3]
     set r4 [java::new ptolemy.actor.TypedIORelation $e0 relation4]
 
-    [java::field $orderedMerge inputA] link $r1
-    [java::field $orderedMerge inputB] link $r3
-    [java::field $orderedMerge output] link $r4
+    [java::field [java::cast ptolemy.actor.lib.OrderedMerge $orderedMerge] \
+	 inputA] link $r1
+    [java::field [java::cast ptolemy.actor.lib.OrderedMerge $orderedMerge] \
+	 inputB] link $r3
+    [java::field [java::cast ptolemy.actor.lib.OrderedMerge $orderedMerge] \
+	 output] link $r4
 
     [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] link $r1
     [java::field [java::cast ptolemy.actor.lib.Source $ramp2] output] link $r3
@@ -93,4 +96,5 @@ test OrderedMerge-2.1 {Two ramps with an OrderedMerge } {
 
     [$e0 getManager] execute
     [$e0 getManager] execute
-} {}
+    [$orderedMerge getNextPort] toString
+} {ptolemy.actor.TypedIOPort {.top.OrderedMerge.inputA}}
