@@ -78,5 +78,21 @@ test CodeGeneratorHelper-4.1 {generateVariableDeclaration} {
     # Uses 1.1 above
     # Do nothing, we just want good coverage
     list [$cgHelper generateVariableDeclaration]
-} {}
+} {{}}
+
+#####
+test CodeGeneratorHelper-5.1 {getSourceChannel} {
+    # Uses 1.1 above
+    # Add a ramp and a recorder
+    set ramp [java::new ptolemy.actor.lib.Ramp $model ramp]
+    set rec [java::new ptolemy.actor.lib.Recorder $model rec]
+    $model connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    set outputPort [$ramp getPort output]
+    set inputPort [$rec getPort input]
+    catch {$cgHelper getSourceChannel $outputPort 1} errMsg
+    set channel [$cgHelper getSourceChannel $inputPort 0]
+    list $errMsg [$channel toString]
+} {{java.lang.IndexOutOfBoundsException: Index: 0, Size: 0} output_0}
 
