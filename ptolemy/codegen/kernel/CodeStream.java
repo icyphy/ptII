@@ -898,30 +898,6 @@ public class CodeStream {
         }
 
         /**
-         * Return the file path of the code template file that contains
-         * the given code block signature. It searches bottom-up in the class
-         * hierarchy to find the first scope that contains the signature.   
-         * @param signature The given code block signature.
-         * @return The file path of the code template file that contains
-         * the given code block signature.
-         * @exception IllegalActionException Thrown if there is no scopes that
-         *  contains the given signature. 
-         */
-        public String getFilePath(Signature signature)
-                throws IllegalActionException {
-            Iterator files = _codeTableList.iterator();
-
-            while (files.hasNext()) {
-                Hashtable table = (Hashtable) files.next();
-                if (table.containsKey(signature)) {
-                    return (String) ((Object[]) table.get(signature))[0];
-                }
-            }
-            throw new IllegalActionException(_helper,
-                    "Cannot find code block: " + signature + ".");
-        }
-        
-        /**
          * Get the list of parameters for the code block with the given
          * signature. This searches the code block from the entire list
          * of scopes.  
