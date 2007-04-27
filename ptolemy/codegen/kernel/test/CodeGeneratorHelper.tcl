@@ -73,4 +73,10 @@ test CodeGeneratorHelper-3.1 {parseTreeCodeGenerator coverage } {
     [$cgHelper getParseTreeCodeGenerator] escapeForTargetLanguage "foobar"
 } {foobar}
 
+#####
+test CodeGeneratorHelper-4.1 {generateVariableDeclaration} {
+    # Uses 1.1 above
+    # Do nothing, we just want good coverage
+    list [$cgHelper generateVariableDeclaration]
+} {}
 
