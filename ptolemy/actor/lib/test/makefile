@@ -37,7 +37,7 @@ DIRS =		performance
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/automaton.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -80,6 +80,7 @@ JSIMPLE_TESTS = \
 	RecordDisassembler.tcl \
 	Sinewave.tcl \
 	Scale.tcl \
+	SetVariable.tcl \
 	Test.tcl \
 	VariableClock.tcl
 
