@@ -117,7 +117,8 @@ JSRCS = \
 	ThrowModelError.java \
 	TrigFunction.java \
 	UnaryMathFunction.java \
-	Uniform.java
+	Uniform.java \
+	WallClockTime.java
 
 OTHER_FILES_TO_BE_JARED = \
 	AbsoluteValue.c \
@@ -175,6 +176,7 @@ OTHER_FILES_TO_BE_JARED = \
 	TrigFunction.c \
 	UnaryMathFunction.c \
 	Uniform.c \
+	WallClockTime.c \
 	aggregators.xml \
 	array.xml \
 	booleanflowcontrol.xml \
