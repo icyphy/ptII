@@ -67,8 +67,8 @@ test Clock-2.1 {test with the default output value} {
     $manager addExecutionListener \
             [java::new ptolemy.actor.StreamExecutionListener]
     $manager execute
-    enumToTokenValues [$rec getRecord 0]
-} {1 0 1 0 1}
+    list [enumToTokenValues [$rec getRecord 0]] [$clock getStopTime]
+} {{1 0 1 0 1} Infinity}
 
 test Clock-2.2 {check times} {
     enumToObjects [$rec getTimeRecord]
