@@ -84,6 +84,7 @@ JSIMPLE_TESTS = \
 	Scale.tcl \
 	SetVariable.tcl \
 	Test.tcl \
+	TestExceptionHandler.tcl \
 	VariableClock.tcl
 
 # Graphical Java tests that use Tcl.
