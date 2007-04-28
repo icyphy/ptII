@@ -41,6 +41,10 @@ if {[info procs sdfModel] == "" } then {
     source [file join $PTII util testsuite models.tcl]
 }
 
+if {[info procs jdkCapture] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
+}
+
 #####
 test CodeGenerator-1.1 {Instantiate a CodeGenerator, call a few methods} {
     set model [sdfModel]
@@ -60,13 +64,6 @@ test CodeGenerator-1.1 {Instantiate a CodeGenerator, call a few methods} {
 } {{ptolemy.codegen.kernel.CodeGenerator {.top.myCodeGenerator}} {/* This is a comment */
 }}
 
-# generateCode(StringBuffer) is tested in
-# $PTII/ptolemy/codegen/c/domains/sdf/kernel/test/SDFDirector.tcl
-# because the test relies on SDFDirector being built. 
-
-# main(String[]) is tested in
-# $PTII/ptolemy/codegen/c/actor/lib/test/CodeGenerator2.tcl
-# because the test relies on SDFDirector being built and actors being present.
 
 #####
 test CodeGenerator-3.1 {getComponent()} {
@@ -148,7 +145,13 @@ test CodeGenerator-11.1 {getModifiedVariables methods} {
     list [java::isnull [$codeGenerator getModifiedVariables]]
 } {1}
 
+
 #####
+
+# generateCode(StringBuffer) is also tested in
+# $PTII/ptolemy/codegen/c/domains/sdf/kernel/test/SDFDirector.tcl
+# because the test relies on SDFDirector being built. 
+
 test CodeGenerator-12.1 {generateCode using actor/TypedCompositeActor.java} {
     # Set the generatorPackage parameter so we look in
     # $PTII/ptolemy/codegen/kernel/test/actor for TypedCompositeActor.java
@@ -189,3 +192,44 @@ void top() {
 /* main entry code */
 /* main exit code */
 }}
+
+
+# main(String[]) is tested in
+# $PTII/ptolemy/codegen/c/actor/lib/test/CodeGenerator2.tcl
+# because the test relies on SDFDirector being built and actors being present.
+test CodeGenerator-13.1 {main -help} {
+
+    set previousExitAfterWrapup \
+	[java::call ptolemy.util.StringUtilities getProperty \
+	     ptolemy.ptII.exitAfterWrapup]
+
+    set args [java::new {String[]} 1  {-help}]
+	java::call System setProperty ptolemy.ptII.exitAfterWrapup false
+    jdkCapture {
+	catch {
+	    java::call ptolemy.codegen.kernel.CodeGenerator main $args
+	} errMsg
+    } result1
+    set args [java::new {String[]} 1  {-version}]
+    jdkCapture {
+	catch {
+	    java::call ptolemy.codegen.kernel.CodeGenerator main $args
+	} errMsg2
+    } result2
+    java::call System setProperty ptolemy.ptII.exitAfterWrapup \
+	previousExitAfterWrapup
+    list $errMsg $result1 $errMsg2 [string range $result2 0 6]
+} {{java.lang.Exception: Failed to parse "-help"} {Usage: ptcg [ options ] [file ...]
+
+Options that take values:
+ -codeDirectory <directory in which to put code (default: $HOME/codegen)>
+ -compile         true|false (default: true)
+ -generateComment true|false (default: true)
+ -inline          true|false (default: false)
+ -overwriteFiles  true|false (default: true)
+ -run             true|false (default: true)
+ -<parameter name> <parameter value>
+
+Boolean flags:
+ -help -version
+} {java.lang.Exception: Failed to parse "-version"} Version}
