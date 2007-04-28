@@ -137,25 +137,6 @@ public class TestExceptionHandler extends TypedAtomicActor implements
         return true;
     }
 
-    /** If the trainingMode parameter is true and the
-     *  model is being run as part of the test suite, then return true.
-     *  This method merely checks to see if
-     *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty.
-     *  To run the test suite in the Nightly Build mode, use
-     *  <pre>
-     *  make nightly
-     *  </pre>
-     *  @return True if the nightly build is running.
-     */
-    public static boolean isRunningNightlyBuild() {
-        if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild")
-                .length() > 0) {
-            return true;
-        }
-
-        return false;
-    }
-
     /** Call the super.wrapup() method. Check whether this actor has
      *  been invoked to handle exceptions. If not, throw an exception.
      *  Otherwise, do nothing.
