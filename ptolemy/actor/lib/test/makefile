@@ -79,6 +79,7 @@ JSIMPLE_TESTS = \
 	Ramp.tcl \
 	RecordAssembler.tcl \
 	RecordDisassembler.tcl \
+	SequentialClock.tcl \
 	Sinewave.tcl \
 	Scale.tcl \
 	SetVariable.tcl \
