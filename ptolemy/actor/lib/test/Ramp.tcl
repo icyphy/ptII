@@ -77,9 +77,11 @@ test Ramp-2.1 {test with the default output values} {
             [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
-    # Cover recorder.getCount() here
-    list [enumToTokenValues [$rec getRecord 0]] [$rec getCount]
-} {{0 1 2 3 4} 5}
+    # Cover recorder.getCount() and getLatest() here
+    list [enumToTokenValues [$rec getRecord 0]] \
+	[$rec getCount] \
+	[[$rec getLatest 0] toString]
+} {{0 1 2 3 4} 5 4}
 
 test Ramp-2.1 {test with strings} {
     set init [getParameter $ramp init]
