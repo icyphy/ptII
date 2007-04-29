@@ -159,9 +159,48 @@ test KeyToken-4.3 {equals(): Different Algorithms} {
 ######################################################################
 ####
 # 
-test KeyToken-10.1 {KeyType.convert} {
+test KeyToken-9.1 {KeyType.add, divide, modulo, multiply subtract} {
     # uses 1.1 above
     set KEY  [java::field ptolemy.actor.lib.security.KeyToken KEY]
+    set secretKeyTokenType [$secretKeyToken getType]
+    list \
+	[list \
+		[[$KEY add $secretKeyTokenType] toString] \
+		[[$KEY add $secretKeyTokenType] equals [$secretKeyTokenType add $KEY]]] \
+	[list \
+		[[$KEY divide $secretKeyTokenType] toString] \
+		[[$KEY divide $secretKeyTokenType] equals [$secretKeyTokenType divide $KEY]]] \
+	[list \
+		[[$KEY modulo $secretKeyTokenType] toString] \
+		[[$KEY modulo $secretKeyTokenType] equals [$secretKeyTokenType modulo $KEY]]] \
+	[list \
+		[[$KEY multiply $secretKeyTokenType] toString] \
+		[[$KEY multiply $secretKeyTokenType] equals [$secretKeyTokenType multiply $KEY]]] \
+	[list \
+		[[$KEY subtract $secretKeyTokenType] toString] \
+		[[$KEY subtract $secretKeyTokenType] equals [$secretKeyTokenType subtract $KEY]]]
+} {{Key 1} {Key 1} {Key 1} {Key 1} {Key 1}}
+
+######################################################################
+####
+# 
+test KeyToken-9.2 {KeyType.add, divide, modulo, multiply subtract} {
+    # uses 1.1 above
+    set KEY  [java::field ptolemy.actor.lib.security.KeyToken KEY]
+    set secretKeyTokenType [$secretKeyToken getType]
+    list \
+	[$KEY isAbstract] \
+	[[$KEY one] toString] \
+	[[$KEY one] equals [$secretKeyTokenType one]] \
+	[[$KEY zero] toString] \
+	[[$KEY zero] equals [$secretKeyTokenType zero]]
+} {0 Key 1 Key 1}
+
+######################################################################
+####
+# 
+test KeyToken-10.1 {KeyType.convert} {
+    # uses 1.1, 9.1 above
     set secretKeyToken3 [$KEY convert $secretKeyToken]
     set  boolean [$secretKeyToken isEqualTo $secretKeyToken2]
     $boolean toString
@@ -206,3 +245,4 @@ test KeyToken-13.1 {KeyType.isSubstitutionInstance} {
 	    [$KEY isSubstitutionInstance \
 	    [java::field ptolemy.data.type.BaseType DOUBLE]]
 } {1 0}
+
