@@ -62,8 +62,9 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'DependencyHighlighter$$DependencyController.class' \
+	'DependencyHighlighter$$HighlightDependents.class' \
 	'HighlightEntities$$HighlightIcons.class'
-
 
 JCLASS = $(JSRCS:%.java=%.class)
 
