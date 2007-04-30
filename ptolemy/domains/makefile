@@ -44,8 +44,9 @@ EXPERIMENTAL_DOMAINS = \
 #   Java 3D was found
 # PTCONTINUOUS_DIR is set to continuous if we want to compile that domain.
 PTCONTINUOUS_DIR = continuous
-DOMAINS =	ci $(PTCONTINUOUS_DIR) csp ct dde ddf de fsm pn sdf dt \
-	    giotto petrinet rendezvous \
+DOMAINS =	ci $(PTCONTINUOUS_DIR) csp ct curriculum \
+	        dde ddf de fsm pn sdf dt \
+	        giotto petrinet rendezvous \
 		$(PTPSDF_DIR) ptinyos \
 		sr tm $(PTJAVA3D_DIR) wireless
 
@@ -71,6 +72,7 @@ PTCLASSJAR =
 
 PTAUXALLJARS = \
 		ci/ci.jar \
+		curriculum/curriculum.jar \
 		dde/dde.jar \
 		ddf/ddf.jar \
 	        dt/dt.jar \
