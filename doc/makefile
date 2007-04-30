@@ -399,6 +399,7 @@ ALL1_4PACKAGES = \
 	ptolemy.codegen.vhdl.kernel \
 	ptolemy.domains.ci.kernel \
 	ptolemy.domains.ci.lib \
+	ptolemy.domains.curriculum \
 	ptolemy.domains.dde.kernel \
 	ptolemy.domains.dde.lib \
 	ptolemy.domains.ddf.kernel \
@@ -639,6 +640,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/codegen/kernel/*.java \
 			../ptolemy/codegen/vhdl/actor/lib/vhdl/*.java \
 			../ptolemy/codegen/vhdl/kernel/*.java \
+			../ptolemy/domains/curriculum/*.java \
 			../ptolemy/domains/ci/kernel/*.java \
 			../ptolemy/domains/ci/lib/*.java \
 			../ptolemy/domains/csp/kernel/*.java \
