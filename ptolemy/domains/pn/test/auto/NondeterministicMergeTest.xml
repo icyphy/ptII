@@ -2,13 +2,13 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NondeterministicMergeTest" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 170, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 170, 815, 516}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -242,13 +242,13 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 1500.0, 3000.0, 1000.0, 4500.0, 2000.0, 3000.0, 4000.0, 6000.0, 5000.0, 7500.0, 6000.0, 7000.0, 8000.0, 9000.0, 9000.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1500.0, 3000.0, 4500.0, 0.0, 6000.0, 1000.0, 2000.0, 7500.0, 3000.0, 4000.0, 9000.0, 5000.0, 6000.0, 7000.0, 8000.0, 9000.0}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="500.0">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="10000.0">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{550.0, 175.0}">
         </property>
     </entity>
     <entity name="LongToDouble" class="ptolemy.actor.lib.conversions.LongToDouble">
