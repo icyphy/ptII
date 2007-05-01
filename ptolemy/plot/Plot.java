@@ -1604,14 +1604,15 @@ public class Plot extends PlotBox {
                     }
 
                     try {
-                        Double bwidth = Double.valueOf(barwidth);
+                        // Use Double.parseDouble() and avoid creating a Double
+                        double bwidth = Double.parseDouble(barwidth);
                         double boffset = _barOffset;
 
                         if (baroffset != null) {
-                            boffset = (Double.valueOf(baroffset)).doubleValue();
+                            boffset = Double.parseDouble(baroffset);
                         }
 
-                        setBars(bwidth.doubleValue(), boffset);
+                        setBars(bwidth, boffset);
                     } catch (NumberFormatException e) {
                         // ignore if format is bogus.
                     }
@@ -1676,8 +1677,9 @@ public class Plot extends PlotBox {
                 }
 
                 try {
-                    Double xpt = Double.valueOf(x);
-                    Double ypt = Double.valueOf(y);
+                    // Use Double.parseDouble() and avoid creating a Double.
+                    double xpt = Double.parseDouble(x);
+                    double ypt = Double.parseDouble(y);
 
                     if (fieldsplit2 > 0) {
                         // There was one separator after the y value, now
@@ -1697,28 +1699,24 @@ public class Plot extends PlotBox {
                             String yl = (line.substring(0, fieldsplit3)).trim();
                             String yh = (line.substring(fieldsplit3 + 1))
                                     .trim();
-                            Double yLowEB = Double.valueOf(yl);
-                            Double yHighEB = Double.valueOf(yh);
+                            double yLowEB = Double.parseDouble(yl);
+                            double yHighEB = Double.parseDouble(yh);
                             connected = _addLegendIfNecessary(connected);
-                            addPointWithErrorBars(_currentdataset, xpt
-                                    .doubleValue(), ypt.doubleValue(), yLowEB
-                                    .doubleValue(), yHighEB.doubleValue(),
-                                    connected);
+                            addPointWithErrorBars(_currentdataset,
+                                    xpt, ypt, yLowEB, yHighEB, connected);
                             return true;
                         } else {
                             // It is unlikely that we have a fieldsplit2 >0
                             // but not fieldsplit3 >0, but just in case:
                             connected = _addLegendIfNecessary(connected);
-                            addPoint(_currentdataset, xpt.doubleValue(), ypt
-                                    .doubleValue(), connected);
+                            addPoint(_currentdataset, xpt, ypt, connected);
                             return true;
                         }
                     } else {
                         // There were no more fields, so this is
                         // a regular pt.
                         connected = _addLegendIfNecessary(connected);
-                        addPoint(_currentdataset, xpt.doubleValue(), ypt
-                                .doubleValue(), connected);
+                        addPoint(_currentdataset, xpt, ypt, connected);
                         return true;
                     }
                 } catch (NumberFormatException e) {
