@@ -262,16 +262,19 @@ public class PlotMLParser extends PlotBoxMLParser {
             x = _currentPointCount;
             _currentPointCount += 1.0;
         } else {
-            // NOTE: Do not use parseDouble() to maintain
-            // Java 1.1 compatibility.
-            x = (Double.valueOf(xSpec)).doubleValue();
+            // NOTE: We use Double.parseDouble() here, which breaks
+            // Java 1.1 compatibility, but means we don't allocate a Double.
+            //x = (Double.valueOf(xSpec)).doubleValue();
+            x = Double.parseDouble(xSpec);
         }
 
         String ySpec = (String) _attributes.get("y");
         _checkForNull(ySpec, "No y value for element \"" + element + "\"");
 
-        // NOTE: Do not use parseDouble() to maintain Java 1.1 compatibility.
-        double y = (Double.valueOf(ySpec)).doubleValue();
+        // NOTE: We use Double.parseDouble() here, which breaks
+        // Java 1.1 compatibility, but means we don't allocate a Double.
+        //double y = (Double.valueOf(ySpec)).doubleValue();
+        double y = Double.parseDouble(ySpec);
 
         String lowSpec = (String) _attributes.get("lowErrorBar");
         String highSpec = (String) _attributes.get("highErrorBar");
