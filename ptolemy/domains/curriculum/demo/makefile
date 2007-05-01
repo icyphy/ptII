@@ -46,7 +46,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	Curriculumn/Curriculumn.jar
+	Curriculum/Curriculum.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
