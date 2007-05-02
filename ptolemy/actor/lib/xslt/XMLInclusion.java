@@ -41,13 +41,27 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//import ptolemy.kernel.util.Workspace;
-
 ////////////////////////////////////////////////////////////////////////////////
 
 /*
-Combine multiply XMLTokens into one XMLToken.  
-more comments to come soon
+This actor combines multiply XMLTokens into one XMLToken.  
+
+The actor reads in multiple arrays of XML Tokens from the <i>input</i> port.
+It also takes a port parameter, template, that specifies how the XML tokens will
+be combined.  The template is of the form:  
+<pre>
+&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;
+ &lt;Node&gt;
+   $inputi,j
+ &lt;/Node&gt;
+</pre>
+The template is a XML Token with $input as a delimiter of where the input
+XML tokens should be placed.  i specifies which array (i.e. which channel) and j
+specifies which XML Token in the array.  Setting j = n will insert all XML tokens in
+that particular array into the template file.  If i or j are out of bounds, $inputi,j
+will not be replaced.
+A XML Token with the delimiters replaced with the appropriate XML Token is sent to the
+<i>output</i> port.  No changes to the input XML Tokens will be made.
 
 @author Christine Avanessians, Edward Lee, Thomas Feng
 @version $Id$
@@ -55,6 +69,7 @@ more comments to come soon
 @Pt.ProposedRating Red (cavaness)
 @Pt.AcceptedRating Red (cavaness)
 */
+
 public class XMLInclusion extends Transformer{
    
    public XMLInclusion(CompositeEntity container, String name)
@@ -126,7 +141,7 @@ public class XMLInclusion extends Transformer{
        }     
    }
    
-   //Removes XML header and DTD as long as each is on one line
+   //Removes XML header and DTD if there is one
    private String removeHeader (Token T) {
        String str="";
        if(T instanceof StringToken){
