@@ -31,13 +31,7 @@ package ptolemy.moml.test;
 import java.io.InputStream;
 import java.net.URL;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
-
 import ptolemy.moml.IconLoader;
 import ptolemy.moml.MoMLParser;
 

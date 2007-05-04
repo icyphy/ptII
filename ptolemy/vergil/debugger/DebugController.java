@@ -35,7 +35,6 @@ import ptolemy.actor.Executable;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.DebugEvent;
-import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;

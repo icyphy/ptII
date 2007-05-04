@@ -28,68 +28,19 @@ COPYRIGHTENDKEY
 package ptolemy.moml;
 
 
-import ptolemy.actor.Manager;
-import ptolemy.actor.TypedCompositeActor;
-
-import ptolemy.data.expr.UndefinedConstantOrIdentifierException;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.ErrorHandler;
-import ptolemy.moml.MoMLParser;
 import java.io.StringWriter;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
-import ptolemy.actor.IOPort;
-import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.actor.gui.PtolemyFrame;
-import ptolemy.actor.gui.PtolemyPreferences;
-import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.UserActorLibrary;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.ExpertParameter;
 import ptolemy.data.expr.ModelScope;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.UndefinedConstantOrIdentifierException;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.expr.Variable;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.undo.RedoChangeRequest;
-import ptolemy.kernel.undo.UndoChangeRequest;
-import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeListener;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.IconLoader;
-import ptolemy.moml.LibraryAttribute;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.MoMLUndoEntry;
-import ptolemy.util.CancelException;
-import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLUtilties

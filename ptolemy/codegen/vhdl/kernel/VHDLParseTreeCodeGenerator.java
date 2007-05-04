@@ -35,7 +35,6 @@ import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.FixToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;

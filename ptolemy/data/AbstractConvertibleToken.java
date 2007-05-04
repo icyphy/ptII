@@ -27,8 +27,6 @@
  */
 package ptolemy.data;
 
-import java.io.Serializable;
-
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;

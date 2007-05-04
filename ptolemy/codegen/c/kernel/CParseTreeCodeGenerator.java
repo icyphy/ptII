@@ -36,7 +36,6 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.FunctionToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.RecordToken;

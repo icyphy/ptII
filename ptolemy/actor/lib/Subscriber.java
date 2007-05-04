@@ -29,9 +29,7 @@ package ptolemy.actor.lib;
 
 import java.util.Iterator;
 
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;

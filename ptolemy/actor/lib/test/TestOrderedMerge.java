@@ -27,9 +27,8 @@
  */
 package ptolemy.actor.lib.test;
 
-import ptolemy.actor.lib.OrderedMerge;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.type.BaseType;
+import ptolemy.actor.lib.OrderedMerge;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

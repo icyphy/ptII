@@ -28,11 +28,12 @@
 package ptolemy.vergil.basic;
 
 import java.util.Iterator;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////

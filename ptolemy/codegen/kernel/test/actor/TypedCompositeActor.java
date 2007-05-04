@@ -27,13 +27,7 @@
  */
 package ptolemy.codegen.kernel.test.actor;
 
-import java.util.HashSet;
-import java.util.Set;
-
-
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.codegen.kernel.*;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor

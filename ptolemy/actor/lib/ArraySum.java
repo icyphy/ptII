@@ -27,7 +27,6 @@
 package ptolemy.actor.lib;
 
 import ptolemy.data.ArrayToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
 import ptolemy.kernel.CompositeEntity;

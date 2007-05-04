@@ -32,7 +32,6 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
