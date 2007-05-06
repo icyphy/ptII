@@ -2,8 +2,6 @@
 
 <!-- Created by Christine Avanessians -->
 
-<xsl:param name="URLparam">1</xsl:param>
-
 <xsl:template match="/">
   <xsl:text>
   </xsl:text>
