@@ -160,38 +160,18 @@ public class XMLInclusion extends Transformer{
            str = T.toString();
        } else {
            throw new InternalErrorException("The token should be either " +
-                   "of type StringToken, or of type XMLToken.");
+                  "of type StringToken, or of type XMLToken.");
        }
-
        String s= str.trim();
        int i=0;
-       if (s.startsWith("<?xml")) { //removes Header
+       if (s.startsWith("<?xml")) {//removes header
            i=1;
-           while (s.charAt(0)!= '\n'){
-               s=s.substring(1);
-           }
-           s=s.substring(1); //removes the new line;
+           s = loopThroughHeaders(s);
        }
        String s2= s.trim();
        if (s2.startsWith("<!DOCTYPE")) {//removes DTD
-           boolean inQuote = false;
-           int pos = 0;
-           while (pos < s2.length() && (inQuote || s2.charAt(pos) != '>')){
-               if (s2.charAt(pos) == '\"') {
-                   inQuote = !inQuote;
-               }
-               pos++;
-           }
-           if (pos < s2.length()) {
-               s2 = s2.substring(pos + 1);
-           }
            i=2;
-           /*while (s2.charAt(0)!= '\n'){
-               s2=s2.substring(1);
-           }*/
-           if(s2.charAt(0)=='\n')  {
-                s2=s2.substring(1); //removes the new line;
-           }
+           s2=loopThroughHeaders(s2);
        }
        if (i==0) { // in order to not remove the white spaces that trim removes
            return str;
@@ -200,7 +180,24 @@ public class XMLInclusion extends Transformer{
        } else {
            return s2;
        }
-   }
+   }   
 
+   private String loopThroughHeaders (String s) {
+       boolean inQuote = false;
+       int pos = 0;
+       while (pos < s.length() && (inQuote || s.charAt(pos) != '>')){
+           if (s.charAt(pos) == '\"') {
+               inQuote = !inQuote;
+           }
+           pos++;
+       }
+       if (pos < s.length()) {
+           s = s.substring(pos + 1);
+       }
+       if(s.charAt(0)=='\n')  {
+           s=s.substring(1); 
+       }   
+       return s;
+   }
 }
    
