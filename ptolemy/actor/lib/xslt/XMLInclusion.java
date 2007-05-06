@@ -1,6 +1,6 @@
 /* An actor that combines multiple XML files into one.
 
-@Copyright (c) 2003-2006 The Regents of the University of California.
+@Copyright (c) 2007 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -44,24 +44,27 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////////////////////////////////////////////////////////////////////////////////
 
 /*
-This actor combines multiply XMLTokens into one XMLToken.  
+Combines multiply XMLTokens into one XMLToken.  
 
 The actor reads in multiple arrays of XML Tokens from the <i>input</i> port.
-It also takes a port parameter, template, that specifies how the XML tokens will
-be combined.  The template is of the form:  
+It also takes a port parameter, <i>template</i>, that specifies how the XML 
+tokens will be combined.  The template is of the form:  
 <pre>
 &lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;
  &lt;Node&gt;
    $inputi,j
  &lt;/Node&gt;
 </pre>
-The template is a XML Token with $input as a delimiter of where the input
+The template is a XML Token with $input as a delimiter for where the input
 XML tokens should be placed.  i specifies which array (i.e. which channel) and j
-specifies which XML Token in the array.  Setting j = n will insert all XML tokens in
-that particular array into the template file.  If i or j are out of bounds, $inputi,j
-will not be replaced.
-A XML Token with the delimiters replaced with the appropriate XML Token is sent to the
-<i>output</i> port.  No changes to the input XML Tokens will be made.
+specifies which XML Token in the array.  Setting j = n will insert all XML 
+tokens in that particular array into the template file.  If i or j are out of 
+bounds, $inputi,j will not be replaced.
+It also takes in a string parameter, <i>headerParameter</i>, which is the header
+used for the output XML token.
+A XML Token with the delimiters replaced with the appropriate XML Token is sent
+to the <i>output</i> port.  No changes are made to the input XML Tokens besides
+removing the header and DTD.
 
 @author Christine Avanessians, Edward Lee, Thomas Feng
 @version $Id$
@@ -94,7 +97,7 @@ public class XMLInclusion extends Transformer{
    ///////////////////////////////////////////////////////////////////
    ////                     ports and parameters                  ////
 
-   /*
+   /* WILL ADD Comments
     */
    public PortParameter template;
    public StringParameter headerParameter;
@@ -102,6 +105,12 @@ public class XMLInclusion extends Transformer{
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
    
+   /** Takes in multiple arrays of XMLTokens from the input and combines them
+    *  according to the specified template.  If the template contains invalid
+    *  delimiters, it returns the template file with the valid ones replaced and
+    *  the invalid ones unmodified.
+    *  @exception IllegalActionException
+    */
    public void fire() throws IllegalActionException{ 
        super.fire();
        template.update();
@@ -115,17 +124,18 @@ public class XMLInclusion extends Transformer{
                String elemInArray=removeHeader(a.getElement(i));
                if (i==0) {
                    allInArray=allInArray.concat(elemInArray);
-               }else {
+               } else {
                    allInArray=allInArray.concat('\n'+ elemInArray);
                }
-               String elemTag = "$input" + Integer.toString(j) + ',' + Integer.toString(i);
+               String elemTag = "$input" + Integer.toString(j) + ',' 
+                                                       + Integer.toString(i);
                outputString = outputString.replace(elemTag, elemInArray);
            }
                String arrayTag = "$input" + Integer.toString(j) + ",n";
                outputString = outputString.replace(arrayTag, allInArray);
-          if(j==0) {
+          if (j==0) {
               all=all.concat(allInArray); 
-          }else {
+          } else {
               all = all.concat('\n'+ allInArray);
           }
        }   
@@ -144,13 +154,11 @@ public class XMLInclusion extends Transformer{
    //Removes XML header and DTD if there is one
    private String removeHeader (Token T) {
        String str="";
-       if(T instanceof StringToken){
+       if (T instanceof StringToken){
            str = ((StringToken)T).stringValue();
-       }
-       else if (T instanceof XMLToken) {
+       } else if (T instanceof XMLToken) {
            str = T.toString();
-       }
-       else  {
+       } else {
            throw new InternalErrorException("The token should be either " +
                    "of type StringToken, or of type XMLToken.");
        }
@@ -187,11 +195,9 @@ public class XMLInclusion extends Transformer{
        }
        if (i==0) { // in order to not remove the white spaces that trim removes
            return str;
-       }
-       else if (i==1) {
+       } else if (i==1) {
            return s;
-       }
-       else {
+       } else {
            return s2;
        }
    }
