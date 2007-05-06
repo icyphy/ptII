@@ -336,15 +336,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1100.0, 245.0]">
         </property>
     </entity>
-    <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="output">
-        </property>
-        <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <doc>Write the value of a string token, one per line, to a text file.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1105.0, 300.0]">
-        </property>
-    </entity>
     <entity name="XSLTransformer" class="ptolemy.actor.lib.xslt.XSLTransformer">
         <property name="styleSheetParameters" class="ptolemy.actor.parameters.PortParameter" value="{URLparam = &quot;C:/Documents and Settings/Armineh/workspace/ptII.cvs/ptolemy/actor/lib/xslt/demo/MoMLFileTransformation/momlFilesForDemo/SampleMOMLFile6.xml&quot;}">
         </property>
@@ -401,10 +392,6 @@
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[1050.0, 245.0]">
-        </vertex>
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -418,6 +405,10 @@
         </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
@@ -450,7 +441,6 @@
     <link port="StringToXML3.input" relation="relation3"/>
     <link port="StringToXML3.output" relation="relation13"/>
     <link port="Display4 - Rearrange Hierarchy.input" relation="relation15"/>
-    <link port="LineWriter.input" relation="relation15"/>
     <link port="XSLTransformer.input" relation="relation"/>
     <link port="XSLTransformer.output" relation="relation8"/>
     <link port="XSLTransformer.styleSheetParameters" relation="relation4"/>
