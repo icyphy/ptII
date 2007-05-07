@@ -57,9 +57,9 @@ tokens will be combined.  The template is of the form:
 </pre>
 The template is a XML Token with $input as a delimiter for where the input
 XML tokens should be placed.  i specifies which array (i.e. which channel) and j
-specifies which XML Token in the array.  Setting j = n will insert all XML 
-tokens in that particular array into the template file.  If i or j are out of 
-bounds, $inputi,j will not be replaced.
+specifies which XML Token in the array.  Setting j = n will insert (in order) 
+all XML tokens in that particular array into the template file.  If i or j are 
+out of bounds, $inputi,j will not be replaced.
 It also takes in a string parameter, <i>headerParameter</i>, which is the header
 used for the output XML token.
 A XML Token with the delimiters replaced with the appropriate XML Token is sent
