@@ -116,7 +116,7 @@ public class PtalonParameter extends Parameter {
     }
     
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                       private members                     ////
 
     /** True if this parameter has a value.
      */

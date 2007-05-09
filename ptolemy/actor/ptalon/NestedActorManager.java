@@ -559,6 +559,9 @@ public class NestedActorManager extends CodeManager {
         return fileName;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+    
     /** Break an expression like:
      *  <p>a(x := <1/>, y := <2/>)(z := b(y := <2/>, z := <2/>))
      *  <p>into an array of expressions like:

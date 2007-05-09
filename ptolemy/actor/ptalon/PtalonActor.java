@@ -595,7 +595,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                      private members                      ////
     
     /** A list of all ptalon parameters that have been assigned a
      *  value.  This is a subset of _ptalonParameters.
