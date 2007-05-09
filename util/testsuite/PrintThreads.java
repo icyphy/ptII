@@ -52,6 +52,11 @@ import javax.swing.SwingUtilities;
  The output includes the number of threads and whether the current thread
  is the Swing Event Dispatch Thread.
 
+ <p>To get a stack trace for each thread:
+ <br> Under Unix, try <code>kill -3 <i>pid</i></code>, where
+ <code><i>pid</i></code> is the process id from <code>ps</code>.
+ <br> Under Windows, try <code>Ctrl-Break</code>.
+
  @author Christopher Hylands, based on code from Fusion Systems Group
  @version $Id$
  @since Ptolemy II 1.0
