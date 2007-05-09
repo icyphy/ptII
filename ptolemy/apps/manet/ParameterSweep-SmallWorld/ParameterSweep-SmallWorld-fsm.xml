@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ParameterSweep-SmallWorld" class="ptolemy.domains.fsm.modal.ModalModel">
+<entity name="ParameterSweep-SmallWorld-fsm" class="ptolemy.domains.fsm.modal.ModalModel">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
@@ -119,7 +119,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, -35.0]">
             </property>
         </property>
-        <property name="runs_j" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="runs_j" class="ptolemy.data.expr.Parameter" value="2">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

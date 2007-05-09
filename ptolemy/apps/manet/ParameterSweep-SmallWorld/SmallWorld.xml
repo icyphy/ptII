@@ -324,6 +324,8 @@ parameter.</text></svg></configure>
         </property>
     </property>
     <entity name="ReportChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="1L">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 120.0]">
         </property>
     </entity>
@@ -338,6 +340,8 @@ parameter.</text></svg></configure>
         </property>
     </entity>
     <entity name="NodeRandomizer" class="ptolemy.domains.wireless.lib.NodeRandomizer">
+        <property name="maxPrecision" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
         <property name="randomizeInInitialize" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="resetOnEachRun" class="ptolemy.data.expr.Parameter" value="resetOnEachRun">
