@@ -776,7 +776,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         //     appear or disappear).
         //  2) The sourcePort has changed its properties parameters
         //     (because this could affect whether other ports are in range).
-        //     This handled by a subclass that uses these properties, like
+        //     This is handled by a subclass that uses these properties, like
         //     LimitedRangeChannel.
         //  3) Any listening port has changed its location.  Any
         //     subclass that is using location information needs to
