@@ -18,7 +18,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 600]">
     </property>
-    <property name="range" class="ptolemy.data.expr.Parameter" value="55">
+    <property name="range" class="ptolemy.data.expr.Parameter" value="100">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -431,6 +431,14 @@ parameter.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 605.0]">
             </property>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 816, 518}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6961688617401">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{417.9299316406249, 389.2866210937499}">
+        </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 165.0]">
@@ -442,6 +450,8 @@ parameter.</text></svg></configure>
             <property name="name" class="ptolemy.data.expr.NameParameter" value="$channelName">
             </property>
             <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="1.0 - probability">
+            </property>
+            <property name="seed" class="ptolemy.data.expr.Parameter" value="1L">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 645.0]">
             </property>
@@ -457,6 +467,8 @@ parameter.</text></svg></configure>
             </property>
         </entity>
         <entity name="NodeRandomizer" class="ptolemy.domains.wireless.lib.NodeRandomizer">
+            <property name="maxPrecision" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
             <property name="randomizeInInitialize" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="resetOnEachRun" class="ptolemy.data.expr.Parameter" value="resetOnEachRun">
@@ -1273,6 +1285,7 @@ parameter.</text></svg></configure>
                 <ptalonExpressionParameter name="n" value="49"/>
                 <ptalonExpressionParameter name="channelName" value="channelName"/>
                 <ptalonExpressionParameter name="reportChannelName" value="reportChannelName"/>
+                <ptalonExpressionParameter name="range" value="range"/>
             </ptalon>
         </configure>
     </entity>

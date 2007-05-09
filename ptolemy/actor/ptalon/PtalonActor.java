@@ -39,7 +39,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -100,31 +100,6 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set the parameter with paramName to have value actorName.
-     *  @param paramName The parameter name.
-     *  @param actorName The contained actor name.
-     *  @throws PtalonRuntimeException If the parameter or actor
-     *  does not exist.
-     */
-    public String addActorParameter(String paramName, String actorName)
-            throws PtalonRuntimeException {
-        PtalonActor actor = (PtalonActor) getEntity(actorName);
-        if (actor == null) {
-            throw new PtalonRuntimeException("No such actor " + actorName);
-        }
-        PtalonParameter param = (PtalonParameter) getAttribute(paramName);
-        if (param == null) {
-            throw new PtalonRuntimeException("No such parameter " + paramName);
-        }
-        try {
-            param.setToken(new StringToken(actorName));
-        } catch (IllegalActionException ex) {
-            throw new PtalonRuntimeException("Not able to set parameter "
-                    + paramName + " to actor " + actorName, ex);
-        }
-        return "";
-    }
-
     /** React to a change in an attribute.  This method is called by a
      *  contained attribute when its value changes.  This initially
      *  responds to changes in the <i>ptalonCode</i> parameter.  Later
@@ -139,17 +114,22 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         super.attributeChanged(attribute);
         
         if (attribute == ptalonCodeLocation) {
+            // The location of the Ptalon file has been set, so start
+            // the Ptalon compiler.
             _initializePtalonCodeLocation();
         } else if (attribute instanceof PtalonParameter) {
             PtalonParameter p = (PtalonParameter) attribute;
-            if (p.hasValue() && p.isValueChanged()) {
-                p.setValueChanged(false);
+            if (_isValueChanged(p)) {
                 try {
                     if (p.getVisibility().equals(Settable.NONE)) {
-                        if (_unsettablePtalonParameters.contains(p)) {
-                            return;
-                        } else {
+                        // Store parameters that are not settable by
+                        // the user so that they do not get exported
+                        // to MoML.
+                        // @see #_exportMoMLContents(Writer output, int depth)
+                        if (!_unsettablePtalonParameters.contains(p)) {
                             _unsettablePtalonParameters.add(p);
+                        } else {
+                            return;
                         }
                     }
                     
@@ -161,35 +141,38 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                         // _assignedPtalonParameters and save a copy
                         // by creating a clone.
                         _assignedPtalonParameters.add(p);
+
                         _assignedPtalonParametersCopy.put(p.getName(),
                                 (PtalonParameter)p.clone(null));
+                        _assignedPtalonParametersCopyValues.put(p.getName(),
+                                p.getToken());
                     } else {
                         // The value of the parameter was previously
-                        // assigned.  Check to see if value has
-                        // actually changed.
-                        PtalonParameter oldParameter =
-                            _assignedPtalonParametersCopy.get(p.getName());
-                        if (!oldParameter.getToken().isEqualTo(p.getToken()).
-                                booleanValue()) {
-                            // The value has changed.  Create a new
-                            // copy of the parameter.
-                            _assignedPtalonParametersCopy.put(p.getName(),
-                                    (PtalonParameter)p.clone(null));
-                            
-                            // Delete the inside of this PtalonActor
-                            // by removing all entities and relations.
-                            // We do not remove ports, but they become
-                            // unlinked when the attached entities and
-                            // relations are removed.
-                            this.removeAllEntities();
-                            this.removeAllRelations();
+                        // assigned, and therefore the parameter value
+                        // must have changed (we checked this at the
+                        // beginning of this method).
 
-                            // Reset this PtalonActor and reparse the
-                            // Ptalon code.
-                            _initializePtalonActor();
-                            _initializePtalonCodeLocation();
-                            return;
-                        }
+                        // Store a new copy of the parameter and its
+                        // token value.
+                        _assignedPtalonParametersCopy.put(p.getName(),
+                                (PtalonParameter)p.clone(null));
+                        _assignedPtalonParametersCopyValues.put(p.getName(),
+                                p.getToken());
+
+                        // Delete the inside of this PtalonActor by
+                        // removing all entities and relations.  We do
+                        // not remove ports, but they become unlinked
+                        // when the attached entities and relations
+                        // are removed.
+                        this.removeAllEntities();
+                        this.removeAllRelations();
+
+                        // Reset this PtalonActor and reparse the
+                        // Ptalon code in order to regenerate the
+                        // inside of thie actor.
+                        _initializePtalonActor();
+                        _initializePtalonCodeLocation();
+                        return;
                     }
                     
                     // FIXME: What is the code below for?
@@ -217,8 +200,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                         _codeManager.assignInternalParameters();
                     }
                 } catch (Exception ex) {
-                    throw new
-                        IllegalActionException(this, ex, ex.getMessage());
+                    throw
+                        new IllegalActionException(this, ex, ex.getMessage());
                 }
             }
         }
@@ -557,6 +540,63 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         _nestedDepth = 0;
     }
     
+    /** Return true if the value of the given PtalonParameter has
+     *  changed.  This method checks for newly assigned values (where
+     *  the value was not previously asigned), changed expression
+     *  values, and changed token values (as a result of a change to
+     *  the value of the underlying expression).
+     *  @see #attributeChanged(Attribute)
+     *  @param p The PtalonParameter to check.
+     *  @return True if value has changed.
+     *  @throws IllegalActionException If unable to compare the token
+     *  value of p with its previously stored value.
+     */
+    private boolean _isValueChanged(PtalonParameter p)
+            throws IllegalActionException {
+        if (!p.hasValue()) {
+            // The parameter does not have a value.
+            return false;
+        } else if (_assignedPtalonParametersCopy.containsKey(
+                p.getName())) {
+            // The value of the parameter was previously assigned.
+            // Check to see if value has actually changed.
+            PtalonParameter oldParameter =
+                _assignedPtalonParametersCopy.get(p.getName());
+            if (!oldParameter.getExpression().equals(p.getExpression())) {
+                // The parameter expressions are different.
+                return true;
+            } else {
+                // The parameter expressions are the same.  Check to
+                // see if the token values are the same.
+                Token oldToken =
+                    _assignedPtalonParametersCopyValues.get(p.getName());
+                if (oldToken == null) {
+                    // The old token value of the parameter is null
+                    // because the token value has not yet been
+                    // stored, since the call to this method in this
+                    // case occurs as a result of a call to getToken()
+                    // to store a copy of the parameter token value (a
+                    // reentrant call).  The value has not changed, so
+                    // we return false.
+                    return false;
+                } else if (p.getToken().isEqualTo(oldToken).booleanValue()) {
+                    // The token values has not changed.
+                    return false;
+                } else {
+                    // The token value has changed.
+                    return true;
+                }
+            }
+        } else {
+            // The parameter has a value, but it was not already
+            // stored.
+            return true;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private variables                    ////
+    
     /** A list of all ptalon parameters that have been assigned a
      *  value.  This is a subset of _ptalonParameters.
      */
@@ -568,10 +608,20 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  value is a copy of an element in _assignedPtalonParameters (a
      *  PtalonParameter) and the key is the name returned by
      *  getName().  This table is used to compare newly assigned
-     *  values against previously assigned values.
+     *  expression values against previously assigned expression values.
      */
     private Hashtable<String, PtalonParameter> _assignedPtalonParametersCopy =
         new Hashtable<String, PtalonParameter>();
+
+    /** A table of copies of token values of all of the elements in
+     *  _assignedPtalonParameters.  In each entry of this table, the
+     *  value is the token value of an element in
+     *  _assignedPtalonParameters (a PtalonParameter) and the key is
+     *  the name returned by getName().  This table is used to compare
+     *  current token values against previous token values.
+     */
+    private Hashtable<String, Token> _assignedPtalonParametersCopyValues =
+        new Hashtable<String, Token>();
     
     /** The abstract syntax tree for the PtalonActor.
      */

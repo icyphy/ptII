@@ -1,4 +1,4 @@
-/* FIXME comment
+/*  A Parameter created in a Ptalon file.
   
  Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
@@ -35,7 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
- This parameter corresponds to a parameter created in a Ptalon file.
+ A Parameter created in a Ptalon file.
  @see PtalonActor
   
  @author Adam Cataldo, Elaine Cheong
@@ -45,13 +45,13 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class PtalonParameter extends Parameter {
 
-    /** Construct a parameter with the given name contained by the specified
-     *  entity. The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This parameter will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  The object is not added to the list of objects in the workspace
-     *  unless the container is null.
+    /** Construct a parameter with the given name contained by the
+     *  specified entity. The container argument must not be null, or
+     *  a NullPointerException will be thrown.  This parameter will
+     *  use the workspace of the container for synchronization and
+     *  version counts.  If the name argument is null, then the name
+     *  is set to the empty string.  The object is not added to the
+     *  list of objects in the workspace unless the container is null.
      *  Increment the version of the workspace.
      *  @param container The container.
      *  @param name The name of the parameter.
@@ -76,23 +76,9 @@ public class PtalonParameter extends Parameter {
     public boolean hasValue() {
         return _hasValue;
     }
-
-    /** Return true if this parameter's value has changed.
-     *  @return True if this parameter's value has changed.
-     */
-    public boolean isValueChanged() {
-        return _valueChanged;
-    }
-
-    /** Set indicator for whether this parameter's value has changed.
-     *  @param value Value of indicator to set.
-     */
-    public void setValueChanged(boolean value) {
-        _valueChanged = value;
-    }   
     
     /** Set the expression and flag that the value has been set for
-     *  this parameter and that the value has changed.
+     *  this parameter.
      *  @param expr The expression to set.
      */
     public void setExpression(String expr) {
@@ -100,25 +86,23 @@ public class PtalonParameter extends Parameter {
             return;
         }
         _hasValue = true;
-        _valueChanged = true;
         
         super.setExpression(expr);
     }
 
     /** Set the token and flag that the value has been set for this
-     *  parameter and that the value has changed.
+     *  parameter.
      *  @param token The token to set.
      *  @throws IllegalActionException If the superclass throws one.
      */
     public void setToken(Token token) throws IllegalActionException {
         _hasValue = true;
-        _valueChanged = true;
         
         super.setToken(token);
     }
 
     /** Set the token and flag that the value has been set for this
-     *  parameter and that the value has changed.
+     *  parameter.
      *  @param expression The expression for this token
      *  @throws IllegalActionException If the superclass throws one.
      */
@@ -127,7 +111,6 @@ public class PtalonParameter extends Parameter {
             return;
         }
         _hasValue = true;
-        _valueChanged = true;
         
         super.setToken(expression);
     }
@@ -138,8 +121,4 @@ public class PtalonParameter extends Parameter {
     /** True if this parameter has a value.
      */
     private boolean _hasValue;
-
-    /** True if value has changed.
-     */
-    public boolean _valueChanged = false;
 }

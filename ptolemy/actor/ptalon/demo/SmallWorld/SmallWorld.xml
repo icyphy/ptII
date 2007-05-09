@@ -305,6 +305,7 @@ Based on $PTII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml</text></s
                 <ptalonExpressionParameter name="n" value="49"/>
                 <ptalonExpressionParameter name="channelName" value="channelName"/>
                 <ptalonExpressionParameter name="reportChannelName" value="reportChannelName"/>
+                <ptalonExpressionParameter name="range" value="range"/>
             </ptalon>
         </configure>
     </entity>

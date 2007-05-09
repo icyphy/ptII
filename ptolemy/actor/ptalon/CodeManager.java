@@ -1214,7 +1214,8 @@ public class CodeManager {
      */
     private IfTree _root;
 
-    /** These two lists are used to store parameters which need to be
+    /** _unassignedParameters and _unassignedParameterValues are used 
+     *  to store parameters which need to be
      *  set by Ptalon; i.e. constant parameters.  The first list are
      *  the parameters, and the second list are the expressions to
      *  assign to the parameters.
@@ -1222,6 +1223,12 @@ public class CodeManager {
     private List<PtalonParameter> _unassignedParameters =
             new LinkedList<PtalonParameter>();
 
+    /** _unassignedParameters and _unassignedParameterValues are used 
+     *  to store parameters which need to be
+     *  set by Ptalon; i.e. constant parameters.  The first list are
+     *  the parameters, and the second list are the expressions to
+     *  assign to the parameters.
+     */
     private List<String> _unassignedParameterValues =
             new LinkedList<String>();
 

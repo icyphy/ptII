@@ -10,24 +10,46 @@ SmallWorld is {
     parameter channelName;
     parameter reportChannelName;
 
+
+    parameter range;
+/*
+    parameter probability;
+    parameter resetOnEachRun;
+    parameter nodePropagationDelay;
+    parameter visualDensity;
+    parameter randomize;
+*/
     outport output;
 
-    channel(defaultProperties := [[{range=range}]], lossProbability := [[1.0 - probability]], seed := [[ 1L ]], name := [[channelName]]);
-    channel(name := [[reportChannelName]]);
+    channel(defaultProperties := [[ {range=range} ]], 
+              lossProbability := [[ 1.0 - probability ]], 
+                         seed := [[ 1L ]], 
+                         name := [[ channelName ]]);
+    channel(name := [[ reportChannelName ]]);
 
-    wirelessToWired(inputChannelName := [[reportChannelName]], payload := output, _location := [[ [0,0] ]]);
+    wirelessToWired(inputChannelName := [[ reportChannelName ]], 
+                             payload := output, 
+                           _location := [[ [0.0, 0.0] ]]);
 
     initiator(_location := [[ [230.0, 345.0] ]]);
 
-    nodeRandomizer(randomizeInInitialize := [[ true ]], resetOnEachRun := [[ resetOnEachRun ]], range := [[ {{100.0, 400.0}, {200.0, 500.0}} ]], seed := [[ 1L ]] );
-
+    nodeRandomizer(
+                     maxPrecision := [[ 3 ]], 
+            randomizeInInitialize := [[ true ]], 
+                   resetOnEachRun := [[ resetOnEachRun ]], 
+                            range := [[ {{100.0, 400.0}, {200.0, 500.0}} ]], 
+                             seed := [[ 1L ]] );
 
     parameter n;
     for i initially [[ 1 ]] [[ i <= n ]] {
-        node(nodePropagationDelay := [[nodePropagationDelay]], 
-                            range := [[range]], 
-                        haloColor := [[{0.0, 0.5, 0.5, probability*visualDensity}]], 
-                        randomize := [[randomize]], 
-                        _location := [[ [10*i, 10*i] ]]);
+/*
+        node(range := [[range ]]);
+*/
+
+        node(nodePropagationDelay := [[ nodePropagationDelay ]], 
+                            range := [[ range ]], 
+                        haloColor := [[ {0.0, 0.5, 0.5, probability*visualDensity} ]], 
+                        randomize := [[ randomize ]], 
+                        _location := [[ [10.0 * i, 10.0 * i] ]]);
     } next [[ i + 1 ]]
 }
