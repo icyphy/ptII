@@ -3,7 +3,8 @@ $super();
 jdouble $actorSymbol(xValue);
 /**/
 
-/***initBlock***/           
+/***initBlock***/    
+$super();       
 $actorSymbol(xValue) = $val(xInit);  
 /**/
 
