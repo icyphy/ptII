@@ -187,7 +187,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         ptolemy.actor.Director director = compositeActor.getDirector();
         Director directorHelper = (Director) _getHelper(director);
         code.append(directorHelper.generateFireFunctionCode());
-        if (!(compositeActor instanceof ptolemy.actor.CompiledCompositeActor)) {
+        if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor)) {
             code.append(super.generateFireFunctionCode());
         }    
         return code.toString();

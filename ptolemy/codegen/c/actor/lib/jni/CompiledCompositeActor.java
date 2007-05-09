@@ -25,10 +25,11 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.codegen.c.actor;
+package ptolemy.codegen.c.actor.lib.jni;
 
 import java.util.List;
 
+import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.StaticSchedulingCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
@@ -53,7 +54,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  @param component The associated component.
      */
     public CompiledCompositeActor(
-            ptolemy.actor.CompiledCompositeActor component) {
+            ptolemy.actor.lib.jni.CompiledCompositeActor component) {
         super(component);
     }
     
@@ -63,8 +64,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  accessing the actor.
      */   
     public static void generateCode(
-            ptolemy.actor.CompiledCompositeActor actor) 
+            ptolemy.actor.TypedCompositeActor compositeActor) 
             throws IllegalActionException {
+        
+        ptolemy.actor.lib.jni.CompiledCompositeActor actor 
+                = (ptolemy.actor.lib.jni.CompiledCompositeActor) compositeActor; 
 
         List codeGenerators = actor.attributeList(CodeGenerator.class);
 

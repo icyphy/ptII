@@ -456,7 +456,21 @@ public class CodeStream {
             ex.printStackTrace();
         }
     }
+    
+    /** Reset this CodeStream object so that its code table will be 
+     *  re-constructed when needed.
+     */
+    public void reset() {
+        _declarations = null;
+    }
 
+    /** Set the code blocks which will be parsed instead of .c file.
+     *  @param codeBlocks
+     */
+    public void setCodeBlocks(String codeBlocks) {
+        _codeBlocks = codeBlocks;
+    }
+    
     /** Set the indent level.
      *  @param indentLevel The indent level, where 0 means no indentation,
      *  1 means indent one level (probably 4 spaces).
@@ -541,6 +555,11 @@ public class CodeStream {
             throws IllegalActionException {
 
         _declarations = new CodeBlockTable();
+        
+        if (_codeBlocks != null) {
+            _constructCodeTableHelper(mayNotExist);
+            return;
+        }
 
         if (_filePath != null) {
             // Use the pre-specified file path.
@@ -568,26 +587,30 @@ public class CodeStream {
         BufferedReader reader = null;
 
         try {
-            // Open the .c file for reading.
-            reader = FileUtilities.openForReading(_filePath, null, null);
+            StringBuffer codeToBeParsed = new StringBuffer();
+            
+            if (_codeBlocks != null) {
+                codeToBeParsed.append(_codeBlocks);
+            } else {
+                // Open the .c file for reading.
+                reader = FileUtilities.openForReading(_filePath, null, null);
 
-            if (reader == null) {
-                return;
-            }
+                if (reader == null) {
+                    return;
+                }
 
-            StringBuffer codeInFile = new StringBuffer();
-
-            // FIXME: is there a better way to read the entire file?
-            // create a string of all code in the file
-            for (String line = reader.readLine(); line != null; line = reader
-                    .readLine()) {
-                codeInFile.append(line + _eol);
-            }
+                // FIXME: is there a better way to read the entire file?
+                // create a string of all code in the file
+                for (String line = reader.readLine(); line != null; line = reader
+                        .readLine()) {
+                    codeToBeParsed.append(line + _eol);
+                }
+            }    
 
             _declarations.addScope();
 
             // repeatedly parse the file
-            while (_parseCodeBlock(codeInFile) != null) {
+            while (_parseCodeBlock(codeToBeParsed) != null) {
                 ;
             }
 
@@ -1235,6 +1258,8 @@ public class CodeStream {
     /** The code generator associated with this code stream. 
      */
     protected CodeGenerator _codeGenerator;
+    
+    private String _codeBlocks;
 
     /**
      * The code block table that stores the code blocks information,

@@ -305,6 +305,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         _codeFileName = null;
         _sanitizedModelName = CodeGeneratorHelper.generateName(_model);
+        // Each time a .dll file is generated, we must use a different name
+        // for it so that it can be loaded without restarting vergil.
+        NamedObj container = getContainer();
+        if (container instanceof ptolemy.actor.lib.jni.CompiledCompositeActor) {
+            _sanitizedModelName = ((ptolemy.actor.lib.jni.CompiledCompositeActor) 
+                    container).getSanitizedName();
+        }
+            
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
 
         // We separate the generation and the appending into 2 phases.
@@ -370,13 +378,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             code.append(fireFunctionCode);
         }
 
-        if (containsCode(variableInitCode)
-                || containsCode(initializeCode)) {
+        //if (containsCode(variableInitCode)
+        //        || containsCode(initializeCode)) {
             code.append(initializeEntryCode);
             code.append(variableInitCode);
             code.append(initializeCode);
             code.append(initializeExitCode);
-        }
+        //}
 
         if (containsCode(_postfireCode)) {
             code.append(postfireEntryCode);
@@ -384,11 +392,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             code.append(postfireExitCode);
         }
 
-        if (containsCode(wrapupCode)) {
+        //if (containsCode(wrapupCode)) {
             code.append(wrapupEntryCode);
             code.append(wrapupCode);
             code.append(wrapupExitCode);
-        }
+        //}
 
         code.append(mainEntryCode);
 
@@ -560,8 +568,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
-        code.append(compositeActorHelper.generateFireFunctionCode());
+        ActorCodeGenerator helper = _getHelper(getContainer());
+        code.append(helper.generateFireFunctionCode());
         return code.toString();
     }
 
@@ -599,8 +607,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         StringBuffer code = new StringBuffer();
         //code.append(comment("Initialize " + getContainer().getFullName()));
 
-        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
-        code.append(compositeActorHelper.generateInitializeCode());
+        ActorCodeGenerator helper = _getHelper(getContainer());
+        code.append(helper.generateInitializeCode());
         return code.toString();
     }
 
@@ -662,8 +670,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         StringBuffer code = new StringBuffer();
         //code.append(comment(1, "Postfire " + getContainer().getFullName()));
 
-        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
-        code.append(compositeActorHelper.generatePostfireCode());
+        ActorCodeGenerator helper = _getHelper(getContainer());
+        code.append(helper.generatePostfireCode());
         return code.toString();
     }
 
@@ -705,16 +713,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
+        ActorCodeGenerator helper = _getHelper(getContainer());
 
         try {
-            _modifiedVariables = compositeActorHelper.getModifiedVariables();
+            _modifiedVariables = helper.getModifiedVariables();
 
-            code.append(compositeActorHelper.generatePreinitializeCode());
+            code.append(helper.generatePreinitializeCode());
 
-            code.append(compositeActorHelper.createOffsetVariablesIfNeeded());
+            code.append(helper.createOffsetVariablesIfNeeded());
         } catch (Throwable throwable) {
-            throw new IllegalActionException(compositeActorHelper
+            throw new IllegalActionException(helper
                     .getComponent(), throwable,
                     "Failed to generate preinitialize code");
         }
@@ -733,8 +741,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateSharedCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
-        Set sharedCodeBlocks = compositeActorHelper.getSharedCode();
+        ActorCodeGenerator helper = _getHelper(getContainer());
+        Set sharedCodeBlocks = helper.getSharedCode();
         Iterator blocks = sharedCodeBlocks.iterator();
         while (blocks.hasNext()) {
             String block = (String) blocks.next();
@@ -777,8 +785,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         //code.append(comment(0, "Variable Declarations "
         //        + getContainer().getFullName()));
 
-        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
-        code.append(compositeActorHelper.generateVariableDeclaration());
+        ActorCodeGenerator helper = _getHelper(getContainer());
+        code.append(helper.generateVariableDeclaration());
         return code.toString();
     }
 
@@ -794,9 +802,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         //code.append(comment(1, "Variable initialization "
         //       + getContainer().getFullName()));
 
-        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
+        ActorCodeGenerator helper = _getHelper(getContainer());
 
-        code.append(compositeActorHelper.generateVariableInitialization());
+        code.append(helper.generateVariableInitialization());
         return code.toString();
     }
 
@@ -822,8 +830,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         StringBuffer code = new StringBuffer();
         //code.append(comment(1, "Wrapup " + getContainer().getFullName()));
 
-        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
-        code.append(compositeActorHelper.generateWrapupCode());
+        ActorCodeGenerator helper = _getHelper(getContainer());
+        code.append(helper.generateWrapupCode());
         return code.toString();
     }
 

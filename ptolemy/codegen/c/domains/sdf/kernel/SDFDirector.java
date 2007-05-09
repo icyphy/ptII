@@ -30,7 +30,7 @@ package ptolemy.codegen.c.domains.sdf.kernel;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompiledCompositeActor;
+import ptolemy.actor.lib.jni.CompiledCompositeActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
@@ -299,7 +299,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             String portName = outputPort.getName();
             String tokensToThisPort = "tokensTo" + portName;
-            ;
+
             Type type = ((TypedIOPort) outputPort).getType();
 
             int numberOfChannels = outputPort.getWidthInside();

@@ -334,9 +334,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             throws IllegalActionException {
     }
 
-    /** Generate sanitized name for the given named object.
-     *  The name will never have a leading underscore so as to avoid
-     *  conflicts with systems functions.
+    /** Generate sanitized name for the given named object. Remove all
+     *  underscores to avoid conflicts with systems functions.
      *  @param namedObj The named object for which the name is generated.
      *  @return The sanitized name.
      */

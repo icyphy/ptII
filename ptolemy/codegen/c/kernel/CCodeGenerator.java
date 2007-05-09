@@ -53,6 +53,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 ////CodeGenerator
@@ -137,7 +138,15 @@ public class CCodeGenerator extends CodeGenerator {
         includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
 
         if (!isTopLevel()) {
-            includingFiles.add("\"Jni" + _sanitizedModelName + ".h\"");
+            includingFiles.add("\"" + _sanitizedModelName + ".h\"");
+            
+            // FIXME: This only works under windows.
+            String javaHome = StringUtilities.getProperty("java.home");
+            javaHome = javaHome.replace('\\', '/');
+            int index = javaHome.lastIndexOf("jre");
+            javaHome = javaHome.substring(0, index);
+            addInclude("-I\"" + javaHome + "include\"");
+            addInclude("-I\"" + javaHome + "include/win32\"");
         }
 
         includingFiles.add("<stdarg.h>");
@@ -172,7 +181,7 @@ public class CCodeGenerator extends CodeGenerator {
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
         } else {
-            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_Jni"
+            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
                     + _sanitizedModelName + "_initialize("
                     + "JNIEnv *env, jobject obj) {" + _eol;
         }
@@ -216,7 +225,7 @@ public class CCodeGenerator extends CodeGenerator {
             // for the Java and C co-simulation.
         } else {
             mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL"
-                    + _eol + "Java_Jni" + _sanitizedModelName + "_fire ("
+                    + _eol + "Java_" + _sanitizedModelName + "_fire ("
                     + _eol + "JNIEnv *env, jobject obj");
 
             Iterator inputPorts = ((Actor) getContainer()).inputPortList()
@@ -259,7 +268,7 @@ public class CCodeGenerator extends CodeGenerator {
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
         } else {
-            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_Jni"
+            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
                     + _sanitizedModelName + "_postfire("
                     + "JNIEnv *env, jobject obj) {" + _eol;
         }
@@ -528,7 +537,7 @@ public class CCodeGenerator extends CodeGenerator {
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
         } else {
-            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_Jni"
+            return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
                     + _sanitizedModelName + "_wrapup("
                     + "JNIEnv *env, jobject obj) {" + _eol;
         }
