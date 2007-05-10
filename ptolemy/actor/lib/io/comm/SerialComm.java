@@ -119,10 +119,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p> FIXME: This actor has some key limitations.
  <ul>
  <li> It currently works only under Windows.
- <li> It is designed under the (poor) assumption that there will
- be only one instance of the actor present.  It should use static
- data structures to ensure that if there are multiple instances,
- then all instances see all serial port input data.
+ <li> If there are multiple instances in a model, then unless
+      the model designer has taken special care to ensure sequential
+      execution of the actor, inputs from the serial port may be
+      nondeterministically received by any of the actors.
  </ul>
 
  @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
@@ -338,7 +338,7 @@ public class SerialComm extends TypedAtomicActor implements
         super.fire();
 
         try {
-            // Produce output first.
+            // Produce output to the serial port first.
             if ((dataToSend.getWidth() > 0) && dataToSend.hasToken(0)) {
                 ArrayToken dataArrayToken = (ArrayToken) dataToSend.get(0);
                 OutputStream out = _serialPort.getOutputStream();
@@ -367,8 +367,18 @@ public class SerialComm extends TypedAtomicActor implements
             }
 
             // NOTE: This needs _minimumOutputSize to be at least 1.
+            // FIXME: stopFire() is called if the serial port receives
+            // a byte while we are in the wait() (by the serialEvent()
+            // method, through fireAtCurrentTime(), I think). But we
+            // don't want to exit the loop if stopFire() is called for
+            // this reason.  We want to continue waiting until there
+            // is enough input data.  But this means that if stopFire()
+            // is called for some other reason, then this actor will
+            // ignore the call.  This is not quite right, and could
+            // make the actor fail in domains where stopFire() is essential
+            // (are there any?).
             while ((bytesAvailable < _minimumOutputSize) && _blocking
-                    && !_stopRequested && !_stopFireRequested) {
+                    && !_stopRequested /* && !_stopFireRequested */) {
                 try {
                     if (_debugging) {
                         _debug("Blocking waiting for minimum number of bytes: "
@@ -467,20 +477,27 @@ public class SerialComm extends TypedAtomicActor implements
             String serialPortNameValue = serialPortName.stringValue();
             CommPortIdentifier portID = CommPortIdentifier
                     .getPortIdentifier(serialPortNameValue);
-            _serialPort = (SerialPort) portID.open("Ptolemy", 2000);
+            if (_serialPort == null || !toplevel().getName().equals(portID.getCurrentOwner())) {
+                _serialPort = (SerialPort) portID.open(toplevel().getName(), 2000);
 
-            // The 2000 above is 2000mS to open the port, otherwise time out.
-            int bits_per_second = ((IntToken) (baudRate.getToken())).intValue();
-            _serialPort.setSerialPortParams(bits_per_second,
-                    SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
-                    SerialPort.PARITY_NONE);
+                // The 2000 above is 2000mS to open the port, otherwise time out.
+                int bits_per_second = ((IntToken) (baudRate.getToken())).intValue();
+                _serialPort.setSerialPortParams(bits_per_second,
+                        SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
+                        SerialPort.PARITY_NONE);
 
-            _serialPort.addEventListener(this);
-            _serialPort.notifyOnDataAvailable(true);
-            _serialPort.notifyOnDSR(true); // DataSetReady isDSR
-            _serialPort.notifyOnCTS(true); // ClearToSend isCTS
-            _serialPort.notifyOnCarrierDetect(true); // isCD
-            _serialPort.notifyOnRingIndicator(true); // isRI
+                // NOTE: SerialPort only supports a single
+                // listener. With this design, only one SerialComm actor
+                // will be awakened in DE.  This is fine if there is only
+                // one SerialComm actor, but if there are more, it may
+                // be unexpected.
+                _serialPort.addEventListener(this);
+                _serialPort.notifyOnDataAvailable(true);
+                _serialPort.notifyOnDSR(true); // DataSetReady isDSR
+                _serialPort.notifyOnCTS(true); // ClearToSend isCTS
+                _serialPort.notifyOnCarrierDetect(true); // isCD
+                _serialPort.notifyOnRingIndicator(true); // isRI
+            }
 
             // Direct serial events on this port to my serialEvent() method.
             _stopFireRequested = false;
@@ -552,7 +569,7 @@ public class SerialComm extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The serial port.
-    private SerialPort _serialPort;
+    private static SerialPort _serialPort;
 
     // Threshold for reading serial port data.  Don't read unless
     // at least this many bytes are available.
