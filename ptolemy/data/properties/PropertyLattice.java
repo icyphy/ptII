@@ -85,13 +85,14 @@ public class PropertyLattice {
         }
         // System.out.println("compare " + property1 + " and " + property2 + " = " + _lattice.compare(property1, property2));
 
+        /*
         int i1 = property1.getPropertyHash();
         int i2 = property2.getPropertyHash();
 
         // Uncommment the false below to measure the impact of
         // _lattice.compare() on ptolemy.data package performance... Run
         // ptolemy/data/property/test/performance.xml before and after...(zk)
-        if ( /*false &&*/
+        if ( //false &&
         (i1 != Property.HASH_INVALID) && (i2 != Property.HASH_INVALID)) {
             if (_getCachedPropertyComparisonResult(i1, i2) == Property.HASH_INVALID) {
                 _setCachedPropertyComparisonResult(i1, i2, _lattice.compare(property1,
@@ -100,7 +101,8 @@ public class PropertyLattice {
 
             return _getCachedPropertyComparisonResult(i1, i2);
         }
-
+        */
+        
         return _lattice.compare(property1, property2);
     }
 
@@ -229,7 +231,7 @@ public class PropertyLattice {
         public Object greatestLowerBound(Object[] subset) {
             synchronized (PropertyLattice.class) {
                 if (subset.length == 0) {
-                    return BaseProperty.GENERAL;
+                    //return BaseProperty.GENERAL;
                 }
 
                 Object glb = subset[0];
@@ -328,90 +330,10 @@ public class PropertyLattice {
                             + "Arguments are not instances of Property.");
                 }
 
-                // System.out.println("LUB of " + t1 + " and " + t2); 
-                Property ct1 = (Property) t1;
-                Property ct2 = (Property) t2;
-
-                Property t1Rep = _toRepresentative(ct1);
-                Property t2Rep = _toRepresentative(ct2);
-
-                if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredProperty) {
-                    return ((StructuredProperty) t1)
-                    ._leastUpperBound((StructuredProperty) t2);
-                } else if (t1Rep instanceof ArrayProperty
-                        && !(t2Rep instanceof ArrayProperty)
-                        && !t2.equals(BaseProperty.UNKNOWN)
-                        && !t2.equals(BaseProperty.ARRAY_BOTTOM)) {
-                    // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                    ArrayProperty arrayProperty = (ArrayProperty) t1;
-                    Property elementProperty = ((ArrayProperty) ct1).getElementProperty();
-                    int elementComparison = compare(elementProperty, t2Rep);
-                    if (elementComparison == SAME || elementComparison == HIGHER) {
-                        if (arrayProperty.hasKnownLength() && arrayProperty.length() != 1) {
-                            // Least upper bound is unsized property.
-                            return new ArrayProperty(elementProperty);
-                        } else {
-                            return t1;
-                        }
-                    } else {
-                        if (t2Rep == BaseProperty.GENERAL) {
-                            return t2;
-                        } else {
-                            // INCOMPARABLE
-                            if (_basicLattice.containsNodeWeight(t2Rep)
-                                    && _basicLattice
-                                    .containsNodeWeight(elementProperty)) {
-                                // The least upper bound is an array of the LUB
-                                // of t2Rep and the element property of t1.
-                                return new ArrayProperty((Property) _basicLattice
-                                        .leastUpperBound(elementProperty, t2Rep));
-                            } else {
-                                // t2 is a user property (has no representative in the
-                                // basic lattice). Arrays of this property are not supported.
-                                return BaseProperty.GENERAL;
-                            }
-                        }
-                    }
-                } else if (t2Rep instanceof ArrayProperty
-                        && !(t1Rep instanceof ArrayProperty)
-                        && !t1.equals(BaseProperty.UNKNOWN)
-                        && !t1.equals(BaseProperty.ARRAY_BOTTOM)) {
-                    // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
-                    ArrayProperty arrayProperty = (ArrayProperty) t2;
-                    Property elementProperty = ((ArrayProperty) ct2).getElementProperty();
-                    int elementComparison = compare(elementProperty, t1Rep);
-                    if (elementComparison == SAME || elementComparison == HIGHER) {
-                        if (arrayProperty.hasKnownLength() && arrayProperty.length() != 1) {
-                            // Least upper bound is unsized property.
-                            return new ArrayProperty(elementProperty);
-                        } else {
-                            return t2;
-                        }
-                    } else {
-                        if (t1Rep == BaseProperty.GENERAL) {
-                            return t1;
-                        } else {
-                            // INCOMPARABLE
-                            if (_basicLattice.containsNodeWeight(t1Rep)
-                                    && _basicLattice
-                                    .containsNodeWeight(elementProperty)) {
-                                // The least upper bound is an array of the LUB
-                                // of t2Rep and the element property of t1.
-                                return new ArrayProperty((Property) _basicLattice
-                                        .leastUpperBound(elementProperty, t1Rep));
-                            } else {
-                                // t1 is a user property (has no representative in the
-                                // basic lattice). Arrays of this property are not supported.
-                                return BaseProperty.GENERAL;
-                            }
-                        }
-                    }
-                } else if (_basicLattice.containsNodeWeight(t1Rep)
-                        && _basicLattice.containsNodeWeight(t2Rep)) {
                     // Both are neither the same structured property, nor an array
                     // and non-array pair, so their property relation is defined
                     // by the basic lattice.
-                    int relation = _basicLattice.compare(t1Rep, t2Rep);
+                    int relation = _basicLattice.compare(t1, t2);
 
                     if (relation == SAME) {
                         return t1;
@@ -420,24 +342,8 @@ public class PropertyLattice {
                     } else if (relation == HIGHER) {
                         return t1;
                     } else { // INCOMPARABLE
-                        return _basicLattice.leastUpperBound(t1Rep, t2Rep);
+                        return _basicLattice.leastUpperBound(t1, t2);
                     }
-                } else {
-                    // Both arguments are not the same structured property, and
-                    // at least one is user defined, so their relation is
-                    // rather simple.
-                    if (t1Rep.equals(t2Rep)) {
-                        return t1;
-                    } else if ((t1Rep == BaseProperty.UNKNOWN)
-                            || (t2Rep == BaseProperty.GENERAL)) {
-                        return t2;
-                    } else if ((t2Rep == BaseProperty.UNKNOWN)
-                            || (t1Rep == BaseProperty.GENERAL)) {
-                        return t1;
-                    } else {
-                        return top();
-                    }
-                }
             }
         }
 
@@ -448,7 +354,7 @@ public class PropertyLattice {
         public Object leastUpperBound(Object[] subset) {
             synchronized (PropertyLattice.class) {
                 if (subset.length == 0) {
-                    return BaseProperty.UNKNOWN;
+                    //return BaseProperty.UNKNOWN;
                 }
 
                 Object lub = subset[0];
@@ -489,6 +395,8 @@ public class PropertyLattice {
         private ThePropertyLattice() {
             synchronized (PropertyLattice.class) {
                 _basicLattice = new DirectedAcyclicGraph();
+                
+                /*
 
                 StructuredProperty arrayRep = (new ArrayProperty(BaseProperty.UNKNOWN))
                 ._getRepresentative();
@@ -500,7 +408,8 @@ public class PropertyLattice {
                 StructuredProperty unionRep = (new UnionProperty(labels, properties))
                 ._getRepresentative();
 
-                /*StructuredProperty functionRep = */new ptolemy.data.property.FunctionProperty(
+                //StructuredProperty functionRep = 
+                 new ptolemy.data.property.FunctionProperty(
                         new ptolemy.data.property.Property[0],
                         ptolemy.data.property.BaseProperty.UNKNOWN)._getRepresentative();
 
@@ -601,6 +510,8 @@ public class PropertyLattice {
                 // _basicLattice.addEdge(BaseProperty.NIL, BaseProperty.INT);
                 _basicLattice.addEdge(BaseProperty.NIL, BaseProperty.UNSIGNED_BYTE);
 
+                */
+                
                 // FIXME: Replace this with an assert when we move to 1.5
                 if (!_basicLattice.isLattice()) {
                     throw new InternalErrorException("ThePropertyLattice: The "
@@ -626,15 +537,4 @@ public class PropertyLattice {
     /** The result cache for parts of the property lattice. */
     private static int[][] _compareCache;
 
-    static {
-        synchronized (PropertyLattice.class) {
-            _compareCache = new int[Property.HASH_MAX + 1][Property.HASH_MAX + 1];
-
-            for (int i = 0; i <= Property.HASH_MAX; i++) {
-                for (int j = 0; j <= Property.HASH_MAX; j++) {
-                    _compareCache[i][j] = Property.HASH_INVALID;
-                }
-            }
-        }
-    }
 }
