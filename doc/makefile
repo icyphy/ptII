@@ -372,6 +372,7 @@ ALL1_4PACKAGES = \
 	ptolemy.actor.gui.unit \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.hoc \
+	ptolemy.actor.lib.jni \
 	ptolemy.actor.lib.net \
 	ptolemy.actor.lib.vhdl \
 	ptolemy.actor.sched \
@@ -384,6 +385,7 @@ ALL1_4PACKAGES = \
 	ptolemy.codegen.c.actor.lib.hoc \
 	ptolemy.codegen.c.actor.lib.io \
 	ptolemy.codegen.c.actor.lib.javasound \
+	ptolemy.codegen.c.actor.lib.jni \
 	ptolemy.codegen.c.actor.lib.logic \
 	ptolemy.codegen.c.actor.lib.string \
 	ptolemy.codegen.c.actor.sched \
@@ -607,6 +609,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/lib/conversions/*.java \
 			../ptolemy/actor/lib/hoc/*.java \
 			../ptolemy/actor/lib/io/*.java \
+			../ptolemy/actor/lib/jni/*.java \
 			../ptolemy/actor/lib/net/*.java \
 			../ptolemy/actor/lib/gui/*.java \
 			../ptolemy/actor/lib/logic/*.java \
@@ -627,6 +630,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/codegen/c/actor/lib/hoc/*.java \
 			../ptolemy/codegen/c/actor/lib/io/*.java \
 			../ptolemy/codegen/c/actor/lib/javasound/*.java \
+			../ptolemy/codegen/c/actor/lib/jni/*.java \
 			../ptolemy/codegen/c/actor/lib/logic/*.java \
 			../ptolemy/codegen/c/actor/lib/string/*.java \
 			../ptolemy/codegen/c/actor/sched/*.java \
