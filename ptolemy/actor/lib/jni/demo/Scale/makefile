@@ -71,12 +71,7 @@ all: jclass
 
 install: all jars
 
-demo: demo_ptolemy demo_vergil
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer Scale.htm
-
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Scale.xml
+demo: demo_vergil
 
 demo_vergil:
 	"$(PTII)/bin/vergil" Scale.xml
