@@ -54,7 +54,7 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for X10 and sets PTX10_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTX10_DIR is empty.
 
-DIRS = 		conversions gui logic hoc image javasound net io xslt \
+DIRS = 		conversions gui logic hoc image javasound jni net io xslt \
 		test comm security string vhdl $(PTCOLT_DIR) $(PTJAI_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
 		$(PTJYTHON_DIR) $(PTJXTA_DIR) $(PTX10_DIR)
@@ -84,6 +84,7 @@ PTCLASSALLJARS = \
 	io/io.jar \
 	logic/logic.jar \
 	javasound/javasound.jar \
+	jni/jni.jar \
 	net/net.jar \
 	security/security.jar \
 	string/string.jar \
@@ -270,6 +271,7 @@ OPTIONAL_FILES = \
 	jai \
 	javasound \
 	jmf \
+	jni \
 	joystick \
 	x10 \
 	'AbsoluteValue$$1.class' \
