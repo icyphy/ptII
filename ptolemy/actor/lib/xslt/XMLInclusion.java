@@ -46,9 +46,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
    Combine multiple XMLTokens into one XMLToken.  
 
-   <p>The actor reads in multiple arrays of XML Tokens from the <i>input</i> port.
-   It also takes a port parameter, <i>template</i>, that specifies how the XML 
-   tokens will be combined.  The template is of the form:  
+   <p>The actor reads in multiple arrays of XML Tokens from the
+   <i>input</i> port.  It also takes a port parameter,
+   <i>template</i>, that specifies how the XML tokens will be
+   combined.  The template is of the form:
+
    <pre>
    &lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;
    &lt;Node&gt;
@@ -56,16 +58,19 @@ import ptolemy.kernel.util.NameDuplicationException;
    &lt;/Node&gt;
    </pre>
 
-   The template is a XML Token with $input as a delimiter for where the
-   input XML tokens should be placed, <code>i</code> specifies which array
-   (i.e. which channel) and <code>j</code> specifies which XML Token in the array.
-   Setting <code>j</code> equal to <code>n</code> will insert (in order) all XML tokens in that particular
-   array into the template file.  If <code>i</code> or <code>j</code> are out of bounds, <code>$inputi,j</code>
-   will not be replaced.  It also takes in a string parameter,
+   The template is a XML Token with $input as a delimiter for where
+   the input XML tokens should be placed, <code>i</code> specifies
+   which array (i.e. which channel) and <code>j</code> specifies which
+   XML Token in the array.  Setting <code>j</code> equal to
+   <code>n</code> will insert (in order) all XML tokens in that
+   particular array into the template file.  If <code>i</code> or
+   <code>j</code> are out of bounds, <code>$inputi,j</code> will not
+   be replaced.  It also takes in a string parameter,
    <i>headerParameter</i>, which is the header used for the output XML
-   token.  A XML Token with the delimiters replaced with the appropriate
-   XML Token is sent to the <i>output</i> port.  No changes are made to
-   the input XML Tokens besides removing the header and DTD.
+   token.  A XML Token with the delimiters replaced with the
+   appropriate XML Token is sent to the <i>output</i> port.  No
+   changes are made to the input XML Tokens besides removing the
+   header and DTD.
 
    @author Christine Avanessians, Edward Lee, Thomas Feng
    @version $Id$
@@ -93,6 +98,7 @@ public class XMLInclusion extends Transformer{
         input.setTypeEquals(new ArrayType(BaseType.XMLTOKEN));
         input.setMultiport(true);
        
+        // FIXME: what is the initial value of this parameter?
         template = new PortParameter(this, "template");
         template.setStringMode(true);
         
@@ -111,6 +117,9 @@ public class XMLInclusion extends Transformer{
      *  The initial value is not defined.
      */
     public PortParameter template;
+
+    // FIXME: change the name from headerParameter to header.
+    // We already know this is a parameter, so remove that from the name.
 
     /** The xml header.  This parameter is a string with an initial value of
      *  <code>&lt;?xml version="1.0" standalone="no"?&gt;</code>.
@@ -134,6 +143,8 @@ public class XMLInclusion extends Transformer{
         String all="";
         for (int j=0; j <input.getWidth(); j++) {
             ArrayToken a = (ArrayToken) input.get(j);
+
+            // FIXME: use StringBuffer instead of concatenating a String.
             String allInArray="";
             int i;
             for (i=0; i < a.length(); i++) {
@@ -150,7 +161,7 @@ public class XMLInclusion extends Transformer{
             String arrayTag = "$input" + Integer.toString(j) + ",n";
             outputString = outputString.replace(arrayTag, allInArray);
             if (j==0) {
-                all=all.concat(allInArray); 
+                all = all.concat(allInArray); 
             } else {
                 all = all.concat('\n'+ allInArray);
             }
@@ -163,10 +174,12 @@ public class XMLInclusion extends Transformer{
             output.broadcast(out);
         }
         catch (Exception e) {
-            throw new InternalErrorException(e);
+            throw new InternalErrorException(this, e);
         }     
     }
    
+    // FIXME: insert private comment, see Ramp
+
     //Removes XML header and DTD if there is one
     private String removeHeader (Token T) {
         String str="";
@@ -175,6 +188,7 @@ public class XMLInclusion extends Transformer{
         } else if (T instanceof XMLToken) {
             str = T.toString();
         } else {
+            // FIXME, use this when throwing exceptions
             throw new InternalErrorException("The token should be either " +
                     "of type StringToken, or of type XMLToken.");
         }
