@@ -48,9 +48,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.3
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Green (eal)
- @Pt.AcceptedRating Green (bilung)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class Starver extends Transformer {
     /** Construct an actor with the given container and name.
