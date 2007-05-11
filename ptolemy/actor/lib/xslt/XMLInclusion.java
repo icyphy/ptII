@@ -174,11 +174,13 @@ public class XMLInclusion extends Transformer{
             output.broadcast(out);
         }
         catch (Exception e) {
-            throw new InternalErrorException(this, e);
+            // FIXME: throw an exception that uses "this" so we
+            // know in which actor the error is located
+            throw new InternalErrorException(e);
         }     
     }
    
-    // FIXME: insert private comment, see Ramp
+    // FIXME: insert private comment header, see Ramp
 
     //Removes XML header and DTD if there is one
     private String removeHeader (Token T) {
