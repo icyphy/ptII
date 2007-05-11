@@ -1,0 +1,11 @@
+ModelChange is {
+    actor node = ptolemy.domains.de.lib.SingleEvent;
+    parameter n;
+
+    /* Move the following line to the end of the file. */
+    outport myoutput;
+
+    for i initially [[ 1 ]] [[ i <= n ]] {
+        node();
+    } next [[ i + 1 ]]
+}
