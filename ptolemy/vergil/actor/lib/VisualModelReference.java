@@ -88,7 +88,7 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
  </ul>
  
 
- @author Edward A. Lee
+ @author Edward A. Lee, Elaine Cheong
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Yellow (eal)

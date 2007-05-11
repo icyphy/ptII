@@ -14,9 +14,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[715, 531]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0118521139218">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.964112457091">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{310.3125, 224.2807473776224}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.8073652306968, 237.2734375}">
     </property>
     <property name="i" class="ptolemy.data.expr.Parameter" value="2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -56,13 +56,21 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 15.0]">
         </property>
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="i is node layout pattern.&#10;range = 10*j + 55">
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model runs the SmallWorld demo with different parameter values.&#10;In particular, it runs it with i different node layouts and j different ranges,&#10;where the range is equal to (10*j + startRange).  The results are output&#10;to dataOuti_j.txt">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, -20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 410.0]">
         </property>
     </property>
-    <entity name="range" class="ptolemy.actor.lib.Const">
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Elaine Cheong">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 495.0]">
+        </property>
+    </property>
+    <entity name="startRange" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="55">
         </property>
         <doc>Create a constant sequence.</doc>
@@ -476,8 +484,8 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="range.output" relation="relation11"/>
-    <link port="range.trigger" relation="relation12"/>
+    <link port="startRange.output" relation="relation11"/>
+    <link port="startRange.trigger" relation="relation12"/>
     <link port="VisualModelReference.range" relation="relation"/>
     <link port="VisualModelReference.resetOnEachRun" relation="relation2"/>
     <link port="VisualModelReference.fileName" relation="relation3"/>

@@ -169,7 +169,7 @@ import ptolemy.moml.MoMLParser;
  </ul>
  <P>
 
- @author Edward A. Lee
+ @author Edward A. Lee, Elaine Cheong
  @version $Id$
  @since Ptolemy II 4.0
  @see RunCompositeActor

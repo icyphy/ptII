@@ -14,13 +14,13 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 77, 945, 612}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 25, 1024, 612}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[729, 493]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[808, 493]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7443502823758">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7887362108426">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{375.9211502075195, 288.6612903715325}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{398.4441528320312, 270.0252734835785}">
         </property>
         <property name="i" class="ptolemy.data.expr.Parameter" value="0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -41,7 +41,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, -35.0]">
             </property>
         </property>
-        <property name="start" class="ptolemy.data.expr.Parameter" value="55">
+        <property name="startRange" class="ptolemy.data.expr.Parameter" value="55">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -136,6 +136,20 @@
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, -5.0]">
+            </property>
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model runs the SmallWorld demo with different parameter values.&#10;In particular, it runs it with runs_i different node layouts and runs_j different ranges,&#10;where the range is equal to (10*j + startRange).  The results are output&#10;to dataOuti_j.txt">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 400.0]">
+            </property>
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Elaine Cheong">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 500.0]">
             </property>
         </property>
         <entity name="state" class="ptolemy.domains.fsm.kernel.State">
@@ -255,7 +269,7 @@
         <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state.fileName.value = filePrefix + i + &quot;_&quot; + j + &quot;.txt&quot;; state.resetOnEachRun.value = true; state.range.value = start">
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state.fileName.value = filePrefix + i + &quot;_&quot; + j + &quot;.txt&quot;; state.resetOnEachRun.value = true; state.range.value = startRange">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>
@@ -307,7 +321,7 @@
         <relation name="relation8" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="i &gt;= runs_i">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="i = 0; j = j + 1; state.fileName.value = filePrefix + i + &quot;_&quot; + j + &quot;.txt&quot;; state.resetOnEachRun.value = true; state.range.value = start + j * 10">
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="i = 0; j = j + 1; state.fileName.value = filePrefix + i + &quot;_&quot; + j + &quot;.txt&quot;; state.resetOnEachRun.value = true; state.range.value = startRange + j * 10">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.8982493102662625">
             </property>
