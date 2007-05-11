@@ -25,7 +25,8 @@ SmallWorld is {
               lossProbability := [[ 1.0 - probability ]], 
                          seed := [[ 1L ]], 
                          name := [[ channelName ]]);
-    channel(name := [[ reportChannelName ]]);
+    channel(seed := [[ 1L ]], 
+            name := [[ reportChannelName ]]);
 
     wirelessToWired(inputChannelName := [[ reportChannelName ]], 
                              payload := output, 

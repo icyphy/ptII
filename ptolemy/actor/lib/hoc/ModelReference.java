@@ -453,7 +453,7 @@ public class ModelReference extends TypedAtomicActor implements
         if (!_alreadyReadInputs) {
             // Iterate over input ports and read any available values into
             // the referenced model parameters.
-            _readInputs();
+            _readInputsAndValidateSettables();
         }
 
         // Set the flag to false for the next firing.
@@ -712,13 +712,15 @@ public class ModelReference extends TypedAtomicActor implements
      *  @exception IllegalActionException If reading the ports or
      *   setting the parameters causes it.
      */
-    protected void _readInputs() throws IllegalActionException {
+    protected void _readInputsAndValidateSettables() throws IllegalActionException {
         // NOTE: This is an essentially exact copy of the code in RunCompositeActor,
         // but this class and that one can't easily share a common base class.
         if (_debugging) {
             _debug("** Reading inputs (if any).");
         }
 
+        boolean changeMade = false;
+        
         Iterator ports = inputPortList().iterator();
 
         while (ports.hasNext()) {
@@ -732,6 +734,7 @@ public class ModelReference extends TypedAtomicActor implements
                 }
 
                 parameter.update();
+                changeMade = true;
                 continue;
             }
 
@@ -749,6 +752,7 @@ public class ModelReference extends TypedAtomicActor implements
                         }
 
                         ((Variable) attribute).setToken(token);
+                        changeMade = true;
                     } else if (attribute instanceof Settable) {
                         if (_debugging) {
                             _debug("** Transferring input as string to parameter: "
@@ -756,9 +760,13 @@ public class ModelReference extends TypedAtomicActor implements
                         }
 
                         ((Settable) attribute).setExpression(token.toString());
+                        changeMade = true;
                     }
                 }
             }
+        }
+        if (changeMade) {
+            _model.validateSettables();
         }
     }
 

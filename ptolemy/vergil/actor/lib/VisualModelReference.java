@@ -244,7 +244,7 @@ public class VisualModelReference extends ModelReference {
         // this requires disabling the call in the superclass
         // because otherwise, if there are two pending input
         // tokens, they will both be consumed in this firing.
-        _readInputs();
+        _readInputsAndValidateSettables();
         _alreadyReadInputs = true;
 
         if (_model instanceof CompositeActor) {

@@ -1,0 +1,13 @@
+ModelChange is {
+    actor node = ptolemy.domains.de.lib.SingleEvent;
+    parameter n;
+
+    outport myoutput;
+
+    relation r;
+    for i initially [[ 1 ]] [[ i <= n ]] {
+        node(time := [[1.0 * i]], value := [[1.0 * i]], output := r);
+    } next [[ i + 1 ]]
+
+    this(myoutput := r);
+}
