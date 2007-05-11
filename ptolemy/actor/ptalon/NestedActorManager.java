@@ -1148,7 +1148,7 @@ public class NestedActorManager extends CodeManager {
         }
 
         /** Make all connections for this nested actor.
-         *  @param actor The actor for to connect to others.
+         *  @param actor The actor to connect to others.
          *  @exception PtalonRuntimeException If thrown trying to
          *  access the parameter, or if unable to set the token for
          *  the corresponding parameter.
