@@ -703,7 +703,14 @@ public class CCodeGenerator extends CodeGenerator {
                     .put("@PTCGIncludes@", _concatenateElements(_includes));
             substituteMap.put("@PTCGLibraries@",
                     _concatenateElements(_libraries));
-
+            
+            // If we are under Windows, set @PTJNI_NO_CYGWIN@
+            String osName = StringUtilities.getProperty("os.name");
+            if (osName != null && osName.startsWith("Windows")) {
+                substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
+            } else {
+                substituteMap.put("@PTJNI_NO_CYGWIN@", "");
+            }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(this, ex,
                     "Problem generating substitution map from " + _model);

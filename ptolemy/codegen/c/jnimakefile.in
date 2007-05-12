@@ -7,8 +7,8 @@
 
 PTCGLIBRARIES = @PTCGLibraries@
 PTCGINCLUDES = @PTCGIncludes@
+PTJNI_NO_CYGWIN = @PTJNI_NO_CYGWIN@
 
 # We need -lm so we can get floor() for ftoi() 
 @modelName@.dll: @modelName@.c
-	gcc -mno-cygwin $(PTCGINCLUDES) -Wl,--add-stdcall-alias -shared -o @modelName@.dll @modelName@.c -lm $(PTCGLIBRARIES)
-	
+	gcc $(PTJNI_NO_CYGWIN) $(PTCGINCLUDES) -Wl,--add-stdcall-alias -shared -o @modelName@.dll @modelName@.c -lm $(PTCGLIBRARIES)
