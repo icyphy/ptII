@@ -146,7 +146,19 @@ public class CCodeGenerator extends CodeGenerator {
             int index = javaHome.lastIndexOf("jre");
             javaHome = javaHome.substring(0, index);
             addInclude("-I\"" + javaHome + "include\"");
-            addInclude("-I\"" + javaHome + "include/win32\"");
+
+            String osName = StringUtilities.getProperty("os.name");
+            if (osName != null) {
+                if (osName.startsWith("Windows")) {
+                    addInclude("-I\"" + javaHome + "include/win32\"");
+                } else if (osName.startsWith("SunOS")) {
+                    addInclude("-I\"" + javaHome + "include/solaris\"");
+                } else if (osName.startsWith("Linux")) {
+                    addInclude("-I\"" + javaHome + "include/linux\"");
+                } else if (osName.startsWith("Darwin")) {
+                    addInclude("-I\"" + javaHome + "include/darwin\"");
+                }
+            }
         }
 
         includingFiles.add("<stdarg.h>");
