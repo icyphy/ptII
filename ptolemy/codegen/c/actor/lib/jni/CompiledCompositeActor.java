@@ -59,7 +59,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     }
     
     /** Generate code for a given actor.
-     *  @param actor The actor for which code is generated.
+     *  @param compositeActor The actor for which code is generated.
      *  @exception IllegalActionException If there are problems
      *  accessing the actor.
      */   
