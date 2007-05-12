@@ -379,10 +379,10 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
         List commands = new LinkedList();
 
         // Create the .class file.
-        commands.add("javac " + _sanitizedActorName + ".java");
+        commands.add("javac -classpath . " + _sanitizedActorName + ".java");
 
         // Create the .h file.
-        commands.add("javah " + _sanitizedActorName);
+        commands.add("javah -classpath . " + _sanitizedActorName);
 
         _executeCommands.setWorkingDirectory(codeDirectory.asFile());
         _executeCommands.setCommands(commands);
