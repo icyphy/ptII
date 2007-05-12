@@ -178,7 +178,8 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If <i>embeddedCCode</i> is changed, compile the changed C Code. 
+    //FIXME: Note that the next block is not a javadoc, I changed /** to /* 
+    /* If <i>embeddedCCode</i> is changed, compile the changed C Code. 
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If there is any error in evaluating
      *   the embedded C code.
