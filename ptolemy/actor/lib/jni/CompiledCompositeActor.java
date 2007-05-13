@@ -424,8 +424,17 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
 
         String dllPath = null;
         try {
+            String fileName = "";
+            String osName = StringUtilities.getProperty("os.name");
+            if (osName != null) {
+                if (osName.startsWith("Windows")) {
+                    fileName = _sanitizedActorName + ".dll";
+                } else {
+                    fileName = "lib" + _sanitizedActorName + ".so";
+                }
+            }
             dllPath = codeDirectory.asFile().getCanonicalPath() +
-                    File.separator + _sanitizedActorName + ".dll";
+                File.separator + fileName;
             dllPath = dllPath.replace("\\", "/");
             
         } catch (IOException e) {

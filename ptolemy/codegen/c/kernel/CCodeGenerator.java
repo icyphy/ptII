@@ -715,13 +715,42 @@ public class CCodeGenerator extends CodeGenerator {
                     .put("@PTCGIncludes@", _concatenateElements(_includes));
             substituteMap.put("@PTCGLibraries@",
                     _concatenateElements(_libraries));
-            
-            // If we are under Windows, set @PTJNI_NO_CYGWIN@
+
+            // Define substitutions to be used in the makefile
+            substituteMap.put("@PTJNI_NO_CYGWIN@", "");
+            substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@",
+                    "");
+            substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
+                    "");
+            substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@",
+                    "");
+            substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@",
+                    "");
+
             String osName = StringUtilities.getProperty("os.name");
-            if (osName != null && osName.startsWith("Windows")) {
-                substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
-            } else {
-                substituteMap.put("@PTJNI_NO_CYGWIN@", "");
+            if (osName != null) {
+                // FIXME: What about Darwin/MacOS?
+                if (osName.startsWith("Windows")) {
+                    substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
+                            "-Wl,--add-stdcall-alias");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@",
+                            "dll);
+                } else if (osName.startsWith("SunOS")) {
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@",
+                            "-fPIC");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
+                            "-fPIC");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@",
+                            "lib");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@",
+                            "so");
+                } else if (osName.startsWith("Linux")) { 
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@",
+                            "lib");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@",
+                            "so");
+                }
             }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(this, ex,

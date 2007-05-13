@@ -1,14 +1,30 @@
-# Template makefile from $PTII/ptolemy/codegen/c/makefile.in
+# Template makefile from $PTII/ptolemy/codegen/c/jnimakefile.in
 # $Id$
-# The CodeGenerator class subsitutes strings like "@modelName@" with
+# The CCodeGenerator class subsitutes strings like "@modelName@" with
 # the value of parameters and writes the results in the directory
 # where the source code is created.
 # To compile, run make -f @modelName@.mk
 
-PTCGLIBRARIES = @PTCGLibraries@
-PTCGINCLUDES = @PTCGIncludes@
-PTJNI_NO_CYGWIN = @PTJNI_NO_CYGWIN@
+MODELNAME =	@modelName@
+
+PTCGINCLUDES = 			@PTCGIncludes@
+PTCGLIBRARIES = 		@PTCGLibraries@
+
+# Flag to use with JNI under Cygwin (-mno-cygwin)
+PTJNI_NO_CYGWIN =		@PTJNI_NO_CYGWIN@
+
+# JNI shared library linker flag, under Solaris this would be -fPIC.
+PTJNI_SHAREDLIBRARY_LDFLAG =	@PTJNI_SHAREDLIBRARY_LDFLAG@
+
+# JNI shared library prefix, under Solaris this would be lib
+PTJNI_SHAREDLIBRARY_PREFIX = 	@PTJNI_SHAREDLIBRARY_PREFIX@
+
+# JNI shared library suffix, under Windows this would be dll.
+PTJNI_SHAREDLIBRARY_SUFFIX = 	@PTJNI_SHAREDLIBRARY_SUFFIX@
+
+# The name of the library we are generating
+PTLIB = $(PTJNI_SHAREDLIBRARY_PREFIX)$(MODELNAME).$(PTJNI_SHAREDLIBRARY_SUFFIX)
 
 # We need -lm so we can get floor() for ftoi() 
-@modelName@.dll: @modelName@.c
-	gcc $(PTJNI_NO_CYGWIN) $(PTCGINCLUDES) -Wl,--add-stdcall-alias -shared -o @modelName@.dll @modelName@.c -lm $(PTCGLIBRARIES)
+$(PTLIB): $(MODELNAME).c
+	gcc $(PTJNI_NO_CYGWIN) $(PTCGINCLUDES) $(PTJNI_SHAREDLIBRARY_LDFLAG) -shared -o $(PTLIB) @modelName@.c -lm $(PTCGLIBRARIES)
