@@ -735,7 +735,7 @@ public class CCodeGenerator extends CodeGenerator {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
                             "-Wl,--add-stdcall-alias");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@",
-                            "dll);
+                            "dll");
                 } else if (osName.startsWith("SunOS")) {
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@",
                             "-fPIC");
