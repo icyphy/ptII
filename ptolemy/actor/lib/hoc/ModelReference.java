@@ -451,8 +451,9 @@ public class ModelReference extends TypedAtomicActor implements
         // fire() method, before calling this class, in which case
         // they are expected to set this flag to true.
         if (!_alreadyReadInputs) {
-            // Iterate over input ports and read any available values into
-            // the referenced model parameters.
+            // Iterate over input ports and read any available values
+            // into the referenced model parameters and validate
+            // settable attributes.
             _readInputsAndValidateSettables();
         }
 
@@ -708,17 +709,34 @@ public class ModelReference extends TypedAtomicActor implements
     ////                         protected methods                 ////
 
     /** Iterate over input ports and read any available values into
-     *  the referenced model parameters.
+     *  the referenced model parameters and validate settable
+     *  attributes.
+     *
+     *  Note: We call validateSettables() on the referenced model in
+     *  this method, since input values read into the referenced model
+     *  may cause structural changes to the model (e.g. if a Ptalon
+     *  parameter changes and causes the internal structure of a
+     *  PtalonActor to be regenerated).  Since validateSettables() is
+     *  not currently called in
+     *  ptolemy.actor.Manager#preinitializeAndResolveTypes(), we must
+     *  call it here before type resolution begins in a later step, in
+     *  order to avoid collecting invalid type constraints (due to
+     *  deleted or invalidated parts of the model) and to avoid
+     *  insufficient type constraints (due to newly generated parts of
+     *  the model).
      *  @exception IllegalActionException If reading the ports or
      *   setting the parameters causes it.
      */
-    protected void _readInputsAndValidateSettables() throws IllegalActionException {
-        // NOTE: This is an essentially exact copy of the code in RunCompositeActor,
-        // but this class and that one can't easily share a common base class.
+    protected void _readInputsAndValidateSettables()
+            throws IllegalActionException {
+        // NOTE: This is an essentially exact copy of the code in
+        // RunCompositeActor, but this class and that one can't easily
+        // share a common base class.
         if (_debugging) {
             _debug("** Reading inputs (if any).");
         }
 
+        // Flag to check if a value has actually been changed.
         boolean changeMade = false;
         
         Iterator ports = inputPortList().iterator();
@@ -766,6 +784,9 @@ public class ModelReference extends TypedAtomicActor implements
             }
         }
         if (changeMade) {
+            // If a value in the referenced model has actually been
+            // changed, we need to validate the settable attributes in
+            // the model.  See note in method comment.
             _model.validateSettables();
         }
     }
