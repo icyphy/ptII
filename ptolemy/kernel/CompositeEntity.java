@@ -1335,7 +1335,8 @@ public class CompositeEntity extends ComponentEntity {
             try {
                 _workspace.getWriteAccess();
                 _unlinkLevelCrossingLinksToOutside(this);
-                super.setContainer(container);
+                // Findbugs reports "load of known null value" so we use null  
+                super.setContainer(null);
             } finally {
                 _workspace.doneWriting();
             }
