@@ -510,7 +510,7 @@ public class ArrayType extends StructuredType {
      *  </pre>
      *  for a parameter "param".
      */
-    public static InequalityTerm ARRAY_BOTTOM = new ArrayBottomTypeTerm(
+    public static final InequalityTerm ARRAY_BOTTOM = new ArrayBottomTypeTerm(
             BaseType.ARRAY_BOTTOM);
 
     /** A term to use when declaring the type of some parameter or port
@@ -520,7 +520,7 @@ public class ArrayType extends StructuredType {
      *  </pre>
      *  for a parameter "param".
      */
-    public static InequalityTerm ARRAY_UNSIZED_BOTTOM = new ArrayBottomTypeTerm(
+    public static final InequalityTerm ARRAY_UNSIZED_BOTTOM = new ArrayBottomTypeTerm(
             new ArrayType(BaseType.UNKNOWN));
 
     //  (new ArrayType(BaseType.UNKNOWN) {
