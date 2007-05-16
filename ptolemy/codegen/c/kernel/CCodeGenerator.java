@@ -357,7 +357,7 @@ public class CCodeGenerator extends CodeGenerator {
         CodeStream[] typeStreams = new CodeStream[types.size()];
 
         // Generate type map.
-        String typeMembers = "";
+        StringBuffer typeMembers = new StringBuffer();
         code.append("#define TYPE_Token -1 " + _eol);
         for (int i = 0; i < typesArray.length; i++) {
             // Open the .c file for each type.
@@ -369,11 +369,11 @@ public class CCodeGenerator extends CodeGenerator {
 
             // Dynamically generate all the types within the union.
             if (i > 0) {
-                typeMembers += _INDENT2;
+                typeMembers.append(_INDENT2);
             }
             typeMembers += typesArray[i] + "Token " + typesArray[i] + ";";
             if (i < typesArray.length - 1) {
-                typeMembers += _eol;
+                typeMembers.append(_eol);
             }
         }
 
@@ -405,8 +405,8 @@ public class CCodeGenerator extends CodeGenerator {
 
         ArrayList args = new ArrayList();
         // Token declareBlock.
-        if (!typeMembers.equals("")) {
-            args.add(typeMembers);
+        if (!typeMembers.length() != 0) {
+            args.add(typeMembers.toString());
             sharedStream.clear();
             sharedStream.appendCodeBlock("tokenDeclareBlock", args);
 
