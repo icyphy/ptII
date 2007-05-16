@@ -93,7 +93,6 @@ public class LineWriter extends CCodeGeneratorHelper {
         } else {
             String fileNameString = FileReader.getFileName(actor.fileName);
 
-            fileNameString = FileReader.getFileName(actor.fileName);
             ArrayList args = new ArrayList();
             args.add(fileNameString);
 
