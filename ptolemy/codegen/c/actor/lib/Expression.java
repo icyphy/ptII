@@ -146,11 +146,6 @@ public class Expression extends CCodeGeneratorHelper {
                     + actor.expression.getExpression() + "\" invalid.");
         }
 
-        if (result == null) {
-            //throw new IllegalActionException(actor,
-            //        "Expression yields a null result: "
-            //                + actor.expression.getExpression());
-        }
         code.append(processCode(_cParseTreeCodeGenerator.generatePreinitializeCode()));
         return code.toString();
     }
