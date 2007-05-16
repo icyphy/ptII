@@ -209,7 +209,7 @@ public class HeaderFileGenerator extends CodeGenerator {
 
             headerCode.append("#include \"");
 
-            String fileName = new String((String) requiredTypes.next());
+            String fileName = (String) requiredTypes.next());
 
             fileName = CNames.sanitize(fileName.substring(0,
                     fileName.length() - 2))
