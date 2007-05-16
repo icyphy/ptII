@@ -62,12 +62,13 @@ JSRCS =	Documentation.java \
 	ImportAttribute.java \
 	LibraryAttribute.java \
 	LibraryBuilder.java \
+	MissingClassException.java \
 	MoMLAttribute.java \
 	MoMLChangeRequest.java \
 	MoMLFilter.java \
 	MoMLParser.java \
 	MoMLUndoEntry.java \
-	MoMLUtilities.java \
+	MoMLVariableChecker.java \
 	ParserAttribute.java \
 	SharedParameter.java \
 	StreamErrorHandler.java \
