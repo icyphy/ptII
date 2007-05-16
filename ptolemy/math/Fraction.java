@@ -161,6 +161,15 @@ public class Fraction extends Object {
         return false;
     }
 
+    /** Return a hash code value for this Fraction. This method returns the
+     *  bitwise and of the hashcode of the denominator and the numerator.
+     *  @return A hash code value for this Coordinate
+     */
+    public int hashCode() {
+        return Integer.valueOf(_denominator).hashCode()
+            & Integer.valueOf(_numerator).hashCode();
+    }
+
     /** Find the multiplicative inverse of this fraction.
      *  @return The answer as another fraction in lowest terms
      *  @exception ArithmeticException If this fraction has a value of zero,

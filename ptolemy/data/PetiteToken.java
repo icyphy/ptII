@@ -148,6 +148,14 @@ public class PetiteToken extends ScalarToken {
         return BaseType.PETITE;
     }
 
+    /** Return a hash code value for this token. This method returns the
+     *  hash code of the contained double.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+        return Double.valueOf(_value).hashCode();
+    }
+
     /** Returns a PetiteToken with value nearest 1.0.......
      *  @return A PetiteToken with value nearest 1.0.
      */

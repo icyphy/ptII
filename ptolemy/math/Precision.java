@@ -386,6 +386,17 @@ public class Precision implements Cloneable, Serializable {
         return _sign;
     }
 
+    /** Return a hash code value for this Precision. This method returns the
+     *  bitwise and of the length, exponent and sign.
+     *  @return A hash code value for this Coordinate
+     */
+    public int hashCode() {
+        return Integer.valueOf(_length).hashCode()
+            & Integer.valueOf(_exponent).hashCode()
+            & Integer.valueOf(_sign).hashCode();
+
+    }
+
     /**
      * Determine if the fixed point format is signed or not.
      *

@@ -78,6 +78,15 @@ public class Coordinate {
         }
     }
 
+    /** Return a hash code value for this Coordinate. This method returns the
+     *  bitwise and of the X and Y integer values.
+     *  @return A hash code value for this Coordinate
+     */
+    public int hashCode() {
+        return Integer.valueOf(X).hashCode() &
+            Integer.valueOf(Y).hashCode();
+    }
+
     /**
      * Returns a string representation of the Coordinate in the form "(X, Y)".
      *
