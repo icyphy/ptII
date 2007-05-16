@@ -77,7 +77,7 @@ public class IntegerCounter extends VHDLCodeGeneratorHelper {
 
         int width = precision.getNumberOfBits() - 1;
 
-        args.add(new Integer(width));
+        args.add(Integer.valueOf(width));
 
         args.add(actor.hasEnable.getExpression());
 
