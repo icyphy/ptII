@@ -839,9 +839,9 @@ public class HDFDirector extends SDFDirector {
      *  the configuration number of the container actor and the configuration
      *  numbers of contained actors.
      */
-    private int[] _divisors;
+    private int[] _divisors = {};
 
     /** An array of schedules, each element corresponding to one configuration.
      */
-    private Schedule[] _schedules;
+    private Schedule[] _schedules = {};
 }
