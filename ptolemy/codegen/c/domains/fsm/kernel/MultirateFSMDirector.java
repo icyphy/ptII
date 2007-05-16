@@ -322,6 +322,12 @@ public class MultirateFSMDirector extends FSMDirector {
 
             IOPort controllerPort = (IOPort) controller.getPort(inputPort
                     .getName());
+            if (currentState == null) {
+                // Findbugs wants us to check for null
+                throw new IllegalActionException(getComponent(),
+                        "Internal Error, inputPort '" + inputPort 
+                        + "': currentState == null");
+            }
             Entity refinement = (Entity) currentState.getRefinement()[0];
             IOPort refinementPort = (IOPort) refinement.getPort(inputPort
                     .getName());
