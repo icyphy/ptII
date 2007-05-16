@@ -2331,6 +2331,123 @@ test MoMLParser-5.2.1 {Test property deletion} {
 ######################################################################
 ####
 #
+test MoMLParser-5.3.1 {Delete a PortParameter} {
+    set incMomlBase "$header
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <property name=\"MyPortParameter\"
+              class=\"ptolemy.actor.parameters.PortParameter\"/>
+    <port name=\"MyPortParameter\"
+          class=\"ptolemy.actor.parameters.ParameterPort\"/>
+</entity>
+"
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $incMomlBase]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="MyPortParameter" class="ptolemy.actor.parameters.PortParameter">
+    </property>
+    <port name="MyPortParameter" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+    </port>
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLParser-5.3.2 {Test property deletion of a PortParameter - get both the PortParameter and the ParameterPort} {
+    # uses 5.3.1 above
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+	<entity name=".top"><deleteProperty name="MyPortParameter"/></entity>
+    }]
+    $change setUndoable true
+    
+    # NOTE: Request is filled immediately because the model is not running.
+    $toplevel requestChange $change
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLParser-5.3.3 {Test property deletion of a PortParameter - get both the PortParameter and the ParameterPort} {
+    # Depends on 5.3.1 and 5.3.2
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
+    $toplevel requestChange $undochange
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="MyPortParameter" class="ptolemy.actor.parameters.PortParameter">
+    </property>
+    <port name="MyPortParameter" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+    </port>
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLParser-5.3.4 {Test property deletion of a ParameterPort - get both the PortParameter and the ParameterPort} {
+    # uses 5.3.* above
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+	<entity name=".top"><deletePort name="MyPortParameter"/></entity>
+    }]
+    $change setUndoable true
+    
+    # NOTE: Request is filled immediately because the model is not running.
+    $toplevel requestChange $change
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLParser-5.3.5 {Test undo of 5.3.4} {
+    # Depends on 5.3.*
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
+    $toplevel requestChange $undochange
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="MyPortParameter" class="ptolemy.actor.parameters.PortParameter">
+    </property>
+    <port name="MyPortParameter" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="input"/>
+    </port>
+</entity>
+}
+
+######################################################################
+####
+#
 test MoMLParser-6.1 {Test indexed I/O with actor model.} {
     set incMomlBase "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">

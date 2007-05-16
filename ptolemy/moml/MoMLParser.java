@@ -53,6 +53,8 @@ import java.util.Stack;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -373,7 +375,22 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // We only convert "name" attributes, not "port" or
                 // "relation", etc.
                 String oldValue = value;
+                // If we have seen a createIfNecessary="true",
+                // then skip if there alread is an element with that name.
+                String createIfNecessary = (String) _attributes.get("createIfNecessary");
                 value = _current.uniqueName(oldValue);
+                if (createIfNecessary != null
+                        && createIfNecessary.equals("true")
+                        && !value.equals(oldValue)) {
+                    // There already is something with that name, so we skip
+                    String currentElement = _xmlParser.getCurrentElement();
+
+                    // FIXME: increment _skipElement or set it to 1?
+                    _skipElement++;
+                    _skipElementIsNew = true;
+                    _skipElementName = currentElement;
+                    return;
+                }
                 _namespaceTranslationTable.put(oldValue, value);
             }
         } else {
@@ -875,6 +892,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 } catch (EmptyStackException ex) {
                     // We are back at the top level.
                     _current = null;
+
                 }
 
                 try {
@@ -1989,6 +2007,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
 
                 _current = entity;
+
                 _namespace = _DEFAULT_NAMESPACE;
 
                 if (_undoEnabled) {
@@ -2075,6 +2094,41 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // The entity attribute is optional.
                 String entityName = (String) _attributes.get("entity");
 
+                // Delete the corresponding ParameterPort, if any.
+                Port toDelete = null;
+                try {
+                    toDelete = _searchForPort(portName);
+                } catch (XmlException ex) {
+                    // Ignore, there is no port by that name.
+                }
+                // Find the corresponding ParameterPort and delete it
+                if (toDelete != null) {
+                    NamedObj container = toDelete.getContainer();
+                    if (container != null
+                            && container instanceof Entity) {
+                        Attribute attribute = ((Entity) container).getAttribute(portName);
+                        if (attribute != null && attribute instanceof PortParameter) {
+                            DeleteRequest request = new DeleteRequest(_DELETE_PROPERTY,
+                                    attribute.getName(), null);
+                            // Only defer if we are in a class, entity, or
+                            // model context, which is equivalent to the
+                            // _current being an instance of
+                            // InstantiableNamedObj.
+                            if ((_deleteRequests != null)
+                                    && _current instanceof InstantiableNamedObj) {
+                                _deleteRequests.add(request);
+                            } else {
+                                // Very likely, the context is null, in which
+                                // case the following will throw an exception.
+                                // We defer to it in case somehow a link request
+                                // is being made at the top level with a non-null
+                                // context (e.g. via a change request).
+                                request.execute();
+                            }
+                        }
+                    }
+                }
+
                 // Link is stored and processed last, but before deletions.
                 DeleteRequest request = new DeleteRequest(_DELETE_PORT,
                         portName, entityName);
@@ -2107,6 +2161,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 DeleteRequest request = new DeleteRequest(_DELETE_PROPERTY,
                         propName, null);
 
+                // We use toDelete to find any PortParameters
+                Attribute toDelete = _searchForAttribute(propName);
+
                 // Only defer if we are in a class, entity, or model context,
                 // which is equivalent to the _current being an instance of
                 // InstantiableNamedObj.
@@ -2120,6 +2177,33 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // is being made at the top level with a non-null
                     // context (e.g. via a change request).
                     request.execute();
+                }
+
+
+                // Find the corresponding PortParameter and delete it
+                NamedObj container = toDelete.getContainer();
+                if (container != null
+                        && container instanceof Entity) {
+                    Port port = ((Entity) container).getPort(propName);
+                    if (port != null && port instanceof ParameterPort) {
+                        request = new DeleteRequest(_DELETE_PORT,
+                                port.getName(), container.getFullName());
+                        // Only defer if we are in a class, entity, or
+                        // model context, which is equivalent to the
+                        // _current being an instance of
+                        // InstantiableNamedObj.
+                        if ((_deleteRequests != null)
+                                && _current instanceof InstantiableNamedObj) {
+                            _deleteRequests.add(request);
+                        } else {
+                            // Very likely, the context is null, in which
+                            // case the following will throw an exception.
+                            // We defer to it in case somehow a link request
+                            // is being made at the top level with a non-null
+                            // context (e.g. via a change request).
+                            request.execute();
+                        }
+                    }
                 }
 
                 // NOTE: deleteProperty is not supposed to have anything
@@ -2279,6 +2363,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
 
                 _current = entity;
+
                 _namespace = _DEFAULT_NAMESPACE;
 
                 if (_undoEnabled) {
@@ -2533,6 +2618,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 _pushContext();
                 _current = port;
+
                 _namespace = _DEFAULT_NAMESPACE;
 
                 // Handle the undo aspect if needed
@@ -2605,13 +2691,23 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 //////////////////////////////////////////////////////////////
                 //// property
             } else if (elementName.equals("property")) {
+                String createIfNecessary = (String) _attributes.get("createIfNecessary");
                 String className = (String) _attributes.get("class");
                 String propertyName = (String) _attributes.get("name");
                 _checkForNull(propertyName, "No name for element \"property\"");
-
-                String value = (String) _attributes.get("value");
-
-                _handlePropertyElement(className, propertyName, value);
+                if (createIfNecessary != null
+                            && createIfNecessary.equals("true")
+                            && _current != null && propertyName != null
+                            && _current.getAttribute(propertyName) != null) {
+                    // The createIfNecessary="true" and the property
+                    // already exists
+                } else {
+                    // If the createIfNecessary property is true and
+                    // there already is a property with this name, we 
+                    // don't handle this property
+                    String value = (String) _attributes.get("value");
+                    _handlePropertyElement(className, propertyName, value);
+                }
 
                 //////////////////////////////////////////////////////////////
                 //// relation
@@ -2688,6 +2784,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                     _namespace = _DEFAULT_NAMESPACE;
                     _current = newRelation;
+
                 } else {
                     // Previously existing relation with the specified name.
                     if (newClass != null) {
@@ -3611,8 +3708,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Extending a previously defined entity.  Check to see that
             // it was defined to be a class definition.
             if (!reference.isClassDefinition()) {
-                throw new XmlException("Attempt to extend an entity that "
+                throw new MissingClassException("Attempt to extend an entity that "
                         + "is not a class: " + reference.getFullName(),
+                        reference.getFullName(),
                         _currentExternalEntity(), _getLineNumber(),
                         _getColumnNumber());
             }
@@ -4033,9 +4131,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             Iterator derivedObjects = toDelete.getDerivedList().iterator();
 
             String toUndo = _getUndoForDeleteAttribute(toDelete);
+
             toDelete.setContainer(null);
             undoMoML.append(toUndo);
-
             while (derivedObjects.hasNext()) {
                 Attribute derived = (Attribute) derivedObjects.next();
                 // Note that we need to generate undo for the attributes
@@ -4928,6 +5026,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             _pushContext();
             _current = property;
+
             _namespace = _DEFAULT_NAMESPACE;
 
             // Handle the undo aspect if needed
