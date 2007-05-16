@@ -121,7 +121,8 @@ public class TestToken extends Token {
         /** Return this, that is, return the reference to this object.
          *  @return A TestType
          */
-        public Object clone() {
+        public Object clone() throws CloneNotSupportedException {
+            super.clone();
             return this;
         }
 
