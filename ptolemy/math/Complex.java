@@ -60,7 +60,7 @@ import java.io.Serializable;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Complex implements Cloneable, Serializable {
+public class Complex {
     /** Construct a Complex equal to zero.
      *  @deprecated Use Complex.ZERO instead.
      */
