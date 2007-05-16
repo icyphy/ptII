@@ -81,8 +81,8 @@ public class Display extends VHDLCodeGeneratorHelper {
         int high = precision.getIntegerBitLength() - 1;
         int low = -precision.getFractionBitLength();
 
-        args.add(new Integer(high));
-        args.add(new Integer(low));
+        args.add(Integer.valueOf(high));
+        args.add(Integer.valueOf(low));
         args.add(actor.getName());
 
         String signed = (precision.isSigned()) ? "SIGNED_TYPE"
