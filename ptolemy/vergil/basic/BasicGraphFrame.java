@@ -111,7 +111,7 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLUndoEntry;
-import ptolemy.moml.MoMLUtilities;
+import ptolemy.moml.MoMLVariableChecker;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -480,15 +480,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             String momlToBeCopied = buffer.toString();
             String variablesToBePrepended = "";
             try {
+                MoMLVariableChecker variableChecker = new MoMLVariableChecker();
                 variablesToBePrepended =
-                    MoMLUtilities.checkCopy(momlToBeCopied, container);
+                    variableChecker.checkCopy(momlToBeCopied, container);
             } catch (IllegalActionException ex) {
                 // Ignore, maybe the missing symbols will work out
                 // in the pasted context.
             }
             clipboard.setContents(new StringSelection(
                                           variablesToBePrepended
-                                          + momlToBeCopied), this);
+                                          + momlToBeCopied
+                                          ), this);
+
 
         } catch (IOException ex) {
             MessageHandler.error("Copy failed", ex);
@@ -1034,7 +1037,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // uniqueName() method of the container, to ensure that they
             // do not collide with objects already in the container.
             moml.append("<group name=\"auto\">\n");
-
+            //moml.append("<group>\n");
             moml.append((String) transferable
                     .getTransferData(DataFlavor.stringFlavor));
 
