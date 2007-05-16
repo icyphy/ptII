@@ -238,13 +238,10 @@ public abstract class AbstractActionsAttribute extends Action implements
     public void setExpression(String expression) throws IllegalActionException {
         super.setExpression(expression);
 
-        // This is important for InterfaceAutomata which extend from
-        // this class.
-        if ((expression == null) || expression.trim().equals("")) {
-            return;
-        }
-
         // Initialize the lists that store the commands to be executed.
+        // NOTE: This must be done before we return if the expression is
+        // null, otherwise, previous set actions will continue to be
+        // executed.
         _destinationNames = new LinkedList();
         _numbers = new LinkedList();
         _parseTrees = new LinkedList();
@@ -253,6 +250,12 @@ public abstract class AbstractActionsAttribute extends Action implements
         // determination of the destinations because the destinations
         // may not have been created yet.
         _destinationsListVersion = -1;
+
+        // This is important for InterfaceAutomata which extend from
+        // this class.
+        if ((expression == null) || expression.trim().equals("")) {
+            return;
+        }
 
         PtParser parser = new PtParser();
         Map map = parser.generateAssignmentMap(expression);
