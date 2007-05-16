@@ -209,7 +209,8 @@ public class Expression extends CCodeGeneratorHelper {
     /**
      * Variable scope class customized for the CParseTreeCodeGenerator.
      */
-    protected class VariableScope extends ModelScope {
+    protected static class VariableScope extends ModelScope {
+        // Findbugs suggests that this should be static.
         /**
          * Constructor of a VariableScope.
          * @param actor The named ptolemy actor.
