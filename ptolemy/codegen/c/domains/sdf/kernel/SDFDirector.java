@@ -446,12 +446,13 @@ public class SDFDirector extends StaticSchedulingDirector {
         if (port.isInput()) {
             receivers = port.getReceivers();
         } else if (port.isOutput()) {
+
             receivers = port.getInsideReceivers();
+        } else {
+            // Findbugs: receivers could be null, so we throw an exception. 
+            throw new IllegalActionException(port,
+                   "Port is neither an input nor an output.");
         }
-        // else {
-        //    throw new IllegalActionException(port,
-        //           "Port is neither an input nor an output.");
-        //}
 
         //try {
         int size = 0;
