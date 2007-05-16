@@ -76,8 +76,6 @@ public class TokenToExpression extends CCodeGeneratorHelper {
             _codeStream.appendCodeBlock("FireBlock", args);
         } else {
             if (inputType instanceof ArrayType) {
-                ArrayList args = new ArrayList();
-
                 Type elementType = ((ArrayType) inputType).getElementType();
 
                 if (elementType instanceof BaseType.ScalarType) {
