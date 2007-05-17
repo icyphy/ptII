@@ -212,6 +212,14 @@ public class VersionAttribute extends StringAttribute implements Comparable {
         return false;
     }
 
+    /** Return a hash code value for attribute. This method returns the
+     *  hash code of the expression.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+        return getExpression().hashCode();
+    }
+
     /** Return true if this version is less than the specified version.
      *  This method uses compareTo(), but may yield more readable code
      *  in certain circumstances.
