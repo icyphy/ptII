@@ -540,7 +540,7 @@ public class PtolemyUtilities {
             ptolemy.data.type.RecordType recordType = (ptolemy.data.type.RecordType) type;
 
             // recurse
-            String typeName = "type_recordOf";
+            StringBuffer typeName = new StringBuffer("type_recordOf");
 
             // Create the new array of labels.
             Local labelArrayLocal = Jimple.v().newLocal("labelArray",
@@ -570,7 +570,7 @@ public class PtolemyUtilities {
                 ptolemy.data.type.Type elementType = recordType.get(label);
                 Local elementTypeLocal = buildConstantTypeLocal(body,
                         insertPoint, elementType);
-                typeName += ("_" + label + "_" + elementTypeLocal.getName());
+                typeName.append("_" + label + "_" + elementTypeLocal.getName());
 
                 // Store into the array of labels.
                 units.insertBefore(
@@ -587,7 +587,7 @@ public class PtolemyUtilities {
             }
 
             // Create the new local and assign to local variable.
-            Local typeLocal = Jimple.v().newLocal(typeName,
+            Local typeLocal = Jimple.v().newLocal(typeName.toString(),
                     RefType.v(recordTypeClass));
             body.getLocals().add(typeLocal);
             units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
@@ -1196,6 +1196,7 @@ public class PtolemyUtilities {
             // Remove call.
             body.getUnits().remove(unit);
             doneSomething = true;
+            //
         } else if (name.equals("typeConstraintList")) {
             //FIXME This method should be removed.
             // Local exceptionLocal =
@@ -1407,7 +1408,7 @@ public class PtolemyUtilities {
 
     public static SootClass complexMatrixTokenClass;
 
-    public static SootMethod complexMatrixTokenConstructor;
+    public /*final*/ static SootMethod complexMatrixTokenConstructor;
 
     public static SootMethod complexMatrixTokenArrayConstructor;
 
