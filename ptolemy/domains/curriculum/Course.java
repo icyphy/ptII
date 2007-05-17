@@ -74,7 +74,7 @@ public class Course extends TypedAtomicActor {
         
         new NameIcon(this, "_icon");
         
-        DependencyHighlighter controller = new DependencyHighlighter(this, "_controller");
+        /*DependencyHighlighter controller =*/ new DependencyHighlighter(this, "_controller");
         
         units = new Parameter(this, "units");
         units.setTypeEquals(BaseType.INT);
