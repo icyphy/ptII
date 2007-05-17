@@ -295,7 +295,8 @@ public class CircleGeometry implements Geometry {
         public boolean isNormal(int direction) {
             double theta1 = getAngle(direction);
             double theta2 = (_normal < 0) ? (_normal + (2 * Math.PI)) : _normal;
-            return (theta1 == theta2);
+            // Don't compare floats with ==
+            return (Math.abs(theta1 - theta2) < 0.000001);
         }
 
         /** Translate the site by the indicated distance,
