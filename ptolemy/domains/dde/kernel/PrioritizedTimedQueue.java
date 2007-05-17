@@ -552,7 +552,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     // values. This is particularly useful in situations
     // where the specification of the destination receiver
     // may be considered redundant.
-    private class Event {
+    private static class Event {
         // Construct an Event with a token and time stamp.
         public Event(Token token, Time time) {
             _token = token;
