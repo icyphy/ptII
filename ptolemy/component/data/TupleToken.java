@@ -146,6 +146,18 @@ public class TupleToken extends Token {
         return new TupleType(types);
     }
 
+    /** Return a hash code value for this token. This method returns the
+     *  hash code length xored with the values of the tuples.
+     *  @return A hash code value for this token.
+     */
+    public int hashCode() {
+        int results = 0;
+        for (int i = 0; i < _value.length; i++) {
+            results ^= _value[i].hashCode();
+        }
+        return results;
+    }
+
     /** Return the length of the contained token array.
      *  @return The length of the contained token array.
      */
