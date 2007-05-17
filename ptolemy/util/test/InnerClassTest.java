@@ -36,7 +36,7 @@ package ptolemy.util.test;
  */
 public class InnerClassTest {
     /** Field that refers to an inner class. */
-    public static InnerClass innerClass = new InnerClass();
+    public final static InnerClass innerClass = new InnerClass();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
