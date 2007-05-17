@@ -95,8 +95,8 @@ public class LeftRightDirector extends StaticSchedulingDirector {
             public int hashCode() {
                 List locations = ((Entity)this).attributeList(Locatable.class);
                 if (locations.size() > 0) {
-                    double[] location1 = ((Locatable)locations.get(0)).getLocation();
-                    return Double.valueOf(location1[0]).hashCode() &
+                    double[] location = ((Locatable)locations.get(0)).getLocation();
+                    return Double.valueOf(location[0]).hashCode() &
                         Double.valueOf(location[1]).hashCode();
                 } 
                 return 0;
