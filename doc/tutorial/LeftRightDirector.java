@@ -86,21 +86,6 @@ public class LeftRightDirector extends StaticSchedulingDirector {
                     return false;
                 }
             }
-
-            /** Return a hash code value for this Coordinate. This
-             *  method returns the bitwise and of the X and Y double
-             *  values.
-             *  @return A hash code value for this Coordinate
-             */
-            public int hashCode() {
-                List locations = ((Entity)this).attributeList(Locatable.class);
-                if (locations.size() > 0) {
-                    double[] location = ((Locatable)locations.get(0)).getLocation();
-                    return Double.valueOf(location[0]).hashCode() &
-                        Double.valueOf(location[1]).hashCode();
-                } 
-                return 0;
-            }
         }
     }
 }
