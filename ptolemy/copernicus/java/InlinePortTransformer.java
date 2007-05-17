@@ -633,7 +633,7 @@ public class InlinePortTransformer extends SceneTransformer implements
                                                 (SpecialInvokeExpr) r, method);
                             }
 
-                            if (inline != null && !inlinee.getDeclaringClass()
+                            if (inlinee != null && !inlinee.getDeclaringClass()
                                     .isApplicationClass()) {
                                 inlinee.getDeclaringClass().setLibraryClass();
                             }
