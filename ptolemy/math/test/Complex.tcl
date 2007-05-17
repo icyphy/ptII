@@ -191,11 +191,11 @@ test Complex-5.2.5 {equals} {
 	    [java::field $c2 real] \
 	    [java::field $c2 imag]]
     list \
-	    [$c0 {equals ptolemy.math.Complex} $c0] \
-	    [$c1 {equals ptolemy.math.Complex} $c1] \
-	    [$c2 {equals ptolemy.math.Complex} $c2] \
-	    [$c2 {equals ptolemy.math.Complex} $c1] \
-	    [$c2 {equals ptolemy.math.Complex} $ct4]
+	    [$c0 equals $c0] \
+	    [$c1 equals $c1] \
+	    [$c2 equals $c2] \
+	    [$c2 equals $c1] \
+	    [$c2 equals $ct4]
 } {1 1 1 0 1}
 
 ####################################################################
