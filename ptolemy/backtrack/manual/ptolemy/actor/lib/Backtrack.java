@@ -128,7 +128,7 @@ public class Backtrack extends TypedAtomicActor {
             HashMap<Checkpoint, Long> handles = new HashMap<Checkpoint, Long>();
             _checkpoint(handles, (CompositeActor) getContainer());
             _currentHandle++;
-            _handleMap.put(new Long(_currentHandle), handles);
+            _handleMap.put(Long.valueOf(_currentHandle), handles);
             _handle.send(0, new LongToken(_currentHandle));
         }
     }
@@ -145,7 +145,7 @@ public class Backtrack extends TypedAtomicActor {
         boolean result = super.postfire();
 
         if (_rollbackHandle > 0) {
-            HashMap<Checkpoint, Long> handles = _handleMap.get(new Long(
+            HashMap<Checkpoint, Long> handles = _handleMap.get(Long.valueOf(
                     _rollbackHandle));
 
             if (handles != null) {
@@ -194,7 +194,7 @@ public class Backtrack extends TypedAtomicActor {
             Checkpoint checkpointObject = entity.$GET$CHECKPOINT();
             if (!handles.containsKey(checkpointObject)) {
                 long handle = checkpointObject.createCheckpoint();
-                handles.put(checkpointObject, new Long(handle));
+                handles.put(checkpointObject, Long.valueOf(handle));
             }
         }
 
