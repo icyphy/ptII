@@ -225,9 +225,21 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         String libraryName = StringUtilities.preferencesDirectory()
                 + PREFERENCES_FILE_NAME;
         File file = new File(libraryName);
-        FileWriter writer = new FileWriter(file);
-        exportMoML(writer);
-        writer.close();
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter(file);
+            exportMoML(writer);
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException ex) {
+                    System.out.println("Failed to close \""
+                            + libraryName + "\": " + ex);
+
+                }
+            }
+        }
     }
 
     /** Set the values in this instance of PtolemyPreferences to be
