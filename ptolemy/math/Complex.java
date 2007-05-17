@@ -496,8 +496,12 @@ public class Complex {
      *  @param z The argument to which this number is being compared.
      *  @return True if the real and imaginary parts are equal.
      */
-    public final boolean equals(Complex z) {
-        return ((z.real == real) && (z.imag == imag));
+    public final boolean equals(Object z) {
+        if (z instanceof Complex) {
+            return (( ((Complex)z).real == real)
+                    && (((Complex)z).imag == imag));
+        }
+        return false;
     }
 
     /** Return the exponential of this complex number,
