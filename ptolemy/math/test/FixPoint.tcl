@@ -823,11 +823,11 @@ test FixPoint-6.1 {equals} {
     set eq_3 [java::new $ctor_double 7.5734 $q_20_28]
     set eq_4 [java::new $ctor_double 7.5734 $q_20_26]
     list "
-[$eq_1 toString] [$eq_1 toString] [$eq_1 {equals ptolemy.math.FixPoint} $eq_1 ] 
-[$eq_1 toString] [$eq_2 toString] [$eq_1 {equals ptolemy.math.FixPoint} $eq_2 ] 
-[$eq_1 toString] [$eq_3 toString] [$eq_1 {equals ptolemy.math.FixPoint} $eq_3 ] 
-[$eq_1 toString] [$eq_4 toString] [$eq_1 {equals ptolemy.math.FixPoint} $eq_4 ] 
-[$eq_2 toString] [$eq_1 toString] [$eq_2 {equals ptolemy.math.FixPoint} $eq_1 ] "
+[$eq_1 toString] [$eq_1 toString] [$eq_1 equals $eq_1 ] 
+[$eq_1 toString] [$eq_2 toString] [$eq_1 equals $eq_2 ] 
+[$eq_1 toString] [$eq_3 toString] [$eq_1 equals $eq_3 ] 
+[$eq_1 toString] [$eq_4 toString] [$eq_1 equals $eq_4 ] 
+[$eq_2 toString] [$eq_1 toString] [$eq_2 equals $eq_1 ] "
 } {{
 7.573399998247623443603515625 7.573399998247623443603515625 1 
 7.573399998247623443603515625 7.573399998247623443603515625 1 
