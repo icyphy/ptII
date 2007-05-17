@@ -187,11 +187,13 @@ public class ConfigParser {
     ///////////////////////////////////////////////////////////////////
     ////                        public fields                      ////
 
+    // FindBugs suggests making these final.
+
     /** The default path of the default Ptolemy configuration file. It is
      *  usually located at <tt>ptolemy/configs/full/configuration.xml</tt> in
      *  the Ptolemy tree.
      */
-    public static String DEFAULT_SYSTEM_ID = PathFinder.getPtolemyPath()
+    public static final String DEFAULT_SYSTEM_ID = PathFinder.getPtolemyPath()
             + "ptolemy/configs/full/configuration.xml";
 
     ///////////////////////////////////////////////////////////////////

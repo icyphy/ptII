@@ -345,29 +345,31 @@ public abstract class AbstractTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                       public fields                       ////
 
+    // Findbugs asks that we make these final.
+
     /** The prefix of assignment methods.
      */
-    public static String ASSIGN_PREFIX = "$ASSIGN$";
+    public static final String ASSIGN_PREFIX = "$ASSIGN$";
 
     /** The prefix of backup functions.
      */
-    public static String BACKUP_PREFIX = "$BACKUP$";
+    public static final String BACKUP_PREFIX = "$BACKUP$";
 
     /** The name of the checkpoint object.
      */
-    public static String CHECKPOINT_NAME = "$CHECKPOINT";
+    public static final String CHECKPOINT_NAME = "$CHECKPOINT";
 
     /** The name of the checkpoint record.
      */
-    public static String CHECKPOINT_RECORD_NAME = "$RECORD$$CHECKPOINT";
+    public static final String CHECKPOINT_RECORD_NAME = "$RECORD$$CHECKPOINT";
 
     /** The name of the method to get the checkpoint.
      */
-    public static String GET_CHECKPOINT_NAME = "$GET$CHECKPOINT";
+    public static final String GET_CHECKPOINT_NAME = "$GET$CHECKPOINT";
 
     /** The name of the method to set a checkpoint.
      */
-    public static String SET_CHECKPOINT_NAME = "$SET$CHECKPOINT";
+    public static final String SET_CHECKPOINT_NAME = "$SET$CHECKPOINT";
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////

@@ -451,33 +451,35 @@ public class AssignmentTransformer extends AbstractTransformer implements
     ///////////////////////////////////////////////////////////////////
     ////                       public fields                       ////
 
+    // Findbugs asks that we make these final.
+
     /** The name of commit methods.
      */
-    public static String COMMIT_NAME = "$COMMIT";
+    public static final String COMMIT_NAME = "$COMMIT";
 
     /** Whether to refactor private static fields.
      */
-    public static boolean HANDLE_STATIC_FIELDS = false;
+    public static final boolean HANDLE_STATIC_FIELDS = false;
 
     /** Whether to optimize method calls. (Not implemented yet.)
      */
-    public static boolean OPTIMIZE_CALL = true;
+    public static final boolean OPTIMIZE_CALL = true;
 
     /** The name of the proxy class created in each anonymous class.
      */
-    public static String PROXY_NAME = "_PROXY_";
+    public static final String PROXY_NAME = "_PROXY_";
 
     /** The prefix of records (new fields to be added to a class).
      */
-    public static String RECORD_PREFIX = "$RECORD$";
+    public static final String RECORD_PREFIX = "$RECORD$";
 
     /** The name of the record array.
      */
-    public static String RECORDS_NAME = "$RECORDS";
+    public static final String RECORDS_NAME = "$RECORDS";
 
     /** The name of restore methods.
      */
-    public static String RESTORE_NAME = "$RESTORE";
+    public static final String RESTORE_NAME = "$RESTORE";
 
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
@@ -2688,7 +2690,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
             classTable.put(fieldName, indicesList);
         }
 
-        Integer iIndices = new Integer(indices);
+        Integer iIndices = Integer.valueOf(indices);
 
         if (!indicesList.contains(iIndices)) {
             indicesList.add(iIndices);
@@ -2743,7 +2745,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
      */
     private Hashtable<String, Hashtable<String, List<Integer>>> _specialAccessedFields = new Hashtable<String, Hashtable<String, List<Integer>>>();
 
-    private class NodeReplace {
+    private static class NodeReplace {
         NodeReplace(ASTNode fromNode, ASTNode toNode) {
             _fromNode = fromNode;
             _toNode = toNode;
@@ -2762,7 +2764,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
         private ASTNode _toNode;
     }
 
-    private class RehandleDeclarationRecord {
+    private static class RehandleDeclarationRecord {
         RehandleDeclarationRecord(List<ASTNode> bodyDeclarations) {
             _bodyDeclarations = bodyDeclarations;
         }

@@ -639,20 +639,20 @@ public class Director implements ActorCodeGenerator {
     /** Indent string for indent level 1.
      *  @see #_getIndentPrefix(int)
      */
-    protected static String _INDENT1 = _getIndentPrefix(1);
+    protected static final String _INDENT1 = _getIndentPrefix(1);
 
     /** Indent string for indent level 2.
      *  @see #_getIndentPrefix(int)
      */
-    protected static String _INDENT2 = _getIndentPrefix(2);
+    protected static final String _INDENT2 = _getIndentPrefix(2);
 
     /** Indent string for indent level 3.
      *  @see #_getIndentPrefix(int)
      */
-    protected static String _INDENT3 = _getIndentPrefix(3);
+    protected static final String _INDENT3 = _getIndentPrefix(3);
 
     /** Indent string for indent level 4.
      *  @see #_getIndentPrefix(int)
      */
-    protected static String _INDENT4 = _getIndentPrefix(4);
+    protected static final String _INDENT4 = _getIndentPrefix(4);
 }
