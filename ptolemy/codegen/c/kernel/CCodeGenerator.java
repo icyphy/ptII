@@ -405,7 +405,7 @@ public class CCodeGenerator extends CodeGenerator {
 
         ArrayList args = new ArrayList();
         // Token declareBlock.
-        if (typeMembers.length() == 0) {
+        if (typeMembers.length() != 0) {
             args.add(typeMembers.toString());
             sharedStream.clear();
             sharedStream.appendCodeBlock("tokenDeclareBlock", args);
