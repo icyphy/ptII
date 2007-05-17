@@ -189,6 +189,10 @@ void top() {
 
     /* Fire Composite Actor: top */
 }
+/* initialization entry code */
+/* initialization exit code */
+/* wrapup entry code */
+/* wrapup exit code */
 /* main entry code */
 /* main exit code */
 }}
