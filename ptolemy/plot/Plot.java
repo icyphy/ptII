@@ -2004,7 +2004,7 @@ public class Plot extends PlotBox {
                 x -= (width * Math.floor(1.0 + ((x - _wrapHigh) / width)));
 
                 // NOTE: Could quantization errors be a problem here?
-                if (x == _wrapLow) {
+                if (Math.abs(x - _wrapLow) < 0.00001) {
                     x = _wrapHigh;
                 }
             }
