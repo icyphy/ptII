@@ -104,12 +104,6 @@ public class AttributeValueIcon extends XMLIcon {
         CompositeFigure result = (CompositeFigure) super.createFigure();
         String truncated = _displayString();
 
-        // If there is no string to display now, then create a string
-        // with a single blank.
-        if (truncated == null) {
-            truncated = " ";
-        }
-
         LabelFigure label = new LabelFigure(truncated, _labelFont, 1.0,
                 SwingConstants.CENTER);
         Rectangle2D backBounds = result.getBackgroundFigure().getBounds();
