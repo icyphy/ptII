@@ -875,8 +875,8 @@ set moml "$header $body"
 test MoMLParser-1.14 {test that instantiation of an entity fails} {
     $parser reset
     catch {set toplevel [$parser parse $moml]} msg
-    string range $msg 0 29
-} {com.microstar.xml.XmlException}
+    string range $msg 0 33
+} {ptolemy.moml.MissingClassException}
 
 ######################################################################
 ####
