@@ -1215,14 +1215,14 @@ public class CodeStream {
          * Return the string format of this code block signature.
          */
         public String toString() {
-            String result = functionName + "(";
+            StringBuffer result = new StringBuffer(functionName + "(");
             for (int i = 0; i < numParameters; i++) {
                 if (i != 0) {
-                    result += ", ";
+                    result.append(", ");
                 }
-                result += "$";
+                result.append("$");
             }
-            return result += ")";
+            return result.toString() + ")";
         }
 
         /**
