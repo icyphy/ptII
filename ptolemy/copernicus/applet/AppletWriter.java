@@ -590,17 +590,18 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // 'make install' was not run.
         boolean fixJarFiles = false;
 
-        Iterator classNames = classMap.keySet().iterator();
+        Iterator classNames = classMap.entrySet().iterator();
 
         while (classNames.hasNext()) {
-            String className = (String) classNames.next();
+            Map.Entry entry = (Map.Entry) classNames.next();
+            String className = (String) entry.getKey();
 
             if (jarFilesThatHaveBeenRequired.contains(classMap.get(className))) {
                 // If we have already possibly copied the jar file, then skip
                 continue;
             }
 
-            if (!_copyPotentialJarFile((String) classMap.get(className),
+            if (!_copyPotentialJarFile((String) entry.getValue(),
                     className, jarFilesThatHaveBeenRequired)) {
                 // The className could not be found in the classMap
                 // Under Web Start, the resource that contains a class
@@ -808,7 +809,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The relative path to $PTII, for example "../../..".
-    private String _codeBase;
+    private String _codeBase = null;
 
     // The path to the jar file containing the domain classes,
     // for example "ptolemy/domains/sdf/sdf.jar".
