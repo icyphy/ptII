@@ -287,3 +287,110 @@ test UndoPort-1.3b {Test undoing a port transition: complex name} {
     </entity>
 </entity>
 }
+
+##
+
+set twoPortAdd {
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 260}">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Ramp.output" relation="relation"/>
+}
+
+set baseModel2 {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+</entity>
+}
+
+test UndoPort-2.1 {Test undoing an actor with two channels} {
+    set w [java::new ptolemy.kernel.util.Workspace w2_1]
+    set parser [java::new ptolemy.moml.MoMLParser $w]
+
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+
+    set toplevel [java::cast ptolemy.actor.CompositeActor \
+		      [$parser parse $baseModel2]]
+    # This replicates the paste action, where we put things in a group
+    set changeRequest [java::new ptolemy.moml.MoMLChangeRequest \
+			   $toplevel $toplevel \
+			   "<group name=\"auto\">$twoPortAdd</group>" ]
+
+    # Mark the change as being undoable
+    $changeRequest setUndoable true
+    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] \
+		     "myManager"]
+    $toplevel setManager $manager
+    $manager requestChange $changeRequest
+
+    $toplevel exportMoML
+
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 260}">
+        </property>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Ramp.output" relation="relation"/>
+</entity>
+}
+
+##
+
+test UndoPort-2.2 {Test undoing port creation on two ports in a group} {
+    # This replicates a bug that occurs when we have an AddSubtract
+    # that has two connections on the + port and we paste it and then
+    # try undo
+    # Now create the MoMLUndoChangeRequest which will undo the change
+    set undochange [java::new ptolemy.kernel.undo.UndoChangeRequest $toplevel $toplevel]
+
+    # NOTE: Request is filled immediately because the model is not running.
+    $manager requestChange $undochange
+
+    # Should be back to the base model...
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+</entity>
+}
