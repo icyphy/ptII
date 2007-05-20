@@ -219,8 +219,10 @@ public class MoMLVariableChecker {
                     || (missingClassName.startsWith(".")
                             && missingClassName.substring(1).equals(containedObject.getName()))) {
                     try {
-                        // FIXME: use createIfNecessary here?
-                        String moml = containedObject.exportMoML();
+                        String moml = containedObject.exportMoML()
+                            .replaceFirst("<class",
+                                    "<class createIfNecessary=\"true\"");
+
                         MoMLChangeRequest change = new MoMLChangeRequest(parsedContainer,
                                 parsedContainer,
                                 moml);
