@@ -52,6 +52,15 @@ if {[string compare sdfModel [info procs getParameterl]] != 0} \
 proc parseMoML {moml workspaceName } {
     set w [java::new ptolemy.kernel.util.Workspace $workspaceName]
     set parser [java::new ptolemy.moml.MoMLParser $w]
+    # The list of filters is static, so we reset it in case there
+    # filters were already added.
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+
 
     set toplevel [java::cast ptolemy.actor.CompositeActor \
 		      [$parser parse $moml]]
@@ -418,12 +427,6 @@ test MoMLVariableChecker-2.3 {copy a class that does exist} {
         <property name="value" class="ptolemy.data.expr.Parameter" value="4242">
         </property>
         <doc>Create a constant sequence.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{200, 150}">
         </property>
     </entity>
