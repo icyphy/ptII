@@ -170,25 +170,29 @@ public class MoMLVariableChecker {
         // errors.
 
         // FIXME: what about classes?
-        Iterator entities = parsedContainer.allAtomicEntityList().iterator();
-        while (entities.hasNext()) {
-            Entity entity = (Entity) entities.next();
-            Iterator attributes = entity.attributeList().iterator();
-            while (attributes.hasNext()) {
-                Attribute attribute = (Attribute) attributes.next();
-                if (attribute instanceof Variable) {
-                    Variable variable = (Variable) attribute;
+        if (parsedContainer != null) {
+            // parsedContainer might be null if we failed to parse because
+            // of a missing class
+            Iterator entities = parsedContainer.allAtomicEntityList().iterator();
+            while (entities.hasNext()) {
+                Entity entity = (Entity) entities.next();
+                Iterator attributes = entity.attributeList().iterator();
+                while (attributes.hasNext()) {
+                    Attribute attribute = (Attribute) attributes.next();
+                    if (attribute instanceof Variable) {
+                        Variable variable = (Variable) attribute;
 
-                    boolean doGetToken = true;
-                    while (doGetToken) {
-                        doGetToken = false;
-                        try {
-                            variable.getToken();
-                        } catch (IllegalActionException ex) {
-                            doGetToken = _findUndefinedConstantsOrIdentifiers(ex,
-                                    container, parsedContainer);
-                        }
-                    };
+                        boolean doGetToken = true;
+                        while (doGetToken) {
+                            doGetToken = false;
+                            try {
+                                variable.getToken();
+                            } catch (IllegalActionException ex) {
+                                doGetToken = _findUndefinedConstantsOrIdentifiers(ex,
+                                        container, parsedContainer);
+                            }
+                        };
+                    }
                 }
             }
         }
@@ -206,13 +210,34 @@ public class MoMLVariableChecker {
         boolean doRerun = false;
 
         if (container instanceof CompositeEntity) {
-            System.out.println("MoMLVariableChecker: exception: " + exception + " container: " + container);
-
             Iterator containedClasses = ((CompositeEntity) container).classDefinitionList().iterator();
 
             while (containedClasses.hasNext()) {
                 NamedObj containedObject = (NamedObj) containedClasses.next();
-                System.out.println("_findMissingClass: " + exception.missingClassName() + " " + containedObject.getFullName());
+                String missingClassName = exception.missingClassName();
+                if (missingClassName == containedObject.getName()
+                    || (missingClassName.startsWith(".")
+                            && missingClassName.substring(1).equals(containedObject.getName()))) {
+                    try {
+                        // FIXME: use createIfNecessary here?
+                        String moml = containedObject.exportMoML();
+                        MoMLChangeRequest change = new MoMLChangeRequest(parsedContainer,
+                                parsedContainer,
+                                moml);
+
+                        if (parsedContainer != null) {
+                            // If we are parsing the moml for the first
+                            // time, then the parsedContainer might be null.
+                            parsedContainer.requestChange(change);
+                        }
+                        _variableBuffer.append(moml);
+                        // Rerun the parse in case there are other problems.
+                        doRerun = true;
+                    } catch (Throwable ex2) {
+                        // Ignore and hope the user pastes into a
+                        // location where the variable is defined
+                    }
+                }
             }
         }
         return doRerun;
@@ -248,12 +273,10 @@ public class MoMLVariableChecker {
             }
         }
 
-        // System.out.println("MoMLUtilities: idException: " + idException);
         if (idException == null) {
             // The exception or the cause was not an
             // UndefinedConstantOrIdentifierException, so we cannot do
             // anything.
-            // System.out.println("MoMLUtilities: returning false");
             return false;
         }
 
@@ -267,28 +290,21 @@ public class MoMLVariableChecker {
 
         Attribute masterAttribute = container.getAttribute(variableName);
 
-        // System.out.println("MoMLUtilities: variableName: " + variableName
-        //        + " masterAttr: " + masterAttribute);
         if (masterAttribute instanceof Variable) {
             Variable masterVariable = (Variable)masterAttribute;
             ParserScope parserScope = masterVariable.getParserScope();
-            // System.out.println("MoMLUtilities: parserScope: " + parserScope);
             if (parserScope instanceof ModelScope) {
                 if (masterVariable != null) {
                     Variable node = masterVariable.getVariable(idException.nodeName());
-                    // System.out.println("MoMLUtilities: node: " + node
-                    //        + " _previousNode: " + _previousNode);
+
                     if (node == _previousNode) {
                         // We've already seen this node, so stop
                         // looping through the getToken() loop.
-                        // System.out.println("MoMLUtilities: returning false!");
                         return false;
                     }
                     _previousNode = node;
 
                     try {
-                        // System.out.println("MoMLUtilities: about to export"
-                        //        + " for " + node);
 
                         String moml = node.exportMoML()
                             .replaceFirst("<property",
@@ -318,7 +334,6 @@ public class MoMLVariableChecker {
                 }
             }
         }
-        // System.out.println("MoMLUtilities: returning " + doRerun);
         return doRerun;
     }
 

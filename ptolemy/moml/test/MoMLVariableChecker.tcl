@@ -35,6 +35,11 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[string compare sdfModel [info procs getParameterl]] != 0} \
+        then {
+    source [file join $PTII util testsuite models.tcl]
+} {}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -355,7 +360,7 @@ test MoMLVariableChecker-2.1 {copy a class that _does_ exist} {
     set results [changeAndGetToken $toplevelClassDefinition2_1 \
 	       "<group name=\"auto\">$instance2_0</group>" \
 	       ConstClassDefinition.Const]
-    list $results
+    list [$results toString]
 } {4242}
 
 ######################################################################
@@ -376,5 +381,153 @@ test MoMLVariableChecker-2.2 {copy a class that does not exist} {
     set toplevel2_2b [parseMoML $moml2_2b w2_2b]
 
     set variableChecker2_2 [java::new ptolemy.moml.MoMLVariableChecker]
+
+    # We did not find the missing class, so copyMoML is empty
     set copyMoML [$variableChecker2_2 checkCopy "<group name=\"auto\">$instance2_0</group>" $toplevel2_2b]
 } {}
+
+######################################################################
+####
+# 
+test MoMLVariableChecker-2.3 {copy a class that does exist} {
+    # Uses instance2_0 from 2.0 above
+    set w [java::new ptolemy.kernel.util.Workspace w2_3a]
+    set parser [java::new ptolemy.moml.MoMLParser $w]
+
+    # We copy from here
+    set toplevelClassDefinition2_3 [java::cast ptolemy.actor.CompositeActor \
+		      [$parser parseFile ConstClassDefinition.xml]]
+
+    # We paste to here, which does not have the class definition
+    set moml2_3b "$header $entityStart $myParam $paramCopyConst </entity>"
+    set toplevel2_3b [parseMoML $moml2_3b w2_3b]
+
+    set variableChecker2_3 [java::new ptolemy.moml.MoMLVariableChecker]
+
+    # We _did_ find the missing class!
+    set copyMoML [$variableChecker2_3 checkCopy "<group name=\"auto\">$instance2_0</group>" $toplevelClassDefinition2_3]
+} {<class name="ConstClassDefinition" extends="ptolemy.actor.TypedCompositeActor">
+    <property name="_location" class="ptolemy.kernel.util.Location" value="{185, 90}">
+    </property>
+    <port name="port" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 160.0]">
+        </property>
+    </port>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="4242">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200, 150}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="port" relation="relation"/>
+    <link port="Const.output" relation="relation"/>
+</class>
+}
+
+
+######################################################################
+####
+# 
+test MoMLVariableChecker-2.3.2 {copy a class that does exist to a top level that  does not have the class} {
+    set moml2_3_2 "$header $entityStart</entity>"
+    set toplevel2_3_2 [parseMoML $moml2_3_2 w2_3_2]
+
+    # Uses instance2_0 from 2.0 above and copyMoML from 2.3
+    set results [changeAndGetToken $toplevel2_3_2 \
+	       "<group name=\"auto\">$copyMoML $instance2_0</group>" \
+	       ConstClassDefinition.Const]
+    list [$results toString]
+} {4242}
+
+
+
+######################################################################
+####
+# 
+test MoMLVariableChecker-2.3.3 {copy a class that does exist to a top level that _does_ have the class} {
+
+    # Uses instance2_0 from 2.0 above
+    set w [java::new ptolemy.kernel.util.Workspace w2_3a]
+    set parser [java::new ptolemy.moml.MoMLParser $w]
+    $parser purgeModelRecord ConstClassDefinition.xml
+
+    #set moml2_3_3 "$header $entityStart</entity>"
+    #set toplevel2_3_3 [parseMoML $moml2_3_3 w2_3_3]
+
+    set toplevelClassDefinition2_3_3 [java::cast ptolemy.actor.CompositeActor \
+		      [$parser parseFile ConstClassDefinition.xml]]
+
+    # Change ConstClassDefinition.Const to 666
+    set const [$toplevelClassDefinition2_3_3 getEntity \
+		   ConstClassDefinition.Const]
+    set value [getParameter $const value]
+    $value setExpression 666
+
+
+    # Uses instance2_0 from 2.0 above and copyMoML from 2.3
+    set results [changeAndGetToken $toplevelClassDefinition2_3_3 \
+	       "<group name=\"auto\">$copyMoML $instance2_0</group>" \
+	       ConstClassDefinition.Const]
+
+    $parser purgeModelRecord ConstClassDefinition.xml
+
+    list [$results toString]
+} {666}
+
+
+######################################################################
+####
+# 
+test MoMLVariableChecker-2.3.4 {copy a class that does exist to a top level that _does_ have the class, but with a different definition} {
+
+    # Uses instance2_0 from 2.0 above
+    set w [java::new ptolemy.kernel.util.Workspace w2_3a]
+    set parser [java::new ptolemy.moml.MoMLParser $w]
+    $parser purgeModelRecord ConstClassDefinition.xml
+
+    #set moml2_3_4 "$header $entityStart</entity>"
+    #set toplevel2_3_4 [parseMoML $moml2_3_4 w2_3_4]
+
+    set toplevelClassDefinition2_3_4 [java::cast ptolemy.actor.CompositeActor \
+		      [$parser parseFile ConstClassDefinition.xml]]
+
+    # Change ConstClassDefinition.Const to 666
+    set const [$toplevelClassDefinition2_3_4 getEntity \
+		   ConstClassDefinition.Const]
+    set value [getParameter $const value]
+    $value setExpression 666
+
+    # Reread the class
+    $parser reset
+    $parser purgeModelRecord ConstClassDefinition.xml
+    set toplevelClassDefinition2_3_4b \
+	[java::cast ptolemy.actor.CompositeActor \
+		      [$parser parseFile ConstClassDefinition.xml]]
+
+    # Change ConstClassDefinition.Const to 777
+    set const [$toplevelClassDefinition2_3_4b getEntity \
+		   ConstClassDefinition.Const]
+    set value [getParameter $const value]
+    $value setExpression 777
+
+    # Uses instance2_0 from 2.0 above and copyMoML from 2.3
+    set results [changeAndGetToken $toplevelClassDefinition2_3_4b  \
+	       "<group name=\"auto\">$copyMoML $instance2_0</group>" \
+	       ConstClassDefinition.Const]
+
+    $parser purgeModelRecord ConstClassDefinition.xml
+
+    list [$results toString]
+} {777}
