@@ -387,9 +387,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         //}
 
         if (containsCode(_postfireCode)) {
-            code.append(postfireEntryCode);
-            code.append(_postfireCode);
-            code.append(postfireExitCode);
+            if (isTopLevel()) {
+                code.append(postfireProcedureName);
+            } else {
+                code.append(postfireEntryCode);
+                code.append(_postfireCode);
+                code.append(postfireExitCode);
+            }
         }
 
         //if (containsCode(wrapupCode)) {
@@ -454,7 +458,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
 
             for (int i = 0; i < args.length; i++) {
-                _parseArg(args[i]);
+                if (_parseArg(args[i])) {
+                    continue;
+                }
                 if (args[i].trim().startsWith("-")) {
                     if (i >= (args.length - 1)) {
                         throw new IllegalActionException("Cannot set "
@@ -1049,15 +1055,19 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (arg.equals("-help")) {
             System.out.println(_usage());
 
-            // NOTE: This means the test suites cannot test -help
             StringUtilities.exit(0);
+            // If we are testing, and ptolemy.ptII.exitAfterWrapup is set
+            // then StringUtilities.exit(0) might not actually exit.
+            return true;
         } else if (arg.equals("-version")) {
             System.out.println("Version "
                             + VersionAttribute.CURRENT_VERSION.getExpression()
                             + ", Build $Id$");
 
-            // NOTE: This means the test suites cannot test -version
             StringUtilities.exit(0);
+            // If we are testing, and ptolemy.ptII.exitAfterWrapup is set
+            // then StringUtilities.exit(0) might not actually exit.
+            return true;
         } else if (arg.equals("")) {
             // Ignore blank argument.
         }
@@ -1176,13 +1186,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             { "-<parameter name>", "<parameter value>" } };
 
     /** The form of the command line. */
-    protected static String _commandTemplate = "ptcg [ options ] [file ...]";
+    protected static final String _commandTemplate = "ptcg [ options ] [file ...]";
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line charactor so that the files we generate
      *  have the proper end of line character for use by other native tools.
      */
-    protected static String _eol;
+    protected static final String _eol;
     static {
         _eol = StringUtilities.getProperty("line.separator");
     }
@@ -1199,17 +1209,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Indent string for indent level 1.
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
-    protected static String _INDENT1 = StringUtilities.getIndentPrefix(1);
+    protected static final String _INDENT1 = StringUtilities.getIndentPrefix(1);
 
     /** Indent string for indent level 2.
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
-    protected static String _INDENT2 = StringUtilities.getIndentPrefix(2);
+    protected static final String _INDENT2 = StringUtilities.getIndentPrefix(2);
 
     /** Indent string for indent level 3.
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
-    protected static String _INDENT3 = StringUtilities.getIndentPrefix(3);
+    protected static final String _INDENT3 = StringUtilities.getIndentPrefix(3);
 
     /** Set of include command line arguments where each element is 
      *  a string, for example "-I/usr/local/include".
