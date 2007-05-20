@@ -5584,22 +5584,27 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         || relation.getDerivedLevel() == Integer.MAX_VALUE) {
                     // The relation name was given, see if the link was
                     // added inside or outside
+
                     if (port.numInsideLinks() != origNumInsideLinks) {
                         if (insertInsideAt == -1) {
                             insertInsideAt = port.numInsideLinks() - 1;
                         }
                         // Enclose in a group to prevent deferral on undo.
-                        _undoContext.appendUndoMoML("<group><unlink port=\""
+                        // Handle deleting links in reverse order so that if
+                        // we copy and paste the undo/redo works out
+                        _undoContext.appendClosingUndoMoML("<group><unlink port=\""
                                 + portName + "\" insideIndex=\""
-                                + insertInsideAt + "\" /></group>\n");
+                                + insertInsideAt + "\" /></group>" + "\n");
                     } else if (port.numLinks() != origNumOutsideLinks) {
                         if (insertAt == -1) {
                             insertAt = port.numLinks() - 1;
                         }
                         // Enclose in a group to prevent deferral on undo.
-                        _undoContext.appendUndoMoML("<group><unlink port=\""
+                        // Handle deleting links in reverse order so that if
+                        // we copy and paste the undo/redo works out
+                        _undoContext.appendClosingUndoMoML("<group><unlink port=\""
                                 + portName + "\" index=\"" + insertAt
-                                + "\" /></group>\n");
+                                + "\" /></group>" + "\n");
                     } else {
                         // No change so do not need to generate any undo MoML
                     }
