@@ -27,12 +27,16 @@
  */
 package ptolemy.vergil.fsm;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
@@ -49,6 +53,7 @@ import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.graph.GraphPane;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphFrame
@@ -101,6 +106,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
 
         // Override the default help file.
         helpFile = "ptolemy/configs/doc/vergilFsmEditorHelp.htm";
+        _layoutAction = new LayoutAction();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -115,6 +121,8 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
         _graphMenu = new JMenu("Graph");
         _graphMenu.setMnemonic(KeyEvent.VK_G);
         _menubar.add(_graphMenu);
+        GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
+        GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
 
         // Add any commands to graph menu and toolbar that the controller
         // wants in the graph menu and toolbar.
@@ -190,6 +198,9 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
 
     /** The graph menu. */
     protected JMenu _graphMenu;
+
+    /** The action for automatically laying out the graph. */
+    protected Action _layoutAction;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -275,5 +286,34 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
         }
 
         private NamedObj _listeningTo;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// LayoutAction
+
+    /** Action to automatically lay out the graph. */
+    private class LayoutAction extends AbstractAction {
+
+        // FIXME: consider refactoring this code, see also
+        // vergil/actor/ActorGraphFrame.java
+
+        /** Create a new action to automatically lay out the graph. */
+        public LayoutAction() {
+            super("Automatic Layout");
+            putValue("tooltip", "Layout the Graph (Ctrl+T)");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_T, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
+        }
+
+        /** Lay out the graph. */
+        public void actionPerformed(ActionEvent e) {
+            try {
+                layoutGraph();
+            } catch (Exception ex) {
+                MessageHandler.error("Layout failed", ex);
+            }
+        }
     }
 }
