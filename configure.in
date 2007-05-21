@@ -2541,7 +2541,8 @@ changequote([, ])dnl
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/glnx86
 			;;
 		CYGWIN*)
-			MATLAB_USE_MSVC="yes"
+                        # As of 5/2007, we no longer use MSVC cl for Matlab
+			MATLAB_USE_MSVC="no"
 			MATLAB_LIBDIR=${MATLAB_DIR}/bin/win32
 			;;
 		SunOS*)
@@ -2574,7 +2575,7 @@ changequote([, ])dnl
 			fi
 		    fi
                 else 
-		    PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -c -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
+		    PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
 
 		    AC_MSG_CHECKING([for gcc])
 		    AC_PATH_PROG(PTCC, gcc)
