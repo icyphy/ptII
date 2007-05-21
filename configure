@@ -7947,7 +7947,8 @@ echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed.
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/glnx86
 			;;
 		CYGWIN*)
-			MATLAB_USE_MSVC="yes"
+                        # As of 5/2007, we no longer use MSVC cl for Matlab
+			MATLAB_USE_MSVC="no"
 			MATLAB_LIBDIR=${MATLAB_DIR}/bin/win32
 			;;
 		SunOS*)
@@ -8065,7 +8066,7 @@ echo "$as_me: WARNING: Failed to find MSVC cl or GNU gcc, so we will
 			fi
 		    fi
                 else
-		    PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -c -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
+		    PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -lc -leng -lmx"
 
 		    { echo "$as_me:$LINENO: checking for gcc" >&5
 echo $ECHO_N "checking for gcc... $ECHO_C" >&6; }
