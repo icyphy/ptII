@@ -387,13 +387,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         //}
 
         if (containsCode(_postfireCode)) {
-            if (isTopLevel()) {
-                code.append(postfireProcedureName);
-            } else {
+            // if (isTopLevel()) {
+            //                          code.append(postfireProcedureName);
+                          //            } else {
                 code.append(postfireEntryCode);
                 code.append(_postfireCode);
                 code.append(postfireExitCode);
-            }
+                //            }
         }
 
         //if (containsCode(wrapupCode)) {
