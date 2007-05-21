@@ -132,7 +132,7 @@ $(PTLIB)_msvc: ptmatlab.cc Engine.class
 		/Tpptmatlab.cc \
 		-Fe$@ \
 		/link /dll \
-		/libpath:$(MATLAB_DIR)/extern/lib/win32/microsoft/msvc70 \
+		/libpath:"$(MATLAB_DIR)/extern/lib/win32/microsoft/msvc70" \
 		libeng.lib libmx.lib
 
 # Build using gcc
@@ -142,16 +142,17 @@ $(PTLIB)_msvc: ptmatlab.cc Engine.class
 # -fno-exceptions  - see note at bottom
 # $(PTJNI_NO_CYGWIN) is sometimes set to -mno-cygwin and causes
 # "Invalid access to memory location" errors
+ptlib_gcc: $(PTLIB)_gcc
 $(PTLIB)_gcc: ptmatlab.cc Engine.class
 	CLASSPATH="$(CLASSPATH)" "$(PTJAVA_DIR)/bin/javah" -jni -o ptmatlab.h ptolemy.matlab.Engine
 	$(PTCC) -shared \
-f		"-I$(MATLAB_DIR)/extern/include" \
+		"-I$(MATLAB_DIR)/extern/include" \
 		"-I$(PTJAVA_DIR)/include" \
 		"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)" \
 		$< \
 		-fno-exceptions \
 		-o $@ \
-		-L$(MATLAB_LIBDIR) $(PTJNI_SHAREDLIBRARY_LDFLAG) -lc -leng -lmx
+		"-L$(MATLAB_LIBDIR)" $(PTJNI_SHAREDLIBRARY_LDFLAG) -lc -leng -lmx
 
 # Jar file for Web Start that contains the dll
 $(PTPACKAGE_NATIVE_JAR): $(PTLIB)
