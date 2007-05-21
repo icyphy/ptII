@@ -145,6 +145,28 @@ public class DocBuilder extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    /** Return the command to compile ptII/doc/PtDoclet.
+     */
+    private static String _compilePtDoclet(File ptII) {
+        String results = "";
+        try {
+            String javaHome = StringUtilities.getProperty("java.home");
+            if (javaHome != null && javaHome.length() > 1) {
+                javaHome = javaHome.replace('\\', '/');
+                String toolsJarFileBase = "/../lib/tools.jar";
+                File toolsJarFile = new File(javaHome + toolsJarFileBase);
+                if (toolsJarFile.exists()) {
+                    results = "javac -classpath \"" + ptII + File.pathSeparator
+                        + javaHome + toolsJarFileBase
+                        + "\" doc/doclets/PtDoclet.java";
+                }
+            }
+        } catch (Throwable throwable) {
+            // Ignore, return the empty string.
+        }
+        return results;
+    } 
 
     /** Build the documentation. 
      *  @return The return value of the last subprocess that was executed
@@ -213,14 +235,15 @@ public class DocBuilder extends Attribute {
                             .getProperty("ptolemy.ptII.dir"));
                     _executeCommands.setWorkingDirectory(ptII);
                     _executeCommands
-                            .updateStatusBar("Please wait, searching for packages.");
+                            .updateStatusBar("When creating docs, warnings are ok.");
 
+                    commands.add(_compilePtDoclet(ptII));
                     commands.add("javadoc -classpath \""
                             + StringUtilities.getProperty("java.class.path")
                             + "\" -J-Xmx512m -d doc/codeDoc "
-                            + "-doclet doc.doclets.PtDoclet ");
-                    _executeCommands
-                            .updateStatusBar("Done searching for packages.");
+                            + "-doclet doc.doclets.PtDoclet "
+                            + "-subpackages com:diva:jni:org:ptolemy:thales "
+                            + "-exclude ptolemy.apps:ptolemy.copernicus:diva.util.java2d.svg");
                     commands
                             .add("java -Xmx256m -classpath \""
                                     + StringUtilities
