@@ -2547,6 +2547,10 @@ changequote([, ])dnl
 			;;
 		SunOS*)
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib/sol2
+			if test ! -d "$MATLAB_LIBDIR"; then
+			    # Why, under Unix, are the libs in the bin dir? 
+			    MATLAB_LIBDIR=${MATLAB_DIR}/bin/sol64
+                        fi  
 			;;
 		*)
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib
