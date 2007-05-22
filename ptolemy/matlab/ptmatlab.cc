@@ -36,6 +36,10 @@ Version $Id$
 typedef long long __int64;
 #endif
 
+// Define MX_COMPAT_32 so that mwSize, mwIndex are defined.
+// See extern/include/tmwtypes.h
+#define MX_COMPAT_32
+
 // V5_COMPAT allows matlab version 5 compatible (obsolete in 6.5 and
 // beyond) functions (like mxGetArray()...) in the source yielding one
 // shared ptmatlab library. The alternative would be to have two source
