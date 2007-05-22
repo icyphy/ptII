@@ -40,9 +40,6 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-#
-#
-
 test composition-1.0 {DE model contained within SDF} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set manager [java::new ptolemy.actor.Manager $w Manager]
@@ -76,3 +73,68 @@ test composition-1.0 {DE model contained within SDF} {
     $manager run
     list [enumToTokenValues [$a3 getRecord 0]]  [enumToObjects [$a3 getTimeRecord]]
 } {{0 1 2 3 4 5} {0.0 0.0 0.0 0.0 0.0 0.0}}
+
+####
+test composition-2.0 {Liberal links should work if you have a single SDF director at the top level. (no opaque composite actor with other domains) https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=26} { 
+
+    # Create a Ramp -> Scale -> Recorder model, where the Scale is contained
+    # in a separate Composite.
+
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [$director getScheduler]
+
+    set ramp2 [java::new ptolemy.actor.lib.Ramp $toplevel Ramp2]
+
+    # Put the scale inside a TypedCompositeActor 
+    set composite2 [java::new ptolemy.actor.TypedCompositeActor \
+			$toplevel Composite2]
+    set innerScale2 [java::new ptolemy.actor.lib.Scale $composite2 InnerScale2]
+
+    # Set the Scale factor to 2
+    set factor [$innerScale2 getAttribute factor]
+    _testSetToken $factor [java::new {ptolemy.data.IntToken int} 2]
+
+    set scaleInput [java::field \
+			[java::cast ptolemy.actor.lib.Transformer \
+			     $innerScale2] input]
+
+    set r1 [java::new ptolemy.actor.TypedIORelation $toplevel r1]
+    
+    # This will throw a level crossing link exception
+    catch {$scaleInput link $r1} errMsg
+
+    # This works
+    $scaleInput liberalLink $r1
+
+
+    set rampOutput [java::field [java::cast ptolemy.actor.lib.Source $ramp2] \
+			output]
+    $rampOutput link $r1
+
+
+    set scaleOutput [java::field \
+			[java::cast ptolemy.actor.lib.Transformer \
+			     $innerScale2] output]
+    set r2 [java::new ptolemy.actor.TypedIORelation $toplevel r2]
+    $scaleOutput liberalLink $r2
+
+
+    set recorder2 [java::new ptolemy.actor.lib.Recorder $toplevel Recorder2]
+    set recorderInput [java::field [java::cast ptolemy.actor.lib.Sink \
+					$recorder2] input]
+    $recorderInput link $r2
+
+    set iterations [$director getAttribute iterations]
+    _testSetToken $iterations [java::new {ptolemy.data.IntToken int} 6]
+
+    $manager run
+    list [enumToTokenValues [$recorder2 getRecord 0]] $errMsg
+} {{0 2 4 6 8 10} {ptolemy.kernel.util.IllegalActionException: Link crosses levels of the hierarchy
+  in .Toplevel.Composite2.InnerScale2.input and .Toplevel.r1}}
+
