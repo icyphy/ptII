@@ -280,6 +280,17 @@ public class State extends ComponentEntity {
                             "Malformed list of refinements: " + names);
                 }
 
+                if (containerContainer == null) {
+                    // If we are doing saveAs of ModalBSC and select 
+                    // submodel only, then some of the refinements might
+                    // not yet have a container (containercontainer == null).
+                    // ptolemy.vergil.fsm.StateIcon._getFill() will call
+                    // this and properly handles an IllegalActionException 
+                    throw new IllegalActionException(this, "Container of \""
+                            + getFullName()
+                            + "\" is null?  This is not always a problem.");
+                }
+
                 TypedActor element = (TypedActor) containerContainer
                         .getEntity(name);
 
