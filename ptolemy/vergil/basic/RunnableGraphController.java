@@ -30,6 +30,9 @@ package ptolemy.vergil.basic;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -40,9 +43,18 @@ import javax.swing.KeyStroke;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
+import ptolemy.actor.TypeConflictException;
+import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.graph.Inequality;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.gui.GraphicalMessageHandler;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -96,6 +108,36 @@ public abstract class RunnableGraphController extends WithIconGraphController
      */
     public void executionError(Manager manager, Throwable throwable) {
         getFrame().report(throwable);
+        
+        if (throwable instanceof KernelException) {
+            _highlightError(((KernelException)throwable).getNameable1());
+            _highlightError(((KernelException)throwable).getNameable2());
+            
+            // Type conflict errors need to be handled specially.
+            if (throwable instanceof TypeConflictException) {
+                Iterator inequalities 
+                        = ((TypeConflictException)throwable).inequalityList().iterator();
+                while (inequalities.hasNext()) {
+                    Inequality inequality = (Inequality)inequalities.next();
+                    if (inequality != null) {
+                        InequalityTerm term = inequality.getGreaterTerm();
+                        if (term != null) {
+                            Object object = term.getAssociatedObject();
+                            if (object instanceof Nameable) {
+                                _highlightError((Nameable)object);
+                            }
+                        }
+                        term = inequality.getLesserTerm();
+                        if (term != null) {
+                            Object object = term.getAssociatedObject();
+                            if (object instanceof Nameable) {
+                                _highlightError((Nameable)object);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /** Report that execution of the model has finished.
@@ -113,6 +155,16 @@ public abstract class RunnableGraphController extends WithIconGraphController
         Manager.State newState = manager.getState();
 
         if (newState != _previousState) {
+            // Clear any error reporting highlights that may be present.
+            ChangeRequest request = new ChangeRequest(this, "Error Highlight Clearer") {
+                protected void _execute() throws Exception {
+                    for (Attribute highlight : _errorHighlights) {
+                        highlight.setContainer(null);
+                    }
+                }
+            };
+            manager.requestChange(request);
+
             getFrame().report(manager.getState().getDescription());
             _previousState = newState;
 
@@ -181,8 +233,51 @@ public abstract class RunnableGraphController extends WithIconGraphController
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Add an error highlight color to the specified culprit if it is
+     *  not already present.
+     *  @param culprit The culprit to highlight.
+     *  @throws IllegalActionException If the highlight cannot be added.
+     *  @throws NameDuplicationException Should not be thrown.
+     */
+    private void _addErrorHighlightIfNeeded(Nameable culprit)
+            throws IllegalActionException, NameDuplicationException {
+        Attribute highlightColor = ((NamedObj)culprit).getAttribute("_highlightColor");
+        if (highlightColor == null) {
+            highlightColor = new ColorAttribute((NamedObj)culprit, "_highlightColor");
+            ((ColorAttribute)highlightColor).setExpression("{1.0, 0.0, 0.0, 1.0}");
+            highlightColor.setPersistent(false);
+            _errorHighlights.add(highlightColor);
+        }
+    }
+    
+    /** Highlight the specified object and all its containers to
+     *  indicate that it is the source of an error.
+     *  @param culprit The culprit.
+     */
+    private void _highlightError(final Nameable culprit) {
+        if (culprit instanceof NamedObj) {
+            ChangeRequest request = new ChangeRequest(this, "Error Highlighter") {
+                protected void _execute() throws Exception {
+                    _addErrorHighlightIfNeeded(culprit);
+                    NamedObj container = culprit.getContainer();
+                    while (container != null) {
+                        _addErrorHighlightIfNeeded(container);
+                        container = container.getContainer();
+                    }
+                }
+            };
+            ((NamedObj)culprit).requestChange(request);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** List of error highlight attributes we have created. */
+    private List<Attribute> _errorHighlights = new LinkedList<Attribute>();
+    
     /** The manager we are currently listening to. */
     private Manager _manager = null;
 
