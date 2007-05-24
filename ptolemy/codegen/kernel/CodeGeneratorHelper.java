@@ -1271,6 +1271,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return sinkChannels;
         }
 
+        if (remoteReceivers[channelNumber] == null) {
+            throw new InternalErrorException("Channel "
+                    + channelNumber + " of Port \"" + port + "\" was null!");
+        }
+
         for (int i = 0; i < remoteReceivers[channelNumber].length; i++) {
             IOPort sinkPort = remoteReceivers[channelNumber][i].getContainer();
             Receiver[][] portReceivers;

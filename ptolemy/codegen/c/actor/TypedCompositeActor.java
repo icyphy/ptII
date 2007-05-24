@@ -79,8 +79,13 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            helperObject.analyzeTypeConvert();
+            try {
+                CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+                helperObject.analyzeTypeConvert();
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(actor, throwable,
+                        "Failed to determine which ports need type conversion.");
+            }
         }
     }
 
