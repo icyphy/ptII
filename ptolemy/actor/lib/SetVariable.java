@@ -57,7 +57,7 @@ import ptolemy.util.MessageHandler;
 /**
  <p>Set the value of a variable contained by the container.  The result
  may occur at two different times, depending on the value of the
- delayed parameter.
+ <it>delayed</it> parameter.
 
  </p><p> If <it>delayed</it> is true, then the change to
  the value of the variable is implemented in a change request, and
