@@ -189,3 +189,43 @@ test Publisher-1.6 {Convert CompositeActor to a class } {
 	$manager execute
     }
 } {}
+
+######################################################################
+####
+#
+test Publisher-2.1 {Instantiate twice a class that has a publisher} {
+    set workspace [java::new ptolemy.kernel.util.Workspace "pubWS"]
+    set parser [java::new ptolemy.moml.MoMLParser $workspace]
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+    set url [[java::new java.io.File "PublisherSubscriberInClass.xml"] toURL]
+    $parser purgeModelRecord $url
+    set model [java::cast ptolemy.actor.TypedCompositeActor \
+		   [$parser {parse java.net.URL java.net.URL} \
+			[java::null] $url]]
+    set compositeActor [$model getEntity CompositeActor]
+    #set moml "<group name=\"auto\"><entity name=\"InstanceOf[$compositeActor getName]\" class=\"[$compositeActor getName]\"/></group>"
+    set moml "<entity name=\"Instance1Of[$compositeActor getName]\" class=\"[$compositeActor getName]\"/>"
+    set request [java::new ptolemy.moml.MoMLChangeRequest \
+		     $workspace $model $moml]
+
+    # This should not cause an error
+    $model requestChange $request
+
+    # Instantiate again.  This means we now have two publishers
+    # with the same instance
+    set moml "<entity name=\"Instance2Of[$compositeActor getName]\" class=\"[$compositeActor getName]\"/>"
+    set request2 [java::new ptolemy.moml.MoMLChangeRequest \
+		     $workspace $model $moml]
+    $model requestChange $request2
+
+    set manager [java::new ptolemy.actor.Manager $workspace "pubManager"]
+    $model setManager $manager 
+    $manager execute
+    list [$model getName] \
+	[[$model getEntity CompositeActor] isClassDefinition]
+} {}
