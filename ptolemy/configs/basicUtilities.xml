@@ -25,4 +25,5 @@
 <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences"/>
 <input source="ptolemy/vergil/kernel/attributes/decorative.xml"/>
 <input source="ptolemy/configs/utilityParameters.xml"/>
+<input source="ptolemy/configs/utilityAnalysis.xml"/>
 </group>

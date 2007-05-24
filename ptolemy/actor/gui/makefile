@@ -84,6 +84,7 @@ JSRCS = \
 	ConfigurationEffigy.java \
 	Configurer.java \
 	DebugListenerTableau.java \
+	DependencyHighlighter.java \
 	DialogTableau.java \
 	EditorFactory.java \
 	EditorPaneFactory.java \

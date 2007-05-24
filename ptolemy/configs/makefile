@@ -84,6 +84,7 @@ OTHER_FILES_TO_BE_JARED = \
 	runPanelConfiguration.xml \
 	runWelcomeWindow.xml \
 	utilitiesLibrary.xml \
+	utilityAnalysis.xml \
 	utilityColorAttribute.xml \
 	utilityCompositeActor.xml \
 	utilityFileParameter.xml \
