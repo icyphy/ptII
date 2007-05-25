@@ -282,7 +282,8 @@ public class HTMLAbout {
             // Convert the list to a Set and avoid duplicates.
             Set modelSet = new HashSet(modelList);
             newURL = _temporaryHTMLFile("checkModelSizes", ".htm",
-                    CheckModelSize.checkModelSize((String[]) modelSet
+                    CheckModelSize.checkModelSize(configuration,
+                            (String[]) modelSet
                             .toArray(new String[modelSet.size()])));
         } else if (event.getDescription().equals("about:copyright")) {
             // Note that if we have a link that is
@@ -662,8 +663,6 @@ public class HTMLAbout {
                         if (!sawModel) {
                             modelList.add(model);
                             if (depth > 0 && model.matches(".*(.htm|.html)")) {
-                                System.out.println("HTMLAbout: _getURLs() "
-                                        + "checking: " + modelURL);
                                 modelList.addAll(_getURLs(modelURL, regexp,
                                         absoluteURLs, depth - 1));
                             }
