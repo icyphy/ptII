@@ -83,10 +83,12 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
+		$(ROOT)/ptolemy/domains/sdf/kernel/test/SDFTestRamp.class \
+		test_auto
 	$(JTCLSH) alljtests.tcl
 
-
+$(ROOT)/ptolemy/domains/sdf/kernel/test/SDFTestRamp.class: $(ROOT)/ptolemy/domains/sdf/kernel/test/SDFTestRamp.java
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
