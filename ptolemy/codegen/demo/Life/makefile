@@ -58,6 +58,8 @@ OTHER_FILES_TO_BE_JARED = \
 	CycleLEDs.mk.in \
 	CycleLEDs.xml \
 	LifeCGAVR.mk.in \
+	LifePtalonCGAVR.mk.in \
+	LifePtalonCGAVR.xml \
 	ModalLEDs.mk.in \
 	ModalLEDs.xml
 
