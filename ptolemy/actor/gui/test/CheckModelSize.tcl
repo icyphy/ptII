@@ -52,7 +52,8 @@ set ptolemyPtIIDir [java::call ptolemy.util.StringUtilities getProperty ptolemy.
 test CheckModelSize-1.0 {checkModelSize} {
     set args [java::new {String[]} {1} {../../../../ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml}]
     set results \
-	[java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args]
+	[java::call ptolemy.actor.gui.CheckModelSize \
+		checkModelSize [java::null] $args]
     if { [regsub -all "file:/*$ptolemyPtIIDir/" $results {} results2] == 0} {
 	regsub -all {file:[^>]*/ptII/} $results {} results2
     }
@@ -75,7 +76,8 @@ Below are the results from checking the sizes of and centering of models
 test CheckModelSize-1.1 {checkModelSize: no _vergilSize} {
     set args [java::new {String[]} {1} {test.xml}]
     set results \
-	[java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args]
+	[java::call ptolemy.actor.gui.CheckModelSize \
+		checkModelSize [java::null] $args]
     if { [regsub -all "file:/*$ptolemyPtIIDir/" $results {} results2] == 0} {
 	regsub -all {file:[^>]*/ptII/} $results {} results2
     }
@@ -97,7 +99,8 @@ Below are the results from checking the sizes of and centering of models
 test CheckModelSize-1.2 {checkModelSize: bad moml} {
     set args [java::new {String[]} {1} {badMoML.moml}]
     set results \
-	[java::call ptolemy.actor.gui.CheckModelSize checkModelSize $args]
+	[java::call ptolemy.actor.gui.CheckModelSize \
+		checkModelSize [java::null] $args]
     if { [regsub -all "file:/*$ptolemyPtIIDir/" $results {} results2] == 0} {
 	regsub -all {file:[^>]*/ptII/} $results {} results2
     }
