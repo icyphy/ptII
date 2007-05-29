@@ -52,6 +52,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	Array.c \
 	Boolean.c \
+	Complex.c \
 	Double.c \
 	Int.c \
 	Matrix.c \
