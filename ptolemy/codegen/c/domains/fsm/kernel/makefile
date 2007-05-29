@@ -71,6 +71,7 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	'FSMActor$$1.class' \
+	'FSMActor$$PortScope.class' \
 	'FSMActor$$TransitionRetriever.class' \
 	'FSMDirector$$1.class' \
 	'FSMDirector$$2.class' \
