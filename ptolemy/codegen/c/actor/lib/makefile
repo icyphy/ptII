@@ -33,7 +33,8 @@
 
 ME =		ptolemy/codegen/c/actor/lib
 
-DIRS =		comm conversions gui hoc io javasound jni \
+# PTCOLT_DIR is set to colt if colt was found
+DIRS =		comm $(PTCOLT_DIR) conversions gui hoc io javasound jni \
 		logic string test tutorial
 
 # Root of the Java directory
@@ -86,6 +87,7 @@ JSRCS = \
 	Commutator.java \
 	Const.java \
 	Counter.java \
+	CurrentTime.java \
 	Differential.java \
 	Discard.java \
 	DiscreteRandomSource.java \
@@ -95,16 +97,19 @@ JSRCS = \
 	Expression.java \
 	Gaussian.java \
 	GradientAdaptiveLattice.java \
+	Lattice.java \
 	Limiter.java \
 	LookupTable.java \
 	Maximum.java \
 	Minimum.java \
 	MonitorValue.java \
 	MultiplyDivide.java \
+	Publisher.java \
 	Pulse.java \
 	Quantizer.java \
 	Ramp.java \
 	RandomSource.java \
+	RecursiveLattice.java \
 	Remainder.java \
 	Rician.java \
 	Scale.java \
@@ -113,6 +118,8 @@ JSRCS = \
 	Sleep.java \
 	Stop.java \
 	StringConst.java \
+	Subscriber.java \
+	SubscriptionAggregator.java \
 	Synchronizer.java \
 	Test.java \
 	ThrowException.java \
@@ -120,6 +127,8 @@ JSRCS = \
 	TrigFunction.java \
 	UnaryMathFunction.java \
 	Uniform.java \
+	VectorAssembler.java \
+	VectorDisassembler.java \
 	WallClockTime.java
 
 OTHER_FILES_TO_BE_JARED = \
@@ -153,6 +162,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Expression.c \
 	Gaussian.c \
 	GradientAdaptiveLattice.c \
+	Lattice.c \
 	Limiter.c \
 	LookupTable.c \
 	Maximum.c \
@@ -163,6 +173,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Quantizer.c \
 	Ramp.c \
 	RandomSource.c \
+	RecursiveLattice.c \
 	Remainder.c \
 	Rician.c \
 	Scale.c \
@@ -202,7 +213,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = comm conversions gui hoc io javasound jni \
+MISC_FILES = comm colt conversions gui hoc io javasound jni \
 	logic string test tutorial
 
 # make checkjunk will not report OPTIONAL_FILES as trash

@@ -51,7 +51,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	BooleanToAnything.java \
+	CartesianToComplex.java \
 	CartesianToPolar.java \
+	ComplexToCartesian.java \
 	PolarToCartesian.java \
 	Round.java \
 	StringToIntArray.java \
@@ -59,7 +61,9 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	BooleanToAnything.c \
+	CartesianToComplex.c \
 	CartesianToPolar.c \
+	ComplexToCartesian.c \
 	PolarToCartesian.c \
 	Round.c \
 	StringToIntArray.c \
