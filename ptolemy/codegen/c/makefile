@@ -74,7 +74,8 @@ MISC_FILES =	kernel actor domains
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc
+	doc \
+	lib
 
 JCLASS = $(JSRCS:%.java=%.class)
 
