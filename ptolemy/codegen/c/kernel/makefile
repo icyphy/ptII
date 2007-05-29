@@ -60,6 +60,7 @@ JSRCS = \
 
 
 OTHER_FILES_TO_BE_JARED = \
+	CCodeGeneratorHelper.c \
 	SharedCode.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
