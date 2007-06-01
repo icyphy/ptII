@@ -171,9 +171,10 @@ import ptolemy.moml.HandlesInternalLinks;
  <p><ol>
  <li> E. A. Lee and T. M. Parks, "Dataflow Process Networks,"
  Proceedings of the IEEE, 83(5): 773-801, May, 1995.
- <li> H. J. Reekie, "Toward Effective Programming for
- Parallel Digital Signal Processing," Ph.D. Thesis,
- University of Technology, Sydney, Sydney, Australia, 1992.
+ <li> H. J. Reekie,
+<a href="http://ptolemy.eecs.berkeley.edu/~johnr/papers/thesis.html#in_browser">Realtime Signal Processing: Dataflow, Visual,
+ and Functional Programming</a>," Ph.D. Thesis,
+ University of Technology, Sydney, Sydney, Australia, 1995.
  </ol>
 
  @author Edward A. Lee, Steve Neuendorffer
