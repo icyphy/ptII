@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gr;
+package ptolemy.actor.gt;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.kernel.CompositeEntity;
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class AtomicActorMatcher extends TypedAtomicActor {
-	
+    
     public AtomicActorMatcher(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);

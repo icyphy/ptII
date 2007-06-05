@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.vergil.gr;
+package ptolemy.vergil.gt;
 
 import java.awt.Component;
 import java.awt.event.KeyEvent;
@@ -36,8 +36,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import ptolemy.actor.gr.CompositeActorMatcher;
-import ptolemy.actor.gr.SingleRuleTransformer;
+import ptolemy.actor.gt.CompositeActorMatcher;
+import ptolemy.actor.gt.SingleRuleTransformer;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
@@ -50,7 +50,7 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 
 //////////////////////////////////////////////////////////////////////////
-//// GRRuleGraphFrame
+//// GTRuleGraphFrame
 
 /**
  This is a graph editor frame for ptolemy graph transformation models.
@@ -62,7 +62,7 @@ import diva.graph.JGraph;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GRRuleGraphFrame extends ActorGraphFrame implements ChangeListener {
+public class GTRuleGraphFrame extends ActorGraphFrame implements ChangeListener {
 
 	/** Construct a frame associated with the specified case actor.
      *  After constructing this, it is necessary
@@ -75,7 +75,7 @@ public class GRRuleGraphFrame extends ActorGraphFrame implements ChangeListener 
      *  @param entity The model to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      */
-    public GRRuleGraphFrame(SingleRuleTransformer entity, Tableau tableau) {
+    public GTRuleGraphFrame(SingleRuleTransformer entity, Tableau tableau) {
         this(entity, tableau, null);
     }
 
@@ -93,7 +93,7 @@ public class GRRuleGraphFrame extends ActorGraphFrame implements ChangeListener 
      *  @param defaultLibrary An attribute specifying the default library
      *   to use if the model does not have a library.
      */
-    public GRRuleGraphFrame(SingleRuleTransformer entity, Tableau tableau,
+    public GTRuleGraphFrame(SingleRuleTransformer entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
 

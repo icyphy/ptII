@@ -5,11 +5,11 @@
   <configure>
     <entity name="graph transformation library" class="ptolemy.kernel.CompositeEntity">
       <input source="ptolemy/configs/basicUtilities.xml"/>
-      <entity name="CompositeActorMatcher" class="ptolemy.actor.gr.CompositeActorMatcher">
-        <input source="ptolemy/configs/grLibrary.xml"/>
+      <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
+        <input source="ptolemy/configs/gtLibrary.xml"/>
       </entity>
-      <entity name="AtomicActorMatcher" class="ptolemy.actor.gr.AtomicActorMatcher">
-        <property name="_editorFactory" class="ptolemy.actor.gr.RuleEditor$Factory">
+      <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
+        <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
           <property name="attributeName" value="ruleList"/>
         </property>
       </entity>

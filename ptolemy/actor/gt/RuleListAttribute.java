@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gr;
+package ptolemy.actor.gt;
 
 import java.util.Collection;
 
@@ -48,53 +48,53 @@ import ptolemy.kernel.util.Workspace;
 public class RuleListAttribute extends StringAttribute {
 
     public RuleListAttribute() {
-	}
+    }
 
-	public RuleListAttribute(NamedObj container, String name)
-	throws IllegalActionException, NameDuplicationException {
-		super(container, name);
-	}
+    public RuleListAttribute(NamedObj container, String name)
+    throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
 
-	public RuleListAttribute(Workspace workspace) {
-		super(workspace);
-	}
+    public RuleListAttribute(Workspace workspace) {
+        super(workspace);
+    }
 
-	public String getExpression() {
-		// FIXME: serialize _ruleList
-		return super.getExpression();
-	}
-	
-	public RuleList getRuleList() throws MalformedStringException {
-		if (!_parsed) {
-			_parse();
-		}
-		return _ruleList;
-	}
-	
-	public void setExpression(String expression) throws IllegalActionException {
-		_parsed = false;
-		super.setExpression(expression);
-	}
-	
-	public Collection<?> validate() throws IllegalActionException {
-		if (!_parsed) {
-			try {
-				_parse();
-			} catch (MalformedStringException e) {
-				throw new IllegalActionException(e.getMessage());
-			}
-		}
-		return null;
-	}
-	
-	private void _parse() throws MalformedStringException {
-		_parsed = true;
-		_ruleList = RuleList.parse(super.getExpression());
-	}
-	
-	private boolean _parsed = false;
-	
-	private RuleList _ruleList = null;
+    public String getExpression() {
+        // FIXME: serialize _ruleList
+        return super.getExpression();
+    }
+    
+    public RuleList getRuleList() throws MalformedStringException {
+        if (!_parsed) {
+            _parse();
+        }
+        return _ruleList;
+    }
+    
+    public void setExpression(String expression) throws IllegalActionException {
+        _parsed = false;
+        super.setExpression(expression);
+    }
+    
+    public Collection<?> validate() throws IllegalActionException {
+        if (!_parsed) {
+            try {
+                _parse();
+            } catch (MalformedStringException e) {
+                throw new IllegalActionException(e.getMessage());
+            }
+        }
+        return null;
+    }
+    
+    private void _parse() throws MalformedStringException {
+        _parsed = true;
+        _ruleList = RuleList.parse(super.getExpression());
+    }
+    
+    private boolean _parsed = false;
+    
+    private RuleList _ruleList = null;
 
     private static final long serialVersionUID = 3642067100376815343L;
 

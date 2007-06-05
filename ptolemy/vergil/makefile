@@ -31,7 +31,7 @@
 
 ME =		ptolemy/vergil
 
-DIRS = 		toolbox basic actor kernel fsm gr debugger icon lib tree test
+DIRS = 		toolbox basic actor kernel fsm gt debugger icon lib tree test
 
 # Root of the Java directory
 ROOT =		../..
@@ -52,7 +52,7 @@ PTAUXALLJARS = \
 		actor/actor.jar \
 		basic/basic.jar \
 		fsm/fsm.jar \
-		gr/gr.jar \
+		gt/gt.jar \
 		icon/icon.jar \
 		kernel/kernel.jar \
 		debugger/debugger.jar \

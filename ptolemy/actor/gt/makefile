@@ -1,4 +1,4 @@
-# Makefile for the ptolemy/actor/gr package
+# Makefile for the ptolemy/actor/gt package
 #
 # @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/gr
+ME =		ptolemy/actor/gt
 
 DIRS = 		rules
 
@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	gr
+PTPACKAGE = 	gt
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = \
     rules/rules.jar
@@ -54,9 +54,9 @@ JSRCS = \
 	AtomicActorMatcher.java \
 	CompositeActorMatcher.java \
 	MalformedStringException.java \
+	RuleEditor.java \
 	Rule.java \
 	RuleAttribute.java \
-	RuleEditor.java \
 	RuleList.java \
 	RuleListAttribute.java \
 	SingleRuleTransformer.java

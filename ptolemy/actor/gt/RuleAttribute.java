@@ -24,15 +24,10 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gr;
-
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+package ptolemy.actor.gt;
 
 //////////////////////////////////////////////////////////////////////////
-//// CompositeActorMatcher
+//// RuleAttribute
 
 /**
 
@@ -42,13 +37,24 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class CompositeActorMatcher extends TypedCompositeActor {
+public class RuleAttribute {
 
-    public CompositeActorMatcher(CompositeEntity container, String name)
-	throws NameDuplicationException, IllegalActionException {
-		super(container, name);
-	}
-	
-    private static final long serialVersionUID = -3093694369352820033L;
-
+    public RuleAttribute(int type, String name) {
+        _type = type;
+        _name = name;
+    }
+    
+    public String getName() {
+        return _name;
+    }
+    
+    public int getType() {
+        return _type;
+    }
+    
+    public static int STRING;
+    
+    private String _name;
+    
+    private int _type;
 }

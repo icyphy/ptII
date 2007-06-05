@@ -24,11 +24,11 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.vergil.gr;
+package ptolemy.vergil.gt;
 
 import java.awt.Color;
 
-import ptolemy.actor.gr.SingleRuleTransformer;
+import ptolemy.actor.gt.SingleRuleTransformer;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
@@ -42,7 +42,7 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.fsm.CaseGraphTableau;
 
 //////////////////////////////////////////////////////////////////////////
-//// GRRuleGraphTableau
+//// GTRuleGraphTableau
 
 /** An editor tableau for graph transformation in Ptolemy II. FIXME: more
 
@@ -53,7 +53,7 @@ import ptolemy.vergil.fsm.CaseGraphTableau;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GRRuleGraphTableau extends Tableau {
+public class GTRuleGraphTableau extends Tableau {
     /** Create a new case editor tableau with the specified container
      *  and name.
      *  @param container The container.
@@ -63,7 +63,7 @@ public class GRRuleGraphTableau extends Tableau {
      *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
-    public GRRuleGraphTableau(PtolemyEffigy container, String name)
+    public GTRuleGraphTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
@@ -78,7 +78,7 @@ public class GRRuleGraphTableau extends Tableau {
      *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
-    public GRRuleGraphTableau(PtolemyEffigy container, String name,
+    public GTRuleGraphTableau(PtolemyEffigy container, String name,
             LibraryAttribute defaultLibrary) throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
@@ -119,7 +119,7 @@ public class GRRuleGraphTableau extends Tableau {
             throw new InternalErrorException(this, null, "Composite Entity \""
                     + model.getFullName() + "\" is not an instance of SingleRuleTransformer.");
         }
-        GRRuleGraphFrame frame = new GRRuleGraphFrame((SingleRuleTransformer) model, this,
+        GTRuleGraphFrame frame = new GTRuleGraphFrame((SingleRuleTransformer) model, this,
                 defaultLibrary);
 
         try {
@@ -174,7 +174,7 @@ public class GRRuleGraphTableau extends Tableau {
                 LibraryAttribute library = (LibraryAttribute) getAttribute(
                         "_library", LibraryAttribute.class);
 
-                GRRuleGraphTableau tableau = new GRRuleGraphTableau(
+                GTRuleGraphTableau tableau = new GTRuleGraphTableau(
                         (PtolemyEffigy) effigy, effigy.uniqueName("tableau"),
                         library);
                 return tableau;

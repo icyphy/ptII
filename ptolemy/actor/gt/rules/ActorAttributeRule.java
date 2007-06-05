@@ -24,10 +24,10 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gr.rules;
+package ptolemy.actor.gt.rules;
 
-import ptolemy.actor.gr.Rule;
-import ptolemy.actor.gr.RuleAttribute;
+import ptolemy.actor.gt.Rule;
+import ptolemy.actor.gt.RuleAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorAttributeRule
@@ -41,48 +41,48 @@ import ptolemy.actor.gr.RuleAttribute;
 @Pt.AcceptedRating Red (tfeng)
 */
 public class ActorAttributeRule extends Rule {
-	
-	public ActorAttributeRule() {
-		this("");
-	}
-	
-	public ActorAttributeRule(String values) {
-	    setValues(values);
-	}
-	
-	public ActorAttributeRule(String name, String type, String value) {
-		_attributeName = name;
-		_attributeType = type;
-		_attributeValue = value;
-	}
-	
-	public RuleAttribute[] getAttributes() {
-		return _ATTRIBUTES;
-	}
-	
-	public Object getAttributeValue(int index) {
-		switch (index) {
-		case 0: return _attributeName;
-		case 1: return _attributeType;
-		case 2: return _attributeValue;
-		default: return null;
-		}
-	}
-	
-	public String getValues() {
+    
+    public ActorAttributeRule() {
+        this("");
+    }
+    
+    public ActorAttributeRule(String values) {
+        setValues(values);
+    }
+    
+    public ActorAttributeRule(String name, String type, String value) {
+        _attributeName = name;
+        _attributeType = type;
+        _attributeValue = value;
+    }
+    
+    public RuleAttribute[] getAttributes() {
+        return _ATTRIBUTES;
+    }
+    
+    public Object getAttributeValue(int index) {
+        switch (index) {
+        case 0: return _attributeName;
+        case 1: return _attributeType;
+        case 2: return _attributeValue;
+        default: return null;
+        }
+    }
+    
+    public String getValues() {
         return _attributeName + FIELD_SEPARATOR + _attributeType +
                 FIELD_SEPARATOR + _attributeValue;
     }
-	
-	public void setAttributeValue(int index, Object value) {
-	    switch (index) {
-	    case 0: _attributeName = (String) value;
-	    case 1: _attributeType = (String) value;
-	    case 2: _attributeValue = (String) value;
-	    }
-	}
-	
-	public void setValues(String values) {
+    
+    public void setAttributeValue(int index, Object value) {
+        switch (index) {
+        case 0: _attributeName = (String) value;
+        case 1: _attributeType = (String) value;
+        case 2: _attributeValue = (String) value;
+        }
+    }
+    
+    public void setValues(String values) {
         int pos1 = values.indexOf(FIELD_SEPARATOR);
         if (pos1 >= 0) {
             _attributeName = values.substring(0, pos1);
@@ -100,14 +100,14 @@ public class ActorAttributeRule extends Rule {
             _attributeValue = "";
         }
     }
-	
-	private String _attributeName;
-	
-	private static final RuleAttribute[] _ATTRIBUTES = {
-		new RuleAttribute(RuleAttribute.STRING, "Attribute Name"),
-		new RuleAttribute(RuleAttribute.STRING, "Attribute Type"),
-		new RuleAttribute(RuleAttribute.STRING, "Attribute Value")
-	};
+    
+    private String _attributeName;
+    
+    private static final RuleAttribute[] _ATTRIBUTES = {
+        new RuleAttribute(RuleAttribute.STRING, "Attribute Name"),
+        new RuleAttribute(RuleAttribute.STRING, "Attribute Type"),
+        new RuleAttribute(RuleAttribute.STRING, "Attribute Value")
+    };
 
     private String _attributeType;
 

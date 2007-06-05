@@ -2,12 +2,12 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <!-- Library of actors that are automata. -->
-<entity name="GraphRewriting" class="ptolemy.moml.EntityLibrary">
+<entity name="GraphTransformation" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
-        <entity name="SingleRuleTransformer" class="ptolemy.actor.gr.SingleRuleTransformer">
-          <input source="ptolemy/configs/grLibrary.xml"/>
+        <entity name="SingleRuleTransformer" class="ptolemy.actor.gt.SingleRuleTransformer">
+          <input source="ptolemy/configs/gtLibrary.xml"/>
         </entity>
       </group>
     ?>

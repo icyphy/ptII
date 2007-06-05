@@ -24,10 +24,13 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gr;
+package ptolemy.actor.gt.rules;
+
+import ptolemy.actor.gt.Rule;
+import ptolemy.actor.gt.RuleAttribute;
 
 //////////////////////////////////////////////////////////////////////////
-//// RuleAttribute
+//// SubclassRule
 
 /**
 
@@ -37,24 +40,44 @@ package ptolemy.actor.gr;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class RuleAttribute {
+public class SubclassRule extends Rule {
+    
+    public SubclassRule() {
+        this("");
+    }
 
-	public RuleAttribute(int type, String name) {
-		_type = type;
-		_name = name;
-	}
-	
-	public String getName() {
-		return _name;
-	}
-	
-	public int getType() {
-		return _type;
-	}
-	
-	public static int STRING;
-	
-	private String _name;
-	
-	private int _type;
+    public SubclassRule(String values) {
+        setValues(values);
+    }
+    
+    public RuleAttribute[] getAttributes() {
+        return _ATTRIBUTES;
+    }
+    
+    public Object getAttributeValue(int index) {
+        switch (index) {
+        case 0: return _superclass;
+        default: return null;
+        }
+    }
+    
+    public String getValues() {
+        return _superclass;
+    }
+    
+    public void setAttributeValue(int index, Object value) {
+        switch (index) {
+        case 0: _superclass = (String) value;
+        }
+    }
+    
+    public void setValues(String values) {
+        _superclass = values;
+    }
+    
+    private static final RuleAttribute[] _ATTRIBUTES = {
+        new RuleAttribute(RuleAttribute.STRING, "Superclass")
+    };
+
+    private String _superclass;
 }

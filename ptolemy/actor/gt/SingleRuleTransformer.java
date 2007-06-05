@@ -24,10 +24,15 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gr;
+package ptolemy.actor.gt;
+
+import ptolemy.actor.lib.hoc.MultiCompositeActor;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Rule
+//// SingleRuleTransformer
 
 /**
 
@@ -37,21 +42,24 @@ package ptolemy.actor.gr;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public abstract class Rule {
-	
-	public abstract RuleAttribute[] getAttributes();
-	
-	public abstract Object getAttributeValue(int index);
-	
-	public abstract String getValues();
-	
-	public abstract void setAttributeValue(int index, Object value);
-	
-	public abstract void setValues(String values);
-	
-	public String toString() {
-	    return getValues();
-	}
-	
-	public static final String FIELD_SEPARATOR = "/";
+public class SingleRuleTransformer extends MultiCompositeActor {
+
+    public SingleRuleTransformer(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+
+        // Create the default refinement.
+        _leftHandSide = new CompositeActorMatcher(this, "Left Hand Side");
+        _rightHandSide = new CompositeActorMatcher(this, "Right Hand Side");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected CompositeActorMatcher _leftHandSide;
+
+    protected CompositeActorMatcher _rightHandSide;
+
+    private static final long serialVersionUID = -456353254196458127L;
+
 }

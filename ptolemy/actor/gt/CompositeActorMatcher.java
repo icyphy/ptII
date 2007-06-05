@@ -24,15 +24,15 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gr;
+package ptolemy.actor.gt;
 
-import ptolemy.actor.lib.hoc.MultiCompositeActor;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// SingleRuleTransformer
+//// CompositeActorMatcher
 
 /**
 
@@ -42,24 +42,13 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class SingleRuleTransformer extends MultiCompositeActor {
+public class CompositeActorMatcher extends TypedCompositeActor {
 
-    public SingleRuleTransformer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public CompositeActorMatcher(CompositeEntity container, String name)
+    throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
-        // Create the default refinement.
-        _leftHandSide = new CompositeActorMatcher(this, "Left Hand Side");
-        _rightHandSide = new CompositeActorMatcher(this, "Right Hand Side");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    protected CompositeActorMatcher _leftHandSide;
-
-    protected CompositeActorMatcher _rightHandSide;
-
-    private static final long serialVersionUID = -456353254196458127L;
+    
+    private static final long serialVersionUID = -3093694369352820033L;
 
 }

@@ -1,4 +1,4 @@
-# Makefile for the ptolemy/actor/gr/rules package
+# Makefile for the ptolemy/vergil/gt package
 #
 # @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
 #
@@ -29,29 +29,33 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/gr/rules
 
-DIRS = 		
+ME =		ptolemy/vergil/gt
 
-# Root of the Ptolemy II directory
-ROOT =		../../../..
+DIRS =		
 
-CLASSPATH = 	$(ROOT)
+# Root of the Java directory
+ROOT =		../../..
+
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	rules
+PTPACKAGE = 	gt
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = 
 
-# Keep this list alphabetized.
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 JSRCS = \
-	ActorAttributeRule.java \
-	SubclassRule.java
+	GTRuleGraphFrame.java \
+	GTRuleGraphTableau.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -60,14 +64,13 @@ EXTRA_SRCS =	$(JSRCS)
 MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass $(PTCLASSJAR)
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
