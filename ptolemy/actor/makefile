@@ -38,7 +38,7 @@ ME =		ptolemy/actor
 # If $(PTPTALON_DIR) is empty, then configure failed and compilation
 # will fail.
 DIRS = 		util sched process gui lib corba parameters test \
-		$(PTPTALON_DIR)
+		$(PTPTALON_DIR) gr
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -60,7 +60,8 @@ PTCLASSALLJARS = \
 	parameters/parameters.jar \
 	process/process.jar \
 	sched/sched.jar \
-	util/util.jar 
+	util/util.jar \
+	gr/gr.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

@@ -41,6 +41,7 @@
     <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
     <input source="ptolemy/configs/iaEffigyFactory.xml"/>
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
+    <input source="ptolemy/configs/grEffigyFactory.xml"/>
   </entity>
 
   <!-- The list of tableau factories, which defines the visual   -->
@@ -52,6 +53,7 @@
     <input source="ptolemy/configs/iaTableauFactory.xml"/>
     <input source="ptolemy/configs/fsmTableauFactory.xml"/>
     <input source="ptolemy/configs/caseTableauFactory.xml"/>
+    <input source="ptolemy/configs/grRuleTableauFactory.xml"/>
     <input source="ptolemy/configs/graphTableauFactory.xml"/>
     <!-- Add the code generator to the full configuration. -->
     <!-- property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory" -->
@@ -101,6 +103,8 @@
             <!--input source="ptolemy/actor/corba/corba.xml"/-->
             <input source="ptolemy/actor/lib/esoteric.xml"/>
             <input source="ptolemy/domains/domains.xml"/>
+        <!-- Graph rewriting library -->
+            <input source="ptolemy/configs/grActorLibrary.xml"/>
  	    <!-- GR depends on the 3D graphics package of Java being present-->
             <input source="ptolemy/domains/gr/gr.xml"/>
             <input source="ptolemy/actor/lib/image/image.xml"/>

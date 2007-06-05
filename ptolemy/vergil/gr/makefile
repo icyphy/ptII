@@ -1,10 +1,10 @@
-# Makefile for the Vergil package
+# Makefile for the ptolemy/vergil/gr package
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2006 The Regents of the University of California.
+# @Copyright (c) 2001-2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,13 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/vergil
 
-DIRS = 		toolbox basic actor kernel fsm gr debugger icon lib tree test
+ME =		ptolemy/vergil/gr
+
+DIRS =		
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
@@ -43,81 +44,33 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	vergil
+PTPACKAGE = 	gr
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
-# Include these jars in PTAUXALLJAR
-PTAUXALLJARS = \
-		actor/actor.jar \
-		basic/basic.jar \
-		fsm/fsm.jar \
-		gr/gr.jar \
-		icon/icon.jar \
-		kernel/kernel.jar \
-		debugger/debugger.jar \
-		toolbox/toolbox.jar \
-		tree/tree.jar
-
-# All the .class files necessary to run a Vergil applet
-PTAUXALLJAR =	vergilApplet.jar
-
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		$(PTAUXALLJARS) \
-		debugger/debugger.jar \
-		lib/lib.jar
+PTCLASSALLJARS = 
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	MoMLViewerApplet.java  \
-	TypeAnimatorApplet.java \
-	VergilApplication.java \
-	VergilErrorHandler.java \
-	VergilInitializer.java
+	GRRuleGraphFrame.java \
+	GRRuleGraphTableau.java
 
-OTHER_FILES_TO_BE_JARED =
-
-EXTRA_SRCS =	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED) \
-	TODO.txt \
-	Vergil.htm \
-	Vergil.properties \
-	vergilAppletDemo.xml
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	$(DIRS)
 
-
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc \
-	lib \
-	test \
-	$(PTCLASSJAR) \
-	'MoMLViewerApplet$$GetDocumentationAction.class' \
-	'MoMLViewerApplet$$ObjectContextMenuFactory.class' \
-	'MoMLViewerApplet$$PortContextMenuFactory$$PortDescriptionFactory.class' \
-	'MoMLViewerApplet$$PortContextMenuFactory.class' \
-	'MoMLViewerApplet$$StateContextMenuFactory.class' \
-	'MoMLViewerApplet$$TransitionContextMenuFactory.class' \
-	'TypeAnimatorApplet$$1.class' \
-	'TypeAnimatorApplet$$PortTypeListener.class' \
-	'VergilApplication$$1.class' \
-	'VergilApplication$$2.class' \
-	'VergilApplication$$3.class' \
-	'VergilApplication$$4.class' \
-	'VergilApplication$$ClassReloadingService.class' \
-	'VergilApplication$$MouseFocusMover.class' \
-	'VergilApplication$$TitleChanger.class'
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
