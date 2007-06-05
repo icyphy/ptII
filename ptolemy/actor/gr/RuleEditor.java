@@ -416,10 +416,12 @@ public class RuleEditor extends JDialog implements ActionListener {
             _currentRow = (Row) value;
             JPanel leftPanel = _currentRow.getLeftPanel();
             JPanel rightPanel = _currentRow.getRightPanel();
+            JComboBox classSelector = _currentRow.getClassSelector();
             Color color =
                 isSelected ? ROW_SELECTED_COLOR : ROW_UNSELECTED_COLOR;
             leftPanel.setBackground(color);
             rightPanel.setBackground(color);
+            classSelector.setBackground(color);
             _currentRow.getAttributeTable().getTableHeader()
                     .setBackground(color);
             return column == 0 ? leftPanel : rightPanel;
@@ -431,10 +433,12 @@ public class RuleEditor extends JDialog implements ActionListener {
             Row currentRow = (Row) value;
             JPanel leftPanel = currentRow.getLeftPanel();
             JPanel rightPanel = currentRow.getRightPanel();
+            JComboBox classSelector = currentRow.getClassSelector();
             Color color =
                 isSelected ? ROW_SELECTED_COLOR : ROW_UNSELECTED_COLOR;
             leftPanel.setBackground(color);
             rightPanel.setBackground(color);
+            classSelector.setBackground(color);
             currentRow.getAttributeTable().getTableHeader()
                     .setBackground(color);
             
@@ -517,8 +521,8 @@ public class RuleEditor extends JDialog implements ActionListener {
     }
     
     private class Row implements ItemListener {
-        
-        public Row(Rule rule) {
+    	
+    	public Row(Rule rule) {
             _rightPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 
             JTableHeader header = _attributeTable.getTableHeader();
