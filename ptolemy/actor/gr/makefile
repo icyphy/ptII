@@ -54,9 +54,9 @@ JSRCS = \
 	AtomicActorMatcher.java \
 	CompositeActorMatcher.java \
 	MalformedStringException.java \
-	MatchingRulesEditor.java \
 	Rule.java \
 	RuleAttribute.java \
+	RuleEditor.java \
 	RuleList.java \
 	RuleListAttribute.java \
 	SingleRuleTransformer.java
