@@ -65,7 +65,7 @@ all: jclass
 install: all
 
 demo:
-	CLASSPATH=$(CLASSPATH) java ptolemy.media.javasound.demo.livesines.LiveSines
+	CLASSPATH=$(CLASSPATH) java ptolemy.media.javasound.demo.LiveSines.LiveSines
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
