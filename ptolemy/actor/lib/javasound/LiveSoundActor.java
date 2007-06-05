@@ -31,16 +31,13 @@ import java.io.IOException;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.media.javasound.LiveSound;
-import ptolemy.media.javasound.LiveSoundEvent;
-import ptolemy.media.javasound.LiveSoundListener;
+import ptolemy.moml.SharedParameter;
 
 /////////////////////////////////////////////////////////
 //// LiveSoundActor
@@ -51,7 +48,7 @@ import ptolemy.media.javasound.LiveSoundListener;
  parameters for live sound.
  <p>
  Note: Requires Java 2 v1.3.0 or later.
- @author Steve Neuendorffer
+ @author Steve Neuendorffer, Edward A. Lee (contributor)
  @version  $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Green (neuendor)
@@ -60,8 +57,7 @@ import ptolemy.media.javasound.LiveSoundListener;
  @see AudioPlayer
  @see AudioCapture
  */
-public class LiveSoundActor extends TypedAtomicActor implements
-        LiveSoundListener {
+public class LiveSoundActor extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -74,55 +70,79 @@ public class LiveSoundActor extends TypedAtomicActor implements
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
+        sampleRate = new SharedParameter(this, "sampleRate", LiveSoundActor.class);
+        sampleRate.setExpression("8000");
         sampleRate.setTypeEquals(BaseType.INT);
 
-        bitsPerSample = new Parameter(this, "bitsPerSample", new IntToken(16));
+        bitsPerSample = new SharedParameter(this, "bitsPerSample", LiveSoundActor.class);
+        bitsPerSample.setExpression("16");
         bitsPerSample.setTypeEquals(BaseType.INT);
 
-        channels = new Parameter(this, "channels", new IntToken(1));
+        channels = new SharedParameter(this, "channels", LiveSoundActor.class);
+        channels.setExpression("1");
         channels.setTypeEquals(BaseType.INT);
 
-        transferSize = new Parameter(this, "transferSize");
-        transferSize.setExpression("1");
+        transferSize = new SharedParameter(this, "transferSize", LiveSoundActor.class);
+        transferSize.setExpression("128");
         transferSize.setTypeEquals(BaseType.INT);
-
-        // Add this class as a listener of live sound change
-        // events.
-        LiveSound.addLiveSoundListener(this);
+        
+        bufferSize = new SharedParameter(this, "bufferSize", LiveSoundActor.class);
+        bufferSize.setExpression("1024");
+        bufferSize.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The desired sample rate to use, in Hz. The default value
-     *  is an IntToken equal to 8000.
-     *  <p>
-     *  An exception will be occur if this parameter is set to an
-     *  unsupported sample rate.
+    /** The number of bits per sample. This is an integer that
+     *  defaults to 16. This parameter is shared by all instances
+     *  of this class and subclasses in the model, so changing it in
+     *  one of those actors will cause it to change in all.
+     *  An exception will be thrown if this parameter is set to an
+     *  unsupported bit resolution (currently, only 8 and 16 bits
+     *  are supported).
      */
-    public Parameter sampleRate;
-
-    /** The number desired number of bits per sample. The default
-     *  value is an IntToken equal to 16.
-     *  <p>
-     *  An exception will occur if this parameter is set to an
-     *  unsupported bit resolution.
+    public SharedParameter bitsPerSample;
+    
+    /** The requested buffer size in the audio hardware. This
+     *  affects how far ahead of real time the model can get.
+     *  A larger buffer size may limit the responsivity of the
+     *  model because changes in the model will be heard only
+     *  after the buffer has been flushed. This is an integer
+     *  that defaults to 1024, representing a buffer with
+     *  1024 samples per channel. At an 8 kHz sample rate,
+     *  this means a worst-case latency of about 1/8 seconds.
+     *  This parameter is shared by all instances
+     *  of this class and subclasses in the model, so changing it in
+     *  one of those actors will cause it to change in all.
      */
-    public Parameter bitsPerSample;
+    public SharedParameter bufferSize;
 
-    /** The number of audio channels to use. The default value is
-     *  an IntToken equal to 1.
-     *  <p>
-     *  An exception will occur if this parameter is set to an
+    /** The number of audio channels. This is an integer that
+     *  defaults to 1. This parameter is shared by all instances
+     *  of this class and subclasses in the model, so changing it in
+     *  one of those actors will cause it to change in all.
+     *  An exception will be thrown if this parameter is set to an
      *  an unsupported channel number.
      */
-    public Parameter channels;
+    public SharedParameter channels;
+
+    /** The sample rate in samples per second. This is an integer that
+     *  defaults to 8000. This parameter is shared by all instances
+     *  of this class and subclasses in the model, so changing it in
+     *  one of those actors will cause it to change in all.
+     *  An exception will be thrown if this parameter is set to an
+     *  unsupported sample rate.
+     */
+    public SharedParameter sampleRate;
 
     /** The number of samples that will be transferred to the audio driver
-     *  together.  The default is 128.
+     *  together.  This is an integer with default 128. 
+     *  This parameter is shared by all instances
+     *  of this class and subclasses in the model, so changing it in
+     *  one of those actors will cause it to change in all.
      */
-    public Parameter transferSize;
+    public SharedParameter transferSize;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -137,49 +157,50 @@ public class LiveSoundActor extends TypedAtomicActor implements
             throws IllegalActionException {
         try {
             if (attribute == transferSize) {
-                // The size of the array (in samples per channel) to pass
-                // to LiveSound.putSamples().
                 _transferSize = ((IntToken) transferSize.getToken()).intValue();
-
                 if (!_isExecuting
                         && (LiveSound.getTransferSize() != _transferSize)) {
                     LiveSound.setTransferSize(_transferSize);
                 }
+            } else if (attribute == bufferSize) {
+                _bufferSize = ((IntToken) bufferSize.getToken()).intValue();
+                if (!_isExecuting
+                        && (LiveSound.getBufferSize() != _bufferSize)) {
+                    LiveSound.setBufferSize(_bufferSize);
+                }
             } else if (attribute == channels) {
-                int channelsInt = ((IntToken) channels.getToken()).intValue();
+                _channels = ((IntToken) channels.getToken()).intValue();
 
-                if (channelsInt < 1) {
+                if (_channels < 1) {
                     throw new IllegalActionException(this,
                             "Attempt to set channels parameter to an illegal "
-                                    + "value of: " + channelsInt
+                                    + "value of: " + _channels
                                     + " . The value must be a "
                                     + "positive integer.");
                 }
 
                 // Only set the channels if it is different than
                 // the currently active channels.
-                if (!_isExecuting && (LiveSound.getChannels() != channelsInt)) {
-                    LiveSound.setChannels(channelsInt);
+                if (!_isExecuting && (LiveSound.getChannels() != _channels)) {
+                    LiveSound.setChannels(_channels);
                 }
             } else if (attribute == sampleRate) {
-                int sampleRateInt = ((IntToken) sampleRate.getToken())
-                        .intValue();
+                _sampleRate = ((IntToken) sampleRate.getToken()).intValue();
 
                 // Only set the sample rate if it is different than
                 // the currently active sample rate.
                 if (!_isExecuting
-                        && (LiveSound.getSampleRate() != sampleRateInt)) {
-                    LiveSound.setSampleRate(sampleRateInt);
+                        && (LiveSound.getSampleRate() != _sampleRate)) {
+                    LiveSound.setSampleRate(_sampleRate);
                 }
             } else if (attribute == bitsPerSample) {
-                int bitsPerSampleInt = ((IntToken) bitsPerSample.getToken())
-                        .intValue();
+                _bitsPerSample = ((IntToken) bitsPerSample.getToken()).intValue();
 
                 // Only set the bitsPerSample if it is different than
                 // the currently active bitsPerSample.
                 if (!_isExecuting
-                        && (LiveSound.getBitsPerSample() != bitsPerSampleInt)) {
-                    LiveSound.setBitsPerSample(bitsPerSampleInt);
+                        && (LiveSound.getBitsPerSample() != _bitsPerSample)) {
+                    LiveSound.setBitsPerSample(_bitsPerSample);
                 }
             }
 
@@ -200,63 +221,6 @@ public class LiveSoundActor extends TypedAtomicActor implements
     public void initialize() throws IllegalActionException {
         super.initialize();
         _isExecuting = true;
-    }
-
-    /** Notify this actor that the an audio parameter of LiveSound has
-     *  changed.
-     *
-     *  @param event The live sound change event.
-     */
-    public void liveSoundChanged(LiveSoundEvent event) {
-        // Check to see what parameter was changed.
-        int changedParameter = event.getSoundParameter();
-
-        try {
-            if (changedParameter == LiveSoundEvent.SAMPLE_RATE) {
-                // Get the currently active sample rate.
-                int activeSampleRate = LiveSound.getSampleRate();
-
-                // Get the current value of this actor's sampleRate parameter.
-                int thisActorSampleRate = ((IntToken) sampleRate.getToken())
-                        .intValue();
-
-                // Only set the sampleRate parameter if it is different from
-                // the new sample rate.
-                if (activeSampleRate != thisActorSampleRate) {
-                    sampleRate.setToken(new IntToken(activeSampleRate));
-                }
-            } else if (changedParameter == LiveSoundEvent.CHANNELS) {
-                // Get the currently active number of channels.
-                int activeChannels = LiveSound.getChannels();
-
-                // Get the current value of this actor's sampleRate parameter.
-                int thisActorChannels = ((IntToken) channels.getToken())
-                        .intValue();
-
-                // Only set the channels parameter if it is different from
-                // the new channels.
-                if (activeChannels != thisActorChannels) {
-                    channels.setToken(new IntToken(activeChannels));
-                }
-            } else if (changedParameter == LiveSoundEvent.BITS_PER_SAMPLE) {
-                // Get the currently active bitsPerSample.
-                int activeBitsPerSample = LiveSound.getBitsPerSample();
-
-                // Get the current value of this actor's bitsPerSample
-                // parameter.
-                int thisActorBitsPerSample = ((IntToken) bitsPerSample
-                        .getToken()).intValue();
-
-                // Only set the channels parameter if it is different from
-                // the new channels.
-                if (activeBitsPerSample != thisActorBitsPerSample) {
-                    bitsPerSample.setToken(new IntToken(activeBitsPerSample));
-                }
-            }
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(
-                    "Error responding to audio parameter change. " + ex);
-        }
     }
 
     /** Wrapup execution.  Derived classes should override this method
@@ -282,28 +246,18 @@ public class LiveSoundActor extends TypedAtomicActor implements
     protected synchronized void _initializeAudio()
             throws IllegalActionException, IOException {
         // Initialize audio.
-        _transferSize = ((IntToken) transferSize.getToken()).intValue();
-        _channels = ((IntToken) channels.getToken()).intValue();
-
-        int sampleRateInt = ((IntToken) sampleRate.getToken()).intValue();
-        int bitsPerSampleInt = ((IntToken) bitsPerSample.getToken()).intValue();
-
-        if (LiveSound.getSampleRate() != sampleRateInt) {
-            LiveSound.setSampleRate(sampleRateInt);
+        if (LiveSound.getSampleRate() != _sampleRate) {
+            LiveSound.setSampleRate(_sampleRate);
         }
-
-        if (LiveSound.getBitsPerSample() != bitsPerSampleInt) {
-            LiveSound.setBitsPerSample(bitsPerSampleInt);
+        if (LiveSound.getBitsPerSample() != _bitsPerSample) {
+            LiveSound.setBitsPerSample(_bitsPerSample);
         }
-
         if (LiveSound.getChannels() != _channels) {
             LiveSound.setChannels(_channels);
         }
-
-        if (LiveSound.getBufferSize() != 1000) {
-            LiveSound.setBufferSize(1000);
+        if (LiveSound.getBufferSize() != _bufferSize) {
+            LiveSound.setBufferSize(_bufferSize);
         }
-
         if (LiveSound.getTransferSize() != _transferSize) {
             LiveSound.setTransferSize(_transferSize);
         }
@@ -312,8 +266,17 @@ public class LiveSoundActor extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** Value of the bitsPerSample parameter. */
+    protected int _bitsPerSample;
+    
+    /** The requested buffer size. */
+    protected int _bufferSize;
+    
     /** The number of channels.  Initialized from the channels parameter. */
     protected int _channels;
+    
+    /** The value of the sampleRate parameter. */
+    protected int _sampleRate;
 
     /** The transfer size.  Initialized from the transferSize parameter. */
     protected int _transferSize;

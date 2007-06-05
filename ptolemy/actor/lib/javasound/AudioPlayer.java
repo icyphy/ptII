@@ -86,10 +86,9 @@ import ptolemy.media.javasound.LiveSound;
  audio channels, but this is not supported in Java.
  </ul>
  <p>
- It should be noted that at most one AudioCapture and one AudioPlayer
- actor may be used simultaneously. Otherwise, an exception will
- occur. This restriction may be lifted in a future version of
- this actor.
+ If more than one AudioPlayer actor is used in model, the
+ sounds produced by these actors will be interleaved. This
+ may make sense, for example, if the actor is used in a ModalModel.
  <p>
  Note: Requires Java 2 v1.3.0 or later.
  @author  Brian K. Vogel, Steve Neuendorffer
@@ -141,28 +140,17 @@ public class AudioPlayer extends LiveSoundActor {
 
     /** Obtain access to the audio playback hardware, and start playback.
      *  An exception will occur if there is a problem starting
-     *  playback. This will occur if another AudioPlayer actor is
-     *  playing audio.
+     *  playback.
      *  @exception IllegalActionException If there is a problem
      *   beginning audio playback.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-
-        // Stop playback. Close any open sound files. Free
-        // up audio system resources.
-        if (LiveSound.isPlaybackActive()) {
-            throw new IllegalActionException(
-                    this,
-                    "This actor cannot start audio playback because "
-                            + "another actor currently has access to the audio "
-                            + "playback resource. Only one AudioPlayer actor may "
-                            + "be used at a time.");
-        }
-
         try {
-            // Set the correct parameters in LiveSound.
-            _initializeAudio();
+            if (!LiveSound.isPlaybackActive()) {
+                // Set the correct parameters in LiveSound.
+                _initializeAudio();
+            }
 
             // Reallocate the arrays.
             if ((_audioPutArray == null)
@@ -196,22 +184,21 @@ public class AudioPlayer extends LiveSoundActor {
         return true;
     }
 
-    /** At most one token is read from each channel and written to the
-     *  audio output port of the computer, which is typically the
-     *  computer speaker or the headphones output.
+    /** Read a block of inputs as given by the <i>transferSize</i>
+     *  parameter from each input channel and send them to the audio
+     *  hardware. If the audio buffer cannot accept them, then this
+     *  method will stall the calling thread until it can.
      *  @exception IllegalActionException If there is a problem
      *   playing audio.
      */
     public boolean postfire() throws IllegalActionException {
-        int count = _transferSize;
-
         for (int j = 0; j < _channels; j++) {
             // NOTE: inArray[j].length may be > count, in which case
             // only the first count tokens are valid.
-            Token[] inputArray = input.get(j, count);
+            Token[] inputArray = input.get(j, _transferSize);
 
             // Convert to doubles.
-            for (int element = 0; element < count; element++) {
+            for (int element = 0; element < _transferSize; element++) {
                 _audioPutArray[j][element] = ((DoubleToken) inputArray[element])
                         .doubleValue();
             }
@@ -249,5 +236,6 @@ public class AudioPlayer extends LiveSoundActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     private double[][] _audioPutArray;
 }
