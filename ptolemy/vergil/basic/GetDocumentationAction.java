@@ -113,6 +113,21 @@ public class GetDocumentationAction extends FigureAction {
             return;
         }
 
+        showDocumentation(target);
+    }
+    
+    /**
+     * provides a manual interface for displaying the documentation for a 
+     * target.  This does the same thing as the actionPerformed but without
+     * the action handler
+     */
+    public void showDocumentation(NamedObj target)
+    {
+       if (_configuration == null) {
+            MessageHandler
+                    .error("Cannot get documentation without a configuration.");
+        }
+        
         // If the object contains
         // an attribute named of class DocAttribute or if there
         // is a doc file for the object in the standard place,
@@ -125,7 +140,7 @@ public class GetDocumentationAction extends FigureAction {
           (KeplerDocumentationAttribute)target.getAttribute("KeplerDocumentation");
         int docAttributeSize = docAttributes.size();
 
-        if (docAttributes.size() != 0 && keplerDocumentationAttribute != null) {
+        if(docAttributes.size() != 0 && keplerDocumentationAttribute != null) {
           //if there is both a docAttribute and a KeplerDocumentationAttribute
           //use the preference passed in to the constructor
           if (docPreference == 0)
@@ -136,17 +151,20 @@ public class GetDocumentationAction extends FigureAction {
           {
             docAttributeSize = 0;
           }
-        }
-
-        if (keplerDocumentationAttribute != null) {
-            //use the KeplerDocumentationAttribute
-            DocAttribute docAtt = keplerDocumentationAttribute.getDocAttribute(target);
-            if (docAtt != null) {
-                showDocAttributeTableau(docAtt, target);
-            } else {
-                throw new InternalErrorException("Error building Kepler documentation");
-            }
-        } else if (docAttributeSize != 0) {
+        } 
+                
+        if(keplerDocumentationAttribute != null) {
+          //use the KeplerDocumentationAttribute
+          DocAttribute docAtt = keplerDocumentationAttribute.getDocAttribute(target);
+          if(docAtt != null)
+          {
+            showDocAttributeTableau(docAtt, target);
+          }
+          else
+          {
+            throw new InternalErrorException("Error building Kepler documentation");
+          }
+        } else if(docAttributeSize != 0) {
             // Have a doc attribute. Use that.
             DocAttribute docAttribute = (DocAttribute) docAttributes
                     .get(docAttributes.size() - 1);
@@ -167,6 +185,7 @@ public class GetDocumentationAction extends FigureAction {
             getDocumentation(_configuration, className, context);
         }
     }
+    
 
     /** Get the documentation for a particular class.
      *  <p>If the configuration has a parameter _docApplicationSpecializer
@@ -320,6 +339,15 @@ public class GetDocumentationAction extends FigureAction {
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
     }
+    
+    /** Set the effigy to be used if the effigy is not evident from the 
+     *  model being edited.  This is used if you are showing the documentation
+     *  from code that is not in a model.
+     *  @param effigy the effigy to set.
+     */
+    public void setEffigy(Effigy effigy) {
+      _effigy = effigy;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ///////             private methods                   /////////////
@@ -332,15 +360,21 @@ public class GetDocumentationAction extends FigureAction {
     private void showDocAttributeTableau(DocAttribute docAttribute,
             NamedObj target) {
         // Need to create an effigy and tableau.
+        ComponentEntity effigy = null;
         Effigy context = Configuration.findEffigy(target);
-        if (context == null) {
-            context = Configuration.findEffigy(target.getContainer());
-            if (context == null) {
-                MessageHandler.error("Cannot find an effigy for "
-                        + target.getFullName());
-            }
+        if(_effigy == null) {
+          if (context == null) {
+              context = Configuration.findEffigy(target.getContainer());
+              if (context == null) {
+                  MessageHandler.error("Cannot find an effigy for "
+                          + target.getFullName());
+              }
+              effigy = context.getEntity("DocEffigy");
+          }
+        } else {
+          effigy = _effigy;
         }
-        ComponentEntity effigy = context.getEntity("DocEffigy");
+        
         if (effigy == null) {
             try {
                 effigy = new DocEffigy(context, "DocEffigy");
@@ -392,4 +426,9 @@ public class GetDocumentationAction extends FigureAction {
      * default to ptolemy.  0 is ptolemy, 1 is kepler.
      */
     private int docPreference = 0;
+    
+    /**
+     * Defines the effigy to use if the effigy is not apparent from the model
+     */
+    private Effigy _effigy = null;
 }
