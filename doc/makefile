@@ -228,6 +228,11 @@ EXPERIMENTALPACKAGES =
 #	ptolemy.domains.rtp.lib
 
 
+GRAPHTRANSFORMATIONPACKAGES = \
+	ptolemy.actor.gt \
+	ptolemy.actor.gt.rules \
+	ptolemy.vergil.gt
+
 # Packages used by HyVisual
 HYVISUALPACKAGES = \
 	$(PTCOLT_PACKAGES) \
@@ -341,6 +346,7 @@ ALL1_4PACKAGES = \
 	$(COPERNICUSPACKAGES) \
 	$(DIVAPACKAGES) \
 	$(EXPERIMENTALPACKAGES) \
+	$(GRAPHTRANSFORMATIONPACKAGES) \
 	$(PTBACKTRACK_PACKAGES) \
 	$(PTBSH_PACKAGES) \
 	$(PTCOMM_PACKAGES) \
