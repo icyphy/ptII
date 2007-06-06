@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2001-2007 The Regents of the University of California.
+# @Copyright (c) 2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -45,13 +45,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	gt
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	GTRuleGraphFrame.java \
@@ -65,7 +59,9 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 
+OPTIONAL_FILES = \
+	'GTRuleGraphFrame$$1.class' \
+	'GTRuleGraphTableau$$Factory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
