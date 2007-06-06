@@ -23,7 +23,7 @@
 			<fileset dir="${basedir}/com/microstar/xml/" includes="**/*.class" excludes="**/demo/*"/>
 		</copy>
 		<copy todir="${temp.folder}/ptIIbacktrack.jar.bin/ptolemy/backtrack/" failonerror="true">
-			<fileset dir="${basedir}/ptolemy/backtrack/" includes="**/*.class, **/*.gif" excludes="automatic/, manual/, **/test/, eclipse/plugin/build/, eclipse/plugin/doc/, eclipse/plugin/icons/, eclipse/plugin/images/"/>
+			<fileset dir="${basedir}/ptolemy/backtrack/" includes="**/*.class, **/*.gif, **/*.png" excludes="automatic/, manual/, **/test/, eclipse/plugin/build/, eclipse/plugin/doc/, eclipse/plugin/icons/, eclipse/plugin/images/"/>
 		</copy>
 		<mkdir dir="${build.result.folder}"/>
 		<jar destfile="${build.result.folder}/ptIIbacktrack.jar" basedir="${temp.folder}/ptIIbacktrack.jar.bin"/>
@@ -93,7 +93,7 @@
 			<fileset dir="${basedir}/com/microstar/xml/" includes="**/*.class, **/*.java" excludes="**/demo/*"/>
 		</copy>
 		<copy todir="${temp.folder}/ptolemy/backtrack/" failonerror="true">
-			<fileset dir="${basedir}/ptolemy/backtrack/" includes="**/*.class, **/*.gif, **/*.java, **/*.html, **/*.xml" excludes="automatic/, manual/, **/test/, plugin/build/"/>
+			<fileset dir="${basedir}/ptolemy/backtrack/" includes="**/*.class, **/*.gif, **/*.png, **/*.java, **/*.html, **/*.xml" excludes="automatic/, manual/, **/test/, plugin/build/"/>
 		</copy>
 		<copy todir="${temp.folder}" failonerror="true">
 			<fileset dir="${basedir}" includes="plugin.xml"/>

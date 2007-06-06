@@ -69,6 +69,7 @@
          
          <action
                class="ptolemy.backtrack.eclipse.plugin.actions.RefactorAction"
+               definitionId="ptolemy.backtrack.commands.BatchRefactoringCommand"
                icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
                id="ptolemy.backtrack.eclipse.plugin.refactoraction"
                label="&amp;Batch Refactoring"
@@ -102,12 +103,22 @@
       
       <actionSet
             id="ptolemy.backtrack.editorActionSet"
-            label="Ptolemy Backtracking"
+            label="Ptolemy Code Style"
             visible="false">
+         <action
+               class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.RemoveTabsEditorAction"
+               definitionId="ptolemy.backtrack.commands.RemoveTabsCommand"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/remove_tabs_icon.png"
+               id="ptolemy.backtrack.eclipse.plugin.RemoveTabsAction"
+               label="Replace &amp;Tabs with Spaces"
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/ptolemy.backtrack.menus.CodeStyle/group1"
+               toolbarPath="Ptolemy"
+               tooltip="Replace each tab with 4 spaces, and add a new line to the end if necessary.">
+         </action>
          <action
                class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.SortMembersEditorAction"
                definitionId="ptolemy.backtrack.commands.SortMembersCommand"
-               icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/sort_members_icon.png"
                id="ptolemy.backtrack.eclipse.plugin.SortMembersAction"
                label="&amp;Sort Members"
                menubarPath="ptolemy.backtrack.menus.Ptolemy/ptolemy.backtrack.menus.CodeStyle/group1"
@@ -172,9 +183,17 @@
             <separator name="group1"/>
          </menu>
          <action
+               class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.RemoveTabsObjectAction"
+               definitionId="ptolemy.backtrack.commands.RemoveTabsCommand"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/remove_tabs_icon.png"
+               id="ptolemy.backtrack.actions.RemoveTabsObjectAction"
+               label="Replace &amp;Tabs with Spaces"
+               menubarPath="ptolemy.backtrack.menu.PtolemyPackageExplorer/group1">
+         </action>
+         <action
                class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.SortMembersObjectAction"
                definitionId="ptolemy.backtrack.commands.SortMembersCommand"
-               icon="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/sort_members_icon.png"
                id="ptolemy.backtrack.actions.SortMembersObjectAction"
                label="&amp;Sort Members"
                menubarPath="ptolemy.backtrack.menu.PtolemyPackageExplorer/group1"/>
@@ -255,12 +274,27 @@
             name="Ptolemy"/>
       <command
             categoryId="ptolemy.backtrack.category"
+            id="ptolemy.backtrack.commands.RemoveTabsCommand"
+            name="Replace Tabs with Spaces">
+      </command>
+      <command
+            categoryId="ptolemy.backtrack.category"
             id="ptolemy.backtrack.commands.SortMembersCommand"
             name="Sort Members"/>
+      <command
+            categoryId="ptolemy.backtrack.category"
+            id="ptolemy.backtrack.commands.BatchRefactoringCommand"
+            name="Batch Refactoring">
+      </command>
    </extension>
    
    <extension
          point="org.eclipse.ui.bindings">
+      <key
+            commandId="ptolemy.backtrack.commands.RemoveTabsCommand"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="Ctrl+Alt+T">
+      </key>
       <key
             sequence="Ctrl+Alt+S"
             commandId="ptolemy.backtrack.commands.SortMembersCommand"
