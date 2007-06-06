@@ -8,7 +8,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 import ptolemy.backtrack.eclipse.plugin.editor.MultiPageCompilationUnitEditor;
 
-public class RemoveTabsEditorAction implements IWorkbenchWindowActionDelegate {
+public class StandardizeTabsSpacesEditorAction implements IWorkbenchWindowActionDelegate {
 
     public void dispose() {
     }
@@ -26,7 +26,7 @@ public class RemoveTabsEditorAction implements IWorkbenchWindowActionDelegate {
         MultiPageCompilationUnitEditor editor =
             (MultiPageCompilationUnitEditor) editorPart;
 
-        RemoveTabsUtility.removeTabs(editor);
+        StandardizeTabsSpacesUtility.standardize(editor);
     }
 
     /** Handle the change of selection.

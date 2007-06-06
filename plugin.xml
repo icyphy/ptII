@@ -51,10 +51,10 @@
             <separator name="group3"/>
          </menu>
          
-         <!-- Code Style Menu -->
+         <!-- Coding Style Menu -->
          <menu
-               id="ptolemy.backtrack.menus.CodeStyle"
-               label="&amp;Code Style"
+               id="ptolemy.backtrack.menus.CodingStyle"
+               label="&amp;Coding Style"
                path="ptolemy.backtrack.menus.Ptolemy/group1">
             <separator name="group1"/>
          </menu>
@@ -103,17 +103,17 @@
       
       <actionSet
             id="ptolemy.backtrack.editorActionSet"
-            label="Ptolemy Code Style"
+            label="Ptolemy Coding Style"
             visible="false">
          <action
-               class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.RemoveTabsEditorAction"
-               definitionId="ptolemy.backtrack.commands.RemoveTabsCommand"
-               icon="ptolemy/backtrack/eclipse/plugin/icons/remove_tabs_icon.png"
-               id="ptolemy.backtrack.eclipse.plugin.RemoveTabsAction"
-               label="Replace &amp;Tabs with Spaces"
-               menubarPath="ptolemy.backtrack.menus.Ptolemy/ptolemy.backtrack.menus.CodeStyle/group1"
+               class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.StandardizeTabsSpacesEditorAction"
+               definitionId="ptolemy.backtrack.commands.StandardizeTabsSpacesCommand"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/standardize_tabs_spaces_icon.png"
+               id="ptolemy.backtrack.eclipse.plugin.StandardizeTabsSpacesAction"
+               label="Standardize &amp;Tabs and Spaces"
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/ptolemy.backtrack.menus.CodingStyle/group1"
                toolbarPath="Ptolemy"
-               tooltip="Replace each tab with 4 spaces, and add a new line to the end if necessary.">
+               tooltip="Replace each tab with 4 spaces, remove trailing spaces, and add a new line to the end if necessary.">
          </action>
          <action
                class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.SortMembersEditorAction"
@@ -121,9 +121,9 @@
                icon="ptolemy/backtrack/eclipse/plugin/icons/sort_members_icon.png"
                id="ptolemy.backtrack.eclipse.plugin.SortMembersAction"
                label="&amp;Sort Members"
-               menubarPath="ptolemy.backtrack.menus.Ptolemy/ptolemy.backtrack.menus.CodeStyle/group1"
+               menubarPath="ptolemy.backtrack.menus.Ptolemy/ptolemy.backtrack.menus.CodingStyle/group1"
                toolbarPath="Ptolemy"
-               tooltip="Soft Java class members"/>
+               tooltip="Sort Java class members"/>
       </actionSet>
    </extension>
    
@@ -179,15 +179,15 @@
          <menu
                id="ptolemy.backtrack.menu.PtolemyPackageExplorer"
                path="additions"
-               label="&amp;Ptolemy Code Style">
+               label="&amp;Ptolemy Coding Style">
             <separator name="group1"/>
          </menu>
          <action
-               class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.RemoveTabsObjectAction"
-               definitionId="ptolemy.backtrack.commands.RemoveTabsCommand"
-               icon="ptolemy/backtrack/eclipse/plugin/icons/remove_tabs_icon.png"
-               id="ptolemy.backtrack.actions.RemoveTabsObjectAction"
-               label="Replace &amp;Tabs with Spaces"
+               class="ptolemy.backtrack.eclipse.plugin.actions.codestyle.StandardizeTabsSpacesObjectAction"
+               definitionId="ptolemy.backtrack.commands.StandardizeTabsSpacesCommand"
+               icon="ptolemy/backtrack/eclipse/plugin/icons/standardize_tabs_spaces_icon.png"
+               id="ptolemy.backtrack.actions.StandardizeTabsSpacesObjectAction"
+               label="Standardize &amp;Tabs and Spaces"
                menubarPath="ptolemy.backtrack.menu.PtolemyPackageExplorer/group1">
          </action>
          <action
@@ -274,8 +274,8 @@
             name="Ptolemy"/>
       <command
             categoryId="ptolemy.backtrack.category"
-            id="ptolemy.backtrack.commands.RemoveTabsCommand"
-            name="Replace Tabs with Spaces">
+            id="ptolemy.backtrack.commands.StandardizeTabsSpacesCommand"
+            name="Standardize Tabs and Spaces">
       </command>
       <command
             categoryId="ptolemy.backtrack.category"
@@ -291,7 +291,7 @@
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="ptolemy.backtrack.commands.RemoveTabsCommand"
+            commandId="ptolemy.backtrack.commands.StandardizeTabsSpacesCommand"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="Ctrl+Alt+T">
       </key>

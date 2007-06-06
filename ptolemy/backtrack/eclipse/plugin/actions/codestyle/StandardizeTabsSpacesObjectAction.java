@@ -15,7 +15,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 import ptolemy.backtrack.eclipse.plugin.console.OutputConsole;
 
-public class RemoveTabsObjectAction implements IObjectActionDelegate {
+public class StandardizeTabsSpacesObjectAction implements IObjectActionDelegate {
 
     public void run(IAction action) {
         if (_lastSelection != null && _lastSelection instanceof ITreeSelection) {
@@ -28,7 +28,7 @@ public class RemoveTabsObjectAction implements IObjectActionDelegate {
                     IEditorPart editor = EditorUtility.openInEditor(
                             compilationUnit, false);
                     if (editor != null) {
-                        RemoveTabsUtility.removeTabs(editor);
+                        StandardizeTabsSpacesUtility.standardize(editor);
                     }
                     if (!editor.isDirty()) {
                         ((ITextEditor) editor).close(false);
