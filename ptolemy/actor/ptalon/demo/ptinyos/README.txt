@@ -7,7 +7,7 @@ Instructions for creating a Ptalon version of a Viptos demo:
   - Fix the PtinyOSDirector output directory.
   - Delete any timeResolution or nodeID parameter values from
 PtinyOSDirector section of MoML file.
-  - Do above fix for SharedParameter:
+  - Temporary fix for Ptalon SharedParameter bug:
     - For PtinyOS nodes, create timeResolution (=0.25E-6) and nodeID (=1)
 parameters at the top level, then set the value of the PtinyOSDirector
 parameters to the names of the new parameters.
