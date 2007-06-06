@@ -1,5 +1,5 @@
-/***preinitBlock ($declaredType)***/
-static $declaredType $actorSymbol(state);
+/***preinitBlock***/
+static $targetType(output) $actorSymbol(state);
 /**/
 
 /*** ArrayConvertInitBlock($elementType) ***/

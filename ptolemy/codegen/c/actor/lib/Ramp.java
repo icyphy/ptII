@@ -93,27 +93,6 @@ public class Ramp extends CCodeGeneratorHelper {
         return processCode(_codeStream.toString());
     }
 
-    /** Generate the preinitialize code. Declare the variable state.
-     *  @return The preinitialize code.
-     *  @exception IllegalActionException
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-
-        ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
-
-        ArrayList args = new ArrayList();
-        args.add(targetType(actor.output.getType()));
-
-        if (_codeStream.isEmpty()) {
-            _codeStream.append(_eol
-                    + _codeGenerator.comment("preinitialize "
-                            + getComponent().getName()));
-        }
-        _codeStream.appendCodeBlock("preinitBlock", args);
-        return processCode(_codeStream.toString());
-    }
-
     /**
      * Generate fire code for the Ramp actor.
      * @return The generated code.
