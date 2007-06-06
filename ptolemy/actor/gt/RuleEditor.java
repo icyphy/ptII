@@ -285,7 +285,11 @@ public class RuleEditor extends JDialog implements ActionListener {
         _table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         JTableHeader header = _table.getTableHeader();
-        header.setFont(new Font(Font.DIALOG, Font.BOLD, 11));
+
+        // This line does not compile under Java 1.5 because Java 1.5
+        // does not have Font.DIALOG.
+        //header.setFont(new Font(Font.DIALOG, Font.BOLD, 11));
+
         header.setForeground(Color.BLUE);
         header.setReorderingAllowed(false);
         DefaultTableCellRenderer renderer =
