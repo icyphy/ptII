@@ -53,7 +53,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * This actor calculates the autocorrelation of a sequence of input tokens.
  * <a name="autocorrelation"></a>
  * It is polymorphic, supporting any input data type that supports
@@ -119,25 +119,25 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
     // Set the output type to be an ArrayType.
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    /**     
+    /**
      * If true, the estimate will be biased.
      * This is a boolean with default value false.
      */
     public Parameter biased;
 
-    /**     
+    /**
      * Number of input samples to average.
      * This is an integer with default value 256.
      */
     public Parameter numberOfInputs;
 
-    /**     
+    /**
      * Number of autocorrelation lags to output.
      * This is an integer with default value 64.
      */
     public Parameter numberOfLags;
 
-    /**     
+    /**
      * If true, then the output from each firing
      * will have 2*<i>numberOfLags</i> + 1
      * samples (an odd number) whose values are symmetric about
@@ -191,7 +191,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
             $ASSIGN$_port(port);
         }
 
-        /**         
+        /**
          * Return the function result.
          * @return A Type.
          */
@@ -206,7 +206,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Return an one element array containing the InequalityTerm
          * representing the type of the input port.
          * @return An array of InequalityTerm.
@@ -267,7 +267,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
 
     }
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -295,7 +295,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
         attributeChanged(numberOfInputs);
     }
 
-    /**     
+    /**
      * Check to see that the numberOfInputs parameter is positive,
      * and that the numberOfLags parameter is positive.  Based on the
      * new values, recompute the size of the output array.
@@ -333,7 +333,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets the type constraints.
      * @param workspace The workspace for the new object.
@@ -352,7 +352,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * Consume tokens from the input and produce a token on the output
      * that contains an array token that represents an autocorrelation
      * estimate of the consumed tokens.  The estimate is consistent with
@@ -399,7 +399,7 @@ public class Autocorrelation extends SDFTransformer implements Rollbackable {
         output.broadcast(new ArrayToken($BACKUP$_outputs()));
     }
 
-    /**     
+    /**
      * If there are not sufficient inputs, then return false.
      * Otherwise, return whatever the base class returns.
      * @exception IllegalActionException If the base class throws it.

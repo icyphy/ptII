@@ -41,7 +41,7 @@ import java.util.Iterator;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * An abstract implementation of Set to make it easier to create your own
  * implementations. In order to create a Set, subclass AbstractSet and
  * implement the same methods that are required for AbstractCollection
@@ -63,13 +63,13 @@ import ptolemy.backtrack.util.FieldRecord;
 public abstract class AbstractSet extends AbstractCollection implements Set,
         Rollbackable {
 
-    /**     
+    /**
      * The main constructor, for use by subclasses.
      */
     protected AbstractSet() {
     }
 
-    /**     
+    /**
      * Tests whether the given object is equal to this Set. This implementation
      * first checks whether this set <em>is</em> the given object, and returns
      * true if so. Otherwise, if o is a Set and is the same size as this one, it
@@ -82,7 +82,7 @@ public abstract class AbstractSet extends AbstractCollection implements Set,
         return (o == this || (o instanceof Set && ((Set) o).size() == size() && containsAll((Collection) o)));
     }
 
-    /**     
+    /**
      * Returns a hash code for this Set. The hash code of a Set is the sum of the
      * hash codes of all its elements, except that the hash code of null is
      * defined to be zero. This implementation obtains an Iterator over the Set,
@@ -99,7 +99,7 @@ public abstract class AbstractSet extends AbstractCollection implements Set,
         return hash;
     }
 
-    /**     
+    /**
      * Removes from this set all elements in the given collection (optional
      * operation). This implementation uses <code>size()</code> to determine
      * the smaller collection.  Then, if this set is smaller, it iterates

@@ -55,7 +55,7 @@ public class ConfigXmlHandler extends XmlHandler {
     ////                       public methods                      ////
 
     /** Exclude the specified XML document from the scan.
-     * 
+     *
      *  @param canonicalPath The canonical path of the XML document to be
      *   excluded.
      */
@@ -64,7 +64,7 @@ public class ConfigXmlHandler extends XmlHandler {
     }
 
     /** Exclude the specified XML documents from the scan.
-     * 
+     *
      *  @param canonicalPaths The canonical paths of the XML documents to be
      *   excluded.
      */
@@ -77,7 +77,7 @@ public class ConfigXmlHandler extends XmlHandler {
      *  of classes to keep. If so, the element is kept in the transformed XML
      *  document. Otherwise, the element is not output to the transformed XML
      *  document.
-     *  
+     *
      *  @param elementName The name of the XML element.
      *  @exception Exception If the overrided method in the superclass throws an
      *   Exception.
@@ -114,7 +114,7 @@ public class ConfigXmlHandler extends XmlHandler {
 
     /** Process the instruction given in the data. This method only handles
      *  the "moml" target type.
-     *  
+     *
      *  @param target The target (the name at the start of the processing
      *   instruction).
      *  @param data The data, if any (the rest of the processing instruction).
@@ -136,7 +136,7 @@ public class ConfigXmlHandler extends XmlHandler {
 
     /** Handle the start tag of an XML element. If the element is an "input"
      *  element, the source referred to is parsed.
-     * 
+     *
      *  @param elementName The name of the XML element.
      *  @exception Exception If the overrided method in the superclass throws an
      *   Exception.
@@ -174,7 +174,7 @@ public class ConfigXmlHandler extends XmlHandler {
     ////                         constructor                       ////
 
     /** Construct an XML handler.
-     * 
+     *
      *  @param tree The XML tree to be scanned.
      *  @param systemId The system ID representing the location of the original
      *   XML document.

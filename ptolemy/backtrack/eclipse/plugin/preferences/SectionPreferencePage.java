@@ -70,7 +70,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
 
     /** Construct a preference page with multiple sections and with a page
      *  description.
-     *  
+     *
      *  @param description The description.
      */
     public SectionPreferencePage(String description) {
@@ -84,7 +84,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
 
     /** Create the contents of the preference page with the parent as its
      *  container.
-     *  
+     *
      *  @param parent The parent container.
      *  @return The parent itself.
      */
@@ -102,7 +102,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
 
     /** Initialize. This method is inherited from the abstract superclass, and
      *  does nothing.
-     *  
+     *
      *  @param workbench The workbench.
      */
     public void init(IWorkbench workbench) {
@@ -112,7 +112,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
     ////                     protected methods                     ////
 
     /** Create a section in this page with a title and a section description.
-     * 
+     *
      *  @param title The title.
      *  @param description The description.
      *  @return The container that can contain all the controls in the created
@@ -140,7 +140,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
     }
 
     /** Given a field editor, return its parent.
-     * 
+     *
      *  @param editor The field editor.
      *  @return The parent.
      *  @see #_setParent(FieldEditor, Composite)
@@ -150,7 +150,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
     }
 
     /** Create a new container with the given parent.
-     * 
+     *
      *  @param parent The parent container.
      *  @return The new container.
      */
@@ -160,7 +160,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
 
     /** Create a new container with the given composite container as its parent,
      *  and use a grid layout with the specified number of columns.
-     * 
+     *
      *  @param parent The parent container.
      *  @param column The number of columns in the grid layout.
      *  @return The new container.
@@ -180,7 +180,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
     }
 
     /** Create a new group with the given parent and the given title.
-     * 
+     *
      *  @param parent The parent container.
      *  @param title The title.
      *  @return The new group.
@@ -197,7 +197,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
     }
 
     /** Set whether a container and all its children are enabled.
-     * 
+     *
      *  @param composite The container.
      *  @param enabled Whether the container and all its children are enabled.
      */
@@ -218,7 +218,7 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
     }
 
     /** Set the parent of a field editor.
-     * 
+     *
      *  @param editor The field editor.
      *  @param parent The parent.
      *  @see #_getParent(FieldEditor)

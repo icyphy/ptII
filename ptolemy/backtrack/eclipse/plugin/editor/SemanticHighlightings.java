@@ -65,7 +65,7 @@ public class SemanticHighlightings {
 
     /** Test whether the event in store affects the enablement of semantic
      *  highlighting.
-     *  
+     *
      *  @param store The preference store where the event was observed.
      *  @param event The property change under examination.
      *  @return true if the event in store affects the enablement of semantic
@@ -107,7 +107,7 @@ public class SemanticHighlightings {
 
     /** Return the complete list of semantic highlightings to be used in the
      *  Ptolemy editor.
-     *  
+     *
      *  @return The array of semantic highlightings.
      */
     public static SemanticHighlighting[] getSemanticHighlightings() {
@@ -120,7 +120,7 @@ public class SemanticHighlightings {
     }
 
     /** Test whether semantic highlightings are enabled in the preference store.
-     * 
+     *
      *  @param store The preference store.
      *  @return true if semantic highlightings are enabled.
      */
@@ -136,7 +136,7 @@ public class SemanticHighlightings {
     //// MethodHighlighting
     /**
      Semantic highlighting for methods.
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -146,7 +146,7 @@ public class SemanticHighlightings {
     protected static class MethodHighlighting extends SemanticHighlighting {
 
         /** Test whether a semantic token can be consumed.
-         * 
+         *
          *  @param token The token to be tested.
          *  @return true if the token can be consumed.
          */
@@ -163,7 +163,7 @@ public class SemanticHighlightings {
         }
 
         /** Get the key of the bold face preference.
-         * 
+         *
          *  @return The key for the bold face preference.
          */
         public String getBoldPreferenceKey() {
@@ -171,7 +171,7 @@ public class SemanticHighlightings {
         }
 
         /** Get the key of the color preference.
-         * 
+         *
          *  @return The key of the color preference.
          */
         public String getColorPreferenceKey() {
@@ -179,7 +179,7 @@ public class SemanticHighlightings {
         }
 
         /** Get the key of the enabled preference.
-         * 
+         *
          *  @return The key of the enabled preference.
          */
         public String getEnabledPreferenceKey() {
@@ -187,7 +187,7 @@ public class SemanticHighlightings {
         }
 
         /** Get the key of the italic font preference.
-         * 
+         *
          *  @return The key of the italic font preference.
          */
         public String getItalicPreferenceKey() {
@@ -204,7 +204,7 @@ public class SemanticHighlightings {
         //// PtolemyMethod
         /**
          Wrapper for Ptolemy methods to be highlighted.
-         
+
          @author Thomas Feng
          @version $Id$
          @since Ptolemy II 5.1
@@ -214,7 +214,7 @@ public class SemanticHighlightings {
         protected static class PtolemyMethod {
 
             /** Get the names of the method's argument types.
-             * 
+             *
              *  @return The names of the method's argument types.
              */
             protected String[] _getArgumentTypes() {
@@ -223,7 +223,7 @@ public class SemanticHighlightings {
 
             /** Get the modifier of the method (a constant defined in
              *  <tt>org.eclipse.jdt.core.dom.Modifier</tt>).
-             *  
+             *
              *  @return The modifier.
              */
             protected int _getModifier() {
@@ -231,7 +231,7 @@ public class SemanticHighlightings {
             }
 
             /** Get the name of the method.
-             * 
+             *
              *  @return The name of the method.
              */
             protected String _getName() {
@@ -239,7 +239,7 @@ public class SemanticHighlightings {
             }
 
             /** Get the name of the method's return type.
-             * 
+             *
              *  @return The name of the method's return type.
              */
             protected String _getReturnType() {
@@ -247,7 +247,7 @@ public class SemanticHighlightings {
             }
 
             /** Test whether the method binding matches this method description.
-             * 
+             *
              *  @param binding The method binding.
              *  @return true if the method binding matches this method
              *   description.
@@ -276,7 +276,7 @@ public class SemanticHighlightings {
             }
 
             /** Construct a Ptolemy special method description.
-             * 
+             *
              *  @param modifier Modifier of the method (a constant defined in
              *   <tt>org.eclipse.jdt.core.dom.Modifier</tt>).
              *  @param returnType Name of the method's return type.
@@ -315,7 +315,7 @@ public class SemanticHighlightings {
 
         /** Test whether the method binding matches any of the pre-defined
          *  special methods.
-         *  
+         *
          *  @param binding The method binding.
          *  @return true if the method binding matches any of the pre-defined
          *   special methods.
@@ -389,7 +389,7 @@ public class SemanticHighlightings {
     //// StateVariableHighlighting
     /**
      Semantic highlighting for state variables.
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -400,7 +400,7 @@ public class SemanticHighlightings {
             SemanticHighlighting {
 
         /** Test whether a semantic token can be consumed.
-         * 
+         *
          *  @param token The token to be tested.
          *  @return true if the token can be consumed.
          */
@@ -418,7 +418,7 @@ public class SemanticHighlightings {
         }
 
         /** Get the key of the bold face preference.
-         * 
+         *
          *  @return The key for the bold face preference.
          */
         public String getBoldPreferenceKey() {
@@ -426,7 +426,7 @@ public class SemanticHighlightings {
         }
 
         /** Get the key of the color preference.
-         * 
+         *
          *  @return The key of the color preference.
          */
         public String getColorPreferenceKey() {
@@ -434,7 +434,7 @@ public class SemanticHighlightings {
         }
 
         /** Get the key of the enabled preference.
-         * 
+         *
          *  @return The key of the enabled preference.
          */
         public String getEnabledPreferenceKey() {
@@ -442,7 +442,7 @@ public class SemanticHighlightings {
         }
 
         /** Get the key of the italic font preference.
-         * 
+         *
          *  @return The key of the italic font preference.
          */
         public String getItalicPreferenceKey() {

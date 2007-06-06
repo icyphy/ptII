@@ -64,7 +64,7 @@ import diva.graph.JGraph;
  */
 public class GTRuleGraphFrame extends ActorGraphFrame implements ChangeListener {
 
-	/** Construct a frame associated with the specified case actor.
+    /** Construct a frame associated with the specified case actor.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
      *  This is typically done by calling show() on the controlling tableau.
@@ -154,7 +154,7 @@ public class GTRuleGraphFrame extends ActorGraphFrame implements ChangeListener 
                 .iterator();
         boolean first = true;
         while (cases.hasNext()) {
-        	CompositeActorMatcher matcher = (CompositeActorMatcher) cases.next();
+            CompositeActorMatcher matcher = (CompositeActorMatcher) cases.next();
             JGraph jgraph = _addTabbedPane(matcher, false);
             // The first JGraph is the one with the focus.
             if (first) {

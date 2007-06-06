@@ -63,7 +63,7 @@ public class DirectoryFieldEditor extends
     ////                        constructors                       ////
 
     /** Construct a directory field editor with no name and no parent.
-     * 
+     *
      *  @param canBeEmpty Whether the file name can be left empty.
      */
     public DirectoryFieldEditor(boolean canBeEmpty) {
@@ -71,7 +71,7 @@ public class DirectoryFieldEditor extends
     }
 
     /** Construct a directory field editor.
-     * 
+     *
      *  @param name The name of this editor.
      *  @param labelText The label.
      *  @param parent The parent.
@@ -88,7 +88,7 @@ public class DirectoryFieldEditor extends
 
     /** Set whether this directory field editor should only show the directories
      *  in the current workspace.
-     *  
+     *
      *  @param workspaceOnly Whether to show only the directories in the current
      *   workspace.
      */
@@ -101,7 +101,7 @@ public class DirectoryFieldEditor extends
 
     /** Pop up the directory selection dialog after the change button is
      *  pressed, and retrieve the name of the selected directory.
-     * 
+     *
      *  @return The name of the selected directory, or null if the operation is
      *   canceled.
      */
@@ -146,7 +146,7 @@ public class DirectoryFieldEditor extends
     }
 
     /** Check whether the current state of this directory editor is valid.
-     * 
+     *
      *  @return true if the field editor's value is valid; false, otherwise.
      */
     protected boolean doCheckState() {

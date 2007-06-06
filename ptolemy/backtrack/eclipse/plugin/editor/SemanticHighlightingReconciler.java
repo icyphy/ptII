@@ -98,7 +98,7 @@ public class SemanticHighlightingReconciler implements
 
     /** Prepare for the change of the input document. This method is invoked
      *  before the document is changed.
-     *  
+     *
      *  @param oldInput The old input document.
      *  @param newInput The new input document.
      */
@@ -115,7 +115,7 @@ public class SemanticHighlightingReconciler implements
 
     /** Handle the change of input document. This method is invoked after the
      *  document is changed.
-     *  
+     *
      *  @param oldInput The old input document.
      *  @param newInput The new input document.
      */
@@ -131,7 +131,7 @@ public class SemanticHighlightingReconciler implements
 
     /** Install this reconciler to the editor, and enable it if it is set to be
      *  enabled.
-     * 
+     *
      *  @param editor The editor.
      *  @param colorManager The color manager.
      */
@@ -147,7 +147,7 @@ public class SemanticHighlightingReconciler implements
     }
 
     /** Return whether the semantic highlighting is enabled.
-     * 
+     *
      *  @return true if the semantic highlighting is enabled.
      */
     public boolean isEnabled() {
@@ -156,7 +156,7 @@ public class SemanticHighlightingReconciler implements
 
     /** Handle the change of a property in the preference. This method is called
      *  if the user sets a preference in the preference dialog.
-     * 
+     *
      *  @param event The property change event.
      */
     public void propertyChange(PropertyChangeEvent event) {
@@ -164,7 +164,7 @@ public class SemanticHighlightingReconciler implements
     }
 
     /** Perform operation after the reconcilation is finished.
-     * 
+     *
      *  @param ast The compilation unit of the Java source.
      *  @param forced Whether the reconcilation is forced.
      *  @param progressMonitor The progress monitor.
@@ -223,7 +223,7 @@ public class SemanticHighlightingReconciler implements
     //// HighlightedPosition
     /**
      The position of a semantic highlighting.
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -248,7 +248,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         /** Return a corresponding style range.
-         * 
+         *
          *  @return The style range.
          */
         public StyleRange createStyleRange() {
@@ -265,7 +265,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         /** Mark this position as deleted.
-         * 
+         *
          *  @see #undelete()
          */
         public void delete() {
@@ -275,7 +275,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         /** Return the highlighting style.
-         * 
+         *
          *  @return The highlighting style.
          */
         public HighlightingStyle getHighlighting() {
@@ -314,7 +314,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         /** Set the length of this position.
-         * 
+         *
          *  @param length The new length.
          */
         public void setLength(int length) {
@@ -324,7 +324,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         /** Set the offset of this position.
-         * 
+         *
          *  @param offset The new offset.
          */
         public void setOffset(int offset) {
@@ -334,7 +334,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         /** Mark this position as not deleted.
-         * 
+         *
          *  @see #delete()
          */
         public void undelete() {
@@ -344,7 +344,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         /** Update this position with the new offset and new length.
-         * 
+         *
          *  @param offset The new offset.
          *  @param length The new length.
          */
@@ -368,7 +368,7 @@ public class SemanticHighlightingReconciler implements
     //// HighlightingStyle
     /**
      The semantic highlighting style.
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -378,7 +378,7 @@ public class SemanticHighlightingReconciler implements
     protected static class HighlightingStyle {
 
         /** Construct a highlighting style with the given text attribute.
-         * 
+         *
          *  @param textAttribute The text attribute.
          *  @param isEnabled Whether this style is enabled.
          */
@@ -388,7 +388,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         /** Return the text attribute.
-         * 
+         *
          * @return The text attribute.
          * @see #setTextAttribute(TextAttribute)
          */
@@ -397,7 +397,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         /** Return whether this style is enabled.
-         * 
+         *
          *  @return true if this style is enabled.
          */
         public boolean isEnabled() {
@@ -405,7 +405,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         /** Set whether this style is enabled.
-         * 
+         *
          *  @param isEnabled true if this style is enabled.
          */
         public void setEnabled(boolean isEnabled) {
@@ -413,7 +413,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         /** Set the text attribute.
-         * 
+         *
          *  @param textAttribute The text attribute.
          *  @see #getTextAttribute()
          */
@@ -434,7 +434,7 @@ public class SemanticHighlightingReconciler implements
     ////                       private methods                     ////
 
     /** Adapt to a change on the enabled state.
-     * 
+     *
      *  @param highlighting The highlighting style.
      *  @param event The event of the change.
      */
@@ -455,7 +455,7 @@ public class SemanticHighlightingReconciler implements
     }
 
     /** Adapt to a change on the text background.
-     * 
+     *
      *  @param highlighting The highlighting style.
      *  @param event The event of the change.
      */
@@ -490,7 +490,7 @@ public class SemanticHighlightingReconciler implements
     }
 
     /** Adapt to a change on text style.
-     * 
+     *
      *  @param highlighting The highlighting style.
      *  @param event The event of the change.
      */
@@ -517,7 +517,7 @@ public class SemanticHighlightingReconciler implements
     }
 
     /** Add a color with the given key.
-     * 
+     *
      *  @param colorKey The color key.
      *  @see #_removeColor(String)
      */
@@ -535,7 +535,7 @@ public class SemanticHighlightingReconciler implements
     }
 
     /** Disable the semantic highlightings.
-     * 
+     *
      *  @see #_enable()
      */
     private void _disable() {
@@ -569,9 +569,9 @@ public class SemanticHighlightingReconciler implements
     }
 
     /** Enable the semantic highlightings.
-     * 
+     *
      *  @return true if the highlightings are enabled successfully; false,
-     *   otherwise. 
+     *   otherwise.
      *  @see #_disable()
      */
     private boolean _enable() {
@@ -604,7 +604,7 @@ public class SemanticHighlightingReconciler implements
     }
 
     /** Handle a property change evant.
-     * 
+     *
      *  @param event The event of the change.
      *  @see #_adaptToEnablementChange(ptolemy.backtrack.eclipse.plugin.editor.SemanticHighlightingReconciler.HighlightingStyle, PropertyChangeEvent)
      *  @see #_adaptToTextForegroundChange(ptolemy.backtrack.eclipse.plugin.editor.SemanticHighlightingReconciler.HighlightingStyle, PropertyChangeEvent)
@@ -701,7 +701,7 @@ public class SemanticHighlightingReconciler implements
     }
 
     /** Reconcile the positions of the AST subtrees.
-     * 
+     *
      *  @param subtrees The subtrees to be reconciled.
      */
     private void _reconcilePositions(ASTNode[] subtrees) {
@@ -725,7 +725,7 @@ public class SemanticHighlightingReconciler implements
     }
 
     /** Remove a color with the given key.
-     * 
+     *
      *  @param colorKey The color key.
      *  @see #_addColor(String)
      */
@@ -780,7 +780,7 @@ public class SemanticHighlightingReconciler implements
     }
 
     /** Start reconciling the positions.
-     * 
+     *
      *  @see #_stopReconcilingPositions()
      */
     private void _startReconcilingPositions() {
@@ -789,7 +789,7 @@ public class SemanticHighlightingReconciler implements
     }
 
     /** Stop reconciling the positions.
-     * 
+     *
      *  @see #_startReconcilingPositions()
      */
     private void _stopReconcilingPositions() {
@@ -799,7 +799,7 @@ public class SemanticHighlightingReconciler implements
     }
 
     /** Update the text presentation with semantic highlightings.
-     * 
+     *
      *  @param textPresentation The text presentation.
      *  @param addedPositions The add positions.
      *  @param removedPositions The removed positions.
@@ -929,7 +929,7 @@ public class SemanticHighlightingReconciler implements
     //// PositionCollector
     /**
      The AST visitor to collect positions to be reconciled.
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -940,7 +940,7 @@ public class SemanticHighlightingReconciler implements
 
         /** Visit a simple name in the AST and record its position if it is
          *  part of the semantic highlighting.
-         *  
+         *
          *  @param node The simple name node.
          *  @return Always false because the simple name node has no children to
          *   visit.
@@ -970,9 +970,9 @@ public class SemanticHighlightingReconciler implements
 
         /** Visit an AST node, and retain its offset and length if it is
          *  malformed.
-         * 
+         *
          *  @param node The AST node.
-         *  @return false if the node is malformed; true, otherwise. 
+         *  @return false if the node is malformed; true, otherwise.
          */
         protected boolean visitNode(ASTNode node) {
             if ((node.getFlags() & ASTNode.MALFORMED) == ASTNode.MALFORMED) {
@@ -985,7 +985,7 @@ public class SemanticHighlightingReconciler implements
 
         /** Add a position with the given range and highlighting if it does not
          *  exist already.
-         *  
+         *
          *  @param offset The range offset.
          *  @param length The range length.
          *  @param highlighting The highlighting style.
@@ -1019,7 +1019,7 @@ public class SemanticHighlightingReconciler implements
         }
 
         /** Retain the positions completely contained in the given range.
-         * 
+         *
          *  @param offset The range offset.
          *  @param length The range length.
          */

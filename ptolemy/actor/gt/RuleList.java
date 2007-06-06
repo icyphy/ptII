@@ -48,7 +48,7 @@ public class RuleList extends LinkedList<Rule> {
     public RuleList(RuleList initRules) {
         super(initRules);
     }
-    
+
     public static RuleList parse(String expression)
     throws MalformedStringException {
         RuleList list = new RuleList();
@@ -65,7 +65,7 @@ public class RuleList extends LinkedList<Rule> {
         }
         return list;
     }
-    
+
     public String toString() {
         StringBuffer buffer = new StringBuffer();
         for (Rule rule : this) {
@@ -77,7 +77,7 @@ public class RuleList extends LinkedList<Rule> {
         }
         return buffer.toString();
     }
-    
+
     private static int _nextRule(String expression, int startPos) {
         if (expression.charAt(startPos) == '(') {
             int parenNum = 1;
@@ -86,7 +86,7 @@ public class RuleList extends LinkedList<Rule> {
             boolean escaped = false;
             for (int i = startPos + 1; i < expression.length(); i++) {
                 char c = expression.charAt(i);
-                
+
                 if (c == '\\' && (inDblQuote || inSngQuote)) {
                     escaped = !escaped;
                 } else if (c == '\"' && !escaped) {
@@ -96,20 +96,20 @@ public class RuleList extends LinkedList<Rule> {
                 } else if (c == ')' && !inDblQuote && !inSngQuote) {
                     parenNum--;
                 }
-                
+
                 if (c != '\\') {
                     escaped = false;
                 }
-                
+
                 if (parenNum == 0) {
                     return i;
                 }
             }
-            
+
         }
         return -1;
     }
-    
+
     private static Rule _parseRule(String ruleString) {
         int separator = ruleString.indexOf(Rule.FIELD_SEPARATOR);
         if (separator < 0) {
@@ -132,6 +132,6 @@ public class RuleList extends LinkedList<Rule> {
             return null;
         }
     }
-    
+
     private static final long serialVersionUID = -5344621368362493745L;
 }

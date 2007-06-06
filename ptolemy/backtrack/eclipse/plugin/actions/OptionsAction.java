@@ -57,7 +57,7 @@ public class OptionsAction implements IWorkbenchWindowActionDelegate {
     }
 
     /** Initialize the action with a window as its parent.
-     * 
+     *
      *  @param window The parent window.
      */
     public void init(IWorkbenchWindow window) {
@@ -65,7 +65,7 @@ public class OptionsAction implements IWorkbenchWindowActionDelegate {
     }
 
     /** Activate the action and pop up the Options dialog.
-     * 
+     *
      *  @param action The action proxy (not used in this method).
      */
     public void run(IAction action) {
@@ -80,7 +80,7 @@ public class OptionsAction implements IWorkbenchWindowActionDelegate {
     }
 
     /** Handle the change of selection.
-     * 
+     *
      *  @param action The action proxy (not used in this method).
      *  @param selection The new selection (not used in this method).
      */

@@ -48,7 +48,7 @@ public class CompositeActorMatcher extends TypedCompositeActor {
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
-    
+
     private static final long serialVersionUID = -3093694369352820033L;
 
 }

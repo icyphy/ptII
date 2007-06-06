@@ -46,7 +46,7 @@ import java.util.Iterator;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * This class provides a HashMap-backed implementation of the Set interface.
  * <p>
  * Most operations are O(1), assuming no hash collisions.  In the worst
@@ -79,17 +79,17 @@ import ptolemy.backtrack.util.FieldRecord;
 public class HashSet extends AbstractSet implements Set, Cloneable,
         Serializable, Rollbackable {
 
-    /**     
+    /**
      * Compatible with JDK 1.2.
      */
     private static final long serialVersionUID = -5024744406713321676L;
 
-    /**     
+    /**
      * The HashMap which backs this Set.
      */
     private transient HashMap map;
 
-    /**     
+    /**
      * Construct a new, empty HashSet whose backing HashMap has the default
      * capacity (11) and loadFacor (0.75).
      */
@@ -97,7 +97,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         this(HashMap.DEFAULT_CAPACITY, HashMap.DEFAULT_LOAD_FACTOR);
     }
 
-    /**     
+    /**
      * Construct a new, empty HashSet whose backing HashMap has the supplied
      * capacity and the default load factor (0.75).
      * @param initialCapacity the initial capacity of the backing HashMap
@@ -107,7 +107,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         this(initialCapacity, HashMap.DEFAULT_LOAD_FACTOR);
     }
 
-    /**     
+    /**
      * Construct a new, empty HashSet whose backing HashMap has the supplied
      * capacity and load factor.
      * @param initialCapacity the initial capacity of the backing HashMap
@@ -119,7 +119,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         $ASSIGN$map(init(initialCapacity, loadFactor));
     }
 
-    /**     
+    /**
      * Construct a new HashSet with the same elements as are in the supplied
      * collection (eliminating any duplicates, of course). The backing storage
      * has twice the size of the collection, or the default size of 11,
@@ -132,7 +132,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         addAll(c);
     }
 
-    /**     
+    /**
      * Adds the given Object to the set if it is not already in the Set.
      * This set permits a null element.
      * @param o the Object to add to this Set
@@ -142,14 +142,14 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         return map.put(o, "") == null;
     }
 
-    /**     
+    /**
      * Empties this Set of all elements; this takes constant time.
      */
     public void clear() {
         map.clear();
     }
 
-    /**     
+    /**
      * Returns a shallow copy of this Set. The Set itself is cloned; its
      * elements are not.
      * @return a shallow clone of the set
@@ -165,7 +165,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         return copy;
     }
 
-    /**     
+    /**
      * Returns true if the supplied element is in this Set.
      * @param o the Object to look for
      * @return true if it is in the set
@@ -174,7 +174,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         return map.containsKey(o);
     }
 
-    /**     
+    /**
      * Returns true if this set has no elements in it.
      * @return <code>size() == 0</code>.
      */
@@ -182,7 +182,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         return map.getSize() == 0;
     }
 
-    /**     
+    /**
      * Returns an Iterator over the elements of this Set, which visits the
      * elements in no particular order.  For this class, the Iterator allows
      * removal of elements. The iterator is fail-fast, and will throw a
@@ -195,7 +195,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         return map.iterator(AbstractMap.KEYS);
     }
 
-    /**     
+    /**
      * Removes the supplied Object from this Set if it is in the Set.
      * @param o the object to remove
      * @return true if an element was removed
@@ -204,7 +204,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         return (map.remove(o) != null);
     }
 
-    /**     
+    /**
      * Returns the number of elements in this Set (its cardinality).
      * @return the size of the set
      */
@@ -212,7 +212,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         return map.getSize();
     }
 
-    /**     
+    /**
      * Helper method which initializes the backing Map. Overridden by
      * LinkedHashSet for correct semantics.
      * @param capacity the initial capacity
@@ -223,7 +223,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         return new HashMap(capacity, load);
     }
 
-    /**     
+    /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
      * @throws IOException if the underlying stream fails
@@ -243,7 +243,7 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         }
     }
 
-    /**     
+    /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
      * @throws ClassNotFoundException if the underlying stream fails

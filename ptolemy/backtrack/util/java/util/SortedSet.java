@@ -43,7 +43,7 @@ import java.util.NoSuchElementException;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 
-/** 
+/**
  * A set which guarantees its iteration order. The elements in the set
  * are related by the <i>natural ordering</i> if they are Comparable, or
  * by the provided Comparator.  Additional operations take advantage of
@@ -79,21 +79,21 @@ import ptolemy.backtrack.Rollbackable;
  */
 public interface SortedSet extends Set, Rollbackable {
 
-    /**     
+    /**
      * Returns the comparator used in sorting this set, or null if it is
      * the elements' natural ordering.
      * @return the sorting comparator
      */
     Comparator comparator();
 
-    /**     
+    /**
      * Returns the first (lowest sorted) element in the set.
      * @return the first element
      * @throws NoSuchElementException if the set is empty.
      */
     Object first();
 
-    /**     
+    /**
      * Returns a view of the portion of the set strictly less than toElement. The
      * view is backed by this set, so changes in one show up in the other.
      * The subset supports all optional operations of the original.
@@ -114,14 +114,14 @@ public interface SortedSet extends Set, Rollbackable {
      */
     SortedSet headSet(Object toElement);
 
-    /**     
+    /**
      * Returns the last (highest sorted) element in the set.
      * @return the last element
      * @throws NoSuchElementException if the set is empty.
      */
     Object last();
 
-    /**     
+    /**
      * Returns a view of the portion of the set greater than or equal to
      * fromElement, and strictly less than toElement. The view is backed by
      * this set, so changes in one show up in the other. The subset supports all
@@ -147,7 +147,7 @@ public interface SortedSet extends Set, Rollbackable {
      */
     SortedSet subSet(Object fromElement, Object toElement);
 
-    /**     
+    /**
      * Returns a view of the portion of the set greater than or equal to
      * fromElement. The view is backed by this set, so changes in one show up
      * in the other. The subset supports all optional operations of the original.

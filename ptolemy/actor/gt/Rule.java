@@ -38,20 +38,20 @@ package ptolemy.actor.gt;
 @Pt.AcceptedRating Red (tfeng)
 */
 public abstract class Rule {
-    
+
     public abstract RuleAttribute[] getAttributes();
-    
+
     public abstract Object getAttributeValue(int index);
-    
+
     public abstract String getValues();
-    
+
     public abstract void setAttributeValue(int index, Object value);
-    
+
     public abstract void setValues(String values);
-    
+
     public String toString() {
         return getValues();
     }
-    
+
     public static final String FIELD_SEPARATOR = "/";
 }

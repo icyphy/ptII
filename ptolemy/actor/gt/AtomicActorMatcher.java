@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class AtomicActorMatcher extends TypedAtomicActor {
-    
+
     public AtomicActorMatcher(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);

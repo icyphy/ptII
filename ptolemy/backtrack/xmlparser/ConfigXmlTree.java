@@ -14,11 +14,11 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
@@ -47,7 +47,7 @@ import java.util.Vector;
 public class ConfigXmlTree {
 
     /** Construct a node in the tree with no child.
-     * 
+     *
      *  @param elementName The XML element name of the node.
      */
     public ConfigXmlTree(String elementName) {
@@ -59,7 +59,7 @@ public class ConfigXmlTree {
 
     /** Add a child to this node. This child will be added after the existing
      *  children.
-     *  
+     *
      *  @param child The child to be added.
      */
     public void addChild(ConfigXmlTree child) {
@@ -68,7 +68,7 @@ public class ConfigXmlTree {
     }
 
     /** Clone the sub-tree starting from this node, and return the clone result.
-     * 
+     *
      *  @return A clone of the sub-tree.
      */
     public Object clone() {
@@ -85,7 +85,7 @@ public class ConfigXmlTree {
 
     /** Print the content of the sub-tree starting from this node to the given
      *  output stream in a text format.
-     *  
+     *
      *  @param stream The stream to be printed to.
      */
     public void dump(PrintStream stream) {
@@ -93,7 +93,7 @@ public class ConfigXmlTree {
     }
 
     /** Get the value of the attribute with the given name.
-     * 
+     *
      *  @param name The attribute name.
      *  @return The value of the attribute, or null if not found.
      *  @see #setAttribute(String, String)
@@ -103,15 +103,15 @@ public class ConfigXmlTree {
     }
 
     /** Get the names of all the attributes of this XML element.
-     * 
-     *  @return The enumeration of attribute names. 
+     *
+     *  @return The enumeration of attribute names.
      */
     public Enumeration<String> getAttributeNames() {
         return _attributes.keys();
     }
 
     /** Get the name of this XML element.
-     * 
+     *
      *  @return The element name.
      */
     public String getElementName() {
@@ -119,7 +119,7 @@ public class ConfigXmlTree {
     }
 
     /** Get the parent of this node.
-     * 
+     *
      *  @return The parent, or null.
      */
     public ConfigXmlTree getParent() {
@@ -127,9 +127,9 @@ public class ConfigXmlTree {
     }
 
     /** Test whether this node has an attribute with the given name.
-     * 
+     *
      *  @param name The attribute name.
-     *  @return true if this node has an attribute with the name; false, 
+     *  @return true if this node has an attribute with the name; false,
      *   otherwise.
      */
     public boolean hasAttribute(String name) {
@@ -137,7 +137,7 @@ public class ConfigXmlTree {
     }
 
     /** Test whether there are more children to traverse.
-     * 
+     *
      *  @return true if there are more children to traverse; false, otherwise.
      *  @see #nextChild()
      *  @see #startTraverseChildren()
@@ -147,7 +147,7 @@ public class ConfigXmlTree {
     }
 
     /** Test whether this node is a leaf in the XML tree.
-     * 
+     *
      *  @return true if this node is a leaf; false, otherwise.
      */
     public boolean isLeaf() {
@@ -155,7 +155,7 @@ public class ConfigXmlTree {
     }
 
     /** Return the next child to be traversed.
-     * 
+     *
      *  @return The next child.
      *  @see #hasMoreChildren()
      *  @see #startTraverseChildren()
@@ -166,7 +166,7 @@ public class ConfigXmlTree {
 
     /** Set the value of the attribute with the given name. Create the attribute
      *  if it does not exist yet.
-     *  
+     *
      *  @param name The attribute name.
      *  @param value The attribute value.
      *  @see #getAttribute(String)
@@ -179,7 +179,7 @@ public class ConfigXmlTree {
 
     /** Start traversing the children of this node by initializing the internal
      *  iterator.
-     *  
+     *
      *  @see #hasMoreChildren()
      *  @see #nextChild()
      */
@@ -193,7 +193,7 @@ public class ConfigXmlTree {
     /** Print the content of the sub-tree starting from this node to the given
      *  output stream in a text format. The sub-tree is indented with the
      *  specified amount.
-     *  
+     *
      *  @param indent The amount of indentation.
      *  @param stream The stream to be printed to.
      */
@@ -217,7 +217,7 @@ public class ConfigXmlTree {
     }
 
     /** Set the name of this XML element.
-     * 
+     *
      *  @param elementName The element name.
      */
     protected void _setElementName(String elementName) {
@@ -227,7 +227,7 @@ public class ConfigXmlTree {
     /** Set the parent of this XML node. This method does not update the
      *  parent's children list. To add this node to be one of the parent's
      *  children, use {@link #addChild(ConfigXmlTree)} of the parent.
-     *  
+     *
      *  @param parent The parent node.
      */
     protected void _setParent(ConfigXmlTree parent) {
@@ -239,7 +239,7 @@ public class ConfigXmlTree {
 
     /** Print a string to the given output stream in a text format. The string
      *  is indented with the specified amount.
-     * 
+     *
      *  @param indent The amount of indentation.
      *  @param s The string to be printed.
      *  @param stream The stream to be printed to.

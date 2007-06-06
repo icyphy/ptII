@@ -59,7 +59,7 @@ public final class SemanticToken {
     ////                       public methods                      ////
 
     /** Return the binding, or null if undefined.
-     * 
+     *
      *  @return The binding.
      */
     public IBinding getBinding() {
@@ -72,7 +72,7 @@ public final class SemanticToken {
     }
 
     /** Return the AST node of this token.
-     * 
+     *
      *  @return The AST node.
      */
     public SimpleName getNode() {
@@ -80,7 +80,7 @@ public final class SemanticToken {
     }
 
     /** Return the AST root.
-     * 
+     *
      *  @return The AST root.
      */
     public CompilationUnit getRoot() {

@@ -97,7 +97,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     ////                       public methods                      ////
 
     /** Create the controls for this editor.
-     * 
+     *
      *  @param parent The parent of the editor.
      */
     public void createPartControl(Composite parent) {
@@ -161,7 +161,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     }
 
     /** Set the active tab of the editor.
-     * 
+     *
      *  @param pageIndex The index of the tab to change to. 0 for "Raw" tab; 1
      *   for "Preview" tab.
      */
@@ -265,7 +265,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
 
     /** Override the title image so that the Ptolemy icon is always used as the
      *  editor's title image.
-     *  
+     *
      *  @param titleImage The new title image to be set, which is always
      *   ignored.
      */
@@ -279,7 +279,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     ////                       private methods                     ////
 
     /** Create the top-level container for this editor.
-     * 
+     *
      *  @param parent The parent of the top-level container.
      *  @return The tab folder as the container of the two tabs.
      */
@@ -298,7 +298,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     }
 
     /** Create an item for tab folder.
-     * 
+     *
      *  @param index The index of the item.
      *  @param control The control for the item.
      *  @return The item created in the tab folder.
@@ -343,7 +343,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     }
 
     /** Get the compilation unit for the Java code in the "Raw" tab.
-     * 
+     *
      *  @return The compilation unit.
      *  @exception JavaModelException If the compilation unit cannot be
      *   retrieved from the Eclipse Java editor.
@@ -367,7 +367,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     }
 
     /** Get the file containing the transformed code for preview.
-     * 
+     *
      *  @return The file.
      */
     private IFile _getPreviewFile() {
@@ -438,7 +438,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     /**
      The thread to output the refactoring result to the "Preview" tab, and
      output any error message to the backtracking console.
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -469,7 +469,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
         }
 
         /** Construct a thread to output the refactoring result.
-         * 
+         *
          *  @param file The file object containing the "Preview" tab's content.
          *  @param inputStream The input stream to read refactoring result from.
          */
@@ -491,7 +491,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
     //// TransformerRunnable
     /**
      The runnable object that executes the transformation.
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -513,7 +513,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
         }
 
         /** Construct a runnable object that executes the transformation.
-         * 
+         *
          *  @param fileName The name of the file to be refactored.
          *  @param compilationUnit The compilation unit of the Java code.
          *  @param writer The writer to output result to.

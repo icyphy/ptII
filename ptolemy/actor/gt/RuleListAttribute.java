@@ -63,19 +63,19 @@ public class RuleListAttribute extends StringAttribute {
         // FIXME: serialize _ruleList
         return super.getExpression();
     }
-    
+
     public RuleList getRuleList() throws MalformedStringException {
         if (!_parsed) {
             _parse();
         }
         return _ruleList;
     }
-    
+
     public void setExpression(String expression) throws IllegalActionException {
         _parsed = false;
         super.setExpression(expression);
     }
-    
+
     public Collection<?> validate() throws IllegalActionException {
         if (!_parsed) {
             try {
@@ -86,14 +86,14 @@ public class RuleListAttribute extends StringAttribute {
         }
         return null;
     }
-    
+
     private void _parse() throws MalformedStringException {
         _parsed = true;
         _ruleList = RuleList.parse(super.getExpression());
     }
-    
+
     private boolean _parsed = false;
-    
+
     private RuleList _ruleList = null;
 
     private static final long serialVersionUID = 3642067100376815343L;

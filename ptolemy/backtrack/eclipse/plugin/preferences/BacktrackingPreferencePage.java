@@ -83,7 +83,7 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
 
     /** Create the contents of the preference page with the parent as its
      *  container.
-     *  
+     *
      *  @param parent The parent container.
      *  @return The parent itself.
      */
@@ -103,7 +103,7 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
     }
 
     /** Set whether the backtracking preference page is visible.
-     * 
+     *
      *  @param visible Whether the backtracking preference page is visible.
      */
     public void setVisible(boolean visible) {
@@ -353,7 +353,7 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
     }
 
     /** Update the source files to be refactored in the list.
-     * 
+     *
      *  @return true if the update is successful; false, otherwise.
      */
     private boolean _updateSources() {

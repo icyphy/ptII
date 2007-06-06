@@ -21,7 +21,7 @@ public class SortMembersEditorAction implements IWorkbenchWindowActionDelegate {
     }
 
     /** Sort the source code in the editor.
-     * 
+     *
      *  @param action The action proxy (not used in this method).
      */
     public void run(IAction action) {
@@ -37,7 +37,7 @@ public class SortMembersEditorAction implements IWorkbenchWindowActionDelegate {
     }
 
     /** Handle the change of selection.
-     * 
+     *
      *  @param action The action proxy (not used in this method).
      *  @param selection The new selection (not used in this method).
      */

@@ -54,7 +54,7 @@ public class FieldRecordState {
     ////                       constructor                         ////
 
     /** Construct a field record.
-     * 
+     *
      *  @param dimensions The number of dimensions of this field.
      */
     protected FieldRecordState(int dimensions) {

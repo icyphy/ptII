@@ -43,18 +43,18 @@ public class RuleAttribute {
         _type = type;
         _name = name;
     }
-    
+
     public String getName() {
         return _name;
     }
-    
+
     public int getType() {
         return _type;
     }
-    
+
     public static int STRING;
-    
+
     private String _name;
-    
+
     private int _type;
 }

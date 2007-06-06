@@ -45,7 +45,7 @@ import java.util.Enumeration;
 public class XmlOutput {
 
     /** Output an XML tree to the writer.
-     * 
+     *
      *  @param tree The XML tree.
      *  @param writer The writer.
      *  @exception IOException If there is an IO exception during the output.
@@ -72,7 +72,7 @@ public class XmlOutput {
 
     /** Output the sub-tree to the writer with the specified number of
      *  indentations.
-     *  
+     *
      *  @param tree The sub-tree.
      *  @param writer The writer.
      *  @param indent The number of indentations.
@@ -120,7 +120,7 @@ public class XmlOutput {
     }
 
     /** Return a string with the specified number of white spaces.
-     * 
+     *
      *  @param indent The number of white spaces.
      *  @return A string with the specified number of white spaces.
      */

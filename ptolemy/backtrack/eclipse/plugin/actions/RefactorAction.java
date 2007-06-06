@@ -76,7 +76,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
     }
 
     /** Initialize the action with a window as its parent.
-     * 
+     *
      *  @param window The parent window.
      */
     public void init(IWorkbenchWindow window) {
@@ -84,7 +84,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
     }
 
     /** Activate the action and transform the listed Java source files.
-     * 
+     *
      *  @param action The action proxy (not used in this method).
      */
     public void run(IAction action) {
@@ -140,7 +140,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
     }
 
     /** Handle the change of selection.
-     * 
+     *
      *  @param action The action proxy (not used in this method).
      *  @param selection The new selection (not used in this method).
      */
@@ -157,7 +157,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
     /**
      The subclass of PrintStream that asynchronously sends the output to the
      Eclipse console.
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -168,7 +168,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
         /** Check whether there is an IO error. This method always returns
          *  false.
-         *  
+         *
          *  @param true if there is an error; false, otherwise.
          */
         public boolean checkError() {
@@ -187,7 +187,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print a boolean value to the stream.
-         * 
+         *
          *  @param b The boolean value.
          */
         public void print(boolean b) {
@@ -195,7 +195,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print a char to the stream.
-         * 
+         *
          *  @param c The char to write.
          */
         public void print(char c) {
@@ -203,7 +203,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print an array of chars to the stream.
-         * 
+         *
          *  @param s The array of chars to write.
          */
         public void print(char[] s) {
@@ -211,7 +211,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print a double value to the stream.
-         * 
+         *
          *  @param d The double value to write.
          */
         public void print(double d) {
@@ -219,7 +219,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print a float value to the stream.
-         * 
+         *
          *  @param f The float value to write.
          */
         public void print(float f) {
@@ -227,7 +227,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print an integer to the stream.
-         * 
+         *
          *  @param i The integer to write.
          */
         public void print(int i) {
@@ -235,7 +235,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print a long value to the stream.
-         * 
+         *
          *  @param l The long value to write.
          */
         public void print(long l) {
@@ -243,7 +243,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print the string representation of an object to the stream.
-         * 
+         *
          *  @param object The object.
          */
         public void print(Object object) {
@@ -251,7 +251,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print a string to the stream.
-         * 
+         *
          *  @param s The string to write.
          */
         public void print(String s) {
@@ -266,7 +266,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
         /** Print a boolean value to the stream, and append a new line
          *  character.
-         * 
+         *
          *  @param b The boolean value.
          */
         public void println(boolean b) {
@@ -274,7 +274,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print a char to the stream, and append a new line character.
-         * 
+         *
          *  @param c The char to write.
          */
         public void println(char c) {
@@ -283,7 +283,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
         /** Print an array of chars to the stream, and append a new line
          *  character.
-         * 
+         *
          *  @param s The array of chars to write.
          */
         public void println(char[] s) {
@@ -291,7 +291,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print a double value to the stream, and append a new line character.
-         * 
+         *
          *  @param d The double value to write.
          */
         public void println(double d) {
@@ -299,7 +299,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print a float value to the stream, and append a new line character.
-         * 
+         *
          *  @param f The float value to write.
          */
         public void println(float f) {
@@ -307,7 +307,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print an integer to the stream, and append a new line character.
-         * 
+         *
          *  @param i The integer to write.
          */
         public void println(int i) {
@@ -315,7 +315,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print a long value to the stream, and append a new line character.
-         * 
+         *
          *  @param l The long value to write.
          */
         public void println(long l) {
@@ -324,7 +324,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
         /** Print the string representation of an object to the stream, and
          *  append a new line character.
-         * 
+         *
          *  @param object The object.
          */
         public void println(Object object) {
@@ -332,7 +332,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Print a string to the stream, and append a new line character.
-         * 
+         *
          *  @param s The string to write.
          */
         public void println(String s) {
@@ -340,7 +340,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Write a part of the byte buffer to the stream.
-         * 
+         *
          *  @param buffer The buffer.
          *  @param offset The starting offset.
          *  @param length The length.
@@ -350,7 +350,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Write a char in the integer to the stream.
-         * 
+         *
          *  @param i The integer representation of the char.
          */
         public void write(int i) {
@@ -359,7 +359,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
         /** Construct a stream that asynchronously sends the output to the given
          *  stream of the Eclipse console.
-         *  
+         *
          *  @param stream The stream of the Eclipse console.
          */
         AsyncPrintStream(MessageConsoleStream stream) {
@@ -383,7 +383,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         /**
          The runnable object to execute asynchronously with the Eclipse GUI
          thread. It produces output to the Eclipse console.
-         
+
          @author Thomas Feng
          @version $Id$
          @since Ptolemy II 5.1
@@ -424,7 +424,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
             public static final int PRINTLN = 2;
 
             /** Construct a runnable to print the output to the Eclipse console.
-             * 
+             *
              *  @param s The string to print.
              *  @param operation The operation ({@link #FLUSH}, {@link #PRINT}
              *   or {@link #PRINTLN}).
@@ -449,7 +449,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
     /**
      The runnable object to asynchronously pop up an error dialog.
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -466,7 +466,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Construct an error dialog with a cause.
-         * 
+         *
          *  @param t The cause of the error.
          */
         ErrorDialogRunnable(Throwable t) {
@@ -483,7 +483,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
 
     /**
      The thread to execute the transformation.
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -535,7 +535,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         }
 
         /** Construct a thread to execute the transformation.
-         * 
+         *
          *  @param args The command-line arguments to the transformer's main
          *   function ({@link Transformer#main(String[])}).
          *  @param output The stream where the normal console output is sent, or

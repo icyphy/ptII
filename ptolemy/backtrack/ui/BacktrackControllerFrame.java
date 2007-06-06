@@ -14,11 +14,11 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
@@ -258,7 +258,7 @@ public class BacktrackControllerFrame extends TableauFrame {
 
     /**
      Element of the checkpoint handle table.
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -268,7 +268,7 @@ public class BacktrackControllerFrame extends TableauFrame {
     private class HandleTableElement {
 
         /** Return the checkpoint handle.
-         * 
+         *
          *  @return The checkpoint handle.
          */
         public long getHandle() {
@@ -276,7 +276,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         }
 
         /** Return the time at which the checkpoint was created.
-         * 
+         *
          *  @return The checkpoint creation time.
          */
         public Date getTime() {
@@ -284,7 +284,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         }
 
         /** Construct an element in the checkpoint handle list.
-         *  
+         *
          *  @param handle The checkpoint handle.
          *  @param time The time at which the checkpoint was created.
          */
@@ -303,7 +303,7 @@ public class BacktrackControllerFrame extends TableauFrame {
 
     /**
      The data store for the list of checkpoint handles.
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -313,7 +313,7 @@ public class BacktrackControllerFrame extends TableauFrame {
     private class HandleTableModel extends AbstractTableModel {
 
         /** Return the number of columns in the list.
-         * 
+         *
          *  @return The number of columns.
          */
         public int getColumnCount() {
@@ -321,7 +321,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         }
 
         /** Return the name of the specified column.
-         * 
+         *
          *  @return The column name.
          */
         public String getColumnName(int column) {
@@ -329,7 +329,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         }
 
         /** Return the number of rows in the list.
-         * 
+         *
          *  @return The number of rows.
          */
         public int getRowCount() {
@@ -339,7 +339,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         /** Return the object that represents the value at the given row and the
          *  given column. Java will call toString() of the returned object to
          *  get it textual representation to be shown in the cell.
-         *  
+         *
          *  @return The value of the given cell.
          */
         public Object getValueAt(int rowIndex, int columnIndex) {
@@ -358,7 +358,7 @@ public class BacktrackControllerFrame extends TableauFrame {
 
         /** Insert a element to the end of the data store. One more row will be
          *  added to the checkpoint handle list.
-         * 
+         *
          *  @param element The element to be added.
          */
         public synchronized void insertElement(HandleTableElement element) {
@@ -367,7 +367,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         }
 
         /** Remove the element at the given position from the data store.
-         * 
+         *
          *  @param position The position of the element.
          */
         public synchronized void removeElement(int position) {
@@ -393,7 +393,7 @@ public class BacktrackControllerFrame extends TableauFrame {
      In the model selector (a JTable), the item names are retrieved with
      toString(), so this class returns the PtolemyFrame's title in
      toString().
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -403,7 +403,7 @@ public class BacktrackControllerFrame extends TableauFrame {
     private class ModelSelectorElement {
 
         /** Get the frame of the Ptolemy model.
-         * 
+         *
          *  @return The frame of the Ptolemy model.
          */
         public PtolemyFrame getFrame() {
@@ -411,7 +411,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         }
 
         /** Return the title of the Ptolemy frame.
-         * 
+         *
          *  @return The title of the Ptolemy frame.
          */
         public String toString() {
@@ -419,7 +419,7 @@ public class BacktrackControllerFrame extends TableauFrame {
         }
 
         /** Construct a model selector element.
-         * 
+         *
          *  @param frame The frame of the Ptolemy model.
          */
         ModelSelectorElement(PtolemyFrame frame) {

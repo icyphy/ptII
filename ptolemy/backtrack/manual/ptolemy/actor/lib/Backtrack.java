@@ -14,11 +14,11 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
@@ -50,7 +50,7 @@ import ptolemy.kernel.util.StringAttribute;
  This actor provides the interface to the backtracking mechanism. It is able to
  create checkpoints (in which case a checkpoint handle is returned) and roll
  back to previously created checkpoints.
- 
+
  This actor has a "checkpoint" input port. It takes a boolean token in every
  firing, which means whether a checkpoint should be created. If it is true, a
  checkpoint will be created in the firing, and the checkpoint handle (a long
@@ -61,7 +61,7 @@ import ptolemy.kernel.util.StringAttribute;
  hierarchical components if any, restores its previous state recorded for that
  checkpoint; if the given checkpoint handle is equal to or less than 0, the
  rollback operation will not be performed.
- 
+
  @author Thomas Feng
  @version $Id$
  @since Ptolemy II 6.1
@@ -112,7 +112,7 @@ public class Backtrack extends TypedAtomicActor {
      *  which is greater than 0. This checkpoint handle is recorded in a private
      *  field, and the rollback operation will actually be performed in {@link
      *  #postfire()}.
-     *  
+     *
      *  @exception IllegalActionException If the fire method of the superclass
      *  throws this exception.
      */
@@ -137,7 +137,7 @@ public class Backtrack extends TypedAtomicActor {
      *  the last token received from the "rollback" port is greater than 0, it
      *  is recorded as the checkpoint handle used for the rollback. When
      *  performed, the rollback operation restores the state of the whole model.
-     *  
+     *
      *  @exception IllegalActionException If the postfire method of the
      *  superclass throws this exception.
      */
@@ -175,13 +175,13 @@ public class Backtrack extends TypedAtomicActor {
      *  record the checkpoint handles in the map. The checkpoint objects are the
      *  keys in the map, and their checkpoint handles are the values associated
      *  with the keys.
-     *  
+     *
      *  Only the actors that implements the {@link Rollbackable} interface can
      *  be checkpointed.
-     *  
+     *
      *  This method recursively invokes itself on the composite actors in the
      *  given composite actor.
-     *  
+     *
      *  @param handles The map that associates the checkpoint objects with the
      *  checkpoint handles for them.
      *  @param container The composite actor to be checkpointed.

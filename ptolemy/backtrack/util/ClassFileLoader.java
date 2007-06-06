@@ -100,7 +100,7 @@ public class ClassFileLoader extends URLClassLoader {
                 throw new IOException("Failed to read \""
                         + classFile + "\", read only " + bytesRead
                         + " bytes, expected to read "
-                        + bytesAvailable + " bytes"); 
+                        + bytesAvailable + " bytes");
             };
 
             try {

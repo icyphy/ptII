@@ -41,25 +41,25 @@ import ptolemy.actor.gt.RuleAttribute;
 @Pt.AcceptedRating Red (tfeng)
 */
 public class ActorAttributeRule extends Rule {
-    
+
     public ActorAttributeRule() {
         this("");
     }
-    
+
     public ActorAttributeRule(String values) {
         setValues(values);
     }
-    
+
     public ActorAttributeRule(String name, String type, String value) {
         _attributeName = name;
         _attributeType = type;
         _attributeValue = value;
     }
-    
+
     public RuleAttribute[] getAttributes() {
         return _ATTRIBUTES;
     }
-    
+
     public Object getAttributeValue(int index) {
         switch (index) {
         case 0: return _attributeName;
@@ -68,12 +68,12 @@ public class ActorAttributeRule extends Rule {
         default: return null;
         }
     }
-    
+
     public String getValues() {
         return _attributeName + FIELD_SEPARATOR + _attributeType +
                 FIELD_SEPARATOR + _attributeValue;
     }
-    
+
     public void setAttributeValue(int index, Object value) {
         switch (index) {
         case 0: _attributeName = (String) value;
@@ -81,7 +81,7 @@ public class ActorAttributeRule extends Rule {
         case 2: _attributeValue = (String) value;
         }
     }
-    
+
     public void setValues(String values) {
         int pos1 = values.indexOf(FIELD_SEPARATOR);
         if (pos1 >= 0) {
@@ -100,9 +100,9 @@ public class ActorAttributeRule extends Rule {
             _attributeValue = "";
         }
     }
-    
+
     private String _attributeName;
-    
+
     private static final RuleAttribute[] _ATTRIBUTES = {
         new RuleAttribute(RuleAttribute.STRING, "Attribute Name"),
         new RuleAttribute(RuleAttribute.STRING, "Attribute Type"),

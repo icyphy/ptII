@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.FileDialog;
 //// SaveFileFieldEditor
 
 /**
- A field editor for a file to be saved to. 
+ A field editor for a file to be saved to.
 
  @author Thomas Feng
  @version $Id$
@@ -52,7 +52,7 @@ public class SaveFileFieldEditor extends FileFieldEditor {
     ////                        constructors                       ////
 
     /** Construct a save file field editor with no name and no parent.
-     *  
+     *
      *  @param canBeEmpty Whether the file name can be left empty.
      */
     public SaveFileFieldEditor(boolean canBeEmpty) {
@@ -60,7 +60,7 @@ public class SaveFileFieldEditor extends FileFieldEditor {
     }
 
     /** Construct a save file field editor.
-     * 
+     *
      *  @param name The name of this editor.
      *  @param labelText The label.
      *  @param parent The parent.
@@ -76,7 +76,7 @@ public class SaveFileFieldEditor extends FileFieldEditor {
     ////                       public methods                      ////
 
     /** Set the allowed extensions.
-     * 
+     *
      *  @param extensions The extensions.
      */
     public void setFileExtensions(String[] extensions) {
@@ -89,7 +89,7 @@ public class SaveFileFieldEditor extends FileFieldEditor {
 
     /** Pop up the file selection dialog after the change button is pressed, and
      *  retrieve the name of the selected file.
-     * 
+     *
      *  @return The name of the selected file, or null if the operation is
      *   canceled.
      */
@@ -110,7 +110,7 @@ public class SaveFileFieldEditor extends FileFieldEditor {
     }
 
     /** Check whether the current state of this field editor is valid.
-     * 
+     *
      *  @return true if the field editor's value is valid; false, otherwise.
      */
     protected boolean checkState() {
@@ -136,7 +136,7 @@ public class SaveFileFieldEditor extends FileFieldEditor {
 
     /** Pop up the file selection dialog, and return the file object of the
      *  selected file.
-     *  
+     *
      *  @param startingDirectory The directory that the file selection dialog
      *   shows initially.
      *  @return The file object of the selected file, or null if the dialog is

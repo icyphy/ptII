@@ -14,11 +14,11 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
@@ -142,7 +142,7 @@ public class ConfigParser {
      *  corresponding to the classes in <tt>includedClasses</tt> and their
      *  parent nodes are created. Other nodes in the XML tree are ignored.
      *  <p>
-     *  This method is the same as <tt>parseConfigFile(fileName, 
+     *  This method is the same as <tt>parseConfigFile(fileName,
      *  includedClasses, true)</tt>.
      *
      *  @param fileName The name of the configuration file.

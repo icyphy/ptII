@@ -103,14 +103,14 @@ public class ASTBuilder {
     public static CompilationUnit parse(String fileName) throws IOException,
             ASTMalformedException {
         File file = new File(fileName);
-        long fileLength = file.length(); 
+        long fileLength = file.length();
         char[] source = new char[(int)fileLength];
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(file);
             int bytesRead;
             if ((bytesRead = fileReader.read(source)) != fileLength) {
-                throw new IOException("While reading \"" + fileName 
+                throw new IOException("While reading \"" + fileName
                         + ", read only " + bytesRead + ", expecting "
                         + fileLength + "bytes.");
             }

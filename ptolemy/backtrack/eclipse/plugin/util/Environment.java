@@ -64,7 +64,7 @@ public class Environment {
 
     /** Create the folder represented by the container object, and all its
      *  parent folders if necessary.
-     *  
+     *
      *  @param container The container representing the folder to be created.
      *  @exception CoreException If the folder creation fails.
      */
@@ -81,7 +81,7 @@ public class Environment {
      *  a sub-folder rooted at the backtracking root (can be set in the
      *  preference page). The sub-path is appended to the root according to the
      *  backtracking prefix.
-     *  
+     *
      *  @return The container representing the folder where all the transformed
      *   classes are placed.
      */
@@ -102,7 +102,7 @@ public class Environment {
     }
 
     /** Get the default class paths.
-     * 
+     *
      *  @param shell The shell object.
      *  @return The array of class paths, or null if Ptolemy is not found.
      */
@@ -119,7 +119,7 @@ public class Environment {
     }
 
     /** Given a path, return its container representation in Eclipse.
-     * 
+     *
      *  @param path The path.
      *  @return The contailer, or null if the path is invalid.
      */
@@ -134,7 +134,7 @@ public class Environment {
     }
 
     /** Get the Ptolemy home.
-     * 
+     *
      *  @return The Ptolemy home, or null if Ptolemy is not found.
      */
     public static String getPtolemyHome() {
@@ -143,7 +143,7 @@ public class Environment {
 
     /** Get the Ptolemy home. If Ptolemy cannot be found, an error message is
      *  popped up in the given shell.
-     * 
+     *
      *  @param shell The shell.
      *  @return The Ptolemy home, or null if Ptolemy is not found.
      */
@@ -169,7 +169,7 @@ public class Environment {
 
     /** Given the source name of a Java file and its package name, return the
      *  path to the transformed file with backtracking prefix added to it.
-     *  
+     *
      *  @param source The Java source file.
      *  @param packageName The package name.
      *  @return The path to the transformed file.
@@ -207,7 +207,7 @@ public class Environment {
 
     /** Get the root for the source transformer. This root can be set in the
      *  preference page.
-     *  
+     *
      *  @return The root, or null if the root is invalid.
      */
     public static String getRefactoringRoot() {
@@ -217,7 +217,7 @@ public class Environment {
     /** Get the root for the source transformer. This root can be set in the
      *  preference page. If the root is invalid, an error message is popped up
      *  in the given shell.
-     *  
+     *
      *  @param shell The shell.
      *  @return The root, or null if the root is invalid.
      */
@@ -253,7 +253,7 @@ public class Environment {
     }
 
     /** Get the file name of the refactoring source list.
-     * 
+     *
      *  @return The file name of the refactoring source list, or null if the
      *   source list is invalid.
      */
@@ -263,7 +263,7 @@ public class Environment {
 
     /** Get the file name of the refactoring source list. If the source list is
      *  invalid, an error message is popped up in the given shell.
-     * 
+     *
      *  @param shell The shell.
      *  @return The file name of the refactoring source list.
      */
@@ -291,12 +291,12 @@ public class Environment {
     /** Set up the transformation arguments according to the preferences set in
      *  the preference page. Static fields of the transformer are initialized
      *  with these arguments.
-     *  
+     *
      *  @param shell The shell.
      *  @param config Whether to generate MoML configuration.
      *  @param alwaysOverwrite Whether to overwrite existing files.
      *  @return false if the Refactoring root cannot be found, true
-     *  otherwise.   
+     *  otherwise.
      */
     public static boolean setupTransformerArguments(Shell shell,
             boolean config, boolean alwaysOverwrite) {

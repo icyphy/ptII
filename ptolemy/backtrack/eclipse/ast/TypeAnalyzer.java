@@ -158,7 +158,7 @@ public class TypeAnalyzer extends ASTVisitor {
     /** Construct an analyzer with with an array of explicit class
      *  paths for its class loader (an instanceof {@link
      *  LocalClassLoader}).
-     *  
+     *
      *  @param classPaths The class paths.
      *  @exception  MalformedURLException If a classpath is not a proper URL.
      */
@@ -204,7 +204,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
     /** End the visit of an anonymous class declaration and close its
      *  scope. The current class is set back to the last visited class.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(AnonymousClassDeclaration node) {
@@ -817,7 +817,7 @@ public class TypeAnalyzer extends ASTVisitor {
 
     /** Visit a simple type node, and propergate the type of its name to it if
      *  it is in a {@link ClassInstanceCreation}.
-     *  
+     *
      *  @param node The node to be visited.
      */
     public void endVisit(SimpleType node) {

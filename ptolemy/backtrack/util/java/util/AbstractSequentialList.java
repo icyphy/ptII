@@ -42,7 +42,7 @@ import java.util.ListIterator;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * Abstract superclass to make it easier to implement the List interface when
  * backed by a sequential-access store, such as a linked list. For random
  * access data, use AbstractList. This class implements the random access
@@ -75,13 +75,13 @@ import ptolemy.backtrack.util.FieldRecord;
 public abstract class AbstractSequentialList extends AbstractList implements
         Rollbackable {
 
-    /**     
+    /**
      * The main constructor, for use by subclasses.
      */
     protected AbstractSequentialList() {
     }
 
-    /**     
+    /**
      * Returns a ListIterator over the list, starting from position index.
      * Subclasses must provide an implementation of this method.
      * @param index the starting position of the list
@@ -90,7 +90,7 @@ public abstract class AbstractSequentialList extends AbstractList implements
      */
     public abstract ListIterator listIterator(int index);
 
-    /**     
+    /**
      * Insert an element into the list at a given position (optional operation).
      * This shifts all existing elements from that position to the end one
      * index to the right. This version of add has no return, since it is
@@ -112,7 +112,7 @@ public abstract class AbstractSequentialList extends AbstractList implements
         listIterator(index).add(o);
     }
 
-    /**     
+    /**
      * Insert the contents of a collection into the list at a given position
      * (optional operation). Shift all elements at that position to the right
      * by the number of elements inserted. This operation is undefined if
@@ -149,7 +149,7 @@ public abstract class AbstractSequentialList extends AbstractList implements
         return size > 0;
     }
 
-    /**     
+    /**
      * Get the element at a given index in this list. This implementation
      * returns listIterator(index).next().
      * @param index the index of the element to be returned
@@ -165,7 +165,7 @@ public abstract class AbstractSequentialList extends AbstractList implements
         return listIterator(index).next();
     }
 
-    /**     
+    /**
      * Obtain an Iterator over this list, whose sequence is the list order. This
      * implementation returns listIterator().
      * @return an Iterator over the elements of this list, in order
@@ -174,7 +174,7 @@ public abstract class AbstractSequentialList extends AbstractList implements
         return listIterator();
     }
 
-    /**     
+    /**
      * Remove the element at a given position in this list (optional operation).
      * Shifts all remaining elements to the left to fill the gap. This
      * implementation uses listIterator(index) and ListIterator.remove().
@@ -196,7 +196,7 @@ public abstract class AbstractSequentialList extends AbstractList implements
         return removed;
     }
 
-    /**     
+    /**
      * Replace an element of this list with another object (optional operation).
      * This implementation uses listIterator(index) and ListIterator.set(o).
      * @param index the position within this list of the element to be replaced

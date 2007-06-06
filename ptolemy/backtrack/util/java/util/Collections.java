@@ -51,7 +51,7 @@ import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * Utility class consisting of static methods that operate on, or return
  * Collections. Contains methods to sort, search, reverse, fill and shuffle
  * Collections, methods to facilitate interoperability with legacy APIs that
@@ -86,7 +86,7 @@ public class Collections implements Rollbackable {
 
     protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-    /**     
+    /**
      * Constant used to decide cutoff for when a non-RandomAccess list should
      * be treated as sequential-access. Basically, quadratic behavior is
      * acceptable for small lists when the overhead is so small in the first
@@ -94,7 +94,7 @@ public class Collections implements Rollbackable {
      */
     private static final int LARGE_LIST_SIZE = 16;
 
-    /**     
+    /**
      * An immutable, serializable, empty Set.
      * @see Serializable
      */
@@ -104,7 +104,7 @@ public class Collections implements Rollbackable {
     // The remaining methods are optional, but provide a performance
     // advantage by not allocating unnecessary iterators in AbstractSet.
     // class EmptySet
-    /**     
+    /**
      * An immutable, serializable, empty List, which implements RandomAccess.
      * @see Serializable
      * @see RandomAccess
@@ -114,7 +114,7 @@ public class Collections implements Rollbackable {
     // The remaining methods are optional, but provide a performance
     // advantage by not allocating unnecessary iterators in AbstractList.
     // class EmptyList
-    /**     
+    /**
      * An immutable, serializable, empty Map.
      * @see Serializable
      */
@@ -136,7 +136,7 @@ public class Collections implements Rollbackable {
     // The remaining methods are optional, but provide a performance
     // advantage by not allocating unnecessary iterators in AbstractList.
     // class CopiesList
-    /**     
+    /**
      * The object for {
      @link #reverseOrder()    }
      .
@@ -147,7 +147,7 @@ public class Collections implements Rollbackable {
     // are (distance / LCM) loops to cycle through.
     // Now, make the swaps. We must take the remainder every time through
     // the inner loop so that we don't overflow i to negative values.
-    /**     
+    /**
      * Cache a single Random object for use by shuffle(List). This improves
      * performance as well as ensuring that sequential calls to shuffle() will
      * not result in the same shuffle order occurring: the resolution of
@@ -155,7 +155,7 @@ public class Collections implements Rollbackable {
      */
     private static Random defaultRandom = null;
 
-    /**     
+    /**
      * The implementation of {
      @link #EMPTY_SET    }
      . This class name is required
@@ -165,18 +165,18 @@ public class Collections implements Rollbackable {
     private static final class EmptySet extends AbstractSet implements
             Serializable, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 1582296315990362920L;
 
-        /**         
+        /**
          * A private constructor adds overhead.
          */
         EmptySet() {
         }
 
-        /**         
+        /**
          * The size: always 0!
          * @return 0.
          */
@@ -184,7 +184,7 @@ public class Collections implements Rollbackable {
             return 0;
         }
 
-        /**         
+        /**
          * Returns an iterator that does not iterate.
          * @return A non-iterating iterator.
          */
@@ -192,7 +192,7 @@ public class Collections implements Rollbackable {
             return EMPTY_LIST.iterator();
         }
 
-        /**         
+        /**
          * The empty set never contains anything.
          * @param o The object to search for.
          * @return <code>false</code>.
@@ -201,7 +201,7 @@ public class Collections implements Rollbackable {
             return false;
         }
 
-        /**         
+        /**
          * This is true only if the given collection is also empty.
          * @param c The collection of objects which are to be compared
          * against the members of this set.
@@ -211,7 +211,7 @@ public class Collections implements Rollbackable {
             return c.isEmpty();
         }
 
-        /**         
+        /**
          * Equal only if the other set is empty.
          * @param o The object to compare with this set.
          * @return <code>true</code> if o is an empty instance of <code>Set</code>.
@@ -220,7 +220,7 @@ public class Collections implements Rollbackable {
             return o instanceof Set && ((Set) o).isEmpty();
         }
 
-        /**         
+        /**
          * The hashcode is always 0.
          * @return 0.
          */
@@ -228,7 +228,7 @@ public class Collections implements Rollbackable {
             return 0;
         }
 
-        /**         
+        /**
          * Always succeeds with a <code>false</code> result.
          * @param o The object to remove.
          * @return <code>false</code>.
@@ -237,7 +237,7 @@ public class Collections implements Rollbackable {
             return false;
         }
 
-        /**         
+        /**
          * Always succeeds with a <code>false</code> result.
          * @param c The collection of objects which should
          * all be removed from this set.
@@ -247,7 +247,7 @@ public class Collections implements Rollbackable {
             return false;
         }
 
-        /**         
+        /**
          * Always succeeds with a <code>false</code> result.
          * @param c The collection of objects which should
          * all be retained within this set.
@@ -257,7 +257,7 @@ public class Collections implements Rollbackable {
             return false;
         }
 
-        /**         
+        /**
          * The array is always empty.
          * @return A new array with a size of 0.
          */
@@ -265,7 +265,7 @@ public class Collections implements Rollbackable {
             return new Object[0];
         }
 
-        /**         
+        /**
          * We don't even need to use reflection!
          * @param a An existing array, which can be empty.
          * @return The original array with any existing
@@ -278,7 +278,7 @@ public class Collections implements Rollbackable {
             return a;
         }
 
-        /**         
+        /**
          * The string never changes.
          * @return the string "[]".
          */
@@ -300,7 +300,7 @@ public class Collections implements Rollbackable {
 
     }
 
-    /**     
+    /**
      * The implementation of {
      @link #EMPTY_LIST    }
      . This class name is required
@@ -310,18 +310,18 @@ public class Collections implements Rollbackable {
     private static final class EmptyList extends AbstractList implements
             Serializable, RandomAccess, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 8842843931221139166L;
 
-        /**         
+        /**
          * A private constructor adds overhead.
          */
         EmptyList() {
         }
 
-        /**         
+        /**
          * The size is always 0.
          * @return 0.
          */
@@ -329,7 +329,7 @@ public class Collections implements Rollbackable {
             return 0;
         }
 
-        /**         
+        /**
          * No matter the index, it is out of bounds.  This
          * method never returns, throwing an exception instead.
          * @param index The index of the element to retrieve.
@@ -341,7 +341,7 @@ public class Collections implements Rollbackable {
             throw new IndexOutOfBoundsException();
         }
 
-        /**         
+        /**
          * Never contains anything.
          * @param o The object to search for.
          * @return <code>false</code>.
@@ -350,17 +350,17 @@ public class Collections implements Rollbackable {
             return false;
         }
 
-        /**         
+        /**
          * This is true only if the given collection is also empty.
          * @param c The collection of objects, which should be compared
          * against the members of this list.
-         * @return <code>true</code> if c is also empty. 
+         * @return <code>true</code> if c is also empty.
          */
         public boolean containsAll(Collection c) {
             return c.isEmpty();
         }
 
-        /**         
+        /**
          * Equal only if the other list is empty.
          * @param o The object to compare against this list.
          * @return <code>true</code> if o is also an empty instance of
@@ -370,7 +370,7 @@ public class Collections implements Rollbackable {
             return o instanceof List && ((List) o).isEmpty();
         }
 
-        /**         
+        /**
          * The hashcode is always 1.
          * @return 1.
          */
@@ -378,7 +378,7 @@ public class Collections implements Rollbackable {
             return 1;
         }
 
-        /**         
+        /**
          * Returns -1.
          * @param o The object to search for.
          * @return -1.
@@ -387,7 +387,7 @@ public class Collections implements Rollbackable {
             return -1;
         }
 
-        /**         
+        /**
          * Returns -1.
          * @param o The object to search for.
          * @return -1.
@@ -396,7 +396,7 @@ public class Collections implements Rollbackable {
             return -1;
         }
 
-        /**         
+        /**
          * Always succeeds with <code>false</code> result.
          * @param o The object to remove.
          * @return -1.
@@ -405,7 +405,7 @@ public class Collections implements Rollbackable {
             return false;
         }
 
-        /**         
+        /**
          * Always succeeds with <code>false</code> result.
          * @param c The collection of objects which should
          * all be removed from this list.
@@ -415,7 +415,7 @@ public class Collections implements Rollbackable {
             return false;
         }
 
-        /**         
+        /**
          * Always succeeds with <code>false</code> result.
          * @param c The collection of objects which should
          * all be retained within this list.
@@ -425,7 +425,7 @@ public class Collections implements Rollbackable {
             return false;
         }
 
-        /**         
+        /**
          * The array is always empty.
          * @return A new array with a size of 0.
          */
@@ -433,7 +433,7 @@ public class Collections implements Rollbackable {
             return new Object[0];
         }
 
-        /**         
+        /**
          * We don't even need to use reflection!
          * @param a An existing array, which can be empty.
          * @return The original array with any existing
@@ -446,7 +446,7 @@ public class Collections implements Rollbackable {
             return a;
         }
 
-        /**         
+        /**
          * The string never changes.
          * @return the string "[]".
          */
@@ -468,7 +468,7 @@ public class Collections implements Rollbackable {
 
     }
 
-    /**     
+    /**
      * The implementation of {
      @link #EMPTY_MAP    }
      . This class name is required
@@ -478,18 +478,18 @@ public class Collections implements Rollbackable {
     private static final class EmptyMap extends AbstractMap implements
             Serializable, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 6428348081105594320L;
 
-        /**         
+        /**
          * A private constructor adds overhead.
          */
         EmptyMap() {
         }
 
-        /**         
+        /**
          * There are no entries.
          * @return The empty set.
          */
@@ -497,7 +497,7 @@ public class Collections implements Rollbackable {
             return EMPTY_SET;
         }
 
-        /**         
+        /**
          * No entries!
          * @param key The key to search for.
          * @return <code>false</code>.
@@ -506,7 +506,7 @@ public class Collections implements Rollbackable {
             return false;
         }
 
-        /**         
+        /**
          * No entries!
          * @param value The value to search for.
          * @return <code>false</code>.
@@ -515,7 +515,7 @@ public class Collections implements Rollbackable {
             return false;
         }
 
-        /**         
+        /**
          * Equal to all empty maps.
          * @param o The object o to compare against this map.
          * @return <code>true</code> if o is also an empty instance of
@@ -525,16 +525,16 @@ public class Collections implements Rollbackable {
             return o instanceof Map && ((Map) o).isEmpty();
         }
 
-        /**         
+        /**
          * No mappings, so this returns null.
          * @param o The key of the object to retrieve.
-         * @return null. 
+         * @return null.
          */
         public Object get(Object o) {
             return null;
         }
 
-        /**         
+        /**
          * The hashcode is always 0.
          * @return 0.
          */
@@ -542,7 +542,7 @@ public class Collections implements Rollbackable {
             return 0;
         }
 
-        /**         
+        /**
          * No entries.
          * @return The empty set.
          */
@@ -550,7 +550,7 @@ public class Collections implements Rollbackable {
             return EMPTY_SET;
         }
 
-        /**         
+        /**
          * Remove always succeeds, with null result.
          * @param o The key of the mapping to remove.
          * @return null, as there is never a mapping for o.
@@ -559,7 +559,7 @@ public class Collections implements Rollbackable {
             return null;
         }
 
-        /**         
+        /**
          * Size is always 0.
          * @return 0.
          */
@@ -567,7 +567,7 @@ public class Collections implements Rollbackable {
             return 0;
         }
 
-        /**         
+        /**
          * No entries. Technically, EMPTY_SET, while more specific than a general
          * Collection, will work. Besides, that's what the JDK uses!
          * @return The empty set.
@@ -576,7 +576,7 @@ public class Collections implements Rollbackable {
             return EMPTY_SET;
         }
 
-        /**         
+        /**
          * The string never changes.
          * @return the string "[]".
          */
@@ -598,7 +598,7 @@ public class Collections implements Rollbackable {
 
     }
 
-    /**     
+    /**
      * The implementation of {
      @link #nCopies(int, Object)    }
      . This class name
@@ -608,24 +608,24 @@ public class Collections implements Rollbackable {
     private static final class CopiesList extends AbstractList implements
             Serializable, RandomAccess, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 2739099268398711800L;
 
-        /**         
+        /**
          * The count of elements in this list.
          * @serial the list size
          */
         private final int n;
 
-        /**         
+        /**
          * The repeated list element.
          * @serial the list contents
          */
         private final Object element;
 
-        /**         
+        /**
          * Constructs the list.
          * @param n the count
          * @param o the object
@@ -639,7 +639,7 @@ public class Collections implements Rollbackable {
             element = o;
         }
 
-        /**         
+        /**
          * The size is fixed.
          * @return The size of the list.
          */
@@ -647,7 +647,7 @@ public class Collections implements Rollbackable {
             return n;
         }
 
-        /**         
+        /**
          * The same element is returned.
          * @param index The index of the element to be returned (irrelevant
          * as the list contains only copies of <code>element</code>).
@@ -660,7 +660,7 @@ public class Collections implements Rollbackable {
             return element;
         }
 
-        /**         
+        /**
          * This list only contains one element.
          * @param o The object to search for.
          * @return <code>true</code> if o is the element used by this list.
@@ -669,7 +669,7 @@ public class Collections implements Rollbackable {
             return n > 0 && equals(o, element);
         }
 
-        /**         
+        /**
          * The index is either 0 or -1.
          * @param o The object to find the index of.
          * @return 0 if <code>o == element</code>, -1 if not.
@@ -678,7 +678,7 @@ public class Collections implements Rollbackable {
             return (n > 0 && equals(o, element)) ? 0 : -1;
         }
 
-        /**         
+        /**
          * The index is either n-1 or -1.
          * @param o The object to find the last index of.
          * @return The last index in the list if <code>o == element</code>,
@@ -688,7 +688,7 @@ public class Collections implements Rollbackable {
             return equals(o, element) ? n - 1 : -1;
         }
 
-        /**         
+        /**
          * A subList is just another CopiesList.
          * @param from The starting bound of the sublist.
          * @param to The ending bound of the sublist.
@@ -703,7 +703,7 @@ public class Collections implements Rollbackable {
             return new CopiesList(to - from, element);
         }
 
-        /**         
+        /**
          * The array is easy.
          * @return An array of size n filled with copies of
          * the element used by this list.
@@ -714,7 +714,7 @@ public class Collections implements Rollbackable {
             return a;
         }
 
-        /**         
+        /**
          * The string is easy to generate.
          * @return A string representation of the list.
          */
@@ -747,7 +747,7 @@ public class Collections implements Rollbackable {
 
     }
 
-    /**     
+    /**
      * The implementation of {
      @link #reverseOrder()    }
      . This class name
@@ -759,18 +759,18 @@ public class Collections implements Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 7207038068494060240L;
 
-        /**         
+        /**
          * A private constructor adds overhead.
          */
         ReverseComparator() {
         }
 
-        /**         
+        /**
          * Compare two objects in reverse natural order.
          * @param a the first object
          * @param b the second object
@@ -824,7 +824,7 @@ public class Collections implements Rollbackable {
     // Obtain a random position to swap with. pos + 1 is used so that the
     // range of the random number includes the current position.
     // Swap the desired element.
-    /**     
+    /**
      * The implementation of {
      @link #singleton(Object)    }
      . This class name
@@ -834,18 +834,18 @@ public class Collections implements Rollbackable {
     private static final class SingletonSet extends AbstractSet implements
             Serializable, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 3193687207550431679L;
 
-        /**         
+        /**
          * The single element; package visible for use in nested class.
          * @serial the singleton
          */
         final Object element;
 
-        /**         
+        /**
          * Construct a singleton.
          * @param o the element
          */
@@ -853,7 +853,7 @@ public class Collections implements Rollbackable {
             element = o;
         }
 
-        /**         
+        /**
          * The size: always 1!
          * @return 1.
          */
@@ -861,18 +861,18 @@ public class Collections implements Rollbackable {
             return 1;
         }
 
-        /**         
+        /**
          * Returns an iterator over the lone element.
          */
         public Iterator iterator() {
             return new Iterator() {
-                /**                 
+                /**
                  * Flag to indicate whether or not the element has
                  * been retrieved.
                  */
                 private boolean hasNext = true;
 
-                /**                 
+                /**
                  * Returns <code>true</code> if elements still remain to be
                  * iterated through.
                  * @return <code>true</code> if the element has not yet been returned.
@@ -881,7 +881,7 @@ public class Collections implements Rollbackable {
                     return hasNext;
                 }
 
-                /**                 
+                /**
                  * Returns the element.
                  * @return The element used by this singleton.
                  * @throws NoSuchElementException if the object
@@ -896,7 +896,7 @@ public class Collections implements Rollbackable {
                     }
                 }
 
-                /**                 
+                /**
                  * Removes the element from the singleton.
                  * As this set is immutable, this will always
                  * throw an exception.
@@ -987,7 +987,7 @@ public class Collections implements Rollbackable {
         // The remaining methods are optional, but provide a performance
 
         // advantage by not allocating unnecessary iterators in AbstractSet.
-        /**         
+        /**
          * The set only contains one element.
          * @param o The object to search for.
          * @return <code>true</code> if o == the element of the singleton.
@@ -996,7 +996,7 @@ public class Collections implements Rollbackable {
             return equals(o, element);
         }
 
-        /**         
+        /**
          * This is true if the other collection only contains the element.
          * @param c A collection to compare against this singleton.
          * @return <code>true</code> if c only contains either no elements or
@@ -1013,7 +1013,7 @@ public class Collections implements Rollbackable {
             return true;
         }
 
-        /**         
+        /**
          * The hash is just that of the element.
          * @return The hashcode of the element.
          */
@@ -1021,7 +1021,7 @@ public class Collections implements Rollbackable {
             return hashCode(element);
         }
 
-        /**         
+        /**
          * Returning an array is simple.
          * @return An array containing the element.
          */
@@ -1029,7 +1029,7 @@ public class Collections implements Rollbackable {
             return new Object[] { element };
         }
 
-        /**         
+        /**
          * Obvious string.
          * @return The string surrounded by enclosing
          * square brackets.
@@ -1053,7 +1053,7 @@ public class Collections implements Rollbackable {
     }
 
     // class SingletonSet
-    /**     
+    /**
      * The implementation of {
      @link #singletonList(Object)    }
      . This class name
@@ -1063,18 +1063,18 @@ public class Collections implements Rollbackable {
     private static final class SingletonList extends AbstractList implements
             Serializable, RandomAccess, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 3093736618740652951L;
 
-        /**         
+        /**
          * The single element.
          * @serial the singleton
          */
         private final Object element;
 
-        /**         
+        /**
          * Construct a singleton.
          * @param o the element
          */
@@ -1082,7 +1082,7 @@ public class Collections implements Rollbackable {
             element = o;
         }
 
-        /**         
+        /**
          * The size: always 1!
          * @return 1.
          */
@@ -1090,7 +1090,7 @@ public class Collections implements Rollbackable {
             return 1;
         }
 
-        /**         
+        /**
          * Only index 0 is valid.
          * @param index The index of the element
          * to retrieve.
@@ -1109,7 +1109,7 @@ public class Collections implements Rollbackable {
         // The remaining methods are optional, but provide a performance
 
         // advantage by not allocating unnecessary iterators in AbstractList.
-        /**         
+        /**
          * The set only contains one element.
          * @param o The object to search for.
          * @return <code>true</code> if o == the singleton element.
@@ -1118,7 +1118,7 @@ public class Collections implements Rollbackable {
             return equals(o, element);
         }
 
-        /**         
+        /**
          * This is true if the other collection only contains the element.
          * @param c A collection to compare against this singleton.
          * @return <code>true</code> if c only contains either no elements or
@@ -1135,7 +1135,7 @@ public class Collections implements Rollbackable {
             return true;
         }
 
-        /**         
+        /**
          * Speed up the hashcode computation.
          * @return The hashcode of the list, based
          * on the hashcode of the singleton element.
@@ -1144,7 +1144,7 @@ public class Collections implements Rollbackable {
             return 31 + hashCode(element);
         }
 
-        /**         
+        /**
          * Either the list has it or not.
          * @param o The object to find the first index of.
          * @return 0 if o is the singleton element, -1 if not.
@@ -1153,7 +1153,7 @@ public class Collections implements Rollbackable {
             return equals(o, element) ? 0 : -1;
         }
 
-        /**         
+        /**
          * Either the list has it or not.
          * @param o The object to find the last index of.
          * @return 0 if o is the singleton element, -1 if not.
@@ -1162,7 +1162,7 @@ public class Collections implements Rollbackable {
             return equals(o, element) ? 0 : -1;
         }
 
-        /**         
+        /**
          * Sublists are limited in scope.
          * @param from The starting bound for the sublist.
          * @param to The ending bound for the sublist.
@@ -1185,7 +1185,7 @@ public class Collections implements Rollbackable {
             throw new IndexOutOfBoundsException();
         }
 
-        /**         
+        /**
          * Returning an array is simple.
          * @return An array containing the element.
          */
@@ -1193,10 +1193,10 @@ public class Collections implements Rollbackable {
             return new Object[] { element };
         }
 
-        /**         
+        /**
          * Obvious string.
          * @return The string surrounded by enclosing
-         * square brackets. 
+         * square brackets.
          */
         public String toString() {
             return "[" + element + "]";
@@ -1220,7 +1220,7 @@ public class Collections implements Rollbackable {
     }
 
     // class SingletonList
-    /**     
+    /**
      * The implementation of {
      @link #singletonMap(Object, Object)    }
      . This class
@@ -1230,29 +1230,29 @@ public class Collections implements Rollbackable {
     private static final class SingletonMap extends AbstractMap implements
             Serializable, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -6979724477215052911L;
 
-        /**         
+        /**
          * The single key.
          * @serial the singleton key
          */
         private final Object k;
 
-        /**         
+        /**
          * The corresponding value.
          * @serial the singleton value
          */
         private final Object v;
 
-        /**         
+        /**
          * Cache the entry set.
          */
         private transient Set entries;
 
-        /**         
+        /**
          * Construct a singleton.
          * @param key the key
          * @param value the value
@@ -1262,14 +1262,14 @@ public class Collections implements Rollbackable {
             v = value;
         }
 
-        /**         
+        /**
          * There is a single immutable entry.
          * @return A singleton containing the map entry.
          */
         public Set entrySet() {
             if (entries == null) {
                 $ASSIGN$entries(singleton(new AbstractMap.BasicMapEntry(k, v) {
-                    /**                     
+                    /**
                      * Sets the value of the map entry to the supplied value.
                      * An exception is always thrown, as the map is immutable.
                      * @param o The new value.
@@ -1347,7 +1347,7 @@ public class Collections implements Rollbackable {
         // The remaining methods are optional, but provide a performance
 
         // advantage by not allocating unnecessary iterators in AbstractMap.
-        /**         
+        /**
          * Single entry.
          * @param key The key to look for.
          * @return <code>true</code> if the key is the same as the one used by
@@ -1357,7 +1357,7 @@ public class Collections implements Rollbackable {
             return equals(key, k);
         }
 
-        /**         
+        /**
          * Single entry.
          * @param value The value to look for.
          * @return <code>true</code> if the value is the same as the one used by
@@ -1367,7 +1367,7 @@ public class Collections implements Rollbackable {
             return equals(value, v);
         }
 
-        /**         
+        /**
          * Single entry.
          * @param key The key of the value to be retrieved.
          * @return The singleton value if the key is the same as the
@@ -1377,7 +1377,7 @@ public class Collections implements Rollbackable {
             return equals(key, k) ? v : null;
         }
 
-        /**         
+        /**
          * Calculate the hashcode directly.
          * @return The hashcode computed from the singleton key
          * and the singleton value.
@@ -1386,7 +1386,7 @@ public class Collections implements Rollbackable {
             return hashCode(k) ^ hashCode(v);
         }
 
-        /**         
+        /**
          * Return the keyset.
          * @return A singleton containing the key.
          */
@@ -1397,7 +1397,7 @@ public class Collections implements Rollbackable {
             return getKeys();
         }
 
-        /**         
+        /**
          * The size: always 1!
          * @return 1.
          */
@@ -1405,7 +1405,7 @@ public class Collections implements Rollbackable {
             return 1;
         }
 
-        /**         
+        /**
          * Return the values. Technically, a singleton, while more specific than
          * a general Collection, will work. Besides, that's what the JDK uses!
          * @return A singleton containing the value.
@@ -1417,7 +1417,7 @@ public class Collections implements Rollbackable {
             return getValues();
         }
 
-        /**         
+        /**
          * Obvious string.
          * @return A string containing the string representations of the key
          * and its associated value.
@@ -1461,7 +1461,7 @@ public class Collections implements Rollbackable {
     }
 
     // class SingletonMap
-    /**     
+    /**
      * The implementation of {
      @link #synchronizedCollection(Collection)    }
      . This
@@ -1475,18 +1475,18 @@ public class Collections implements Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 3053995032091335093L;
 
-        /**         
+        /**
          * The wrapped collection. Package visible for use by subclasses.
          * @serial the real collection
          */
         final Collection c;
 
-        /**         
+        /**
          * The object to synchronize on.  When an instance is created via public
          * methods, it will be this; but other uses like SynchronizedMap.values()
          * must specify another mutex. Package visible for use by subclasses.
@@ -1494,7 +1494,7 @@ public class Collections implements Rollbackable {
          */
         final Object mutex;
 
-        /**         
+        /**
          * Wrap a given collection.
          * @param c the collection to wrap
          * @throws NullPointerException if c is null
@@ -1507,7 +1507,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the
          * collection.
          * @param sync the mutex
@@ -1518,7 +1518,7 @@ public class Collections implements Rollbackable {
             mutex = sync;
         }
 
-        /**         
+        /**
          * Adds the object to the underlying collection, first
          * obtaining a lock on the mutex.
          * @param o The object to add.
@@ -1539,7 +1539,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Adds the objects in col to the underlying collection, first
          * obtaining a lock on the mutex.
          * @param col The collection to take the new objects from.
@@ -1561,7 +1561,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Removes all objects from the underlying collection,
          * first obtaining a lock on the mutex.
          * @throws UnsupportedOperationException if this collection does not
@@ -1573,7 +1573,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Checks for the existence of o within the underlying
          * collection, first obtaining a lock on the mutex.
          * @param o the element to look for.
@@ -1590,7 +1590,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Checks for the existence of each object in cl
          * within the underlying collection, first obtaining
          * a lock on the mutex.
@@ -1609,7 +1609,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns <code>true</code> if there are no objects in the underlying
          * collection.  A lock on the mutex is obtained before the
          * check is performed.
@@ -1621,7 +1621,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns a synchronized iterator wrapper around the underlying
          * collection's iterator.  A lock on the mutex is obtained before
          * retrieving the collection's iterator.
@@ -1634,7 +1634,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Removes the specified object from the underlying collection,
          * first obtaining a lock on the mutex.
          * @param o The object to remove.
@@ -1653,7 +1653,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Removes all elements, e, of the underlying
          * collection for which <code>col.contains(e)</code>
          * returns <code>true</code>.  A lock on the mutex is obtained
@@ -1674,7 +1674,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Retains all elements, e, of the underlying
          * collection for which <code>col.contains(e)</code>
          * returns <code>true</code>.  That is, every element that doesn't
@@ -1696,7 +1696,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Retrieves the size of the underlying collection.
          * A lock on the mutex is obtained before the collection
          * is accessed.
@@ -1708,7 +1708,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns an array containing each object within the underlying
          * collection.  A lock is obtained on the mutex before the collection
          * is accessed.
@@ -1721,7 +1721,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Copies the elements in the underlying collection to the supplied
          * array.  If <code>a.length < size()</code>, a new array of the
          * same run-time type is created, with a size equal to that of
@@ -1743,7 +1743,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns a string representation of the underlying collection.
          * A lock is obtained on the mutex before the string is created.
          * @return A string representation of the collection.
@@ -1795,7 +1795,7 @@ public class Collections implements Rollbackable {
     }
 
     // class SynchronizedCollection
-    /**     
+    /**
      * The implementation of the various iterator methods in the
      * synchronized classes. These iterators must "sync" on the same object
      * as the collection they iterate over.
@@ -1805,17 +1805,17 @@ public class Collections implements Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * The object to synchronize on. Package visible for use by subclass.
          */
         final Object mutex;
 
-        /**         
+        /**
          * The wrapped iterator.
          */
         private final Iterator i;
 
-        /**         
+        /**
          * Only trusted code creates a wrapper, with the specified sync.
          * @param sync the mutex
          * @param i the wrapped iterator
@@ -1825,7 +1825,7 @@ public class Collections implements Rollbackable {
             mutex = sync;
         }
 
-        /**         
+        /**
          * Retrieves the next object in the underlying collection.
          * A lock is obtained on the mutex before the collection is accessed.
          * @return The next object in the collection.
@@ -1837,7 +1837,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns <code>true</code> if objects can still be retrieved from the iterator
          * using <code>next()</code>.  A lock is obtained on the mutex before
          * the collection is accessed.
@@ -1850,7 +1850,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Removes the object that was last returned by <code>next()</code>
          * from the underlying collection.  Only one call to this method is
          * allowed per call to the <code>next()</code> method, and it does
@@ -1914,7 +1914,7 @@ public class Collections implements Rollbackable {
     }
 
     // class SynchronizedIterator
-    /**     
+    /**
      * The implementation of {
      @link #synchronizedList(List)    }
      for sequential
@@ -1926,19 +1926,19 @@ public class Collections implements Rollbackable {
     static class SynchronizedList extends SynchronizedCollection implements
             List, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -7754090372962971524L;
 
-        /**         
+        /**
          * The wrapped list; stored both here and in the superclass to avoid
          * excessive casting. Package visible for use by subclass.
          * @serial the wrapped list
          */
         final List list;
 
-        /**         
+        /**
          * Wrap a given list.
          * @param l the list to wrap
          * @throws NullPointerException if l is null
@@ -1948,7 +1948,7 @@ public class Collections implements Rollbackable {
             list = l;
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the list.
          * @param sync the mutex
          * @param l the list
@@ -1958,7 +1958,7 @@ public class Collections implements Rollbackable {
             list = l;
         }
 
-        /**         
+        /**
          * Insert an element into the underlying list at a given position (optional
          * operation).  This shifts all existing elements from that position to the
          * end one index to the right. This version of add has no return, since it is
@@ -1982,9 +1982,9 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Add the contents of a collection to the underlying list at the given
-         * index (optional operation).  If the list imposes restraints on what 
+         * index (optional operation).  If the list imposes restraints on what
          * can be inserted, such as no null elements, this should be documented.
          * A lock is obtained on the mutex before any of the elements are added.
          * @param index the index at which to insert
@@ -2005,7 +2005,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Tests whether the underlying list is equal to the supplied object.
          * The object is deemed to be equal if it is also a <code>List</code>
          * of equal size and with the same elements (i.e. each element, e1,
@@ -2022,7 +2022,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Retrieves the object at the specified index.  A lock
          * is obtained on the mutex before the list is accessed.
          * @param index the index of the element to be returned
@@ -2035,7 +2035,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Obtains a hashcode for the underlying list, first obtaining
          * a lock on the mutex.  The calculation of the hashcode is
          * detailed in the documentation for the <code>List</code>
@@ -2049,7 +2049,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Obtain the first index at which a given object is to be found in the
          * underlying list.  A lock is obtained on the mutex before the list is
          * accessed.
@@ -2067,7 +2067,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Obtain the last index at which a given object is to be found in this
          * underlying list.  A lock is obtained on the mutex before the list
          * is accessed.
@@ -2084,7 +2084,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Retrieves a synchronized wrapper around the underlying list's
          * list iterator.  A lock is obtained on the mutex before the
          * list iterator is retrieved.
@@ -2099,7 +2099,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Retrieves a synchronized wrapper around the underlying list's
          * list iterator.  A lock is obtained on the mutex before the
          * list iterator is retrieved.  The iterator starts at the
@@ -2122,7 +2122,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Remove the element at a given position in the underlying list (optional
          * operation).  All remaining elements are shifted to the left to fill the gap.
          * A lock on the mutex is obtained before the element is removed.
@@ -2138,7 +2138,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Replace an element of the underlying list with another object (optional
          * operation).  A lock is obtained on the mutex before the element is
          * replaced.
@@ -2161,7 +2161,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Obtain a List view of a subsection of the underlying list, from fromIndex
          * (inclusive) to toIndex (exclusive). If the two indices are equal, the
          * sublist is empty. The returned list should be modifiable if and only
@@ -2200,7 +2200,7 @@ public class Collections implements Rollbackable {
     }
 
     // class SynchronizedList
-    /**     
+    /**
      * The implementation of {
      @link #synchronizedList(List)    }
      for random-access
@@ -2211,12 +2211,12 @@ public class Collections implements Rollbackable {
     private static final class SynchronizedRandomAccessList extends
             SynchronizedList implements RandomAccess, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 1530674583602358482L;
 
-        /**         
+        /**
          * Wrap a given list.
          * @param l the list to wrap
          * @throws NullPointerException if l is null
@@ -2225,7 +2225,7 @@ public class Collections implements Rollbackable {
             super(l);
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the
          * collection.
          * @param sync the mutex
@@ -2235,7 +2235,7 @@ public class Collections implements Rollbackable {
             super(sync, l);
         }
 
-        /**         
+        /**
          * Obtain a List view of a subsection of the underlying list, from fromIndex
          * (inclusive) to toIndex (exclusive). If the two indices are equal, the
          * sublist is empty. The returned list should be modifiable if and only
@@ -2275,7 +2275,7 @@ public class Collections implements Rollbackable {
     }
 
     // class SynchronizedRandomAccessList
-    /**     
+    /**
      * The implementation of {
      @link SynchronizedList#listIterator()    }
      . This
@@ -2285,13 +2285,13 @@ public class Collections implements Rollbackable {
     private static final class SynchronizedListIterator extends
             SynchronizedIterator implements ListIterator, Rollbackable {
 
-        /**         
+        /**
          * The wrapped iterator, stored both here and in the superclass to
          * avoid excessive casting.
          */
         private final ListIterator li;
 
-        /**         
+        /**
          * Only trusted code creates a wrapper, with the specified sync.
          * @param sync the mutex
          * @param li the wrapped iterator
@@ -2301,7 +2301,7 @@ public class Collections implements Rollbackable {
             this.li = li;
         }
 
-        /**         
+        /**
          * Insert an element into the underlying list at the current position of
          * the iterator (optional operation). The element is inserted in between
          * the element that would be returned by <code>previous()</code> and the
@@ -2324,7 +2324,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Tests whether there are elements remaining in the underlying list
          * in the reverse direction. In other words, <code>previous()</code>
          * will not fail with a NoSuchElementException.  A lock is obtained
@@ -2337,7 +2337,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Find the index of the element that would be returned by a call to
          * <code>next()</code>.  If hasNext() returns <code>false</code>, this
          * returns the list size.  A lock is obtained on the mutex before the
@@ -2350,7 +2350,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Obtain the previous element from the underlying list. Repeated
          * calls to previous may be used to iterate backwards over the entire list,
          * or calls to next and previous may be used together to go forwards and
@@ -2365,7 +2365,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Find the index of the element that would be returned by a call to
          * previous. If hasPrevious() returns <code>false</code>, this returns -1.
          * A lock is obtained on the mutex before the query takes place.
@@ -2377,7 +2377,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Replace the element last returned by a call to <code>next()</code> or
          * <code>previous()</code> with a given object (optional operation).  This
          * method may only be called if neither <code>add()</code> nor
@@ -2419,7 +2419,7 @@ public class Collections implements Rollbackable {
     }
 
     // class SynchronizedListIterator
-    /**     
+    /**
      * The implementation of {
      @link #synchronizedMap(Map)    }
      . This
@@ -2431,18 +2431,18 @@ public class Collections implements Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 1978198479659022715L;
 
-        /**         
+        /**
          * The wrapped map.
          * @serial the real map
          */
         private final Map m;
 
-        /**         
+        /**
          * The object to synchronize on.  When an instance is created via public
          * methods, it will be this; but other uses like
          * SynchronizedSortedMap.subMap() must specify another mutex. Package
@@ -2451,22 +2451,22 @@ public class Collections implements Rollbackable {
          */
         final Object mutex;
 
-        /**         
+        /**
          * Cache the entry set.
          */
         private transient Set entries;
 
-        /**         
+        /**
          * Cache the key set.
          */
         private transient Set keys;
 
-        /**         
+        /**
          * Cache the value collection.
          */
         private transient Collection values;
 
-        /**         
+        /**
          * Wrap a given map.
          * @param m the map to wrap
          * @throws NullPointerException if m is null
@@ -2479,7 +2479,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the map.
          * @param sync the mutex
          * @param m the map
@@ -2489,7 +2489,7 @@ public class Collections implements Rollbackable {
             mutex = sync;
         }
 
-        /**         
+        /**
          * Clears all the entries from the underlying map.  A lock is obtained
          * on the mutex before the map is cleared.
          * @throws UnsupportedOperationException if clear is not supported
@@ -2500,7 +2500,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns <code>true</code> if the underlying map contains a entry for the given key.
          * A lock is obtained on the mutex before the map is queried.
          * @param key the key to search for.
@@ -2515,7 +2515,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns <code>true</code> if the underlying map contains at least one entry with the
          * given value.  In other words, returns <code>true</code> if a value v exists where
          * <code>(value == null ? v == null : value.equals(v))</code>. This usually
@@ -2551,7 +2551,7 @@ public class Collections implements Rollbackable {
                     e = (Map.Entry) o;
                 }
 
-                /**                 
+                /**
                  * Returns <code>true</code> if the object, o, implements <code>Map.Entry</code>
                  * with the same key and value as the underlying entry.  A lock is
                  * obtained on the mutex before the comparison takes place.
@@ -2564,7 +2564,7 @@ public class Collections implements Rollbackable {
                     }
                 }
 
-                /**                 
+                /**
                  * Returns the key used in the underlying map entry.  A lock is obtained
                  * on the mutex before the key is retrieved.
                  * @return The key of the underlying map entry.
@@ -2575,7 +2575,7 @@ public class Collections implements Rollbackable {
                     }
                 }
 
-                /**                 
+                /**
                  * Returns the value used in the underlying map entry.  A lock is obtained
                  * on the mutex before the value is retrieved.
                  * @return The value of the underlying map entry.
@@ -2586,7 +2586,7 @@ public class Collections implements Rollbackable {
                     }
                 }
 
-                /**                 
+                /**
                  * Computes the hash code for the underlying map entry.
                  * This computation is described in the documentation for the
                  * <code>Map</code> interface.  A lock is obtained on the mutex
@@ -2600,7 +2600,7 @@ public class Collections implements Rollbackable {
                     }
                 }
 
-                /**                 
+                /**
                  * Replaces the value in the underlying map entry with the specified
                  * object (optional operation).  A lock is obtained on the mutex
                  * before the map is altered.  The map entry, in turn, will alter
@@ -2621,7 +2621,7 @@ public class Collections implements Rollbackable {
                     }
                 }
 
-                /**                 
+                /**
                  * Returns a textual representation of the underlying map entry.
                  * A lock is obtained on the mutex before the entry is accessed.
                  * @return The contents of the map entry in <code>String</code> form.
@@ -2677,7 +2677,7 @@ public class Collections implements Rollbackable {
             if (entries == null) {
                 synchronized (mutex) {
                     $ASSIGN$entries(new SynchronizedSet(mutex, m.entrySet()) {
-                        /**                         
+                        /**
                          * Returns an iterator over the set.  The iterator has no specific order,
                          * unless further specified.  A lock is obtained on the set's mutex
                          * before the iterator is created.  The created iterator is also
@@ -2688,7 +2688,7 @@ public class Collections implements Rollbackable {
                             synchronized (super.mutex) {
                                 return new SynchronizedIterator(super.mutex, c
                                         .iterator()) {
-                                    /**                                     
+                                    /**
                                      * Retrieves the next map entry from the iterator.
                                      * A lock is obtained on the iterator's mutex before
                                      * the entry is created.  The new map entry is enclosed in
@@ -2837,7 +2837,7 @@ public class Collections implements Rollbackable {
             return entries;
         }
 
-        /**         
+        /**
          * Returns <code>true</code> if the object, o, is also an instance
          * of <code>Map</code> and contains an equivalent
          * entry set to that of the underlying map.  A lock
@@ -2852,7 +2852,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns the value associated with the given key, or null
          * if no such mapping exists.  An ambiguity exists with maps
          * that accept null values as a return value of null could
@@ -2872,7 +2872,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Calculates the hash code of the underlying map as the
          * sum of the hash codes of all entries.  A lock is obtained
          * on the mutex before the hash code is computed.
@@ -2884,7 +2884,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns <code>true</code> if the underlying map contains no entries.
          * A lock is obtained on the mutex before the map is examined.
          * @return <code>true</code> if the map is empty.
@@ -2895,7 +2895,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns a thread-safe set view of the keys in the underlying map.  The
          * set is backed by the map, so that changes in one show up in the other.
          * Modifications made while an iterator is in progress cause undefined
@@ -2916,7 +2916,7 @@ public class Collections implements Rollbackable {
             return keys;
         }
 
-        /**         
+        /**
          * Associates the given key to the given value (optional operation). If the
          * underlying map already contains the key, its value is replaced. Be aware
          * that in a map that permits <code>null</code> values, a null return does not
@@ -2939,7 +2939,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Copies all entries of the given map to the underlying one (optional
          * operation). If the map already contains a key, its value is replaced.
          * A lock is obtained on the mutex before the operation proceeds.
@@ -2958,7 +2958,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Removes the mapping for the key, o, if present (optional operation). If
          * the key is not present, this returns null. Note that maps which permit
          * null values may also return null if the key was removed.  A prior
@@ -2978,7 +2978,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Retrieves the size of the underlying map.  A lock
          * is obtained on the mutex before access takes place.
          * Maps with a size greater than <code>Integer.MAX_VALUE</code>
@@ -2991,7 +2991,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns a textual representation of the underlying
          * map.  A lock is obtained on the mutex before the map
          * is accessed.
@@ -3003,7 +3003,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns a synchronized collection view of the values in the underlying
          * map.  The collection is backed by the map, so that changes in one show up in
          * the other.  Modifications made while an iterator is in progress cause
@@ -3110,7 +3110,7 @@ public class Collections implements Rollbackable {
     }
 
     // class SynchronizedMap
-    /**     
+    /**
      * The implementation of {
      @link #synchronizedSet(Set)    }
      . This class
@@ -3122,12 +3122,12 @@ public class Collections implements Rollbackable {
     static class SynchronizedSet extends SynchronizedCollection implements Set,
             Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 487447009682186044L;
 
-        /**         
+        /**
          * Wrap a given set.
          * @param s the set to wrap
          * @throws NullPointerException if s is null
@@ -3136,7 +3136,7 @@ public class Collections implements Rollbackable {
             super(s);
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the set.
          * @param sync the mutex
          * @param s the set
@@ -3145,7 +3145,7 @@ public class Collections implements Rollbackable {
             super(sync, s);
         }
 
-        /**         
+        /**
          * Returns <code>true</code> if the object, o, is a <code>Set</code>
          * of the same size as the underlying set, and contains
          * each element, e, which occurs in the underlying set.
@@ -3160,7 +3160,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Computes the hash code for the underlying set as the
          * sum of the hash code of all elements within the set.
          * A lock is obtained on the mutex before the computation
@@ -3188,7 +3188,7 @@ public class Collections implements Rollbackable {
     }
 
     // class SynchronizedSet
-    /**     
+    /**
      * The implementation of {
      @link #synchronizedSortedMap(SortedMap)    }
      . This
@@ -3198,19 +3198,19 @@ public class Collections implements Rollbackable {
     private static final class SynchronizedSortedMap extends SynchronizedMap
             implements SortedMap, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -8798146769416483793L;
 
-        /**         
+        /**
          * The wrapped map; stored both here and in the superclass to avoid
          * excessive casting.
          * @serial the wrapped map
          */
         private final SortedMap sm;
 
-        /**         
+        /**
          * Wrap a given map.
          * @param sm the map to wrap
          * @throws NullPointerException if sm is null
@@ -3220,7 +3220,7 @@ public class Collections implements Rollbackable {
             this.sm = sm;
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the map.
          * @param sync the mutex
          * @param sm the map
@@ -3230,7 +3230,7 @@ public class Collections implements Rollbackable {
             this.sm = sm;
         }
 
-        /**         
+        /**
          * Returns the comparator used in sorting the underlying map, or null if
          * it is the keys' natural ordering.  A lock is obtained on the mutex
          * before the comparator is retrieved.
@@ -3242,7 +3242,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns the first, lowest sorted, key from the underlying map.
          * A lock is obtained on the mutex before the map is accessed.
          * @return the first key.
@@ -3254,7 +3254,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns a submap containing the keys from the first
          * key (as returned by <code>firstKey()</code>) to
          * the key before that specified.  The submap supports all
@@ -3278,7 +3278,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns the last, highest sorted, key from the underlying map.
          * A lock is obtained on the mutex before the map is accessed.
          * @return the last key.
@@ -3290,7 +3290,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns a submap containing the keys from fromKey to
          * the key before toKey.  The submap supports all
          * operations supported by the underlying map and all actions
@@ -3314,7 +3314,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns a submap containing all the keys from fromKey onwards.
          * The submap supports all operations supported by the underlying
          * map and all actions taking place on the submap are also reflected
@@ -3353,7 +3353,7 @@ public class Collections implements Rollbackable {
     }
 
     // class SynchronizedSortedMap
-    /**     
+    /**
      * The implementation of {
      @link #synchronizedSortedSet(SortedSet)    }
      . This
@@ -3363,19 +3363,19 @@ public class Collections implements Rollbackable {
     private static final class SynchronizedSortedSet extends SynchronizedSet
             implements SortedSet, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 8695801310862127406L;
 
-        /**         
+        /**
          * The wrapped set; stored both here and in the superclass to avoid
          * excessive casting.
          * @serial the wrapped set
          */
         private final SortedSet ss;
 
-        /**         
+        /**
          * Wrap a given set.
          * @param ss the set to wrap
          * @throws NullPointerException if ss is null
@@ -3385,7 +3385,7 @@ public class Collections implements Rollbackable {
             this.ss = ss;
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the set.
          * @param sync the mutex
          * @param ss the set
@@ -3395,7 +3395,7 @@ public class Collections implements Rollbackable {
             this.ss = ss;
         }
 
-        /**         
+        /**
          * Returns the comparator used in sorting the underlying set, or null if
          * it is the elements' natural ordering.  A lock is obtained on the mutex
          * before the comparator is retrieved.
@@ -3407,7 +3407,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns the first, lowest sorted, element from the underlying set.
          * A lock is obtained on the mutex before the set is accessed.
          * @return the first element.
@@ -3419,7 +3419,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns a subset containing the element from the first
          * element (as returned by <code>first()</code>) to
          * the element before that specified.  The subset supports all
@@ -3443,7 +3443,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns the last, highest sorted, element from the underlying set.
          * A lock is obtained on the mutex before the set is accessed.
          * @return the last element.
@@ -3455,7 +3455,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns a subset containing the elements from fromElement to
          * the element before toElement.  The subset supports all
          * operations supported by the underlying set and all actions
@@ -3479,7 +3479,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Returns a subset containing all the elements from fromElement onwards.
          * The subset supports all operations supported by the underlying
          * set and all actions taking place on the subset are also reflected
@@ -3518,7 +3518,7 @@ public class Collections implements Rollbackable {
     }
 
     // class SynchronizedSortedSet
-    /**     
+    /**
      * The implementation of {
      @link #unmodifiableCollection(Collection)    }
      . This
@@ -3530,18 +3530,18 @@ public class Collections implements Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 1820017752578914078L;
 
-        /**         
+        /**
          * The wrapped collection. Package visible for use by subclasses.
          * @serial the real collection
          */
         final Collection c;
 
-        /**         
+        /**
          * Wrap a given collection.
          * @param c the collection to wrap
          * @throws NullPointerException if c is null
@@ -3553,7 +3553,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Blocks the addition of elements to the underlying collection.
          * This method never returns, throwing an exception instead.
          * @param o the object to add.
@@ -3565,7 +3565,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Blocks the addition of a collection of elements to the underlying
          * collection.  This method never returns, throwing an exception instead.
          * @param c the collection to add.
@@ -3577,7 +3577,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Blocks the clearing of the underlying collection.  This method never
          * returns, throwing an exception instead.
          * @throws UnsupportedOperationException as an unmodifiable collection does
@@ -3587,7 +3587,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Test whether the underlying collection contains a given object as one of its
          * elements.
          * @param o the element to look for.
@@ -3603,7 +3603,7 @@ public class Collections implements Rollbackable {
             return c.contains(o);
         }
 
-        /**         
+        /**
          * Test whether the underlying collection contains every element in a given
          * collection.
          * @param c1 the collection to test for.
@@ -3619,7 +3619,7 @@ public class Collections implements Rollbackable {
             return c.containsAll(c1);
         }
 
-        /**         
+        /**
          * Tests whether the underlying collection is empty, that is,
          * if size() == 0.
          * @return <code>true</code> if this collection contains no elements.
@@ -3628,7 +3628,7 @@ public class Collections implements Rollbackable {
             return c.isEmpty();
         }
 
-        /**         
+        /**
          * Obtain an Iterator over the underlying collection, which maintains
          * its unmodifiable nature.
          * @return an UnmodifiableIterator over the elements of the underlying
@@ -3638,7 +3638,7 @@ public class Collections implements Rollbackable {
             return new UnmodifiableIterator(c.iterator());
         }
 
-        /**         
+        /**
          * Blocks the removal of an object from the underlying collection.
          * This method never returns, throwing an exception instead.
          * @param o The object to remove.
@@ -3651,7 +3651,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Blocks the removal of a collection of objects from the underlying
          * collection.  This method never returns, throwing an exception
          * instead.
@@ -3664,7 +3664,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Blocks the removal of all elements from the underlying collection,
          * except those in the supplied collection.  This method never returns,
          * throwing an exception instead.
@@ -3677,7 +3677,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Retrieves the number of elements in the underlying collection.
          * @return the number of elements in the collection.
          */
@@ -3685,7 +3685,7 @@ public class Collections implements Rollbackable {
             return c.size();
         }
 
-        /**         
+        /**
          * Copy the current contents of the underlying collection into an array.
          * @return an array of type Object[] with a length equal to the size of the
          * underlying collection and containing the elements currently in
@@ -3695,7 +3695,7 @@ public class Collections implements Rollbackable {
             return c.toArray();
         }
 
-        /**         
+        /**
          * Copy the current contents of the underlying collection into an array.  If
          * the array passed as an argument has length less than the size of the
          * underlying collection, an array of the same run-time type as a, with a length
@@ -3715,7 +3715,7 @@ public class Collections implements Rollbackable {
             return c.toArray(a);
         }
 
-        /**         
+        /**
          * A textual representation of the unmodifiable collection.
          * @return The unmodifiable collection in the form of a <code>String</code>.
          */
@@ -3764,7 +3764,7 @@ public class Collections implements Rollbackable {
     }
 
     // class UnmodifiableCollection
-    /**     
+    /**
      * The implementation of the various iterator methods in the
      * unmodifiable classes.
      * @author Eric Blake (ebb9@email.byu.edu)
@@ -3773,12 +3773,12 @@ public class Collections implements Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * The wrapped iterator.
          */
         private final Iterator i;
 
-        /**         
+        /**
          * Only trusted code creates a wrapper.
          * @param i the wrapped iterator
          */
@@ -3786,7 +3786,7 @@ public class Collections implements Rollbackable {
             this.i = i;
         }
 
-        /**         
+        /**
          * Obtains the next element in the underlying collection.
          * @return the next element in the collection.
          * @throws NoSuchElementException if there are no more elements.
@@ -3795,7 +3795,7 @@ public class Collections implements Rollbackable {
             return i.next();
         }
 
-        /**         
+        /**
          * Tests whether there are still elements to be retrieved from the
          * underlying collection by <code>next()</code>.  When this method
          * returns <code>true</code>, an exception will not be thrown on calling
@@ -3807,7 +3807,7 @@ public class Collections implements Rollbackable {
             return i.hasNext();
         }
 
-        /**         
+        /**
          * Blocks the removal of elements from the underlying collection by the
          * iterator.
          * @throws UnsupportedOperationException as an unmodifiable collection
@@ -3861,7 +3861,7 @@ public class Collections implements Rollbackable {
     }
 
     // class UnmodifiableIterator
-    /**     
+    /**
      * The implementation of {
      @link #unmodifiableList(List)    }
      for sequential
@@ -3872,19 +3872,19 @@ public class Collections implements Rollbackable {
     private static class UnmodifiableList extends UnmodifiableCollection
             implements List, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -283967356065247728L;
 
-        /**         
+        /**
          * The wrapped list; stored both here and in the superclass to avoid
          * excessive casting. Package visible for use by subclass.
          * @serial the wrapped list
          */
         final List list;
 
-        /**         
+        /**
          * Wrap a given list.
          * @param l the list to wrap
          * @throws NullPointerException if l is null
@@ -3894,7 +3894,7 @@ public class Collections implements Rollbackable {
             list = l;
         }
 
-        /**         
+        /**
          * Blocks the addition of an element to the underlying
          * list at a specific index.  This method never returns,
          * throwing an exception instead.
@@ -3907,7 +3907,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Blocks the addition of a collection of elements to the
          * underlying list at a specific index.  This method never
          * returns, throwing an exception instead.
@@ -3920,7 +3920,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Returns <code>true</code> if the object, o, is an instance of
          * <code>List</code> with the same size and elements
          * as the underlying list.
@@ -3931,7 +3931,7 @@ public class Collections implements Rollbackable {
             return list.equals(o);
         }
 
-        /**         
+        /**
          * Retrieves the element at a given index in the underlying list.
          * @param index the index of the element to be returned
          * @return the element at index index in this list
@@ -3941,7 +3941,7 @@ public class Collections implements Rollbackable {
             return list.get(index);
         }
 
-        /**         
+        /**
          * Computes the hash code for the underlying list.
          * The exact computation is described in the documentation
          * of the <code>List</code> interface.
@@ -3952,7 +3952,7 @@ public class Collections implements Rollbackable {
             return list.hashCode();
         }
 
-        /**         
+        /**
          * Obtain the first index at which a given object is to be found in the
          * underlying list.
          * @param o the object to search for
@@ -3967,7 +3967,7 @@ public class Collections implements Rollbackable {
             return list.indexOf(o);
         }
 
-        /**         
+        /**
          * Obtain the last index at which a given object is to be found in the
          * underlying list.
          * @return the greatest integer n such that <code>o == null ? get(n) == null
@@ -3981,7 +3981,7 @@ public class Collections implements Rollbackable {
             return list.lastIndexOf(o);
         }
 
-        /**         
+        /**
          * Obtains a list iterator over the underlying list, starting at the beginning
          * and maintaining the unmodifiable nature of this list.
          * @return a <code>UnmodifiableListIterator</code> over the elements of the
@@ -3991,7 +3991,7 @@ public class Collections implements Rollbackable {
             return new UnmodifiableListIterator(list.listIterator());
         }
 
-        /**         
+        /**
          * Obtains a list iterator over the underlying list, starting at the specified
          * index and maintaining the unmodifiable nature of this list.  An initial call
          * to <code>next()</code> will retrieve the element at the specified index,
@@ -4007,7 +4007,7 @@ public class Collections implements Rollbackable {
             return new UnmodifiableListIterator(list.listIterator(index));
         }
 
-        /**         
+        /**
          * Blocks the removal of the element at the specified index.
          * This method never returns, throwing an exception instead.
          * @param index The index of the element to remove.
@@ -4020,7 +4020,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Blocks the replacement of the element at the specified index.
          * This method never returns, throwing an exception instead.
          * @param index The index of the element to replace.
@@ -4034,7 +4034,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Obtain a List view of a subsection of the underlying list, from
          * fromIndex (inclusive) to toIndex (exclusive). If the two indices
          * are equal, the sublist is empty. The returned list will be
@@ -4067,7 +4067,7 @@ public class Collections implements Rollbackable {
     }
 
     // class UnmodifiableList
-    /**     
+    /**
      * The implementation of {
      @link #unmodifiableList(List)    }
      for random-access
@@ -4078,12 +4078,12 @@ public class Collections implements Rollbackable {
     private static final class UnmodifiableRandomAccessList extends
             UnmodifiableList implements RandomAccess, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -2542308836966382001L;
 
-        /**         
+        /**
          * Wrap a given list.
          * @param l the list to wrap
          * @throws NullPointerException if l is null
@@ -4107,7 +4107,7 @@ public class Collections implements Rollbackable {
     }
 
     // class UnmodifiableRandomAccessList
-    /**     
+    /**
      * The implementation of {
      @link UnmodifiableList#listIterator()    }
      .
@@ -4116,13 +4116,13 @@ public class Collections implements Rollbackable {
     private static final class UnmodifiableListIterator extends
             UnmodifiableIterator implements ListIterator, Rollbackable {
 
-        /**         
+        /**
          * The wrapped iterator, stored both here and in the superclass to
          * avoid excessive casting.
          */
         private final ListIterator li;
 
-        /**         
+        /**
          * Only trusted code creates a wrapper.
          * @param li the wrapped iterator
          */
@@ -4131,7 +4131,7 @@ public class Collections implements Rollbackable {
             this.li = li;
         }
 
-        /**         
+        /**
          * Blocks the addition of an object to the list underlying this iterator.
          * This method never returns, throwing an exception instead.
          * @param o The object to add.
@@ -4142,7 +4142,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Tests whether there are still elements to be retrieved from the
          * underlying collection by <code>previous()</code>.  When this method
          * returns <code>true</code>, an exception will not be thrown on calling
@@ -4154,7 +4154,7 @@ public class Collections implements Rollbackable {
             return li.hasPrevious();
         }
 
-        /**         
+        /**
          * Find the index of the element that would be returned by a call to next.
          * If <code>hasNext()</code> returns <code>false</code>, this returns the list size.
          * @return the index of the element that would be returned by
@@ -4164,7 +4164,7 @@ public class Collections implements Rollbackable {
             return li.nextIndex();
         }
 
-        /**         
+        /**
          * Obtains the previous element in the underlying list.
          * @return the previous element in the list.
          * @throws NoSuchElementException if there are no more prior elements.
@@ -4173,7 +4173,7 @@ public class Collections implements Rollbackable {
             return li.previous();
         }
 
-        /**         
+        /**
          * Find the index of the element that would be returned by a call to
          * previous. If <code>hasPrevious()</code> returns <code>false</code>,
          * this returns -1.
@@ -4184,7 +4184,7 @@ public class Collections implements Rollbackable {
             return li.previousIndex();
         }
 
-        /**         
+        /**
          * Blocks the replacement of an element in the list underlying this
          * iterator.  This method never returns, throwing an exception instead.
          * @param o The new object to replace the existing one.
@@ -4213,7 +4213,7 @@ public class Collections implements Rollbackable {
     }
 
     // class UnmodifiableListIterator
-    /**     
+    /**
      * The implementation of {
      @link #unmodifiableMap(Map)    }
      . This
@@ -4225,33 +4225,33 @@ public class Collections implements Rollbackable {
 
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -1034234728574286014L;
 
-        /**         
+        /**
          * The wrapped map.
          * @serial the real map
          */
         private final Map m;
 
-        /**         
+        /**
          * Cache the entry set.
          */
         private transient Set entries;
 
-        /**         
+        /**
          * Cache the key set.
          */
         private transient Set keys;
 
-        /**         
+        /**
          * Cache the value collection.
          */
         private transient Collection values;
 
-        /**         
+        /**
          * The implementation of {
          @link UnmodifiableMap#entrySet()        }
          . This class
@@ -4261,12 +4261,12 @@ public class Collections implements Rollbackable {
         private static final class UnmodifiableEntrySet extends UnmodifiableSet
                 implements Serializable, Rollbackable {
 
-            /**             
+            /**
              * Compatible with JDK 1.4.
              */
             private static final long serialVersionUID = 7854390611657943733L;
 
-            /**             
+            /**
              * Wrap a given set.
              * @param s the set to wrap
              */
@@ -4278,7 +4278,7 @@ public class Collections implements Rollbackable {
 
             public Iterator iterator() {
                 return new UnmodifiableIterator(c.iterator()) {
-                    /**                     
+                    /**
                      * Obtains the next element from the underlying set of
                      * map entries.
                      * @return the next element in the collection.
@@ -4290,7 +4290,7 @@ public class Collections implements Rollbackable {
                             protected Checkpoint $CHECKPOINT = new Checkpoint(
                                     this);
 
-                            /**                             
+                            /**
                              * Returns <code>true</code> if the object, o, is also a map entry with an
                              * identical key and value.
                              * @param o the object to compare.
@@ -4300,7 +4300,7 @@ public class Collections implements Rollbackable {
                                 return e.equals(o);
                             }
 
-                            /**                             
+                            /**
                              * Returns the key of this map entry.
                              * @return the key.
                              */
@@ -4308,7 +4308,7 @@ public class Collections implements Rollbackable {
                                 return e.getKey();
                             }
 
-                            /**                             
+                            /**
                              * Returns the value of this map entry.
                              * @return the value.
                              */
@@ -4316,7 +4316,7 @@ public class Collections implements Rollbackable {
                                 return e.getValue();
                             }
 
-                            /**                             
+                            /**
                              * Computes the hash code of this map entry.
                              * The computation is described in the <code>Map</code>
                              * interface documentation.
@@ -4327,7 +4327,7 @@ public class Collections implements Rollbackable {
                                 return e.hashCode();
                             }
 
-                            /**                             
+                            /**
                              * Blocks the alteration of the value of this map entry.
                              * This method never returns, throwing an exception instead.
                              * @param value The new value.
@@ -4339,7 +4339,7 @@ public class Collections implements Rollbackable {
                                 throw new UnsupportedOperationException();
                             }
 
-                            /**                             
+                            /**
                              * Returns a textual representation of the map entry.
                              * @return The map entry as a <code>String</code>.
                              */
@@ -4466,7 +4466,7 @@ public class Collections implements Rollbackable {
         }
 
         // class UnmodifiableEntrySet
-        /**         
+        /**
          * Wrap a given map.
          * @param m the map to wrap
          * @throws NullPointerException if m is null
@@ -4478,7 +4478,7 @@ public class Collections implements Rollbackable {
             }
         }
 
-        /**         
+        /**
          * Blocks the clearing of entries from the underlying map.
          * This method never returns, throwing an exception instead.
          * @throws UnsupportedOperationException as an unmodifiable
@@ -4488,7 +4488,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Returns <code>true</code> if the underlying map contains a mapping for
          * the given key.
          * @param key the key to search for
@@ -4501,7 +4501,7 @@ public class Collections implements Rollbackable {
             return m.containsKey(key);
         }
 
-        /**         
+        /**
          * Returns <code>true</code> if the underlying map contains at least one mapping with
          * the given value.  In other words, it returns <code>true</code> if a value v exists where
          * <code>(value == null ? v == null : value.equals(v))</code>. This usually
@@ -4517,7 +4517,7 @@ public class Collections implements Rollbackable {
             return m.containsValue(value);
         }
 
-        /**         
+        /**
          * Returns a unmodifiable set view of the entries in the underlying map.
          * Each element in the set is a unmodifiable variant of <code>Map.Entry</code>.
          * The set is backed by the map, so that changes in one show up in the other.
@@ -4534,7 +4534,7 @@ public class Collections implements Rollbackable {
             return entries;
         }
 
-        /**         
+        /**
          * Returns <code>true</code> if the object, o, is also an instance
          * of <code>Map</code> with an equal set of map entries.
          * @param o The object to compare.
@@ -4544,7 +4544,7 @@ public class Collections implements Rollbackable {
             return m.equals(o);
         }
 
-        /**         
+        /**
          * Returns the value associated with the supplied key or
          * null if no such mapping exists.  An ambiguity can occur
          * if null values are accepted by the underlying map.
@@ -4560,7 +4560,7 @@ public class Collections implements Rollbackable {
             return m.get(key);
         }
 
-        /**         
+        /**
          * Blocks the addition of a new entry to the underlying map.
          * This method never returns, throwing an exception instead.
          * @param key The new key.
@@ -4573,7 +4573,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Computes the hash code for the underlying map, as the sum
          * of the hash codes of all entries.
          * @return The hash code of the underlying map.
@@ -4583,7 +4583,7 @@ public class Collections implements Rollbackable {
             return m.hashCode();
         }
 
-        /**         
+        /**
          * Returns <code>true</code> if the underlying map contains no entries.
          * @return <code>true</code> if the map is empty.
          */
@@ -4591,7 +4591,7 @@ public class Collections implements Rollbackable {
             return m.isEmpty();
         }
 
-        /**         
+        /**
          * Returns a unmodifiable set view of the keys in the underlying map.
          * The set is backed by the map, so that changes in one show up in the other.
          * Modifications made while an iterator is in progress cause undefined
@@ -4606,7 +4606,7 @@ public class Collections implements Rollbackable {
             return keys;
         }
 
-        /**         
+        /**
          * Blocks the addition of the entries in the supplied map.
          * This method never returns, throwing an exception instead.
          * @param m The map, the entries of which should be added
@@ -4618,7 +4618,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Blocks the removal of an entry from the map.
          * This method never returns, throwing an exception instead.
          * @param o The key of the entry to remove.
@@ -4632,7 +4632,7 @@ public class Collections implements Rollbackable {
             throw new UnsupportedOperationException();
         }
 
-        /**         
+        /**
          * Returns the number of key-value mappings in the underlying map.
          * If there are more than Integer.MAX_VALUE mappings, Integer.MAX_VALUE
          * is returned.
@@ -4642,7 +4642,7 @@ public class Collections implements Rollbackable {
             return m.size();
         }
 
-        /**         
+        /**
          * Returns a textual representation of the map.
          * @return The map in the form of a <code>String</code>.
          */
@@ -4650,7 +4650,7 @@ public class Collections implements Rollbackable {
             return m.toString();
         }
 
-        /**         
+        /**
          * Returns a unmodifiable collection view of the values in the underlying map.
          * The collection is backed by the map, so that changes in one show up in the other.
          * Modifications made while an iterator is in progress cause undefined
@@ -4750,7 +4750,7 @@ public class Collections implements Rollbackable {
     }
 
     // class UnmodifiableMap
-    /**     
+    /**
      * The implementation of {
      @link #unmodifiableSet(Set)    }
      . This class
@@ -4760,12 +4760,12 @@ public class Collections implements Rollbackable {
     private static class UnmodifiableSet extends UnmodifiableCollection
             implements Set, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -9215047833775013803L;
 
-        /**         
+        /**
          * Wrap a given set.
          * @param s the set to wrap
          * @throws NullPointerException if s is null
@@ -4774,7 +4774,7 @@ public class Collections implements Rollbackable {
             super(s);
         }
 
-        /**         
+        /**
          * Returns <code>true</code> if the object, o, is also an instance of
          * <code>Set</code> of the same size and with the same entries.
          * @return <code>true</code> if o is an equivalent set.
@@ -4783,7 +4783,7 @@ public class Collections implements Rollbackable {
             return c.equals(o);
         }
 
-        /**         
+        /**
          * Computes the hash code of this set, as the sum of the
          * hash codes of all elements within the set.
          * @return the hash code of the set.
@@ -4807,7 +4807,7 @@ public class Collections implements Rollbackable {
     }
 
     // class UnmodifiableSet
-    /**     
+    /**
      * The implementation of {
      @link #unmodifiableSortedMap(SortedMap)    }
      . This
@@ -4817,19 +4817,19 @@ public class Collections implements Rollbackable {
     private static class UnmodifiableSortedMap extends UnmodifiableMap
             implements SortedMap, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -8806743815996713206L;
 
-        /**         
+        /**
          * The wrapped map; stored both here and in the superclass to avoid
          * excessive casting.
          * @serial the wrapped map
          */
         private final SortedMap sm;
 
-        /**         
+        /**
          * Wrap a given map.
          * @param sm the map to wrap
          * @throws NullPointerException if sm is null
@@ -4839,7 +4839,7 @@ public class Collections implements Rollbackable {
             this.sm = sm;
         }
 
-        /**         
+        /**
          * Returns the comparator used in sorting the underlying map,
          * or null if it is the keys' natural ordering.
          * @return the sorting comparator.
@@ -4848,7 +4848,7 @@ public class Collections implements Rollbackable {
             return sm.comparator();
         }
 
-        /**         
+        /**
          * Returns the first (lowest sorted) key in the map.
          * @return the first key.
          * @throws NoSuchElementException if this map is empty.
@@ -4857,7 +4857,7 @@ public class Collections implements Rollbackable {
             return sm.firstKey();
         }
 
-        /**         
+        /**
          * Returns a unmodifiable view of the portion of the map strictly less
          * than toKey. The view is backed by the underlying map, so changes in
          * one show up in the other.  The submap supports all optional operations
@@ -4881,7 +4881,7 @@ public class Collections implements Rollbackable {
             return new UnmodifiableSortedMap(sm.headMap(toKey));
         }
 
-        /**         
+        /**
          * Returns the last (highest sorted) key in the map.
          * @return the last key.
          * @throws NoSuchElementException if this map is empty.
@@ -4890,7 +4890,7 @@ public class Collections implements Rollbackable {
             return sm.lastKey();
         }
 
-        /**         
+        /**
          * Returns a unmodifiable view of the portion of the map greater than or
          * equal to fromKey, and strictly less than toKey. The view is backed by
          * the underlying map, so changes in one show up in the other. The submap
@@ -4918,7 +4918,7 @@ public class Collections implements Rollbackable {
             return new UnmodifiableSortedMap(sm.subMap(fromKey, toKey));
         }
 
-        /**         
+        /**
          * Returns a unmodifiable view of the portion of the map greater than or
          * equal to fromKey. The view is backed by the underlying map, so changes
          * in one show up in the other. The submap supports all optional operations
@@ -4960,7 +4960,7 @@ public class Collections implements Rollbackable {
     }
 
     // class UnmodifiableSortedMap
-    /**     
+    /**
      * The implementation of {
      @link #synchronizedSortedMap(SortedMap)    }
      . This
@@ -4970,19 +4970,19 @@ public class Collections implements Rollbackable {
     private static class UnmodifiableSortedSet extends UnmodifiableSet
             implements SortedSet, Rollbackable {
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -4929149591599911165L;
 
-        /**         
+        /**
          * The wrapped set; stored both here and in the superclass to avoid
          * excessive casting.
          * @serial the wrapped set
          */
         private SortedSet ss;
 
-        /**         
+        /**
          * Wrap a given set.
          * @param ss the set to wrap
          * @throws NullPointerException if ss is null
@@ -4992,7 +4992,7 @@ public class Collections implements Rollbackable {
             this.$ASSIGN$ss(ss);
         }
 
-        /**         
+        /**
          * Returns the comparator used in sorting the underlying set,
          * or null if it is the elements' natural ordering.
          * @return the sorting comparator
@@ -5001,7 +5001,7 @@ public class Collections implements Rollbackable {
             return ss.comparator();
         }
 
-        /**         
+        /**
          * Returns the first (lowest sorted) element in the underlying
          * set.
          * @return the first element.
@@ -5011,7 +5011,7 @@ public class Collections implements Rollbackable {
             return ss.first();
         }
 
-        /**         
+        /**
          * Returns a unmodifiable view of the portion of the set strictly
          * less than toElement. The view is backed by the underlying set,
          * so changes in one show up in the other.  The subset supports
@@ -5036,7 +5036,7 @@ public class Collections implements Rollbackable {
             return new UnmodifiableSortedSet(ss.headSet(toElement));
         }
 
-        /**         
+        /**
          * Returns the last (highest sorted) element in the underlying
          * set.
          * @return the last element.
@@ -5046,7 +5046,7 @@ public class Collections implements Rollbackable {
             return ss.last();
         }
 
-        /**         
+        /**
          * Returns a unmodifiable view of the portion of the set greater than or
          * equal to fromElement, and strictly less than toElement. The view is backed by
          * the underlying set, so changes in one show up in the other. The subset
@@ -5074,7 +5074,7 @@ public class Collections implements Rollbackable {
             return new UnmodifiableSortedSet(ss.subSet(fromElement, toElement));
         }
 
-        /**         
+        /**
          * Returns a unmodifiable view of the portion of the set greater than or equal to
          * fromElement. The view is backed by the underlying set, so changes in one show up
          * in the other. The subset supports all optional operations of the original.
@@ -5125,7 +5125,7 @@ public class Collections implements Rollbackable {
     }
 
     // class UnmodifiableSortedSet
-    /**     
+    /**
      * Determines if a list should be treated as a sequential-access one.
      * Rather than the old method of JDK 1.3 of assuming only instanceof
      * AbstractSequentialList should be sequential, this uses the new method
@@ -5138,13 +5138,13 @@ public class Collections implements Rollbackable {
         return !(l instanceof RandomAccess) && l.size() > LARGE_LIST_SIZE;
     }
 
-    /**     
+    /**
      * This class is non-instantiable.
      */
     private Collections() {
     }
 
-    /**     
+    /**
      * Compare two objects with or without a Comparator. If c is null, uses the
      * natural ordering. Slightly slower than doing it inline if the JVM isn't
      * clever, but worth it for removing a duplicate of the search code.
@@ -5154,7 +5154,7 @@ public class Collections implements Rollbackable {
         return c == null ? ((Comparable) o1).compareTo(o2) : c.compare(o1, o2);
     }
 
-    /**     
+    /**
      * Perform a binary search of a List for a key, using the natural ordering of
      * the elements. The list must be sorted (as by the sort() method) - if it is
      * not, the behavior of this method is undefined, and may be an infinite
@@ -5184,7 +5184,7 @@ public class Collections implements Rollbackable {
         return binarySearch(l, key, null);
     }
 
-    /**     
+    /**
      * Perform a binary search of a List for a key, using a supplied Comparator.
      * The list must be sorted (as by the sort() method with the same Comparator)
      * - if it is not, the behavior of this method is undefined, and may be an
@@ -5266,7 +5266,7 @@ public class Collections implements Rollbackable {
         return -pos - 1;
     }
 
-    /**     
+    /**
      * Copy one list to another. If the destination list is longer than the
      * source list, the remaining elements are unaffected. This method runs in
      * linear time.
@@ -5290,7 +5290,7 @@ public class Collections implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Returns an Enumeration over a collection. This allows interoperability
      * with legacy APIs that require an Enumeration as input.
      * @param c the Collection to iterate over
@@ -5299,7 +5299,7 @@ public class Collections implements Rollbackable {
     public static Enumeration enumeration(Collection c) {
         final Iterator i = c.iterator();
         return new Enumeration() {
-            /**             
+            /**
              * Returns <code>true</code> if there are more elements to
              * be enumerated.
              * @return The result of <code>hasNext()</code>
@@ -5309,7 +5309,7 @@ public class Collections implements Rollbackable {
                 return i.hasNext();
             }
 
-            /**             
+            /**
              * Returns the next element to be enumerated.
              * @return The result of <code>next()</code>
              * called on the underlying iterator.
@@ -5321,7 +5321,7 @@ public class Collections implements Rollbackable {
         };
     }
 
-    /**     
+    /**
      * Replace every element of a list with a given value. This method runs in
      * linear time.
      * @param l the list to fill.
@@ -5337,7 +5337,7 @@ public class Collections implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Returns the starting index where the specified sublist first occurs
      * in a larger list, or -1 if there is no matching position. If
      * <code>target.size() &gt; source.size()</code>, this returns -1,
@@ -5359,7 +5359,7 @@ public class Collections implements Rollbackable {
         return -1;
     }
 
-    /**     
+    /**
      * Returns the starting index where the specified sublist last occurs
      * in a larger list, or -1 if there is no matching position. If
      * <code>target.size() &gt; source.size()</code>, this returns -1,
@@ -5381,7 +5381,7 @@ public class Collections implements Rollbackable {
         return -1;
     }
 
-    /**     
+    /**
      * Returns an ArrayList holding the elements visited by a given
      * Enumeration. This method exists for interoperability between legacy
      * APIs and the new Collection API.
@@ -5398,7 +5398,7 @@ public class Collections implements Rollbackable {
         return l;
     }
 
-    /**     
+    /**
      * Find the maximum element in a Collection, according to the natural
      * ordering of the elements. This implementation iterates over the
      * Collection, so it works in linear time.
@@ -5412,7 +5412,7 @@ public class Collections implements Rollbackable {
         return max(c, null);
     }
 
-    /**     
+    /**
      * Find the maximum element in a Collection, according to a specified
      * Comparator. This implementation iterates over the Collection, so it
      * works in linear time.
@@ -5438,7 +5438,7 @@ public class Collections implements Rollbackable {
         return max;
     }
 
-    /**     
+    /**
      * Find the minimum element in a Collection, according to the natural
      * ordering of the elements. This implementation iterates over the
      * Collection, so it works in linear time.
@@ -5452,7 +5452,7 @@ public class Collections implements Rollbackable {
         return min(c, null);
     }
 
-    /**     
+    /**
      * Find the minimum element in a Collection, according to a specified
      * Comparator. This implementation iterates over the Collection, so it
      * works in linear time.
@@ -5478,7 +5478,7 @@ public class Collections implements Rollbackable {
         return min;
     }
 
-    /**     
+    /**
      * Creates an immutable list consisting of the same object repeated n times.
      * The returned object is tiny, consisting of only a single reference to the
      * object and a count of the number of elements. It is Serializable, and
@@ -5496,7 +5496,7 @@ public class Collections implements Rollbackable {
         return new CopiesList(n, o);
     }
 
-    /**     
+    /**
      * Replace all instances of one object with another in the specified list.
      * The list does not change size. An element e is replaced if
      * <code>oldval == null ? e == null : oldval.equals(e)</code>.
@@ -5524,7 +5524,7 @@ public class Collections implements Rollbackable {
         return replace_occured;
     }
 
-    /**     
+    /**
      * Reverse a given list. This method works in linear time.
      * @param l the list to reverse
      * @throws UnsupportedOperationException if l.listIterator() does not
@@ -5544,7 +5544,7 @@ public class Collections implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Get a comparator that implements the reverse of natural ordering. In
      * other words, this sorts Comparable objects opposite of how their
      * compareTo method would sort. This makes it easy to sort into reverse
@@ -5558,7 +5558,7 @@ public class Collections implements Rollbackable {
         return rcInstance;
     }
 
-    /**     
+    /**
      * Rotate the elements in a list by a specified distance. After calling this
      * method, the element now at index <code>i</code> was formerly at index
      * <code>(i - distance) mod list.size()</code>. The list size is unchanged.
@@ -5625,7 +5625,7 @@ public class Collections implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Shuffle a list according to a default source of randomness. The algorithm
      * used iterates backwards over the list, swapping each element with an
      * element randomly selected from the elements in positions less than or
@@ -5656,7 +5656,7 @@ public class Collections implements Rollbackable {
         shuffle(l, defaultRandom);
     }
 
-    /**     
+    /**
      * Shuffle a list according to a given source of randomness. The algorithm
      * used iterates backwards over the list, swapping each element with an
      * element randomly selected from the elements in positions less than or
@@ -5698,7 +5698,7 @@ public class Collections implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Obtain an immutable Set consisting of a single element. The return value
      * of this method is Serializable.
      * @param o the single element
@@ -5709,7 +5709,7 @@ public class Collections implements Rollbackable {
         return new SingletonSet(o);
     }
 
-    /**     
+    /**
      * Obtain an immutable List consisting of a single element. The return value
      * of this method is Serializable, and implements RandomAccess.
      * @param o the single element
@@ -5722,7 +5722,7 @@ public class Collections implements Rollbackable {
         return new SingletonList(o);
     }
 
-    /**     
+    /**
      * Obtain an immutable Map consisting of a single key-value pair.
      * The return value of this method is Serializable.
      * @param key the single key
@@ -5735,7 +5735,7 @@ public class Collections implements Rollbackable {
         return new SingletonMap(key, value);
     }
 
-    /**     
+    /**
      * Sort a list according to the natural ordering of its elements. The list
      * must be modifiable, but can be of fixed size. The sort algorithm is
      * precisely that used by Arrays.sort(Object[]), which offers guaranteed
@@ -5752,7 +5752,7 @@ public class Collections implements Rollbackable {
         sort(l, null);
     }
 
-    /**     
+    /**
      * Sort a list according to a specified Comparator. The list must be
      * modifiable, but can be of fixed size. The sort algorithm is precisely that
      * used by Arrays.sort(Object[], Comparator), which offers guaranteed
@@ -5778,7 +5778,7 @@ public class Collections implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Swaps the elements at the specified positions within the list. Equal
      * positions have no effect.
      * @param l the list to work on
@@ -5793,7 +5793,7 @@ public class Collections implements Rollbackable {
         l.set(i, l.set(j, l.get(i)));
     }
 
-    /**     
+    /**
      * Returns a synchronized (thread-safe) collection wrapper backed by the
      * given collection. Notice that element access through the iterators
      * is thread-safe, but if the collection can be structurally modified
@@ -5822,7 +5822,7 @@ public class Collections implements Rollbackable {
         return new SynchronizedCollection(c);
     }
 
-    /**     
+    /**
      * Returns a synchronized (thread-safe) list wrapper backed by the
      * given list. Notice that element access through the iterators
      * is thread-safe, but if the list can be structurally modified
@@ -5853,7 +5853,7 @@ public class Collections implements Rollbackable {
         return new SynchronizedList(l);
     }
 
-    /**     
+    /**
      * Returns a synchronized (thread-safe) map wrapper backed by the given
      * map. Notice that element access through the collection views and their
      * iterators are thread-safe, but if the map can be structurally modified
@@ -5880,7 +5880,7 @@ public class Collections implements Rollbackable {
         return new SynchronizedMap(m);
     }
 
-    /**     
+    /**
      * Returns a synchronized (thread-safe) set wrapper backed by the given
      * set. Notice that element access through the iterator is thread-safe, but
      * if the set can be structurally modified (adding or removing elements)
@@ -5906,7 +5906,7 @@ public class Collections implements Rollbackable {
         return new SynchronizedSet(s);
     }
 
-    /**     
+    /**
      * Returns a synchronized (thread-safe) sorted map wrapper backed by the
      * given map. Notice that element access through the collection views,
      * subviews, and their iterators are thread-safe, but if the map can be
@@ -5938,7 +5938,7 @@ public class Collections implements Rollbackable {
         return new SynchronizedSortedMap(m);
     }
 
-    /**     
+    /**
      * Returns a synchronized (thread-safe) sorted set wrapper backed by the
      * given set. Notice that element access through the iterator and through
      * subviews are thread-safe, but if the set can be structurally modified
@@ -5965,7 +5965,7 @@ public class Collections implements Rollbackable {
         return new SynchronizedSortedSet(s);
     }
 
-    /**     
+    /**
      * Returns an unmodifiable view of the given collection. This allows
      * "read-only" access, although changes in the backing collection show up
      * in this view. Attempts to modify the collection directly or via iterators
@@ -5988,7 +5988,7 @@ public class Collections implements Rollbackable {
         return new UnmodifiableCollection(c);
     }
 
-    /**     
+    /**
      * Returns an unmodifiable view of the given list. This allows
      * "read-only" access, although changes in the backing list show up
      * in this view. Attempts to modify the list directly, via iterators, or
@@ -5997,7 +5997,7 @@ public class Collections implements Rollbackable {
      .
      * Although this view prevents changes to the structure of the list and
      * its elements, the values referenced by the objects in the list can
-     * still be modified.   
+     * still be modified.
      * <p>
      * The returned List implements Serializable, but can only be serialized if
      * the list it wraps is likewise Serializable. In addition, if the wrapped
@@ -6014,7 +6014,7 @@ public class Collections implements Rollbackable {
         return new UnmodifiableList(l);
     }
 
-    /**     
+    /**
      * Returns an unmodifiable view of the given map. This allows "read-only"
      * access, although changes in the backing map show up in this view.
      * Attempts to modify the map directly, or via collection views or their
@@ -6023,7 +6023,7 @@ public class Collections implements Rollbackable {
      .
      * Although this view prevents changes to the structure of the map and its
      * entries, the values referenced by the objects in the map can still be
-     * modified.   
+     * modified.
      * <p>
      * The returned Map implements Serializable, but can only be serialized if
      * the map it wraps is likewise Serializable.
@@ -6035,7 +6035,7 @@ public class Collections implements Rollbackable {
         return new UnmodifiableMap(m);
     }
 
-    /**     
+    /**
      * Returns an unmodifiable view of the given set. This allows
      * "read-only" access, although changes in the backing set show up
      * in this view. Attempts to modify the set directly or via iterators
@@ -6044,7 +6044,7 @@ public class Collections implements Rollbackable {
      .
      * Although this view prevents changes to the structure of the set and its
      * entries, the values referenced by the objects in the set can still be
-     * modified.   
+     * modified.
      * <p>
      * The returned Set implements Serializable, but can only be serialized if
      * the set it wraps is likewise Serializable.
@@ -6056,7 +6056,7 @@ public class Collections implements Rollbackable {
         return new UnmodifiableSet(s);
     }
 
-    /**     
+    /**
      * Returns an unmodifiable view of the given sorted map. This allows
      * "read-only" access, although changes in the backing map show up in this
      * view. Attempts to modify the map directly, via subviews, via collection
@@ -6065,7 +6065,7 @@ public class Collections implements Rollbackable {
      .
      * Although this view prevents changes to the structure of the map and its
      * entries, the values referenced by the objects in the map can still be
-     * modified.   
+     * modified.
      * <p>
      * The returned SortedMap implements Serializable, but can only be
      * serialized if the map it wraps is likewise Serializable.
@@ -6077,7 +6077,7 @@ public class Collections implements Rollbackable {
         return new UnmodifiableSortedMap(m);
     }
 
-    /**     
+    /**
      * Returns an unmodifiable view of the given sorted set. This allows
      * "read-only" access, although changes in the backing set show up
      * in this view. Attempts to modify the set directly, via subsets, or via
@@ -6086,7 +6086,7 @@ public class Collections implements Rollbackable {
      .
      * Although this view prevents changes to the structure of the set and its
      * entries, the values referenced by the objects in the set can still be
-     * modified.   
+     * modified.
      * <p>
      * The returns SortedSet implements Serializable, but can only be
      * serialized if the set it wraps is likewise Serializable.

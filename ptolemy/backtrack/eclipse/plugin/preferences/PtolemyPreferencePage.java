@@ -71,7 +71,7 @@ public class PtolemyPreferencePage extends FieldEditorPreferencePage implements
     ////                       public methods                      ////
 
     /** Create the contents in the Ptolemy preference. A field editor will be
-     *  created for the path of Ptolemy home. 
+     *  created for the path of Ptolemy home.
      */
     public void createFieldEditors() {
         Composite parent = getFieldEditorParent();
@@ -121,7 +121,7 @@ public class PtolemyPreferencePage extends FieldEditorPreferencePage implements
 
     /** Initialize. This method is inherited from the abstract superclass, and
      *  does nothing.
-     *  
+     *
      *  @param workbench The workbench.
      */
     public void init(IWorkbench workbench) {

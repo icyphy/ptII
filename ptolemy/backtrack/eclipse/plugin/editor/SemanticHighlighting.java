@@ -43,32 +43,32 @@ package ptolemy.backtrack.eclipse.plugin.editor;
 public abstract class SemanticHighlighting {
 
     /** Test whether a semantic token can be consumed.
-     * 
+     *
      *  @param token The token to be tested.
      *  @return true if the token can be consumed.
      */
     public abstract boolean consumes(SemanticToken token);
 
     /** Get the key of the bold face preference.
-     * 
+     *
      *  @return The key for the bold face preference.
      */
     public abstract String getBoldPreferenceKey();
 
     /** Get the key of the color preference.
-     * 
+     *
      *  @return The key of the color preference.
      */
     public abstract String getColorPreferenceKey();
 
     /** Get the key of the enabled preference.
-     * 
+     *
      *  @return The key of the enabled preference.
      */
     public abstract String getEnabledPreferenceKey();
 
     /** Get the key of the italic font preference.
-     * 
+     *
      *  @return The key of the italic font preference.
      */
     public abstract String getItalicPreferenceKey();

@@ -62,7 +62,7 @@ public class EclipsePlugin extends AbstractUIPlugin {
     ////                       public methods                      ////
 
     /** Return the console for this plugin.
-     * 
+     *
      *  @return The console.
      */
     public OutputConsole getConsole() {
@@ -70,7 +70,7 @@ public class EclipsePlugin extends AbstractUIPlugin {
     }
 
     /** Return the only instance of this plugin.
-     * 
+     *
      *  @return The instance of this plugin created in the current Eclipse
      *  process.
      */
@@ -90,7 +90,7 @@ public class EclipsePlugin extends AbstractUIPlugin {
     }
 
     /** Return the plugin's resource bundle.
-     * 
+     *
      *  @return The resource bundle for this plugin, or null if none.
      */
     public ResourceBundle getResourceBundle() {
@@ -108,7 +108,7 @@ public class EclipsePlugin extends AbstractUIPlugin {
 
     /** Return the string from the plugin's resource bundle, or the key itself
      *  if not found.
-     *  
+     *
      *  @param key The key of the resource string.
      *  @return The resource string, or the key itself.
      */
@@ -124,7 +124,7 @@ public class EclipsePlugin extends AbstractUIPlugin {
 
     /** Return the current Eclipse process's standard display. This standard
      *  display can be used to synchronize user interface operations.
-     *  
+     *
      *  @return The standard display.
      */
     public static Display getStandardDisplay() {
@@ -138,7 +138,7 @@ public class EclipsePlugin extends AbstractUIPlugin {
     }
 
     /** Start the plugin. This method is called upon plugin activation.
-     * 
+     *
      *  @param context The context where this plugin is started.
      *  @exception Exception If the start method of the superclass throws an
      *  Exception.
@@ -151,7 +151,7 @@ public class EclipsePlugin extends AbstractUIPlugin {
     /** Stop the plugin. This method is called when the plugin is stopped. After
      *  the plugin is stopped, it cannot be started again, unless a new instance
      *  of plugin is created.
-     *  
+     *
      *  @param context The context where this plugin has been started.
      *  @exception Exception If the stop method of the superclass throws an
      *  Exception.

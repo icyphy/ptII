@@ -41,7 +41,7 @@ import ptolemy.actor.gt.RuleAttribute;
 @Pt.AcceptedRating Red (tfeng)
 */
 public class SubclassRule extends Rule {
-    
+
     public SubclassRule() {
         this("");
     }
@@ -49,32 +49,32 @@ public class SubclassRule extends Rule {
     public SubclassRule(String values) {
         setValues(values);
     }
-    
+
     public RuleAttribute[] getAttributes() {
         return _ATTRIBUTES;
     }
-    
+
     public Object getAttributeValue(int index) {
         switch (index) {
         case 0: return _superclass;
         default: return null;
         }
     }
-    
+
     public String getValues() {
         return _superclass;
     }
-    
+
     public void setAttributeValue(int index, Object value) {
         switch (index) {
         case 0: _superclass = (String) value;
         }
     }
-    
+
     public void setValues(String values) {
         _superclass = values;
     }
-    
+
     private static final RuleAttribute[] _ATTRIBUTES = {
         new RuleAttribute(RuleAttribute.STRING, "Superclass")
     };

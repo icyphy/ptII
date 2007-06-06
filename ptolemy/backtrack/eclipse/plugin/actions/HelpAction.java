@@ -52,7 +52,7 @@ public class HelpAction implements IWorkbenchWindowActionDelegate {
     }
 
     /** Initialize the action with a window as its parent.
-     * 
+     *
      *  @param window The parent window.
      */
     public void init(IWorkbenchWindow window) {
@@ -62,7 +62,7 @@ public class HelpAction implements IWorkbenchWindowActionDelegate {
     /** Activate the action and show the Eclipse help center. The help center
      *  shows the Eclipse backtracking plugin documentation, whose table of
      *  contents page is "ptolemy/backtrack/eclipse/plugin/doc/toc.xml".
-     * 
+     *
      *  @param action The action proxy (not used in this method).
      */
     public void run(IAction action) {
@@ -71,7 +71,7 @@ public class HelpAction implements IWorkbenchWindowActionDelegate {
     }
 
     /** Handle the change of selection.
-     * 
+     *
      *  @param action The action proxy (not used in this method).
      *  @param selection The new selection (not used in this method).
      */

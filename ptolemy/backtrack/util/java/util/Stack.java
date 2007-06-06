@@ -70,18 +70,18 @@ import ptolemy.backtrack.util.FieldRecord;
 
 public class Stack extends Vector implements Rollbackable {
 
-    /**     
+    /**
      * Compatible with JDK 1.0+.
      */
     private static final long serialVersionUID = 1224463164541339165L;
 
-    /**     
+    /**
      * This constructor creates a new Stack, initially empty
      */
     public Stack() {
     }
 
-    /**     
+    /**
      * Pushes an Object onto the top of the stack.  This method is effectively
      * the same as addElement(item).
      * @param item the Object to push onto the stack
@@ -93,7 +93,7 @@ public class Stack extends Vector implements Rollbackable {
         return item;
     }
 
-    /**     
+    /**
      * Pops an item from the stack and returns it.  The item popped is
      * removed from the Stack.
      * @return the Object popped from the stack
@@ -109,7 +109,7 @@ public class Stack extends Vector implements Rollbackable {
         return obj;
     }
 
-    /**     
+    /**
      * Returns the top Object on the stack without removing it.
      * @return the top Object on the stack
      * @throws EmptyStackException if the stack is empty
@@ -121,7 +121,7 @@ public class Stack extends Vector implements Rollbackable {
         return getElementData()[getElementCount() - 1];
     }
 
-    /**     
+    /**
      * Tests if the stack is empty.
      * @return true if the stack contains no items, false otherwise
      */
@@ -129,7 +129,7 @@ public class Stack extends Vector implements Rollbackable {
         return getElementCount() == 0;
     }
 
-    /**     
+    /**
      * Returns the position of an Object on the stack, with the top
      * most Object being at position 1, and each Object deeper in the
      * stack at depth + 1.

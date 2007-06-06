@@ -50,7 +50,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
 
     /** Handle an attribute. Its name and value will be recorded in the hash
      *  table of attributes.
-     *  
+     *
      *  @param name The name of the attribute.
      *  @param value The value of the attribute.
      *  @param isSpecified true if the value was specified, false if it was
@@ -65,7 +65,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     }
 
     /** Handle a chunk of char data.
-     * 
+     *
      *  @param ch The character data.
      *  @param start The starting position in the array.
      *  @param length The number of characters available.
@@ -75,7 +75,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     }
 
     /** Handle a document type declaration.
-     * 
+     *
      *  @param name The document type name.
      *  @param publicId The public identifier, or null if unspecified.
      *  @param systemId The system identifier, or null if unspecified.
@@ -91,7 +91,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     }
 
     /** Handle the end of an XML element.
-     * 
+     *
      *  @param elementName The name of the element.
      *  @exception Exception Not thrown in this base class.
      */
@@ -100,7 +100,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     }
 
     /** Handle the end of an external entity.
-     * 
+     *
      *  @param systemId The system ID of the external entity.
      *  @exception Exception Not thrown in this base class.
      */
@@ -108,7 +108,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     }
 
     /** Signal an error message.
-     * 
+     *
      *  @param message The error message.
      *  @param systemId The system ID of the XML document that contains the
      *   error.
@@ -121,7 +121,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     }
 
     /** Return the current XML tree.
-     * 
+     *
      *  @return The current XML tree.
      */
     public ConfigXmlTree getCurrentTree() {
@@ -129,7 +129,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     }
 
     /** Return the system ID of the XML document.
-     * 
+     *
      *  @return The system ID.
      */
     public String getSystemId() {
@@ -137,7 +137,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     }
 
     /** Handle consecutive ignorable white spaces.
-     * 
+     *
      *  @param ch The literal whitespace characters.
      *  @param start The starting position in the array.
      *  @param length The number of whitespace characters available.
@@ -148,7 +148,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     }
 
     /** Handle a processing instruction.
-     * 
+     *
      *  @param target The target (the name at the start of the processing
      *   instruction).
      *  @param data The data, if any (the rest of the processing instruction).
@@ -159,7 +159,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     }
 
     /** Resolve an external entity.
-     * 
+     *
      *  @param publicId The public ID, or null if none was supplied.
      *  @param systemId The system ID.
      *  @return The replacement system identifier, or null to use the default.
@@ -175,14 +175,14 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     }
 
     /** Handle the start of the XML document.
-     * 
+     *
      *  @exception Exception Not thrown in this base class.
      */
     public void startDocument() throws Exception {
     }
 
     /** Handle the start of an XML element.
-     *  
+     *
      *  @param elementName The name of the XML element.
      *  @exception Exception Not thrown in this base class.
      */
@@ -200,7 +200,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     }
 
     /** Handle the start of an external entity.
-     * 
+     *
      *  @param systemId The system ID of the external entity.
      *  @exception Exception Not thrown in this base class.
      */
@@ -227,7 +227,7 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
     ////                         constructor                       ////
 
     /** Construct an XML handler with the given XML tree as the current tree.
-     * 
+     *
      *  @param tree The initial XML tree.
      *  @param systemId The system ID of the document type.
      */

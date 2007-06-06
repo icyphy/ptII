@@ -42,7 +42,7 @@ import java.util.NoSuchElementException;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 
-/** 
+/**
  * A map which guarantees its key's iteration order. The entries in the
  * map are related by the <i>natural ordering</i> of the keys if they
  * are Comparable, or by the provided Comparator.  Additional operations
@@ -77,21 +77,21 @@ import ptolemy.backtrack.Rollbackable;
  */
 public interface SortedMap extends Map, Rollbackable {
 
-    /**     
+    /**
      * Returns the comparator used in sorting this map, or null if it is
      * the keys' natural ordering.
      * @return the sorting comparator
      */
     Comparator comparator();
 
-    /**     
+    /**
      * Returns the first (lowest sorted) key in the map.
      * @return the first key
      * @throws NoSuchElementException if this map is empty.
      */
     Object firstKey();
 
-    /**     
+    /**
      * Returns a view of the portion of the map strictly less than toKey. The
      * view is backed by this map, so changes in one show up in the other.
      * The submap supports all optional operations of the original.
@@ -111,14 +111,14 @@ public interface SortedMap extends Map, Rollbackable {
      */
     SortedMap headMap(Object toKey);
 
-    /**     
+    /**
      * Returns the last (highest sorted) key in the map.
      * @return the last key
      * @throws NoSuchElementException if this map is empty.
      */
     Object lastKey();
 
-    /**     
+    /**
      * Returns a view of the portion of the map greater than or equal to
      * fromKey, and strictly less than toKey. The view is backed by this map,
      * so changes in one show up in the other. The submap supports all
@@ -144,7 +144,7 @@ public interface SortedMap extends Map, Rollbackable {
      */
     SortedMap subMap(Object fromKey, Object toKey);
 
-    /**     
+    /**
      * Returns a view of the portion of the map greater than or equal to
      * fromKey. The view is backed by this map, so changes in one show up
      * in the other. The submap supports all optional operations of the original.

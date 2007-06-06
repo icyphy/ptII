@@ -30,7 +30,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -104,7 +103,7 @@ public class RuleEditor extends JDialog implements ActionListener {
         _createComponents();
         resetTable(initialRules);
     }
-    
+
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if ("add".equals(command)) {
@@ -117,7 +116,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             cancel();
         }
     }
-    
+
     public void addNewRow() {
         try {
             Row row = new Row(_ruleClasses.get(0).newInstance());
@@ -127,23 +126,23 @@ public class RuleEditor extends JDialog implements ActionListener {
                     "rule instance.");
         }
     }
-    
+
     public void cancel() {
         setVisible(false);
         _isCanceled = true;
     }
-    
+
     public void centerOnScreen() {
         Toolkit tk = Toolkit.getDefaultToolkit();
         setLocation((tk.getScreenSize().width - getSize().width) / 2,
                  (tk.getScreenSize().height - getSize().height) / 2);
     }
-    
+
     public void commit() {
         setVisible(false);
         _isCanceled = false;
     }
-    
+
     public RuleList getRuleList() {
         RuleList list = new RuleList();
         Vector<?> dataVector = _tableModel.getDataVector();
@@ -155,11 +154,11 @@ public class RuleEditor extends JDialog implements ActionListener {
         }
         return list;
     }
-    
+
     public boolean isCanceled() {
         return _isCanceled;
     }
-    
+
     public void removeSelectedRows() {
         _editor.stopCellEditing();
         int[] rows = _table.getSelectedRows();
@@ -167,7 +166,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             _tableModel.removeRow(rows[i] - j);
         }
     }
-    
+
     public void resetTable(RuleList ruleList) {
         _tableModel.getDataVector().removeAllElements();
         for (Rule rule : ruleList) {
@@ -175,7 +174,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             _tableModel.addRow(new Object[] {row, row});
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     public static void searchRuleClasses(String[] packages,
             ClassLoader loader) {
@@ -216,24 +215,24 @@ public class RuleEditor extends JDialog implements ActionListener {
             }
         }
     }
-    
+
     public static int ROW_HEIGHT = 42;
-    
+
     public static Color ROW_SELECTED_COLOR = new Color(230, 230, 255);
-    
+
     public static Color ROW_UNSELECTED_COLOR = Color.WHITE;
-    
+
     /**
      * @author tfeng
      *
      * @see VisibleParameterEditorFactory
      */
     public static class Factory extends EditorFactory {
-        
+
         public Factory(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
             super(container, name);
-            
+
             attributeName = new StringAttribute(this, "attributeName");
         }
 
@@ -251,12 +250,12 @@ public class RuleEditor extends JDialog implements ActionListener {
                 _editor.pack();
                 _editor.centerOnScreen();
                 _editor.setVisible(true);
-                
+
                 if (!_editor.isCanceled()) {
                     RuleList list = _editor.getRuleList();
                     String listString = list.toString();
                     attributeToEdit.setExpression(listString);
-                    
+
                     String moml = "<property name=\"" + name + "\" value=\""
                             + StringUtilities.escapeForXML(listString)
                             + "\"/>";
@@ -269,14 +268,14 @@ public class RuleEditor extends JDialog implements ActionListener {
                         "Cannot get specified string attribute to edit.", ex);
             }
         }
-        
+
         public StringAttribute attributeName;
 
         private RuleEditor _editor;
-        
+
         private static final long serialVersionUID = 6581490244784855795L;
     }
-    
+
     protected void _createComponents() {
         _tableModel = new DefaultTableModel(
                 new Object[] {"Class", "Attributes"}, 0);
@@ -296,7 +295,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             (DefaultTableCellRenderer) header.getDefaultRenderer();
         renderer.setHorizontalAlignment(SwingConstants.CENTER);
         renderer.setPreferredSize(new Dimension(0, 22));
-        
+
         _editor = new AttributesEditor();
         TableColumnModel model = _table.getColumnModel();
         model.getColumn(0).setCellEditor(_editor);
@@ -305,7 +304,7 @@ public class RuleEditor extends JDialog implements ActionListener {
         model.getColumn(1).setCellRenderer(_editor);
         JScrollPane scrollPane = new JScrollPane(_table);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
-        
+
         JPanel buttonsPanel = new JPanel();
         _addButton = new JButton("Add");
         _addButton.setActionCommand("add");
@@ -323,12 +322,12 @@ public class RuleEditor extends JDialog implements ActionListener {
         _cancelButton = new JButton("Cancel");
         _cancelButton.setActionCommand("cancel");
         _cancelButton.addActionListener(this);
-        
+
         buttonsPanel.add(_cancelButton);
         getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
         model.getColumn(0).setPreferredWidth(100);
         model.getColumn(1).setPreferredWidth(300);
-        
+
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -336,7 +335,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             }
         });
     }
-    
+
     @SuppressWarnings("unchecked")
     protected Rule _createRuleFromRow(Row row) {
         JComboBox classSelector = row.getClassSelector();
@@ -350,7 +349,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             throw new KernelRuntimeException(e, "Unable to create rule from " +
                     "class \"" + ruleClass.getName() + "\".");
         }
-        
+
         JTable attributeTable = row.getAttributeTable();
         DefaultTableModel attributeModel =
             (DefaultTableModel) attributeTable.getModel();
@@ -364,10 +363,10 @@ public class RuleEditor extends JDialog implements ActionListener {
                         ((JTextField) attributeField).getText());
             }
         }
-        
+
         return rule;
     }
-    
+
     private static boolean _isSubclass(Class<?> subclass, Class<?> superclass) {
         if (subclass == null) {
             return false;
@@ -377,7 +376,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             return _isSubclass(subclass.getSuperclass(), superclass);
         }
     }
-    
+
     private static void _setCaretForAllJTextFields(JPanel panel,
             boolean visible) {
         for (Component c : panel.getComponents()) {
@@ -386,31 +385,31 @@ public class RuleEditor extends JDialog implements ActionListener {
             }
         }
     }
-    
+
     private JButton _addButton;
-    
+
     private JButton _cancelButton;
-    
+
     private JButton _commitButton;
-    
+
     private AttributesEditor _editor;
-    
+
     private boolean _isCanceled = false;
-    
+
     private JButton _removeButton;
-    
+
     private static List<Class<? extends Rule>> _ruleClasses =
         new LinkedList<Class<? extends Rule>>();
-    
+
     private JTable _table;
 
     private DefaultTableModel _tableModel;
-    
+
     private static final long serialVersionUID = -2788727943126991098L;
-    
+
     private static class AttributesEditor extends AbstractCellEditor
     implements TableCellEditor, TableCellRenderer {
-        
+
         public Object getCellEditorValue() {
             return _currentRow;
         }
@@ -428,7 +427,7 @@ public class RuleEditor extends JDialog implements ActionListener {
                     .setBackground(color);
             return column == 0 ? leftPanel : rightPanel;
         }
-        
+
         public Component getTableCellRendererComponent(JTable table,
                 Object value, boolean isSelected, boolean hasFocus, int row,
                 int column) {
@@ -441,7 +440,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             rightPanel.setBackground(color);
             currentRow.getAttributeTable().getTableHeader()
                     .setBackground(color);
-            
+
             if (column == 0) {
                 DefaultTableModel attributeModel =
                     (DefaultTableModel) currentRow._attributeTable.getModel();
@@ -454,47 +453,47 @@ public class RuleEditor extends JDialog implements ActionListener {
             }
             return column == 0 ? leftPanel : rightPanel;
         }
-        
+
         private Row _currentRow;
-        
+
         private static final long serialVersionUID = -8545086228933217848L;
-        
+
     }
-    
+
     private static class ComboElement {
-        
+
         public ComboElement(Rule rule) {
             _ruleClass = rule.getClass();
             _rule = rule;
         }
-        
+
         public Rule getRule() {
             return _rule;
         }
-        
+
         public Class<?> getRuleClass() {
             return _ruleClass;
         }
-        
+
         public String toString() {
             return _ruleClass.getSimpleName();
         }
-        
+
         private Rule _rule;
-        
+
         private Class<?> _ruleClass;
     }
-    
+
     private static class JPanelCellEditor extends AbstractCellEditor
     implements TableCellEditor, TableCellRenderer, ActionListener {
-        
+
         public void actionPerformed(ActionEvent e) {
         }
 
         public Object getCellEditorValue() {
             return _currentValue;
         }
-        
+
         public Component getTableCellEditorComponent(JTable table,
                 Object value,
                 boolean isSelected,
@@ -505,7 +504,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             _currentValue = panel;
             return panel;
         }
-        
+
         public Component getTableCellRendererComponent(
                 JTable table, Object value,
                 boolean isSelected, boolean hasFocus,
@@ -514,14 +513,14 @@ public class RuleEditor extends JDialog implements ActionListener {
             _setCaretForAllJTextFields(panel, false);
             return panel;
         }
-        
+
         private JPanel _currentValue;
-        
+
         private static final long serialVersionUID = -3898792308707116805L;
     }
-    
+
     private class Row implements ItemListener {
-        
+
         public Row(Rule rule) {
             _rightPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 
@@ -533,13 +532,13 @@ public class RuleEditor extends JDialog implements ActionListener {
             header.setPreferredSize(new Dimension(0, 18));
             header.setOpaque(false);
             header.setBackground(Color.WHITE);
-            
+
             _attributeTable.setCellSelectionEnabled(false);
             _attributeTable.setIntercellSpacing(new Dimension(10, 0));
             _attributeTable.setShowGrid(false);
             _attributeTable.setOpaque(false);
             _attributeTable.setRowHeight(ROW_HEIGHT - 18);
-            
+
             JScrollPane scrollPane = new JScrollPane(_attributeTable,
                     JScrollPane.VERTICAL_SCROLLBAR_NEVER,
                     JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -547,7 +546,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             scrollPane.getViewport().setOpaque(false);
             scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
             _rightPanel.add(scrollPane, BorderLayout.CENTER);
-            
+
             Class<?> ruleClass = rule.getClass();
             _classSelector.addItemListener(this);
             for (Class<? extends Rule> listedRule : _ruleClasses) {
@@ -576,27 +575,27 @@ public class RuleEditor extends JDialog implements ActionListener {
             _leftPanel.add(_classSelector, BorderLayout.CENTER);
             _leftPanel.setBorder(new EmptyBorder(0, 5, 3, 5));
         }
-        
+
         public JTable getAttributeTable() {
             return _attributeTable;
         }
-        
+
         public JComboBox getClassSelector() {
             return _classSelector;
         }
-        
+
         public JPanel getLeftPanel() {
             return _leftPanel;
         }
-        
+
         public JPanel getRightPanel() {
             return _rightPanel;
         }
-        
+
         public void itemStateChanged(ItemEvent e) {
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 _initRightPanel();
-                
+
                 DefaultTableModel tableModel =
                     (DefaultTableModel) _table.getModel();
                 for (int i = 0; i < tableModel.getRowCount(); i++) {
@@ -606,7 +605,7 @@ public class RuleEditor extends JDialog implements ActionListener {
                 }
             }
         }
-        
+
         protected JComponent _getComponent(RuleAttribute attribute) {
             JComponent component = null;
             if (attribute.getType() == RuleAttribute.STRING) {
@@ -615,7 +614,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             }
             return component;
         }
-        
+
         protected void _initRightPanel() {
             ComboElement selectedElement =
                 (ComboElement) _classSelector.getSelectedItem();
@@ -629,27 +628,27 @@ public class RuleEditor extends JDialog implements ActionListener {
             _attributeTable.setModel(tableModel);
 
             TableColumnModel columnModel = _attributeTable.getColumnModel();
-            
+
             for (int i = 0; i < attributes.length; i++) {
                 RuleAttribute attribute = attributes[i];
-                
+
                 JComponent component = _getComponent(attribute);
                 _setComponentValue(attribute, component,
                         rule.getAttributeValue(i));
                 _components[i] = component;
-                
+
                 JPanel panel = new JPanel(new BorderLayout());
                 panel.setBorder(new EmptyBorder(2, 0, 4, 0));
                 panel.setOpaque(false);
                 panel.add(component, BorderLayout.CENTER);
-                
+
                 tableModel.addColumn(attribute.getName(), new Object[] {panel});
 
                 TableColumn column =
                     _attributeTable.getColumnModel().getColumn(i + 1);
                 column.setHeaderValue(attribute.getName());
             }
-            
+
             columnModel.removeColumn(columnModel.getColumn(0));
 
             int columnCount = columnModel.getColumnCount();
@@ -658,24 +657,24 @@ public class RuleEditor extends JDialog implements ActionListener {
                 columnModel.getColumn(i).setCellRenderer(_cellEditor);
             }
         }
-        
+
         protected void _setComponentValue(RuleAttribute attribute,
                 JComponent component, Object value) {
             if (attribute.getType() == RuleAttribute.STRING) {
                 ((JTextField) component).setText((String) value);
             }
         }
-        
+
         private JTable _attributeTable = new JTable();
-        
+
         private JPanelCellEditor _cellEditor = new JPanelCellEditor();
-        
+
         private JComboBox _classSelector = new JComboBox();
-        
+
         private JComponent[] _components;
-        
+
         private JPanel _leftPanel = new JPanel(new BorderLayout());
-        
+
         private JPanel _rightPanel = new JPanel(new BorderLayout());
     }
 

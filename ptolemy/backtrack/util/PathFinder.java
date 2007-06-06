@@ -199,7 +199,7 @@ public class PathFinder {
 
     /**
      *  Filter out all the files in a directory, except for sub-directories.
-     *  
+     *
      *  @author Thomas Feng
      *  @version $Id$
      *  @since Ptolemy II 5.1

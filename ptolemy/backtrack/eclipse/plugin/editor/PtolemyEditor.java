@@ -69,7 +69,7 @@ public class PtolemyEditor extends CompilationUnitEditor {
 
     /** Add a reconciling listener to the list of reconciling listeners to be
      *  notified.
-     *  
+     *
      *  @param listener The reconciling listener to be added.
      *  @see #removeJavaReconcileListener(IJavaReconcilingListener)
      */
@@ -81,7 +81,7 @@ public class PtolemyEditor extends CompilationUnitEditor {
 
     /** Create the controls for this editor, and install the semantic
      *  highlighting handler.
-     * 
+     *
      *  @param parent The parent of the editor.
      */
     public void createPartControl(Composite parent) {
@@ -92,7 +92,7 @@ public class PtolemyEditor extends CompilationUnitEditor {
 
     /** Get the Java element wrapped by this editors input. This method is the
      *  same as the overridden method in the superclass. It is made public.
-     *  
+     *
      *  @return The Java element wrapped by this editors input.
      */
     public IJavaElement getInputJavaElement() {
@@ -100,7 +100,7 @@ public class PtolemyEditor extends CompilationUnitEditor {
     }
 
     /** Notify all the reconsiling listeners after reconciliation is performed.
-     * 
+     *
      *  @param ast The compilation unit of the Java source.
      *  @param forced Whether the reconciliation is forced.
      *  @param progressMonitor The progress monitor to handle the reconcilation
@@ -121,7 +121,7 @@ public class PtolemyEditor extends CompilationUnitEditor {
 
     /** Remove a reconciling listener from the list of reconciling listeners
      *  to be notified.
-     *  
+     *
      *  @param listener The reconciling listener to be removed.
      *  @see #addJavaReconcileListener(IJavaReconcilingListener)
      */
@@ -135,7 +135,7 @@ public class PtolemyEditor extends CompilationUnitEditor {
     ////                      protected methods                    ////
 
     /** Install the semantic highlighting handler.
-     * 
+     *
      *  @param colorManager The color manager with the color settings.
      */
     protected void _installSemanticHighlighting(IColorManager colorManager) {

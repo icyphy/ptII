@@ -215,7 +215,7 @@ public class TypeAnalyzerState {
     }
 
     /** Return whether a name refers to a variable in the variable stack.
-     * 
+     *
      *  @param name The name.
      *  @return true if the name refers to a defined variable.
      */
@@ -351,14 +351,14 @@ public class TypeAnalyzerState {
 
     /** A table to hold the current class, which is the only object in the
      *  table.
-     * 
+     *
      *  @author tfeng
      */
     public static class CurrentClassElement extends Hashtable<String, Class> {
 
         /** Construct a table with a single element (the current class object)
          *  in it.
-         * 
+         *
          *  @param currentClass The current class.
          */
         public CurrentClassElement(Class currentClass) {
@@ -366,7 +366,7 @@ public class TypeAnalyzerState {
         }
 
         /** Get the current class element recorded in this table.
-         * 
+         *
          *  @return The current class element.
          */
         public Class getCurrentClassElement() {

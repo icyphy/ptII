@@ -130,7 +130,7 @@ public class SortMembersUtility {
 
         /** Compare two body declarations and return a number reflecting
          *  the order between them.
-         *  
+         *
          *  @param bodyDeclaration1 The first body declaration.
          *  @param bodyDeclaration2 The second body declaration.
          *  @return -1 if the first body declaration should be sorted before

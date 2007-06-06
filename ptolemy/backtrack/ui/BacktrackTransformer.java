@@ -14,11 +14,11 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
@@ -62,10 +62,10 @@ public class BacktrackTransformer {
 
     /** Transform a model by replacing the actors with existing backtracking
      *  versions, and return the resulting model.
-     *  
+     *
      *  Each transformed actor has a "_decorate" attribute. It adds a small
      *  backtracking decoration to the actor's icon.
-     *  
+     *
      *  @param model The model to be transformed.
      *  @return The transformed model.
      *  @exception IllegalActionException If the parser fails to parse the
@@ -134,7 +134,7 @@ public class BacktrackTransformer {
      The MoML filter that renames the actor classes in the model, if there are
      backtracking versions for them. No change is done on the actor classes
      that do not have backtracking versions.
-     
+
      @author Thomas Feng
      @version $Id$
      @since Ptolemy II 5.1
@@ -144,7 +144,7 @@ public class BacktrackTransformer {
     private static class RenameClassMoMLFilter implements MoMLFilter {
 
         /** Return the entities that are changed during the last XML parsing.
-         * 
+         *
          *  @return The entities that are changed.
          */
         public Iterator<NamedObj> entitiesChanged() {
@@ -154,7 +154,7 @@ public class BacktrackTransformer {
         /** Filter the value of the attribute. If the attribute corresponds to
          *  a Ptolemy actor with a backtracking version, its class name is
          *  changed to the class name of its backtracking version.
-         *  
+         *
          *  @param container The container of the attribute.
          *  @param element The XML element.
          *  @param attributeName The attribute name.
@@ -205,7 +205,7 @@ public class BacktrackTransformer {
          *  to its backtracking version, the MoML description of the original
          *  actor's icon is copied to the new model, because the backtracking
          *  version does not have an icon associated with it.
-         *  
+         *
          *  @param container The container of the element.
          *  @param The XML element to be closed.
          *  @exception IllegalActionException If the MoML of the original
@@ -238,7 +238,7 @@ public class BacktrackTransformer {
         public static final String MANUAL_PREFIX = "ptolemy.backtrack.manual";
 
         /** Test whether a class with the given name can be found.
-         * 
+         *
          *  @param className The name of the class.
          *  @return true if the class is found; false, otherwise.
          */
@@ -253,7 +253,7 @@ public class BacktrackTransformer {
 
         /** Copy the icon of the last modified class (of a Ptolemy actor) to the
          *  MoML within the container's context.
-         *  
+         *
          *  @param container The container.
          *  @exception IllegalActionException If the parsing is not successful.
          */
@@ -277,13 +277,13 @@ public class BacktrackTransformer {
         }
 
         /** Get the new name for class to be changed to its backtracking
-         *  version. If the class has a manually written backtracking version, 
+         *  version. If the class has a manually written backtracking version,
          *  the name of that backtracking version will be returned; if there is
          *  no manually written backtracking version for it, but there is an
          *  automatically generated backtracking version, the automatically
          *  name of the generated version will be returned; otherwise, null will
          *  be returned.
-         *  
+         *
          *  @param oldClassName The name of the class before change.
          *  @return The new class name, or null.
          */
@@ -300,7 +300,7 @@ public class BacktrackTransformer {
         }
 
         /** Parse the content in the reader within the context of the container.
-         * 
+         *
          *  @param reader The reader to be read from.
          *  @param container The context of the parsing.
          *  @return The NamedObj returned by the parser.

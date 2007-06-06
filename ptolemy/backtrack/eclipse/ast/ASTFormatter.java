@@ -256,7 +256,7 @@ public class ASTFormatter extends ASTVisitor {
     }
 
     /** Handle an AST node before it is visited.
-     * 
+     *
      *  @param node The AST node.
      */
     public void postVisit(ASTNode node) {
@@ -268,7 +268,7 @@ public class ASTFormatter extends ASTVisitor {
     }
 
     /** Handle an AST node after it is visited.
-     * 
+     *
      *  @param node The AST node.
      */
     public void preVisit(ASTNode node) {
@@ -281,7 +281,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -308,7 +308,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -335,7 +335,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -355,7 +355,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -369,7 +369,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -408,7 +408,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -436,7 +436,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -448,7 +448,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -468,7 +468,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -481,7 +481,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -508,7 +508,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -520,7 +520,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -536,7 +536,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -555,7 +555,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -569,7 +569,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -583,7 +583,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -594,7 +594,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -643,7 +643,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -702,7 +702,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -717,7 +717,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -760,7 +760,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -779,7 +779,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -811,7 +811,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -823,7 +823,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -840,7 +840,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -884,7 +884,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -946,7 +946,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -959,7 +959,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -972,7 +972,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1005,7 +1005,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1058,7 +1058,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1115,7 +1115,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1141,7 +1141,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1164,7 +1164,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1183,7 +1183,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1196,7 +1196,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1218,7 +1218,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1232,7 +1232,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1244,7 +1244,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1256,7 +1256,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1272,7 +1272,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1285,7 +1285,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1371,7 +1371,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1418,7 +1418,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1446,7 +1446,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1463,7 +1463,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1474,7 +1474,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1498,7 +1498,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1509,7 +1509,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1520,7 +1520,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1549,7 +1549,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1572,7 +1572,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1585,7 +1585,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1597,7 +1597,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1609,7 +1609,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1620,7 +1620,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1633,7 +1633,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1646,7 +1646,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1665,7 +1665,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1676,7 +1676,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1686,7 +1686,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1701,7 +1701,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1731,7 +1731,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1742,7 +1742,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1790,7 +1790,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1807,7 +1807,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1856,7 +1856,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1876,7 +1876,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1908,7 +1908,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1923,7 +1923,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1983,7 +1983,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -1994,7 +1994,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -2010,7 +2010,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -2024,7 +2024,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -2051,7 +2051,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -2144,7 +2144,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -2156,7 +2156,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -2168,7 +2168,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -2193,7 +2193,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -2218,7 +2218,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -2239,7 +2239,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -2267,7 +2267,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -2293,7 +2293,7 @@ public class ASTFormatter extends ASTVisitor {
 
     /** Visit an ast node, and return whether its children should be further
      *  visited.
-     *  
+     *
      *  @param node The AST node.
      *  @return Whether its children should be further visited.
      */
@@ -2319,7 +2319,7 @@ public class ASTFormatter extends ASTVisitor {
     ////                      private methods                      ////
 
     /** Check the comments from the start position.
-     * 
+     *
      *  @param startPosition The start position.
      */
     private void _checkComments(int startPosition) {
@@ -2369,7 +2369,7 @@ public class ASTFormatter extends ASTVisitor {
     }
 
     /** Return the source code from the start position of the given length.
-     * 
+     *
      *  @param startPosition The start position.
      *  @param length The length.
      *  @return The source code.
@@ -2430,7 +2430,7 @@ public class ASTFormatter extends ASTVisitor {
     }
 
     /** Output the next comment.
-     * 
+     *
      *  @exception IOException If error occurs while writing to the output.
      */
     private void _nextComment() throws IOException {

@@ -18,7 +18,7 @@ public class StandardizeTabsSpacesEditorAction implements IWorkbenchWindowAction
     }
 
     /** Sort the source code in the editor.
-     * 
+     *
      *  @param action The action proxy (not used in this method).
      */
     public void run(IAction action) {
@@ -30,7 +30,7 @@ public class StandardizeTabsSpacesEditorAction implements IWorkbenchWindowAction
     }
 
     /** Handle the change of selection.
-     * 
+     *
      *  @param action The action proxy (not used in this method).
      *  @param selection The new selection (not used in this method).
      */

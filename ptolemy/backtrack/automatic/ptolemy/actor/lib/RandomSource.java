@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * A base class for sources of random numbers.
  * It uses the class java.util.Random.
  * This base class manages the seed.
@@ -61,7 +61,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * The seed that controls the random number generation.
      * A seed of zero is interpreted to mean that no seed is specified,
      * which means that each execution of the model could result in
@@ -84,18 +84,18 @@ public abstract class RandomSource extends Source implements Rollbackable {
     ////                         protected variables               ////
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**     
-     * The Random object. 
+    /**
+     * The Random object.
      */
     protected Random _random = (Random) new Random()
             .$SET$CHECKPOINT($CHECKPOINT);
 
-    /**     
-     * Indicator that a new random number is needed. 
+    /**
+     * Indicator that a new random number is needed.
      */
     private boolean _needNew = false;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -113,7 +113,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
                 .setToken(BooleanToken.TRUE);
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace. This calls the
      * base class and then creates new ports and parameters.
      * @param workspace The workspace for the new object.
@@ -127,7 +127,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * Generate a new random number if this is the first firing
      * of the iteration.
      * @exception IllegalActionException If there is no director.
@@ -140,7 +140,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Calculate the next random number.
      * @exception IllegalActionException If the base class throws it.
      * @return True if it is ok to continue.
@@ -150,7 +150,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
         return super.postfire();
     }
 
-    /**     
+    /**
      * Initialize the random number generator with the seed, if it
      * has been given.  A seed of zero is interpreted to mean that no
      * seed is specified.  In such cases, a seed based on the current
@@ -169,7 +169,7 @@ public abstract class RandomSource extends Source implements Rollbackable {
         $ASSIGN$_needNew(true);
     }
 
-    /**     
+    /**
      * Generate a new random number.
      * @exception IllegalActionException Not thrown in this base class.
      * Derived classes may throw it if there are problems getting parameter

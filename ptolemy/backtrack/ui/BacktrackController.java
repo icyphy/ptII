@@ -14,11 +14,11 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
@@ -62,7 +62,7 @@ public class BacktrackController {
      *  longer roll back to that checkpoint, or any other checkpoint taken
      *  before that one. Memory allocated for the committed checkpoints will be
      *  released.
-     * 
+     *
      *  @param handle The handle of the checkpoint to be committed.
      */
     public void commit(long handle) {
@@ -84,16 +84,16 @@ public class BacktrackController {
 
     /** Create a checkpoint for the given composite actor, and return the
      *  checkpoint handle.
-     *  
+     *
      *  This checkpoint handle is different from the checkpoint handles returned
      *  by {@link Checkpoint#createCheckpoint()}, which are the internal
-     *  representations of checkpoint timestamps. This checkpoint handle, 
+     *  representations of checkpoint timestamps. This checkpoint handle,
      *  however, refers to a collection of checkpoint timestamps for different
      *  checkpoint objects that manage different entities in the container.
-     *  
+     *
      *  The returned checkpoint handle can only be used with {@link
      *  #commit(long)} and {@link #rollback(long, boolean)} in this class.
-     * 
+     *
      *  @param container The composite actor for which a checkpoint will be
      *   created.
      *  @return The checkpoint handle.
@@ -120,12 +120,12 @@ public class BacktrackController {
 
     /** Roll back the system state with the records in the checkpoint with the
      *  given handle.
-     *  
+     *
      *  If the checkpoint objects that monitor the entities in the composite
-     *  actor are not changed since the time when the checkpoint was created, 
+     *  actor are not changed since the time when the checkpoint was created,
      *  this rollback only affects that composite actor and its children. This
      *  is true in most of the cases, but it is not guaranteed.
-     * 
+     *
      *  @param handle The checkpoint handle previous returned by {@link
      *   #createCheckpoint(CompositeActor)}.
      *  @param trim Whether the records in the checkpoint should be deleted. If

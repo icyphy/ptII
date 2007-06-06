@@ -321,7 +321,7 @@ public class SemanticHighlightingPresenter implements
     }
 
     /** Test whether the current reconcile is canceled.
-     * 
+     *
      *  @return true iff the current reconcile is canceled.
      */
     public boolean isCanceled() {

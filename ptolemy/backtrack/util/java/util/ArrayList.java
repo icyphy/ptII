@@ -49,7 +49,7 @@ import java.util.RandomAccess;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * An array-backed implementation of the List interface.  This implements
  * all optional list operations, and permits null elements, so that it is
  * better than Vector, which it replaces. Random access is roughly constant
@@ -85,28 +85,28 @@ import ptolemy.backtrack.util.FieldRecord;
 public class ArrayList extends AbstractList implements List, RandomAccess,
         Cloneable, Serializable, Rollbackable {
 
-    /**     
+    /**
      * Compatible with JDK 1.2
      */
     private static final long serialVersionUID = 8683452581122892189L;
 
-    /**     
+    /**
      * The default capacity for new ArrayLists.
      */
     private static final int DEFAULT_CAPACITY = 16;
 
-    /**     
+    /**
      * The number of elements in this list.
      * @serial the list size
      */
     private int size;
 
-    /**     
+    /**
      * Where the data is stored.
      */
     private transient Object[] data;
 
-    /**     
+    /**
      * Construct a new ArrayList with the supplied initial capacity.
      * @param capacity initial capacity of this ArrayList
      * @throws IllegalArgumentException if capacity is negative
@@ -119,14 +119,14 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         $ASSIGN$data(new Object[capacity]);
     }
 
-    /**     
+    /**
      * Construct a new ArrayList with the default capacity (16).
      */
     public ArrayList() {
         this(DEFAULT_CAPACITY);
     }
 
-    /**     
+    /**
      * Construct a new ArrayList, and initialize it with the elements
      * in the supplied Collection. The initial capacity is 110% of the
      * Collection's size.
@@ -138,7 +138,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         addAll(c);
     }
 
-    /**     
+    /**
      * Trims the capacity of this List to be equal to its size;
      * a memory saver.
      */
@@ -152,7 +152,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         }
     }
 
-    /**     
+    /**
      * Guarantees that this list will have at least enough capacity to
      * hold minCapacity elements. This implementation will grow the list to
      * max(current * 2, minCapacity) if (minCapacity &gt; current). The JCL says
@@ -170,7 +170,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         }
     }
 
-    /**     
+    /**
      * Returns the number of elements in this list.
      * @return the list size
      */
@@ -178,7 +178,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return size;
     }
 
-    /**     
+    /**
      * Checks if the list is empty.
      * @return true if there are no elements
      */
@@ -186,7 +186,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return size == 0;
     }
 
-    /**     
+    /**
      * Returns true iff element is in this ArrayList.
      * @param e the element whose inclusion in the List is being tested
      * @return true if the list contains e
@@ -195,7 +195,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return indexOf(e) != -1;
     }
 
-    /**     
+    /**
      * Returns the lowest index at which element appears in this List, or
      * -1 if it does not appear.
      * @param e the element whose inclusion in the List is being tested
@@ -210,7 +210,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return -1;
     }
 
-    /**     
+    /**
      * Returns the highest index at which element appears in this List, or
      * -1 if it does not appear.
      * @param e the element whose inclusion in the List is being tested
@@ -225,7 +225,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return -1;
     }
 
-    /**     
+    /**
      * Creates a shallow copy of this ArrayList (elements are not cloned).
      * @return the cloned object
      */
@@ -240,7 +240,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return clone;
     }
 
-    /**     
+    /**
      * Returns an Object array containing all of the elements in this ArrayList.
      * The array is independent of this list.
      * @return an array representation of this list
@@ -251,7 +251,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return array;
     }
 
-    /**     
+    /**
      * Returns an Array whose component type is the runtime component type of
      * the passed-in Array.  The returned Array is populated with all of the
      * elements in this ArrayList.  If the passed-in Array is not large enough
@@ -275,7 +275,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return a;
     }
 
-    /**     
+    /**
      * Retrieves the element at the user-supplied index.
      * @param index the index of the element we are fetching
      * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
@@ -285,7 +285,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return data[index];
     }
 
-    /**     
+    /**
      * Sets the element at the specified index.  The new element, e,
      * can be an object of any type or null.
      * @param index the index at which the element is being set
@@ -300,7 +300,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return result;
     }
 
-    /**     
+    /**
      * Appends the supplied element to the end of this list.
      * The element, e, can be an object of any type or null.
      * @param e the element to be appended to this list
@@ -315,7 +315,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return true;
     }
 
-    /**     
+    /**
      * Adds the supplied element at the specified index, shifting all
      * elements currently at that index or higher one to the right.
      * The element, e, can be an object of any type or null.
@@ -337,7 +337,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         $ASSIGN$SPECIAL$size(11, size);
     }
 
-    /**     
+    /**
      * Removes the element at the user-supplied index.
      * @param index the index of the element to be removed
      * @return the removed Object
@@ -356,7 +356,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return r;
     }
 
-    /**     
+    /**
      * Removes all elements from this List
      */
     public void clear() {
@@ -368,7 +368,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         }
     }
 
-    /**     
+    /**
      * Add each element in the supplied Collection to this List. It is undefined
      * what happens if you modify the list while this is taking place; for
      * example, if the collection contains this list.  c can contain objects
@@ -381,7 +381,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return addAll(size, c);
     }
 
-    /**     
+    /**
      * Add all elements in the supplied collection, inserting them beginning
      * at the specified index.  c can contain objects of any type, as well
      * as null values.
@@ -410,7 +410,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return csize > 0;
     }
 
-    /**     
+    /**
      * Removes all elements in the half-open interval [fromIndex, toIndex).
      * Does nothing when toIndex is equal to fromIndex.
      * @param fromIndex the first index which will be removed
@@ -429,7 +429,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         }
     }
 
-    /**     
+    /**
      * Checks that the index is in the range of possible elements (inclusive).
      * @param index the index to check
      * @throws IndexOutOfBoundsException if index &gt; size
@@ -444,7 +444,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         }
     }
 
-    /**     
+    /**
      * Checks that the index is in the range of existing elements (exclusive).
      * @param index the index to check
      * @throws IndexOutOfBoundsException if index &gt;= size
@@ -459,7 +459,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         }
     }
 
-    /**     
+    /**
      * Remove from this list all elements contained in the given collection.
      * This is not public, due to Sun's API, but this performs in linear
      * time while the default behavior of AbstractList would be quadratic.
@@ -488,7 +488,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return true;
     }
 
-    /**     
+    /**
      * Retain in this vector only the elements contained in the given collection.
      * This is not public, due to Sun's API, but this performs in linear
      * time while the default behavior of AbstractList would be quadratic.
@@ -518,7 +518,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return true;
     }
 
-    /**     
+    /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
      * @throws IOException if the underlying stream fails
@@ -538,7 +538,7 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         }
     }
 
-    /**     
+    /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
      * @throws ClassNotFoundException if the underlying stream fails

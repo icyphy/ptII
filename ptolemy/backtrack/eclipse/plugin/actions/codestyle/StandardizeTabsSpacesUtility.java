@@ -13,14 +13,14 @@ public class StandardizeTabsSpacesUtility {
         if (!(editor instanceof JavaEditor)) {
             return;
         }
-        
+
         JavaEditor textEditor = (JavaEditor) editor;
         int caretPosition = textEditor.getViewer().getSelectedRange().x;
-        
+
         IDocument document = textEditor.getDocumentProvider().getDocument(
                 textEditor.getEditorInput());
         StringBuffer buffer = new StringBuffer(document.get());
-        
+
         // Replace tabs with spaces
         for (int i = 0; i >= 0;) {
             i = buffer.indexOf("\t", i);
@@ -38,31 +38,31 @@ public class StandardizeTabsSpacesUtility {
                 i++;
             }
         }
-        
+
         // Remove trailing spaces
         boolean finished = false;
         for (int eolPos = 0; !finished;) {
-        	char chr = '\0';
-        	
-        	int bufLength = buffer.length();
-        	int eolSize = 1;
-        	for (; eolPos < bufLength; eolPos++) {
-        		chr = buffer.charAt(eolPos);
-        		if (chr == '\n' || chr == '\r') {
-        			break;
-        		}
-        	}
-        	
+            char chr = '\0';
+
+            int bufLength = buffer.length();
+            int eolSize = 1;
+            for (; eolPos < bufLength; eolPos++) {
+                chr = buffer.charAt(eolPos);
+                if (chr == '\n' || chr == '\r') {
+                    break;
+                }
+            }
+
             if (eolPos == bufLength) {
                 finished = true;
             } else {
-            	if (chr == '\r' && eolPos + 1 < bufLength
-        				&& buffer.charAt(eolPos + 1) == '\n') {
-        			eolSize++;
-        			eolPos++;
-        		}
+                if (chr == '\r' && eolPos + 1 < bufLength
+                        && buffer.charAt(eolPos + 1) == '\n') {
+                    eolSize++;
+                    eolPos++;
+                }
             }
-            
+
             int spaceStart = eolPos - eolSize;
             for (; spaceStart >= 0; spaceStart--) {
                 if (buffer.charAt(spaceStart) != ' ') {
@@ -72,13 +72,13 @@ public class StandardizeTabsSpacesUtility {
             if (spaceStart + eolSize < eolPos) {
                 try {
                     document.replace(spaceStart + 1,
-                    		eolPos - (spaceStart + eolSize), "");
+                            eolPos - (spaceStart + eolSize), "");
                     buffer.replace(spaceStart + 1, eolPos - eolSize + 1, "");
                     if (eolPos < caretPosition) {
-                    	caretPosition -= eolPos - (spaceStart + eolSize);
+                        caretPosition -= eolPos - (spaceStart + eolSize);
                     } else if (spaceStart < caretPosition
-                    		&& eolPos >= caretPosition) {
-                    	caretPosition -= caretPosition - (spaceStart + 1);
+                            && eolPos >= caretPosition) {
+                        caretPosition -= caretPosition - (spaceStart + 1);
                     }
                     eolPos = spaceStart + eolSize;
                 } catch (BadLocationException e) {
@@ -87,7 +87,7 @@ public class StandardizeTabsSpacesUtility {
             }
             eolPos++;
         }
-        
+
         // Add a new line to the end of file
         int docLength = document.getLength();
         try {
@@ -98,7 +98,7 @@ public class StandardizeTabsSpacesUtility {
         } catch (BadLocationException e) {
             OutputConsole.outputError(e.getMessage());
         }
-        
+
         textEditor.getViewer().setSelectedRange(caretPosition, 0);
     }
 }

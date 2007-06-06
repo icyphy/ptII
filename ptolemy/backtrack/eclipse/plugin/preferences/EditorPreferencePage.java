@@ -67,7 +67,7 @@ public class EditorPreferencePage extends SectionPreferencePage implements
 
     /** Create the contents of the preference page with the parent as its
      *  container.
-     *  
+     *
      *  @param parent The parent container.
      *  @return The parent itself.
      */

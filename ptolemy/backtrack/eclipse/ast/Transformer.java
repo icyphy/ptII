@@ -528,7 +528,7 @@ public class Transformer {
      *  @param writer The writer where the output is written.
      *  @param classPaths An array of explicit class paths, or <tt>null</tt>
      *   if none.
-     *   
+     *
      *  @exception  MalformedURLException If a classpath is not a proper URL.
      */
     private Transformer(String fileName, String[] classPaths)
