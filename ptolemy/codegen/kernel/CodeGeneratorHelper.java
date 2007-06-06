@@ -194,8 +194,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 while (sinks.hasNext()) {
                     Channel sink = (Channel) sinks.next();
                     TypedIOPort sinkPort = (TypedIOPort) sink.port;
-                    if (!targetType(sourcePort.getType()).equals(
-                            targetType(sinkPort.getType()))) {
+                    if (!sourcePort.getType().equals(sinkPort.getType())) {
                         _markTypeConvert(new Channel(sourcePort, j), sink);
                     }
                 }
@@ -1092,14 +1091,16 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     IOPort sinkPort = channel.port;
                     int sinkChannelNumber = channel.channelNumber;
 
-                    // Type convert.
-                    if (typeConvertSinks.contains(channel)) {
+                    // Type convert.                
+                    if (typeConvertSinks.contains(channel) && 
+                            isPrimitive(((TypedIOPort) sourceChannel.port).getType())) {
+                        
                         if (!hasTypeConvertReference) {
                             if (i != 0) {
                                 result.append(" = ");
                             }
-                            result
-                                    .append(_getTypeConvertReference(sourceChannel));
+                            result.append(_getTypeConvertReference(sourceChannel));
+                            
                             int rate = Math
                                     .max(
                                             DFUtilities
@@ -1270,6 +1271,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             // method if the output port does not have a remote receiver.
             return sinkChannels;
         }
+        
+        if (remoteReceivers[channelNumber] == null) {
+            throw new InternalErrorException("Channel "
+                    + channelNumber + " of Port \"" + port + "\" was null!");
+        }
 
         if (remoteReceivers[channelNumber] == null) {
             throw new InternalErrorException("Channel "
@@ -1304,11 +1310,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  is the length of its array if the parameter's type is array,
      *  and 1 otherwise.
      *  @param name The name of the parameter.
-     *  @return The size of a parameter.
+     *  @return The expression that represents the size of a parameter or port.
      *  @exception IllegalActionException If no port or parameter of
      *   the given name is found.
      */
-    public int getSize(String name) throws IllegalActionException {
+    public String getSize(String name) throws IllegalActionException {
 
         // Try if the name is a parameter.
         Attribute attribute = _component.getAttribute(name);
@@ -1319,15 +1325,26 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 Token token = ((Variable) attribute).getToken();
 
                 if (token instanceof ArrayToken) {
-                    return ((ArrayToken) token).length();
+                    return String.valueOf(((ArrayToken) token).length());
                 }
 
-                return 1;
+                return "1";
             }
         } else {
-            IOPort port = getPort(name);
+            TypedIOPort port = getPort(name);
             if (port != null) {
-                return port.getWidth();
+                if (port.isMultiport()) { 
+                    return String.valueOf(port.getWidth());
+                } else {
+                    Type type = port.getType();
+                    if (type instanceof ArrayType) {
+                        if (((ArrayType) type).hasKnownLength()) {
+                            return String.valueOf(((ArrayType) type).length());
+                        } else {
+                            return getReference(name) + ".payload.Array->size";
+                        }
+                    }
+                }
             }
         }
 
@@ -1924,16 +1941,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         // The references are associated with their own helper, so we need
         // to find the associated helper.       
-        //String sourcePortChannel = source.port.getName() + "#"
-        //        + source.channelNumber + ", " + offset;
-        //String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
-        //        .getContainer())).getReference(sourcePortChannel);
-        String sourceRef = _getTypeConvertReference(source);
-        int rate = Math.max(DFUtilities.getTokenProductionRate(source.port),
-                DFUtilities.getTokenConsumptionRate(source.port));
-        if (rate > 1) {
-            sourceRef += "[" + offset + "]";
-        }
+        String sourcePortChannel = source.port.getName() + "#"
+                + source.channelNumber + ", " + offset;
+        String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
+                .getContainer())).getReference(sourcePortChannel);
 
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
                 + ", " + offset;
@@ -1962,7 +1973,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         String result = sourceRef;
 
-        if (sinkType != sourceType) {
+        if (!sinkType.equals(sourceType)) {
             if (isPrimitive(sinkType)) {
 
                 result = codeGenType(sourceType) + "to" + codeGenType(sinkType)
@@ -1980,16 +1991,23 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         result = "$new(Array(1, 1, " + result + ", TYPE_"
                                 + codeGenType(sourceType) + "))";
                     }
+
+                    // Deep converting for ArrayType.
                     Type elementType = ((ArrayType) sinkType).getElementType();
-                    if (elementType != BaseType.SCALAR) {
+                    while (elementType instanceof ArrayType) {
+                        elementType = ((ArrayType) elementType).getElementType();
+                    }
+                    
+                    if (elementType != BaseType.SCALAR && elementType != BaseType.GENERAL) {
                         result = "$typeFunc(TYPE_"
                                 + codeGenType(sinkType)
                                 + "::convert("
                                 + result
-                                + ", (int) TYPE_"
+                                + ", TYPE_"
                                 + codeGenType(((ArrayType) sinkType)
                                         .getElementType()) + "))";
                     }
+                    
                 } else {
                     result = "$typeFunc(TYPE_" + codeGenType(sinkType)
                             + "::convert(" + result + "))";

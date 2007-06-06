@@ -37,6 +37,7 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.ExecuteCommands;
@@ -313,18 +314,25 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         Iterator channels = _getTypeConvertChannels().iterator();
         while (channels.hasNext()) {
             Channel channel = (Channel) channels.next();
-            code.append("static ");
-            code.append(targetType(((TypedIOPort) channel.port).getType()));
-            code.append(" " + _getTypeConvertReference(channel));
-
-            int bufferSize = Math.max(DFUtilities
-                    .getTokenProductionRate(channel.port), DFUtilities
-                    .getTokenConsumptionRate(channel.port));
-
-            if (bufferSize > 1) {
-                code.append("[" + bufferSize + "]");
+            Type portType = ((TypedIOPort) channel.port).getType();
+            
+            if (isPrimitive(portType)) {
+                
+                code.append("static ");
+                code.append(targetType(portType));
+                code.append(" " + _getTypeConvertReference(channel));
+    
+                //int bufferSize = getBufferSize(channel.port);
+                int bufferSize = Math.max(DFUtilities
+                        .getTokenProductionRate(channel.port), DFUtilities
+                        .getTokenConsumptionRate(channel.port));
+    
+                if (bufferSize > 1) {
+                    code.append("[" + bufferSize + "]");
+                }
+                code.append(";" + _eol);
             }
-            code.append(";" + _eol);
+            
         }
 
         return code.toString();
