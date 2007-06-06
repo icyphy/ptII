@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2001-2007 The Regents of the University of California.
+# @Copyright (c) 2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -44,9 +44,8 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	gt
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = \
-    rules/rules.jar
+	rules/rules.jar
 
 
 # Keep this list alphabetized.
