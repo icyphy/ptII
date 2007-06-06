@@ -69,12 +69,12 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	RuleEditor$$1.class \
-	RuleEditor$$AttributesEditor.class \
-	RuleEditor$$ComboElement.class \
-	RuleEditor$$Factory.class \
-	RuleEditor$$JPanelCellEditor.class \
-	RuleEditor$$Row.class
+	'RuleEditor$$1.class' \
+	'RuleEditor$$AttributesEditor.class' \
+	'RuleEditor$$ComboElement.class' \
+	'RuleEditor$$Factory.class' \
+	'RuleEditor$$JPanelCellEditor.class' \
+	'RuleEditor$$Row.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
