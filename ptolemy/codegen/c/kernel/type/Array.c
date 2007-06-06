@@ -22,6 +22,12 @@ void Array_resize(Token array, int size) {
 	array.payload.Array->elements = (Token*) realloc(array.payload.Array->elements, size * sizeof(Token));
 }
 
+void Array_insert(Token array, Token token) {
+    int oldSize = array.payload.Array->size++;
+    Array_resize(array, array.payload.Array->size);
+    array.payload.Array->elements[oldSize] = token;
+}
+
 /**/
 
 /***newBlock***/
@@ -67,6 +73,7 @@ Token Array_new(int size, int given, ...) {
     return result;
 }
 /**/
+
 
 /***deleteBlock***/
 Token Array_delete(Token token, ...) { 
