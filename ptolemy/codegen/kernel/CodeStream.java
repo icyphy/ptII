@@ -1003,7 +1003,10 @@ public class CodeStream {
                 Object[] codeObject = (Object[]) table.get(signature);
                 StringBuffer codeBlock = (StringBuffer) codeObject[1]; 
                 List parameters = (List) codeObject[2];
-                
+
+                codeBlock = 
+                    _substituteParameters(codeBlock, parameters, arguments);
+
                 String callExpression = 
                     "(\\$super\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)" +
                     "|(\\$this\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)" +
@@ -1066,10 +1069,6 @@ public class CodeStream {
                     returnCode.append(callCodeBlock);
                     returnCode.append(subBlocks[i]);
                 }
-
-                returnCode = 
-                    _substituteParameters(returnCode, parameters, arguments);
-
                 
                 return returnCode;
 
