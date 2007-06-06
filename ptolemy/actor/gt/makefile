@@ -44,7 +44,10 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	gt
-PTCLASSJAR = \
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
 	rules/rules.jar
 
 
