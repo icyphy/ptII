@@ -30,6 +30,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -285,9 +286,7 @@ public class RuleEditor extends JDialog implements ActionListener {
 
         JTableHeader header = _table.getTableHeader();
 
-        // This line does not compile under Java 1.5 because Java 1.5
-        // does not have Font.DIALOG.
-        //header.setFont(new Font(Font.DIALOG, Font.BOLD, 11));
+        header.setFont(new Font("Dialog", Font.BOLD, 11));
 
         header.setForeground(Color.BLUE);
         header.setReorderingAllowed(false);
