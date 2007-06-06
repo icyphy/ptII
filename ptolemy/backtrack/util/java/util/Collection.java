@@ -88,6 +88,14 @@ import ptolemy.backtrack.Rollbackable;
  */
 public interface Collection extends Rollbackable {
 
+    public void $COMMIT(long timestamp);
+
+    public Checkpoint $GET$CHECKPOINT();
+
+    public void $RESTORE(long timestamp, boolean trim);
+
+    public Object $SET$CHECKPOINT(Checkpoint checkpoint);
+
     /**
      * Add an element to this collection.
      * @param o the object to add.
@@ -273,13 +281,5 @@ public interface Collection extends Rollbackable {
      * collection is not a subtype of the element type of a.
      */
     Object[] toArray(Object[] a);
-
-    public void $COMMIT(long timestamp);
-
-    public void $RESTORE(long timestamp, boolean trim);
-
-    public Checkpoint $GET$CHECKPOINT();
-
-    public Object $SET$CHECKPOINT(Checkpoint checkpoint);
 
 }

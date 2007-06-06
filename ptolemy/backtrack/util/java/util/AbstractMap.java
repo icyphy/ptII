@@ -73,253 +73,40 @@ import ptolemy.backtrack.util.FieldRecord;
  */
 public abstract class AbstractMap implements Map, Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-    /**
-     * An "enum" of iterator types.
-     */
-    static final int KEYS = 0, VALUES = 1, ENTRIES = 2;
-
-    /**
-     * The cache for {
-     @link #keySet()    }
-     .
-     */
-    private Set keys;
-
-    /**
-     * The cache for {
-     @link #values()    }
-     .
-     */
-    private Collection values;
-
-    // Clear out the caches; they are stale.
-    // Must get the value before we remove it from iterator.
-    // Package visible for use throughout java.util.
-    // It may be inlined since it is final.
-    // Package visible for use throughout java.util.
-    // It may be inlined since it is final.
-    // Package visible for use by subclasses.
-    // Package visible for use by subclasses.
-    // Package visible for use by subclasses.
-    // Package visible for use by subclasses.
-    // XXX - FIXME Use fully qualified implements as gcj 3.1 workaround.
-    //       Bug still exists in 3.4.1
-    /**
-     * A class which implements Map.Entry. It is shared by HashMap, TreeMap,
-     * Hashtable, and Collections. It is not specified by the JDK, but makes
-     * life much easier.
-     * @author Jon Zeppieri
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    static class BasicMapEntry implements Map.Entry, Rollbackable {
-
-        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-        /**
-         * The key. Package visible for direct manipulation.
-         */
-        private Object key;
-
-        /**
-         * The value. Package visible for direct manipulation.
-         */
-        private Object value;
-
-        /**
-         * Basic constructor initializes the fields.
-         * @param newKey the key
-         * @param newValue the value
-         */
-        BasicMapEntry(Object newKey, Object newValue) {
-            setKeyField(newKey);
-            setValueField(newValue);
-        }
-
-        /**
-         * Compares the specified object with this entry. Returns true only if
-         * the object is a mapping of identical key and value. In other words,
-         * this must be:<br>
-         * <pre>(o instanceof Map.Entry)
-         * && (getKey() == null ? ((HashMap) o).getKey() == null
-         * : getKey().equals(((HashMap) o).getKey()))
-         * && (getValue() == null ? ((HashMap) o).getValue() == null
-         * : getValue().equals(((HashMap) o).getValue()))</pre>
-         * @param o the object to compare
-         * @return <code>true</code> if it is equal
-         */
-        public final boolean equals(Object o) {
-            if (!(o instanceof Map.Entry)) {
-                return false;
-            }
-            // Optimize for our own entries.
-            if (o instanceof BasicMapEntry) {
-                BasicMapEntry e = (BasicMapEntry) o;
-                return (AbstractMap.equals(getKeyField(), e.getKeyField()) && AbstractMap
-                        .equals(getValueField(), e.getValueField()));
-            }
-            Map.Entry e = (Map.Entry) o;
-            return (AbstractMap.equals(getKeyField(), e.getKey()) && AbstractMap
-                    .equals(getValueField(), e.getValue()));
-        }
-
-        /**
-         * Get the key corresponding to this entry.
-         * @return the key
-         */
-        public final Object getKey() {
-            return getKeyField();
-        }
-
-        /**
-         * Get the value corresponding to this entry. If you already called
-         * Iterator.remove(), the behavior undefined, but in this case it works.
-         * @return the value
-         */
-        public final Object getValue() {
-            return getValueField();
-        }
-
-        /**
-         * Returns the hash code of the entry.  This is defined as the exclusive-or
-         * of the hashcodes of the key and value (using 0 for null). In other
-         * words, this must be:<br>
-         * <pre>(getKey() == null ? 0 : getKey().hashCode())
-         * ^ (getValue() == null ? 0 : getValue().hashCode())</pre>
-         * @return the hash code
-         */
-        public final int hashCode() {
-            return (AbstractMap.hashCode(getKeyField()) ^ AbstractMap
-                    .hashCode(getValueField()));
-        }
-
-        /**
-         * Replaces the value with the specified object. This writes through
-         * to the map, unless you have already called Iterator.remove(). It
-         * may be overridden to restrict a null value.
-         * @param newVal the new value to store
-         * @return the old value
-         * @throws NullPointerException if the map forbids null values.
-         * @throws UnsupportedOperationException if the map doesn't support
-         * <code>put()</code>.
-         * @throws ClassCastException if the value is of a type unsupported
-         * by the map.
-         * @throws IllegalArgumentException if something else about this
-         * value prevents it being stored in the map.
-         */
-        public Object setValue(Object newVal) {
-            Object r = getValueField();
-            setValueField(newVal);
-            return r;
-        }
-
-        /**
-         * This provides a string representation of the entry. It is of the form
-         * "key=value", where string concatenation is used on key and value.
-         * @return the string representation
-         */
-        public final String toString() {
-            return getKeyField() + "=" + getValueField();
-        }
-
-        void setKeyField(Object key) {
-            this.$ASSIGN$key(key);
-        }
-
-        Object getKeyField() {
-            return key;
-        }
-
-        void setValueField(Object value) {
-            this.$ASSIGN$value(value);
-        }
-
-        Object getValueField() {
-            return value;
-        }
-
-        private final Object $ASSIGN$key(Object newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$key.add(null, key, $CHECKPOINT.getTimestamp());
-            }
-            return key = newValue;
-        }
-
-        private final Object $ASSIGN$value(Object newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$value.add(null, value, $CHECKPOINT.getTimestamp());
-            }
-            return value = newValue;
-        }
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            $RECORD$$CHECKPOINT.commit(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            key = (Object) $RECORD$key.restore(key, timestamp, trim);
-            value = (Object) $RECORD$value.restore(value, timestamp, trim);
-            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                        timestamp, trim);
-                FieldRecord.popState($RECORDS);
-                $RESTORE(timestamp, trim);
-            }
-        }
-
-        public final Checkpoint $GET$CHECKPOINT() {
-            return $CHECKPOINT;
-        }
-
-        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-            if ($CHECKPOINT != checkpoint) {
-                Checkpoint oldCheckpoint = $CHECKPOINT;
-                if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                            .getTimestamp());
-                    FieldRecord.pushState($RECORDS);
-                }
-                $CHECKPOINT = checkpoint;
-                oldCheckpoint.setCheckpoint(checkpoint);
-                checkpoint.addObject(this);
-            }
-            return this;
-        }
-
-        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-        private FieldRecord $RECORD$key = new FieldRecord(0);
-
-        private FieldRecord $RECORD$value = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$key,
-                $RECORD$value };
-
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
-    // class BasicMapEntry
-    /**
-     * The main constructor, for use by subclasses.
-     */
-    protected AbstractMap() {
+    public final Checkpoint $GET$CHECKPOINT() {
+        return $CHECKPOINT;
     }
 
-    /**
-     * Returns a set view of the mappings in this Map.  Each element in the
-     * set must be an implementation of Map.Entry.  The set is backed by
-     * the map, so that changes in one show up in the other.  Modifications
-     * made while an iterator is in progress cause undefined behavior.  If
-     * the set supports removal, these methods must be valid:
-     * <code>Iterator.remove</code>, <code>Set.remove</code>,
-     * <code>removeAll</code>, <code>retainAll</code>, and <code>clear</code>.
-     * Element addition is not supported via this set.
-     * @return the entry set
-     * @see Map.Entry
-     */
-    public abstract Set entrySet();
+    public void $RESTORE(long timestamp, boolean trim) {
+        keys = (Set) $RECORD$keys.restore(keys, timestamp, trim);
+        values = (Collection) $RECORD$values.restore(values, timestamp, trim);
+        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
+            FieldRecord.popState($RECORDS);
+            $RESTORE(timestamp, trim);
+        }
+    }
+
+    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+        if ($CHECKPOINT != checkpoint) {
+            Checkpoint oldCheckpoint = $CHECKPOINT;
+            if (checkpoint != null) {
+                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                FieldRecord.pushState($RECORDS);
+            }
+            $CHECKPOINT = checkpoint;
+            oldCheckpoint.setCheckpoint(checkpoint);
+            checkpoint.addObject(this);
+        }
+        return this;
+    }
 
     /**
      * Remove all entries from this Map (optional operation). This default
@@ -333,21 +120,6 @@ public abstract class AbstractMap implements Map, Rollbackable {
      */
     public void clear() {
         entrySet().clear();
-    }
-
-    /**
-     * Create a shallow copy of this Map, no keys or values are copied. The
-     * default implementation simply calls <code>super.clone()</code>.
-     * @return the shallow clone
-     * @throws CloneNotSupportedException if a subclass is not Cloneable
-     * @see Cloneable
-     * @see Object#clone()
-     */
-    protected Object clone() throws CloneNotSupportedException {
-        AbstractMap copy = (AbstractMap) super.clone();
-        copy.setKeys(null);
-        copy.setValues(null);
-        return copy;
     }
 
     /**
@@ -395,6 +167,20 @@ public abstract class AbstractMap implements Map, Rollbackable {
         }
         return false;
     }
+
+    /**
+     * Returns a set view of the mappings in this Map.  Each element in the
+     * set must be an implementation of Map.Entry.  The set is backed by
+     * the map, so that changes in one show up in the other.  Modifications
+     * made while an iterator is in progress cause undefined behavior.  If
+     * the set supports removal, these methods must be valid:
+     * <code>Iterator.remove</code>, <code>Set.remove</code>,
+     * <code>removeAll</code>, <code>retainAll</code>, and <code>clear</code>.
+     * Element addition is not supported via this set.
+     * @return the entry set
+     * @see Map.Entry
+     */
+    public abstract Set entrySet();
 
     /**
      * Compares the specified object with this map for equality. Returns
@@ -475,12 +261,34 @@ public abstract class AbstractMap implements Map, Rollbackable {
     public Set keySet() {
         if (getKeys() == null) {
             setKeys(new AbstractSet() {
-                /**
-                 * Retrieves the number of keys in the backing map.
-                 * @return The number of keys.
-                 */
-                public int size() {
-                    return AbstractMap.this.size();
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
+                    super.$COMMIT(timestamp);
+                }
+
+                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                    return $CHECKPOINT;
+                }
+
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    super.$RESTORE(timestamp, trim);
+                }
+
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
+                    if ($CHECKPOINT != checkpoint) {
+                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                        if (checkpoint != null) {
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
+                            FieldRecord.pushState($RECORDS);
+                        }
+                        $CHECKPOINT = checkpoint;
+                        oldCheckpoint.setCheckpoint(checkpoint);
+                        checkpoint.addObject(new _PROXY_());
+                    }
+                    return this;
                 }
 
                 /**
@@ -501,11 +309,45 @@ public abstract class AbstractMap implements Map, Rollbackable {
                  */
                 public Iterator iterator() {
                     return new Iterator() {
-                        /**
-                         * The iterator returned by <code>entrySet()</code>.
-                         */
-                        private final Iterator map_iterator = entrySet()
-                                .iterator();
+                        public void $COMMIT_ANONYMOUS(long timestamp) {
+                            FieldRecord.commit($RECORDS, timestamp,
+                                    $RECORD$$CHECKPOINT.getTopTimestamp());
+                            $RECORD$$CHECKPOINT.commit(timestamp);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                            return $CHECKPOINT;
+                        }
+
+                        public void $RESTORE_ANONYMOUS(long timestamp,
+                                boolean trim) {
+                            $RECORD$map_iterator.restore(map_iterator,
+                                    timestamp, trim);
+                            if (timestamp <= $RECORD$$CHECKPOINT
+                                    .getTopTimestamp()) {
+                                $CHECKPOINT = $RECORD$$CHECKPOINT.restore(
+                                        $CHECKPOINT, new _PROXY_(), timestamp,
+                                        trim);
+                                FieldRecord.popState($RECORDS);
+                                $RESTORE_ANONYMOUS(timestamp, trim);
+                            }
+                        }
+
+                        public final Object $SET$CHECKPOINT_ANONYMOUS(
+                                Checkpoint checkpoint) {
+                            if ($CHECKPOINT != checkpoint) {
+                                Checkpoint oldCheckpoint = $CHECKPOINT;
+                                if (checkpoint != null) {
+                                    $RECORD$$CHECKPOINT.add($CHECKPOINT,
+                                            checkpoint.getTimestamp());
+                                    FieldRecord.pushState($RECORDS);
+                                }
+                                $CHECKPOINT = checkpoint;
+                                oldCheckpoint.setCheckpoint(checkpoint);
+                                checkpoint.addObject(new _PROXY_());
+                            }
+                            return this;
+                        }
 
                         /**
                          * Returns true if a call to <code>next()</code> will
@@ -543,13 +385,13 @@ public abstract class AbstractMap implements Map, Rollbackable {
                                 $COMMIT_ANONYMOUS(timestamp);
                             }
 
+                            public final Checkpoint $GET$CHECKPOINT() {
+                                return $GET$CHECKPOINT_ANONYMOUS();
+                            }
+
                             public final void $RESTORE(long timestamp,
                                     boolean trim) {
                                 $RESTORE_ANONYMOUS(timestamp, trim);
-                            }
-
-                            public final Checkpoint $GET$CHECKPOINT() {
-                                return $GET$CHECKPOINT_ANONYMOUS();
                             }
 
                             public final Object $SET$CHECKPOINT(
@@ -560,50 +402,16 @@ public abstract class AbstractMap implements Map, Rollbackable {
 
                         }
 
-                        public void $COMMIT_ANONYMOUS(long timestamp) {
-                            FieldRecord.commit($RECORDS, timestamp,
-                                    $RECORD$$CHECKPOINT.getTopTimestamp());
-                            $RECORD$$CHECKPOINT.commit(timestamp);
-                        }
-
-                        public void $RESTORE_ANONYMOUS(long timestamp,
-                                boolean trim) {
-                            $RECORD$map_iterator.restore(map_iterator,
-                                    timestamp, trim);
-                            if (timestamp <= $RECORD$$CHECKPOINT
-                                    .getTopTimestamp()) {
-                                $CHECKPOINT = $RECORD$$CHECKPOINT.restore(
-                                        $CHECKPOINT, new _PROXY_(), timestamp,
-                                        trim);
-                                FieldRecord.popState($RECORDS);
-                                $RESTORE_ANONYMOUS(timestamp, trim);
-                            }
-                        }
-
-                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                            return $CHECKPOINT;
-                        }
-
-                        public final Object $SET$CHECKPOINT_ANONYMOUS(
-                                Checkpoint checkpoint) {
-                            if ($CHECKPOINT != checkpoint) {
-                                Checkpoint oldCheckpoint = $CHECKPOINT;
-                                if (checkpoint != null) {
-                                    $RECORD$$CHECKPOINT.add($CHECKPOINT,
-                                            checkpoint.getTimestamp());
-                                    FieldRecord.pushState($RECORDS);
-                                }
-                                $CHECKPOINT = checkpoint;
-                                oldCheckpoint.setCheckpoint(checkpoint);
-                                checkpoint.addObject(new _PROXY_());
-                            }
-                            return this;
-                        }
-
                         private FieldRecord $RECORD$map_iterator = new FieldRecord(
                                 0);
 
                         private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$map_iterator };
+
+                        /**
+                         * The iterator returned by <code>entrySet()</code>.
+                         */
+                        private final Iterator map_iterator = entrySet()
+                                .iterator();
 
                         {
                             $CHECKPOINT.addObject(new _PROXY_());
@@ -612,18 +420,26 @@ public abstract class AbstractMap implements Map, Rollbackable {
                     };
                 }
 
+                /**
+                 * Retrieves the number of keys in the backing map.
+                 * @return The number of keys.
+                 */
+                public int size() {
+                    return AbstractMap.this.size();
+                }
+
                 final class _PROXY_ implements Rollbackable {
 
                     public final void $COMMIT(long timestamp) {
                         $COMMIT_ANONYMOUS(timestamp);
                     }
 
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
-                    }
-
                     public final Checkpoint $GET$CHECKPOINT() {
                         return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
                     }
 
                     public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
@@ -631,36 +447,6 @@ public abstract class AbstractMap implements Map, Rollbackable {
                         return this;
                     }
 
-                }
-
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                            .getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(
-                        Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                                    .getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
                 }
 
                 private FieldRecord[] $RECORDS = new FieldRecord[] {};
@@ -808,13 +594,34 @@ public abstract class AbstractMap implements Map, Rollbackable {
     public Collection values() {
         if (getValues() == null) {
             setValues(new AbstractCollection() {
-                /**
-                 * Returns the number of values stored in
-                 * the backing map.
-                 * @return The number of values.
-                 */
-                public int size() {
-                    return AbstractMap.this.size();
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
+                    super.$COMMIT(timestamp);
+                }
+
+                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                    return $CHECKPOINT;
+                }
+
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    super.$RESTORE(timestamp, trim);
+                }
+
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
+                    if ($CHECKPOINT != checkpoint) {
+                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                        if (checkpoint != null) {
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
+                            FieldRecord.pushState($RECORDS);
+                        }
+                        $CHECKPOINT = checkpoint;
+                        oldCheckpoint.setCheckpoint(checkpoint);
+                        checkpoint.addObject(new _PROXY_());
+                    }
+                    return this;
                 }
 
                 /**
@@ -835,11 +642,45 @@ public abstract class AbstractMap implements Map, Rollbackable {
                  */
                 public Iterator iterator() {
                     return new Iterator() {
-                        /**
-                         * The iterator returned by <code>entrySet()</code>.
-                         */
-                        private final Iterator map_iterator = entrySet()
-                                .iterator();
+                        public void $COMMIT_ANONYMOUS(long timestamp) {
+                            FieldRecord.commit($RECORDS, timestamp,
+                                    $RECORD$$CHECKPOINT.getTopTimestamp());
+                            $RECORD$$CHECKPOINT.commit(timestamp);
+                        }
+
+                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                            return $CHECKPOINT;
+                        }
+
+                        public void $RESTORE_ANONYMOUS(long timestamp,
+                                boolean trim) {
+                            $RECORD$map_iterator.restore(map_iterator,
+                                    timestamp, trim);
+                            if (timestamp <= $RECORD$$CHECKPOINT
+                                    .getTopTimestamp()) {
+                                $CHECKPOINT = $RECORD$$CHECKPOINT.restore(
+                                        $CHECKPOINT, new _PROXY_(), timestamp,
+                                        trim);
+                                FieldRecord.popState($RECORDS);
+                                $RESTORE_ANONYMOUS(timestamp, trim);
+                            }
+                        }
+
+                        public final Object $SET$CHECKPOINT_ANONYMOUS(
+                                Checkpoint checkpoint) {
+                            if ($CHECKPOINT != checkpoint) {
+                                Checkpoint oldCheckpoint = $CHECKPOINT;
+                                if (checkpoint != null) {
+                                    $RECORD$$CHECKPOINT.add($CHECKPOINT,
+                                            checkpoint.getTimestamp());
+                                    FieldRecord.pushState($RECORDS);
+                                }
+                                $CHECKPOINT = checkpoint;
+                                oldCheckpoint.setCheckpoint(checkpoint);
+                                checkpoint.addObject(new _PROXY_());
+                            }
+                            return this;
+                        }
 
                         /**
                          * Returns true if a call to <code>next()</call> will
@@ -877,13 +718,13 @@ public abstract class AbstractMap implements Map, Rollbackable {
                                 $COMMIT_ANONYMOUS(timestamp);
                             }
 
+                            public final Checkpoint $GET$CHECKPOINT() {
+                                return $GET$CHECKPOINT_ANONYMOUS();
+                            }
+
                             public final void $RESTORE(long timestamp,
                                     boolean trim) {
                                 $RESTORE_ANONYMOUS(timestamp, trim);
-                            }
-
-                            public final Checkpoint $GET$CHECKPOINT() {
-                                return $GET$CHECKPOINT_ANONYMOUS();
                             }
 
                             public final Object $SET$CHECKPOINT(
@@ -894,50 +735,16 @@ public abstract class AbstractMap implements Map, Rollbackable {
 
                         }
 
-                        public void $COMMIT_ANONYMOUS(long timestamp) {
-                            FieldRecord.commit($RECORDS, timestamp,
-                                    $RECORD$$CHECKPOINT.getTopTimestamp());
-                            $RECORD$$CHECKPOINT.commit(timestamp);
-                        }
-
-                        public void $RESTORE_ANONYMOUS(long timestamp,
-                                boolean trim) {
-                            $RECORD$map_iterator.restore(map_iterator,
-                                    timestamp, trim);
-                            if (timestamp <= $RECORD$$CHECKPOINT
-                                    .getTopTimestamp()) {
-                                $CHECKPOINT = $RECORD$$CHECKPOINT.restore(
-                                        $CHECKPOINT, new _PROXY_(), timestamp,
-                                        trim);
-                                FieldRecord.popState($RECORDS);
-                                $RESTORE_ANONYMOUS(timestamp, trim);
-                            }
-                        }
-
-                        public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                            return $CHECKPOINT;
-                        }
-
-                        public final Object $SET$CHECKPOINT_ANONYMOUS(
-                                Checkpoint checkpoint) {
-                            if ($CHECKPOINT != checkpoint) {
-                                Checkpoint oldCheckpoint = $CHECKPOINT;
-                                if (checkpoint != null) {
-                                    $RECORD$$CHECKPOINT.add($CHECKPOINT,
-                                            checkpoint.getTimestamp());
-                                    FieldRecord.pushState($RECORDS);
-                                }
-                                $CHECKPOINT = checkpoint;
-                                oldCheckpoint.setCheckpoint(checkpoint);
-                                checkpoint.addObject(new _PROXY_());
-                            }
-                            return this;
-                        }
-
                         private FieldRecord $RECORD$map_iterator = new FieldRecord(
                                 0);
 
                         private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$map_iterator };
+
+                        /**
+                         * The iterator returned by <code>entrySet()</code>.
+                         */
+                        private final Iterator map_iterator = entrySet()
+                                .iterator();
 
                         {
                             $CHECKPOINT.addObject(new _PROXY_());
@@ -946,18 +753,27 @@ public abstract class AbstractMap implements Map, Rollbackable {
                     };
                 }
 
+                /**
+                 * Returns the number of values stored in
+                 * the backing map.
+                 * @return The number of values.
+                 */
+                public int size() {
+                    return AbstractMap.this.size();
+                }
+
                 final class _PROXY_ implements Rollbackable {
 
                     public final void $COMMIT(long timestamp) {
                         $COMMIT_ANONYMOUS(timestamp);
                     }
 
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
-                    }
-
                     public final Checkpoint $GET$CHECKPOINT() {
                         return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
                     }
 
                     public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
@@ -965,36 +781,6 @@ public abstract class AbstractMap implements Map, Rollbackable {
                         return this;
                     }
 
-                }
-
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                            .getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(
-                        Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                                    .getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
                 }
 
                 private FieldRecord[] $RECORDS = new FieldRecord[] {};
@@ -1008,6 +794,32 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return getValues();
     }
 
+    // class BasicMapEntry
+    /**
+     * The main constructor, for use by subclasses.
+     */
+    protected AbstractMap() {
+    }
+
+    /**
+     * Create a shallow copy of this Map, no keys or values are copied. The
+     * default implementation simply calls <code>super.clone()</code>.
+     * @return the shallow clone
+     * @throws CloneNotSupportedException if a subclass is not Cloneable
+     * @see Cloneable
+     * @see Object#clone()
+     */
+    protected Object clone() throws CloneNotSupportedException {
+        AbstractMap copy = (AbstractMap) super.clone();
+        copy.setKeys(null);
+        copy.setValues(null);
+        return copy;
+    }
+
+    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
     /**
      * Compare two objects according to Collection semantics.
      * @param o1 the first object
@@ -1016,6 +828,14 @@ public abstract class AbstractMap implements Map, Rollbackable {
      */
     static final boolean equals(Object o1, Object o2) {
         return o1 == o2 || (o1 != null && o1.equals(o2));
+    }
+
+    Set getKeys() {
+        return keys;
+    }
+
+    Collection getValues() {
+        return values;
     }
 
     /**
@@ -1031,16 +851,219 @@ public abstract class AbstractMap implements Map, Rollbackable {
         this.$ASSIGN$keys(keys);
     }
 
-    Set getKeys() {
-        return keys;
-    }
-
     void setValues(Collection values) {
         this.$ASSIGN$values(values);
     }
 
-    Collection getValues() {
-        return values;
+    /**
+     * An "enum" of iterator types.
+     */
+    static final int KEYS = 0, VALUES = 1, ENTRIES = 2;
+
+    // Clear out the caches; they are stale.
+    // Must get the value before we remove it from iterator.
+    // Package visible for use throughout java.util.
+    // It may be inlined since it is final.
+    // Package visible for use throughout java.util.
+    // It may be inlined since it is final.
+    // Package visible for use by subclasses.
+    // Package visible for use by subclasses.
+    // Package visible for use by subclasses.
+    // Package visible for use by subclasses.
+    // XXX - FIXME Use fully qualified implements as gcj 3.1 workaround.
+    //       Bug still exists in 3.4.1
+    /**
+     * A class which implements Map.Entry. It is shared by HashMap, TreeMap,
+     * Hashtable, and Collections. It is not specified by the JDK, but makes
+     * life much easier.
+     * @author Jon Zeppieri
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    static class BasicMapEntry implements Map.Entry, Rollbackable {
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
+        public final Checkpoint $GET$CHECKPOINT() {
+            return $CHECKPOINT;
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            key = (Object) $RECORD$key.restore(key, timestamp, trim);
+            value = (Object) $RECORD$value.restore(value, timestamp, trim);
+            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
+                FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
+            }
+        }
+
+        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+            if ($CHECKPOINT != checkpoint) {
+                Checkpoint oldCheckpoint = $CHECKPOINT;
+                if (checkpoint != null) {
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
+                    FieldRecord.pushState($RECORDS);
+                }
+                $CHECKPOINT = checkpoint;
+                oldCheckpoint.setCheckpoint(checkpoint);
+                checkpoint.addObject(this);
+            }
+            return this;
+        }
+
+        /**
+         * Compares the specified object with this entry. Returns true only if
+         * the object is a mapping of identical key and value. In other words,
+         * this must be:<br>
+         * <pre>(o instanceof Map.Entry)
+         * && (getKey() == null ? ((HashMap) o).getKey() == null
+         * : getKey().equals(((HashMap) o).getKey()))
+         * && (getValue() == null ? ((HashMap) o).getValue() == null
+         * : getValue().equals(((HashMap) o).getValue()))</pre>
+         * @param o the object to compare
+         * @return <code>true</code> if it is equal
+         */
+        public final boolean equals(Object o) {
+            if (!(o instanceof Map.Entry)) {
+                return false;
+            }
+            // Optimize for our own entries.
+            if (o instanceof BasicMapEntry) {
+                BasicMapEntry e = (BasicMapEntry) o;
+                return (AbstractMap.equals(getKeyField(), e.getKeyField()) && AbstractMap
+                        .equals(getValueField(), e.getValueField()));
+            }
+            Map.Entry e = (Map.Entry) o;
+            return (AbstractMap.equals(getKeyField(), e.getKey()) && AbstractMap
+                    .equals(getValueField(), e.getValue()));
+        }
+
+        /**
+         * Get the key corresponding to this entry.
+         * @return the key
+         */
+        public final Object getKey() {
+            return getKeyField();
+        }
+
+        /**
+         * Get the value corresponding to this entry. If you already called
+         * Iterator.remove(), the behavior undefined, but in this case it works.
+         * @return the value
+         */
+        public final Object getValue() {
+            return getValueField();
+        }
+
+        /**
+         * Returns the hash code of the entry.  This is defined as the exclusive-or
+         * of the hashcodes of the key and value (using 0 for null). In other
+         * words, this must be:<br>
+         * <pre>(getKey() == null ? 0 : getKey().hashCode())
+         * ^ (getValue() == null ? 0 : getValue().hashCode())</pre>
+         * @return the hash code
+         */
+        public final int hashCode() {
+            return (AbstractMap.hashCode(getKeyField()) ^ AbstractMap
+                    .hashCode(getValueField()));
+        }
+
+        /**
+         * Replaces the value with the specified object. This writes through
+         * to the map, unless you have already called Iterator.remove(). It
+         * may be overridden to restrict a null value.
+         * @param newVal the new value to store
+         * @return the old value
+         * @throws NullPointerException if the map forbids null values.
+         * @throws UnsupportedOperationException if the map doesn't support
+         * <code>put()</code>.
+         * @throws ClassCastException if the value is of a type unsupported
+         * by the map.
+         * @throws IllegalArgumentException if something else about this
+         * value prevents it being stored in the map.
+         */
+        public Object setValue(Object newVal) {
+            Object r = getValueField();
+            setValueField(newVal);
+            return r;
+        }
+
+        /**
+         * This provides a string representation of the entry. It is of the form
+         * "key=value", where string concatenation is used on key and value.
+         * @return the string representation
+         */
+        public final String toString() {
+            return getKeyField() + "=" + getValueField();
+        }
+
+        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+        /**
+         * Basic constructor initializes the fields.
+         * @param newKey the key
+         * @param newValue the value
+         */
+        BasicMapEntry(Object newKey, Object newValue) {
+            setKeyField(newKey);
+            setValueField(newValue);
+        }
+
+        Object getKeyField() {
+            return key;
+        }
+
+        Object getValueField() {
+            return value;
+        }
+
+        void setKeyField(Object key) {
+            this.$ASSIGN$key(key);
+        }
+
+        void setValueField(Object value) {
+            this.$ASSIGN$value(value);
+        }
+
+        private final Object $ASSIGN$key(Object newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$key.add(null, key, $CHECKPOINT.getTimestamp());
+            }
+            return key = newValue;
+        }
+
+        private final Object $ASSIGN$value(Object newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$value.add(null, value, $CHECKPOINT.getTimestamp());
+            }
+            return value = newValue;
+        }
+
+        private FieldRecord $RECORD$key = new FieldRecord(0);
+
+        private FieldRecord $RECORD$value = new FieldRecord(0);
+
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$key,
+                $RECORD$value };
+
+        /**
+         * The key. Package visible for direct manipulation.
+         */
+        private Object key;
+
+        /**
+         * The value. Package visible for direct manipulation.
+         */
+        private Object value;
+
     }
 
     private final Set $ASSIGN$keys(Set newValue) {
@@ -1063,48 +1086,25 @@ public abstract class AbstractMap implements Map, Rollbackable {
         return values = newValue;
     }
 
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        $RECORD$$CHECKPOINT.commit(timestamp);
-    }
-
-    public void $RESTORE(long timestamp, boolean trim) {
-        keys = (Set) $RECORD$keys.restore(keys, timestamp, trim);
-        values = (Collection) $RECORD$values.restore(values, timestamp, trim);
-        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
-            FieldRecord.popState($RECORDS);
-            $RESTORE(timestamp, trim);
-        }
-    }
-
-    public final Checkpoint $GET$CHECKPOINT() {
-        return $CHECKPOINT;
-    }
-
-    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-        if ($CHECKPOINT != checkpoint) {
-            Checkpoint oldCheckpoint = $CHECKPOINT;
-            if (checkpoint != null) {
-                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                FieldRecord.pushState($RECORDS);
-            }
-            $CHECKPOINT = checkpoint;
-            oldCheckpoint.setCheckpoint(checkpoint);
-            checkpoint.addObject(this);
-        }
-        return this;
-    }
-
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
     private FieldRecord $RECORD$keys = new FieldRecord(0);
 
     private FieldRecord $RECORD$values = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$keys,
             $RECORD$values };
+
+    /**
+     * The cache for {
+     @link #keySet()    }
+     .
+     */
+    private Set keys;
+
+    /**
+     * The cache for {
+     @link #values()    }
+     .
+     */
+    private Collection values;
 
 }

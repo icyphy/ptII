@@ -101,485 +101,6 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
         Serializable, Rollbackable {
 
     /**
-     * Default number of buckets. This is the value the JDK 1.3 uses. Some
-     * early documentation specified this value as 101. That is incorrect.
-     * Package visible for use by HashSet.
-     */
-    static final int DEFAULT_CAPACITY = 11;
-
-    /**
-     * The default load factor; this is explicitly specified by the spec.
-     * Package visible for use by HashSet.
-     */
-    static final float DEFAULT_LOAD_FACTOR = 0.75f;
-
-    /**
-     * Compatible with JDK 1.2.
-     */
-    private static final long serialVersionUID = 362498820763181265L;
-
-    /**
-     * The rounded product of the capacity and the load factor; when the number
-     * of elements exceeds the threshold, the HashMap calls
-     * <code>rehash()</code>.
-     * @serial the threshold for rehashing
-     */
-    private int threshold;
-
-    /**
-     * Load factor of this HashMap:  used in computing the threshold.
-     * Package visible for use by HashSet.
-     * @serial the load factor
-     */
-    final float loadFactor;
-
-    /**
-     * Array containing the actual key-value mappings.
-     * Package visible for use by nested and subclasses.
-     */
-    private transient HashEntry[] buckets;
-
-    /**
-     * Counts the number of modifications this HashMap has undergone, used
-     * by Iterators to know when to throw ConcurrentModificationExceptions.
-     * Package visible for use by nested and subclasses.
-     */
-    private transient int modCount;
-
-    /**
-     * The size of this HashMap:  denotes the number of key-value pairs.
-     * Package visible for use by nested and subclasses.
-     */
-    private transient int size;
-
-    /**
-     * The cache for {
-     @link #entrySet()    }
-     .
-     */
-    private transient Set entries;
-
-    /**
-     * Class to represent an entry in the hash table. Holds a single key-value
-     * pair. Package visible for use by subclass.
-     * @author Eric Blake (ebb9@email.byu.edu)
-     */
-    static class HashEntry extends AbstractMap.BasicMapEntry implements
-            Rollbackable {
-
-        /**
-         * The next entry in the linked list. Package visible for use by subclass.
-         */
-        private HashEntry next;
-
-        /**
-         * Simple constructor.
-         * @param key the key
-         * @param value the value
-         */
-        HashEntry(Object key, Object value) {
-            super(key, value);
-        }
-
-        /**
-         * Called when this entry is accessed via {
-         @link #put(Object, Object)        }
-         .
-         * This version does nothing, but in LinkedHashMap, it must do some
-         * bookkeeping for access-traversal mode.
-         */
-        void access() {
-        }
-
-        /**
-         * Called when this entry is removed from the map. This version simply
-         * returns the value, but in LinkedHashMap, it must also do bookkeeping.
-         * @return the value of this key as it is removed
-         */
-        Object cleanup() {
-            return getValueField();
-        }
-
-        void setNext(HashEntry next) {
-            this.$ASSIGN$next(next);
-        }
-
-        HashEntry getNext() {
-            return next;
-        }
-
-        private final HashEntry $ASSIGN$next(HashEntry newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$next.add(null, next, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return next = newValue;
-        }
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
-            super.$RESTORE(timestamp, trim);
-        }
-
-        private FieldRecord $RECORD$next = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$next };
-
-    }
-
-    // check for NaN too
-    // Must call this for bookkeeping in LinkedHashMap.
-    // At this point, we know we need to add a new entry.
-    // Need a new hash value to suit the bigger table.
-    // LinkedHashMap cannot override put(), hence this call.
-    // Optimize in case the Entry is one of our own.
-    // Method call necessary for LinkedHashMap to work correctly.
-    // This is impossible.
-    // Clear the entry cache. AbstractMap.clone() does the others.
-    // Create an AbstractSet with custom implementations of those methods
-    // that can be overridden easily and efficiently.
-    // Cannot create the iterator directly, because of LinkedHashMap.
-    // Test against the size of the HashMap to determine if anything
-    // really got removed. This is necessary because the return value
-    // of HashMap.remove() is ambiguous in the null case.
-    // We don't bother overriding many of the optional methods, as doing so
-    // wouldn't provide any significant performance advantage.
-    // Cannot create the iterator directly, because of LinkedHashMap.
-    // Create an AbstractSet with custom implementations of those methods
-    // that can be overridden easily and efficiently.
-    // Cannot create the iterator directly, because of LinkedHashMap.
-    // Package visible, for use in nested classes.
-    // Write the threshold and loadFactor fields.
-    // Avoid creating a wasted Set by creating the iterator directly.
-    // Read the threshold and loadFactor fields.
-    // Read and use capacity, followed by key/value pairs.
-    /**
-     * Iterate over HashMap's entries.
-     * This implementation is parameterized to give a sequential view of
-     * keys, values, or entries.
-     * @author Jon Zeppieri
-     */
-    private final class HashIterator implements Iterator, Rollbackable {
-
-        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-        /**
-         * The type of this Iterator: {
-         @link #KEYS        }
-         , {
-         @link #VALUES        }
-         ,
-         * or {
-         @link #ENTRIES        }
-         .
-         */
-        private final int type;
-
-        /**
-         * The number of modifications to the backing HashMap that we know about.
-         */
-        private int knownMod = getModCount();
-
-        /**
-         * The number of elements remaining to be returned by next().
-         */
-        private int count = getSize();
-
-        /**
-         * Current index in the physical hash table.
-         */
-        private int idx = getBuckets().length;
-
-        /**
-         * The last Entry returned by a next() call.
-         */
-        private HashEntry last;
-
-        /**
-         * The next entry that should be returned by next(). It is set to something
-         * if we're iterating through a bucket that contains multiple linked
-         * entries. It is null if next() needs to find a new bucket.
-         */
-        private HashEntry next;
-
-        /**
-         * Construct a new HashIterator with the supplied type.
-         * @param type {
-         @link #KEYS        }
-         , {
-         @link #VALUES        }
-         , or {
-         @link #ENTRIES        }
-
-         */
-        HashIterator(int type) {
-            this.type = type;
-        }
-
-        /**
-         * Returns true if the Iterator has more elements.
-         * @return true if there are more elements
-         */
-        public boolean hasNext() {
-            return count > 0;
-        }
-
-        /**
-         * Returns the next element in the Iterator's sequential view.
-         * @return the next element
-         * @throws ConcurrentModificationException if the HashMap was modified
-         * @throws NoSuchElementException if there is none
-         */
-        public Object next() {
-            if (knownMod != getModCount()) {
-                throw new ConcurrentModificationException();
-            }
-            if (count == 0) {
-                throw new NoSuchElementException();
-            }
-            $ASSIGN$SPECIAL$count(12, count);
-            HashEntry e = next;
-            while (e == null) {
-                e = getBuckets()[$ASSIGN$SPECIAL$idx(14, idx)];
-            }
-            $ASSIGN$next(e.getNext());
-            $ASSIGN$last(e);
-            if (type == VALUES) {
-                return e.getValueField();
-            }
-            if (type == KEYS) {
-                return e.getKeyField();
-            }
-            return e;
-        }
-
-        /**
-         * Removes from the backing HashMap the last element which was fetched
-         * with the <code>next()</code> method.
-         * @throws ConcurrentModificationException if the HashMap was modified
-         * @throws IllegalStateException if called when there is no last element
-         */
-        public void remove() {
-            if (knownMod != getModCount()) {
-                throw new ConcurrentModificationException();
-            }
-            if (last == null) {
-                throw new IllegalStateException();
-            }
-            HashMap.this.remove(last.getKeyField());
-            $ASSIGN$last(null);
-            $ASSIGN$SPECIAL$knownMod(11, knownMod);
-        }
-
-        private final int $ASSIGN$SPECIAL$knownMod(int operator, long newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$knownMod
-                        .add(null, knownMod, $CHECKPOINT.getTimestamp());
-            }
-            switch (operator) {
-            case 0:
-                return knownMod += newValue;
-            case 1:
-                return knownMod -= newValue;
-            case 2:
-                return knownMod *= newValue;
-            case 3:
-                return knownMod /= newValue;
-            case 4:
-                return knownMod &= newValue;
-            case 5:
-                return knownMod |= newValue;
-            case 6:
-                return knownMod ^= newValue;
-            case 7:
-                return knownMod %= newValue;
-            case 8:
-                return knownMod <<= newValue;
-            case 9:
-                return knownMod >>= newValue;
-            case 10:
-                return knownMod >>>= newValue;
-            case 11:
-                return knownMod++;
-            case 12:
-                return knownMod--;
-            case 13:
-                return ++knownMod;
-            case 14:
-                return --knownMod;
-            default:
-                return knownMod;
-            }
-        }
-
-        private final int $ASSIGN$SPECIAL$count(int operator, long newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$count.add(null, count, $CHECKPOINT.getTimestamp());
-            }
-            switch (operator) {
-            case 0:
-                return count += newValue;
-            case 1:
-                return count -= newValue;
-            case 2:
-                return count *= newValue;
-            case 3:
-                return count /= newValue;
-            case 4:
-                return count &= newValue;
-            case 5:
-                return count |= newValue;
-            case 6:
-                return count ^= newValue;
-            case 7:
-                return count %= newValue;
-            case 8:
-                return count <<= newValue;
-            case 9:
-                return count >>= newValue;
-            case 10:
-                return count >>>= newValue;
-            case 11:
-                return count++;
-            case 12:
-                return count--;
-            case 13:
-                return ++count;
-            case 14:
-                return --count;
-            default:
-                return count;
-            }
-        }
-
-        private final int $ASSIGN$SPECIAL$idx(int operator, long newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$idx.add(null, idx, $CHECKPOINT.getTimestamp());
-            }
-            switch (operator) {
-            case 0:
-                return idx += newValue;
-            case 1:
-                return idx -= newValue;
-            case 2:
-                return idx *= newValue;
-            case 3:
-                return idx /= newValue;
-            case 4:
-                return idx &= newValue;
-            case 5:
-                return idx |= newValue;
-            case 6:
-                return idx ^= newValue;
-            case 7:
-                return idx %= newValue;
-            case 8:
-                return idx <<= newValue;
-            case 9:
-                return idx >>= newValue;
-            case 10:
-                return idx >>>= newValue;
-            case 11:
-                return idx++;
-            case 12:
-                return idx--;
-            case 13:
-                return ++idx;
-            case 14:
-                return --idx;
-            default:
-                return idx;
-            }
-        }
-
-        private final HashEntry $ASSIGN$last(HashEntry newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$last.add(null, last, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return last = newValue;
-        }
-
-        private final HashEntry $ASSIGN$next(HashEntry newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$next.add(null, next, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return next = newValue;
-        }
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            $RECORD$$CHECKPOINT.commit(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
-            count = $RECORD$count.restore(count, timestamp, trim);
-            idx = $RECORD$idx.restore(idx, timestamp, trim);
-            last = (HashEntry) $RECORD$last.restore(last, timestamp, trim);
-            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
-            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                        timestamp, trim);
-                FieldRecord.popState($RECORDS);
-                $RESTORE(timestamp, trim);
-            }
-        }
-
-        public final Checkpoint $GET$CHECKPOINT() {
-            return $CHECKPOINT;
-        }
-
-        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-            if ($CHECKPOINT != checkpoint) {
-                Checkpoint oldCheckpoint = $CHECKPOINT;
-                if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                            .getTimestamp());
-                    FieldRecord.pushState($RECORDS);
-                }
-                $CHECKPOINT = checkpoint;
-                oldCheckpoint.setCheckpoint(checkpoint);
-                checkpoint.addObject(this);
-            }
-            return this;
-        }
-
-        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-        private FieldRecord $RECORD$type = new FieldRecord(0);
-
-        private FieldRecord $RECORD$knownMod = new FieldRecord(0);
-
-        private FieldRecord $RECORD$count = new FieldRecord(0);
-
-        private FieldRecord $RECORD$idx = new FieldRecord(0);
-
-        private FieldRecord $RECORD$last = new FieldRecord(0);
-
-        private FieldRecord $RECORD$next = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$type,
-                $RECORD$knownMod, $RECORD$count, $RECORD$idx, $RECORD$last,
-                $RECORD$next };
-
-    }
-
-    /**
      * Construct a new HashMap with the default capacity (11) and the default
      * load factor (0.75).
      */
@@ -634,20 +155,188 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
         $ASSIGN$threshold((int) (initialCapacity * loadFactor));
     }
 
-    /**
-     * Returns the number of kay-value mappings currently in this Map.
-     * @return the size
-     */
-    public int size() {
-        return getSize();
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
+    public void $RESTORE(long timestamp, boolean trim) {
+        threshold = $RECORD$threshold.restore(threshold, timestamp, trim);
+        buckets = (HashEntry[]) $RECORD$buckets.restore(buckets, timestamp,
+                trim);
+        modCount = $RECORD$modCount.restore(modCount, timestamp, trim);
+        size = $RECORD$size.restore(size, timestamp, trim);
+        entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
+        super.$RESTORE(timestamp, trim);
     }
 
     /**
-     * Returns true if there are no key-value mappings currently in this Map.
-     * @return <code>size() == 0</code>
+     * Clears the Map so it has no keys. This is O(1).
      */
-    public boolean isEmpty() {
-        return getSize() == 0;
+    public void clear() {
+        if (getSize() != 0) {
+            setModCount(getModCount() + 1);
+            Arrays.fill(getBuckets(), null);
+            setSize(0);
+        }
+    }
+
+    /**
+     * Returns a shallow clone of this HashMap. The Map itself is cloned,
+     * but its contents are not.  This is O(n).
+     * @return the clone
+     */
+    public Object clone() {
+        HashMap copy = null;
+        try {
+            copy = (HashMap) super.clone();
+        } catch (CloneNotSupportedException x) {
+        }
+        copy.setBuckets(new HashEntry[getBuckets().length]);
+        copy.putAllInternal(this);
+        copy.$ASSIGN$entries(null);
+        return copy;
+    }
+
+    /**
+     * Returns true if the supplied object <code>equals()</code> a key
+     * in this HashMap.
+     * @param key the key to search for in this HashMap
+     * @return true if the key is in the table
+     * @see #containsValue(Object)
+     */
+    public boolean containsKey(Object key) {
+        int idx = hash(key);
+        HashEntry e = getBuckets()[idx];
+        while (e != null) {
+            if (equals(key, e.getKeyField())) {
+                return true;
+            }
+            e = e.getNext();
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if this HashMap contains a value <code>o</code>, such that
+     * <code>o.equals(value)</code>.
+     * @param value the value to search for in this HashMap
+     * @return true if at least one key maps to the value
+     * @see #containsKey(Object)
+     */
+    public boolean containsValue(Object value) {
+        for (int i = getBuckets().length - 1; i >= 0; i--) {
+            HashEntry e = getBuckets()[i];
+            while (e != null) {
+                if (equals(value, e.getValueField())) {
+                    return true;
+                }
+                e = e.getNext();
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns a "set view" of this HashMap's entries. The set is backed by
+     * the HashMap, so changes in one show up in the other.  The set supports
+     * element removal, but not element addition.<p>
+     * Note that the iterators for all three views, from keySet(), entrySet(),
+     * and values(), traverse the HashMap in the same sequence.
+     * @return a set view of the entries
+     * @see #keySet()
+     * @see #values()
+     * @see Map.Entry
+     */
+    public Set entrySet() {
+        if (entries == null) {
+            $ASSIGN$entries(new AbstractSet() {
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
+                    super.$COMMIT(timestamp);
+                }
+
+                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                    return $CHECKPOINT;
+                }
+
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    super.$RESTORE(timestamp, trim);
+                }
+
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
+                    if ($CHECKPOINT != checkpoint) {
+                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                        if (checkpoint != null) {
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
+                            FieldRecord.pushState($RECORDS);
+                        }
+                        $CHECKPOINT = checkpoint;
+                        oldCheckpoint.setCheckpoint(checkpoint);
+                        checkpoint.addObject(new _PROXY_());
+                    }
+                    return this;
+                }
+
+                public void clear() {
+                    HashMap.this.clear();
+                }
+
+                public boolean contains(Object o) {
+                    return getEntry(o) != null;
+                }
+
+                public Iterator iterator() {
+                    return HashMap.this.iterator(ENTRIES);
+                }
+
+                public boolean remove(Object o) {
+                    HashEntry e = getEntry(o);
+                    if (e != null) {
+                        HashMap.this.remove(e.getKeyField());
+                        return true;
+                    }
+                    return false;
+                }
+
+                public int size() {
+                    return getSize();
+                }
+
+                final class _PROXY_ implements Rollbackable {
+
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT() {
+                        return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+
+                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        return this;
+                    }
+
+                }
+
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
+
+                {
+                    $CHECKPOINT.addObject(new _PROXY_());
+                }
+
+            });
+        }
+        return entries;
     }
 
     /**
@@ -673,22 +362,106 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
     }
 
     /**
-     * Returns true if the supplied object <code>equals()</code> a key
-     * in this HashMap.
-     * @param key the key to search for in this HashMap
-     * @return true if the key is in the table
-     * @see #containsValue(Object)
+     * Returns true if there are no key-value mappings currently in this Map.
+     * @return <code>size() == 0</code>
      */
-    public boolean containsKey(Object key) {
-        int idx = hash(key);
-        HashEntry e = getBuckets()[idx];
-        while (e != null) {
-            if (equals(key, e.getKeyField())) {
-                return true;
-            }
-            e = e.getNext();
+    public boolean isEmpty() {
+        return getSize() == 0;
+    }
+
+    /**
+     * Returns a "set view" of this HashMap's keys. The set is backed by the
+     * HashMap, so changes in one show up in the other.  The set supports
+     * element removal, but not element addition.
+     * @return a set view of the keys
+     * @see #values()
+     * @see #entrySet()
+     */
+    public Set keySet() {
+        if (getKeys() == null) {
+            setKeys(new AbstractSet() {
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
+                    super.$COMMIT(timestamp);
+                }
+
+                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                    return $CHECKPOINT;
+                }
+
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    super.$RESTORE(timestamp, trim);
+                }
+
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
+                    if ($CHECKPOINT != checkpoint) {
+                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                        if (checkpoint != null) {
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
+                            FieldRecord.pushState($RECORDS);
+                        }
+                        $CHECKPOINT = checkpoint;
+                        oldCheckpoint.setCheckpoint(checkpoint);
+                        checkpoint.addObject(new _PROXY_());
+                    }
+                    return this;
+                }
+
+                public void clear() {
+                    HashMap.this.clear();
+                }
+
+                public boolean contains(Object o) {
+                    return containsKey(o);
+                }
+
+                public Iterator iterator() {
+                    return HashMap.this.iterator(KEYS);
+                }
+
+                public boolean remove(Object o) {
+                    int oldsize = getSize();
+                    HashMap.this.remove(o);
+                    return oldsize != getSize();
+                }
+
+                public int size() {
+                    return getSize();
+                }
+
+                final class _PROXY_ implements Rollbackable {
+
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT() {
+                        return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+
+                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        return this;
+                    }
+
+                }
+
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
+
+                {
+                    $CHECKPOINT.addObject(new _PROXY_());
+                }
+
+            });
         }
-        return false;
+        return getKeys();
     }
 
     /**
@@ -775,146 +548,11 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
     }
 
     /**
-     * Clears the Map so it has no keys. This is O(1).
+     * Returns the number of kay-value mappings currently in this Map.
+     * @return the size
      */
-    public void clear() {
-        if (getSize() != 0) {
-            setModCount(getModCount() + 1);
-            Arrays.fill(getBuckets(), null);
-            setSize(0);
-        }
-    }
-
-    /**
-     * Returns true if this HashMap contains a value <code>o</code>, such that
-     * <code>o.equals(value)</code>.
-     * @param value the value to search for in this HashMap
-     * @return true if at least one key maps to the value
-     * @see #containsKey(Object)
-     */
-    public boolean containsValue(Object value) {
-        for (int i = getBuckets().length - 1; i >= 0; i--) {
-            HashEntry e = getBuckets()[i];
-            while (e != null) {
-                if (equals(value, e.getValueField())) {
-                    return true;
-                }
-                e = e.getNext();
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns a shallow clone of this HashMap. The Map itself is cloned,
-     * but its contents are not.  This is O(n).
-     * @return the clone
-     */
-    public Object clone() {
-        HashMap copy = null;
-        try {
-            copy = (HashMap) super.clone();
-        } catch (CloneNotSupportedException x) {
-        }
-        copy.setBuckets(new HashEntry[getBuckets().length]);
-        copy.putAllInternal(this);
-        copy.$ASSIGN$entries(null);
-        return copy;
-    }
-
-    /**
-     * Returns a "set view" of this HashMap's keys. The set is backed by the
-     * HashMap, so changes in one show up in the other.  The set supports
-     * element removal, but not element addition.
-     * @return a set view of the keys
-     * @see #values()
-     * @see #entrySet()
-     */
-    public Set keySet() {
-        if (getKeys() == null) {
-            setKeys(new AbstractSet() {
-                public int size() {
-                    return getSize();
-                }
-
-                public Iterator iterator() {
-                    return HashMap.this.iterator(KEYS);
-                }
-
-                public void clear() {
-                    HashMap.this.clear();
-                }
-
-                public boolean contains(Object o) {
-                    return containsKey(o);
-                }
-
-                public boolean remove(Object o) {
-                    int oldsize = getSize();
-                    HashMap.this.remove(o);
-                    return oldsize != getSize();
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
-                    }
-
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
-                    }
-
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                        return this;
-                    }
-
-                }
-
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                            .getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(
-                        Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                                    .getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-
-            });
-        }
-        return getKeys();
+    public int size() {
+        return getSize();
     }
 
     /**
@@ -929,51 +567,18 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
     public Collection values() {
         if (getValues() == null) {
             setValues(new AbstractCollection() {
-                public int size() {
-                    return getSize();
-                }
-
-                public Iterator iterator() {
-                    return HashMap.this.iterator(VALUES);
-                }
-
-                public void clear() {
-                    HashMap.this.clear();
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
-                    }
-
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
-                    }
-
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                        return this;
-                    }
-
-                }
-
                 public void $COMMIT_ANONYMOUS(long timestamp) {
                     FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
                             .getTopTimestamp());
                     super.$COMMIT(timestamp);
                 }
 
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
                 public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
                     return $CHECKPOINT;
+                }
+
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    super.$RESTORE(timestamp, trim);
                 }
 
                 public final Object $SET$CHECKPOINT_ANONYMOUS(
@@ -990,6 +595,39 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
                         checkpoint.addObject(new _PROXY_());
                     }
                     return this;
+                }
+
+                public void clear() {
+                    HashMap.this.clear();
+                }
+
+                public Iterator iterator() {
+                    return HashMap.this.iterator(VALUES);
+                }
+
+                public int size() {
+                    return getSize();
+                }
+
+                final class _PROXY_ implements Rollbackable {
+
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT() {
+                        return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+
+                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        return this;
+                    }
+
                 }
 
                 private FieldRecord[] $RECORDS = new FieldRecord[] {};
@@ -1001,107 +639,6 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
             });
         }
         return getValues();
-    }
-
-    /**
-     * Returns a "set view" of this HashMap's entries. The set is backed by
-     * the HashMap, so changes in one show up in the other.  The set supports
-     * element removal, but not element addition.<p>
-     * Note that the iterators for all three views, from keySet(), entrySet(),
-     * and values(), traverse the HashMap in the same sequence.
-     * @return a set view of the entries
-     * @see #keySet()
-     * @see #values()
-     * @see Map.Entry
-     */
-    public Set entrySet() {
-        if (entries == null) {
-            $ASSIGN$entries(new AbstractSet() {
-                public int size() {
-                    return getSize();
-                }
-
-                public Iterator iterator() {
-                    return HashMap.this.iterator(ENTRIES);
-                }
-
-                public void clear() {
-                    HashMap.this.clear();
-                }
-
-                public boolean contains(Object o) {
-                    return getEntry(o) != null;
-                }
-
-                public boolean remove(Object o) {
-                    HashEntry e = getEntry(o);
-                    if (e != null) {
-                        HashMap.this.remove(e.getKeyField());
-                        return true;
-                    }
-                    return false;
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
-                    }
-
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
-                    }
-
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                        return this;
-                    }
-
-                }
-
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                            .getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(
-                        Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                                    .getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-
-            });
-        }
-        return entries;
     }
 
     /**
@@ -1117,6 +654,10 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
         HashEntry e = new HashEntry(key, value);
         e.setNext(getBuckets()[idx]);
         getBuckets()[idx] = e;
+    }
+
+    HashEntry[] getBuckets() {
+        return $BACKUP$buckets();
     }
 
     /**
@@ -1141,6 +682,14 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
             e = e.getNext();
         }
         return null;
+    }
+
+    int getModCount() {
+        return modCount;
+    }
+
+    int getSize() {
+        return size;
     }
 
     /**
@@ -1184,6 +733,179 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
             Object key = e.getKey();
             int idx = hash(key);
             addEntry(key, e.getValue(), idx, false);
+        }
+    }
+
+    void setBuckets(HashEntry[] buckets) {
+        this.$ASSIGN$buckets(buckets);
+    }
+
+    void setModCount(int modCount) {
+        this.$ASSIGN$modCount(modCount);
+    }
+
+    int setSize(int size) {
+        return this.$ASSIGN$size(size);
+    }
+
+    /**
+     * Default number of buckets. This is the value the JDK 1.3 uses. Some
+     * early documentation specified this value as 101. That is incorrect.
+     * Package visible for use by HashSet.
+     */
+    static final int DEFAULT_CAPACITY = 11;
+
+    /**
+     * The default load factor; this is explicitly specified by the spec.
+     * Package visible for use by HashSet.
+     */
+    static final float DEFAULT_LOAD_FACTOR = 0.75f;
+
+    /**
+     * Load factor of this HashMap:  used in computing the threshold.
+     * Package visible for use by HashSet.
+     * @serial the load factor
+     */
+    final float loadFactor;
+
+    /**
+     * Class to represent an entry in the hash table. Holds a single key-value
+     * pair. Package visible for use by subclass.
+     * @author Eric Blake (ebb9@email.byu.edu)
+     */
+    static class HashEntry extends AbstractMap.BasicMapEntry implements
+            Rollbackable {
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
+            super.$RESTORE(timestamp, trim);
+        }
+
+        /**
+         * Simple constructor.
+         * @param key the key
+         * @param value the value
+         */
+        HashEntry(Object key, Object value) {
+            super(key, value);
+        }
+
+        /**
+         * Called when this entry is accessed via {
+         @link #put(Object, Object)        }
+         .
+         * This version does nothing, but in LinkedHashMap, it must do some
+         * bookkeeping for access-traversal mode.
+         */
+        void access() {
+        }
+
+        /**
+         * Called when this entry is removed from the map. This version simply
+         * returns the value, but in LinkedHashMap, it must also do bookkeeping.
+         * @return the value of this key as it is removed
+         */
+        Object cleanup() {
+            return getValueField();
+        }
+
+        HashEntry getNext() {
+            return next;
+        }
+
+        void setNext(HashEntry next) {
+            this.$ASSIGN$next(next);
+        }
+
+        private final HashEntry $ASSIGN$next(HashEntry newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$next.add(null, next, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return next = newValue;
+        }
+
+        private FieldRecord $RECORD$next = new FieldRecord(0);
+
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$next };
+
+        /**
+         * The next entry in the linked list. Package visible for use by subclass.
+         */
+        private HashEntry next;
+
+    }
+
+    private final HashEntry[] $ASSIGN$buckets(HashEntry[] newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$buckets.add(null, buckets, $CHECKPOINT.getTimestamp());
+        }
+        return buckets = newValue;
+    }
+
+    private final Set $ASSIGN$entries(Set newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$entries.add(null, entries, $CHECKPOINT.getTimestamp());
+        }
+        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+            newValue.$SET$CHECKPOINT($CHECKPOINT);
+        }
+        return entries = newValue;
+    }
+
+    private final int $ASSIGN$modCount(int newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$modCount.add(null, modCount, $CHECKPOINT.getTimestamp());
+        }
+        return modCount = newValue;
+    }
+
+    private final int $ASSIGN$size(int newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
+        }
+        return size = newValue;
+    }
+
+    private final int $ASSIGN$threshold(int newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$threshold.add(null, threshold, $CHECKPOINT.getTimestamp());
+        }
+        return threshold = newValue;
+    }
+
+    private final HashEntry[] $BACKUP$buckets() {
+        $RECORD$buckets.backup(null, buckets, $CHECKPOINT.getTimestamp());
+        return buckets;
+    }
+
+    /**
+     * Deserializes this object from the given stream.
+     * @param s the stream to read from
+     * @throws ClassNotFoundException if the underlying stream fails
+     * @throws IOException if the underlying stream fails
+     * @serialData the <i>capacity</i>(int) that is the length of the
+     * bucket array, the <i>size</i>(int) of the hash map
+     * are emitted first.  They are followed by size entries,
+     * each consisting of a key (Object) and a value (Object).
+     */
+    private void readObject(ObjectInputStream s) throws IOException,
+            ClassNotFoundException {
+        s.defaultReadObject();
+        setBuckets(new HashEntry[s.readInt()]);
+        int len = s.readInt();
+        setSize(len);
+        while (len-- > 0) {
+            Object key = s.readObject();
+            addEntry(key, s.readObject(), hash(key), false);
         }
     }
 
@@ -1234,122 +956,400 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
         }
     }
 
-    /**
-     * Deserializes this object from the given stream.
-     * @param s the stream to read from
-     * @throws ClassNotFoundException if the underlying stream fails
-     * @throws IOException if the underlying stream fails
-     * @serialData the <i>capacity</i>(int) that is the length of the
-     * bucket array, the <i>size</i>(int) of the hash map
-     * are emitted first.  They are followed by size entries,
-     * each consisting of a key (Object) and a value (Object).
-     */
-    private void readObject(ObjectInputStream s) throws IOException,
-            ClassNotFoundException {
-        s.defaultReadObject();
-        setBuckets(new HashEntry[s.readInt()]);
-        int len = s.readInt();
-        setSize(len);
-        while (len-- > 0) {
-            Object key = s.readObject();
-            addEntry(key, s.readObject(), hash(key), false);
-        }
-    }
-
-    void setModCount(int modCount) {
-        this.$ASSIGN$modCount(modCount);
-    }
-
-    int getModCount() {
-        return modCount;
-    }
-
-    int setSize(int size) {
-        return this.$ASSIGN$size(size);
-    }
-
-    int getSize() {
-        return size;
-    }
-
-    void setBuckets(HashEntry[] buckets) {
-        this.$ASSIGN$buckets(buckets);
-    }
-
-    HashEntry[] getBuckets() {
-        return $BACKUP$buckets();
-    }
-
-    private final int $ASSIGN$threshold(int newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$threshold.add(null, threshold, $CHECKPOINT.getTimestamp());
-        }
-        return threshold = newValue;
-    }
-
-    private final HashEntry[] $ASSIGN$buckets(HashEntry[] newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$buckets.add(null, buckets, $CHECKPOINT.getTimestamp());
-        }
-        return buckets = newValue;
-    }
-
-    private final HashEntry[] $BACKUP$buckets() {
-        $RECORD$buckets.backup(null, buckets, $CHECKPOINT.getTimestamp());
-        return buckets;
-    }
-
-    private final int $ASSIGN$modCount(int newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$modCount.add(null, modCount, $CHECKPOINT.getTimestamp());
-        }
-        return modCount = newValue;
-    }
-
-    private final int $ASSIGN$size(int newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
-        }
-        return size = newValue;
-    }
-
-    private final Set $ASSIGN$entries(Set newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$entries.add(null, entries, $CHECKPOINT.getTimestamp());
-        }
-        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-            newValue.$SET$CHECKPOINT($CHECKPOINT);
-        }
-        return entries = newValue;
-    }
-
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        super.$COMMIT(timestamp);
-    }
-
-    public void $RESTORE(long timestamp, boolean trim) {
-        threshold = $RECORD$threshold.restore(threshold, timestamp, trim);
-        buckets = (HashEntry[]) $RECORD$buckets.restore(buckets, timestamp,
-                trim);
-        modCount = $RECORD$modCount.restore(modCount, timestamp, trim);
-        size = $RECORD$size.restore(size, timestamp, trim);
-        entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
-        super.$RESTORE(timestamp, trim);
-    }
-
-    private FieldRecord $RECORD$threshold = new FieldRecord(0);
-
     private FieldRecord $RECORD$buckets = new FieldRecord(1);
+
+    private FieldRecord $RECORD$entries = new FieldRecord(0);
 
     private FieldRecord $RECORD$modCount = new FieldRecord(0);
 
     private FieldRecord $RECORD$size = new FieldRecord(0);
 
-    private FieldRecord $RECORD$entries = new FieldRecord(0);
+    private FieldRecord $RECORD$threshold = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$threshold,
             $RECORD$buckets, $RECORD$modCount, $RECORD$size, $RECORD$entries };
+
+    /**
+     * Array containing the actual key-value mappings.
+     * Package visible for use by nested and subclasses.
+     */
+    private transient HashEntry[] buckets;
+
+    /**
+     * The cache for {
+     @link #entrySet()    }
+     .
+     */
+    private transient Set entries;
+
+    /**
+     * Counts the number of modifications this HashMap has undergone, used
+     * by Iterators to know when to throw ConcurrentModificationExceptions.
+     * Package visible for use by nested and subclasses.
+     */
+    private transient int modCount;
+
+    /**
+     * Compatible with JDK 1.2.
+     */
+    private static final long serialVersionUID = 362498820763181265L;
+
+    /**
+     * The size of this HashMap:  denotes the number of key-value pairs.
+     * Package visible for use by nested and subclasses.
+     */
+    private transient int size;
+
+    /**
+     * The rounded product of the capacity and the load factor; when the number
+     * of elements exceeds the threshold, the HashMap calls
+     * <code>rehash()</code>.
+     * @serial the threshold for rehashing
+     */
+    private int threshold;
+
+    // check for NaN too
+    // Must call this for bookkeeping in LinkedHashMap.
+    // At this point, we know we need to add a new entry.
+    // Need a new hash value to suit the bigger table.
+    // LinkedHashMap cannot override put(), hence this call.
+    // Optimize in case the Entry is one of our own.
+    // Method call necessary for LinkedHashMap to work correctly.
+    // This is impossible.
+    // Clear the entry cache. AbstractMap.clone() does the others.
+    // Create an AbstractSet with custom implementations of those methods
+    // that can be overridden easily and efficiently.
+    // Cannot create the iterator directly, because of LinkedHashMap.
+    // Test against the size of the HashMap to determine if anything
+    // really got removed. This is necessary because the return value
+    // of HashMap.remove() is ambiguous in the null case.
+    // We don't bother overriding many of the optional methods, as doing so
+    // wouldn't provide any significant performance advantage.
+    // Cannot create the iterator directly, because of LinkedHashMap.
+    // Create an AbstractSet with custom implementations of those methods
+    // that can be overridden easily and efficiently.
+    // Cannot create the iterator directly, because of LinkedHashMap.
+    // Package visible, for use in nested classes.
+    // Write the threshold and loadFactor fields.
+    // Avoid creating a wasted Set by creating the iterator directly.
+    // Read the threshold and loadFactor fields.
+    // Read and use capacity, followed by key/value pairs.
+    /**
+     * Iterate over HashMap's entries.
+     * This implementation is parameterized to give a sequential view of
+     * keys, values, or entries.
+     * @author Jon Zeppieri
+     */
+    private final class HashIterator implements Iterator, Rollbackable {
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
+        public final Checkpoint $GET$CHECKPOINT() {
+            return $CHECKPOINT;
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
+            count = $RECORD$count.restore(count, timestamp, trim);
+            idx = $RECORD$idx.restore(idx, timestamp, trim);
+            last = (HashEntry) $RECORD$last.restore(last, timestamp, trim);
+            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
+            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
+                FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
+            }
+        }
+
+        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+            if ($CHECKPOINT != checkpoint) {
+                Checkpoint oldCheckpoint = $CHECKPOINT;
+                if (checkpoint != null) {
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
+                    FieldRecord.pushState($RECORDS);
+                }
+                $CHECKPOINT = checkpoint;
+                oldCheckpoint.setCheckpoint(checkpoint);
+                checkpoint.addObject(this);
+            }
+            return this;
+        }
+
+        /**
+         * Returns true if the Iterator has more elements.
+         * @return true if there are more elements
+         */
+        public boolean hasNext() {
+            return count > 0;
+        }
+
+        /**
+         * Returns the next element in the Iterator's sequential view.
+         * @return the next element
+         * @throws ConcurrentModificationException if the HashMap was modified
+         * @throws NoSuchElementException if there is none
+         */
+        public Object next() {
+            if (knownMod != getModCount()) {
+                throw new ConcurrentModificationException();
+            }
+            if (count == 0) {
+                throw new NoSuchElementException();
+            }
+            $ASSIGN$SPECIAL$count(12, count);
+            HashEntry e = next;
+            while (e == null) {
+                e = getBuckets()[$ASSIGN$SPECIAL$idx(14, idx)];
+            }
+            $ASSIGN$next(e.getNext());
+            $ASSIGN$last(e);
+            if (type == VALUES) {
+                return e.getValueField();
+            }
+            if (type == KEYS) {
+                return e.getKeyField();
+            }
+            return e;
+        }
+
+        /**
+         * Removes from the backing HashMap the last element which was fetched
+         * with the <code>next()</code> method.
+         * @throws ConcurrentModificationException if the HashMap was modified
+         * @throws IllegalStateException if called when there is no last element
+         */
+        public void remove() {
+            if (knownMod != getModCount()) {
+                throw new ConcurrentModificationException();
+            }
+            if (last == null) {
+                throw new IllegalStateException();
+            }
+            HashMap.this.remove(last.getKeyField());
+            $ASSIGN$last(null);
+            $ASSIGN$SPECIAL$knownMod(11, knownMod);
+        }
+
+        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+        /**
+         * Construct a new HashIterator with the supplied type.
+         * @param type {
+         @link #KEYS        }
+         , {
+         @link #VALUES        }
+         , or {
+         @link #ENTRIES        }
+
+         */
+        HashIterator(int type) {
+            this.type = type;
+        }
+
+        private final int $ASSIGN$SPECIAL$count(int operator, long newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$count.add(null, count, $CHECKPOINT.getTimestamp());
+            }
+            switch (operator) {
+            case 0:
+                return count += newValue;
+            case 1:
+                return count -= newValue;
+            case 2:
+                return count *= newValue;
+            case 3:
+                return count /= newValue;
+            case 4:
+                return count &= newValue;
+            case 5:
+                return count |= newValue;
+            case 6:
+                return count ^= newValue;
+            case 7:
+                return count %= newValue;
+            case 8:
+                return count <<= newValue;
+            case 9:
+                return count >>= newValue;
+            case 10:
+                return count >>>= newValue;
+            case 11:
+                return count++;
+            case 12:
+                return count--;
+            case 13:
+                return ++count;
+            case 14:
+                return --count;
+            default:
+                return count;
+            }
+        }
+
+        private final int $ASSIGN$SPECIAL$idx(int operator, long newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$idx.add(null, idx, $CHECKPOINT.getTimestamp());
+            }
+            switch (operator) {
+            case 0:
+                return idx += newValue;
+            case 1:
+                return idx -= newValue;
+            case 2:
+                return idx *= newValue;
+            case 3:
+                return idx /= newValue;
+            case 4:
+                return idx &= newValue;
+            case 5:
+                return idx |= newValue;
+            case 6:
+                return idx ^= newValue;
+            case 7:
+                return idx %= newValue;
+            case 8:
+                return idx <<= newValue;
+            case 9:
+                return idx >>= newValue;
+            case 10:
+                return idx >>>= newValue;
+            case 11:
+                return idx++;
+            case 12:
+                return idx--;
+            case 13:
+                return ++idx;
+            case 14:
+                return --idx;
+            default:
+                return idx;
+            }
+        }
+
+        private final int $ASSIGN$SPECIAL$knownMod(int operator, long newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$knownMod
+                        .add(null, knownMod, $CHECKPOINT.getTimestamp());
+            }
+            switch (operator) {
+            case 0:
+                return knownMod += newValue;
+            case 1:
+                return knownMod -= newValue;
+            case 2:
+                return knownMod *= newValue;
+            case 3:
+                return knownMod /= newValue;
+            case 4:
+                return knownMod &= newValue;
+            case 5:
+                return knownMod |= newValue;
+            case 6:
+                return knownMod ^= newValue;
+            case 7:
+                return knownMod %= newValue;
+            case 8:
+                return knownMod <<= newValue;
+            case 9:
+                return knownMod >>= newValue;
+            case 10:
+                return knownMod >>>= newValue;
+            case 11:
+                return knownMod++;
+            case 12:
+                return knownMod--;
+            case 13:
+                return ++knownMod;
+            case 14:
+                return --knownMod;
+            default:
+                return knownMod;
+            }
+        }
+
+        private final HashEntry $ASSIGN$last(HashEntry newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$last.add(null, last, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return last = newValue;
+        }
+
+        private final HashEntry $ASSIGN$next(HashEntry newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$next.add(null, next, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return next = newValue;
+        }
+
+        private FieldRecord $RECORD$count = new FieldRecord(0);
+
+        private FieldRecord $RECORD$idx = new FieldRecord(0);
+
+        private FieldRecord $RECORD$knownMod = new FieldRecord(0);
+
+        private FieldRecord $RECORD$last = new FieldRecord(0);
+
+        private FieldRecord $RECORD$next = new FieldRecord(0);
+
+        private FieldRecord $RECORD$type = new FieldRecord(0);
+
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$type,
+                $RECORD$knownMod, $RECORD$count, $RECORD$idx, $RECORD$last,
+                $RECORD$next };
+
+        /**
+         * The number of elements remaining to be returned by next().
+         */
+        private int count = getSize();
+
+        /**
+         * Current index in the physical hash table.
+         */
+        private int idx = getBuckets().length;
+
+        /**
+         * The number of modifications to the backing HashMap that we know about.
+         */
+        private int knownMod = getModCount();
+
+        /**
+         * The last Entry returned by a next() call.
+         */
+        private HashEntry last;
+
+        /**
+         * The next entry that should be returned by next(). It is set to something
+         * if we're iterating through a bucket that contains multiple linked
+         * entries. It is null if next() needs to find a new bucket.
+         */
+        private HashEntry next;
+
+        /**
+         * The type of this Iterator: {
+         @link #KEYS        }
+         , {
+         @link #VALUES        }
+         ,
+         * or {
+         @link #ENTRIES        }
+         .
+         */
+        private final int type;
+
+    }
 
 }

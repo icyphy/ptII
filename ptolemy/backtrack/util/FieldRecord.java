@@ -100,6 +100,20 @@ public class FieldRecord {
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
+     *  @see #add(int[], Object, long)
+     */
+    public void add(Object value, long timestamp) {
+        _addRecord(0, new Record(null, value, timestamp));
+    }
+
+    /** Add an old value to the records, associated with a timestamp. This
+     *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
+     *  the value is stored without any indexing (e.g., the field is not
+     *  an array, or no indexing is needed for the value).
+     *
+     *  @param value The old value.
+     *  @param timestamp The current timestamp to be associated with the
+     *   old value.
      *  @see #add(int[], boolean, long)
      */
     public void add(boolean value, long timestamp) {
@@ -174,6 +188,26 @@ public class FieldRecord {
      */
     public void add(int value, long timestamp) {
         _addRecord(0, new Record(null, Integer.valueOf(value), timestamp));
+    }
+
+    /** Add an old value to the specified indices of the records, and
+     *  associate it with a timestamp. The indices is the array of indices
+     *  to locate the element in the array. E.g., the following assignment
+     *  makes it necessary to record the old value at indices
+     *  <tt>[1][2][3]</tt>:
+     *  <pre>buf[1][2][3] = new char[10];</pre>
+     *  <p>
+     *  If the indices array is null, it is assumed that no index is
+     *  needed.
+     *
+     *  @param indices The indices.
+     *  @param value The old value.
+     *  @param timestamp The current timestamp to be associated with the
+     *   old value.
+     */
+    public void add(int[] indices, Object value, long timestamp) {
+        _addRecord((indices == null) ? 0 : indices.length, new Record(indices,
+                value, timestamp));
     }
 
     /** Add an old value to the specified indices of the records, and
@@ -331,26 +365,6 @@ public class FieldRecord {
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
      */
-    public void add(int[] indices, Object value, long timestamp) {
-        _addRecord((indices == null) ? 0 : indices.length, new Record(indices,
-                value, timestamp));
-    }
-
-    /** Add an old value to the specified indices of the records, and
-     *  associate it with a timestamp. The indices is the array of indices
-     *  to locate the element in the array. E.g., the following assignment
-     *  makes it necessary to record the old value at indices
-     *  <tt>[1][2][3]</tt>:
-     *  <pre>buf[1][2][3] = new char[10];</pre>
-     *  <p>
-     *  If the indices array is null, it is assumed that no index is
-     *  needed.
-     *
-     *  @param indices The indices.
-     *  @param value The old value.
-     *  @param timestamp The current timestamp to be associated with the
-     *   old value.
-     */
     public void add(int[] indices, short value, long timestamp) {
         _addRecord((indices == null) ? 0 : indices.length, new Record(indices,
                 new Short(value), timestamp));
@@ -378,24 +392,22 @@ public class FieldRecord {
      *  @param value The old value.
      *  @param timestamp The current timestamp to be associated with the
      *   old value.
-     *  @see #add(int[], Object, long)
-     */
-    public void add(Object value, long timestamp) {
-        _addRecord(0, new Record(null, value, timestamp));
-    }
-
-    /** Add an old value to the records, associated with a timestamp. This
-     *  is the same as calling <tt>add(null, value, timestamp)</tt>, where
-     *  the value is stored without any indexing (e.g., the field is not
-     *  an array, or no indexing is needed for the value).
-     *
-     *  @param value The old value.
-     *  @param timestamp The current timestamp to be associated with the
-     *   old value.
      *  @see #add(int[], short, long)
      */
     public void add(short value, long timestamp) {
         _addRecord(0, new Record(null, new Short(value), timestamp));
+    }
+
+    /** Backup the values in an array, and associate the record with a
+     *  timestamp. This is the same as calling <tt>backup(null, array,
+     *  timestamp)</tt>.
+     *
+     *  @param array The array.
+     *  @param timestamp The current timestamp to be associated with the
+     *   old value.
+     */
+    public void backup(Object array, long timestamp) {
+        backup(null, array, timestamp);
     }
 
     /** Backup the values in an array, and associate the record with a
@@ -433,18 +445,6 @@ public class FieldRecord {
 
         _addRecord((indices == null) ? 0 : indices.length, new Record(indices,
                 oldValue, timestamp, true));
-    }
-
-    /** Backup the values in an array, and associate the record with a
-     *  timestamp. This is the same as calling <tt>backup(null, array,
-     *  timestamp)</tt>.
-     *
-     *  @param array The array.
-     *  @param timestamp The current timestamp to be associated with the
-     *   old value.
-     */
-    public void backup(Object array, long timestamp) {
-        backup(null, array, timestamp);
     }
 
     /** Commit the changes in all the <tt>FieldRecord</tt> objects up to the
@@ -614,6 +614,47 @@ public class FieldRecord {
      *   are deleted from the record.
      *  @return The old value to be assigned back to the field.
      */
+    public Object restore(Object current, long timestamp, boolean trim) {
+        int indices = _getTopState()._getRecords().length;
+
+        if (indices == 1) {
+            Iterator recordIter = iterator(0);
+            Record record = _findRecord(recordIter, timestamp, trim);
+            return record.getValue();
+        } else {
+            Iterator recordIter = iterator();
+
+            while (recordIter.hasNext()) {
+                Record record = (Record) recordIter.next();
+
+                if (record.getTimestamp() < timestamp) {
+                    break;
+                } else {
+                    current = _restoreField(current, record);
+                }
+
+                if (trim) {
+                    recordIter.remove();
+                }
+            }
+
+            return current;
+        }
+    }
+
+    /** Restore the old value at the timestamp to the field.
+     *  <p>
+     *  The given timestamp refers to the time when the field still possesses
+     *  its old value. If the timestamp is increased at an assignment, the old
+     *  value at that timestamp refers to the value of the field before
+     *  assignment.
+     *
+     *  @param current The current value of the field.
+     *  @param timestamp The timestamp.
+     *  @param trim If <tt>true</tt>, any values newer than the restored value
+     *   are deleted from the record.
+     *  @return The old value to be assigned back to the field.
+     */
     public boolean restore(boolean current, long timestamp, boolean trim) {
         Iterator recordIter = iterator(0);
         Record record = _findRecord(recordIter, timestamp, trim);
@@ -766,47 +807,6 @@ public class FieldRecord {
             return current;
         } else {
             return ((Long) record.getValue()).longValue();
-        }
-    }
-
-    /** Restore the old value at the timestamp to the field.
-     *  <p>
-     *  The given timestamp refers to the time when the field still possesses
-     *  its old value. If the timestamp is increased at an assignment, the old
-     *  value at that timestamp refers to the value of the field before
-     *  assignment.
-     *
-     *  @param current The current value of the field.
-     *  @param timestamp The timestamp.
-     *  @param trim If <tt>true</tt>, any values newer than the restored value
-     *   are deleted from the record.
-     *  @return The old value to be assigned back to the field.
-     */
-    public Object restore(Object current, long timestamp, boolean trim) {
-        int indices = _getTopState()._getRecords().length;
-
-        if (indices == 1) {
-            Iterator recordIter = iterator(0);
-            Record record = _findRecord(recordIter, timestamp, trim);
-            return record.getValue();
-        } else {
-            Iterator recordIter = iterator();
-
-            while (recordIter.hasNext()) {
-                Record record = (Record) recordIter.next();
-
-                if (record.getTimestamp() < timestamp) {
-                    break;
-                } else {
-                    current = _restoreField(current, record);
-                }
-
-                if (trim) {
-                    recordIter.remove();
-                }
-            }
-
-            return current;
         }
     }
 

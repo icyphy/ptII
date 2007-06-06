@@ -77,6 +77,14 @@ import ptolemy.backtrack.Rollbackable;
  */
 public interface SortedMap extends Map, Rollbackable {
 
+    public void $COMMIT(long timestamp);
+
+    public Checkpoint $GET$CHECKPOINT();
+
+    public void $RESTORE(long timestamp, boolean trim);
+
+    public Object $SET$CHECKPOINT(Checkpoint checkpoint);
+
     /**
      * Returns the comparator used in sorting this map, or null if it is
      * the keys' natural ordering.
@@ -164,13 +172,5 @@ public interface SortedMap extends Map, Rollbackable {
      * null keys
      */
     SortedMap tailMap(Object fromKey);
-
-    public void $COMMIT(long timestamp);
-
-    public void $RESTORE(long timestamp, boolean trim);
-
-    public Checkpoint $GET$CHECKPOINT();
-
-    public Object $SET$CHECKPOINT(Checkpoint checkpoint);
 
 }

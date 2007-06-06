@@ -72,28 +72,38 @@ import ptolemy.backtrack.util.FieldRecord;
  */
 public abstract class AbstractCollection implements Collection, Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-    /**
-     * The main constructor, for use by subclasses.
-     */
-    protected AbstractCollection() {
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
-    /**
-     * Return an Iterator over this collection. The iterator must provide the
-     * hasNext and next methods and should in addition provide remove if the
-     * collection is modifiable.
-     * @return an iterator
-     */
-    public abstract Iterator iterator();
+    public final Checkpoint $GET$CHECKPOINT() {
+        return $CHECKPOINT;
+    }
 
-    /**
-     * Return the number of elements in this collection. If there are more than
-     * Integer.MAX_VALUE elements, return Integer.MAX_VALUE.
-     * @return the size
-     */
-    public abstract int size();
+    public void $RESTORE(long timestamp, boolean trim) {
+        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
+            FieldRecord.popState($RECORDS);
+            $RESTORE(timestamp, trim);
+        }
+    }
+
+    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+        if ($CHECKPOINT != checkpoint) {
+            Checkpoint oldCheckpoint = $CHECKPOINT;
+            if (checkpoint != null) {
+                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                FieldRecord.pushState($RECORDS);
+            }
+            $CHECKPOINT = checkpoint;
+            oldCheckpoint.setCheckpoint(checkpoint);
+            checkpoint.addObject(this);
+        }
+        return this;
+    }
 
     /**
      * Add an object to the collection (optional operation). This implementation
@@ -220,6 +230,14 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     }
 
     /**
+     * Return an Iterator over this collection. The iterator must provide the
+     * hasNext and next methods and should in addition provide remove if the
+     * collection is modifiable.
+     * @return an iterator
+     */
+    public abstract Iterator iterator();
+
+    /**
      * Remove a single instance of an object from this collection (optional
      * operation). That is, remove one element e such that
      * <code>(o == null ? e == null : o.equals(e))</code>, if such an element
@@ -268,35 +286,6 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     }
 
     /**
-     * Remove from this collection all its elements that are contained in a given
-     * collection (optional operation). This implementation iterates over this
-     * collection, and for each element tests if it is contained in the given
-     * collection. If so, it is removed by the Iterator's remove method (thus
-     * this method will fail with an UnsupportedOperationException if the
-     * Iterator's remove method does). This method is necessary for ArrayList,
-     * which cannot publicly override removeAll but can optimize this call.
-     * @param c the collection to remove the elements of
-     * @return true if the remove operation caused the Collection to change
-     * @throws UnsupportedOperationException if this collection's Iterator
-     * does not support the remove method
-     * @throws NullPointerException if the collection, c, is null.
-     * @see Iterator#remove()
-     */
-    // Package visible for use throughout java.util.
-    boolean removeAllInternal(Collection c) {
-        Iterator itr = iterator();
-        boolean modified = false;
-        int pos = size();
-        while (--pos >= 0) {
-            if (c.contains(itr.next())) {
-                itr.remove();
-                modified = true;
-            }
-        }
-        return modified;
-    }
-
-    /**
      * Remove from this collection all its elements that are not contained in a
      * given collection (optional operation). This implementation iterates over
      * this collection, and for each element tests if it is contained in the
@@ -315,34 +304,11 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     }
 
     /**
-     * Remove from this collection all its elements that are not contained in a
-     * given collection (optional operation). This implementation iterates over
-     * this collection, and for each element tests if it is contained in the
-     * given collection. If not, it is removed by the Iterator's remove method
-     * (thus this method will fail with an UnsupportedOperationException if
-     * the Iterator's remove method does). This method is necessary for
-     * ArrayList, which cannot publicly override retainAll but can optimize
-     * this call.
-     * @param c the collection to retain the elements of
-     * @return true if the remove operation caused the Collection to change
-     * @throws UnsupportedOperationException if this collection's Iterator
-     * does not support the remove method
-     * @throws NullPointerException if the collection, c, is null.
-     * @see Iterator#remove()
+     * Return the number of elements in this collection. If there are more than
+     * Integer.MAX_VALUE elements, return Integer.MAX_VALUE.
+     * @return the size
      */
-    // Package visible for use throughout java.util.
-    boolean retainAllInternal(Collection c) {
-        Iterator itr = iterator();
-        boolean modified = false;
-        int pos = size();
-        while (--pos >= 0) {
-            if (!c.contains(itr.next())) {
-                itr.remove();
-                modified = true;
-            }
-        }
-        return modified;
-    }
+    public abstract int size();
 
     /**
      * Return an array containing the elements of this collection. This
@@ -429,6 +395,16 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     }
 
     /**
+     * The main constructor, for use by subclasses.
+     */
+    protected AbstractCollection() {
+    }
+
+    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+    /**
      * Compare two objects according to Collection semantics.
      * @param o1 the first object
      * @param o2 the second object
@@ -451,40 +427,64 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return o == null ? 0 : o.hashCode();
     }
 
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        $RECORD$$CHECKPOINT.commit(timestamp);
-    }
-
-    public void $RESTORE(long timestamp, boolean trim) {
-        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
-            FieldRecord.popState($RECORDS);
-            $RESTORE(timestamp, trim);
-        }
-    }
-
-    public final Checkpoint $GET$CHECKPOINT() {
-        return $CHECKPOINT;
-    }
-
-    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-        if ($CHECKPOINT != checkpoint) {
-            Checkpoint oldCheckpoint = $CHECKPOINT;
-            if (checkpoint != null) {
-                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                FieldRecord.pushState($RECORDS);
+    /**
+     * Remove from this collection all its elements that are contained in a given
+     * collection (optional operation). This implementation iterates over this
+     * collection, and for each element tests if it is contained in the given
+     * collection. If so, it is removed by the Iterator's remove method (thus
+     * this method will fail with an UnsupportedOperationException if the
+     * Iterator's remove method does). This method is necessary for ArrayList,
+     * which cannot publicly override removeAll but can optimize this call.
+     * @param c the collection to remove the elements of
+     * @return true if the remove operation caused the Collection to change
+     * @throws UnsupportedOperationException if this collection's Iterator
+     * does not support the remove method
+     * @throws NullPointerException if the collection, c, is null.
+     * @see Iterator#remove()
+     */
+    // Package visible for use throughout java.util.
+    boolean removeAllInternal(Collection c) {
+        Iterator itr = iterator();
+        boolean modified = false;
+        int pos = size();
+        while (--pos >= 0) {
+            if (c.contains(itr.next())) {
+                itr.remove();
+                modified = true;
             }
-            $CHECKPOINT = checkpoint;
-            oldCheckpoint.setCheckpoint(checkpoint);
-            checkpoint.addObject(this);
         }
-        return this;
+        return modified;
     }
 
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+    /**
+     * Remove from this collection all its elements that are not contained in a
+     * given collection (optional operation). This implementation iterates over
+     * this collection, and for each element tests if it is contained in the
+     * given collection. If not, it is removed by the Iterator's remove method
+     * (thus this method will fail with an UnsupportedOperationException if
+     * the Iterator's remove method does). This method is necessary for
+     * ArrayList, which cannot publicly override retainAll but can optimize
+     * this call.
+     * @param c the collection to retain the elements of
+     * @return true if the remove operation caused the Collection to change
+     * @throws UnsupportedOperationException if this collection's Iterator
+     * does not support the remove method
+     * @throws NullPointerException if the collection, c, is null.
+     * @see Iterator#remove()
+     */
+    // Package visible for use throughout java.util.
+    boolean retainAllInternal(Collection c) {
+        Iterator itr = iterator();
+        boolean modified = false;
+        int pos = size();
+        while (--pos >= 0) {
+            if (!c.contains(itr.next())) {
+                itr.remove();
+                modified = true;
+            }
+        }
+        return modified;
+    }
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {};
 

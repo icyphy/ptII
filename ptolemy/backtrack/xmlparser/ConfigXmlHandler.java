@@ -191,6 +191,28 @@ public class ConfigXmlHandler extends XmlHandler {
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
 
+    /** The class in the original XML document that should be removed when it
+     *  is transformed to the library description of backtracking actors.
+     */
+    private static final String[] _REMOVED_CLASSES = new String[] {
+            "ptolemy.kernel.CompositeEntity", "ptolemy.actor.gui.Configuration" };
+
+    /** The class in the original XML document that should be removed when it
+     *  is transformed to the library description of backtracking actors.
+     */
+    private static Set<String> _REMOVED_CLASS_SET = new HashSet<String>();
+
+    /** The elements in the original XML document that should be removed when it
+     *  is transformed to the library description of backtracking actors.
+     */
+    private static final String[] _REMOVED_ELEMENTS = new String[] {
+            "configure", "input" };
+
+    /** The elements in the original XML document that should be removed when it
+     *  is transformed to the library description of backtracking actors.
+     */
+    private static Set<String> _REMOVED_ELEMENT_SET = new HashSet<String>();
+
     /** The canonical paths of the XML documents that should be excluded from
      *  the parsing.
      */
@@ -200,28 +222,6 @@ public class ConfigXmlHandler extends XmlHandler {
      *  document. If it is null, all classes will be kept.
      */
     private Set<String> _includedClasses;
-
-    /** The class in the original XML document that should be removed when it
-     *  is transformed to the library description of backtracking actors.
-     */
-    private static Set<String> _REMOVED_CLASS_SET = new HashSet<String>();
-
-    /** The class in the original XML document that should be removed when it
-     *  is transformed to the library description of backtracking actors.
-     */
-    private static final String[] _REMOVED_CLASSES = new String[] {
-            "ptolemy.kernel.CompositeEntity", "ptolemy.actor.gui.Configuration" };
-
-    /** The elements in the original XML document that should be removed when it
-     *  is transformed to the library description of backtracking actors.
-     */
-    private static Set<String> _REMOVED_ELEMENT_SET = new HashSet<String>();
-
-    /** The elements in the original XML document that should be removed when it
-     *  is transformed to the library description of backtracking actors.
-     */
-    private static final String[] _REMOVED_ELEMENTS = new String[] {
-            "configure", "input" };
 
     ///////////////////////////////////////////////////////////////////
     ////                  static class initializer                 ////

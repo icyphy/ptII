@@ -42,7 +42,12 @@ import ptolemy.backtrack.util.java.util.Random;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class RandomTest1 {
-    private Random _random = new Random();
+    /**
+     *  @param args
+     */
+    public static void main(String[] args) {
+        new RandomTest1().test();
+    }
 
     void test() {
         long handle = _random.$GET$CHECKPOINT().createCheckpoint();
@@ -62,10 +67,5 @@ public class RandomTest1 {
         System.out.println();
     }
 
-    /**
-     *  @param args
-     */
-    public static void main(String[] args) {
-        new RandomTest1().test();
-    }
+    private Random _random = new Random();
 }

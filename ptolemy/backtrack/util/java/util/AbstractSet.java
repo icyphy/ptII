@@ -63,10 +63,14 @@ import ptolemy.backtrack.util.FieldRecord;
 public abstract class AbstractSet extends AbstractCollection implements Set,
         Rollbackable {
 
-    /**
-     * The main constructor, for use by subclasses.
-     */
-    protected AbstractSet() {
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
+    public void $RESTORE(long timestamp, boolean trim) {
+        super.$RESTORE(timestamp, trim);
     }
 
     /**
@@ -133,14 +137,10 @@ public abstract class AbstractSet extends AbstractCollection implements Set,
         return oldsize != size();
     }
 
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        super.$COMMIT(timestamp);
-    }
-
-    public void $RESTORE(long timestamp, boolean trim) {
-        super.$RESTORE(timestamp, trim);
+    /**
+     * The main constructor, for use by subclasses.
+     */
+    protected AbstractSet() {
     }
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {};

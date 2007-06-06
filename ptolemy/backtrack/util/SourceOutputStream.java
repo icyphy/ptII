@@ -50,37 +50,6 @@ public class SourceOutputStream extends FileOutputStream {
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
-    /** Get an output stream with a file name. If the parent directories of the
-     *  output file does not exist yet, they are created automatically.
-     *
-     *  @param fileName The output file name.
-     *  @param overwrite Whether to an overwrite existing file, if any.
-     *  @return The output stream of the file.
-     *  @exception IOException If error occurs when creating the output stream.
-     *   An {@link IOException} is thrown if <tt>overwrite</tt> is
-     *   <tt>false</tt>and the output file already exists; {@link
-     *   FileNotFoundException} is thrown if the output file cannot be created
-     *   for other reasons.
-     */
-    public static SourceOutputStream getStream(String fileName,
-            boolean overwrite) throws IOException {
-        File file = new File(fileName);
-
-        if (file.getParent() != null) {
-            File path = new File(file.getParent());
-
-            if (!path.exists()) {
-                path.mkdirs();
-            }
-        }
-
-        if (!overwrite && new File(fileName).exists()) {
-            throw new IOException("File \"" + fileName + "\" already exists.");
-        } else {
-            return new SourceOutputStream(fileName);
-        }
-    }
-
     /** Get an output stream with a output root directory, the name of the
      *  package which the output class is in, and an output file name. If the
      *  parent directories of the final output file (computed from the given
@@ -118,6 +87,37 @@ public class SourceOutputStream extends FileOutputStream {
             throw new IOException("File \"" + fullName + "\" already exists.");
         } else {
             return new SourceOutputStream(root + File.separator + fileName);
+        }
+    }
+
+    /** Get an output stream with a file name. If the parent directories of the
+     *  output file does not exist yet, they are created automatically.
+     *
+     *  @param fileName The output file name.
+     *  @param overwrite Whether to an overwrite existing file, if any.
+     *  @return The output stream of the file.
+     *  @exception IOException If error occurs when creating the output stream.
+     *   An {@link IOException} is thrown if <tt>overwrite</tt> is
+     *   <tt>false</tt>and the output file already exists; {@link
+     *   FileNotFoundException} is thrown if the output file cannot be created
+     *   for other reasons.
+     */
+    public static SourceOutputStream getStream(String fileName,
+            boolean overwrite) throws IOException {
+        File file = new File(fileName);
+
+        if (file.getParent() != null) {
+            File path = new File(file.getParent());
+
+            if (!path.exists()) {
+                path.mkdirs();
+            }
+        }
+
+        if (!overwrite && new File(fileName).exists()) {
+            throw new IOException("File \"" + fileName + "\" already exists.");
+        } else {
+            return new SourceOutputStream(fileName);
         }
     }
 

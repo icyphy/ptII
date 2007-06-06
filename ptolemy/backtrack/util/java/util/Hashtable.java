@@ -107,635 +107,6 @@ import ptolemy.backtrack.util.FieldRecord;
 public class Hashtable extends Dictionary implements Map, Cloneable,
         Serializable, Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-    // WARNING: Hashtable is a CORE class in the bootstrap cycle. See the
-    // comments in vm/reference/java/lang/Runtime for implications of this fact.
-    /**
-     * Default number of buckets. This is the value the JDK 1.3 uses. Some
-     * early documentation specified this value as 101. That is incorrect.
-     */
-    private static final int DEFAULT_CAPACITY = 11;
-
-    /**
-     * An "enum" of iterator types.
-     */
-    // Package visible for use by nested classes.
-    static final int KEYS = 0, VALUES = 1, ENTRIES = 2;
-
-    /**
-     * The default load factor; this is explicitly specified by the spec.
-     */
-    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
-
-    /**
-     * Compatible with JDK 1.0+.
-     */
-    private static final long serialVersionUID = 1421746759512286392L;
-
-    /**
-     * The rounded product of the capacity and the load factor; when the number
-     * of elements exceeds the threshold, the Hashtable calls
-     * <code>rehash()</code>.
-     * @serial
-     */
-    private int threshold;
-
-    /**
-     * Load factor of this Hashtable:  used in computing the threshold.
-     * @serial
-     */
-    private final float loadFactor;
-
-    /**
-     * Array containing the actual key-value mappings.
-     */
-    // Package visible for use by nested classes.
-    private transient HashEntry[] buckets;
-
-    /**
-     * Counts the number of modifications this Hashtable has undergone, used
-     * by Iterators to know when to throw ConcurrentModificationExceptions.
-     */
-    // Package visible for use by nested classes.
-    private transient int modCount;
-
-    /**
-     * The size of this Hashtable:  denotes the number of key-value pairs.
-     */
-    // Package visible for use by nested classes.
-    private transient int size;
-
-    /**
-     * The cache for {
-     @link #keySet()    }
-     .
-     */
-    private transient Set keys;
-
-    /**
-     * The cache for {
-     @link #values()    }
-     .
-     */
-    private transient Collection values;
-
-    /**
-     * The cache for {
-     @link #entrySet()    }
-     .
-     */
-    private transient Set entries;
-
-    /**
-     * Class to represent an entry in the hash table. Holds a single key-value
-     * pair. A Hashtable Entry is identical to a HashMap Entry, except that
-     * `null' is not allowed for keys and values.
-     */
-    private static final class HashEntry extends AbstractMap.BasicMapEntry
-            implements Rollbackable {
-
-        /**
-         * The next entry in the linked list.
-         */
-        private HashEntry next;
-
-        /**
-         * Simple constructor.
-         * @param key the key, already guaranteed non-null
-         * @param value the value, already guaranteed non-null
-         */
-        HashEntry(Object key, Object value) {
-            super(key, value);
-        }
-
-        /**
-         * Resets the value.
-         * @param newVal the new value
-         * @return the prior value
-         * @throws NullPointerException if <code>newVal</code> is null
-         */
-        public Object setValue(Object newVal) {
-            if (newVal == null) {
-                throw new NullPointerException();
-            }
-            return super.setValue(newVal);
-        }
-
-        void setNext(HashEntry next) {
-            this.$ASSIGN$next(next);
-        }
-
-        HashEntry getNext() {
-            return next;
-        }
-
-        private final HashEntry $ASSIGN$next(HashEntry newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$next.add(null, next, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return next = newValue;
-        }
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
-            super.$RESTORE(timestamp, trim);
-        }
-
-        private FieldRecord $RECORD$next = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$next };
-
-    }
-
-    // check for NaN too
-    // Delegate to older method to make sure code overriding it continues
-    // to work.
-    // Check if value is null since it is not permitted.
-    // Bypass e.setValue, since we already know value is non-null.
-    // At this point, we know we need to add a new entry.
-    // Need a new hash value to suit the bigger table.
-    // Optimize in case the Entry is one of our own.
-    // This is impossible.
-    // Clear the caches.
-    // Since we are already synchronized, and entrySet().iterator()
-    // would repeatedly re-lock/release the monitor, we directly use the
-    // unsynchronized HashIterator instead.
-    // Create a synchronized AbstractSet with custom implementations of
-    // those methods that can be overridden easily and efficiently.
-    // We must specify the correct object to synchronize upon, hence the
-    // use of a non-public API
-    // We don't bother overriding many of the optional methods, as doing so
-    // wouldn't provide any significant performance advantage.
-    // We must specify the correct object to synchronize upon, hence the
-    // use of a non-public API
-    // Create an AbstractSet with custom implementations of those methods
-    // that can be overridden easily and efficiently.
-    // We must specify the correct object to synchronize upon, hence the
-    // use of a non-public API
-    // no need to synchronize, entrySet().equals() does that
-    // Since we are already synchronized, and entrySet().iterator()
-    // would repeatedly re-lock/release the monitor, we directly use the
-    // unsynchronized HashIterator instead.
-    // Note: Inline Math.abs here, for less method overhead, and to avoid
-    // a bootstrap dependency, since Math relies on native methods.
-    // Package visible, for use in nested classes.
-    // Write the threshold and loadFactor fields.
-    // Since we are already synchronized, and entrySet().iterator()
-    // would repeatedly re-lock/release the monitor, we directly use the
-    // unsynchronized HashIterator instead.
-    // Read the threshold and loadFactor fields.
-    // Read and use capacity.
-    // Read and use key/value pairs.
-    // TODO: should we be defensive programmers, and check for illegal nulls?
-    /**
-     * A class which implements the Iterator interface and is used for
-     * iterating over Hashtables.
-     * This implementation is parameterized to give a sequential view of
-     * keys, values, or entries; it also allows the removal of elements,
-     * as per the Javasoft spec.  Note that it is not synchronized; this is
-     * a performance enhancer since it is never exposed externally and is
-     * only used within synchronized blocks above.
-     * @author Jon Zeppieri
-     */
-    private final class HashIterator implements Iterator, Rollbackable {
-
-        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-        /**
-         * The type of this Iterator: {
-         @link #KEYS        }
-         , {
-         @link #VALUES        }
-         ,
-         * or {
-         @link #ENTRIES        }
-         .
-         */
-        final int type;
-
-        /**
-         * The number of modifications to the backing Hashtable that we know about.
-         */
-        private int knownMod = getModCount();
-
-        /**
-         * The number of elements remaining to be returned by next().
-         */
-        private int count = getSize();
-
-        /**
-         * Current index in the physical hash table.
-         */
-        private int idx = getBuckets().length;
-
-        /**
-         * The last Entry returned by a next() call.
-         */
-        private HashEntry last;
-
-        /**
-         * The next entry that should be returned by next(). It is set to something
-         * if we're iterating through a bucket that contains multiple linked
-         * entries. It is null if next() needs to find a new bucket.
-         */
-        private HashEntry next;
-
-        /**
-         * Construct a new HashIterator with the supplied type.
-         * @param type {
-         @link #KEYS        }
-         , {
-         @link #VALUES        }
-         , or {
-         @link #ENTRIES        }
-
-         */
-        HashIterator(int type) {
-            this.type = type;
-        }
-
-        /**
-         * Returns true if the Iterator has more elements.
-         * @return true if there are more elements
-         */
-        public boolean hasNext() {
-            return getCount() > 0;
-        }
-
-        /**
-         * Returns the next element in the Iterator's sequential view.
-         * @return the next element
-         * @throws ConcurrentModificationException if the hashtable was modified
-         * @throws NoSuchElementException if there is none
-         */
-        public Object next() {
-            if (getKnownMod() != getModCount()) {
-                throw new ConcurrentModificationException();
-            }
-            if (getCount() == 0) {
-                throw new NoSuchElementException();
-            }
-            setCount(getCount() - 1);
-            HashEntry e = getNext();
-            while (e == null) {
-                e = getBuckets()[setIdx(getIdx() - 1)];
-            }
-            setNext(e.getNext());
-            setLast(e);
-            if (type == VALUES) {
-                return e.getValueField();
-            }
-            if (type == KEYS) {
-                return e.getKeyField();
-            }
-            return e;
-        }
-
-        /**
-         * Removes from the backing Hashtable the last element which was fetched
-         * with the <code>next()</code> method.
-         * @throws ConcurrentModificationException if the hashtable was modified
-         * @throws IllegalStateException if called when there is no last element
-         */
-        public void remove() {
-            if (getKnownMod() != getModCount()) {
-                throw new ConcurrentModificationException();
-            }
-            if (getLast() == null) {
-                throw new IllegalStateException();
-            }
-            Hashtable.this.remove(getLast().getKeyField());
-            setLast(null);
-            setKnownMod(getKnownMod() + 1);
-        }
-
-        void setCount(int count) {
-            this.$ASSIGN$count(count);
-        }
-
-        int getCount() {
-            return count;
-        }
-
-        int setIdx(int idx) {
-            return this.$ASSIGN$idx(idx);
-        }
-
-        int getIdx() {
-            return idx;
-        }
-
-        void setKnownMod(int knownMod) {
-            this.$ASSIGN$knownMod(knownMod);
-        }
-
-        int getKnownMod() {
-            return knownMod;
-        }
-
-        void setLast(HashEntry last) {
-            this.$ASSIGN$last(last);
-        }
-
-        HashEntry getLast() {
-            return last;
-        }
-
-        void setNext(HashEntry next) {
-            this.$ASSIGN$next(next);
-        }
-
-        HashEntry getNext() {
-            return next;
-        }
-
-        private final int $ASSIGN$knownMod(int newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$knownMod
-                        .add(null, knownMod, $CHECKPOINT.getTimestamp());
-            }
-            return knownMod = newValue;
-        }
-
-        private final int $ASSIGN$count(int newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$count.add(null, count, $CHECKPOINT.getTimestamp());
-            }
-            return count = newValue;
-        }
-
-        private final int $ASSIGN$idx(int newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$idx.add(null, idx, $CHECKPOINT.getTimestamp());
-            }
-            return idx = newValue;
-        }
-
-        private final HashEntry $ASSIGN$last(HashEntry newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$last.add(null, last, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return last = newValue;
-        }
-
-        private final HashEntry $ASSIGN$next(HashEntry newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$next.add(null, next, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return next = newValue;
-        }
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            $RECORD$$CHECKPOINT.commit(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
-            count = $RECORD$count.restore(count, timestamp, trim);
-            idx = $RECORD$idx.restore(idx, timestamp, trim);
-            last = (HashEntry) $RECORD$last.restore(last, timestamp, trim);
-            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
-            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                        timestamp, trim);
-                FieldRecord.popState($RECORDS);
-                $RESTORE(timestamp, trim);
-            }
-        }
-
-        public final Checkpoint $GET$CHECKPOINT() {
-            return $CHECKPOINT;
-        }
-
-        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-            if ($CHECKPOINT != checkpoint) {
-                Checkpoint oldCheckpoint = $CHECKPOINT;
-                if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                            .getTimestamp());
-                    FieldRecord.pushState($RECORDS);
-                }
-                $CHECKPOINT = checkpoint;
-                oldCheckpoint.setCheckpoint(checkpoint);
-                checkpoint.addObject(this);
-            }
-            return this;
-        }
-
-        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-        private FieldRecord $RECORD$knownMod = new FieldRecord(0);
-
-        private FieldRecord $RECORD$count = new FieldRecord(0);
-
-        private FieldRecord $RECORD$idx = new FieldRecord(0);
-
-        private FieldRecord $RECORD$last = new FieldRecord(0);
-
-        private FieldRecord $RECORD$next = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$knownMod,
-                $RECORD$count, $RECORD$idx, $RECORD$last, $RECORD$next };
-
-    }
-
-    // class HashIterator
-    /**
-     * Enumeration view of this Hashtable, providing sequential access to its
-     * elements; this implementation is parameterized to provide access either
-     * to the keys or to the values in the Hashtable.
-     * <b>NOTE</b>: Enumeration is not safe if new elements are put in the table
-     * as this could cause a rehash and we'd completely lose our place.  Even
-     * without a rehash, it is undetermined if a new element added would
-     * appear in the enumeration.  The spec says nothing about this, but
-     * the "Java Class Libraries" book infers that modifications to the
-     * hashtable during enumeration causes indeterminate results.  Don't do it!
-     * @author Jon Zeppieri
-     */
-    private final class Enumerator implements Enumeration, Rollbackable {
-
-        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-        /**
-         * The type of this Iterator: {
-         @link #KEYS        }
-         or {
-         @link #VALUES        }
-         .
-         */
-        final int type;
-
-        /**
-         * The number of elements remaining to be returned by next().
-         */
-        private int count = getSize();
-
-        /**
-         * Current index in the physical hash table.
-         */
-        private int idx = getBuckets().length;
-
-        /**
-         * Entry which will be returned by the next nextElement() call. It is
-         * set if we are iterating through a bucket with multiple entries, or null
-         * if we must look in the next bucket.
-         */
-        private HashEntry next;
-
-        /**
-         * Construct the enumeration.
-         * @param type either {
-         @link #KEYS        }
-         or {
-         @link #VALUES        }
-         .
-         */
-        Enumerator(int type) {
-            this.type = type;
-        }
-
-        /**
-         * Checks whether more elements remain in the enumeration.
-         * @return true if nextElement() will not fail.
-         */
-        public boolean hasMoreElements() {
-            return getCount() > 0;
-        }
-
-        /**
-         * Returns the next element.
-         * @return the next element
-         * @throws NoSuchElementException if there is none.
-         */
-        public Object nextElement() {
-            if (getCount() == 0) {
-                throw new NoSuchElementException("Hashtable Enumerator");
-            }
-            setCount(getCount() - 1);
-            HashEntry e = getNext();
-            while (e == null) {
-                e = getBuckets()[setIdx(getIdx() - 1)];
-            }
-            setNext(e.getNext());
-            return type == VALUES ? e.getValueField() : e.getKeyField();
-        }
-
-        void setCount(int count) {
-            this.$ASSIGN$count(count);
-        }
-
-        int getCount() {
-            return count;
-        }
-
-        int setIdx(int idx) {
-            return this.$ASSIGN$idx(idx);
-        }
-
-        int getIdx() {
-            return idx;
-        }
-
-        void setNext(HashEntry next) {
-            this.$ASSIGN$next(next);
-        }
-
-        HashEntry getNext() {
-            return next;
-        }
-
-        private final int $ASSIGN$count(int newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$count.add(null, count, $CHECKPOINT.getTimestamp());
-            }
-            return count = newValue;
-        }
-
-        private final int $ASSIGN$idx(int newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$idx.add(null, idx, $CHECKPOINT.getTimestamp());
-            }
-            return idx = newValue;
-        }
-
-        private final HashEntry $ASSIGN$next(HashEntry newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$next.add(null, next, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return next = newValue;
-        }
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            $RECORD$$CHECKPOINT.commit(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            count = $RECORD$count.restore(count, timestamp, trim);
-            idx = $RECORD$idx.restore(idx, timestamp, trim);
-            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
-            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                        timestamp, trim);
-                FieldRecord.popState($RECORDS);
-                $RESTORE(timestamp, trim);
-            }
-        }
-
-        public final Checkpoint $GET$CHECKPOINT() {
-            return $CHECKPOINT;
-        }
-
-        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-            if ($CHECKPOINT != checkpoint) {
-                Checkpoint oldCheckpoint = $CHECKPOINT;
-                if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                            .getTimestamp());
-                    FieldRecord.pushState($RECORDS);
-                }
-                $CHECKPOINT = checkpoint;
-                oldCheckpoint.setCheckpoint(checkpoint);
-                checkpoint.addObject(this);
-            }
-            return this;
-        }
-
-        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-        private FieldRecord $RECORD$count = new FieldRecord(0);
-
-        private FieldRecord $RECORD$idx = new FieldRecord(0);
-
-        private FieldRecord $RECORD$next = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$count,
-                $RECORD$idx, $RECORD$next };
-
-    }
-
     // class Enumerator
     /**
      * Construct a new Hashtable with the default capacity (11) and the default
@@ -796,44 +167,75 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         $ASSIGN$threshold((int) (initialCapacity * loadFactor));
     }
 
-    /**
-     * Returns the number of key-value mappings currently in this hashtable.
-     * @return the size
-     */
-    public synchronized int size() {
-        return getSize();
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        $RECORD$$CHECKPOINT.commit(timestamp);
+    }
+
+    public final Checkpoint $GET$CHECKPOINT() {
+        return $CHECKPOINT;
+    }
+
+    public void $RESTORE(long timestamp, boolean trim) {
+        threshold = $RECORD$threshold.restore(threshold, timestamp, trim);
+        buckets = (HashEntry[]) $RECORD$buckets.restore(buckets, timestamp,
+                trim);
+        modCount = $RECORD$modCount.restore(modCount, timestamp, trim);
+        size = $RECORD$size.restore(size, timestamp, trim);
+        keys = (Set) $RECORD$keys.restore(keys, timestamp, trim);
+        values = (Collection) $RECORD$values.restore(values, timestamp, trim);
+        entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
+        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
+            FieldRecord.popState($RECORDS);
+            $RESTORE(timestamp, trim);
+        }
+    }
+
+    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+        if ($CHECKPOINT != checkpoint) {
+            Checkpoint oldCheckpoint = $CHECKPOINT;
+            if (checkpoint != null) {
+                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                FieldRecord.pushState($RECORDS);
+            }
+            $CHECKPOINT = checkpoint;
+            oldCheckpoint.setCheckpoint(checkpoint);
+            checkpoint.addObject(this);
+        }
+        return this;
     }
 
     /**
-     * Returns true if there are no key-value mappings currently in this table.
-     * @return <code>size() == 0</code>
+     * Clears the hashtable so it has no keys.  This is O(1).
      */
-    public synchronized boolean isEmpty() {
-        return getSize() == 0;
+    public synchronized void clear() {
+        if (getSize() > 0) {
+            setModCount(getModCount() + 1);
+            Arrays.fill(getBuckets(), null);
+            setSize(0);
+        }
     }
 
     /**
-     * Return an enumeration of the keys of this table. There's no point
-     * in synchronizing this, as you have already been warned that the
-     * enumeration is not specified to be thread-safe.
-     * @return the keys
-     * @see #elements()
-     * @see #keySet()
+     * Returns a shallow clone of this Hashtable. The Map itself is cloned,
+     * but its contents are not.  This is O(n).
+     * @return the clone
      */
-    public Enumeration keys() {
-        return new Enumerator(KEYS);
-    }
-
-    /**
-     * Return an enumeration of the values of this table. There's no point
-     * in synchronizing this, as you have already been warned that the
-     * enumeration is not specified to be thread-safe.
-     * @return the values
-     * @see #keys()
-     * @see #values()
-     */
-    public Enumeration elements() {
-        return new Enumerator(VALUES);
+    public synchronized Object clone() {
+        Hashtable copy = null;
+        try {
+            copy = (Hashtable) super.clone();
+        } catch (CloneNotSupportedException x) {
+        }
+        copy.setBuckets(new HashEntry[getBuckets().length]);
+        copy.putAllInternal(this);
+        copy.$ASSIGN$keys(null);
+        copy.$ASSIGN$values(null);
+        copy.$ASSIGN$entries(null);
+        return copy;
     }
 
     /**
@@ -864,21 +266,6 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     }
 
     /**
-     * Returns true if this Hashtable contains a value <code>o</code>, such that
-     * <code>o.equals(value)</code>. This is the new API for the old
-     * <code>contains()</code>.
-     * @param value the value to search for in this Hashtable
-     * @return true if at least one key maps to the value
-     * @see #contains(Object)
-     * @see #containsKey(Object)
-     * @throws NullPointerException if <code>value</code> is null
-     * @since 1.2
-     */
-    public boolean containsValue(Object value) {
-        return contains(value);
-    }
-
-    /**
      * Returns true if the supplied object <code>equals()</code> a key
      * in this Hashtable.
      * @param key the key to search for in this Hashtable
@@ -896,6 +283,165 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
             e = e.getNext();
         }
         return false;
+    }
+
+    /**
+     * Returns true if this Hashtable contains a value <code>o</code>, such that
+     * <code>o.equals(value)</code>. This is the new API for the old
+     * <code>contains()</code>.
+     * @param value the value to search for in this Hashtable
+     * @return true if at least one key maps to the value
+     * @see #contains(Object)
+     * @see #containsKey(Object)
+     * @throws NullPointerException if <code>value</code> is null
+     * @since 1.2
+     */
+    public boolean containsValue(Object value) {
+        return contains(value);
+    }
+
+    /**
+     * Return an enumeration of the values of this table. There's no point
+     * in synchronizing this, as you have already been warned that the
+     * enumeration is not specified to be thread-safe.
+     * @return the values
+     * @see #keys()
+     * @see #values()
+     */
+    public Enumeration elements() {
+        return new Enumerator(VALUES);
+    }
+
+    /**
+     * Returns a "set view" of this Hashtable's entries. The set is backed by
+     * the hashtable, so changes in one show up in the other.  The set supports
+     * element removal, but not element addition.  The set is properly
+     * synchronized on the original hashtable.  Sun has not documented the
+     * proper interaction of null with this set, but has inconsistent behavior
+     * in the JDK. Therefore, in this implementation, contains, remove,
+     * containsAll, retainAll, removeAll, and equals just ignore a null entry,
+     * or an entry with a null key or value, rather than throwing a{
+     @link NullPointerException    }
+     . However, calling entry.setValue(null)
+     * will fail.
+     * <p>
+     * Note that the iterators for all three views, from keySet(), entrySet(),
+     * and values(), traverse the hashtable in the same sequence.
+     * @return a set view of the entries
+     * @see #keySet()
+     * @see #values()
+     * @see Map.Entry
+     * @since 1.2
+     */
+    public Set entrySet() {
+        if (entries == null) {
+            Set r = new AbstractSet() {
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
+                    super.$COMMIT(timestamp);
+                }
+
+                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                    return $CHECKPOINT;
+                }
+
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    super.$RESTORE(timestamp, trim);
+                }
+
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
+                    if ($CHECKPOINT != checkpoint) {
+                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                        if (checkpoint != null) {
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
+                            FieldRecord.pushState($RECORDS);
+                        }
+                        $CHECKPOINT = checkpoint;
+                        oldCheckpoint.setCheckpoint(checkpoint);
+                        checkpoint.addObject(new _PROXY_());
+                    }
+                    return this;
+                }
+
+                public void clear() {
+                    Hashtable.this.clear();
+                }
+
+                public boolean contains(Object o) {
+                    return getEntry(o) != null;
+                }
+
+                public Iterator iterator() {
+                    return new HashIterator(ENTRIES);
+                }
+
+                public boolean remove(Object o) {
+                    HashEntry e = getEntry(o);
+                    if (e != null) {
+                        Hashtable.this.remove(e.getKeyField());
+                        return true;
+                    }
+                    return false;
+                }
+
+                public int size() {
+                    return getSize();
+                }
+
+                final class _PROXY_ implements Rollbackable {
+
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT() {
+                        return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+
+                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        return this;
+                    }
+
+                }
+
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
+
+                {
+                    $CHECKPOINT.addObject(new _PROXY_());
+                }
+
+            };
+            $ASSIGN$entries(new Collections.SynchronizedSet(this, r));
+        }
+        return entries;
+    }
+
+    /**
+     * Returns true if this Hashtable equals the supplied Object <code>o</code>.
+     * As specified by Map, this is:
+     * <code>
+     * (o instanceof Map) && entrySet().equals(((Map) o).entrySet());
+     * </code>
+     * @param o the object to compare to
+     * @return true if o is an equal map
+     * @since 1.2
+     */
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Map)) {
+            return false;
+        }
+        return entrySet().equals(((Map) o).entrySet());
     }
 
     /**
@@ -917,6 +463,146 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
             e = e.getNext();
         }
         return null;
+    }
+
+    /**
+     * Returns the hashCode for this Hashtable.  As specified by Map, this is
+     * the sum of the hashCodes of all of its Map.Entry objects
+     * @return the sum of the hashcodes of the entries
+     * @since 1.2
+     */
+    public synchronized int hashCode() {
+        Iterator itr = new HashIterator(ENTRIES);
+        int hashcode = 0;
+        for (int pos = getSize(); pos > 0; pos--) {
+            hashcode += itr.next().hashCode();
+        }
+        return hashcode;
+    }
+
+    /**
+     * Returns true if there are no key-value mappings currently in this table.
+     * @return <code>size() == 0</code>
+     */
+    public synchronized boolean isEmpty() {
+        return getSize() == 0;
+    }
+
+    /**
+     * Returns a "set view" of this Hashtable's keys. The set is backed by
+     * the hashtable, so changes in one show up in the other.  The set supports
+     * element removal, but not element addition.  The set is properly
+     * synchronized on the original hashtable.  Sun has not documented the
+     * proper interaction of null with this set, but has inconsistent behavior
+     * in the JDK. Therefore, in this implementation, contains, remove,
+     * containsAll, retainAll, removeAll, and equals just ignore a null key
+     * rather than throwing a {
+     @link NullPointerException    }
+     .
+     * @return a set view of the keys
+     * @see #values()
+     * @see #entrySet()
+     * @since 1.2
+     */
+    public Set keySet() {
+        if (keys == null) {
+            Set r = new AbstractSet() {
+                public void $COMMIT_ANONYMOUS(long timestamp) {
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
+                    super.$COMMIT(timestamp);
+                }
+
+                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                    return $CHECKPOINT;
+                }
+
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    super.$RESTORE(timestamp, trim);
+                }
+
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
+                    if ($CHECKPOINT != checkpoint) {
+                        Checkpoint oldCheckpoint = $CHECKPOINT;
+                        if (checkpoint != null) {
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
+                            FieldRecord.pushState($RECORDS);
+                        }
+                        $CHECKPOINT = checkpoint;
+                        oldCheckpoint.setCheckpoint(checkpoint);
+                        checkpoint.addObject(new _PROXY_());
+                    }
+                    return this;
+                }
+
+                public void clear() {
+                    Hashtable.this.clear();
+                }
+
+                public boolean contains(Object o) {
+                    if (o == null) {
+                        return false;
+                    }
+                    return containsKey(o);
+                }
+
+                public Iterator iterator() {
+                    return new HashIterator(KEYS);
+                }
+
+                public boolean remove(Object o) {
+                    return Hashtable.this.remove(o) != null;
+                }
+
+                public int size() {
+                    return getSize();
+                }
+
+                final class _PROXY_ implements Rollbackable {
+
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT() {
+                        return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+
+                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        return this;
+                    }
+
+                }
+
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
+
+                {
+                    $CHECKPOINT.addObject(new _PROXY_());
+                }
+
+            };
+            $ASSIGN$keys(new Collections.SynchronizedSet(this, r));
+        }
+        return keys;
+    }
+
+    /**
+     * Return an enumeration of the keys of this table. There's no point
+     * in synchronizing this, as you have already been warned that the
+     * enumeration is not specified to be thread-safe.
+     * @return the keys
+     * @see #elements()
+     * @see #keySet()
+     */
+    public Enumeration keys() {
+        return new Enumerator(KEYS);
     }
 
     /**
@@ -957,6 +643,26 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     }
 
     /**
+     * Copies all elements of the given map into this hashtable.  However, no
+     * mapping can contain null as key or value.  If this table already has
+     * a mapping for a key, the new mapping replaces the current one.
+     * @param m the map to be hashed into this
+     * @throws NullPointerException if m is null, or contains null keys or values
+     */
+    public synchronized void putAll(Map m) {
+        Iterator itr = m.entrySet().iterator();
+        while (itr.hasNext()) {
+            Map.Entry e = (Map.Entry) itr.next();
+            if (e instanceof AbstractMap.BasicMapEntry) {
+                AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
+                put(entry.getKeyField(), entry.getValueField());
+            } else {
+                put(e.getKey(), e.getValue());
+            }
+        }
+    }
+
+    /**
      * Removes from the table and returns the value which is mapped by the
      * supplied key. If the key maps to nothing, then the table remains
      * unchanged, and <code>null</code> is returned.
@@ -985,53 +691,11 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     }
 
     /**
-     * Copies all elements of the given map into this hashtable.  However, no
-     * mapping can contain null as key or value.  If this table already has
-     * a mapping for a key, the new mapping replaces the current one.
-     * @param m the map to be hashed into this
-     * @throws NullPointerException if m is null, or contains null keys or values
+     * Returns the number of key-value mappings currently in this hashtable.
+     * @return the size
      */
-    public synchronized void putAll(Map m) {
-        Iterator itr = m.entrySet().iterator();
-        while (itr.hasNext()) {
-            Map.Entry e = (Map.Entry) itr.next();
-            if (e instanceof AbstractMap.BasicMapEntry) {
-                AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
-                put(entry.getKeyField(), entry.getValueField());
-            } else {
-                put(e.getKey(), e.getValue());
-            }
-        }
-    }
-
-    /**
-     * Clears the hashtable so it has no keys.  This is O(1).
-     */
-    public synchronized void clear() {
-        if (getSize() > 0) {
-            setModCount(getModCount() + 1);
-            Arrays.fill(getBuckets(), null);
-            setSize(0);
-        }
-    }
-
-    /**
-     * Returns a shallow clone of this Hashtable. The Map itself is cloned,
-     * but its contents are not.  This is O(n).
-     * @return the clone
-     */
-    public synchronized Object clone() {
-        Hashtable copy = null;
-        try {
-            copy = (Hashtable) super.clone();
-        } catch (CloneNotSupportedException x) {
-        }
-        copy.setBuckets(new HashEntry[getBuckets().length]);
-        copy.putAllInternal(this);
-        copy.$ASSIGN$keys(null);
-        copy.$ASSIGN$values(null);
-        copy.$ASSIGN$entries(null);
-        return copy;
+    public synchronized int size() {
+        return getSize();
     }
 
     /**
@@ -1056,111 +720,6 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     }
 
     /**
-     * Returns a "set view" of this Hashtable's keys. The set is backed by
-     * the hashtable, so changes in one show up in the other.  The set supports
-     * element removal, but not element addition.  The set is properly
-     * synchronized on the original hashtable.  Sun has not documented the
-     * proper interaction of null with this set, but has inconsistent behavior
-     * in the JDK. Therefore, in this implementation, contains, remove,
-     * containsAll, retainAll, removeAll, and equals just ignore a null key
-     * rather than throwing a {
-     @link NullPointerException    }
-     .
-     * @return a set view of the keys
-     * @see #values()
-     * @see #entrySet()
-     * @since 1.2
-     */
-    public Set keySet() {
-        if (keys == null) {
-            Set r = new AbstractSet() {
-                public int size() {
-                    return getSize();
-                }
-
-                public Iterator iterator() {
-                    return new HashIterator(KEYS);
-                }
-
-                public void clear() {
-                    Hashtable.this.clear();
-                }
-
-                public boolean contains(Object o) {
-                    if (o == null) {
-                        return false;
-                    }
-                    return containsKey(o);
-                }
-
-                public boolean remove(Object o) {
-                    return Hashtable.this.remove(o) != null;
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
-                    }
-
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
-                    }
-
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                        return this;
-                    }
-
-                }
-
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                            .getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(
-                        Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                                    .getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-
-            };
-            $ASSIGN$keys(new Collections.SynchronizedSet(this, r));
-        }
-        return keys;
-    }
-
-    /**
      * Returns a "collection view" (or "bag view") of this Hashtable's values.
      * The collection is backed by the hashtable, so changes in one show up
      * in the other.  The collection supports element removal, but not element
@@ -1179,51 +738,18 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     public Collection values() {
         if (values == null) {
             Collection r = new AbstractCollection() {
-                public int size() {
-                    return getSize();
-                }
-
-                public Iterator iterator() {
-                    return new HashIterator(VALUES);
-                }
-
-                public void clear() {
-                    Hashtable.this.clear();
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
-                    }
-
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
-                    }
-
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                        return this;
-                    }
-
-                }
-
                 public void $COMMIT_ANONYMOUS(long timestamp) {
                     FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
                             .getTopTimestamp());
                     super.$COMMIT(timestamp);
                 }
 
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
                 public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
                     return $CHECKPOINT;
+                }
+
+                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                    super.$RESTORE(timestamp, trim);
                 }
 
                 public final Object $SET$CHECKPOINT_ANONYMOUS(
@@ -1240,6 +766,39 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
                         checkpoint.addObject(new _PROXY_());
                     }
                     return this;
+                }
+
+                public void clear() {
+                    Hashtable.this.clear();
+                }
+
+                public Iterator iterator() {
+                    return new HashIterator(VALUES);
+                }
+
+                public int size() {
+                    return getSize();
+                }
+
+                final class _PROXY_ implements Rollbackable {
+
+                    public final void $COMMIT(long timestamp) {
+                        $COMMIT_ANONYMOUS(timestamp);
+                    }
+
+                    public final Checkpoint $GET$CHECKPOINT() {
+                        return $GET$CHECKPOINT_ANONYMOUS();
+                    }
+
+                    public final void $RESTORE(long timestamp, boolean trim) {
+                        $RESTORE_ANONYMOUS(timestamp, trim);
+                    }
+
+                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
+                        return this;
+                    }
+
                 }
 
                 private FieldRecord[] $RECORDS = new FieldRecord[] {};
@@ -1252,211 +811,6 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
             $ASSIGN$values(new Collections.SynchronizedCollection(this, r));
         }
         return values;
-    }
-
-    /**
-     * Returns a "set view" of this Hashtable's entries. The set is backed by
-     * the hashtable, so changes in one show up in the other.  The set supports
-     * element removal, but not element addition.  The set is properly
-     * synchronized on the original hashtable.  Sun has not documented the
-     * proper interaction of null with this set, but has inconsistent behavior
-     * in the JDK. Therefore, in this implementation, contains, remove,
-     * containsAll, retainAll, removeAll, and equals just ignore a null entry,
-     * or an entry with a null key or value, rather than throwing a{
-     @link NullPointerException    }
-     . However, calling entry.setValue(null)
-     * will fail.
-     * <p>
-     * Note that the iterators for all three views, from keySet(), entrySet(),
-     * and values(), traverse the hashtable in the same sequence.
-     * @return a set view of the entries
-     * @see #keySet()
-     * @see #values()
-     * @see Map.Entry
-     * @since 1.2
-     */
-    public Set entrySet() {
-        if (entries == null) {
-            Set r = new AbstractSet() {
-                public int size() {
-                    return getSize();
-                }
-
-                public Iterator iterator() {
-                    return new HashIterator(ENTRIES);
-                }
-
-                public void clear() {
-                    Hashtable.this.clear();
-                }
-
-                public boolean contains(Object o) {
-                    return getEntry(o) != null;
-                }
-
-                public boolean remove(Object o) {
-                    HashEntry e = getEntry(o);
-                    if (e != null) {
-                        Hashtable.this.remove(e.getKeyField());
-                        return true;
-                    }
-                    return false;
-                }
-
-                final class _PROXY_ implements Rollbackable {
-
-                    public final void $COMMIT(long timestamp) {
-                        $COMMIT_ANONYMOUS(timestamp);
-                    }
-
-                    public final void $RESTORE(long timestamp, boolean trim) {
-                        $RESTORE_ANONYMOUS(timestamp, trim);
-                    }
-
-                    public final Checkpoint $GET$CHECKPOINT() {
-                        return $GET$CHECKPOINT_ANONYMOUS();
-                    }
-
-                    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-                        $SET$CHECKPOINT_ANONYMOUS(checkpoint);
-                        return this;
-                    }
-
-                }
-
-                public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                            .getTopTimestamp());
-                    super.$COMMIT(timestamp);
-                }
-
-                public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    super.$RESTORE(timestamp, trim);
-                }
-
-                public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                    return $CHECKPOINT;
-                }
-
-                public final Object $SET$CHECKPOINT_ANONYMOUS(
-                        Checkpoint checkpoint) {
-                    if ($CHECKPOINT != checkpoint) {
-                        Checkpoint oldCheckpoint = $CHECKPOINT;
-                        if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                                    .getTimestamp());
-                            FieldRecord.pushState($RECORDS);
-                        }
-                        $CHECKPOINT = checkpoint;
-                        oldCheckpoint.setCheckpoint(checkpoint);
-                        checkpoint.addObject(new _PROXY_());
-                    }
-                    return this;
-                }
-
-                private FieldRecord[] $RECORDS = new FieldRecord[] {};
-
-                {
-                    $CHECKPOINT.addObject(new _PROXY_());
-                }
-
-            };
-            $ASSIGN$entries(new Collections.SynchronizedSet(this, r));
-        }
-        return entries;
-    }
-
-    /**
-     * Returns true if this Hashtable equals the supplied Object <code>o</code>.
-     * As specified by Map, this is:
-     * <code>
-     * (o instanceof Map) && entrySet().equals(((Map) o).entrySet());
-     * </code>
-     * @param o the object to compare to
-     * @return true if o is an equal map
-     * @since 1.2
-     */
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-        if (!(o instanceof Map)) {
-            return false;
-        }
-        return entrySet().equals(((Map) o).entrySet());
-    }
-
-    /**
-     * Returns the hashCode for this Hashtable.  As specified by Map, this is
-     * the sum of the hashCodes of all of its Map.Entry objects
-     * @return the sum of the hashcodes of the entries
-     * @since 1.2
-     */
-    public synchronized int hashCode() {
-        Iterator itr = new HashIterator(ENTRIES);
-        int hashcode = 0;
-        for (int pos = getSize(); pos > 0; pos--) {
-            hashcode += itr.next().hashCode();
-        }
-        return hashcode;
-    }
-
-    /**
-     * Helper method that returns an index in the buckets array for `key'
-     * based on its hashCode().
-     * @param key the key
-     * @return the bucket number
-     * @throws NullPointerException if key is null
-     */
-    private int hash(Object key) {
-        int hash = key.hashCode() % getBuckets().length;
-        return hash < 0 ? -hash : hash;
-    }
-
-    /**
-     * Helper method for entrySet(), which matches both key and value
-     * simultaneously. Ignores null, as mentioned in entrySet().
-     * @param o the entry to match
-     * @return the matching entry, if found, or null
-     * @see #entrySet()
-     */
-    HashEntry getEntry(Object o) {
-        if (!(o instanceof Map.Entry)) {
-            return null;
-        }
-        Object key = ((Map.Entry) o).getKey();
-        if (key == null) {
-            return null;
-        }
-        int idx = hash(key);
-        HashEntry e = getBuckets()[idx];
-        while (e != null) {
-            if (e.equals(o)) {
-                return e;
-            }
-            e = e.getNext();
-        }
-        return null;
-    }
-
-    /**
-     * A simplified, more efficient internal implementation of putAll(). clone()
-     * should not call putAll or put, in order to be compatible with the JDK
-     * implementation with respect to subclasses.
-     * @param m the map to initialize this from
-     */
-    void putAllInternal(Map m) {
-        Iterator itr = m.entrySet().iterator();
-        setSize(0);
-        while (itr.hasNext()) {
-            setSize(getSize() + 1);
-            Map.Entry e = (Map.Entry) itr.next();
-            Object key = e.getKey();
-            int idx = hash(key);
-            HashEntry he = new HashEntry(key, e.getValue());
-            he.setNext(getBuckets()[idx]);
-            getBuckets()[idx] = he;
-        }
     }
 
     /**
@@ -1494,26 +848,159 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         }
     }
 
+    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+    HashEntry[] getBuckets() {
+        return $BACKUP$buckets();
+    }
+
     /**
-     * Serializes this object to the given stream.
-     * @param s the stream to write to
-     * @throws IOException if the underlying stream fails
-     * @serialData the <i>capacity</i> (int) that is the length of the
-     * bucket array, the <i>size</i> (int) of the hash map
-     * are emitted first.  They are followed by size entries,
-     * each consisting of a key (Object) and a value (Object).
+     * Helper method for entrySet(), which matches both key and value
+     * simultaneously. Ignores null, as mentioned in entrySet().
+     * @param o the entry to match
+     * @return the matching entry, if found, or null
+     * @see #entrySet()
      */
-    private synchronized void writeObject(ObjectOutputStream s)
-            throws IOException {
-        s.defaultWriteObject();
-        s.writeInt(getBuckets().length);
-        s.writeInt(getSize());
-        Iterator it = new HashIterator(ENTRIES);
-        while (it.hasNext()) {
-            HashEntry entry = (HashEntry) it.next();
-            s.writeObject(entry.getKeyField());
-            s.writeObject(entry.getValueField());
+    HashEntry getEntry(Object o) {
+        if (!(o instanceof Map.Entry)) {
+            return null;
         }
+        Object key = ((Map.Entry) o).getKey();
+        if (key == null) {
+            return null;
+        }
+        int idx = hash(key);
+        HashEntry e = getBuckets()[idx];
+        while (e != null) {
+            if (e.equals(o)) {
+                return e;
+            }
+            e = e.getNext();
+        }
+        return null;
+    }
+
+    int getModCount() {
+        return modCount;
+    }
+
+    int getSize() {
+        return size;
+    }
+
+    /**
+     * A simplified, more efficient internal implementation of putAll(). clone()
+     * should not call putAll or put, in order to be compatible with the JDK
+     * implementation with respect to subclasses.
+     * @param m the map to initialize this from
+     */
+    void putAllInternal(Map m) {
+        Iterator itr = m.entrySet().iterator();
+        setSize(0);
+        while (itr.hasNext()) {
+            setSize(getSize() + 1);
+            Map.Entry e = (Map.Entry) itr.next();
+            Object key = e.getKey();
+            int idx = hash(key);
+            HashEntry he = new HashEntry(key, e.getValue());
+            he.setNext(getBuckets()[idx]);
+            getBuckets()[idx] = he;
+        }
+    }
+
+    void setBuckets(HashEntry[] buckets) {
+        this.$ASSIGN$buckets(buckets);
+    }
+
+    void setModCount(int modCount) {
+        this.$ASSIGN$modCount(modCount);
+    }
+
+    int setSize(int size) {
+        return this.$ASSIGN$size(size);
+    }
+
+    /**
+     * An "enum" of iterator types.
+     */
+    // Package visible for use by nested classes.
+    static final int KEYS = 0, VALUES = 1, ENTRIES = 2;
+
+    private final HashEntry[] $ASSIGN$buckets(HashEntry[] newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$buckets.add(null, buckets, $CHECKPOINT.getTimestamp());
+        }
+        return buckets = newValue;
+    }
+
+    private final Set $ASSIGN$entries(Set newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$entries.add(null, entries, $CHECKPOINT.getTimestamp());
+        }
+        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+            newValue.$SET$CHECKPOINT($CHECKPOINT);
+        }
+        return entries = newValue;
+    }
+
+    private final Set $ASSIGN$keys(Set newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$keys.add(null, keys, $CHECKPOINT.getTimestamp());
+        }
+        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+            newValue.$SET$CHECKPOINT($CHECKPOINT);
+        }
+        return keys = newValue;
+    }
+
+    private final int $ASSIGN$modCount(int newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$modCount.add(null, modCount, $CHECKPOINT.getTimestamp());
+        }
+        return modCount = newValue;
+    }
+
+    private final int $ASSIGN$size(int newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
+        }
+        return size = newValue;
+    }
+
+    private final int $ASSIGN$threshold(int newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$threshold.add(null, threshold, $CHECKPOINT.getTimestamp());
+        }
+        return threshold = newValue;
+    }
+
+    private final Collection $ASSIGN$values(Collection newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$values.add(null, values, $CHECKPOINT.getTimestamp());
+        }
+        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+            newValue.$SET$CHECKPOINT($CHECKPOINT);
+        }
+        return values = newValue;
+    }
+
+    private final HashEntry[] $BACKUP$buckets() {
+        $RECORD$buckets.backup(null, buckets, $CHECKPOINT.getTimestamp());
+        return buckets;
+    }
+
+    /**
+     * Helper method that returns an index in the buckets array for `key'
+     * based on its hashCode().
+     * @param key the key
+     * @return the bucket number
+     * @throws NullPointerException if key is null
+     */
+    private int hash(Object key) {
+        int hash = key.hashCode() % getBuckets().length;
+        return hash < 0 ? -hash : hash;
     }
 
     /**
@@ -1536,155 +1023,668 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         }
     }
 
-    void setBuckets(HashEntry[] buckets) {
-        this.$ASSIGN$buckets(buckets);
-    }
-
-    HashEntry[] getBuckets() {
-        return $BACKUP$buckets();
-    }
-
-    void setModCount(int modCount) {
-        this.$ASSIGN$modCount(modCount);
-    }
-
-    int getModCount() {
-        return modCount;
-    }
-
-    int setSize(int size) {
-        return this.$ASSIGN$size(size);
-    }
-
-    int getSize() {
-        return size;
-    }
-
-    private final int $ASSIGN$threshold(int newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$threshold.add(null, threshold, $CHECKPOINT.getTimestamp());
-        }
-        return threshold = newValue;
-    }
-
-    private final HashEntry[] $ASSIGN$buckets(HashEntry[] newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$buckets.add(null, buckets, $CHECKPOINT.getTimestamp());
-        }
-        return buckets = newValue;
-    }
-
-    private final HashEntry[] $BACKUP$buckets() {
-        $RECORD$buckets.backup(null, buckets, $CHECKPOINT.getTimestamp());
-        return buckets;
-    }
-
-    private final int $ASSIGN$modCount(int newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$modCount.add(null, modCount, $CHECKPOINT.getTimestamp());
-        }
-        return modCount = newValue;
-    }
-
-    private final int $ASSIGN$size(int newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
-        }
-        return size = newValue;
-    }
-
-    private final Set $ASSIGN$keys(Set newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$keys.add(null, keys, $CHECKPOINT.getTimestamp());
-        }
-        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-            newValue.$SET$CHECKPOINT($CHECKPOINT);
-        }
-        return keys = newValue;
-    }
-
-    private final Collection $ASSIGN$values(Collection newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$values.add(null, values, $CHECKPOINT.getTimestamp());
-        }
-        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-            newValue.$SET$CHECKPOINT($CHECKPOINT);
-        }
-        return values = newValue;
-    }
-
-    private final Set $ASSIGN$entries(Set newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$entries.add(null, entries, $CHECKPOINT.getTimestamp());
-        }
-        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-            newValue.$SET$CHECKPOINT($CHECKPOINT);
-        }
-        return entries = newValue;
-    }
-
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        $RECORD$$CHECKPOINT.commit(timestamp);
-    }
-
-    public void $RESTORE(long timestamp, boolean trim) {
-        threshold = $RECORD$threshold.restore(threshold, timestamp, trim);
-        buckets = (HashEntry[]) $RECORD$buckets.restore(buckets, timestamp,
-                trim);
-        modCount = $RECORD$modCount.restore(modCount, timestamp, trim);
-        size = $RECORD$size.restore(size, timestamp, trim);
-        keys = (Set) $RECORD$keys.restore(keys, timestamp, trim);
-        values = (Collection) $RECORD$values.restore(values, timestamp, trim);
-        entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
-        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
-            FieldRecord.popState($RECORDS);
-            $RESTORE(timestamp, trim);
+    /**
+     * Serializes this object to the given stream.
+     * @param s the stream to write to
+     * @throws IOException if the underlying stream fails
+     * @serialData the <i>capacity</i> (int) that is the length of the
+     * bucket array, the <i>size</i> (int) of the hash map
+     * are emitted first.  They are followed by size entries,
+     * each consisting of a key (Object) and a value (Object).
+     */
+    private synchronized void writeObject(ObjectOutputStream s)
+            throws IOException {
+        s.defaultWriteObject();
+        s.writeInt(getBuckets().length);
+        s.writeInt(getSize());
+        Iterator it = new HashIterator(ENTRIES);
+        while (it.hasNext()) {
+            HashEntry entry = (HashEntry) it.next();
+            s.writeObject(entry.getKeyField());
+            s.writeObject(entry.getValueField());
         }
     }
-
-    public final Checkpoint $GET$CHECKPOINT() {
-        return $CHECKPOINT;
-    }
-
-    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-        if ($CHECKPOINT != checkpoint) {
-            Checkpoint oldCheckpoint = $CHECKPOINT;
-            if (checkpoint != null) {
-                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                FieldRecord.pushState($RECORDS);
-            }
-            $CHECKPOINT = checkpoint;
-            oldCheckpoint.setCheckpoint(checkpoint);
-            checkpoint.addObject(this);
-        }
-        return this;
-    }
-
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
-    private FieldRecord $RECORD$threshold = new FieldRecord(0);
-
-    private FieldRecord $RECORD$loadFactor = new FieldRecord(0);
 
     private FieldRecord $RECORD$buckets = new FieldRecord(1);
+
+    private FieldRecord $RECORD$entries = new FieldRecord(0);
+
+    private FieldRecord $RECORD$keys = new FieldRecord(0);
+
+    private FieldRecord $RECORD$loadFactor = new FieldRecord(0);
 
     private FieldRecord $RECORD$modCount = new FieldRecord(0);
 
     private FieldRecord $RECORD$size = new FieldRecord(0);
 
-    private FieldRecord $RECORD$keys = new FieldRecord(0);
+    private FieldRecord $RECORD$threshold = new FieldRecord(0);
 
     private FieldRecord $RECORD$values = new FieldRecord(0);
-
-    private FieldRecord $RECORD$entries = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$threshold,
             $RECORD$loadFactor, $RECORD$buckets, $RECORD$modCount,
             $RECORD$size, $RECORD$keys, $RECORD$values, $RECORD$entries };
+
+    // WARNING: Hashtable is a CORE class in the bootstrap cycle. See the
+    // comments in vm/reference/java/lang/Runtime for implications of this fact.
+    /**
+     * Default number of buckets. This is the value the JDK 1.3 uses. Some
+     * early documentation specified this value as 101. That is incorrect.
+     */
+    private static final int DEFAULT_CAPACITY = 11;
+
+    /**
+     * The default load factor; this is explicitly specified by the spec.
+     */
+    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
+
+    /**
+     * Array containing the actual key-value mappings.
+     */
+    // Package visible for use by nested classes.
+    private transient HashEntry[] buckets;
+
+    /**
+     * The cache for {
+     @link #entrySet()    }
+     .
+     */
+    private transient Set entries;
+
+    /**
+     * The cache for {
+     @link #keySet()    }
+     .
+     */
+    private transient Set keys;
+
+    /**
+     * Load factor of this Hashtable:  used in computing the threshold.
+     * @serial
+     */
+    private final float loadFactor;
+
+    /**
+     * Counts the number of modifications this Hashtable has undergone, used
+     * by Iterators to know when to throw ConcurrentModificationExceptions.
+     */
+    // Package visible for use by nested classes.
+    private transient int modCount;
+
+    /**
+     * Compatible with JDK 1.0+.
+     */
+    private static final long serialVersionUID = 1421746759512286392L;
+
+    /**
+     * The size of this Hashtable:  denotes the number of key-value pairs.
+     */
+    // Package visible for use by nested classes.
+    private transient int size;
+
+    /**
+     * The rounded product of the capacity and the load factor; when the number
+     * of elements exceeds the threshold, the Hashtable calls
+     * <code>rehash()</code>.
+     * @serial
+     */
+    private int threshold;
+
+    /**
+     * The cache for {
+     @link #values()    }
+     .
+     */
+    private transient Collection values;
+
+    // class HashIterator
+    /**
+     * Enumeration view of this Hashtable, providing sequential access to its
+     * elements; this implementation is parameterized to provide access either
+     * to the keys or to the values in the Hashtable.
+     * <b>NOTE</b>: Enumeration is not safe if new elements are put in the table
+     * as this could cause a rehash and we'd completely lose our place.  Even
+     * without a rehash, it is undetermined if a new element added would
+     * appear in the enumeration.  The spec says nothing about this, but
+     * the "Java Class Libraries" book infers that modifications to the
+     * hashtable during enumeration causes indeterminate results.  Don't do it!
+     * @author Jon Zeppieri
+     */
+    private final class Enumerator implements Enumeration, Rollbackable {
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
+        public final Checkpoint $GET$CHECKPOINT() {
+            return $CHECKPOINT;
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            count = $RECORD$count.restore(count, timestamp, trim);
+            idx = $RECORD$idx.restore(idx, timestamp, trim);
+            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
+            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
+                FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
+            }
+        }
+
+        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+            if ($CHECKPOINT != checkpoint) {
+                Checkpoint oldCheckpoint = $CHECKPOINT;
+                if (checkpoint != null) {
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
+                    FieldRecord.pushState($RECORDS);
+                }
+                $CHECKPOINT = checkpoint;
+                oldCheckpoint.setCheckpoint(checkpoint);
+                checkpoint.addObject(this);
+            }
+            return this;
+        }
+
+        /**
+         * Checks whether more elements remain in the enumeration.
+         * @return true if nextElement() will not fail.
+         */
+        public boolean hasMoreElements() {
+            return getCount() > 0;
+        }
+
+        /**
+         * Returns the next element.
+         * @return the next element
+         * @throws NoSuchElementException if there is none.
+         */
+        public Object nextElement() {
+            if (getCount() == 0) {
+                throw new NoSuchElementException("Hashtable Enumerator");
+            }
+            setCount(getCount() - 1);
+            HashEntry e = getNext();
+            while (e == null) {
+                e = getBuckets()[setIdx(getIdx() - 1)];
+            }
+            setNext(e.getNext());
+            return type == VALUES ? e.getValueField() : e.getKeyField();
+        }
+
+        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+        /**
+         * Construct the enumeration.
+         * @param type either {
+         @link #KEYS        }
+         or {
+         @link #VALUES        }
+         .
+         */
+        Enumerator(int type) {
+            this.type = type;
+        }
+
+        int getCount() {
+            return count;
+        }
+
+        int getIdx() {
+            return idx;
+        }
+
+        HashEntry getNext() {
+            return next;
+        }
+
+        void setCount(int count) {
+            this.$ASSIGN$count(count);
+        }
+
+        int setIdx(int idx) {
+            return this.$ASSIGN$idx(idx);
+        }
+
+        void setNext(HashEntry next) {
+            this.$ASSIGN$next(next);
+        }
+
+        /**
+         * The type of this Iterator: {
+         @link #KEYS        }
+         or {
+         @link #VALUES        }
+         .
+         */
+        final int type;
+
+        private final int $ASSIGN$count(int newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$count.add(null, count, $CHECKPOINT.getTimestamp());
+            }
+            return count = newValue;
+        }
+
+        private final int $ASSIGN$idx(int newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$idx.add(null, idx, $CHECKPOINT.getTimestamp());
+            }
+            return idx = newValue;
+        }
+
+        private final HashEntry $ASSIGN$next(HashEntry newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$next.add(null, next, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return next = newValue;
+        }
+
+        private FieldRecord $RECORD$count = new FieldRecord(0);
+
+        private FieldRecord $RECORD$idx = new FieldRecord(0);
+
+        private FieldRecord $RECORD$next = new FieldRecord(0);
+
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$count,
+                $RECORD$idx, $RECORD$next };
+
+        /**
+         * The number of elements remaining to be returned by next().
+         */
+        private int count = getSize();
+
+        /**
+         * Current index in the physical hash table.
+         */
+        private int idx = getBuckets().length;
+
+        /**
+         * Entry which will be returned by the next nextElement() call. It is
+         * set if we are iterating through a bucket with multiple entries, or null
+         * if we must look in the next bucket.
+         */
+        private HashEntry next;
+
+    }
+
+    /**
+     * Class to represent an entry in the hash table. Holds a single key-value
+     * pair. A Hashtable Entry is identical to a HashMap Entry, except that
+     * `null' is not allowed for keys and values.
+     */
+    private static final class HashEntry extends AbstractMap.BasicMapEntry
+            implements Rollbackable {
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
+            super.$RESTORE(timestamp, trim);
+        }
+
+        /**
+         * Resets the value.
+         * @param newVal the new value
+         * @return the prior value
+         * @throws NullPointerException if <code>newVal</code> is null
+         */
+        public Object setValue(Object newVal) {
+            if (newVal == null) {
+                throw new NullPointerException();
+            }
+            return super.setValue(newVal);
+        }
+
+        /**
+         * Simple constructor.
+         * @param key the key, already guaranteed non-null
+         * @param value the value, already guaranteed non-null
+         */
+        HashEntry(Object key, Object value) {
+            super(key, value);
+        }
+
+        HashEntry getNext() {
+            return next;
+        }
+
+        void setNext(HashEntry next) {
+            this.$ASSIGN$next(next);
+        }
+
+        private final HashEntry $ASSIGN$next(HashEntry newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$next.add(null, next, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return next = newValue;
+        }
+
+        private FieldRecord $RECORD$next = new FieldRecord(0);
+
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$next };
+
+        /**
+         * The next entry in the linked list.
+         */
+        private HashEntry next;
+
+    }
+
+    // check for NaN too
+    // Delegate to older method to make sure code overriding it continues
+    // to work.
+    // Check if value is null since it is not permitted.
+    // Bypass e.setValue, since we already know value is non-null.
+    // At this point, we know we need to add a new entry.
+    // Need a new hash value to suit the bigger table.
+    // Optimize in case the Entry is one of our own.
+    // This is impossible.
+    // Clear the caches.
+    // Since we are already synchronized, and entrySet().iterator()
+    // would repeatedly re-lock/release the monitor, we directly use the
+    // unsynchronized HashIterator instead.
+    // Create a synchronized AbstractSet with custom implementations of
+    // those methods that can be overridden easily and efficiently.
+    // We must specify the correct object to synchronize upon, hence the
+    // use of a non-public API
+    // We don't bother overriding many of the optional methods, as doing so
+    // wouldn't provide any significant performance advantage.
+    // We must specify the correct object to synchronize upon, hence the
+    // use of a non-public API
+    // Create an AbstractSet with custom implementations of those methods
+    // that can be overridden easily and efficiently.
+    // We must specify the correct object to synchronize upon, hence the
+    // use of a non-public API
+    // no need to synchronize, entrySet().equals() does that
+    // Since we are already synchronized, and entrySet().iterator()
+    // would repeatedly re-lock/release the monitor, we directly use the
+    // unsynchronized HashIterator instead.
+    // Note: Inline Math.abs here, for less method overhead, and to avoid
+    // a bootstrap dependency, since Math relies on native methods.
+    // Package visible, for use in nested classes.
+    // Write the threshold and loadFactor fields.
+    // Since we are already synchronized, and entrySet().iterator()
+    // would repeatedly re-lock/release the monitor, we directly use the
+    // unsynchronized HashIterator instead.
+    // Read the threshold and loadFactor fields.
+    // Read and use capacity.
+    // Read and use key/value pairs.
+    // TODO: should we be defensive programmers, and check for illegal nulls?
+    /**
+     * A class which implements the Iterator interface and is used for
+     * iterating over Hashtables.
+     * This implementation is parameterized to give a sequential view of
+     * keys, values, or entries; it also allows the removal of elements,
+     * as per the Javasoft spec.  Note that it is not synchronized; this is
+     * a performance enhancer since it is never exposed externally and is
+     * only used within synchronized blocks above.
+     * @author Jon Zeppieri
+     */
+    private final class HashIterator implements Iterator, Rollbackable {
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
+            $RECORD$$CHECKPOINT.commit(timestamp);
+        }
+
+        public final Checkpoint $GET$CHECKPOINT() {
+            return $CHECKPOINT;
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
+            count = $RECORD$count.restore(count, timestamp, trim);
+            idx = $RECORD$idx.restore(idx, timestamp, trim);
+            last = (HashEntry) $RECORD$last.restore(last, timestamp, trim);
+            next = (HashEntry) $RECORD$next.restore(next, timestamp, trim);
+            if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
+                FieldRecord.popState($RECORDS);
+                $RESTORE(timestamp, trim);
+            }
+        }
+
+        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+            if ($CHECKPOINT != checkpoint) {
+                Checkpoint oldCheckpoint = $CHECKPOINT;
+                if (checkpoint != null) {
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
+                    FieldRecord.pushState($RECORDS);
+                }
+                $CHECKPOINT = checkpoint;
+                oldCheckpoint.setCheckpoint(checkpoint);
+                checkpoint.addObject(this);
+            }
+            return this;
+        }
+
+        /**
+         * Returns true if the Iterator has more elements.
+         * @return true if there are more elements
+         */
+        public boolean hasNext() {
+            return getCount() > 0;
+        }
+
+        /**
+         * Returns the next element in the Iterator's sequential view.
+         * @return the next element
+         * @throws ConcurrentModificationException if the hashtable was modified
+         * @throws NoSuchElementException if there is none
+         */
+        public Object next() {
+            if (getKnownMod() != getModCount()) {
+                throw new ConcurrentModificationException();
+            }
+            if (getCount() == 0) {
+                throw new NoSuchElementException();
+            }
+            setCount(getCount() - 1);
+            HashEntry e = getNext();
+            while (e == null) {
+                e = getBuckets()[setIdx(getIdx() - 1)];
+            }
+            setNext(e.getNext());
+            setLast(e);
+            if (type == VALUES) {
+                return e.getValueField();
+            }
+            if (type == KEYS) {
+                return e.getKeyField();
+            }
+            return e;
+        }
+
+        /**
+         * Removes from the backing Hashtable the last element which was fetched
+         * with the <code>next()</code> method.
+         * @throws ConcurrentModificationException if the hashtable was modified
+         * @throws IllegalStateException if called when there is no last element
+         */
+        public void remove() {
+            if (getKnownMod() != getModCount()) {
+                throw new ConcurrentModificationException();
+            }
+            if (getLast() == null) {
+                throw new IllegalStateException();
+            }
+            Hashtable.this.remove(getLast().getKeyField());
+            setLast(null);
+            setKnownMod(getKnownMod() + 1);
+        }
+
+        protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+        protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
+
+        /**
+         * Construct a new HashIterator with the supplied type.
+         * @param type {
+         @link #KEYS        }
+         , {
+         @link #VALUES        }
+         , or {
+         @link #ENTRIES        }
+
+         */
+        HashIterator(int type) {
+            this.type = type;
+        }
+
+        int getCount() {
+            return count;
+        }
+
+        int getIdx() {
+            return idx;
+        }
+
+        int getKnownMod() {
+            return knownMod;
+        }
+
+        HashEntry getLast() {
+            return last;
+        }
+
+        HashEntry getNext() {
+            return next;
+        }
+
+        void setCount(int count) {
+            this.$ASSIGN$count(count);
+        }
+
+        int setIdx(int idx) {
+            return this.$ASSIGN$idx(idx);
+        }
+
+        void setKnownMod(int knownMod) {
+            this.$ASSIGN$knownMod(knownMod);
+        }
+
+        void setLast(HashEntry last) {
+            this.$ASSIGN$last(last);
+        }
+
+        void setNext(HashEntry next) {
+            this.$ASSIGN$next(next);
+        }
+
+        /**
+         * The type of this Iterator: {
+         @link #KEYS        }
+         , {
+         @link #VALUES        }
+         ,
+         * or {
+         @link #ENTRIES        }
+         .
+         */
+        final int type;
+
+        private final int $ASSIGN$count(int newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$count.add(null, count, $CHECKPOINT.getTimestamp());
+            }
+            return count = newValue;
+        }
+
+        private final int $ASSIGN$idx(int newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$idx.add(null, idx, $CHECKPOINT.getTimestamp());
+            }
+            return idx = newValue;
+        }
+
+        private final int $ASSIGN$knownMod(int newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$knownMod
+                        .add(null, knownMod, $CHECKPOINT.getTimestamp());
+            }
+            return knownMod = newValue;
+        }
+
+        private final HashEntry $ASSIGN$last(HashEntry newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$last.add(null, last, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return last = newValue;
+        }
+
+        private final HashEntry $ASSIGN$next(HashEntry newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$next.add(null, next, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return next = newValue;
+        }
+
+        private FieldRecord $RECORD$count = new FieldRecord(0);
+
+        private FieldRecord $RECORD$idx = new FieldRecord(0);
+
+        private FieldRecord $RECORD$knownMod = new FieldRecord(0);
+
+        private FieldRecord $RECORD$last = new FieldRecord(0);
+
+        private FieldRecord $RECORD$next = new FieldRecord(0);
+
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$knownMod,
+                $RECORD$count, $RECORD$idx, $RECORD$last, $RECORD$next };
+
+        /**
+         * The number of elements remaining to be returned by next().
+         */
+        private int count = getSize();
+
+        /**
+         * Current index in the physical hash table.
+         */
+        private int idx = getBuckets().length;
+
+        /**
+         * The number of modifications to the backing Hashtable that we know about.
+         */
+        private int knownMod = getModCount();
+
+        /**
+         * The last Entry returned by a next() call.
+         */
+        private HashEntry last;
+
+        /**
+         * The next entry that should be returned by next(). It is set to something
+         * if we're iterating through a bucket that contains multiple linked
+         * entries. It is null if next() needs to find a new bucket.
+         */
+        private HashEntry next;
+
+    }
 
 }
 

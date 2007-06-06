@@ -94,37 +94,6 @@ public class Vector extends AbstractList implements List, RandomAccess,
         Cloneable, Serializable, Rollbackable {
 
     /**
-     * Compatible with JDK 1.0+.
-     */
-    private static final long serialVersionUID = -2767605614048989439L;
-
-    /**
-     * The internal array used to hold members of a Vector. The elements are
-     * in positions 0 through elementCount - 1, and all remaining slots are null.
-     * @serial the elements
-     */
-    private Object[] elementData;
-
-    /**
-     * The number of elements currently in the vector, also returned by{
-     @link #size    }
-     .
-     * @serial the size
-     */
-    private int elementCount;
-
-    /**
-     * The amount the Vector's internal array should be increased in size when
-     * a new element is added that exceeds the current size of the array,
-     * or when {
-     @link #ensureCapacity    }
-     is called. If &lt;= 0, the vector just
-     * doubles in size.
-     * @serial the amount to grow the vector by
-     */
-    private int capacityIncrement;
-
-    /**
      * Constructs an empty vector with an initial size of 10, and
      * a capacity increment of 0
      */
@@ -145,6 +114,16 @@ public class Vector extends AbstractList implements List, RandomAccess,
     }
 
     /**
+     * Constructs a Vector with the initial capacity specified, and a capacity
+     * increment of 0 (double in size).
+     * @param initialCapacity the initial size of the Vector's internal array
+     * @throws IllegalArgumentException if initialCapacity &lt; 0
+     */
+    public Vector(int initialCapacity) {
+        this(initialCapacity, 0);
+    }
+
+    /**
      * Constructs a Vector with the initial capacity and capacity
      * increment specified.
      * @param initialCapacity the initial size of the Vector's internal array
@@ -160,14 +139,150 @@ public class Vector extends AbstractList implements List, RandomAccess,
         this.setCapacityIncrement(capacityIncrement);
     }
 
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
+    public void $RESTORE(long timestamp, boolean trim) {
+        elementData = (Object[]) $RECORD$elementData.restore(elementData,
+                timestamp, trim);
+        elementCount = $RECORD$elementCount.restore(elementCount, timestamp,
+                trim);
+        capacityIncrement = $RECORD$capacityIncrement.restore(
+                capacityIncrement, timestamp, trim);
+        super.$RESTORE(timestamp, trim);
+    }
+
     /**
-     * Constructs a Vector with the initial capacity specified, and a capacity
-     * increment of 0 (double in size).
-     * @param initialCapacity the initial size of the Vector's internal array
-     * @throws IllegalArgumentException if initialCapacity &lt; 0
+     * Adds an object to the Vector.
+     * @param o the element to add to the Vector
+     * @return true, as specified by List
+     * @since 1.2
      */
-    public Vector(int initialCapacity) {
-        this(initialCapacity, 0);
+    public boolean add(Object o) {
+        addElement(o);
+        return true;
+    }
+
+    /**
+     * Adds an object at the specified index.  Elements at or above
+     * index are shifted up one position.
+     * @param index the index at which to add the element
+     * @param element the element to add to the Vector
+     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt; size()
+     * @since 1.2
+     */
+    public void add(int index, Object element) {
+        insertElementAt(element, index);
+    }
+
+    /**
+     * Appends all elements of the given collection to the end of this Vector.
+     * Behavior is undefined if the collection is modified during this operation
+     * (for example, if this == c).
+     * @param c the collection to append
+     * @return true if this vector changed, in other words c was not empty
+     * @throws NullPointerException if c is null
+     * @since 1.2
+     */
+    public synchronized boolean addAll(Collection c) {
+        return addAll(getElementCount(), c);
+    }
+
+    /**
+     * Inserts all elements of the given collection at the given index of
+     * this Vector. Behavior is undefined if the collection is modified during
+     * this operation (for example, if this == c).
+     * @param c the collection to append
+     * @return true if this vector changed, in other words c was not empty
+     * @throws NullPointerException if c is null
+     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt; size()
+     * @since 1.2
+     */
+    public synchronized boolean addAll(int index, Collection c) {
+        checkBoundInclusive(index);
+        Iterator itr = c.iterator();
+        int csize = c.size();
+        setModCount(getModCount() + 1);
+        ensureCapacity(getElementCount() + csize);
+        int end = index + csize;
+        if (getElementCount() > 0 && index != getElementCount()) {
+            System.arraycopy(getElementData(), index, getElementData(), end,
+                    getElementCount() - index);
+        }
+        setElementCount(getElementCount() + csize);
+        for (; index < end; index++) {
+            getElementData()[index] = itr.next();
+        }
+        return (csize > 0);
+    }
+
+    /**
+     * Adds an element to the Vector at the end of the Vector.  The vector
+     * is increased by ensureCapacity(size() + 1) if needed.
+     * @param obj the object to add to the Vector
+     */
+    public synchronized void addElement(Object obj) {
+        if (getElementCount() == getElementData().length) {
+            ensureCapacity(getElementCount() + 1);
+        }
+        setModCount(getModCount() + 1);
+        getElementData()[$ASSIGN$SPECIAL$elementCount(11, elementCount)] = obj;
+    }
+
+    /**
+     * Returns the size of the internal data array (not the amount of elements
+     * contained in the Vector).
+     * @return capacity of the internal data array
+     */
+    public synchronized int capacity() {
+        return getElementData().length;
+    }
+
+    /**
+     * Clears all elements in the Vector and sets its size to 0.
+     */
+    public void clear() {
+        removeAllElements();
+    }
+
+    /**
+     * Creates a new Vector with the same contents as this one. The clone is
+     * shallow; elements are not cloned.
+     * @return the clone of this vector
+     */
+    public synchronized Object clone() {
+        try {
+            Vector clone = (Vector) super.clone();
+            clone.setElementData((Object[]) getElementData().clone());
+            return clone;
+        } catch (CloneNotSupportedException ex) {
+            // Impossible to get here.
+            throw new InternalError(ex.toString());
+        }
+    }
+
+    /**
+     * Returns true when <code>elem</code> is contained in this Vector.
+     * @param elem the element to check
+     * @return true if the object is contained in this Vector, false otherwise
+     */
+    public boolean contains(Object elem) {
+        return indexOf(elem, 0) >= 0;
+    }
+
+    /**
+     * Returns true if this Vector contains all the elements in c.
+     * @param c the collection to compare to
+     * @return true if this vector contains all elements of c
+     * @throws NullPointerException if c is null
+     * @since 1.2
+     */
+    public synchronized boolean containsAll(Collection c) {
+        // Here just for the sychronization.
+        return super.containsAll(c);
     }
 
     /**
@@ -186,86 +301,15 @@ public class Vector extends AbstractList implements List, RandomAccess,
     }
 
     /**
-     * Trims the Vector down to size.  If the internal data array is larger
-     * than the number of Objects its holding, a new array is constructed
-     * that precisely holds the elements. Otherwise this does nothing.
+     * Returns the Object stored at <code>index</code>.
+     * @param index the index of the Object to retrieve
+     * @return the object at <code>index</code>
+     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
+     * @see #get(int)
      */
-    public synchronized void trimToSize() {
-        // Don't bother checking for the case where size() == the capacity of the
-        // vector since that is a much less likely case; it's more efficient to
-        // not do the check and lose a bit of performance in that infrequent case
-        Object[] newArray = new Object[getElementCount()];
-        System.arraycopy(getElementData(), 0, newArray, 0, getElementCount());
-        setElementData(newArray);
-    }
-
-    /**
-     * Ensures that <code>minCapacity</code> elements can fit within this Vector.
-     * If <code>elementData</code> is too small, it is expanded as follows:
-     * If the <code>elementCount + capacityIncrement</code> is adequate, that
-     * is the new size. If <code>capacityIncrement</code> is non-zero, the
-     * candidate size is double the current. If that is not enough, the new
-     * size is <code>minCapacity</code>.
-     * @param minCapacity the desired minimum capacity, negative values ignored
-     */
-    public synchronized void ensureCapacity(int minCapacity) {
-        if (getElementData().length >= minCapacity) {
-            return;
-        }
-        int newCapacity;
-        if (getCapacityIncrement() <= 0) {
-            newCapacity = getElementData().length * 2;
-        } else {
-            newCapacity = getElementData().length + getCapacityIncrement();
-        }
-        Object[] newArray = new Object[Math.max(newCapacity, minCapacity)];
-        System.arraycopy(getElementData(), 0, newArray, 0, getElementCount());
-        setElementData(newArray);
-    }
-
-    /**
-     * Explicitly sets the size of the vector (but not necessarily the size of
-     * the internal data array). If the new size is smaller than the old one,
-     * old values that don't fit are lost. If the new size is larger than the
-     * old one, the vector is padded with null entries.
-     * @param newSize The new size of the internal array
-     * @throws ArrayIndexOutOfBoundsException if the new size is negative
-     */
-    public synchronized void setSize(int newSize) {
-        // Don't bother checking for the case where size() == the capacity of the
-        // vector since that is a much less likely case; it's more efficient to
-        // not do the check and lose a bit of performance in that infrequent case
-        setModCount(getModCount() + 1);
-        ensureCapacity(newSize);
-        if (newSize < getElementCount()) {
-            Arrays.fill(getElementData(), newSize, getElementCount(), null);
-        }
-        setElementCount(newSize);
-    }
-
-    /**
-     * Returns the size of the internal data array (not the amount of elements
-     * contained in the Vector).
-     * @return capacity of the internal data array
-     */
-    public synchronized int capacity() {
-        return getElementData().length;
-    }
-
-    /**
-     * Returns the number of elements stored in this Vector.
-     * @return the number of elements in this Vector
-     */
-    public synchronized int size() {
-        return getElementCount();
-    }
-
-    /**
-     * Returns true if this Vector is empty, false otherwise
-     * @return true if the Vector is empty, false otherwise
-     */
-    public synchronized boolean isEmpty() {
-        return getElementCount() == 0;
+    public synchronized Object elementAt(int index) {
+        checkBoundExclusive(index);
+        return getElementData()[index];
     }
 
     /**
@@ -277,7 +321,40 @@ public class Vector extends AbstractList implements List, RandomAccess,
     // No need to synchronize as the Enumeration is not thread-safe!
     public Enumeration elements() {
         return new Enumeration() {
-            private int i = 0;
+            public void $COMMIT_ANONYMOUS(long timestamp) {
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                        .getTopTimestamp());
+                $RECORD$$CHECKPOINT.commit(timestamp);
+            }
+
+            public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                return $CHECKPOINT;
+            }
+
+            public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                i = $RECORD$i.restore(i, timestamp, trim);
+                if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                            new _PROXY_(), timestamp, trim);
+                    FieldRecord.popState($RECORDS);
+                    $RESTORE_ANONYMOUS(timestamp, trim);
+                }
+            }
+
+            public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                if ($CHECKPOINT != checkpoint) {
+                    Checkpoint oldCheckpoint = $CHECKPOINT;
+                    if (checkpoint != null) {
+                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                .getTimestamp());
+                        FieldRecord.pushState($RECORDS);
+                    }
+                    $CHECKPOINT = checkpoint;
+                    oldCheckpoint.setCheckpoint(checkpoint);
+                    checkpoint.addObject(new _PROXY_());
+                }
+                return this;
+            }
 
             public boolean hasMoreElements() {
                 return i < getElementCount();
@@ -296,12 +373,12 @@ public class Vector extends AbstractList implements List, RandomAccess,
                     $COMMIT_ANONYMOUS(timestamp);
                 }
 
-                public final void $RESTORE(long timestamp, boolean trim) {
-                    $RESTORE_ANONYMOUS(timestamp, trim);
-                }
-
                 public final Checkpoint $GET$CHECKPOINT() {
                     return $GET$CHECKPOINT_ANONYMOUS();
+                }
+
+                public final void $RESTORE(long timestamp, boolean trim) {
+                    $RESTORE_ANONYMOUS(timestamp, trim);
                 }
 
                 public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
@@ -351,44 +428,11 @@ public class Vector extends AbstractList implements List, RandomAccess,
                 }
             }
 
-            public void $COMMIT_ANONYMOUS(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                        .getTopTimestamp());
-                $RECORD$$CHECKPOINT.commit(timestamp);
-            }
-
-            public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                i = $RECORD$i.restore(i, timestamp, trim);
-                if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
-                            new _PROXY_(), timestamp, trim);
-                    FieldRecord.popState($RECORDS);
-                    $RESTORE_ANONYMOUS(timestamp, trim);
-                }
-            }
-
-            public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                return $CHECKPOINT;
-            }
-
-            public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                if ($CHECKPOINT != checkpoint) {
-                    Checkpoint oldCheckpoint = $CHECKPOINT;
-                    if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                                .getTimestamp());
-                        FieldRecord.pushState($RECORDS);
-                    }
-                    $CHECKPOINT = checkpoint;
-                    oldCheckpoint.setCheckpoint(checkpoint);
-                    checkpoint.addObject(new _PROXY_());
-                }
-                return this;
-            }
-
             private FieldRecord $RECORD$i = new FieldRecord(0);
 
             private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$i };
+
+            private int i = 0;
 
             {
                 $CHECKPOINT.addObject(new _PROXY_());
@@ -398,12 +442,71 @@ public class Vector extends AbstractList implements List, RandomAccess,
     }
 
     /**
-     * Returns true when <code>elem</code> is contained in this Vector.
-     * @param elem the element to check
-     * @return true if the object is contained in this Vector, false otherwise
+     * Ensures that <code>minCapacity</code> elements can fit within this Vector.
+     * If <code>elementData</code> is too small, it is expanded as follows:
+     * If the <code>elementCount + capacityIncrement</code> is adequate, that
+     * is the new size. If <code>capacityIncrement</code> is non-zero, the
+     * candidate size is double the current. If that is not enough, the new
+     * size is <code>minCapacity</code>.
+     * @param minCapacity the desired minimum capacity, negative values ignored
      */
-    public boolean contains(Object elem) {
-        return indexOf(elem, 0) >= 0;
+    public synchronized void ensureCapacity(int minCapacity) {
+        if (getElementData().length >= minCapacity) {
+            return;
+        }
+        int newCapacity;
+        if (getCapacityIncrement() <= 0) {
+            newCapacity = getElementData().length * 2;
+        } else {
+            newCapacity = getElementData().length + getCapacityIncrement();
+        }
+        Object[] newArray = new Object[Math.max(newCapacity, minCapacity)];
+        System.arraycopy(getElementData(), 0, newArray, 0, getElementCount());
+        setElementData(newArray);
+    }
+
+    /**
+     * Compares this to the given object.
+     * @param o the object to compare to
+     * @return true if the two are equal
+     * @since 1.2
+     */
+    public synchronized boolean equals(Object o) {
+        // Here just for the sychronization.
+        return super.equals(o);
+    }
+
+    /**
+     * Returns the first element (index 0) in the Vector.
+     * @return the first Object in the Vector
+     * @throws NoSuchElementException the Vector is empty
+     */
+    public synchronized Object firstElement() {
+        if (getElementCount() == 0) {
+            throw new NoSuchElementException();
+        }
+        return getElementData()[0];
+    }
+
+    /**
+     * Returns the element at position <code>index</code>.
+     * @param index the position from which an element will be retrieved
+     * @return the element at that position
+     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
+     * @since 1.2
+     */
+    public Object get(int index) {
+        return elementAt(index);
+    }
+
+    /**
+     * Computes the hashcode of this object.
+     * @return the hashcode
+     * @since 1.2
+     */
+    public synchronized int hashCode() {
+        // Here just for the sychronization.
+        return super.hashCode();
     }
 
     /**
@@ -436,6 +539,46 @@ public class Vector extends AbstractList implements List, RandomAccess,
     }
 
     /**
+     * Inserts a new element into the Vector at <code>index</code>.  Any elements
+     * at or greater than index are shifted up one position.
+     * @param obj the object to insert
+     * @param index the index at which the object is inserted
+     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt; size()
+     * @see #add(int, Object)
+     */
+    public synchronized void insertElementAt(Object obj, int index) {
+        checkBoundInclusive(index);
+        if (getElementCount() == getElementData().length) {
+            ensureCapacity(getElementCount() + 1);
+        }
+        setModCount(getModCount() + 1);
+        System.arraycopy(getElementData(), index, getElementData(), index + 1,
+                getElementCount() - index);
+        setElementCount(getElementCount() + 1);
+        getElementData()[index] = obj;
+    }
+
+    /**
+     * Returns true if this Vector is empty, false otherwise
+     * @return true if the Vector is empty, false otherwise
+     */
+    public synchronized boolean isEmpty() {
+        return getElementCount() == 0;
+    }
+
+    /**
+     * Returns the last element in the Vector.
+     * @return the last Object in the Vector
+     * @throws NoSuchElementException the Vector is empty
+     */
+    public synchronized Object lastElement() {
+        if (getElementCount() == 0) {
+            throw new NoSuchElementException();
+        }
+        return getElementData()[getElementCount() - 1];
+    }
+
+    /**
      * Returns the last index of <code>elem</code> within this Vector, or -1
      * if the object is not within the Vector.
      * @param elem the object to search for
@@ -465,94 +608,79 @@ public class Vector extends AbstractList implements List, RandomAccess,
     }
 
     /**
-     * Returns the Object stored at <code>index</code>.
-     * @param index the index of the Object to retrieve
-     * @return the object at <code>index</code>
+     * Removes the given Object from the Vector.  If it exists, true
+     * is returned, if not, false is returned.
+     * @param o the object to remove from the Vector
+     * @return true if the Object existed in the Vector, false otherwise
+     * @since 1.2
+     */
+    public boolean remove(Object o) {
+        return removeElement(o);
+    }
+
+    /**
+     * Removes the element at the specified index, and returns it.
+     * @param index the position from which to remove the element
+     * @return the object removed
      * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
-     * @see #get(int)
+     * @since 1.2
      */
-    public synchronized Object elementAt(int index) {
+    public synchronized Object remove(int index) {
         checkBoundExclusive(index);
-        return getElementData()[index];
-    }
-
-    /**
-     * Returns the first element (index 0) in the Vector.
-     * @return the first Object in the Vector
-     * @throws NoSuchElementException the Vector is empty
-     */
-    public synchronized Object firstElement() {
-        if (getElementCount() == 0) {
-            throw new NoSuchElementException();
+        Object temp = getElementData()[index];
+        setModCount(getModCount() + 1);
+        setElementCount(getElementCount() - 1);
+        if (index < getElementCount()) {
+            System.arraycopy(getElementData(), index + 1, getElementData(),
+                    index, getElementCount() - index);
         }
-        return getElementData()[0];
+        getElementData()[getElementCount()] = null;
+        return temp;
     }
 
     /**
-     * Returns the last element in the Vector.
-     * @return the last Object in the Vector
-     * @throws NoSuchElementException the Vector is empty
+     * Remove from this vector all elements contained in the given collection.
+     * @param c the collection to filter out
+     * @return true if this vector changed
+     * @throws NullPointerException if c is null
+     * @since 1.2
      */
-    public synchronized Object lastElement() {
-        if (getElementCount() == 0) {
-            throw new NoSuchElementException();
+    public synchronized boolean removeAll(Collection c) {
+        if (c == null) {
+            throw new NullPointerException();
         }
-        return getElementData()[getElementCount() - 1];
-    }
-
-    /**
-     * Changes the element at <code>index</code> to be <code>obj</code>
-     * @param obj the object to store
-     * @param index the position in the Vector to store the object
-     * @throws ArrayIndexOutOfBoundsException the index is out of range
-     * @see #set(int, Object)
-     */
-    public void setElementAt(Object obj, int index) {
-        set(index, obj);
-    }
-
-    /**
-     * Removes the element at <code>index</code>, and shifts all elements at
-     * positions greater than index to their index - 1.
-     * @param index the index of the element to remove
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size();
-     * @see #remove(int)
-     */
-    public void removeElementAt(int index) {
-        remove(index);
-    }
-
-    /**
-     * Inserts a new element into the Vector at <code>index</code>.  Any elements
-     * at or greater than index are shifted up one position.
-     * @param obj the object to insert
-     * @param index the index at which the object is inserted
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt; size()
-     * @see #add(int, Object)
-     */
-    public synchronized void insertElementAt(Object obj, int index) {
-        checkBoundInclusive(index);
-        if (getElementCount() == getElementData().length) {
-            ensureCapacity(getElementCount() + 1);
+        int i;
+        int j;
+        for (i = 0; i < getElementCount(); i++) {
+            if (c.contains(getElementData()[i])) {
+                break;
+            }
+        }
+        if (i == getElementCount()) {
+            return false;
         }
         setModCount(getModCount() + 1);
-        System.arraycopy(getElementData(), index, getElementData(), index + 1,
-                getElementCount() - index);
-        setElementCount(getElementCount() + 1);
-        getElementData()[index] = obj;
+        for (j = i++; i < getElementCount(); i++) {
+            if (!c.contains(getElementData()[i])) {
+                getElementData()[j++] = getElementData()[i];
+            }
+        }
+        setElementCount(getElementCount() - (i - j));
+        return true;
     }
 
     /**
-     * Adds an element to the Vector at the end of the Vector.  The vector
-     * is increased by ensureCapacity(size() + 1) if needed.
-     * @param obj the object to add to the Vector
+     * Removes all elements from the Vector.  Note that this does not
+     * resize the internal data array.
+     * @see #clear()
      */
-    public synchronized void addElement(Object obj) {
-        if (getElementCount() == getElementData().length) {
-            ensureCapacity(getElementCount() + 1);
+    public synchronized void removeAllElements() {
+        if (getElementCount() == 0) {
+            return;
         }
         setModCount(getModCount() + 1);
-        getElementData()[$ASSIGN$SPECIAL$elementCount(11, elementCount)] = obj;
+        Arrays.fill(getElementData(), 0, getElementCount(), null);
+        setElementCount(0);
     }
 
     /**
@@ -573,33 +701,125 @@ public class Vector extends AbstractList implements List, RandomAccess,
     }
 
     /**
-     * Removes all elements from the Vector.  Note that this does not
-     * resize the internal data array.
-     * @see #clear()
+     * Removes the element at <code>index</code>, and shifts all elements at
+     * positions greater than index to their index - 1.
+     * @param index the index of the element to remove
+     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size();
+     * @see #remove(int)
      */
-    public synchronized void removeAllElements() {
-        if (getElementCount() == 0) {
-            return;
-        }
-        setModCount(getModCount() + 1);
-        Arrays.fill(getElementData(), 0, getElementCount(), null);
-        setElementCount(0);
+    public void removeElementAt(int index) {
+        remove(index);
     }
 
     /**
-     * Creates a new Vector with the same contents as this one. The clone is
-     * shallow; elements are not cloned.
-     * @return the clone of this vector
+     * Retain in this vector only the elements contained in the given collection.
+     * @param c the collection to filter by
+     * @return true if this vector changed
+     * @throws NullPointerException if c is null
+     * @since 1.2
      */
-    public synchronized Object clone() {
-        try {
-            Vector clone = (Vector) super.clone();
-            clone.setElementData((Object[]) getElementData().clone());
-            return clone;
-        } catch (CloneNotSupportedException ex) {
-            // Impossible to get here.
-            throw new InternalError(ex.toString());
+    public synchronized boolean retainAll(Collection c) {
+        if (c == null) {
+            throw new NullPointerException();
         }
+        int i;
+        int j;
+        for (i = 0; i < getElementCount(); i++) {
+            if (!c.contains(getElementData()[i])) {
+                break;
+            }
+        }
+        if (i == getElementCount()) {
+            return false;
+        }
+        setModCount(getModCount() + 1);
+        for (j = i++; i < getElementCount(); i++) {
+            if (c.contains(getElementData()[i])) {
+                getElementData()[j++] = getElementData()[i];
+            }
+        }
+        setElementCount(getElementCount() - (i - j));
+        return true;
+    }
+
+    /**
+     * Puts <code>element</code> into the Vector at position <code>index</code>
+     * and returns the Object that previously occupied that position.
+     * @param index the index within the Vector to place the Object
+     * @param element the Object to store in the Vector
+     * @return the previous object at the specified index
+     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
+     * @since 1.2
+     */
+    public synchronized Object set(int index, Object element) {
+        checkBoundExclusive(index);
+        Object temp = getElementData()[index];
+        getElementData()[index] = element;
+        return temp;
+    }
+
+    /**
+     * Changes the element at <code>index</code> to be <code>obj</code>
+     * @param obj the object to store
+     * @param index the position in the Vector to store the object
+     * @throws ArrayIndexOutOfBoundsException the index is out of range
+     * @see #set(int, Object)
+     */
+    public void setElementAt(Object obj, int index) {
+        set(index, obj);
+    }
+
+    /**
+     * Explicitly sets the size of the vector (but not necessarily the size of
+     * the internal data array). If the new size is smaller than the old one,
+     * old values that don't fit are lost. If the new size is larger than the
+     * old one, the vector is padded with null entries.
+     * @param newSize The new size of the internal array
+     * @throws ArrayIndexOutOfBoundsException if the new size is negative
+     */
+    public synchronized void setSize(int newSize) {
+        // Don't bother checking for the case where size() == the capacity of the
+        // vector since that is a much less likely case; it's more efficient to
+        // not do the check and lose a bit of performance in that infrequent case
+        setModCount(getModCount() + 1);
+        ensureCapacity(newSize);
+        if (newSize < getElementCount()) {
+            Arrays.fill(getElementData(), newSize, getElementCount(), null);
+        }
+        setElementCount(newSize);
+    }
+
+    /**
+     * Returns the number of elements stored in this Vector.
+     * @return the number of elements in this Vector
+     */
+    public synchronized int size() {
+        return getElementCount();
+    }
+
+    /**
+     * Obtain a List view of a subsection of this list, from fromIndex
+     * (inclusive) to toIndex (exclusive). If the two indices are equal, the
+     * sublist is empty. The returned list is modifiable, and changes in one
+     * reflect in the other. If this list is structurally modified in
+     * any way other than through the returned list, the result of any subsequent
+     * operations on the returned list is undefined.
+     * <p>
+     * @param fromIndex the index that the returned list should start from
+     * (inclusive)
+     * @param toIndex the index that the returned list should go to (exclusive)
+     * @return a List backed by a subsection of this vector
+     * @throws IndexOutOfBoundsException if fromIndex &lt; 0
+     * || toIndex &gt; size()
+     * @throws IllegalArgumentException if fromIndex &gt; toIndex
+     * @see ConcurrentModificationException
+     * @since 1.2
+     */
+    public synchronized List subList(int fromIndex, int toIndex) {
+        List sub = super.subList(fromIndex, toIndex);
+        // We must specify the correct object to synchronize upon, hence the
+        // use of a non-public API
+        return new Collections.SynchronizedList(this, sub);
     }
 
     /**
@@ -644,230 +864,6 @@ public class Vector extends AbstractList implements List, RandomAccess,
     }
 
     /**
-     * Returns the element at position <code>index</code>.
-     * @param index the position from which an element will be retrieved
-     * @return the element at that position
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
-     * @since 1.2
-     */
-    public Object get(int index) {
-        return elementAt(index);
-    }
-
-    /**
-     * Puts <code>element</code> into the Vector at position <code>index</code>
-     * and returns the Object that previously occupied that position.
-     * @param index the index within the Vector to place the Object
-     * @param element the Object to store in the Vector
-     * @return the previous object at the specified index
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
-     * @since 1.2
-     */
-    public synchronized Object set(int index, Object element) {
-        checkBoundExclusive(index);
-        Object temp = getElementData()[index];
-        getElementData()[index] = element;
-        return temp;
-    }
-
-    /**
-     * Adds an object to the Vector.
-     * @param o the element to add to the Vector
-     * @return true, as specified by List
-     * @since 1.2
-     */
-    public boolean add(Object o) {
-        addElement(o);
-        return true;
-    }
-
-    /**
-     * Removes the given Object from the Vector.  If it exists, true
-     * is returned, if not, false is returned.
-     * @param o the object to remove from the Vector
-     * @return true if the Object existed in the Vector, false otherwise
-     * @since 1.2
-     */
-    public boolean remove(Object o) {
-        return removeElement(o);
-    }
-
-    /**
-     * Adds an object at the specified index.  Elements at or above
-     * index are shifted up one position.
-     * @param index the index at which to add the element
-     * @param element the element to add to the Vector
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt; size()
-     * @since 1.2
-     */
-    public void add(int index, Object element) {
-        insertElementAt(element, index);
-    }
-
-    /**
-     * Removes the element at the specified index, and returns it.
-     * @param index the position from which to remove the element
-     * @return the object removed
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt;= size()
-     * @since 1.2
-     */
-    public synchronized Object remove(int index) {
-        checkBoundExclusive(index);
-        Object temp = getElementData()[index];
-        setModCount(getModCount() + 1);
-        setElementCount(getElementCount() - 1);
-        if (index < getElementCount()) {
-            System.arraycopy(getElementData(), index + 1, getElementData(),
-                    index, getElementCount() - index);
-        }
-        getElementData()[getElementCount()] = null;
-        return temp;
-    }
-
-    /**
-     * Clears all elements in the Vector and sets its size to 0.
-     */
-    public void clear() {
-        removeAllElements();
-    }
-
-    /**
-     * Returns true if this Vector contains all the elements in c.
-     * @param c the collection to compare to
-     * @return true if this vector contains all elements of c
-     * @throws NullPointerException if c is null
-     * @since 1.2
-     */
-    public synchronized boolean containsAll(Collection c) {
-        // Here just for the sychronization.
-        return super.containsAll(c);
-    }
-
-    /**
-     * Appends all elements of the given collection to the end of this Vector.
-     * Behavior is undefined if the collection is modified during this operation
-     * (for example, if this == c).
-     * @param c the collection to append
-     * @return true if this vector changed, in other words c was not empty
-     * @throws NullPointerException if c is null
-     * @since 1.2
-     */
-    public synchronized boolean addAll(Collection c) {
-        return addAll(getElementCount(), c);
-    }
-
-    /**
-     * Remove from this vector all elements contained in the given collection.
-     * @param c the collection to filter out
-     * @return true if this vector changed
-     * @throws NullPointerException if c is null
-     * @since 1.2
-     */
-    public synchronized boolean removeAll(Collection c) {
-        if (c == null) {
-            throw new NullPointerException();
-        }
-        int i;
-        int j;
-        for (i = 0; i < getElementCount(); i++) {
-            if (c.contains(getElementData()[i])) {
-                break;
-            }
-        }
-        if (i == getElementCount()) {
-            return false;
-        }
-        setModCount(getModCount() + 1);
-        for (j = i++; i < getElementCount(); i++) {
-            if (!c.contains(getElementData()[i])) {
-                getElementData()[j++] = getElementData()[i];
-            }
-        }
-        setElementCount(getElementCount() - (i - j));
-        return true;
-    }
-
-    /**
-     * Retain in this vector only the elements contained in the given collection.
-     * @param c the collection to filter by
-     * @return true if this vector changed
-     * @throws NullPointerException if c is null
-     * @since 1.2
-     */
-    public synchronized boolean retainAll(Collection c) {
-        if (c == null) {
-            throw new NullPointerException();
-        }
-        int i;
-        int j;
-        for (i = 0; i < getElementCount(); i++) {
-            if (!c.contains(getElementData()[i])) {
-                break;
-            }
-        }
-        if (i == getElementCount()) {
-            return false;
-        }
-        setModCount(getModCount() + 1);
-        for (j = i++; i < getElementCount(); i++) {
-            if (c.contains(getElementData()[i])) {
-                getElementData()[j++] = getElementData()[i];
-            }
-        }
-        setElementCount(getElementCount() - (i - j));
-        return true;
-    }
-
-    /**
-     * Inserts all elements of the given collection at the given index of
-     * this Vector. Behavior is undefined if the collection is modified during
-     * this operation (for example, if this == c).
-     * @param c the collection to append
-     * @return true if this vector changed, in other words c was not empty
-     * @throws NullPointerException if c is null
-     * @throws ArrayIndexOutOfBoundsException index &lt; 0 || index &gt; size()
-     * @since 1.2
-     */
-    public synchronized boolean addAll(int index, Collection c) {
-        checkBoundInclusive(index);
-        Iterator itr = c.iterator();
-        int csize = c.size();
-        setModCount(getModCount() + 1);
-        ensureCapacity(getElementCount() + csize);
-        int end = index + csize;
-        if (getElementCount() > 0 && index != getElementCount()) {
-            System.arraycopy(getElementData(), index, getElementData(), end,
-                    getElementCount() - index);
-        }
-        setElementCount(getElementCount() + csize);
-        for (; index < end; index++) {
-            getElementData()[index] = itr.next();
-        }
-        return (csize > 0);
-    }
-
-    /**
-     * Compares this to the given object.
-     * @param o the object to compare to
-     * @return true if the two are equal
-     * @since 1.2
-     */
-    public synchronized boolean equals(Object o) {
-        // Here just for the sychronization.
-        return super.equals(o);
-    }
-
-    /**
-     * Computes the hashcode of this object.
-     * @return the hashcode
-     * @since 1.2
-     */
-    public synchronized int hashCode() {
-        // Here just for the sychronization.
-        return super.hashCode();
-    }
-
-    /**
      * Returns a string representation of this Vector in the form
      * "[element0, element1, ... elementN]".
      * @return the String representation of this Vector
@@ -878,28 +874,29 @@ public class Vector extends AbstractList implements List, RandomAccess,
     }
 
     /**
-     * Obtain a List view of a subsection of this list, from fromIndex
-     * (inclusive) to toIndex (exclusive). If the two indices are equal, the
-     * sublist is empty. The returned list is modifiable, and changes in one
-     * reflect in the other. If this list is structurally modified in
-     * any way other than through the returned list, the result of any subsequent
-     * operations on the returned list is undefined.
-     * <p>
-     * @param fromIndex the index that the returned list should start from
-     * (inclusive)
-     * @param toIndex the index that the returned list should go to (exclusive)
-     * @return a List backed by a subsection of this vector
-     * @throws IndexOutOfBoundsException if fromIndex &lt; 0
-     * || toIndex &gt; size()
-     * @throws IllegalArgumentException if fromIndex &gt; toIndex
-     * @see ConcurrentModificationException
-     * @since 1.2
+     * Trims the Vector down to size.  If the internal data array is larger
+     * than the number of Objects its holding, a new array is constructed
+     * that precisely holds the elements. Otherwise this does nothing.
      */
-    public synchronized List subList(int fromIndex, int toIndex) {
-        List sub = super.subList(fromIndex, toIndex);
-        // We must specify the correct object to synchronize upon, hence the
-        // use of a non-public API
-        return new Collections.SynchronizedList(this, sub);
+    public synchronized void trimToSize() {
+        // Don't bother checking for the case where size() == the capacity of the
+        // vector since that is a much less likely case; it's more efficient to
+        // not do the check and lose a bit of performance in that infrequent case
+        Object[] newArray = new Object[getElementCount()];
+        System.arraycopy(getElementData(), 0, newArray, 0, getElementCount());
+        setElementData(newArray);
+    }
+
+    protected int getCapacityIncrement() {
+        return capacityIncrement;
+    }
+
+    protected int getElementCount() {
+        return elementCount;
+    }
+
+    protected Object[] getElementData() {
+        return $BACKUP$elementData();
     }
 
     /**
@@ -925,91 +922,16 @@ public class Vector extends AbstractList implements List, RandomAccess,
         }
     }
 
-    /**
-     * Checks that the index is in the range of possible elements (inclusive).
-     * @param index the index to check
-     * @throws ArrayIndexOutOfBoundsException if index &gt; size
-     */
-    private void checkBoundInclusive(int index) {
-        // Implementation note: we do not check for negative ranges here, since
-        // use of a negative index will cause an ArrayIndexOutOfBoundsException
-        // with no effort on our part.
-        if (index > getElementCount()) {
-            throw new ArrayIndexOutOfBoundsException(index + " > "
-                    + getElementCount());
-        }
-    }
-
-    /**
-     * Checks that the index is in the range of existing elements (exclusive).
-     * @param index the index to check
-     * @throws ArrayIndexOutOfBoundsException if index &gt;= size
-     */
-    private void checkBoundExclusive(int index) {
-        // Implementation note: we do not check for negative ranges here, since
-        // use of a negative index will cause an ArrayIndexOutOfBoundsException
-        // with no effort on our part.
-        if (index >= getElementCount()) {
-            throw new ArrayIndexOutOfBoundsException(index + " >= "
-                    + getElementCount());
-        }
-    }
-
-    /**
-     * Serializes this object to the given stream.
-     * @param s the stream to write to
-     * @throws IOException if the underlying stream fails
-     * @serialData just calls default write function
-     */
-    private synchronized void writeObject(ObjectOutputStream s)
-            throws IOException {
-        s.defaultWriteObject();
-    }
-
     protected void setCapacityIncrement(int capacityIncrement) {
         this.$ASSIGN$capacityIncrement(capacityIncrement);
-    }
-
-    protected int getCapacityIncrement() {
-        return capacityIncrement;
     }
 
     protected int setElementCount(int elementCount) {
         return this.$ASSIGN$elementCount(elementCount);
     }
 
-    protected int getElementCount() {
-        return elementCount;
-    }
-
     protected void setElementData(Object[] elementData) {
         this.$ASSIGN$elementData(elementData);
-    }
-
-    protected Object[] getElementData() {
-        return $BACKUP$elementData();
-    }
-
-    private final Object[] $ASSIGN$elementData(Object[] newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$elementData.add(null, elementData, $CHECKPOINT
-                    .getTimestamp());
-        }
-        return elementData = newValue;
-    }
-
-    private final Object[] $BACKUP$elementData() {
-        $RECORD$elementData.backup(null, elementData, $CHECKPOINT
-                .getTimestamp());
-        return elementData;
-    }
-
-    private final int $ASSIGN$elementCount(int newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$elementCount.add(null, elementCount, $CHECKPOINT
-                    .getTimestamp());
-        }
-        return elementCount = newValue;
     }
 
     private final int $ASSIGN$SPECIAL$elementCount(int operator, long newValue) {
@@ -1061,29 +983,107 @@ public class Vector extends AbstractList implements List, RandomAccess,
         return capacityIncrement = newValue;
     }
 
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        super.$COMMIT(timestamp);
+    private final int $ASSIGN$elementCount(int newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$elementCount.add(null, elementCount, $CHECKPOINT
+                    .getTimestamp());
+        }
+        return elementCount = newValue;
     }
 
-    public void $RESTORE(long timestamp, boolean trim) {
-        elementData = (Object[]) $RECORD$elementData.restore(elementData,
-                timestamp, trim);
-        elementCount = $RECORD$elementCount.restore(elementCount, timestamp,
-                trim);
-        capacityIncrement = $RECORD$capacityIncrement.restore(
-                capacityIncrement, timestamp, trim);
-        super.$RESTORE(timestamp, trim);
+    private final Object[] $ASSIGN$elementData(Object[] newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$elementData.add(null, elementData, $CHECKPOINT
+                    .getTimestamp());
+        }
+        return elementData = newValue;
     }
 
-    private FieldRecord $RECORD$elementData = new FieldRecord(1);
+    private final Object[] $BACKUP$elementData() {
+        $RECORD$elementData.backup(null, elementData, $CHECKPOINT
+                .getTimestamp());
+        return elementData;
+    }
 
-    private FieldRecord $RECORD$elementCount = new FieldRecord(0);
+    /**
+     * Checks that the index is in the range of existing elements (exclusive).
+     * @param index the index to check
+     * @throws ArrayIndexOutOfBoundsException if index &gt;= size
+     */
+    private void checkBoundExclusive(int index) {
+        // Implementation note: we do not check for negative ranges here, since
+        // use of a negative index will cause an ArrayIndexOutOfBoundsException
+        // with no effort on our part.
+        if (index >= getElementCount()) {
+            throw new ArrayIndexOutOfBoundsException(index + " >= "
+                    + getElementCount());
+        }
+    }
+
+    /**
+     * Checks that the index is in the range of possible elements (inclusive).
+     * @param index the index to check
+     * @throws ArrayIndexOutOfBoundsException if index &gt; size
+     */
+    private void checkBoundInclusive(int index) {
+        // Implementation note: we do not check for negative ranges here, since
+        // use of a negative index will cause an ArrayIndexOutOfBoundsException
+        // with no effort on our part.
+        if (index > getElementCount()) {
+            throw new ArrayIndexOutOfBoundsException(index + " > "
+                    + getElementCount());
+        }
+    }
+
+    /**
+     * Serializes this object to the given stream.
+     * @param s the stream to write to
+     * @throws IOException if the underlying stream fails
+     * @serialData just calls default write function
+     */
+    private synchronized void writeObject(ObjectOutputStream s)
+            throws IOException {
+        s.defaultWriteObject();
+    }
 
     private FieldRecord $RECORD$capacityIncrement = new FieldRecord(0);
 
+    private FieldRecord $RECORD$elementCount = new FieldRecord(0);
+
+    private FieldRecord $RECORD$elementData = new FieldRecord(1);
+
     private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$elementData,
             $RECORD$elementCount, $RECORD$capacityIncrement };
+
+    /**
+     * The amount the Vector's internal array should be increased in size when
+     * a new element is added that exceeds the current size of the array,
+     * or when {
+     @link #ensureCapacity    }
+     is called. If &lt;= 0, the vector just
+     * doubles in size.
+     * @serial the amount to grow the vector by
+     */
+    private int capacityIncrement;
+
+    /**
+     * The number of elements currently in the vector, also returned by{
+     @link #size    }
+     .
+     * @serial the size
+     */
+    private int elementCount;
+
+    /**
+     * The internal array used to hold members of a Vector. The elements are
+     * in positions 0 through elementCount - 1, and all remaining slots are null.
+     * @serial the elements
+     */
+    private Object[] elementData;
+
+    /**
+     * Compatible with JDK 1.0+.
+     */
+    private static final long serialVersionUID = -2767605614048989439L;
 
 }

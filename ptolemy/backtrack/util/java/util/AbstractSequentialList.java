@@ -75,20 +75,15 @@ import ptolemy.backtrack.util.FieldRecord;
 public abstract class AbstractSequentialList extends AbstractList implements
         Rollbackable {
 
-    /**
-     * The main constructor, for use by subclasses.
-     */
-    protected AbstractSequentialList() {
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        super.$COMMIT(timestamp);
     }
 
-    /**
-     * Returns a ListIterator over the list, starting from position index.
-     * Subclasses must provide an implementation of this method.
-     * @param index the starting position of the list
-     * @return the list iterator
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
-     */
-    public abstract ListIterator listIterator(int index);
+    public void $RESTORE(long timestamp, boolean trim) {
+        super.$RESTORE(timestamp, trim);
+    }
 
     /**
      * Insert an element into the list at a given position (optional operation).
@@ -175,6 +170,15 @@ public abstract class AbstractSequentialList extends AbstractList implements
     }
 
     /**
+     * Returns a ListIterator over the list, starting from position index.
+     * Subclasses must provide an implementation of this method.
+     * @param index the starting position of the list
+     * @return the list iterator
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+     */
+    public abstract ListIterator listIterator(int index);
+
+    /**
      * Remove the element at a given position in this list (optional operation).
      * Shifts all remaining elements to the left to fill the gap. This
      * implementation uses listIterator(index) and ListIterator.remove().
@@ -224,14 +228,10 @@ public abstract class AbstractSequentialList extends AbstractList implements
         return old;
     }
 
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        super.$COMMIT(timestamp);
-    }
-
-    public void $RESTORE(long timestamp, boolean trim) {
-        super.$RESTORE(timestamp, trim);
+    /**
+     * The main constructor, for use by subclasses.
+     */
+    protected AbstractSequentialList() {
     }
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {};

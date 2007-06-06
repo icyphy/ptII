@@ -159,8 +159,8 @@ public class SemanticHighlightingPresenter implements
      * @param removedPositions the removed positions
      * @return the text presentation or <code>null</code>, if reconciliation should be canceled
      */
-    public TextPresentation createPresentation(List addedPositions,
-            List removedPositions) {
+    public TextPresentation createPresentation(List<?> addedPositions,
+            List<?> removedPositions) {
         JavaSourceViewer sourceViewer = _sourceViewer;
         JavaPresentationReconciler presentationReconciler = _presentationReconciler;
 
@@ -676,12 +676,12 @@ public class SemanticHighlightingPresenter implements
     /** UI position lock */
     private Object _positionLock = new Object();
 
-    /** UI's current highlighted positions - can contain <code>null</code> elements */
-    private List<HighlightedPosition> _positions = new ArrayList<HighlightedPosition>();
-
     /** Position updater */
     private IPositionUpdater _positionUpdater = new HighlightingPositionUpdater(
             _getPositionCategory());
+
+    /** UI's current highlighted positions - can contain <code>null</code> elements */
+    private List<HighlightedPosition> _positions = new ArrayList<HighlightedPosition>();
 
     /** The background presentation reconciler */
     private JavaPresentationReconciler _presentationReconciler;

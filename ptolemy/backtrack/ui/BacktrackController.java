@@ -101,7 +101,7 @@ public class BacktrackController {
     public synchronized long createCheckpoint(CompositeActor container) {
         HashMap<Checkpoint, Long> checkpointsAndHandles = new HashMap<Checkpoint, Long>();
         Set<Checkpoint> checkpoints = new HashSet<Checkpoint>();
-        Iterator objectsIterator = container.containedObjectsIterator();
+        Iterator<?> objectsIterator = container.containedObjectsIterator();
         while (objectsIterator.hasNext()) {
             Object object = objectsIterator.next();
             if (object instanceof Rollbackable) {

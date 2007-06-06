@@ -82,29 +82,6 @@ public class CTCompositeActor extends TypedCompositeActor implements
         setClassName("ptolemy.backtrack.manual.ptolemy.domains.ct.kernel.CTCompositeActor");
     }
 
-    /** Construct a CTCompositeActor in the specified workspace with
-     *  no container and an empty string as a name. You can then change
-     *  the name with setName(). If the workspace argument is null, then
-     *  use the default workspace.  You should set the local director or
-     *  executive director before attempting to send data to the actor
-     *  or to execute it. Add the actor to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the actor.
-     */
-    public CTCompositeActor(Workspace workspace) {
-        super(workspace);
-
-        // By default, when exporting MoML, the class name is whatever
-        // the Java class is, which in this case is CTCompositeActor.
-        // In derived classes, however, we usually do not want to identify
-        // the class name as that of the derived class, but rather want
-        // to identify it as CTCompositeActor.  This way, the MoML
-        // that is exported does not depend on the presence of the
-        // derived class Java definition. Thus, we force the class name
-        // here to be CTCompositeActor.
-        setClassName("ptolemy.backtrack.manual.ptolemy.domains.ct.kernel.CTCompositeActor");
-    }
-
     /** Construct a CTCompositeActor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -124,6 +101,29 @@ public class CTCompositeActor extends TypedCompositeActor implements
     public CTCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        // By default, when exporting MoML, the class name is whatever
+        // the Java class is, which in this case is CTCompositeActor.
+        // In derived classes, however, we usually do not want to identify
+        // the class name as that of the derived class, but rather want
+        // to identify it as CTCompositeActor.  This way, the MoML
+        // that is exported does not depend on the presence of the
+        // derived class Java definition. Thus, we force the class name
+        // here to be CTCompositeActor.
+        setClassName("ptolemy.backtrack.manual.ptolemy.domains.ct.kernel.CTCompositeActor");
+    }
+
+    /** Construct a CTCompositeActor in the specified workspace with
+     *  no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then
+     *  use the default workspace.  You should set the local director or
+     *  executive director before attempting to send data to the actor
+     *  or to execute it. Add the actor to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public CTCompositeActor(Workspace workspace) {
+        super(workspace);
 
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is CTCompositeActor.

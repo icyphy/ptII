@@ -62,14 +62,6 @@ public class DirectoryFieldEditor extends
     ///////////////////////////////////////////////////////////////////
     ////                        constructors                       ////
 
-    /** Construct a directory field editor with no name and no parent.
-     *
-     *  @param canBeEmpty Whether the file name can be left empty.
-     */
-    public DirectoryFieldEditor(boolean canBeEmpty) {
-        _canBeEmpty = canBeEmpty;
-    }
-
     /** Construct a directory field editor.
      *
      *  @param name The name of this editor.
@@ -80,6 +72,14 @@ public class DirectoryFieldEditor extends
     public DirectoryFieldEditor(String name, String labelText,
             Composite parent, boolean canBeEmpty) {
         super(name, labelText, parent);
+        _canBeEmpty = canBeEmpty;
+    }
+
+    /** Construct a directory field editor with no name and no parent.
+     *
+     *  @param canBeEmpty Whether the file name can be left empty.
+     */
+    public DirectoryFieldEditor(boolean canBeEmpty) {
         _canBeEmpty = canBeEmpty;
     }
 

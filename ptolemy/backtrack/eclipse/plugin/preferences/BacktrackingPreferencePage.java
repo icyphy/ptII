@@ -396,6 +396,10 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
 
+    /** Height of the source list.
+     */
+    private static final int _LIST_HEIGHT = 100;
+
     /** Editor for the configuration file to be generated.
      */
     private FileFieldEditor _configuration;
@@ -407,10 +411,6 @@ public class BacktrackingPreferencePage extends SectionPreferencePage implements
     /** Check box for whether to generate a configuration.
      */
     private BooleanFieldEditor _generateConfiguration;
-
-    /** Height of the source list.
-     */
-    private static final int _LIST_HEIGHT = 100;
 
     /** Check box for whether to overwrite existing files.
      */

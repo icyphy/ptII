@@ -56,10 +56,6 @@ public class ActorAttributeRule extends Rule {
         _attributeValue = value;
     }
 
-    public RuleAttribute[] getAttributes() {
-        return _ATTRIBUTES;
-    }
-
     public Object getAttributeValue(int index) {
         switch (index) {
         case 0: return _attributeName;
@@ -67,6 +63,10 @@ public class ActorAttributeRule extends Rule {
         case 2: return _attributeValue;
         default: return null;
         }
+    }
+
+    public RuleAttribute[] getAttributes() {
+        return _ATTRIBUTES;
     }
 
     public String getValues() {
@@ -101,13 +101,13 @@ public class ActorAttributeRule extends Rule {
         }
     }
 
-    private String _attributeName;
-
     private static final RuleAttribute[] _ATTRIBUTES = {
         new RuleAttribute(RuleAttribute.STRING, "Attribute Name"),
         new RuleAttribute(RuleAttribute.STRING, "Attribute Type"),
         new RuleAttribute(RuleAttribute.STRING, "Attribute Value")
     };
+
+    private String _attributeName;
 
     private String _attributeType;
 

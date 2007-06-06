@@ -69,6 +69,14 @@ import ptolemy.backtrack.Rollbackable;
  */
 public interface Set extends Collection, Rollbackable {
 
+    public void $COMMIT(long timestamp);
+
+    public Checkpoint $GET$CHECKPOINT();
+
+    public void $RESTORE(long timestamp, boolean trim);
+
+    public Object $SET$CHECKPOINT(Checkpoint checkpoint);
+
     /**
      * Adds the specified element to the set if it is not already present
      * (optional operation). In particular, the comparison algorithm is
@@ -247,13 +255,5 @@ public interface Set extends Collection, Rollbackable {
      * @see #toArray()
      */
     Object[] toArray(Object[] a);
-
-    public void $COMMIT(long timestamp);
-
-    public void $RESTORE(long timestamp, boolean trim);
-
-    public Checkpoint $GET$CHECKPOINT();
-
-    public Object $SET$CHECKPOINT(Checkpoint checkpoint);
 
 }

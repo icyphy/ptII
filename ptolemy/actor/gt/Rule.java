@@ -39,9 +39,9 @@ package ptolemy.actor.gt;
 */
 public abstract class Rule {
 
-    public abstract RuleAttribute[] getAttributes();
-
     public abstract Object getAttributeValue(int index);
+
+    public abstract RuleAttribute[] getAttributes();
 
     public abstract String getValues();
 

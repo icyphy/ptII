@@ -469,13 +469,13 @@ public class AssignmentTransformer extends AbstractTransformer implements
      */
     public static final String PROXY_NAME = "_PROXY_";
 
-    /** The prefix of records (new fields to be added to a class).
-     */
-    public static final String RECORD_PREFIX = "$RECORD$";
-
     /** The name of the record array.
      */
     public static final String RECORDS_NAME = "$RECORDS";
+
+    /** The prefix of records (new fields to be added to a class).
+     */
+    public static final String RECORD_PREFIX = "$RECORD$";
 
     /** The name of restore methods.
      */
@@ -483,6 +483,124 @@ public class AssignmentTransformer extends AbstractTransformer implements
 
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
+
+    /** Create assignment methods for each accessed field that has been
+     *  recorded. If a field is a multi-dimensional array, access with
+     *  different numbers of indices is recorded with multiple entries.
+     *  For each of those entries, an extra method is created for each
+     *  different number of indices.
+     *
+     *  @param ast The {@link AST} object.
+     *  @param root The root of the AST.
+     *  @param state The current state of the type analyzer.
+     *  @param fieldName The name of the field to be handled.
+     *  @param fieldType The type of the field to be handled.
+     *  @param indices The number of indices.
+     *  @param special Whether to handle special assign operators.
+     *  @param isStatic Whether the field is static.
+     *  @return The declaration of the method that handles assignment to
+     *   the field.
+     */
+    private MethodDeclaration _createAssignMethod(AST ast,
+            CompilationUnit root, TypeAnalyzerState state, String fieldName,
+            Type fieldType, int indices, boolean special, boolean isStatic) {
+        Class currentClass = state.getCurrentClass();
+        ClassLoader loader = state.getClassLoader();
+        String methodName = _getAssignMethodName(fieldName, special);
+
+        // Check if the method is duplicated (possibly because the source
+        // program is refactored twice).
+        if (_isMethodDuplicated(currentClass, methodName, fieldType, indices,
+                isStatic, loader, true)) {
+            throw new ASTDuplicatedMethodException(currentClass.getName(),
+                    methodName);
+        }
+
+        MethodDeclaration method = ast.newMethodDeclaration();
+
+        // Get the type of the new value. The return value has the same
+        // type.
+        for (int i = 0; i < indices; i++) {
+            try {
+                fieldType = fieldType.removeOneDimension();
+            } catch (ClassNotFoundException e) {
+                throw new ASTClassNotFoundException(fieldType);
+            }
+        }
+
+        String fieldTypeName = fieldType.getName();
+
+        // Set the name and return type.
+        SimpleName name = ast.newSimpleName(methodName);
+        org.eclipse.jdt.core.dom.Type type;
+        method.setName(name);
+
+        String typeName = getClassName(fieldTypeName, state, root);
+
+        if (special && _assignOperators.containsKey(fieldTypeName)) {
+            PrimitiveType.Code code = _rightHandTypes.get(fieldTypeName);
+            type = ast.newPrimitiveType(code);
+        } else {
+            type = createType(ast, typeName);
+        }
+
+        method.setReturnType2(createType(ast, typeName));
+
+        // If the field is static, add a checkpoint object argument.
+        if (isStatic) {
+            // Add a "$CHECKPOINT" argument.
+            SingleVariableDeclaration checkpoint = ast
+                    .newSingleVariableDeclaration();
+            String checkpointType = getClassName(Checkpoint.class, state, root);
+            checkpoint.setType(ast
+                    .newSimpleType(createName(ast, checkpointType)));
+            checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
+            method.parameters().add(checkpoint);
+        }
+
+        if (special && _assignOperators.containsKey(fieldTypeName)) {
+            // Add an operator parameter.
+            SingleVariableDeclaration operator = ast
+                    .newSingleVariableDeclaration();
+            operator.setType(ast.newPrimitiveType(PrimitiveType.INT));
+            operator.setName(ast.newSimpleName("operator"));
+            method.parameters().add(operator);
+        }
+
+        // Add all the indices.
+        for (int i = 0; i < indices; i++) {
+            SingleVariableDeclaration index = ast
+                    .newSingleVariableDeclaration();
+            index.setType(ast.newPrimitiveType(PrimitiveType.INT));
+            index.setName(ast.newSimpleName("index" + i));
+            method.parameters().add(index);
+        }
+
+        // Add a new value argument with name "newValue".
+        SingleVariableDeclaration argument = ast.newSingleVariableDeclaration();
+        argument.setType((org.eclipse.jdt.core.dom.Type) ASTNode.copySubtree(
+                ast, type));
+        argument.setName(ast.newSimpleName("newValue"));
+        method.parameters().add(argument);
+
+        // If the field is static, the method is also static; the method
+        // is also private.
+        List modifiers = method.modifiers();
+        modifiers
+                .add(ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
+        modifiers.add(ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
+        if (isStatic) {
+            modifiers.add(ast
+                    .newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
+        }
+
+        // Create the method body.
+        Block body = _createAssignmentBlock(ast, state, fieldName, fieldType,
+                indices, special);
+        method.setBody(body);
+
+        return method;
+    }
 
     /** Create the body of an assignment method, which backs up the field
      *  before a new value is assigned to it.
@@ -684,124 +802,6 @@ public class AssignmentTransformer extends AbstractTransformer implements
         }
 
         return block;
-    }
-
-    /** Create assignment methods for each accessed field that has been
-     *  recorded. If a field is a multi-dimensional array, access with
-     *  different numbers of indices is recorded with multiple entries.
-     *  For each of those entries, an extra method is created for each
-     *  different number of indices.
-     *
-     *  @param ast The {@link AST} object.
-     *  @param root The root of the AST.
-     *  @param state The current state of the type analyzer.
-     *  @param fieldName The name of the field to be handled.
-     *  @param fieldType The type of the field to be handled.
-     *  @param indices The number of indices.
-     *  @param special Whether to handle special assign operators.
-     *  @param isStatic Whether the field is static.
-     *  @return The declaration of the method that handles assignment to
-     *   the field.
-     */
-    private MethodDeclaration _createAssignMethod(AST ast,
-            CompilationUnit root, TypeAnalyzerState state, String fieldName,
-            Type fieldType, int indices, boolean special, boolean isStatic) {
-        Class currentClass = state.getCurrentClass();
-        ClassLoader loader = state.getClassLoader();
-        String methodName = _getAssignMethodName(fieldName, special);
-
-        // Check if the method is duplicated (possibly because the source
-        // program is refactored twice).
-        if (_isMethodDuplicated(currentClass, methodName, fieldType, indices,
-                isStatic, loader, true)) {
-            throw new ASTDuplicatedMethodException(currentClass.getName(),
-                    methodName);
-        }
-
-        MethodDeclaration method = ast.newMethodDeclaration();
-
-        // Get the type of the new value. The return value has the same
-        // type.
-        for (int i = 0; i < indices; i++) {
-            try {
-                fieldType = fieldType.removeOneDimension();
-            } catch (ClassNotFoundException e) {
-                throw new ASTClassNotFoundException(fieldType);
-            }
-        }
-
-        String fieldTypeName = fieldType.getName();
-
-        // Set the name and return type.
-        SimpleName name = ast.newSimpleName(methodName);
-        org.eclipse.jdt.core.dom.Type type;
-        method.setName(name);
-
-        String typeName = getClassName(fieldTypeName, state, root);
-
-        if (special && _assignOperators.containsKey(fieldTypeName)) {
-            PrimitiveType.Code code = _rightHandTypes.get(fieldTypeName);
-            type = ast.newPrimitiveType(code);
-        } else {
-            type = createType(ast, typeName);
-        }
-
-        method.setReturnType2(createType(ast, typeName));
-
-        // If the field is static, add a checkpoint object argument.
-        if (isStatic) {
-            // Add a "$CHECKPOINT" argument.
-            SingleVariableDeclaration checkpoint = ast
-                    .newSingleVariableDeclaration();
-            String checkpointType = getClassName(Checkpoint.class, state, root);
-            checkpoint.setType(ast
-                    .newSimpleType(createName(ast, checkpointType)));
-            checkpoint.setName(ast.newSimpleName(CHECKPOINT_NAME));
-            method.parameters().add(checkpoint);
-        }
-
-        if (special && _assignOperators.containsKey(fieldTypeName)) {
-            // Add an operator parameter.
-            SingleVariableDeclaration operator = ast
-                    .newSingleVariableDeclaration();
-            operator.setType(ast.newPrimitiveType(PrimitiveType.INT));
-            operator.setName(ast.newSimpleName("operator"));
-            method.parameters().add(operator);
-        }
-
-        // Add all the indices.
-        for (int i = 0; i < indices; i++) {
-            SingleVariableDeclaration index = ast
-                    .newSingleVariableDeclaration();
-            index.setType(ast.newPrimitiveType(PrimitiveType.INT));
-            index.setName(ast.newSimpleName("index" + i));
-            method.parameters().add(index);
-        }
-
-        // Add a new value argument with name "newValue".
-        SingleVariableDeclaration argument = ast.newSingleVariableDeclaration();
-        argument.setType((org.eclipse.jdt.core.dom.Type) ASTNode.copySubtree(
-                ast, type));
-        argument.setName(ast.newSimpleName("newValue"));
-        method.parameters().add(argument);
-
-        // If the field is static, the method is also static; the method
-        // is also private.
-        List modifiers = method.modifiers();
-        modifiers
-                .add(ast.newModifier(Modifier.ModifierKeyword.PRIVATE_KEYWORD));
-        modifiers.add(ast.newModifier(Modifier.ModifierKeyword.FINAL_KEYWORD));
-        if (isStatic) {
-            modifiers.add(ast
-                    .newModifier(Modifier.ModifierKeyword.STATIC_KEYWORD));
-        }
-
-        // Create the method body.
-        Block body = _createAssignmentBlock(ast, state, fieldName, fieldType,
-                indices, special);
-        method.setBody(body);
-
-        return method;
     }
 
     /** Create a backup method that backs up an array (possibly with some given

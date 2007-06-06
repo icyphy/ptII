@@ -71,26 +71,39 @@ import ptolemy.backtrack.util.FieldRecord;
 public class Stack extends Vector implements Rollbackable {
 
     /**
-     * Compatible with JDK 1.0+.
-     */
-    private static final long serialVersionUID = 1224463164541339165L;
-
-    /**
      * This constructor creates a new Stack, initially empty
      */
     public Stack() {
     }
 
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
+    public void $RESTORE(long timestamp, boolean trim) {
+        super.$RESTORE(timestamp, trim);
+    }
+
     /**
-     * Pushes an Object onto the top of the stack.  This method is effectively
-     * the same as addElement(item).
-     * @param item the Object to push onto the stack
-     * @return the Object pushed onto the stack
-     * @see Vector#addElement(Object)
+     * Tests if the stack is empty.
+     * @return true if the stack contains no items, false otherwise
      */
-    public Object push(Object item) {
-        addElement(item);
-        return item;
+    public synchronized boolean empty() {
+        return getElementCount() == 0;
+    }
+
+    /**
+     * Returns the top Object on the stack without removing it.
+     * @return the top Object on the stack
+     * @throws EmptyStackException if the stack is empty
+     */
+    public synchronized Object peek() {
+        if (getElementCount() == 0) {
+            throw new EmptyStackException();
+        }
+        return getElementData()[getElementCount() - 1];
     }
 
     /**
@@ -110,23 +123,15 @@ public class Stack extends Vector implements Rollbackable {
     }
 
     /**
-     * Returns the top Object on the stack without removing it.
-     * @return the top Object on the stack
-     * @throws EmptyStackException if the stack is empty
+     * Pushes an Object onto the top of the stack.  This method is effectively
+     * the same as addElement(item).
+     * @param item the Object to push onto the stack
+     * @return the Object pushed onto the stack
+     * @see Vector#addElement(Object)
      */
-    public synchronized Object peek() {
-        if (getElementCount() == 0) {
-            throw new EmptyStackException();
-        }
-        return getElementData()[getElementCount() - 1];
-    }
-
-    /**
-     * Tests if the stack is empty.
-     * @return true if the stack contains no items, false otherwise
-     */
-    public synchronized boolean empty() {
-        return getElementCount() == 0;
+    public Object push(Object item) {
+        addElement(item);
+        return item;
     }
 
     /**
@@ -147,16 +152,11 @@ public class Stack extends Vector implements Rollbackable {
         return -1;
     }
 
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        super.$COMMIT(timestamp);
-    }
-
-    public void $RESTORE(long timestamp, boolean trim) {
-        super.$RESTORE(timestamp, trim);
-    }
-
     private FieldRecord[] $RECORDS = new FieldRecord[] {};
+
+    /**
+     * Compatible with JDK 1.0+.
+     */
+    private static final long serialVersionUID = 1224463164541339165L;
 
 }

@@ -173,23 +173,23 @@ public class ASTFormatter extends ASTVisitor {
      *  formatter output will be added.
      *
      *  @param buffer The string buffer to be used.
-     *  @param source The array that contains the Java source.
-     */
-    public ASTFormatter(StringBuffer buffer, char[] source) {
-        _buffer = buffer;
-        _source = source;
-    }
-
-    /** Construct an AST formatter with a {@link StringBuffer} where the
-     *  formatter output will be added.
-     *
-     *  @param buffer The string buffer to be used.
      *  @param sourceStream The input stream from which the Java source can be
      *   read in.
      */
     public ASTFormatter(StringBuffer buffer, InputStream sourceStream) {
         _buffer = buffer;
         _sourceStream = sourceStream;
+    }
+
+    /** Construct an AST formatter with a {@link StringBuffer} where the
+     *  formatter output will be added.
+     *
+     *  @param buffer The string buffer to be used.
+     *  @param source The array that contains the Java source.
+     */
+    public ASTFormatter(StringBuffer buffer, char[] source) {
+        _buffer = buffer;
+        _source = source;
     }
 
     /** Construct an AST formatter with a writer to which the formatted
@@ -205,23 +205,23 @@ public class ASTFormatter extends ASTVisitor {
      *  output will be written.
      *
      *  @param writer The writer to write to.
-     *  @param source The array that contains the Java source.
-     */
-    public ASTFormatter(Writer writer, char[] source) {
-        _writer = writer;
-        _source = source;
-    }
-
-    /** Construct an AST formatter with a writer to which the formatted
-     *  output will be written.
-     *
-     *  @param writer The writer to write to.
      *  @param sourceStream The input stream from which the Java source can be
      *   read in.
      */
     public ASTFormatter(Writer writer, InputStream sourceStream) {
         _writer = writer;
         _sourceStream = sourceStream;
+    }
+
+    /** Construct an AST formatter with a writer to which the formatted
+     *  output will be written.
+     *
+     *  @param writer The writer to write to.
+     *  @param source The array that contains the Java source.
+     */
+    public ASTFormatter(Writer writer, char[] source) {
+        _writer = writer;
+        _source = source;
     }
 
     ///////////////////////////////////////////////////////////////////

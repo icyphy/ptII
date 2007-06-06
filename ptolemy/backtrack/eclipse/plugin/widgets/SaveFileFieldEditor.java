@@ -51,14 +51,6 @@ public class SaveFileFieldEditor extends FileFieldEditor {
     ///////////////////////////////////////////////////////////////////
     ////                        constructors                       ////
 
-    /** Construct a save file field editor with no name and no parent.
-     *
-     *  @param canBeEmpty Whether the file name can be left empty.
-     */
-    public SaveFileFieldEditor(boolean canBeEmpty) {
-        _canBeEmpty = canBeEmpty;
-    }
-
     /** Construct a save file field editor.
      *
      *  @param name The name of this editor.
@@ -69,6 +61,14 @@ public class SaveFileFieldEditor extends FileFieldEditor {
     public SaveFileFieldEditor(String name, String labelText, Composite parent,
             boolean canBeEmpty) {
         super(name, labelText, parent);
+        _canBeEmpty = canBeEmpty;
+    }
+
+    /** Construct a save file field editor with no name and no parent.
+     *
+     *  @param canBeEmpty Whether the file name can be left empty.
+     */
+    public SaveFileFieldEditor(boolean canBeEmpty) {
         _canBeEmpty = canBeEmpty;
     }
 

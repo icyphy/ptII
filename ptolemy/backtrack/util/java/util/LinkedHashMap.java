@@ -111,160 +111,6 @@ import ptolemy.backtrack.util.FieldRecord;
  */
 public class LinkedHashMap extends HashMap implements Rollbackable {
 
-    /**
-     * Compatible with JDK 1.4.
-     */
-    private static final long serialVersionUID = 3801124242820219131L;
-
-    /**
-     * The oldest Entry to begin iteration at.
-     */
-    private transient LinkedHashEntry root;
-
-    /**
-     * The iteration order of this linked hash map: <code>true</code> for
-     * access-order, <code>false</code> for insertion-order.
-     * @serial true for access order traversal
-     */
-    final boolean accessOrder;
-
-    /**
-     * Class to represent an entry in the hash table. Holds a single key-value
-     * pair and the doubly-linked insertion order list.
-     */
-    class LinkedHashEntry extends HashEntry implements Rollbackable {
-
-        /**
-         * The predecessor in the iteration list. If this entry is the root
-         * (eldest), pred points to the newest entry.
-         */
-        private LinkedHashEntry pred;
-
-        /**
-         * The successor in the iteration list, null if this is the newest.
-         */
-        private LinkedHashEntry succ;
-
-        /**
-         * Simple constructor.
-         * @param key the key
-         * @param value the value
-         */
-        LinkedHashEntry(Object key, Object value) {
-            super(key, value);
-            if (getRoot() == null) {
-                setRoot(this);
-                setPred(this);
-            } else {
-                setPred(getRoot().getPred());
-                getPred().setSucc(this);
-                getRoot().setPred(this);
-            }
-        }
-
-        /**
-         * Called when this entry is accessed via put or get. This version does
-         * the necessary bookkeeping to keep the doubly-linked list in order,
-         * after moving this element to the newest position in access order.
-         */
-        void access() {
-            if (accessOrder && getSucc() != null) {
-                setModCount(getModCount() + 1);
-                if (this == getRoot()) {
-                    setRoot(getSucc());
-                    getPred().setSucc(this);
-                    setSucc(null);
-                } else {
-                    getPred().setSucc(succ);
-                    getSucc().setPred(pred);
-                    setSucc(null);
-                    setPred(getRoot().getPred());
-                    getPred().setSucc(this);
-                    getRoot().setPred(this);
-                }
-            }
-        }
-
-        /**
-         * Called when this entry is removed from the map. This version does
-         * the necessary bookkeeping to keep the doubly-linked list in order.
-         * @return the value of this key as it is removed
-         */
-        Object cleanup() {
-            if (this == getRoot()) {
-                setRoot(getSucc());
-                if (getSucc() != null) {
-                    getSucc().setPred(pred);
-                }
-            } else if (getSucc() == null) {
-                getPred().setSucc(null);
-                getRoot().setPred(pred);
-            } else {
-                getPred().setSucc(succ);
-                getSucc().setPred(pred);
-            }
-            return getValueField();
-        }
-
-        void setPred(LinkedHashEntry pred) {
-            this.$ASSIGN$pred(pred);
-        }
-
-        LinkedHashEntry getPred() {
-            return pred;
-        }
-
-        void setSucc(LinkedHashEntry succ) {
-            this.$ASSIGN$succ(succ);
-        }
-
-        LinkedHashEntry getSucc() {
-            return succ;
-        }
-
-        private final LinkedHashEntry $ASSIGN$pred(LinkedHashEntry newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$pred.add(null, pred, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return pred = newValue;
-        }
-
-        private final LinkedHashEntry $ASSIGN$succ(LinkedHashEntry newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                $RECORD$succ.add(null, succ, $CHECKPOINT.getTimestamp());
-            }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-                newValue.$SET$CHECKPOINT($CHECKPOINT);
-            }
-            return succ = newValue;
-        }
-
-        public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                    .getTopTimestamp());
-            super.$COMMIT(timestamp);
-        }
-
-        public void $RESTORE(long timestamp, boolean trim) {
-            pred = (LinkedHashEntry) $RECORD$pred
-                    .restore(pred, timestamp, trim);
-            succ = (LinkedHashEntry) $RECORD$succ
-                    .restore(succ, timestamp, trim);
-            super.$RESTORE(timestamp, trim);
-        }
-
-        private FieldRecord $RECORD$pred = new FieldRecord(0);
-
-        private FieldRecord $RECORD$succ = new FieldRecord(0);
-
-        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$pred,
-                $RECORD$succ };
-
-    }
-
     // class LinkedHashEntry
     /**
      * Construct a new insertion-ordered LinkedHashMap with the default
@@ -329,6 +175,17 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
             boolean accessOrder) {
         super(initialCapacity, loadFactor);
         this.accessOrder = accessOrder;
+    }
+
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
+    public void $RESTORE(long timestamp, boolean trim) {
+        root = (LinkedHashEntry) $RECORD$root.restore(root, timestamp, trim);
+        super.$RESTORE(timestamp, trim);
     }
 
     /**
@@ -440,14 +297,8 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         }
     }
 
-    /**
-     * Helper method, called by clone() to reset the doubly-linked list.
-     * @param m the map to add entries from
-     * @see #clone()
-     */
-    void putAllInternal(Map m) {
-        setRoot(null);
-        super.putAllInternal(m);
+    LinkedHashEntry getRoot() {
+        return root;
     }
 
     /**
@@ -464,20 +315,44 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
      */
     Iterator iterator(final int type) {
         return new Iterator() {
-            /**
-             * The current Entry.
-             */
-            private LinkedHashEntry current = getRoot();
+            public void $COMMIT_ANONYMOUS(long timestamp) {
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                        .getTopTimestamp());
+                $RECORD$$CHECKPOINT.commit(timestamp);
+            }
 
-            /**
-             * The previous Entry returned by next().
-             */
-            private LinkedHashEntry last;
+            public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
+                return $CHECKPOINT;
+            }
 
-            /**
-             * The number of known modifications to the backing Map.
-             */
-            private int knownMod = getModCount();
+            public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                current = (LinkedHashEntry) $RECORD$current.restore(current,
+                        timestamp, trim);
+                last = (LinkedHashEntry) $RECORD$last.restore(last, timestamp,
+                        trim);
+                knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
+                if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                            new _PROXY_(), timestamp, trim);
+                    FieldRecord.popState($RECORDS);
+                    $RESTORE_ANONYMOUS(timestamp, trim);
+                }
+            }
+
+            public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                if ($CHECKPOINT != checkpoint) {
+                    Checkpoint oldCheckpoint = $CHECKPOINT;
+                    if (checkpoint != null) {
+                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                .getTimestamp());
+                        FieldRecord.pushState($RECORDS);
+                    }
+                    $CHECKPOINT = checkpoint;
+                    oldCheckpoint.setCheckpoint(checkpoint);
+                    checkpoint.addObject(new _PROXY_());
+                }
+                return this;
+            }
 
             /**
              * Returns true if the Iterator has more elements.
@@ -524,28 +399,28 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                 setKnownMod(getKnownMod() + 1);
             }
 
-            void setCurrent(LinkedHashEntry current) {
-                this.$ASSIGN$current(current);
-            }
-
             LinkedHashEntry getCurrent() {
                 return current;
             }
 
-            void setLast(LinkedHashEntry last) {
-                this.$ASSIGN$last(last);
+            int getKnownMod() {
+                return knownMod;
             }
 
             LinkedHashEntry getLast() {
                 return last;
             }
 
+            void setCurrent(LinkedHashEntry current) {
+                this.$ASSIGN$current(current);
+            }
+
             void setKnownMod(int knownMod) {
                 this.$ASSIGN$knownMod(knownMod);
             }
 
-            int getKnownMod() {
-                return knownMod;
+            void setLast(LinkedHashEntry last) {
+                this.$ASSIGN$last(last);
             }
 
             final class _PROXY_ implements Rollbackable {
@@ -554,12 +429,12 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                     $COMMIT_ANONYMOUS(timestamp);
                 }
 
-                public final void $RESTORE(long timestamp, boolean trim) {
-                    $RESTORE_ANONYMOUS(timestamp, trim);
-                }
-
                 public final Checkpoint $GET$CHECKPOINT() {
                     return $GET$CHECKPOINT_ANONYMOUS();
+                }
+
+                public final void $RESTORE(long timestamp, boolean trim) {
+                    $RESTORE_ANONYMOUS(timestamp, trim);
                 }
 
                 public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
@@ -582,6 +457,14 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                 return current = newValue;
             }
 
+            private final int $ASSIGN$knownMod(int newValue) {
+                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT
+                            .getTimestamp());
+                }
+                return knownMod = newValue;
+            }
+
             private final LinkedHashEntry $ASSIGN$last(LinkedHashEntry newValue) {
                 if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
                     $RECORD$last.add(null, last, $CHECKPOINT.getTimestamp());
@@ -593,61 +476,29 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
                 return last = newValue;
             }
 
-            private final int $ASSIGN$knownMod(int newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                    $RECORD$knownMod.add(null, knownMod, $CHECKPOINT
-                            .getTimestamp());
-                }
-                return knownMod = newValue;
-            }
-
-            public void $COMMIT_ANONYMOUS(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                        .getTopTimestamp());
-                $RECORD$$CHECKPOINT.commit(timestamp);
-            }
-
-            public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                current = (LinkedHashEntry) $RECORD$current.restore(current,
-                        timestamp, trim);
-                last = (LinkedHashEntry) $RECORD$last.restore(last, timestamp,
-                        trim);
-                knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
-                if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
-                            new _PROXY_(), timestamp, trim);
-                    FieldRecord.popState($RECORDS);
-                    $RESTORE_ANONYMOUS(timestamp, trim);
-                }
-            }
-
-            public final Checkpoint $GET$CHECKPOINT_ANONYMOUS() {
-                return $CHECKPOINT;
-            }
-
-            public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
-                if ($CHECKPOINT != checkpoint) {
-                    Checkpoint oldCheckpoint = $CHECKPOINT;
-                    if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
-                                .getTimestamp());
-                        FieldRecord.pushState($RECORDS);
-                    }
-                    $CHECKPOINT = checkpoint;
-                    oldCheckpoint.setCheckpoint(checkpoint);
-                    checkpoint.addObject(new _PROXY_());
-                }
-                return this;
-            }
-
             private FieldRecord $RECORD$current = new FieldRecord(0);
-
-            private FieldRecord $RECORD$last = new FieldRecord(0);
 
             private FieldRecord $RECORD$knownMod = new FieldRecord(0);
 
+            private FieldRecord $RECORD$last = new FieldRecord(0);
+
             private FieldRecord[] $RECORDS = new FieldRecord[] {
                     $RECORD$current, $RECORD$last, $RECORD$knownMod };
+
+            /**
+             * The current Entry.
+             */
+            private LinkedHashEntry current = getRoot();
+
+            /**
+             * The number of known modifications to the backing Map.
+             */
+            private int knownMod = getModCount();
+
+            /**
+             * The previous Entry returned by next().
+             */
+            private LinkedHashEntry last;
 
             {
                 $CHECKPOINT.addObject(new _PROXY_());
@@ -656,12 +507,162 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         };
     }
 
+    /**
+     * Helper method, called by clone() to reset the doubly-linked list.
+     * @param m the map to add entries from
+     * @see #clone()
+     */
+    void putAllInternal(Map m) {
+        setRoot(null);
+        super.putAllInternal(m);
+    }
+
     void setRoot(LinkedHashEntry root) {
         this.$ASSIGN$root(root);
     }
 
-    LinkedHashEntry getRoot() {
-        return root;
+    /**
+     * The iteration order of this linked hash map: <code>true</code> for
+     * access-order, <code>false</code> for insertion-order.
+     * @serial true for access order traversal
+     */
+    final boolean accessOrder;
+
+    /**
+     * Class to represent an entry in the hash table. Holds a single key-value
+     * pair and the doubly-linked insertion order list.
+     */
+    class LinkedHashEntry extends HashEntry implements Rollbackable {
+
+        public void $COMMIT(long timestamp) {
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
+            super.$COMMIT(timestamp);
+        }
+
+        public void $RESTORE(long timestamp, boolean trim) {
+            pred = (LinkedHashEntry) $RECORD$pred
+                    .restore(pred, timestamp, trim);
+            succ = (LinkedHashEntry) $RECORD$succ
+                    .restore(succ, timestamp, trim);
+            super.$RESTORE(timestamp, trim);
+        }
+
+        /**
+         * Simple constructor.
+         * @param key the key
+         * @param value the value
+         */
+        LinkedHashEntry(Object key, Object value) {
+            super(key, value);
+            if (getRoot() == null) {
+                setRoot(this);
+                setPred(this);
+            } else {
+                setPred(getRoot().getPred());
+                getPred().setSucc(this);
+                getRoot().setPred(this);
+            }
+        }
+
+        /**
+         * Called when this entry is accessed via put or get. This version does
+         * the necessary bookkeeping to keep the doubly-linked list in order,
+         * after moving this element to the newest position in access order.
+         */
+        void access() {
+            if (accessOrder && getSucc() != null) {
+                setModCount(getModCount() + 1);
+                if (this == getRoot()) {
+                    setRoot(getSucc());
+                    getPred().setSucc(this);
+                    setSucc(null);
+                } else {
+                    getPred().setSucc(succ);
+                    getSucc().setPred(pred);
+                    setSucc(null);
+                    setPred(getRoot().getPred());
+                    getPred().setSucc(this);
+                    getRoot().setPred(this);
+                }
+            }
+        }
+
+        /**
+         * Called when this entry is removed from the map. This version does
+         * the necessary bookkeeping to keep the doubly-linked list in order.
+         * @return the value of this key as it is removed
+         */
+        Object cleanup() {
+            if (this == getRoot()) {
+                setRoot(getSucc());
+                if (getSucc() != null) {
+                    getSucc().setPred(pred);
+                }
+            } else if (getSucc() == null) {
+                getPred().setSucc(null);
+                getRoot().setPred(pred);
+            } else {
+                getPred().setSucc(succ);
+                getSucc().setPred(pred);
+            }
+            return getValueField();
+        }
+
+        LinkedHashEntry getPred() {
+            return pred;
+        }
+
+        LinkedHashEntry getSucc() {
+            return succ;
+        }
+
+        void setPred(LinkedHashEntry pred) {
+            this.$ASSIGN$pred(pred);
+        }
+
+        void setSucc(LinkedHashEntry succ) {
+            this.$ASSIGN$succ(succ);
+        }
+
+        private final LinkedHashEntry $ASSIGN$pred(LinkedHashEntry newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$pred.add(null, pred, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return pred = newValue;
+        }
+
+        private final LinkedHashEntry $ASSIGN$succ(LinkedHashEntry newValue) {
+            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                $RECORD$succ.add(null, succ, $CHECKPOINT.getTimestamp());
+            }
+            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+                newValue.$SET$CHECKPOINT($CHECKPOINT);
+            }
+            return succ = newValue;
+        }
+
+        private FieldRecord $RECORD$pred = new FieldRecord(0);
+
+        private FieldRecord $RECORD$succ = new FieldRecord(0);
+
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$pred,
+                $RECORD$succ };
+
+        /**
+         * The predecessor in the iteration list. If this entry is the root
+         * (eldest), pred points to the newest entry.
+         */
+        private LinkedHashEntry pred;
+
+        /**
+         * The successor in the iteration list, null if this is the newest.
+         */
+        private LinkedHashEntry succ;
+
     }
 
     private final LinkedHashEntry $ASSIGN$root(LinkedHashEntry newValue) {
@@ -674,20 +675,19 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
         return root = newValue;
     }
 
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        super.$COMMIT(timestamp);
-    }
-
-    public void $RESTORE(long timestamp, boolean trim) {
-        root = (LinkedHashEntry) $RECORD$root.restore(root, timestamp, trim);
-        super.$RESTORE(timestamp, trim);
-    }
-
     private FieldRecord $RECORD$root = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$root };
+
+    /**
+     * The oldest Entry to begin iteration at.
+     */
+    private transient LinkedHashEntry root;
+
+    /**
+     * Compatible with JDK 1.4.
+     */
+    private static final long serialVersionUID = 3801124242820219131L;
 
 }
 

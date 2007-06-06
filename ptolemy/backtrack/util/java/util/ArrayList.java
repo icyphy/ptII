@@ -86,40 +86,6 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         Cloneable, Serializable, Rollbackable {
 
     /**
-     * Compatible with JDK 1.2
-     */
-    private static final long serialVersionUID = 8683452581122892189L;
-
-    /**
-     * The default capacity for new ArrayLists.
-     */
-    private static final int DEFAULT_CAPACITY = 16;
-
-    /**
-     * The number of elements in this list.
-     * @serial the list size
-     */
-    private int size;
-
-    /**
-     * Where the data is stored.
-     */
-    private transient Object[] data;
-
-    /**
-     * Construct a new ArrayList with the supplied initial capacity.
-     * @param capacity initial capacity of this ArrayList
-     * @throws IllegalArgumentException if capacity is negative
-     */
-    public ArrayList(int capacity) {
-        // Must explicitly check, to get correct exception.
-        if (capacity < 0) {
-            throw new IllegalArgumentException();
-        }
-        $ASSIGN$data(new Object[capacity]);
-    }
-
-    /**
      * Construct a new ArrayList with the default capacity (16).
      */
     public ArrayList() {
@@ -139,165 +105,28 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
     }
 
     /**
-     * Trims the capacity of this List to be equal to its size;
-     * a memory saver.
+     * Construct a new ArrayList with the supplied initial capacity.
+     * @param capacity initial capacity of this ArrayList
+     * @throws IllegalArgumentException if capacity is negative
      */
-    public void trimToSize() {
-        // Not a structural change from the perspective of iterators on this list,
-        // so don't update modCount.
-        if (size != data.length) {
-            Object[] newData = new Object[size];
-            System.arraycopy($BACKUP$data(), 0, newData, 0, size);
-            $ASSIGN$data(newData);
+    public ArrayList(int capacity) {
+        // Must explicitly check, to get correct exception.
+        if (capacity < 0) {
+            throw new IllegalArgumentException();
         }
+        $ASSIGN$data(new Object[capacity]);
     }
 
-    /**
-     * Guarantees that this list will have at least enough capacity to
-     * hold minCapacity elements. This implementation will grow the list to
-     * max(current * 2, minCapacity) if (minCapacity &gt; current). The JCL says
-     * explictly that "this method increases its capacity to minCap", while
-     * the JDK 1.3 online docs specify that the list will grow to at least the
-     * size specified.
-     * @param minCapacity the minimum guaranteed capacity
-     */
-    public void ensureCapacity(int minCapacity) {
-        int current = data.length;
-        if (minCapacity > current) {
-            Object[] newData = new Object[Math.max(current * 2, minCapacity)];
-            System.arraycopy($BACKUP$data(), 0, newData, 0, size);
-            $ASSIGN$data(newData);
-        }
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        super.$COMMIT(timestamp);
     }
 
-    /**
-     * Returns the number of elements in this list.
-     * @return the list size
-     */
-    public int size() {
-        return size;
-    }
-
-    /**
-     * Checks if the list is empty.
-     * @return true if there are no elements
-     */
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    /**
-     * Returns true iff element is in this ArrayList.
-     * @param e the element whose inclusion in the List is being tested
-     * @return true if the list contains e
-     */
-    public boolean contains(Object e) {
-        return indexOf(e) != -1;
-    }
-
-    /**
-     * Returns the lowest index at which element appears in this List, or
-     * -1 if it does not appear.
-     * @param e the element whose inclusion in the List is being tested
-     * @return the index where e was found
-     */
-    public int indexOf(Object e) {
-        for (int i = 0; i < size; i++) {
-            if (equals(e, data[i])) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Returns the highest index at which element appears in this List, or
-     * -1 if it does not appear.
-     * @param e the element whose inclusion in the List is being tested
-     * @return the index where e was found
-     */
-    public int lastIndexOf(Object e) {
-        for (int i = size - 1; i >= 0; i--) {
-            if (equals(e, data[i])) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * Creates a shallow copy of this ArrayList (elements are not cloned).
-     * @return the cloned object
-     */
-    public Object clone() {
-        ArrayList clone = null;
-        try {
-            clone = (ArrayList) super.clone();
-            clone.$ASSIGN$data((Object[]) data.clone());
-        } catch (CloneNotSupportedException e) {
-            // Impossible to get here.
-        }
-        return clone;
-    }
-
-    /**
-     * Returns an Object array containing all of the elements in this ArrayList.
-     * The array is independent of this list.
-     * @return an array representation of this list
-     */
-    public Object[] toArray() {
-        Object[] array = new Object[size];
-        System.arraycopy($BACKUP$data(), 0, array, 0, size);
-        return array;
-    }
-
-    /**
-     * Returns an Array whose component type is the runtime component type of
-     * the passed-in Array.  The returned Array is populated with all of the
-     * elements in this ArrayList.  If the passed-in Array is not large enough
-     * to store all of the elements in this List, a new Array will be created
-     * and returned; if the passed-in Array is <i>larger</i> than the size
-     * of this List, then size() index will be set to null.
-     * @param a the passed-in Array
-     * @return an array representation of this list
-     * @throws ArrayStoreException if the runtime type of a does not allow
-     * an element in this list
-     * @throws NullPointerException if a is null
-     */
-    public Object[] toArray(Object[] a) {
-        if (a.length < size) {
-            a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
-                    size);
-        } else if (a.length > size) {
-            a[size] = null;
-        }
-        System.arraycopy($BACKUP$data(), 0, a, 0, size);
-        return a;
-    }
-
-    /**
-     * Retrieves the element at the user-supplied index.
-     * @param index the index of the element we are fetching
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
-     */
-    public Object get(int index) {
-        checkBoundExclusive(index);
-        return data[index];
-    }
-
-    /**
-     * Sets the element at the specified index.  The new element, e,
-     * can be an object of any type or null.
-     * @param index the index at which the element is being set
-     * @param e the element to be set
-     * @return the element previously at the specified index
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= 0
-     */
-    public Object set(int index, Object e) {
-        checkBoundExclusive(index);
-        Object result = data[index];
-        $ASSIGN$data(index, e);
-        return result;
+    public void $RESTORE(long timestamp, boolean trim) {
+        size = $RECORD$size.restore(size, timestamp, trim);
+        data = (Object[]) $RECORD$data.restore(data, timestamp, trim);
+        super.$RESTORE(timestamp, trim);
     }
 
     /**
@@ -335,37 +164,6 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         }
         $ASSIGN$data(index, e);
         $ASSIGN$SPECIAL$size(11, size);
-    }
-
-    /**
-     * Removes the element at the user-supplied index.
-     * @param index the index of the element to be removed
-     * @return the removed Object
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
-     */
-    public Object remove(int index) {
-        checkBoundExclusive(index);
-        Object r = data[index];
-        setModCount(getModCount() + 1);
-        if (index != $ASSIGN$SPECIAL$size(14, size)) {
-            System.arraycopy($BACKUP$data(), index + 1, $BACKUP$data(), index,
-                    size - index);
-        }
-        // Aid for garbage collection by releasing this pointer.
-        $ASSIGN$data(size, null);
-        return r;
-    }
-
-    /**
-     * Removes all elements from this List
-     */
-    public void clear() {
-        if (size > 0) {
-            setModCount(getModCount() + 1);
-            // Allow for garbage collection.
-            Arrays.fill($BACKUP$data(), 0, size, null);
-            $ASSIGN$size(0);
-        }
     }
 
     /**
@@ -411,6 +209,199 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
     }
 
     /**
+     * Removes all elements from this List
+     */
+    public void clear() {
+        if (size > 0) {
+            setModCount(getModCount() + 1);
+            // Allow for garbage collection.
+            Arrays.fill($BACKUP$data(), 0, size, null);
+            $ASSIGN$size(0);
+        }
+    }
+
+    /**
+     * Creates a shallow copy of this ArrayList (elements are not cloned).
+     * @return the cloned object
+     */
+    public Object clone() {
+        ArrayList clone = null;
+        try {
+            clone = (ArrayList) super.clone();
+            clone.$ASSIGN$data((Object[]) data.clone());
+        } catch (CloneNotSupportedException e) {
+            // Impossible to get here.
+        }
+        return clone;
+    }
+
+    /**
+     * Returns true iff element is in this ArrayList.
+     * @param e the element whose inclusion in the List is being tested
+     * @return true if the list contains e
+     */
+    public boolean contains(Object e) {
+        return indexOf(e) != -1;
+    }
+
+    /**
+     * Guarantees that this list will have at least enough capacity to
+     * hold minCapacity elements. This implementation will grow the list to
+     * max(current * 2, minCapacity) if (minCapacity &gt; current). The JCL says
+     * explictly that "this method increases its capacity to minCap", while
+     * the JDK 1.3 online docs specify that the list will grow to at least the
+     * size specified.
+     * @param minCapacity the minimum guaranteed capacity
+     */
+    public void ensureCapacity(int minCapacity) {
+        int current = data.length;
+        if (minCapacity > current) {
+            Object[] newData = new Object[Math.max(current * 2, minCapacity)];
+            System.arraycopy($BACKUP$data(), 0, newData, 0, size);
+            $ASSIGN$data(newData);
+        }
+    }
+
+    /**
+     * Retrieves the element at the user-supplied index.
+     * @param index the index of the element we are fetching
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     */
+    public Object get(int index) {
+        checkBoundExclusive(index);
+        return data[index];
+    }
+
+    /**
+     * Returns the lowest index at which element appears in this List, or
+     * -1 if it does not appear.
+     * @param e the element whose inclusion in the List is being tested
+     * @return the index where e was found
+     */
+    public int indexOf(Object e) {
+        for (int i = 0; i < size; i++) {
+            if (equals(e, data[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Checks if the list is empty.
+     * @return true if there are no elements
+     */
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    /**
+     * Returns the highest index at which element appears in this List, or
+     * -1 if it does not appear.
+     * @param e the element whose inclusion in the List is being tested
+     * @return the index where e was found
+     */
+    public int lastIndexOf(Object e) {
+        for (int i = size - 1; i >= 0; i--) {
+            if (equals(e, data[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Removes the element at the user-supplied index.
+     * @param index the index of the element to be removed
+     * @return the removed Object
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     */
+    public Object remove(int index) {
+        checkBoundExclusive(index);
+        Object r = data[index];
+        setModCount(getModCount() + 1);
+        if (index != $ASSIGN$SPECIAL$size(14, size)) {
+            System.arraycopy($BACKUP$data(), index + 1, $BACKUP$data(), index,
+                    size - index);
+        }
+        // Aid for garbage collection by releasing this pointer.
+        $ASSIGN$data(size, null);
+        return r;
+    }
+
+    /**
+     * Sets the element at the specified index.  The new element, e,
+     * can be an object of any type or null.
+     * @param index the index at which the element is being set
+     * @param e the element to be set
+     * @return the element previously at the specified index
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= 0
+     */
+    public Object set(int index, Object e) {
+        checkBoundExclusive(index);
+        Object result = data[index];
+        $ASSIGN$data(index, e);
+        return result;
+    }
+
+    /**
+     * Returns the number of elements in this list.
+     * @return the list size
+     */
+    public int size() {
+        return size;
+    }
+
+    /**
+     * Returns an Object array containing all of the elements in this ArrayList.
+     * The array is independent of this list.
+     * @return an array representation of this list
+     */
+    public Object[] toArray() {
+        Object[] array = new Object[size];
+        System.arraycopy($BACKUP$data(), 0, array, 0, size);
+        return array;
+    }
+
+    /**
+     * Returns an Array whose component type is the runtime component type of
+     * the passed-in Array.  The returned Array is populated with all of the
+     * elements in this ArrayList.  If the passed-in Array is not large enough
+     * to store all of the elements in this List, a new Array will be created
+     * and returned; if the passed-in Array is <i>larger</i> than the size
+     * of this List, then size() index will be set to null.
+     * @param a the passed-in Array
+     * @return an array representation of this list
+     * @throws ArrayStoreException if the runtime type of a does not allow
+     * an element in this list
+     * @throws NullPointerException if a is null
+     */
+    public Object[] toArray(Object[] a) {
+        if (a.length < size) {
+            a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
+                    size);
+        } else if (a.length > size) {
+            a[size] = null;
+        }
+        System.arraycopy($BACKUP$data(), 0, a, 0, size);
+        return a;
+    }
+
+    /**
+     * Trims the capacity of this List to be equal to its size;
+     * a memory saver.
+     */
+    public void trimToSize() {
+        // Not a structural change from the perspective of iterators on this list,
+        // so don't update modCount.
+        if (size != data.length) {
+            Object[] newData = new Object[size];
+            System.arraycopy($BACKUP$data(), 0, newData, 0, size);
+            $ASSIGN$data(newData);
+        }
+    }
+
+    /**
      * Removes all elements in the half-open interval [fromIndex, toIndex).
      * Does nothing when toIndex is equal to fromIndex.
      * @param fromIndex the first index which will be removed
@@ -426,36 +417,6 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
             $ASSIGN$SPECIAL$size(1, change);
         } else if (change < 0) {
             throw new IndexOutOfBoundsException();
-        }
-    }
-
-    /**
-     * Checks that the index is in the range of possible elements (inclusive).
-     * @param index the index to check
-     * @throws IndexOutOfBoundsException if index &gt; size
-     */
-    private void checkBoundInclusive(int index) {
-        // Implementation note: we do not check for negative ranges here, since
-        // use of a negative index will cause an ArrayIndexOutOfBoundsException,
-        // a subclass of the required exception, with no effort on our part.
-        if (index > size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: "
-                    + size);
-        }
-    }
-
-    /**
-     * Checks that the index is in the range of existing elements (exclusive).
-     * @param index the index to check
-     * @throws IndexOutOfBoundsException if index &gt;= size
-     */
-    private void checkBoundExclusive(int index) {
-        // Implementation note: we do not check for negative ranges here, since
-        // use of a negative index will cause an ArrayIndexOutOfBoundsException,
-        // a subclass of the required exception, with no effort on our part.
-        if (index >= size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: "
-                    + size);
         }
     }
 
@@ -518,52 +479,6 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return true;
     }
 
-    /**
-     * Serializes this object to the given stream.
-     * @param s the stream to write to
-     * @throws IOException if the underlying stream fails
-     * @serialData the size field (int), the length of the backing array
-     * (int), followed by its elements (Objects) in proper order.
-     */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        // The 'size' field.
-        s.defaultWriteObject();
-        // We serialize unused list entries to preserve capacity.
-        int len = data.length;
-        s.writeInt(len);
-        // it would be more efficient to just write "size" items,
-        // this need readObject read "size" items too.
-        for (int i = 0; i < size; i++) {
-            s.writeObject(data[i]);
-        }
-    }
-
-    /**
-     * Deserializes this object from the given stream.
-     * @param s the stream to read from
-     * @throws ClassNotFoundException if the underlying stream fails
-     * @throws IOException if the underlying stream fails
-     * @serialData the size field (int), the length of the backing array
-     * (int), followed by its elements (Objects) in proper order.
-     */
-    private void readObject(ObjectInputStream s) throws IOException,
-            ClassNotFoundException {
-        // the `size' field.
-        s.defaultReadObject();
-        int capacity = s.readInt();
-        $ASSIGN$data(new Object[capacity]);
-        for (int i = 0; i < size; i++) {
-            $ASSIGN$data(i, s.readObject());
-        }
-    }
-
-    private final int $ASSIGN$size(int newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
-        }
-        return size = newValue;
-    }
-
     private final int $ASSIGN$SPECIAL$size(int operator, long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
             $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
@@ -619,28 +534,113 @@ public class ArrayList extends AbstractList implements List, RandomAccess,
         return data[index0] = newValue;
     }
 
+    private final int $ASSIGN$size(int newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
+        }
+        return size = newValue;
+    }
+
     private final Object[] $BACKUP$data() {
         $RECORD$data.backup(null, data, $CHECKPOINT.getTimestamp());
         return data;
     }
 
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        super.$COMMIT(timestamp);
+    /**
+     * Checks that the index is in the range of existing elements (exclusive).
+     * @param index the index to check
+     * @throws IndexOutOfBoundsException if index &gt;= size
+     */
+    private void checkBoundExclusive(int index) {
+        // Implementation note: we do not check for negative ranges here, since
+        // use of a negative index will cause an ArrayIndexOutOfBoundsException,
+        // a subclass of the required exception, with no effort on our part.
+        if (index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: "
+                    + size);
+        }
     }
 
-    public void $RESTORE(long timestamp, boolean trim) {
-        size = $RECORD$size.restore(size, timestamp, trim);
-        data = (Object[]) $RECORD$data.restore(data, timestamp, trim);
-        super.$RESTORE(timestamp, trim);
+    /**
+     * Checks that the index is in the range of possible elements (inclusive).
+     * @param index the index to check
+     * @throws IndexOutOfBoundsException if index &gt; size
+     */
+    private void checkBoundInclusive(int index) {
+        // Implementation note: we do not check for negative ranges here, since
+        // use of a negative index will cause an ArrayIndexOutOfBoundsException,
+        // a subclass of the required exception, with no effort on our part.
+        if (index > size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: "
+                    + size);
+        }
     }
 
-    private FieldRecord $RECORD$size = new FieldRecord(0);
+    /**
+     * Deserializes this object from the given stream.
+     * @param s the stream to read from
+     * @throws ClassNotFoundException if the underlying stream fails
+     * @throws IOException if the underlying stream fails
+     * @serialData the size field (int), the length of the backing array
+     * (int), followed by its elements (Objects) in proper order.
+     */
+    private void readObject(ObjectInputStream s) throws IOException,
+            ClassNotFoundException {
+        // the `size' field.
+        s.defaultReadObject();
+        int capacity = s.readInt();
+        $ASSIGN$data(new Object[capacity]);
+        for (int i = 0; i < size; i++) {
+            $ASSIGN$data(i, s.readObject());
+        }
+    }
+
+    /**
+     * Serializes this object to the given stream.
+     * @param s the stream to write to
+     * @throws IOException if the underlying stream fails
+     * @serialData the size field (int), the length of the backing array
+     * (int), followed by its elements (Objects) in proper order.
+     */
+    private void writeObject(ObjectOutputStream s) throws IOException {
+        // The 'size' field.
+        s.defaultWriteObject();
+        // We serialize unused list entries to preserve capacity.
+        int len = data.length;
+        s.writeInt(len);
+        // it would be more efficient to just write "size" items,
+        // this need readObject read "size" items too.
+        for (int i = 0; i < size; i++) {
+            s.writeObject(data[i]);
+        }
+    }
 
     private FieldRecord $RECORD$data = new FieldRecord(1);
 
+    private FieldRecord $RECORD$size = new FieldRecord(0);
+
     private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$size,
             $RECORD$data };
+
+    /**
+     * The default capacity for new ArrayLists.
+     */
+    private static final int DEFAULT_CAPACITY = 16;
+
+    /**
+     * Where the data is stored.
+     */
+    private transient Object[] data;
+
+    /**
+     * Compatible with JDK 1.2
+     */
+    private static final long serialVersionUID = 8683452581122892189L;
+
+    /**
+     * The number of elements in this list.
+     * @serial the list size
+     */
+    private int size;
 
 }

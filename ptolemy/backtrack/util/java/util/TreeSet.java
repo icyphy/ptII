@@ -85,16 +85,6 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         Serializable, Rollbackable {
 
     /**
-     * Compatible with JDK 1.2.
-     */
-    private static final long serialVersionUID = -2479143000061671589L;
-
-    /**
-     * The SortedMap which backs this Set.
-     */
-    private transient SortedMap map;
-
-    /**
      * Construct a new TreeSet whose backing TreeMap using the "natural"
      * ordering of keys. Elements that are not mutually comparable will cause
      * ClassCastExceptions down the road.
@@ -102,16 +92,6 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
      */
     public TreeSet() {
         $ASSIGN$map(new TreeMap());
-    }
-
-    /**
-     * Construct a new TreeSet whose backing TreeMap uses the supplied
-     * Comparator. Elements that are not mutually comparable will cause
-     * ClassCastExceptions down the road.
-     * @param comparator the Comparator this Set will use
-     */
-    public TreeSet(Comparator comparator) {
-        $ASSIGN$map(new TreeMap(comparator));
     }
 
     /**
@@ -131,6 +111,16 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
     }
 
     /**
+     * Construct a new TreeSet whose backing TreeMap uses the supplied
+     * Comparator. Elements that are not mutually comparable will cause
+     * ClassCastExceptions down the road.
+     * @param comparator the Comparator this Set will use
+     */
+    public TreeSet(Comparator comparator) {
+        $ASSIGN$map(new TreeMap(comparator));
+    }
+
+    /**
      * Construct a new TreeSet, using the same key ordering as the supplied
      * SortedSet and containing all of the elements in the supplied SortedSet.
      * This constructor runs in linear time.
@@ -144,13 +134,15 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         ((TreeMap) map).putKeysLinear(itr, sortedSet.size());
     }
 
-    /**
-     * This private constructor is used to implement the subSet() calls around
-     * a backing TreeMap.SubMap.
-     * @param backingMap the submap
-     */
-    private TreeSet(SortedMap backingMap) {
-        $ASSIGN$map(backingMap);
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
+    public void $RESTORE(long timestamp, boolean trim) {
+        map = (SortedMap) $RECORD$map.restore(map, timestamp, trim);
+        super.$RESTORE(timestamp, trim);
     }
 
     /**
@@ -339,21 +331,22 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
     }
 
     /**
-     * Serializes this object to the given stream.
-     * @param s the stream to write to
-     * @throws IOException if the underlying stream fails
-     * @serialData the <i>comparator</i> (Object), followed by the set size
-     * (int), the the elements in sorted order (Object)
+     * This private constructor is used to implement the subSet() calls around
+     * a backing TreeMap.SubMap.
+     * @param backingMap the submap
      */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        Iterator itr = map.keySet().iterator();
-        int pos = map.size();
-        s.writeObject(map.comparator());
-        s.writeInt(pos);
-        while (--pos >= 0) {
-            s.writeObject(itr.next());
+    private TreeSet(SortedMap backingMap) {
+        $ASSIGN$map(backingMap);
+    }
+
+    private final SortedMap $ASSIGN$map(SortedMap newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$map.add(null, map, $CHECKPOINT.getTimestamp());
         }
+        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+            newValue.$SET$CHECKPOINT($CHECKPOINT);
+        }
+        return map = newValue;
     }
 
     /**
@@ -373,29 +366,36 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
         ((TreeMap) map).putFromObjStream(s, size, false);
     }
 
-    private final SortedMap $ASSIGN$map(SortedMap newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$map.add(null, map, $CHECKPOINT.getTimestamp());
+    /**
+     * Serializes this object to the given stream.
+     * @param s the stream to write to
+     * @throws IOException if the underlying stream fails
+     * @serialData the <i>comparator</i> (Object), followed by the set size
+     * (int), the the elements in sorted order (Object)
+     */
+    private void writeObject(ObjectOutputStream s) throws IOException {
+        s.defaultWriteObject();
+        Iterator itr = map.keySet().iterator();
+        int pos = map.size();
+        s.writeObject(map.comparator());
+        s.writeInt(pos);
+        while (--pos >= 0) {
+            s.writeObject(itr.next());
         }
-        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-            newValue.$SET$CHECKPOINT($CHECKPOINT);
-        }
-        return map = newValue;
-    }
-
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        super.$COMMIT(timestamp);
-    }
-
-    public void $RESTORE(long timestamp, boolean trim) {
-        map = (SortedMap) $RECORD$map.restore(map, timestamp, trim);
-        super.$RESTORE(timestamp, trim);
     }
 
     private FieldRecord $RECORD$map = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$map };
+
+    /**
+     * The SortedMap which backs this Set.
+     */
+    private transient SortedMap map;
+
+    /**
+     * Compatible with JDK 1.2.
+     */
+    private static final long serialVersionUID = -2479143000061671589L;
 
 }

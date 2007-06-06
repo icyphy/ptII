@@ -72,41 +72,6 @@ import ptolemy.backtrack.util.FieldRecord;
  */
 public class Random implements Serializable, Rollbackable {
 
-    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
-
-    /**
-     * True if the next nextGaussian is available.  This is used by
-     * nextGaussian, which generates two gaussian numbers by one call,
-     * and returns the second on the second call.
-     * @serial whether nextNextGaussian is available
-     * @see #nextGaussian()
-     * @see #nextNextGaussian
-     */
-    private boolean haveNextNextGaussian;
-
-    /**
-     * The next nextGaussian, when available.  This is used by nextGaussian,
-     * which generates two gaussian numbers by one call, and returns the
-     * second on the second call.
-     * @serial the second gaussian of a pair
-     * @see #nextGaussian()
-     * @see #haveNextNextGaussian
-     */
-    private double nextNextGaussian;
-
-    /**
-     * The seed.  This is the number set by setSeed and which is used
-     * in next.
-     * @serial the internal state of this generator
-     * @see #next(int)
-     */
-    private long seed;
-
-    /**
-     * Compatible with JDK 1.0+.
-     */
-    private static final long serialVersionUID = 3905348978240129619L;
-
     /**
      * Creates a new pseudorandom number generator.  The seed is initialized
      * to the current time, as if by
@@ -126,40 +91,56 @@ public class Random implements Serializable, Rollbackable {
         setSeed(seed);
     }
 
-    /**
-     * Sets the seed for this pseudorandom number generator.  As described
-     * above, two instances of the same random class, starting with the
-     * same seed, should produce the same results, if the same methods
-     * are called.  The implementation for java.util.Random is:
-     * <pre>public synchronized void setSeed(long seed)
-     * {
-     * this.seed = (seed ^ 0x5DEECE66DL) & ((1L &lt;&lt; 48) - 1);
-     * haveNextNextGaussian = false;
-     * }</pre>
-     * @param seed the new seed
-     */
-    public synchronized void setSeed(long seed) {
-        this.$ASSIGN$seed((seed ^ 0x5DEECE66DL) & ((1L << 48) - 1));
-        $ASSIGN$haveNextNextGaussian(false);
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        $RECORD$$CHECKPOINT.commit(timestamp);
+    }
+
+    public final Checkpoint $GET$CHECKPOINT() {
+        return $CHECKPOINT;
+    }
+
+    public void $RESTORE(long timestamp, boolean trim) {
+        haveNextNextGaussian = $RECORD$haveNextNextGaussian.restore(
+                haveNextNextGaussian, timestamp, trim);
+        nextNextGaussian = $RECORD$nextNextGaussian.restore(nextNextGaussian,
+                timestamp, trim);
+        seed = $RECORD$seed.restore(seed, timestamp, trim);
+        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
+            FieldRecord.popState($RECORDS);
+            $RESTORE(timestamp, trim);
+        }
+    }
+
+    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+        if ($CHECKPOINT != checkpoint) {
+            Checkpoint oldCheckpoint = $CHECKPOINT;
+            if (checkpoint != null) {
+                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                FieldRecord.pushState($RECORDS);
+            }
+            $CHECKPOINT = checkpoint;
+            oldCheckpoint.setCheckpoint(checkpoint);
+            checkpoint.addObject(this);
+        }
+        return this;
     }
 
     /**
-     * Generates the next pseudorandom number.  This returns
-     * an int value whose <code>bits</code> low order bits are
-     * independent chosen random bits (0 and 1 are equally likely).
-     * The implementation for java.util.Random is:
-     * <pre>protected synchronized int next(int bits)
+     * Generates the next pseudorandom boolean.  True and false have
+     * the same probability.  The implementation is:
+     * <pre>public boolean nextBoolean()
      * {
-     * seed = (seed * 0x5DEECE66DL + 0xBL) & ((1L &lt;&lt; 48) - 1);
-     * return (int) (seed &gt;&gt;&gt; (48 - bits));
+     * return next(1) != 0;
      * }</pre>
-     * @param bits the number of random bits to generate, in the range 1..32
-     * @return the next pseudorandom value
-     * @since 1.1
+     * @return the next pseudorandom boolean
+     * @since 1.2
      */
-    protected synchronized int next(int bits) {
-        $ASSIGN$seed((seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1));
-        return (int) (seed >>> (48 - bits));
+    public boolean nextBoolean() {
+        return next(1) != 0;
     }
 
     /**
@@ -200,6 +181,84 @@ public class Random implements Serializable, Rollbackable {
                 random >>= 8;
             }
         }
+    }
+
+    /**
+     * Generates the next pseudorandom double uniformly distributed
+     * between 0.0 (inclusive) and 1.0 (exclusive).  The
+     * implementation is as follows.
+     * <pre>public double nextDouble()
+     * {
+     * return (((long) next(26) &lt;&lt; 27) + next(27)) / (double)(1L &lt;&lt; 53);
+     * }</pre>
+     * @return the next pseudorandom double
+     */
+    public double nextDouble() {
+        return (((long) next(26) << 27) + next(27)) / (double) (1L << 53);
+    }
+
+    /**
+     * Generates the next pseudorandom float uniformly distributed
+     * between 0.0f (inclusive) and 1.0f (exclusive).  The
+     * implementation is as follows.
+     * <pre>public float nextFloat()
+     * {
+     * return next(24) / ((float)(1 &lt;&lt; 24));
+     * }</pre>
+     * @return the next pseudorandom float
+     */
+    public float nextFloat() {
+        return next(24) / (float) (1 << 24);
+    }
+
+    /**
+     * Generates the next pseudorandom, Gaussian (normally) distributed
+     * double value, with mean 0.0 and standard deviation 1.0.
+     * The algorithm is as follows.
+     * <pre>public synchronized double nextGaussian()
+     * {
+     * if (haveNextNextGaussian)
+     * {
+     * haveNextNextGaussian = false;
+     * return nextNextGaussian;
+     * }
+     * else
+     * {
+     * double v1, v2, s;
+     * do
+     * {
+     * v1 = 2 * nextDouble() - 1; // between -1.0 and 1.0
+     * v2 = 2 * nextDouble() - 1; // between -1.0 and 1.0
+     * s = v1 * v1 + v2 * v2;
+     * }
+     * while (s >= 1);
+     * double norm = Math.sqrt(-2 * Math.log(s) / s);
+     * nextNextGaussian = v2 * norm;
+     * haveNextNextGaussian = true;
+     * return v1 * norm;
+     * }
+     * }</pre>
+     * <p>This is described in section 3.4.1 of <em>The Art of Computer
+     * Programming, Volume 2</em> by Donald Knuth.
+     * @return the next pseudorandom Gaussian distributed double
+     */
+    public synchronized double nextGaussian() {
+        if (haveNextNextGaussian) {
+            $ASSIGN$haveNextNextGaussian(false);
+            return nextNextGaussian;
+        }
+        double v1, v2, s;
+        do {
+            v1 = 2 * nextDouble() - 1;
+            // Between -1.0 and 1.0.
+            v2 = 2 * nextDouble() - 1;
+            // Between -1.0 and 1.0.
+            s = v1 * v1 + v2 * v2;
+        } while (s >= 1);
+        double norm = Math.sqrt(-2 * Math.log(s) / s);
+        $ASSIGN$nextNextGaussian(v2 * norm);
+        $ASSIGN$haveNextNextGaussian(true);
+        return v1 * norm;
     }
 
     /**
@@ -287,96 +346,44 @@ public class Random implements Serializable, Rollbackable {
     }
 
     /**
-     * Generates the next pseudorandom boolean.  True and false have
-     * the same probability.  The implementation is:
-     * <pre>public boolean nextBoolean()
+     * Sets the seed for this pseudorandom number generator.  As described
+     * above, two instances of the same random class, starting with the
+     * same seed, should produce the same results, if the same methods
+     * are called.  The implementation for java.util.Random is:
+     * <pre>public synchronized void setSeed(long seed)
      * {
-     * return next(1) != 0;
-     * }</pre>
-     * @return the next pseudorandom boolean
-     * @since 1.2
-     */
-    public boolean nextBoolean() {
-        return next(1) != 0;
-    }
-
-    /**
-     * Generates the next pseudorandom float uniformly distributed
-     * between 0.0f (inclusive) and 1.0f (exclusive).  The
-     * implementation is as follows.
-     * <pre>public float nextFloat()
-     * {
-     * return next(24) / ((float)(1 &lt;&lt; 24));
-     * }</pre>
-     * @return the next pseudorandom float
-     */
-    public float nextFloat() {
-        return next(24) / (float) (1 << 24);
-    }
-
-    /**
-     * Generates the next pseudorandom double uniformly distributed
-     * between 0.0 (inclusive) and 1.0 (exclusive).  The
-     * implementation is as follows.
-     * <pre>public double nextDouble()
-     * {
-     * return (((long) next(26) &lt;&lt; 27) + next(27)) / (double)(1L &lt;&lt; 53);
-     * }</pre>
-     * @return the next pseudorandom double
-     */
-    public double nextDouble() {
-        return (((long) next(26) << 27) + next(27)) / (double) (1L << 53);
-    }
-
-    /**
-     * Generates the next pseudorandom, Gaussian (normally) distributed
-     * double value, with mean 0.0 and standard deviation 1.0.
-     * The algorithm is as follows.
-     * <pre>public synchronized double nextGaussian()
-     * {
-     * if (haveNextNextGaussian)
-     * {
+     * this.seed = (seed ^ 0x5DEECE66DL) & ((1L &lt;&lt; 48) - 1);
      * haveNextNextGaussian = false;
-     * return nextNextGaussian;
-     * }
-     * else
-     * {
-     * double v1, v2, s;
-     * do
-     * {
-     * v1 = 2 * nextDouble() - 1; // between -1.0 and 1.0
-     * v2 = 2 * nextDouble() - 1; // between -1.0 and 1.0
-     * s = v1 * v1 + v2 * v2;
-     * }
-     * while (s >= 1);
-     * double norm = Math.sqrt(-2 * Math.log(s) / s);
-     * nextNextGaussian = v2 * norm;
-     * haveNextNextGaussian = true;
-     * return v1 * norm;
-     * }
      * }</pre>
-     * <p>This is described in section 3.4.1 of <em>The Art of Computer
-     * Programming, Volume 2</em> by Donald Knuth.
-     * @return the next pseudorandom Gaussian distributed double
+     * @param seed the new seed
      */
-    public synchronized double nextGaussian() {
-        if (haveNextNextGaussian) {
-            $ASSIGN$haveNextNextGaussian(false);
-            return nextNextGaussian;
-        }
-        double v1, v2, s;
-        do {
-            v1 = 2 * nextDouble() - 1;
-            // Between -1.0 and 1.0.
-            v2 = 2 * nextDouble() - 1;
-            // Between -1.0 and 1.0.
-            s = v1 * v1 + v2 * v2;
-        } while (s >= 1);
-        double norm = Math.sqrt(-2 * Math.log(s) / s);
-        $ASSIGN$nextNextGaussian(v2 * norm);
-        $ASSIGN$haveNextNextGaussian(true);
-        return v1 * norm;
+    public synchronized void setSeed(long seed) {
+        this.$ASSIGN$seed((seed ^ 0x5DEECE66DL) & ((1L << 48) - 1));
+        $ASSIGN$haveNextNextGaussian(false);
     }
+
+    /**
+     * Generates the next pseudorandom number.  This returns
+     * an int value whose <code>bits</code> low order bits are
+     * independent chosen random bits (0 and 1 are equally likely).
+     * The implementation for java.util.Random is:
+     * <pre>protected synchronized int next(int bits)
+     * {
+     * seed = (seed * 0x5DEECE66DL + 0xBL) & ((1L &lt;&lt; 48) - 1);
+     * return (int) (seed &gt;&gt;&gt; (48 - bits));
+     * }</pre>
+     * @param bits the number of random bits to generate, in the range 1..32
+     * @return the next pseudorandom value
+     * @since 1.1
+     */
+    protected synchronized int next(int bits) {
+        $ASSIGN$seed((seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1));
+        return (int) (seed >>> (48 - bits));
+    }
+
+    protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+
+    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
     private final boolean $ASSIGN$haveNextNextGaussian(boolean newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
@@ -401,46 +408,6 @@ public class Random implements Serializable, Rollbackable {
         return seed = newValue;
     }
 
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        $RECORD$$CHECKPOINT.commit(timestamp);
-    }
-
-    public void $RESTORE(long timestamp, boolean trim) {
-        haveNextNextGaussian = $RECORD$haveNextNextGaussian.restore(
-                haveNextNextGaussian, timestamp, trim);
-        nextNextGaussian = $RECORD$nextNextGaussian.restore(nextNextGaussian,
-                timestamp, trim);
-        seed = $RECORD$seed.restore(seed, timestamp, trim);
-        if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
-            FieldRecord.popState($RECORDS);
-            $RESTORE(timestamp, trim);
-        }
-    }
-
-    public final Checkpoint $GET$CHECKPOINT() {
-        return $CHECKPOINT;
-    }
-
-    public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
-        if ($CHECKPOINT != checkpoint) {
-            Checkpoint oldCheckpoint = $CHECKPOINT;
-            if (checkpoint != null) {
-                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
-                FieldRecord.pushState($RECORDS);
-            }
-            $CHECKPOINT = checkpoint;
-            oldCheckpoint.setCheckpoint(checkpoint);
-            checkpoint.addObject(this);
-        }
-        return this;
-    }
-
-    protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
-
     private FieldRecord $RECORD$haveNextNextGaussian = new FieldRecord(0);
 
     private FieldRecord $RECORD$nextNextGaussian = new FieldRecord(0);
@@ -450,5 +417,38 @@ public class Random implements Serializable, Rollbackable {
     private FieldRecord[] $RECORDS = new FieldRecord[] {
             $RECORD$haveNextNextGaussian, $RECORD$nextNextGaussian,
             $RECORD$seed };
+
+    /**
+     * True if the next nextGaussian is available.  This is used by
+     * nextGaussian, which generates two gaussian numbers by one call,
+     * and returns the second on the second call.
+     * @serial whether nextNextGaussian is available
+     * @see #nextGaussian()
+     * @see #nextNextGaussian
+     */
+    private boolean haveNextNextGaussian;
+
+    /**
+     * The next nextGaussian, when available.  This is used by nextGaussian,
+     * which generates two gaussian numbers by one call, and returns the
+     * second on the second call.
+     * @serial the second gaussian of a pair
+     * @see #nextGaussian()
+     * @see #haveNextNextGaussian
+     */
+    private double nextNextGaussian;
+
+    /**
+     * The seed.  This is the number set by setSeed and which is used
+     * in next.
+     * @serial the internal state of this generator
+     * @see #next(int)
+     */
+    private long seed;
+
+    /**
+     * Compatible with JDK 1.0+.
+     */
+    private static final long serialVersionUID = 3905348978240129619L;
 
 }

@@ -20,7 +20,7 @@ public class StandardizeTabsSpacesObjectAction implements IObjectActionDelegate 
     public void run(IAction action) {
         if (_lastSelection != null && _lastSelection instanceof ITreeSelection) {
             ITreeSelection treeSelection = (ITreeSelection) _lastSelection;
-            Iterator iterator = treeSelection.iterator();
+            Iterator<?> iterator = treeSelection.iterator();
             while (iterator.hasNext()) {
                 ICompilationUnit compilationUnit = (ICompilationUnit) iterator
                         .next();

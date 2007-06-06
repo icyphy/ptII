@@ -186,6 +186,22 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
             _display.syncExec(new PrintRunnable(null, PrintRunnable.FLUSH));
         }
 
+        /** Print the string representation of an object to the stream.
+         *
+         *  @param object The object.
+         */
+        public void print(Object object) {
+            print(object.toString());
+        }
+
+        /** Print a string to the stream.
+         *
+         *  @param s The string to write.
+         */
+        public void print(String s) {
+            _display.syncExec(new PrintRunnable(s, PrintRunnable.PRINT));
+        }
+
         /** Print a boolean value to the stream.
          *
          *  @param b The boolean value.
@@ -242,26 +258,27 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
             print(Long.toString(l));
         }
 
-        /** Print the string representation of an object to the stream.
-         *
-         *  @param object The object.
-         */
-        public void print(Object object) {
-            print(object.toString());
-        }
-
-        /** Print a string to the stream.
-         *
-         *  @param s The string to write.
-         */
-        public void print(String s) {
-            _display.syncExec(new PrintRunnable(s, PrintRunnable.PRINT));
-        }
-
         /** Print an empty line to the stream.
          */
         public void println() {
             println("");
+        }
+
+        /** Print the string representation of an object to the stream, and
+         *  append a new line character.
+         *
+         *  @param object The object.
+         */
+        public void println(Object object) {
+            println(object.toString());
+        }
+
+        /** Print a string to the stream, and append a new line character.
+         *
+         *  @param s The string to write.
+         */
+        public void println(String s) {
+            _display.syncExec(new PrintRunnable(s, PrintRunnable.PRINTLN));
         }
 
         /** Print a boolean value to the stream, and append a new line
@@ -320,23 +337,6 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
          */
         public void println(long l) {
             println(Long.toString(l));
-        }
-
-        /** Print the string representation of an object to the stream, and
-         *  append a new line character.
-         *
-         *  @param object The object.
-         */
-        public void println(Object object) {
-            println(object.toString());
-        }
-
-        /** Print a string to the stream, and append a new line character.
-         *
-         *  @param s The string to write.
-         */
-        public void println(String s) {
-            _display.syncExec(new PrintRunnable(s, PrintRunnable.PRINTLN));
         }
 
         /** Write a part of the byte buffer to the stream.

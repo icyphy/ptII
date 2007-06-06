@@ -88,16 +88,23 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable,
         Serializable, Rollbackable {
 
     /**
-     * Compatible with JDK 1.4.
-     */
-    private static final long serialVersionUID = -2851667679971038690L;
-
-    /**
      * Construct a new, empty HashSet whose backing HashMap has the default
      * capacity (11) and loadFacor (0.75).
      */
     public LinkedHashSet() {
         super();
+    }
+
+    /**
+     * Construct a new HashSet with the same elements as are in the supplied
+     * collection (eliminating any duplicates, of course). The backing storage
+     * has twice the size of the collection, or the default size of 11,
+     * whichever is greater; and the default load factor (0.75).
+     * @param c a collection of initial set elements
+     * @throws NullPointerException if c is null
+     */
+    public LinkedHashSet(Collection c) {
+        super(c);
     }
 
     /**
@@ -122,16 +129,14 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable,
         super(initialCapacity, loadFactor);
     }
 
-    /**
-     * Construct a new HashSet with the same elements as are in the supplied
-     * collection (eliminating any duplicates, of course). The backing storage
-     * has twice the size of the collection, or the default size of 11,
-     * whichever is greater; and the default load factor (0.75).
-     * @param c a collection of initial set elements
-     * @throws NullPointerException if c is null
-     */
-    public LinkedHashSet(Collection c) {
-        super(c);
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
+    public void $RESTORE(long timestamp, boolean trim) {
+        super.$RESTORE(timestamp, trim);
     }
 
     /**
@@ -144,16 +149,11 @@ public class LinkedHashSet extends HashSet implements Set, Cloneable,
         return new LinkedHashMap(capacity, load);
     }
 
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        super.$COMMIT(timestamp);
-    }
-
-    public void $RESTORE(long timestamp, boolean trim) {
-        super.$RESTORE(timestamp, trim);
-    }
-
     private FieldRecord[] $RECORDS = new FieldRecord[] {};
+
+    /**
+     * Compatible with JDK 1.4.
+     */
+    private static final long serialVersionUID = -2851667679971038690L;
 
 }

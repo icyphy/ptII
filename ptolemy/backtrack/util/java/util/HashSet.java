@@ -80,21 +80,24 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         Serializable, Rollbackable {
 
     /**
-     * Compatible with JDK 1.2.
-     */
-    private static final long serialVersionUID = -5024744406713321676L;
-
-    /**
-     * The HashMap which backs this Set.
-     */
-    private transient HashMap map;
-
-    /**
      * Construct a new, empty HashSet whose backing HashMap has the default
      * capacity (11) and loadFacor (0.75).
      */
     public HashSet() {
         this(HashMap.DEFAULT_CAPACITY, HashMap.DEFAULT_LOAD_FACTOR);
+    }
+
+    /**
+     * Construct a new HashSet with the same elements as are in the supplied
+     * collection (eliminating any duplicates, of course). The backing storage
+     * has twice the size of the collection, or the default size of 11,
+     * whichever is greater; and the default load factor (0.75).
+     * @param c a collection of initial set elements
+     * @throws NullPointerException if c is null
+     */
+    public HashSet(Collection c) {
+        this(Math.max(2 * c.size(), HashMap.DEFAULT_CAPACITY));
+        addAll(c);
     }
 
     /**
@@ -119,17 +122,15 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         $ASSIGN$map(init(initialCapacity, loadFactor));
     }
 
-    /**
-     * Construct a new HashSet with the same elements as are in the supplied
-     * collection (eliminating any duplicates, of course). The backing storage
-     * has twice the size of the collection, or the default size of 11,
-     * whichever is greater; and the default load factor (0.75).
-     * @param c a collection of initial set elements
-     * @throws NullPointerException if c is null
-     */
-    public HashSet(Collection c) {
-        this(Math.max(2 * c.size(), HashMap.DEFAULT_CAPACITY));
-        addAll(c);
+    public void $COMMIT(long timestamp) {
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
+        super.$COMMIT(timestamp);
+    }
+
+    public void $RESTORE(long timestamp, boolean trim) {
+        map = (HashMap) $RECORD$map.restore(map, timestamp, trim);
+        super.$RESTORE(timestamp, trim);
     }
 
     /**
@@ -223,24 +224,14 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         return new HashMap(capacity, load);
     }
 
-    /**
-     * Serializes this object to the given stream.
-     * @param s the stream to write to
-     * @throws IOException if the underlying stream fails
-     * @serialData the <i>capacity</i> (int) and <i>loadFactor</i> (float)
-     * of the backing store, followed by the set size (int),
-     * then a listing of its elements (Object) in no order
-     */
-    private void writeObject(ObjectOutputStream s) throws IOException {
-        s.defaultWriteObject();
-        // Avoid creating intermediate keySet() object by using non-public API.
-        Iterator it = map.iterator(AbstractMap.KEYS);
-        s.writeInt(map.getBuckets().length);
-        s.writeFloat(map.loadFactor);
-        s.writeInt(map.getSize());
-        while (it.hasNext()) {
-            s.writeObject(it.next());
+    private final HashMap $ASSIGN$map(HashMap newValue) {
+        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            $RECORD$map.add(null, map, $CHECKPOINT.getTimestamp());
         }
+        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+            newValue.$SET$CHECKPOINT($CHECKPOINT);
+        }
+        return map = newValue;
     }
 
     /**
@@ -261,29 +252,38 @@ public class HashSet extends AbstractSet implements Set, Cloneable,
         }
     }
 
-    private final HashMap $ASSIGN$map(HashMap newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$map.add(null, map, $CHECKPOINT.getTimestamp());
+    /**
+     * Serializes this object to the given stream.
+     * @param s the stream to write to
+     * @throws IOException if the underlying stream fails
+     * @serialData the <i>capacity</i> (int) and <i>loadFactor</i> (float)
+     * of the backing store, followed by the set size (int),
+     * then a listing of its elements (Object) in no order
+     */
+    private void writeObject(ObjectOutputStream s) throws IOException {
+        s.defaultWriteObject();
+        // Avoid creating intermediate keySet() object by using non-public API.
+        Iterator it = map.iterator(AbstractMap.KEYS);
+        s.writeInt(map.getBuckets().length);
+        s.writeFloat(map.loadFactor);
+        s.writeInt(map.getSize());
+        while (it.hasNext()) {
+            s.writeObject(it.next());
         }
-        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
-            newValue.$SET$CHECKPOINT($CHECKPOINT);
-        }
-        return map = newValue;
-    }
-
-    public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
-        super.$COMMIT(timestamp);
-    }
-
-    public void $RESTORE(long timestamp, boolean trim) {
-        map = (HashMap) $RECORD$map.restore(map, timestamp, trim);
-        super.$RESTORE(timestamp, trim);
     }
 
     private FieldRecord $RECORD$map = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$map };
+
+    /**
+     * The HashMap which backs this Set.
+     */
+    private transient HashMap map;
+
+    /**
+     * Compatible with JDK 1.2.
+     */
+    private static final long serialVersionUID = -5024744406713321676L;
 
 }

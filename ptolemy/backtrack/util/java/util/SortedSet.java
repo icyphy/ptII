@@ -79,6 +79,14 @@ import ptolemy.backtrack.Rollbackable;
  */
 public interface SortedSet extends Set, Rollbackable {
 
+    public void $COMMIT(long timestamp);
+
+    public Checkpoint $GET$CHECKPOINT();
+
+    public void $RESTORE(long timestamp, boolean trim);
+
+    public Object $SET$CHECKPOINT(Checkpoint checkpoint);
+
     /**
      * Returns the comparator used in sorting this set, or null if it is
      * the elements' natural ordering.
@@ -167,13 +175,5 @@ public interface SortedSet extends Set, Rollbackable {
      * allow null elements
      */
     SortedSet tailSet(Object fromElement);
-
-    public void $COMMIT(long timestamp);
-
-    public void $RESTORE(long timestamp, boolean trim);
-
-    public Checkpoint $GET$CHECKPOINT();
-
-    public Object $SET$CHECKPOINT(Checkpoint checkpoint);
 
 }

@@ -321,7 +321,7 @@ public class SemanticHighlightings {
          *   special methods.
          */
         private boolean _testMethod(IMethodBinding binding) {
-            Enumeration keys = _METHODS.keys();
+            Enumeration<String> keys = _METHODS.keys();
 
             while (keys.hasMoreElements()) {
                 String typeName = (String) keys.nextElement();

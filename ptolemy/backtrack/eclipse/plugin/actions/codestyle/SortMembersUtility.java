@@ -1,7 +1,6 @@
 package ptolemy.backtrack.eclipse.plugin.actions.codestyle;
 
 import java.lang.reflect.InvocationTargetException;
-import java.text.Collator;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -66,16 +65,15 @@ public class SortMembersUtility {
         }
 
         if (editor != null && containsRelevantMarkers(editor)) {
-            int returnCode = OptionalMessageDialog
-                    .open(
-                            "ptolemy.backtrack.eclipse.plugin.actions.SortMembersAction",
-                            shell,
-                            ActionMessages.SortMembersAction_dialog_title,
-                            null,
-                            ActionMessages.SortMembersAction_containsmarkers,
-                            MessageDialog.WARNING, new String[] {
+            int returnCode = OptionalMessageDialog.open(
+                    "ptolemy.backtrack.eclipse.plugin.actions."
+                            + "SortMembersAction",
+                    shell, ActionMessages.SortMembersAction_dialog_title, null,
+                    ActionMessages.SortMembersAction_containsmarkers,
+                    MessageDialog.WARNING, new String[] {
                                     IDialogConstants.OK_LABEL,
-                                    IDialogConstants.CANCEL_LABEL }, 0);
+                                    IDialogConstants.CANCEL_LABEL
+                                    }, 0);
             if (returnCode != OptionalMessageDialog.NOT_SHOWN
                     && returnCode != Window.OK) {
                 return;
@@ -87,7 +85,8 @@ public class SortMembersUtility {
         PtolemySortMembersOperation operation = new PtolemySortMembersOperation(
                 compilationUnit, null, false);
         try {
-            BusyIndicatorRunnableContext context = new BusyIndicatorRunnableContext();
+            BusyIndicatorRunnableContext context =
+                new BusyIndicatorRunnableContext();
             PlatformUI.getWorkbench().getProgressService().runInUI(context,
                     new WorkbenchRunnableAdapter(operation, schedulingRule),
                     schedulingRule);
@@ -96,29 +95,6 @@ public class SortMembersUtility {
         } catch (InterruptedException e) {
             // Do nothing. Operation has been canceled by user.
         }
-    }
-
-    public static class PtolemySortMembersOperation extends
-            SortMembersOperation {
-        public PtolemySortMembersOperation(ICompilationUnit compilationUnit,
-                int[] positions, boolean doNotSortFields) {
-            super(compilationUnit, positions, doNotSortFields);
-
-            _compilationUnit = compilationUnit;
-            _positions = positions;
-            _comparator = new JavaElementComparator(doNotSortFields);
-        }
-
-        public void run(IProgressMonitor monitor) throws CoreException {
-            CompilationUnitSorter.sort(AST.JLS3, _compilationUnit, _positions,
-                    _comparator, 0, monitor);
-        }
-
-        private JavaElementComparator _comparator;
-
-        private ICompilationUnit _compilationUnit;
-
-        private int[] _positions;
     }
 
     public static class JavaElementComparator implements
@@ -150,10 +126,13 @@ public class SortMembersUtility {
                 return -1;
             }
 
-            boolean fieldType1 = (type1 == ASTNode.FIELD_DECLARATION || type1 == ASTNode.ENUM_CONSTANT_DECLARATION);
-            boolean fieldType2 = (type2 == ASTNode.FIELD_DECLARATION || type2 == ASTNode.ENUM_CONSTANT_DECLARATION);
+            boolean fieldType1 = (type1 == ASTNode.FIELD_DECLARATION
+                    || type1 == ASTNode.ENUM_CONSTANT_DECLARATION);
+            boolean fieldType2 = (type2 == ASTNode.FIELD_DECLARATION
+                    || type2 == ASTNode.ENUM_CONSTANT_DECLARATION);
             if (_doNotSortFields && fieldType1 && fieldType2) {
-                return preserveRelativeOrder(bodyDeclaration1, bodyDeclaration2);
+                return preserveRelativeOrder(bodyDeclaration1,
+                        bodyDeclaration2);
             } else {
                 return compareVisibility(bodyDeclaration1, bodyDeclaration2);
             }
@@ -176,7 +155,7 @@ public class SortMembersUtility {
 
         private int compareNames(BodyDeclaration bodyDeclaration1,
                 BodyDeclaration bodyDeclaration2, String name1, String name2) {
-            int nameResult = _collator.compare(name1, name2);
+            int nameResult = name1.compareTo(name2);
             if (nameResult != 0) {
                 return nameResult;
             }
@@ -192,8 +171,10 @@ public class SortMembersUtility {
             } else {
                 switch (bodyDeclaration1.getNodeType()) {
                 case ASTNode.METHOD_DECLARATION:
-                    MethodDeclaration method1 = (MethodDeclaration) bodyDeclaration1;
-                    MethodDeclaration method2 = (MethodDeclaration) bodyDeclaration2;
+                    MethodDeclaration method1 =
+                        (MethodDeclaration) bodyDeclaration1;
+                    MethodDeclaration method2 =
+                        (MethodDeclaration) bodyDeclaration2;
 
                     if (method1.isConstructor() && !method2.isConstructor()) {
                         return -1;
@@ -206,26 +187,24 @@ public class SortMembersUtility {
                     String methodName2 = method2.getName().getIdentifier();
 
                     // method declarations (constructors) are sorted by name
-                    int nameResult = _collator
-                            .compare(methodName1, methodName2);
+                    int nameResult = methodName1.compareTo(methodName2);
                     if (nameResult != 0) {
                         return nameResult;
                     }
 
                     // if names equal, sort by parameter types
-                    List parameters1 = method1.parameters();
-                    List parameters2 = method2.parameters();
+                    List<?> parameters1 = method1.parameters();
+                    List<?> parameters2 = method2.parameters();
                     int length1 = parameters1.size();
                     int length2 = parameters2.size();
                     int minLength = Math.min(length1, length2);
                     for (int i = 0; i < minLength; i++) {
-                        SingleVariableDeclaration param1i = (SingleVariableDeclaration) parameters1
-                                .get(i);
-                        SingleVariableDeclaration param2i = (SingleVariableDeclaration) parameters2
-                                .get(i);
-                        int paramResult = _collator.compare(
-                                buildSignature(param1i.getType()),
-                                buildSignature(param2i.getType()));
+                        SingleVariableDeclaration param1i =
+                            (SingleVariableDeclaration) parameters1.get(i);
+                        SingleVariableDeclaration param2i =
+                            (SingleVariableDeclaration) parameters2.get(i);
+                        int paramResult = buildSignature(param1i.getType())
+                                .compareTo(buildSignature(param2i.getType()));
                         if (paramResult != 0) {
                             return paramResult;
                         }
@@ -237,8 +216,10 @@ public class SortMembersUtility {
                             bodyDeclaration2);
 
                 case ASTNode.FIELD_DECLARATION:
-                    FieldDeclaration field1 = (FieldDeclaration) bodyDeclaration1;
-                    FieldDeclaration field2 = (FieldDeclaration) bodyDeclaration2;
+                    FieldDeclaration field1 =
+                        (FieldDeclaration) bodyDeclaration1;
+                    FieldDeclaration field2 =
+                        (FieldDeclaration) bodyDeclaration2;
 
                     String fieldName1 = ((VariableDeclarationFragment) field1
                             .fragments().get(0)).getName().getIdentifier();
@@ -255,8 +236,10 @@ public class SortMembersUtility {
                 case ASTNode.TYPE_DECLARATION:
                 case ASTNode.ENUM_DECLARATION:
                 case ASTNode.ANNOTATION_TYPE_DECLARATION:
-                    AbstractTypeDeclaration type1 = (AbstractTypeDeclaration) bodyDeclaration1;
-                    AbstractTypeDeclaration type2 = (AbstractTypeDeclaration) bodyDeclaration2;
+                    AbstractTypeDeclaration type1 =
+                        (AbstractTypeDeclaration) bodyDeclaration1;
+                    AbstractTypeDeclaration type2 =
+                        (AbstractTypeDeclaration) bodyDeclaration2;
 
                     String typeName1 = type1.getName().getIdentifier();
                     String typeName2 = type2.getName().getIdentifier();
@@ -265,8 +248,10 @@ public class SortMembersUtility {
                             typeName1, typeName2);
 
                 case ASTNode.ENUM_CONSTANT_DECLARATION:
-                    EnumConstantDeclaration enum1 = (EnumConstantDeclaration) bodyDeclaration1;
-                    EnumConstantDeclaration enum2 = (EnumConstantDeclaration) bodyDeclaration2;
+                    EnumConstantDeclaration enum1 =
+                        (EnumConstantDeclaration) bodyDeclaration1;
+                    EnumConstantDeclaration enum2 =
+                        (EnumConstantDeclaration) bodyDeclaration2;
 
                     String enumName1 = enum1.getName().getIdentifier();
                     String enumName2 = enum2.getName().getIdentifier();
@@ -275,8 +260,10 @@ public class SortMembersUtility {
                             enumName1, enumName2);
 
                 case ASTNode.ANNOTATION_TYPE_MEMBER_DECLARATION:
-                    AnnotationTypeMemberDeclaration annotation1 = (AnnotationTypeMemberDeclaration) bodyDeclaration1;
-                    AnnotationTypeMemberDeclaration annotation2 = (AnnotationTypeMemberDeclaration) bodyDeclaration2;
+                    AnnotationTypeMemberDeclaration annotation1 =
+                        (AnnotationTypeMemberDeclaration) bodyDeclaration1;
+                    AnnotationTypeMemberDeclaration annotation2 =
+                        (AnnotationTypeMemberDeclaration) bodyDeclaration2;
 
                     String annotationName1 = annotation1.getName()
                             .getIdentifier();
@@ -333,25 +320,44 @@ public class SortMembersUtility {
 
         private int preserveRelativeOrder(BodyDeclaration bodyDeclaration1,
                 BodyDeclaration bodyDeclaration2) {
-            int order1 = ((Integer) bodyDeclaration1
-                    .getProperty(CompilationUnitSorter.RELATIVE_ORDER))
-                    .intValue();
-            int order2 = ((Integer) bodyDeclaration2
-                    .getProperty(CompilationUnitSorter.RELATIVE_ORDER))
-                    .intValue();
+            int order1 = ((Integer) bodyDeclaration1.getProperty(
+                    CompilationUnitSorter.RELATIVE_ORDER)).intValue();
+            int order2 = ((Integer) bodyDeclaration2.getProperty(
+                    CompilationUnitSorter.RELATIVE_ORDER)).intValue();
             return order1 - order2;
         }
 
-        private Collator _collator = Collator.getInstance();
-
         private boolean _doNotSortFields;
+    }
+
+    public static class PtolemySortMembersOperation extends
+            SortMembersOperation {
+        public PtolemySortMembersOperation(ICompilationUnit compilationUnit,
+                int[] positions, boolean doNotSortFields) {
+            super(compilationUnit, positions, doNotSortFields);
+
+            _compilationUnit = compilationUnit;
+            _positions = positions;
+            _comparator = new JavaElementComparator(doNotSortFields);
+        }
+
+        public void run(IProgressMonitor monitor) throws CoreException {
+            CompilationUnitSorter.sort(AST.JLS3, _compilationUnit, _positions,
+                    _comparator, 0, monitor);
+        }
+
+        private JavaElementComparator _comparator;
+
+        private ICompilationUnit _compilationUnit;
+
+        private int[] _positions;
     }
 
     private static boolean containsRelevantMarkers(IEditorPart editor) {
         IEditorInput input = editor.getEditorInput();
         IAnnotationModel model = JavaUI.getDocumentProvider()
                 .getAnnotationModel(input);
-        Iterator iterator = model.getAnnotationIterator();
+        Iterator<?> iterator = model.getAnnotationIterator();
         while (iterator.hasNext()) {
             Object element = iterator.next();
             if (element instanceof IJavaAnnotation) {

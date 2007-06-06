@@ -83,6 +83,31 @@ import ptolemy.backtrack.Rollbackable;
  */
 public interface List extends Collection, Rollbackable {
 
+    public void $COMMIT(long timestamp);
+
+    public Checkpoint $GET$CHECKPOINT();
+
+    public void $RESTORE(long timestamp, boolean trim);
+
+    public Object $SET$CHECKPOINT(Checkpoint checkpoint);
+
+    /**
+     * Add an element to the end of the list (optional operation). If the list
+     * imposes restraints on what can be inserted, such as no null elements,
+     * this should be documented.
+     * @param o the object to add
+     * @return true, as defined by Collection for a modified list
+     * @throws UnsupportedOperationException if this list does not support the
+     * add operation
+     * @throws ClassCastException if o cannot be added to this list due to its
+     * type
+     * @throws IllegalArgumentException if o cannot be added to this list for
+     * some other reason
+     * @throws NullPointerException if o is null and this list doesn't support
+     * the addition of null values.
+     */
+    boolean add(Object o);
+
     /**
      * Insert an element into the list at a given position (optional operation).
      * This shifts all existing elements from that position to the end one
@@ -103,21 +128,25 @@ public interface List extends Collection, Rollbackable {
     void add(int index, Object o);
 
     /**
-     * Add an element to the end of the list (optional operation). If the list
-     * imposes restraints on what can be inserted, such as no null elements,
-     * this should be documented.
-     * @param o the object to add
-     * @return true, as defined by Collection for a modified list
+     * Add the contents of a collection to the end of the list (optional
+     * operation).  This operation is undefined if this list is modified
+     * during the operation (for example, if you try to insert a list into
+     * itself).
+     * @param c the collection to add
+     * @return true if the list was modified by this action, that is, if c is
+     * non-empty
      * @throws UnsupportedOperationException if this list does not support the
-     * add operation
-     * @throws ClassCastException if o cannot be added to this list due to its
-     * type
-     * @throws IllegalArgumentException if o cannot be added to this list for
-     * some other reason
-     * @throws NullPointerException if o is null and this list doesn't support
-     * the addition of null values.
+     * addAll operation
+     * @throws ClassCastException if some element of c cannot be added to this
+     * list due to its type
+     * @throws IllegalArgumentException if some element of c cannot be added
+     * to this list for some other reason
+     * @throws NullPointerException if the specified collection is null
+     * @throws NullPointerException if some element of c is null and this list
+     * doesn't support the addition of null values.
+     * @see #add(Object)
      */
-    boolean add(Object o);
+    boolean addAll(Collection c);
 
     /**
      * Insert the contents of a collection into the list at a given position
@@ -142,27 +171,6 @@ public interface List extends Collection, Rollbackable {
      * @see #add(int, Object)
      */
     boolean addAll(int index, Collection c);
-
-    /**
-     * Add the contents of a collection to the end of the list (optional
-     * operation).  This operation is undefined if this list is modified
-     * during the operation (for example, if you try to insert a list into
-     * itself).
-     * @param c the collection to add
-     * @return true if the list was modified by this action, that is, if c is
-     * non-empty
-     * @throws UnsupportedOperationException if this list does not support the
-     * addAll operation
-     * @throws ClassCastException if some element of c cannot be added to this
-     * list due to its type
-     * @throws IllegalArgumentException if some element of c cannot be added
-     * to this list for some other reason
-     * @throws NullPointerException if the specified collection is null
-     * @throws NullPointerException if some element of c is null and this list
-     * doesn't support the addition of null values.
-     * @see #add(Object)
-     */
-    boolean addAll(Collection c);
 
     /**
      * Clear the list, such that a subsequent call to isEmpty() would return
@@ -296,17 +304,6 @@ public interface List extends Collection, Rollbackable {
     ListIterator listIterator(int index);
 
     /**
-     * Remove the element at a given position in this list (optional operation).
-     * Shifts all remaining elements to the left to fill the gap.
-     * @param index the position within the list of the object to remove
-     * @return the object that was removed
-     * @throws UnsupportedOperationException if this list does not support the
-     * remove operation
-     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
-     */
-    Object remove(int index);
-
-    /**
      * Remove the first occurence of an object from this list (optional
      * operation). That is, remove the first element e such that
      * <code>o == null ? e == null : o.equals(e)</code>.
@@ -321,6 +318,17 @@ public interface List extends Collection, Rollbackable {
      * list does not support removing null values.
      */
     boolean remove(Object o);
+
+    /**
+     * Remove the element at a given position in this list (optional operation).
+     * Shifts all remaining elements to the left to fill the gap.
+     * @param index the position within the list of the object to remove
+     * @return the object that was removed
+     * @throws UnsupportedOperationException if this list does not support the
+     * remove operation
+     * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+     */
+    Object remove(int index);
 
     /**
      * Remove all elements of a given collection from this list (optional
@@ -422,13 +430,5 @@ public interface List extends Collection, Rollbackable {
      * @throws NullPointerException if the specified array is null
      */
     Object[] toArray(Object[] a);
-
-    public void $COMMIT(long timestamp);
-
-    public void $RESTORE(long timestamp, boolean trim);
-
-    public Checkpoint $GET$CHECKPOINT();
-
-    public Object $SET$CHECKPOINT(Checkpoint checkpoint);
 
 }

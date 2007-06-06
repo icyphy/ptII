@@ -67,29 +67,6 @@ public class ASTBuilder {
         return DEFAULT_LANGUAGE_SPECIFICATION;
     }
 
-    /** Parse the Java source code given in the source buffer, and
-     *  return the root of the AST.
-     *
-     *  @param source The <tt>char</tt> array that contains the
-     *   source code in a single Java source file.
-     *  @return The root of the AST.
-     *  @exception ASTMalformedException If the Java source file
-     *   does not conform to the supported Java grammar.
-     */
-    public static CompilationUnit parse(char[] source)
-            throws ASTMalformedException {
-        ASTParser parser = ASTParser.newParser(DEFAULT_LANGUAGE_SPECIFICATION);
-        parser.setSource(source);
-
-        CompilationUnit ast = (CompilationUnit) parser.createAST(null);
-
-        if ((ast.getFlags() & ASTNode.MALFORMED) != 0) {
-            throw new ASTMalformedException();
-        }
-
-        return ast;
-    }
-
     /** Parse a Java source file given by its name, and return the
      *  root of the AST.
      *
@@ -125,6 +102,29 @@ public class ASTBuilder {
         } catch (ASTMalformedException e) {
             throw new ASTMalformedException(fileName);
         }
+    }
+
+    /** Parse the Java source code given in the source buffer, and
+     *  return the root of the AST.
+     *
+     *  @param source The <tt>char</tt> array that contains the
+     *   source code in a single Java source file.
+     *  @return The root of the AST.
+     *  @exception ASTMalformedException If the Java source file
+     *   does not conform to the supported Java grammar.
+     */
+    public static CompilationUnit parse(char[] source)
+            throws ASTMalformedException {
+        ASTParser parser = ASTParser.newParser(DEFAULT_LANGUAGE_SPECIFICATION);
+        parser.setSource(source);
+
+        CompilationUnit ast = (CompilationUnit) parser.createAST(null);
+
+        if ((ast.getFlags() & ASTNode.MALFORMED) != 0) {
+            throw new ASTMalformedException();
+        }
+
+        return ast;
     }
 
     /** Set the ID of the Java language specification being used by the

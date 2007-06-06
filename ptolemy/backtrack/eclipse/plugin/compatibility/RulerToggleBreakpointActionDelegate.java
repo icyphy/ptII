@@ -106,7 +106,7 @@ public class RulerToggleBreakpointActionDelegate implements
     /* Eclipse 3.0 */
     "org.eclipse.jdt.internal.debug.ui.actions.ManageBreakpointRulerActionDelegate" };
 
-    private Class _delegateClass;
+    private Class<?> _delegateClass;
 
     private Object _realDelegate;
 

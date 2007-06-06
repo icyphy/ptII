@@ -50,15 +50,15 @@ public class SubclassRule extends Rule {
         setValues(values);
     }
 
-    public RuleAttribute[] getAttributes() {
-        return _ATTRIBUTES;
-    }
-
     public Object getAttributeValue(int index) {
         switch (index) {
         case 0: return _superclass;
         default: return null;
         }
+    }
+
+    public RuleAttribute[] getAttributes() {
+        return _ATTRIBUTES;
     }
 
     public String getValues() {

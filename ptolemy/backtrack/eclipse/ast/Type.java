@@ -775,21 +775,6 @@ public class Type {
 
     /** Construct a {@link Type} object. Users should not directly
      *  <tt>new</tt> an object but use {@link #createType(String)} to
-     *  create it.
-     *
-     *  @param primitiveNum The integer identifier of primitive types;
-     *   -1 if the type to be obtained is not primitive.
-     *  @param fullName The full name of the type. If it is an array,
-     *   it must be converted to the run-time representation (with
-     *   leading "[").
-     */
-    private Type(int primitiveNum, String fullName) {
-        _primitiveNum = primitiveNum;
-        _fullName = fullName;
-    }
-
-    /** Construct a {@link Type} object. Users should not directly
-     *  <tt>new</tt> an object but use {@link #createType(String)} to
      *  create it. The type constructed by this constructor is never
      *  primitive, even if the full name is a primitive name by
      *  mistake.
@@ -803,8 +788,39 @@ public class Type {
         _fullName = fullName;
     }
 
+    /** Construct a {@link Type} object. Users should not directly
+     *  <tt>new</tt> an object but use {@link #createType(String)} to
+     *  create it.
+     *
+     *  @param primitiveNum The integer identifier of primitive types;
+     *   -1 if the type to be obtained is not primitive.
+     *  @param fullName The full name of the type. If it is an array,
+     *   it must be converted to the run-time representation (with
+     *   leading "[").
+     */
+    private Type(int primitiveNum, String fullName) {
+        _primitiveNum = primitiveNum;
+        _fullName = fullName;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                      private fields                       ////
+
+    /** Array nicknames for primitive element types. Keys are
+     *  names of primitive types; keys are compact run-time
+     *  representations.
+     */
+    private static final Hashtable<String, String> PRIMITIVE_ARRAY_TYPES = new Hashtable<String, String>();
+
+    /** Table of primitive {@link Class} objects. Each primitive
+     *  type has a {@link Class} object to represent it.
+     */
+    private static final Hashtable<String, Class> PRIMITIVE_CLASSES = new Hashtable<String, Class>();
+
+    /** Table of primitive types. Keys are names of primitive
+     *  types; values are primitive {@link Type} objects.
+     */
+    private static final Hashtable<String, Type> PRIMITIVE_TYPES = new Hashtable<String, Type>();
 
     /** The {@link Class} object corresponding to this type.
      */
@@ -825,22 +841,6 @@ public class Type {
      *  stored in this table is returned.
      */
     private static Hashtable<String, Type> _typeObjects = new Hashtable<String, Type>();
-
-    /** Array nicknames for primitive element types. Keys are
-     *  names of primitive types; keys are compact run-time
-     *  representations.
-     */
-    private static final Hashtable<String, String> PRIMITIVE_ARRAY_TYPES = new Hashtable<String, String>();
-
-    /** Table of primitive {@link Class} objects. Each primitive
-     *  type has a {@link Class} object to represent it.
-     */
-    private static final Hashtable<String, Class> PRIMITIVE_CLASSES = new Hashtable<String, Class>();
-
-    /** Table of primitive types. Keys are names of primitive
-     *  types; values are primitive {@link Type} objects.
-     */
-    private static final Hashtable<String, Type> PRIMITIVE_TYPES = new Hashtable<String, Type>();
 
     // Initialize the constant tables.
     static {

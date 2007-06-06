@@ -67,13 +67,13 @@ public class PreferenceConstants {
      */
     public static final String BACKTRACK_ROOT = "ptolemy.backtrackingRoot";
 
-    /** Backtracking source list.
-     */
-    public static final String BACKTRACK_SOURCE_LIST = "ptolemy.backtrackSourceList";
-
     /** Backtracking source files.
      */
     public static final String BACKTRACK_SOURCES = "ptolemy.backtrackSources";
+
+    /** Backtracking source list.
+     */
+    public static final String BACKTRACK_SOURCE_LIST = "ptolemy.backtrackSourceList";
 
     ///////////////////////////////////////////////////////////////////
     ////                           editor                          ////
