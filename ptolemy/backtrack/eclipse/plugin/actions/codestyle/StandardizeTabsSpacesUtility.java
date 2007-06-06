@@ -20,7 +20,6 @@ public class StandardizeTabsSpacesUtility {
         IDocument document = textEditor.getDocumentProvider().getDocument(
                 textEditor.getEditorInput());
         StringBuffer buffer = new StringBuffer(document.get());
-        int caretOffset = 0, updateOffset = 0;
         
         // Replace tabs with spaces
         for (int i = 0; i >= 0;) {
@@ -41,52 +40,60 @@ public class StandardizeTabsSpacesUtility {
         }
         
         // Remove trailing spaces
-        caretOffset = 0;
-        updateOffset = 0;
         boolean finished = false;
-        for (int i = 0; !finished;) {
-            i = buffer.indexOf("\n", i);
-            if (i < 0) {
-                i = buffer.length();
+        for (int eolPos = 0; !finished;) {
+        	char chr = '\0';
+        	
+        	int bufLength = buffer.length();
+        	int eolSize = 1;
+        	for (; eolPos < bufLength; eolPos++) {
+        		chr = buffer.charAt(eolPos);
+        		if (chr == '\n' || chr == '\r') {
+        			break;
+        		}
+        	}
+        	
+            if (eolPos == bufLength) {
                 finished = true;
+            } else {
+            	if (chr == '\r' && eolPos + 1 < bufLength
+        				&& buffer.charAt(eolPos + 1) == '\n') {
+        			eolSize++;
+        			eolPos++;
+        		}
             }
-            if (i >= 0) {
-                int k = i - 1;
-                int endOfLineLength = 1;
-                if (k >= 0 && buffer.charAt(k) == '\r') {
-                    k--;
-                    endOfLineLength++;
+            
+            int spaceStart = eolPos - eolSize;
+            for (; spaceStart >= 0; spaceStart--) {
+                if (buffer.charAt(spaceStart) != ' ') {
+                    break;
                 }
-                for (; k >= 0; k--) {
-                    if (buffer.charAt(k) != ' ') {
-                        break;
-                    }
-                }
-                if (k + endOfLineLength < i) {
-                    try {
-                        document.replace(k + 1 + updateOffset,
-                                i - (k + endOfLineLength), "");
-                        if (i < caretPosition) {
-                            caretOffset -= i - (k + endOfLineLength);
-                        } else if (k < caretPosition && i >= caretPosition) {
-                            caretOffset -= caretPosition - (k + 1);
-                        }
-                        updateOffset += k + endOfLineLength - i;
-                    } catch (BadLocationException e) {
-                        OutputConsole.outputError(e.getMessage());
-                    }
-                }
-                i++;
             }
+            if (spaceStart + eolSize < eolPos) {
+                try {
+                    document.replace(spaceStart + 1,
+                    		eolPos - (spaceStart + eolSize), "");
+                    buffer.replace(spaceStart + 1, eolPos - eolSize + 1, "");
+                    if (eolPos < caretPosition) {
+                    	caretPosition -= eolPos - (spaceStart + eolSize);
+                    } else if (spaceStart < caretPosition
+                    		&& eolPos >= caretPosition) {
+                    	caretPosition -= caretPosition - (spaceStart + 1);
+                    }
+                    eolPos = spaceStart + eolSize;
+                } catch (BadLocationException e) {
+                    OutputConsole.outputError(e.getMessage());
+                }
+            }
+            eolPos++;
         }
-        caretPosition = caretPosition + caretOffset;
         
         // Add a new line to the end of file
-        int length = document.getLength();
+        int docLength = document.getLength();
         try {
-            if (length == 0 || (!document.get(length - 1, 1).equals("\n")
-                    && !document.get(length - 1, 1).equals("\r"))) {
-                document.replace(length, 0, "\n");
+            if (docLength == 0 || (!document.get(docLength - 1, 1).equals("\n")
+                    && !document.get(docLength - 1, 1).equals("\r"))) {
+                document.replace(docLength, 0, "\n");
             }
         } catch (BadLocationException e) {
             OutputConsole.outputError(e.getMessage());
