@@ -16,7 +16,7 @@
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 25, 1016, 718}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 600]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 596]">
     </property>
     <property name="range" class="ptolemy.data.expr.Parameter" value="55">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -137,9 +137,9 @@ that on average, fewer hops are
 needed when the range increases.
 
 When you run the demo, the initiator
-will broadcast a message. A node turns to be
+will broadcast a message. A node turns
 red if it receives the message in one hop;
-it turn to be green if it receives it 
+it turns green if it receives the message in
 more than one hop.  It stays white if
 it never receives the message.</text></svg></configure>
         </property>
@@ -283,7 +283,7 @@ parameter.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9530265262152">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{441.7154947916666, 316.78662109375}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{441.7154947916667, 314.6880436197916}">
     </property>
     <entity name="ReportChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 120.0]">
