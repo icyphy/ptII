@@ -58,10 +58,14 @@ public class ActorAttributeRule extends Rule {
 
     public Object getAttributeValue(int index) {
         switch (index) {
-        case 0: return _attributeName;
-        case 1: return _attributeType;
-        case 2: return _attributeValue;
-        default: return null;
+        case 0:
+            return _attributeName;
+        case 1:
+            return _attributeType;
+        case 2:
+            return _attributeValue;
+        default:
+            return null;
         }
     }
 
@@ -76,29 +80,22 @@ public class ActorAttributeRule extends Rule {
 
     public void setAttributeValue(int index, Object value) {
         switch (index) {
-        case 0: _attributeName = (String) value;
-        case 1: _attributeType = (String) value;
-        case 2: _attributeValue = (String) value;
+        case 0:
+            _attributeName = (String) value;
+            break;
+        case 1:
+            _attributeType = (String) value;
+            break;
+        case 2:
+            _attributeValue = (String) value;
+            break;
         }
     }
 
     public void setValues(String values) {
-        int pos1 = values.indexOf(FIELD_SEPARATOR);
-        if (pos1 >= 0) {
-            _attributeName = values.substring(0, pos1);
-            int pos2 = values.indexOf(FIELD_SEPARATOR, pos1 + 1);
-            if (pos2 >= 0) {
-                _attributeType = values.substring(pos1 + 1, pos2);
-                _attributeValue = values.substring(pos2 + 1);
-            } else {
-                _attributeType = values.substring(pos1 + 1);
-                _attributeValue = "";
-            }
-        } else {
-            _attributeName = values;
-            _attributeType = "";
-            _attributeValue = "";
-        }
+        _attributeName = _getFirstField(values);
+        _attributeType = _getNextField();
+        _attributeValue = _getLastField();
     }
 
     private static final RuleAttribute[] _ATTRIBUTES = {

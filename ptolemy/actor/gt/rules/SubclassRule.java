@@ -52,8 +52,10 @@ public class SubclassRule extends Rule {
 
     public Object getAttributeValue(int index) {
         switch (index) {
-        case 0: return _superclass;
-        default: return null;
+        case 0:
+            return _superclass;
+        default:
+            return null;
         }
     }
 
@@ -67,7 +69,9 @@ public class SubclassRule extends Rule {
 
     public void setAttributeValue(int index, Object value) {
         switch (index) {
-        case 0: _superclass = (String) value;
+        case 0:
+            _superclass = (String) value;
+            break;
         }
     }
 

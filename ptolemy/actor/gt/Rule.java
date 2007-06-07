@@ -54,4 +54,43 @@ public abstract class Rule {
     }
 
     public static final String FIELD_SEPARATOR = "/";
+
+    protected String _getFirstField(String values) {
+        _currentValues = values;
+        _currentPosition = _currentValues.indexOf(FIELD_SEPARATOR);
+        if (_currentPosition < 0) {
+            return _currentValues;
+        } else {
+            return _currentValues.substring(0, _currentPosition++);
+        }
+    }
+
+    protected String _getLastField() {
+        if (_currentPosition < 0) {
+            return "";
+        } else {
+            return _currentValues.substring(_currentPosition);
+        }
+    }
+
+    protected String _getNextField() {
+        if (_currentPosition < 0) {
+            return "";
+        } else {
+            int newPosition =
+                _currentValues.indexOf(FIELD_SEPARATOR, _currentPosition);
+            if (newPosition < 0) {
+                return _currentValues.substring(_currentPosition);
+            } else {
+                String result =
+                    _currentValues.substring(_currentPosition, newPosition);
+                _currentPosition = newPosition + 1;
+                return result;
+            }
+        }
+    }
+
+    private int _currentPosition;
+
+    private String _currentValues;
 }

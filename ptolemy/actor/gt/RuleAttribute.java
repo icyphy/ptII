@@ -52,7 +52,9 @@ public class RuleAttribute {
         return _type;
     }
 
-    public static int STRING;
+    public static final int BOOLEAN = 0;
+
+    public static final int STRING = 1;
 
     private String _name;
 

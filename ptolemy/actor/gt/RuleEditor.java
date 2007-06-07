@@ -50,6 +50,7 @@ import java.util.Vector;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -98,8 +99,7 @@ public class RuleEditor extends JDialog implements ActionListener {
         this(owner, "Rule Editor", initialRules);
     }
 
-    public RuleEditor(Frame owner, String title,
-            RuleList initialRules) {
+    public RuleEditor(Frame owner, String title, RuleList initialRules) {
         super(owner, title, true);
         _createComponents();
         resetTable(initialRules);
@@ -193,9 +193,8 @@ public class RuleEditor extends JDialog implements ActionListener {
                         if (file.exists() && file.isFile()) {
                             String filePath = file.getName();
                             if (filePath.endsWith(".class")) {
-                                String className =
-                                    filePath.substring(0,
-                                            filePath.length() - 6);
+                                String className = filePath.substring(0,
+                                        filePath.length() - 6);
                                 className = className.replace('$', '.');
                                 String fullClassName = pkg + "." + className;
                                 try {
@@ -360,10 +359,19 @@ public class RuleEditor extends JDialog implements ActionListener {
             if (attributeField instanceof JTextField) {
                 rule.setAttributeValue(i - 1,
                         ((JTextField) attributeField).getText());
+            } else if (attributeField instanceof JCheckBox) {
+                rule.setAttributeValue(i - 1, Boolean.valueOf(
+                        ((JCheckBox) attributeField).isSelected()));
             }
         }
 
         return rule;
+    }
+
+    protected void _setColumnWidthsForAllRows() {
+        for (int i = 0; i < _tableModel.getRowCount(); i++) {
+            ((Row) _tableModel.getValueAt(i, 0))._setColumnWidths();
+        }
     }
 
     private static boolean _isSubclass(Class<?> subclass, Class<?> superclass) {
@@ -592,25 +600,42 @@ public class RuleEditor extends JDialog implements ActionListener {
         }
 
         public void itemStateChanged(ItemEvent e) {
+            _initRightPanel();
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                _initRightPanel();
-
                 DefaultTableModel tableModel =
                     (DefaultTableModel) _table.getModel();
                 for (int i = 0; i < tableModel.getRowCount(); i++) {
                     if (tableModel.getValueAt(i, 0) == this) {
                         tableModel.fireTableRowsUpdated(i, i);
+                        break;
                     }
                 }
             }
         }
 
+        protected int _getColumnWidth(JComponent component) {
+            if (component instanceof JTextField) {
+                return 80;
+            } else if (component instanceof JCheckBox) {
+                return 30;
+            } else {
+                return 80;
+            }
+        }
+
         protected JComponent _getComponent(RuleAttribute attribute) {
             JComponent component = null;
-            if (attribute.getType() == RuleAttribute.STRING) {
+            switch (attribute.getType()) {
+            case RuleAttribute.BOOLEAN:
+                JCheckBox checkBox = new JCheckBox();
+                checkBox.setHorizontalAlignment(SwingConstants.CENTER);
+                component = checkBox;
+                break;
+            case RuleAttribute.STRING:
                 component = new JTextField();
-                component.setOpaque(false);
+                break;
             }
+            component.setOpaque(false);
             return component;
         }
 
@@ -655,12 +680,37 @@ public class RuleEditor extends JDialog implements ActionListener {
                 columnModel.getColumn(i).setCellEditor(_cellEditor);
                 columnModel.getColumn(i).setCellRenderer(_cellEditor);
             }
+
+            _setColumnWidths();
+        }
+
+        protected void _setColumnWidths() {
+            int totalWidth = 0;
+            int[] widths = new int[_components.length];
+            for (int i = 0; i < _components.length; i++) {
+                widths[i] = _getColumnWidth(_components[i]);
+                totalWidth += widths[i];
+            }
+
+            TableColumnModel columnModel = _attributeTable.getColumnModel();
+            int tableWidth = _attributeTable.getWidth();
+            for (int i = 0; i < widths.length; i++) {
+                float percentage = (float) widths[i] / totalWidth;
+                columnModel.getColumn(i).setPreferredWidth(
+                        (int) (tableWidth * percentage));
+            }
         }
 
         protected void _setComponentValue(RuleAttribute attribute,
                 JComponent component, Object value) {
-            if (attribute.getType() == RuleAttribute.STRING) {
+            switch (attribute.getType()) {
+            case RuleAttribute.BOOLEAN:
+                ((JCheckBox) component).setSelected(
+                        ((Boolean) value).booleanValue());
+                break;
+            case RuleAttribute.STRING:
                 ((JTextField) component).setText((String) value);
+                break;
             }
         }
 
