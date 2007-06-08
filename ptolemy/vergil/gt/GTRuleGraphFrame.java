@@ -1,6 +1,5 @@
-/*
-
- Copyright (c) 2003-2006 The Regents of the University of California.
+/* A graph editor frame for ptolemy graph transformation models.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -58,12 +57,12 @@ import diva.graph.JGraph;
 //// GTRuleGraphFrame
 
 /**
- This is a graph editor frame for ptolemy graph transformation models.
+ A graph editor frame for ptolemy graph transformation models.
 
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 6.1
- @see ActorGraphFrame, BasicGraphFrame, CaseGraphFrame
+ @see ptolemy.vergil.actor.ActorGraphFrame
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
