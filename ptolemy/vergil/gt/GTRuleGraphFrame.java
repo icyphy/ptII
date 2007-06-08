@@ -27,8 +27,14 @@
 package ptolemy.vergil.gt;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JMenu;
@@ -43,7 +49,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.EditorDropTarget;
-import ptolemy.vergil.fsm.CaseGraphFrame;
 import diva.canvas.event.LayerAdapter;
 import diva.canvas.event.LayerEvent;
 import diva.graph.GraphPane;
@@ -58,11 +63,12 @@ import diva.graph.JGraph;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 6.1
- @see CaseGraphFrame
+ @see ActorGraphFrame, BasicGraphFrame, CaseGraphFrame
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GTRuleGraphFrame extends ActorGraphFrame implements ChangeListener {
+public class GTRuleGraphFrame extends ActorGraphFrame
+implements ChangeListener {
 
     /** Construct a frame associated with the specified case actor.
      *  After constructing this, it is necessary
@@ -97,8 +103,6 @@ public class GTRuleGraphFrame extends ActorGraphFrame implements ChangeListener 
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
 
-        _rule = entity;
-
         // Override the default help file.
         // FIXME
         // helpFile = "ptolemy/configs/doc/vergilFsmEditorHelp.htm";
@@ -106,6 +110,32 @@ public class GTRuleGraphFrame extends ActorGraphFrame implements ChangeListener 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Set the center location of the visible part of the pane.
+     *  This will cause the panner to center on the specified location
+     *  with the current zoom factor.
+     *  @param center The center of the visible part.
+     *  @see #getCenter()
+     */
+    public void setCenter(Point2D center) {
+        if (_graphs != null) {
+            Rectangle2D visibleRect = getVisibleCanvasRectangle();
+            AffineTransform newTransform = getJGraph().getCanvasPane()
+                    .getTransformContext().getTransform();
+
+            newTransform.translate(visibleRect.getCenterX() - center.getX(),
+                    visibleRect.getCenterY() - center.getY());
+
+            Iterator<JGraph> graphsIterator = _graphs.iterator();
+            while (graphsIterator.hasNext()) {
+                graphsIterator.next().getCanvasPane().setTransform(
+                        newTransform);
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** React to a change in the state of the tabbed pane.
      *  @param event The event.
@@ -123,9 +153,6 @@ public class GTRuleGraphFrame extends ActorGraphFrame implements ChangeListener 
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
 
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
@@ -148,10 +175,37 @@ public class GTRuleGraphFrame extends ActorGraphFrame implements ChangeListener 
         if (!(entity instanceof SingleRuleTransformer)) {
             return super._createRightComponent(entity);
         }
-        _tabbedPane = new JTabbedPane();
+
+        _graphs = new LinkedList<JGraph>();
+
+        _tabbedPane = new JTabbedPane() {
+            public void setMinimumSize(Dimension minimumSize) {
+                Iterator<JGraph> graphsIterator = _graphs.iterator();
+                while (graphsIterator.hasNext()) {
+                    graphsIterator.next().setMinimumSize(minimumSize);
+                }
+            }
+
+            public void setPreferredSize(Dimension preferredSize) {
+                Iterator<JGraph> graphsIterator = _graphs.iterator();
+                while (graphsIterator.hasNext()) {
+                    graphsIterator.next().setPreferredSize(preferredSize);
+                }
+            }
+
+            public void setSize(int width, int height) {
+                Iterator<JGraph> graphsIterator = _graphs.iterator();
+                while (graphsIterator.hasNext()) {
+                    graphsIterator.next().setSize(width, height);
+                }
+            }
+
+            /** Serial ID */
+            private static final long serialVersionUID = -4998226270980176175L;
+        };
         _tabbedPane.addChangeListener(this);
-        Iterator cases = ((SingleRuleTransformer) entity).entityList(CompositeActorMatcher.class)
-                .iterator();
+        Iterator<?> cases = ((SingleRuleTransformer) entity).entityList(
+                CompositeActorMatcher.class).iterator();
         boolean first = true;
         while (cases.hasNext()) {
             CompositeActorMatcher matcher = (CompositeActorMatcher) cases.next();
@@ -161,6 +215,7 @@ public class GTRuleGraphFrame extends ActorGraphFrame implements ChangeListener 
                 first = false;
                 setJGraph(jgraph);
             }
+            _graphs.add(jgraph);
         }
         return _tabbedPane;
     }
@@ -179,7 +234,8 @@ public class GTRuleGraphFrame extends ActorGraphFrame implements ChangeListener 
      *  @param newPane True to add the pane prior to the last pane.
      *  @return The pane.
      */
-    private JGraph _addTabbedPane(CompositeActorMatcher matcher, boolean newPane) {
+    private JGraph _addTabbedPane(CompositeActorMatcher matcher,
+            boolean newPane) {
         GraphPane pane = _createGraphPane(matcher);
         pane.getForegroundLayer().setPickHalo(2);
         pane.getForegroundEventLayer().setConsuming(false);
@@ -207,7 +263,8 @@ public class GTRuleGraphFrame extends ActorGraphFrame implements ChangeListener 
         _tabbedPane.add(jgraph, index);
         jgraph.setBackground(BACKGROUND_COLOR);
         // Create a drop target for the jgraph.
-        // FIXME: Should override _setDropIntoEnabled to modify all the drop targets created.
+        // FIXME: Should override _setDropIntoEnabled to modify all the drop
+        //        targets created.
         new EditorDropTarget(jgraph);
         return jgraph;
     }
@@ -215,9 +272,11 @@ public class GTRuleGraphFrame extends ActorGraphFrame implements ChangeListener 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The SingleRuleTransformer actor displayed by this frame. */
-    private SingleRuleTransformer _rule;
+    private List<JGraph> _graphs;
 
     /** The tabbed pane for cases. */
     private JTabbedPane _tabbedPane;
+
+    /** Serial ID */
+    private static final long serialVersionUID = 5919681658644668772L;
 }
