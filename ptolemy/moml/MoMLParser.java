@@ -1134,12 +1134,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     try {
                         // We have to append a trailing "/" here for this to
                         // work under Solaris.
-                        base = new URL("file", null, cwd + File.pathSeparator);
+                        base = new URL("file", null, cwd + File.separator);
                         result = new URL(base, source);
                         input = result.openStream();
                     } catch (Throwable throwable) {
                         errorMessage
-                                .append("-- " + cwd + File.pathSeparator
+                                .append("-- " + cwd + File.separator
                                         + source + "\n"
                                         + throwable.getMessage() + "\n");
                     }
