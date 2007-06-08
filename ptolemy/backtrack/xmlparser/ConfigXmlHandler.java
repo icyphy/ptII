@@ -147,8 +147,9 @@ public class ConfigXmlHandler extends XmlHandler {
         if (elementName.equals("input")) {
             String fileName = getCurrentTree().getAttribute("source");
 
+            String newName = null;
             try {
-                String newName = PathFinder.getPtolemyPath() + fileName;
+                newName = PathFinder.getPtolemyPath() + fileName;
                 File newFile = new File(newName);
 
                 if (!newFile.exists()) {
@@ -165,6 +166,8 @@ public class ConfigXmlHandler extends XmlHandler {
                     subparser.parseConfigFile(newName, _includedClasses, false);
                 }
             } catch (Exception e) {
+                System.err.println("ConfigXmlHandler: failed to parse \""
+                        + newName + "\": " + e);
                 // By default, do not change the element.
             }
         }
