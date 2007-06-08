@@ -415,7 +415,7 @@ test MoMLVariableChecker-2.3 {copy a class that does exist} {
 
     # We _did_ find the missing class!
     set copyMoML [$variableChecker2_3 checkCopy "<group name=\"auto\">$instance2_0</group>" $toplevelClassDefinition2_3]
-} {<class name="ConstClassDefinition" extends="ptolemy.actor.TypedCompositeActor">
+} {<class createIfNecessary="true" name="ConstClassDefinition" extends="ptolemy.actor.TypedCompositeActor">
     <property name="_location" class="ptolemy.kernel.util.Location" value="{185, 90}">
     </property>
     <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -530,7 +530,10 @@ test MoMLVariableChecker-2.3.4 {copy a class that does exist to a top level that
 	       "<group name=\"auto\">$copyMoML $instance2_0</group>" \
 	       ConstClassDefinition.Const]
 
+    # Make sure that we have only one class definition 
+    set classDefinitions [$toplevelClassDefinition2_3_4b classDefinitionList]
+
     $parser purgeModelRecord ConstClassDefinition.xml
 
-    list [$results toString]
-} {777}
+    list [$classDefinitions size] [$results toString]
+} {1 777}
