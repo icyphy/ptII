@@ -73,7 +73,7 @@ public class ArrayPeakSearch extends CCodeGeneratorHelper {
         } else if (scale.equals("relative amplitude decibels")) {
             scale = "RELATIVE_DB";
         } else if (scale.equals("relative power decibels")) {
-            scale = "_RELATIVE_DB_POWER";
+            scale = "RELATIVE_DB_POWER";
         } else if (scale.equals("relative linear")) {
             scale = "RELATIVE_LINEAR";        
         }
@@ -85,4 +85,14 @@ public class ArrayPeakSearch extends CCodeGeneratorHelper {
         return processCode(_codeStream.toString());
     }
 
+    /** Get the files needed by the code generated for the RandomSource actor.
+     *  @return A set of strings that are names of the files
+     *  needed by the code generated for the RandomSource actor.
+     *  @exception IllegalActionException Not Thrown in this subclass.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
+        Set files = new HashSet();
+        files.add("<math.h>");
+        return files;
+    }
 }

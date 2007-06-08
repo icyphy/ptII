@@ -110,16 +110,16 @@ $ref(peakIndices) = $new(Array(0, 0));
 
     
 /*** fireBlock11_RELATIVE_DB ***/
-    $actorClass(dipThreshold) = $actorClass(localMax) * Math.pow(10.0, (-$val(dip) / 20));
-    $actorClass(riseThreshold) = $actorClass(localMin) * Math.pow(10.0, ($val(dip) / 20));
-    $actorClass(squelchValue) = $actorClass(maxValue) * Math.pow(10.0, (-$actorClass(squelchValue) / 20));
+    $actorClass(dipThreshold) = $actorClass(localMax) * pow(10.0, (-$val(dip) / 20));
+    $actorClass(riseThreshold) = $actorClass(localMin) * pow(10.0, ($val(dip) / 20));
+    $actorClass(squelchValue) = $actorClass(maxValue) * pow(10.0, (-$actorClass(squelchValue) / 20));
 /**/
 
 
 /*** fireBlock11_RELATIVE_DB_POWER ***/
-    $actorClass(dipThreshold) = $actorClass(localMax) * Math.pow(10.0, (-$val(dip) / 10));
-    $actorClass(riseThreshold) = $actorClass(localMin) * Math.pow(10.0, ($val(dip) / 10));
-    $actorClass(squelchValue) = $actorClass(maxValue) * Math.pow(10.0, (-$actorClass(squelchValue) / 10));
+    $actorClass(dipThreshold) = $actorClass(localMax) * pow(10.0, (-$val(dip) / 10));
+    $actorClass(riseThreshold) = $actorClass(localMin) * pow(10.0, ($val(dip) / 10));
+    $actorClass(squelchValue) = $actorClass(maxValue) * pow(10.0, (-$actorClass(squelchValue) / 10));
 /**/
 
     
@@ -184,12 +184,15 @@ $ref(peakIndices) = $new(Array(0, 0));
 
 /**/
 
+/*** fireBlock21_ABSOLUTE ***/
+/**/
+
 /*** fireBlock21_RELATIVE_DB ***/
-    $actorClass(riseThreshold) = $actorClass(localMin) * Math.pow(10.0, ($val(dip) / 20));
+    $actorClass(riseThreshold) = $actorClass(localMin) * pow(10.0, ($val(dip) / 20));
 /**/
 	
 /*** fireBlock21_RELATIVE_DB_POWER ***/
-    $actorClass(riseThreshold) = $actorClass(localMin) * Math.pow(10.0, ($val(dip) / 10));
+    $actorClass(riseThreshold) = $actorClass(localMin) * pow(10.0, ($val(dip) / 10));
 /**/
 	
 /*** fireBlock21_RELATIVE_LINEAR ***/
@@ -197,13 +200,15 @@ $ref(peakIndices) = $new(Array(0, 0));
 /**/
 
 
+/*** fireBlock22_ABSOLUTE ***/
+/**/
 
 /*** fireBlock22_RELATIVE_DB ***/
-    $actorClass(dipThreshold) = $actorClass(localMax) * Math.pow(10.0, (-$val(dip) / 20));
+    $actorClass(dipThreshold) = $actorClass(localMax) * pow(10.0, (-$val(dip) / 20));
 /**/
     
 /*** fireBlock22_RELATIVE_DB_POWER ***/
-    $actorClass(dipThreshold) = $actorClass(localMax) * Math.pow(10.0, (-$val(dip) / 10));
+    $actorClass(dipThreshold) = $actorClass(localMax) * pow(10.0, (-$val(dip) / 10));
 /**/
     
 /*** fireBlock22_RELATIVE_LINEAR ***/
@@ -212,12 +217,15 @@ $ref(peakIndices) = $new(Array(0, 0));
 
 
 
+/*** fireBlock23_ABSOLUTE ***/
+/**/
+
 /*** fireBlock23_RELATIVE_DB ***/
-    $actorClass(dipThreshold) = $actorClass(localMax) * Math.pow(10.0, (-$val(dip) / 20));
+    $actorClass(dipThreshold) = $actorClass(localMax) * pow(10.0, (-$val(dip) / 20));
 /**/
 
 /*** fireBlock23_RELATIVE_DB_POWER ***/
-    $actorClass(dipThreshold) = $actorClass(localMax) * Math.pow(10.0, (-$val(dip) / 10));
+    $actorClass(dipThreshold) = $actorClass(localMax) * pow(10.0, (-$val(dip) / 10));
 /**/
 
 /*** fireBlock23_RELATIVE_LINEAR ***/
@@ -225,13 +233,15 @@ $ref(peakIndices) = $new(Array(0, 0));
 /**/
 
 
+/*** fireBlock24_ABSOLUTE ***/
+/**/
 
 /*** fireBlock24_RELATIVE_DB ***/
-    $actorClass(riseThreshold) = $actorClass(localMin) * Math.pow(10.0, ($val(dip) / 20));
+    $actorClass(riseThreshold) = $actorClass(localMin) * pow(10.0, ($val(dip) / 20));
 /**/
 
 /*** fireBlock24_RELATIVE_DB_POWER ***/
-    $actorClass(riseThreshold) = $actorClass(localMin) * Math.pow(10.0, ($val(dip) / 10));
+    $actorClass(riseThreshold) = $actorClass(localMin) * pow(10.0, ($val(dip) / 10));
 /**/
 
 /*** fireBlock24_RELATIVE_LINEAR ***/
