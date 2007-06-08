@@ -26,10 +26,12 @@
  */
 package ptolemy.actor.gt;
 
+import ptolemy.actor.lib.hoc.CaseDirector;
 import ptolemy.actor.lib.hoc.MultiCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// SingleRuleTransformer
@@ -47,10 +49,21 @@ public class SingleRuleTransformer extends MultiCompositeActor {
     public SingleRuleTransformer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _init();
+    }
 
+    public SingleRuleTransformer(Workspace workspace)
+    throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+        _init();
+    }
+
+    protected void _init()
+    throws IllegalActionException, NameDuplicationException {
         // Create the default refinement.
         _leftHandSide = new CompositeActorMatcher(this, "Left Hand Side");
         _rightHandSide = new CompositeActorMatcher(this, "Right Hand Side");
+        new CaseDirector(this, "_director");
     }
 
     ///////////////////////////////////////////////////////////////////

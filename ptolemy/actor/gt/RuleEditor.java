@@ -368,12 +368,6 @@ public class RuleEditor extends JDialog implements ActionListener {
         return rule;
     }
 
-    protected void _setColumnWidthsForAllRows() {
-        for (int i = 0; i < _tableModel.getRowCount(); i++) {
-            ((Row) _tableModel.getValueAt(i, 0))._setColumnWidths();
-        }
-    }
-
     private static boolean _isSubclass(Class<?> subclass, Class<?> superclass) {
         if (subclass == null) {
             return false;
@@ -680,8 +674,6 @@ public class RuleEditor extends JDialog implements ActionListener {
                 columnModel.getColumn(i).setCellEditor(_cellEditor);
                 columnModel.getColumn(i).setCellRenderer(_cellEditor);
             }
-
-            _setColumnWidths();
         }
 
         protected void _setColumnWidths() {
@@ -714,7 +706,14 @@ public class RuleEditor extends JDialog implements ActionListener {
             }
         }
 
-        private JTable _attributeTable = new JTable();
+        private JTable _attributeTable = new JTable() {
+            public void doLayout() {
+                _setColumnWidths();
+                super.doLayout();
+            }
+
+            private static final long serialVersionUID = -1516263162184646883L;
+        };
 
         private JPanelCellEditor _cellEditor = new JPanelCellEditor();
 
