@@ -174,8 +174,15 @@ public class ConfigParser {
                 includedClasses);
         handler.addExcludedFiles(_excludedFiles);
         parser.setHandler(handler);
-        parser.parse(fileName, null, br);
-
+        try {
+            // This fails to parse gtLibrary because it goes into a loop,
+            // and causes a stack overflow, so we catch Throwable and
+            // throw an exception.
+            parser.parse(fileName, null, br);
+        } catch (Throwable throwable) {
+            throw new Exception(
+                    "Failed to parse \"" + fileName + "\"", throwable);
+        }
         // Manually modify the resulting tree.
         if (backtrackingElement) {
             _xmlTree._setElementName("entity");
