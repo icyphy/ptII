@@ -40,6 +40,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -118,7 +119,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         overwriteFiles = new Parameter(this, "overwriteFiles");
         overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
         overwriteFiles.setExpression("true");
-
+        
         run = new Parameter(this, "run");
         run.setTypeEquals(BaseType.BOOLEAN);
         run.setExpression("true");
@@ -427,6 +428,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             _executeCommands = new StreamExec();
         }
 
+        code = _finalPassOverCode(code);
         _codeFileName = _writeCode(code);
         _writeMakefile();
         return _executeCommands();
@@ -909,6 +911,21 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return _modifiedVariables;
     }
 
+    /**
+     * Return the name of the output file. 
+     * @return The output file name.
+     * @exception IllegalActionException If there is problem resolving
+     *  the string value of the generatorPackage parameter. 
+     */
+    public String getOutputFilename() throws IllegalActionException {
+        String packageValue = generatorPackage.stringValue();
+
+        String extension = 
+            packageValue.substring(packageValue.lastIndexOf("."));
+
+        return _sanitizedModelName + extension;
+    }
+
     /** Test if the containing actor is in the top level.
      *  @return true if the containing actor is in the top level.
      */
@@ -981,6 +998,52 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected int _executeCommands() throws IllegalActionException {
         return 0;
+    }
+    
+    /** Make a final pass over the generated code. Subclass may extend
+     * this method to do extra processing to format the output code.
+     * @param code The given code to be processed. 
+     * @return The processed code.
+     * @throws IllegalActionException If #getOutputFilename() throws it.
+     */
+    protected StringBuffer _finalPassOverCode(StringBuffer code) 
+            throws IllegalActionException {
+
+        StringTokenizer tokenizer = 
+            new StringTokenizer(code.toString(), _eol + "\n");
+        
+        code = new StringBuffer();
+        
+        while (tokenizer.hasMoreTokens()) {
+            String line = tokenizer.nextToken();
+            line = _prettyPrint(line, "{", "}");
+            code.append(line + _eol);
+        }
+        
+        return code;
+    }
+
+    /**
+     * Pretty print the given line by indenting the line with the
+     * current indent level. If a block begin symbol is found, the
+     * indent level is incremented. Similarly, the indent level is
+     * decremented if a block end symbol is found.
+     * @param line The given line of code.
+     * @param blockBegin The given block begin symbol to match.
+     * @param blockEnd The given block end symbol to match.
+     * @return The pretty-printed version of the given code line.
+     */
+    protected String _prettyPrint(
+            String line, String blockBegin, String blockEnd) {
+
+        line = line.trim();
+        int begin = line.contains(blockBegin) ? 1 : 0;
+        int end = line.contains(blockEnd) ? -1 : 0;
+
+        String result = CodeStream.indent(_indent + end, line);
+        _indent += begin + end;
+
+        return result;
     }
 
     /** Get the code generator helper associated with the given component.
@@ -1096,13 +1159,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected String _writeCode(StringBuffer code)
             throws IllegalActionException {
+                
         // This method is private so that the body of the caller shorter.
 
-        String extension = generatorPackage.stringValue().substring(
-                generatorPackage.stringValue().lastIndexOf("."));
-
-        String codeFileName = _sanitizedModelName + extension;
-
+        String codeFileName = getOutputFilename();
+        
         // Write the code to a file with the same name as the model into
         // the directory named by the codeDirectory parameter.
         try {
@@ -1341,9 +1402,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     private HashMap _helperStore = new HashMap();
 
+    /** Indicate the current indent level when pretty printing the
+     * generated code.
+     */
+    private int _indent;
+
     // List of parameter names seen on the command line.
     private static List _parameterNames = new LinkedList();
 
     // List of parameter values seen on the command line.
     private static List _parameterValues = new LinkedList();
+    
 }

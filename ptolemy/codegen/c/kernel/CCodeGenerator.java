@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
@@ -47,6 +48,7 @@ import ptolemy.codegen.kernel.CodeGeneratorUtilities;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -82,7 +84,24 @@ public class CCodeGenerator extends CodeGenerator {
         super(container, name);
 
         generatorPackage.setExpression("ptolemy.codegen.c");
+
+        sourceLineBinding = new Parameter(this, "sourceLineBinding");
+        sourceLineBinding.setTypeEquals(BaseType.BOOLEAN);
+        sourceLineBinding.setExpression("false");
+
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     parameters                            ////
+    
+    /** If true, then the generated source is binded to the line 
+     * number and file of the (helper) templates. Otherwise, the 
+     * source is binded only to the output file. The default   
+     * value is a parameter with the value false..
+     */
+    public Parameter sourceLineBinding;
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -622,7 +641,69 @@ public class CCodeGenerator extends CodeGenerator {
         }
         return _executeCommands.getLastSubprocessReturnCode();
     }
+    
+    
+    /** Make a final pass over the generated code. Subclass may extend
+     * this method to do extra processing to format the output code. If
+     * sourceLineBinding is set to true, it will check and insert the
+     * appropriate #line macro for each line in the given code. Blank lines
+     * are discarded if #line macros are inserted.  
+     * @param code The given code to be processed. 
+     * @return The processed code.
+     * @throws IllegalActionException If #getOutputFilename() throws it.
+     */
+    protected StringBuffer _finalPassOverCode(StringBuffer code) 
+            throws IllegalActionException {
 
+        code = super._finalPassOverCode(code);
+        
+        if (((BooleanToken) sourceLineBinding.getToken()).booleanValue()) {
+            
+            String filename = getOutputFilename();
+    
+            StringTokenizer tokenizer = 
+                new StringTokenizer(code.toString(), _eol);
+            
+            code = new StringBuffer();
+            
+            String lastLine = null;
+            if (tokenizer.hasMoreTokens()) {
+                lastLine = tokenizer.nextToken();
+            }
+    
+            for (int i = 2; tokenizer.hasMoreTokens(); ) {
+                String line = tokenizer.nextToken();
+                if (lastLine.trim().length() == 0) {
+                    lastLine = line;
+                } else if (line.trim().length() == 0) {
+                    // Get another line.
+                } else {
+                    if (lastLine.trim().startsWith("#line")) {
+                        if (!line.trim().startsWith("#line")) {
+                            code.append(lastLine + _eol);
+                            i++;
+                        }
+                    } else {                    
+                        code.append(lastLine + _eol);
+                        i++;
+                        
+                        if (!line.trim().startsWith("#line")) {
+                            code.append("#line " + i++ + " \"" + filename + "\"" + _eol);                        
+                        }                    
+                    }
+                    lastLine = line;
+                }
+            }
+            
+            if (lastLine.trim().length() != 0) {
+                code.append(lastLine + _eol);            
+            }
+        }
+        
+        return code;
+    }
+    
+    
     /** Read in a template makefile, substitute variables and write
      *  the resulting makefile.
      *

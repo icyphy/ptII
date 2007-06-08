@@ -40,6 +40,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ptolemy.codegen.c.kernel.CCodeGenerator;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
@@ -601,8 +604,22 @@ public class CodeStream {
 
                 // FIXME: is there a better way to read the entire file?
                 // create a string of all code in the file
-                for (String line = reader.readLine(); line != null; line = reader
-                        .readLine()) {
+                
+                int lineNumber = 1;
+                String filename = _filePath.replaceAll("\\$", "");
+                for (String line = reader.readLine(); 
+                line != null; line = reader.readLine(), lineNumber++) {
+                    
+                    if (_codeGenerator instanceof CCodeGenerator) {
+                        Token token = ((CCodeGenerator) 
+                                _codeGenerator).sourceLineBinding.getToken();
+                        
+                        if (((BooleanToken) token).booleanValue()) {
+                            codeToBeParsed.append("#line " + 
+                                    lineNumber + " \"" + filename + "\"\n");                            
+                        }
+                    }
+                    
                     codeToBeParsed.append(line + _eol);
                 }
             }    
