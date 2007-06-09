@@ -2550,7 +2550,7 @@ changequote([, ])dnl
 			if test ! -d "$MATLAB_LIBDIR"; then
 			    # Why, under Unix, are the libs in the bin dir? 
 			    MATLAB_LIBDIR=${MATLAB_DIR}/bin
-			    if test ! -d "$MATLAB_LIBDIR"; then
+			    if test ! -f "$MATLAB_LIBDIR/libmx.so"; then
 			        MATLAB_LIBDIR=${MATLAB_DIR}/bin/sol64
                             fi
                         fi  
