@@ -1,6 +1,6 @@
 /* Code generator helper for EmbeddedCActor.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Gang Zhou
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 6.1
  @Pt.ProposedRating red (zgang)
  @Pt.AcceptedRating Red (zgang)
  */
@@ -59,22 +59,30 @@ public class EmbeddedCActor extends CompiledCompositeActor {
         super(component);
     }
     
+    /** A placeholder or dummy actor used in Embedded C code generation.
+     */
     public static class DummyActor extends CCodeGeneratorHelper {
-        public DummyActor(ptolemy.actor.lib.jni.EmbeddedCActor.DummyActor actor) {
+
+        /** Create a DummyActor.
+         *  @param actor The associated actor.
+         */   
+        public DummyActor(ptolemy.actor.lib.jni.EmbeddedCActor.DummyActor
+                actor) {
             super(actor);
         }
         
-        /** Generate the shared code. Since this is the first generate method invoked 
-         *  out of all, the CodeStream object is reset so that its code table will be 
-         *  re-constructed.
+        /** Generate the shared code. Since this is the first generate
+         *  method invoked out of all, the CodeStream object is reset
+         *  so that its code table will be re-constructed.
          *  @exception IllegalActionException Not thrown in this base class.
          */
         public Set getSharedCode() throws IllegalActionException {
-            // FIXME: One can do optimization here so that reset happens only when
-            // the embedded C code is modified.
+            // FIXME: One can do optimization here so that reset
+            // happens only when the embedded C code is modified.
             _codeStream.reset();
             _codeStream.setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) 
-                    getComponent().getContainer()).embeddedCCode.getExpression());
+                    getComponent().getContainer())
+                    .embeddedCCode.getExpression());
             return super.getSharedCode();
         }
     }

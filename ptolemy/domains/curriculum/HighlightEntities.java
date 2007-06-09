@@ -130,10 +130,19 @@ public class HighlightEntities extends Attribute {
      *  "configure" command.
      */
     public class HighlightIcons extends EditorFactory {
+        /**
+         * Construct an attribute that defines the action performed
+         * on a "configure" command.
+         * @param container The container for this attribute.
+         * @param name The name of this attribute. 
+         * @throws IllegalActionException If thrown by the parent class.
+         * @throws NameDuplicationException If thrown by the parent class.
+         */
         public HighlightIcons(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
+
         public void createEditor(NamedObj object, Frame parent) {
             // Perform the highlighting.
             try {

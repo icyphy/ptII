@@ -1,7 +1,7 @@
 /* An attribute that produces a custom node controller that highlights
  * downstream actors.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -55,9 +55,9 @@ import diva.graph.GraphController;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (johnr)
+ @Pt.AcceptedRating Red (red)
  */
 public class DependencyHighlighter extends NodeControllerFactory {
     /** Construct a new attribute with the given container and name.
@@ -145,8 +145,14 @@ public class DependencyHighlighter extends NodeControllerFactory {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     
+    /** A node controller for dependency highlights.
+     */   
     public class DependencyController extends AttributeController {
 
+        /** Create a node controller that provideds interaction with
+         *  the dependency highlights.
+         *  @param controller The associated graph controller.
+         */   
         public DependencyController(GraphController controller) {
             super(controller);
             

@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// WallClockTime
 
 /**
- A helper class for ptolemy.actor.lib.WallClockTime
+ A helper class for ptolemy.actor.lib.WallClockTime.
 
  @author Christopher Brooks
  @version $Id$

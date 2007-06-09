@@ -468,7 +468,7 @@ public class CodeStream {
     }
 
     /** Set the code blocks which will be parsed instead of .c file.
-     *  @param codeBlocks
+     *  @param codeBlocks The code blocks to be parsed.
      */
     public void setCodeBlocks(String codeBlocks) {
         _codeBlocks = codeBlocks;
