@@ -29,6 +29,7 @@
 //// Commutator
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
@@ -44,7 +45,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * A polymorphic commutator, which merges a set of input sequences into a
  * single output sequence.  The commutator has an input port (a
  * multiport) and an output port (a single port).  The types of the ports
@@ -72,14 +73,13 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating Yellow (mudit)
  * @Pt.AcceptedRating Yellow (cxh)
  */
-public class Commutator extends Transformer implements SequenceActor,
-        Rollbackable {
+public class Commutator extends Transformer implements SequenceActor, Rollbackable {
 
     protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The parameter controlling the output port production rate.
      * This parameter contains an IntToken, initially with a value of 0.
      */
@@ -97,7 +97,7 @@ public class Commutator extends Transformer implements SequenceActor,
 
     private int _tentativeInputPosition;
 
-    /**
+    /**     
      * Construct an actor in the specified container with the specified
      * name. Create ports and make the input port a multiport. Create
      * the actor parameters.
@@ -108,16 +108,14 @@ public class Commutator extends Transformer implements SequenceActor,
      * @exception IllegalActionException If the actor cannot be contained
      * by the proposed container.
      */
-    public Commutator(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public Commutator(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setMultiport(true);
-        output_tokenProductionRate = new Parameter(output,
-                "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setExpression("0");
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This calls the base
      * class method and sets the public variables to point to the new ports.
      * @param workspace The workspace for the new object.
@@ -125,14 +123,13 @@ public class Commutator extends Transformer implements SequenceActor,
      * @exception CloneNotSupportedException If a derived class contains
      * attributes that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Commutator newObject = (Commutator) super.clone(workspace);
-        newObject.output_tokenProductionRate = (Parameter) (newObject.output
-                .getAttribute("tokenProductionRate"));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        Commutator newObject = (Commutator)super.clone(workspace);
+        newObject.output_tokenProductionRate = (Parameter)(newObject.output.getAttribute("tokenProductionRate"));
         return newObject;
     }
 
-    /**
+    /**     
      * Notify this entity that the links to the specified port have
      * been altered.  This sets the production rate of the output port
      * and notifies the director that the schedule is invalid, if there
@@ -142,16 +139,14 @@ public class Commutator extends Transformer implements SequenceActor,
         super.connectionsChanged(port);
         if (port == input) {
             try {
-                output_tokenProductionRate.setToken(new IntToken(input
-                        .getWidth()));
+                output_tokenProductionRate.setToken(new IntToken(input.getWidth()));
             } catch (IllegalActionException ex) {
-                throw new InternalErrorException(this, ex, "input width was"
-                        + input.getWidth());
+                throw new InternalErrorException(this, ex, "input width was" + input.getWidth());
             }
         }
     }
 
-    /**
+    /**     
      * Read one token from each input channel and send it to the
      * output port. If an input channel has no token, suspend firing
      * and return. In this case, the actor makes a record of the
@@ -161,7 +156,7 @@ public class Commutator extends Transformer implements SequenceActor,
      * channels in the input port.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         $ASSIGN$_tentativeInputPosition(_currentInputPosition);
         int width = input.getWidth();
@@ -169,42 +164,41 @@ public class Commutator extends Transformer implements SequenceActor,
             if (!input.hasToken(_tentativeInputPosition)) {
                 break;
             }
-            output.send(0, input.get($ASSIGN$SPECIAL$_tentativeInputPosition(
-                    11, _tentativeInputPosition)));
+            output.send(0, input.get($ASSIGN$SPECIAL$_tentativeInputPosition(11, _tentativeInputPosition)));
             if (_tentativeInputPosition >= width) {
                 $ASSIGN$_tentativeInputPosition(0);
             }
         }
     }
 
-    /**
+    /**     
      * Begin execution by setting the current input channel to zero.
      * @exception IllegalActionException If there is no director.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_currentInputPosition(0);
     }
 
-    /**
+    /**     
      * Update the input position to equal that determined by the most
      * recent invocation of the fire() method.  The input position is
      * the channel number of the input port from which the next input
      * will be read.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_currentInputPosition(_tentativeInputPosition);
         return super.postfire();
     }
 
-    /**
+    /**     
      * Return false if the current input position does not have an
      * input token.
      * @return False if the current input position has no token.
      * @exception IllegalActionException If input.hasToken() throws it.
      */
-    public boolean prefire() throws IllegalActionException {
+    public boolean prefire() throws IllegalActionException  {
         if (!input.hasToken(_currentInputPosition)) {
             return false;
         }
@@ -213,76 +207,68 @@ public class Commutator extends Transformer implements SequenceActor,
 
     private final int $ASSIGN$_currentInputPosition(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_currentInputPosition.add(null, _currentInputPosition,
-                    $CHECKPOINT.getTimestamp());
+            $RECORD$_currentInputPosition.add(null, _currentInputPosition, $CHECKPOINT.getTimestamp());
         }
         return _currentInputPosition = newValue;
     }
 
     private final int $ASSIGN$_tentativeInputPosition(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeInputPosition.add(null, _tentativeInputPosition,
-                    $CHECKPOINT.getTimestamp());
+            $RECORD$_tentativeInputPosition.add(null, _tentativeInputPosition, $CHECKPOINT.getTimestamp());
         }
         return _tentativeInputPosition = newValue;
     }
 
-    private final int $ASSIGN$SPECIAL$_tentativeInputPosition(int operator,
-            long newValue) {
+    private final int $ASSIGN$SPECIAL$_tentativeInputPosition(int operator, long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeInputPosition.add(null, _tentativeInputPosition,
-                    $CHECKPOINT.getTimestamp());
+            $RECORD$_tentativeInputPosition.add(null, _tentativeInputPosition, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-        case 0:
-            return _tentativeInputPosition += newValue;
-        case 1:
-            return _tentativeInputPosition -= newValue;
-        case 2:
-            return _tentativeInputPosition *= newValue;
-        case 3:
-            return _tentativeInputPosition /= newValue;
-        case 4:
-            return _tentativeInputPosition &= newValue;
-        case 5:
-            return _tentativeInputPosition |= newValue;
-        case 6:
-            return _tentativeInputPosition ^= newValue;
-        case 7:
-            return _tentativeInputPosition %= newValue;
-        case 8:
-            return _tentativeInputPosition <<= newValue;
-        case 9:
-            return _tentativeInputPosition >>= newValue;
-        case 10:
-            return _tentativeInputPosition >>>= newValue;
-        case 11:
-            return _tentativeInputPosition++;
-        case 12:
-            return _tentativeInputPosition--;
-        case 13:
-            return ++_tentativeInputPosition;
-        case 14:
-            return --_tentativeInputPosition;
-        default:
-            return _tentativeInputPosition;
+            case 0:
+                return _tentativeInputPosition += newValue;
+            case 1:
+                return _tentativeInputPosition -= newValue;
+            case 2:
+                return _tentativeInputPosition *= newValue;
+            case 3:
+                return _tentativeInputPosition /= newValue;
+            case 4:
+                return _tentativeInputPosition &= newValue;
+            case 5:
+                return _tentativeInputPosition |= newValue;
+            case 6:
+                return _tentativeInputPosition ^= newValue;
+            case 7:
+                return _tentativeInputPosition %= newValue;
+            case 8:
+                return _tentativeInputPosition <<= newValue;
+            case 9:
+                return _tentativeInputPosition >>= newValue;
+            case 10:
+                return _tentativeInputPosition >>>= newValue;
+            case 11:
+                return _tentativeInputPosition++;
+            case 12:
+                return _tentativeInputPosition--;
+            case 13:
+                return ++_tentativeInputPosition;
+            case 14:
+                return --_tentativeInputPosition;
+            default:
+                return _tentativeInputPosition;
         }
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _currentInputPosition = $RECORD$_currentInputPosition.restore(
-                _currentInputPosition, timestamp, trim);
-        _tentativeInputPosition = $RECORD$_tentativeInputPosition.restore(
-                _tentativeInputPosition, timestamp, trim);
+        _currentInputPosition = $RECORD$_currentInputPosition.restore(_currentInputPosition, timestamp, trim);
+        _tentativeInputPosition = $RECORD$_tentativeInputPosition.restore(_tentativeInputPosition, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -313,6 +299,9 @@ public class Commutator extends Transformer implements SequenceActor,
     private FieldRecord $RECORD$_tentativeInputPosition = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_currentInputPosition, $RECORD$_tentativeInputPosition };
+            $RECORD$_currentInputPosition,
+            $RECORD$_tentativeInputPosition
+        };
 
 }
+

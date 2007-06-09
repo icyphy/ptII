@@ -29,6 +29,7 @@
 //// Distributor
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.backtrack.Checkpoint;
@@ -46,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-/**
+/** 
  * A polymorphic distributor, which splits an input stream into a set of
  * output streams. The distributor has an input port and an output port,
  * the latter of which is a multiport.
@@ -75,15 +76,14 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating Yellow (mudit)
  * @Pt.AcceptedRating Yellow (cxh)
  */
-public class Distributor extends Transformer implements SequenceActor,
-        Rollbackable {
+public class Distributor extends Transformer implements SequenceActor, Rollbackable {
 
     protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
     // These parameters are required for SDF
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * The parameter controlling the input port consumption rate.
      * This parameter contains an IntToken, initially with a value of 0.
      */
@@ -101,7 +101,7 @@ public class Distributor extends Transformer implements SequenceActor,
 
     private int _tentativeOutputPosition;
 
-    /**
+    /**     
      * Construct an actor in the specified container with the specified
      * name. Create ports and make the input port a multiport. Create
      * the actor parameters.
@@ -112,18 +112,16 @@ public class Distributor extends Transformer implements SequenceActor,
      * @exception IllegalActionException If the actor cannot be contained
      * by the proposed container.
      */
-    public Distributor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+    public Distributor(CompositeEntity container, String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input_tokenConsumptionRate = new Parameter(input,
-                "tokenConsumptionRate", new IntToken(0));
+        input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate", new IntToken(0));
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setPersistent(false);
         output.setMultiport(true);
     }
 
-    /**
+    /**     
      * Clone the actor into the specified workspace. This calls the base
      * class method and sets the public variables to point to the new ports.
      * @param workspace The workspace for the new object.
@@ -131,14 +129,13 @@ public class Distributor extends Transformer implements SequenceActor,
      * @exception CloneNotSupportedException If a derived class contains
      * attributes that cannot be cloned.
      */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Distributor newObject = (Distributor) super.clone(workspace);
-        newObject.input_tokenConsumptionRate = (Parameter) (newObject.input
-                .getAttribute("tokenConsumptionRate"));
+    public Object clone(Workspace workspace) throws CloneNotSupportedException  {
+        Distributor newObject = (Distributor)super.clone(workspace);
+        newObject.input_tokenConsumptionRate = (Parameter)(newObject.input.getAttribute("tokenConsumptionRate"));
         return newObject;
     }
 
-    /**
+    /**     
      * Notify this entity that the links to the specified port have
      * been altered.  This sets the consumption rate of the input port
      * and notifies the director that the schedule is invalid, if there
@@ -150,17 +147,15 @@ public class Distributor extends Transformer implements SequenceActor,
         super.connectionsChanged(port);
         if (port == output) {
             try {
-                input_tokenConsumptionRate.setToken(new IntToken(output
-                        .getWidth()));
+                input_tokenConsumptionRate.setToken(new IntToken(output.getWidth()));
                 $ASSIGN$_currentOutputPosition(0);
             } catch (IllegalActionException ex) {
-                throw new InternalErrorException(this, ex, "output width was"
-                        + output.getWidth());
+                throw new InternalErrorException(this, ex, "output width was" + output.getWidth());
             }
         }
     }
 
-    /**
+    /**     
      * Read at most <i>n</i> tokens from the input port, where <i>n</i>
      * is the width of the output port. Write one token to each of the
      * output channels. If  there are not <i>n</i> tokens available,
@@ -168,7 +163,7 @@ public class Distributor extends Transformer implements SequenceActor,
      * On the next iteration, the actor will pick up where it left off.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         $ASSIGN$_tentativeOutputPosition(_currentOutputPosition);
         int width = output.getWidth();
@@ -176,107 +171,98 @@ public class Distributor extends Transformer implements SequenceActor,
             if (!input.hasToken(0)) {
                 break;
             }
-            output.send($ASSIGN$SPECIAL$_tentativeOutputPosition(11,
-                    _tentativeOutputPosition), input.get(0));
+            output.send($ASSIGN$SPECIAL$_tentativeOutputPosition(11, _tentativeOutputPosition), input.get(0));
             if (_tentativeOutputPosition >= width) {
                 $ASSIGN$_tentativeOutputPosition(0);
             }
         }
     }
 
-    /**
+    /**     
      * Begin execution by setting the current output channel to zero.
      * @exception IllegalActionException If there is no director.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_currentOutputPosition(0);
     }
 
-    /**
+    /**     
      * Update the output position to equal that determined by the most
      * recent invocation of the fire() method.  The output position is
      * the channel number of the output port to which the next input
      * will be sent.
      * @exception IllegalActionException If there is no director.
      */
-    public boolean postfire() throws IllegalActionException {
+    public boolean postfire() throws IllegalActionException  {
         $ASSIGN$_currentOutputPosition(_tentativeOutputPosition);
         return super.postfire();
     }
 
     private final int $ASSIGN$_currentOutputPosition(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_currentOutputPosition.add(null, _currentOutputPosition,
-                    $CHECKPOINT.getTimestamp());
+            $RECORD$_currentOutputPosition.add(null, _currentOutputPosition, $CHECKPOINT.getTimestamp());
         }
         return _currentOutputPosition = newValue;
     }
 
     private final int $ASSIGN$_tentativeOutputPosition(int newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeOutputPosition.add(null,
-                    _tentativeOutputPosition, $CHECKPOINT.getTimestamp());
+            $RECORD$_tentativeOutputPosition.add(null, _tentativeOutputPosition, $CHECKPOINT.getTimestamp());
         }
         return _tentativeOutputPosition = newValue;
     }
 
-    private final int $ASSIGN$SPECIAL$_tentativeOutputPosition(int operator,
-            long newValue) {
+    private final int $ASSIGN$SPECIAL$_tentativeOutputPosition(int operator, long newValue) {
         if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$_tentativeOutputPosition.add(null,
-                    _tentativeOutputPosition, $CHECKPOINT.getTimestamp());
+            $RECORD$_tentativeOutputPosition.add(null, _tentativeOutputPosition, $CHECKPOINT.getTimestamp());
         }
         switch (operator) {
-        case 0:
-            return _tentativeOutputPosition += newValue;
-        case 1:
-            return _tentativeOutputPosition -= newValue;
-        case 2:
-            return _tentativeOutputPosition *= newValue;
-        case 3:
-            return _tentativeOutputPosition /= newValue;
-        case 4:
-            return _tentativeOutputPosition &= newValue;
-        case 5:
-            return _tentativeOutputPosition |= newValue;
-        case 6:
-            return _tentativeOutputPosition ^= newValue;
-        case 7:
-            return _tentativeOutputPosition %= newValue;
-        case 8:
-            return _tentativeOutputPosition <<= newValue;
-        case 9:
-            return _tentativeOutputPosition >>= newValue;
-        case 10:
-            return _tentativeOutputPosition >>>= newValue;
-        case 11:
-            return _tentativeOutputPosition++;
-        case 12:
-            return _tentativeOutputPosition--;
-        case 13:
-            return ++_tentativeOutputPosition;
-        case 14:
-            return --_tentativeOutputPosition;
-        default:
-            return _tentativeOutputPosition;
+            case 0:
+                return _tentativeOutputPosition += newValue;
+            case 1:
+                return _tentativeOutputPosition -= newValue;
+            case 2:
+                return _tentativeOutputPosition *= newValue;
+            case 3:
+                return _tentativeOutputPosition /= newValue;
+            case 4:
+                return _tentativeOutputPosition &= newValue;
+            case 5:
+                return _tentativeOutputPosition |= newValue;
+            case 6:
+                return _tentativeOutputPosition ^= newValue;
+            case 7:
+                return _tentativeOutputPosition %= newValue;
+            case 8:
+                return _tentativeOutputPosition <<= newValue;
+            case 9:
+                return _tentativeOutputPosition >>= newValue;
+            case 10:
+                return _tentativeOutputPosition >>>= newValue;
+            case 11:
+                return _tentativeOutputPosition++;
+            case 12:
+                return _tentativeOutputPosition--;
+            case 13:
+                return ++_tentativeOutputPosition;
+            case 14:
+                return --_tentativeOutputPosition;
+            default:
+                return _tentativeOutputPosition;
         }
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        _currentOutputPosition = $RECORD$_currentOutputPosition.restore(
-                _currentOutputPosition, timestamp, trim);
-        _tentativeOutputPosition = $RECORD$_tentativeOutputPosition.restore(
-                _tentativeOutputPosition, timestamp, trim);
+        _currentOutputPosition = $RECORD$_currentOutputPosition.restore(_currentOutputPosition, timestamp, trim);
+        _tentativeOutputPosition = $RECORD$_tentativeOutputPosition.restore(_tentativeOutputPosition, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -307,6 +293,9 @@ public class Distributor extends Transformer implements SequenceActor,
     private FieldRecord $RECORD$_tentativeOutputPosition = new FieldRecord(0);
 
     private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$_currentOutputPosition, $RECORD$_tentativeOutputPosition };
+            $RECORD$_currentOutputPosition,
+            $RECORD$_tentativeOutputPosition
+        };
 
 }
+

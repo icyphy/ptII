@@ -1,6 +1,6 @@
 /* A polymorphic switch with boolean select.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -30,6 +30,7 @@
 //// BooleanSwitch
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import java.lang.Object;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.backtrack.Checkpoint;
@@ -44,8 +45,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-/**
- * A type polymorphic switch with boolean valued control.  In an
+/** 
+ * <p>A type polymorphic switch with boolean valued control.  In an
  * iteration, if an input token is available at the <i>control</i> input,
  * that token is read, and its value is noted.  Its value specifies the
  * input port that should be read next. If the <i>control</i> input is
@@ -53,9 +54,9 @@ import ptolemy.kernel.util.StringAttribute;
  * then it is is read and sent to the <i>trueOutput</i>.  Likewise with a
  * false input and the <i>falseOutput</i> port.  Because tokens are
  * immutable, the same Token is sent to the output, rather than a copy.
- * The <i>input</i> port may receive Tokens of any type.
+ * The <i>input</i> port may receive Tokens of any type.</p>
  * <p>If no token has ever been received on the <i>control</i> port, then
- * <i>falseOutput</i> is assumed to be the one to receive data.
+ * <i>falseOutput</i> is assumed to be the one to receive data.</p>
  * @author Steve Neuendorffer
  * @version $Id$
  * @since Ptolemy II 2.0
@@ -69,24 +70,24 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
     // Put the control input on the bottom of the actor.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**
+    /**     
      * Input that selects one of the other input ports.  The type is
      * BooleanToken.
      */
     public TypedIOPort control;
 
-    /**
+    /**     
      * The input port.  The type can be anything.
      */
     public TypedIOPort input;
 
-    /**
+    /**     
      * Output for tokens on the true path.  The type is at least the
      * type of the input.
      */
     public TypedIOPort trueOutput;
 
-    /**
+    /**     
      * Output for tokens on the false path.  The type is at least the
      * type of the input.
      */
@@ -99,7 +100,7 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
     // The most recently read control token.
     private boolean _control = false;
 
-    /**
+    /**     
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -109,8 +110,7 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
      * @exception NameDuplicationException If the name coincides with
      * an actor already in the container.
      */
-    public BooleanSwitch(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public BooleanSwitch(CompositeEntity container, String name) throws IllegalActionException, NameDuplicationException  {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         control = new TypedIOPort(this, "control", true, false);
@@ -119,22 +119,21 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
         falseOutput = new TypedIOPort(this, "falseOutput", false, true);
         trueOutput.setTypeAtLeast(input);
         falseOutput.setTypeAtLeast(input);
-        StringAttribute controlCardinal = new StringAttribute(control,
-                "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(control, "_cardinal");
         controlCardinal.setExpression("SOUTH");
     }
 
-    /**
+    /**     
      * Read a token from each input port.  If the token from the
      * <i>control</i> input is true, then output the token consumed from the
      * <i>input</i> port on the <i>trueOutput</i> port,
      * otherwise output the token on the <i>falseOutput</i> port.
      * @exception IllegalActionException If there is no director.
      */
-    public void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException  {
         super.fire();
         if (control.hasToken(0)) {
-            $ASSIGN$_control(((BooleanToken) control.get(0)).booleanValue());
+            $ASSIGN$_control(((BooleanToken)control.get(0)).booleanValue());
         }
         if (input.hasToken(0)) {
             Token token = input.get(0);
@@ -146,12 +145,12 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
         }
     }
 
-    /**
+    /**     
      * Initialize this actor so that the <i>falseOutput</i> is written
      * to until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.
      */
-    public void initialize() throws IllegalActionException {
+    public void initialize() throws IllegalActionException  {
         super.initialize();
         $ASSIGN$_control(false);
     }
@@ -164,16 +163,14 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
-                .getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         _control = $RECORD$_control.restore(_control, timestamp, trim);
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
-                    timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -201,6 +198,9 @@ public class BooleanSwitch extends TypedAtomicActor implements Rollbackable {
 
     private FieldRecord $RECORD$_control = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$_control };
+    private FieldRecord[] $RECORDS = new FieldRecord[] {
+            $RECORD$_control
+        };
 
 }
+
