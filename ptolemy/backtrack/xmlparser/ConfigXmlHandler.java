@@ -138,8 +138,8 @@ public class ConfigXmlHandler extends XmlHandler {
      *  element, the source referred to is parsed.
      *
      *  @param elementName The name of the XML element.
-     *  @exception Exception If the overrided method in the superclass throws an
-     *   Exception.
+     *  @exception Exception If the overridden method in the superclass throws
+     *   an Exception.
      */
     public void startElement(String elementName) throws Exception {
         super.startElement(elementName);
@@ -160,9 +160,12 @@ public class ConfigXmlHandler extends XmlHandler {
 
                 String canonicalPath = newFile.getCanonicalPath();
 
-                if (!_excludedFiles.contains(canonicalPath)) {
+                if (!_excludedFiles.contains(canonicalPath)
+                        && !_parsedFiles.contains(canonicalPath)) {
+                    _parsedFiles.add(canonicalPath);
                     ConfigParser subparser = new ConfigParser(getCurrentTree());
                     subparser.addExcludedFiles(_excludedFiles);
+                    subparser.addExcludedFiles(_parsedFiles);
                     subparser.parseConfigFile(newName, _includedClasses, false);
                 }
             } catch (Exception e) {
@@ -172,9 +175,6 @@ public class ConfigXmlHandler extends XmlHandler {
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         constructor                       ////
 
     /** Construct an XML handler.
      *
@@ -192,13 +192,16 @@ public class ConfigXmlHandler extends XmlHandler {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private fields                      ////
+    ////                         constructor                       ////
 
     /** The class in the original XML document that should be removed when it
      *  is transformed to the library description of backtracking actors.
      */
     private static final String[] _REMOVED_CLASSES = new String[] {
             "ptolemy.kernel.CompositeEntity", "ptolemy.actor.gui.Configuration" };
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
     /** The class in the original XML document that should be removed when it
      *  is transformed to the library description of backtracking actors.
@@ -225,6 +228,12 @@ public class ConfigXmlHandler extends XmlHandler {
      *  document. If it is null, all classes will be kept.
      */
     private Set<String> _includedClasses;
+
+    /** The canonical paths of the XML documents that have been parsed by this
+     *  parser, or by the parsers that parse the ancestor nodes of the current
+     *  tree.
+     */
+    private Set<String> _parsedFiles = new HashSet<String>();
 
     ///////////////////////////////////////////////////////////////////
     ////                  static class initializer                 ////
