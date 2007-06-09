@@ -35,6 +35,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.Action;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JTabbedPane;
@@ -48,6 +50,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.EditorDropTarget;
+import ptolemy.vergil.basic.WithIconGraphController.NewPortAction;
 import diva.canvas.event.LayerAdapter;
 import diva.canvas.event.LayerEvent;
 import diva.graph.GraphPane;
@@ -161,6 +164,18 @@ implements ChangeListener {
         _ruleMenu = new JMenu("Rule");
         _ruleMenu.setMnemonic(KeyEvent.VK_R);
         _menubar.add(_ruleMenu);
+        
+        // Remove create new port actions in the tool bar.
+        Component[] components = _toolbar.getComponents();
+        for (int i = 0, del = 0; i < components.length; i++) {
+            if (components[i] instanceof JButton) {
+                Action action = ((JButton) components[i]).getAction();
+                if (action != null && action instanceof NewPortAction) {
+                    _toolbar.remove(i - del);
+                    del++;
+                }
+            }
+        }
     }
 
     /** Create the component that goes to the right of the library.
