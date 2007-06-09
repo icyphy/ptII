@@ -117,9 +117,9 @@ public class GetDocumentationAction extends FigureAction {
     }
     
     /**
-     * provides a manual interface for displaying the documentation for a 
-     * target.  This does the same thing as the actionPerformed but without
-     * the action handler
+     * Show the documentation for a NamedObj.  This does the same
+     * thing as the actionPerformed but without the action handler
+     * @param target The NamedObj that will have its documentation shown.
      */
     public void showDocumentation(NamedObj target)
     {

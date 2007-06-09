@@ -187,6 +187,9 @@ public class DependencyHighlighter extends NodeControllerFactory {
      */
     public class DependencyController extends ActorInstanceController {
 
+        /** Create a DependencyController that is associated with a controller.
+         *  @param controller The controller.
+         */ 
         public DependencyController(GraphController controller) {
             super(controller);
             

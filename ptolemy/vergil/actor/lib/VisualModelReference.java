@@ -449,6 +449,7 @@ public class VisualModelReference extends ModelReference {
 
         /** Open an instance of the model.
          *  @param effigy The effigy with which we open the model.
+         *  @return The instance of the model.
          *  @exception Exception If there is a problem opening the
          *  model.
          */   
