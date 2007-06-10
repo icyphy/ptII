@@ -78,6 +78,19 @@ public class RuleList extends LinkedList<Rule> {
         return buffer.toString();
     }
 
+    public void validate() throws RuleValidationException {
+        int i = 0;
+        for (Rule rule : this) {
+            i++;
+            try {
+                rule.validate();
+            } catch (RuleValidationException e) {
+                throw new RuleValidationException("Rule " + i + ": "
+                        + e.getMessage());
+            }
+        }
+    }
+
     private static int _nextRule(String expression, int startPos) {
         if (expression.charAt(startPos) == '(') {
             int parenNum = 1;

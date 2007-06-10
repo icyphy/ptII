@@ -28,6 +28,7 @@ package ptolemy.actor.gt.rules;
 
 import ptolemy.actor.gt.Rule;
 import ptolemy.actor.gt.RuleAttribute;
+import ptolemy.actor.gt.RuleValidationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorAttributeRule
@@ -96,6 +97,9 @@ public class ActorAttributeRule extends Rule {
         _attributeName = _getFirstField(values);
         _attributeType = _getNextField();
         _attributeValue = _getLastField();
+    }
+
+    public void validate() throws RuleValidationException {
     }
 
     private static final RuleAttribute[] _ATTRIBUTES = {

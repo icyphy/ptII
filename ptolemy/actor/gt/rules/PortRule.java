@@ -2,6 +2,7 @@ package ptolemy.actor.gt.rules;
 
 import ptolemy.actor.gt.Rule;
 import ptolemy.actor.gt.RuleAttribute;
+import ptolemy.actor.gt.RuleValidationException;
 
 public class PortRule extends Rule {
 
@@ -75,6 +76,19 @@ public class PortRule extends Rule {
         _input = _getNextField().equals("true") ? true : false;
         _output = _getNextField().equals("true") ? true : false;
         _multiport = _getLastField().equals("true") ? true : false;
+    }
+
+    public void validate() throws RuleValidationException {
+        if (_portName.equals("")) {
+            throw new RuleValidationException("Port name must not be empty.");
+        }
+        if (_portType.equals("")) {
+            throw new RuleValidationException("Port type must not be empty.");
+        }
+        if (!(_input ^ _output)) {
+            throw new RuleValidationException("A port should be either an "
+                    + "input port or an output port.");
+        }
     }
 
     private static final RuleAttribute[] _ATTRIBUTES = {

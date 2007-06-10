@@ -53,6 +53,8 @@ public abstract class Rule {
         return getValues();
     }
 
+    public abstract void validate() throws RuleValidationException;
+
     public static final String FIELD_SEPARATOR = "/";
 
     protected String _getFirstField(String values) {

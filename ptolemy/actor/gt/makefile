@@ -57,11 +57,12 @@ JSRCS = \
 	AtomicActorMatcher.java \
 	CompositeActorMatcher.java \
 	MalformedStringException.java \
-	RuleEditor.java \
 	Rule.java \
 	RuleAttribute.java \
+    RuleEditor.java \
 	RuleList.java \
 	RuleListAttribute.java \
+	RuleValidationException.java \
 	SingleRuleTransformer.java
 
 EXTRA_SRCS =	$(JSRCS)

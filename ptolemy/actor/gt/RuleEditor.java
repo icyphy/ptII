@@ -55,6 +55,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -121,7 +122,8 @@ public class RuleEditor extends JDialog implements ActionListener {
     public void addNewRow() {
         try {
             Row row = new Row(_ruleClasses.get(0).newInstance());
-            _tableModel.addRow(new Object[] {row, row});
+            _tableModel.addRow(new Object[] {_tableModel.getRowCount() + 1, row,
+                    row});
         } catch (Exception e) {
             throw new KernelRuntimeException(e, "Unable to create a new " +
                     "rule instance.");
@@ -140,20 +142,39 @@ public class RuleEditor extends JDialog implements ActionListener {
     }
 
     public void commit() {
-        setVisible(false);
-        _isCanceled = false;
-    }
-
-    public RuleList getRuleList() {
-        RuleList list = new RuleList();
+        _committedRuleList.clear();
         Vector<?> dataVector = _tableModel.getDataVector();
         for (Object rowData : dataVector) {
             Vector<?> rowVector = (Vector<?>) rowData;
-            Row row = (Row) rowVector.get(0);
+            Row row = (Row) rowVector.get(1);
             Rule rule = _createRuleFromRow(row);
-            list.add(rule);
+            _committedRuleList.add(rule);
         }
-        return list;
+
+        try {
+            _committedRuleList.validate();
+            _isCanceled = false;
+        } catch (RuleValidationException e) {
+            String message = e.getMessage();
+            message += "\nPress Edit to return to modify the rules, or press "
+                + "Cancel to cancel all the changes.";
+
+            String[] options = new String[] {"Edit", "Cancel"};
+            int selected = JOptionPane.showOptionDialog(null, message,
+                    "Validation Error", JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+            if (selected == 0) {
+                return;
+            } else {
+                _isCanceled = true;
+            }
+        }
+
+        setVisible(false);
+    }
+
+    public RuleList getRuleList() {
+        return _committedRuleList;
     }
 
     public boolean isCanceled() {
@@ -163,16 +184,23 @@ public class RuleEditor extends JDialog implements ActionListener {
     public void removeSelectedRows() {
         _editor.stopCellEditing();
         int[] rows = _table.getSelectedRows();
-        for (int i = 0, j = 0; i < rows.length; i++, j++) {
-            _tableModel.removeRow(rows[i] - j);
+        int size = _tableModel.getRowCount();
+        for (int i = 0, deleted = 0; i < size; i++) {
+            if (deleted < rows.length && i == rows[deleted]) {
+                _tableModel.removeRow(i - deleted);
+                deleted++;
+            } else {
+                _tableModel.setValueAt(i - deleted + 1, i - deleted, 0);
+            }
         }
     }
 
     public void resetTable(RuleList ruleList) {
         _tableModel.getDataVector().removeAllElements();
+        int i = 0;
         for (Rule rule : ruleList) {
             Row row = new Row(rule);
-            _tableModel.addRow(new Object[] {row, row});
+            _tableModel.addRow(new Object[] {i++ + 1, row, row});
         }
     }
 
@@ -278,10 +306,22 @@ public class RuleEditor extends JDialog implements ActionListener {
 
     protected void _createComponents() {
         _tableModel = new DefaultTableModel(
-                new Object[] {"Class", "Attributes"}, 0);
+                new Object[] {"", "Class", "Attributes"}, 0) {
+                    public boolean isCellEditable(int row, int column) {
+                        if (column == 0) {
+                            return false;
+                        } else {
+                            return super.isCellEditable(row, column);
+                        }
+                    }
+                    private static final long serialVersionUID =
+                        -6967159767501555584L;
+                };
         _table = new JTable(_tableModel);
         _table.setRowHeight(ROW_HEIGHT);
         _table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        _table.setSelectionBackground(ROW_SELECTED_COLOR);
+        _table.setSelectionForeground(Color.BLACK);
 
         JTableHeader header = _table.getTableHeader();
 
@@ -296,10 +336,10 @@ public class RuleEditor extends JDialog implements ActionListener {
 
         _editor = new AttributesEditor();
         TableColumnModel model = _table.getColumnModel();
-        model.getColumn(0).setCellEditor(_editor);
-        model.getColumn(0).setCellRenderer(_editor);
         model.getColumn(1).setCellEditor(_editor);
         model.getColumn(1).setCellRenderer(_editor);
+        model.getColumn(2).setCellEditor(_editor);
+        model.getColumn(2).setCellRenderer(_editor);
         JScrollPane scrollPane = new JScrollPane(_table);
         getContentPane().add(scrollPane, BorderLayout.CENTER);
 
@@ -323,8 +363,27 @@ public class RuleEditor extends JDialog implements ActionListener {
 
         buttonsPanel.add(_cancelButton);
         getContentPane().add(buttonsPanel, BorderLayout.SOUTH);
-        model.getColumn(0).setPreferredWidth(100);
-        model.getColumn(1).setPreferredWidth(300);
+
+        TableColumn column0 = model.getColumn(0);
+        column0.setMinWidth(10);
+        column0.setPreferredWidth(15);
+        column0.setMaxWidth(30);
+        DefaultTableCellRenderer indexRenderer =
+            new DefaultTableCellRenderer() {
+                public Component getTableCellRendererComponent(JTable table,
+                        Object value, boolean isSelected, boolean hasFocus,
+                        int row, int column) {
+                    return super.getTableCellRendererComponent(table, value,
+                            isSelected, false, row, column);
+                }
+                private static final long serialVersionUID =
+                    2746000543494635898L;
+        };
+        indexRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        column0.setCellRenderer(indexRenderer);
+
+        model.getColumn(1).setPreferredWidth(100);
+        model.getColumn(2).setPreferredWidth(300);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -393,6 +452,8 @@ public class RuleEditor extends JDialog implements ActionListener {
 
     private JButton _commitButton;
 
+    private RuleList _committedRuleList = new RuleList();
+
     private AttributesEditor _editor;
 
     private boolean _isCanceled = false;
@@ -426,7 +487,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             rightPanel.setBackground(color);
             _currentRow.getAttributeTable().getTableHeader()
                     .setBackground(color);
-            return column == 0 ? leftPanel : rightPanel;
+            return column == 1 ? leftPanel : rightPanel;
         }
 
         public Component getTableCellRendererComponent(JTable table,
@@ -442,7 +503,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             currentRow.getAttributeTable().getTableHeader()
                     .setBackground(color);
 
-            if (column == 0) {
+            if (column == 1) {
                 DefaultTableModel attributeModel =
                     (DefaultTableModel) currentRow._attributeTable.getModel();
                 for (int i = 0; i < attributeModel.getColumnCount(); i++) {
@@ -452,7 +513,7 @@ public class RuleEditor extends JDialog implements ActionListener {
                     }
                 }
             }
-            return column == 0 ? leftPanel : rightPanel;
+            return column == 1 ? leftPanel : rightPanel;
         }
 
         private Row _currentRow;
@@ -599,7 +660,7 @@ public class RuleEditor extends JDialog implements ActionListener {
                 DefaultTableModel tableModel =
                     (DefaultTableModel) _table.getModel();
                 for (int i = 0; i < tableModel.getRowCount(); i++) {
-                    if (tableModel.getValueAt(i, 0) == this) {
+                    if (tableModel.getValueAt(i, 1) == this) {
                         tableModel.fireTableRowsUpdated(i, i);
                         break;
                     }

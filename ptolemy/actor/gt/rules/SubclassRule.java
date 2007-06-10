@@ -26,8 +26,10 @@
  */
 package ptolemy.actor.gt.rules;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.gt.Rule;
 import ptolemy.actor.gt.RuleAttribute;
+import ptolemy.actor.gt.RuleValidationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// SubclassRule
@@ -77,6 +79,26 @@ public class SubclassRule extends Rule {
 
     public void setValues(String values) {
         _superclass = values;
+    }
+
+    public void validate() throws RuleValidationException {
+        if (_superclass.equals("")) {
+            throw new RuleValidationException("Superclass name must not be "
+                    + "empty.");
+        }
+        Class<?> superclass;
+        try {
+            superclass = Class.forName(_superclass);
+        } catch (ClassNotFoundException e) {
+            throw new RuleValidationException("Cannot load class \""
+                    + _superclass + "\".");
+        }
+        try {
+            superclass.asSubclass(Actor.class);
+        } catch (ClassCastException e) {
+            throw new RuleValidationException("Superclass must be a subclass "
+                    + "of \"" + Actor.class.getName() + "\".");
+        }
     }
 
     private static final RuleAttribute[] _ATTRIBUTES = {
