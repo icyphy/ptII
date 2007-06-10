@@ -14,9 +14,9 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 25, 1016, 718}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 25, 998, 718}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 596]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[782, 596]">
     </property>
     <property name="range" class="ptolemy.data.expr.Parameter" value="55">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -161,7 +161,7 @@ it never receives the message.</text></svg></configure>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Edward Lee, Yang Zhao</text></svg></configure>
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Edward Lee, Yang Zhao, Elaine Cheong</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -235,7 +235,7 @@ parameter.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 560.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 550.0]">
         </property>
     </property>
     <property name="randomize" class="ptolemy.data.expr.Parameter" value="true">
@@ -283,7 +283,7 @@ parameter.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9530265262152">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{441.7154947916667, 314.6880436197916}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{432.2718961588541, 314.6880436197916}">
     </property>
     <entity name="ReportChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 120.0]">
