@@ -32,7 +32,7 @@
 ME = 		ptolemy/domains/pn/demo
 
 DIRS =		BrockAckerman \
-		NondeterministicMerge NondeterministicMergeWithFeedback
+		NondeterministicMerge NondeterministicMergeWithFeedback \
 		OrderedMerge QR RemoveNilTokens
 
 # Root of the Java directory
