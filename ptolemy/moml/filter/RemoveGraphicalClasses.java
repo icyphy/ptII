@@ -289,6 +289,11 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor",
                 null);
 
+        // Remove various graphical classes from curriculum
+        _graphicalClasses.put("ptolemy.domains.curriculum.DependencyHighlighter",
+                null);
+        _graphicalClasses.put("ptolemy.domains.curriculum.HighlightEntities",
+                "ptolemy.kernel.util.Attribute");
     }
 
     /** True if we should remove the GR domain. */
