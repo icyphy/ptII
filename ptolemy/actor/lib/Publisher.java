@@ -351,8 +351,9 @@ public class Publisher extends TypedAtomicActor {
                     // trying to publish on the same channel.
                     if (_channel.equals(((Publisher) actor)._channel)) {
                         throw new IllegalActionException(this,
-                                "There is already a publisher using channel "
-                                        + "\"_channel\": "
+                                "There is already a publisher using channel \""
+                                        + _channel
+                                        + "\": "
                                         + ((NamedObj) actor).getFullName());
                     }
                 }
