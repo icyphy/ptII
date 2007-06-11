@@ -76,12 +76,13 @@ install: all jars $(PTPACKAGE).jar
 
 # 'make fast' looks for EXTRA_TARGETS.
 #  See $PTII/mk/ptcommon.mk for the definition of 'make fast'
-EXTRA_TARGETS = transform
+EXTRA_TARGETS = transform build
 
 transform:
 	if [ "$(PTBACKTRACK_ECLIPSE_DIR)" = "eclipse" ]; then \
 		echo "Transform the source files in source.lst."; \
 		rm -rf ptolemy; \
+		rm -f ./ptolemy/configs/output.xml; \
 		"$(JAVA)" \
 			-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)$(AUXCLASSPATH)" \
 			ptolemy.backtrack.eclipse.ast.Transformer \
