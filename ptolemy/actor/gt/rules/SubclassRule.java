@@ -66,7 +66,7 @@ public class SubclassRule extends Rule {
     }
 
     public String getValues() {
-        return _superclass;
+        return escapeStringAttribute(_superclass);
     }
 
     public void setAttributeValue(int index, Object value) {
@@ -78,7 +78,7 @@ public class SubclassRule extends Rule {
     }
 
     public void setValues(String values) {
-        _superclass = values;
+        _superclass = unescapeStringAttribute(values);
     }
 
     public void validate() throws RuleValidationException {

@@ -75,8 +75,9 @@ public class ActorAttributeRule extends Rule {
     }
 
     public String getValues() {
-        return _attributeName + FIELD_SEPARATOR + _attributeType +
-                FIELD_SEPARATOR + _attributeValue;
+        return escapeStringAttribute(_attributeName) + FIELD_SEPARATOR
+                + escapeStringAttribute(_attributeType) + FIELD_SEPARATOR
+                + escapeStringAttribute(_attributeValue);
     }
 
     public void setAttributeValue(int index, Object value) {
@@ -94,9 +95,9 @@ public class ActorAttributeRule extends Rule {
     }
 
     public void setValues(String values) {
-        _attributeName = _getFirstField(values);
-        _attributeType = _getNextField();
-        _attributeValue = _getLastField();
+        _attributeName = unescapeStringAttribute(_getFirstField(values));
+        _attributeType = unescapeStringAttribute(_getNextField());
+        _attributeValue = unescapeStringAttribute(_getLastField());
     }
 
     public void validate() throws RuleValidationException {

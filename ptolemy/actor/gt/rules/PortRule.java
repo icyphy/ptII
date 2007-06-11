@@ -53,7 +53,8 @@ public class PortRule extends Rule {
     }
 
     public String getValues() {
-        return _portName + FIELD_SEPARATOR + _portType + FIELD_SEPARATOR
+        return escapeStringAttribute(_portName) + FIELD_SEPARATOR
+                + escapeStringAttribute(_portType) + FIELD_SEPARATOR
                 + _input + FIELD_SEPARATOR + _output + FIELD_SEPARATOR
                 + _multiport;
     }
@@ -91,8 +92,8 @@ public class PortRule extends Rule {
     }
 
     public void setValues(String values) {
-        _portName = _getFirstField(values);
-        _portType = _getNextField();
+        _portName = unescapeStringAttribute(_getFirstField(values));
+        _portType = unescapeStringAttribute(_getNextField());
         _input = _getNextField().equals("true") ? true : false;
         _output = _getNextField().equals("true") ? true : false;
         _multiport = _getLastField().equals("true") ? true : false;

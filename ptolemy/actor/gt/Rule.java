@@ -39,6 +39,72 @@ package ptolemy.actor.gt;
 */
 public abstract class Rule {
 
+    public static String escapeStringAttribute(String attribute) {
+        if (attribute.equals("")) {
+            return "";
+        }
+
+        attribute = attribute.replace("\\", "\\\\");
+        attribute = attribute.replace("\"", "\\\"");
+        attribute = attribute.replace("\'", "\\\'");
+        return "\"" + attribute + "\"";
+    }
+
+    public static int findMatchingParen(String s, int startPos) {
+        if (s.charAt(startPos) == '(') {
+            int parenNum = 1;
+            boolean inDblQuote = false;
+            boolean inSngQuote = false;
+            boolean escaped = false;
+            for (int i = startPos + 1; i < s.length(); i++) {
+                char c = s.charAt(i);
+
+                if (c == '\\' && (inDblQuote || inSngQuote)) {
+                    escaped = !escaped;
+                } else if (c == '\"' && !escaped) {
+                    inDblQuote = !inDblQuote;
+                } else if (c == '\'' && !inDblQuote && !escaped) {
+                    inSngQuote = !inSngQuote;
+                } else if (c == ')' && !inDblQuote && !inSngQuote) {
+                    parenNum--;
+                }
+
+                if (c != '\\') {
+                    escaped = false;
+                }
+
+                if (parenNum == 0) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public static int findSeparator(String s, int startPos, char separator) {
+        boolean inDblQuote = false;
+        boolean inSngQuote = false;
+        boolean escaped = false;
+        for (int i = startPos; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (c == '\\' && (inDblQuote || inSngQuote)) {
+                escaped = !escaped;
+            } else if (c == '\"' && !escaped) {
+                inDblQuote = !inDblQuote;
+            } else if (c == '\'' && !inDblQuote && !escaped) {
+                inSngQuote = !inSngQuote;
+            } else if (c == separator && !inDblQuote && !inSngQuote) {
+                return i;
+            }
+
+            if (c != '\\') {
+                escaped = false;
+            }
+        }
+        return -1;
+    }
+
     public abstract Object getAttributeValue(int index);
 
     public abstract RuleAttribute[] getAttributes();
@@ -51,6 +117,22 @@ public abstract class Rule {
 
     public String toString() {
         return getValues();
+    }
+
+    public static String unescapeStringAttribute(String attribute) {
+        if (attribute.equals("")) {
+            return "";
+        }
+
+        StringBuffer buffer = new StringBuffer(attribute);
+        buffer.deleteCharAt(0);
+        buffer.deleteCharAt(buffer.length() - 1);
+        for (int i = 0; i < buffer.length(); i++) {
+            if (buffer.charAt(i) == '\\') {
+                buffer.deleteCharAt(i);
+            }
+        }
+        return buffer.toString();
     }
 
     public abstract void validate() throws RuleValidationException;

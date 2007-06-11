@@ -54,7 +54,7 @@ public class RuleList extends LinkedList<Rule> {
         RuleList list = new RuleList();
         int startPos = 0;
         while (startPos < expression.length()) {
-            int endPos = _nextRule(expression, startPos);
+            int endPos = Rule.findMatchingParen(expression, startPos);
             if (endPos < 0) {
                 throw new MalformedStringException(expression);
             }
@@ -89,38 +89,6 @@ public class RuleList extends LinkedList<Rule> {
                         + e.getMessage());
             }
         }
-    }
-
-    private static int _nextRule(String expression, int startPos) {
-        if (expression.charAt(startPos) == '(') {
-            int parenNum = 1;
-            boolean inDblQuote = false;
-            boolean inSngQuote = false;
-            boolean escaped = false;
-            for (int i = startPos + 1; i < expression.length(); i++) {
-                char c = expression.charAt(i);
-
-                if (c == '\\' && (inDblQuote || inSngQuote)) {
-                    escaped = !escaped;
-                } else if (c == '\"' && !escaped) {
-                    inDblQuote = !inDblQuote;
-                } else if (c == '\'' && !inDblQuote && !escaped) {
-                    inSngQuote = !inSngQuote;
-                } else if (c == ')' && !inDblQuote && !inSngQuote) {
-                    parenNum--;
-                }
-
-                if (c != '\\') {
-                    escaped = false;
-                }
-
-                if (parenNum == 0) {
-                    return i;
-                }
-            }
-
-        }
-        return -1;
     }
 
     private static Rule _parseRule(String ruleString) {
