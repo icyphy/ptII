@@ -44,10 +44,30 @@ public class PortRule extends Rule {
         return _ATTRIBUTES;
     }
 
+    public String getPortName() {
+        return _portName;
+    }
+
+    public String getPortType() {
+        return _portType;
+    }
+
     public String getValues() {
         return _portName + FIELD_SEPARATOR + _portType + FIELD_SEPARATOR
                 + _input + FIELD_SEPARATOR + _output + FIELD_SEPARATOR
                 + _multiport;
+    }
+
+    public boolean isInput() {
+        return _input;
+    }
+
+    public boolean isMultiport() {
+        return _multiport;
+    }
+
+    public boolean isOutput() {
+        return _output;
     }
 
     public void setAttributeValue(int index, Object value) {

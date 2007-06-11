@@ -267,12 +267,12 @@ public class RuleEditor extends JDialog implements ActionListener {
         public void createEditor(NamedObj object, Frame parent) {
             try {
                 String name = attributeName.getExpression();
+                NamedObj container = getContainer();
                 RuleListAttribute attributeToEdit =
-                    (RuleListAttribute) getContainer().getAttribute(
-                            name, RuleListAttribute.class);
+                    (RuleListAttribute) container.getAttribute(name,
+                            RuleListAttribute.class);
                 _editor = new RuleEditor(parent,
-                        "Editor for " + name + " of "
-                                + getContainer().getFullName(),
+                        "Editor for " + name + " of " + container.getFullName(),
                         attributeToEdit.getRuleList());
 
                 _editor.pack();

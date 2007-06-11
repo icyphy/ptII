@@ -27,7 +27,10 @@
 package ptolemy.actor.gt;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gt.rules.PortRule;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -55,6 +58,35 @@ public class AtomicActorMatcher extends TypedAtomicActor {
                 + "style=\"fill:#C0C0C0\"/>\n" + "<text x=\"-18\" y=\"5\""
                 + "style=\"font-size:14; fill:blue; font-family:SansSerif\">"
                 + "Match</text>\n" + "</svg>\n");
+    }
+
+    public void attributeChanged(Attribute attribute)
+    throws IllegalActionException {
+        super.attributeChanged(attribute);
+        if (attribute == ruleList) {
+            try {
+                _workspace.getWriteAccess();
+                removeAllPorts();
+                for (Rule rule : ruleList.getRuleList()) {
+                    if (rule instanceof PortRule) {
+                        PortRule portRule = (PortRule) rule;
+                        TypedIOPort port = new TypedIOPort(this,
+                                portRule.getPortName(), portRule.isInput(),
+                                portRule.isOutput());
+                        port.setPersistent(false);
+                        port.setMultiport(portRule.isMultiport());
+                    }
+                }
+            } catch (MalformedStringException e) {
+                throw new IllegalActionException(null, e,
+                        "ruleList attribute is malformed.");
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(null, e,
+                        "Name duplicated.");
+            } finally {
+                _workspace.doneWriting();
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
