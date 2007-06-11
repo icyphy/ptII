@@ -35,7 +35,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
-import ptolemy.vergil.icon.NameIcon;
 
 //////////////////////////////////////////////////////////////////////////
 //// Course
@@ -71,8 +70,6 @@ public class Course extends TypedAtomicActor {
         
         Parameter hide = new Parameter(this, "_hideName");
         hide.setVisibility(Settable.EXPERT);
-        
-        new NameIcon(this, "_icon");
         
         /*DependencyHighlighter controller =*/ new DependencyHighlighter(this, "_controller");
         
