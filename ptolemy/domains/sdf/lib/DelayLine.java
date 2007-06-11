@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
  Note that this actor is not a simple sample delay.
  Use the SampleDelay actor to achieve a simple sample delay.
 
- @see SampleDelay
+ @see ptolemy.domains.sdf.lib.SampleDelay
  @author Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 1.0

@@ -97,9 +97,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  S. M. Kay, <i>Modern Spectral Estimation: Theory & Application</i>,
  Prentice-Hall, Englewood Cliffs, NJ, 1988.
 
- @see IIR
- @see LevinsonDurbin
- @see Lattice
+ @see ptolemy.actor.lib.IIR
+ @see ptolemy.actor.lib.LevinsonDurbin
+ @see ptolemy.actor.lib.Lattice
  @see ptolemy.domains.sdf.lib.VariableRecursiveLattice
  @author Edward A. Lee, Christopher Hylands, Steve Neuendorffer
  @version $Id$
