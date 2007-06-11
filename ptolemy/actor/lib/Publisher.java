@@ -181,6 +181,9 @@ public class Publisher extends TypedAtomicActor {
                             _updateLinks();
                         } catch (IllegalActionException ex) {
                             _updatedLinks = false;
+                            if (_running) {
+                                throw ex;
+                            }
                         }
                     }
                 }
@@ -252,12 +255,23 @@ public class Publisher extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+        _running = true;
         // If this was created by instantiating a container class,
         // then the links would not have been updated when setContainer()
         // was called, so we must do it now.
         if (!_updatedLinks) {
             _updateLinks();
         }
+    }
+
+    /** Override the base class to ensure to record that the actor
+     *  is no longer running.
+     *  @exception IllegalActionException If there is already a publisher
+     *   publishing on the same channel.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        _running = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -415,4 +429,7 @@ public class Publisher extends TypedAtomicActor {
 
     /** An indicator that connectionsChanged() has been called. */
     private boolean _inConnectionsChanged = false;
+    
+    /** Indicator that preinitialize has been called and not wrapup. */
+    private boolean _running;
 }
