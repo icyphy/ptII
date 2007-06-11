@@ -74,6 +74,10 @@ all: transform build
 # only if necessary
 install: all jars $(PTPACKAGE).jar
 
+# 'make fast' looks for EXTRA_TARGETS.
+#  See $PTII/mk/ptcommon.mk for the definition of 'make fast'
+EXTRA_TARGETS = transform
+
 transform:
 	if [ "$(PTBACKTRACK_ECLIPSE_DIR)" = "eclipse" ]; then \
 		echo "Transform the source files in source.lst."; \
