@@ -71,7 +71,7 @@ public class Course extends TypedAtomicActor {
         Parameter hide = new Parameter(this, "_hideName");
         hide.setVisibility(Settable.EXPERT);
         
-        /*DependencyHighlighter controller =*/ new DependencyHighlighter(this, "_controller");
+        /*DependencyHighlighter controller =*/ //new DependencyHighlighter(this, "_controller");
         
         units = new Parameter(this, "units");
         units.setTypeEquals(BaseType.INT);
