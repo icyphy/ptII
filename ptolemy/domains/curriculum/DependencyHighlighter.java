@@ -53,6 +53,12 @@ import diva.graph.GraphController;
  This is an attribute that produces a custom node controller that adds
  context menu commands to highlight dependents and prerequisites.
 
+ <p>The preferred way to use this attribute is to add it to an
+ <code><i>Foo</i>Icon.xml</code> file instead of adding it directly to the
+ <code><i>Foo</i>.java</code> file.  The reason is that if this attribute
+ is in <code><i>Foo</i>Icon.xml</code>, then the actor can be used in
+ a non-graphical context.
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.1
