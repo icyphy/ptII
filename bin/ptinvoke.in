@@ -176,12 +176,12 @@ JHDL_JAR="@JHDL_JAR@"
 #### Backtracking facility
 # The Backtracking facility uses Eclipse jar files
 # Set to backtrack and used in $PTII/ptolemy/makefile if Eclipse was found
-PTBACKTRACK_DIR=@PTBACKTRACK_DIR@
+PTBACKTRACK_ECLIPSE_DIR=@PTBACKTRACK_ECLIPSE_DIR@
 BACKTRACK_JARS=""
-if [ "$PTBACKTRACK_DIR" = "backtrack" ]; then
-    PTBACKTRACK_JARS="@PTBACKTRACK_JARS@"
+if [ "$PTBACKTRACK_ECLIPSE_DIR" = "eclipse" ]; then
+    PTBACKTRACK_ECLIPSE_JARS="@PTBACKTRACK_ECLIPSE_JARS@"
     # PTBACKTRACK_JARS will always have a CLASSPATHSEPARATOR prefix
-    BACKTRACK_JARS="${PTBACKTRACK_JARS}"
+    BACKTRACK_JARS="${PTBACKTRACK_ECLIPSE_JARS}"
 fi
 
 #### Cal 
