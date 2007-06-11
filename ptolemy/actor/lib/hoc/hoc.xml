@@ -83,7 +83,9 @@
          </property>
       </entity>
 
-	  <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor"/>
+      <entity name="PtalonActor" class="ptolemy.actor.ptalon.PtalonActor"/>
+
+      <entity name="RunCompositeActor" class="ptolemy.actor.lib.hoc.RunCompositeActor"/>
             
       <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference"/>
       
