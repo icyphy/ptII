@@ -53,19 +53,19 @@ import ptolemy.vergil.toolbox.FigureAction;
 //// GetDocumentationAction
 
 /** This is an action that accesses the documentation for a Ptolemy
- object associated with a figure.  Note that this base class does
- not put this action in a menu, since some derived classes will
- not want it.  But by having it here, it is available to all
- derived classes.
+    object associated with a figure.  Note that this base class does
+    not put this action in a menu, since some derived classes will
+    not want it.  But by having it here, it is available to all
+    derived classes.
 
- This class provides an action for removing instance-specific documentation.
+    This class provides an action for removing instance-specific documentation.
 
- @author Edward A. Lee
- @version $Id$
- @since Ptolemy II 5.2
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (johnr)
- */
+    @author Edward A. Lee
+    @version $Id$
+    @since Ptolemy II 5.2
+    @Pt.ProposedRating Red (eal)
+    @Pt.AcceptedRating Red (johnr)
+*/
 public class GetDocumentationAction extends FigureAction {
 
     /** construct an instance and give a preference for whether the
@@ -104,7 +104,7 @@ public class GetDocumentationAction extends FigureAction {
 
         if (_configuration == null) {
             MessageHandler
-                    .error("Cannot get documentation without a configuration.");
+                .error("Cannot get documentation without a configuration.");
         }
 
         NamedObj target = getTarget();
@@ -121,11 +121,10 @@ public class GetDocumentationAction extends FigureAction {
      * thing as the actionPerformed but without the action handler
      * @param target The NamedObj that will have its documentation shown.
      */
-    public void showDocumentation(NamedObj target)
-    {
-       if (_configuration == null) {
+    public void showDocumentation(NamedObj target) {
+        if (_configuration == null) {
             MessageHandler
-                    .error("Cannot get documentation without a configuration.");
+                .error("Cannot get documentation without a configuration.");
         }
         
         // If the object contains
@@ -137,37 +136,33 @@ public class GetDocumentationAction extends FigureAction {
         List docAttributes = target.attributeList(DocAttribute.class);
         //check for the KeplerDocumentation attribute
         KeplerDocumentationAttribute keplerDocumentationAttribute =
-          (KeplerDocumentationAttribute)target.getAttribute("KeplerDocumentation");
+            (KeplerDocumentationAttribute)target.getAttribute("KeplerDocumentation");
         int docAttributeSize = docAttributes.size();
 
-        if(docAttributes.size() != 0 && keplerDocumentationAttribute != null) {
-          //if there is both a docAttribute and a KeplerDocumentationAttribute
-          //use the preference passed in to the constructor
-          if (docPreference == 0)
-          {
-            keplerDocumentationAttribute = null;
-          }
-          else if (docPreference == 1)
-          {
-            docAttributeSize = 0;
-          }
+        if (docAttributes.size() != 0 && keplerDocumentationAttribute != null) {
+            //if there is both a docAttribute and a KeplerDocumentationAttribute
+            //use the preference passed in to the constructor
+            if (docPreference == 0) {
+                keplerDocumentationAttribute = null;
+            }
+            else if (docPreference == 1) {
+                docAttributeSize = 0;
+            }
         } 
                 
-        if(keplerDocumentationAttribute != null) {
-          //use the KeplerDocumentationAttribute
-          DocAttribute docAtt = keplerDocumentationAttribute.getDocAttribute(target);
-          if(docAtt != null)
-          {
-            showDocAttributeTableau(docAtt, target);
-          }
-          else
-          {
-            throw new InternalErrorException("Error building Kepler documentation");
-          }
-        } else if(docAttributeSize != 0) {
+        if (keplerDocumentationAttribute != null) {
+            //use the KeplerDocumentationAttribute
+            DocAttribute docAttribute = keplerDocumentationAttribute.getDocAttribute(target);
+            if (docAttribute != null) {
+                showDocAttributeTableau(docAttribute, target);
+            }
+            else {
+                throw new InternalErrorException("Error building Kepler documentation");
+            }
+        } else if (docAttributeSize != 0) {
             // Have a doc attribute. Use that.
             DocAttribute docAttribute = (DocAttribute) docAttributes
-                    .get(docAttributes.size() - 1);
+                .get(docAttributes.size() - 1);
             showDocAttributeTableau(docAttribute, target);
         } else {
             // No doc attribute. Try for a doc file.
@@ -224,7 +219,7 @@ public class GetDocumentationAction extends FigureAction {
             } else {
                 throw new Exception(
                         "Could not get find documentation for "
-                                + className
+                        + className
                                 + "."
                                 + (DocManager.getRemoteDocumentationURLBase() != null ? " Also tried looking on \""
                                         + DocManager
@@ -362,7 +357,7 @@ public class GetDocumentationAction extends FigureAction {
         // Need to create an effigy and tableau.
         ComponentEntity effigy = null;
         Effigy context = Configuration.findEffigy(target);
-        if(_effigy == null) {
+        if (_effigy == null) {
           if (context == null) {
               context = Configuration.findEffigy(target.getContainer());
               if (context == null) {
