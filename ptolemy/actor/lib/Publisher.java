@@ -168,7 +168,20 @@ public class Publisher extends TypedAtomicActor {
                         // handles connectivity information. If we want to,
                         // for example, highlight dependents before a model
                         // has been run, this has to be done here.
-                        _updateLinks();
+                        // However, it could fail due to a transient error.
+                        // For example, suppose we create two publishers
+                        // that have the same channel name while editing a
+                        // model, e.g., by instantiating a class containing
+                        // a publisher twice. But during editing, we plan
+                        // to change the channel name before running the
+                        // model.  Thus, we should tolerate errors here
+                        // and continue until the error is caught in
+                        // preinitialize().
+                        try {
+                            _updateLinks();
+                        } catch (IllegalActionException ex) {
+                            _updatedLinks = false;
+                        }
                     }
                 }
             }
