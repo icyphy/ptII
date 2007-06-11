@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 516}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -20,8 +20,14 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test out having two publishers that are&#10;instances of a class.  The way we handle&#10;the two publishers is by specifying the&#10;publisher channel as a parameter in&#10;the class definition.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 20.0]">
+        </property>
+    </property>
     <class name="CompositeActor" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 115.0]">
         </property>
         <property name="Parameter" class="ptolemy.data.expr.Parameter" value="1">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -42,7 +48,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 35}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={60, 202, 815, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={60, 202, 815, 516}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -79,7 +85,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 115}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 110.0]">
             </property>
         </entity>
         <entity name="Publisher" class="ptolemy.actor.lib.Publisher">
@@ -109,11 +115,11 @@
         </property>
         <property name="Parameter" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="channelName" class="ptolemy.data.expr.StringParameter" value="channel2">
+        <property name="channelName" class="ptolemy.data.expr.StringParameter" value="channel1">
         </property>
     </entity>
     <entity name="InstanceOfCompositeActor2" class="CompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 330.0]">
         </property>
         <property name="Parameter" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -125,7 +131,7 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
         </property>
-        <property name="channelName" class="ptolemy.data.expr.StringParameter" value="channel1">
+        <property name="channelName" class="ptolemy.data.expr.StringParameter" value="channel2">
         </property>
     </entity>
     <entity name="Subscriber" class="ptolemy.actor.lib.Subscriber">
@@ -138,21 +144,50 @@
             <property name="boxColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 250.0]">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={604, 78, 330, 237}, maximized=false}">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{465, 280}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 250.0]">
+        </property>
+    </entity>
+    <entity name="Subscriber2" class="ptolemy.actor.lib.Subscriber">
+        <property name="channel" class="ptolemy.data.expr.StringParameter" value="channel2">
+        </property>
+        <doc>Produce a sequence generated by a matching Publisher.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="channel">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="boxColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 2, 2, 2, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 335.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="Subscriber.output" relation="relation"/>
-    <link port="Display.input" relation="relation"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Subscriber2.output" relation="relation2"/>
+    <link port="Test2.input" relation="relation2"/>
 </entity>
