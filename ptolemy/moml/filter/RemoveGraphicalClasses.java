@@ -294,6 +294,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 null);
         _graphicalClasses.put("ptolemy.domains.curriculum.HighlightEntities",
                 "ptolemy.kernel.util.Attribute");
+        _graphicalClasses.put("ptolemy.vergil.icon.NameIcon", null);
+
     }
 
     /** True if we should remove the GR domain. */
