@@ -94,8 +94,16 @@ public class TextEditorTableau extends Tableau {
         setFrame(frame);
         frame.setTableau(this);
 
+        // https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=67 says:
+        // "Create a new model and drag in a Const actor. If you close
+        // the model at this time, vergil prompts to save the model
+        // since there is unsaved modification. However, if you first
+        // do View -> XML View, and then close the model, no prompt
+        // shows up even if the model should be dirty."
+        // So, we don't want to mark the frame as unmodified.
+        //
         // The above will mark the text object modified. Reverse this.
-        frame.setModified(false);
+        //frame.setModified(false);
     }
 
     ///////////////////////////////////////////////////////////////////
