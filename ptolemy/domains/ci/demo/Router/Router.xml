@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Router" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[718, 570]">
     </property>
@@ -92,7 +92,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 195.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {45, 19, 933, 679}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 19, 933, 686}, maximized=false}">
     </property>
     <property name="1:annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -360,9 +360,11 @@ help it make decisions.</text></svg></configure>
             </port>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Packets from the Fast Interface">
-            </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {138, 491, 292, 222}, maximized = false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+            </property>
+            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Packets from the Fast Interface">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 180.0">
             </property>
@@ -384,7 +386,7 @@ help it make decisions.</text></svg></configure>
         <link port="Display.input" relation="relation3"/>
     </entity>
     <entity name="channel2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="670.0, 345.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 345.0]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -420,9 +422,11 @@ help it make decisions.</text></svg></configure>
             </port>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Packets from the Slow Interface">
-            </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {433, 491, 292, 222}, maximized = false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+            </property>
+            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Packets from the Slow Interface">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 180.0">
             </property>
@@ -502,9 +506,11 @@ help it make decisions.</text></svg></configure>
         </port>
     </entity>
     <entity name="dropped" class="ptolemy.actor.lib.gui.Display">
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Dropped Packets">
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {728, 489, 292, 222}, maximized = false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Dropped Packets">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 285.0">
         </property>
@@ -556,7 +562,7 @@ help it make decisions.</text></svg></configure>
             </property>
         </port>
         <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
-            <property name="sleepTime" class="ptolemy.data.expr.Parameter" value="period">
+            <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="period">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 160.0">
             </property>
@@ -602,7 +608,7 @@ help it make decisions.</text></svg></configure>
             </property>
         </port>
         <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
-            <property name="sleepTime" class="ptolemy.data.expr.Parameter" value="period">
+            <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="period">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 160.0">
             </property>
