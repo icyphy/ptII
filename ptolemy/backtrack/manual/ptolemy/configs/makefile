@@ -52,7 +52,7 @@ PTCLASSJAR =    $(PTPACKAGE).jar
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-	backtrack.xml
+	manualActors.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
