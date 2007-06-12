@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TokenRing" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 630]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[801, 630]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[2, 12]">
     </property>
@@ -19,10 +19,10 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 11, 1019, 737}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 9, 1016, 746}, maximized=false}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -41,27 +41,27 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 590.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 575.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{402.0, 315.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.5, 315.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A cyclic token-ring system composed of three blocks.  This system arbitrates&#10;fairly among requests for exclusive access to a shared resource by marching&#10;a token around a ring.  At each &quot;tick&quot; of the clock, the arbiter grants access&#10;to the first requestor downstream of the block with the token.&#10;&#10;In this model, InstanceOfArbiter1 starts with the token (see the parameter&#10;of the instance).&#10;&#10;This example is from:&#10;    Stephen A. Edwards and Edward A. Lee&#10;    &quot;The Semantics and Execution of a Synchronous Block-Diagram Language&quot;&#10;    Technical Memorandum UCB/ERL M01/33, &#10;    University of California, Berkeley, CA 94720, &#10;    October 25, 2001.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 15.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Arbiter class definition">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 160.0]">
         </property>
     </property>
     <class name="Arbiter" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 120.0]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 630]">
         </property>
@@ -334,7 +334,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 405.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -346,14 +346,16 @@
     <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={704, 128, 292, 229}, maximized=false}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[720.0, 480.0]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 485.0]">
         </property>
     </entity>
     <entity name="Request2" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 405.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -366,7 +368,7 @@
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 400.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 405.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -380,11 +382,11 @@
         </property>
         <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;Arbiter 1 granted access&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 480.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 485.0]">
         </property>
     </entity>
     <entity name="InstanceOfArbiter1" class="Arbiter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 360.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 365.0]">
         </property>
         <property name="initiallyOwnsToken" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -420,7 +422,7 @@
         </port>
     </entity>
     <entity name="InstanceOfArbiter2" class="Arbiter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 365.0]">
         </property>
         <property name="initiallyOwnsToken" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -456,7 +458,7 @@
         </port>
     </entity>
     <entity name="InstanceOfArbiter3" class="Arbiter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 365.0]">
         </property>
         <property name="initiallyOwnsToken" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -500,7 +502,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 535.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -512,7 +514,7 @@
         <property name="init" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 535.0]">
         </property>
     </entity>
     <entity name="BooleanToString2" class="ptolemy.actor.lib.conversions.BooleanToAnything">
@@ -520,7 +522,7 @@
         </property>
         <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;Arbiter 2 granted access&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 450.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 455.0]">
         </property>
     </entity>
     <entity name="BooleanToString3" class="ptolemy.actor.lib.conversions.BooleanToAnything">
@@ -528,15 +530,15 @@
         </property>
         <property name="trueValue" class="ptolemy.data.expr.Parameter" value="&quot;Arbiter 3 granted access&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 450.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 455.0]">
         </property>
     </entity>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[635.0, 285.0]">
+        <vertex name="vertex1" value="[640.0, 290.0]">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[105.0, 295.0]">
+        <vertex name="vertex1" value="[110.0, 300.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
