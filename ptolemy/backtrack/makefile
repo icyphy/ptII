@@ -64,7 +64,8 @@ JSRCS = Checkpoint.java \
         CheckpointState.java \
         Rollbackable.java
 
-OTHER_FILES_TO_BE_JARED = 
+OTHER_FILES_TO_BE_JARED = \
+        backtrack.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
