@@ -194,6 +194,12 @@ test Publisher-1.6 {Convert CompositeActor to a class } {
 ####
 #
 test Publisher-2.1 {Instantiate twice a class that has a publisher} {
+
+    # Having two publishers with the same channel name is an error,
+    # and detecting it at run time is correct (detecting it at model
+    # construction time would be wrong, since then you couldn't
+    # actually create two instances).
+
     set workspace [java::new ptolemy.kernel.util.Workspace "pubWS"]
     set parser [java::new ptolemy.moml.MoMLParser $workspace]
     $parser setMoMLFilters [java::null]
@@ -225,7 +231,8 @@ test Publisher-2.1 {Instantiate twice a class that has a publisher} {
 
     set manager [java::new ptolemy.actor.Manager $workspace "pubManager"]
     $model setManager $manager 
-    $manager execute
-    list [$model getName] \
-	[[$model getEntity CompositeActor] isClassDefinition]
-} {}
+
+    catch {$manager execute} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: There is already a publisher using channel "_channel": .PublisherSubscriberInClass.Instance2OfCompositeActor.Publisher
+  in .PublisherSubscriberInClass.Instance1OfCompositeActor.Publisher}}
