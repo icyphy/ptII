@@ -14,9 +14,9 @@
     </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 25, 998, 718}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 25, 1009, 733}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[782, 596]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[794, 617]">
     </property>
     <property name="range" class="ptolemy.data.expr.Parameter" value="55">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -174,7 +174,7 @@ it never receives the message.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 595.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 625.0]">
         </property>
     </property>
     <property name="sureRange" class="ptolemy.data.expr.Parameter" value="55">
@@ -281,9 +281,9 @@ parameter.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 35.0]">
         </property>
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9530265262152">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9501822600243">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{432.2718961588541, 314.6880436197916}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{439.8145780051151, 326.6745524296675}">
     </property>
     <entity name="ReportChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 120.0]">
@@ -1012,7 +1012,7 @@ parameter.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 345.0">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 223, 815, 516}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 223, 815, 516}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
