@@ -183,11 +183,9 @@ public class ConfigParser {
             throw new Exception(
                     "Failed to parse \"" + fileName + "\"", throwable);
         }
-        // Manually modify the resulting tree.
+        // Manually add a <group> element to the root of the tree.
         if (backtrackingElement) {
-            _xmlTree._setElementName("entity");
-            _xmlTree.setAttribute("name", "Backtracking");
-            _xmlTree.setAttribute("class", "ptolemy.moml.EntityLibrary");
+            _xmlTree._setElementName("group");
         }
     }
 

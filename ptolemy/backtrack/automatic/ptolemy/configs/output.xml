@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE group PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Backtracking" class="ptolemy.moml.EntityLibrary">
+<group>
   <group>
     <entity name="Actors" class="ptolemy.moml.EntityLibrary">
       <group>
@@ -111,4 +111,4 @@
       </group>
     </entity>
   </group>
-</entity>
+</group>
