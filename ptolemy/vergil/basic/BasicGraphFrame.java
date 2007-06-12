@@ -76,6 +76,7 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.PtolemyFrame;
@@ -355,6 +356,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _libraryContextMenuCreator = new PTreeMenuCreator();
         _libraryContextMenuCreator
                 .addMenuItemFactory(new OpenLibraryMenuItemFactory());
+        _libraryContextMenuCreator
+                .addMenuItemFactory(new DocumentationMenuItemFactory());
         _library.addMouseListener(_libraryContextMenuCreator);
 
         _libraryScrollPane = new JScrollPane(_library);
@@ -1882,6 +1885,34 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
+
+    ///////////////////////////////////////////////////////////////////
+    //// DocumentationMenuItemFactory
+
+    /**
+     *  Create a menu item that will show documentation
+     */
+    private class DocumentationMenuItemFactory implements MenuItemFactory {
+        /**
+         * Add an item to the given context menu that bring up the 
+         * documentation for the given object
+         */
+        public JMenuItem create(final JContextMenu menu, final NamedObj object) {
+            Action action = new GetDocumentationAction() {
+                public void actionPerformed(ActionEvent e) {
+                    Configuration configuration = getConfiguration();
+                    setConfiguration(configuration);
+                    super.actionPerformed(e);
+                }
+            };
+
+            action.putValue("tooltip", "Get Documentation.");
+            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
+                    KeyEvent.VK_D));
+            return menu.add(action, (String) action.getValue(Action.NAME));
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     //// CopyAction
 
