@@ -284,9 +284,15 @@ public class LayoutConstraintsManager
           // any valid properties. the text props don't count
           // for controls like JLabel, JButton, etc. because
           // we'll put those in the constructor.
+          
+          // EAL: In Ptolemy, we need text in the properties
+          // fields. So remove this check below, and force
+          // isTextComponent to false.
+          isTextComponent = false;
+          
           for (String propertyName : customProperties.keySet())
           {
-            if ((!isTextComponent) || (!propertyName.equals("text")))
+            if ((!isTextComponent) /* EAL: || (!propertyName.equals("text")) */)
             {
               hasProperties = true;
               break;
