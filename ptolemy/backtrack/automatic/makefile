@@ -104,7 +104,12 @@ build: ptolemy_makefile
 		echo "Running $(MAKE) in ptolemy/"; \
 		(cd ptolemy; $(MAKE)); \
 	else \
-		echo "Eclipse not found by configure, not building in ptolemy/"; \
+		if [ -f ptolemy/makefile ]; then \
+		    echo "Eclipse is not present, but ptolemy/makefile is, so running $(MAKE) in ptolemy/"; \
+		    (cd ptolemy; $(MAKE)); \
+                else \
+		    echo "Eclipse not found by configure, ptolemy/makefile not found, not building in ptolemy/"; \
+                fi \
 	fi
 
 ptolemy_makefile: 
