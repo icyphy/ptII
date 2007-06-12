@@ -65,9 +65,6 @@ JSRCS = \
 	PtalonTokenTypes.java \
 	Tester.java
 
-OTHER_FILES_TO_BE_JARED = \
-	ptalon.xml
-
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
 	PtalonLexer.smap \
 	PtalonPopulator.smap \
