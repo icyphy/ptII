@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Transmission" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
@@ -40,7 +40,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 1, 862, 592}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 1, 862, 590}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[647, 474]">
     </property>
@@ -167,7 +167,7 @@ used to simplify the model.</text></svg></configure>
     <entity name="car model" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 215.0}">
         </property>
         <port name="position" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -212,12 +212,12 @@ to see how the function closure
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 180.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 120.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 121, 815, 521}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 405]">
             </property>
             <property name="annotation2" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -238,43 +238,51 @@ to see how the function closure
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 180.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 120.0]">
                 </property>
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 202.5}">
             </property>
             <port name="position" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 205.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 145.0]">
                 </property>
             </port>
             <port name="gear" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 200.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 140.0]">
                 </property>
             </port>
             <port name="throttle" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 250.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 190.0]">
                 </property>
             </port>
             <port name="velocity" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 265.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 205.0]">
                 </property>
             </port>
             <entity name="inGear" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 210.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 150.0]">
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 230.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 170.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
@@ -420,7 +428,7 @@ and rpm).  The integrators model the inertia of the vehicle.</text></svg></confi
                 <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 340.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={88, 137, 815, 516}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={88, 137, 815, 516}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -448,9 +456,31 @@ and rpm).  The integrators model the inertia of the vehicle.</text></svg></confi
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                        </property>
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                        </property>
+                        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                        </property>
+                    </property>
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+                    </property>
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+                    </property>
+                    <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+                        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/lib/integral.gif">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
+                        </property>
                     </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 230.0">
@@ -470,9 +500,31 @@ and rpm).  The integrators model the inertia of the vehicle.</text></svg></confi
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="-0.0, 0.0">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="38.0">
+                        </property>
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="40.0">
+                        </property>
+                        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                        </property>
+                    </property>
                     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 239, 815, 518}, maximized=false}">
                     </property>
                     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+                    </property>
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+                    </property>
+                    <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+                        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/domains/ct/lib/integral.gif">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -16.0]">
+                        </property>
                     </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 275.0">
