@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="j">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="runs_j">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -10.0]">
         </property>
@@ -18,7 +18,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.8073652306968, 237.2734375}">
     </property>
-    <property name="i" class="ptolemy.data.expr.Parameter" value="2">
+    <property name="runs_i" class="ptolemy.data.expr.Parameter" value="2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -37,7 +37,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{135, -10}">
         </property>
     </property>
-    <property name="j" class="ptolemy.data.expr.Parameter" value="2">
+    <property name="runs_j" class="ptolemy.data.expr.Parameter" value="2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -57,7 +57,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model runs the SmallWorld demo with different parameter values.&#10;In particular, it runs it with i different node layouts and j different ranges,&#10;where the range is equal to (10*j + startRange).  The results are output&#10;to dataOuti_j.txt">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model runs the SmallWorld demo with different parameter values.&#10;In particular, it runs it with runs_i different node layouts and runs_j different ranges,&#10;where the range is equal to (10*j + startRange).  &#10;The results are output to dataOuti_j.txt">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 400.0]">
         </property>
@@ -90,12 +90,18 @@
         </property>
         <port name="range" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
         <port name="resetOnEachRun" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
         <port name="fileName" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -141,12 +147,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 240.0]">
         </property>
     </entity>
-    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 205.0]">
         </property>
     </entity>
-    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;dataOut&quot; + i + &quot;_&quot; + j + &quot;.txt&quot;">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -159,13 +165,17 @@
         </property>
         <port name="i" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
         <port name="j" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
     </entity>
-    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input % i">
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input % runs_i">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -180,7 +190,7 @@
         </port>
     </entity>
     <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
-        <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="i">
+        <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="runs_i">
         </property>
         <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -417,7 +427,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 105.0]">
         </property>
     </entity>
-    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
@@ -494,15 +504,15 @@
     <link port="Comparator.right" relation="relation4"/>
     <link port="Comparator.output" relation="relation2"/>
     <link port="Zero.output" relation="relation4"/>
-    <link port="Ramp.output" relation="relation5"/>
-    <link port="Expression.output" relation="relation3"/>
-    <link port="Expression.i" relation="relation7"/>
-    <link port="Expression.j" relation="relation12"/>
-    <link port="Expression2.output" relation="relation7"/>
-    <link port="Expression2.input" relation="relation5"/>
+    <link port="Ramp2.output" relation="relation5"/>
+    <link port="Expression2.output" relation="relation3"/>
+    <link port="Expression2.i" relation="relation7"/>
+    <link port="Expression2.j" relation="relation12"/>
+    <link port="Expression.output" relation="relation7"/>
+    <link port="Expression.input" relation="relation5"/>
     <link port="Repeat.input" relation="relation8"/>
     <link port="Repeat.output" relation="relation12"/>
-    <link port="Ramp2.output" relation="relation8"/>
+    <link port="Ramp.output" relation="relation8"/>
     <link port="Scale.input" relation="relation12"/>
     <link port="Scale.output" relation="relation10"/>
     <link port="AddSubtract.plus" relation="relation10"/>
