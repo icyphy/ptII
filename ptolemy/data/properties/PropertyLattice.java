@@ -27,7 +27,6 @@
  */
 package ptolemy.data.properties;
 
-import ptolemy.data.Token;
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.InternalErrorException;
@@ -37,8 +36,8 @@ import ptolemy.kernel.util.InternalErrorException;
 
 /**
  Property hierarchy base class.
- Note that all public methods are static and synchronized.
- There is exactly one instance of a property lattice.
+ Note that all public methods are synchronized.
+ There are more than one instances of a property lattice.
  Although the property lattice is constructed once and then typically
  does not change during execution, the methods need to be synchronized
  because there are various data structures used to cache results that
@@ -62,7 +61,7 @@ public class PropertyLattice {
      *  lattice.
      *  @return an instance of CPO.
      */
-    public static CPO basicLattice() {
+    public CPO basicLattice() {
         return _lattice._basicLattice;
     }
 
@@ -76,7 +75,7 @@ public class PropertyLattice {
      *  @param property2 an instance of Property.
      *  @return An integer.
      */
-    public synchronized static int compare(Property property1, Property property2) {
+    public synchronized int compare(Property property1, Property property2) {
         if ((property1 == null) || (property2 == null)) {
             throw new IllegalArgumentException(
                     "PropertyLattice.compare(Property, Property): "
@@ -106,11 +105,20 @@ public class PropertyLattice {
         return _lattice.compare(property1, property2);
     }
 
+    /** Return the greatest lower bound of the two given properties.
+     *  @param property1 The first given property.
+     *  @param property2 The second given property.
+     *  @return The greatest lower bound of property1 and property2.
+     */
+    public synchronized Property greatestLowerBound(Property property1, Property property2) {
+        return (Property) _lattice.greatestLowerBound(property1, property2);
+    }
+
     /** Return the an instance of CPO representing the infinite property
      *  lattice.
      *  @return an instance of CPO.
      */
-    public static CPO lattice() {
+    public CPO lattice() {
         return _lattice;
     }
 
@@ -119,7 +127,7 @@ public class PropertyLattice {
      *  @param property2 The second given property.
      *  @return The least upper bound of property1 and property2.
      */
-    public synchronized static Property leastUpperBound(Property property1, Property property2) {
+    public synchronized Property leastUpperBound(Property property1, Property property2) {
         return (Property) _lattice.leastUpperBound(property1, property2);
     }
 
@@ -129,7 +137,7 @@ public class PropertyLattice {
     /** Return the result for the properties that have the given two
      * indexes as hashes.
      */
-    private static final int _getCachedPropertyComparisonResult(int index1,
+    private final int _getCachedPropertyComparisonResult(int index1,
             int index2) {
         return _compareCache[index1][index2];
     }
@@ -137,7 +145,7 @@ public class PropertyLattice {
     /** Set the result for the properties that have the given two
      *  indexes as hashes.
      */
-    private static final void _setCachedPropertyComparisonResult(int index1,
+    private final void _setCachedPropertyComparisonResult(int index1,
             int index2, int value) {
         _compareCache[index1][index2] = value;
     }
@@ -145,7 +153,7 @@ public class PropertyLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
     // The infinite property lattice
-    private static class ThePropertyLattice implements CPO {
+    private class ThePropertyLattice implements CPO {
         /** Return the bottom element of the property lattice, which is UNKNOWN.
          *  @return The Property object representing UNKNOWN.
          */
@@ -532,9 +540,9 @@ public class PropertyLattice {
     ////                         private variables                 ////
 
     /** The infinite property lattice. */
-    private static ThePropertyLattice _lattice = new ThePropertyLattice();
+    private ThePropertyLattice _lattice = new ThePropertyLattice();
 
     /** The result cache for parts of the property lattice. */
-    private static int[][] _compareCache;
+    private int[][] _compareCache;
 
 }
