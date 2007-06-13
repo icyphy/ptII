@@ -1,4 +1,4 @@
-/** An Interface representing a property.
+/** A base class representing a property constraint helper.
 
  Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
@@ -34,11 +34,6 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.MonotonicFunction;
-import ptolemy.data.type.StructuredType;
-import ptolemy.data.type.Type;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
@@ -46,10 +41,10 @@ import ptolemy.kernel.util.NamedObj;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// Property
+//// PropertyConstraintHelper
 
 /**
- An interface representing a property.
+ A base class representing a property constraint helper.
 
  @author Man-Kit Leung, Thomas Mandl, Edward A. Lee
  @version $Id$
@@ -58,7 +53,6 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (mankit)
  */
 public class PropertyConstraintHelper {
-
     
     /** Construct the property constraint helper associated
      *  with the given component.
@@ -97,6 +91,7 @@ public class PropertyConstraintHelper {
      */
     public Property getProperty(IOPort port, PropertyLattice lattice) {
         // return something from _properties.
+        // FIXME: not implemented yet.
         return null;
     }
     
@@ -107,14 +102,8 @@ public class PropertyConstraintHelper {
      * @return The property term of the given port.
      */
     public InequalityTerm getPropertyTerm(IOPort port, PropertyLattice lattice) {
-        // TODO Auto-generated method stub
+        // FIXME: not implemented yet.
         return null;
-    }
-
-    public void setAtLeast (InequalityTerm term1, 
-            InequalityTerm term2, PropertyLattice lattice) {
-        Inequality inequality = new Inequality(term2, term1);
-        _addConstraint(lattice, inequality);        
     }
 
     /**
@@ -124,32 +113,61 @@ public class PropertyConstraintHelper {
      * @param port2 The second given port.
      * @param lattice The given lattice.
      */
-    public void setAtLeast(TypedIOPort port1, TypedIOPort port2, PropertyLattice lattice) {
-        setAtLeast(getPropertyTerm(port1, lattice),
+    public void setAtLeast(IOPort port1, IOPort port2, PropertyLattice lattice) {
+        _setAtLeast(getPropertyTerm(port1, lattice),
                 getPropertyTerm(port2, lattice), lattice);
     }
 
-    
-    public void setAtLeast(TypedIOPort port, MonotonicFunction term, PropertyLattice lattice) {
-        setAtLeast(getPropertyTerm(port, lattice), term, lattice);
+    /**
+     * Create a constraint that set the property of the given port 
+     * to be at least the given function term.
+     * @param port The given port.
+     * @param term The given function term.
+     * @param lattice The given lattice.
+     */
+    public void setAtLeast(IOPort port, InequalityTerm term, PropertyLattice lattice) {
+        _setAtLeast(getPropertyTerm(port, lattice), term, lattice);
     }
     
-    
-    public void setAtMost(TypedIOPort port1, TypedIOPort port2, PropertyLattice lattice) {
-        setAtLeast(getPropertyTerm(port2, lattice),
+    /**
+     * Create a constraint that set the property of the port1 
+     * to be at least the property of port2.
+     * @param port1 The first given port.
+     * @param port2 The second given port.
+     * @param lattice The given lattice.
+     */
+    public void setAtMost(IOPort port1, IOPort port2, PropertyLattice lattice) {
+        _setAtLeast(getPropertyTerm(port2, lattice),
                 getPropertyTerm(port1, lattice), lattice);
     }
 
-    /** Constrain the type of this port to be equal to or greater
-     *  than the type represented by the specified InequalityTerm.
-     *  <p>Actors that call this method should have a clone() method that
-     *  repeats the relative type constraints that were specified in
-     *  the constructor.
-     *  @param typeTerm An InequalityTerm.
+    /**
+     * Create a constraint that set the property of the given port 
+     * to be at most the given function term.
+     * @param port The given port.
+     * @param term The given function term.
+     * @param lattice The given lattice.
      */
-    public void setAtMost(TypedIOPort port, MonotonicFunction term, PropertyLattice lattice) {
-        setAtLeast(term, getPropertyTerm(port, lattice), lattice);
+    public void setAtMost(IOPort port, InequalityTerm term, PropertyLattice lattice) {
+        _setAtLeast(term, getPropertyTerm(port, lattice), lattice);
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The map between property lattices and the associated
+     *  list of constraints 
+     */
+    protected HashMap <PropertyLattice, List<Inequality>> _constraints = new HashMap();
+
+    /** The map between port property values and property lattices.
+     */
+    protected HashMap <PropertyLattice, Map <IOPort, Property>> _properties = new HashMap();
+
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /**
      * Add the given inequality to the list of constraint for
@@ -168,19 +186,21 @@ public class PropertyConstraintHelper {
         constraintList.add(inequality);
     }
 
-    /** The map between property lattices and the associated
-     *  list of constraints 
+    /**
+     * For a given lattice, create a constraint that set the
+     * first term to be at least the second term.
+     * @param term1 The greater term.
+     * @param term2 The lesser term.
+     * @param lattice The given lattice.
      */
-    protected HashMap <PropertyLattice, List<Inequality>> _constraints = new HashMap();
+    private void _setAtLeast(InequalityTerm term1, 
+            InequalityTerm term2, PropertyLattice lattice) {
+        Inequality inequality = new Inequality(term2, term1);
+        _addConstraint(lattice, inequality);        
+    }
 
-    /** The map between port property values and property lattices.
-     */
-    protected HashMap <PropertyLattice, Map <IOPort, Property>> _properties = new HashMap();
-
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
 
     /** The associated component of this helper. */
     private NamedObj _component;

@@ -28,15 +28,13 @@
  */
 package ptolemy.data.properties;
 
-import ptolemy.data.type.TypeLattice;
-import ptolemy.graph.CPO;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// Property
 
 /**
- An interface representing a property.
+ An class representing a static property.
 
  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
  @version $Id$
@@ -44,46 +42,8 @@ import ptolemy.graph.CPO;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
-public class StaticProperty implements Property {
+public class StaticProperty extends BaseProperty {
 
-    /** Test if the argument property is compatible with this property.
-     *  Compatible is defined as follows: If this property is a constant, the
-     *  argument is compatible if it is the same or less than this property in
-     *  the property lattice; If this property is a variable, the argument is
-     *  compatible if it is a substitution instance of this property.
-     *  @param property An instance of Property.
-     *  @return True if the argument is compatible with this property.
-     */
-    public boolean isCompatible(Property property) {
-        //if (this == UNKNOWN) {
-        //   return true;
-        //}
-
-        int propertyInfo = getPropertyLattice().compare(this, property);
-        return ((propertyInfo == CPO.SAME) || (propertyInfo == CPO.HIGHER));
-    }
-
-    /** Test if this property is a constant. A property is a constant if it
-     *  does not contain the bottom of the property lattice in any level within it.
-     *  @return True if this property is a constant.
-     */
-    public boolean isConstant() {
-        return false;
-    }
-
-    /** Return true if the specified property is a substitution instance of this
-     *  property. For the argument to be a substitution instance, it must be
-     *  either the same as this property, or it must be a property that can be
-     *  obtained by replacing the BaseProperty.UNKNOWN component of this property by
-     *  another property.
-     *  @param property A property.
-     *  @return True if the argument is a substitution instance of this property.
-     */
-    public boolean isSubstitutionInstance(Property property) {
-        return //(this == UNKNOWN) || 
-        (this == property);
-    }
-    
     public PropertyLattice getPropertyLattice() {
         return PropertyLattices.getPropertyLattice("StaticDynamic");
     }

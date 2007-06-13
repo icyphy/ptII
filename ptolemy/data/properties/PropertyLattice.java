@@ -27,9 +27,13 @@
  */
 package ptolemy.data.properties;
 
+import java.io.File;
+import java.util.HashMap;
+
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.util.FileUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PropertyLattice
@@ -49,8 +53,8 @@ import ptolemy.kernel.util.InternalErrorException;
  @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.4
- @Pt.ProposedRating Red (yuhong)
- @Pt.AcceptedRating Red
+ @Pt.ProposedRating Red (mankit)
+ @Pt.AcceptedRating Red (mankit)
  @see ptolemy.graph.CPO
  */
 public class PropertyLattice {
@@ -104,6 +108,34 @@ public class PropertyLattice {
         
         return _lattice.compare(property1, property2);
     }
+
+    /**
+     * Return the property lattice described by the given lattice
+     * description file. If the lattice was not created already, 
+     * the given lattice description file is parsed.
+     * @param latticeFile The given lattice description file.
+     * @return The property lattice described by the given file.
+     */
+    public static PropertyLattice getPropertyLattice(File latticeFile) {
+        if (!_lattices.containsKey(latticeFile)) {
+            // Parse the file.
+            // Create a new instance of PropertyLattice.
+            // _lattices.put(latticeFile, newLattice);
+        }
+        
+        return _lattices.get(latticeFile);
+    }
+
+    /**
+     * Return the property lattice with the given name.
+     * @param latticeName The given lattice name.
+     * @return The property lattice with the given name.
+     */
+    public static PropertyLattice getPropertyLattice(String latticeName) {
+        String fileName = "$PTII/ptolemy/data/properties/"
+            + latticeName + ".ldf";
+        return getPropertyLattice(FileUtilities.nameToFile(fileName, null));
+    }  
 
     /** Return the greatest lower bound of the two given properties.
      *  @param property1 The first given property.
@@ -527,7 +559,7 @@ public class PropertyLattice {
                 }
             }
         }
-
+        
         ///////////////////////////////////////////////////////////////
         ////                      private methods                  ////
 
@@ -539,10 +571,16 @@ public class PropertyLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The result cache for parts of the property lattice. */
+    private int[][] _compareCache;
+
     /** The infinite property lattice. */
     private ThePropertyLattice _lattice = new ThePropertyLattice();
 
-    /** The result cache for parts of the property lattice. */
-    private int[][] _compareCache;
+    /**
+     * A HashMap that contains all property lattices with unique
+     * lattice files as keys.
+     */
+    private static HashMap <File, PropertyLattice> _lattices = new HashMap();
 
 }

@@ -1,6 +1,6 @@
-/* A helper class for ptolemy.actor.lib.AddSubtract
+/* Code generator helper for typed composite actor.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,37 +25,46 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties.actor.lib;
+package ptolemy.data.properties.actor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ptolemy.data.properties.PropertyConstraintHelper;
-import ptolemy.data.properties.PropertyLattice;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// AddSubtract
+//// TypedCompositeActor
 
 /**
- A helper class for ptolemy.actor.lib.AddSubtract.
+ Code generator helper for typed composite actor.
 
- @author Man-Kit (Jackie) Leung, Gang Zhou
+ @author Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Yellow (mankit) Pending FIXME in AddSubtract.c: need to deallocate Tokens
- @Pt.AcceptedRating Yellow (cxh)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (zgang)
  */
-public class AddSubtract extends PropertyConstraintHelper {
-    /**
-     * Construct an AddSubtract helper.
-     * @param actor the associated actor
+public class CompositeActor extends PropertyConstraintHelper {
+
+    /** Construct the property constraint helper associated
+     *  with the given TypedCompositeActor.
+     *  @param component The associated component.
      */
-    public AddSubtract(ptolemy.actor.lib.AddSubtract actor) {
-        super(actor);
+    public CompositeActor(ptolemy.actor.TypedCompositeActor component) {
+        super(component);
+    }
+    
+    /** Return all constraints of this component.  The constraints is
+     *  a list of inequalities. 
+     *  @return A list of Inequality.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public List constraintList() throws IllegalActionException {
         
-        PropertyLattice lattice = 
-            PropertyLattice.getPropertyLattice("StaticDynamic");
-        
-        setAtLeast(actor.output, actor.minus, lattice); 
-        setAtLeast(actor.output, actor.plus, lattice); 
-        
+        ArrayList constraints = new ArrayList();
+        constraints.addAll(_constraints.entrySet());
+        return constraints;
     }
 
 }

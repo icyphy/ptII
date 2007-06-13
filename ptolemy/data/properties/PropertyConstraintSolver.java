@@ -29,8 +29,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
- * @author eal
- *
+ @author Man-Kit Leung, Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 6.0.4
+ @Pt.ProposedRating Red (mankit)
+ @Pt.AcceptedRating Red (mankit)
  */
 public class PropertyConstraintSolver extends Attribute {
     /**
@@ -97,7 +100,7 @@ public class PropertyConstraintSolver extends Attribute {
 
         PropertyConstraintHelper compositeHelper = _getHelper(topLevel);
         
-        PropertyLattice lattice = PropertyLattices.getPropertyLattice(
+        PropertyLattice lattice = PropertyLattice.getPropertyLattice(
                 latticeFile.asFile());
         
         try {
