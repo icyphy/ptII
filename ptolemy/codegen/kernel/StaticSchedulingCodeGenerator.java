@@ -36,6 +36,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.codegen.c.kernel.CCodeGenerator;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
@@ -130,7 +131,6 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
 
                 int iterationCount = ((IntToken) ((Variable) iterations)
                         .getToken()).intValue();
-
                 if (iterationCount <= 0) {
                     code.append(_eol + _INDENT1 + "while (true) {" + _eol);
                 } else {
@@ -169,7 +169,17 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
                         + _INDENT3 + "break;" + _eol
                         + _INDENT2 + "}" + _eol);
             }
-            code.append(_INDENT1 + "}" + _eol);
+
+            Attribute period = director.getAttribute("period");
+            if (period != null) {
+                Double periodValue = ((DoubleToken) ((Variable) period)
+                        .getToken()).doubleValue();
+                if (periodValue != 0.0) {
+                    code.append(_INDENT1 + "_currentTime += "
+                            + periodValue + ";" + _eol);
+                }
+                code.append(_INDENT1 + "}" + _eol);
+            }
         }
 
         return code.toString();
@@ -264,6 +274,38 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
         code.append(modelHelper.generatePostfireCode());
         return code.toString();
     }
+
+    /** Generate variable declarations for inputs and outputs and parameters.
+     *  Append the declarations to the given string buffer.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
+     */
+    public String generateVariableDeclaration() throws IllegalActionException {
+        StringBuffer variableDeclarations = new StringBuffer(super.generateVariableDeclaration());
+        CompositeEntity model = (CompositeEntity) getContainer();
+        ptolemy.actor.Director director = ((Actor) model).getDirector();
+
+        if (director == null) {
+            throw new IllegalActionException(this, "The model "
+                    + model.getName() + " does not have a director.");
+        }
+
+        Attribute period = director.getAttribute("period");
+        Double periodValue = 0.0;
+        if (period != null) {
+            periodValue = ((DoubleToken) ((Variable) period)
+                    .getToken()).doubleValue();
+            if (periodValue != 0.0) {
+                variableDeclarations.append(_eol +
+                        comment(1, "Director has a period attribute,"
+                                + " so we track current time."));
+                variableDeclarations.append("double _currentTime = 0;" + _eol);
+            }
+        }
+        return variableDeclarations.toString();
+     }
+
 
     /**
      * Generate the shared code. In this base class, return an empty set.
