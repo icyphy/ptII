@@ -58,15 +58,23 @@ test Test-1.1 {} {
 Value was: 1.0. Should have been: 1.1
   in .TestFailure.Test}}
 
-
-test Test-2.1 {Execute the TestFailure.xml file in CG} {
-    # TestFailure should fail because the expected values are not correct
+######################################################################
+####
+#
+test Test-2.1 {TestFailure should fail because the expected values are not correct} {
     testCG TestFailure.xml
 } {255}
 
-test Test-3.1 {Execute the TestNotEnoughTokens.xml file in CG} {
-    # TestNotEnoughTokens.xml should fail because we don't have enough
-    # tokens
+######################################################################
+####
+#
+test Test-2.2 {TestFailure2Channel should fail because the expected values are not correct} {
+    testCG TestFailure2Channel.xml
+} {2}
+
+######################################################################
+####
+#
+test Test-3.1 {TestNotEnoughTokens.xml should fail because we don't have enoughtokens} {
     testCG TestNotEnoughTokens.xml
 } {254}
-
