@@ -1,6 +1,11 @@
 Elaine Cheong
 June 6, 2007
 
+NOTE: You must have the necessary tools for running Viptos before you
+will be able to run the demos in the subdirectories.  For
+instructions, see:
+  $PTII/ptolemy/domains/ptinyos/doc/installation.htm
+
 Instructions for creating a Ptalon version of a Viptos demo:
 
 - Open an existing Viptos demo and save all unique nodes (or other composite
