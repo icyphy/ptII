@@ -2233,10 +2233,18 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @return The index which indicates the position of the paired
      *   close parenthesis of the string.
      *  @exception IllegalActionException If the character at the
-     *   given position of the string is not an open parenthesis.
+     *   given position of the string is not an open parenthesis or
+     *   if the index is less than 0 or past the end of the string.
      */
     private int _findCloseParen(String string, int pos)
             throws IllegalActionException {
+        if (pos < 0 || pos >= string.length()) {
+            throw new IllegalActionException(_component,
+                    "The character index " + pos
+                    + " is past the end of string \"" + string
+                    + "\", which has a length of " + string.length() + ".");
+        }
+
         if (string.charAt(pos) != '(') {
             throw new IllegalActionException(_component,
                     "The character at index " + pos + " of string: " + string
