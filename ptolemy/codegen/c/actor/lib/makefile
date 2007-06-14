@@ -153,6 +153,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Commutator.c \
 	Const.c \
 	Counter.c \
+	CurrentTime.c \
 	Differential.c \
 	DiscreteRandomSource.c \
 	Distributor.c \
