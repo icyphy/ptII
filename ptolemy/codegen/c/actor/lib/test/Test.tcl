@@ -37,6 +37,17 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+# Run the codegenerator on file
+proc testCG {file} {
+    catch {set application [createAndExecute $file]} errMsg
+    set args [java::new {String[]} 1 \
+	  [list $file]]
+
+    set returnValue [java::call ptolemy.codegen.kernel.CodeGenerator \
+   	generateCode $args]
+    list $returnValue
+}
+
 ######################################################################
 ####
 #
@@ -47,14 +58,15 @@ test Test-1.1 {} {
 Value was: 1.0. Should have been: 1.1
   in .TestFailure.Test}}
 
-test Test-2.1 {Execute the TestFailure.xml file in CG} {
-    set file TestFailure.xml	
-    catch {set application [createAndExecute $file]} errMsg
-    set args [java::new {String[]} 1 \
-	  [list $file]]
 
+test Test-2.1 {Execute the TestFailure.xml file in CG} {
     # TestFailure should fail because the expected values are not correct
-    set returnValue [java::call ptolemy.codegen.kernel.CodeGenerator \
-   	generateCode $args]
-    list $returnValue
+    testCG TestFailure.xml
 } {255}
+
+test Test-3.1 {Execute the TestNotEnoughTokens.xml file in CG} {
+    # TestNotEnoughTokens.xml should fail because we don't have enough
+    # tokens
+    testCG TestNotEnoughTokens.xml
+} {254}
+
