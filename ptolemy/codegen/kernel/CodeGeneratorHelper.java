@@ -1439,6 +1439,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         while (currentPos < code.length()) {
             int openParenIndex = code.indexOf("(", currentPos + 1);
+            if (openParenIndex == -1) {
+                throw new IllegalActionException(_component,                
+                        "Failed to find open paren in \"" + code + "\".");
+            }
             int closeParenIndex = _findCloseParen(code, openParenIndex);
 
             if (closeParenIndex < 0) {
