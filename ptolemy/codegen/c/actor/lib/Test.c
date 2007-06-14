@@ -50,8 +50,8 @@ $actorSymbol(numberOfTokensSeen)++;
 /* $actorSymbol(), DoubleBlock($channel) which has only one channel */
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && fabs($ref(input#$channel)
-                - $ref(correctValues, $actorSymbol(numberOfTokensSeen))
-                > $ref(tolerance))) {
+                - $ref(correctValues, $actorSymbol(numberOfTokensSeen)))
+                > $ref(tolerance)) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been: %f\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
@@ -71,7 +71,7 @@ $actorSymbol(correctValuesThisFiring_$channel) =
 $ref(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && fabs($ref(input#$channel)
-                - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Double)
+                - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Double))
         > $ref(tolerance)) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %g. Should have been: %g\n",
             $actorSymbol(numberOfTokensSeen),
@@ -179,5 +179,12 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $tokenFunc($ref(input#$channel)::toString()).payload.String,
             $tokenFunc(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel)::toString()).payload.String);
     exit(-1);
+}
+/**/
+
+/*** wrapupBlock ***/
+if (($actorSymbol(numberOfTokensSeen) + 1) < $size(correctValues)) {
+    printf("\nTest produced only %d tokens, yet the correctValues parameter was expecting %d tokens.\n", $actorSymbol(numberOfTokensSeen), $size(correctValues));
+    exit(-2);
 }
 /**/
