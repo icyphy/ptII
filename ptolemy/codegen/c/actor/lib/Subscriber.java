@@ -51,4 +51,28 @@ public class Subscriber extends CCodeGeneratorHelper {
     public Subscriber(ptolemy.actor.lib.Subscriber actor) {
         super(actor);
     }
+
+    /**
+     * Generate fire code.
+     * The method reads in <code>fireBlock</code> from Subscriber.c and
+     * replaces macros with their values and returns the processed code
+     * block.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        super.generateFireCode();
+
+        ptolemy.actor.lib.Subscriber actor = (ptolemy.actor.lib.Subscriber) getComponent();
+
+        ArrayList args = new ArrayList();
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            args.add(Integer.valueOf(i));
+            _codeStream.appendCodeBlock("fireBlock", args);
+        }
+
+        return processCode(_codeStream.toString());
+    }
+
 }

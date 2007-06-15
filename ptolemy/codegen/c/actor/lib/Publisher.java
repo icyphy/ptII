@@ -28,19 +28,21 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
+
 
 /**
- * Generate C code for an actor that produces an output token on
- * on each firing with a value that is equal to the absolute value of
- * the input.
+ * Generate C code for an actor that publishes tokens on a named channel.
  *
  * @see ptolemy.actor.lib.Publisher
- * @author Man-Kit Leung
+ * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 6.0
- * @Pt.ProposedRating Green (mankit)
- * @Pt.AcceptedRating Green (cxh)
+ * @since Ptolemy II 6.1
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (cxh)
  *
  */
 public class Publisher extends CCodeGeneratorHelper {
@@ -51,4 +53,28 @@ public class Publisher extends CCodeGeneratorHelper {
     public Publisher(ptolemy.actor.lib.Publisher actor) {
         super(actor);
     }
+
+    /**
+     * Generate fire code.
+     * The method reads in <code>fireBlock</code> from Publisher.c and
+     * replaces macros with their values and returns the processed code
+     * block.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        super.generateFireCode();
+
+        ptolemy.actor.lib.Publisher actor = (ptolemy.actor.lib.Publisher) getComponent();
+
+        ArrayList args = new ArrayList();
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            args.add(Integer.valueOf(i));
+            _codeStream.appendCodeBlock("fireBlock", args);
+        }
+
+        return processCode(_codeStream.toString());
+    }
+
 }
