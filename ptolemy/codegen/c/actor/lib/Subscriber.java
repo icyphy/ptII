@@ -28,7 +28,10 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * Generate C code for an actor that produces an output token on
@@ -67,8 +70,9 @@ public class Subscriber extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Subscriber actor = (ptolemy.actor.lib.Subscriber) getComponent();
 
         ArrayList args = new ArrayList();
-        for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.add(Integer.valueOf(i));
+        args.add(Integer.valueOf(0));
+        for (int i = 0; i < actor.output.getWidth(); i++) {
+            args.set(0, Integer.valueOf(i));
             _codeStream.appendCodeBlock("fireBlock", args);
         }
 

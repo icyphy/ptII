@@ -69,8 +69,9 @@ public class Publisher extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Publisher actor = (ptolemy.actor.lib.Publisher) getComponent();
 
         ArrayList args = new ArrayList();
+        args.add(Integer.valueOf(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.add(Integer.valueOf(i));
+            args.set(0, Integer.valueOf(i));
             _codeStream.appendCodeBlock("fireBlock", args);
         }
 
