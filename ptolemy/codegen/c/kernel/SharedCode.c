@@ -37,6 +37,7 @@ struct token {         // Base type for tokens.
 #define StringtoLong atol
 #define DoubletoInt floor
 #define InttoDouble (double)
+#define InttoLong (long)
 
 char* InttoString (int i) {
     char* string = (char*) malloc(sizeof(char) * 12);
