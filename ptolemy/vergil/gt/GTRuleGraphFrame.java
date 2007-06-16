@@ -27,6 +27,7 @@ package ptolemy.vergil.gt;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -39,6 +40,8 @@ import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -48,13 +51,19 @@ import ptolemy.actor.gt.SingleRuleTransformer;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.actor.ActorEditorGraphController.NewRelationAction;
 import ptolemy.vergil.basic.EditorDropTarget;
 import ptolemy.vergil.basic.WithIconGraphController.NewPortAction;
+import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.canvas.event.LayerAdapter;
 import diva.canvas.event.LayerEvent;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// GTRuleGraphFrame
@@ -156,6 +165,79 @@ implements ChangeListener {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    //// NewRelationAction
+    /** An action to create a new relation. */
+    public class GTNewRelationAction extends FigureAction {
+
+        /** Create an action that creates a new relation.
+         */
+        public GTNewRelationAction() {
+            super("New Relation");
+
+            String[][] iconRoles = new String[][] {
+                    { "/ptolemy/vergil/actor/img/relation.gif",
+                        GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_o.gif",
+                        GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_ov.gif",
+                        GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/actor/img/relation_on.gif",
+                        GUIUtilities.SELECTED_ICON } };
+            GUIUtilities.addIcons(this, iconRoles);
+
+            putValue("tooltip", "Control-click to create a new relation");
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
+                    KeyEvent.VK_R));
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            double x;
+            double y;
+
+            JGraph graph = (JGraph) _tabbedPane.getSelectedComponent();
+            Dimension size = graph.getSize();
+            x = size.getWidth() / 2;
+            y = size.getHeight() / 2;
+
+            ActorGraphModel graphModel =
+                (ActorGraphModel) _controller.getGraphModel();
+            double[] point = SnapConstraint.constrainPoint(x, y);
+            CompositeActorMatcher matcher =
+                (CompositeActorMatcher) graphModel.getPtolemyModel();
+            SingleRuleTransformer transformer =
+                (SingleRuleTransformer) matcher.getContainer();
+            List<?> entityList =
+                transformer.entityList(CompositeActorMatcher.class);
+            Iterator<?> iterator = entityList.iterator();
+            for (int i = 0; i < _tabbedPane.getSelectedIndex(); i++) {
+                iterator.next();
+            }
+
+            NamedObj namedObj = (NamedObj) iterator.next();
+
+            final String relationName = namedObj.uniqueName("relation");
+            final String vertexName = "vertex1";
+
+            // Create the relation.
+            StringBuffer moml = new StringBuffer();
+            moml.append("<relation name=\"" + relationName + "\">\n");
+            moml.append("<vertex name=\"" + vertexName + "\" value=\"{");
+            moml.append(point[0] + ", " + point[1]);
+            moml.append("}\"/>\n");
+            moml.append("</relation>");
+
+            MoMLChangeRequest request = new MoMLChangeRequest(this, namedObj,
+                    moml.toString());
+            request.setUndoable(true);
+            namedObj.requestChange(request);
+        }
+
+        private static final long serialVersionUID = 2208151447002268749L;
+    }
+
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
      */
@@ -164,19 +246,51 @@ implements ChangeListener {
         _ruleMenu = new JMenu("Rule");
         _ruleMenu.setMnemonic(KeyEvent.VK_R);
         _menubar.add(_ruleMenu);
-        
+
         // Remove create new port actions in the tool bar.
         Component[] components = _toolbar.getComponents();
         for (int i = 0, del = 0; i < components.length; i++) {
             if (components[i] instanceof JButton) {
                 Action action = ((JButton) components[i]).getAction();
-                if (action != null && action instanceof NewPortAction) {
+                if (action != null && (action instanceof NewPortAction
+                        || action instanceof NewRelationAction)) {
                     _toolbar.remove(i - del);
                     del++;
                 }
             }
         }
+
+        // Remove create new port actions in the menu.
+        components = _graphMenu.getMenuComponents();
+        for (int i = 0, del = 0; i < components.length; i++) {
+            if (components[i] instanceof JMenuItem) {
+                Action action = ((JMenuItem) components[i]).getAction();
+                if (action != null && (action instanceof NewPortAction
+                        || action instanceof NewRelationAction)) {
+                    _graphMenu.remove(i - del);
+                    del++;
+                }
+            }
+        }
+
+        // Remove duplicated menu separators.
+        for (int i = _graphMenu.getMenuComponentCount() - 1; i >= 0; i--) {
+            if (_graphMenu.getMenuComponent(i)
+                    instanceof JPopupMenu.Separator) {
+                if (i == 0 || _graphMenu.getMenuComponent(i - 1)
+                    instanceof JPopupMenu.Separator) {
+                    _graphMenu.remove(i);
+                }
+            }
+        }
+
+        GTNewRelationAction newRelationAction = new GTNewRelationAction();
+        diva.gui.GUIUtilities.addMenuItem(_graphMenu, newRelationAction);
+        diva.gui.GUIUtilities.addToolBarButton(_toolbar, newRelationAction);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** Create the component that goes to the right of the library.
      *  NOTE: This is called in the base class constructor, before
@@ -235,13 +349,10 @@ implements ChangeListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private methods                   ////
 
     /** The case menu. */
     protected JMenu _ruleMenu;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     /** Add a tabbed pane for the specified case.
      *  @param refinement The case.
