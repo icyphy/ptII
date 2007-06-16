@@ -1273,13 +1273,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
         
         if (remoteReceivers[channelNumber] == null) {
-            throw new InternalErrorException("Channel "
-                    + channelNumber + " of Port \"" + port + "\" was null!");
-        }
-
-        if (remoteReceivers[channelNumber] == null) {
-            throw new InternalErrorException("Channel "
-                    + channelNumber + " of Port \"" + port + "\" was null!");
+            if (!printedNullPortWarnings) {
+                printedNullPortWarnings = true;
+                System.out.println("Warning: Channel "
+                        + channelNumber + " of Port \"" + port + "\" was null! Total number of channels: " + remoteReceivers.length);
+            }
+            return sinkChannels;            
         }
 
         for (int i = 0; i < remoteReceivers[channelNumber].length; i++) {
@@ -2385,4 +2384,5 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             "initBlock", "fireBlock", "postfireBlock",
             "wrapupBlock" };
 
+    private boolean printedNullPortWarnings = false;
 }
