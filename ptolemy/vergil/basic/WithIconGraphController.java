@@ -311,6 +311,9 @@ public abstract class WithIconGraphController extends BasicGraphController {
                 }
 
                 if (_prototype.isMultiport()) {
+                    // Set the width of the multiport to 0 so that the width is inferred.
+                    // See ptolemy/actor/lib/test/auto/VectorDisassemblerComposite.xml
+                    moml.append("<property name=\"width\" class=\"ptolemy.data.expr.Parameter\" value=\"0\"/>");
                     moml.append("<property name=\"multiport\"/>");
                 }
             }
