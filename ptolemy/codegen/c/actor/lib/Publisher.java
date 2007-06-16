@@ -71,8 +71,10 @@ public class Publisher extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i));
-            _codeStream.appendCodeBlock("fireBlock", args);
+            if (actor.output.numberOfSinks() > 0) {
+                args.set(0, Integer.valueOf(i));
+                _codeStream.appendCodeBlock("fireBlock", args);
+            }
         }
 
         return processCode(_codeStream.toString());
