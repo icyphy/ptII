@@ -2,6 +2,9 @@
 #define MISSING 0
 #define boolean unsigned char
 
+/* Infinity is a valid Ptolemy identifier. */
+#define Infinity HUGE_VAL
+
 #ifdef linux
 /* Linux tends to have NAN. */
 #define NaN (__builtin_nanf (""))
