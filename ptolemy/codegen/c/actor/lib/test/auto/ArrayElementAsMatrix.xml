@@ -4,7 +4,7 @@
 <entity name="ArrayElementAsMatrix" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 30, 924, 574}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={21, -14, 924, 576}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[709, 458]">
     </property>
@@ -15,7 +15,7 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -28,6 +28,10 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Iterate through an array by accessing it like a matrix">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 40.0]">
+        </property>
+    </property>
+    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{580, 100}">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
