@@ -850,6 +850,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                     if (valueType.equals(BaseType.INT)) {
                         _fireCode.insert(nextIndex, "$new(Int(");
                         _fireCode.append(")), TYPE_Int");
+                    } else if (valueType.equals(BaseType.LONG)) {
+                        _fireCode.insert(nextIndex, "$new(Long(");
+                        _fireCode.append(")), TYPE_Long");
                     } else if (valueType.equals(BaseType.DOUBLE)) {
                         _fireCode.insert(nextIndex, "$new(Double(");
                         _fireCode.append(")), TYPE_Double");
