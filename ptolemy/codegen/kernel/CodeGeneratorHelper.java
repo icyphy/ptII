@@ -161,6 +161,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a type to the Set of types used thus far.
+     *  @param typeName A string naming the type, for example "Boolean"
+     *  or "String".
+     */
+    public void addNewTypeUsed(String typeName) {
+        _codeGenerator._newTypesUsed.add(typeName);
+    }
+
     /**
      * Find out each output port that needs to be converted for the
      * actor associated with this helper. Then, mark these ports along
@@ -250,7 +258,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 : ptType == BaseType.STRING ? "char*"
                         : ptType == BaseType.DOUBLE ? "double"
                                 : ptType == BaseType.BOOLEAN ? "boolean"
-                                        : "Token";
+                                        : ptType == BaseType.LONG ? "long"
+                                               : "Token";
     }
 
     /**
@@ -1978,7 +1987,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         if (!sinkType.equals(sourceType)) {
             if (isPrimitive(sinkType)) {
-
                 result = codeGenType(sourceType) + "to" + codeGenType(sinkType)
                         + "(" + result + ")";
 
