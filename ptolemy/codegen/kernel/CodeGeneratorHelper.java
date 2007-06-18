@@ -896,8 +896,16 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 parseTreeCodeGenerator.evaluateParseTree(parseTree,
                         new VariableScope(variable));
 
+                String fireCode = processCode(parseTreeCodeGenerator.generateFireCode());
+
+                //if (castType == null && codeGenType(variable.getType()).equals("Array")) {
+                    // FIXME: this is a gross hack necessary for Case.
+                    // The problem is that if the refinement is named "{0}", then
+                    // we get into trouble because {0} is "false"?  sigh.
+                //    return "Array_new(1, 1, " + fireCode + ");";
+                //}
                 return _generateTypeConvertMethod(
-                        processCode(parseTreeCodeGenerator.generateFireCode()),
+                        fireCode,
                         castType, codeGenType(variable.getType()));
 
             } else /* if (attribute instanceof Settable)*/{
