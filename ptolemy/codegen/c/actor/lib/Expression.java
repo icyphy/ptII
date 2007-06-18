@@ -160,9 +160,10 @@ public class Expression extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public Set getSharedCode() throws IllegalActionException {
+
         _cParseTreeCodeGenerator = new CParseTreeCodeGenerator();
 
-        Set codeBlocks = new HashSet();
+        Set codeBlocks = super.getSharedCode();
         codeBlocks.add(processCode(_cParseTreeCodeGenerator
                 .generateSharedCode()));
         return codeBlocks;
