@@ -45,30 +45,34 @@ Token Array_new(int size, int given, ...) {
     result.payload.Array = (ArrayToken) malloc(sizeof(struct array));
     result.payload.Array->size = size;
 
-    // Allocate an new array of Tokens.
-    result.payload.Array->elements = (Token*) calloc(size, sizeof(Token));
+    // Only call calloc if size > 0.  Otherwise Electric Fence reports
+    // an error.
+    if (size > 0) {
+        // Allocate an new array of Tokens.
+        result.payload.Array->elements = (Token*) calloc(size, sizeof(Token));
 
-    if (given > 0) {
-        va_start(argp, given);
+        if (given > 0) {
+            va_start(argp, given);
 
-        for (i = 0; i < given; i++) {
-            result.payload.Array->elements[i] = va_arg(argp, Token);
-        }    
-		
-        // elementType is given as the last argument.
-        elementType = va_arg(argp, int);			
-        //result.payload.Array->elementType = elementType;
-
-        if (elementType >= 0) {
-            // convert the elements if needed.
             for (i = 0; i < given; i++) {
-                if (Array_get(result, i).type != elementType) {
-                    result.payload.Array->elements[i] = functionTable[(int)elementType][FUNC_convert](Array_get(result, i));
-                }
+                result.payload.Array->elements[i] = va_arg(argp, Token);
             }    
-        }
+		
+            // elementType is given as the last argument.
+            elementType = va_arg(argp, int);			
+            //result.payload.Array->elementType = elementType;
 
-        va_end(argp);
+            if (elementType >= 0) {
+                // convert the elements if needed.
+                for (i = 0; i < given; i++) {
+                    if (Array_get(result, i).type != elementType) {
+                        result.payload.Array->elements[i] = functionTable[(int)elementType][FUNC_convert](Array_get(result, i));
+                    }
+                }    
+            }
+
+            va_end(argp);
+        }
     }
     return result;
 }
