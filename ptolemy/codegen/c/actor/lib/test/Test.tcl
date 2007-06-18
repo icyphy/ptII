@@ -70,7 +70,7 @@ test Test-2.1 {TestFailure should fail because the expected values are not corre
 #
 test Test-2.2 {TestFailure2Channel should fail because the expected values are not correct} {
     testCG TestFailure2Channel.xml
-} {2}
+} {255}
 
 ######################################################################
 ####
