@@ -25,7 +25,6 @@ for ($actorSymbol(i) = 0;
 /**/
 
 /*** fireBlock ($numPoints)***/
-$ref(output) = $actorSymbol(levels).payload.Double;
 for ($actorSymbol(i) = 0;
      $actorSymbol(i) < $numPoints;
      $actorSymbol(i)++) {        
@@ -34,6 +33,11 @@ for ($actorSymbol(i) = 0;
         $ref(output) = $actorSymbol(levels).payload.Array->elements[$actorSymbol(i)].payload.Double;
         break;
     }
+}
+if ($actorSymbol(i) >= $numPoints) {
+    // There was no match in the for loop above.
+    $ref(output) = $actorSymbol(levels).payload.Array->elements[$numPoints-1].payload.Double;
+
 }
 
 /**/
