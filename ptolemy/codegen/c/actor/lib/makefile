@@ -54,6 +54,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 #Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	colt/colt.jar \
 	comm/comm.jar \
 	conversions/conversions.jar \
 	gui/gui.jar \
@@ -103,6 +104,7 @@ JSRCS = \
 	Maximum.java \
 	Minimum.java \
 	MonitorValue.java \
+	MovingAverage.java \
 	MultiplyDivide.java \
 	Publisher.java \
 	Pulse.java \
