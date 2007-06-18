@@ -33,6 +33,9 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.type.BaseType;
+
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -77,31 +80,86 @@ public class CaseDirector extends Director {
         ptolemy.actor.lib.hoc.Case container = (ptolemy.actor.lib.hoc.Case) getComponent()
                 .getContainer();
 
-        code.append(_eol + _INDENT2 + "switch ("
-                + _codeGenerator.generateVariableName(container.control)
-                + ") {" + _eol);
+        System.out.println("CaseDirector: " + container.control.getType());
+
+
+
+        boolean useSwitch = false;
+        if (container.control.getType() == BaseType.BOOLEAN
+                || container.control.getType() == BaseType.INT) {
+            // We have a boolean or integer, so we can use a C switch.
+            useSwitch = true;
+            code.append(_eol + _INDENT2 + "switch("
+                    + _codeGenerator.generateVariableName(container.control)
+                    + ") {" + _eol);
+        }
+
+        // If we are not using a C switch, save the default refinement and
+        // output it last
+        CompositeActor defaultRefinement = null;
+
+        int refinementCount = 0;
 
         Iterator refinements = container.deepEntityList().iterator();
         while (refinements.hasNext()) {
+            boolean fireRefinement = true;
+            refinementCount++;
             CompositeActor refinement = (CompositeActor) refinements.next();
+            CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper(refinement);
             String refinementName = refinement.getName();
             if (!refinementName.equals("default")) {
-                code.append(_INDENT2 + "case " + refinementName + ":");
+                if (useSwitch) {
+                    code.append(_INDENT2 + "case " + refinementName + ":");
+                } else {
+                    if (refinementCount == 1) {
+                        // Add String to the list of _newTypesUsed.
+                        refinementHelper.addNewTypeUsed("String");
+                        code.append(_INDENT2 + "if (!strcmp(");
+                    } else {
+                        code.append(_INDENT2 + "} else if (!strcmp(");
+                    }
+                    code.append(_codeGenerator.generateVariableName(container.control)
+                            + ".payload.String, "
+                            + "\"" + refinementName + "\")) {" + _eol);
+                }
             } else {
-                code.append(_INDENT2 + "default: ");
+                if (useSwitch) {
+                    code.append(_INDENT2 + "default: ");
+                } else {
+                    defaultRefinement = refinement;
+                    // Skip Firing the default refinement for now,
+                    // we'll do it later.
+                    fireRefinement = false;
+                }
             }
-            CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper(refinement);
 
-            // fire the refinement
+            // Fire the refinement
+            if (fireRefinement) {
+                if (inline) {
+                    code.append(refinementHelper.generateFireCode());
+                    code.append(refinementHelper.generateTypeConvertFireCode());
+                } else {
+                    code.append(CodeGeneratorHelper.generateName(refinement)
+                            + "();" + _eol);
+                }
+            }
+            fireRefinement = true;
+
+            if (useSwitch) {
+                code.append(_INDENT2 + "break;" + _eol + _eol);
+            }
+        }
+
+        if (defaultRefinement != null) {
+            code.append(_INDENT2 + "} else {" + _eol);
             if (inline) {
-                code.append(refinementHelper.generateFireCode());
-                code.append(refinementHelper.generateTypeConvertFireCode());
+                CodeGeneratorHelper defaultHelper = (CodeGeneratorHelper) _getHelper(defaultRefinement);
+                code.append(defaultHelper.generateFireCode());
+                code.append(defaultHelper.generateTypeConvertFireCode());
             } else {
-                code.append(CodeGeneratorHelper.generateName(refinement)
+                code.append(CodeGeneratorHelper.generateName(defaultRefinement)
                         + "();" + _eol);
             }
-
-            code.append(_INDENT2 + "break;" + _eol + _eol);
         }
 
         code.append(_INDENT2 + "}" + _eol);
