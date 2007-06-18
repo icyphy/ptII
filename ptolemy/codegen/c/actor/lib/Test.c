@@ -14,7 +14,7 @@ $actorSymbol(numberOfTokensSeen)++;
 
 /* $actorSymbol(), IntBlock($channel) which has only one channel */
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && $ref(input#$channel) != $ref(correctValues, $actorSymbol(numberOfTokensSeen))) {
+        && ($ref(input#$channel) != $ref(correctValues, $actorSymbol(numberOfTokensSeen)))) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been: %d\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
