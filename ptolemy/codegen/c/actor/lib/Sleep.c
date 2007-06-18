@@ -8,8 +8,11 @@
     $actorSymbol(sleepTime).tv_nsec = ($val(sleepTime) % 1000) * 1000000;
 /**/
 
-/***transferBlock($channel)***/
+/*** fireBlock ***/
     nanosleep(&$actorSymbol(sleepTime), &$actorSymbol(remainingTime));
+/**/
+
+/***transferBlock($channel)***/
     $ref(output#$channel) = $ref(input#$channel);
 /**/
 
