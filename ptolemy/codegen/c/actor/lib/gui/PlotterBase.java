@@ -39,6 +39,7 @@ import java.util.Set;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.plot.Plot;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -106,7 +107,12 @@ public class PlotterBase extends CCodeGeneratorHelper {
         // If the plot has not been created, we need to creat the plot
         // to get the configuration.
         if (actor.plot == null) {
-            actor.initialize();
+            try {
+                actor.initialize();
+            } catch (IllegalActionException ex) {
+                // Ignore this, we probably don't have a configuration.
+                actor.plot = new Plot();
+            }
         }
 
         StringWriter stringWriter = new StringWriter();
