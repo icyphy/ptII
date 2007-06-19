@@ -1062,6 +1062,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String componentClassName = component.getClass().getName();
         String helperClassName = componentClassName.replaceFirst("ptolemy",
                 packageName);
+        if (helperClassName.equals(componentClassName)) {
+            throw new IllegalActionException(component,
+                    "The component class name \""
+                    + componentClassName + "\" and the helper class name \""
+                    + helperClassName + "\" are the same?  Perhaps the "
+                    + "substitution of the value of the generatorPackage "
+                    + "parameter \"" + packageName + "\" failed?");
+        }
 
         Class helperClass = null;
 
