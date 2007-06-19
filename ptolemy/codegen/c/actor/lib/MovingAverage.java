@@ -30,6 +30,7 @@ package ptolemy.codegen.c.actor.lib;
 
 import java.util.ArrayList;
 
+import ptolemy.data.type.Type;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -65,5 +66,33 @@ public class MovingAverage extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         return processCode(super.generateFireCode());
+    }
+
+    /**
+     * Generate preinitialize code.
+     * Read the <code>CommonPreinitBlock</code> from MovingAverage.c
+     * replace macros with their values and return the processed code
+     * block.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        super.generatePreinitializeCode();
+
+        ptolemy.actor.lib.MovingAverage actor = (ptolemy.actor.lib.MovingAverage) getComponent();
+
+        ArrayList args = new ArrayList();
+
+        Type type = actor.output.getType();
+        if (isPrimitive(type)) {
+            args.add(targetType(type));
+            _codeStream.appendCodeBlock("CommonPreinitBlock", args);
+        } else {
+            throw new IllegalActionException("Non-primitive types "
+                    + type + " not yet supported by MovingAverage");
+        }
+
+        return processCode(_codeStream.toString());
     }
 }
