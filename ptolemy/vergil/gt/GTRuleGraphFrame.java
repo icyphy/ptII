@@ -27,11 +27,14 @@ package ptolemy.vergil.gt;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,15 +46,26 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.SingleRuleTransformer;
+import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.actor.ActorEditorGraphController.NewRelationAction;
@@ -166,7 +180,7 @@ implements ChangeListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// NewRelationAction
+    //// GTNewRelationAction
     /** An action to create a new relation. */
     public class GTNewRelationAction extends FigureAction {
 
@@ -238,6 +252,116 @@ implements ChangeListener {
         private static final long serialVersionUID = 2208151447002268749L;
     }
 
+    public class GTRunAction extends FigureAction {
+
+        public GTRunAction() {
+            super("Perform Transformation");
+
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/basic/img/run.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/run_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/basic/img/run_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/run_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", "Perform Transformation (Ctrl+R)");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_R, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+
+            _attribute = new Attribute((Workspace) null);
+
+            try {
+                _inputModel = new FileParameter(_attribute, "inputModel");
+                _inputModel.setDisplayName("Input model");
+
+                _outputModel = new FileParameter(_attribute, "outputModel");
+                _outputModel.setDisplayName("Output model");
+            } catch (KernelException e) {
+                throw new KernelRuntimeException(e, "Unable to create action " +
+                        "instance.");
+            }
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            TransformationFilesChooser filesChooser =
+                new TransformationFilesChooser(getFrame(), _attribute);
+            if (filesChooser.buttonPressed().equals(
+                    TransformationFilesChooser._moreButtons[0])) {
+                File input = null;
+                try {
+                    input = _inputModel.asFile();
+                } catch (IllegalActionException ex) {
+                }
+                if (input == null) {
+                    MessageHandler.message("Input model must not be empty.");
+                    return;
+                }
+                if (!input.exists()) {
+                    MessageHandler.message("Unable to read input model " +
+                            _inputModel.getExpression() + ".");
+                    return;
+                }
+
+                File output = null;
+                try {
+                    output = _outputModel.asFile();
+                } catch (IllegalActionException ex) {
+                }
+                if (output == null) {
+                    MessageHandler.message("Output model must not be empty.");
+                    return;
+                }
+                if (output.exists()) {
+                    if (!MessageHandler.yesNoQuestion(
+                            "Overwrite output model " +
+                            _outputModel.getExpression() + "?")) {
+                        return;
+                    }
+                }
+
+                _parser.reset();
+                NamedObj model;
+                try {
+                    model = _parser.parse(null, input.toURL());
+                } catch (Exception ex) {
+                    MessageHandler.message("Unable to parse input model.");
+                    return;
+                }
+            }
+        }
+
+        private Attribute _attribute;
+
+        private FileParameter _inputModel;
+
+        private FileParameter _outputModel;
+
+        private MoMLParser _parser = new MoMLParser();
+
+        private static final long serialVersionUID = -3272455226789715544L;
+
+    }
+
+    public static class TransformationFilesChooser extends ComponentDialog {
+
+        public TransformationFilesChooser(Frame owner, NamedObj target) {
+            super(owner, "Choose Input/Output Files", new Configurer(target),
+                    _moreButtons);
+        }
+
+        private static final String[] _moreButtons = new String[] {
+            "Transform", "Cancel"
+        };
+
+        private static final long serialVersionUID = -8150952956122992910L;
+    }
+
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
      */
@@ -281,6 +405,35 @@ implements ChangeListener {
                     instanceof JPopupMenu.Separator) {
                     _graphMenu.remove(i);
                 }
+            }
+        }
+
+        // Replace the "Run" action if the current composite actor is toplevel.
+        NamedObj model = getModel();
+        if (model == model.toplevel()) {
+            components = _toolbar.getComponents();
+            int position = -1;
+            for (int i = 0, del = 0; i < components.length; i++) {
+                if (components[i] instanceof JButton) {
+                    Action action = ((JButton) components[i]).getAction();
+                    if (action != null && action.getClass().getName().equals(
+                            "ptolemy.vergil.basic.RunnableGraphController" +
+                            "$RunModelAction")) {
+                        _toolbar.remove(i - del);
+                        if (del == 0) {
+                            position = i;
+                        }
+                    }
+                }
+            }
+            if (position >= 0) {
+                GUIUtilities.addToolBarButton(_toolbar, new GTRunAction());
+
+                // Move the newly added component to the original position.
+                int index = _toolbar.getComponentCount() - 1;
+                Component runComponent = _toolbar.getComponent(index);
+                _toolbar.remove(index);
+                _toolbar.add(runComponent, position);
             }
         }
 
