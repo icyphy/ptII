@@ -472,6 +472,23 @@ and execution capabilities from Ptolemy.
  complex, domain specific data analysis steps.
 </BLOCKQUOTE>
 
+Concerning using Ptolemy actors within Kepler, Norbert Podhorszki writes:
+<BLOCKQUOTE>
+If you find a Ptolemy actor useful, just remember its class name (e.g. 
+ptolemy.actor.lib.Ramp). In Kepler, "Tools/Instantiate Component" menu 
+allows you to type in the class name, which will put an actor instance on 
+your canvas just as dragging one from the actor tree.
+
+ <p>The ptolemy jar is stored in the kepler.jar, so you have access to any 
+Ptolemy actors and directors.
+
+ <p>If you want to use a director not in Kepler tree, you have to use the
+"Tools/Instantiate Attribute" menu. I use it to get a DDF director 
+frequently (class ptolemy.domains.ddf.kernel.DDFDirector).
+
+ <p>I suppose, you can create a kar file for any ptolemy actor just as for 
+kepler actors, if you want to add some of them into the Kepler actor tree.
+</BLOCKQUOTE>
 
 </dl>
 
