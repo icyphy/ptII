@@ -53,11 +53,14 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.EditorDropTarget;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.event.LayerAdapter;
 import diva.canvas.event.LayerEvent;
+import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
@@ -152,6 +155,25 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
         GUIUtilities.addMenuItem(_caseMenu, _addCaseAction);
         GUIUtilities.addHotKey(_getRightComponent(), _removeCaseAction);
         GUIUtilities.addMenuItem(_caseMenu, _removeCaseAction);
+    }
+
+    /** Create a new graph pane. Note that this method is called in
+     *  constructor of the base class, so it must be careful to not reference
+     *  local variables that may not have yet been created.
+     *  This overrides the base class to create a specialized
+     *  graph controller (an inner class).
+     *  @param entity The object to be displayed in the pane.
+     *  @return The pane that is created.
+     */
+    protected GraphPane _createGraphPane(NamedObj entity) {
+        _controller = new CaseGraphController();
+        _controller.setConfiguration(getConfiguration());
+        _controller.setFrame(this);
+
+        // The cast is safe because the constructor only accepts
+        // CompositeEntity.
+        final ActorGraphModel graphModel = new ActorGraphModel(entity);
+        return new GraphPane(_controller, graphModel);
     }
 
     /** Create the component that goes to the right of the library.
@@ -339,6 +361,24 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
 
                 _case.requestChange(change);
             }
+        }
+    }
+    
+    /** Specialized graph controller that handles multiple graph models. */
+    public class CaseGraphController extends ActorEditorGraphController {
+        /** Override the base class to select the graph model associated
+         *  with the selected pane.
+         */
+        public GraphModel getGraphModel() {
+            if (_tabbedPane != null) {
+                Component tab = _tabbedPane.getSelectedComponent();
+                if (tab instanceof JGraph) {
+                    GraphPane pane = ((JGraph)tab).getGraphPane();
+                    return pane.getGraphModel();
+                }
+            }
+            // Fallback position.
+            return super.getGraphModel();
         }
     }
 
