@@ -3,18 +3,18 @@
  */
 package ptolemy.data.properties;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.TypeConflictException;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.FileParameter;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.properties.gui.PropertyConstraintSolverGUIFactory;
-import ptolemy.data.type.BaseType;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalitySolver;
@@ -27,6 +27,7 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.FileUtilities;
 
 /**
  @author Man-Kit Leung, Edward A. Lee
@@ -51,21 +52,23 @@ public class PropertyConstraintSolver extends Attribute {
 
         // FIXME: What should we use for the extension of the 
         // lattice decription file?
-        latticeFile = new FileParameter(this, "latticeFile");
-        latticeFile.setExpression(
-                "$PTII/ptolemy/data/properties/lattice/StaticDynamic.ldf");
-        
-        solveLeast = new Parameter(this, "solveLeast");
-        solveLeast.setTypeEquals(BaseType.BOOLEAN);
-        solveLeast.setExpression("true");
+        propertyLattice = new StringParameter(this, "propertyLattice");
+        propertyLattice.setExpression("staticDynamic");
+                
+        solvingFixedPoint = new StringParameter(this, "solvingFixedPoint");
+        solvingFixedPoint.setExpression("least");
+
+        _addChoices();
 
         _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
+                + "<rect x=\"-50\" y=\"-20\" width=\"115\" height=\"40\" "
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
-                + "Double click to\nresolve property.</text></svg>");
+                + "Double click to\nResolve Property.</text></svg>");
 
-        new PropertyConstraintSolverGUIFactory(this, "_codeGeneratorGUIFactory");
+        new PropertyConstraintSolverGUIFactory(
+                this, "_propertyConstraintSolverGUIFactory");
+        
     }
 
     
@@ -75,17 +78,61 @@ public class PropertyConstraintSolver extends Attribute {
 
     //public StringParameter latticeClassName;    
 
-    /**
-     * The file parameter for the lattice description file.
+    private void _addChoices() {
+        File file = null;
+        
+        try {
+            file = new File(FileUtilities.nameToURL(
+                    "$CLASSPATH/ptolemy/data/properties/lattice", 
+                    null, null).getFile());
+        } catch (IOException ex) {
+            // Should not happen.
+            assert false;
+        }
+
+        File[] lattices = file.listFiles(); 
+        for (int i = 0; i < lattices.length; i++) {
+            String latticeName = lattices[i].getName();
+            if (lattices[i].isDirectory() && !latticeName.equals("CVS")) {
+                propertyLattice.addChoice(latticeName);
+            }
+        }
+        
+        solvingFixedPoint.addChoice("least");
+        solvingFixedPoint.addChoice("greatest");
+    }
+
+
+
+    /** The file parameter for the lattice description file.
      */
-    public FileParameter latticeFile;
+    public StringParameter propertyLattice;
     
-    public Parameter solveLeast;
+    /** Indicate whether to compute the least or greatest 
+     *  fixed point solution.
+     */
+    public StringParameter solvingFixedPoint;
     
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
+    /** React to a change in an attribute. Clear the previous mappings
+     *  for the helpers, so new helpers will be created for the new
+     *  lattice.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this class).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        super.attributeChanged(attribute);
+        
+        if (attribute.equals(propertyLattice)) {
+            _helperStore.clear();
+        }
+    }
+    
     /**
      * Resolve the property values for the given top-level entity.
      * @param topLevel The given top level entity.
@@ -101,7 +148,7 @@ public class PropertyConstraintSolver extends Attribute {
         PropertyConstraintHelper compositeHelper = _getHelper(topLevel);
         
         PropertyLattice lattice = PropertyLattice.getPropertyLattice(
-                latticeFile.asFile());
+                propertyLattice.stringValue());
         
         try {
             List conflicts = new LinkedList();
@@ -131,11 +178,11 @@ public class PropertyConstraintSolver extends Attribute {
                 solver.addInequalities(constraints);
 
                 try {
-                    // Find the least solution (most specific types)
-                    if (((BooleanToken) solveLeast.getToken()).booleanValue()) {
-                        solver.solveLeast();
-                    } else {
+                    // Find the greatest solution (most general type)
+                    if (solvingFixedPoint.stringValue().equals("Greatest")) {
                         solver.solveGreatest();
+                    } else {
+                        solver.solveLeast();
                     }
                 } catch (InvalidStateException ex) {
                     throw new InvalidStateException(topLevel, ex,
@@ -215,42 +262,58 @@ public class PropertyConstraintSolver extends Attribute {
      * @param component The given component
      * @return The associated property constraint helper.
      */    
-    protected static PropertyConstraintHelper _getHelper(NamedObj component)
+    public PropertyConstraintHelper _getHelper(NamedObj component)
             throws IllegalActionException {
         if (_helperStore.containsKey(component)) {
             return (PropertyConstraintHelper) _helperStore.get(component);
         }
+        
+        PropertyLattice lattice = PropertyLattice
+                .getPropertyLattice(propertyLattice.stringValue());
+        
+        String packageName = "ptolemy.data.properties.lattice." 
+            + propertyLattice.stringValue();        
 
-        String packageName = "ptolemy.data.properties";
-        String componentClassName = component.getClass().getName();
-        String helperClassName = componentClassName.replaceFirst("ptolemy",
-                packageName);
+        Class componentClass = component.getClass();
 
         Class helperClass = null;
-
-        try {
-            helperClass = Class.forName(helperClassName);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalActionException(null, e,
-                    "Cannot find helper class " + helperClassName);
+        while (helperClass == null) {
+            try {
+                
+                // FIXME: Is this the right error message?
+                if (!componentClass.getName().contains("ptolemy")) {
+                    throw new IllegalActionException("There is no property helper "
+                            + " for " + component.getClass());
+                }
+                
+                helperClass = Class.forName(componentClass.getName()
+                        .replaceFirst("ptolemy", packageName));
+                
+            } catch (ClassNotFoundException e) {
+                // If helper class cannot be found, search the helper class
+                // for parent class instead.
+                componentClass = componentClass.getSuperclass();
+            }
         }
-
+        
         Constructor constructor = null;
-
+        Method initializeMethod = null;
+        
         try {
-            constructor = helperClass.getConstructor(new Class[] { component
-                                                                   .getClass() });
+            constructor = helperClass.getConstructor(
+                    new Class[] { componentClass, PropertyLattice.class });
+            
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(null, e,
-                    "There is no constructor in " + helperClassName
-                    + " which accepts an instance of "
-                    + componentClassName + " as the argument.");
+                    "Cannot find constructor method in " 
+                    + helperClass.getName());
         }
 
         Object helperObject = null;
 
         try {
-            helperObject = constructor.newInstance(new Object[] { component });
+            helperObject = constructor.newInstance(new Object[] { component, lattice });
+            
         } catch (Exception ex) {
             throw new IllegalActionException(component, ex,
                     "Failed to create the helper class for property constraints.");
@@ -258,19 +321,20 @@ public class PropertyConstraintSolver extends Attribute {
 
         if (!(helperObject instanceof PropertyConstraintHelper)) {
             throw new IllegalActionException(
-                    "Cannot resolve property for this component: " + component
-                    + ". Its helper class does not"
+                    "Cannot resolve property for this component: "
+                    + component + ". Its helper class does not"
                     + " implement PropertyConstraintHelper.");
         }
 
-        PropertyConstraintHelper castHelperObject = (PropertyConstraintHelper) helperObject;
+        PropertyConstraintHelper castHelperObject = 
+            (PropertyConstraintHelper) helperObject;
 
+        castHelperObject.setSolver(this);
+        
         _helperStore.put(component, helperObject);
 
         return castHelperObject;
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

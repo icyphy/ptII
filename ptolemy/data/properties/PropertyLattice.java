@@ -27,13 +27,10 @@
  */
 package ptolemy.data.properties;
 
-import java.io.File;
 import java.util.HashMap;
 
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.util.FileUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// PropertyLattice
@@ -112,31 +109,35 @@ public class PropertyLattice {
     /**
      * Return the property lattice described by the given lattice
      * description file. If the lattice was not created already, 
-     * the given lattice description file is parsed.
-     * @param latticeFile The given lattice description file.
+     * a new property lattice is instantiated.
+     * @param latticeName The given lattice name.
      * @return The property lattice described by the given file.
      */
-    public static PropertyLattice getPropertyLattice(File latticeFile) {
-        if (!_lattices.containsKey(latticeFile)) {
-            // Parse the file.
-            // Create a new instance of PropertyLattice.
-            // _lattices.put(latticeFile, newLattice);
+    public static PropertyLattice getPropertyLattice(String latticeName) {
+        if (!_lattices.containsKey(latticeName)) {
+
+            try {
+                Class latticeClass = Class.forName("ptolemy.data.properties.lattice." + latticeName + ".Lattice");
+                // Create a new instance of PropertyLattice.
+                //PropertyLattice newLattice = new PropertyLattice();
+                PropertyLattice newLattice = (PropertyLattice)
+                    latticeClass.getConstructor(new Class[0]).newInstance(new Object[0]);                
+
+                _lattices.put(latticeName, newLattice);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }            
         }
         
-        return _lattices.get(latticeFile);
+        return _lattices.get(latticeName);
     }
 
-    /**
-     * Return the property lattice with the given name.
-     * @param latticeName The given lattice name.
-     * @return The property lattice with the given name.
-     */
-    public static PropertyLattice getPropertyLattice(String latticeName) {
-        String fileName = "$PTII/ptolemy/data/properties/"
-            + latticeName + ".ldf";
-        return getPropertyLattice(FileUtilities.nameToFile(fileName, null));
-    }  
-
+    
+    public Property getInitialProperty() {
+        return new BaseProperty(this);
+    }
+    
     /** Return the greatest lower bound of the two given properties.
      *  @param property1 The first given property.
      *  @param property2 The second given property.
@@ -554,8 +555,8 @@ public class PropertyLattice {
                 
                 // FIXME: Replace this with an assert when we move to 1.5
                 if (!_basicLattice.isLattice()) {
-                    throw new InternalErrorException("ThePropertyLattice: The "
-                            + "property hierarchy is not a lattice.");
+                    //throw new InternalErrorException("ThePropertyLattice: The "
+                    //        + "property hierarchy is not a lattice.");
                 }
             }
         }
@@ -581,6 +582,6 @@ public class PropertyLattice {
      * A HashMap that contains all property lattices with unique
      * lattice files as keys.
      */
-    private static HashMap <File, PropertyLattice> _lattices = new HashMap();
+    private static HashMap <String, PropertyLattice> _lattices = new HashMap();
 
 }

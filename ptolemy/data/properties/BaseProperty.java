@@ -43,8 +43,12 @@ import ptolemy.graph.CPO;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
-public abstract class BaseProperty implements Property {
+public class BaseProperty implements Property {
         
+    public BaseProperty(PropertyLattice lattice) {
+        _lattice = lattice;
+    }
+    
     /** Test if the argument property is compatible with this property.
      *  Compatible is defined as follows: If this property is a constant, the
      *  argument is compatible if it is the same or less than this property in
@@ -58,7 +62,7 @@ public abstract class BaseProperty implements Property {
         //   return true;
         //}
 
-        int propertyInfo = getPropertyLattice().compare(this, property);
+        int propertyInfo = _lattice.compare(this, property);
         return ((propertyInfo == CPO.SAME) || (propertyInfo == CPO.HIGHER));
     }
 
@@ -68,6 +72,16 @@ public abstract class BaseProperty implements Property {
      */
     public boolean isConstant() {
         return false;
+    }
+
+
+    /** Determine if this Type corresponds to an instantiable token
+     *  class.
+     *  @return True if this type corresponds to an instantiable
+     *   token class.
+     */
+    public boolean isInstantiable() {
+        return true;
     }
 
     /** Return true if the specified property is a substitution instance of this
@@ -86,6 +100,17 @@ public abstract class BaseProperty implements Property {
     /** Get the property lattice associated with this property.
      *  @return The associated property lattice.
      */
-    public abstract PropertyLattice getPropertyLattice();
+    public PropertyLattice getPropertyLattice() {
+        return _lattice;
+    }
+    
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private PropertyLattice _lattice;
     
 }

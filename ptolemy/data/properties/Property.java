@@ -64,6 +64,14 @@ public interface Property {
      */
     public boolean isConstant();
 
+
+    /** Determine if this Type corresponds to an instantiable token
+     *  class.
+     *  @return True if this type corresponds to an instantiable
+     *   token class.
+     */
+    public boolean isInstantiable();
+
     /** Return true if the specified property is a substitution instance of this
      *  property. For the argument to be a substitution instance, it must be
      *  either the same as this property, or it must be a property that can be
