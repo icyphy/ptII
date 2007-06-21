@@ -29,11 +29,9 @@ package ptolemy.data.properties.gui;
 
 import java.awt.Frame;
 
-import ptolemy.actor.gui.EditorFactory;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.TableauFrame;
+import ptolemy.actor.gui.DoubleClickFactory;
 import ptolemy.data.properties.PropertyConstraintSolver;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -57,7 +55,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class PropertyConstraintSolverGUIFactory extends EditorFactory {
+public class PropertyConstraintSolverGUIFactory extends DoubleClickFactory {
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -79,42 +77,21 @@ public class PropertyConstraintSolverGUIFactory extends EditorFactory {
      *  @param object The object to configure.
      *  @param parent The parent window, or null if there is none.
      */
-    public void createEditor(NamedObj object, Frame parent) {
+    public void invoke(NamedObj object, Frame parent) {
         // This is always used to configure the container, so
         // we just use that.
         PropertyConstraintSolver solver = (PropertyConstraintSolver) getContainer();
+        CompositeEntity top = (CompositeEntity) solver.getContainer();
 
-        if (!(parent instanceof TableauFrame)) {
-            throw new InternalErrorException(
-                    "Can't create a PropertyConstraintSolverGUI without a tableau!");
+        while (top.getContainer() != null){
+            top = (CompositeEntity) top.getContainer();
+        }
+        try {
+            solver.resolveProperties(top);
+        } catch (KernelException e) {
+            throw new InternalErrorException(e);
         }
 
-        Effigy effigy = ((TableauFrame) parent).getEffigy();
-
-        // FIXME: Is the cast safe?
-        Tableau tableau = (Tableau) effigy.getEntity("propertyConstraintSolverGUI");
-
-        if (tableau == null) {
-            try {
-                tableau = new Tableau(effigy, "propertyConstraintSolverGUI");
-            } catch (KernelException e) {
-                throw new InternalErrorException(e);
-            }
-        }
-
-        Frame frame = tableau.getFrame();
-
-        if (frame == null) {
-            try {
-                frame = new PropertyConstraintSolverGUI(solver, tableau);
-            } catch (KernelException e) {
-                throw new InternalErrorException(e);
-            }
-        }
-
-        // Show the result.
-        frame.pack();
-        frame.setVisible(true);
     }
 
     // FIXME: Check that the container is an instance of PropertyConstraintSolver.
