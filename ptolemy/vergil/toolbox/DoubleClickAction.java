@@ -1,4 +1,4 @@
-/* An action for editing parameters.
+/* An action for double clicking a component.
 
  Copyright (c) 1999-2005 The Regents of the University of California.
  All rights reserved.
@@ -51,7 +51,6 @@ import ptolemy.util.MessageHandler;
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
- @see ptolemy.actor.gui.ConfigureAction
  */
 public class DoubleClickAction extends FigureAction {
     /** Construct a new configure action.
