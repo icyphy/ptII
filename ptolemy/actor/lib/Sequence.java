@@ -50,7 +50,8 @@ import ptolemy.kernel.util.Workspace;
  * port is connected, then it provides a boolean sequence that specifies
  * whether to produce an output. If the <i>enable</i> is present and
  * true, then the actor will produce the next output. Otherwise, it
- * produces no output.
+ * produces no output and will produce the next in the sequence
+ * on the next firing (if enable is true).
  * <p>
  * Compared with the Pulse actor, this actor can be enabled or disabled
  * on each firing by providing a true or false input on the <i>enable</i>
@@ -189,8 +190,8 @@ public class Sequence extends TypedAtomicActor {
                 if (repeatValue) {
                     _currentIndex = 0;
                 } else {
-                    // To prevent overflow...
-                    _currentIndex = valuesArray.length();
+                    // To repeatedly produce the last output.
+                    _currentIndex = valuesArray.length() - 1;
                 }
             }
         }
