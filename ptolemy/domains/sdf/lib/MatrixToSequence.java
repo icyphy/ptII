@@ -48,12 +48,11 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  This actor unbundles a matrix into a sequence of output tokens.
- On each firing, it writes the elements of the array to the output
- as a sequence of output tokens.
- and writes one output matrix token with the specified number of rows
- and columns.
+ On each firing, it writes the elements of the matrix to the output
+ as a sequence of output tokens. It outputs the contents of the first
+ row first, then the second row, etc.
  If the <i>enforceMatrixSize</i> parameter true, then if an input
- matrix does not match <i>rows</i> and <i>columns</i>, then
+ matrix does not match <i>rows</i> and <i>columns</i> parameters, then
  the fire() method will throw an exception.
  This feature is important in domains, such as SDF,
  that do static scheduling based on production and consumption
