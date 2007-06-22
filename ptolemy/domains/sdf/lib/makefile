@@ -72,6 +72,7 @@ JSRCS = \
 	IntToBits.java \
 	LineCoder.java \
 	LMSAdaptive.java \
+	MatrixJoin.java \
 	MatrixToDouble.java \
 	MatrixToSequence.java \
 	RaisedCosine.java \
