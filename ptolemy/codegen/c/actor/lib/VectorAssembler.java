@@ -28,7 +28,11 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * Generate C code for an actor that produces an output token on
@@ -50,5 +54,36 @@ public class VectorAssembler extends CCodeGeneratorHelper {
      */
     public VectorAssembler(ptolemy.actor.lib.VectorAssembler actor) {
         super(actor);
+    }
+    
+    /**
+     * Generate fire code.
+     * The method reads in <code>fireBlock</code> from VectorAssembler.c,
+     * replaces macros with their values and returns the processed code
+     * block.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        super.generateFireCode();
+
+        ptolemy.actor.lib.VectorAssembler actor = (ptolemy.actor.lib.VectorAssembler) getComponent();
+
+        String fireCode = new String();
+        ArrayList args = new ArrayList();
+        args.add(Integer.valueOf(0));
+
+        Type type = actor.input.getType();
+        if (isPrimitive(type)) {
+            args.add(codeGenType(type));
+        }
+        
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            args.set(0, Integer.valueOf(i));
+            fireCode += _generateBlockCode("fireBlock", args);
+        }
+
+        return processCode(fireCode);
     }
 }
