@@ -28,12 +28,12 @@
 package ptolemy.actor.lib;
 
 import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
@@ -48,19 +48,21 @@ import ptolemy.kernel.util.Workspace;
  The types of the ports are undeclared and will be resolved by the type
  resolution mechanism, with the constraint that the output type must be
  greater than or equal to the input type. On each call to the fire method, the
- actor reads at most <i>n</i> tokens from the input, where <i>n</i> is
- the width of the output port, and writes one token to each output channel,
- in the order of the channels.  If there are fewer than <i>n</i> tokens
+ actor reads at most <i>N</i> tokens from the input, where <i>N</i> is
+ the width of the output port times the <i>blockSize</i> parameter,
+ and writes <i>blockSize</i> tokens to each output channel,
+ in the order of the channels.  If there are fewer than <i>N</i> tokens
  at the input, then the all available input tokens are sent to the output
  channels, and the fire() method returns.  In the next iteration of this
  actor, it will begin producing outputs on the first channel that did
- not receive a token in the previous iteration.
+ not have enough tokens in the previous iteration.
  <p>
  For the benefit of domains like SDF, which need to know the token consumption
  or production rate for all ports before they can construct a firing schedule,
  this actor sets the tokenConsumptionRate parameter for the input port
- to equal the number of output channels.
- This parameter is set each time that a link is established with
+ to equal the number of output channels times the <i>blockSize</i> parameter,
+ and the output production rate is set to the <i>blockSize</i> parameter.
+ The consumption rate parameter is set each time that a link is established with
  the input port, or when a link is removed.  The director is notified
  that the schedule is invalid, so that if the link is modified at
  run time, the schedule will be recalculated if necessary.
@@ -86,6 +88,10 @@ public class Distributor extends Transformer implements SequenceActor {
     public Distributor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+        
+        blockSize = new Parameter(this, "blockSize");
+        blockSize.setTypeEquals(BaseType.INT);
+        blockSize.setExpression("1");
 
         // These parameters are required for SDF
         input_tokenConsumptionRate = new Parameter(input,
@@ -94,16 +100,34 @@ public class Distributor extends Transformer implements SequenceActor {
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setPersistent(false);
 
+        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate.setVisibility(Settable.NOT_EDITABLE);
+        output_tokenProductionRate.setTypeEquals(BaseType.INT);
+        output_tokenProductionRate.setExpression("blockSize");
+        output_tokenProductionRate.setPersistent(false);
+
         output.setMultiport(true);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** The number of tokens produced on each output channel on each firing.
+     *  This is an integer with default value 0.
+     */
+    public Parameter blockSize;
+    
     /** The parameter controlling the input port consumption rate.
-     *  This parameter contains an IntToken, initially with a value of 0.
+     *  This is an integer, initially with value 0. Whenever a connection
+     *  is made to the output, the value of this parameter is changed to
+     *  equal the width of the output times the <i>blockSize</i> parameter.
      */
     public Parameter input_tokenConsumptionRate;
+
+    /** The parameter specifying the output port production rate.
+     *  This is an integer, equal to the value of <i>blockSize</i>.
+     */
+    public Parameter output_tokenProductionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -133,26 +157,21 @@ public class Distributor extends Transformer implements SequenceActor {
         super.connectionsChanged(port);
 
         if (port == output) {
-            try {
-                input_tokenConsumptionRate.setToken(new IntToken(output
-                        .getWidth()));
-                _currentOutputPosition = 0;
+            input_tokenConsumptionRate.setExpression(
+                    output.getWidth() + " * blockSize");
+            _currentOutputPosition = 0;
 
-                // NOTE: schedule is invalidated automatically already
-                // by the changed connections.
-            } catch (IllegalActionException ex) {
-                throw new InternalErrorException(this, ex, "output width was"
-                        + output.getWidth());
-            }
+            // NOTE: schedule is invalidated automatically already
+            // by the changed connections.
         }
     }
 
-    /** Read at most <i>n</i> tokens from the input port, where <i>n</i>
-     *  is the width of the output port. Write one token to each of the
-     *  output channels. If  there are not <i>n</i> tokens available,
+    /** Read at most <i>N</i> tokens from the input port, where <i>N</i>
+     *  is the width of the output port times the <i>blockSize</i> parameter.
+     *  Write <i>blockSize</i> tokens to each of the
+     *  output channels. If  there are not <i>N</i> tokens available,
      *  then read all the tokens and send them to the outputs.
      *  On the next iteration, the actor will pick up where it left off.
-     *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -160,13 +179,14 @@ public class Distributor extends Transformer implements SequenceActor {
         _tentativeOutputPosition = _currentOutputPosition;
 
         int width = output.getWidth();
+        int blockSizeValue = ((IntToken)blockSize.getToken()).intValue();
 
         for (int i = 0; i < width; i++) {
-            if (!input.hasToken(0)) {
+            if (!input.hasToken(0, blockSizeValue)) {
                 break;
             }
-
-            output.send(_tentativeOutputPosition++, input.get(0));
+            Token[] tokens = input.get(0, blockSizeValue);
+            output.send(_tentativeOutputPosition++, tokens, blockSizeValue);
 
             if (_tentativeOutputPosition >= width) {
                 _tentativeOutputPosition = 0;
@@ -195,6 +215,7 @@ public class Distributor extends Transformer implements SequenceActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
     // The channel number for the next output.
     private int _currentOutputPosition;
 
