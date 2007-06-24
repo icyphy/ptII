@@ -17,27 +17,37 @@ Token Matrix_new(int row, int column, int given, ...);
 Token Matrix_get(Token token, int row, int column) {   
     return token.payload.Matrix->elements[column * token.payload.Matrix->row + row];
 }
+
+void Matrix_set(Token matrix, int row, int column, Token element) {
+    matrix.payload.Matrix->elements[column * matrix.payload.Matrix->row + row] = element;
+}
 /**/
 
 
 /***deleteBlock***/
 Token Matrix_delete(Token token, ...) { 
     int i, j;
-	  
+	Token element, emptyToken;
+      
     // Delete each elements.
     for (i = 0; i < token.payload.Matrix->column; i++) {
         for (j = 0; j < token.payload.Matrix->row; j++) {
-            functionTable[Matrix_get(j, i).type][FUNC_delete](Matrix_get(j, i));
+            element = Matrix_get(token, j, i);
+            functionTable[(int) element.type][FUNC_delete](element);
         }
     }
     free(token.payload.Matrix->elements);
     free(token.payload.Matrix);
+
+    return emptyToken;     
 }
 /**/
 
 /***convertBlock***/
 Token Matrix_convert(Token token, ...) {
+    Token emptyToken;
     fprintf(stderr, "Matrix_convert() not yet implemented.\n");
+    return emptyToken;     
 }
 /**/
 
@@ -50,32 +60,46 @@ Token Matrix_convert(Token token, ...) {
 Token Matrix_new(int row, int column, int given, ...) {
     va_list argp; 
     int i;
-    char elementType;
-    Token element;
-    boolean doConvert = false;
-
     Token result;
+    char elementType;
+
     result.type = TYPE_Matrix;
     result.payload.Matrix = (MatrixToken) malloc(sizeof(struct matrix));
     result.payload.Matrix->row = row;
     result.payload.Matrix->column = column;
 
     // Allocate a new matrix of Tokens.
-    result.payload.Matrix->elements = (Token*) calloc(row * column, sizeof(Token));
+    if (row > 0 && column > 0) {
+        // Allocate an new 2-D array of Tokens.
+        result.payload.Matrix->elements = (Token*) calloc(row * column, sizeof(Token));
+    
+        if (given > 0) {
+            // Set the first element.
+            va_start(argp, given);
+            
+            for (i = 0; i < given; i++) {
+                result.payload.Matrix->elements[i] = va_arg(argp, Token);
+            }    
 
-    if (given > 0) {
-        // Set the first element.
-        va_start(argp, given);
-        for (i = 0; i < given; i++) {
-            element = va_arg(argp, Token);
-            result.payload.Matrix->elements[i] = element;
-        }    
-        va_end(argp);
+            // elementType is given as the last argument.
+            elementType = va_arg(argp, int);            
+
+            if (elementType >= 0) {
+                // convert the elements if needed.
+                for (i = 0; i < given; i++) {
+                    if (Matrix_get(result, i, 0).type != elementType) {
+                        result.payload.Matrix->elements[i] = functionTable[(int)elementType][FUNC_convert](Matrix_get(result, i, 0));
+                    }
+                }    
+            }
+
+            va_end(argp);
+        }
     }
     return result;
 }    
 /**/
-
+    
 /***equalsBlock***/
 Token Matrix_equals(Token this, ...) {
     int i, j;
@@ -90,80 +114,184 @@ Token Matrix_equals(Token this, ...) {
     }
     for (i = 0; i < this.payload.Matrix->column; i++) { 
         for (j = 0; j < this.payload.Matrix->row; j++) { 
-            if (!functionTable[Matrix_get(token, j, i).type][FUNC_equals](Matrix_get(this, j, i), Matrix_get(otherToken, j, i))).payload.Boolean) {
-            return Boolean_new(false);
+            if (!functionTable[(int) Matrix_get(this, j, i).type][FUNC_equals](Matrix_get(this, j, i), Matrix_get(otherToken, j, i)).payload.Boolean) {
+                return Boolean_new(false);
+            }
         }
     }
-}
-return Boolean_new(true);
+    return Boolean_new(true);
 }
 /**/
 
 
 /***printBlock***/
 Token Matrix_print(Token this, ...) {
-// Token string = Matrix_toString(this);
-// printf(string.payload.String);
-// free(string.payload.String);
-
-int i, j;
-printf("[");
-for (i = 0; i < this.payload.Matrix->column; i++) {
-if (i != 0) {
-printf("; ");
-}
-for (j = 0; j < this.payload.Matrix->row; j++) {
-if (j != 0) {
-printf(", ");
-}
-functionTable[this.payload.Matrix->elements[i * this.payload.Matrix->row + j].type][FUNC_print](this.payload.Matrix->elements[i]);
-}
-}
-printf("]");
+    // Token string = Matrix_toString(this);
+    // printf(string.payload.String);
+    // free(string.payload.String);
+    
+    int i, j;
+    printf("[");
+    for (i = 0; i < this.payload.Matrix->column; i++) {
+        if (i != 0) {
+            printf("; ");
+        }
+        for (j = 0; j < this.payload.Matrix->row; j++) {
+            if (j != 0) {
+                printf(", ");
+            }
+            functionTable[this.payload.Matrix->elements[i * this.payload.Matrix->row + j].type][FUNC_print](this.payload.Matrix->elements[i]);
+        }
+    }
+    printf("]");
 }
 /**/
 
 
 /***toStringBlock***/
 Token Matrix_toString(Token this, ...) {
-int i, j;
-int currentSize;
-int allocatedSize;
-char* string;
-Token elementString;
-
-allocatedSize = 512;
-string = (char*) malloc(allocatedSize);
-string[0] = '[';
-string[1] = '\0';
-currentSize = 2;
-for (i = 0; i < this.payload.Matrix->column; i++) {
-if (i != 0) {
-strcat(string, "; ");
-}
-for (j = 0; j < this.payload.Matrix->row; j++) {
-if (j != 0) {
-strcat(string, ", ");
-}
-elementString = functionTable[Matrix_get(this, j, i).type][FUNC_toString](Matrix_get(this, j, i));
-currentSize += strlen(elementString.payload.String);
-if (currentSize > allocatedSize) {
-allocatedSize *= 2;
-string = (char*) realloc(string, allocatedSize);
-}
-	
-strcat(string, elementString.payload.String);
-free(elementString.payload.String);
-}
-}
-strcat(string, "]");
-return String_new(string);
+    int i, j;
+    int currentSize, allocatedSize;
+    char* string;
+    Token elementString;
+    
+    allocatedSize = 512;
+    string = (char*) malloc(allocatedSize);
+    string[0] = '[';
+    string[1] = '\0';
+    currentSize = 2;
+    for (i = 0; i < this.payload.Matrix->column; i++) {
+        if (i != 0) {
+            strcat(string, "; ");
+        }
+        for (j = 0; j < this.payload.Matrix->row; j++) {
+            if (j != 0) {
+                strcat(string, ", ");
+            }
+            elementString = functionTable[(int) Matrix_get(this, j, i).type][FUNC_toString](Matrix_get(this, j, i));
+            currentSize += strlen(elementString.payload.String);
+            if (currentSize > allocatedSize) {
+                allocatedSize *= 2;
+                string = (char*) realloc(string, allocatedSize);
+            }
+            	
+            strcat(string, elementString.payload.String);
+            free(elementString.payload.String);
+        }
+    }
+    strcat(string, "]");
+    return String_new(string);
 }
 /**/
 
+
+
+
+
+
+
+/***multiplyBlock***/
+// Assume the given otherToken is array type.
+// Return a new Array token.
+Token Matrix_multiply(Token this, ...) {
+    int i;
+    va_list argp; 
+    Token result; 
+    Token element, otherToken;
+    
+    va_start(argp, this);
+    otherToken = va_arg(argp, Token);
+
+    result = Matrix_new(this.payload.Matrix->size, 0);
+    
+    switch (otherToken.type) {
+    case TYPE_Matrix:        
+        for (i = 0; i < this.payload.Matrix->column; i++) {
+            for (j = 0; j < this.payload.Matrix->row; j++) {
+                element = Matrix_get(this, i);
+                // FIXME: Need to program this.
+            }
+        }
+        break;
+    #ifdef TYPE_Array
+    case TYPE_Array:
+        for (i = 0; i < this.payload.Matrix->column; i++) {
+            for (j = 0; j < this.payload.Matrix->row; j++) {
+                element = Matrix_get(this, i);
+                // FIXME: Need to program this.                
+            }
+        }        
+        break;
+    #endif
+    default: 
+        for (i = 0; i < this.payload.Matrix->column; i++) {
+            for (j = 0; j < this.payload.Matrix->row; j++) {
+                element = Matrix_get(this, i);
+                result.payload.Matrix->elements[i] = functionTable[(int)element.type][FUNC_multiply](element, otherToken);
+            }
+        }
+    }
+    va_end(argp);
+    return result;
+}
+/**/
+
+/***divideBlock***/
+// Assume the given otherToken is array type.
+// Return a new Array token.
+Token Matrix_divide(Token this, ...) {
+    int i, j, index;
+    va_list argp; 
+    Token result; 
+    Token element, otherToken;
+    
+    va_start(argp, this);
+    otherToken = va_arg(argp, Token);
+
+    
+    switch (otherToken.type) {
+    case TYPE_Matrix:        
+        for (i = 0; i < this.payload.Matrix->column; i++) {
+            for (j = 0; j < this.payload.Matrix->row; j++) {
+                element = Matrix_get(this, j, i);
+                // FIXME: Need to program this.
+            }
+        }
+        break;
+    #ifdef TYPE_Array
+    case TYPE_Array:
+        // Divide reverse.
+        result = Array_new(otherToken.payload.Array->size, 0);
+
+        for (i = 0; i < otherToken.payload.Array->size; i++) {
+            element = Array_get(this, i);
+            result.payload.Array->elements[i] = functionTable[TYPE_Matrix][FUNC_divide](this, element);
+        }
+        
+        break;
+    #endif
+    default: 
+        result = Matrix_new(this.payload.Matrix->row, this.payload.Matrix->column, 0);
+        
+        for (i = 0, index = 0; i < this.payload.Matrix->column; i++) {
+            for (j = 0; j < this.payload.Matrix->row; j++, index++) {
+                element = Matrix_get(this, j, i);
+                result.payload.Matrix->elements[index] = functionTable[(int)element.type][FUNC_divide](element, otherToken);
+            }
+        }
+    }
+    va_end(argp);
+    return result;
+}
+/**/
+
+
+
+
+
 /***toExpressionBlock***/
 Token Matrix_toExpression(Token this, ...) {
-return Matrix_toString(this);
+    return Matrix_toString(this);
 }
 /**/
 
