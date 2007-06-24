@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  It reads N*M input matrices from the input port, where N is
  the value of the <i>rows</i> parameter, and M is
  the value of the <i>columns</i> parameter. The matrices
- read on distinct channels are arranged left-to-right,
+ read are arranged left-to-right,
  top-to-bottom, in a raster scan pattern.
  For example, if <i>rows</i> = <i>columns</i> = 2, then on
  each firing, four matrices, A, B, C, D, will be read from
