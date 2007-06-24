@@ -82,7 +82,7 @@ Token Array_new(int size, int given, ...) {
 /***deleteBlock***/
 Token Array_delete(Token token, ...) { 
     int i;  
-    Token element;
+    Token element, emptyToken;
     
     // Delete each elements.
     for (i = 0; i < token.payload.Array->size; i++) {
@@ -226,15 +226,23 @@ Token Array_multiply(Token this, ...) {
     int i;
     va_list argp; 
     Token result; 
-    Token otherToken;
+    Token element, otherToken;
 	
     va_start(argp, this);
     otherToken = va_arg(argp, Token);
 
     result = Array_new(this.payload.Array->size, 0);
 	
-    for (i = 0; i < this.payload.Array->size; i++) {
-        result.payload.Array->elements[i] = functionTable[(int)Array_get(this, i).type][FUNC_multiply](Array_get(this, i), Array_get(otherToken, i));
+    if (otherToken.type == TYPE_Array) {
+        for (i = 0; i < this.payload.Array->size; i++) {
+            element = Array_get(this, i);
+            result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_multiply](element, Array_get(otherToken, i));
+        }
+    } else {
+        for (i = 0; i < this.payload.Array->size; i++) {
+            element = Array_get(this, i);
+            result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_multiply](element, otherToken);
+        }
     }
 
     va_end(argp);
