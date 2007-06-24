@@ -1,4 +1,4 @@
-/* Join matrices provided either in sequence or on multiple input channels.
+/* Join matrices provided in sequence.
 
  Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
