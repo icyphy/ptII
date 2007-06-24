@@ -94,6 +94,7 @@ OTHER_FILES_TO_BE_JARED = \
 	DownSampleIcon.xml \
 	FIRIcon.xml \
 	MaximumEntropySpectrum.xml \
+	MatrixJoinIcon.xml \
 	Periodogram.xml \
 	RepeatIcon.xml \
 	SequenceToArrayIcon.xml \

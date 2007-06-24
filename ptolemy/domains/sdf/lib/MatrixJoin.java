@@ -30,6 +30,7 @@ package ptolemy.domains.sdf.lib;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -40,11 +41,28 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  This actor joins matrices into a single matrix by tiling.
- It reads N input matrices from each channel, where N is
- the value of the <i>sequentialTiles</i> parameter.
- 
- Assuming M input channels and <i>sequentialInputs<i> = N,
- FIXME
+ It reads N*M input matrices from the input port, where N is
+ the value of the <i>rows</i> parameter, and M is
+ the value of the <i>columns</i> parameter. The matrices
+ read on distinct channels are arranged left-to-right,
+ top-to-bottom, in a raster scan pattern.
+ For example, if <i>rows</i> = <i>columns</i> = 2, then on
+ each firing, four matrices, A, B, C, D, will be read from
+ the input channel.  Assuming A is the first one read, then
+ the output matrix will be a matrix arranged as follows:
+ <pre>
+   A B
+   C D
+ </pre>
+ The size of the output depends on the matrices in the top row
+ and left column. That is, in the above examples, the number of
+ columns in the output will equal the sum of the number of columns
+ in A and B.  The number of rows will equal the sum of the number
+ of rows in A and C.  The matrices are tiled in raster-scan order,
+ first A, then B, then C, and then D.  Gaps are zero filled,
+ and overlaps are overwritten, where later matrices in the raster-scan
+ order overwrite earlier matrices.  For example, if B has more rows
+ than A, then the bottom rows of B will be overwritten by rows of D.
  <p>
 
  @author Edward Lee
@@ -68,24 +86,27 @@ public class MatrixJoin extends SDFTransformer {
 
         // Set parameters.
         columns = new Parameter(this, "columns");
+        columns.setTypeEquals(BaseType.INT);
         columns.setExpression("1");
+        rows = new Parameter(this, "rows");
+        rows.setTypeEquals(BaseType.INT);
+        rows.setExpression("1");
 
-        input_tokenConsumptionRate.setExpression("columns");
-        input.setMultiport(true);
-
-        // Set the icon.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-                + "style=\"fill:white\"/>\n" + "</svg>\n");
+        input_tokenConsumptionRate.setExpression("rows * columns");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The number of columns in the output.  This is an integer that defaults
-     *  to 1.
+    /** The number of matrices to arrange left to right on the output.
+     *  This is an integer that defaults to 1.
      */
     public Parameter columns;
+
+    /** The number of matrices to arrange top to bottom on the output.
+     *  This is an integer that defaults to 1.
+     */
+    public Parameter rows;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -102,6 +123,12 @@ public class MatrixJoin extends SDFTransformer {
                 throw new IllegalActionException(this,
                         "Invalid number of columns: " + columnsValue);
             }
+        } else if (attribute == rows) {
+            int rowsValue = ((IntToken) rows.getToken()).intValue();
+            if (rowsValue <= 0) {
+                throw new IllegalActionException(this,
+                        "Invalid number of rows: " + rowsValue);
+            }
         }
         super.attributeChanged(attribute);
     }
@@ -112,11 +139,11 @@ public class MatrixJoin extends SDFTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         int numberOfColumns = ((IntToken) columns.getToken()).intValue();
-        int numberOfRows = input.getWidth();
+        int numberOfRows = ((IntToken) rows.getToken()).intValue();
         MatrixToken[][] result = new MatrixToken[numberOfRows][numberOfColumns];
         for (int i = 0; i < numberOfRows; i++) {
             for (int j = 0; j < numberOfColumns; j++) {
-                result[i][j] = (MatrixToken)input.get(i);
+                result[i][j] = (MatrixToken)input.get(0);
             }
         };
         output.send(0, MatrixToken.matrixJoin(result));
@@ -132,7 +159,8 @@ public class MatrixJoin extends SDFTransformer {
      */
     public boolean prefire() throws IllegalActionException {
         int columnsValue = ((IntToken) columns.getToken()).intValue();
-        if (!input.hasToken(0, columnsValue)) {
+        int rowsValue = ((IntToken) rows.getToken()).intValue();
+        if (!input.hasToken(0, rowsValue * columnsValue)) {
             if (_debugging) {
                 _debug("Called prefire(), which returns false.");
             }
