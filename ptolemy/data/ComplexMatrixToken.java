@@ -342,6 +342,73 @@ public class ComplexMatrixToken extends MatrixToken {
         return (int) sum.magnitude();
     }
 
+    /** Join a matrix of matrices into a single matrix by tiling.
+     *  All matrices in the matrix must be of the same type,
+     *  the same type as this matrix. But none of them needs to
+     *  actually be this matrix. This base class simply throws
+     *  an exception. Derived classes provide the implementation.
+     *  The number of columns in the resulting matrix is the sum
+     *  of the number of columns in the first row of the argument.
+     *  The number of rows in the resulting matrix is the sum
+     *  of the number of rows in the first column of the argument.
+     *  The matrices are copied into the result starting at the
+     *  position determined by the first row or column.
+     *  If the matrices overlap, then while copying left to right,
+     *  top-to-bottom, data will be overwritten. If there are gaps,
+     *  the resulting matrix will be filled with zeros.
+     *  @param matrices A two-dimensional array of matrix tokens.
+     *  @return A new matrix token of the same type as the elements
+     *   in the input matrix of matrix tokens.
+     *  @exception IllegalActionException If the types of the matrices
+     *   in the input are not all the same, or if tiling fails due
+     *   to size incompatibilities, or if the input matrix has no
+     *   tokens.
+     */
+    public MatrixToken join(MatrixToken[][] matrices)
+            throws IllegalActionException {
+        if (matrices == null || matrices.length == 0 || matrices[0].length == 0) {
+            throw new IllegalActionException("matrixJoin: No input matrices.");
+        }
+        // Calculate the size of the result.
+        // This assumes the matrices tile.
+        int rows = 0;
+        int columns = 0;
+        for (int i = 0; i < matrices.length; i++) {
+            rows += matrices[i][0].getRowCount();
+        }
+        for (int j = 0; j < matrices[0].length; j++) {
+            columns += matrices[0][j].getColumnCount();
+        }
+        Complex[][] tiled = new Complex[rows][columns];
+        int row = 0;
+        for (int i = 0; i < matrices.length; i++) {
+            int column = 0;
+            for (int j = 0; j < matrices[i].length; j++) {
+                if (!(matrices[i][j] instanceof ComplexMatrixToken)) {
+                    throw new IllegalActionException(
+                            "matrixJoin: matrices not all of the same type.");
+                }
+                int rowCount = matrices[i][j].getRowCount();
+                if (row + rowCount > rows) {
+                    rowCount = rows - row;
+                }
+                int columnCount = matrices[i][j].getColumnCount();
+                if (column + columnCount > columns) {
+                    columnCount = columns - column;
+                }
+                ComplexMatrixMath.matrixCopy(
+                        matrices[i][j].complexMatrix(), 0, 0,
+                        tiled, row, column,
+                        rowCount, columnCount);
+                // Starting position for the next column.
+                column += matrices[0][j].getColumnCount();
+            }
+            // Starting position for the next column.
+            row += matrices[i][0].getRowCount();
+        }
+        return new ComplexMatrixToken(tiled);
+    }
+
     /** Return a new Token representing the left multiplicative
      *  identity. The returned token contains an identity matrix
      *  whose dimensions are the same as the number of rows of

@@ -146,7 +146,7 @@ public class MatrixJoin extends SDFTransformer {
                 result[i][j] = (MatrixToken)input.get(0);
             }
         };
-        output.send(0, MatrixToken.matrixJoin(result));
+        output.send(0, result[0][0].join(result));
     }
 
     /** Return true if each input channel has enough tokens for this actor to

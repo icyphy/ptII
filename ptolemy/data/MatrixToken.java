@@ -41,7 +41,11 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
+import ptolemy.math.ComplexMatrixMath;
 import ptolemy.math.DoubleMatrixMath;
+import ptolemy.math.FixPoint;
+import ptolemy.math.IntegerMatrixMath;
+import ptolemy.math.LongMatrixMath;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatrixToken
@@ -346,6 +350,17 @@ public abstract class MatrixToken extends Token {
             return BaseType.UNKNOWN;
         }
     }
+    
+    /** Return the content of this token as a 2-D boolean matrix.
+     *  In this base class, just throw an exception.
+     *  @return A 2-D boolean matrix.
+     *  @exception IllegalActionException If the token cannot be represented
+     *   as requested (always thrown in this base class).
+     */
+    public boolean[][] booleanMatrix() throws IllegalActionException {
+        throw new IllegalActionException(notSupportedConversionMessage(this,
+                "boolean matrix"));
+    }
 
     /** Return a copy of the content of this token as a 2-D Complex matrix.
      *  In this base class, just throw an exception.
@@ -612,6 +627,17 @@ public abstract class MatrixToken extends Token {
                 "double matrix"));
     }
 
+    /** Return the content of this token as a 2-D fixed point matrix.
+     *  In this base class, just throw an exception.
+     *  @return A 2-D fix matrix.
+     *  @exception IllegalActionException If the token cannot be represented
+     *   as requested (always thrown in this base class).
+     */
+    public FixPoint[][] fixMatrix() throws IllegalActionException {
+        throw new IllegalActionException(notSupportedConversionMessage(this,
+                "FixPoint matrix"));
+    }
+
     /** Return the number of columns of the matrix.
      *  @return The number of columns of the matrix.
      */
@@ -742,19 +768,11 @@ public abstract class MatrixToken extends Token {
         }
     }
 
-    /** Return the content of this matrix as a 2-D long matrix.
-     *  In this base class, just throw an exception.
-     *  @return A 2-D long matrix.
-     *  @exception IllegalActionException If the token cannot be represented
-     *   as requested (always thrown in this base class).
-     */
-    public long[][] longMatrix() throws IllegalActionException {
-        throw new IllegalActionException(notSupportedConversionMessage(this,
-                "long matrix"));
-    }
-
     /** Join a matrix of matrices into a single matrix by tiling.
-     *  All matrices in the matrix must be of the same type.
+     *  All matrices in the matrix must be of the same type,
+     *  the same type as this matrix. But none of them needs to
+     *  actually be this matrix. This base class simply throws
+     *  an exception. Derived classes provide the implementation.
      *  The number of columns in the resulting matrix is the sum
      *  of the number of columns in the first row of the argument.
      *  The number of rows in the resulting matrix is the sum
@@ -770,71 +788,24 @@ public abstract class MatrixToken extends Token {
      *  @exception IllegalActionException If the types of the matrices
      *   in the input are not all the same, or if tiling fails due
      *   to size incompatibilities, or if the input matrix has no
-     *   tokens.
+     *   tokens, or the operation is not supported by this matrix class.
      */
-    public static MatrixToken matrixJoin(MatrixToken[][] matrices)
+    public MatrixToken join(MatrixToken[][] matrices)
             throws IllegalActionException {
-        MatrixToken result = null;
-        
-        if (matrices == null || matrices.length == 0 || matrices[0].length == 0) {
-            throw new IllegalActionException("matrixJoin: No input matrices.");
-        }
-        // Calculate the size of the result.
-        // This assumes the matrices tile.
-        int rows = 0;
-        int columns = 0;
-        for (int i = 0; i < matrices.length; i++) {
-            rows += matrices[i][0].getRowCount();
-        }
-        for (int j = 0; j < matrices[0].length; j++) {
-            columns += matrices[0][j].getColumnCount();
-        }
-        if (matrices[0][0] instanceof BooleanMatrixToken) {
-            // FIXME
-        } else if (matrices[0][0] instanceof IntMatrixToken) {
-            // FIXME
-        } else if (matrices[0][0] instanceof LongMatrixToken) {
-            // FIXME
-        } else if (matrices[0][0] instanceof DoubleMatrixToken) {
-            double[][] tiled = new double[rows][columns];
-            int row = 0;
-            for (int i = 0; i < matrices.length; i++) {
-                int column = 0;
-                for (int j = 0; j < matrices[i].length; j++) {
-                    if (!(matrices[i][j] instanceof DoubleMatrixToken)) {
-                        throw new IllegalActionException(
-                                "matrixJoin: matrices not all of the same type.");
-                    }
-                    int rowCount = matrices[i][j].getRowCount();
-                    if (row + rowCount > rows) {
-                        rowCount = rows - row;
-                    }
-                    int columnCount = matrices[i][j].getColumnCount();
-                    if (column + columnCount > columns) {
-                        columnCount = columns - column;
-                    }
-                    DoubleMatrixMath.matrixCopy(
-                            matrices[i][j].doubleMatrix(), 0, 0,
-                            tiled, row, column,
-                            rowCount, columnCount);
-                    // Starting position for the next column.
-                    column += matrices[0][j].getColumnCount();
-                }
-                // Starting position for the next column.
-                row += matrices[i][0].getRowCount();
-            }
-            result = new DoubleMatrixToken(tiled);
-        } else if (matrices[0][0] instanceof ComplexMatrixToken) {
-            // FIXME
-        } else if (matrices[0][0] instanceof FixMatrixToken) {
-            // FIXME
-        } else {
-            throw new IllegalActionException("matrixJoin: Unrecognized type " 
-                    + matrices[0][0].getClass()
-                    + " for matrix creation.");
-        }
+        throw new IllegalActionException("join: Operation not supported on class " 
+                + getClass()
+                + ".");
+    }
 
-        return result;
+    /** Return the content of this matrix as a 2-D long matrix.
+     *  In this base class, just throw an exception.
+     *  @return A 2-D long matrix.
+     *  @exception IllegalActionException If the token cannot be represented
+     *   as requested (always thrown in this base class).
+     */
+    public long[][] longMatrix() throws IllegalActionException {
+        throw new IllegalActionException(notSupportedConversionMessage(this,
+                "long matrix"));
     }
 
     /** Create a new instance of ArrayToken that contains the values
@@ -1158,6 +1129,55 @@ public abstract class MatrixToken extends Token {
     public Token oneRight() throws IllegalActionException {
         throw new IllegalActionException("Right multiplicative identity "
                 + "not supported on " + getClass().getName() + " objects.");
+    }
+
+    /** Split this matrix into multiple matrices. In this base
+     *  class, this method simply throws an exception. Derived
+     *  classes provide the implementation.
+     *  <p>
+     *  The matrices are produced from submatrices extracted 
+     *  left-to-right, top-to-bottom, in a raster scan pattern.
+     *  For example, if <i>rowSplit</i> = {1, 2},
+     *  <i>columnSplit</i> = {2, 1}, and the input matrix is
+     *  as follows:
+     *  <pre>
+     *    1  2  3
+     *    4  5  6
+     *    7  8  9
+     *  </pre>
+     *  then the first matrix out is a column vector:
+     *  <pre>
+     *    1
+     *    4
+     *  </pre>
+     *  The second matrix out is
+     *  <pre>
+     *    2  3
+     *    5  6
+     *  </pre>
+     *  The third is
+     *  <pre>
+     *    7
+     *  </pre>
+     *  (a 1x1 matrix) and the fourth is
+     *  <pre>
+     *   8  9
+     *  </pre>
+     *  a row vector.
+     *  If the input does not have enough elements to fill the specified
+     *  output matrices, then zeros (of the same type as the input elements)
+     *  are used. If the input is larger than is required to fill the specified
+     *  output, then the additional values are discarded.
+     *  @param rows The number of rows per submatrix.
+     *  @param columns The number of columns per submatrix.
+     *  @return An array of matrix tokens.
+     *  @exception IllegalActionException If the operation is not supported.
+     */
+    public MatrixToken[][] split(int[] rows, int[] columns) 
+            throws IllegalActionException {
+        throw new IllegalActionException("split: Operation not supported on class " 
+                + getClass()
+                + ".");
     }
 
     /** Return a new token whose value is the value of the argument token
