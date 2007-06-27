@@ -71,7 +71,7 @@ public class BaseProperty implements Property {
      *  @return True if this property is a constant.
      */
     public boolean isConstant() {
-        return false;
+        return true;
     }
 
 
@@ -93,7 +93,8 @@ public class BaseProperty implements Property {
      *  @return True if the argument is a substitution instance of this property.
      */
     public boolean isSubstitutionInstance(Property property) {
-        return //(this == UNKNOWN) || 
+        return //(this == UNKNOWN) ||
+        (this == _lattice.basicLattice().bottom()) ||
         (this == property);
     }
     

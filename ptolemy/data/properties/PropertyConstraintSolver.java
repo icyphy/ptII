@@ -5,9 +5,6 @@ package ptolemy.data.properties;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,10 +51,19 @@ public class PropertyConstraintSolver extends Attribute {
         // lattice decription file?
         propertyLattice = new StringParameter(this, "propertyLattice");
         propertyLattice.setExpression("staticDynamic");
-                
+
         solvingFixedPoint = new StringParameter(this, "solvingFixedPoint");
         solvingFixedPoint.setExpression("least");
 
+        actorConstraintType = new StringParameter(this, "actorConstraintType");
+        actorConstraintType.setExpression("out == meet(in1, in2, ...)");
+
+        connectionConstraintType = new StringParameter(this, "connectionConstraintType");
+        connectionConstraintType.setExpression("sink == meet(src1, src2, ...)");
+
+        compositeConnectionConstraintType = new StringParameter(this, "compositeConnectionConstraintType");
+        compositeConnectionConstraintType.setExpression("sink == meet(src1, src2, ...)");
+        
         _addChoices();
 
         _attachText("_iconDescription", "<svg>\n"
@@ -100,6 +106,30 @@ public class PropertyConstraintSolver extends Attribute {
         
         solvingFixedPoint.addChoice("least");
         solvingFixedPoint.addChoice("greatest");
+        
+        
+        actorConstraintType.addChoice("in <= out");
+        actorConstraintType.addChoice("out <= in");
+        actorConstraintType.addChoice("out == in");
+        actorConstraintType.addChoice("out == meet(in1, in2, ...)");
+        actorConstraintType.addChoice("in == meet(out1, out2, ...)");
+        actorConstraintType.addChoice("NONE");
+
+        
+        connectionConstraintType.addChoice("src <= sink");
+        connectionConstraintType.addChoice("sink <= src");
+        connectionConstraintType.addChoice("sink == src");
+        connectionConstraintType.addChoice("src == meet(sink1, sink2, ...)");
+        connectionConstraintType.addChoice("sink == meet(src1, src2, ...)");
+        connectionConstraintType.addChoice("NONE");
+
+        compositeConnectionConstraintType.addChoice("src <= sink");
+        compositeConnectionConstraintType.addChoice("sink <= src");
+        compositeConnectionConstraintType.addChoice("sink == src");
+        compositeConnectionConstraintType.addChoice("src == meet(sink1, sink2, ...)");
+        compositeConnectionConstraintType.addChoice("sink == meet(src1, src2, ...)");
+        compositeConnectionConstraintType.addChoice("NONE");
+                
     }
 
 
@@ -112,8 +142,13 @@ public class PropertyConstraintSolver extends Attribute {
      *  fixed point solution.
      */
     public StringParameter solvingFixedPoint;
+        
+    public StringParameter connectionConstraintType;
     
+    public StringParameter actorConstraintType;
 
+    public StringParameter compositeConnectionConstraintType;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
@@ -126,10 +161,23 @@ public class PropertyConstraintSolver extends Attribute {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
+        
         super.attributeChanged(attribute);
         
-        if (attribute.equals(propertyLattice)) {
-            _helperStore.clear();
+        if (attribute == propertyLattice) {
+
+            if (_lattice == null || 
+                    !propertyLattice.stringValue().equals(_lattice.getName())) {
+
+                if (_lattice != null) {
+                    PropertyLattice.releasePropertyLattice(_lattice);
+                }
+
+                _lattice = PropertyLattice.getPropertyLattice(
+                        propertyLattice.stringValue());                
+            }
+        } else if (attribute == actorConstraintType) {
+            actorContraintTypeChanged = true;
         }
     }
     
@@ -145,10 +193,21 @@ public class PropertyConstraintSolver extends Attribute {
                 " The specified actor is not the top level container.");
         }
 
-        PropertyConstraintHelper compositeHelper = _getHelper(topLevel);
+        PropertyConstraintCompositeHelper compositeHelper = 
+            (PropertyConstraintCompositeHelper) _lattice.getHelper(topLevel);
+
+        if (actorContraintTypeChanged) {
+            actorContraintTypeChanged = false;
+            compositeHelper._changeDefaultConstraints(
+                    _getConstraintType(actorConstraintType.stringValue()));
+        }
         
-        PropertyLattice lattice = PropertyLattice.getPropertyLattice(
-                propertyLattice.stringValue());
+        // FIXME: have to generate the connection every time
+        // because the model structure can changed.
+        // (i.e. adding or removing connections.)
+        compositeHelper._setConnectionConstraintType( 
+                _getConstraintType(connectionConstraintType.stringValue()), 
+                _getConstraintType(compositeConnectionConstraintType.stringValue()));        
         
         try {
             List conflicts = new LinkedList();
@@ -171,7 +230,7 @@ public class PropertyConstraintSolver extends Attribute {
              */
 
             if (constraintList.size() > 0) {
-                CPO cpo = lattice.lattice();
+                CPO cpo = _lattice.lattice();
                 InequalitySolver solver = new InequalitySolver(cpo);
                 Iterator constraints = constraintList.iterator();
 
@@ -179,7 +238,7 @@ public class PropertyConstraintSolver extends Attribute {
 
                 try {
                     // Find the greatest solution (most general type)
-                    if (solvingFixedPoint.stringValue().equals("Greatest")) {
+                    if (solvingFixedPoint.stringValue().equals("greatest")) {
                         solver.solveGreatest();
                     } else {
                         solver.solveLeast();
@@ -187,9 +246,11 @@ public class PropertyConstraintSolver extends Attribute {
                 } catch (InvalidStateException ex) {
                     throw new InvalidStateException(topLevel, ex,
                             "The basic property lattic was: "
-                            + lattice.basicLattice());
+                            + _lattice.basicLattice());
                 }
 
+                compositeHelper.updatePortProperty();
+                
                 // If some inequalities are not satisfied, or type variables
                 // are resolved to unacceptable types, such as
                 // BaseType.UNKNOWN, add the inequalities to the list of 
@@ -199,7 +260,7 @@ public class PropertyConstraintSolver extends Attribute {
                 while (inequalities.hasNext()) {
                     Inequality inequality = (Inequality) inequalities.next();
 
-                    if (!inequality.isSatisfied(lattice.lattice())) {
+                    if (!inequality.isSatisfied(_lattice.lattice())) {
                         conflicts.add(inequality);
                     } else {
                         // Check if type variables are resolved to unacceptable
@@ -256,92 +317,48 @@ public class PropertyConstraintSolver extends Attribute {
         }        
     }
 
-    /**
-     * Returns the helper that contains property information for
-     * the given component.
-     * @param component The given component
-     * @return The associated property constraint helper.
-     */    
-    public PropertyConstraintHelper _getHelper(NamedObj component)
-            throws IllegalActionException {
-        if (_helperStore.containsKey(component)) {
-            return (PropertyConstraintHelper) _helperStore.get(component);
-        }
-        
-        PropertyLattice lattice = PropertyLattice
-                .getPropertyLattice(propertyLattice.stringValue());
-        
-        String packageName = "ptolemy.data.properties.lattice." 
-            + propertyLattice.stringValue();        
-
-        Class componentClass = component.getClass();
-
-        Class helperClass = null;
-        while (helperClass == null) {
-            try {
-                
-                // FIXME: Is this the right error message?
-                if (!componentClass.getName().contains("ptolemy")) {
-                    throw new IllegalActionException("There is no property helper "
-                            + " for " + component.getClass());
-                }
-                
-                helperClass = Class.forName(componentClass.getName()
-                        .replaceFirst("ptolemy", packageName));
-                
-            } catch (ClassNotFoundException e) {
-                // If helper class cannot be found, search the helper class
-                // for parent class instead.
-                componentClass = componentClass.getSuperclass();
-            }
-        }
-        
-        Constructor constructor = null;
-        Method initializeMethod = null;
-        
-        try {
-            constructor = helperClass.getConstructor(
-                    new Class[] { componentClass, PropertyLattice.class });
-            
-        } catch (NoSuchMethodException e) {
-            throw new IllegalActionException(null, e,
-                    "Cannot find constructor method in " 
-                    + helperClass.getName());
-        }
-
-        Object helperObject = null;
-
-        try {
-            helperObject = constructor.newInstance(new Object[] { component, lattice });
-            
-        } catch (Exception ex) {
-            throw new IllegalActionException(component, ex,
-                    "Failed to create the helper class for property constraints.");
-        }
-
-        if (!(helperObject instanceof PropertyConstraintHelper)) {
-            throw new IllegalActionException(
-                    "Cannot resolve property for this component: "
-                    + component + ". Its helper class does not"
-                    + " implement PropertyConstraintHelper.");
-        }
-
-        PropertyConstraintHelper castHelperObject = 
-            (PropertyConstraintHelper) helperObject;
-
-        castHelperObject.setSolver(this);
-        
-        _helperStore.put(component, helperObject);
-
-        return castHelperObject;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** A hash map that stores the code generator helpers associated
-     *  with the actors.
-     */
-    private static HashMap _helperStore = new HashMap();
+    private ConstraintType _getConstraintType(String typeValue) throws IllegalActionException {
+        boolean isEquals = typeValue.contains("==");
+        boolean isSrc = typeValue.startsWith("src") || typeValue.startsWith("in");
+        boolean hasMeet = typeValue.contains("meet");
+
+        if (typeValue.equals("NONE")) {
+            return ConstraintType.NONE;
+        }
+        if (hasMeet) {
+            return (isSrc) ? ConstraintType.SRC_EQUALS_MEET : 
+                ConstraintType.SINK_EQUALS_MEET;
+            
+        } else if (isEquals) {
+            return ConstraintType.EQUALS;
+            
+        } else { 
+            return (isSrc) ? ConstraintType.SRC_LESS :
+                ConstraintType.SINK_LESS;
+        }            
+    }
+
+
+
+    private boolean actorContraintTypeChanged = false;
+    
+    private PropertyLattice _lattice = null;
+    
+    /**
+    *
+    */
+   public static enum ConstraintType { 
+       SRC_LESS, 
+       SINK_LESS, 
+       SRC_EQUALS_MEET, 
+       SINK_EQUALS_MEET, 
+       EQUALS,
+       NONE };
+
+        
 
 }
+
