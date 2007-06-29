@@ -509,47 +509,33 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     public MatrixToken[][] split(int[] rows, int[] columns) {
         MatrixToken[][] result = new MatrixToken[rows.length][columns.length];
-        /* FIXME
-            double[][] tiled = new double[rows][columns];
-            int row = 0;
-            for (int i = 0; i < matrices.length; i++) {
-                int column = 0;
-                for (int j = 0; j < matrices[i].length; j++) {
-                    if (!(matrices[i][j] instanceof DoubleMatrixToken)) {
-                        throw new IllegalActionException(
-                                "matrixJoin: matrices not all of the same type.");
-                    }
-                    int rowCount = matrices[i][j].getRowCount();
-                    if (row + rowCount > rows) {
-                        rowCount = rows - row;
-                    }
-                    int columnCount = matrices[i][j].getColumnCount();
-                    if (column + columnCount > columns) {
-                        columnCount = columns - column;
-                    }
-                    DoubleMatrixMath.matrixCopy(
-                            matrices[i][j].doubleMatrix(), 0, 0,
-                            tiled, row, column,
-                            rowCount, columnCount);
-                    // Starting position for the next column.
-                    column += matrices[0][j].getColumnCount();
+        double[][] source = doubleMatrix();
+        int row = 0;
+        for (int i = 0; i < rows.length; i++) {
+            int column = 0;
+            for (int j = 0; j < columns.length; j++) {
+                double[][] contents = new double[rows[i]][columns[j]];
+                int rowspan = rows[i];
+                if (row + rowspan > source.length) {
+                    rowspan = source.length - row;
                 }
-                // Starting position for the next column.
-                row += matrices[i][0].getRowCount();
+                int columnspan = columns[j];
+                if (column + columnspan > source[0].length) {
+                    columnspan = source[0].length - column;
+                }
+                if (columnspan > 0 && rowspan > 0) {
+                    DoubleMatrixMath.matrixCopy(
+                            source, row, column, contents, 0, 0, rowspan, columnspan);
+                }
+                column += columns[j];
+                try {
+                    result[i][j] = new DoubleMatrixToken(contents);
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException(e);
+                }
             }
-            result = new DoubleMatrixToken(tiled);
-        } else if (matrix instanceof IntMatrixToken) {
-            // FIXME
-        } else if (matrix instanceof BooleanMatrixToken) {
-        } else if (matrix instanceof LongMatrixToken) {
-        } else if (matrix instanceof ComplexMatrixToken) {
-        } else if (matrix instanceof FixMatrixToken) {
-        } else {
-            throw new IllegalActionException("matrixJoin: Unrecognized type " 
-                    + matrix.getClass()
-                    + " for matrix split.");
+            row += rows[i];
         }
-*/
         return result;
     }
 

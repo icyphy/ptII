@@ -67,6 +67,8 @@ public class ComplexMatrixToken extends MatrixToken {
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
+     *  This constructor also ensures that the matrix is initialized
+     *  with zeros if any of the specifies values is null.
      *  @param value The 2-D Complex matrix.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
@@ -131,7 +133,7 @@ public class ComplexMatrixToken extends MatrixToken {
 
     /** Construct an ComplexMatrixToken from the specified array of
      *  tokens.  The tokens in the array must be scalar tokens
-     *  convertible into integers.
+     *  convertible into complex numbers.
      *  @param tokens The array of tokens, which must contains
      *  rows*columns ScalarTokens.
      *  @param rows The number of rows in the matrix to be created.
@@ -165,6 +167,8 @@ public class ComplexMatrixToken extends MatrixToken {
             if (token instanceof ScalarToken) {
                 _value[i / columns][i % columns] = ((ScalarToken) token)
                         .complexValue();
+            } else if (token == null) {
+                _value[i / columns][i % columns] = Complex.ZERO;
             } else {
                 throw new IllegalActionException("ComplexMatrixToken: Element "
                         + i + " in the array with value " + token
@@ -407,6 +411,45 @@ public class ComplexMatrixToken extends MatrixToken {
             row += matrices[i][0].getRowCount();
         }
         return new ComplexMatrixToken(tiled);
+    }
+
+    /** Split this matrix into multiple matrices. See the base
+     *  class for documentation.
+     *  @param rows The number of rows per submatrix.
+     *  @param columns The number of columns per submatrix.
+     *  @return An array of matrix tokens.
+     */
+    public MatrixToken[][] split(int[] rows, int[] columns) {
+        MatrixToken[][] result = new MatrixToken[rows.length][columns.length];
+        Complex[][] source = complexMatrix();
+        int row = 0;
+        for (int i = 0; i < rows.length; i++) {
+            int column = 0;
+            for (int j = 0; j < columns.length; j++) {
+                Complex[][] contents = new Complex[rows[i]][columns[j]];
+                int rowspan = rows[i];
+                if (row + rowspan > source.length) {
+                    rowspan = source.length - row;
+                }
+                int columnspan = columns[j];
+                if (column + columnspan > source[0].length) {
+                    columnspan = source[0].length - column;
+                }
+                if (columnspan > 0 && rowspan > 0) {
+                    ComplexMatrixMath.matrixCopy(
+                            source, row, column, contents, 0, 0, rowspan, columnspan);
+                }
+                column += columns[j];
+                try {
+                    // Use the copy constructor to ensure zero fill.
+                    result[i][j] = new ComplexMatrixToken(contents);
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException(e);
+                }
+            }
+            row += rows[i];
+        }
+        return result;
     }
 
     /** Return a new Token representing the left multiplicative
@@ -666,7 +709,18 @@ public class ComplexMatrixToken extends MatrixToken {
         if (copy == DO_NOT_COPY) {
             _value = value;
         } else {
-            _value = ComplexMatrixMath.allocCopy(value);
+            // Can't use System.arraycopy() because we have
+            // to ensure that nulls are replaced with zero.
+            _value = new Complex[value.length][value[0].length];
+            for (int i = 0; i < value.length; i++) {
+                for (int j = 0; j < value[0].length; j++) {
+                    if (value[i][j] != null) {
+                        _value[i][j] = value[i][j];
+                    } else {
+                        _value[i][j] = Complex.ZERO;
+                    }
+                }
+            }
         }
     }
 

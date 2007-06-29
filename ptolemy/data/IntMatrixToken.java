@@ -556,6 +556,44 @@ public class IntMatrixToken extends MatrixToken {
         }
     }
 
+    /** Split this matrix into multiple matrices. See the base
+     *  class for documentation.
+     *  @param rows The number of rows per submatrix.
+     *  @param columns The number of columns per submatrix.
+     *  @return An array of matrix tokens.
+     */
+    public MatrixToken[][] split(int[] rows, int[] columns) {
+        MatrixToken[][] result = new MatrixToken[rows.length][columns.length];
+        int[][] source = intMatrix();
+        int row = 0;
+        for (int i = 0; i < rows.length; i++) {
+            int column = 0;
+            for (int j = 0; j < columns.length; j++) {
+                int[][] contents = new int[rows[i]][columns[j]];
+                int rowspan = rows[i];
+                if (row + rowspan > source.length) {
+                    rowspan = source.length - row;
+                }
+                int columnspan = columns[j];
+                if (column + columnspan > source[0].length) {
+                    columnspan = source[0].length - column;
+                }
+                if (columnspan > 0 && rowspan > 0) {
+                    IntegerMatrixMath.matrixCopy(
+                            source, row, column, contents, 0, 0, rowspan, columnspan);
+                }
+                column += columns[j];
+                try {
+                    result[i][j] = new IntMatrixToken(contents);
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException(e);
+                }
+            }
+            row += rows[i];
+        }
+        return result;
+    }
+
     /** Return a new Token representing the additive identity.
      *  The returned token contains a matrix whose elements are
      *  all zero, and the size of the matrix is the same as the

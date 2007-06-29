@@ -72,6 +72,10 @@ public class FixMatrixToken extends MatrixToken {
      *  This method makes a copy of the matrix and stores the copy,
      *  so changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
+     *  If any element of the specified matrix is null, then it
+     *  is replaced with an element with value zero and precision
+     *  the same as previous elements in the matrix.  Note that the
+     *  very first element cannot be null.
      *  @param value the 2D matrix of FixPoint values.
      *  @exception IllegalActionException If the precisions of the
      *   entries in the matrix are not all identical, or the specified
@@ -83,7 +87,7 @@ public class FixMatrixToken extends MatrixToken {
                     + "matrix is null.");
         }
 
-        _initialize(value);
+        _initialize(value, null);
     }
 
     /** Construct a FixMatrixToken from the specified string.
@@ -98,11 +102,34 @@ public class FixMatrixToken extends MatrixToken {
 
         if (token instanceof FixMatrixToken) {
             FixPoint[][] value = ((FixMatrixToken) token).fixMatrix();
-            _initialize(value);
+            _initialize(value, null);
         } else {
             throw new IllegalActionException("A FixMatrixToken cannot be"
                     + " created from the expression '" + init + "'");
         }
+    }
+
+    /** Construct a FixMatrixToken with the specified 2-D matrix.
+     *  This method makes a copy of the matrix and stores the copy,
+     *  so changes on the specified matrix after this token is
+     *  constructed will not affect the content of this token.
+     *  If any element of the specified matrix is null, then it
+     *  is replaced with an element with value zero and precision
+     *  the same as previous elements in the matrix.  Note that the
+     *  very first element cannot be null.
+     *  @param value the 2D matrix of FixPoint values.
+     *  @param precision The precision to use.
+     *  @exception IllegalActionException If the precisions of the
+     *   entries in the matrix are not all identical, or the specified
+     *   matrix is null.
+     */
+    public FixMatrixToken(FixPoint[][] value, Precision precision)
+            throws IllegalActionException {
+        if (value == null) {
+            throw new IllegalActionException("FixMatrixToken: The specified "
+                    + "matrix is null.");
+        }
+        _initialize(value, precision);
     }
 
     /** Construct an FixMatrixToken from the specified array of
@@ -388,6 +415,51 @@ public class FixMatrixToken extends MatrixToken {
             row += matrices[i][0].getRowCount();
         }
         return new FixMatrixToken(tiled);
+    }
+
+    /** Split this matrix into multiple matrices. See the base
+     *  class for documentation.
+     *  @param rows The number of rows per submatrix.
+     *  @param columns The number of columns per submatrix.
+     *  @return An array of matrix tokens.
+     */
+    public MatrixToken[][] split(int[] rows, int[] columns) {
+        MatrixToken[][] result = new MatrixToken[rows.length][columns.length];
+        FixPoint[][] source = fixMatrix();
+        int row = 0;
+        for (int i = 0; i < rows.length; i++) {
+            int column = 0;
+            for (int j = 0; j < columns.length; j++) {
+                FixPoint[][] contents = new FixPoint[rows[i]][columns[j]];
+                int rowspan = rows[i];
+                if (row + rowspan > source.length) {
+                    rowspan = source.length - row;
+                }
+                int columnspan = columns[j];
+                if (column + columnspan > source[0].length) {
+                    columnspan = source[0].length - column;
+                }
+                if (columnspan > 0 && rowspan > 0) {
+                    // There is no FixPointMatrixMath class, so we need
+                    // to implement the matrix copy here.
+                    for (int ii = 0; ii < rowspan; ii++) {
+                        System.arraycopy(source[row + ii], column,
+                                contents[ii],
+                                0, columnspan);
+                    }
+                }
+                column += columns[j];
+                try {
+                    // Use the precision of the (0,0) element because the entire submatrix
+                    // may be zero, in which case the precision cannot be inferred.
+                    result[i][j] = new FixMatrixToken(contents, getElementAt(0, 0).getPrecision());
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException(e);
+                }
+            }
+            row += rows[i];
+        }
+        return result;
     }
 
     /** Return a new Token representing the left multiplicative
@@ -695,9 +767,14 @@ public class FixMatrixToken extends MatrixToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // initialize the row and column count and copy the specified
-    // matrix. This method is used by the constructors.
-    private void _initialize(FixPoint[][] value) throws IllegalActionException {
+
+    /** Initialize the row and column count and copy the specified
+     *  matrix. This method is used by the constructors.
+     *  @param value The value.
+     *  @param prevision The precision, or null to infer it from the values.
+     */
+    private void _initialize(FixPoint[][] value, Precision precision)
+            throws IllegalActionException {
         _rowCount = value.length;
         _columnCount = value[0].length;
         _value = new FixPoint[_rowCount][_columnCount];
@@ -705,8 +782,15 @@ public class FixMatrixToken extends MatrixToken {
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
                 _value[i][j] = value[i][j];
-
-                Precision precision = value[i][j].getPrecision();
+                if (_value[i][j] == null) {
+                    // NOTE: This requires that the very first element
+                    // must be non-null, in order to set the precision,
+                    // or that the precision be provided in the argument.
+                    _value[i][j] = Quantizer.round(0.0, precision);
+                }
+                if (precision == null) {
+                    precision = _value[i][j].getPrecision();
+                }
 
                 if ((_precision != null) && !_precision.equals(precision)) {
                     throw new IllegalActionException(
