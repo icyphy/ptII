@@ -57,6 +57,14 @@ public class SingleRuleTransformer extends MultiCompositeActor {
         _init();
     }
 
+    public CompositeActorMatcher getLeftHandSide() {
+        return _leftHandSide;
+    }
+
+    public CompositeActorMatcher getRightHandSide() {
+        return _rightHandSide;
+    }
+
     protected void _init()
     throws IllegalActionException, NameDuplicationException {
         // Create the default refinement.
@@ -65,11 +73,11 @@ public class SingleRuleTransformer extends MultiCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                          private variables                ////
 
-    protected CompositeActorMatcher _leftHandSide;
+    private CompositeActorMatcher _leftHandSide;
 
-    protected CompositeActorMatcher _rightHandSide;
+    private CompositeActorMatcher _rightHandSide;
 
     private static final long serialVersionUID = -456353254196458127L;
 

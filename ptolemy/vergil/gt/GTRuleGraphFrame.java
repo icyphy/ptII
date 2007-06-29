@@ -51,7 +51,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
+import ptolemy.actor.gt.GraphTransformationException;
 import ptolemy.actor.gt.SingleRuleTransformer;
+import ptolemy.actor.gt.DepthFirstTransformer;
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.expr.FileParameter;
@@ -160,7 +162,7 @@ implements ChangeListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                          public methods                   ////
 
     /** React to a change in the state of the tabbed pane.
      *  @param event The event.
@@ -215,16 +217,11 @@ implements ChangeListener {
             Dimension size = graph.getSize();
             x = size.getWidth() / 2;
             y = size.getHeight() / 2;
-
-            ActorGraphModel graphModel =
-                (ActorGraphModel) _controller.getGraphModel();
             double[] point = SnapConstraint.constrainPoint(x, y);
-            CompositeActorMatcher matcher =
-                (CompositeActorMatcher) graphModel.getPtolemyModel();
-            SingleRuleTransformer transformer =
-                (SingleRuleTransformer) matcher.getContainer();
+
+            SingleRuleTransformer transformerActor = _getTransformer();
             List<?> entityList =
-                transformer.entityList(CompositeActorMatcher.class);
+                transformerActor.entityList(CompositeActorMatcher.class);
             Iterator<?> iterator = entityList.iterator();
             for (int i = 0; i < _tabbedPane.getSelectedIndex(); i++) {
                 iterator.next();
@@ -333,6 +330,14 @@ implements ChangeListener {
                     MessageHandler.message("Unable to parse input model.");
                     return;
                 }
+
+                SingleRuleTransformer transformerActor = _getTransformer();
+                try {
+                    _transformer.transform(model, transformerActor);
+                } catch (GraphTransformationException ex) {
+                    throw new KernelRuntimeException(ex,
+                            "Unable to transform model.");
+                }
             }
         }
 
@@ -343,6 +348,8 @@ implements ChangeListener {
         private FileParameter _outputModel;
 
         private MoMLParser _parser = new MoMLParser();
+
+        private DepthFirstTransformer _transformer = new DepthFirstTransformer();
 
         private static final long serialVersionUID = -3272455226789715544L;
 
@@ -442,9 +449,6 @@ implements ChangeListener {
         diva.gui.GUIUtilities.addToolBarButton(_toolbar, newRelationAction);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
     /** Create the component that goes to the right of the library.
      *  NOTE: This is called in the base class constructor, before
      *  things have been initialized. Hence, it cannot reference
@@ -502,10 +506,13 @@ implements ChangeListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected variables               ////
 
     /** The case menu. */
     protected JMenu _ruleMenu;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Add a tabbed pane for the specified case.
      *  @param refinement The case.
@@ -545,6 +552,16 @@ implements ChangeListener {
         //        targets created.
         new EditorDropTarget(jgraph);
         return jgraph;
+    }
+
+    private SingleRuleTransformer _getTransformer() {
+        ActorGraphModel graphModel =
+            (ActorGraphModel) _controller.getGraphModel();
+        CompositeActorMatcher matcher =
+            (CompositeActorMatcher) graphModel.getPtolemyModel();
+        SingleRuleTransformer transformer =
+            (SingleRuleTransformer) matcher.getContainer();
+        return transformer;
     }
 
     ///////////////////////////////////////////////////////////////////
