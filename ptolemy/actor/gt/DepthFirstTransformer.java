@@ -41,6 +41,14 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.NamedObj;
 
+/**
+
+ @author Thomas Huining Feng
+ @version $$
+ @since Ptolemy II 6.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class DepthFirstTransformer {
 
     public void match(CompositeActorMatcher lhsGraph, NamedObj hostGraph)
