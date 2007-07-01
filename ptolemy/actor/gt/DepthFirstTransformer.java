@@ -31,9 +31,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import ptolemy.actor.AtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.Pair;
 import ptolemy.kernel.CompositeEntity;
@@ -57,11 +57,15 @@ public class DepthFirstTransformer {
         _lhsFrontier = new FastLinkedList<NamedObj>();
         _hostFrontier = new FastLinkedList<NamedObj>();
 
-        _match.put(hostGraph, lhsGraph);
         _lhsFrontier.add(lhsGraph);
         _hostFrontier.add(hostGraph);
 
-        _match(_lhsFrontier.getHead(), _hostFrontier.getHead());
+        if (_match(_lhsFrontier.getHead(), _hostFrontier.getHead())) {
+            for (NamedObj lhsObject : _match.keySet()) {
+                System.out.println(lhsObject.getName() + " : " +
+                        _match.get(lhsObject).getName());
+            }
+        }
     }
 
     public NamedObj transform(NamedObj from, SingleRuleTransformer transformer)
@@ -171,19 +175,42 @@ public class DepthFirstTransformer {
         }
     }
 
+    private boolean _matchLoop(FastLinkedList<NamedObj>.Entry lhsStart,
+            FastLinkedList<NamedObj>.Entry hostStart) {
+        if (lhsStart == null) {
+            return true;
+        } else {
+            FastLinkedList<NamedObj>.Entry lhsEntry = lhsStart;
+            while (lhsEntry != null) {
+                if (!_match(lhsEntry, hostStart)) {
+                    return false;
+                }
+                lhsEntry = lhsEntry.getNext();
+            }
+            return true;
+        }
+    }
+
     private boolean _tryToMatch(NamedObj lhsObject, NamedObj hostObject) {
-        if (lhsObject instanceof CompositeEntity
-                && hostObject instanceof CompositeEntity) {
-            return _tryToMatchCompositeEntity((CompositeEntity) lhsObject,
-                    (CompositeEntity) hostObject);
-        } else if (lhsObject instanceof Relation
-                && hostObject instanceof Relation) {
-            return _tryToMatchRelation((Relation) lhsObject,
-                    (Relation) hostObject);
+        if (_match.containsKey(lhsObject)) {
+            return _match.get(lhsObject) == hostObject;
+        } else if (_match.containsValue(hostObject)) {
+            return false;
         } else if (lhsObject instanceof AtomicActor
                 && hostObject instanceof AtomicActor) {
             return _tryToMatchAtomicActor((AtomicActor) lhsObject,
                     (AtomicActor) hostObject);
+        } else if (lhsObject instanceof CompositeEntity
+                && hostObject instanceof CompositeEntity) {
+            return _tryToMatchCompositeEntity((CompositeEntity) lhsObject,
+                    (CompositeEntity) hostObject);
+        } else if (lhsObject instanceof Port
+                && hostObject instanceof Port) {
+            return _tryToMatchPort((Port) lhsObject, (Port) hostObject);
+        } else if (lhsObject instanceof Relation
+                && hostObject instanceof Relation) {
+            return _tryToMatchRelation((Relation) lhsObject,
+                    (Relation) hostObject);
         } else {
             return false;
         }
@@ -197,30 +224,21 @@ public class DepthFirstTransformer {
 
         _match.put(lhsActor, hostActor);
 
-        Set<NamedObj> matchKeys = _match.keySet();
-        Collection<NamedObj> matchValues = _match.values();
-
         for (Object portObject : lhsActor.portList()) {
             Port port = (Port) portObject;
-            for (Object relationObject : port.linkedRelationList()) {
-                Relation relation = (Relation) relationObject;
-                if (!matchKeys.contains(relation)) {
-                    _lhsFrontier.add(relation);
-                }
+            if (!_match.containsKey(port)) {
+                _lhsFrontier.add(port);
             }
         }
 
         for (Object portObject : hostActor.portList()) {
             Port port = (Port) portObject;
-            for (Object relationObject : port.linkedRelationList()) {
-                Relation relation = (Relation) relationObject;
-                if (!matchValues.contains(relation)) {
-                    _hostFrontier.add(relation);
-                }
+            if (!_match.containsValue(port)) {
+                _hostFrontier.add(port);
             }
         }
 
-        if (_match(lhsTail.getNext(), hostTail.getNext())) {
+        if (_matchLoop(lhsTail.getNext(), hostTail.getNext())) {
             return true;
         } else {
             _match.remove(lhsActor);
@@ -250,7 +268,6 @@ public class DepthFirstTransformer {
                     hostMarkedList, _match.values());
 
             while (hostNextActor != null) {
-                _match.put(lhsNextActor, hostNextActor);
                 _lhsFrontier.add(lhsNextActor);
                 _hostFrontier.add(hostNextActor);
 
@@ -263,8 +280,63 @@ public class DepthFirstTransformer {
                             hostMarkedList, _match.values());
                 }
             }
-            _match.remove(lhsNextActor);
             return false;
+        }
+    }
+
+    private boolean _tryToMatchPort(Port lhsPort, Port hostPort) {
+        
+        if (!_checkPortMatch(lhsPort, hostPort)) {
+            return false;
+        }
+
+        FastLinkedList<NamedObj>.Entry lhsTail = _lhsFrontier.getTail();
+        FastLinkedList<NamedObj>.Entry hostTail = _hostFrontier.getTail();
+
+        _match.put(lhsPort, hostPort);
+
+        for (Object relationObject : lhsPort.linkedRelationList()) {
+            Relation relation = (Relation) relationObject;
+            if (!_match.containsKey(relation)) {
+                _lhsFrontier.add(relation);
+            }
+        }
+
+        for (Object relationObject : hostPort.linkedRelationList()) {
+            Relation relation = (Relation) relationObject;
+            if (!_match.containsValue(relation)) {
+                _hostFrontier.add(relation);
+            }
+        }
+
+        if (_matchLoop(lhsTail.getNext(), hostTail.getNext())) {
+            return true;
+        } else {
+            _match.remove(lhsPort);
+            _lhsFrontier.removeAllAfter(lhsTail);
+            _hostFrontier.removeAllAfter(hostTail);
+            return false;
+        }
+    }
+    
+    private boolean _checkPortMatch(Port lhsPort, Port hostPort) {
+        if (lhsPort instanceof TypedIOPort) {
+            if (hostPort instanceof TypedIOPort) {
+                TypedIOPort lhsTypedPort = (TypedIOPort) lhsPort;
+                TypedIOPort hostTypedPort = (TypedIOPort) hostPort;
+                if (lhsTypedPort.isInput() && !hostTypedPort.isInput()) {
+                    return false;
+                } else if (lhsTypedPort.isOutput()
+                        && !hostTypedPort.isOutput()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return true;
         }
     }
 
@@ -276,13 +348,10 @@ public class DepthFirstTransformer {
 
         _match.put(lhsRelation, hostRelation);
 
-        Set<NamedObj> matchKeys = _match.keySet();
-        Collection<NamedObj> matchValues = _match.values();
-
         for (Object portObject : lhsRelation.linkedPortList()) {
             Port port = (Port) portObject;
             NamedObj container = port.getContainer();
-            if (!matchKeys.contains(container)) {
+            if (!_match.containsKey(container)) {
                 _lhsFrontier.add(container);
             }
         }
@@ -290,12 +359,12 @@ public class DepthFirstTransformer {
         for (Object portObject : hostRelation.linkedPortList()) {
             Port port = (Port) portObject;
             NamedObj container = port.getContainer();
-            if (!matchValues.contains(container)) {
+            if (!_match.containsValue(container)) {
                 _hostFrontier.add(container);
             }
         }
 
-        if (_match(lhsTail.getNext(), hostTail.getNext())) {
+        if (_matchLoop(lhsTail.getNext(), hostTail.getNext())) {
             return true;
         } else {
             _match.remove(lhsRelation);
