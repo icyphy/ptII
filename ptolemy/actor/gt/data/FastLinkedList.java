@@ -90,7 +90,7 @@ public class FastLinkedList<E> implements Collection<E> {
     }
 
     public boolean isEmpty() {
-        return _head != null;
+        return _head == null;
     }
 
     public Iterator<E> iterator() {
