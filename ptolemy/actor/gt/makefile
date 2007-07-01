@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/gt
 
-DIRS = 		rules
+DIRS = 		data rules
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -48,6 +48,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	data/data.jar \
 	rules/rules.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -56,14 +57,18 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AtomicActorMatcher.java \
 	CompositeActorMatcher.java \
+	DepthFirstTransformer.java \
+	GraphTransformationException.java \
 	MalformedStringException.java \
+	NoMatchFoundException.java \
 	Rule.java \
 	RuleAttribute.java \
-    RuleEditor.java \
+	RuleEditor.java \
 	RuleList.java \
 	RuleListAttribute.java \
 	RuleValidationException.java \
-	SingleRuleTransformer.java
+	SingleRuleTransformer.java \
+	SubgraphMatchingException.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -75,11 +80,14 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'RuleEditor$$1.class' \
+	'RuleEditor$$2.class' \
+	'RuleEditor$$3.class' \
 	'RuleEditor$$AttributesEditor.class' \
 	'RuleEditor$$ComboElement.class' \
 	'RuleEditor$$Factory.class' \
 	'RuleEditor$$JPanelCellEditor.class' \
-	'RuleEditor$$Row.class'
+	'RuleEditor$$Row.class' \
+	'RuleEditor$$Row$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
