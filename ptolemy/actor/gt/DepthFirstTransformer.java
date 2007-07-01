@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
 /**
 
  @author Thomas Huining Feng
- @version $$
+ @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
