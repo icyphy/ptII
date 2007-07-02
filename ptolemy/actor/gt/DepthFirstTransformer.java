@@ -75,6 +75,27 @@ public class DepthFirstTransformer {
         return null;
     }
 
+    private boolean _checkPortMatch(Port lhsPort, Port hostPort) {
+        if (lhsPort instanceof TypedIOPort) {
+            if (hostPort instanceof TypedIOPort) {
+                TypedIOPort lhsTypedPort = (TypedIOPort) lhsPort;
+                TypedIOPort hostTypedPort = (TypedIOPort) hostPort;
+                if (lhsTypedPort.isInput() && !hostTypedPort.isInput()) {
+                    return false;
+                } else if (lhsTypedPort.isOutput()
+                        && !hostTypedPort.isOutput()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
     private AtomicActor _findFirstAtomicActor(CompositeEntity top,
             FastLinkedList<MarkedEntityList> markedList,
             Collection<NamedObj> excludedEntities) {
@@ -285,7 +306,7 @@ public class DepthFirstTransformer {
     }
 
     private boolean _tryToMatchPort(Port lhsPort, Port hostPort) {
-        
+
         if (!_checkPortMatch(lhsPort, hostPort)) {
             return false;
         }
@@ -316,27 +337,6 @@ public class DepthFirstTransformer {
             _lhsFrontier.removeAllAfter(lhsTail);
             _hostFrontier.removeAllAfter(hostTail);
             return false;
-        }
-    }
-    
-    private boolean _checkPortMatch(Port lhsPort, Port hostPort) {
-        if (lhsPort instanceof TypedIOPort) {
-            if (hostPort instanceof TypedIOPort) {
-                TypedIOPort lhsTypedPort = (TypedIOPort) lhsPort;
-                TypedIOPort hostTypedPort = (TypedIOPort) hostPort;
-                if (lhsTypedPort.isInput() && !hostTypedPort.isInput()) {
-                    return false;
-                } else if (lhsTypedPort.isOutput()
-                        && !hostTypedPort.isOutput()) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } else {
-                return false;
-            }
-        } else {
-            return true;
         }
     }
 
