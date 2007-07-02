@@ -53,9 +53,9 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-    FastLinkedList.java \
-    Pair.java \
-    Tuple.java
+	FastLinkedList.java \
+	Pair.java \
+	Tuple.java
 
 EXTRA_SRCS =    $(JSRCS)
 
@@ -66,7 +66,7 @@ MISC_FILES =    $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-    'FastLinkedList$$Entry.class'
+	'FastLinkedList$$Entry.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
