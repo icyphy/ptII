@@ -1,10 +1,10 @@
-# Makefile for the ptolemy/actor/gt/data package
+# Makefile for Ptolemy graph transformation data
 #
 # @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2007 The Regents of the University of California.
+# @Copyright (c) 1998-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -26,30 +26,24 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-#                       PT_COPYRIGHT_VERSION_2
-#                       COPYRIGHTENDKEY
+# 						PT_COPYRIGHT_VERSION_2
+# 						COPYRIGHTENDKEY
 
-ME =        ptolemy/actor/gt/data
+ME =		ptolemy/actor/gt/data
 
 DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =      ../../../..
+ROOT =		../../../..
 
-CLASSPATH =     $(ROOT)
-
+CLASSPATH =	$(ROOT)
 # Get configuration info
-CONFIG =    $(ROOT)/mk/ptII.mk
+CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     data
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	data
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
@@ -57,15 +51,16 @@ JSRCS = \
 	Pair.java \
 	Tuple.java
 
-EXTRA_SRCS =    $(JSRCS)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =    $(DIRS)
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'FastLinkedList$$1.class' \
 	'FastLinkedList$$Entry.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
