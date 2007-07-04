@@ -75,6 +75,31 @@ public class DepthFirstTransformer {
         return null;
     }
 
+    private boolean _checkDisconnectedComponents(
+            FastLinkedList<NamedObj>.Entry lhsStart,
+            FastLinkedList<NamedObj>.Entry hostStart) {
+        FastLinkedList<NamedObj>.Entry lhsEntry = lhsStart;
+        while (lhsEntry != null) {
+            NamedObj lhsObject = lhsEntry.getValue();
+            if (lhsObject instanceof CompositeEntity) {
+                CompositeEntity lhsEntity = (CompositeEntity) lhsObject;
+                int size;
+                // Keep matching entities within the composite, until the match
+                // no longer grows.
+                // This helps to match all disconnected components in the graph.
+                do {
+                    size = _match.size();
+                    if (!_tryToMatchCompositeEntity(lhsEntity,
+                            (CompositeEntity) _match.get(lhsEntity))) {
+                        return false;
+                    }
+                } while (_match.size() > size);
+            }
+            lhsEntry = lhsEntry.getPrevious();
+        }
+        return true;
+    }
+
     private boolean _checkPortMatch(Port lhsPort, Port hostPort) {
         if (lhsPort instanceof TypedIOPort) {
             if (hostPort instanceof TypedIOPort) {
@@ -202,19 +227,27 @@ public class DepthFirstTransformer {
             return true;
         } else {
             FastLinkedList<NamedObj>.Entry lhsEntry = lhsStart;
+            boolean nestedMatch = false;
             while (lhsEntry != null) {
+                nestedMatch = true;
                 if (!_match(lhsEntry, hostStart)) {
                     return false;
                 }
                 lhsEntry = lhsEntry.getNext();
             }
-            return true;
+            if (nestedMatch) {
+                return true;
+            } else {
+                return _checkDisconnectedComponents(lhsStart, lhsEntry);
+            }
         }
     }
 
     private boolean _tryToMatch(NamedObj lhsObject, NamedObj hostObject) {
         if (_match.containsKey(lhsObject)) {
-            return _match.get(lhsObject) == hostObject;
+            return _match.get(lhsObject) == hostObject
+                    && _checkDisconnectedComponents(_lhsFrontier.getTail(),
+                            _hostFrontier.getTail());
         } else if (_match.containsValue(hostObject)) {
             return false;
         } else if (lhsObject instanceof AtomicActor
@@ -277,6 +310,8 @@ public class DepthFirstTransformer {
         AtomicActor lhsNextActor =
             _findFirstAtomicActor(lhsEntity, lhsMarkedList, _match.keySet());
 
+        _match.put(lhsEntity, hostEntity);
+
         if (lhsNextActor == null) {
             return true;
         } else {
@@ -301,6 +336,7 @@ public class DepthFirstTransformer {
                             hostMarkedList, _match.values());
                 }
             }
+            _match.remove(lhsEntity);
             return false;
         }
     }
