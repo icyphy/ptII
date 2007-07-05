@@ -47,6 +47,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	FastHashMap.java \
 	FastLinkedList.java \
 	Pair.java \
 	Tuple.java
