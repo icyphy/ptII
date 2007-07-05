@@ -28,12 +28,12 @@
 package ptolemy.actor.gt;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gt.data.FastHashMap;
 import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.Pair;
 import ptolemy.kernel.CompositeEntity;
@@ -53,7 +53,7 @@ public class DepthFirstTransformer {
 
     public void match(CompositeActorMatcher lhsGraph, NamedObj hostGraph)
     throws SubgraphMatchingException {
-        _match = new HashMap<NamedObj, NamedObj>();
+        _match = new FastHashMap<NamedObj, NamedObj>();
         _lhsFrontier = new FastLinkedList<NamedObj>();
         _hostFrontier = new FastLinkedList<NamedObj>();
 
@@ -89,8 +89,9 @@ public class DepthFirstTransformer {
                 // This helps to match all disconnected components in the graph.
                 do {
                     size = _match.size();
-                    if (!_tryToMatchCompositeEntity(lhsEntity,
-                            (CompositeEntity) _match.get(lhsEntity))) {
+                    if (_match.containsKey(lhsEntity)
+                            && !_tryToMatchCompositeEntity(lhsEntity,
+                                    (CompositeEntity) _match.get(lhsEntity))) {
                         return false;
                     }
                 } while (_match.size() > size);
@@ -223,14 +224,22 @@ public class DepthFirstTransformer {
 
     private boolean _matchLoop(FastLinkedList<NamedObj>.Entry lhsStart,
             FastLinkedList<NamedObj>.Entry hostStart) {
-        if (lhsStart == null) {
-            return true;
+        
+        // The real start of the two frontiers.
+        // For the 1st check for disconnected components, the parameters have to
+        // be non-null, and the following variables are the actual parameters to
+        // the loop.
+        FastLinkedList<NamedObj>.Entry lhsChildStart = lhsStart.getNext();
+        FastLinkedList<NamedObj>.Entry hostChildStart = hostStart.getNext();
+        
+        if (lhsChildStart == null) {
+            return _checkDisconnectedComponents(lhsStart, hostStart);
         } else {
-            FastLinkedList<NamedObj>.Entry lhsEntry = lhsStart;
+            FastLinkedList<NamedObj>.Entry lhsEntry = lhsChildStart;
             boolean nestedMatch = false;
             while (lhsEntry != null) {
                 nestedMatch = true;
-                if (!_match(lhsEntry, hostStart)) {
+                if (!_match(lhsEntry, hostChildStart)) {
                     return false;
                 }
                 lhsEntry = lhsEntry.getNext();
@@ -238,7 +247,7 @@ public class DepthFirstTransformer {
             if (nestedMatch) {
                 return true;
             } else {
-                return _checkDisconnectedComponents(lhsStart, lhsEntry);
+                return _checkDisconnectedComponents(lhsChildStart, lhsEntry);
             }
         }
     }
@@ -292,7 +301,7 @@ public class DepthFirstTransformer {
             }
         }
 
-        if (_matchLoop(lhsTail.getNext(), hostTail.getNext())) {
+        if (_matchLoop(lhsTail, hostTail)) {
             return true;
         } else {
             _match.remove(lhsActor);
@@ -366,7 +375,7 @@ public class DepthFirstTransformer {
             }
         }
 
-        if (_matchLoop(lhsTail.getNext(), hostTail.getNext())) {
+        if (_matchLoop(lhsTail, hostTail)) {
             return true;
         } else {
             _match.remove(lhsPort);
@@ -400,7 +409,7 @@ public class DepthFirstTransformer {
             }
         }
 
-        if (_matchLoop(lhsTail.getNext(), hostTail.getNext())) {
+        if (_matchLoop(lhsTail, hostTail)) {
             return true;
         } else {
             _match.remove(lhsRelation);
