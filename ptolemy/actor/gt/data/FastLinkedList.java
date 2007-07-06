@@ -220,6 +220,20 @@ public class FastLinkedList<E> implements Collection<E> {
             return _value;
         }
 
+        public void remove() {
+            if (_previous != null) {
+                _previous._next = _next;
+            } else {
+                _head = _next;
+            }
+            if (_next != null) {
+                _next._previous = _previous;
+            } else {
+                _tail = _previous;
+            }
+            _size--;
+        }
+
         private Entry(E value) {
             this._value = value;
         }

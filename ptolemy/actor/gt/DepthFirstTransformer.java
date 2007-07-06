@@ -53,9 +53,14 @@ public class DepthFirstTransformer {
 
     public void match(CompositeActorMatcher lhsGraph, NamedObj hostGraph)
     throws SubgraphMatchingException {
+
+        // Matching result.
         _match = new FastHashMap<NamedObj, NamedObj>();
+
+        // Temporary data structures.
         _lhsFrontier = new FastLinkedList<NamedObj>();
         _hostFrontier = new FastLinkedList<NamedObj>();
+        _visitedLHSCompositeEntities = new FastLinkedList<CompositeEntity>();
 
         _lhsFrontier.add(lhsGraph);
         _hostFrontier.add(hostGraph);
@@ -66,6 +71,11 @@ public class DepthFirstTransformer {
                         _match.get(lhsObject).getName());
             }
         }
+
+        // Clear temporary data structures to free memory.
+        _lhsFrontier = null;
+        _hostFrontier = null;
+        _visitedLHSCompositeEntities = null;
     }
 
     public NamedObj transform(NamedObj from, SingleRuleTransformer transformer)
@@ -75,26 +85,14 @@ public class DepthFirstTransformer {
         return null;
     }
 
-    private boolean _checkDisconnectedComponents(
-            FastLinkedList<NamedObj>.Entry lhsStart,
-            FastLinkedList<NamedObj>.Entry hostStart) {
-        FastLinkedList<NamedObj>.Entry lhsEntry = lhsStart;
+    private boolean _checkDisconnectedComponents() {
+        FastLinkedList<CompositeEntity>.Entry lhsEntry =
+            _visitedLHSCompositeEntities.getTail();
         while (lhsEntry != null) {
-            NamedObj lhsObject = lhsEntry.getValue();
-            if (lhsObject instanceof CompositeEntity) {
-                CompositeEntity lhsEntity = (CompositeEntity) lhsObject;
-                int size;
-                // Keep matching entities within the composite, until the match
-                // no longer grows.
-                // This helps to match all disconnected components in the graph.
-                do {
-                    size = _match.size();
-                    if (_match.containsKey(lhsEntity)
-                            && !_tryToMatchCompositeEntity(lhsEntity,
-                                    (CompositeEntity) _match.get(lhsEntity))) {
-                        return false;
-                    }
-                } while (_match.size() > size);
+            CompositeEntity lhsEntity = lhsEntry.getValue();
+            if (!_tryToMatchCompositeEntity(lhsEntity,
+                    (CompositeEntity) _match.get(lhsEntity))) {
+                return false;
             }
             lhsEntry = lhsEntry.getPrevious();
         }
@@ -224,16 +222,16 @@ public class DepthFirstTransformer {
 
     private boolean _matchLoop(FastLinkedList<NamedObj>.Entry lhsStart,
             FastLinkedList<NamedObj>.Entry hostStart) {
-        
+
         // The real start of the two frontiers.
         // For the 1st check for disconnected components, the parameters have to
         // be non-null, and the following variables are the actual parameters to
         // the loop.
         FastLinkedList<NamedObj>.Entry lhsChildStart = lhsStart.getNext();
         FastLinkedList<NamedObj>.Entry hostChildStart = hostStart.getNext();
-        
+
         if (lhsChildStart == null) {
-            return _checkDisconnectedComponents(lhsStart, hostStart);
+            return _checkDisconnectedComponents();
         } else {
             FastLinkedList<NamedObj>.Entry lhsEntry = lhsChildStart;
             boolean nestedMatch = false;
@@ -247,7 +245,7 @@ public class DepthFirstTransformer {
             if (nestedMatch) {
                 return true;
             } else {
-                return _checkDisconnectedComponents(lhsChildStart, lhsEntry);
+                return _checkDisconnectedComponents();
             }
         }
     }
@@ -255,8 +253,7 @@ public class DepthFirstTransformer {
     private boolean _tryToMatch(NamedObj lhsObject, NamedObj hostObject) {
         if (_match.containsKey(lhsObject)) {
             return _match.get(lhsObject) == hostObject
-                    && _checkDisconnectedComponents(_lhsFrontier.getTail(),
-                            _hostFrontier.getTail());
+                    && _checkDisconnectedComponents();
         } else if (_match.containsValue(hostObject)) {
             return false;
         } else if (lhsObject instanceof AtomicActor
@@ -319,13 +316,22 @@ public class DepthFirstTransformer {
         AtomicActor lhsNextActor =
             _findFirstAtomicActor(lhsEntity, lhsMarkedList, _match.keySet());
 
-        _match.put(lhsEntity, hostEntity);
+        boolean firstEntrance = !_match.containsKey(lhsEntity);
+        if (firstEntrance) {
+            _match.put(lhsEntity, hostEntity);
+        }
 
         if (lhsNextActor == null) {
             return true;
         } else {
             FastLinkedList<NamedObj>.Entry lhsTail = _lhsFrontier.getTail();
             FastLinkedList<NamedObj>.Entry hostTail = _hostFrontier.getTail();
+
+            FastLinkedList<CompositeEntity>.Entry compositeTail = null;
+            if (firstEntrance) {
+                _visitedLHSCompositeEntities.add(lhsEntity);
+                compositeTail = _visitedLHSCompositeEntities.getTail();
+            }
 
             FastLinkedList<MarkedEntityList> hostMarkedList =
                 new FastLinkedList<MarkedEntityList>();
@@ -341,11 +347,18 @@ public class DepthFirstTransformer {
                 } else {
                     _hostFrontier.removeAllAfter(hostTail);
                     _lhsFrontier.removeAllAfter(lhsTail);
+                    if (firstEntrance) {
+                        _visitedLHSCompositeEntities.removeAllAfter(
+                                compositeTail);
+                    }
                     hostNextActor = _findNextAtomicActor(hostEntity,
                             hostMarkedList, _match.values());
                 }
             }
-            _match.remove(lhsEntity);
+            if (firstEntrance) {
+                compositeTail.remove();
+                _match.remove(lhsEntity);
+            }
             return false;
         }
     }
@@ -424,6 +437,8 @@ public class DepthFirstTransformer {
     private FastLinkedList<NamedObj> _lhsFrontier;
 
     private Map<NamedObj, NamedObj> _match;
+
+    private FastLinkedList<CompositeEntity> _visitedLHSCompositeEntities;
 
     private static class MarkedEntityList extends Pair<List<?>, Integer> {
 
