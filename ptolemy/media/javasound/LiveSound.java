@@ -38,6 +38,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
+import javax.sound.sampled.Mixer.Info;
 
 //////////////////////////////////////////////////////////
 //// LiveSound
@@ -47,14 +48,11 @@ import javax.sound.sampled.TargetDataLine;
  samples. For audio capture, audio samples are captured
  from the audio input port of the computer. The audio input
  port is typically associated with the line-in port,
- microphone-in port, or cdrom audio-in port. It is not
- possible to select the desired input port from Java. The
- desired input port may be selected from the operating
- system. For audio playback, audio samples are written to
+ microphone-in port, or cdrom audio-in port. 
+ For audio playback, audio samples are written to
  the audio output port. The audio output port is typically
  associated with the headphones jack or the internal
- speaker of the computer. The desired output port may be
- selected from the operating system.
+ speaker of the computer.
  <p>
  <b>Format of audio samples</b>
  <p>
@@ -1109,15 +1107,17 @@ public class LiveSound {
         AudioFormat format = new AudioFormat(_sampleRate, _bitsPerSample,
                 _channels, signed, bigEndian);
 
-        DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
-                format, AudioSystem.NOT_SPECIFIED);
+        // As of Java 5.0, no longer need to specify this.
+        // Use the convenience method AudioSystem.getSourceDataLine(AudioFormat).
+        // DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
+        //        format, AudioSystem.NOT_SPECIFIED);
 
-        // get and open the source data line for playback.
+        // Get and open the source data line for playback.
         try {
             // Source DataLine is really a target for
             // audio data, not a source.
-            _sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
-
+            _sourceLine = (SourceDataLine) AudioSystem.getSourceDataLine(format);
+            
             // Open line and suggest a buffer size (in bytes) to use or
             // the internal audio buffer.
             _sourceLine.open(format, _bufferSize * _bytesPerSample * _channels);
