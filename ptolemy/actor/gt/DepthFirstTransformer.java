@@ -28,14 +28,17 @@
 package ptolemy.actor.gt;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.FastHashMap;
 import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.Pair;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
@@ -51,7 +54,11 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class DepthFirstTransformer {
 
-    public void match(CompositeActorMatcher lhsGraph, NamedObj hostGraph)
+    public Map<NamedObj, NamedObj> getMatch() {
+        return Collections.unmodifiableMap(_match);
+    }
+
+    public boolean match(CompositeActorMatcher lhsGraph, NamedObj hostGraph)
     throws SubgraphMatchingException {
 
         // Matching result.
@@ -65,7 +72,9 @@ public class DepthFirstTransformer {
         _lhsFrontier.add(lhsGraph);
         _hostFrontier.add(hostGraph);
 
-        if (_match(_lhsFrontier.getHead(), _hostFrontier.getHead())) {
+        boolean success =
+            _match(_lhsFrontier.getHead(), _hostFrontier.getHead());
+        if (success) {
             for (NamedObj lhsObject : _match.keySet()) {
                 System.out.println(lhsObject.getName() + " : " +
                         _match.get(lhsObject).getName());
@@ -76,6 +85,7 @@ public class DepthFirstTransformer {
         _lhsFrontier = null;
         _hostFrontier = null;
         _visitedLHSCompositeEntities = null;
+        return success;
     }
 
     public NamedObj transform(NamedObj from, SingleRuleTransformer transformer)
@@ -120,7 +130,7 @@ public class DepthFirstTransformer {
         }
     }
 
-    private AtomicActor _findFirstAtomicActor(CompositeEntity top,
+    private ComponentEntity _findFirstChild(CompositeEntity top,
             FastLinkedList<MarkedEntityList> markedList,
             Collection<NamedObj> excludedEntities) {
         List<?> entities = top.entityList(AtomicActor.class);
@@ -141,16 +151,19 @@ public class DepthFirstTransformer {
             FastLinkedList<MarkedEntityList>.Entry tail = markedList.getTail();
             int i = 0;
             for (Object entityObject : entities) {
-                CompositeEntity entity = (CompositeEntity) entityObject;
-                if (!excludedEntities.contains(entity)) {
+                CompositeEntity container = (CompositeEntity) entityObject;
+                if (!excludedEntities.contains(container)) {
                     markedList.add(new MarkedEntityList(entities, i));
-                    AtomicActor actor =
-                        _findFirstAtomicActor(entity, markedList,
-                                excludedEntities);
-                    if (actor != null) {
-                        return actor;
+                    if (_isNewLevel(container)) {
+                        return container;
                     } else {
-                        markedList.removeAllAfter(tail);
+                        ComponentEntity actor = _findFirstChild(container,
+                                markedList, excludedEntities);
+                        if (actor != null) {
+                            return actor;
+                        } else {
+                            markedList.removeAllAfter(tail);
+                        }
                     }
                 }
                 i++;
@@ -159,37 +172,55 @@ public class DepthFirstTransformer {
         return null;
     }
 
-    private AtomicActor _findNextAtomicActor(CompositeEntity top,
+    private ComponentEntity _findNextChild(CompositeEntity top,
             FastLinkedList<MarkedEntityList> markedList,
             Collection<NamedObj> excludedEntities) {
         if (markedList.isEmpty()) {
-            return _findFirstAtomicActor(top, markedList, excludedEntities);
+            return _findFirstChild(top, markedList, excludedEntities);
         } else {
             FastLinkedList<MarkedEntityList>.Entry entry = markedList.getTail();
-            MarkedEntityList markedEntityList = entry.getValue();
-            List<?> atomicEntityList = markedEntityList.getFirst();
-            for (int index = markedEntityList.getSecond() + 1;
-                   index < atomicEntityList.size(); index++) {
-                AtomicActor atomicEntity =
-                    (AtomicActor) atomicEntityList.get(index);
-                if (!excludedEntities.contains(atomicEntity)) {
+            while (entry != null) {
+                MarkedEntityList markedEntityList = entry.getValue();
+                List<?> entityList = markedEntityList.getFirst();
+                for (int index = markedEntityList.getSecond() + 1;
+                       index < entityList.size(); index++) {
                     markedEntityList.setSecond(index);
-                    return (AtomicActor) atomicEntity;
+                    ComponentEntity entity =
+                        (ComponentEntity) entityList.get(index);
+                    if (!excludedEntities.contains(entity)) {
+                        markedList.removeAllAfter(entry);
+                        if (entity instanceof AtomicActor
+                                || entity instanceof CompositeEntity
+                                && _isNewLevel((CompositeEntity) entity)) {
+                            return entity;
+                        } else {
+                            CompositeEntity compositeEntity =
+                                (CompositeEntity) entity;
+                            ComponentEntity child = _findFirstChild(
+                                    compositeEntity, markedList,
+                                    excludedEntities);
+                            if (child != null) {
+                                return child;
+                            }
+                        }
+                    }
                 }
+                entry = entry.getPrevious();
             }
 
-            entry = entry.getPrevious();
+            /*entry = entry.getPrevious();
             while (entry != null) {
-                markedEntityList = entry.getValue();
-                List<?> compositeEntityList = markedEntityList.getFirst();
-                for (int index = markedEntityList.getSecond() + 1;
+                lastMarkedEntityList = entry.getValue();
+                List<?> compositeEntityList = lastMarkedEntityList.getFirst();
+                for (int index = lastMarkedEntityList.getSecond() + 1;
                         index < compositeEntityList.size(); index++) {
+                    lastMarkedEntityList.setSecond(index);
                     CompositeEntity compositeEntity =
                         (CompositeEntity) compositeEntityList.get(index);
                     if (!excludedEntities.contains(compositeEntity)) {
                         markedList.removeAllAfter(entry);
-                        AtomicActor atomicEntity =
-                            _findFirstAtomicActor(compositeEntity, markedList,
+                        ComponentEntity atomicEntity =
+                            _findFirstChild(compositeEntity, markedList,
                                     excludedEntities);
                         if (atomicEntity != null) {
                             return atomicEntity;
@@ -197,9 +228,14 @@ public class DepthFirstTransformer {
                     }
                 }
                 entry = entry.getPrevious();
-            }
+            }*/
             return null;
         }
+    }
+
+    private boolean _isNewLevel(CompositeEntity container) {
+        return container instanceof CompositeActor
+                && ((CompositeActor) container).getDirector() != null;
     }
 
     private boolean _match(FastLinkedList<NamedObj>.Entry lhsEntry,
@@ -313,8 +349,8 @@ public class DepthFirstTransformer {
 
         FastLinkedList<MarkedEntityList> lhsMarkedList =
             new FastLinkedList<MarkedEntityList>();
-        AtomicActor lhsNextActor =
-            _findFirstAtomicActor(lhsEntity, lhsMarkedList, _match.keySet());
+        ComponentEntity lhsNextActor =
+            _findFirstChild(lhsEntity, lhsMarkedList, _match.keySet());
 
         boolean firstEntrance = !_match.containsKey(lhsEntity);
         if (firstEntrance) {
@@ -335,7 +371,7 @@ public class DepthFirstTransformer {
 
             FastLinkedList<MarkedEntityList> hostMarkedList =
                 new FastLinkedList<MarkedEntityList>();
-            AtomicActor hostNextActor = _findFirstAtomicActor(hostEntity,
+            ComponentEntity hostNextActor = _findFirstChild(hostEntity,
                     hostMarkedList, _match.values());
 
             while (hostNextActor != null) {
@@ -351,7 +387,7 @@ public class DepthFirstTransformer {
                         _visitedLHSCompositeEntities.removeAllAfter(
                                 compositeTail);
                     }
-                    hostNextActor = _findNextAtomicActor(hostEntity,
+                    hostNextActor = _findNextChild(hostEntity,
                             hostMarkedList, _match.values());
                 }
             }
