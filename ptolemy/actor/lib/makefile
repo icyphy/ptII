@@ -187,6 +187,7 @@ JSRCS = \
 	Source.java \
 	Stop.java \
 	StringConst.java \
+	SubMatrix.java \
 	Subscriber.java \
 	SubscriptionAggregator.java \
 	Switch.java \

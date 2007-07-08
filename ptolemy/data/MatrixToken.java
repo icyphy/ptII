@@ -41,11 +41,7 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
-import ptolemy.math.ComplexMatrixMath;
-import ptolemy.math.DoubleMatrixMath;
 import ptolemy.math.FixPoint;
-import ptolemy.math.IntegerMatrixMath;
-import ptolemy.math.LongMatrixMath;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatrixToken
@@ -457,6 +453,22 @@ public abstract class MatrixToken extends Token {
     public static Token[] createTokenSequence(Token start, Token increment,
             int length) throws IllegalActionException {
         return createSequence(start, increment, length);
+    }
+
+    /** Return a new matrix that is a sub-matrix of this matrix.
+     *  @param rowStart The row to start on.
+     *  @param colStart The column to start on.
+     *  @param rowSpan The number of rows to copy.
+     *  @param colSpan The number of columns to copy.
+     *  @exception IllegalActionException If the operation is not supported. Always thrown
+     *   in this base class.
+     */
+    public MatrixToken crop(
+            int rowStart, int colStart, int rowSpan, int colSpan)
+            throws IllegalActionException {
+        throw new IllegalActionException("crop: Operation not supported on class " 
+                + getClass()
+                + ".");
     }
 
     /** Count the number of tokens differing by the given increment

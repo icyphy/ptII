@@ -202,6 +202,38 @@ public class BooleanMatrixToken extends MatrixToken {
                 "[boolean]"));
     }
 
+    /** Return a new matrix that is a sub-matrix of this matrix.
+     *  @param rowStart The row to start on.
+     *  @param colStart The column to start on.
+     *  @param rowSpan The number of rows to copy.
+     *  @param colSpan The number of columns to copy.
+     *  @exception IllegalActionException If the returned matrix is empty or if the specified
+     *   parameters result in out of bounds accesses.
+     */
+    public MatrixToken crop(
+            int rowStart, int colStart, int rowSpan, int colSpan)
+            throws IllegalActionException {
+        boolean[][] value = this.booleanMatrix();
+        try {
+            boolean[][] result = new boolean[rowSpan][colSpan];
+            for (int i = 0; i < rowSpan; i++) {
+                System.arraycopy(value[rowStart + i], colStart, result[i], 0,
+                        colSpan);
+            }
+            return new BooleanMatrixToken(result);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            throw new IllegalActionException("Matrix crop indices out of bounds (rowStart = "
+                    + rowStart
+                    + ", colStart = "
+                    + colStart
+                    + ", rowSpan = "
+                    + rowSpan
+                    + ", colSpan = "
+                    + colSpan
+                    + ").");
+        }
+    }
+
     /** Return true if the argument is an instance of BooleanMatrixToken
      *  of the same dimensions and the corresponding elements of the matrices
      *  are equal.

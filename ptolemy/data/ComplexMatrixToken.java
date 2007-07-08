@@ -236,6 +236,38 @@ public class ComplexMatrixToken extends MatrixToken {
                 "[complex]"));
     }
 
+    /** Return a new matrix that is a sub-matrix of this matrix.
+     *  @param rowStart The row to start on.
+     *  @param colStart The column to start on.
+     *  @param rowSpan The number of rows to copy.
+     *  @param colSpan The number of columns to copy.
+     *  @exception IllegalActionException If the returned matrix is empty or if the specified
+     *   parameters result in out of bounds accesses.
+     */
+    public MatrixToken crop(
+            int rowStart, int colStart, int rowSpan, int colSpan)
+            throws IllegalActionException {
+        Complex[][] value = this.complexMatrix();
+        try {
+            Complex[][] result = new Complex[rowSpan][colSpan];
+            for (int i = 0; i < rowSpan; i++) {
+                System.arraycopy(value[rowStart + i], colStart, result[i], 0,
+                        colSpan);
+            }
+            return new ComplexMatrixToken(result);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            throw new IllegalActionException("Matrix crop indices out of bounds (rowStart = "
+                    + rowStart
+                    + ", colStart = "
+                    + colStart
+                    + ", rowSpan = "
+                    + rowSpan
+                    + ", colSpan = "
+                    + colSpan
+                    + ").");
+        }
+    }
+
     /** Return true if the argument is an instance of ComplexMatrixToken
      *  of the same dimensions and the corresponding elements of the matrices
      *  are equal.

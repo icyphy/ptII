@@ -279,6 +279,34 @@ public class DoubleMatrixToken extends MatrixToken {
         throw new IllegalActionException(notSupportedConversionMessage(token,
                 "[double]"));
     }
+    
+    /** Return a new matrix that is a sub-matrix of this matrix.
+     *  @param rowStart The row to start on.
+     *  @param colStart The column to start on.
+     *  @param rowSpan The number of rows to copy.
+     *  @param colSpan The number of columns to copy.
+     *  @exception IllegalActionException If the returned matrix is empty or if the specified
+     *   parameters result in out of bounds accesses.
+     */
+    public MatrixToken crop(
+            int rowStart, int colStart, int rowSpan, int colSpan)
+            throws IllegalActionException {
+        double[][] value = this.doubleMatrix();
+        try {
+            double[][] result = DoubleMatrixMath.crop(value, rowStart, colStart, rowSpan, colSpan);
+            return new DoubleMatrixToken(result);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            throw new IllegalActionException("Matrix crop indices out of bounds (rowStart = "
+                    + rowStart
+                    + ", colStart = "
+                    + colStart
+                    + ", rowSpan = "
+                    + rowSpan
+                    + ", colSpan = "
+                    + colSpan
+                    + ").");
+        }
+    }
 
     /** Return the content in the token as a 2-D double matrix.
      *  The returned matrix is a copy so the caller is free to
