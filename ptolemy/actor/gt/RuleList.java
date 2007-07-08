@@ -48,6 +48,12 @@ public class RuleList extends LinkedList<Rule> {
     public RuleList(RuleList initRules) {
         super(initRules);
     }
+    
+    public RuleList(Rule ... rules) {
+        for (Rule rule : rules) {
+            add(rule);
+        }
+    }
 
     public static RuleList parse(String expression)
     throws MalformedStringException {
