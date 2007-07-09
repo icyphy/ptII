@@ -54,6 +54,14 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class DepthFirstTransformer {
 
+    public String dump() {
+        if (_success) {
+            return Utils.toString(_match);
+        } else {
+            return "{}";
+        }
+    }
+
     public Map<NamedObj, NamedObj> getMatch() {
         return Collections.unmodifiableMap(_match);
     }
@@ -72,9 +80,8 @@ public class DepthFirstTransformer {
         _lhsFrontier.add(lhsGraph);
         _hostFrontier.add(hostGraph);
 
-        boolean success =
-            _match(_lhsFrontier.getHead(), _hostFrontier.getHead());
-        if (success) {
+        _success = _match(_lhsFrontier.getHead(), _hostFrontier.getHead());
+        if (_success) {
             for (NamedObj lhsObject : _match.keySet()) {
                 System.out.println(lhsObject.getName() + " : " +
                         _match.get(lhsObject).getName());
@@ -85,7 +92,7 @@ public class DepthFirstTransformer {
         _lhsFrontier = null;
         _hostFrontier = null;
         _visitedLHSCompositeEntities = null;
-        return success;
+        return _success;
     }
 
     public NamedObj transform(NamedObj from, SingleRuleTransformer transformer)
@@ -473,6 +480,8 @@ public class DepthFirstTransformer {
     private FastLinkedList<NamedObj> _lhsFrontier;
 
     private Map<NamedObj, NamedObj> _match;
+
+    private boolean _success = false;
 
     private FastLinkedList<CompositeEntity> _visitedLHSCompositeEntities;
 
