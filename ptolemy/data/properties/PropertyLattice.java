@@ -31,6 +31,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
+import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.properties.lattice.staticDynamic.Lattice;
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
@@ -417,81 +418,6 @@ public class PropertyLattice {
     }
 
     
-    /**
-     * Returns the helper that contains property information for
-     * the given component.
-     * @param component The given component
-     * @return The associated property constraint helper.
-     */    
-    public PropertyConstraintHelper getHelper(NamedObj component)
-            throws IllegalActionException {
-        if (_helperStore.containsKey(component)) {
-            return (PropertyConstraintHelper) _helperStore.get(component);
-        }
-        
-        String packageName = getClass().getPackage().getName();
-
-        Class componentClass = component.getClass();
-
-        Class helperClass = null;
-        while (helperClass == null) {
-            try {
-                
-                // FIXME: Is this the right error message?
-                if (!componentClass.getName().contains("ptolemy")) {
-                    throw new IllegalActionException("There is no property helper "
-                            + " for " + component.getClass());
-                }
-                
-                helperClass = Class.forName(componentClass.getName()
-                        .replaceFirst("ptolemy", packageName));
-                
-            } catch (ClassNotFoundException e) {
-                // If helper class cannot be found, search the helper class
-                // for parent class instead.
-                componentClass = componentClass.getSuperclass();
-            }
-        }
-        
-        Constructor constructor = null;
-        Method initializeMethod = null;
-        
-        try {
-            constructor = helperClass.getConstructor(
-                    new Class[] { componentClass, getClass() });
-            
-        } catch (NoSuchMethodException e) {
-            throw new IllegalActionException(null, e,
-                    "Cannot find constructor method in " 
-                    + helperClass.getName());
-        }
-
-        Object helperObject = null;
-
-        try {
-            helperObject = constructor.newInstance(new Object[] { component, this });
-            
-        } catch (Exception ex) {
-            throw new IllegalActionException(component, ex,
-                    "Failed to create the helper class for property constraints.");
-        }
-
-        if (!(helperObject instanceof PropertyConstraintHelper)) {
-            throw new IllegalActionException(
-                    "Cannot resolve property for this component: "
-                    + component + ". Its helper class does not"
-                    + " implement PropertyConstraintHelper.");
-        }
-
-        PropertyConstraintHelper castHelperObject = 
-            (PropertyConstraintHelper) helperObject;
-        
-        _helperStore.put(component, helperObject);
-
-        return castHelperObject;
-    }
-
-    
     public Property getInitialProperty() {
         return null;
     }
@@ -533,6 +459,7 @@ public class PropertyLattice {
         return _compareCache[index1][index2];
     }
 
+    
     /** Set the result for the properties that have the given two
      *  indexes as hashes.
      */
@@ -548,11 +475,6 @@ public class PropertyLattice {
 
     /** The result cache for parts of the property lattice. */
     private int[][] _compareCache;
-
-    /** A hash map that stores the code generator helpers associated
-     *  with the actors.
-     */
-    private HashMap _helperStore = new HashMap();
 
     /** The infinite property lattice. */
     protected ThePropertyLattice _lattice = new ThePropertyLattice();

@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.AtomicActor.
+/* A helper class for ptolemy.data.expr.ASTPtFunctionApplicationNode.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -25,39 +25,45 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties.lattice.staticDynamic.actor;
 
-import ptolemy.data.properties.PropertyConstraintHelper;
+package ptolemy.data.properties.lattice.staticDynamic.data.expr;
+
+import java.util.Arrays;
+import java.util.List;
+
+import ptolemy.data.properties.PropertyConstraintASTNodeHelper;
 import ptolemy.data.properties.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.staticDynamic.Lattice;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// AtomicActor
+//// ASTPtFunctionApplicationNode
 
 /**
- A helper class for ptolemy.actor.AtomicActor.
+ A helper class for ptolemy.data.expr.ASTPtFunctionApplicationNode.
 
- @author Man-Kit Leung, Thomas Mandl
+ @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class AtomicActor extends PropertyConstraintHelper {
+public class ASTPtFunctionApplicationNode extends PropertyConstraintASTNodeHelper {
 
-    /**
-     * Construct a helper for the given AtomicActor. This is the
-     * helper class for any ActomicActor that does not have a
-     * specific defined helper class. Default actor constraints
-     * are set for this helper. 
-     * @param actor The given ActomicActor.
-     * @param lattice The staticDynamic lattice.
-     * @throws IllegalActionException 
-     */
-    public AtomicActor(PropertyConstraintSolver solver, 
-            ptolemy.actor.AtomicActor actor)
-            throws IllegalActionException {
-        
-        super(solver, actor);
+    public ASTPtFunctionApplicationNode(PropertyConstraintSolver solver, 
+            ptolemy.data.expr.ASTPtFunctionApplicationNode node) throws IllegalActionException {
+        super(solver, node);
+
+        Lattice lattice = (Lattice) solver.getLattice();
+
+        if (dynamicFunctions.contains(node.getFunctionName())) {
+            
+            _useDefaultConstraints = false;
+            setEquals(node, lattice.DYNAMIC);
+        }
     }
+    
+    List dynamicFunctions = Arrays.asList( 
+            new String[]{ "gaussian"
+    });
 }

@@ -44,9 +44,9 @@ import ptolemy.data.properties.PropertyLattice;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Static extends BaseProperty {
+public class Unknown extends BaseProperty {
         
-    Static(PropertyLattice lattice) {
+    Unknown(PropertyLattice lattice) {
         super(lattice);
     }
 }

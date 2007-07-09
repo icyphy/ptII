@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.AddSubtract.
+/* A helper class for ptolemy.data.expr.ASTPtRootNode.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -25,34 +25,35 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties.lattice.staticDynamic.actor.lib;
+package ptolemy.data.properties.lattice.staticDynamic.data.expr;
 
-import ptolemy.data.properties.PropertyConstraintHelper;
-import ptolemy.data.properties.lattice.staticDynamic.Lattice;
+import ptolemy.data.properties.PropertyConstraintASTNodeHelper;
+import ptolemy.data.properties.PropertyConstraintSolver;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// AddSubtract
+//// ASTPtRootNode
 
 /**
- A helper class for ptolemy.actor.lib.AddSubtract.
+ A helper class for ptolemy.data.expr.ASTPtRootNode.
 
- @author Man-Kit Leung, Thomas Mandl
+ @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
-*/
-public class AddSubtract extends PropertyConstraintHelper {
+ */
+public class ASTPtRootNode extends PropertyConstraintASTNodeHelper {
     /**
-     * Construct an AddSubtract helper.
+     * Construct an ASTPtRootNode helper.
      * @param actor the associated actor
      * @throws IllegalActionException 
      */
-    public AddSubtract(ptolemy.actor.lib.AddSubtract actor,
-            Lattice lattice) throws IllegalActionException {
-        super(actor, lattice);
+    public ASTPtRootNode(PropertyConstraintSolver solver, 
+            ptolemy.data.expr.ASTPtRootNode node) 
+    throws IllegalActionException {
         
+        super(solver, node);
     }
 
 }

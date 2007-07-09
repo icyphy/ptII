@@ -1,4 +1,4 @@
-/* Code generator helper for typed composite actor.
+/* A property constraint helper for composite actor.
 
  Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
@@ -28,14 +28,14 @@
 package ptolemy.data.properties.lattice.staticDynamic.actor;
 
 import ptolemy.data.properties.PropertyConstraintCompositeHelper;
-import ptolemy.data.properties.lattice.staticDynamic.Lattice;
+import ptolemy.data.properties.PropertyConstraintSolver;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// TypedCompositeActor
+//// CompositeActor
 
 /**
- Code generator helper for composite actor.
+ A property constraint helper for composite actor.
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
@@ -45,13 +45,19 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class CompositeActor extends PropertyConstraintCompositeHelper {
 
-    /** Construct the property constraint helper associated
-     *  with the given TypedCompositeActor.
-     *  @param component The associated component.
+    /** 
+     * Construct a property constraint helper for the given
+     * CompositeActor. This is the helper class for any 
+     * CompositeActor that does not have a specific defined
+     * helper class.
+     * @param actor The given CompositeActor.
+     * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
-    public CompositeActor(ptolemy.actor.CompositeActor component,
-            Lattice lattice) throws IllegalActionException {
-        super(component, lattice);
+    public CompositeActor(PropertyConstraintSolver solver, 
+            ptolemy.actor.CompositeActor actor)
+        throws IllegalActionException {
+
+        super(solver, actor);
     }
 }

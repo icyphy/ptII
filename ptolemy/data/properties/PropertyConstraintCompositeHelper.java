@@ -50,23 +50,33 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper {
+public class PropertyConstraintCompositeHelper 
+    extends PropertyConstraintHelper {
 
     /** Construct the property constraint helper associated
      *  with the given TypedCompositeActor.
-     *  @param component The associated component.
+     * @param solver TODO
+     * @param component The associated component.
+     *  @throws IllegalActionException 
      * @throws IllegalActionException 
      */
-    public PropertyConstraintCompositeHelper(ptolemy.actor.CompositeActor component,
-            PropertyLattice lattice) throws IllegalActionException {
-        super(component, lattice);
+    public PropertyConstraintCompositeHelper(
+            PropertyConstraintSolver solver, ptolemy.actor.CompositeActor component) 
+            throws IllegalActionException {
+
+        super(solver, component, false);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
     /**
      * 
      */
-    public void updatePortProperty() throws IllegalActionException, NameDuplicationException {
+    public void updateProperty(boolean isTraining) 
+        throws IllegalActionException, NameDuplicationException {
 
+        super.updateProperty(isTraining);
         ptolemy.actor.CompositeActor component = 
             (ptolemy.actor.CompositeActor) _component;
         
@@ -75,10 +85,10 @@ public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper 
         while (iterator.hasNext()) {
             NamedObj actor = (NamedObj) iterator.next();
             
-            PropertyConstraintHelper helper = 
-                _lattice.getHelper(actor);
+            PropertyHelper helper = 
+                _solver.getHelper(actor);
             
-            helper.updatePortProperty();
+            helper.updateProperty(isTraining);
         }
     }
     
@@ -90,21 +100,41 @@ public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper 
         ptolemy.actor.CompositeActor component = 
             (ptolemy.actor.CompositeActor) _component;
         
-        Iterator iterator = component.deepEntityList().iterator();
+        Iterator iterator = component.entityList().iterator();
         
         while (iterator.hasNext()) {
-            ptolemy.actor.AtomicActor actor = 
-                (ptolemy.actor.AtomicActor) iterator.next();
+            NamedObj actor = 
+                (NamedObj) iterator.next();
             
             PropertyConstraintHelper helper = 
-                _lattice.getHelper(actor);
+                _solver.getHelper(actor);
             
-            if (helper._useDefaultConstraints) {
-                helper._changeDefaultConstraints(actorConstraintType);
-            }
+            helper._changeDefaultConstraints(actorConstraintType);
         }        
     }    
-    
+
+    /**
+     * 
+     */
+    protected void _reinitialize() throws IllegalActionException {
+        ptolemy.actor.CompositeActor component = 
+            (ptolemy.actor.CompositeActor) _component;
+        super._reinitialize();
+        
+        Iterator iterator = component.entityList().iterator();
+        
+        while (iterator.hasNext()) {
+            NamedObj actor = 
+                (NamedObj) iterator.next();
+            
+            PropertyHelper helper = 
+                _solver.getHelper(actor);
+            
+            helper._reinitialize();
+        }                
+    }
+
+            
     /**
      * 
      * @param constraintType
@@ -112,10 +142,11 @@ public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper 
      */
     protected void _setConnectionConstraintType(
             ConstraintType constraintType, 
-            ConstraintType compositeConstraintType) throws IllegalActionException {
+            ConstraintType compositeConstraintType, 
+            ConstraintType expressionASTNodeConstraintType)
+            throws IllegalActionException {
 
-        connectionConstraintType = constraintType;
-        compositeConnectionConstraintType = compositeConstraintType;
+        interconnectConstraintType = compositeConstraintType;        
         
         ptolemy.actor.CompositeActor component = 
             (ptolemy.actor.CompositeActor) _component;
@@ -123,17 +154,19 @@ public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper 
         Iterator iterator = component.entityList().iterator();
         
         while (iterator.hasNext()) {
-            NamedObj actor = (NamedObj) iterator.next();
-
-            if (actor instanceof CompositeActor) {
-                
-                PropertyConstraintCompositeHelper helper = 
-                    (PropertyConstraintCompositeHelper) _lattice.getHelper(actor);
-                
-                helper._setConnectionConstraintType(constraintType, compositeConstraintType);
-            }
+            NamedObj actor = 
+                (NamedObj) iterator.next();
+            
+            PropertyConstraintHelper helper = 
+                _solver.getHelper(actor);
+            
+            helper._setConnectionConstraintType(
+                    constraintType, 
+                    compositeConstraintType,
+                    expressionASTNodeConstraintType);
         }        
     }
+    
     
     /** Return all constraints of this component.  The constraints is
      *  a list of inequalities. 
@@ -148,50 +181,53 @@ public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper 
         ptolemy.actor.CompositeActor component = 
             (ptolemy.actor.CompositeActor) _component;
         
-        Iterator iterator = component.deepEntityList().iterator();
+        Iterator iterator = component.entityList().iterator();
         
         while (iterator.hasNext()) {
-            ptolemy.actor.AtomicActor actor = 
-                (ptolemy.actor.AtomicActor) iterator.next();
+            NamedObj actor = 
+                (NamedObj) iterator.next();
             
             PropertyConstraintHelper helper = 
-                _lattice.getHelper(actor);
+                _solver.getHelper((NamedObj) actor);
 
             // Add constraints from helpers of contained actors.
             constraints.addAll(helper.constraintList());
 
-            boolean constraintSource = 
-                (connectionConstraintType == ConstraintType.SRC_EQUALS_MEET) ||  
-                (connectionConstraintType == ConstraintType.SRC_LESS);
-
-            List portList1 = (constraintSource) ?
-                    actor.outputPortList() : actor.inputPortList();
-
-            Iterator ports = portList1.iterator();
-            
-            while (ports.hasNext()) {                    
-                TypedIOPort port = (TypedIOPort) ports.next();
-
-                List portList2 = (constraintSource) ? 
-                        port.sinkPortList() : port.sourcePortList();
-                        
-                _constraintPort(connectionConstraintType, port, portList2);
-            }
         }
-        constraints.addAll(_constraints);
+      
+        boolean constraintSource = 
+            (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET) ||  
+            (interconnectConstraintType == ConstraintType.SRC_LESS);
+        
+        CompositeActor actor = (CompositeActor) _component;
+
+        List portList1 = actor.portList();
+
+        Iterator ports = portList1.iterator();
+        
+        while (ports.hasNext()) {                    
+            TypedIOPort port = (TypedIOPort) ports.next();
+
+            List portList2;
+            
+            // Eliminate duplicates.
+            if (constraintSource ^ port.isOutput()) {
+                portList2 = port.insidePortList();
+            } else {
+                if (constraintSource) {
+                    portList2 = _getSinkPortList(port);
+                } else {
+                    portList2 = _getSourcePortList(port);
+                }
+            }
+            constraints.addAll(
+                    _constraintObject(interconnectConstraintType, port, portList2));
+        }
+
+        //constraints.addAll(_constraints);
         
         return constraints;
     }
 
 
-    /**
-     * 
-     */
-    public ConstraintType connectionConstraintType;
-
-    /**
-     * 
-     */
-    public ConstraintType compositeConnectionConstraintType;
-    
 }

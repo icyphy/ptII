@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.AtomicActor.
+/* A helper class for ptolemy.data.expr.ASTPtRootNode.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -25,39 +25,45 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties.lattice.staticDynamic.actor;
 
-import ptolemy.data.properties.PropertyConstraintHelper;
+package ptolemy.data.properties.lattice.staticDynamic.data.expr;
+
+import java.util.Arrays;
+import java.util.List;
+
+import ptolemy.data.properties.PropertyConstraintASTNodeHelper;
 import ptolemy.data.properties.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.staticDynamic.Lattice;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// AtomicActor
+//// AddSubtract
 
 /**
- A helper class for ptolemy.actor.AtomicActor.
+ A helper class for ptolemy.data.expr.ASTPtRootNode.
 
- @author Man-Kit Leung, Thomas Mandl
+ @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class AtomicActor extends PropertyConstraintHelper {
+public class ASTPtLeafNode extends PropertyConstraintASTNodeHelper {
 
-    /**
-     * Construct a helper for the given AtomicActor. This is the
-     * helper class for any ActomicActor that does not have a
-     * specific defined helper class. Default actor constraints
-     * are set for this helper. 
-     * @param actor The given ActomicActor.
-     * @param lattice The staticDynamic lattice.
-     * @throws IllegalActionException 
-     */
-    public AtomicActor(PropertyConstraintSolver solver, 
-            ptolemy.actor.AtomicActor actor)
-            throws IllegalActionException {
-        
-        super(solver, actor);
+    public ASTPtLeafNode(PropertyConstraintSolver solver, 
+            ptolemy.data.expr.ASTPtLeafNode node) throws IllegalActionException {
+        super(solver, node, false);
+
+        Lattice lattice = (Lattice) solver.getLattice();
+
+        if (variables.contains(node.getName())) {
+            setEquals(node, lattice.DYNAMIC);
+        } else {
+            setEquals(node, lattice.STATIC);
+        }
     }
+    
+    List variables = Arrays.asList( 
+            new String[]{ "time", "iteration"
+    });    
 }

@@ -27,6 +27,7 @@
  */
 package ptolemy.data.properties.lattice.staticDynamic;
 
+import ptolemy.data.properties.BaseProperty;
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.PropertyLattice;
 import ptolemy.graph.DirectedAcyclicGraph;
@@ -59,12 +60,15 @@ public class Lattice extends PropertyLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public /*static*/ Property STATIC = new Static(this);
+    public Property STATIC = new Static(this);
 
-    public /*static*/ Property DYNAMIC = new Dynamic(this);
+    public Property DYNAMIC = new Dynamic(this);
+    
+    public Property UNKNOWN = new Unknown(this);
 
     public Property getInitialProperty() {
         return DYNAMIC;
+        //return UNKNOWN;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -79,20 +83,24 @@ public class Lattice extends PropertyLattice {
         DirectedAcyclicGraph basicLattice = 
             (DirectedAcyclicGraph) _lattice.basicLattice();
         
+
         basicLattice.addNodeWeight(STATIC);
 
         basicLattice.addNodeWeight(DYNAMIC);
-        
+
         basicLattice.addEdge(DYNAMIC, STATIC);
+        //basicLattice.addEdge(STATIC, DYNAMIC);
         
+
+        /*
+        basicLattice.addNodeWeight(UNKNOWN);
+        basicLattice.addEdge(UNKNOWN, DYNAMIC);
+        //*/
+
         // FIXME: Replace this with an assert when we move to 1.5
         if (!basicLattice.isLattice()) {
             throw new InternalErrorException("ThePropertyLattice: The "
                     + "property hierarchy is not a lattice.");
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
 }

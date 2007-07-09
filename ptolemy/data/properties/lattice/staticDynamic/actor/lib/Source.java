@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.lib.AddSubtract.
+/* A helper class for ptolemy.actor.lib.Source.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -27,36 +27,41 @@
  */
 package ptolemy.data.properties.lattice.staticDynamic.actor.lib;
 
-import ptolemy.data.properties.MeetFunction;
 import ptolemy.data.properties.PropertyConstraintHelper;
+import ptolemy.data.properties.PropertyConstraintSolver;
+import ptolemy.data.properties.PropertySolver;
 import ptolemy.data.properties.lattice.staticDynamic.Lattice;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// AddSubtract
+//// Const
 
 /**
- A helper class for ptolemy.actor.lib.AddSubtract.
+ A helper class for ptolemy.actor.lib.Source.
 
- @author Man-Kit Leung, Thomas Mandl
+ @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
 */
-public class MultiplyDivide extends PropertyConstraintHelper {
+public class Source extends PropertyConstraintHelper {
+
     /**
-     * Construct an AddSubtract helper.
-     * @param actor the associated actor
+     * Construct a Source helper for the staticDynamic lattice.
+     * This set a permanent constraint for the output port to
+     * be DYNAMIC, but does not use the default actor constraints.
+     * @param actor The given Source actor
+     * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
-    public MultiplyDivide(ptolemy.actor.lib.MultiplyDivide actor,
-            Lattice lattice) throws IllegalActionException {
-        super(actor, lattice, false);
-        
-        setAtLeast(actor.output, 
-                new MeetFunction(_lattice, new Object[] { actor.multiply, actor.divide}));
-        
+    public Source(PropertyConstraintSolver solver, 
+            ptolemy.actor.lib.Source actor)
+            throws IllegalActionException {
+
+        super(solver, actor, false);
+        Lattice lattice = (Lattice) solver.getLattice();        
+        setEquals(actor.output, lattice.DYNAMIC);        
     }
 
 }

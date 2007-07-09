@@ -31,14 +31,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.IOPort;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
-//// JoinFunctionTerm
+//// MeetFunction
 
 /**
  Produce an output token on each firing with a value that is
@@ -54,10 +56,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-///////////////////////////////////////////////////////////////////
-////                         private variables                 ////
-///////////////////////////////////////////////////////////////////
-////                         inner classes                     ////
+
 // This class implements a monotonic function of the input port
 // type. The result of the function is the same as the input type
 // if is not Complex; otherwise, the result is Double.
@@ -75,18 +74,22 @@ public class MeetFunction extends MonotonicFunction {
     // The constructor takes a port argument so that the clone()
     // method can construct an instance of this class for the
     // input port on the clone.
-    public MeetFunction(PropertyLattice lattice, Object[] functionTerms) {
-        _lattice = lattice;
+    public MeetFunction(PropertyConstraintSolver solver, Object[] functionTerms) {
+        _solver = solver;
         _functionTerms = functionTerms;
     }
 
-    public MeetFunction(PropertyLattice lattice, List functionTerms) {
-        this(lattice, functionTerms.toArray());
+    public MeetFunction(PropertyConstraintSolver solver, List functionTerms) {
+        this(solver, functionTerms.toArray());
+    }
+
+    public MeetFunction(PropertyConstraintSolver solver, Set functionTerms) {
+        this(solver, functionTerms.toArray());
     }
     
-    ///////////////////////////////////////////////////////////////
-    ////                       public inner methods            ////
-
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
     /** Return the function result.
      *  @return A Property.
      */
@@ -105,18 +108,15 @@ public class MeetFunction extends MonotonicFunction {
             
                 termValue = (Property) ((MonotonicFunction) object).getValue();
 
-            } else if (object instanceof IOPort) {
+            } else {
+                PropertyHelper helper = 
+                    _solver.getHelper(object);
 
-                IOPort port = (IOPort) object;
-                
-                PropertyConstraintHelper helper = 
-                    _lattice.getHelper(port.getContainer());
-
-                termValue = helper.getProperty(port);                
+                termValue = helper.getProperty(object);                
             }
             
             joinValue = (joinValue == null) ? termValue : 
-                _lattice.greatestLowerBound(joinValue, termValue);
+                _solver.getLattice().greatestLowerBound(joinValue, termValue);
         }
         return joinValue; 
     }
@@ -135,27 +135,26 @@ public class MeetFunction extends MonotonicFunction {
 
             Object object = iterator.next();
             
+            InequalityTerm term = null;
+            
             if (object instanceof InequalityTerm) {
 
-                result.add((InequalityTerm) object);
+                term = (InequalityTerm) object; 
                 
-            } else if (object instanceof IOPort) {
-                IOPort port = (IOPort) object;
-                
+            } else {
                 try {
                     PropertyConstraintHelper helper = 
-                        _lattice.getHelper(port.getContainer());
+                        (PropertyConstraintHelper) _solver.getHelper(object);
 
-                    InequalityTerm term = helper.getPropertyTerm(port);
+                    term = helper.getPropertyTerm(object);
                     
-                    if (term.isSettable()) {
-                        result.add(term);
-                    }
-                
                 } catch (IllegalActionException ex) {
-                    // Should not get here.
+                    throw new InternalErrorException("Helper not found.");
                 }
-                
+            } 
+
+            if (term.isSettable()) {
+                result.add(term);
             }
         }
         
@@ -168,7 +167,7 @@ public class MeetFunction extends MonotonicFunction {
     ///////////////////////////////////////////////////////////////
     ////                       private inner variable          ////
     
-    private PropertyLattice _lattice;
+    private PropertyConstraintSolver _solver;
 
     private Object[] _functionTerms;
 

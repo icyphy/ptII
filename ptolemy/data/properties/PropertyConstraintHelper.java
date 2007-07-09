@@ -29,22 +29,27 @@
 package ptolemy.data.properties;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.IOPort;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.properties.PropertyConstraintSolver.ConstraintType;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,356 +64,344 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintHelper {
+public class PropertyConstraintHelper extends PropertyHelper {
 
-
-    /** Construct the property constraint helper associated
-     *  with the given component.
-     *  @param component The associated component.
-     * @throws IllegalActionException 
+    /** 
+     * Construct the property constraint helper associated
+     * with the given component.
+     * @param solver TODO
+     * @param component The associated component.
+     * @throws IllegalActionException Thrown if 
+     *  PropertyConstraintHelper(NamedObj, PropertyLattice, boolean)
+     *  throws it. 
      */
-    public PropertyConstraintHelper(NamedObj component, 
-            PropertyLattice lattice) throws IllegalActionException {
-        this(component, lattice, true);
+    public PropertyConstraintHelper(PropertyConstraintSolver solver, Object component) throws IllegalActionException {
+        this(solver, component, true);
     }
     
     /**
-     * 
-     * @param component
-     * @param lattice
-     * @param useDefaultConstraints
-     * @throws IllegalActionException
+     * Construct the property constraint helper for the given
+     * component and property lattice.
+     * @param solver TODO
+     * @param component The given component.
+     * @param useDefaultConstraints Indicate whether this helper
+     *  uses the default actor constraints. 
+     * @param solver The given property lattice.
+     * @throws IllegalActionException Thrown if the helper cannot
+     *  be initialized.
      */
-    public PropertyConstraintHelper(NamedObj component, 
-            PropertyLattice lattice, boolean useDefaultConstraints)
+    public PropertyConstraintHelper(PropertyConstraintSolver solver, Object component, boolean useDefaultConstraints)
             throws IllegalActionException {
+        
         _component = component;
-        _lattice = lattice;
         _useDefaultConstraints = useDefaultConstraints;
-        _initialize();
+        _solver = solver;
         
+        //if (!useDefaultConstraints) {
+        //    _reinitialize();
+        //}
     }
 
-    /**
-     * 
-     * @param actorConstraintType
-     * @throws IllegalActionException
-     */
-    protected void _changeDefaultConstraints(
-            ConstraintType actorConstraintType) throws IllegalActionException {
-        _constraints.clear();
-        
-        boolean constraintSource = 
-            (actorConstraintType == ConstraintType.SRC_EQUALS_MEET) ||  
-            (actorConstraintType == ConstraintType.SRC_LESS);
-
-        List portList1 = (constraintSource) ?
-                ((AtomicActor) _component).inputPortList() :
-                ((AtomicActor) _component).outputPortList();
-
-        List portList2 = (constraintSource) ?
-                ((AtomicActor) _component).outputPortList() :
-                ((AtomicActor) _component).inputPortList();
-                
-        Iterator ports = portList1.iterator();
-        
-        while (ports.hasNext()) {                    
-            IOPort port = (IOPort) ports.next();                    
-            _constraintPort(actorConstraintType, port, portList2);
-        }
-    }
-
-    /**
-     * @param constraintType
-     * @param port
-     * @param portList2
-     * @throws IllegalActionException
-     */
-    protected void _constraintPort(ConstraintType constraintType, 
-            IOPort port, List portList2) throws IllegalActionException {
-        boolean isEquals = 
-            (constraintType == ConstraintType.EQUALS) ||  
-            (constraintType == ConstraintType.SINK_EQUALS_MEET) ||  
-            (constraintType == ConstraintType.SRC_EQUALS_MEET);         
-        
-        boolean useMeetFunction = 
-            (constraintType == ConstraintType.SRC_EQUALS_MEET) ||  
-            (constraintType == ConstraintType.SINK_EQUALS_MEET);
-
-        Iterator constraintingPorts = portList2.iterator();
-
-        if (!useMeetFunction) {
-            while (constraintingPorts.hasNext()) {
-                IOPort port2 = (IOPort) constraintingPorts.next();
-
-                if (isEquals) {
-                    setSameAs(port, port2);
-                    
-                } else {
-                    setAtMost(port, port2);                        
-                } 
-            }
-        } else if (constraintType != ConstraintType.NONE) {
-            if (portList2.size() > 0) {
-                setSameAs(port, new MeetFunction(_lattice, portList2));
-            }
-        }
-    }
-
-    
-    /**
-     * 
-     *
-     */
-    private void _initialize() {
-        List propertyables = _getPropertyable();
-
-        Iterator iterator = propertyables.iterator();
-        
-        while (iterator.hasNext()) {
-            NamedObj propertyable = (NamedObj) iterator.next();
-
-            //_resolvedProperties.put(port, _lattice.getInitialProperty());
-            _declaredProperties.put(propertyable, _lattice.getInitialProperty());
-            _propertyTerms.put(propertyable, new PropertyTerm(propertyable));            
-        }
-    }
-
-    /**
-     * @return
-     */
-    private List _getPropertyable() {
-        List list = new ArrayList();
-        
-        // Add all ports.
-        list.addAll(((Entity) _component).portList());
-        
-        // Add parameters.
-        Iterator parameters = 
-            ((Entity) _component).attributeList(Parameter.class).iterator();
-        
-        while (parameters.hasNext()) {
-            Parameter parameter = (Parameter) parameters.next();
-
-            // FIXME: We should do some sort of filtering here.            
-            list.add(parameter);
-        }
-        return list;
-    }
-
-    /**
-     * 
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
-     */
-    public void updatePortProperty() throws IllegalActionException, NameDuplicationException {
-        List propertyables = _getPropertyable();
-
-        Iterator iterator = propertyables.iterator();
-
-        while (iterator.hasNext()) {
-            NamedObj namedObj = (NamedObj) iterator.next();
-            
-            Property property = getProperty(namedObj);
-            
-            StringParameter attribute = 
-            (StringParameter) namedObj.getAttribute("_showInfo");
-
-            if (attribute == null) {
-                attribute = new StringParameter(namedObj, "_showInfo");
-            }
-
-            if (property != null) {
-                attribute.setToken(property.toString());
-            } else {
-                attribute.setToken("");                
-            }
-        }
-    }
-    
     /** Return the constraints of this component.  The constraints is
      *  a list of inequalities. This base class returns a empty list.
      *  @return A list of Inequality.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public List constraintList() throws IllegalActionException {
-        return _constraints;
-    }
-    
-    /**
-     * Return the property value associated with the given property lattice
-     * and the given port.  
-     * @param port The given port.
-     * @param lattice The given lattice.
-     * @return The property value of the given port. 
-     */
-    public Property getProperty(NamedObj port) {
-        return (Property) _resolvedProperties.get(port);
-    }
-    
-    /**
-     * Return the property term from the given port and lattice.
-     * @param port The given port.
-     * @param lattice The given property lattice.
-     * @return The property term of the given port.
-     * @throws IllegalActionException 
-     */
-    public InequalityTerm getPropertyTerm(NamedObj port) throws IllegalActionException {
-        if (port.getContainer() != _component) {
-            return _lattice.getHelper(port.getContainer()).getPropertyTerm(port);            
-        } else {
-            return (InequalityTerm) _propertyTerms.get(port); 
+        List constraints = new ArrayList();
+        constraints.addAll(_constraints);
+
+        /*
+        Iterator astHelpers = _getASTNodeHelpers().iterator();
+        
+        while (astHelpers.hasNext()) {
+            PropertyConstraintASTNodeHelper helper = 
+                (PropertyConstraintASTNodeHelper) astHelpers.next();
+            constraints.addAll(helper.constraintList());
+        }
+        //*/
+        Iterator parseTrees = _getAttributeParseTrees().iterator();
+        ParseTreePropertyConstraintCollector collector = 
+            new ParseTreePropertyConstraintCollector();
+        
+        while (parseTrees.hasNext()) {
+            ASTPtRootNode root = (ASTPtRootNode) parseTrees.next();
+
+            constraints.addAll(
+                    collector.collectConstraints(root, _solver));
         }
         
+        
+        AtomicActor actor = (AtomicActor) _component;
+        
+        boolean constraintSource = 
+            (interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET) ||  
+            (interconnectConstraintType == ConstraintType.SRC_LESS);
+
+        // Mark all the disconnected ports.
+        _nonConstraintings.clear();
+        Iterator ports = actor.portList().iterator();        
+        while (ports.hasNext()) {                    
+            TypedIOPort port = (TypedIOPort) ports.next();
+
+            if (port.numLinks() <= 0) {
+                _nonConstraintings.add(port);
+            }
+        }
+        
+        List portList1 = (constraintSource) ?
+                actor.outputPortList() : actor.inputPortList();
+
+        ports = portList1.iterator();
+        
+        while (ports.hasNext()) {                    
+            TypedIOPort port = (TypedIOPort) ports.next();
+
+            if (!_nonConstraintings.contains(port)) {
+                // Eliminate duplicates.
+                Set portList2 = (constraintSource) ? 
+                        new HashSet(_getSinkPortList(port)) :
+                            new HashSet(_getSourcePortList(port));
+    
+                portList2.removeAll(_nonConstraintings);
+                
+                constraints.addAll(
+                        _constraintObject(interconnectConstraintType, port, portList2));
+            }
+        }
+
+        Set removeConstraints = new HashSet();
+        
+        Iterator inequalities = _constraints.iterator();
+        while (inequalities.hasNext()) {                    
+            Inequality inequality = (Inequality) inequalities.next();
+            List variables = 
+                _deepGetVariables(inequality.getGreaterTerm().getVariables());
+            
+            variables.addAll(
+                    _deepGetVariables(inequality.getLesserTerm().getVariables()));
+
+            Iterator iterator = variables.iterator();
+            
+            while (iterator.hasNext()) {
+                InequalityTerm term = (InequalityTerm) iterator.next();
+                if (_nonConstraintings.contains(term.getAssociatedObject())) {
+                    removeConstraints.add(inequality);
+                }
+            }
+        }
+        constraints.removeAll(removeConstraints);
+        
+        return constraints;
+    }
+    
+    protected List _getSinkPortList(IOPort port) {
+        List result = new ArrayList();
+        
+        Iterator iterator = port.connectedPortList().iterator();
+        
+        while (iterator.hasNext()) {
+            IOPort connectedPort = (IOPort) iterator.next();
+            
+            boolean isInput = connectedPort.isInput();
+            boolean isCompositeOutput = 
+                (connectedPort.getContainer() instanceof CompositeEntity)
+                && !isInput &&            
+                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
+            
+            if (isInput || isCompositeOutput) {
+                result.add(connectedPort);
+            }
+        }
+        return result;
+    }
+
+    
+    protected List _getSourcePortList(IOPort port) {
+        List result = new ArrayList();
+        
+        Iterator iterator = port.connectedPortList().iterator();
+        
+        while (iterator.hasNext()) {
+            IOPort connectedPort = (IOPort) iterator.next();
+            boolean isInput = connectedPort.isInput();
+            boolean isCompositeInput = 
+                (connectedPort.getContainer() instanceof CompositeEntity)
+                && isInput &&
+                port.depthInHierarchy() > connectedPort.depthInHierarchy();            
+
+            if (!isInput || isCompositeInput) {
+                result.add(connectedPort);
+            }
+        }
+        return result;
+    }
+    
+    /**
+     * Return the property term from the given object.
+     * @param object The given object.
+     * @return The property term of the given object.
+     * @throws IllegalActionException 
+     */
+    public InequalityTerm getPropertyTerm(Object object) throws IllegalActionException {
+        if (object instanceof InequalityTerm) {
+            return (InequalityTerm) object;
+        }
+        
+        if (object instanceof NamedObj) {
+            NamedObj container = ((NamedObj) object).getContainer();
+            
+            if (container != _component) {
+                return _solver.getHelper(container).getPropertyTerm(object);            
+            }
+        }
+
+        // The property term for an Attribute is its root ASTNode.
+        if (object instanceof Attribute) {
+            ASTPtRootNode node = getParseTree((Attribute) object);
+            return _solver.getHelper(node).getPropertyTerm(node);
+        }
+
+        if (!_propertyTerms.containsKey(object)) {
+            _propertyTerms.put(object, new PropertyTerm(object));                        
+        }
+                
+        return (InequalityTerm) _propertyTerms.get(object); 
     }
 
     /**
      * 
-     * @param port
+     * @param attribute
      * @return
      * @throws IllegalActionException
      */
-    public boolean isSettable(NamedObj port) throws IllegalActionException {
-        if (port.getContainer() != _component) {
-            return _lattice.getHelper(port.getContainer()).isSettable(port);            
-        } else {
-            return !_nonSettablePorts.contains(port);
+    public ASTPtRootNode getParseTree(Attribute attribute) 
+            throws IllegalActionException {
+        if (!_parseTrees.containsKey(attribute)) {
+
+            if (_parser == null) {
+                _parser = new PtParser();
+            }
+
+            String expression = ((Settable) attribute).getExpression();
+            
+            ASTPtRootNode parseTree = 
+                _parser.generateParseTree(expression);
+            
+            _parseTrees.put(attribute, parseTree);
+                
         }
+        return _parseTrees.get(attribute);
     }
     
+    
+    public Inequality setAtLeast(Object object1, Object object2) throws IllegalActionException {
+        return setAtLeast(object1, object2, true);
+    }
+        
     /**
      * Create a constraint that set the port1 property to be at least
      * the port2 property.
-     * @param port1 The first given port.
-     * @param port2 The second given port.
+     * @param object1 The first given port.
+     * @param object2 The second given port.
      * @param lattice The given lattice.
      * @throws IllegalActionException 
      */
-    public void setAtLeast(NamedObj port1, NamedObj port2) throws IllegalActionException {
-        _setAtLeast(getPropertyTerm(port1),
-                getPropertyTerm(port2));
+    public Inequality setAtLeast(Object object1, Object object2, boolean isPermanent) throws IllegalActionException {
+        return _setAtLeast(getPropertyTerm(object1),
+                getPropertyTerm(object2),
+                isPermanent);
     }
 
-    /**
-     * Create a constraint that set the property of the given port 
-     * to be at least the given function term.
-     * @param port The given port.
-     * @param term The given function term.
-     * @throws IllegalActionException 
-     */
-    public void setAtLeast(NamedObj port, InequalityTerm term) throws IllegalActionException {
-        _setAtLeast(getPropertyTerm(port), term);
+    public Inequality setAtMost(Object object1, Object object2, boolean isPermanent) throws IllegalActionException {
+        return setAtLeast(object2, object1, isPermanent);
     }
     
-    /**
-     * Create a constraint that set the property of the port1 
-     * to be at least the property of port2.
-     * @param port1 The first given port.
-     * @param port2 The second given port.
-     * @throws IllegalActionException 
-     */
-    public void setAtMost(NamedObj port1, IOPort port2) throws IllegalActionException {
-        _setAtLeast(getPropertyTerm(port2),
-                getPropertyTerm(port1));
-    }
-
-    /**
-     * Create a constraint that set the property of the given port 
-     * to be at most the given function term.
-     * @param port The given port.
-     * @param term The given function term.
-     * @throws IllegalActionException 
-     */
-    public void setAtMost(NamedObj port, InequalityTerm term) throws IllegalActionException {
-        _setAtLeast(term, getPropertyTerm(port));
-    }
-    
-
-    /**
-     * Create a constraint that set the port1 property to be equal
-     * to the port2 property.
-     * @param port1 The first given port.
-     * @param port2 The second given port.
-     */
-    public void setEquals(NamedObj port, Property property) {
-        
-        _declaredProperties.put(port, property);
-        _resolvedProperties.put(port, property);
-        
-        _nonSettablePorts.add(port);
-        
-        //Property oldProperty = (Property) _resolvedProperties.get(port);
-    }
-
-    /**
-     * 
-     * @param port1
-     * @param port2
-     * @throws IllegalActionException
-     */
-    public void setSameAs(NamedObj port1, NamedObj port2) throws IllegalActionException {
-        setAtLeast(port1, port2);
-        setAtLeast(port2, port1);
+    public Inequality setAtMost(Object object1, Object object2) throws IllegalActionException {
+        return setAtMost(object1, object2, true);
     }
 
     /**
      * Create a constraint that set the property of the given port 
      * to be same as the given function term.
-     * @param port The given port.
+     * @param object The given port.
      * @param term The given function term.
      * @throws IllegalActionException 
      */
-    public void setSameAs(NamedObj port, InequalityTerm term) throws IllegalActionException {
-        _setAtLeast(term, getPropertyTerm(port));
-        _setAtLeast(getPropertyTerm(port), term);
+    public List setSameAs(Object object1, Object object2, boolean isPermanent) throws IllegalActionException {
+        List inequalities = new ArrayList();
+        inequalities.add(setAtLeast(getPropertyTerm(object1), getPropertyTerm(object2), isPermanent));
+        inequalities.add(setAtLeast(getPropertyTerm(object2), getPropertyTerm(object1), isPermanent));
+        return inequalities;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    /**
+     * 
+     * @param constraintType
+     * @throws IllegalActionException
+     */
+    protected void _setConnectionConstraintType(
+            ConstraintType constraintType, 
+            ConstraintType compositeConstraintType,
+            ConstraintType expressionASTNodeConstraintType)
+            throws IllegalActionException {
+
+        Iterator astHelpers = _getASTNodeHelpers().iterator();
+        
+        while (astHelpers.hasNext()) {
+            PropertyConstraintASTNodeHelper helper = 
+                (PropertyConstraintASTNodeHelper) astHelpers.next();
+            helper.interconnectConstraintType = 
+                expressionASTNodeConstraintType;
+        }
+        
+        interconnectConstraintType = constraintType;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The list of property constraints. 
-     */
+    /** The list of permanent property constraints. */
     protected List _constraints = new ArrayList();
 
-    /** The mapping between ports and their property values.
-     * Each mapping is of the form (IOPort, Property). 
-     */
-    protected HashMap _resolvedProperties = new HashMap();
-
     /**
+     * The set of property-able objects (i.e. disconnected ports)
+     * that has no effects in the constraints.
      */
-    protected HashMap _declaredProperties = new HashMap();
-
-    /**
-     */
-    protected HashSet _nonSettablePorts = new HashSet();
-
-    /**
-     */
+    protected HashSet _nonConstraintings = new HashSet();
+    
+    /** The mapping between property-able objects and their PropertyTerm. */
     protected HashMap _propertyTerms = new HashMap();
 
+    /** Indicate whether this helper uses the default actor constraints. */
+    protected boolean _useDefaultConstraints;
 
     
-    private class PropertyTerm implements InequalityTerm {
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
+
+    protected class PropertyTerm implements InequalityTerm {
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
-        private NamedObj _namedObj;
+        private Object _object;
         
-        public PropertyTerm (NamedObj object) {
-            _namedObj = object;
+        private PropertyTerm (Object object) {
+            _object = object;
         }
 
         /** Return this TypedIOPort.
          *  @return A TypedIOPort.
          */
         public Object getAssociatedObject() {
-            return _namedObj;
+            return _object;
         }
 
         /** Return the type of this TypedIOPort.
          */
         public Object getValue() {
-            return getProperty(_namedObj);
+            return getProperty(_object);
         }
 
         /** Return this PropertyTerm in an array if this term represent
@@ -443,7 +436,7 @@ public class PropertyConstraintHelper {
                         + "The argument is not a Property.");
             }
 
-            _resolvedProperties.put(_namedObj, property);
+            _resolvedProperties.put(_object, property);
         }
 
         /** Test if the property of the port associated with this Term
@@ -452,7 +445,7 @@ public class PropertyConstraintHelper {
          *  @return True if the property can be changed; false otherwise.
          */
         public boolean isSettable() {
-            return !_nonSettablePorts.contains(_namedObj);
+            return !_nonSettables.contains(_object);
         }
 
         /** Check whether the current value of this term is acceptable.
@@ -461,13 +454,13 @@ public class PropertyConstraintHelper {
          *  @return True if the current value is acceptable.
          */
         public boolean isValueAcceptable() {
-            if (getProperty(_namedObj).isInstantiable()) {
+            if (getProperty(_object).isInstantiable()) {
                 return true;
             }
 
             // For a disconnected port, any property is acceptable.
-            if (_namedObj instanceof IOPort) {
-                if (((IOPort) _namedObj).numLinks() == 0) {
+            if (_object instanceof IOPort) {
+                if (((IOPort) _object).numLinks() == 0) {
                     return true;
                 }
             }
@@ -486,17 +479,18 @@ public class PropertyConstraintHelper {
                         "The property is not settable.");
             }
 
-            if (!((Property) _declaredProperties.get(_namedObj))
-                    .isSubstitutionInstance((Property) property)) {
-                throw new IllegalActionException("Property conflict on port "
-                        + _namedObj.getFullName() + ".\n"
+            Property declaredProperty = (Property) _declaredProperties.get(_object); 
+            if (declaredProperty != null &&
+                    !declaredProperty.isSubstitutionInstance((Property) property)) {
+                throw new IllegalActionException("Property conflict on object "
+                        + _object.toString() + ".\n"
                         + "Declared property is "
-                        + _declaredProperties.get(_namedObj).toString() + ".\n"
+                        + _declaredProperties.get(_object).toString() + ".\n"
                         + "The connection or property constraints, however, "
                         + "require property " + property.toString());
             }
             
-            _resolvedProperties.put(_namedObj, property);
+            _resolvedProperties.put(_object, property);
         }
 
         /** Override the base class to give a description of the port
@@ -504,7 +498,7 @@ public class PropertyConstraintHelper {
          *  @return A description of the port and its property.
          */
         public String toString() {
-            return "(" + _namedObj.toString() + ", " + getProperty(_namedObj) + ")";
+            return "(" + _object.toString() + ", " + getProperty(_object) + ")";
         }
     }
   
@@ -520,29 +514,246 @@ public class PropertyConstraintHelper {
         _constraints.add(inequality);
     }
 
+
+    /**
+     * 
+     * @param actorConstraintType
+     * @throws IllegalActionException
+     */
+    protected void _changeDefaultConstraints(
+            ConstraintType actorConstraintType) throws IllegalActionException {
+        if (!_useDefaultConstraints) {
+            return;
+        }
+
+        _constraints.clear();
+        
+        boolean constraintSource = 
+            (actorConstraintType == ConstraintType.SRC_EQUALS_MEET) ||  
+            (actorConstraintType == ConstraintType.SRC_LESS);
+
+        List portList1 = (constraintSource) ?
+                ((AtomicActor) _component).inputPortList() :
+                ((AtomicActor) _component).outputPortList();
+
+        List portList2 = (constraintSource) ?
+                ((AtomicActor) _component).outputPortList() :
+                ((AtomicActor) _component).inputPortList();
+                
+        Iterator ports = portList1.iterator();
+        
+        while (ports.hasNext()) {                    
+            IOPort port = (IOPort) ports.next();                    
+            _constraints.addAll(_constraintObject(actorConstraintType, port, portList2));
+        }
+    }
+
+    protected List _constraintObject(ConstraintType constraintType, 
+            Object object, Set objectList) throws IllegalActionException {
+        return _constraintObject(constraintType, object, new ArrayList(objectList));        
+    }
+    
+    /**
+     * @param constraintType
+     * @param object
+     * @param portList2
+     * @throws IllegalActionException
+     */
+    protected List _constraintObject(ConstraintType constraintType, 
+            Object object, List objectList) throws IllegalActionException {
+        List result = new ArrayList();
+        
+        boolean isEquals = 
+            (constraintType == ConstraintType.EQUALS) ||  
+            (constraintType == ConstraintType.SINK_EQUALS_MEET) ||  
+            (constraintType == ConstraintType.SRC_EQUALS_MEET);         
+        
+        boolean useMeetFunction = 
+            (constraintType == ConstraintType.SRC_EQUALS_MEET) ||  
+            (constraintType == ConstraintType.SINK_EQUALS_MEET);
+
+        Iterator constraintings = objectList.iterator();
+
+        InequalityTerm term1 = getPropertyTerm(object);
+
+        if (constraintType != ConstraintType.NONE) {
+            if (!useMeetFunction) {
+    
+                while (constraintings.hasNext()) {
+                    Object object2 = constraintings.next();
+    
+                    InequalityTerm term2 = getPropertyTerm(object2);
+                    
+                    if (isEquals) {
+                        //setSameAs(port, port2);
+                        result.add(new Inequality(term1, term2));
+                        result.add(new Inequality(term2, term1));
+                        
+                    } else {
+                        //setAtMost(port, port2);
+                        result.add(new Inequality(term1, term2));
+                    } 
+                }
+            } else {
+                InequalityTerm term2 = new MeetFunction(_solver, objectList);
+                
+                if (objectList.size() > 0) {
+                    //setSameAs(port, new MeetFunction(_lattice, portList2));
+                    result.add(new Inequality(term1, term2));
+                    result.add(new Inequality(term2, term1));                
+                }
+            }
+        }
+        return result;
+    }
+
+    
+    private List _deepGetVariables(InequalityTerm[] variables) {
+        List result = new ArrayList();
+        
+        for (int i = 0; i < variables.length; i++) {
+            if (variables[i].getAssociatedObject() != null) {
+
+                result.addAll(Arrays.asList(variables[i].getVariables()));                
+            } else {
+                
+                result.addAll(_deepGetVariables(variables[i].getVariables()));
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Return a list of property-able NamedObj contained by
+     * the component. All ports and parameters are considered
+     * property-able.
+     * @return The list of property-able named object.
+     */
+    protected List _getPropertyables() {
+        List list = new ArrayList();
+        
+        // Add all ports.
+        list.addAll(((Entity) _component).portList());
+        
+        // Add attributes.
+        Iterator parseTrees = _getAttributeParseTrees().iterator();
+
+        ParseTreeNodeCollector collector = new ParseTreeNodeCollector();
+        
+        while (parseTrees.hasNext()) {
+            ASTPtRootNode parseTree = (ASTPtRootNode) parseTrees.next();
+                
+            try {
+                Set nodes = collector.collectNodes(parseTree);
+                list.addAll(nodes);
+                
+            } catch (IllegalActionException e) {
+                // FIXME:
+            }
+        }
+        return list;
+    }
+
+
+    /**
+     * Return the list of parse trees for all settable Attributes
+     * of the component. 
+     * @return The list of ASTPtRootNodes.
+     */
+    protected List _getAttributeParseTrees() {
+        List result = new ArrayList();
+        
+        Iterator attributes = 
+            ((Entity) _component).attributeList(Attribute.class).iterator();
+        
+        while (attributes.hasNext()) {
+            Attribute attribute = (Attribute) attributes.next();
+
+            // FIXME: We should do some sort of filtering here.            
+            if (attribute instanceof Settable) {
+                
+                try {
+                    result.add(getParseTree(attribute));
+                    
+                } catch (IllegalActionException ex) {
+                    // This means the expression is not parse-able.
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Reinitialize the helper before each round of property resolution.
+     * It resets the resolved property of all propertyable objects. This
+     * method is called in the beginning of the
+     * PropertyConstraintSolver.resolveProperties() method.
+     * @throws IllegalActionException Thrown if 
+     */
+    protected void _reinitialize() throws IllegalActionException {
+        List propertyables = _getPropertyables();
+
+        Iterator iterator = propertyables.iterator();
+        
+        while (iterator.hasNext()) {
+            Object propertyable = iterator.next();
+    
+            if (!_nonSettables.contains(propertyable)) {
+                _resolvedProperties.remove(propertyable);
+                //_declaredProperties.put(propertyable, _solver.getLattice().getInitialProperty());
+            }
+        }
+        
+        Iterator astHelpers = _getASTNodeHelpers().iterator();
+        
+        while (astHelpers.hasNext()) {
+            PropertyConstraintASTNodeHelper helper = 
+                (PropertyConstraintASTNodeHelper) astHelpers.next();
+            helper._reinitialize();
+        }
+    }
+    
+    
+    private List _getASTNodeHelpers() throws IllegalActionException {
+        List astHelpers = new ArrayList();
+        ParseTreeASTNodeHelperCollector collector = 
+            new ParseTreeASTNodeHelperCollector();
+        
+        Iterator nodes = _parseTrees.values().iterator();
+        while (nodes.hasNext()) {
+            ASTPtRootNode node = (ASTPtRootNode) nodes.next();
+            
+            astHelpers.addAll(collector.collectHelpers(
+                    node, _solver));            
+        }
+        return astHelpers;
+    }
+
     /**
      * Create a constraint that set the
      * first term to be at least the second term.
      * @param term1 The greater term.
      * @param term2 The lesser term.
      */
-    private void _setAtLeast(InequalityTerm term1, 
-            InequalityTerm term2) {
+    protected Inequality _setAtLeast(InequalityTerm term1, InequalityTerm term2, boolean isPermanent) {
         Inequality inequality = new Inequality(term2, term1);
-        _addConstraint(inequality);        
+        if (isPermanent) {
+            _addConstraint(inequality);        
+        }
+        return inequality;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The associated component of this helper. */
-    protected NamedObj _component;
-    
-    /** The associated property lattice. */
-    protected PropertyLattice _lattice;
-
     /**
+     * 
      */
-    protected boolean _useDefaultConstraints;
+    public ConstraintType interconnectConstraintType;
+    
+    
+    private HashMap<Attribute, ASTPtRootNode> _parseTrees = new HashMap<Attribute, ASTPtRootNode>();
+
+    static PtParser _parser;
 
 }

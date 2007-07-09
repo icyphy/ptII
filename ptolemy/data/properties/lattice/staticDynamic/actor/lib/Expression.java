@@ -1,4 +1,4 @@
-/* A helper class for ptolemy.actor.AtomicActor.
+/* A helper class for ptolemy.actor.lib.Const.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -25,39 +25,43 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties.lattice.staticDynamic.actor;
+package ptolemy.data.properties.lattice.staticDynamic.actor.lib;
 
 import ptolemy.data.properties.PropertyConstraintHelper;
 import ptolemy.data.properties.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.staticDynamic.Lattice;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// AtomicActor
+//// Const
 
 /**
- A helper class for ptolemy.actor.AtomicActor.
+ A helper class for ptolemy.actor.lib.Const.
 
  @author Man-Kit Leung, Thomas Mandl
  @version $Id$
  @since Ptolemy II 6.2
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
- */
-public class AtomicActor extends PropertyConstraintHelper {
+*/
+public class Expression extends PropertyConstraintHelper {
 
     /**
-     * Construct a helper for the given AtomicActor. This is the
-     * helper class for any ActomicActor that does not have a
-     * specific defined helper class. Default actor constraints
-     * are set for this helper. 
-     * @param actor The given ActomicActor.
+     * Construct a Const helper for the staticDynamic lattice.
+     * This set a permanent constraint for the output port to
+     * be STATIC, but does not use the default actor constraints.
+     * @param actor The given Source actor
      * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
-    public AtomicActor(PropertyConstraintSolver solver, 
-            ptolemy.actor.AtomicActor actor)
+    public Expression(PropertyConstraintSolver solver, 
+            ptolemy.actor.lib.Expression actor)
             throws IllegalActionException {
-        
-        super(solver, actor);
+
+        super(solver, actor, false);
+        Lattice lattice = (Lattice) solver.getLattice();        
+
+        setAtLeast(actor.output, actor.expression);
     }
+
 }

@@ -1,4 +1,4 @@
-/** A base class representing a property.
+/** A class that represents dynamic property in the StaticDynamic lattice.
 
  Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
@@ -36,9 +36,9 @@ import ptolemy.data.properties.PropertyLattice;
 //// Property
 
 /**
- A base class representing a property.
+ A class that represents dynamic property in the StaticDynamic lattice.
 
- @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
+ @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Red (neuendor)
@@ -46,7 +46,11 @@ import ptolemy.data.properties.PropertyLattice;
  */
 public class Dynamic extends BaseProperty {
         
-    public Dynamic(PropertyLattice lattice) {
+    /**
+     * Construct a Dynamic property object
+     * @param lattice
+     */
+    Dynamic(PropertyLattice lattice) {
         super(lattice);
     }
 }
