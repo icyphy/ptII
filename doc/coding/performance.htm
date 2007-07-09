@@ -23,7 +23,17 @@ Contents
 <li> <a href="../../ptolemy/data/type/test/performance.xml"><CODE>ptolemy/data/type/test/performance.xml</CODE></a> 
  - type system performance testing
 
-<li> <a href="../../ptolemy/domains/wireless/test/auto/performance.xml/"><CODE>ptolemy/domains/wireless/test/performance.xml</CODE></a>  - Wireless domain test
+
+<li> <a href="../../ptolemy/domains/de/lib/test/Time.java"><CODE>ptolemy/domains/de/lib/test/Time.java</CODE></a>  - Simple DE domain test.  To run it, do
+<pre>
+cd $PTII/ptolemy/domains/de/lib/test
+java -classpath $PTII ptolemy.domains.de.lib.test.Time
+</pre>
+
+<li> <a href="../../ptolemy/domains/de/test/auto/TwoSigmaDelta.xml"><CODE>ptolemy/domains/de/test/auto/TwoSigmaDelta.xml</CODE></a> - Test that runs the a version of the sigma delta demo.  This test takes 3-7 seconds.
+
+<li> <a href="../../ptolemy/domains/wireless/test/auto/performance.xml/"><CODE>ptolemy/domains/wireless/test/performance.xml</CODE></a>  - Wireless domain test.  Note that the Wireless domains extends the Discrete Event (DE) domain, so
+this is also a good DE test.
 
 
 <li> 
