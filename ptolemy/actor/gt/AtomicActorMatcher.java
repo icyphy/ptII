@@ -26,10 +26,15 @@
  */
 package ptolemy.actor.gt;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.rules.PortRule;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -63,18 +68,47 @@ public class AtomicActorMatcher extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
     throws IllegalActionException {
         super.attributeChanged(attribute);
+        
         if (attribute == ruleList) {
             try {
                 _workspace.getWriteAccess();
-                removeAllPorts();
+                
+                Set<String> preservedPortNames = new HashSet<String>();
                 for (Rule rule : ruleList.getRuleList()) {
                     if (rule instanceof PortRule) {
                         PortRule portRule = (PortRule) rule;
-                        TypedIOPort port = new TypedIOPort(this,
-                                portRule.getPortName(), portRule.isInput(),
-                                portRule.isOutput());
-                        port.setPersistent(false);
-                        port.setMultiport(portRule.isMultiport());
+                        String portName = portRule.getPortName();
+                        preservedPortNames.add(portName);
+
+                        TypedIOPort port = (TypedIOPort) getPort(portName);
+                        if (port != null) {
+                            // Change the port instead of deleting it later.
+                            port.setInput(portRule.isInput());
+                            port.setOutput(portRule.isOutput());
+                            port.setMultiport(portRule.isMultiport());
+                            port.setPersistent(false);
+                        } else {
+                            port = new TypedIOPort(this,
+                                    portRule.getPortName(), portRule.isInput(),
+                                    portRule.isOutput());
+                            port.setMultiport(portRule.isMultiport());
+                            port.setPersistent(false);
+                        }
+                    }
+                }
+                List<?> portList = portList();
+                for (int i = 0; i < portList.size();) {
+                    Port port = (Port) portList.get(i);
+                    if (!preservedPortNames.contains(port.getName())) {
+                        port.setContainer(null);
+                    } else {
+                        i++;
+                    }
+                }
+                for (Object portObject : portList()) {
+                    Port port = (Port) portObject;
+                    if (!preservedPortNames.contains(port.getName())) {
+                        port.setContainer(null);
                     }
                 }
             } catch (MalformedStringException e) {
