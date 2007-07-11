@@ -109,6 +109,10 @@
      </property>
 </entity>
 
+<entity name="ClipPlayer" class="ptolemy.actor.lib.javasound.ClipPlayer"/>
+<entity name="SoundPlayer" class="ptolemy.actor.lib.javasound.SoundPlayer"/>
+<entity name="TimedAudioPlayer" class="ptolemy.actor.lib.javasound.TimedAudioPlayer"/>
+
       </group>
     ?>
   </configure>
