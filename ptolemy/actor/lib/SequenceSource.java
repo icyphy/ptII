@@ -27,11 +27,7 @@
  */
 package ptolemy.actor.lib;
 
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -50,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  the <i>n</i>-th invocation of postfire() returns false, which indicates
  to the scheduler that it should stop invocations of this actor.
  The default value of <i>firingCountLimit</i>
- is zero, which results in postfire always returning
+ is NONE, which results in postfire always returning
  true.  Derived classes must call super.postfire() for this mechanism to
  work.
 
@@ -60,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (bilung)
  */
-public class SequenceSource extends Source implements SequenceActor {
+public class SequenceSource extends LimitedFiringSource implements SequenceActor {
     /** Construct an actor with the given container and name.
      *  The <i>firingCountLimit</i> parameter is also constructed.
      *  @param container The container.
@@ -72,82 +68,8 @@ public class SequenceSource extends Source implements SequenceActor {
      */
     public SequenceSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
+        // NOTE: This actor only adds implementing the
+        // marker interface SequenceActor to its base class.
         super(container, name);
-        firingCountLimit = new Parameter(this, "firingCountLimit");
-        firingCountLimit.setExpression("0");
-        firingCountLimit.setTypeEquals(BaseType.INT);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** If greater than zero, then the number of iterations before the
-     *  actor indicates to the scheduler that it is finished by returning
-     *  false in its postfire() method.
-     */
-    public Parameter firingCountLimit;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Override the base class to determine which attribute is being
-     *  specified.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the function is not recognized.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == firingCountLimit) {
-            _firingCountLimit = ((IntToken) firingCountLimit.getToken())
-                    .intValue();
-        }
-    }
-
-    /** Initialize the iteration counter.  A derived class must call
-     *  this method in its initialize() method or the <i>firingCountLimit</i>
-     *  feature will not work.
-     *  @exception IllegalActionException If the parent class throws it,
-     *   which could occur if, for example, the director will not accept
-     *   sequence actors.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _iterationCount = 0;
-    }
-
-    /** Increment the iteration counter, and if it equals the
-     *  value of the <i>firingCountLimit</i> parameter, return false.
-     *  Otherwise, return true.  Derived classes should call this
-     *  at the end of their postfire() method and return its returned
-     *  value.
-     *  @exception IllegalActionException If firingCountLimit has
-     *   an invalid expression.
-     */
-    public boolean postfire() throws IllegalActionException {
-        if (_firingCountLimit != 0) {
-            _iterationCount++;
-
-            if (_iterationCount == _firingCountLimit) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** This is the value in parameter
-     * firingCountLimit.
-     * It may be convenient for derived classes to read this
-     *  variable in the iterate() method.
-     */
-    protected int _firingCountLimit;
-
-    /** The current number of elapsed iterations.
-     * It may be convenient for derived classes to read/set this
-     * variable in the iterate() method.
-     */
-    protected int _iterationCount = 0;
 }

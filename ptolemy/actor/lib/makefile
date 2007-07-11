@@ -146,6 +146,7 @@ JSRCS = \
 	Lattice.java \
 	LevinsonDurbin.java \
 	Limiter.java \
+	LimitedFiringSource.java \
 	LinearDifferenceEquationSystem.java \
 	LookupTable.java \
 	MathFunction.java \

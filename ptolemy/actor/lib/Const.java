@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (bilung)
  */
-public class Const extends Source {
+public class Const extends LimitedFiringSource {
     /** Construct a constant source with the given container and name.
      *  Create the <i>value</i> parameter, initialize its value to
      *  the default value of an IntToken with value 1.
