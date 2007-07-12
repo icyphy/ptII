@@ -74,7 +74,7 @@ if [ file isdirectory auto/knownFailedTests ] {
     }
 }
 
-proc CGC_test {file inline} {
+proc CGC_test {file inline {extraArgs {}} } {
     global PTII	
     set relativeFilename \
 	    [java::call ptolemy.util.StringUtilities substituteFilePrefix \
@@ -86,8 +86,16 @@ proc CGC_test {file inline} {
 	    # might have backslashes under Windows, which causes no end
 	    # of trouble.
         set application [createAndExecute $file]
-	set args [java::new {String[]} 3 \
+	if {$extraArgs != {}} {
+	    # We might pass -sourceLineBinding true to this method
+	    set args [java::new {String[]} [expr {3 + [$extraArgs length]}] \
+			  [list "-inline" $inline ]]
+	    $args setrange 2 [$extraArgs getrange]
+	    $args set [expr {[$args length] -1}] $file
+	} else {
+	    set args [java::new {String[]} 3 \
 			  [list "-inline" $inline $file]]
+	}
 
 	set timeout 60000
 	puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
@@ -106,10 +114,15 @@ proc CGC_test {file inline} {
 	list $returnValue
     } {0}
 }
+set coverageArgs [java::new {String[]} 4 \
+		      [list \
+			   "-sourceLineBinding" "true" \
+			   "-compileTarget" "coverage"]]
 
 foreach file [glob auto/*.xml] {
     CGC_test $file true
-    CGC_test $file false
+    #CGC_test $file false
+    CGC_test $file false $coverageArgs
 }
 
 # Print out stats
