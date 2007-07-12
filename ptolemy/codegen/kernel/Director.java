@@ -627,7 +627,7 @@ public class Director implements ActorCodeGenerator {
      *  We use a end of line charactor so that the files we generate
      *  have the proper end of line character for use by other native tools.
      */
-    protected static String _eol;
+    protected static final String _eol;
     static {
         _eol = StringUtilities.getProperty("line.separator");
     }
