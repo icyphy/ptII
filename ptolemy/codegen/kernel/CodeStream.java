@@ -608,7 +608,7 @@ public class CodeStream {
                 int lineNumber = 1;
                 //String filename = _filePath.replaceAll("\\$", "");
                 String filename = FileUtilities.nameToURL(_filePath,
-                        null, null).getPath().substring(1);
+                        null, null).getPath();
                 for (String line = reader.readLine(); 
                      line != null;
                      line = reader.readLine(), lineNumber++) {
