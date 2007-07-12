@@ -606,20 +606,21 @@ public class CodeStream {
                 // create a string of all code in the file
                 
                 int lineNumber = 1;
-                String filename = _filePath.replaceAll("\\$", "");
+                //String filename = _filePath.replaceAll("\\$", "");
+                String filename = FileUtilities.nameToURL(_filePath,
+                        null, null).getPath().substring(1);
                 for (String line = reader.readLine(); 
-                line != null; line = reader.readLine(), lineNumber++) {
-                    
-                    if (_codeGenerator instanceof CCodeGenerator) {
-                        Token token = ((CCodeGenerator) 
-                                _codeGenerator).sourceLineBinding.getToken();
-                        
-                        if (((BooleanToken) token).booleanValue()) {
-                            codeToBeParsed.append("#line " + 
-                                    lineNumber + " \"" + filename + "\"\n");                            
-                        }
+                     line != null;
+                     line = reader.readLine(), lineNumber++) {
+                    if (_codeGenerator == null) {
+                        _codeGenerator = _helper._codeGenerator;
                     }
-                    
+                    Token token = _codeGenerator.sourceLineBinding.getToken();
+                        
+                    if (((BooleanToken) token).booleanValue()) {
+                        codeToBeParsed.append("#line " + 
+                                lineNumber + " \"" + filename + "\"\n");                            
+                    }
                     codeToBeParsed.append(line + _eol);
                 }
             }    

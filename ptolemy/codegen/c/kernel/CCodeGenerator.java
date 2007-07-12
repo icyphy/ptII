@@ -84,23 +84,11 @@ public class CCodeGenerator extends CodeGenerator {
         super(container, name);
 
         generatorPackage.setExpression("ptolemy.codegen.c");
-
-        sourceLineBinding = new Parameter(this, "sourceLineBinding");
-        sourceLineBinding.setTypeEquals(BaseType.BOOLEAN);
-        sourceLineBinding.setExpression("false");
-
     }
 
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
-    
-    /** If true, then the generated source is binded to the line 
-     * number and file of the (helper) templates. Otherwise, the 
-     * source is binded only to the output file. The default   
-     * value is a parameter with the value false..
-     */
-    public Parameter sourceLineBinding;
     
 
     ///////////////////////////////////////////////////////////////////
@@ -606,7 +594,8 @@ public class CCodeGenerator extends CodeGenerator {
 
         List commands = new LinkedList();
         if (((BooleanToken) compile.getToken()).booleanValue()) {
-            commands.add("make -f " + _sanitizedModelName + ".mk");
+            commands.add("make -f " + _sanitizedModelName + ".mk "
+                    + compileTarget.stringValue());
         }
 
         if (isTopLevel()) {
@@ -660,7 +649,8 @@ public class CCodeGenerator extends CodeGenerator {
         if (((BooleanToken) sourceLineBinding.getToken()).booleanValue()) {
             
             String filename = getOutputFilename();
-    
+            //filename = new java.io.File(filename).getAbsolutePath().replace('\\', '/');
+
             StringTokenizer tokenizer = 
                 new StringTokenizer(code.toString(), _eol);
             

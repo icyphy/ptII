@@ -40,3 +40,10 @@ optimize:
 	    time @modelName@_$${O_FLAG}_stripped.exe; \
 	    time @modelName@_$${O_FLAG}_stripped.exe; \
 	done	
+
+# Generate code coverage using gcov
+coverage:
+	rm -f @modelName@ @modelName@.exe
+	make -f @modelName@.mk USER_CC_FLAGS="-fprofile-arcs -ftest-coverage"
+	./@modelName@
+	#gcov @modelName@.c

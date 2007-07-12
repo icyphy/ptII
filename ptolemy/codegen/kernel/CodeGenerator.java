@@ -106,6 +106,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         compile.setTypeEquals(BaseType.BOOLEAN);
         compile.setExpression("true");
 
+        compileTarget = new StringParameter(this, "compileTarget");
+
         generatorPackage = new StringParameter(this, "generatorPackage");
 
         generateComment = new Parameter(this, "generateComment");
@@ -123,6 +125,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         run = new Parameter(this, "run");
         run.setTypeEquals(BaseType.BOOLEAN);
         run.setExpression("true");
+
+        sourceLineBinding = new Parameter(this, "sourceLineBinding");
+        sourceLineBinding.setTypeEquals(BaseType.BOOLEAN);
+        sourceLineBinding.setExpression("false");
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
@@ -152,6 +158,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public Parameter compile;
 
+    /** The name of compile target to be run if the <i>compile</i> parameter
+     *  is true.  This is a string with a default value of the empty string,
+     *  which means the first target in the makefile would be run.
+     */
+    public StringParameter compileTarget;
+
     /** If true, generate comments in the output code; otherwise,
      *  no comments is generated. The default value is a parameter
      *  with the value true.
@@ -180,6 +192,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public Parameter run;
 
+    /** If true, then the generated source is binded to the line 
+     * number and file of the (helper) templates. Otherwise, the 
+     * source is binded only to the output file. The default   
+     * value is a parameter with the value false..
+     */
+    public Parameter sourceLineBinding;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
