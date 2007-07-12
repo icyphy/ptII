@@ -1,4 +1,4 @@
-/* An actor that displays input data in a text area on the screen.
+/*  This actor opens a window to display the specified model and applies its inputs to the model.
 
  @Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
@@ -60,7 +60,7 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 
 //////////////////////////////////////////////////////////////////////////
-////Display
+//// ModelDisplay
 
 /**
  This actor opens a window to display the specified model.
@@ -68,7 +68,7 @@ import diva.graph.JGraph;
  that are to be applied to the model. This can be used, for
  example, to create animations.
  
- @author  Edward A. Lee
+ @author  Edward A. Lee, Elaine Cheong
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (eal)

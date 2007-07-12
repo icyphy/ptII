@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Workspace;
 //// RunCompositeActor
 
 /**
- This is a composite actor that can executes the contained model
+ This is a composite actor that can execute the contained model
  completely, as if it were a top-level model, on each firing.
  This can be used to define an actor whose firing behavior
  is given by a complete execution of a submodel.
@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Workspace;
  input ports, then on each firing, before executing the referenced
  model, this actor will read an input token from the input port, if
  there is one, and use it to set the value of a top-level parameter
- in the referenced model that has the same name as the port, if there
+ in the contained model that has the same name as the port, if there
  is one.  The simplest way to ensure that there is a matching parameter
  is to use a PortParameter for inputs.  However, this actor will work
  also for ordinary ports. In this case, if this actor has a
@@ -87,20 +87,13 @@ import ptolemy.kernel.util.Workspace;
  to do from Vergil, the ports and parameters of this actor
  should not be changed using Vergil during execution.
  <p>
- The subclass of this may need to call a method, for example prefire(),
- of  the superclass of this when execute the inside model. Since Java
- doesn't supported super.super.prefire(), this class uses a boolean
- variable <i>_isSubclassOfRunCompositeActor</i> to provide a mechanism to
- call the method of the superclass of this. To to so, Subclass of this can
- set the <i>_isSubclassOfRunCompositeActor</i> to be true.
- <p>
  This actor also overrides the requestChange() method and the
- executeChangerRequests() method to execute the given change. It does not
+ executeChangeRequests() method to execute the given change. It does not
  delegate the change request to the container, but executes the request
  immediately or records it, depending on whether setDeferringChangeRequests()
  has been called with a true argument.
 
- @author Edward A. Lee, Yang Zhao
+ @author Edward A. Lee, Yang Zhao, Elaine Cheong
  @version $Id$
  @since Ptolemy II 4.0
  @see ModelReference
