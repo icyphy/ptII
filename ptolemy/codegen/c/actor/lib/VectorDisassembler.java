@@ -70,7 +70,7 @@ public class VectorDisassembler extends CCodeGeneratorHelper {
 
         ptolemy.actor.lib.VectorDisassembler actor = (ptolemy.actor.lib.VectorDisassembler) getComponent();
 
-        String fireCode = new String();
+        StringBuffer fireCode = new StringBuffer();
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0));
 
@@ -81,9 +81,9 @@ public class VectorDisassembler extends CCodeGeneratorHelper {
         
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
-            fireCode += _generateBlockCode("fireBlock", args);
+            fireCode.append(_generateBlockCode("fireBlock", args));
         }
 
-        return processCode(fireCode);
+        return processCode(fireCode.toString());
     }
 }
