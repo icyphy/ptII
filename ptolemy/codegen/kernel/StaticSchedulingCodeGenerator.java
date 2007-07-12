@@ -292,9 +292,8 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
         }
 
         Attribute period = director.getAttribute("period");
-        Double periodValue = 0.0;
         if (period != null) {
-            periodValue = ((DoubleToken) ((Variable) period)
+            Double periodValue = ((DoubleToken) ((Variable) period)
                     .getToken()).doubleValue();
             if (periodValue != 0.0) {
                 variableDeclarations.append(_eol +
@@ -347,15 +346,6 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
      */
     protected ActorCodeGenerator _getHelper(NamedObj actor)
             throws IllegalActionException {
-        ActorCodeGenerator helperObject = super._getHelper(actor);
-
-        if (!(helperObject instanceof ActorCodeGenerator)) {
-            throw new IllegalActionException(this,
-                    "Cannot generate code for this actor: " + actor
-                            + ". Its helper class does not"
-                            + " implement ActorCodeGenerator.");
-        }
-
-        return helperObject;
+        return super._getHelper(actor);
     }
 }
