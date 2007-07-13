@@ -55,8 +55,7 @@ JSRCS = \
 	AudioPlayer.java \
 	AudioReadBuffer.java \
 	AudioWriteBuffer.java \
-	LiveSoundActor.java \
-	TimedAudioPlayer.java
+	LiveSoundActor.java
 
 # We include voice.wav so that we can include the voice.wav file in
 # the jar file for use under Web Start.
