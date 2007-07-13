@@ -1,6 +1,6 @@
-/** A base class representing a property.
+/* A helper class for ptolemy.actor.AtomicActor.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,29 +24,41 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-
  */
-package ptolemy.data.properties.lattice.staticDynamic;
+package ptolemy.data.properties.token.firstValueToken.actor;
 
-import ptolemy.data.properties.LatticeProperty;
-import ptolemy.data.properties.PropertyLattice;
+import java.util.List;
 
+import ptolemy.data.properties.PortValueHelper;
+import ptolemy.data.properties.PortValueSolver;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// Property
+//// AtomicActor
 
 /**
- A base class representing a property.
+ A helper class for ptolemy.actor.AtomicActor.
 
- @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
+ @author Thomas Mandl, Man-Kit Leung
  @version $Id$
- @since Ptolemy II 0.4
- @Pt.ProposedRating Red (neuendor)
- @Pt.AcceptedRating Red (cxh)
+ @since Ptolemy II 6.2
+ @Pt.ProposedRating Red (mankit)
+ @Pt.AcceptedRating Red (mankit)
  */
-public class Unknown extends LatticeProperty {
-        
-    Unknown(PropertyLattice lattice) {
-        super(lattice);
+public class AtomicActor extends PortValueHelper {
+
+    /**
+     * Construct a helper for the given AtomicActor. This is the
+     * helper class for any ActomicActor that does not have a
+     * specific defined helper class. Default actor constraints
+     * are set for this helper. 
+     * @param actor The given ActomicActor.
+     * @param lattice The staticDynamic lattice.
+     * @throws IllegalActionException 
+     */
+    public AtomicActor(PortValueSolver solver, 
+            ptolemy.actor.AtomicActor actor)
+            throws IllegalActionException {
+        super(solver, actor);
     }
 }

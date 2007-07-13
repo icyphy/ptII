@@ -43,9 +43,9 @@ import ptolemy.graph.CPO;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
-public class BaseProperty implements Property {
+public class LatticeProperty implements Property {
         
-    public BaseProperty(PropertyLattice lattice) {
+    public LatticeProperty(PropertyLattice lattice) {
         _lattice = lattice;
     }
     

@@ -42,7 +42,7 @@ import ptolemy.util.FileUtilities;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintSolver extends Attribute implements PropertySolver {
+public class PropertyConstraintSolver extends PropertySolver {
     /**
      * @param container The given container.
      * @param name The given name
@@ -195,10 +195,6 @@ public class PropertyConstraintSolver extends Attribute implements PropertySolve
             if (_lattice == null || 
                     !propertyLattice.stringValue().equals(_lattice.getName())) {
 
-                if (_lattice != null) {
-                    PropertyLattice.releasePropertyLattice(_lattice);
-                }
-
                 _lattice = PropertyLattice.getPropertyLattice(
                         propertyLattice.stringValue());                
 
@@ -207,6 +203,28 @@ public class PropertyConstraintSolver extends Attribute implements PropertySolve
         }
     }
 
+    /**
+     * Find a constraint solver that is associated with the given 
+     * property lattice name. There can be more than one solvers with
+     * the same lattice. This method returns whichever it finds first.
+     * Return null if no matched solver is found.
+     * @param latticeName The given name of the property lattice. 
+     * @return The property constraint solver associated with the
+     *  given lattice name. 
+     */
+    public static PropertyConstraintSolver findSolver(String latticeName) {
+        Iterator iterator = _solvers.iterator();
+        while (iterator.hasNext()) {
+            PropertyConstraintSolver solver = 
+                (PropertyConstraintSolver) iterator.next();
+            
+            if (solver.propertyLattice.getExpression().equals(latticeName)) {
+                return solver;
+            }
+        }
+        return null;
+    }
+    
     
     /**
      * Returns the helper that contains property information for
@@ -234,17 +252,19 @@ public class PropertyConstraintSolver extends Attribute implements PropertySolve
     }
     
     /**
-     * 
+     * Return the property constraint helper associated with the
+     * given object.
+     * @param object The given object.
      */
-    public PropertyHelper getHelper(Object object) 
+    public PropertyConstraintHelper getHelper(Object object) 
             throws IllegalActionException {
         
-        return _getHelper(object);
+        return (PropertyConstraintHelper) _getHelper(object);
     }
     
     /**
-     * 
-     * @return
+     * Return the property lattice for this constraint solver.
+     * @return The property lattice for this constraint solver.
      */
     public PropertyLattice getLattice() {
         return _lattice;
@@ -267,11 +287,8 @@ public class PropertyConstraintSolver extends Attribute implements PropertySolve
 
         compositeHelper._reinitialize();
         
-        //if (actorContraintTypeChanged) {
-        //    actorContraintTypeChanged = false;
         compositeHelper._changeDefaultConstraints(
                 _getConstraintType(actorConstraintType.stringValue()));
-        //}
         
         // FIXME: have to generate the connection every time
         // because the model structure can changed.
@@ -409,14 +426,23 @@ public class PropertyConstraintSolver extends Attribute implements PropertySolve
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /**
+     * 
+     */
     private void _cleanUp() {
         _helperStore.clear();
-        
+        PropertyLattice.cleanUp();
         PropertyConstraintHelper._parser = null;        
     }
 
 
 
+    /**
+     * 
+     * @param typeValue
+     * @return
+     * @throws IllegalActionException
+     */
     private ConstraintType _getConstraintType(String typeValue) throws IllegalActionException {
         boolean isEquals = typeValue.contains("==");
         boolean isSrc = 
@@ -442,15 +468,22 @@ public class PropertyConstraintSolver extends Attribute implements PropertySolve
         }            
     }
     
+    /**
+     * 
+     * @param object
+     * @return
+     * @throws IllegalActionException
+     */
     private PropertyHelper _getHelper(Object object) 
             throws IllegalActionException {
         if (_helperStore.containsKey(object)) {
             return (PropertyHelper) _helperStore.get(object);
         }
         
-        if (object instanceof IOPort) {
-            return _getHelper(((IOPort) object).getContainer());
+        if (object instanceof IOPort || object instanceof Attribute) {
+            return _getHelper(((NamedObj) object).getContainer());
         }
+        
         
         String packageName = getClass().getPackage().getName()
                                 + ".lattice." + _lattice.getName();
@@ -506,53 +539,42 @@ public class PropertyConstraintSolver extends Attribute implements PropertySolve
                     + object + ". Its helper class does not"
                     + " implement PropertyConstraintHelper.");
         }        
-        
-        //((PropertyConstraintHelper) helperObject).setSolver(this);
         _helperStore.put(object, helperObject);
                 
         return (PropertyHelper) helperObject;
     }
     
-
-    //private boolean actorContraintTypeChanged = false;
-    
+    /**
+     * The property lattice for this constraint solver.
+     */
     private PropertyLattice _lattice = null;
     
     /**
     *
     */
-   public static enum ConstraintType { 
-       SRC_LESS, 
-       SINK_LESS, 
-       SRC_EQUALS_MEET, 
-       SINK_EQUALS_MEET, 
-       EQUALS,
-       NONE 
-   };
+    public static enum ConstraintType { 
+        SRC_LESS, 
+        SINK_LESS, 
+        SRC_EQUALS_MEET, 
+        SINK_EQUALS_MEET, 
+        EQUALS,
+        NONE 
+    };
 
    
-   public static PropertyConstraintSolver findSolver(String latticeName) {
-       Iterator iterator = _solvers.iterator();
-       while (iterator.hasNext()) {
-           PropertyConstraintSolver solver = 
-               (PropertyConstraintSolver) iterator.next();
-           
-           if (solver.propertyLattice.getExpression().equals(latticeName)) {
-               return solver;
-           }
-       }
-       return null;
-   }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
    
-   ///////////////////////////////////////////////////////////////////
-   ////                         protected variables               ////
-   
-   /** A hash map that stores the code generator helpers associated
-    *  with the actors.
-    */
-   private HashMap _helperStore = new HashMap();
+    /** A hash map that stores the code generator helpers associated
+     *  with the actors.
+     */
+    private HashMap _helperStore = new HashMap(); 
 
-   private static List _solvers = new ArrayList(); 
+    private static List _solvers = new ArrayList();
+
+    public String getSolverIdentifier() {
+        return propertyLattice.getExpression();
+    }
 
 }
 

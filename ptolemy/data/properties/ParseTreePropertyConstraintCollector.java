@@ -30,6 +30,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Expression;
 import ptolemy.data.expr.ASTPtArrayConstructNode;
 import ptolemy.data.expr.ASTPtBitwiseNode;
 import ptolemy.data.expr.ASTPtFunctionApplicationNode;
@@ -48,9 +50,14 @@ import ptolemy.data.expr.ASTPtShiftNode;
 import ptolemy.data.expr.ASTPtSumNode;
 import ptolemy.data.expr.ASTPtUnaryNode;
 import ptolemy.data.expr.AbstractParseTreeVisitor;
+import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.properties.PropertyConstraintSolver.ConstraintType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreePropertyInference
@@ -70,6 +77,8 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    private NamedObj _container;
+
     /** Infer the property of the parse tree with the specified root node using
      *  the specified scope to resolve the values of variables.
      *  @param node The root of the parse tree.
@@ -78,11 +87,12 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public Set collectConstraints(ASTPtRootNode node, //ParserScope scope, 
+    public Set collectConstraints(ASTPtRootNode node, NamedObj container, 
         PropertyConstraintSolver solver)
             throws IllegalActionException {
 
         _constraints = new HashSet();
+        _container = container;
         //_scope = scope;
         _solver = solver;
         node.visit(this);
@@ -159,7 +169,13 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
             return;
         }
 
-        String name = node.getName();
+        NamedObj namedObj = VariableScope.getNamedObject(
+                (Entity) _container, node.getName());
+        
+        if (namedObj != null) {
+            _constraints.addAll(
+                    _solver.getHelper(node).setSameAs(namedObj, node));
+        }
 
         /*
         if (_scope != null) {
@@ -285,6 +301,8 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    
+    
     /**
      * Assert that the given boolean value, which describes the given
      * parse tree node is true.  If it is false, then throw a new
@@ -321,7 +339,7 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
 
             if (!constraintParent && !isNone){
                 // Set child <= parent.
-                _constraints.add(helper.setAtMost(node.jjtGetChild(i), node));
+                _constraints.add(helper.setAtLeast(node, node.jjtGetChild(i)));
             } else {
                 children.add(node.jjtGetChild(i));
             }
@@ -351,4 +369,25 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
     protected PropertyConstraintSolver _solver;
     
     //protected ParserScope _scope;
+    
+    
+    private static class VariableScope {
+        public static NamedObj getNamedObject(Entity container, String name) {
+
+            // Check the port names.
+            TypedIOPort port = (TypedIOPort) container.getPort(name);
+
+            if (port != null) {
+                return port;
+            }
+
+            Variable result = 
+                ModelScope.getScopedVariable(null, container, name);
+
+            if (result != null) {
+                return result;
+            }
+            return null;
+        }
+    }
 }

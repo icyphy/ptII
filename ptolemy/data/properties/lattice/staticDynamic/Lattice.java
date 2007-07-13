@@ -27,7 +27,7 @@
  */
 package ptolemy.data.properties.lattice.staticDynamic;
 
-import ptolemy.data.properties.BaseProperty;
+import ptolemy.data.properties.LatticeProperty;
 import ptolemy.data.properties.Property;
 import ptolemy.data.properties.PropertyLattice;
 import ptolemy.graph.DirectedAcyclicGraph;

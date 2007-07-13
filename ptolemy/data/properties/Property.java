@@ -46,7 +46,7 @@ public interface Property {
     /** Get the property lattice associated with this property.
      *  @return The associated property lattice.
      */
-    public PropertyLattice getPropertyLattice();
+ //   public PropertyLattice getPropertyLattice();
     
     /** Test if the argument property is compatible with this property.
      *  Compatible is defined as follows: If this property is a constant, the

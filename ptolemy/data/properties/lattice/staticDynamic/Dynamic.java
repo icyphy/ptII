@@ -28,7 +28,7 @@
  */
 package ptolemy.data.properties.lattice.staticDynamic;
 
-import ptolemy.data.properties.BaseProperty;
+import ptolemy.data.properties.LatticeProperty;
 import ptolemy.data.properties.PropertyLattice;
 
 
@@ -44,7 +44,7 @@ import ptolemy.data.properties.PropertyLattice;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Dynamic extends BaseProperty {
+public class Dynamic extends LatticeProperty {
         
     /**
      * Construct a Dynamic property object

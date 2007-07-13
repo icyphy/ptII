@@ -85,7 +85,7 @@ public abstract class PropertyHelper {
     protected Object _component;
     
     /** The associated property lattice. */
-    protected PropertyConstraintSolver _solver;
+    protected PropertySolver _solver;
     
     /** 
      * The mapping between property-able objects and their
@@ -110,19 +110,16 @@ public abstract class PropertyHelper {
     protected abstract List _getPropertyables();
 
     /**
-     * Create a constraint that set the port1 property to be equal
-     * to the port2 property.
-     * @param port1 The first given port.
-     * @param port2 The second given port.
+     * Create a constraint that set the given object to be equal
+     * to the given property. Mark the property of the given object
+     * to be non-settable. 
+     * @param object The given object.
+     * @param property The given property.
      */
     public void setEquals(Object object, Property property) {
-        
         _declaredProperties.put(object, property);
-        _resolvedProperties.put(object, property);
-        
-        _nonSettables.add(object);
-        
-        //Property oldProperty = (Property) _resolvedProperties.get(port);
+        _resolvedProperties.put(object, property);        
+        _nonSettables.add(object);        
     }
 
     /**

@@ -372,16 +372,10 @@ public class PropertyLattice {
         return _lattice.compare(property1, property2);
     }
 
-    
-    public static void releasePropertyLattice(PropertyLattice lattice) {
-        int count = _referenceCount.get(lattice);
-
-        if (--count <= 0) {
-            _lattices.remove(lattice.getName());
-        } else {
-            _referenceCount.put(lattice, count);
-        }
+    public static void cleanUp() {
+        _lattices.clear();
     }
+    
     
     /**
      * Return the property lattice described by the given lattice
@@ -408,11 +402,6 @@ public class PropertyLattice {
         }
         
         PropertyLattice lattice = _lattices.get(latticeName);
-        
-        if (!_referenceCount.containsKey(lattice)) {
-            _referenceCount.put(lattice, 0);
-        }
-        _referenceCount.put(lattice, _referenceCount.get(lattice) + 1);
         
         return lattice;
     }

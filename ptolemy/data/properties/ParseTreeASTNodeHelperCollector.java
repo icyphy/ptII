@@ -147,6 +147,9 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
      *  occurs, or an identifier is not bound in the current scope.
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
+        if (node.jjtGetParent() == null) {
+            _helpers.add(_solver.getHelper(node));
+        }
     }
 
     /** Set the property of the given node to be boolean.

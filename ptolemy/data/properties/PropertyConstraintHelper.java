@@ -32,13 +32,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.properties.PropertyConstraintSolver.ConstraintType;
@@ -128,7 +131,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
             ASTPtRootNode root = (ASTPtRootNode) parseTrees.next();
 
             constraints.addAll(
-                    collector.collectConstraints(root, _solver));
+                    collector.collectConstraints(root, (NamedObj) _component, getSolver()));
         }
         
         
@@ -247,28 +250,49 @@ public class PropertyConstraintHelper extends PropertyHelper {
         if (object instanceof InequalityTerm) {
             return (InequalityTerm) object;
         }
-        
+
         if (object instanceof NamedObj) {
             NamedObj container = ((NamedObj) object).getContainer();
-            
+    
+            // First, make sure that this is the right helper.
             if (container != _component) {
-                return _solver.getHelper(container).getPropertyTerm(object);            
+                return getSolver().getHelper(container).getPropertyTerm(object);            
             }
-        }
-
-        // The property term for an Attribute is its root ASTNode.
-        if (object instanceof Attribute) {
-            ASTPtRootNode node = getParseTree((Attribute) object);
-            return _solver.getHelper(node).getPropertyTerm(node);
-        }
+            
+            // Use the property term for the ParameterPort, if it is connected.
+            if (object instanceof PortParameter) {
+                PortParameter parameter = (PortParameter) object;
+                if (parameter.getPort().numLinks() > 0) {
+                    return getPropertyTerm(parameter.getPort());
+                }
+            }
+    
+            // The property term for an Attribute is its root ASTNode.
+            if (object instanceof Attribute) {
+                ASTPtRootNode node = getParseTree((Attribute) object);
+                return getSolver().getHelper(node).getPropertyTerm(node);
+            }
+        }        
 
         if (!_propertyTerms.containsKey(object)) {
             _propertyTerms.put(object, new PropertyTerm(object));                        
         }
-                
+
         return (InequalityTerm) _propertyTerms.get(object); 
     }
 
+    
+    /**
+     * 
+     * @param node
+     * @return
+     */
+    public Attribute getAttribute(ASTPtRootNode node) {
+        ASTPtRootNode root = node;
+        while (root.jjtGetParent() != null);
+        return _attributes.get(root);
+    }
+    
     /**
      * 
      * @param attribute
@@ -288,15 +312,20 @@ public class PropertyConstraintHelper extends PropertyHelper {
             ASTPtRootNode parseTree = 
                 _parser.generateParseTree(expression);
             
-            _parseTrees.put(attribute, parseTree);
-                
+            _parseTrees.put(attribute, parseTree); 
+            _attributes.put(parseTree, attribute); 
         }
         return _parseTrees.get(attribute);
     }
     
     
+    
+    public PropertyConstraintSolver getSolver() {
+        return (PropertyConstraintSolver) _solver;
+    }
+    
     public Inequality setAtLeast(Object object1, Object object2) throws IllegalActionException {
-        return setAtLeast(object1, object2, true);
+        return _setAtLeast(getPropertyTerm(object1), getPropertyTerm(object2), true);        
     }
         
     /**
@@ -308,19 +337,20 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @throws IllegalActionException 
      */
     public Inequality setAtLeast(Object object1, Object object2, boolean isPermanent) throws IllegalActionException {
-        return _setAtLeast(getPropertyTerm(object1),
-                getPropertyTerm(object2),
-                isPermanent);
+        return _setAtLeast(getPropertyTerm(object1), getPropertyTerm(object2), isPermanent);
     }
 
-    public Inequality setAtMost(Object object1, Object object2, boolean isPermanent) throws IllegalActionException {
-        return setAtLeast(object2, object1, isPermanent);
+    /**
+     * Create a constraint that set the property of the given port 
+     * to be same as the given function term.
+     * @param object The given port.
+     * @param term The given function term.
+     * @throws IllegalActionException 
+     */
+    public List setSameAs(Object object1, Object object2) throws IllegalActionException {
+        return setSameAs(object1, object2, true);
     }
-    
-    public Inequality setAtMost(Object object1, Object object2) throws IllegalActionException {
-        return setAtMost(object1, object2, true);
-    }
-
+     
     /**
      * Create a constraint that set the property of the given port 
      * to be same as the given function term.
@@ -387,7 +417,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
         ////                       public inner methods            ////
         private Object _object;
         
-        private PropertyTerm (Object object) {
+        protected PropertyTerm (Object object) {
             _object = object;
         }
 
@@ -595,7 +625,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
                     } 
                 }
             } else {
-                InequalityTerm term2 = new MeetFunction(_solver, objectList);
+                InequalityTerm term2 = new MeetFunction(getSolver(), objectList);
                 
                 if (objectList.size() > 0) {
                     //setSameAs(port, new MeetFunction(_lattice, portList2));
@@ -671,12 +701,13 @@ public class PropertyConstraintHelper extends PropertyHelper {
 
             // FIXME: We should do some sort of filtering here.            
             if (attribute instanceof Settable) {
-                
-                try {
-                    result.add(getParseTree(attribute));
-                    
-                } catch (IllegalActionException ex) {
-                    // This means the expression is not parse-able.
+                if (((Settable)attribute).getVisibility() == Settable.FULL) {
+                    try {
+                        result.add(getParseTree(attribute));
+                        
+                    } catch (IllegalActionException ex) {
+                        // This means the expression is not parse-able.
+                    }
                 }
             }
         }
@@ -702,29 +733,37 @@ public class PropertyConstraintHelper extends PropertyHelper {
                 _resolvedProperties.remove(propertyable);
                 //_declaredProperties.put(propertyable, _solver.getLattice().getInitialProperty());
             }
-        }
-        
-        Iterator astHelpers = _getASTNodeHelpers().iterator();
-        
-        while (astHelpers.hasNext()) {
-            PropertyConstraintASTNodeHelper helper = 
-                (PropertyConstraintASTNodeHelper) astHelpers.next();
-            helper._reinitialize();
-        }
+        }        
     }
     
     
-    private List _getASTNodeHelpers() throws IllegalActionException {
+    private List _getASTNodeHelpers() {
         List astHelpers = new ArrayList();
         ParseTreeASTNodeHelperCollector collector = 
             new ParseTreeASTNodeHelperCollector();
         
-        Iterator nodes = _parseTrees.values().iterator();
-        while (nodes.hasNext()) {
-            ASTPtRootNode node = (ASTPtRootNode) nodes.next();
-            
-            astHelpers.addAll(collector.collectHelpers(
-                    node, _solver));            
+        Iterator attributes = 
+            ((Entity) _component).attributeList(Attribute.class).iterator();
+        
+        while (attributes.hasNext()) {
+            Attribute attribute = (Attribute) attributes.next();
+
+            // FIXME: We should do some sort of filtering here.            
+            if (attribute instanceof Settable) {
+
+                
+                ASTPtRootNode node;
+                try {
+                    node = getParseTree(attribute);
+                    Set helpers = collector.collectHelpers(node, getSolver());
+                    
+                    astHelpers.addAll(helpers);
+
+                } catch (IllegalActionException e) {
+                    // This means the expression is not parse-able.
+                    // FIXME: So, we will discard it for now.
+                }
+            }
         }
         return astHelpers;
     }
@@ -752,7 +791,9 @@ public class PropertyConstraintHelper extends PropertyHelper {
     public ConstraintType interconnectConstraintType;
     
     
-    private HashMap<Attribute, ASTPtRootNode> _parseTrees = new HashMap<Attribute, ASTPtRootNode>();
+    private Map<Attribute, ASTPtRootNode> _parseTrees = new HashMap<Attribute, ASTPtRootNode>();
+
+    private Map<ASTPtRootNode, Attribute> _attributes = new HashMap<ASTPtRootNode, Attribute>();
 
     static PtParser _parser;
 

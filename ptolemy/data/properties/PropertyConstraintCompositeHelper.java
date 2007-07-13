@@ -86,7 +86,7 @@ public class PropertyConstraintCompositeHelper
             NamedObj actor = (NamedObj) iterator.next();
             
             PropertyHelper helper = 
-                _solver.getHelper(actor);
+                getSolver().getHelper(actor);
             
             helper.updateProperty(isTraining);
         }
@@ -107,7 +107,7 @@ public class PropertyConstraintCompositeHelper
                 (NamedObj) iterator.next();
             
             PropertyConstraintHelper helper = 
-                _solver.getHelper(actor);
+                getSolver().getHelper(actor);
             
             helper._changeDefaultConstraints(actorConstraintType);
         }        
@@ -128,7 +128,7 @@ public class PropertyConstraintCompositeHelper
                 (NamedObj) iterator.next();
             
             PropertyHelper helper = 
-                _solver.getHelper(actor);
+                getSolver().getHelper(actor);
             
             helper._reinitialize();
         }                
@@ -158,7 +158,7 @@ public class PropertyConstraintCompositeHelper
                 (NamedObj) iterator.next();
             
             PropertyConstraintHelper helper = 
-                _solver.getHelper(actor);
+                getSolver().getHelper(actor);
             
             helper._setConnectionConstraintType(
                     constraintType, 
@@ -188,7 +188,7 @@ public class PropertyConstraintCompositeHelper
                 (NamedObj) iterator.next();
             
             PropertyConstraintHelper helper = 
-                _solver.getHelper((NamedObj) actor);
+                getSolver().getHelper((NamedObj) actor);
 
             // Add constraints from helpers of contained actors.
             constraints.addAll(helper.constraintList());

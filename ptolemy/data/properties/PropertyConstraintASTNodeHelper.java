@@ -31,11 +31,14 @@ package ptolemy.data.properties;
 import java.util.ArrayList;
 import java.util.List;
 
+import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.Variable;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -107,7 +110,7 @@ public class PropertyConstraintASTNodeHelper
             return (Property) _resolvedProperties.get(astNode);
         } else {
             try {
-                return _solver.getHelper(
+                return getSolver().getHelper(
                         (ASTPtRootNode) astNode).getProperty(astNode);
             } catch (IllegalActionException e) {
 
@@ -123,15 +126,20 @@ public class PropertyConstraintASTNodeHelper
      * @return The property term of the given port.
      * @throws IllegalActionException 
      */
-    public InequalityTerm getPropertyTerm(Object astNode) throws IllegalActionException {
-        if (astNode == _component) {
-            return super.getPropertyTerm(astNode);
+    public InequalityTerm getPropertyTerm(Object object) throws IllegalActionException {
+        
+        if (object instanceof InequalityTerm) {
+            return (InequalityTerm) object;
+        }
+        
+        if (object == _component) {
+            
+            return super.getPropertyTerm(object);
         } else {
-            return _solver.getHelper(
-                    (ASTPtRootNode) astNode).getPropertyTerm(astNode);
+            return getSolver().getHelper(object).getPropertyTerm(object);
         }
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

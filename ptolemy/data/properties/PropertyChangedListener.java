@@ -1,6 +1,6 @@
-/** A base class representing a property.
+/* A listener for PropertyChangedListener from a Property.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,29 +24,28 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
-
  */
-package ptolemy.data.properties.lattice.staticDynamic;
-
-import ptolemy.data.properties.LatticeProperty;
-import ptolemy.data.properties.PropertyLattice;
-
+package ptolemy.data.properties;
 
 //////////////////////////////////////////////////////////////////////////
-//// Property
+//// PropertyChangedListener
 
 /**
- A base class representing a property.
+ A PropertyChangedListener listens for events that are issued during the
+ ...
 
- @author Thomas Mandl, Man-Kit Leung, Edward A. Lee
+ @author Thomas Mandl, Man-Kit Leung
  @version $Id$
- @since Ptolemy II 0.4
- @Pt.ProposedRating Red (neuendor)
- @Pt.AcceptedRating Red (cxh)
+ @since Ptolemy II 5.2
+ @Pt.ProposedRating Red (barney)
+ @Pt.AcceptedRating
+ @see IOPort
  */
-public class Unknown extends LatticeProperty {
-        
-    Unknown(PropertyLattice lattice) {
-        super(lattice);
-    }
+public interface PropertyChangedListener {
+    /** Report an that a token was sent.  This method will be called
+     *  when a token has been sent from one IOPort to another.
+     *  @param event The event to report.
+     */
+    public void propertyChangedEvent(PropertyChangedEvent event);
+
 }
