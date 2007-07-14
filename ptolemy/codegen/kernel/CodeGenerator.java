@@ -479,7 +479,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
 
             for (int i = 0; i < args.length; i++) {
-                if (_parseArg(args[i])) {
+                if (parseArg(args[i])) {
                     continue;
                 }
                 if (args[i].trim().startsWith("-")) {
@@ -1141,7 +1141,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return True if the argument is understood, false otherwise.
      *  @exception Exception If something goes wrong.
      */
-    protected static boolean _parseArg(String arg) throws Exception {
+    public static boolean parseArg(String arg) throws Exception {
         if (arg.equals("-help")) {
             System.out.println(_usage());
 
