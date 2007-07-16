@@ -28,11 +28,11 @@
 package ptolemy.data.properties.lattice.staticDynamic.actor.lib;
 
 import ptolemy.data.ScalarToken;
-import ptolemy.data.properties.PortValueSolver;
-import ptolemy.data.properties.PropertyConstraintHelper;
-import ptolemy.data.properties.PropertyConstraintSolver;
-import ptolemy.data.properties.TokenProperty;
+import ptolemy.data.properties.PropertySolver;
+import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.data.properties.lattice.staticDynamic.Lattice;
+import ptolemy.data.properties.token.PortValueSolver;
+import ptolemy.data.properties.token.PropertyToken;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
@@ -59,12 +59,11 @@ public class Ramp extends PropertyConstraintHelper {
      * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
-    public Ramp(PropertyConstraintSolver solver, 
+    public Ramp(PropertySolver solver, 
             ptolemy.actor.lib.Ramp actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
-        Lattice lattice = (Lattice) solver.getLattice();        
 
         setAtLeast(actor.output, new FunctionTerm());
     }
@@ -86,8 +85,8 @@ public class Ramp extends PropertyConstraintHelper {
             ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) _component;
             Lattice lattice = (Lattice) getSolver().getLattice();        
 
-            TokenProperty property = 
-                (TokenProperty) PortValueSolver.findSolver("staticValueToken")
+            PropertyToken property = 
+                (PropertyToken) PortValueSolver.findSolver("staticValueToken")
                 .getHelper(_component).getProperty(actor.step);
             
             if (property != null && 

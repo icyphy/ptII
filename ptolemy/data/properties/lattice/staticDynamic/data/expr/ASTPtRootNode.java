@@ -27,8 +27,8 @@
  */
 package ptolemy.data.properties.lattice.staticDynamic.data.expr;
 
-import ptolemy.data.properties.PropertyConstraintASTNodeHelper;
-import ptolemy.data.properties.PropertyConstraintSolver;
+import ptolemy.data.properties.PropertySolver;
+import ptolemy.data.properties.lattice.PropertyConstraintASTNodeHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -49,7 +49,7 @@ public class ASTPtRootNode extends PropertyConstraintASTNodeHelper {
      * @param actor the associated actor
      * @throws IllegalActionException 
      */
-    public ASTPtRootNode(PropertyConstraintSolver solver, 
+    public ASTPtRootNode(PropertySolver solver, 
             ptolemy.data.expr.ASTPtRootNode node) 
     throws IllegalActionException {
         

@@ -27,8 +27,8 @@
  */
 package ptolemy.data.properties.lattice.staticDynamic.actor;
 
-import ptolemy.data.properties.PropertyConstraintHelper;
-import ptolemy.data.properties.PropertyConstraintSolver;
+import ptolemy.data.properties.PropertySolver;
+import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,10 +54,9 @@ public class AtomicActor extends PropertyConstraintHelper {
      * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
-    public AtomicActor(PropertyConstraintSolver solver, 
+    public AtomicActor(PropertySolver solver, 
             ptolemy.actor.AtomicActor actor)
             throws IllegalActionException {
-        
         super(solver, actor);
     }
 }

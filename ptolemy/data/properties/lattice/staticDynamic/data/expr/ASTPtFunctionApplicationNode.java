@@ -31,8 +31,8 @@ package ptolemy.data.properties.lattice.staticDynamic.data.expr;
 import java.util.Arrays;
 import java.util.List;
 
-import ptolemy.data.properties.PropertyConstraintASTNodeHelper;
-import ptolemy.data.properties.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.PropertyConstraintASTNodeHelper;
+import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.staticDynamic.Lattice;
 import ptolemy.kernel.util.IllegalActionException;
 

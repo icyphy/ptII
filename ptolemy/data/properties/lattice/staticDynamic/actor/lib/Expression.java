@@ -27,9 +27,8 @@
  */
 package ptolemy.data.properties.lattice.staticDynamic.actor.lib;
 
-import ptolemy.data.properties.PropertyConstraintHelper;
-import ptolemy.data.properties.PropertyConstraintSolver;
-import ptolemy.data.properties.lattice.staticDynamic.Lattice;
+import ptolemy.data.properties.PropertySolver;
+import ptolemy.data.properties.lattice.PropertyConstraintHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,12 +53,11 @@ public class Expression extends PropertyConstraintHelper {
      * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
-    public Expression(PropertyConstraintSolver solver, 
+    public Expression(PropertySolver solver, 
             ptolemy.actor.lib.Expression actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
-        Lattice lattice = (Lattice) solver.getLattice();        
 
         setAtLeast(actor.output, actor.expression);
     }

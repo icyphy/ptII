@@ -30,19 +30,11 @@ package ptolemy.data.properties.lattice.staticDynamic.data.expr;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Constants;
-import ptolemy.data.expr.ModelScope;
-import ptolemy.data.expr.ParseTreeEvaluator;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.properties.PropertyConstraintASTNodeHelper;
-import ptolemy.data.properties.PropertyConstraintSolver;
+import ptolemy.data.properties.lattice.PropertyConstraintASTNodeHelper;
+import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.staticDynamic.Lattice;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -69,10 +61,8 @@ public class ASTPtLeafNode extends PropertyConstraintASTNodeHelper {
     public ASTPtLeafNode(PropertyConstraintSolver solver, 
         ptolemy.data.expr.ASTPtLeafNode node) 
             throws IllegalActionException {
-        super(solver, node, false);
 
-        //ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
-        //evaluator.evaluateParseTree(node, new AttributeScope());        
+        super(solver, node, false);
 
         Lattice lattice = (Lattice) solver.getLattice();
 
@@ -97,76 +87,5 @@ public class ASTPtLeafNode extends PropertyConstraintASTNodeHelper {
     private static List _variables = Arrays.asList( 
             new String[]{ "time", "iteration"
     });        
-    
-    
-    private class AttributeScope extends ModelScope {
-        /** Look up and return the attribute with the specified name in the
-         *  scope. Return null if such an attribute does not exist.
-         *  @return The attribute with the specified name in the scope.
-         */
-        public Token get(String name) throws IllegalActionException {
-
-            Attribute attribute = 
-                getAttribute((ptolemy.data.expr.ASTPtRootNode) _component);
-            
-            Variable result = getScopedVariable(null, 
-                    attribute,
-                    name);
-
-
-            if (result != null) {
-                return result.getToken();
-            }
-
-            return null;
-        }
-
-        /** Look up and return the type of the attribute with the
-         *  specified name in the scope. Return null if such an
-         *  attribute does not exist.
-         *  @return The attribute with the specified name in the scope.
-         */
-        public Type getType(String name) throws IllegalActionException {
-            Variable result = getScopedVariable(null, 
-                    getAttribute((ptolemy.data.expr.ASTPtRootNode) _component),
-                    name);
-
-            if (result != null) {
-                return (Type) result.getTypeTerm().getValue();
-            }
-
-            return null;
-        }
-
-        /** Look up and return the type term for the specified name
-         *  in the scope. Return null if the name is not defined in this
-         *  scope, or is a constant type.
-         *  @return The InequalityTerm associated with the given name in
-         *  the scope.
-         *  @exception IllegalActionException If a value in the scope
-         *  exists with the given name, but cannot be evaluated.
-         */
-        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
-            Variable result = getScopedVariable(null, 
-                    getAttribute((ptolemy.data.expr.ASTPtRootNode) _component),
-                    name);
-
-            if (result != null) {
-                return result.getTypeTerm();
-            }
-
-            return null;
-        }
-
-        /** Return the list of identifiers within the scope.
-         *  @return The list of identifiers within the scope.
-         */
-        public Set identifierSet() {
-            return getAllScopedVariableNames(null, 
-                    getAttribute((ptolemy.data.expr.ASTPtRootNode) _component));
-        }
-    }
-
     
 }

@@ -27,9 +27,8 @@
  */
 package ptolemy.data.properties.lattice.staticDynamic.actor.lib;
 
-import ptolemy.data.properties.PropertyConstraintHelper;
-import ptolemy.data.properties.PropertyConstraintSolver;
-import ptolemy.data.properties.PropertySolver;
+import ptolemy.data.properties.lattice.PropertyConstraintHelper;
+import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.data.properties.lattice.staticDynamic.Lattice;
 import ptolemy.kernel.util.IllegalActionException;
 
