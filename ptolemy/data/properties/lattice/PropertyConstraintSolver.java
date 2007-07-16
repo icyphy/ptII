@@ -1,25 +1,22 @@
 /**
  * 
  */
-package ptolemy.data.properties;
+package ptolemy.data.properties.lattice;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypeConflictException;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.properties.gui.PropertyConstraintSolverGUIFactory;
+import ptolemy.data.properties.PropertySolver;
+import ptolemy.data.properties.gui.PropertySolverGUIFactory;
 import ptolemy.data.type.BaseType;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
@@ -90,10 +87,9 @@ public class PropertyConstraintSolver extends PropertySolver {
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\nResolve Property.</text></svg>");
 
-        new PropertyConstraintSolverGUIFactory(
+        new PropertySolverGUIFactory(
                 this, "_propertyConstraintSolverGUIFactory");
         
-        _solvers.add(this);
     }
 
     
@@ -174,11 +170,6 @@ public class PropertyConstraintSolver extends PropertySolver {
 
     public StringParameter expressionASTNodeConstraintType;
     
-    public Parameter trainingMode;
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    
     /** React to a change in an attribute. Clear the previous mappings
      *  for the helpers, so new helpers will be created for the new
      *  lattice.
@@ -197,34 +188,11 @@ public class PropertyConstraintSolver extends PropertySolver {
 
                 _lattice = PropertyLattice.getPropertyLattice(
                         propertyLattice.stringValue());                
-
+                 
                 _helperStore.clear();
             }
         }
     }
-
-    /**
-     * Find a constraint solver that is associated with the given 
-     * property lattice name. There can be more than one solvers with
-     * the same lattice. This method returns whichever it finds first.
-     * Return null if no matched solver is found.
-     * @param latticeName The given name of the property lattice. 
-     * @return The property constraint solver associated with the
-     *  given lattice name. 
-     */
-    public static PropertyConstraintSolver findSolver(String latticeName) {
-        Iterator iterator = _solvers.iterator();
-        while (iterator.hasNext()) {
-            PropertyConstraintSolver solver = 
-                (PropertyConstraintSolver) iterator.next();
-            
-            if (solver.propertyLattice.getExpression().equals(latticeName)) {
-                return solver;
-            }
-        }
-        return null;
-    }
-    
     
     /**
      * Returns the helper that contains property information for
@@ -269,6 +237,14 @@ public class PropertyConstraintSolver extends PropertySolver {
     public PropertyLattice getLattice() {
         return _lattice;
     }
+
+    public String getUseCaseName() {
+        return _lattice.getName();
+    }
+    
+    public String getExtendedUseCaseName() {
+        return "lattice::" + getUseCaseName();
+    }
     
     /**
      * Resolve the property values for the given top-level entity.
@@ -285,7 +261,7 @@ public class PropertyConstraintSolver extends PropertySolver {
         PropertyConstraintCompositeHelper compositeHelper = 
             (PropertyConstraintCompositeHelper) getHelper(topLevel);
 
-        compositeHelper._reinitialize();
+        compositeHelper.reinitialize();
         
         compositeHelper._changeDefaultConstraints(
                 _getConstraintType(actorConstraintType.stringValue()));
@@ -431,7 +407,7 @@ public class PropertyConstraintSolver extends PropertySolver {
      */
     private void _cleanUp() {
         _helperStore.clear();
-        PropertyLattice.cleanUp();
+        PropertyLattice.cleanUp();        
         PropertyConstraintHelper._parser = null;        
     }
 
@@ -469,82 +445,6 @@ public class PropertyConstraintSolver extends PropertySolver {
     }
     
     /**
-     * 
-     * @param object
-     * @return
-     * @throws IllegalActionException
-     */
-    private PropertyHelper _getHelper(Object object) 
-            throws IllegalActionException {
-        if (_helperStore.containsKey(object)) {
-            return (PropertyHelper) _helperStore.get(object);
-        }
-        
-        if (object instanceof IOPort || object instanceof Attribute) {
-            return _getHelper(((NamedObj) object).getContainer());
-        }
-        
-        
-        String packageName = getClass().getPackage().getName()
-                                + ".lattice." + _lattice.getName();
-
-        Class componentClass = object.getClass();
-
-        Class helperClass = null;
-        while (helperClass == null) {
-            try {
-                
-                // FIXME: Is this the right error message?
-                if (!componentClass.getName().contains("ptolemy")) {
-                    throw new IllegalActionException("There is no property helper "
-                            + " for " + object.getClass());
-                }
-                
-                helperClass = Class.forName(componentClass.getName()
-                        .replaceFirst("ptolemy", packageName));
-                
-            } catch (ClassNotFoundException e) {
-                // If helper class cannot be found, search the helper class
-                // for parent class instead.
-                componentClass = componentClass.getSuperclass();
-            }
-        }
-        
-        Constructor constructor = null;
-        Method initializeMethod = null;
-        
-        try {
-            constructor = helperClass.getConstructor(
-                    new Class[] { PropertyConstraintSolver.class, componentClass });
-            
-        } catch (NoSuchMethodException e) {
-            throw new IllegalActionException(null, e,
-                    "Cannot find constructor method in " 
-                    + helperClass.getName());
-        }
-
-        Object helperObject = null;
-
-        try {
-            helperObject = constructor.newInstance(new Object[] { this, object });
-            
-        } catch (Exception ex) {
-            throw new IllegalActionException(null, ex,
-                    "Failed to create the helper class for property constraints.");
-        }
-
-        if (!(helperObject instanceof PropertyConstraintHelper)) {
-            throw new IllegalActionException(
-                    "Cannot resolve property for this component: "
-                    + object + ". Its helper class does not"
-                    + " implement PropertyConstraintHelper.");
-        }        
-        _helperStore.put(object, helperObject);
-                
-        return (PropertyHelper) helperObject;
-    }
-    
-    /**
      * The property lattice for this constraint solver.
      */
     private PropertyLattice _lattice = null;
@@ -559,22 +459,6 @@ public class PropertyConstraintSolver extends PropertySolver {
         SINK_EQUALS_MEET, 
         EQUALS,
         NONE 
-    };
-
-   
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-   
-    /** A hash map that stores the code generator helpers associated
-     *  with the actors.
-     */
-    private HashMap _helperStore = new HashMap(); 
-
-    private static List _solvers = new ArrayList();
-
-    public String getSolverIdentifier() {
-        return propertyLattice.getExpression();
-    }
-
+    }; 
 }
 

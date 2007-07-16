@@ -1,20 +1,19 @@
-package ptolemy.data.properties;
+package ptolemy.data.properties.token;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.properties.gui.PortValueSolverGUIFactory;
+import ptolemy.data.properties.PropertyHelper;
+import ptolemy.data.properties.PropertySolver;
+import ptolemy.data.properties.gui.PropertySolverGUIFactory;
 import ptolemy.data.properties.token.firstValueToken.FirstTokenSentListener;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -33,7 +32,6 @@ public class PortValueSolver extends PropertySolver {
 
         portValue = new StringParameter(this, "portValue");
         portValue.setExpression("staticValueToken");
-        _portValue = portValue.getExpression();
 
         listeningMethod = new StringParameter(this, "listeningMethod");
         listeningMethod.setExpression("NONE");
@@ -45,7 +43,7 @@ public class PortValueSolver extends PropertySolver {
                 + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
                 + "Double click to\nResolve Property.</text></svg>");
 
-        new PortValueSolverGUIFactory(
+        new PropertySolverGUIFactory(
                 this, "_portValueSolverGUIFactory");
 
         trainingMode = new Parameter(this, "trainingMode");
@@ -53,8 +51,6 @@ public class PortValueSolver extends PropertySolver {
         trainingMode.setExpression("true");
         
         _addChoices();
-
-        _solvers.add(this);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -67,15 +63,14 @@ public class PortValueSolver extends PropertySolver {
      * @param component The given component
      * @return The associated property constraint helper.
      */    
-    public PropertyHelper getHelper(NamedObj component)
-            throws IllegalActionException {
-
-        return (PropertyHelper) _getHelper(component);
-    }
-
     public PropertyHelper getHelper(Object object) throws IllegalActionException {
-        return (PortValueHelper) _getHelper(object);
+        return _getHelper(object);
     }
+
+    public String getUseCaseName() {
+        return portValue.getExpression();        
+    }
+    
 
     public void resolveProperties(CompositeEntity topLevel) throws KernelException {
         
@@ -93,7 +88,7 @@ public class PortValueSolver extends PropertySolver {
             Actor actor = (Actor)actorIterator.next();
 
             if (_actorPortValueChanged) {
-                _getHelper(actor)._reinitialize();
+                _getHelper(actor).reinitialize();
             } 
             
             if (_listeningMethod.contains("Output")) {
@@ -155,34 +150,16 @@ public class PortValueSolver extends PropertySolver {
             }
         }
 
+        boolean isTraining = 
+            ((BooleanToken) trainingMode.getToken()).booleanValue();
+
         actorIterator = _compositeActor.deepEntityList().iterator();
         while (actorIterator.hasNext()) {
             Actor actor = (Actor)actorIterator.next();
-            getHelper(actor).updateProperty(true);
+            getHelper(actor).updateProperty(isTraining);
         }    
     }
 
-    /**
-     * 
-     * @param solverName
-     * @return
-     * @throws IllegalActionException
-     */
-    public static PortValueSolver findSolver(String solverName)
-            throws IllegalActionException {
-
-        Iterator iterator = _solvers.iterator();
-        while (iterator.hasNext()) {
-            PortValueSolver solver = 
-                (PortValueSolver) iterator.next();
-            
-            if (solver.portValue.getExpression().equals(solverName)) {
-                return solver;
-            }
-        }
-        throw new IllegalActionException(
-                "Cannot find the \"" + solverName + "\" solver.");
-    }
 
     /** React to a change in an attribute. Clear the previous mappings
      *  for the helpers, so new helpers will be created for the new
@@ -197,8 +174,7 @@ public class PortValueSolver extends PropertySolver {
         super.attributeChanged(attribute);
         
         if (attribute == portValue) {
-            if (!_portValue.equals(portValue.getExpression())) {
-                _portValue = portValue.getExpression();
+            if (!getUseCaseName().equals(portValue.getExpression())) {
                 _actorPortValueChanged = true;            
             }
         } else if (attribute == listeningMethod) {
@@ -209,11 +185,12 @@ public class PortValueSolver extends PropertySolver {
         }
     }
 
-    
+    public String getExtendedUseCaseName() {
+        return "token::" + getUseCaseName();
+    }
+        
     public StringParameter portValue;
     public StringParameter listeningMethod;
-    public Parameter trainingMode;
-    
     private void _addChoices() {
         File file = null;
         
@@ -240,86 +217,12 @@ public class PortValueSolver extends PropertySolver {
         listeningMethod.addChoice("Output Ports");
     }
 
-    private PropertyHelper _getHelper(Object object) 
-        throws IllegalActionException {
-    
-        if (_helperStore.containsKey(object)) {
-            return (PropertyHelper) _helperStore.get(object);
-        }
-        
-        String packageName = getClass().getPackage().getName()
-                                + ".token." + _portValue;
-        
-        Class componentClass = object.getClass();
-        
-        Class helperClass = null;
-        while (helperClass == null) {
-            try {
-                
-                // FIXME: Is this the right error message?
-                if (!componentClass.getName().contains("ptolemy")) {
-                    throw new IllegalActionException("There is no property helper "
-                            + " for " + object.getClass());
-                }
-                
-                helperClass = Class.forName(componentClass.getName()
-                        .replaceFirst("ptolemy", packageName));
-                
-            } catch (ClassNotFoundException e) {
-                // If helper class cannot be found, search the helper class
-                // for parent class instead.
-                componentClass = componentClass.getSuperclass();
-            }
-        }
-        
-        Constructor constructor = null;
-        try {
-            constructor = helperClass.getConstructor(
-                    new Class[] { PortValueSolver.class, componentClass });
-            
-        } catch (NoSuchMethodException e) {
-            throw new IllegalActionException(null, e,
-                    "Cannot find constructor method in " 
-                    + helperClass.getName());
-        }
-        
-        Object helperObject = null;
-        
-        try {
-            helperObject = constructor.newInstance(new Object[] { this, object });
-            
-        } catch (Exception ex) {
-            throw new IllegalActionException(null, ex,
-                    "Failed to create the helper class for property constraints.");
-        }
-        
-        if (!(helperObject instanceof PortValueHelper)) {
-            throw new IllegalActionException(
-                    "Cannot resolve property for this component: "
-                    + object + ". Its helper class does not"
-                    + " implement PortValueHelper.");
-        }        
-        
-        _helperStore.put(object, helperObject);
-                
-        return (PropertyHelper) helperObject;
-    }
-    
-    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
     
-    /** A hash map that stores the helpers associated
-     *  with the actors.
-     */    
-    private HashMap _helperStore = new HashMap();    
     private FirstTokenSentListener listener = new FirstTokenSentListener(this);
-    private static List _solvers = new ArrayList(); 
+       
     private boolean _actorPortValueChanged = false;
-    private String _portValue = "";
-    private String _listeningMethod = "";
-
-    public String getSolverIdentifier() {
-        return portValue.getExpression();
-    }
+    
+    private String _listeningMethod = "";    
 }

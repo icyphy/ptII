@@ -26,13 +26,12 @@
 
 
  */
-package ptolemy.data.properties;
+package ptolemy.data.properties.lattice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +43,12 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
-import ptolemy.data.properties.PropertyConstraintSolver.ConstraintType;
+import ptolemy.data.properties.ParseTreeASTNodeHelperCollector;
+import ptolemy.data.properties.ParseTreeNodeCollector;
+import ptolemy.data.properties.Property;
+import ptolemy.data.properties.PropertyHelper;
+import ptolemy.data.properties.PropertySolver;
+import ptolemy.data.properties.lattice.PropertyConstraintSolver.ConstraintType;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
@@ -78,7 +82,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      *  PropertyConstraintHelper(NamedObj, PropertyLattice, boolean)
      *  throws it. 
      */
-    public PropertyConstraintHelper(PropertyConstraintSolver solver, Object component) throws IllegalActionException {
+    public PropertyConstraintHelper(PropertySolver solver, Object component) throws IllegalActionException {
         this(solver, component, true);
     }
     
@@ -93,7 +97,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @throws IllegalActionException Thrown if the helper cannot
      *  be initialized.
      */
-    public PropertyConstraintHelper(PropertyConstraintSolver solver, Object component, boolean useDefaultConstraints)
+    public PropertyConstraintHelper(PropertySolver solver, Object component, boolean useDefaultConstraints)
             throws IllegalActionException {
         
         _component = component;
@@ -292,7 +296,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
         while (root.jjtGetParent() != null);
         return _attributes.get(root);
     }
-    
+
     /**
      * 
      * @param attribute
@@ -415,7 +419,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
     protected class PropertyTerm implements InequalityTerm {
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
-        private Object _object;
+        protected Object _object;
         
         protected PropertyTerm (Object object) {
             _object = object;
@@ -721,7 +725,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * PropertyConstraintSolver.resolveProperties() method.
      * @throws IllegalActionException Thrown if 
      */
-    protected void _reinitialize() throws IllegalActionException {
+    public void reinitialize() throws IllegalActionException {
         List propertyables = _getPropertyables();
 
         Iterator iterator = propertyables.iterator();
@@ -737,7 +741,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
     }
     
     
-    private List _getASTNodeHelpers() {
+    protected List _getASTNodeHelpers() {
         List astHelpers = new ArrayList();
         ParseTreeASTNodeHelperCollector collector = 
             new ParseTreeASTNodeHelperCollector();

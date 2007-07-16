@@ -26,17 +26,15 @@
 
 
  */
-package ptolemy.data.properties;
+package ptolemy.data.properties.lattice;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ModelScope;
-import ptolemy.data.expr.Variable;
+import ptolemy.data.properties.Property;
+import ptolemy.data.properties.PropertySolver;
 import ptolemy.graph.InequalityTerm;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
@@ -66,7 +64,7 @@ public class PropertyConstraintASTNodeHelper
      *  throws it. 
      */
     public PropertyConstraintASTNodeHelper(
-            PropertyConstraintSolver solver, ASTPtRootNode node) 
+            PropertySolver solver, ASTPtRootNode node) 
             throws IllegalActionException {
         this(solver, node, true);
     }
@@ -82,7 +80,7 @@ public class PropertyConstraintASTNodeHelper
      *  be initialized.
      */
     public PropertyConstraintASTNodeHelper(
-            PropertyConstraintSolver solver, ASTPtRootNode node, 
+            PropertySolver solver, ASTPtRootNode node, 
             boolean useDefaultConstraints) throws IllegalActionException {
         
         super(solver, node, useDefaultConstraints);

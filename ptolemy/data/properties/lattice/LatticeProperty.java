@@ -26,8 +26,9 @@
 
 
  */
-package ptolemy.data.properties;
+package ptolemy.data.properties.lattice;
 
+import ptolemy.data.properties.Property;
 import ptolemy.graph.CPO;
 
 
@@ -43,12 +44,13 @@ import ptolemy.graph.CPO;
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (cxh)
  */
-public class LatticeProperty implements Property {
+public class LatticeProperty extends Property {
         
+
     public LatticeProperty(PropertyLattice lattice) {
         _lattice = lattice;
     }
-    
+
     /** Test if the argument property is compatible with this property.
      *  Compatible is defined as follows: If this property is a constant, the
      *  argument is compatible if it is the same or less than this property in

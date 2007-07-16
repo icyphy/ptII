@@ -1,16 +1,18 @@
-package ptolemy.data.properties;
+package ptolemy.data.properties.token;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import ptolemy.data.properties.Property;
+import ptolemy.data.properties.PropertyHelper;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
 public class PortValueHelper extends PropertyHelper {
 
-    public PortValueHelper(PortValueSolver solver, NamedObj component) {
+    public PortValueHelper(PortValueSolver solver, Object component) {
         
         _component = component;
         _solver = solver; 
@@ -39,7 +41,7 @@ public class PortValueHelper extends PropertyHelper {
         return list;
     }
 
-    protected void _reinitialize() throws IllegalActionException {
+    public void reinitialize() throws IllegalActionException {
         List propertyables = _getPropertyables();
         
         Iterator iterator = propertyables.iterator();

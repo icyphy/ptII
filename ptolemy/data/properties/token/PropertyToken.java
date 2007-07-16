@@ -1,17 +1,19 @@
-package ptolemy.data.properties;
+package ptolemy.data.properties.token;
 
 import ptolemy.data.Token;
+import ptolemy.data.properties.Property;
 
 
-public class TokenProperty implements Property {
+public class PropertyToken extends Property {
 
     private Token _token;
 
-    public TokenProperty (Token token) {
+    public PropertyToken (Token token) {
         _token = token;
     }
+    
     public boolean isCompatible(Property property) {
-        return property instanceof TokenProperty;
+        return property instanceof PropertyToken;
     }
 
     public boolean isConstant() {
@@ -23,7 +25,7 @@ public class TokenProperty implements Property {
     }
 
     public boolean isSubstitutionInstance(Property property) {
-        return property instanceof TokenProperty;
+        return property instanceof PropertyToken;
     }
 
     public Token getToken() {

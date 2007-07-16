@@ -23,7 +23,7 @@
 
 
  */
-package ptolemy.data.properties;
+package ptolemy.data.properties.lattice;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Expression;
 import ptolemy.data.expr.ASTPtArrayConstructNode;
 import ptolemy.data.expr.ASTPtBitwiseNode;
 import ptolemy.data.expr.ASTPtFunctionApplicationNode;
@@ -52,8 +51,7 @@ import ptolemy.data.expr.ASTPtUnaryNode;
 import ptolemy.data.expr.AbstractParseTreeVisitor;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Variable;
-import ptolemy.data.properties.PropertyConstraintSolver.ConstraintType;
-import ptolemy.data.type.Type;
+import ptolemy.data.properties.lattice.PropertyConstraintSolver.ConstraintType;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;

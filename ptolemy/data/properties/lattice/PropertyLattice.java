@@ -25,13 +25,14 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties;
+package ptolemy.data.properties.lattice;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.properties.Property;
 import ptolemy.data.properties.lattice.staticDynamic.Lattice;
 import ptolemy.graph.CPO;
 import ptolemy.graph.DirectedAcyclicGraph;
@@ -375,7 +376,6 @@ public class PropertyLattice {
     public static void cleanUp() {
         _lattices.clear();
     }
-    
     
     /**
      * Return the property lattice described by the given lattice

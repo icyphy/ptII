@@ -28,6 +28,8 @@
 package ptolemy.data.properties;
 
 import ptolemy.actor.IOPort;
+import ptolemy.data.properties.lattice.PropertyLattice;
+import ptolemy.data.properties.token.PropertyToken;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -47,7 +49,7 @@ public class PropertyChangedEvent {
     /** Create a new token changed event with the given parameters.  This
      *  constructor is used for property lattices.
      */
-    public PropertyChangedEvent(NamedObj component, IOPort port, PropertyConstraintSolver solver, PropertyLattice lattice, Object property) {
+    public PropertyChangedEvent(NamedObj component, IOPort port, PropertySolver solver, PropertyLattice lattice, Object property) {
         _component = component;
         _port = port;
         _solver = solver;
@@ -78,7 +80,7 @@ public class PropertyChangedEvent {
         return _property;
     }
 
-    public TokenProperty getTokenPropery() {
+    public PropertyToken getTokenPropery() {
         return _tokenProperty;
     }
 
@@ -100,5 +102,5 @@ public class PropertyChangedEvent {
     private PropertySolver _solver;
     private PropertyLattice _lattice;
     private Object _property;
-    private TokenProperty _tokenProperty;
+    private PropertyToken _tokenProperty;
 }

@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties;
+package ptolemy.data.properties.lattice;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +33,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.IOPort;
+import ptolemy.data.properties.Property;
+import ptolemy.data.properties.PropertyHelper;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;

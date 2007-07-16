@@ -46,6 +46,7 @@ import ptolemy.data.expr.ASTPtShiftNode;
 import ptolemy.data.expr.ASTPtSumNode;
 import ptolemy.data.expr.ASTPtUnaryNode;
 import ptolemy.data.expr.AbstractParseTreeVisitor;
+import ptolemy.data.properties.lattice.PropertyConstraintSolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 

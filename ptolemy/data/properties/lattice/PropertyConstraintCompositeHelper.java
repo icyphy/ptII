@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.data.properties;
+package ptolemy.data.properties.lattice;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,7 +33,9 @@ import java.util.List;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.properties.PropertyConstraintSolver.ConstraintType;
+import ptolemy.data.properties.PropertyHelper;
+import ptolemy.data.properties.PropertySolver;
+import ptolemy.data.properties.lattice.PropertyConstraintSolver.ConstraintType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -61,7 +63,7 @@ public class PropertyConstraintCompositeHelper
      * @throws IllegalActionException 
      */
     public PropertyConstraintCompositeHelper(
-            PropertyConstraintSolver solver, ptolemy.actor.CompositeActor component) 
+            PropertySolver solver, ptolemy.actor.CompositeActor component) 
             throws IllegalActionException {
 
         super(solver, component, false);
@@ -116,10 +118,10 @@ public class PropertyConstraintCompositeHelper
     /**
      * 
      */
-    protected void _reinitialize() throws IllegalActionException {
+    public void reinitialize() throws IllegalActionException {
         ptolemy.actor.CompositeActor component = 
             (ptolemy.actor.CompositeActor) _component;
-        super._reinitialize();
+        super.reinitialize();
         
         Iterator iterator = component.entityList().iterator();
         
@@ -130,7 +132,7 @@ public class PropertyConstraintCompositeHelper
             PropertyHelper helper = 
                 getSolver().getHelper(actor);
             
-            helper._reinitialize();
+            helper.reinitialize();
         }                
     }
 

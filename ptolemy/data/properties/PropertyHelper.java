@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.properties.lattice.PropertyConstraintAttribute;
+import ptolemy.data.properties.token.PropertyTokenAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -20,7 +22,23 @@ public abstract class PropertyHelper {
      * @return The property value of the given port. 
      */
     public Property getProperty(Object object) {
-        return (Property) _resolvedProperties.get(object);
+        Property property = (Property) _resolvedProperties.get(object);
+        
+//        if (property == null) { // get value from attribute
+//            String solverName = getSolver()._solverName;
+/*            Parameter propertyAttribute = (Parameter) ((NamedObj)object).getAttribute("typeSystem_EDC");
+            if (propertyAttribute != null) {
+                try {
+                    ObjectToken ot = (ObjectToken)propertyAttribute.getToken();
+                    System.out.println(ot);
+                } catch (IllegalActionException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+//        }
+*/        
+        return property;
     }
 
     /**
@@ -41,6 +59,7 @@ public abstract class PropertyHelper {
     
         Iterator iterator = propertyables.iterator();
     
+
         while (iterator.hasNext()) {
             Object object = iterator.next();
             
@@ -48,22 +67,44 @@ public abstract class PropertyHelper {
                 NamedObj namedObj = (NamedObj) object;
                 
                 Property property = getProperty(namedObj);
+
+                PropertyAttribute attribute = null;
                 
-                StringParameter attribute = 
-                (StringParameter) namedObj.getAttribute("_showInfo");
-        
-                if (attribute == null) {
-                    attribute = new StringParameter(namedObj, "_showInfo");
-                }
-        
-                if (isTraining) {
-                    if (property != null) {
-                        attribute.setToken(property.toString());
-                    } else {
-                        attribute.setToken("");                
+                // write results to attribute
+                if (getSolver().getExtendedUseCaseName().startsWith("lattice")) {
+                    attribute = (PropertyConstraintAttribute) namedObj.getAttribute(getSolver().getExtendedUseCaseName());
+                    if (attribute == null) {
+                        attribute = new PropertyConstraintAttribute(namedObj, getSolver().getExtendedUseCaseName());
+                    } 
+                } else if (getSolver().getExtendedUseCaseName().startsWith("token")) {
+                    attribute = (PropertyTokenAttribute) namedObj.getAttribute(getSolver().getExtendedUseCaseName());
+                    if (attribute == null) {
+                        attribute = new PropertyTokenAttribute(namedObj, getSolver().getExtendedUseCaseName());
                     }
-        
                 } else {
+                    //FIXME:
+                }
+            
+                
+                if (isTraining) {
+                    StringParameter showAttribute = 
+                        (StringParameter) namedObj.getAttribute("_showInfo");
+                
+                    if (showAttribute == null) {
+                        showAttribute = new StringParameter(namedObj, "_showInfo");
+                    }
+
+                    if (property != null) {
+                    
+                        showAttribute.setToken(property.toString());
+
+                        // write results to attribute
+                        attribute.setExpression(property.toString());
+                    
+                    } else {
+                        showAttribute.setToken("");
+                    }
+                } else {    // testing.
                     String propertyString = (property == null) ? "" : property.toString();
                     
                     if (!attribute.getExpression().equals(propertyString)) {
@@ -126,6 +167,6 @@ public abstract class PropertyHelper {
      * 
      * @throws IllegalActionException 
      */
-    protected abstract void _reinitialize() throws IllegalActionException;
+    public abstract void reinitialize() throws IllegalActionException;
 
 }
