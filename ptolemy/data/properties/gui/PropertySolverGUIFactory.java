@@ -30,7 +30,7 @@ package ptolemy.data.properties.gui;
 import java.awt.Frame;
 
 import ptolemy.actor.gui.DoubleClickFactory;
-import ptolemy.data.properties.PropertyConstraintSolver;
+import ptolemy.data.properties.PropertySolver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class PropertyConstraintSolverGUIFactory extends DoubleClickFactory {
+public class PropertySolverGUIFactory extends DoubleClickFactory {
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -64,7 +64,7 @@ public class PropertyConstraintSolverGUIFactory extends DoubleClickFactory {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public PropertyConstraintSolverGUIFactory(NamedObj container, String name)
+    public PropertySolverGUIFactory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -80,7 +80,7 @@ public class PropertyConstraintSolverGUIFactory extends DoubleClickFactory {
     public void invoke(NamedObj object, Frame parent) {
         // This is always used to configure the container, so
         // we just use that.
-        PropertyConstraintSolver solver = (PropertyConstraintSolver) getContainer();
+        PropertySolver solver = (PropertySolver) getContainer();
         CompositeEntity top = (CompositeEntity) solver.getContainer();
 
         while (top.getContainer() != null){
