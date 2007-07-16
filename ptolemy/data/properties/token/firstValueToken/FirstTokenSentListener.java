@@ -4,9 +4,9 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TokenSentEvent;
 import ptolemy.actor.TokenSentListener;
 import ptolemy.data.Token;
-import ptolemy.data.properties.PortValueHelper;
-import ptolemy.data.properties.PortValueSolver;
-import ptolemy.data.properties.TokenProperty;
+import ptolemy.data.properties.token.PortValueHelper;
+import ptolemy.data.properties.token.PortValueSolver;
+import ptolemy.data.properties.token.PropertyToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 public class FirstTokenSentListener implements TokenSentListener {
@@ -26,7 +26,7 @@ public class FirstTokenSentListener implements TokenSentListener {
         } 
 
         try {
-            ((PortValueHelper)_solver.getHelper(port.getContainer())).setEquals(port, new TokenProperty(token));
+            ((PortValueHelper)_solver.getHelper(port.getContainer())).setEquals(port, new PropertyToken(token));
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

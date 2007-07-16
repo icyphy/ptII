@@ -27,10 +27,8 @@
  */
 package ptolemy.data.properties.token.firstValueToken.actor;
 
-import java.util.List;
-
-import ptolemy.data.properties.PortValueHelper;
-import ptolemy.data.properties.PortValueSolver;
+import ptolemy.data.properties.token.PortValueHelper;
+import ptolemy.data.properties.token.PortValueSolver;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
