@@ -158,5 +158,4 @@ test ConstVariableModelAnalysis-2.1 {test modal model.} {
 	[lsort [listToNames [$analysis getConstVariables $e1]]] \
 	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
 	[lsort [listToNames [$analysis getConstVariables $fsm]]]
-} {init step {firingCountLimit init step} p2}
-
+} {init step {NONE firingCountLimit init step} p2}

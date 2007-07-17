@@ -181,7 +181,7 @@ test Test-1.5 {Export} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
@@ -206,7 +206,9 @@ test Test-1.5 {Export} {
         </property>
     </property>
     <entity name="ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
+        </property>
+        <property name="NONE" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -246,6 +248,7 @@ test Test-1.5 {Export} {
     <link port="test.input" relation="_R"/>
 </entity>
 }}
+
 
 
 ######################################################################
