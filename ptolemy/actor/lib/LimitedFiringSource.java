@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (bilung)
  */
-public class LimitedFiringSource extends Source implements SequenceActor {
+public class LimitedFiringSource extends Source {
     /** Construct an actor with the given container and name.
      *  The <i>firingCountLimit</i> parameter is also constructed.
      *  @param container The container.
