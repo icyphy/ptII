@@ -55,6 +55,9 @@ JSRCS = \
 	ColtPoisson.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ColtBinomial.c \
+	ColtBinomialSelector.c \
+	ColtPoisson.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
