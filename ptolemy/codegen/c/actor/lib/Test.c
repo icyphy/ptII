@@ -14,11 +14,16 @@ $actorSymbol(numberOfTokensSeen)++;
 
 /* $actorSymbol(), IntBlock($channel) which has only one channel */
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && ($ref(input#$channel) != $ref(correctValues, $actorSymbol(numberOfTokensSeen)))) {
-    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been: %d\n",
+        && fabs($ref(input#$channel)
+                - $ref(correctValues, $actorSymbol(numberOfTokensSeen)))
+                > $ref(tolerance)) {
+    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been between: %f and %f\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
-            $ref(correctValues, $actorSymbol(numberOfTokensSeen)));
+            $ref(correctValues, $actorSymbol(numberOfTokensSeen)) - 
+                    $ref(tolerance),
+            $ref(correctValues, $actorSymbol(numberOfTokensSeen)) + 
+                    $ref(tolerance));
     exit(-1);
 }
 /**/
@@ -34,10 +39,13 @@ $actorSymbol(correctValuesThisFiring_$channel) =
 $ref(correctValues, $actorSymbol(numberOfTokensSeen));
                
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-        && $ref(input#$channel) != Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Int) {
-    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been: %d\n",
+        && fabs($ref(input#$channel)
+                - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Double)
+        > $ref(tolerance)) {
+    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %f of: %d\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
+            $ref(tolerance),
             Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Int);
     exit(-1);    
 }        
@@ -52,11 +60,13 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && fabs($ref(input#$channel)
                 - $ref(correctValues, $actorSymbol(numberOfTokensSeen)))
                 > $ref(tolerance)) {
-    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been: %f\n",
+    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been between: %f and %f\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
-            $ref(correctValues,
-                    $actorSymbol(numberOfTokensSeen)));
+            $ref(correctValues, $actorSymbol(numberOfTokensSeen)) - 
+                    $ref(tolerance),
+            $ref(correctValues, $actorSymbol(numberOfTokensSeen)) + 
+                    $ref(tolerance));
     exit(-1);    
 }
 /**/
@@ -73,9 +83,10 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && fabs($ref(input#$channel)
                 - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Double)
         > $ref(tolerance)) {
-    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %g. Should have been: %g\n",
+    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %g. Should have been within %f of: %g\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
+            $ref(tolerance),
             Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Double);
     exit(-1);    
 }
@@ -92,7 +103,7 @@ if (($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(numberOfTokensSeen),
             BooleantoString($ref(input#$channel)),
             BooleantoString($ref(correctValues, $actorSymbol(numberOfTokensSeen))));
-    exit(-1);    		
+    exit(-1);
 }
 /**/
 
@@ -105,9 +116,9 @@ $actorSymbol(correctValuesThisFiring_$channel) =
 $ref(correctValues, $actorSymbol(numberOfTokensSeen));
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
     && (((!Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean
-	  && $ref(input#$channel)))
-	|| (Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean
-	    && !$ref(input#$channel)))) {
+      && $ref(input#$channel)))
+    || (Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean
+        && !$ref(input#$channel)))) {
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a boolean of value: %s. Should have been a boolean of value: %s\n",
             $actorSymbol(numberOfTokensSeen),
             BooleantoString($ref(input#$channel)),
@@ -125,7 +136,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
             $ref(correctValues, $actorSymbol(numberOfTokensSeen)));
-    exit(-1);    		
+    exit(-1);
 }
 /**/
 
@@ -161,7 +172,7 @@ if (($type(input) != TYPE_Array
             $actorSymbol(numberOfTokensSeen),
             $tokenFunc($ref(input#$channel)::toString()).payload.String,
             $tokenFunc($ref(correctValues, $actorSymbol(numberOfTokensSeen))::toString()).payload.String);
-    exit(-1);    				
+    exit(-1);
 }
 /**/
 
