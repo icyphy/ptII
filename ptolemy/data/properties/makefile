@@ -47,9 +47,15 @@ PTPACKAGE = 	properties
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	ParseTreeASTNodeHelperCollector.java \
+	ParseTreeNodeCollector.java \
 	Property.java \
-	PropertyConstraintSolver.java \
-	PropertyLattice.java
+	PropertyAttribute.java \
+	PropertyChangedEvent.java \
+	PropertyChangedListener.java \
+	PropertyDisplay.java \
+	PropertyHelper.java \
+	PropertySolver.java
 
 EXTRA_SRCS =	$(JSRCS)
 
