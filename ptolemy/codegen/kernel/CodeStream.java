@@ -609,15 +609,19 @@ public class CodeStream {
                 //String filename = _filePath.replaceAll("\\$", "");
                 String filename = FileUtilities.nameToURL(_filePath,
                         null, null).getPath();
+                if (_codeGenerator == null && _helper != null) {
+                    _codeGenerator = _helper._codeGenerator;
+                }
+                Token sourceLineBinding = null;
+                if (_codeGenerator != null) {
+                    sourceLineBinding = _codeGenerator.sourceLineBinding.getToken();
+                }                        
+
                 for (String line = reader.readLine(); 
                      line != null;
                      line = reader.readLine(), lineNumber++) {
-                    if (_codeGenerator == null) {
-                        _codeGenerator = _helper._codeGenerator;
-                    }
-                    Token token = _codeGenerator.sourceLineBinding.getToken();
-                        
-                    if (((BooleanToken) token).booleanValue()) {
+                    if (sourceLineBinding != null
+                            && ((BooleanToken) sourceLineBinding).booleanValue()) {
                         codeToBeParsed.append("#line " + 
                                 lineNumber + " \"" + filename + "\"\n");                            
                     }
