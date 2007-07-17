@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 
 import ptolemy.actor.gui.style.CheckBoxStyle;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.properties.gui.PropertyDisplayGUIFactory;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
