@@ -40,9 +40,9 @@ $ref(correctValues, $actorSymbol(numberOfTokensSeen));
                
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && fabs($ref(input#$channel)
-                - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Double)
+                - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Int)
         > $ref(tolerance)) {
-    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %f of: %d\n",
+    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %g of: %d\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
             $ref(tolerance),
