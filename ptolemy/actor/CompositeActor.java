@@ -306,7 +306,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             
             // First invoke piggybacked methods.
             if (_piggybacks != null) {
-                // Invoke the preinitialize method of each piggyback.
+                // Invoke the fire method of each piggyback.
                 Iterator piggybacks = _piggybacks.iterator();
                 while (piggybacks.hasNext()) {
                     Executable piggyback = (Executable)piggybacks.next();
@@ -879,7 +879,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // First invoke piggybacked methods.
             boolean result = true;
             if (_piggybacks != null) {
-                // Invoke the preinitialize method of each piggyback.
+                // Invoke the postfire method of each piggyback.
                 Iterator piggybacks = _piggybacks.iterator();
                 while (piggybacks.hasNext()) {
                     Executable piggyback = (Executable)piggybacks.next();
@@ -928,7 +928,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // If any piggyback method returns false, then we stop
             // there and return false.
             if (_piggybacks != null) {
-                // Invoke the preinitialize method of each piggyback.
+                // Invoke the prefire method of each piggyback.
                 Iterator piggybacks = _piggybacks.iterator();
                 while (piggybacks.hasNext()) {
                     Executable piggyback = (Executable)piggybacks.next();
