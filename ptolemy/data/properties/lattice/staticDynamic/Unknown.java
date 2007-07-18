@@ -28,8 +28,8 @@
  */
 package ptolemy.data.properties.lattice.staticDynamic;
 
-import ptolemy.data.properties.LatticeProperty;
-import ptolemy.data.properties.PropertyLattice;
+import ptolemy.data.properties.lattice.LatticeProperty;
+import ptolemy.data.properties.lattice.PropertyLattice;
 
 
 //////////////////////////////////////////////////////////////////////////
