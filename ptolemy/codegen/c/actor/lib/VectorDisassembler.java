@@ -80,6 +80,7 @@ public class VectorDisassembler extends CCodeGeneratorHelper {
             args.add(codeGenType(type));
         }
         
+//         FIXME: we need a way to get the matrix dimensions here
 //         DoubleMatrixToken vector = (DoubleMatrixToken) actor.input.get(0);
 
 //         if (vector.getColumnCount() != 1) {
@@ -87,7 +88,7 @@ public class VectorDisassembler extends CCodeGeneratorHelper {
 //                     + "be a DoubleMatrixToken with one column.");
 //         }
 
-//        int min = Math.min(vector.getRowCount(), actor.output.getWidth());
+//         int min = Math.min(vector.getRowCount(), actor.output.getWidth());
         int min = actor.output.getWidth();
         for (int i = 0; i < min; i++) {
             args.set(0, Integer.valueOf(i));
