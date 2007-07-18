@@ -33,6 +33,8 @@ import java.util.List;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -42,55 +44,17 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /////////////////////////////////////////////////////////
 //// ClipPlayer
 
 /**
- FIXME: Update.
- This actor plays audio samples provided on the input port
- starting at a time corresponding to the time stamp of the input.
- The audio samples that are supplied to
- this actor should be doubles in the range [-1.0, 1.0], provided
- as a DoubleMatrix, where the first index of the matrix represents
- the channel and the second index is the sample number. Any input
- value that is outside of the valid range will be hard-clipped
- to fall within the range [-1.0, 1.0] before it is written
- to the audio output port of the computer.
- <p>
- If this actor is invoked multiple times with overlapping
- audio segments, then it will add the audio signals before sending
- to the hardware.
- <p>
- The parameters are as follows:
- <ul>
- <li><i>sampleRate</i> should be set to desired sample rate, in Hz.
- The default value is 8000. Allowable values are 8000, 11025,
- 22050, 44100, and 48000 Hz.
- <li><i>bytesPerSample</i> gives the resolution of audio samples.
- This is an integer that defaults to 2, meaning 16-bit samples.
- <li><i>channels</i> should be set to desired number of audio
- channels. Allowable values are 1 (for mono) and 2 (for stereo).
- The default value is 1. Some sound cards support more than two
- audio channels, but this is not supported in Java.
- <li><i>transferSize</i> The number of samples that will
- be transferred to the audio driver
- together.  This is an integer with default 128. 
- <li><i></i>  The requested buffer size in the audio hardware. This
- affects how far ahead of real time the model can get. There is no
- harm in making this large because this actor will overwrite previously
- queued values if necessary. This is an integer
- that defaults to 8000, representing a buffer with
- 8000 samples per channel. At an 8 kHz sample rate,
- this corresponds to one second of sound.
- </ul>
- <p>
- All of these parameters are shared by all audio actors that
- use the audio hardware, so changing them in
- one of those actors will cause it to change in all.
- <p>
- Note: Requires Java 2 v1.3.0 or later.
+ This actor plays an audio clip given in a file. If the <i>overlay</i>
+ parameter is false (the default), then it will terminate any previously
+ playing clip before playing the new instance. Otherwise, it will mix
+ in the new instance with the currently playing clip.
  @author  Edward A. Lee
  @version  $Id$
  @since Ptolemy II 6.2
@@ -101,7 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @see AudioReader
  @see AudioWriter
  */
-public class ClipPlayer extends TypedAtomicActor {
+public class ClipPlayer extends TypedAtomicActor implements LineListener {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -121,6 +85,9 @@ public class ClipPlayer extends TypedAtomicActor {
         overlay = new Parameter(this, "overlay");
         overlay.setTypeEquals(BaseType.BOOLEAN);
         overlay.setExpression("false");
+        
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -130,6 +97,13 @@ public class ClipPlayer extends TypedAtomicActor {
      *  This is set by default to a file containing a voice signal.
      */
     public FileParameter fileOrURL;
+    
+    /** Output port used to indicate starts and stops.
+     *  This is a boolean port. A true output indicates that
+     *  a clip has been started, and a false output indicates that
+     *  one has stopped.
+     */
+    public TypedIOPort output;
     
     /** If true, then if the actor fires before the previous clip
      *  has finished playing, then a new instance of the clip will
@@ -147,6 +121,26 @@ public class ClipPlayer extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Produce outputs indicating that the clip has started or stopped.
+     *  @exception IllegalActionException Not thrown in this class.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+        // Produce all outputs that have been requested.
+        // To respect the actor abstract semantics, we have
+        // to operate on a copy of the list created in the
+        // first firing of the iteration.
+        if (_outputEventsCopy == null) {
+            synchronized(_outputEvents) {
+                _outputEventsCopy = new LinkedList<BooleanToken>(_outputEvents);
+                _outputEvents.clear();
+            }
+        }
+        for (BooleanToken token : _outputEventsCopy) {
+            output.send(0, token);
+        }
+    }
 
     /** Read an input array and send to the audio hardware.
      *  If the audio buffer cannot accept the samples, then this
@@ -155,6 +149,8 @@ public class ClipPlayer extends TypedAtomicActor {
      *   playing audio.
      */
     public boolean postfire() throws IllegalActionException {
+        // Output events will have been sent in fire().
+        _outputEventsCopy = null;
         if (trigger.hasToken(0)) {
             trigger.get(0);
             boolean overlayValue = ((BooleanToken)overlay.getToken()).booleanValue();
@@ -172,6 +168,7 @@ public class ClipPlayer extends TypedAtomicActor {
                     Clip clip = AudioSystem.getClip();
                     AudioInputStream stream = AudioSystem.getAudioInputStream(fileOrURL.asURL());
                     clip.open(stream);
+                    clip.addLineListener(this);
                     clip.start();
                     _clips.add(clip);
                 } catch (Exception e) {
@@ -190,6 +187,28 @@ public class ClipPlayer extends TypedAtomicActor {
         return true;
     }
 
+    /** Called to notify this object of changes in the status of
+     *  a clip.
+     *  @param event The event, with one of type OPEN, CLOSE,
+     *   START, STOP of class LineEvent.Type.
+     */
+    public void update(LineEvent event) {
+        if (event.getType().equals(LineEvent.Type.STOP)) {
+            synchronized(_outputEvents) {
+                _outputEvents.add(BooleanToken.FALSE);
+            }
+        } else if (event.getType().equals(LineEvent.Type.START)) {
+            synchronized(_outputEvents) {
+                _outputEvents.add(BooleanToken.TRUE);
+            }
+        }
+        try {
+            getDirector().fireAtCurrentTime(this);
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+    }
+
     /** Stop audio playback and free up any audio resources used
      *  for audio playback.
      *  @exception IllegalActionException If there is a problem
@@ -203,7 +222,7 @@ public class ClipPlayer extends TypedAtomicActor {
         for (Clip clip: _clips) {
             clip.flush();
             clip.stop();
-            clip.close();            
+            clip.close();  
         }
         _clips.clear();
     }
@@ -213,4 +232,13 @@ public class ClipPlayer extends TypedAtomicActor {
 
     /** The clip to playback. */
     protected List<Clip> _clips = new LinkedList<Clip>();
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** The output values to be produced on the next firing. */
+    private List<BooleanToken> _outputEvents = new LinkedList<BooleanToken>();
+
+    /** The output values to be produced on the next firing. */
+    private List<BooleanToken> _outputEventsCopy = null;
 }
