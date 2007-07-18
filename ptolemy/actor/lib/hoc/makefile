@@ -58,6 +58,7 @@ JSRCS = \
 	CaseDirector.java \
 	IterateOverArray.java \
 	LifeCycleManager.java \
+	MirrorComposite.java \
 	MirrorPort.java \
 	MobileFunction.java \
 	MobileModel.java \
@@ -66,6 +67,7 @@ JSRCS = \
 	MultiCompositeActor.java \
 	MultiCompositePort.java \
 	MultiInstanceComposite.java \
+	RealTimeComposite.java \
 	Refinement.java \
 	RefinementPort.java \
 	RunCompositeActor.java
