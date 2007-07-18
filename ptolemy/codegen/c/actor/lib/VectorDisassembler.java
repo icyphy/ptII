@@ -31,6 +31,7 @@ package ptolemy.codegen.c.actor.lib;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -79,8 +80,18 @@ public class VectorDisassembler extends CCodeGeneratorHelper {
             args.add(codeGenType(type));
         }
         
-        for (int i = 0; i < actor.input.getWidth(); i++) {
+//         DoubleMatrixToken vector = (DoubleMatrixToken) actor.input.get(0);
+
+//         if (vector.getColumnCount() != 1) {
+//             throw new IllegalActionException(this, "The input must "
+//                     + "be a DoubleMatrixToken with one column.");
+//         }
+
+//        int min = Math.min(vector.getRowCount(), actor.output.getWidth());
+        int min = actor.output.getWidth();
+        for (int i = 0; i < min; i++) {
             args.set(0, Integer.valueOf(i));
+            fireCode.append("/*VectorDisassember: " + min + "*/");
             fireCode.append(_generateBlockCode("fireBlock", args));
         }
 
