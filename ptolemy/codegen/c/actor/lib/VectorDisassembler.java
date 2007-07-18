@@ -91,7 +91,6 @@ public class VectorDisassembler extends CCodeGeneratorHelper {
         int min = actor.output.getWidth();
         for (int i = 0; i < min; i++) {
             args.set(0, Integer.valueOf(i));
-            fireCode.append("/*VectorDisassember: " + min + "*/");
             fireCode.append(_generateBlockCode("fireBlock", args));
         }
 
