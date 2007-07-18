@@ -9,6 +9,8 @@
       <group>
         <entity name="Integrator"
                 class="ptolemy.domains.continuous.lib.Integrator"/>
+        <entity name="DifferentialSystem"
+                class="ptolemy.domains.continuous.lib.DifferentialSystem"/>
       </group>
     ?>
   </configure>

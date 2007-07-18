@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	DifferentialSystem.java \
 	DiscreteClock.java \
 	EventSource.java \
 	Integrator.java \
