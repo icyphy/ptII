@@ -452,8 +452,6 @@ public class DEDirector extends Director implements TimedDirector {
                         // If the actor to be fired does not have a container,
                         // it may just be deleted. Put this actor to the
                         // list of disabled actors.
-                        // TESTIT: what if the actor to fire is
-                        // a top-level composite actor?
                         _debug("Actor has no container. Disabling actor.");
                         _disableActor(actorToFire);
                         break;
@@ -583,7 +581,9 @@ public class DEDirector extends Director implements TimedDirector {
     }
 
     /** Schedule an actor to be fired at the specified time by posting
-     *  a pure event to the director.
+     *  a pure event to the director. If the requested time is in the past
+     *  relative to the current time, then replace it with the current
+     *  model time.
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
      *  @exception IllegalActionException If event queue is not ready.
@@ -604,6 +604,12 @@ public class DEDirector extends Director implements TimedDirector {
         // method of this director is responsible to report the next
         // earliest event in the event queue to the higher level.
         synchronized (_eventQueue) {
+            // Changed to use the current time rather than throw an
+            // exception. This allows actors to reliably use fireAt()
+            // to post events from separate threads.
+            if (time.compareTo(_currentTime) < 0) {
+                time = _currentTime;
+            }
             _enqueueEvent(actor, time);
             _eventQueue.notifyAll();
         }
@@ -768,8 +774,11 @@ public class DEDirector extends Director implements TimedDirector {
         // Register the stop time as an event such that the model is 
         // guaranteed to stop at that time. This event also serves as
         // a guideline for an embedded Continuous model to know how much
-        // further to integrate into future.
-        fireAt((Actor) getContainer(), _stopTime);
+        // further to integrate into future. But only do this if the
+        // stop time is finite.
+        if (!_stopTime.isPositiveInfinite()) {
+            fireAt((Actor) getContainer(), _stopTime);
+        }
 
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
             // If the event queue is not empty and the container is not at
@@ -1768,7 +1777,7 @@ public class DEDirector extends Director implements TimedDirector {
                         break;
                     }
                 }
-            } else {
+            } else {    // if (!topLevel)
                 // If the director is at the top level
                 // If the event queue is empty, normally
                 // a blocking read is performed on the queue.
@@ -1888,7 +1897,7 @@ public class DEDirector extends Director implements TimedDirector {
                             }
                         } // while
                     } // sync
-                }
+                } // if (_synchronizeToRealTime)
 
                 // Consume the earliest event from the queue. The event must be
                 // obtained here, since a new event could have been enqueued
@@ -1940,7 +1949,7 @@ public class DEDirector extends Director implements TimedDirector {
                     _exceedStopTime = true;
                     return null;
                 }
-            } else {
+            } else { // if (actorToFire == null)
                 // We have already found an event and the actor to react to it.
                 // Check whether the newly found event has the same tag
                 // and depth. If so, the destination actor should be the same,
