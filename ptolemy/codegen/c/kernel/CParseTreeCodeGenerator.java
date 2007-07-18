@@ -831,7 +831,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         int row = node.getRowCount();
         int column = node.getColumnCount();
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[row * column];
-        _fireCode.append("((Token*) $new(Matrix(" + row + ", " + column);
+        _fireCode.append("($new(Matrix(" + row + ", " + column
+                + ", " + row * column);
 
         ptolemy.data.Token result = null;
 
