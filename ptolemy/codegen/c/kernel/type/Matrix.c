@@ -194,7 +194,7 @@ Token Matrix_toString(Token this, ...) {
 // Assume the given otherToken is array type.
 // Return a new Array token.
 Token Matrix_multiply(Token this, ...) {
-    int i;
+    int i, j;
     va_list argp; 
     Token result; 
     Token element, otherToken;
@@ -202,23 +202,25 @@ Token Matrix_multiply(Token this, ...) {
     va_start(argp, this);
     otherToken = va_arg(argp, Token);
 
-    result = Matrix_new(this.payload.Matrix->size, 0);
+    result = Matrix_new(this.payload.Matrix->row, this.payload.Matrix->row, 0);
     
     switch (otherToken.type) {
     case TYPE_Matrix:        
         for (i = 0; i < this.payload.Matrix->column; i++) {
             for (j = 0; j < this.payload.Matrix->row; j++) {
-                element = Matrix_get(this, i);
-                // FIXME: Need to program this.
+                element = Matrix_get(this, j, i);
             }
         }
         break;
     #ifdef TYPE_Array
     case TYPE_Array:
+        element = Array_new(this.payload.Matrix->column * 
+                this.payload.Matrix->row, 0);
         for (i = 0; i < this.payload.Matrix->column; i++) {
             for (j = 0; j < this.payload.Matrix->row; j++) {
-                element = Matrix_get(this, i);
-                // FIXME: Need to program this.                
+                Array_set(element, 
+                        i + this.payload.Matrix->row * j,
+                        Matrix_get(this, j, i));
             }
         }        
         break;
@@ -226,7 +228,7 @@ Token Matrix_multiply(Token this, ...) {
     default: 
         for (i = 0; i < this.payload.Matrix->column; i++) {
             for (j = 0; j < this.payload.Matrix->row; j++) {
-                element = Matrix_get(this, i);
+                element = Matrix_get(this, j, i);
                 result.payload.Matrix->elements[i] = functionTable[(int)element.type][FUNC_multiply](element, otherToken);
             }
         }
