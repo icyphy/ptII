@@ -51,7 +51,9 @@ import ptolemy.kernel.util.Workspace;
  * whether to produce an output. If the <i>enable</i> is present and
  * true, then the actor will produce the next output. Otherwise, it
  * produces no output and will produce the next in the sequence
- * on the next firing (if enable is true).
+ * on the next firing (if enable is true). If the <i>holdLastOutput</i>
+ * parameter is true, then the sequence is infinite, with the last
+ * value being repeated forever.
  * <p>
  * Compared with the Pulse actor, this actor can be enabled or disabled
  * on each firing by providing a true or false input on the <i>enable</i>
@@ -83,8 +85,11 @@ public class Sequence extends TypedAtomicActor {
         values.setExpression("{1}");
 
         // Set the Repeat Flag.
-        repeat = new Parameter(this, "repeat", new BooleanToken(false));
+        repeat = new Parameter(this, "repeat", BooleanToken.FALSE);
         repeat.setTypeEquals(BaseType.BOOLEAN);
+        
+        holdLastOutput = new Parameter(this, "holdLastOutput", BooleanToken.FALSE);
+        holdLastOutput.setTypeEquals(BaseType.BOOLEAN);
 
         enable = new TypedIOPort(this, "enable", true, false);
         enable.setTypeEquals(BaseType.BOOLEAN);
@@ -103,6 +108,12 @@ public class Sequence extends TypedAtomicActor {
      *  given firing. The type is boolean.
      */
     public TypedIOPort enable;
+    
+    /** A flag indicating whether to interpret the <i>values</i>
+     *  as an infinite sequence where the last value is repeated
+     *  forever. This is a boolean that defaults to false.
+     */
+    public Parameter holdLastOutput;
 
     /** The output port. The type is greater than or equal to the
      *  types of the two input ports.
@@ -110,9 +121,11 @@ public class Sequence extends TypedAtomicActor {
     public TypedIOPort output;
 
     /** The flag that indicates whether the sequence needs to be
-     *  repeated. If this is false, then the last value of the
+     *  repeated. If this is false, then either the last value of the
      *  sequence is repeatedly produced after the entire sequence
-     *  has been produced. This is a boolean, and defaults to false.
+     *  has been produced, or the actor stops producing output,
+     *  depending on the value of <i>holdLastOutput</i>.
+     *  This is a boolean, and defaults to false.
      */
     public Parameter repeat;
 
@@ -190,8 +203,14 @@ public class Sequence extends TypedAtomicActor {
                 if (repeatValue) {
                     _currentIndex = 0;
                 } else {
-                    // To repeatedly produce the last output.
-                    _currentIndex = valuesArray.length() - 1;
+                    boolean holdLastOutputValue = ((BooleanToken) holdLastOutput.getToken()).booleanValue();
+                    if (holdLastOutputValue) {
+                        // To repeatedly produce the last output.
+                        _currentIndex = valuesArray.length() - 1;
+                    } else {
+                        // To prevent overflow.
+                        _currentIndex = valuesArray.length();                        
+                    }
                 }
             }
         }
