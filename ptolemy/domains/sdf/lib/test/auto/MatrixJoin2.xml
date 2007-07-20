@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 59, 770, 496}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 59, 770, 494}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[555, 378]">
     </property>
@@ -26,6 +26,8 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{[1.0, 2.0; 3.0, 4.0], [-1.0; -2.0]}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="SequenceIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -66,6 +68,8 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{[5.0, 6.0], [-7.0]}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="holdLastOutput" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="SequenceIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
