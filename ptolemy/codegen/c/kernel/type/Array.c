@@ -267,7 +267,14 @@ Token Array_divide(Token this, ...) {
 	
     for (i = 0; i < this.payload.Array->size; i++) {
     	element = Array_get(this, i);
-        result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_divide](element, Array_get(otherToken, i));
+        switch (otherToken.type) {
+        case TYPE_Array:
+            result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_divide](element, Array_get(otherToken, i));
+            break;
+        default:
+            result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_divide](element, otherToken);
+            break;
+        }
     }
 
     va_end(argp);
