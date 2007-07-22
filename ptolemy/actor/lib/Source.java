@@ -139,18 +139,17 @@ public abstract class Source extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         if (trigger.numberOfSources() > 0) {
+            // Have to consume all trigger inputs.
+            boolean returnValue = false;
             for (int i = 0; i < trigger.getWidth(); i++) {
                 if (trigger.isKnown(i) && trigger.hasToken(i)) {
-                    return super.prefire();
+                    returnValue = true;
                 }
             }
-
             if (_debugging) {
-                _debug("Called prefire(), which returns false because"
-                        + " the trigger port is connected and has no input.");
+                _debug("Called prefire(), which returns " + returnValue);
             }
-
-            return false;
+            return returnValue;
         }
 
         return super.prefire();
