@@ -54,18 +54,13 @@ import ptolemy.kernel.util.NameDuplicationException;
  a very simply behavior, where the output is always the same, but
  the time between outputs is controlled by the <i>periodControl</i>
  input.
- <p>
- In some domains, such as DE, an input at <i>periodControl</i>
- is sufficient to trigger a firing.  This can be somewhat counterintuitive,
- since an output from the clock may not be expected at that time.
- To avoid this, simple ensure that events at <i>periodControl</i>
- arrive only at times when an output is expected.
 
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (yuhong)
+ @deprecated Use Clock instead.
  */
 public class VariableClock extends Clock {
     /** Construct an actor with the specified container and name.
@@ -106,6 +101,8 @@ public class VariableClock extends Clock {
      *   or if the base class throws it.
      */
     public void fire() throws IllegalActionException {
+        // FIXME
+        double time = getDirector().getModelTime().getDoubleValue();
         if ((periodControl.getWidth() > 0) && periodControl.hasToken(0)) {
             Token in = periodControl.get(0);
             period.setToken(in);

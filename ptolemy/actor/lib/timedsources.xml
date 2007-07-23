@@ -8,7 +8,7 @@
 <doc>Sources that depend on time.</doc>
 
 <entity name="Clock" class="ptolemy.actor.lib.Clock">
-<doc>Create a set of pulses</doc>
+<doc>Create periodic timed events.</doc>
 </entity>
 
 <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
@@ -23,9 +23,7 @@
 class="ptolemy.actor.lib.TriggeredClock">
 <doc>Create a generalized square wave, with start and stop ports</doc>
 </entity>
-<entity name="VariableClock" class="ptolemy.actor.lib.VariableClock">
-<doc>Create a sequence of tokens with increasing value</doc>
-</entity>
+
 
       </group>
     ?>

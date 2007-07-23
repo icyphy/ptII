@@ -27,6 +27,8 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.Manager;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -41,6 +43,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -48,21 +51,17 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  This actor produces a periodic signal, a sequence of events at
- regularly spaced intervals. It can generate finite pulses by specifying
- a finite <i>numberOfCycles</i>. The numberOfCycles has a default value
- as -1, indicating infinite length of executions. If numberOfCycles is
- a positive number, once the specified number of cycles has been completed,
- then this actor returns false from the postfire method.
- <p>
+ regularly spaced intervals.
  At the beginning of each time interval of length given by <i>period</i>,
+ starting from the time at which initialize() is invoked,
  this actor initiates a sequence of output events with values given by
  <i>values</i> and offset into the period given by <i>offsets</i>.
  These parameters contain arrays, which are required to have the same length.
  The <i>offsets</i> array contains doubles, which
  must be nondecreasing and nonnegative,
  or an exception will be thrown when it is set.
- Moreover, its largest entry must be smaller than <i>period</i>
- or an exception will be thrown by the fire() method.
+ If any entry is greater than or equal to the <i>period</i>
+ then the corresponding output will never be produced.
  <p>
  The <i>values</i> parameter by default
  contains an array of IntTokens with values 1 and 0.  The default
@@ -70,21 +69,68 @@ import ptolemy.kernel.util.Workspace;
  alternating 1 and 0 with 50% duty cycle.  The default period
  is 2.0.
  <p>
- The actor uses the fireAt() method of the director to request
- firing at the beginning of each period plus each of the offsets.
- <p>
  The type of the output can be any token type. This type is inferred
  from the element type of the <i>values</i> parameter.
  <p>
- This actor is a timed source; the untimed version is Pulse.
+ If the <i>period</i> is changed at any time, either by
+ providing an input or by changing the parameter, then the
+ new period will take effect as soon as possible. That is,
+ if there is already a period in progress, it may be cut
+ short if the new period is shorter.
  <p>
- There is another kind of clock called ContinuousClock, which produces
- a square wave instead of a sequence of events. The ContinuousClock
- is a special actor for continuous-time domain. One of their key differences
- is that a Clock outputs a DISCRETE signal while a ContinuousClock outputs
- a CONTINUOUS signal.
+ This actor can generate finite sequences by specifying
+ a finite <i>numberOfCycles</i>. The numberOfCycles has a default value
+ UNBOUNDED, indicating infinite length of executions. If numberOfCycles is
+ a positive number, once the specified number of cycles has been completed,
+ then this actor returns false from the postfire() method, which indicates
+ to the director that the actor should not be fired again.
+ (A cycle is "completed" each time the last event in the <i>values</i>
+ array is produced).
+ <p>
+ The actor can also generate a finite sequence by giving a finite
+ value to the <i>stopTime</i> parameter. This gives a time rather than
+ a number of cycles, and thus can be used to stop the clock in the middle
+ of a cycle, unlike <i>numberOfCycles</i>.  Just like <i>numberOfCycles</i>,
+ when the stop time is reached, the actor's postfire() method returns
+ false.
+ <p>
+ If the <i>trigger</i> input is connected, then an output will only
+ be produced if a input has been received since the last output.
+ The trigger input has no effect on the first output. After the
+ first output event, no further output event will be produced
+ until a time greater than or equal to the time at which a trigger
+ input is received. At that time, the output produced will have
+ whatever value would have been produced if the trigger input
+ was not connected. Note that this trigger is typically useful
+ in a feedback situation, where the output of the clock
+ eventually results in a trigger input. If the time-stamp
+ of that trigger input is less than the time between clock
+ events, then the clock will behave as if there were no
+ trigger input. Otherwise, it will "skip beats."
+ <p>
+ This actor can be a bit tricky to use inside a ModalModel.
+ In particular, if the actor is in a state refinement, then
+ it may "skip a beat" because of the state not being the current
+ state at the time of the beat. If this occurs, the clock will
+ simply stop firing, and will produce no further outputs.
+ To prevent this, the clock may be reinitialized
+ (by setting the <i>reset</i> flag
+ of a modal model transition). Alternatively, you can assign
+ a value to the
+ the <i>period</i> of the Clock in the <i>setActions</i>
+ of the transition. This will also have the effect of
+ waking up the clock, but with a subtle difference.
+ If you use a <i>reset</i> transition, the clock starts
+ over upon entering the destination state. If you set
+ the <i>period</i> parameter instead, then the clock
+ behaves as if it had been running all along (except
+ that its period may get changed). Thus, in the first
+ case, the output events are aligned with the time
+ of the transition, while in the second case, they
+ are aligned with the start time of the model execution.
+ <p>
+ This actor is a timed source; the untimed version is Pulse.
 
- @see ptolemy.domains.ct.lib.ContinuousClock
  @author Edward A. Lee, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.3
@@ -104,7 +150,7 @@ public class Clock extends TimedSource {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        period = new Parameter(this, "period");
+        period = new PortParameter(this, "period");
         period.setExpression("2.0");
         period.setTypeEquals(BaseType.DOUBLE);
 
@@ -126,9 +172,14 @@ public class Clock extends TimedSource {
         attributeChanged(values);
 
         // Set the numberOfCycles parameter.
+        // Create a symbolic name for the default.
+        Parameter unbounded = new Parameter(this, "UNBOUNDED");
+        unbounded.setPersistent(false);
+        unbounded.setExpression("-1");
+        unbounded.setVisibility(Settable.EXPERT);
         numberOfCycles = new Parameter(this, "numberOfCycles");
         numberOfCycles.setTypeEquals(BaseType.INT);
-        numberOfCycles.setExpression("-1");
+        numberOfCycles.setExpression("UNBOUNDED");
 
         // Set the output signal type as DISCRETE to indicate
         // that the outputs of this actor are discrete events.
@@ -143,8 +194,8 @@ public class Clock extends TimedSource {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The number of cycles to produce, or -1 to specify no limit.
-     *  This is an integer with default -1.
+    /** The number of cycles to produce, or UNBOUNDED to specify no limit.
+     *  This is an integer with default UNBOUNDED.
      */
     public Parameter numberOfCycles;
 
@@ -155,9 +206,9 @@ public class Clock extends TimedSource {
     public Parameter offsets;
 
     /** The period of the output waveform.
-     *  This parameter must contain a DoubleToken, and it defaults to 2.0.
+     *  This is a double that defaults to 2.0.
      */
-    public Parameter period;
+    public PortParameter period;
 
     /** The values that will be produced at the specified offsets.
      *  This parameter must contain an ArrayToken, and it defaults to
@@ -198,6 +249,14 @@ public class Clock extends TimedSource {
 
                 previous = _offsets[i];
             }
+            // Re-initialize the actor if we are running.
+            if (getManager() != null) {
+                Manager.State state = getManager().getState();
+                if (state == Manager.ITERATING || state == Manager.PAUSED) {
+                    // Reinitialize.
+                    initialize();
+                }
+            }
         } else if (attribute == period) {
             double periodValue = ((DoubleToken) period.getToken())
                     .doubleValue();
@@ -207,6 +266,36 @@ public class Clock extends TimedSource {
                         "Period is required to be positive.  "
                                 + "Period given: " + periodValue);
             }
+            // Schedule the next firing if we are running.
+            if (getManager() != null) {
+                Manager.State state = getManager().getState();
+                if (state == Manager.ITERATING || state == Manager.PAUSED) {
+                    // Need to update the cycle start time in case the
+                    // clock has been dormant (e.g. in a modal model).
+                    // Use the old period to do this.
+                    Time currentTime = getDirector().getModelTime();
+                    if (_previousPeriodValue == 0.0) {
+                        _previousPeriodValue = periodValue;
+                    }
+                    while (_cycleStartTime.add(periodValue).compareTo(
+                            currentTime) <= 0) {
+                        _cycleStartTime = _cycleStartTime.add(_previousPeriodValue);
+                    }
+                    // Need to also update the phase.
+                    // NOTE: If two successive offsets are identical,
+                    // then this will always select the first matching
+                    // phase. Is this the right thing to do?
+                    _phase = 0;
+                    Time nextFiringTime = _cycleStartTime.add(_offsets[0]);
+                    while (nextFiringTime.compareTo(currentTime) < 0 
+                            && _phase < _offsets.length - 1) {
+                        _phase++;
+                        nextFiringTime = _cycleStartTime.add(_offsets[_phase]);
+                    }
+                    getDirector().fireAt(this, nextFiringTime);
+                }
+            }
+            _previousPeriodValue = periodValue;
         } else {
             super.attributeChanged(attribute);
         }
@@ -234,16 +323,23 @@ public class Clock extends TimedSource {
         return newObject;
     }
 
-    /** Output the current value of the clock.
+    /** Output the current value of the clock if the time is right
+     *  and, if connected, a trigger has been received.
      *  @exception IllegalActionException If
      *   the value in the offsets parameter is encountered that is greater
      *   than the period, or if there is no director.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
-
-        // Get the current time and period.
+        // Cannot call super.fire() because it consumes
+        // trigger inputs.
+        
+        // Get the current time.
         Time currentTime = getDirector().getModelTime();
+        if (_debugging) {
+            _debug("Called fire() at time " + currentTime);
+        }
+        // Update the period.
+        period.update();
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
 
         if (_debugging) {
@@ -256,92 +352,91 @@ public class Clock extends TimedSource {
 
         // Use Time.NEGATIVE_INFINITY to indicate that no refire
         // event should be scheduled because we aren't at a phase boundary.
+        // This could happen, for example, if we get a trigger input.
         _tentativeNextFiringTime = Time.NEGATIVE_INFINITY;
 
         // By default, the cycle count will not be incremented.
         _tentativeCycleCountIncrement = 0;
+        
+        // Check the trigger input, if it is connected.
+        boolean triggerConnected = false;
+        if (trigger.numberOfSources() > 0) {
+            triggerConnected = true;
+            for (int i = 0; i < trigger.getWidth(); i++) {
+                if (trigger.isKnown(i) && trigger.hasToken(i)) {
+                    trigger.get(i);
+                    _tentativeTriggered = true;
+                }
+            }
+        }
 
-        // In case current time has reached or crossed a boundary between
-        // periods, update it.  Note that normally it will not
-        // have advanced by more than one period
-        // (unless, perhaps, the entire domain has been dormant
-        // for some time, as might happen for example in a hybrid system).
-        // But do not do this if we are before the first iteration.
+        // A cycle count of 0 is used to indicate that we are done firing,
+        // so if it's zero, do nothing.
         if (_tentativeCycleCount > 0) {
+            // In case current time has reached or crossed a boundary between
+            // periods, update it.  Note that normally it will not
+            // have advanced by more than one period
+            // (unless, perhaps, the entire domain has been dormant
+            // for some time, as might happen for example in a modal model).
+            // But do not do this if we are before the first iteration.
+            // NOTE: This used to increment only if <, not if ==.
+            // But this isn't quite right. If we are right at the end
+            // of a cycle, then we are also at the beginning of the next
+            // cycle (cycleStartTime + period == currentTime). So we should
+            // change things so that we are at the start of the next cycle.
+            // EAL 7/20/07.
+            // NOTE: This is just a modulo operation. Better way to do it?
             while (_tentativeCycleStartTime.add(periodValue).compareTo(
-                    currentTime) < 0) {
+                    currentTime) <= 0) {
                 _tentativeCycleStartTime = _tentativeCycleStartTime
                         .add(periodValue);
             }
 
-            Time currentPhaseTime = _tentativeCycleStartTime
-                    .add(_offsets[_tentativePhase]);
-
-            // Adjust the phase if time has moved beyond the current phase.
-            if (currentTime.compareTo(currentPhaseTime) == 0) {
-                // Phase boundary.  Change the current value.
-                _tentativeCurrentValue = _getValue(_tentativePhase);
-
-                // Increment to the next phase.
+            // Next figure out what phase we are in.
+            // NOTE: This could be optimized to remember the previous
+            // phase and start from there, but it's probably not worth
+            // the extra complexity.
+            _tentativePhase = 0;
+            Time phaseStartTime = _tentativeCycleStartTime.add(_offsets[0]);
+            while (phaseStartTime.compareTo(currentTime) < 0 
+                    && _tentativePhase < _offsets.length - 1) {
                 _tentativePhase++;
-
-                if (_tentativePhase >= _offsets.length) {
-                    _tentativePhase = 0;
-
-                    // Schedule the first firing in the next period.
-                    _tentativeCycleStartTime = _tentativeCycleStartTime
-                            .add(periodValue);
-
-                    // Indicate that the cycle count should increase.
-                    _tentativeCycleCountIncrement++;
+                phaseStartTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+            }
+            // The above finds the first phase that matches the current time.
+            // But if successive offsets are identical, then we need to increase
+            // the phase.
+            if (_tentativePhase <= _phase
+                    && _offsets.length > _phase + 1
+                    && _offsets[_tentativePhase] == _offsets[_phase + 1]) {
+                _tentativePhase = _phase + 1;
+            }
+            // Produce an output only if we exactly match a phase time
+            // and, if the trigger input is connected, we have been triggered.
+            // Also make sure that if the phase is the same as the previous phase,
+            // then time has incremented.
+            if (phaseStartTime.equals(currentTime)
+                    && _tentativeTriggered
+                    && (_tentativePhase != _phase || !phaseStartTime.equals(_previousOutputTime))) {
+                output.send(0, _getValue(_tentativePhase));
+                // If the phase is the last, then increment the cycle count.
+                if (_tentativePhase == _offsets.length - 1) {
+                    _tentativeCycleCountIncrement = 1;
                 }
-
-                if (_offsets[_tentativePhase] >= periodValue) {
-                    throw new IllegalActionException(this, "Offset number "
-                            + _tentativePhase + " with value "
-                            + _offsets[_tentativePhase]
-                            + " must be strictly less than the "
-                            + "period, which is " + periodValue);
-                }
-
-                // Schedule the next firing in this period.
-                // NOTE: In the TM domain, this may not occur if we have
-                // missed a deadline.  As a consequence, the clock will stop.
-                _tentativeNextFiringTime = _tentativeCycleStartTime
-                        .add(_offsets[_tentativePhase]);
-
-                if (_debugging) {
-                    _debug("next firing is at " + _tentativeNextFiringTime);
-                }
-
-                // If we are beyond the number of cycles requested, then
-                // change the output value to zero.
-                // FIXME: is this a desired behavior? why not simply stop the firing?
-                // NOTE: This actor is intended to be used in DE domain. If this actor
-                // serves as a source, when the cycle limit is reached, it should stop
-                // producing more events and consequently the model stops.
-                int cycleLimit = ((IntToken) numberOfCycles.getToken())
-                        .intValue();
-
-                if (cycleLimit > 0) {
-                    Time stopTime = _tentativeStartTime.add(cycleLimit
-                            * periodValue);
-
-                    if (currentTime.compareTo(stopTime) >= 0) {
-                        _tentativeCurrentValue = _tentativeCurrentValue.zero();
-                    }
-                }
-
-                // Used to use any negative number here to indicate
-                // that no future firing should be scheduled.
-                // Now, we leave it up to the director, unless the value
-                // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
-                output.send(0, _tentativeCurrentValue);
-
-                if (_debugging) {
-                    _debug("Output: " + _tentativeCurrentValue + ".");
+                if (triggerConnected) {
+                    _tentativeTriggered = false;
                 }
             }
+            // Schedule the next firing. This must be done even if we
+            // have not been triggered. The time of the next firing
+            // is the cycle start time incremented by either the period
+            // or the next phase offset.
+            double increment = periodValue + _offsets[0];
+            int phase = _tentativePhase + 1;
+            if (phase < _offsets.length) {
+                increment = _offsets[phase];
+            }
+            _tentativeNextFiringTime = _tentativeCycleStartTime.add(increment);
         }
     }
 
@@ -357,21 +452,30 @@ public class Clock extends TimedSource {
             _debug("Initializing " + getFullName() + ".");
         }
 
-        Time timeToStart = getDirector().getModelTime();
-        _cycleStartTime = timeToStart;
-        _startTime = timeToStart.add(_offsets[0]);
-        _currentValue = _getValue(0).zero();
-        _phase = 0;
-        _tentativeNextFiringTime = _startTime;
+        // Start cycles at the current time.
+        // This is important in modal models that reinitialize the actor.
+        _cycleStartTime = getDirector().getModelTime();
+        _tentativeNextFiringTime = _cycleStartTime.add(_offsets[0]);
+        _previousOutputTime = Time.NEGATIVE_INFINITY;
+        _previousPeriodValue = 0.0;
+        
+        // Make sure the first output is enabled.
+        _triggered = true;
+        
+        // Indicate that no previous phase has been output.
+        _phase = -1;
 
-        // As in fire(), we use the strategy pattern so that derived classes
+        // Initialize the _done flag and the cycle count.
+        // We use the strategy pattern so that derived classes
         // can do something different here.
         _initializeCycleCount();
 
-        // Subclasseses may disable starting by setting _done to true.
+        // Schedule the first firing to start the clock.
+        // Subclasseses may disable starting by setting _done to true
+        // in their _initializeCycleCount() method.
         if (!_done) {
             if (_debugging) {
-                _debug("Requesting firing at time " + _startTime);
+                _debug("Requesting firing at time " + _tentativeNextFiringTime);
             }
 
             // This should be the last line, because in threaded domains,
@@ -389,26 +493,35 @@ public class Clock extends TimedSource {
         if (_debugging) {
             _debug("Postfiring at " + getDirector().getModelTime());
         }
-
         _updateStates();
         return super.postfire();
     }
 
     /** Check that the length of the <i>values</i> and
      *  <i>offsets</i> parameters are the same.
+     *  @return True.
      *  @exception IllegalActionException If the <i>values</i> and
      *   <i>offsets</i> parameters do not have the same length.
      */
     public boolean prefire() throws IllegalActionException {
-        // FIXME: why put the check here???
+        if (_debugging) {
+            _debug("Called prefire().");
+        }
+        // Check the length of the values and offsets arrays.
+        // This is done here because it cannot be done in
+        // attributeChanged(), since the two parameters are set
+        // separately, and checking in initialize() is not really
+        // sufficient, since the values of these parameters can
+        // change at run time.
         ArrayToken val = (ArrayToken) (values.getToken());
-
         if (_offsets.length != val.length()) {
             throw new IllegalActionException(this,
                     "Values and offsets vectors do not have the same length.");
         }
 
-        return super.prefire();
+        // Cannot call super.prefire() because it has different semantics
+        // for the trigger input.
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -450,12 +563,10 @@ public class Clock extends TimedSource {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _updateTentativeValues() throws IllegalActionException {
-        _tentativeCurrentValue = _currentValue;
         _tentativeCycleCount = _cycleCount;
         _tentativeCycleStartTime = _cycleStartTime;
         _tentativeDone = _done;
-        _tentativePhase = _phase;
-        _tentativeStartTime = _startTime;
+        _tentativeTriggered = _triggered;
     }
 
     /** Update the states and request refiring if necessary.
@@ -464,17 +575,12 @@ public class Clock extends TimedSource {
      */
     protected void _updateStates() throws IllegalActionException {
         _cycleStartTime = _tentativeCycleStartTime;
-        _currentValue = _tentativeCurrentValue;
-        _phase = _tentativePhase;
+        _triggered = _tentativeTriggered;
         _cycleCount = _tentativeCycleCount;
-        _startTime = _tentativeStartTime;
         _done = _tentativeDone;
-
         _cycleCount += _tentativeCycleCountIncrement;
-
-        if (_debugging) {
-            _debug("Phase for next iteration: " + _phase);
-        }
+        _phase = _tentativePhase;
+        _previousOutputTime = getDirector().getModelTime();
 
         int cycleLimit = ((IntToken) numberOfCycles.getToken()).intValue();
 
@@ -495,7 +601,7 @@ public class Clock extends TimedSource {
         // This should be computed after the above so that a firing
         // gets requested for the tail end of the output pulses.
         _done = _done
-                || ((cycleLimit > 0) && (_cycleCount > cycleLimit) && (_phase == 0));
+                || ((cycleLimit > 0) && (_cycleCount > cycleLimit));
 
         if (_done) {
             _cycleCount = 0;
@@ -513,9 +619,6 @@ public class Clock extends TimedSource {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The current value of the clock output. */
-    protected transient Token _currentValue;
-
     /** The count of cycles executed so far, or 0 before the start. */
     protected transient int _cycleCount;
 
@@ -529,17 +632,20 @@ public class Clock extends TimedSource {
 
     /** Cache of offsets array value. */
     protected transient double[] _offsets;
-
+    
     /** The phase of the next output. */
     protected transient int _phase;
+    
+    /** A record of the previous output time. */
+    protected transient Time _previousOutputTime;
+    
+    /** A record of the previous value of the period. */
+    protected transient double _previousPeriodValue;
 
-    /** The time at which output starts. */
-    protected transient Time _startTime;
+    /** Indicator of whether a trigger input has arrived. */
+    protected transient boolean _triggered = true;
 
     // Following variables recall data from the fire to the postfire method.
-
-    /** The tentative current value of the clock output. */
-    protected transient Token _tentativeCurrentValue;
 
     /** The tentative count of cycles executed so far. */
     protected transient int _tentativeCycleCount;
@@ -556,10 +662,10 @@ public class Clock extends TimedSource {
 
     /** The tentative time for next firing. */
     protected transient Time _tentativeNextFiringTime;
-
+    
     /** The tentative phase of the next output. */
     protected transient int _tentativePhase;
 
-    /** The tentative start time for the clock to produce output. */
-    protected transient Time _tentativeStartTime;
+    /** The tentative flag indicating whether we've been triggered. */
+    protected transient boolean _tentativeTriggered;
 }

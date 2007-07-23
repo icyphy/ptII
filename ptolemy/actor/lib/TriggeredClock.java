@@ -136,8 +136,7 @@ public class TriggeredClock extends Clock {
 
                 Time currentTime = getDirector().getModelTime();
                 _tentativeCycleStartTime = currentTime;
-                _tentativeStartTime = currentTime;
-                _tentativePhase = 0;
+                _tentativeTriggered = true;
                 _tentativeCycleCount = 1;
             }
         }
@@ -152,7 +151,6 @@ public class TriggeredClock extends Clock {
                 stop.get(0);
                 _tentativeDone = true;
                 _tentativeCycleCount = 0;
-                _tentativeCurrentValue = _tentativeCurrentValue.zero();
             }
         }
     }
