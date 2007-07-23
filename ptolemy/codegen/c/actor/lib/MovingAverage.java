@@ -56,19 +56,6 @@ public class MovingAverage extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code.
-     * The method reads in <code>fireBlock</code> from MovingAverage.c and
-     * replaces macros with their values and returns the processed code
-     * block.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        return processCode(super.generateFireCode());
-    }
-
-    /**
      * Generate preinitialize code.
      * Read the <code>CommonPreinitBlock</code> from MovingAverage.c
      * replace macros with their values and return the processed code
