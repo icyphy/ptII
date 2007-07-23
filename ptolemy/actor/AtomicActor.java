@@ -460,7 +460,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
-            _debug("Called prefire(), which returns true");
+            _debug("Called prefire().");
         }
 
         return true;
