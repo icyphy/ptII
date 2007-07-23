@@ -1,5 +1,9 @@
 /***declareBlock***/
 typedef char* StringToken;
+void notSupported(const char * method) {
+    fprintf(stderr, "%s not supported.\n", method);
+    exit(1);
+}
 /**/
 
 /***funcDeclareBlock***/
@@ -73,24 +77,21 @@ Token String_add(Token this, ...) {
 
 /***substractBlock***/
 Token String_substract(Token this, ...) {
-    fprintf(stderr, "String_substract not supported");
-    exit(1);
+    notSupported("String_substract");
     return emptyToken;
 }
 /**/
 
 /***multiplyBlock***/
 Token String_multiply(Token this, ...) {
-    fprintf(stderr, "String_multiply not supported");
-    exit(1);
+    notSupported("String_multiply");
     return emptyToken;
 }
 /**/
 
 /***divideBlock***/
 Token String_divide(Token this, ...) {
-    fprintf(stderr, "String_divide not supported");
-    exit(1);
+    notSupported("String_divide");
     return emptyToken;
 }
 /**/
@@ -109,8 +110,7 @@ Token String_zero(Token token, ...) {
 
 /***oneBlock***/
 Token String_one(Token this, ...) {
-    fprintf(stderr, "String_one not supported");
-    exit(1);
+    notSupported("String_one");
     return emptyToken;
 }
 /**/
