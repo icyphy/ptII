@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.ct.lib;
 
-import ptolemy.actor.lib.Clock;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -70,7 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class ContinuousClock extends Clock {
+public class ContinuousClock extends BaseClock {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.

@@ -135,7 +135,6 @@ public class TriggeredContinuousClock extends ContinuousClock {
 
                 Time currentTime = getDirector().getModelTime();
                 _tentativeCycleStartTime = currentTime;
-                _tentativeStartTime = currentTime;
                 _tentativePhase = 0;
                 _tentativeCycleCount = 1;
             }
