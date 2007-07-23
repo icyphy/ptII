@@ -1059,18 +1059,29 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (_debugging) {
             _debug("Commit transition ", _lastChosenTransition.getFullName());
         }
+        if (_lastChosenTransition.destinationState() == null) {
+            throw new IllegalActionException(this, _lastChosenTransition,
+                    "The transition is enabled but does not have a "
+                            + "destination state.");
+        }
+
+        // Set current time of the director of the destination
+        // refinement before executing actions because there may
+        // be attributeChanged() methods that are invoked that depend
+        // on current time.
+        Actor[] actors = _lastChosenTransition.destinationState().getRefinement();
+        if (actors != null) {
+            for (int i = 0; i < actors.length; ++i) {
+                actors[i].getDirector().setModelTime(
+                        getExecutiveDirector().getModelTime());
+            }
+        }
 
         Iterator actions = _lastChosenTransition.commitActionList().iterator();
 
         while (actions.hasNext() && !_stopRequested) {
             Action action = (Action) actions.next();
             action.execute();
-        }
-
-        if (_lastChosenTransition.destinationState() == null) {
-            throw new IllegalActionException(this, _lastChosenTransition,
-                    "The transition is enabled but does not have a "
-                            + "destination state.");
         }
 
         _currentState = _lastChosenTransition.destinationState();
@@ -1088,8 +1099,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 .getToken();
 
         if (resetToken.booleanValue()) {
-            Actor[] actors = _currentState.getRefinement();
-
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     if (_debugging) {
