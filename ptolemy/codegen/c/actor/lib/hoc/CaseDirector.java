@@ -80,10 +80,6 @@ public class CaseDirector extends Director {
         ptolemy.actor.lib.hoc.Case container = (ptolemy.actor.lib.hoc.Case) getComponent()
                 .getContainer();
 
-        System.out.println("CaseDirector: " + container.control.getType());
-
-
-
         boolean useSwitch = false;
         if (container.control.getType() == BaseType.BOOLEAN
                 || container.control.getType() == BaseType.INT) {
