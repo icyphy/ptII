@@ -45,9 +45,15 @@ Token Matrix_delete(Token token, ...) {
 
 /***convertBlock***/
 Token Matrix_convert(Token token, ...) {
-    Token emptyToken;
-    fprintf(stderr, "Matrix_convert() not yet implemented.\n");
-    return emptyToken;     
+    /* token.payload.Matrix = (MatrixToken) malloc(sizeof(struct matrix));
+       token.payload.Matrix->row = 1;
+       token.payload.Matrix->column = 1;
+       result.payload.Matrix->elements = (Token*) calloc(1, sizeof(Token));
+       token.type = TYPE_Matrix;
+       Matrix_set(token, 0, 0, token);
+       return token;
+    */
+    return Matrix_new(1, 1, 1, token, token.type);
 }
 /**/
 
@@ -195,37 +201,46 @@ Token Matrix_toString(Token this, ...) {
 // Return a new Array token.
 Token Matrix_multiply(Token this, ...) {
     int i, j;
-    va_list argp; 
-    Token result; 
+    va_list argp;
+    Token result;
     Token element, otherToken;
     
     va_start(argp, this);
     otherToken = va_arg(argp, Token);
-
-    result = Matrix_new(this.payload.Matrix->row, this.payload.Matrix->row, 0);
-    
+    if (otherToken.type == TYPE_Matrix
+            && otherToken.payload.Matrix->row == 1
+            && otherToken.payload.Matrix->column == 1) {
+        // Handle simple scaling by a 1x1 matrix
+        result = Matrix_new(this.payload.Matrix->row, this.payload.Matrix->column, 0);
+    } else {
+        result = Matrix_new(this.payload.Matrix->row, this.payload.Matrix->row, 0);
+    }
     switch (otherToken.type) {
-    case TYPE_Matrix:        
+        case TYPE_Matrix:
         for (i = 0; i < this.payload.Matrix->column; i++) {
             for (j = 0; j < this.payload.Matrix->row; j++) {
                 element = Matrix_get(this, j, i);
+                if (otherToken.payload.Matrix->row == 1
+                        && otherToken.payload.Matrix->column == 1) {
+                    Matrix_set(result, j, i, functionTable[(int)element.type][FUNC_multiply](element, Matrix_get(otherToken, 0, 0)));
+                }
             }
         }
         break;
-    #ifdef TYPE_Array
-    case TYPE_Array:
-        element = Array_new(this.payload.Matrix->column * 
-                this.payload.Matrix->row, 0);
+        #ifdef TYPE_Array
+        case TYPE_Array:
+        element = Array_new(this.payload.Matrix->column *
+        this.payload.Matrix->row, 0);
         for (i = 0; i < this.payload.Matrix->column; i++) {
             for (j = 0; j < this.payload.Matrix->row; j++) {
-                Array_set(element, 
-                        i + this.payload.Matrix->row * j,
-                        Matrix_get(this, j, i));
+                Array_set(element,
+                i + this.payload.Matrix->row * j,
+                Matrix_get(this, j, i));
             }
-        }        
+        }
         break;
-    #endif
-    default: 
+        #endif
+        default:
         for (i = 0; i < this.payload.Matrix->column; i++) {
             for (j = 0; j < this.payload.Matrix->row; j++) {
                 element = Matrix_get(this, j, i);
@@ -243,16 +258,15 @@ Token Matrix_multiply(Token this, ...) {
 // Return a new Array token.
 Token Matrix_divide(Token this, ...) {
     int i, j, index;
-    va_list argp; 
-    Token result; 
+    va_list argp;
+    Token result;
     Token element, otherToken;
     
     va_start(argp, this);
     otherToken = va_arg(argp, Token);
-
     
     switch (otherToken.type) {
-    case TYPE_Matrix:        
+        case TYPE_Matrix:
         for (i = 0; i < this.payload.Matrix->column; i++) {
             for (j = 0; j < this.payload.Matrix->row; j++) {
                 element = Matrix_get(this, j, i);
@@ -260,19 +274,18 @@ Token Matrix_divide(Token this, ...) {
             }
         }
         break;
-    #ifdef TYPE_Array
-    case TYPE_Array:
+        #ifdef TYPE_Array
+        case TYPE_Array:
         // Divide reverse.
         result = Array_new(otherToken.payload.Array->size, 0);
-
         for (i = 0; i < otherToken.payload.Array->size; i++) {
             element = Array_get(this, i);
             result.payload.Array->elements[i] = functionTable[TYPE_Matrix][FUNC_divide](this, element);
         }
         
         break;
-    #endif
-    default: 
+        #endif
+        default:
         result = Matrix_new(this.payload.Matrix->row, this.payload.Matrix->column, 0);
         
         for (i = 0, index = 0; i < this.payload.Matrix->column; i++) {
@@ -286,10 +299,6 @@ Token Matrix_divide(Token this, ...) {
     return result;
 }
 /**/
-
-
-
-
 
 /***toExpressionBlock***/
 Token Matrix_toExpression(Token this, ...) {
