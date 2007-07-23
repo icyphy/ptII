@@ -94,7 +94,7 @@ test ChangeRequest-3.1 {test DE example with period change} {
     $t start
     $t doublePeriod
     enumToObjects [$t finish]
-} {0.0 1.0 2.0 3.0 5.0 7.0 9.0 11.0}
+} {0.0 1.0 2.0 4.0 6.0 8.0 10.0 12.0}
 
 test ChangeRequest-3.2 {test DE example with inserted actor} {
     set t [java::new ptolemy.kernel.util.test.TestDE]
