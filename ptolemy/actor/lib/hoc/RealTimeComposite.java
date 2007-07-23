@@ -63,8 +63,18 @@ import ptolemy.util.MessageHandler;
  <i>t</i>.  If real time already exceeds <i>t</i>, then the firing
  may occur immediately. The firing always occurs in another thread.
  If the firing produces output events, then those are given time
- stamps corresponding to the real time elapsed since the start of execution,
- in seconds.
+ stamps equal to the current model time of the enclosing model.
+ 
+ FIXME: In a PTIDES system, we really want this time stamp to be
+ equal to the current real time when the firing occurred. But in
+ DE, this may be in the past, so this is not possible.
+ <p>
+ For various reasons, this actor is tricky to use. The most natural
+ domain to use it in is DE, providing it with input events with time
+ stamps that specify when to perform some action, such as an actuator
+ or display action. However, if the DE system is an open-loop system,
+ then model time of the DE system can get very far ahead of the
+ RealTimeComposite. 
  <p>
  FIXME On a finite run, the associated threads just hangs on a take().
  How to stop it?

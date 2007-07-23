@@ -166,9 +166,9 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                 }
                 try {
                     Clip clip = AudioSystem.getClip();
+                    clip.addLineListener(this);
                     AudioInputStream stream = AudioSystem.getAudioInputStream(fileOrURL.asURL());
                     clip.open(stream);
-                    clip.addLineListener(this);
                     clip.start();
                     _clips.add(clip);
                 } catch (Exception e) {
@@ -179,7 +179,13 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
             } else {
                 // Restart the last clip.
                 Clip clip = _clips.get(_clips.size() - 1);
-                clip.stop();
+                // NOTE: Possible race condition: could become inactive
+                // before the stop() is called, which could result in
+                // two stop notifications to the update() method.
+                // Will the Clip give to stop notifications?
+                if (clip.isActive()) {
+                    clip.stop();
+                }
                 clip.setFramePosition(0);
                 clip.start();
             }
