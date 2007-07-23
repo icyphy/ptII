@@ -82,7 +82,15 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
         }
 
         if (actor.divide.getWidth() > 0) {
-            _codeStream.appendCodeBlock("SetDenominatorBlock");
+            if (type == actor.divide.getType() 
+                || (isPrimitive(type)
+                        && isPrimitive(actor.divide.getType()))) {
+                _codeStream.appendCodeBlock("SetDenominatorBlock");
+            } else {
+                args.set(0, codeGenType(actor.divide.getType()));
+                _codeStream.appendCodeBlock("SetDenominatorBlockType", args);
+            }
+
         }
 
         for (int i = 1; i < actor.multiply.getWidth(); i++) {

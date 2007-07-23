@@ -20,6 +20,10 @@ $actorSymbol(numerator) = $tokenFunc($ref(divide#0)::one());
 $actorSymbol(denominator) = $ref(divide#0);
 /**/
 
+/***SetDenominatorBlockType($type)***/
+$actorSymbol(denominator) = $new($type($ref(divide#0)));
+/**/
+
 
 
 
