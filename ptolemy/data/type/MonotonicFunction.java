@@ -119,7 +119,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
     /** Override the base class to give a description of this term.
      *  @return A description of this term.
      */
-    public final String toString() {
+    public String toString() {
         String string = getVerboseString();
 
         if (string == null) {
