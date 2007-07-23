@@ -73,12 +73,13 @@ public class VectorDisassembler extends CCodeGeneratorHelper {
 
         StringBuffer fireCode = new StringBuffer();
         ArrayList args = new ArrayList();
-        args.add(Integer.valueOf(0));
+        args.add(Integer.valueOf(actor.output.getWidth()));
+        fireCode.append(_generateBlockCode("fireBlock", args));
 
-        Type type = actor.output.getType();
-        if (isPrimitive(type)) {
-            args.add(codeGenType(type));
-        }
+//         Type type = actor.output.getType();
+//         if (isPrimitive(type)) {
+//             args.add(codeGenType(type));
+//         }
         
 //         FIXME: we need a way to get the matrix dimensions here
 //         DoubleMatrixToken vector = (DoubleMatrixToken) actor.input.get(0);
@@ -89,12 +90,50 @@ public class VectorDisassembler extends CCodeGeneratorHelper {
 //         }
 
 //         int min = Math.min(vector.getRowCount(), actor.output.getWidth());
-        int min = actor.output.getWidth();
-        for (int i = 0; i < min; i++) {
-            args.set(0, Integer.valueOf(i));
-            fireCode.append(_generateBlockCode("fireBlock", args));
-        }
+//        int min = actor.output.getWidth();
+//         int min = Math.min(actor.input.getWidth(), actor.output.getWidth());
+//         for (int i = 0; i < min; i++) {
+//             args.set(0, Integer.valueOf(i));
+//             fireCode.append(_generateBlockCode("fireBlock", args));
+//         }
 
+
+
+        ArrayList args2 = new ArrayList();
+        Type type = actor.output.getType();
+        if (isPrimitive(type)) {
+            args2.add(codeGenType(type));
+            fireCode.append(_generateBlockCode("fireBlock2", args2));
+        } else {
+            fireCode.append(_generateBlockCode("fireBlock2"));
+        }
+            
+        ArrayList args3 = new ArrayList();
+        args3.add(Integer.valueOf(0));
+
+        for (int i = 0; i < actor.output.numberOfSinks(); i++) {
+            args3.set(0, Integer.valueOf(i));
+            fireCode.append(_generateBlockCode("fireBlock3", args3));
+        }
         return processCode(fireCode.toString());
+    }
+
+    /**
+     * Generate preinitialize code.
+     * Read the <code>preinitBlock</code>,
+     * replace macros with their values and return the processed code string.
+     * @return The processed code string.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        super.generatePreinitializeCode();
+        ptolemy.actor.lib.VectorDisassembler actor = (ptolemy.actor.lib.VectorDisassembler) getComponent();
+
+        ArrayList args = new ArrayList();
+        args.add(Integer.valueOf(actor.output.getWidth()));
+
+        _codeStream.appendCodeBlock("preinitBlock", args);
+        return processCode(_codeStream.toString());
     }
 }
