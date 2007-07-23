@@ -56,6 +56,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.gui.GUIUtilities;
@@ -248,6 +249,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
             highlightColor = new ColorAttribute((NamedObj)culprit, "_highlightColor");
             ((ColorAttribute)highlightColor).setExpression("{1.0, 0.0, 0.0, 1.0}");
             highlightColor.setPersistent(false);
+            ((ColorAttribute)highlightColor).setVisibility(Settable.EXPERT);
             _errorHighlights.add(highlightColor);
         }
     }
