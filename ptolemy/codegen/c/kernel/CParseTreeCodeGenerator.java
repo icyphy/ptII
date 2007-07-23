@@ -837,6 +837,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         ptolemy.data.Token result = null;
 
         if (node.getForm() == 1) {
+            Type valueType = null;
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < column; j++) {
                     _fireCode.append(", ");
@@ -846,25 +847,33 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                     int nextIndex = _fireCode.length();
                     tokens[index] = _evaluateChild(node, index);
 
-                    Type valueType = tokens[index].getType();
+                    valueType = tokens[index].getType();
 
                     if (valueType.equals(BaseType.INT)) {
                         _fireCode.insert(nextIndex, "$new(Int(");
-                        _fireCode.append(")), TYPE_Int");
+                        _fireCode.append("))");
+
+                        //_fireCode.append(")), TYPE_Int");
                     } else if (valueType.equals(BaseType.LONG)) {
                         _fireCode.insert(nextIndex, "$new(Long(");
-                        _fireCode.append(")), TYPE_Long");
+                        _fireCode.append("))");
+                        //_fireCode.append(")), TYPE_Long");
                     } else if (valueType.equals(BaseType.DOUBLE)) {
                         _fireCode.insert(nextIndex, "$new(Double(");
-                        _fireCode.append(")), TYPE_Double");
+                        _fireCode.append("))");
+                        //_fireCode.append(")), TYPE_Double");
                     } else if (valueType.equals(BaseType.STRING)) {
                         _fireCode.insert(nextIndex, "$new(String(");
-                        _fireCode.append(")), TYPE_String");
+                        _fireCode.append("))");
+                        //_fireCode.append(")), TYPE_String");
                     } else if (valueType instanceof ArrayType) {
-                        _fireCode.append(", TYPE_Array");
+                        //_fireCode.append(", TYPE_Array");
                     }
                 }
             }
+
+            _fireCode.append(", TYPE_"
+                    + CodeGeneratorHelper.codeGenType(valueType));
 
             result = MatrixToken.arrayToMatrix(tokens, node.getRowCount(), node
                     .getColumnCount());

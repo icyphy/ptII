@@ -137,8 +137,7 @@ test CParseTreeCodeGenerator-13.1 {visitMethodCallNode} {
     Node ptolemy.data.expr.ASTPtLeafNode evaluated to 6
   Node ptolemy.data.expr.ASTPtMatrixConstructNode evaluated to [1, 2; 3, 4; 5, 6]
 Node ptolemy.data.expr.ASTPtMethodCallNode evaluated to [1, 2; 3, 4; 5, 6]
-} {($new(Matrix(3, 2, 6, $new(Int(1)), TYPE_Int, $new(Int(2)), TYPE_Int, $new(Int(3)), TYPE_Int, $new(Int(4)), TYPE_Int, $new(Int(5)), TYPE_Int, $new(Int(6)), TYPE_Int)))->getRowCount()}}
-
+} {($new(Matrix(3, 2, 6, $new(Int(1)), $new(Int(2)), $new(Int(3)), $new(Int(4)), $new(Int(5)), $new(Int(6)), TYPE_Int)))->getRowCount()}}
 
 test CParseTreeCodeGenerator-14.1 {visitPowerNode} {
     parseTreeTraceTest {2^3}
