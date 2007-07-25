@@ -407,7 +407,7 @@ public class FixedPointScheduler extends Scheduler {
             // NOTE: In case we ever support ports that are both input
             // and output, we do want to list a port if it is an output,
             // regardless of whether it is also an unconnected input.
-            if (ioPort.isInput() && (ioPort.numberOfSources() == 0)) {
+            if (ioPort.isInput() && (ioPort.sourcePortList().size() == 0)) {
                 continue;
             }
             actor = (Actor) ioPort.getContainer();
@@ -464,7 +464,7 @@ public class FixedPointScheduler extends Scheduler {
             // NOTE: In case we ever support ports that are both input
             // and output, we do want to list a port if it is an output,
             // regardless of whether it is also an unconnected input.
-            if (!ioPort.isOutput() && (ioPort.numberOfSources() == 0)) {
+            if (!ioPort.isOutput() && (ioPort.sourcePortList().size() == 0)) {
                 continue;
             }
             
