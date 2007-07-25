@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="PowerVariability" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 4, 1015, 748}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 4, 1015, 759}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 641]">
     </property>
@@ -151,7 +151,7 @@ power is shown on the plot.</text></svg></configure>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.0, 320.5}">
     </property>
     <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 250.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320, 250]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -217,7 +217,7 @@ power is shown on the plot.</text></svg></configure>
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
             </property>
@@ -260,13 +260,15 @@ power is shown on the plot.</text></svg></configure>
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={732, 222, 330, 237}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[322, 182]">
+            </property>
             <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
             </property>
             <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
             </property>
             <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Received Data">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={732, 222, 292, 229}}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 140.0">
             </property>
@@ -305,7 +307,7 @@ power is shown on the plot.</text></svg></configure>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 487, 508, 263}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 487, 508, 263}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 208]">
             </property>
@@ -444,7 +446,7 @@ power is shown on the plot.</text></svg></configure>
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
             </property>

@@ -550,7 +550,7 @@ GraphicalLocator)</text></svg></configure>
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=outputRange}">
             </property>
-            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location={double}, time=double}">
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=arrayType(double, 2), time=double}">
             </property>
         </port>
     </entity>
@@ -574,7 +574,7 @@ GraphicalLocator)</text></svg></configure>
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=outputRange}">
             </property>
-            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location={double}, time=double}">
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=arrayType(double, 2), time=double}">
             </property>
         </port>
     </entity>
@@ -598,7 +598,7 @@ GraphicalLocator)</text></svg></configure>
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=outputRange}">
             </property>
-            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location={double}, time=double}">
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=arrayType(double, 2), time=double}">
             </property>
         </port>
     </entity>
@@ -622,7 +622,7 @@ GraphicalLocator)</text></svg></configure>
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=outputRange}">
             </property>
-            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location={double}, time=double}">
+            <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=arrayType(double, 2), time=double}">
             </property>
         </port>
     </entity>
@@ -785,14 +785,14 @@ location can be found, then plot that location.</text></svg></configure>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="type" class="ptolemy.actor.TypeAttribute" value="{location={double}, time=double}">
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=arrayType(double, 2), time=double}">
                 </property>
                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
                 </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="type" class="ptolemy.actor.TypeAttribute" value="{double}">
+                <property name="type" class="ptolemy.actor.TypeAttribute" value="arrayType(double, 2)">
                 </property>
                 <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
                 </property>
