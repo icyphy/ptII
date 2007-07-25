@@ -604,12 +604,6 @@ public class DEDirector extends Director implements TimedDirector {
         // method of this director is responsible to report the next
         // earliest event in the event queue to the higher level.
         synchronized (_eventQueue) {
-            // Changed to use the current time rather than throw an
-            // exception. This allows actors to reliably use fireAt()
-            // to post events from separate threads.
-            if (time.compareTo(_currentTime) < 0) {
-                time = _currentTime;
-            }
             _enqueueEvent(actor, time);
             _eventQueue.notifyAll();
         }
