@@ -28,7 +28,11 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * Generate C code for an actor that produces an output token on
@@ -50,5 +54,65 @@ public class SubscriptionAggregator extends CCodeGeneratorHelper {
      */
     public SubscriptionAggregator(ptolemy.actor.lib.SubscriptionAggregator actor) {
         super(actor);
+    }
+
+    /**
+     * Generate fire code.
+     * The method reads in <code>fireBlock</code> from Subscriber.c and
+     * replaces macros with their values and returns the processed code
+     * block.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        super.generateFireCode();
+
+        ptolemy.actor.lib.SubscriptionAggregator actor = (ptolemy.actor.lib.SubscriptionAggregator) getComponent();
+
+        if (actor.input.getWidth() > 0) {
+            _codeStream.appendCodeBlock("fireBlock0", false);
+            ArrayList args = new ArrayList();
+            args.add(Integer.valueOf(0));
+            for (int i = 1; i < actor.input.getWidth(); i++) {
+                args.set(0, Integer.valueOf(i));
+                _codeStream.appendCodeBlock("fireBlock", args);
+            }
+            _codeStream.appendCodeBlock("fireBlock2", false);
+        }
+        return processCode(_codeStream.toString());
+    }
+    /**
+     * Generate preinitialize code.
+     * Read the <code>preinitBlock</code> from SubscriptionAggregator.c
+     * replace macros with their values and returns the processed code
+     * block.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        super.generatePreinitializeCode();
+
+        ptolemy.actor.lib.SubscriptionAggregator actor = (ptolemy.actor.lib.SubscriptionAggregator) getComponent();
+
+        ArrayList args = new ArrayList();
+
+        if (!actor.operation.stringValue().equals("add")) {
+            throw new IllegalActionException("SubscriptionAggregator operation '"
+                    + actor.operation + "' not supported");
+        }
+        Type type = actor.output.getType();
+        args.add(targetType(type));
+
+        if (_codeStream.isEmpty()) {
+            _codeStream.append(_eol
+                    + _codeGenerator.comment("preinitialize "
+                            + getComponent().getName()));
+        }
+
+        _codeStream.appendCodeBlock("preinitBlock", args);
+
+        return processCode(_codeStream.toString());
     }
 }
