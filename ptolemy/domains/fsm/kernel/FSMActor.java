@@ -1098,6 +1098,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         BooleanToken resetToken = (BooleanToken) _lastChosenTransition.reset
                 .getToken();
 
+        actors = _lastChosenTransition.destinationState().getRefinement();
         if (resetToken.booleanValue()) {
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
