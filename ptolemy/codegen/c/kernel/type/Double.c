@@ -44,6 +44,20 @@ Token Double_equals(Token this, ...) {
 }
 /**/
 
+/***isCloseToBlock***/
+Token Double_isCloseTo(Token this, ...) {
+    va_list argp;
+    Token otherToken;
+    Token tolerance;
+    va_start(argp, this);
+    otherToken = va_arg(argp, Token);
+    tolerance = va_arg(argp, Token);
+
+    va_end(argp);
+    return Boolean_new(fabs(this.payload.Double - otherToken.payload.Double) < tolerance.payload.Double);
+}
+/**/
+
 /***printBlock***/
 Token Double_print(Token this, ...) {
     printf("%g", this.payload.Double);
