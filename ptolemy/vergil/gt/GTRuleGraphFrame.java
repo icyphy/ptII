@@ -53,7 +53,7 @@ import javax.swing.event.ChangeListener;
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.GraphTransformationException;
 import ptolemy.actor.gt.SingleRuleTransformer;
-import ptolemy.actor.gt.DepthFirstTransformer;
+import ptolemy.actor.gt.RecursiveGraphMatcher;
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.expr.FileParameter;
@@ -349,7 +349,8 @@ implements ChangeListener {
 
         private MoMLParser _parser = new MoMLParser();
 
-        private DepthFirstTransformer _transformer = new DepthFirstTransformer();
+        private RecursiveGraphMatcher _transformer =
+            new RecursiveGraphMatcher();
 
         private static final long serialVersionUID = -3272455226789715544L;
 
