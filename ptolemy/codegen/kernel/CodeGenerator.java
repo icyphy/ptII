@@ -1208,8 +1208,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // getBaseDirectory()
             codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
 
-            _executeCommands.stdout("Writing " + codeFileName + " in "
-                    + codeDirectory.getBaseDirectory());
+            _executeCommands.stdout("Writing " + codeFileName + " in " +
+                    codeDirectory.getBaseDirectory() + " (" +
+                    code.length() + " characters)");
 
             // Check if needs to overwrite.
             if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
