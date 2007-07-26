@@ -41,6 +41,18 @@ Token Boolean_equals(Token this, ...) {
 /**/
 
 
+/***approximatesBlock***/
+Token Boolean_approximates(Token this, ...) {
+    va_list argp; 
+    Token otherToken; 
+    va_start(argp, this);
+    otherToken = va_arg(argp, Token);
+
+    va_end(argp);
+    return Boolean_equals(this, otherToken);
+}
+/**/
+
 /***printBlock***/
 Token Boolean_print(Token this, ...) {
     printf((this.payload.Boolean) ? "true" : "false");

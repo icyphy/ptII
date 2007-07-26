@@ -28,26 +28,24 @@
  */
 package ptolemy.codegen.c.actor.lib.colt;
 
+import ptolemy.codegen.c.actor.lib.RandomSource;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import ptolemy.codegen.c.actor.lib.RandomSource;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 /**
- * Generate C code for an actor that produces an output token on
- * on each firing with a value that is equal to the absolute value of
- * the input.
+ * A helper class for ptolemy.actor.lib.colt.ColtBinomialSelector.
  *
  * @see ptolemy.actor.lib.ColtBinomialSelector
- * @author Man-Kit Leung
+ * @author Teale Fristoe
  * @version $Id$
- * @since Ptolemy II 6.1
- * @Pt.ProposedRating Red (cxh)
- * @Pt.AcceptedRating Red (cxh)
+ * @since Ptolemy II 6.0
+ * @Pt.ProposedRating Red
+ * @Pt.AcceptedRating 
  *
  */
 public class ColtBinomialSelector extends RandomSource {
@@ -58,10 +56,12 @@ public class ColtBinomialSelector extends RandomSource {
     public ColtBinomialSelector(ptolemy.actor.lib.colt.ColtBinomialSelector actor) {
         super(actor);
     }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Generate shared code.
-     * Read from ColtBinomial.c, replace macros with their values and
+     * Read from ColtBinomialSelector.c, replace macros with their values and
      * return the processed code string.
      * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
@@ -79,11 +79,35 @@ public class ColtBinomialSelector extends RandomSource {
         return sharedCode;
     }
 
+    /** 
+     * Generate the preinitialize code. Declare temporary variables.
+     * @return The preinitialize code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        // Automatically append the "preinitBlock" by default.
+        super.generatePreinitializeCode();
+        
+        _codeStream.appendCodeBlock("preinitBinomialSelectorBlock");
+
+        ptolemy.actor.lib.colt.ColtBinomialSelector actor = (ptolemy.actor.lib.colt.ColtBinomialSelector) getComponent();
+
+        ArrayList args = new ArrayList();
+        args.add(Integer.valueOf(0));
+        for (int i = 0; i < actor.populations.getWidth(); i++) {
+            args.set(0, Integer.valueOf(i));
+            _codeStream.appendCodeBlock("preinitBinomialSelectorArraysBlock", args);
+        }
+
+        return processCode(_codeStream.toString());
+    }
+
     /**
      * Get the files needed by the code generated for the
-     * ColtBinomial actor.
+     * ColtBinomialSelector actor.
      * @return A set of Strings that are names of the files
-     *  needed by the code generated for the ColtBinomial actor.
+     *  needed by the code generated for the ColtBinomialSelector actor.
      * @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
@@ -92,55 +116,39 @@ public class ColtBinomialSelector extends RandomSource {
         files.add("<math.h>");
         return files;
     }
-
-    /**
-     * Generate fire code.  The method reads in
-     * <code>fireBlock0</code> and <code>fireBlock</code> from
-     * ColtBinomialSelector.c and replaces macros with their values
-     * and returns the processed code block.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
-
-        ptolemy.actor.lib.colt.ColtBinomialSelector actor = (ptolemy.actor.lib.colt.ColtBinomialSelector) getComponent();
-
-        ArrayList args = new ArrayList();
-        args.add(Integer.valueOf(0));
-        args.set(0, actor.populations.getWidth());
-        System.out.println("ColtBinomialSelector: fb0");
-        _codeStream.appendCodeBlock("fireBlock0", args);
-
-
-        System.out.println("ColtBinomialSelector: fb1");
-        for (int i = 1; i < actor.populations.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i));
-            _codeStream.appendCodeBlock("fireBlock1", args);
-        }
-
-
-        System.out.println("ColtBinomialSelector: fb2");
-        args.set(0, actor.populations.getWidth());
-        _codeStream.appendCodeBlock("fireBlock2", args);
-
-        System.out.println("ColtBinomialSelector: fb");
-        for (int i = 1; i < actor.output.getWidth(); i++) {
-            args.set(0, Integer.valueOf(i));
-            _codeStream.appendCodeBlock("fireBlock", args);
-        }
-
-        return processCode(_codeStream.toString());
-    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Generate code for producing a new random number.
+    /** Generate code for producing new random numbers.
      *  @exception IllegalActionException Not thrown in this base class.
      *  @return The code that produces a new random number.
      */
     protected String _generateRandomNumber() throws IllegalActionException {
-        return _generateBlockCode("binomialDistributionBlock");
+    	_codeStream.clear();
+
+    	ptolemy.actor.lib.colt.ColtBinomialSelector actor = (ptolemy.actor.lib.colt.ColtBinomialSelector) getComponent();
+
+        ArrayList args = new ArrayList();
+        args.add(Integer.valueOf(0));
+        // StringBuffer code = new StringBuffer();
+        
+        // code.append(_generateBlockCode("initBinomialSelectorBlock"));
+        _codeStream.appendCodeBlock("initBinomialSelectorBlock");
+        
+        for (int i = 0; i < actor.populations.getWidth(); i++) {
+        	args.set(0, Integer.valueOf(i));
+            // code.append(_generateBlockCode("initArraysBinomialSelectorBlock", args));
+            _codeStream.appendCodeBlock("initArraysBinomialSelectorBlock", args);
+        }
+        
+        for (int i = 0; i < actor.populations.getWidth(); i++) {
+        	args.set(0, Integer.valueOf(i));
+            // code.append(_generateBlockCode("binomialSelectorBlock", args));
+            _codeStream.appendCodeBlock("binomialSelectorBlock", args);
+        }
+        // return processCode(code.toString());
+        return processCode(_codeStream.toString());
     }
+
 }

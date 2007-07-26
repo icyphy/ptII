@@ -60,6 +60,9 @@ public class ColtPoisson extends RandomSource {
         super(actor);
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
      * Generate shared code.
      * Read from ColtPoisson.c, replace macros with their values and

@@ -113,7 +113,15 @@ public class CCodeGenerator extends CodeGenerator {
             for (int i = 0; i < types.length; i++) {
                 code.append("\t{");
                 for (int j = 0; j < functions.length; j++) {
-                    code.append(types[i] + "_" + functions[j]);
+//                     if (functions[j].equals("approximates")
+//                             && (types[i].equals("Boolean") 
+//                                     || types[i].equals("String"))) {
+//                         // Boolean_approximates and String_approximates
+//                         // are the same as their corresponding *_equals
+//                         code.append(types[i] + "_equals");
+//                     } else {
+                        code.append(types[i] + "_" + functions[j]);
+                        //                    }
                     if (j != (functions.length - 1)) {
                         code.append(", ");
                     }
@@ -347,12 +355,13 @@ public class CCodeGenerator extends CodeGenerator {
         functions.add("delete");
         //functions.add("toString");    // for debugging.
         functions.add("convert");
+        functions.add("approximates");
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);
 
         // Determine the total number of referenced types.
         HashSet types = new HashSet();
-        if (functions.contains("equals")) {
+        if (functions.contains("equals") || functions.contains("approximates")) {
             types.add("Boolean");
         }
         if (functions.contains("toString")) {
@@ -429,9 +438,27 @@ public class CCodeGenerator extends CodeGenerator {
             // The "funcDeclareBlock" contains all function declarations for
             // the type.
             for (int j = 0; j < functionsArray.length; j++) {
+                if (functionsArray[j].equals("approximates")
+                        && (typesArray[i].equals("Boolean") 
+                                || typesArray[i].equals("String"))) {
+                    boolean foundEquals = false;
+                    for (int k = 0; k < functionsArray.length; k++) {
+                        if (functionsArray[k].equals("equals")) {
+                            foundEquals = true;
+                        }
+                    }
+                    if (!foundEquals) {
+                        // Boolean_approximates and String_approximates
+                        // use Boolean_equals and String_equals.
+                        args.clear();
+                        args.add(typesArray[i] + "_equals");
+                        sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                    }
+                }
                 args.clear();
                 args.add(typesArray[i] + "_" + functionsArray[j]);
                 sharedStream.appendCodeBlock("funcHeaderBlock", args);
+
             }
         }
         code.append(sharedStream.toString());
@@ -464,6 +491,20 @@ public class CCodeGenerator extends CodeGenerator {
                 //     .....
                 // /**/
                 try {
+                    if (functionsArray[j].equals("approximates")
+                        && (typesArray[i].equals("Boolean") 
+                                || typesArray[i].equals("String"))) {
+                        boolean foundEquals = false;
+                        for (int k = 0; k < functionsArray.length; k++) {
+                            if (functionsArray[k].equals("equals")) {
+                                foundEquals = true;
+                                break;
+                            }
+                        }
+                        if (!foundEquals) {
+                            typeStreams[i].appendCodeBlock("equalsBlock");
+                        }
+                    }
                     typeStreams[i].appendCodeBlock(functionsArray[j] + "Block");
                 } catch (IllegalActionException ex) {
                     // We have to catch the exception if some code blocks are

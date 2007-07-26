@@ -1,52 +1,80 @@
-/***preinitBlock***/
-long *$actorSymbol(_current);
-// From RandomSource.c
-double $actorSymbol(seed);
+
+/*** preinitBinomialSelectorBlock ***/
+long $actorSymbol(sourceTotal) = 0;
+
+int $actorSymbol(trialsRemaining) = 0;
+int $actorSymbol(selected) = 0;
+long $actorSymbol(sourcePool) = 0;
+double $actorSymbol(p) = 0;
 /**/
 
-/***binomialDistributionBlock ***/
-$ref(output) = RandomSource_BinomialDistribution(1, 0.5, &$actorSymbol(seed));
+/*** preinitBinomialSelectorArraysBlock($population) ***/
+long $actorSymbol(sourceValues_$population) = 0;
 /**/
 
-/*** fireBlock0($populationWidth)***/
-long sourceValues[$populationWidth];
-long sourceTotal = 0;
-int i;
-    
+/*** initBinomialSelectorBlock ***/
+$actorSymbol(sourceTotal) = 0;
+$actorSymbol(trialsRemaining) = $ref(trials);
+$actorSymbol(selected) = 0;
+$actorSymbol(sourcePool) = 0;
+$actorSymbol(p) = 0;
+/**/
 
-/*** fireBlock1($channel)***/
-sourceValues[i] = $ref(populations, $channel);
-if (sourceValues[i] < 0) {
-    fprintf(stderr, "$ref(populations) was < 0\n");
-    exit(-1);
- }
-sourceTotal += sourceValues[i];
-
-/*** fireBlock2($populationWidth)***/
-// Process the binomial selections.
-
-int trialsRemaining = $ref(trials);
-long sourcePool = sourceTotal;
-if ($actorSymbol(_current) != 0) {
-    free(_current);
+/*** initArraysBinomialSelectorBlock($population) ***/
+$actorSymbol(sourceValues_$population) = $ref(populations#$population);
+if ($actorSymbol(sourceValues_$population) >= 0) {
+    $actorSymbol(sourceTotal) = $actorSymbol(sourceTotal) + $ref(populations#$population);
+    $actorSymbol(sourcePool) = $actorSymbol(sourcePool) + $ref(populations#$population);
 }
-$actorSymbol(_current) = malloc($populationWidth * sizeof(long));
-for (i=0; i < $populationWidth; i++) {
-    int selected = 0;
-    if ((trialsRemaining > 0) && (sourceValues[i] > 0)) {
-        double p = (double) sourceValues[i] / (double) sourcePool;
-        if (p < 1.0) {
-            selected = RandomSource_BinomialDistribution(trialsRemaining, p, &$actorSymbol(seed));
-        } else {
-            selected = trialsRemaining;
-        }
+/**/
+
+/*** binomialSelectorBlock($num) ***/
+if (($actorSymbol(trialsRemaining) > 0) && ($actorSymbol(sourceValues_$num) > 0)) {
+    $actorSymbol(p) = (double) $actorSymbol(sourceValues_$num) / (double) $actorSymbol(sourcePool);
+    if ($actorSymbol(p) < 1.0) {
+        $actorSymbol(selected) = RandomSource_BinomialDistribution($actorSymbol(trialsRemaining), $actorSymbol(p), &$actorSymbol(seed));
+    } else {
+        $actorSymbol(selected) = $actorSymbol(trialsRemaining);
     }
-    $actorSymbol(_current)[i] = selected;
-    trialsRemaining -= selected;
-    sourcePool -= $actorSymbol(sourceValue)[i];
+}
+$ref(output#$num) = $actorSymbol(selected);
+$actorSymbol(trialsRemaining) -= $actorSymbol(selected);
+$actorSymbol(sourcePool) -= $actorSymbol(sourceValues_$num);
+/**/
+
+/*** reference ***/
+int trials
+long populations[]
+
+nextint()
+long sourceValues[populations.length]
+long sourceTotal = 0
+for (i from 0 to sourceValues.length) {
+	sourceValues[i] = populations[i]
+	if (sourceValues[i] < 0) {
+		break;
+	}
+	sourceTotal += sourceValues[i]
+}
+
+int trialsRemaining = trials
+long sourcePool = sourceTotal
+_current.length = sourceValues.length
+int selected
+double p
+for (i from 0 to _current.length) {
+	selected = 0
+	if ((trialsRemaining > 0) && (sourceValues[i] > 0)) {
+		p = sourceValues[i] / sourcePool
+		if (p < 1.0) {
+			selected = binomial(trialsRemaining, p)
+		} else {
+			selected = trialsRemaining
+		}
+	}
+	current[i] = selected
+	trialsRemaining -= selected
+	sourcePool -= sourceValues[i]
 }
 /**/
 
-/***fireBlock($channel)***/
-$ref(output, $channel) = $actorSymbol(_current)[i]
-/**/

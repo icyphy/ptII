@@ -29,6 +29,20 @@ Token Int_equals(Token this, ...) {
 }
 /**/
 
+/***approximatesBlock***/
+Token Int_approximates(Token this, ...) {
+    va_list argp;
+    Token otherToken;
+    Token tolerance;
+    va_start(argp, this);
+    otherToken = va_arg(argp, Token);
+    tolerance = va_arg(argp, Token);
+
+    va_end(argp);
+    return Boolean_new(fabs(this.payload.Int - otherToken.payload.Int) < tolerance.payload.Int);
+}
+/**/
+
 /***deleteBlock***/
 Token Int_delete(Token token, ...) {
     /* We need to return something here because all the methods are declared

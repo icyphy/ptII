@@ -42,7 +42,17 @@ Token String_equals(Token this, ...) {
 }
 /**/
 
+/***approximatesBlock***/
+Token String_approximates(Token this, ...) {
+    va_list argp; 
+    Token otherToken; 
+    va_start(argp, this);
+    otherToken = va_arg(argp, Token);
 
+    va_end(argp);
+    return String_equals(this, otherToken);
+}
+/**/
 
 /***printBlock***/
 Token String_print(Token this, ...) {

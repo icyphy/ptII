@@ -121,6 +121,30 @@ Token Array_equals(Token this, ...) {
 }
 /**/
 
+/***approximatesBlock***/
+Token Array_approximates(Token this, ...) {
+    int i;
+    va_list argp; 
+    Token otherToken; 
+		Token tolerance;
+    va_start(argp, this);
+    otherToken = va_arg(argp, Token);
+		tolerance = va_arg(argp, Token);
+
+    if (this.payload.Array->size != otherToken.payload.Array->size) {
+        return Boolean_new(false);
+    }
+    for (i = 0; i < this.payload.Array->size; i++) {
+        if (!functionTable[(int)Array_get(this, i).type][FUNC_approximates](Array_get(this, i), Array_get(otherToken, i), tolerance).payload.Boolean) {
+            return Boolean_new(false);
+        }
+    }
+
+    va_end(argp);
+    return Boolean_new(true);
+}
+/**/
+
 /***printBlock***/
 Token Array_print(Token this, ...) {
     // Token string = Array_toString(this);

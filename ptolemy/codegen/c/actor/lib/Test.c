@@ -40,9 +40,9 @@ $ref(correctValues, $actorSymbol(numberOfTokensSeen));
                
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && fabs($ref(input#$channel)
-                - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Int)
+                - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Double)
         > $ref(tolerance)) {
-    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %g of: %d\n",
+    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %f of: %d\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
             $ref(tolerance),
@@ -166,11 +166,12 @@ $actorSymbol(numberOfTokensSeen)++;
 if (($type(input) != TYPE_Array
             && !$tokenFunc($ref(input#$channel)::equals($ref(correctValues, $actorSymbol(numberOfTokensSeen)))).payload.Boolean) 
         || ($type(input) == TYPE_Array
-                && !$tokenFunc($typeFunc(TYPE_Array::convert($ref(input#$channel), Array_get(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), 0).type))::equals(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0))).payload.Boolean)) {
+                && !$tokenFunc($typeFunc(TYPE_Array::convert($ref(input#$channel), Array_get(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), 0).type))::approximates(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), Int_new(DoubletoInt($ref(tolerance))))).payload.Boolean)) {
 
-    printf("\nTest $actorSymbol($channel) fails in interation %d.\n Value was: %s. Should have been: %s.\n",
+    printf("\nTest $actorSymbol($channel) fails in interation %d.\n Value was: %s. Should have been within %f of: %s.\n",
             $actorSymbol(numberOfTokensSeen),
             $tokenFunc($ref(input#$channel)::toString()).payload.String,
+						$ref(tolerance),
             $tokenFunc($ref(correctValues, $actorSymbol(numberOfTokensSeen))::toString()).payload.String);
     exit(-1);
 }
