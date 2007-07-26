@@ -29,8 +29,8 @@ Token Int_equals(Token this, ...) {
 }
 /**/
 
-/***approximatesBlock***/
-Token Int_approximates(Token this, ...) {
+/***isCloseToBlock***/
+Token Int_isCloseTo(Token this, ...) {
     va_list argp;
     Token otherToken;
     Token tolerance;

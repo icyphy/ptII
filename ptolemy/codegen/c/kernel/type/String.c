@@ -42,8 +42,8 @@ Token String_equals(Token this, ...) {
 }
 /**/
 
-/***approximatesBlock***/
-Token String_approximates(Token this, ...) {
+/***isCloseToBlock***/
+Token String_isCloseTo(Token this, ...) {
     va_list argp; 
     Token otherToken; 
     va_start(argp, this);

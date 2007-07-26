@@ -41,8 +41,8 @@ Token Boolean_equals(Token this, ...) {
 /**/
 
 
-/***approximatesBlock***/
-Token Boolean_approximates(Token this, ...) {
+/***isCloseToBlock***/
+Token Boolean_isCloseTo(Token this, ...) {
     va_list argp; 
     Token otherToken; 
     va_start(argp, this);

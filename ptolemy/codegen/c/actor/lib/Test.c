@@ -166,7 +166,7 @@ $actorSymbol(numberOfTokensSeen)++;
 if (($type(input) != TYPE_Array
             && !$tokenFunc($ref(input#$channel)::equals($ref(correctValues, $actorSymbol(numberOfTokensSeen)))).payload.Boolean) 
         || ($type(input) == TYPE_Array
-                && !$tokenFunc($typeFunc(TYPE_Array::convert($ref(input#$channel), Array_get(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), 0).type))::approximates(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), Int_new(DoubletoInt($ref(tolerance))))).payload.Boolean)) {
+                && !$tokenFunc($typeFunc(TYPE_Array::convert($ref(input#$channel), Array_get(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), 0).type))::isCloseTo(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), Int_new(DoubletoInt($ref(tolerance))))).payload.Boolean)) {
 
     printf("\nTest $actorSymbol($channel) fails in interation %d.\n Value was: %s. Should have been within %f of: %s.\n",
             $actorSymbol(numberOfTokensSeen),

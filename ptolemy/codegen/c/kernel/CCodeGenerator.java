@@ -113,10 +113,10 @@ public class CCodeGenerator extends CodeGenerator {
             for (int i = 0; i < types.length; i++) {
                 code.append("\t{");
                 for (int j = 0; j < functions.length; j++) {
-//                     if (functions[j].equals("approximates")
+//                     if (functions[j].equals("isCloseTo")
 //                             && (types[i].equals("Boolean") 
 //                                     || types[i].equals("String"))) {
-//                         // Boolean_approximates and String_approximates
+//                         // Boolean_isCloseTo and String_isCloseTo
 //                         // are the same as their corresponding *_equals
 //                         code.append(types[i] + "_equals");
 //                     } else {
@@ -355,13 +355,13 @@ public class CCodeGenerator extends CodeGenerator {
         functions.add("delete");
         //functions.add("toString");    // for debugging.
         functions.add("convert");
-        functions.add("approximates");
+        functions.add("isCloseTo");
         functions.addAll(_typeFuncUsed);
         functions.addAll(_tokenFuncUsed);
 
         // Determine the total number of referenced types.
         HashSet types = new HashSet();
-        if (functions.contains("equals") || functions.contains("approximates")) {
+        if (functions.contains("equals") || functions.contains("isCloseTo")) {
             types.add("Boolean");
         }
         if (functions.contains("toString")) {
@@ -438,7 +438,7 @@ public class CCodeGenerator extends CodeGenerator {
             // The "funcDeclareBlock" contains all function declarations for
             // the type.
             for (int j = 0; j < functionsArray.length; j++) {
-                if (functionsArray[j].equals("approximates")
+                if (functionsArray[j].equals("isCloseTo")
                         && (typesArray[i].equals("Boolean") 
                                 || typesArray[i].equals("String"))) {
                     boolean foundEquals = false;
@@ -448,7 +448,7 @@ public class CCodeGenerator extends CodeGenerator {
                         }
                     }
                     if (!foundEquals) {
-                        // Boolean_approximates and String_approximates
+                        // Boolean_isCloseTo and String_isCloseTo
                         // use Boolean_equals and String_equals.
                         args.clear();
                         args.add(typesArray[i] + "_equals");
@@ -491,7 +491,7 @@ public class CCodeGenerator extends CodeGenerator {
                 //     .....
                 // /**/
                 try {
-                    if (functionsArray[j].equals("approximates")
+                    if (functionsArray[j].equals("isCloseTo")
                         && (typesArray[i].equals("Boolean") 
                                 || typesArray[i].equals("String"))) {
                         boolean foundEquals = false;
