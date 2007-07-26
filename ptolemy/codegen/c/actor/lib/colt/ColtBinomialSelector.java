@@ -28,7 +28,14 @@
  */
 package ptolemy.codegen.c.actor.lib.colt;
 
-import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import ptolemy.codegen.c.actor.lib.RandomSource;
+import ptolemy.kernel.util.IllegalActionException;
+
 
 /**
  * Generate C code for an actor that produces an output token on
@@ -38,17 +45,102 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  * @see ptolemy.actor.lib.ColtBinomialSelector
  * @author Man-Kit Leung
  * @version $Id$
- * @since Ptolemy II 6.0
- * @Pt.ProposedRating Green (mankit)
- * @Pt.AcceptedRating Green (cxh)
+ * @since Ptolemy II 6.1
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  *
  */
-public class ColtBinomialSelector extends CCodeGeneratorHelper {
+public class ColtBinomialSelector extends RandomSource {
     /**
      * Constructor method for the ColtBinomialSelector helper.
      * @param actor the associated actor
      */
     public ColtBinomialSelector(ptolemy.actor.lib.colt.ColtBinomialSelector actor) {
         super(actor);
+    }
+
+    /**
+     * Generate shared code.
+     * Read from ColtBinomial.c, replace macros with their values and
+     * return the processed code string.
+     * @return The processed code string.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public Set getSharedCode() throws IllegalActionException {
+        // LinkedHashSet gives order to the insertion. The order of code block
+        // is important here because binomialBlock uses code from the other
+        // shared code blocks.
+        Set sharedCode = new LinkedHashSet();
+        sharedCode.addAll(super.getSharedCode());
+
+        // binomialBlock is from the RandomSource parent class.
+        sharedCode.add(_generateBlockCode("binomialBlock"));
+        return sharedCode;
+    }
+
+    /**
+     * Get the files needed by the code generated for the
+     * ColtBinomial actor.
+     * @return A set of Strings that are names of the files
+     *  needed by the code generated for the ColtBinomial actor.
+     * @exception IllegalActionException Not Thrown in this subclass.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
+        Set files = new HashSet();
+        files.addAll(super.getHeaderFiles());
+        files.add("<math.h>");
+        return files;
+    }
+
+    /**
+     * Generate fire code.  The method reads in
+     * <code>fireBlock0</code> and <code>fireBlock</code> from
+     * ColtBinomialSelector.c and replaces macros with their values
+     * and returns the processed code block.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        super.generateFireCode();
+
+        ptolemy.actor.lib.colt.ColtBinomialSelector actor = (ptolemy.actor.lib.colt.ColtBinomialSelector) getComponent();
+
+        ArrayList args = new ArrayList();
+        args.add(Integer.valueOf(0));
+        args.set(0, actor.populations.getWidth());
+        System.out.println("ColtBinomialSelector: fb0");
+        _codeStream.appendCodeBlock("fireBlock0", args);
+
+
+        System.out.println("ColtBinomialSelector: fb1");
+        for (int i = 1; i < actor.populations.getWidth(); i++) {
+            args.set(0, Integer.valueOf(i));
+            _codeStream.appendCodeBlock("fireBlock1", args);
+        }
+
+
+        System.out.println("ColtBinomialSelector: fb2");
+        args.set(0, actor.populations.getWidth());
+        _codeStream.appendCodeBlock("fireBlock2", args);
+
+        System.out.println("ColtBinomialSelector: fb");
+        for (int i = 1; i < actor.output.getWidth(); i++) {
+            args.set(0, Integer.valueOf(i));
+            _codeStream.appendCodeBlock("fireBlock", args);
+        }
+
+        return processCode(_codeStream.toString());
+    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate code for producing a new random number.
+     *  @exception IllegalActionException Not thrown in this base class.
+     *  @return The code that produces a new random number.
+     */
+    protected String _generateRandomNumber() throws IllegalActionException {
+        return _generateBlockCode("binomialDistributionBlock");
     }
 }
