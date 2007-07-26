@@ -44,7 +44,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.NamedObj;
 
-/**
+/** A recursive algorithm to match a subgraph to the given pattern.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -52,16 +52,12 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class DepthFirstTransformer {
+public class RecursiveGraphMatcher {
 
-    public String dump() {
-        if (_success) {
-            return Utils.toString(_match);
-        } else {
-            return "{}";
-        }
-    }
-
+    /** Get the last matching result as an unmodifiable map.
+     *
+     *  @return The last matching result.
+     */
     public Map<NamedObj, NamedObj> getMatch() {
         return Collections.unmodifiableMap(_match);
     }
@@ -80,7 +76,7 @@ public class DepthFirstTransformer {
         _lhsFrontier.add(lhsGraph);
         _hostFrontier.add(hostGraph);
 
-        _success = _match(_lhsFrontier.getHead(), _hostFrontier.getHead());
+        _success = _matchEntryList(_lhsFrontier.getHead(), _hostFrontier.getHead());
         if (_success) {
             for (NamedObj lhsObject : _match.keySet()) {
                 System.out.println(lhsObject.getName() + " : " +
@@ -95,46 +91,26 @@ public class DepthFirstTransformer {
         return _success;
     }
 
+    /** Generate a string that describes the last matching result. The matching
+     *  result is stored in a <tt>Map&lt;{@link NamedObj}, {@link
+     *  NamedObj}&gt;</tt> object. To generate the returned string,
+     *  <tt>toString</tt> of the keys and values in the map are invoked.
+     *
+     *  @return A string that describes the last matching result.
+     */
+    public String stringifyMatchResult() {
+        if (_success) {
+            return Utils.toString(_match);
+        } else {
+            return "{}";
+        }
+    }
+
     public NamedObj transform(NamedObj from, SingleRuleTransformer transformer)
     throws GraphTransformationException {
         CompositeActorMatcher leftHandSide = transformer.getLeftHandSide();
         match(leftHandSide, from);
         return null;
-    }
-
-    private boolean _checkDisconnectedComponents() {
-        FastLinkedList<CompositeEntity>.Entry lhsEntry =
-            _visitedLHSCompositeEntities.getTail();
-        while (lhsEntry != null) {
-            CompositeEntity lhsEntity = lhsEntry.getValue();
-            if (!_tryToMatchCompositeEntity(lhsEntity,
-                    (CompositeEntity) _match.get(lhsEntity))) {
-                return false;
-            }
-            lhsEntry = lhsEntry.getPrevious();
-        }
-        return true;
-    }
-
-    private boolean _checkPortMatch(Port lhsPort, Port hostPort) {
-        if (lhsPort instanceof TypedIOPort) {
-            if (hostPort instanceof TypedIOPort) {
-                TypedIOPort lhsTypedPort = (TypedIOPort) lhsPort;
-                TypedIOPort hostTypedPort = (TypedIOPort) hostPort;
-                if (lhsTypedPort.isInput() && !hostTypedPort.isInput()) {
-                    return false;
-                } else if (lhsTypedPort.isOutput()
-                        && !hostTypedPort.isOutput()) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } else {
-                return false;
-            }
-        } else {
-            return true;
-        }
     }
 
     private ComponentEntity _findFirstChild(CompositeEntity top,
@@ -214,28 +190,6 @@ public class DepthFirstTransformer {
                 }
                 entry = entry.getPrevious();
             }
-
-            /*entry = entry.getPrevious();
-            while (entry != null) {
-                lastMarkedEntityList = entry.getValue();
-                List<?> compositeEntityList = lastMarkedEntityList.getFirst();
-                for (int index = lastMarkedEntityList.getSecond() + 1;
-                        index < compositeEntityList.size(); index++) {
-                    lastMarkedEntityList.setSecond(index);
-                    CompositeEntity compositeEntity =
-                        (CompositeEntity) compositeEntityList.get(index);
-                    if (!excludedEntities.contains(compositeEntity)) {
-                        markedList.removeAllAfter(entry);
-                        ComponentEntity atomicEntity =
-                            _findFirstChild(compositeEntity, markedList,
-                                    excludedEntities);
-                        if (atomicEntity != null) {
-                            return atomicEntity;
-                        }
-                    }
-                }
-                entry = entry.getPrevious();
-            }*/
             return null;
         }
     }
@@ -245,81 +199,7 @@ public class DepthFirstTransformer {
                 && ((CompositeActor) container).getDirector() != null;
     }
 
-    private boolean _match(FastLinkedList<NamedObj>.Entry lhsEntry,
-            FastLinkedList<NamedObj>.Entry hostEntry) {
-        if (lhsEntry == null) {
-            return true;
-        } else {
-            // Arbitrarily pick an object in _lhsFrontier to match.
-            NamedObj lhsObject = lhsEntry.getValue();
-            while (hostEntry != null) {
-                if (_tryToMatch(lhsObject, hostEntry.getValue())) {
-                    return true;
-                } else {
-                    hostEntry = hostEntry.getNext();
-                }
-            }
-            return false;
-        }
-    }
-
-    private boolean _matchLoop(FastLinkedList<NamedObj>.Entry lhsStart,
-            FastLinkedList<NamedObj>.Entry hostStart) {
-
-        // The real start of the two frontiers.
-        // For the 1st check for disconnected components, the parameters have to
-        // be non-null, and the following variables are the actual parameters to
-        // the loop.
-        FastLinkedList<NamedObj>.Entry lhsChildStart = lhsStart.getNext();
-        FastLinkedList<NamedObj>.Entry hostChildStart = hostStart.getNext();
-
-        if (lhsChildStart == null) {
-            return _checkDisconnectedComponents();
-        } else {
-            FastLinkedList<NamedObj>.Entry lhsEntry = lhsChildStart;
-            boolean nestedMatch = false;
-            while (lhsEntry != null) {
-                nestedMatch = true;
-                if (!_match(lhsEntry, hostChildStart)) {
-                    return false;
-                }
-                lhsEntry = lhsEntry.getNext();
-            }
-            if (nestedMatch) {
-                return true;
-            } else {
-                return _checkDisconnectedComponents();
-            }
-        }
-    }
-
-    private boolean _tryToMatch(NamedObj lhsObject, NamedObj hostObject) {
-        if (_match.containsKey(lhsObject)) {
-            return _match.get(lhsObject) == hostObject
-                    && _checkDisconnectedComponents();
-        } else if (_match.containsValue(hostObject)) {
-            return false;
-        } else if (lhsObject instanceof AtomicActor
-                && hostObject instanceof AtomicActor) {
-            return _tryToMatchAtomicActor((AtomicActor) lhsObject,
-                    (AtomicActor) hostObject);
-        } else if (lhsObject instanceof CompositeEntity
-                && hostObject instanceof CompositeEntity) {
-            return _tryToMatchCompositeEntity((CompositeEntity) lhsObject,
-                    (CompositeEntity) hostObject);
-        } else if (lhsObject instanceof Port
-                && hostObject instanceof Port) {
-            return _tryToMatchPort((Port) lhsObject, (Port) hostObject);
-        } else if (lhsObject instanceof Relation
-                && hostObject instanceof Relation) {
-            return _tryToMatchRelation((Relation) lhsObject,
-                    (Relation) hostObject);
-        } else {
-            return false;
-        }
-    }
-
-    private boolean _tryToMatchAtomicActor(AtomicActor lhsActor,
+    private boolean _matchAtomicActor(AtomicActor lhsActor,
             AtomicActor hostActor) {
 
         FastLinkedList<NamedObj>.Entry lhsTail = _lhsFrontier.getTail();
@@ -351,7 +231,7 @@ public class DepthFirstTransformer {
         }
     }
 
-    private boolean _tryToMatchCompositeEntity(CompositeEntity lhsEntity,
+    private boolean _matchCompositeEntity(CompositeEntity lhsEntity,
             CompositeEntity hostEntity) {
 
         FastLinkedList<MarkedEntityList> lhsMarkedList =
@@ -385,7 +265,7 @@ public class DepthFirstTransformer {
                 _lhsFrontier.add(lhsNextActor);
                 _hostFrontier.add(hostNextActor);
 
-                if (_match(lhsTail.getNext(), hostTail.getNext())) {
+                if (_matchEntryList(lhsTail.getNext(), hostTail.getNext())) {
                     return true;
                 } else {
                     _hostFrontier.removeAllAfter(hostTail);
@@ -406,9 +286,105 @@ public class DepthFirstTransformer {
         }
     }
 
-    private boolean _tryToMatchPort(Port lhsPort, Port hostPort) {
+    private boolean _matchDisconnectedComponents() {
+        FastLinkedList<CompositeEntity>.Entry lhsEntry =
+            _visitedLHSCompositeEntities.getTail();
+        while (lhsEntry != null) {
+            CompositeEntity lhsEntity = lhsEntry.getValue();
+            if (!_matchCompositeEntity(lhsEntity,
+                    (CompositeEntity) _match.get(lhsEntity))) {
+                return false;
+            }
+            lhsEntry = lhsEntry.getPrevious();
+        }
+        return true;
+    }
 
-        if (!_checkPortMatch(lhsPort, hostPort)) {
+    /** Match a list of LHS entries with a list of host entries. All LHS entries
+     *  must be matched with some or all of the host entries.
+     *
+     *  @param lhsEntry The start of the LHS entries.
+     *  @param hostEntry The start of the host entries.
+     *  @return <tt>true</tt> is the match is successful; <tt>false</tt>
+     *   otherwise.
+     */
+    private boolean _matchEntryList(FastLinkedList<NamedObj>.Entry lhsEntry,
+            FastLinkedList<NamedObj>.Entry hostEntry) {
+        if (lhsEntry == null) {
+            return true;
+        } else {
+            // Arbitrarily pick an object in _lhsFrontier to match.
+            NamedObj lhsObject = lhsEntry.getValue();
+            while (hostEntry != null) {
+                if (_matchNamedObj(lhsObject, hostEntry.getValue())) {
+                    return true;
+                } else {
+                    hostEntry = hostEntry.getNext();
+                }
+            }
+            return false;
+        }
+    }
+
+    private boolean _matchLoop(FastLinkedList<NamedObj>.Entry lhsStart,
+            FastLinkedList<NamedObj>.Entry hostStart) {
+
+        // The real start of the two frontiers.
+        // For the 1st check for disconnected components, the parameters have to
+        // be non-null, and the following variables are the actual parameters to
+        // the loop.
+        FastLinkedList<NamedObj>.Entry lhsChildStart = lhsStart.getNext();
+        FastLinkedList<NamedObj>.Entry hostChildStart = hostStart.getNext();
+
+        if (lhsChildStart == null) {
+            return _matchDisconnectedComponents();
+        } else {
+            FastLinkedList<NamedObj>.Entry lhsEntry = lhsChildStart;
+            boolean nestedMatch = false;
+            while (lhsEntry != null) {
+                nestedMatch = true;
+                if (!_matchEntryList(lhsEntry, hostChildStart)) {
+                    return false;
+                }
+                lhsEntry = lhsEntry.getNext();
+            }
+            if (nestedMatch) {
+                return true;
+            } else {
+                return _matchDisconnectedComponents();
+            }
+        }
+    }
+
+    private boolean _matchNamedObj(NamedObj lhsObject, NamedObj hostObject) {
+        if (_match.containsKey(lhsObject)) {
+            return _match.get(lhsObject) == hostObject
+                    && _matchDisconnectedComponents();
+        } else if (_match.containsValue(hostObject)) {
+            return false;
+        } else if (lhsObject instanceof AtomicActor
+                && hostObject instanceof AtomicActor) {
+            return _matchAtomicActor((AtomicActor) lhsObject,
+                    (AtomicActor) hostObject);
+        } else if (lhsObject instanceof CompositeEntity
+                && hostObject instanceof CompositeEntity) {
+            return _matchCompositeEntity((CompositeEntity) lhsObject,
+                    (CompositeEntity) hostObject);
+        } else if (lhsObject instanceof Port
+                && hostObject instanceof Port) {
+            return _matchPort((Port) lhsObject, (Port) hostObject);
+        } else if (lhsObject instanceof Relation
+                && hostObject instanceof Relation) {
+            return _matchRelation((Relation) lhsObject,
+                    (Relation) hostObject);
+        } else {
+            return false;
+        }
+    }
+
+    private boolean _matchPort(Port lhsPort, Port hostPort) {
+
+        if (!_shallowMatchPort(lhsPort, hostPort)) {
             return false;
         }
 
@@ -441,7 +417,7 @@ public class DepthFirstTransformer {
         }
     }
 
-    private boolean _tryToMatchRelation(Relation lhsRelation,
+    private boolean _matchRelation(Relation lhsRelation,
             Relation hostRelation) {
 
         FastLinkedList<NamedObj>.Entry lhsTail = _lhsFrontier.getTail();
@@ -472,6 +448,27 @@ public class DepthFirstTransformer {
             _hostFrontier.removeAllAfter(hostTail);
             _lhsFrontier.removeAllAfter(lhsTail);
             return false;
+        }
+    }
+
+    private boolean _shallowMatchPort(Port lhsPort, Port hostPort) {
+        if (lhsPort instanceof TypedIOPort) {
+            if (hostPort instanceof TypedIOPort) {
+                TypedIOPort lhsTypedPort = (TypedIOPort) lhsPort;
+                TypedIOPort hostTypedPort = (TypedIOPort) hostPort;
+                if (lhsTypedPort.isInput() && !hostTypedPort.isInput()) {
+                    return false;
+                } else if (lhsTypedPort.isOutput()
+                        && !hostTypedPort.isOutput()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return true;
         }
     }
 

@@ -57,10 +57,10 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AtomicActorMatcher.java \
 	CompositeActorMatcher.java \
-	DepthFirstTransformer.java \
 	GraphTransformationException.java \
 	MalformedStringException.java \
 	NoMatchFoundException.java \
+	RecursiveGraphMatcher.java \
 	Rule.java \
 	RuleAttribute.java \
 	RuleEditor.java \
