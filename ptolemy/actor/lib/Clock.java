@@ -277,7 +277,7 @@ public class Clock extends TimedSource {
                     if (_previousPeriodValue == 0.0) {
                         _previousPeriodValue = periodValue;
                     }
-                    while (_cycleStartTime.add(periodValue).compareTo(
+                    while (_cycleStartTime.add(_previousPeriodValue).compareTo(
                             currentTime) <= 0) {
                         _cycleStartTime = _cycleStartTime.add(_previousPeriodValue);
                     }
@@ -291,6 +291,11 @@ public class Clock extends TimedSource {
                             && _phase < _offsets.length - 1) {
                         _phase++;
                         nextFiringTime = _cycleStartTime.add(_offsets[_phase]);
+                    }
+                    // May still have to add one period, if no offset is
+                    // enough to get past current time.
+                    if (nextFiringTime.compareTo(currentTime) < 0) {
+                        nextFiringTime = _cycleStartTime.add(_previousPeriodValue);
                     }
                     getDirector().fireAt(this, nextFiringTime);
                 }
@@ -341,10 +346,6 @@ public class Clock extends TimedSource {
         // Update the period.
         period.update();
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-
-        if (_debugging) {
-            _debug("--- Firing at time " + currentTime + ".");
-        }
 
         // Use the strategy pattern here so that derived classes can
         // override how this is done.
@@ -505,7 +506,7 @@ public class Clock extends TimedSource {
      */
     public boolean prefire() throws IllegalActionException {
         if (_debugging) {
-            _debug("Called prefire().");
+            _debug("Called prefire()");
         }
         // Check the length of the values and offsets arrays.
         // This is done here because it cannot be done in
