@@ -2218,18 +2218,39 @@ public class IOPort extends ComponentPort {
      *  @return The number of ports that can receive data from this one.
      */
     public int numberOfSinks() {
-        if (_numberOfSinksVersion != _workspace.getVersion()) {
-            _numberOfSinks = sinkPortList().size();
-            _numberOfSinksVersion = _workspace.getVersion();
-        }
+        try {
+            _workspace.getReadAccess();
+            if (_numberOfSinksVersion != _workspace.getVersion()) {
+                Nameable container = getContainer();
+                Director excDirector = ((Actor) container).getExecutiveDirector();
+                int depthOfDirector = excDirector.depthInHierarchy();
+                LinkedList result = new LinkedList();
+                Iterator ports = deepConnectedPortList().iterator();
 
-        return _numberOfSinks;
+                while (ports.hasNext()) {
+                    IOPort port = (IOPort) ports.next();
+                    int depth = port.getContainer().depthInHierarchy();
+
+                    if (port.isInput() 
+                            && (depth >= depthOfDirector)) { 
+                        result.addLast(port);
+                    } else if (port.isOutput() 
+                            && (depth < depthOfDirector)
+                            && (port.numberOfSinks() > 0)) {
+                        result.addLast(port);
+                    }
+                }
+                _numberOfSinks = result.size();
+                _numberOfSinksVersion = _workspace.getVersion();
+            }
+            return _numberOfSinks;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Return the number of source ports that may send data to this one.
-     *  This is the number of ports returned by sourcePortList(), but
-     *  this method is more efficient to call than that one if you only
-     *  need to know how many ports there are (because the result is cached).
+     *  This is no greater than number of ports returned by sourcePortList().
      *  This method is typically used to determine whether an input port
      *  is connected (deeply) to any output port that can supply it with
      *  data.  Note that it is not sufficient to call getWidth() to determine
@@ -2245,12 +2266,43 @@ public class IOPort extends ComponentPort {
      *  @return The number of ports that can send data to this one.
      */
     public int numberOfSources() {
-        if (_numberOfSourcesVersion != _workspace.getVersion()) {
-            _numberOfSources = sourcePortList().size();
-            _numberOfSourcesVersion = _workspace.getVersion();
-        }
+        // The following code is similar to sourcePortList(),
+        // but handles the special case of opaque ports as in
+        // the method comment.
+        try {
+            _workspace.getReadAccess();
+            if (_numberOfSourcesVersion != _workspace.getVersion()) {
+                Nameable container = getContainer();
+                int depthOfDirector = -1;
 
-        return _numberOfSources;
+                if (container != null) {
+                    Director director = ((Actor) container).getExecutiveDirector();
+                    depthOfDirector = director.depthInHierarchy();
+                }
+
+                LinkedList result = new LinkedList();
+                Iterator ports = deepConnectedPortList().iterator();
+
+                while (ports.hasNext()) {
+                    IOPort port = (IOPort) ports.next();
+                    int depth = port.depthInHierarchy();
+
+                    if (port.isInput() 
+                            && (depth <= depthOfDirector) 
+                            && (port.numberOfSources() > 0)) {
+                        result.addLast(port);
+                    } else if (port.isOutput() 
+                            && (depth > depthOfDirector)) {
+                        result.addLast(port);
+                    }
+                }
+                _numberOfSources = result.size();
+                _numberOfSourcesVersion = _workspace.getVersion();
+            }
+            return _numberOfSources;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Unregister a token sent listener.  If the specified listener has not
@@ -2686,28 +2738,28 @@ public class IOPort extends ComponentPort {
     public List sinkPortList() {
         // FIXME: Why Doesn't this just get the containers of the
         // receivers returned by getRemoteReceivers()?
-        // FIXME: This should cache the result.
         try {
             _workspace.getReadAccess();
+            if (_sinkPortListVersion != _workspace.getVersion()) {
+                Nameable container = getContainer();
+                Director excDirector = ((Actor) container).getExecutiveDirector();
+                int depthOfDirector = excDirector.depthInHierarchy();
+                _sinkPortList = new LinkedList();
+                Iterator ports = deepConnectedPortList().iterator();
 
-            Nameable container = getContainer();
-            Director excDirector = ((Actor) container).getExecutiveDirector();
-            int depthOfDirector = excDirector.depthInHierarchy();
-            LinkedList result = new LinkedList();
-            Iterator ports = deepConnectedPortList().iterator();
+                while (ports.hasNext()) {
+                    IOPort port = (IOPort) ports.next();
+                    int depth = port.getContainer().depthInHierarchy();
 
-            while (ports.hasNext()) {
-                IOPort port = (IOPort) ports.next();
-                int depth = port.getContainer().depthInHierarchy();
-
-                if (port.isInput() && (depth >= depthOfDirector)) {
-                    result.addLast(port);
-                } else if (port.isOutput() && (depth < depthOfDirector)) {
-                    result.addLast(port);
+                    if (port.isInput() && (depth >= depthOfDirector)) {
+                        _sinkPortList.addLast(port);
+                    } else if (port.isOutput() && (depth < depthOfDirector)) {
+                        _sinkPortList.addLast(port);
+                    }
                 }
+                _sinkPortListVersion = _workspace.getVersion();
             }
-
-            return result;
+            return _sinkPortList;
         } finally {
             _workspace.doneReading();
         }
@@ -2728,30 +2780,31 @@ public class IOPort extends ComponentPort {
     public List sourcePortList() {
         try {
             _workspace.getReadAccess();
+            if (_sourcePortListVersion != _workspace.getVersion()) {
+                Nameable container = getContainer();
+                int depthOfDirector = -1;
 
-            Nameable container = getContainer();
-            int depthOfDirector = -1;
-
-            if (container != null) {
-                Director director = ((Actor) container).getExecutiveDirector();
-                depthOfDirector = director.depthInHierarchy();
-            }
-
-            LinkedList result = new LinkedList();
-            Iterator ports = deepConnectedPortList().iterator();
-
-            while (ports.hasNext()) {
-                IOPort port = (IOPort) ports.next();
-                int depth = port.depthInHierarchy();
-
-                if (port.isInput() && (depth <= depthOfDirector)) {
-                    result.addLast(port);
-                } else if (port.isOutput() && (depth > depthOfDirector)) {
-                    result.addLast(port);
+                if (container != null) {
+                    Director director = ((Actor) container).getExecutiveDirector();
+                    depthOfDirector = director.depthInHierarchy();
                 }
-            }
 
-            return result;
+                _sourcePortList = new LinkedList();
+                Iterator ports = deepConnectedPortList().iterator();
+
+                while (ports.hasNext()) {
+                    IOPort port = (IOPort) ports.next();
+                    int depth = port.depthInHierarchy();
+
+                    if (port.isInput() && (depth <= depthOfDirector)) {
+                        _sourcePortList.addLast(port);
+                    } else if (port.isOutput() && (depth > depthOfDirector)) {
+                        _sourcePortList.addLast(port);
+                    }
+                }
+                _sourcePortListVersion = _workspace.getVersion();
+            }
+            return _sourcePortList;
         } finally {
             _workspace.doneReading();
         }
@@ -4001,11 +4054,17 @@ public class IOPort extends ComponentPort {
 
     // A cache of the number of sinks, since it's expensive to compute.
     private transient int _numberOfSinks;
-
     private transient long _numberOfSinksVersion = -1;
 
     // A cache of the number of sources, since it's expensive to compute.
     private transient int _numberOfSources;
-
     private transient long _numberOfSourcesVersion = -1;
+    
+    // A cache of the sink port list.
+    private transient LinkedList _sinkPortList;
+    private transient long _sinkPortListVersion;
+
+    // A cache of the source port list.
+    private transient LinkedList _sourcePortList;
+    private transient long _sourcePortListVersion;
 }
