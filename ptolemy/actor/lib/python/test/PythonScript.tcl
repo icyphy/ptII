@@ -114,23 +114,23 @@ Called stopFire()
 Added attribute firingsPerIteration to .top.PythonScript
 Called initialize()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called wrapup()
@@ -142,23 +142,23 @@ set up reference to port "input" as "input"
 set up reference to port "output" as "output"
 Called initialize()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called wrapup()
@@ -189,15 +189,15 @@ set up reference to port "input" as "input"
 set up reference to port "output" as "output"
 Called initialize()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called stop()
 Called postfire()
@@ -229,15 +229,15 @@ set up reference to port "input" as "input"
 set up reference to port "output" as "output"
 Called initialize()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called terminate()
 Called stop()
@@ -270,27 +270,27 @@ set up reference to port "input" as "input"
 set up reference to port "output" as "output"
 Called initialize()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 From script:  0
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 From script:  1
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 From script:  2
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 From script:  3
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 From script:  4
 Called postfire()
