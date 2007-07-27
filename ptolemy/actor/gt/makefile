@@ -80,7 +80,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'DepthFirstTransformer$$MarkedEntityList.class' \
+	'RecursiveGraphMatcher$$MarkedEntityList.class' \
+	'RecursiveGraphMatcher$$NamedObjComparator.class' \
 	'RuleEditor$$1.class' \
 	'RuleEditor$$2.class' \
 	'RuleEditor$$3.class' \

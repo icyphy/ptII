@@ -27,8 +27,11 @@
  */
 package ptolemy.actor.gt;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLParser;
 
 /** A recursive algorithm to match a subgraph to the given pattern.
 
@@ -62,6 +66,47 @@ public class RecursiveGraphMatcher {
         return Collections.unmodifiableMap(_match);
     }
 
+    public static void main(String[] args) throws Exception {
+        if (args.length != 2) {
+            System.err.println("USAGE: java "
+                    + RecursiveGraphMatcher.class.getName()
+                    + " <lhs.xml> <host.xml>");
+            System.exit(1);
+        }
+
+        String lhsXML = args[0];
+        String hostXML = args[1];
+
+        MoMLParser parser = new MoMLParser();
+        SingleRuleTransformer rule = (SingleRuleTransformer)
+                parser.parse(null, new File(lhsXML).toURI().toURL());
+        parser.reset();
+        NamedObj host = parser.parse(null, new File(hostXML).toURI().toURL());
+
+        NamedObjComparator comparator = new NamedObjComparator();
+
+        RecursiveGraphMatcher matcher = new RecursiveGraphMatcher();
+        if (matcher.match(rule.getLeftHandSide(), host)) {
+            Map<NamedObj, NamedObj> match = matcher.getMatch();
+            List<NamedObj> keyList = new LinkedList<NamedObj>(match.keySet());
+            Collections.sort(keyList, comparator);
+            for (NamedObj lhsObject : keyList) {
+                System.out.println(lhsObject.getName() + " : " +
+                        match.get(lhsObject).getName());
+            }
+        }
+    }
+
+    /** Match the LHS graph with the host graph. If the match is successful,
+     *  <tt>true</tt> is returned, and the match result is stored internally,
+     *  which can be retrieved with {@link #getMatch()}.
+     *
+     *  @param lhsGraph The LHS graph.
+     *  @param hostGraph The host graph.
+     *  @return <tt>true</tt> if the match is successful; <tt>false</tt>
+     *   otherwise.
+     *  @throws SubgraphMatchingException If errors occur during the match.
+     */
     public boolean match(CompositeActorMatcher lhsGraph, NamedObj hostGraph)
     throws SubgraphMatchingException {
 
@@ -76,13 +121,8 @@ public class RecursiveGraphMatcher {
         _lhsFrontier.add(lhsGraph);
         _hostFrontier.add(hostGraph);
 
-        _success = _matchEntryList(_lhsFrontier.getHead(), _hostFrontier.getHead());
-        if (_success) {
-            for (NamedObj lhsObject : _match.keySet()) {
-                System.out.println(lhsObject.getName() + " : " +
-                        _match.get(lhsObject).getName());
-            }
-        }
+        _success = _matchEntryList(_lhsFrontier.getHead(),
+                _hostFrontier.getHead());
 
         // Clear temporary data structures to free memory.
         _lhsFrontier = null;
@@ -106,6 +146,13 @@ public class RecursiveGraphMatcher {
         }
     }
 
+    /** TODO: This method is to be removed.
+     *
+     *  @param from
+     *  @param transformer
+     *  @return
+     *  @throws GraphTransformationException
+     */
     public NamedObj transform(NamedObj from, SingleRuleTransformer transformer)
     throws GraphTransformationException {
         CompositeActorMatcher leftHandSide = transformer.getLeftHandSide();
@@ -194,6 +241,15 @@ public class RecursiveGraphMatcher {
         }
     }
 
+    /** Test whether the composite entity starts a new level of composition.
+     *  Return <tt>true</tt> if the composite entity is the top-level composite
+     *  entity of the match operation, or the composite entity has a director
+     *  defined in it.
+     *
+     *  @param container The composite entity to be tested.
+     *  @return <tt>true</tt> if the composite entity starts a new level;
+     *   <tt>false</tt> otherwise.
+     */
     private boolean _isNewLevel(CompositeEntity container) {
         return container instanceof CompositeActor
                 && ((CompositeActor) container).getDirector() != null;
@@ -472,14 +528,29 @@ public class RecursiveGraphMatcher {
         }
     }
 
+    /** The list of host entities that can be used to match the LHS entities.
+     */
     private FastLinkedList<NamedObj> _hostFrontier;
 
+    /** The list of LHS entities that need to be matched.
+     */
     private FastLinkedList<NamedObj> _lhsFrontier;
 
+    /** The map that matches objects in the LHS to the objects in the host.
+     *  These objects include actors, ports, relations, etc.
+     */
     private Map<NamedObj, NamedObj> _match;
 
+    /** The variable that indicates whether the last match operation is
+     *  successful. (See {@link #match(CompositeActorMatcher, NamedObj)})
+     */
     private boolean _success = false;
 
+    /** The list of composite entities (only the top-level one and those with
+     *  directors in them) that have been visited during the current match
+     *  process. This is a temporary variable and is cleared after the match
+     *  operation.
+     */
     private FastLinkedList<CompositeEntity> _visitedLHSCompositeEntities;
 
     private static class MarkedEntityList extends Pair<List<?>, Integer> {
@@ -490,5 +561,12 @@ public class RecursiveGraphMatcher {
 
         private static final long serialVersionUID = -8862333308144377821L;
 
+    }
+
+    private static class NamedObjComparator implements Comparator<NamedObj> {
+
+        public int compare(NamedObj namedObj1, NamedObj namedObj2) {
+            return namedObj1.getName().compareTo(namedObj2.getName());
+        }
     }
 }
