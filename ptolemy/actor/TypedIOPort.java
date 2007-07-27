@@ -417,6 +417,11 @@ public class TypedIOPort extends IOPort implements Typeable {
         if (this.numLinks() == 0) {
             return true;
         }
+        
+        // For an input port with no sources, any type is acceptable.
+        if (isInput() && !isOutput() && numberOfSources() == 0) {
+            return true;
+        }
 
         return false;
     }
