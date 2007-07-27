@@ -364,9 +364,18 @@ public class CCodeGenerator extends CodeGenerator {
         if (functions.contains("equals") || functions.contains("isCloseTo")) {
             types.add("Boolean");
         }
+
         if (functions.contains("toString")) {
             types.add("String");
         }
+
+        if (functions.contains("isCloseTo")
+                && _newTypesUsed.contains("Int")
+                && !_newTypesUsed.contains("Double")) {
+            types.add("Double");
+        }
+
+
         types.addAll(_newTypesUsed);
 
         Object[] typesArray = types.toArray();

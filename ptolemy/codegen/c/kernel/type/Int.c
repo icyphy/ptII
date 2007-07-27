@@ -39,7 +39,7 @@ Token Int_isCloseTo(Token this, ...) {
     tolerance = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(fabs(this.payload.Int - otherToken.payload.Int) < tolerance.payload.Int);
+    return Boolean_new(fabs(this.payload.Int - otherToken.payload.Int) < tolerance.payload.Double);
 }
 /**/
 

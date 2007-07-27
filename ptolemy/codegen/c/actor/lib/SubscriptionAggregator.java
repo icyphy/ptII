@@ -76,7 +76,14 @@ public class SubscriptionAggregator extends CCodeGeneratorHelper {
             args.add(Integer.valueOf(0));
             for (int i = 1; i < actor.input.getWidth(); i++) {
                 args.set(0, Integer.valueOf(i));
-                _codeStream.appendCodeBlock("fireBlock", args);
+                if (actor.operation.stringValue().equals("add")) {
+                    _codeStream.appendCodeBlock("fireBlockAdd", args);
+                } else if (actor.operation.stringValue().equals("multiply")) {
+                    _codeStream.appendCodeBlock("fireBlockMultiply", args);
+                } else {
+                    throw new IllegalActionException("SubscriptionAggregator operation '"
+                    + actor.operation + "' not supported");
+                }
             }
             _codeStream.appendCodeBlock("fireBlock2", false);
         }
@@ -98,10 +105,6 @@ public class SubscriptionAggregator extends CCodeGeneratorHelper {
 
         ArrayList args = new ArrayList();
 
-        if (!actor.operation.stringValue().equals("add")) {
-            throw new IllegalActionException("SubscriptionAggregator operation '"
-                    + actor.operation + "' not supported");
-        }
         Type type = actor.output.getType();
         args.add(targetType(type));
 

@@ -85,7 +85,7 @@ public class Test extends CCodeGeneratorHelper {
         }
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
-            if (CodeGeneratorHelper.isPrimitive(actor.input.getType())) {
+            if (isPrimitive(actor.input.getType())) {
                 inputType = CodeGeneratorHelper.codeGenType(actor.input
                         .getType());
             } else {
@@ -93,6 +93,26 @@ public class Test extends CCodeGeneratorHelper {
             }
             _codeStream.appendCodeBlock(inputType + "Block" + multiChannel,
                     args);
+        }
+        return processCode(_codeStream.toString());
+    }
+
+    /** Generate the initialize code. Declare the variable state.
+     *  @return The initialize code.
+     *  @exception IllegalActionException
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        super.generateInitializeCode();
+
+        ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            if (!isPrimitive(actor.input.getType())) {
+                // One of the channels is not primitive, so we will
+                // later call TokenBlock($channel), so we define
+                // toleranceToken for our use.
+                _codeStream.appendCodeBlock("toleranceTokenInitBlock");
+                break;
+            }
         }
         return processCode(_codeStream.toString());
     }
@@ -115,6 +135,16 @@ public class Test extends CCodeGeneratorHelper {
             for (int i = 0; i < actor.input.getWidth(); i++) {
                 args.set(0, Integer.valueOf(i));
                 _codeStream.appendCodeBlock("TokenPreinitBlock", args);
+            }
+        }
+
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            if (!isPrimitive(actor.input.getType())) {
+                // One of the channels is not primitive, so we will
+                // later call TokenBlock($channel), so we define
+                // toleranceToken for our use.
+                _codeStream.appendCodeBlock("toleranceTokenPreinitBlock");
+                break;
             }
         }
 

@@ -6,9 +6,12 @@ $type $actorSymbol(result);
 $actorSymbol(result) = $ref(($cgType(output)) input#0);
 /**/
 
-/*** fireBlock($channel) ***/
-// FIXME: Handle multiplication
+/*** fireBlockAdd($channel) ***/
 $actorSymbol(result) += $ref(($cgType(output)) input#$channel);
+/**/
+
+/*** fireBlockMultiply($channel) ***/
+$actorSymbol(result) *= $ref(($cgType(output)) input#$channel);
 /**/
 
 /*** fireBlock2 ***/

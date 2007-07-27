@@ -57,8 +57,8 @@ public class Ramp extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    /** Generate the preinitialize code. Declare the variable state.
-     *  @return The preinitialize code.
+    /** Generate the initialize code. Declare the variable state.
+     *  @return The initialize code.
      *  @exception IllegalActionException
      */
     public String generateInitializeCode() throws IllegalActionException {

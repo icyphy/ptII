@@ -698,7 +698,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 || (closeFuncParenIndex != (functionString.length() - 1))) {
             throw new IllegalActionException(
                     "Bad Syntax with the $tokenFunc / $typeFunc macro. "
-                            + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))]");
+                    + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))].  "
+                    + "String was:\n:" + functionString); 
         }
 
         String typeOrToken = functionString.substring(0, commaIndex).trim();
