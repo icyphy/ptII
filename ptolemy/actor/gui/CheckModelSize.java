@@ -72,7 +72,7 @@ public class CheckModelSize {
         StringBuffer results = new StringBuffer();
         Set sizeProblemSet = new HashSet();
         if (configuration != null) {
-            List entityList = configuration.deepEntityList();
+            List entityList = configuration.allCompositeEntityList();
             Iterator entities = entityList.iterator();
             while (entities.hasNext()) {
                 Object entity = entities.next();
@@ -86,6 +86,24 @@ public class CheckModelSize {
                     sizeProblemSet.add(entity);
                 }
             }
+
+            List classList = configuration.classDefinitionList();
+            entities = classList.iterator();
+            while (entities.hasNext()) {
+                Object entity = entities.next();
+                System.out.println("CheckModelSize: " + entity
+                        + " " + (entity instanceof TypedCompositeActor));
+                if (entity instanceof TypedCompositeActor
+                        && !sizeProblemSet.contains(entity)) {
+                    String checkSizeOutput = _checkSize((TypedCompositeActor)entity, false);
+                    if (!checkSizeOutput.equals("")) {
+                        results.append("<tr>\n  <td><b>Class</b> " + ((TypedCompositeActor)entity).getFullName()
+                                + "</td>\n  <td>" + checkSizeOutput + "</td>\n");
+                    }
+                    sizeProblemSet.add(entity);
+                }
+            }
+
         }
 
         for (int i = 0; i < args.length; i++) {
