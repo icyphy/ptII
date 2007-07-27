@@ -129,7 +129,7 @@ Token Array_isCloseTo(Token this, ...) {
     Token tolerance;
     va_start(argp, this);
     otherToken = va_arg(argp, Token);
-		tolerance = va_arg(argp, Token);
+    tolerance = va_arg(argp, Token);
 
     if (this.payload.Array->size != otherToken.payload.Array->size) {
         return Boolean_new(false);

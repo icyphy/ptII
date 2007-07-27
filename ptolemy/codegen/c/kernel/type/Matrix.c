@@ -1,3 +1,51 @@
+/***preinitBlock***/
+static $targetType(output) $actorSymbol(state);
+/**/
+
+/*** ArrayConvertInitBlock($elementType) ***/
+$actorSymbol(state) = $typeFunc(TYPE_Array::convert($actorSymbol(state), $elementType));
+/**/
+
+/*** ArrayConvertStepBlock($elementType) ***/
+$ref(step) = $typeFunc(TYPE_Array::convert($ref(step), $elementType));
+/**/
+
+
+/***CommonInitBlock($type)***/
+$actorSymbol(state) = $val(($type)init);
+/**/
+
+/***StringInitBlock***/
+$actorSymbol(state) = strdup($val((String)init));
+/**/
+
+/***IntFireBlock***/
+$ref(output) = $actorSymbol(state);
+$actorSymbol(state) += $ref((Int)step);
+/**/
+
+/***DoubleFireBlock***/
+$ref(output) = $actorSymbol(state);
+$actorSymbol(state) += $ref((Double)step);
+/**/
+
+/***BooleanFireBlock***/
+$ref(output) = $actorSymbol(state);
+$actorSymbol(state) |= $ref((Boolean)step);
+/**/
+
+/***StringFireBlock***/
+$ref(output) = (char*) realloc($ref(output), sizeof(char) * (strlen($actorSymbol(state)) + 1) );
+strcpy($ref(output), $actorSymbol(state));
+$actorSymbol(state) = (char*) realloc($actorSymbol(state), sizeof(char) * (strlen($actorSymbol(state)) + strlen($ref((String)step)) + 1) );
+strcat($actorSymbol(state),  $ref((String)step));
+/**/
+
+/***TokenFireBlock***/
+$ref(output) = $actorSymbol(state);
+$actorSymbol(state) = $tokenFunc($ref(output)::add($ref((Token)step)));
+/**/
+
 /***declareBlock***/
 #include <stdarg.h>     // Needed Matrix_new va_* macros
 
@@ -113,6 +161,7 @@ Token Matrix_equals(Token this, ...) {
     Token otherToken; 
     va_start(argp, this);
     otherToken = va_arg(argp, Token);
+    va_end(argp);
 
     if (( this.payload.Matrix->row != otherToken.payload.Matrix->row ) ||
             ( this.payload.Matrix->column != otherToken.payload.Matrix->column )) {
@@ -129,6 +178,32 @@ Token Matrix_equals(Token this, ...) {
 }
 /**/
 
+
+/***isCloseToBlock***/
+Token Matrix_isCloseTo(Token this, ...) {
+    int i, j;
+    va_list argp; 
+    Token otherToken; 
+    Token tolerance;
+    va_start(argp, this);
+    otherToken = va_arg(argp, Token);
+    tolerance = va_arg(argp, Token);
+
+    if (( this.payload.Matrix->row != otherToken.payload.Matrix->row ) ||
+            ( this.payload.Matrix->column != otherToken.payload.Matrix->column )) {
+        return Boolean_new(false);
+    }
+    for (i = 0; i < this.payload.Matrix->column; i++) { 
+        for (j = 0; j < this.payload.Matrix->row; j++) { 
+            if (!functionTable[(int) Matrix_get(this, j, i).type][FUNC_isCloseTo](Matrix_get(this, j, i), Matrix_get(otherToken, j, i), tolerance).payload.Boolean) {
+                return Boolean_new(false);
+            }
+        }
+    }
+    va_end(argp);
+    return Boolean_new(true);
+}
+/**/
 
 /***printBlock***/
 Token Matrix_print(Token this, ...) {
