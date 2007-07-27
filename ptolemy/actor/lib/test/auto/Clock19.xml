@@ -56,7 +56,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 210.0]">
         </property>
     </entity>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
@@ -176,6 +176,8 @@
             </port>
             <port name="control" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+                </property>
             </port>
             <entity name="Clock" class="ptolemy.actor.lib.Clock">
                 <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
