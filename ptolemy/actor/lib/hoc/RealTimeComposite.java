@@ -327,10 +327,9 @@ public class RealTimeComposite extends MirrorComposite {
             if (director != null) {
                 // We assume that the contained actors mean "real time" by
                 // "current time". Hopefully, this will be in the future w.r.t. model time.
-                // Use fireAt() hoping that the director will set time
-                // to the current time if current time exceeds the specified
-                // value, rather than throwing an exception. This is what DE
-                // does.
+                // Use fireAt() hoping that the director will not increment time
+                // too soon.
+                // FIXME: This is not right!
                 Time time = new Time(this, (System.currentTimeMillis() - _realStartTime) / 1000.0);
                 if (RealTimeComposite.this._debugging) {
                     RealTimeComposite.this._debug(
