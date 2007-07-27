@@ -607,6 +607,20 @@ public class DEDirector extends Director implements TimedDirector {
             _enqueueEvent(actor, time);
             _eventQueue.notifyAll();
         }
+        // If this is occurring between iterations within
+        // an opaque composite actor, then postfire() will not
+        // be invoked again to pass this fireAt() request up
+        // the hierarchy to the executive director.  We
+        // have to pass it up here.
+        if (_delegateFireAt) {
+            CompositeActor container = (CompositeActor) getContainer();
+            if (_debugging) {
+                _debug("DEDirector: Requests refiring of: " + container.getName()
+                        + " at time " + time);
+            }
+            // Enqueue a pure event to fire the container of this director.
+            container.getExecutiveDirector().fireAt(container, time);
+        }
     }
 
     /** Schedule a firing of the given actor at the current time.
@@ -782,6 +796,11 @@ public class DEDirector extends Director implements TimedDirector {
             // This design allows the upper level director to keep a
             // relatively short event queue.
             _requestFiring();
+            // Indicate that fireAt() request should be passed
+            // up the chain if they are made before the next iteration.
+            _delegateFireAt = true;
+        } else {
+            _delegateFireAt = false;
         }
 
         _isInitializing = false;
@@ -846,7 +865,11 @@ public class DEDirector extends Director implements TimedDirector {
             // levels in hierarchy) to keep a relatively short event queue.
             _requestFiring();
         }
-
+        if (_isEmbedded()) {
+            // Indicate that fireAt() requests should be passed up the
+            // hierarchy if they are made before the next iteration.
+            _delegateFireAt = true;
+        }
         // NOTE: The following commented block enforces that no events with
         // different tags can exist in the same receiver.
         // This is a quite different semantics from the previous designs,
@@ -975,6 +998,11 @@ public class DEDirector extends Director implements TimedDirector {
 
         if (_debugging) {
             _debug("Prefire returns: " + result);
+        }
+        if (result) {
+            _delegateFireAt = false;
+        } else {
+            _delegateFireAt = true;
         }
         return result;
     }
@@ -2045,6 +2073,11 @@ public class DEDirector extends Director implements TimedDirector {
 
     /** A hashtable that caches the depths of actors. */
     private Hashtable _actorToDepth = null;
+    
+    /** Indicator that calls to fireAt() should be delegated
+     *  to the executive director.
+     */
+    private boolean _delegateFireAt = false;
 
     /** The set of actors that have returned false in their postfire()
      *  methods. Events destined for these actors are discarded and
