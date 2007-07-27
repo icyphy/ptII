@@ -50,7 +50,7 @@ import cern.jet.random.Binomial;
  represented in the <code>P</code> populations.  This is done by
  performing a progressively conditional Binomial selection in which
  <code>n</code> and <code>p</code> change after each trial assignment
- step.  The Binomial trails (<code>n</code>) is decremented after each
+ step.  The Binomial trials (<code>n</code>) is decremented after each
  assignment step to represent the remaining trials, and the new
  Binomial probability (<code>p</code>) is calculated based on the
  populations that remain eligible for selection.
@@ -164,7 +164,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
                     selected = _generator.nextInt(trialsRemaining, p);
                 } else {
                     selected = trialsRemaining;
-                }
+                };
             }
 
             _current[i] = new IntToken(selected);
