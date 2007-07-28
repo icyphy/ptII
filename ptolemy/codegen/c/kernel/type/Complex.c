@@ -79,8 +79,8 @@ Token Complex_add(Token this, ...) {
 }
 /**/
 
-/***substractBlock***/
-Token Complex_substract(Token this, ...) {
+/***subtractBlock***/
+Token Complex_subtract(Token this, ...) {
     va_list argp; 
     Token otherToken;
     

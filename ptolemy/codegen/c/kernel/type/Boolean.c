@@ -16,14 +16,8 @@ Token Boolean_new(boolean b) {
 }
 /**/
 
-
 /***deleteBlock***/
-Token Boolean_delete(Token token, ...) {
-    /* We need to return something here because all the methods are declared
-     * as returning a Token so we can use them in a table of functions.
-     */
-    return emptyToken; 
-}    
+/* Instead of Boolean_delete(), we call scalarDelete(). */
 /**/
 
 /***equalsBlock***/
@@ -42,15 +36,7 @@ Token Boolean_equals(Token this, ...) {
 
 
 /***isCloseToBlock***/
-Token Boolean_isCloseTo(Token this, ...) {
-    va_list argp; 
-    Token otherToken; 
-    va_start(argp, this);
-    otherToken = va_arg(argp, Token);
-
-    va_end(argp);
-    return Boolean_equals(this, otherToken);
-}
+// No need to use Boolean_isCloseTo(), we use Boolean_equals() instead.
 /**/
 
 /***printBlock***/
@@ -75,26 +61,18 @@ Token Boolean_add(Token this, ...) {
 }
 /**/
 
-/***substractBlock***/
-Token Boolean_substract(Token this, ...) {
-    fprintf(stderr, "Boolean_substract not supported");
-    exit(1);
-}
+/***subtractBlock***/
+/** Boolean_subtract is not supported. */
 /**/
 
 /***multiplyBlock***/
-Token Boolean_multiply(Token this, ...) {
-    fprintf(stderr, "Boolean_multiply not supported");
-    exit(1);
-}
+/** Boolean_multiply is not supported. */
 /**/
 
 /***divideBlock***/
-Token Boolean_divide(Token this, ...) {
-    fprintf(stderr, "Boolean_divide not supported");
-    exit(1);
-}
+/** Boolean_divide is not supported. */
 /**/
+
 /***negateBlock***/
 Token Boolean_negate(Token this, ...) {
     this.payload.Boolean = !this.payload.Boolean;

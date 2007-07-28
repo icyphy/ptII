@@ -74,3 +74,22 @@ char* BooleantoString (boolean b) {
 }
 
 /**/
+
+/*** unsupportedTypeFunction ***/
+/* We share one method between all types so as to reduce code size. */
+Token unsupportedTypeFunction(Token token, ...) {
+    fprintf(stderr, "Attempted to call unsupported method on a type.\n");
+    exit(1);
+    return emptyToken; 
+}
+/**/
+
+/*** scalarDeleteFunction ***/
+/* We share one method between all scalar types so as to reduce code size. */
+Token scalarDelete(Token token, ...) {
+    /* We need to return something here because all the methods are declared
+     * as returning a Token so we can use them in a table of functions.
+     */
+    return emptyToken; 
+}    
+/**/

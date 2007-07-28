@@ -1,9 +1,5 @@
 /***declareBlock***/
 typedef char* StringToken;
-void notSupported(const char * method) {
-    fprintf(stderr, "%s not supported.\n", method);
-    exit(1);
-}
 /**/
 
 /***funcDeclareBlock***/
@@ -11,7 +7,7 @@ Token String_new(char* s);
 /**/
 
 /***newBlock***/
-// make a new integer token from the given value.
+/* Make a new integer token from the given value. */
 Token String_new(char* s) {
     Token result;
     result.type = TYPE_String;
@@ -43,14 +39,7 @@ Token String_equals(Token this, ...) {
 /**/
 
 /***isCloseToBlock***/
-Token String_isCloseTo(Token this, ...) {
-    va_list argp; 
-    Token otherToken; 
-    va_start(argp, this);
-    otherToken = va_arg(argp, Token);
-
-    va_end(argp);
-    return String_equals(this, otherToken);
+/* No need to use String_isCloseTo(), we use String_equals() instead. */
 }
 /**/
 
@@ -85,25 +74,16 @@ Token String_add(Token this, ...) {
 }
 /**/
 
-/***substractBlock***/
-Token String_substract(Token this, ...) {
-    notSupported("String_substract");
-    return emptyToken;
-}
+/***subtractBlock***/
+/** String_subtract is not supported. */
 /**/
 
 /***multiplyBlock***/
-Token String_multiply(Token this, ...) {
-    notSupported("String_multiply");
-    return emptyToken;
-}
+/** String_multiply is not supported. */
 /**/
 
 /***divideBlock***/
-Token String_divide(Token this, ...) {
-    notSupported("String_divide");
-    return emptyToken;
-}
+/** String_divide is not supported. */
 /**/
 
 /***negateBlock***/
@@ -119,10 +99,7 @@ Token String_zero(Token token, ...) {
 /**/
 
 /***oneBlock***/
-Token String_one(Token this, ...) {
-    notSupported("String_one");
-    return emptyToken;
-}
+/** String_one is not supported. */
 /**/
 
 /***cloneBlock***/

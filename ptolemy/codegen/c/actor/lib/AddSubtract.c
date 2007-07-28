@@ -69,7 +69,7 @@ $actorSymbol(result) = $tokenFunc($actorSymbol(result)::add($ref(plus#$channel))
 /**/
 
 /***TokenMinusBlock($channel)***/
-$actorSymbol(result) = $tokenFunc($actorSymbol(result)::substract($ref(minus#$channel)));
+$actorSymbol(result) = $tokenFunc($actorSymbol(result)::subtract($ref(minus#$channel)));
 /**/
 
 /***PostFireBlock***/
@@ -115,6 +115,6 @@ for ($actorSymbol(i) = 1; $actorSymbol(i) < $size(plus); $actorSymbol(i)++) {
     $tokenFunc($ref(output)::add($ref(plus#$actorSymbol(i))));
 }
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $size(minus); $actorSymbol(i)++) {
-    $ref(output) = $tokenFunc($ref(output)::substract($ref(minus#$actorSymbol(i))));
+    $ref(output) = $tokenFunc($ref(output)::subtract($ref(minus#$actorSymbol(i))));
 }
 /**/

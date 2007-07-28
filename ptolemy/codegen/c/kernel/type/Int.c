@@ -44,12 +44,7 @@ Token Int_isCloseTo(Token this, ...) {
 /**/
 
 /***deleteBlock***/
-Token Int_delete(Token token, ...) {
-    /* We need to return something here because all the methods are declared
-     * as returning a Token so we can use them in a table of functions.
-     */
-    return emptyToken; 
-}    
+/* Instead of Int_delete(), we call scalarDelete(). */
 /**/
 
 /***printBlock***/
@@ -75,8 +70,8 @@ Token Int_add(Token this, ...) {
 }
 /**/
 
-/***substractBlock***/
-Token Int_substract(Token this, ...) {
+/***subtractBlock***/
+Token Int_subtract(Token this, ...) {
     va_list argp; 
     va_start(argp, this);
     Token otherToken = va_arg(argp, Token);	

@@ -219,10 +219,10 @@ Token Array_add(Token this, ...) {
 /**/
 
 
-/***substractBlock***/
+/***subtractBlock***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
-Token Array_substract(Token this, ...) {
+Token Array_subtract(Token this, ...) {
     int i;
     va_list argp; 
     Token result; 
@@ -234,7 +234,7 @@ Token Array_substract(Token this, ...) {
     result = Array_new(this.payload.Array->size, 0);
 	
     for (i = 0; i < this.payload.Array->size; i++) {
-        result.payload.Array->elements[i] = functionTable[(int)Array_get(this, i).type][FUNC_substract](Array_get(this, i), Array_get(otherToken, i));
+        result.payload.Array->elements[i] = functionTable[(int)Array_get(this, i).type][FUNC_subtract](Array_get(this, i), Array_get(otherToken, i));
     }
 
     va_end(argp);

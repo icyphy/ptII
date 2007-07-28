@@ -30,12 +30,7 @@ Token Long_equals(Token this, ...) {
 /**/
 
 /***deleteBlock***/
-Token Long_delete(Token token, ...) {
-    /* We need to return something here because all the methods are declared
-     * as returning a Token so we can use them in a table of functions.
-     */
-    return emptyToken; 
-}    
+/* Instead of Long_delete(), we call scalarDelete(). */
 /**/
 
 /***printBlock***/
@@ -61,8 +56,8 @@ Token Long_add(Token this, ...) {
 }
 /**/
 
-/***substractBlock***/
-Token Long_substract(Token this, ...) {
+/***subtractBlock***/
+Token Long_subtract(Token this, ...) {
     va_list argp; 
     va_start(argp, this);
     Token otherToken = va_arg(argp, Token);	

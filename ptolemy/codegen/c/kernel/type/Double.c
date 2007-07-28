@@ -16,14 +16,8 @@ Token Double_new(double d) {
 }
 /**/
 
-
 /***deleteBlock***/
-Token Double_delete(Token token, ...) {
-    /* We need to return something here because all the methods are declared
-     * as returning a Token so we can use them in a table of functions.
-     */
-    return emptyToken; 
-}    
+/* Instead of Double_delete(), we call scalarDelete(). */
 /**/
 
 /***equalsBlock***/
@@ -82,8 +76,8 @@ Token Double_add(Token this, ...) {
 }
 /**/
 
-/***substractBlock***/
-Token Double_substract(Token this, ...) {
+/***subtractBlock***/
+Token Double_subtract(Token this, ...) {
     va_list argp; 
     Token otherToken;
     

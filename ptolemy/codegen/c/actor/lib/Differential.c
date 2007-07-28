@@ -27,7 +27,7 @@ if ($actorSymbol(isFirst)) {
     $ref(output) = $actorSymbol(_currentInput);
     $actorSymbol(isFirst) = false;
 } else {
-    $ref(output) = $tokenFunc($actorSymbol(_currentInput)::substract($actorSymbol(_lastInput)));
+    $ref(output) = $tokenFunc($actorSymbol(_currentInput)::subtract($actorSymbol(_lastInput)));
 }
 $actorSymbol(_lastInput) = $actorSymbol(_currentInput);
 /**/
