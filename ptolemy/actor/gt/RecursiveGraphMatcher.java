@@ -372,7 +372,8 @@ public class RecursiveGraphMatcher {
             // Arbitrarily pick an object in _lhsFrontier to match.
             NamedObj lhsObject = lhsEntry.getValue();
             while (hostEntry != null) {
-                if (_matchNamedObj(lhsObject, hostEntry.getValue())) {
+                NamedObj hostObject = hostEntry.getValue();
+                if (_matchNamedObj(lhsObject, hostObject)) {
                     return true;
                 } else {
                     hostEntry = hostEntry.getNext();
@@ -449,6 +450,15 @@ public class RecursiveGraphMatcher {
 
         _match.put(lhsPort, hostPort);
 
+        NamedObj lhsContainer = lhsPort.getContainer();
+        if (!_match.containsKey(lhsContainer)) {
+            _lhsFrontier.add(lhsContainer);
+        }
+        NamedObj hostContainer = hostPort.getContainer();
+        if (!_match.containsValue(hostContainer)) {
+            _hostFrontier.add(hostContainer);
+        }
+        
         for (Object relationObject : lhsPort.linkedRelationList()) {
             Relation relation = (Relation) relationObject;
             if (!_match.containsKey(relation)) {
@@ -472,6 +482,19 @@ public class RecursiveGraphMatcher {
             return false;
         }
     }
+    
+    private Collection<Port> _findLinkedPorts(Relation relation,
+            boolean isLHS) {
+        Collection<Port> ports = new LinkedList<Port>();
+        for (Object portObject : relation.linkedPortList()) {
+            Port port = (Port) portObject;
+            if (isLHS && !_match.containsKey(port)
+                    || !isLHS && !_match.containsValue(port)) {
+                ports.add(port);
+            }
+        }
+        return ports;
+    }
 
     private boolean _matchRelation(Relation lhsRelation,
             Relation hostRelation) {
@@ -481,20 +504,12 @@ public class RecursiveGraphMatcher {
 
         _match.put(lhsRelation, hostRelation);
 
-        for (Object portObject : lhsRelation.linkedPortList()) {
-            Port port = (Port) portObject;
-            NamedObj container = port.getContainer();
-            if (!_match.containsKey(container)) {
-                _lhsFrontier.add(container);
-            }
+        for (Port port : _findLinkedPorts(lhsRelation, true)) {
+            _lhsFrontier.add(port);
         }
 
-        for (Object portObject : hostRelation.linkedPortList()) {
-            Port port = (Port) portObject;
-            NamedObj container = port.getContainer();
-            if (!_match.containsValue(container)) {
-                _hostFrontier.add(container);
-            }
+        for (Port port : _findLinkedPorts(hostRelation, false)) {
+            _hostFrontier.add(port);
         }
 
         if (_matchLoop(lhsTail, hostTail)) {
