@@ -47,8 +47,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	FastHashMap.java \
 	FastLinkedList.java \
+	MapSet.java \
 	Pair.java \
 	Tuple.java
 
@@ -62,7 +62,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'FastLinkedList$$1.class' \
-	'FastLinkedList$$Entry.class'
+	'FastLinkedList$$Entry.class' \
+	'MapSet$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -31,15 +31,16 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gt.data.FastHashMap;
 import ptolemy.actor.gt.data.FastLinkedList;
+import ptolemy.actor.gt.data.MapSet;
 import ptolemy.actor.gt.data.Pair;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -62,8 +63,8 @@ public class RecursiveGraphMatcher {
      *
      *  @return The last matching result.
      */
-    public Map<NamedObj, NamedObj> getMatch() {
-        return Collections.unmodifiableMap(_match);
+    public MapSet<NamedObj, NamedObj> getMatch() {
+        return _match;
     }
 
     public static void main(String[] args) throws Exception {
@@ -87,12 +88,14 @@ public class RecursiveGraphMatcher {
 
         RecursiveGraphMatcher matcher = new RecursiveGraphMatcher();
         if (matcher.match(rule.getLeftHandSide(), host)) {
-            Map<NamedObj, NamedObj> match = matcher.getMatch();
+            MapSet<NamedObj, NamedObj> match = matcher.getMatch();
             List<NamedObj> keyList = new LinkedList<NamedObj>(match.keySet());
             Collections.sort(keyList, comparator);
             for (NamedObj lhsObject : keyList) {
-                System.out.println(lhsObject.getName() + " : " +
-                        match.get(lhsObject).getName());
+                for (NamedObj hostObject : match.get(lhsObject)) {
+                    System.out.println(lhsObject.getName() + " : " +
+                            hostObject.getName());
+                }
             }
         }
     }
@@ -111,7 +114,7 @@ public class RecursiveGraphMatcher {
     throws SubgraphMatchingException {
 
         // Matching result.
-        _match = new FastHashMap<NamedObj, NamedObj>();
+        _match = new MapSet<NamedObj, NamedObj>();
 
         // Temporary data structures.
         _lhsFrontier = new FastLinkedList<NamedObj>();
@@ -123,6 +126,9 @@ public class RecursiveGraphMatcher {
 
         _success = _matchEntryList(_lhsFrontier.getHead(),
                 _hostFrontier.getHead());
+        if (!_success) {
+            _match.clear();
+        }
 
         // Clear temporary data structures to free memory.
         _lhsFrontier = null;
@@ -139,20 +145,10 @@ public class RecursiveGraphMatcher {
      *  @return A string that describes the last matching result.
      */
     public String stringifyMatchResult() {
-        if (_success) {
-            return Utils.toString(_match);
-        } else {
-            return "{}";
-        }
+        return _match.toString();
     }
 
-    /** TODO: This method is to be removed.
-     *
-     *  @param from
-     *  @param transformer
-     *  @return
-     *  @throws GraphTransformationException
-     */
+    /* TODO: This method is to be removed. */
     public NamedObj transform(NamedObj from, SingleRuleTransformer transformer)
     throws GraphTransformationException {
         CompositeActorMatcher leftHandSide = transformer.getLeftHandSide();
@@ -200,6 +196,86 @@ public class RecursiveGraphMatcher {
             }
         }
         return null;
+    }
+
+    private Set<Port> _findHostLinkedPorts(Relation hostRelation) {
+        Set<Port> ports = new HashSet<Port>();
+        _findHostLinkedPorts(hostRelation, ports, new HashSet<Relation>());
+        return ports;
+    }
+
+    private void _findHostLinkedPorts(Relation hostRelation,
+            Set<Port> ports, Set<Relation> visitedRelations) {
+        visitedRelations.add(hostRelation);
+
+        for (Object portObject : hostRelation.linkedPortList()) {
+            Port hostPort = (Port) portObject;
+            NamedObj container = hostPort.getContainer();
+            if (container instanceof CompositeEntity) {
+                CompositeEntity composite = (CompositeEntity) container;
+                if (!_isNewLevel(composite)) {
+                    for (Object relationObject
+                            : ((TypedIOPort) hostPort).linkedRelationList()) {
+                        Relation relation = (Relation) relationObject;
+                        if (!visitedRelations.contains(relation)) {
+                            _findHostLinkedPorts(relation, ports,
+                                    visitedRelations);
+                        }
+                    }
+                    for (Object relationObject
+                            : ((TypedIOPort) hostPort).insideRelationList()) {
+                        Relation relation = (Relation) relationObject;
+                        if (!visitedRelations.contains(relation)) {
+                            _findHostLinkedPorts(relation, ports,
+                                    visitedRelations);
+                        }
+                    }
+                    continue;
+                }
+            }
+            if (!_match.containsValue(hostPort)) {
+                ports.add(hostPort);
+            }
+        }
+    }
+
+    /** Find all the ports connected to the LHS relation that have not been
+     *  matched yet. For the ports that have already been matched, a check is
+     *  performed to see whether the past matches conform to the current. If the
+     *  those LHS ports are matched to the host ports connected to the matched
+     *  host relation, then conformance is achieved and <tt>true</tt> is
+     *  returned; otherwise, <tt>false</tt> is returned.
+     *
+     *  @param lhsRelation The LHS relation.
+     *  @param hostRelation The host relation that the LHS relation is to be
+     *   matched.
+     *  @param ports The collection to collect the LHS ports found.
+     *  @return <tt>true</tt> if the current match conforms to previous matches;
+     *   <tt>false</tt> otherwise.
+     */
+    private boolean _findLHSLinkedPorts(Relation lhsRelation,
+            Relation hostRelation, Collection<Port> ports) {
+        for (Object portObject : lhsRelation.linkedPortList()) {
+            Port lhsPort = (Port) portObject;
+            Set<NamedObj> hostMatchedPorts = _match.get(lhsPort);
+            if (hostMatchedPorts == null || hostMatchedPorts.isEmpty()) {
+                ports.add(lhsPort);
+            } else {
+                boolean found = false;
+                for (NamedObj hostMatchedPortObject : hostMatchedPorts) {
+                    Port hostMatchedPort = (Port) hostMatchedPortObject;
+                    if (hostMatchedPort.linkedRelationList().contains(
+                            hostRelation)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private ComponentEntity _findNextChild(CompositeEntity top,
@@ -262,29 +338,47 @@ public class RecursiveGraphMatcher {
         FastLinkedList<NamedObj>.Entry hostTail = _hostFrontier.getTail();
 
         _match.put(lhsActor, hostActor);
+        boolean success = true;
 
         for (Object portObject : lhsActor.portList()) {
             Port port = (Port) portObject;
-            if (!_match.containsKey(port)) {
+            Set<NamedObj> matchedHostPorts = _match.get(port);
+            if (matchedHostPorts == null || matchedHostPorts.isEmpty()) {
                 _lhsFrontier.add(port);
+            } else {
+                boolean found = false;
+                for (NamedObj hostPortObject : matchedHostPorts) {
+                    if (hostPortObject instanceof Port
+                            && hostPortObject.getContainer() == hostActor) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    success = false;
+                    break;
+                }
             }
         }
 
-        for (Object portObject : hostActor.portList()) {
-            Port port = (Port) portObject;
-            if (!_match.containsValue(port)) {
-                _hostFrontier.add(port);
+        if (success) {
+            for (Object portObject : hostActor.portList()) {
+                Port port = (Port) portObject;
+                if (!_match.containsValue(port)) {
+                    _hostFrontier.add(port);
+                }
             }
         }
 
-        if (_matchLoop(lhsTail, hostTail)) {
-            return true;
-        } else {
-            _match.remove(lhsActor);
+        success = success && _matchLoop(lhsTail, hostTail);
+
+        if (!success) {
+            _match.remove(lhsActor, hostActor);
             _lhsFrontier.removeAllAfter(lhsTail);
             _hostFrontier.removeAllAfter(hostTail);
-            return false;
         }
+
+        return success;
     }
 
     private boolean _matchCompositeEntity(CompositeEntity lhsEntity,
@@ -336,7 +430,7 @@ public class RecursiveGraphMatcher {
             }
             if (firstEntrance) {
                 compositeTail.remove();
-                _match.remove(lhsEntity);
+                _match.remove(lhsEntity, hostEntity);
             }
             return false;
         }
@@ -347,8 +441,10 @@ public class RecursiveGraphMatcher {
             _visitedLHSCompositeEntities.getTail();
         while (lhsEntry != null) {
             CompositeEntity lhsEntity = lhsEntry.getValue();
-            if (!_matchCompositeEntity(lhsEntity,
-                    (CompositeEntity) _match.get(lhsEntity))) {
+            Set<NamedObj> hostEntities = _match.get(lhsEntity);
+            if (hostEntities.size() != 1 ||
+                    !_matchCompositeEntity(lhsEntity,
+                            (CompositeEntity) hostEntities.iterator().next())) {
                 return false;
             }
             lhsEntry = lhsEntry.getPrevious();
@@ -415,7 +511,7 @@ public class RecursiveGraphMatcher {
 
     private boolean _matchNamedObj(NamedObj lhsObject, NamedObj hostObject) {
         if (_match.containsKey(lhsObject)) {
-            return _match.get(lhsObject) == hostObject
+            return _match.get(lhsObject).contains(hostObject)
                     && _matchDisconnectedComponents();
         } else if (_match.containsValue(hostObject)) {
             return false;
@@ -449,51 +545,67 @@ public class RecursiveGraphMatcher {
         FastLinkedList<NamedObj>.Entry hostTail = _hostFrontier.getTail();
 
         _match.put(lhsPort, hostPort);
+        boolean success = true;
 
         NamedObj lhsContainer = lhsPort.getContainer();
-        if (!_match.containsKey(lhsContainer)) {
+        Set<NamedObj> hostMatchedContainers = _match.get(lhsContainer);
+        if (hostMatchedContainers == null || hostMatchedContainers.isEmpty()) {
             _lhsFrontier.add(lhsContainer);
+        } else if (!hostMatchedContainers.contains(hostPort.getContainer())) {
+            success = false;
         }
-        NamedObj hostContainer = hostPort.getContainer();
-        if (!_match.containsValue(hostContainer)) {
-            _hostFrontier.add(hostContainer);
-        }
-        
-        for (Object relationObject : lhsPort.linkedRelationList()) {
-            Relation relation = (Relation) relationObject;
-            if (!_match.containsKey(relation)) {
-                _lhsFrontier.add(relation);
+
+        if (success) {
+            NamedObj hostContainer = hostPort.getContainer();
+            if (!_match.containsValue(hostContainer)) {
+                _hostFrontier.add(hostContainer);
             }
         }
 
-        for (Object relationObject : hostPort.linkedRelationList()) {
-            Relation relation = (Relation) relationObject;
-            if (!_match.containsValue(relation)) {
-                _hostFrontier.add(relation);
+        if (success) {
+            for (Object relationObject : lhsPort.linkedRelationList()) {
+                Relation lhsRelation = (Relation) relationObject;
+                Set<NamedObj> hostMatchedRelations = _match.get(lhsRelation);
+                if (hostMatchedRelations == null
+                        || hostMatchedRelations.isEmpty()) {
+                    _lhsFrontier.add(lhsRelation);
+                } else {
+                    boolean found = false;
+                    for (NamedObj hostMatchedRelationObject
+                            : hostMatchedRelations) {
+                        Relation hostMatchedRelation =
+                            (Relation) hostMatchedRelationObject;
+                        if (hostMatchedRelation.linkedPortList().contains(
+                                hostPort)) {
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        success = false;
+                        break;
+                    }
+                }
             }
         }
 
-        if (_matchLoop(lhsTail, hostTail)) {
-            return true;
-        } else {
-            _match.remove(lhsPort);
+        if (success) {
+            for (Object relationObject : hostPort.linkedRelationList()) {
+                Relation relation = (Relation) relationObject;
+                if (!_match.containsValue(relation)) {
+                    _hostFrontier.add(relation);
+                }
+            }
+        }
+
+        success = success && _matchLoop(lhsTail, hostTail);
+
+        if (!success) {
+            _match.remove(lhsPort, hostPort);
             _lhsFrontier.removeAllAfter(lhsTail);
             _hostFrontier.removeAllAfter(hostTail);
-            return false;
         }
-    }
-    
-    private Collection<Port> _findLinkedPorts(Relation relation,
-            boolean isLHS) {
-        Collection<Port> ports = new LinkedList<Port>();
-        for (Object portObject : relation.linkedPortList()) {
-            Port port = (Port) portObject;
-            if (isLHS && !_match.containsKey(port)
-                    || !isLHS && !_match.containsValue(port)) {
-                ports.add(port);
-            }
-        }
-        return ports;
+
+        return success;
     }
 
     private boolean _matchRelation(Relation lhsRelation,
@@ -503,23 +615,32 @@ public class RecursiveGraphMatcher {
         FastLinkedList<NamedObj>.Entry hostTail = _hostFrontier.getTail();
 
         _match.put(lhsRelation, hostRelation);
+        boolean success = true;
 
-        for (Port port : _findLinkedPorts(lhsRelation, true)) {
-            _lhsFrontier.add(port);
+        Collection<Port> lhsPorts = new LinkedList<Port>();
+        success = success && _findLHSLinkedPorts(lhsRelation, hostRelation,
+                lhsPorts);
+        if (success) {
+            for (Port lhsPort : lhsPorts) {
+                _lhsFrontier.add(lhsPort);
+            }
         }
 
-        for (Port port : _findLinkedPorts(hostRelation, false)) {
-            _hostFrontier.add(port);
+        if (success) {
+            for (Port port : _findHostLinkedPorts(hostRelation)) {
+                _hostFrontier.add(port);
+            }
         }
 
-        if (_matchLoop(lhsTail, hostTail)) {
-            return true;
-        } else {
-            _match.remove(lhsRelation);
+        success = success && _matchLoop(lhsTail, hostTail);
+
+        if (!success) {
+            _match.remove(lhsRelation, hostRelation);
             _hostFrontier.removeAllAfter(hostTail);
             _lhsFrontier.removeAllAfter(lhsTail);
-            return false;
         }
+
+        return success;
     }
 
     private boolean _shallowMatchPort(Port lhsPort, Port hostPort) {
@@ -554,7 +675,7 @@ public class RecursiveGraphMatcher {
     /** The map that matches objects in the LHS to the objects in the host.
      *  These objects include actors, ports, relations, etc.
      */
-    private Map<NamedObj, NamedObj> _match;
+    private MapSet<NamedObj, NamedObj> _match;
 
     /** The variable that indicates whether the last match operation is
      *  successful. (See {@link #match(CompositeActorMatcher, NamedObj)})

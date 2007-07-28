@@ -68,8 +68,7 @@ JSRCS = \
 	RuleListAttribute.java \
 	RuleValidationException.java \
 	SingleRuleTransformer.java \
-	SubgraphMatchingException.java \
-	Utils.java
+	SubgraphMatchingException.java
 
 EXTRA_SRCS =	$(JSRCS)
 

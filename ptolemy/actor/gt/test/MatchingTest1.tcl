@@ -48,7 +48,7 @@ test Match-1.1 {An empty graph with an empty lhs} {
     
     $transformer match $lhs $host
     $transformer stringifyMatchResult
-} {{ptolemy.actor.gt.CompositeActorMatcher {.top.lhs}=ptolemy.actor.TypedCompositeActor {.top.host}}}
+} {{ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
 
 test Match-1.2 {An lhs with 2 actor matchers} {
     set lhsA1 [java::new ptolemy.actor.gt.AtomicActorMatcher $lhs A1]
@@ -64,7 +64,7 @@ test Match-1.3 {A graph with 2 actors and an lhs with 2 matchers} {
     
     $transformer match $lhs $host
     $transformer stringifyMatchResult
-} {{ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1}=ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2}=ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs}=ptolemy.actor.TypedCompositeActor {.top.host}}}
+} {{ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2} = ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
 
 test Match-1.4 {A graph with 2 actors and an lhs with 3 actors} {
     set lhsA3 [java::new ptolemy.actor.gt.AtomicActorMatcher $lhs A3]
@@ -78,7 +78,7 @@ test Match-1.5 {A graph with 3 actors and an lhs with 3 actors} {
     
     $transformer match $lhs $host
     $transformer stringifyMatchResult
-} {{ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1}=ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2}=ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3}=ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs}=ptolemy.actor.TypedCompositeActor {.top.host}}}
+} {{ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2} = ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3} = ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
 
 test Match-1.6 {Ports added to all the 3 matchers} {
     set lhsA1PortRule [java::new ptolemy.actor.gt.rules.PortRule "output" "type" false true false]
@@ -101,7 +101,7 @@ test Match-1.6 {Ports added to all the 3 matchers} {
     
     $transformer match $lhs $host
     $transformer stringifyMatchResult
-} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.output}=ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.A2.output}=ptolemy.actor.TypedIOPort {.top.host.A2.output}, ptolemy.actor.TypedIOPort {.top.lhs.A3.input}=ptolemy.actor.TypedIOPort {.top.host.A3.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1}=ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2}=ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3}=ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs}=ptolemy.actor.TypedCompositeActor {.top.host}}}
+} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.output} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.A2.output} = ptolemy.actor.TypedIOPort {.top.host.A2.output}, ptolemy.actor.TypedIOPort {.top.lhs.A3.input} = ptolemy.actor.TypedIOPort {.top.host.A3.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2} = ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3} = ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
 
 test Match-1.7 {Relations added to the lhs} {
     set lhsR1 [java::new ptolemy.actor.TypedIORelation $lhs "R1"]
@@ -125,7 +125,7 @@ test Match-1.8 {Relations added to the graph} {
     
     $transformer match $lhs $host
     $transformer stringifyMatchResult
-} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.output}=ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.A2.output}=ptolemy.actor.TypedIOPort {.top.host.A2.output}, ptolemy.actor.TypedIOPort {.top.lhs.A3.input}=ptolemy.actor.TypedIOPort {.top.host.A3.input}, ptolemy.actor.TypedIORelation {.top.lhs.R1}=ptolemy.actor.TypedIORelation {.top.host.R1}, ptolemy.actor.TypedIORelation {.top.lhs.R2}=ptolemy.actor.TypedIORelation {.top.host.R2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1}=ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2}=ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3}=ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs}=ptolemy.actor.TypedCompositeActor {.top.host}}}
+} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.output} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.A2.output} = ptolemy.actor.TypedIOPort {.top.host.A2.output}, ptolemy.actor.TypedIOPort {.top.lhs.A3.input} = ptolemy.actor.TypedIOPort {.top.host.A3.input}, ptolemy.actor.TypedIORelation {.top.lhs.R1} = ptolemy.actor.TypedIORelation {.top.host.R1}, ptolemy.actor.TypedIORelation {.top.lhs.R2} = ptolemy.actor.TypedIORelation {.top.host.R2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2} = ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3} = ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
 
 test Match-1.9 {LHS's A1 has an input port} {
     set lhsA1PortRule2 [java::new ptolemy.actor.gt.rules.PortRule "input" "type" true false false]
@@ -133,8 +133,8 @@ test Match-1.9 {LHS's A1 has an input port} {
     $lhsA1Attr setExpression [$lhsA1PortRuleList toString]
     
     $transformer match $lhs $host
-    java::call ptolemy.actor.gt.Utils toString [$transformer getMatch]
-} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.input}=ptolemy.actor.TypedIOPort {.top.host.A1.trigger}, ptolemy.actor.TypedIOPort {.top.lhs.A1.output}=ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.A2.output}=ptolemy.actor.TypedIOPort {.top.host.A2.output}, ptolemy.actor.TypedIOPort {.top.lhs.A3.input}=ptolemy.actor.TypedIOPort {.top.host.A3.input}, ptolemy.actor.TypedIORelation {.top.lhs.R1}=ptolemy.actor.TypedIORelation {.top.host.R1}, ptolemy.actor.TypedIORelation {.top.lhs.R2}=ptolemy.actor.TypedIORelation {.top.host.R2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1}=ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2}=ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3}=ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs}=ptolemy.actor.TypedCompositeActor {.top.host}}}
+    $transformer stringifyMatchResult
+} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.input} = ptolemy.actor.TypedIOPort {.top.host.A1.trigger}, ptolemy.actor.TypedIOPort {.top.lhs.A1.output} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.A2.output} = ptolemy.actor.TypedIOPort {.top.host.A2.output}, ptolemy.actor.TypedIOPort {.top.lhs.A3.input} = ptolemy.actor.TypedIOPort {.top.host.A3.input}, ptolemy.actor.TypedIORelation {.top.lhs.R1} = ptolemy.actor.TypedIORelation {.top.host.R1}, ptolemy.actor.TypedIORelation {.top.lhs.R2} = ptolemy.actor.TypedIORelation {.top.host.R2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2} = ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3} = ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
 
 test Match-1.10 {LHS's A3 has an output port} {
     set lhsA3PortRule2 [java::new ptolemy.actor.gt.rules.PortRule "output" "type" false true false]
