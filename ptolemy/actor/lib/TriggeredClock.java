@@ -28,7 +28,6 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.util.Time;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -100,15 +99,20 @@ public class TriggeredClock extends Clock {
     public TypedIOPort stop;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         public methods                    ////
 
-    /** Initialize the cycle count and done flag.  This overrides the
-     *  base class to indicate that the clock is not running yet.
+    /** Override the base class to start not being enabled.
+     *  @exception IllegalActionException If the parent class throws it,
+     *   or if the <i>values</i> parameter is not a row vector, or if the
+     *   fireAt() method of the director throws it.
      */
-    protected void _initializeCycleCount() {
-        _done = true;
-        _cycleCount = 0;
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _enabled = false;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Copy values committed in initialize() or in the last postfire()
      *  into the corresponding tentative variables. In effect, this loads
@@ -119,8 +123,6 @@ public class TriggeredClock extends Clock {
      *   input data.
      */
     protected void _updateTentativeValues() throws IllegalActionException {
-        super._updateTentativeValues();
-
         // Check the start input, to see whether everything needs to
         // be reset.
         if (start.getWidth() > 0) {
@@ -128,30 +130,22 @@ public class TriggeredClock extends Clock {
                 if (_debugging) {
                     _debug("Received a start input.");
                 }
-
                 start.get(0);
-
-                // Indicate to postfire() that it can call fireAt().
-                _tentativeDone = false;
-
-                Time currentTime = getDirector().getModelTime();
-                _tentativeCycleStartTime = currentTime;
-                _tentativeTriggered = true;
-                _tentativeCycleCount = 1;
+                // Restart everything.
+                initialize();
+                _enabled = true;
             }
         }
-
         // Check stop
         if (stop.getWidth() > 0) {
             if (stop.hasToken(0)) {
                 if (_debugging) {
                     _debug("Received a stop input.");
                 }
-
                 stop.get(0);
-                _tentativeDone = true;
-                _tentativeCycleCount = 0;
+                _enabled = false;
             }
         }
+        super._updateTentativeValues();
     }
 }

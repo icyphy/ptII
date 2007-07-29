@@ -76,7 +76,10 @@ import ptolemy.kernel.util.Workspace;
  providing an input or by changing the parameter, then the
  new period will take effect as soon as possible. That is,
  if there is already a period in progress, it may be cut
- short if the new period is shorter.
+ short if the new period is shorter so that its time matches
+ the new period. But it will only be cut short if current
+ time has not passed the cycle start time plus the new period.
+ Otherwise, the period in progress will run to completion.
  <p>
  This actor can generate finite sequences by specifying
  a finite <i>numberOfCycles</i>. The numberOfCycles has a default value
@@ -258,8 +261,10 @@ public class Clock extends TimedSource {
                 }
             }
         } else if (attribute == period) {
-            double periodValue = ((DoubleToken) period.getToken())
-                    .doubleValue();
+            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+            
+            // FIXME: To help debugging.
+            double currentTime = getDirector().getModelTime().getDoubleValue();
 
             if (periodValue <= 0.0) {
                 throw new IllegalActionException(this,
@@ -270,37 +275,37 @@ public class Clock extends TimedSource {
             if (getManager() != null) {
                 Manager.State state = getManager().getState();
                 if (state == Manager.ITERATING || state == Manager.PAUSED) {
-                    // Need to update the cycle start time in case the
-                    // clock has been dormant (e.g. in a modal model).
-                    // Use the old period to do this.
-                    Time currentTime = getDirector().getModelTime();
-                    if (_previousPeriodValue == 0.0) {
-                        _previousPeriodValue = periodValue;
+                    // If this model has been dormant (e.g. in a ModalModel)
+                    // then it needs to catch up.
+                    _catchUp();
+                    // The _tentativeNextOutputTime may already
+                    // be in the future beyond the point where we want it
+                    // with the new period. Seems kind of tricky to get the
+                    // right value. Only if the _phase is zero is this an
+                    // issue, since in that case, the cycleStartTime has
+                    // been updated to the start of the new cycle, which
+                    // is too far in the future.
+                    if (_phase == 0 && _firstOutputProduced) {
+                        Time potentialNextOutputTime 
+                                = _tentativeCycleStartTime
+                                .subtract(_previousPeriod)
+                                .add(periodValue);
+                        if (potentialNextOutputTime.compareTo(getDirector().getModelTime()) >= 0) {
+                            _tentativeNextOutputTime = potentialNextOutputTime;
+                            _tentativeCycleStartTime = potentialNextOutputTime;
+                            // If this occurs outside fire(), e.g. in a modal
+                            // model state transition, we also need to set the _cycleStartTime
+                            // and _nextOutputTime.
+                            if (!_tentative) {
+                                _nextOutputTime = _tentativeNextOutputTime;
+                                _cycleStartTime = _tentativeCycleStartTime;                                
+                            }
+                        }
                     }
-                    while (_cycleStartTime.add(_previousPeriodValue).compareTo(
-                            currentTime) <= 0) {
-                        _cycleStartTime = _cycleStartTime.add(_previousPeriodValue);
-                    }
-                    // Need to also update the phase.
-                    // NOTE: If two successive offsets are identical,
-                    // then this will always select the first matching
-                    // phase. Is this the right thing to do?
-                    _phase = 0;
-                    Time nextFiringTime = _cycleStartTime.add(_offsets[0]);
-                    while (nextFiringTime.compareTo(currentTime) < 0 
-                            && _phase < _offsets.length - 1) {
-                        _phase++;
-                        nextFiringTime = _cycleStartTime.add(_offsets[_phase]);
-                    }
-                    // May still have to add one period, if no offset is
-                    // enough to get past current time.
-                    if (nextFiringTime.compareTo(currentTime) < 0) {
-                        nextFiringTime = _cycleStartTime.add(_previousPeriodValue);
-                    }
-                    getDirector().fireAt(this, nextFiringTime);
+                    getDirector().fireAt(this, _tentativeNextOutputTime);
                 }
             }
-            _previousPeriodValue = periodValue;
+            _previousPeriod = periodValue;
         } else {
             super.attributeChanged(attribute);
         }
@@ -337,28 +342,28 @@ public class Clock extends TimedSource {
     public void fire() throws IllegalActionException {
         // Cannot call super.fire() because it consumes
         // trigger inputs.
-        
-        // Get the current time.
         Time currentTime = getDirector().getModelTime();
         if (_debugging) {
             _debug("Called fire() at time " + currentTime);
         }
-        // Update the period.
-        period.update();
-        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
 
         // Use the strategy pattern here so that derived classes can
         // override how this is done.
         _updateTentativeValues();
-
-        // Use Time.NEGATIVE_INFINITY to indicate that no refire
-        // event should be scheduled because we aren't at a phase boundary.
-        // This could happen, for example, if we get a trigger input.
-        _tentativeNextFiringTime = Time.NEGATIVE_INFINITY;
-
-        // By default, the cycle count will not be incremented.
-        _tentativeCycleCountIncrement = 0;
         
+        // This must be after the above update because it may trigger
+        // a call to attributeChanged(), which uses the tentative values.
+        // Moreover, we should set a flag so that if attributeChanged()
+        // is called, then it is notified that the change is tentative.
+        // It is tentative because the input may be tentative.
+        // We should not commit any state changes in fire().
+        try {
+            _tentative = true;
+            period.update();
+        } finally {
+            _tentative = false;
+        }
+
         // Check the trigger input, if it is connected.
         boolean triggerConnected = false;
         if (trigger.numberOfSources() > 0) {
@@ -371,73 +376,21 @@ public class Clock extends TimedSource {
             }
         }
 
-        // A cycle count of 0 is used to indicate that we are done firing,
-        // so if it's zero, do nothing.
-        if (_tentativeCycleCount > 0) {
-            // In case current time has reached or crossed a boundary between
-            // periods, update it.  Note that normally it will not
-            // have advanced by more than one period
-            // (unless, perhaps, the entire domain has been dormant
-            // for some time, as might happen for example in a modal model).
-            // But do not do this if we are before the first iteration.
-            // NOTE: This used to increment only if <, not if ==.
-            // But this isn't quite right. If we are right at the end
-            // of a cycle, then we are also at the beginning of the next
-            // cycle (cycleStartTime + period == currentTime). So we should
-            // change things so that we are at the start of the next cycle.
-            // EAL 7/20/07.
-            // NOTE: This is just a modulo operation. Better way to do it?
-            while (_tentativeCycleStartTime.add(periodValue).compareTo(
-                    currentTime) <= 0) {
-                _tentativeCycleStartTime = _tentativeCycleStartTime
-                        .add(periodValue);
-            }
-
-            // Next figure out what phase we are in.
-            // NOTE: This could be optimized to remember the previous
-            // phase and start from there, but it's probably not worth
-            // the extra complexity.
-            _tentativePhase = 0;
-            Time phaseStartTime = _tentativeCycleStartTime.add(_offsets[0]);
-            while (phaseStartTime.compareTo(currentTime) < 0 
-                    && _tentativePhase < _offsets.length - 1) {
-                _tentativePhase++;
-                phaseStartTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
-            }
-            // The above finds the first phase that matches the current time.
-            // But if successive offsets are identical, then we need to increase
-            // the phase.
-            if (_tentativePhase <= _phase
-                    && _offsets.length > _phase + 1
-                    && _offsets[_tentativePhase] == _offsets[_phase + 1]) {
-                _tentativePhase = _phase + 1;
-            }
+        if (_enabled) {
+            _catchUp();
             // Produce an output only if we exactly match a phase time
             // and, if the trigger input is connected, we have been triggered.
             // Also make sure that if the phase is the same as the previous phase,
             // then time has incremented.
-            if (phaseStartTime.equals(currentTime)
-                    && _tentativeTriggered
-                    && (_tentativePhase != _phase || !phaseStartTime.equals(_previousOutputTime))) {
-                output.send(0, _getValue(_tentativePhase));
-                // If the phase is the last, then increment the cycle count.
-                if (_tentativePhase == _offsets.length - 1) {
-                    _tentativeCycleCountIncrement = 1;
+            if (_isTimeForOutput()) {
+                if (!triggerConnected || _tentativeTriggered) {
+                    output.send(0, _getValue(_tentativePhase));
                 }
-                if (triggerConnected) {
-                    _tentativeTriggered = false;
-                }
+                // Even if we skip the output because of the lack
+                // of a trigger, we need to act as if we produced an
+                // output for the purposes of scheduling the next event.
+                _outputProduced = true;
             }
-            // Schedule the next firing. This must be done even if we
-            // have not been triggered. The time of the next firing
-            // is the cycle start time incremented by either the period
-            // or the next phase offset.
-            double increment = periodValue + _offsets[0];
-            int phase = _tentativePhase + 1;
-            if (phase < _offsets.length) {
-                increment = _offsets[phase];
-            }
-            _tentativeNextFiringTime = _tentativeCycleStartTime.add(increment);
         }
     }
 
@@ -448,41 +401,34 @@ public class Clock extends TimedSource {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-
-        if (_debugging) {
-            _debug("Initializing " + getFullName() + ".");
-        }
-
+        
         // Start cycles at the current time.
         // This is important in modal models that reinitialize the actor.
         _cycleStartTime = getDirector().getModelTime();
-        _tentativeNextFiringTime = _cycleStartTime.add(_offsets[0]);
-        _previousOutputTime = Time.NEGATIVE_INFINITY;
-        _previousPeriodValue = 0.0;
+        _tentativeCycleStartTime = _cycleStartTime;
+        _cycleCount = 0;
+        _phase = 0;
+        _tentativePhase = _phase;
+        _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
+        _tentativeNextOutputTime = _nextOutputTime;
         
         // Make sure the first output is enabled.
+        _firstOutputProduced = false;
+        _outputProduced = false;
+        _enabled = true;
+        _tentativeEnabled = _enabled;
+        _previousPeriod = ((DoubleToken) period.getToken()).doubleValue();
+
+        // Enable without a trigger input on the first firing.
         _triggered = true;
-        
-        // Indicate that no previous phase has been output.
-        _phase = -1;
+        _tentativeTriggered = _triggered;
 
-        // Initialize the _done flag and the cycle count.
-        // We use the strategy pattern so that derived classes
-        // can do something different here.
-        _initializeCycleCount();
-
-        // Schedule the first firing to start the clock.
-        // Subclasseses may disable starting by setting _done to true
-        // in their _initializeCycleCount() method.
-        if (!_done) {
-            if (_debugging) {
-                _debug("Requesting firing at time " + _tentativeNextFiringTime);
-            }
-
-            // This should be the last line, because in threaded domains,
-            // it could execute immediately.
-            getDirector().fireAt(this, _tentativeNextFiringTime);
+        if (_debugging) {
+            _debug("Requesting firing at time " + _nextOutputTime);
         }
+        // This should be the last line, because in threaded domains,
+        // it could execute immediately.
+        getDirector().fireAt(this, _nextOutputTime);
     }
 
     /** Update the state of the actor and schedule the next firing,
@@ -495,6 +441,10 @@ public class Clock extends TimedSource {
             _debug("Postfiring at " + getDirector().getModelTime());
         }
         _updateStates();
+        
+        if (_outputProduced) {
+            _firstOutputProduced = true;
+        }
         return super.postfire();
     }
 
@@ -528,6 +478,52 @@ public class Clock extends TimedSource {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Catch up the tentative view
+     *  of what the next output time should be.
+     *  This sets _tentativeNextOutputTime to a value that
+     *  is equal to or greater than current time, and it updates
+     *  _tentativePhase and _tentativeCycleStartTime to correspond
+     *  with this _tentativeNextOutputTime. If _tentativeNextOutputTime
+     *  is already equal to or greater than current time, then do nothing.
+     *  @exception IllegalActionException If the period is invalid.
+     */
+    protected void _catchUp() throws IllegalActionException {
+        Time currentTime = getDirector().getModelTime();
+        if (_tentativeNextOutputTime.compareTo(currentTime) >= 0) {
+            return;
+        }
+        // In case current time has reached or crossed a boundary between
+        // periods, update it.  Note that normally it will not
+        // have advanced by more than one period
+        // (unless, perhaps, the entire domain has been dormant
+        // for some time, as might happen for example in a modal model).
+        // But do not do this if we are before the first iteration.
+        // NOTE: This used to increment only if <, not if ==.
+        // But this isn't quite right. If we are right at the end
+        // of a cycle, then we are also at the beginning of the next
+        // cycle (cycleStartTime + period == currentTime). So we should
+        // change things so that we are at the start of the next cycle.
+        // EAL 7/20/07.
+        // NOTE: This is just a modulo operation. Better way to do it?
+        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+        while (_tentativeCycleStartTime.add(periodValue).compareTo(
+                currentTime) <= 0) {
+            _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
+        }
+
+        // Next figure out what phase we are in.
+        Time phaseStartTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+        while (phaseStartTime.compareTo(currentTime) < 0) {
+            _tentativePhase++;
+            if (_tentativePhase >= _offsets.length) {
+                _tentativePhase = 0;
+                _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
+            }
+            phaseStartTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+        }
+        _tentativeNextOutputTime = phaseStartTime;
+    }
+    
     /** Get the specified output value, checking the form of the values
      *  parameter.
      *  @param index The index of the output values.
@@ -545,14 +541,13 @@ public class Clock extends TimedSource {
 
         return val.getElement(index);
     }
-
-    /** Initialize the cycle count and done flag.  These are done in a
-     *  protected method so that derived classes can do something different
-     *  here.
+    
+    /** Return true if the current time is the right time for an output.
+     *  @return True if the current time matches the _nextOutputTime.
      */
-    protected void _initializeCycleCount() {
-        _done = false;
-        _cycleCount = 1;
+    protected boolean _isTimeForOutput() {
+        Time currentTime = getDirector().getModelTime();
+        return _tentativeNextOutputTime.equals(currentTime);
     }
 
     /** Copy values committed in initialize() or in the last postfire()
@@ -564,9 +559,11 @@ public class Clock extends TimedSource {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _updateTentativeValues() throws IllegalActionException {
-        _tentativeCycleCount = _cycleCount;
+        _outputProduced = false;
         _tentativeCycleStartTime = _cycleStartTime;
-        _tentativeDone = _done;
+        _tentativeEnabled = _enabled;
+        _tentativeNextOutputTime = _nextOutputTime;
+        _tentativePhase = _phase;
         _tentativeTriggered = _triggered;
     }
 
@@ -576,45 +573,37 @@ public class Clock extends TimedSource {
      */
     protected void _updateStates() throws IllegalActionException {
         _cycleStartTime = _tentativeCycleStartTime;
-        _triggered = _tentativeTriggered;
-        _cycleCount = _tentativeCycleCount;
-        _done = _tentativeDone;
-        _cycleCount += _tentativeCycleCountIncrement;
         _phase = _tentativePhase;
-        _previousOutputTime = getDirector().getModelTime();
+        if (_outputProduced) {
+            _phase++;
+            if (_phase == _offsets.length) {
+                double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+                _cycleStartTime = _cycleStartTime.add(periodValue);
+                // Make the tentative value match, in case attributeChanged()
+                // is called before the next firing.
+                _tentativeCycleStartTime = _cycleStartTime;
+                _cycleCount++;
+                _phase = 0;
+            }
+            _tentativeTriggered = false;
+        }
+        _triggered = _tentativeTriggered;
+        _enabled = _tentativeEnabled;
+        _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
 
-        int cycleLimit = ((IntToken) numberOfCycles.getToken()).intValue();
-
-        // Used to use any negative number here to indicate
-        // that no future firing should be scheduled.
-        // Now, we leave it up to the director, unless the value
-        // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
-        if (!_done
-                && (_tentativeNextFiringTime.compareTo(Time.NEGATIVE_INFINITY) != 0)) {
-            getDirector().fireAt(this, _tentativeNextFiringTime);
-
+        if (_enabled) {
             if (_debugging) {
-                _debug("Requesting firing at: " + _tentativeNextFiringTime
+                _debug("Requesting firing at: " + _nextOutputTime
                         + ".");
             }
+            getDirector().fireAt(this, _nextOutputTime);
         }
 
         // This should be computed after the above so that a firing
         // gets requested for the tail end of the output pulses.
-        _done = _done
-                || ((cycleLimit > 0) && (_cycleCount > cycleLimit));
-
-        if (_done) {
-            _cycleCount = 0;
-
-            if (_debugging) {
-                _debug("Done with requested number of cycles.");
-            }
-        }
-
-        if (_debugging) {
-            _debug("Cycle count for next iteration: " + _cycleCount + ".");
-        }
+        int cycleLimit = ((IntToken) numberOfCycles.getToken()).intValue();
+        _enabled = _enabled
+                && ((cycleLimit <= 0) || (_cycleCount <= cycleLimit));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -627,46 +616,57 @@ public class Clock extends TimedSource {
     protected transient Time _cycleStartTime;
 
     /** Indicator of whether the specified number of cycles have
-     *  been completed.
+     *  been completed. Also used in derived classes to turn on
+     *  and off the clock.
      */
-    protected transient boolean _done;
+    protected transient boolean _enabled;
+    
+    /** Indicator of whether the first output has been produced. */
+    protected transient boolean _firstOutputProduced = false;
+    
+    /** The time for the next output. */
+    protected transient Time _nextOutputTime;
 
     /** Cache of offsets array value. */
     protected transient double[] _offsets;
     
+    /** Indicator of whether an output was produced in this iteration. */
+    protected transient boolean _outputProduced = false;
+
     /** The phase of the next output. */
     protected transient int _phase;
-    
-    /** A record of the previous output time. */
-    protected transient Time _previousOutputTime;
-    
-    /** A record of the previous value of the period. */
-    protected transient double _previousPeriodValue;
 
-    /** Indicator of whether a trigger input has arrived. */
-    protected transient boolean _triggered = true;
+    /** The tentative time for the next output. */
+    protected transient Time _tentativeNextOutputTime;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The previous value of the period. */
+    private transient double _previousPeriod;
 
     // Following variables recall data from the fire to the postfire method.
 
-    /** The tentative count of cycles executed so far. */
-    protected transient int _tentativeCycleCount;
-
-    /** The tentative increment for cycle count increment. */
-    protected transient int _tentativeCycleCountIncrement;
-
     /** The tentative start time of the most recent cycle. */
-    protected transient Time _tentativeCycleStartTime;
+    private transient Time _tentativeCycleStartTime;
 
+    /** Flag indicating that an update to period is occurring
+     *  in the fire() method.
+     */
+    private transient boolean _tentative = false;
+    
     /** The indicator of whether the specified number of cycles
      *  have been completed. */
-    protected transient boolean _tentativeDone;
-
-    /** The tentative time for next firing. */
-    protected transient Time _tentativeNextFiringTime;
-    
+    private transient boolean _tentativeEnabled;
+   
     /** The tentative phase of the next output. */
-    protected transient int _tentativePhase;
-
-    /** The tentative flag indicating whether we've been triggered. */
-    protected transient boolean _tentativeTriggered;
+    private transient int _tentativePhase;
+    
+    /** Tentative indicator of triggered state. */
+    private transient boolean _tentativeTriggered;
+    
+    /** Indicator of whether trigger inputs have arrived
+     *  since the last output.
+     */
+    private transient boolean _triggered;
 }
