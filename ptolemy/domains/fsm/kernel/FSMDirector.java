@@ -326,6 +326,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
             if (executiveDirector != null) {
                 executiveDirector.fireAt(modalModel, time);
             } else {
+                // FIXME: This does not look right!
                 setModelTime(time);
             }
         }
