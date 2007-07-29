@@ -85,6 +85,7 @@ public class TestDE {
         ChangeRequest change = new ChangeRequest(this, "test") {
             protected void _execute() throws Exception {
                 _clock.period.setExpression("2.0");
+                _clock.period.validate();
             }
         };
 
