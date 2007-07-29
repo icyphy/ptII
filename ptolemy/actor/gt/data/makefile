@@ -48,7 +48,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	FastLinkedList.java \
-	MapSet.java \
+	MatchResult.java \
 	Pair.java \
 	Tuple.java
 
@@ -63,7 +63,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'FastLinkedList$$1.class' \
 	'FastLinkedList$$Entry.class' \
-	'MapSet$$1.class'
+	'MatchResult$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

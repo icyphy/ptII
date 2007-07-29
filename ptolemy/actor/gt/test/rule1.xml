@@ -1,0 +1,64 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Rule" class="ptolemy.actor.gt.SingleRuleTransformer">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="_library" class="ptolemy.moml.LibraryAttribute">
+        <configure>
+    <entity name="graph transformation library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher"><input source="ptolemy/configs/gtLibrary.xml"></input></entity><entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher"><property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory"><property name="attributeName" value="ruleList"></property></property></entity></entity>
+  </configure>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 99, 883, 851}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[660, 736]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="Left Hand Side" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="B" class="ptolemy.actor.gt.AtomicActorMatcher">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;b&quot;/&quot;b&quot;/false/true/false)">
+            </property>
+            <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 160.0}">
+            </property>
+        </entity>
+        <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;c&quot;/&quot;c&quot;/true/false/true)">
+            </property>
+            <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 120.0}">
+            </property>
+        </entity>
+        <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;a&quot;/&quot;a&quot;/false/true/false)">
+            </property>
+            <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 85.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="B.b" relation="relation2"/>
+        <link port="C.c" relation="relation"/>
+        <link port="C.c" relation="relation2"/>
+        <link port="A.a" relation="relation"/>
+    </entity>
+</entity>

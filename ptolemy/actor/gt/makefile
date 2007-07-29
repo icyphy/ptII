@@ -79,8 +79,10 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'RecursiveGraphMatcher$$1.class' \
 	'RecursiveGraphMatcher$$MarkedEntityList.class' \
-	'RecursiveGraphMatcher$$NamedObjComparator.class' \
+	'RecursiveGraphMatcher$$ObjectComparator.class' \
+	'RecursiveGraphMatcher$$Path.class' \
 	'RuleEditor$$1.class' \
 	'RuleEditor$$2.class' \
 	'RuleEditor$$3.class' \
@@ -88,8 +90,8 @@ OPTIONAL_FILES = \
 	'RuleEditor$$ComboElement.class' \
 	'RuleEditor$$Factory.class' \
 	'RuleEditor$$JPanelCellEditor.class' \
-	'RuleEditor$$Row.class' \
-	'RuleEditor$$Row$$1.class'
+	'RuleEditor$$Row$$1.class' \
+	'RuleEditor$$Row.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

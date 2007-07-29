@@ -50,7 +50,8 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	MatchingTest1.tcl
+	MatchingTest1.tcl \
+	MatchingTest2.tcl
 
 # Graphical Java tests.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -59,7 +60,17 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS = \
+	host1.1.xml \
+	host1.2.xml \
+	host1.3.xml \
+	host1.4.xml \
+	host1.5.xml \
+	host1.6.xml \
+	host1.7.xml \
+	host1.8.xml \
+	rule1.xml \
+	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
