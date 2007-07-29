@@ -669,8 +669,10 @@ public class HybridModalDirector extends ModalDirector implements
     /** Return the minimum of the step sizes suggested by any
      *  actors that were fired in current iteration.
      *  @return The suggested next step size.
+     *  @exception IllegalActionException If an actor requests an
+     *   illegal step size.
      */
-    public double suggestedStepSize() {
+    public double suggestedStepSize() throws IllegalActionException {
         double result = Double.POSITIVE_INFINITY;
         Iterator actors = _actorsFired.iterator();
         while (actors.hasNext()) {

@@ -892,8 +892,9 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  fired since initialize() or the previous call to suggestedStepSize(),
      *  then return the value of <i>maxStepSize</i>.
      *  @return The suggested step size for next integration.
+     *  @throws IllegalActionException If an actor suggests an illegal step size.
      */
-    public double suggestedStepSize() {
+    public double suggestedStepSize() throws IllegalActionException {
         double suggestedStep = _initStepSize;
         if (_currentStepSize != 0.0) {
             // Increase the current step size, then ask the step-size control
@@ -912,6 +913,10 @@ public class ContinuousDirector extends FixedPointDirector implements
                 ContinuousStepSizeController actor = (ContinuousStepSizeController) stepSizeControlActors
                         .next();
                 double suggestedStepSize = actor.suggestedStepSize();
+                if (suggestedStepSize < 0.0) {
+                    throw new IllegalActionException((Actor)actor, 
+                            "Actor requests invalid step size: " + suggestedStepSize);
+                }
                 if (_debugging) {
                     _debug("step size controller: " + ((NamedObj)actor).getFullName()
                             + " suggests next step size = " + suggestedStepSize);
