@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="working animated" class="ptolemy.actor.TypedCompositeActor">
+<entity name="NewtonsCradleAnimated" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="acceleration" class="ptolemy.data.expr.Parameter" value="9.8">
@@ -179,6 +179,8 @@
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 175.0]">
         </property>
@@ -441,7 +443,7 @@ transitions occur at the time of the collision.</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <property name="theta_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.4303900617505">
+            <property name="theta_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.4309889607626">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1210,7 +1212,7 @@ transitions occur at the time of the collision.</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <property name="theta_dot_initial" class="ptolemy.data.expr.Parameter" value="2.330064284738E-5">
+            <property name="theta_dot_initial" class="ptolemy.data.expr.Parameter" value="3.2706741187321E-5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1981,7 +1983,7 @@ transitions occur at the time of the collision.</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
-            <property name="theta_dot_initial" class="ptolemy.data.expr.Parameter" value="1.8243788489894E-5">
+            <property name="theta_dot_initial" class="ptolemy.data.expr.Parameter" value="2.772218955715E-5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

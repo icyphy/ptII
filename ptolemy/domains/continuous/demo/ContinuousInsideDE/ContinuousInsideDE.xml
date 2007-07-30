@@ -18,6 +18,20 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 175.0}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Combination of discrete-event modeling (at the top level)&#10;and continuous-time modeling (below that). This example&#10;models a job shop where job arrivals are discrete events,&#10;the processing rate is given by an exponential random&#10;variable, and the job processing is modeled in continuous&#10;time with an opaque composite actor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 5.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Edward A. Lee and Haiyang Zheng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 330.0]">
+        </property>
+    </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -42,6 +56,22 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 40}">
             </property>
         </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+            </property>
+            <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            </property>
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Step function&#10;indicating which&#10;job is being&#10;processed.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 95.0]">
+            </property>
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Continuous-time model that uses the input rate to&#10;determine how long it takes to complete a job.&#10;This model generates a first jobDone output at time 0.5.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 25.0]">
+            </property>
+        </property>
         <port name="job" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 165.0]">
@@ -49,16 +79,16 @@
         </port>
         <port name="jobDone" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[507.34765625, 170.3046875]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 205.0]">
             </property>
         </port>
         <port name="rate" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 240.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 260.0]">
             </property>
         </port>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 230.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 205.0]">
             </property>
         </entity>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -68,7 +98,7 @@
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 85.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 110.0]">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -76,7 +106,7 @@
 <plot>
 <title>TimedPlotter</title>
 <xRange min="0.0" max="10.0"/>
-<yRange min="-0.5" max="8.0"/>
+<yRange min="-0.5" max="9.0"/>
 </plot>?>
             </configure>
         </entity>
@@ -159,7 +189,7 @@
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 170.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 205.0]">
             </property>
         </entity>
         <entity name="Integrator2" class="ptolemy.domains.continuous.lib.Integrator">
@@ -193,13 +223,13 @@
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 240.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 260.0]">
             </property>
         </entity>
         <entity name="ZeroOrderHold3" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
             <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 240.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 260.0]">
             </property>
         </entity>
         <entity name="ZeroOrderHold" class="ptolemy.domains.continuous.lib.ZeroOrderHold">
@@ -209,19 +239,19 @@
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[255.0, 240.0]">
+            <vertex name="vertex1" value="[245.0, 260.0]">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[270.0, 165.0]">
+            <vertex name="vertex1" value="[255.0, 165.0]">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[362.34765625, 170.3046875]">
+            <vertex name="vertex1" value="{365.0, 205.0}">
             </vertex>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -277,12 +307,16 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="10.0"/>
-<yRange min="0.0" max="6.0"/>
+<yRange min="0.0" max="10.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="ColtExponential" class="ptolemy.actor.lib.colt.ColtExponential">
+        <property name="seed" class="ptolemy.moml.SharedParameter" value="2L">
+        </property>
+        <property name="resetOnEachRun" class="ptolemy.moml.SharedParameter" value="true">
+        </property>
         <doc>Create a sequence of Exponential random variables</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 225.0}">
         </property>
