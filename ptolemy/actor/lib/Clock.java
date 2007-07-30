@@ -262,9 +262,9 @@ public class Clock extends TimedSource {
             }
         } else if (attribute == period) {
             double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-            
-            // FIXME: To help debugging.
-            double currentTime = getDirector().getModelTime().getDoubleValue();
+            if (_debugging) {
+                _debug("Setting period to " + periodValue);
+            }
 
             if (periodValue <= 0.0) {
                 throw new IllegalActionException(this,
