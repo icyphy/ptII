@@ -148,12 +148,13 @@ public class CodeGeneratorUtilities {
         // the @ character.  StringTokenizer has problems with
         // "@codebase", which reports as having one token, but
         // should not be substituted since it is not "@codebase@"
-        Iterator keys = substituteMap.keySet().iterator();
+        Iterator substituteMapEntries = substituteMap.entrySet().iterator();
 
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
+        while (substituteMapEntries.hasNext()) {
+            Map.Entry entries = (Map.Entry)substituteMapEntries.next();
+            String key = (String) entries.getKey();
             input = StringUtilities.substitute(input, key,
-                    (String) substituteMap.get(key));
+                    (String) entries.getValue());
         }
 
         return input;
@@ -195,17 +196,24 @@ public class CodeGeneratorUtilities {
                     + "' as a resource");
         }
 
-        BufferedReader inputReader = new BufferedReader(new InputStreamReader(
-                inputFileURL.openStream()));
-        String inputLine;
         StringBuffer output = new StringBuffer();
-        String lineSeparator = System.getProperty("line.separator");
 
-        while ((inputLine = inputReader.readLine()) != null) {
-            output.append(substitute(inputLine + lineSeparator, substituteMap));
+        BufferedReader inputReader = null;
+        try {
+            inputReader = new BufferedReader(new InputStreamReader(
+                            inputFileURL.openStream()));
+            String inputLine;
+            String lineSeparator = System.getProperty("line.separator");
+
+            while ((inputLine = inputReader.readLine()) != null) {
+                output.append(substitute(inputLine + lineSeparator, substituteMap));
+            }
+        } finally {
+            if (inputReader != null) {
+                inputReader.close();
+            }
         }
 
-        inputReader.close();
         return output.toString();
     }
 
@@ -213,7 +221,7 @@ public class CodeGeneratorUtilities {
      *  String key found in substituteMap with the corresponding
      *  String value and write the results to outputFileName.
      *  @param inputFile A BufferedReader that refers to the file to be
-     *  read in.
+     *  read in.  This BufferedReader is always closed by this method.
      *  @param substituteMap The Map of String keys like "@codeBase@"
      *  and String values like "../../..".
      *  @param outputFileName The name of the file to write to.
@@ -224,16 +232,21 @@ public class CodeGeneratorUtilities {
      */
     public static void substitute(BufferedReader inputFile, Map substituteMap,
             String outputFileName) throws FileNotFoundException, IOException {
-        PrintWriter outputFile = new PrintWriter(new BufferedWriter(
-                new FileWriter(outputFileName)));
-        String inputLine;
+        PrintWriter outputFile = null;
+        try {
+            outputFile = new PrintWriter(new BufferedWriter(
+                            new FileWriter(outputFileName)));
+            String inputLine;
 
-        while ((inputLine = inputFile.readLine()) != null) {
-            outputFile.println(substitute(inputLine, substituteMap));
+            while ((inputLine = inputFile.readLine()) != null) {
+                outputFile.println(substitute(inputLine, substituteMap));
+            }
+        } finally {
+            if (outputFile != null) {
+                outputFile.close();
+            }
+            inputFile.close();
         }
-
-        inputFile.close();
-        outputFile.close();
     }
 
     /** Read in the contents of inputFileName, and replace each
