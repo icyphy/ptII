@@ -32,7 +32,7 @@ if ($actorSymbol(sourceValues_$population) >= 0) {
 if (($actorSymbol(trialsRemaining) > 0) && ($actorSymbol(sourceValues_$num) > 0)) {
     $actorSymbol(p) = (double) $actorSymbol(sourceValues_$num) / (double) $actorSymbol(sourcePool);
     if ($actorSymbol(p) < 1.0) {
-        $actorSymbol(selected) = RandomSource_BinomialDistribution($actorSymbol(trialsRemaining), $actorSymbol(p), &$actorSymbol(seed));
+        $actorSymbol(selected) = ColtRandomSource_BinomialDistribution($actorSymbol(trialsRemaining), $actorSymbol(p), &$actorSymbol(current));
     } else {
         $actorSymbol(selected) = $actorSymbol(trialsRemaining);
     }

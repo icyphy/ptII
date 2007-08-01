@@ -51,7 +51,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating
  *
  */
-public class ColtBinomial extends RandomSource {
+public class ColtBinomial extends ColtRandomSource {
     /**
      * Constructor method for the ColtBinomial helper.
      * @param actor the associated actor
@@ -75,7 +75,7 @@ public class ColtBinomial extends RandomSource {
         Set sharedCode = new LinkedHashSet();
         sharedCode.addAll(super.getSharedCode());
 
-        // binomialBlock is from the RandomSource parent class.
+        // binomialBlock is from the ColtRandomSource parent class.
         sharedCode.add(_generateBlockCode("binomialBlock"));
         return sharedCode;
     }

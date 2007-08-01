@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating 
  *
  */
-public class ColtBinomialSelector extends RandomSource {
+public class ColtBinomialSelector extends ColtRandomSource {
     /**
      * Constructor method for the ColtBinomialSelector helper.
      * @param actor the associated actor
