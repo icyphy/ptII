@@ -1195,7 +1195,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             }
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = result;
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
