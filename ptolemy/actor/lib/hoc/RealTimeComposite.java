@@ -30,6 +30,7 @@ package ptolemy.actor.lib.hoc;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
@@ -59,22 +60,26 @@ import ptolemy.util.MessageHandler;
  ports are those of the contained actor. Given one or more events
  with time stamp <i>t</i> at the input ports, it queues the events
  to provide to a firing of the contained actor that is deferred to
- occur when real time  since start of execution (in seconds) exceeds
- <i>t</i>.  If real time already exceeds <i>t</i>, then the firing
+ occur when real time (since start of execution, in seconds) exceeds
+ or matches <i>t</i>.  If real time already exceeds <i>t</i>, then the firing
  may occur immediately. The firing always occurs in another thread.
  If the firing produces output events, then those are given time
- stamps equal to the current model time of the enclosing model.
- 
- FIXME: In a PTIDES system, we really want this time stamp to be
- equal to the current real time when the firing occurred. But in
- DE, this may be in the past, so this is not possible.
+ stamps equal to the greater of the current model time of the
+ enclosing model and the current real time.
  <p>
  For various reasons, this actor is tricky to use. The most natural
  domain to use it in is DE, providing it with input events with time
  stamps that specify when to perform some action, such as an actuator
  or display action. However, if the DE system is an open-loop system,
  then model time of the DE system can get very far ahead of the
- RealTimeComposite. 
+ RealTimeComposite. It is helpful to use a feedback loop including
+ this RealTimeComposite to keep the DE model from getting ahead.
+ <p>
+ This actor may also be used in SDF and SR, but those cases, it
+ will likely be necessary to set <i>synchronizeToRealTime</i>.
+ This actor consumes its inputs and schedules execution in
+ its postfire() method, and hence in SR will behave as a strict
+ actor (all inputs must be known for anything to happen).
  <p>
  FIXME On a finite run, the associated threads just hangs on a take().
  How to stop it?
@@ -188,6 +193,9 @@ public class RealTimeComposite extends MirrorComposite {
     /** Queue of unprocessed input events. */
     private DelayQueue<InputFrame> _inputFrames = new DelayQueue<InputFrame>();
     
+    /** Queue of unprocessed output events. */
+    private Queue<OutputFrame> _outputFrames = new LinkedList<OutputFrame>();
+
     /** The real time at which the model begins executing, in milliseconds. */
     private long _realStartTime = 0;
     
@@ -204,12 +212,12 @@ public class RealTimeComposite extends MirrorComposite {
      *  @param theTokens The tokens in the input events.
      */
     private class InputFrame implements Delayed {
-        public InputFrame(Time theTime, List<InputToken> theTokens) {
+        public InputFrame(Time theTime, List<QueuedToken> theTokens) {
             tokens = theTokens;
             time = theTime;
         }
         public final Time time;
-        public final List<InputToken> tokens;
+        public final List<QueuedToken> tokens;
         public long getDelay(TimeUnit unit) {
             // Calculate time to wait.
             long elapsedTime = System.currentTimeMillis() - _realStartTime;
@@ -229,13 +237,13 @@ public class RealTimeComposite extends MirrorComposite {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// InputToken
+    //// QueuedToken
 
     /** Bundle of a token and the input port and channel
      *  at which it arrived.
      */
-    private class InputToken {
-        public InputToken(IOPort thePort, int theChannel, Token theToken) {
+    private class QueuedToken {
+        public QueuedToken(IOPort thePort, int theChannel, Token theToken) {
             token = theToken;
             channel = theChannel;
             port = thePort;
@@ -246,6 +254,22 @@ public class RealTimeComposite extends MirrorComposite {
         public String toString() {
             return "token " + token + " for port " + port.getFullName() + "(" + channel + ")";
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// OutputFrame
+
+    /** Bundle of a token and the output port at which it arrived.
+     *  @param theTime The model time of the output events.
+     *  @param theTokens The tokens in the output events.
+     */
+    private class OutputFrame {
+        public OutputFrame(Time theTime, List<QueuedToken> theTokens) {
+            tokens = theTokens;
+            time = theTime;
+        }
+        public final Time time;
+        public final List<QueuedToken> tokens;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -275,9 +299,22 @@ public class RealTimeComposite extends MirrorComposite {
             setPersistent(false);
         }
 
-        /** Do nothing except yield to other threads.
+        /** If current model time matches the time at which outputs
+         *  that have been queued should be produced, then produce them.
+         *  Yield to other threads. 
+         *  @exception IllegalActionException If production of an output
+         *   fails (e.g. type error).
          */
-        public void fire() {
+        public void fire() throws IllegalActionException {
+            OutputFrame frame = _outputFrames.peek();
+            if (frame != null && frame.time.equals(getModelTime())) {
+                // Produce the outputs on the frame.
+                for (QueuedToken token : frame.tokens) {
+                    if (token.channel < token.port.getWidth()) {
+                        token.port.send(token.channel, token.token);
+                    }
+                }
+            }
             Thread.yield();
         }
 
@@ -316,13 +353,7 @@ public class RealTimeComposite extends MirrorComposite {
          */
         public void fireAtCurrentTime(Actor actor)
                 throws IllegalActionException {
-            if (RealTimeComposite.this._debugging) {
-                RealTimeComposite.this._debug(
-                        "Queueing iteration request for the associated thread"
-                        + " to be processed at time "
-                        + getModelTime());
-            }
-            _inputFrames.put(new InputFrame(getModelTime(), new LinkedList<InputToken>()));
+            _inputFrames.put(new InputFrame(getModelTime(), new LinkedList<QueuedToken>()));
             Director director = RealTimeComposite.this.getExecutiveDirector();
             if (director != null) {
                 // We assume that the contained actors mean "real time" by
@@ -333,10 +364,12 @@ public class RealTimeComposite extends MirrorComposite {
                 Time time = new Time(this, (System.currentTimeMillis() - _realStartTime) / 1000.0);
                 if (RealTimeComposite.this._debugging) {
                     RealTimeComposite.this._debug(
-                            "---- Actor requests firing at current time, converted to time "
-                            + time
-                            + ": "
-                            + actor.getFullName());
+                            "----- fireAtCurrentTime() request by actor "
+                            + actor.getFullName()
+                            + ". Model time is "
+                            + getModelTime()
+                            + ", and real time is "
+                            + time);
                 }
                 director.fireAt(RealTimeComposite.this, time);
             }
@@ -356,6 +389,8 @@ public class RealTimeComposite extends MirrorComposite {
         public void initialize() throws IllegalActionException {
             // The superclass will initialize all the actors.
             super.initialize();
+            _inputFrames.clear();
+            _outputFrames.clear();
             _realStartTime = System.currentTimeMillis();
             _thread = new RealTimeThread();
             _thread.start();
@@ -378,7 +413,7 @@ public class RealTimeComposite extends MirrorComposite {
             super.prefire();
             // Have to create a new list because the previous list may
             // not have been consumed yet.
-            _inputTokens = new LinkedList<InputToken>();
+            _inputTokens = new LinkedList<QueuedToken>();
             return _thread.isAlive();
         }
 
@@ -397,6 +432,12 @@ public class RealTimeComposite extends MirrorComposite {
                             + getModelTime());
                 }
                 _inputFrames.put(new InputFrame(getModelTime(), _inputTokens));
+            }
+            OutputFrame frame = _outputFrames.peek();
+            if (frame != null && frame.time.equals(getModelTime())) {
+                // Consume the outputs on the frame, which will have
+                // been sent in the fire() method.
+                _outputFrames.poll();
             }
             return _thread.isAlive();
         }
@@ -428,7 +469,7 @@ public class RealTimeComposite extends MirrorComposite {
                     if (port.isKnown(i)) {
                         if (port.hasToken(i)) {
                             Token token = port.get(i);
-                            _inputTokens.add(new InputToken(port, i, token));
+                            _inputTokens.add(new QueuedToken(port, i, token));
                             if (RealTimeComposite.this._debugging) {
                                 RealTimeComposite.this._debug(
                                         getName(), "transferring input from "
@@ -442,8 +483,58 @@ public class RealTimeComposite extends MirrorComposite {
                     throw new InternalErrorException(this, ex, null);
                 }
             }
-
             return result;
+        }
+
+        /** If real time is less than or equal to the current model time
+         *  of the environment, then produce the outputs immediately at the
+         *  current model time. Otherwise, collect them and queue them to
+         *  be produced by the fire method when model time matches the
+         *  current real time, and call fireAt() to request a firing
+         *  at that time.
+         *  @exception IllegalActionException If reading the inputs fails.
+         *  @param port The port to transfer tokens from.
+         *  @return True if at least one data token is produced now.
+         */
+        public boolean transferOutputs(IOPort port)
+                throws IllegalActionException {
+            Time time = getModelTime();
+            double realTimeInSeconds = (System.currentTimeMillis() - _realStartTime) / 1000.0;
+            if (time.getDoubleValue() >= realTimeInSeconds) {
+                return super.transferOutputs(port);
+            } else {
+                // The current real time is greater than the current
+                // model time of the environment. Schedule the production
+                // of outputs at the real time.
+                time = new Time(this, realTimeInSeconds);
+                LinkedList<QueuedToken> outputTokens = new LinkedList<QueuedToken>();
+                for (int i = 0; i < port.getWidth(); i++) {
+                    try {
+                        if (port.isKnownInside(i)) {
+                            if (port.hasTokenInside(i)) {
+                                Token token = port.getInside(i);
+                                outputTokens.add(new QueuedToken(port, i, token));
+                                if (RealTimeComposite.this._debugging) {
+                                    RealTimeComposite.this._debug(
+                                            getName(), "transferring output from "
+                                            + port.getName()
+                                            + " with value "
+                                            + token);
+                                }
+                            }
+                        }
+                    } catch (NoTokenException ex) {
+                        // this shouldn't happen.
+                        throw new InternalErrorException(this, ex, null);
+                    }
+                }
+                if (outputTokens.size() > 0) {
+                    OutputFrame frame = new OutputFrame(time, outputTokens);
+                    _outputFrames.add(frame);
+                    fireAt((Actor)getContainer(), time);
+                }
+                return false;
+            }
         }
 
         /** Override the base class to wait until the associated thread
@@ -470,7 +561,7 @@ public class RealTimeComposite extends MirrorComposite {
         ////                   private variables                  ////
         
         /** List of input events in the current iteration. */
-        private List<InputToken> _inputTokens;
+        private List<QueuedToken> _inputTokens;
 
         /** The thread that executes the contained actors. */
         private Thread _thread;
@@ -506,7 +597,7 @@ public class RealTimeComposite extends MirrorComposite {
                                 "---- Reading input tokens in associated thread: "
                                 + frame.tokens);
                     }
-                    for (InputToken token : frame.tokens) {
+                    for (QueuedToken token : frame.tokens) {
                         if (token.channel < token.port.getWidthInside()) {
                             token.port.sendInside(token.channel, token.token);
                         }
