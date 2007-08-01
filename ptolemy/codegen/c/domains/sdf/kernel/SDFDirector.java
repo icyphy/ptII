@@ -441,7 +441,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
-        Receiver[][] receivers = null;
+        Receiver[][] receivers;
 
         if (port.isInput()) {
             receivers = port.getReceivers();

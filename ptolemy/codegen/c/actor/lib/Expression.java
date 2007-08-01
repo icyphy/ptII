@@ -128,7 +128,6 @@ public class Expression extends CCodeGeneratorHelper {
             _cParseTreeCodeGenerator = new CParseTreeCodeGenerator();
         }
         ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
-        Token result;
 
         try {
             // Note that the parser is NOT retained, since in most
@@ -138,7 +137,7 @@ public class Expression extends CCodeGeneratorHelper {
             ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
                     .getExpression());
 
-            result = _cParseTreeCodeGenerator.evaluateParseTree(parseTree,
+            _cParseTreeCodeGenerator.evaluateParseTree(parseTree,
                     new VariableScope(actor));
         } catch (IllegalActionException ex) {
             // Chain exceptions to get the actor that threw the exception.
