@@ -492,26 +492,12 @@ public class Clock extends TimedSource {
         if (_tentativeNextOutputTime.compareTo(currentTime) >= 0) {
             return;
         }
-        // In case current time has reached or crossed a boundary between
-        // periods, update it.  Note that normally it will not
-        // have advanced by more than one period
-        // (unless, perhaps, the entire domain has been dormant
-        // for some time, as might happen for example in a modal model).
-        // But do not do this if we are before the first iteration.
-        // NOTE: This used to increment only if <, not if ==.
-        // But this isn't quite right. If we are right at the end
-        // of a cycle, then we are also at the beginning of the next
-        // cycle (cycleStartTime + period == currentTime). So we should
-        // change things so that we are at the start of the next cycle.
-        // EAL 7/20/07.
-        // NOTE: This is just a modulo operation. Better way to do it?
+        // Find the first cycle time and phase greater than the
+        // current one that equals or exceeds current time.
+        // It might not be the very next phase because we could
+        // have been disabled in a modal model, or we could have
+        // skipped cycles due to not being triggered.
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-        while (_tentativeCycleStartTime.add(periodValue).compareTo(
-                currentTime) <= 0) {
-            _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
-        }
-
-        // Next figure out what phase we are in.
         Time phaseStartTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
         while (phaseStartTime.compareTo(currentTime) < 0) {
             _tentativePhase++;
@@ -572,6 +558,13 @@ public class Clock extends TimedSource {
      *  not contain a valid parameter or can not request refiring.
      */
     protected void _updateStates() throws IllegalActionException {
+        // Schedule another firing if we are enabled
+        // and either an output was produced
+        // or a trigger input was received.
+        boolean triggerConnected = trigger.numberOfSources() > 0;
+        boolean fireAtNeeded = _tentativeEnabled
+                && ((!triggerConnected && _outputProduced)
+                    || (triggerConnected && _tentativeTriggered && !_outputProduced));
         _cycleStartTime = _tentativeCycleStartTime;
         _phase = _tentativePhase;
         if (_outputProduced) {
@@ -591,7 +584,7 @@ public class Clock extends TimedSource {
         _enabled = _tentativeEnabled;
         _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
 
-        if (_enabled) {
+        if (fireAtNeeded) {
             if (_debugging) {
                 _debug("Requesting firing at: " + _nextOutputTime
                         + ".");
