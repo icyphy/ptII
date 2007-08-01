@@ -27,6 +27,7 @@
  */
 package ptolemy.codegen.kernel;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -217,7 +218,10 @@ public class StaticSchedulingCodeGenerator extends CCodeGenerator implements
                 // We call wrapup here so that the state gets set to idle.
                 // This makes it difficult to test the Exit actor.
                 try {
+                    long startTime = (new Date()).getTime();
                     manager.wrapup();
+                    _timeAndMemory(startTime, "StaticSchedulingCodeGenerator: "
+                            + "wrapup consumed: ");
                 } catch (RuntimeException ex) {
                     // The Exit actor causes Manager.wrapup() to throw this.
                     if (!manager.isExitingAfterWrapup()) {

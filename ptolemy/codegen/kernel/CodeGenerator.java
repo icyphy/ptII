@@ -34,6 +34,7 @@ import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -44,6 +45,7 @@ import java.util.StringTokenizer;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Manager;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
@@ -319,6 +321,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public int generateCode(StringBuffer code) throws KernelException {
 
+        long startTime = (new Date()).getTime();
+        long overallStartTime = startTime;
         // List actors = get all actors
         // for each actor in actors
         // 		actor._analyzeActor();
@@ -340,6 +344,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // for adding additional code into different sections.
         analyzeTypeConvert();
 
+        startTime = _timeAndMemory(startTime,
+                "CodeGenerator.analyzeTimeConvert() consumed: ");
         // FIXME: these should be in the order they are used unless
         // otherwise necessary.  If it is necessary, it should be noted.
 
@@ -363,7 +369,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String initializeProcedureName = generateInitializeProcedureName();
         String postfireEntryCode = generatePostfireEntryCode();
         String postfireExitCode = generatePostfireExitCode();
-        String postfireProcedureName = generatePostfireProcedureName();
+        /*String postfireProcedureName =*/ generatePostfireProcedureName();
         String wrapupEntryCode = generateWrapupEntryCode();
         String wrapupExitCode = generateWrapupExitCode();
         String wrapupProcedureName = generateWrapupProcedureName();
@@ -385,6 +391,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // generate type resolution code has to be after 
         // fire(), wrapup(), preinit(), init()...
         String typeResolutionCode = generateTypeConvertCode();
+
+        startTime = _timeAndMemory(startTime,
+                "CodeGenerator: generating code consumed: ");
 
         // The appending phase.
         code.append(generateCopyright());
@@ -447,9 +456,22 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             _executeCommands = new StreamExec();
         }
 
+        startTime = _timeAndMemory(startTime,
+                "CodeGenerator: appending code consumed: ");
+
         code = _finalPassOverCode(code);
+        startTime = _timeAndMemory(startTime,
+                "CodeGenerator: final pass consumed: ");
+
         _codeFileName = _writeCode(code);
+        startTime = _timeAndMemory(startTime,
+                "CodeGenerator: writing code consumed: ");
+
         _writeMakefile();
+
+        _timeAndMemory(overallStartTime,
+                "CodeGenerator: All phases above consumed: ");
+
         return _executeCommands();
     }
 
@@ -1158,11 +1180,23 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // If we are testing, and ptolemy.ptII.exitAfterWrapup is set
             // then StringUtilities.exit(0) might not actually exit.
             return true;
-        } else if (arg.equals("")) {
-            // Ignore blank argument.
         }
         // Argument not recognized.
         return false;
+    }
+
+    /** Print the elapsed time.
+     *  @param startTime The starting time.  Usually set to the value
+     *  of <code>(new Date()).getTime()</code>.
+     *  @param message The message that is printed if the current time
+     *  is 10 seconds after the <i>startTime</i>.
+     *  @return the current time.
+     */ 
+    protected long _timeAndMemory(long startTime, String message) {
+        if ((new Date()).getTime() - startTime > 10000) {
+            System.out.println(message  + Manager.timeAndMemory(startTime));
+        }
+        return (new Date()).getTime();
     }
 
     /** Return a string summarizing the command-line arguments.
