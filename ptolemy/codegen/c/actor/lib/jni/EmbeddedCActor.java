@@ -47,6 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 6.1
+ @see ptolemy.actor.lib.jni.EmbeddedCActor
  @Pt.ProposedRating red (zgang)
  @Pt.AcceptedRating Red (zgang)
  */
