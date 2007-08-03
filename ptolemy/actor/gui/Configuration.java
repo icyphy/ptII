@@ -101,9 +101,12 @@ import ptolemy.util.StringUtilities;
  configuration calls System.exit() to exit the application.
 
  <p>To access the configuration from a random place, if you have a
- NamedObj, then you can call Configuration.findEffigy().  This is a
- static method.  Then call Effigy.toplevel(). The result will always be
- the configuration.
+ NamedObj <code>foo</code>, then you can call:
+ <pre>
+ Effigy effigy = Configuration.findEffigy(foo.toplevel());
+ Configuration configuration = effigy.toplevel();
+ </pre> 
+
 
  @author Steve Neuendorffer and Edward A. Lee
  @version $Id$
