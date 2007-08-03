@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Iterator;
@@ -43,6 +44,9 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.BooleanToken;
@@ -55,6 +59,7 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -271,19 +276,20 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         boolean invoked = ((BooleanToken) invokeJNI.getToken()).booleanValue();
         if (invoked) {
-
-            if (_generatedCodeVersion != _workspace.getVersion()) {
-
+            if ( _generatedCodeVersion != _workspace.getVersion()) {
+                
                 _sanitizedActorName = StringUtilities.sanitizeName(getFullName());
                 // Remove all underscores to avoid confusion for JNI
                 // related functions.  Each time a .dll file is
                 // generated, we must use a different name for it so
                 // that it can be loaded without restarting vergil.
                 _sanitizedActorName = _sanitizedActorName.replace("_", "") 
-                        + _version++;
-                
-                _generateAndCompileJavaCode();
-                _generateAndCompileCCode();
+                    + _version++;
+
+                if (_buildSharedObjectFile()) {
+                    _generateAndCompileJavaCode();
+                    _generateAndCompileCCode();
+                }
                 _generatedCodeVersion = _workspace.getVersion();
 
                 String jniClassName = _sanitizedActorName;
@@ -447,26 +453,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        String dllPath = null;
-        try {
-            String fileName = "";
-            String osName = StringUtilities.getProperty("os.name");
-            if (osName != null) {
-                if (osName.startsWith("Windows")) {
-                    fileName = _sanitizedActorName + ".dll";
-                } else {
-                    fileName = "lib" + _sanitizedActorName + ".so";
-                }
-            }
-            dllPath = codeDirectory.asFile().getCanonicalPath() +
-                File.separator + fileName;
-            dllPath = dllPath.replace("\\", "/");
-            
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot generate library path.");
-        }
-        
+        String sharedObjectPath = _sharedObjectPath(_sanitizedActorName);
         code.append("public class " + _sanitizedActorName + " {\n"
                   + "\n"
                   + "    public native Object[] fire(" + _getArguments() + ");\n"
@@ -477,7 +464,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                // + "        String library = \"" + _sanitizedActorName + "\";\n"
                // + "        System.loadLibrary(library);\n"
                   
-                  + "        String library = \"" + dllPath + "\";\n"               
+                  + "        String library = \"" + sharedObjectPath + "\";\n"               
                   + "        System.load(library);\n"
                   + "    }\n"
                   + "}\n");
@@ -536,6 +523,101 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
    
+
+    /** Return true if the shared object file should be built.  The
+     *  shared object file must be built if shared object file does
+     *  not exist or if the model has been modified and not saved or
+     *  if the modification time of the shared object file is earlier
+     *  than the modification time of the model file.
+     *  @return true if the shared object file should be built.
+     *  @exception IllegalActionException If there is a problem
+     *  generating the path to the shared object.
+     */
+    private boolean _buildSharedObjectFile() throws IllegalActionException {
+        String message = "CompiledCompositeActor: Building shared object: ";
+        File sharedObjectFile = new File(_sharedObjectPath(_sanitizedActorName));
+        if (sharedObjectFile == null || !(sharedObjectFile.canRead())) {
+            if (_debugging) {
+                _debug(message + "Can't read the shared object file.");
+            }
+            return true;
+        } 
+        Effigy effigy = Configuration.findEffigy(this.toplevel());
+        if (effigy == null) {
+            if (_debugging) {
+                _debug(message + "Could not find the effigy");
+            }
+            return true;
+        }             
+        if (effigy.isModified()) {
+            if (_debugging) {
+                _debug(message
+                        + "The effigy " + effigy + "(model : "
+                        + ((PtolemyEffigy) effigy).getModel()
+                        + ") says the model was modified and thus it does not matter "
+                        + "if the shared object file is newer than the model file "
+                        + "because the model file is out of date.");
+            }
+            return true;
+        }
+
+        URI modelURI = URIAttribute.getModelURI(this);
+        if (modelURI == null) {
+            if (_debugging) {
+                _debug(message
+                        + "This model does not have a _uri parameter.");
+            }
+            return true;
+        }
+        String modelPath = modelURI.getPath();
+        File modelFile = null;
+        try {
+            modelFile = new File(modelPath);
+        } catch (Exception ex) {
+            // Ignore, perhaps modelURI points to a remote model.
+        }
+        if (modelFile == null 
+                || sharedObjectFile.lastModified() < modelFile.lastModified()) {
+            if (_debugging) {
+                _debug(message
+                        + "The sharedObjectFile has a modification time "
+                        + "that is earlier than the modelFile modification time.");
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /** Get the name of the shared object.
+     *  @param sanitizedActorName The sanitized actor name on
+     *  which to base the name of the shared object.
+     *  @return The name of the .dll or .so file.
+     *  @exception IllegalActionException If there is a problem
+     *  reading the <i>codeDirectory</i> parameter.
+     */
+    private String _sharedObjectPath(String sanitizedActorName )
+            throws IllegalActionException {
+        String sharedObjectPath = null;
+        try {
+            String fileName = "";
+            String osName = StringUtilities.getProperty("os.name");
+            if (osName != null) {
+                if (osName.startsWith("Windows")) {
+                    fileName = sanitizedActorName + ".dll";
+                } else {
+                    fileName = "lib" + sanitizedActorName + ".so";
+                }
+            }
+            sharedObjectPath = codeDirectory.asFile().getCanonicalPath() +
+                File.separator + fileName;
+            sharedObjectPath = sharedObjectPath.replace("\\", "/");
+            
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Cannot generate library path.");
+        }
+        return sharedObjectPath;
+    }
 
     private String _getArguments() {
 
