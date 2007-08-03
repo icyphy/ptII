@@ -1,6 +1,6 @@
 /* An aggregation of typed actors with cosimulation option.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,6 +42,7 @@ import java.util.List;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.BooleanToken;
@@ -71,15 +72,14 @@ import ptolemy.util.StringUtilities;
  A CompiledCompositeActor is an aggregation of typed actors with 
  cosimulation option.
 
- @author Gang Zhou
+ @author Gang Zhou, contributor: Christopher Brooks
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 6.1
  @Pt.ProposedRating red (zgang)
  @Pt.AcceptedRating red (zgang)
- @see ptolemy.actor.TypedCompositeActor
  */
 
-public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
+public class CompiledCompositeActor extends TypedCompositeActor {
     /** Construct a CodeGenerationCompositeActor in the default workspace 
      *  with no container and an empty string as its name. Add the actor to 
      *  the workspace directory.
@@ -131,10 +131,6 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-
-    ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
     /** The directory in which to put the generated code.
@@ -155,35 +151,29 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
      */
     public Parameter inline;
     
+    /** If true, then invoke the Java Native Interface (JNI).
+     *  The default value is false.  Classes like EmbeddedCActor
+     *  set invokeJNI to true when there is only C code specifying
+     *  the functionality of an actor.   
+     */
     public Parameter invokeJNI;
 
     /** If true, overwrite preexisting files.  The default
      *  value is a parameter with the value true.
      */
     public Parameter overwriteFiles;
-    
-
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If this actor is opaque, transfer any data from the input ports
-     *  of this composite to the ports connected on the inside, and then
-     *  invoke the fire() method of its local director.
-     *  The transfer is accomplished by calling the transferInputs() method
-     *  of the local director (the exact behavior of which depends on the
-     *  domain).  If the actor is not opaque, throw an exception.
-     *  This method is read-synchronized on the workspace, so the
-     *  fire() method of the director need not be (assuming it is only
-     *  called from here).  After the fire() method of the director returns,
-     *  send any output data created by calling the local director's
-     *  transferOutputs method.
+    /** Read the inputs, invoke the jni fire() method and transfer
+     *  data to the outputs.  If the <i>invokeJNI</i> parameter is false
+     *  then super.fire() is called, otherwise we invoke the jni fire()
+     *  method of the wrapper class.
      *
-     *  @exception IllegalActionException If there is no director, or if
-     *   the director's fire() method throws it, or if the actor is not
-     *   opaque.
+     *  @exception IllegalActionException If thrown by the super
+     *  class, or if there are problems invoking the fire() method of
+     *  wrapper class.   
      */
     public void fire() throws IllegalActionException {
 
@@ -204,9 +194,8 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
 
                 List tokensFromAllInputPorts = new LinkedList();
 
-                for (Iterator inputPorts = inputPortList().iterator(); inputPorts
-                        .hasNext()
-                        && !_stopRequested;) {
+                for (Iterator inputPorts = inputPortList().iterator();
+                     inputPorts.hasNext() && !_stopRequested;) {
                     IOPort port = (IOPort) inputPorts.next();
                     if (!(port instanceof ParameterPort)) {
                         Object tokens = _transferInputs(port);
@@ -223,9 +212,10 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
                     // Invoke the native fire method
                     tokensToAllOutputPorts = (Object[]) _jniFireMethod.invoke(
                             _jniWrapper, tokensFromAllInputPorts.toArray());
-                } catch (Exception e) {
-                    throw new IllegalActionException(this, e,
-                            "Failed to invoke the fire method on the wrapper class.");
+                } catch (Throwable throwable) {
+                    throw new IllegalActionException(this, throwable,
+                            "Failed to invoke the fire method on "
+                            + "the wrapper class.");
                 }
 
                 if (_stopRequested) {
@@ -233,11 +223,11 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
                 }
 
                 int portNumber = 0;
-                for (Iterator outputPorts = outputPortList().iterator(); outputPorts
-                        .hasNext()
-                        && !_stopRequested;) {
+                for (Iterator outputPorts = outputPortList().iterator();
+                     outputPorts.hasNext() && !_stopRequested;) {
                     IOPort port = (IOPort) outputPorts.next();
-                    _transferOutputs(port, tokensToAllOutputPorts[portNumber++]);
+                    _transferOutputs(port,
+                            tokensToAllOutputPorts[portNumber++]);
                 }
 
             } finally {
@@ -252,12 +242,25 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
         }
     }
     
+    /** Return the sanitized file name of this actor.  The sanitized name
+     *  is created by invoking
+     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)},
+     *  removing underscores and appending a version number.
+     *  The version number is necessary so that we can reload the JNI
+     *  shared object.
+     *  @return The sanitized actor name.
+     */
     public String getSanitizedName() {
         return _sanitizedActorName;
     }
 
-    /** Initialize this actor. 
-     *
+    /** Initialize this actor by optionally generating and compiling
+     *  code and invoking the initialize method of the JNI wrapper
+     *  class.
+     *  If the <i>invokeJNI</i> parameter is false, then only the
+     *  parent method is called and code is not generated, compiled
+     *  nor invoked.
+     *   
      *  @exception IllegalActionException If there is no director, or
      *   if the director's initialize() method throws it, or if the
      *   actor is not opaque.
@@ -272,15 +275,15 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
             if (_generatedCodeVersion != _workspace.getVersion()) {
 
                 _sanitizedActorName = StringUtilities.sanitizeName(getFullName());
-                // Remove all underscores to avoid confusion for JNI related 
-                // functions.
-                // Each time a .dll file is generated, we must use a different 
-                // name for it so that it can be loaded without restarting vergil.
+                // Remove all underscores to avoid confusion for JNI
+                // related functions.  Each time a .dll file is
+                // generated, we must use a different name for it so
+                // that it can be loaded without restarting vergil.
                 _sanitizedActorName = _sanitizedActorName.replace("_", "") 
                         + _version++;
                 
-                _generateandCompileJavaCode();
-                _generateandCompileCCode();
+                _generateAndCompileJavaCode();
+                _generateAndCompileCCode();
                 _generatedCodeVersion = _workspace.getVersion();
 
                 String jniClassName = _sanitizedActorName;
@@ -292,18 +295,19 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
                     ClassLoader classLoader = new URLClassLoader(urls);
                     jniClass = classLoader.loadClass(jniClassName);
 
-                } catch (MalformedURLException e) {
-                    throw new IllegalActionException(this, "The class URL for "
+                } catch (MalformedURLException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "The class URL for "
                             + jniClassName + "is malformed");
-                } catch (ClassNotFoundException e) {
-                    throw new IllegalActionException(this,
+                } catch (ClassNotFoundException ex) {
+                    throw new IllegalActionException(this, ex,
                             "Cannot load the class " + jniClassName);
                 }
 
                 try {
                     _jniWrapper = jniClass.newInstance();
-                } catch (Exception e) {
-                    throw new IllegalActionException(this, e,
+                } catch (Throwable throwable) {
+                    throw new IllegalActionException(this, throwable,
                             "Cannot instantiate the wrapper object.");
                 }
 
@@ -320,15 +324,18 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
                 }
                 if (_jniFireMethod == null) {
                     throw new IllegalActionException(this,
-                            "Cannot find fire method in the jni wrapper class.");
+                            "Cannot find fire "
+                            + "method in the jni wrapper class.");
                 }
                 if (_jniInitializeMethod == null) {
                     throw new IllegalActionException(this,
-                            "Cannot find initialize method in the jni wrapper class.");
+                            "Cannot find initialize "
+                            + "method in the jni wrapper class.");
                 }
                 if (_jniWrapupMethod == null) {
                     throw new IllegalActionException(this,
-                            "Cannot find wrapup method in the jni wrapper class.");
+                            "Cannot find wrapup "
+                            + "method in the jni wrapper class.");
                 }
 
             }
@@ -337,9 +344,10 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
                 // Java 1.4, used by Kepler, requires the two arg invoke()
                 // Cast to Object() to supress Java 1.5 warning
                 _jniInitializeMethod.invoke(_jniWrapper, (Object[]) null);
-            } catch (Exception e) {
-                throw new IllegalActionException(this, e,
-                        "Failed to invoke the initialize method on the wrapper class.");
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
+                        "Failed to invoke the initialize method on"
+                        + "the wrapper class.");
             }
 
         }
@@ -360,9 +368,10 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
                 // Java 1.4, used by Kepler, requires the two arg invoke()
                 // Cast to Object() to supress Java 1.5 warning
                 _jniWrapupMethod.invoke(_jniWrapper, (Object[]) null);
-            } catch (Exception e) {
-                throw new IllegalActionException(this, e,
-                        "Failed to invoke the wrapup method on the wrapper class.");
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
+                        "Failed to invoke the wrapup method on "
+                        + "the wrapper class.");
             }
         }
         // _generatedCodeVersion = _workspace.getVersion();
@@ -371,6 +380,13 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+
+    /** Compile the Java code.
+     *  The <code>javac</code> and <code>javah</code> commands are
+     *  executed on the the java file.  
+     *  @exception IllegalActionException If there is a problem reading
+     *  the <i>codeDirectory</i> parameter.
+     */
     protected void _compileJavaCode() throws IllegalActionException {
         if (_executeCommands == null) {
             _executeCommands = new StreamExec();
@@ -389,7 +405,12 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
         _executeCommands.start();
     }
     
-    protected void _generateandCompileCCode() throws IllegalActionException {
+    /** Generate and compile C code.
+     *  @exception IllegalActionException If the helper class cannot be
+     *  found, or if the generateCode() method in the helper class
+     *  cannot be found or invoked.
+     */
+    protected void _generateAndCompileCCode() throws IllegalActionException {
         
         String packageName = generatorPackage.stringValue();
         String helperClassName 
@@ -398,8 +419,8 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
         Class helperClass = null;
         try {
             helperClass = Class.forName(helperClassName);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalActionException(this, e,
+        } catch (ClassNotFoundException ex) {
+            throw new IllegalActionException(this, ex,
                     "Cannot find helper class " + helperClassName);
         }
         
@@ -407,19 +428,23 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
         try {
             generateMethod = helperClass.getMethod("generateCode", 
                     new Class[] {ptolemy.actor.TypedCompositeActor.class});
-        } catch (NoSuchMethodException e) {
-            throw new IllegalActionException(this, e,
+        } catch (NoSuchMethodException ex) {
+            throw new IllegalActionException(this, ex,
                     "Cannot find the generateCode method.");
         }
         
         try {
             generateMethod.invoke(null, new Object[]{this});
-        } catch (Exception e) {
-            throw new IllegalActionException(this, e,
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
                     "Failed to invoke the generateCode method.");
         }
     }
-    protected void _generateandCompileJavaCode() throws IllegalActionException {
+
+    /** Generate and compile the Java code.
+     */
+    protected void _generateAndCompileJavaCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         String dllPath = null;
@@ -437,8 +462,9 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
                 File.separator + fileName;
             dllPath = dllPath.replace("\\", "/");
             
-        } catch (IOException e) {
-            throw new IllegalActionException(this, "Cannot generate library path.");
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Cannot generate library path.");
         }
         
         code.append("public class " + _sanitizedActorName + " {\n"
@@ -466,7 +492,8 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
                 throw new IOException("Error: " + codeDirectory.stringValue()
                         + " is a file, " + "it should be a directory.");
             }
-            if (!codeDirectoryFile.isDirectory() && !codeDirectoryFile.mkdirs()) {
+            if (!codeDirectoryFile.isDirectory()
+                    && !codeDirectoryFile.mkdirs()) {
                 throw new IOException("Failed to make the \""
                         + codeDirectory.stringValue() + "\" directory.");
             }
@@ -496,8 +523,9 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
                     writer.close();
                 }
             }
-        } catch (Throwable ex) {
-            throw new IllegalActionException(this, ex, "Failed to write \""
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Failed to write \""
                     + codeFileName + "\" in "
                     + codeDirectory.getBaseDirectory());
         }
@@ -580,10 +608,8 @@ public class CompiledCompositeActor extends ptolemy.actor.TypedCompositeActor {
 
         if (type == BaseType.INT) {
             tokenHolder = new int[numberOfChannels][];
-
         } else if (type == BaseType.DOUBLE) {
             tokenHolder = new double[numberOfChannels][];
-
         } else {
             // FIXME: need to deal with other types
         }
