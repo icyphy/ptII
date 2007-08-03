@@ -164,6 +164,12 @@ public abstract class RunnableGraphController extends WithIconGraphController
                     }
                 }
             };
+
+            // Mark the Error Highlight Clearer request as
+            // non-persistant so that we don't mark the model as being
+            // modified.  ptolemy/actor/lib/jni/test/Scale/Scale.xml
+            // required this change.
+            request.setPersistent(false);
             manager.requestChange(request);
 
             getFrame().report(manager.getState().getDescription());
