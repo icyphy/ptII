@@ -184,7 +184,6 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         boolean invoked = ((BooleanToken) invokeJNI.getToken()).booleanValue();
         if (invoked) {
-
             if (_debugging) {
                 _debug("Calling fire()");
             }
@@ -278,74 +277,87 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         if (invoked) {
             if ( _generatedCodeVersion != _workspace.getVersion()) {
                 
-                _sanitizedActorName = StringUtilities.sanitizeName(getFullName());
-                // Remove all underscores to avoid confusion for JNI
-                // related functions.  Each time a .dll file is
-                // generated, we must use a different name for it so
-                // that it can be loaded without restarting vergil.
-                _sanitizedActorName = _sanitizedActorName.replace("_", "") 
-                    + _version++;
+                _updateSanitizedActorName();
 
                 if (_buildSharedObjectFile()) {
+                    if (_loadedCodeVersion != -1) {
+                        // We already loaded once, so increment the
+                        // version number used to generate the
+                        // sanitizedActorName
+                        ++_version;
+                        _updateSanitizedActorName();
+                    }
                     _generateAndCompileJavaCode();
                     _generateAndCompileCCode();
-                }
-                _generatedCodeVersion = _workspace.getVersion();
-
-                String jniClassName = _sanitizedActorName;
-                Class jniClass = null;
-                try {
-                    URL url = codeDirectory.asFile().toURL();
-                    URL[] urls = new URL[] { url };
-
-                    ClassLoader classLoader = new URLClassLoader(urls);
-                    jniClass = classLoader.loadClass(jniClassName);
-
-                } catch (MalformedURLException ex) {
-                    throw new IllegalActionException(this, ex,
-                            "The class URL for "
-                            + jniClassName + "is malformed");
-                } catch (ClassNotFoundException ex) {
-                    throw new IllegalActionException(this, ex,
-                            "Cannot load the class " + jniClassName);
+                    _generatedCodeVersion = _workspace.getVersion();
+                } 
+                if (_generatedCodeVersion == -1) {
+                    // We did not build the shared object, we
+                    // are reusing a preexisting one.
+                    _generatedCodeVersion = _workspace.getVersion();
                 }
 
-                try {
-                    _jniWrapper = jniClass.newInstance();
-                } catch (Throwable throwable) {
-                    throw new IllegalActionException(this, throwable,
-                            "Cannot instantiate the wrapper object.");
-                }
+                if (_loadedCodeVersion != _generatedCodeVersion) {
 
-                Method[] methods = jniClass.getMethods();
-                for (int i = 0; i < methods.length; i++) {
-                    String name = methods[i].getName();
-                    if (name.equals("fire")) {
-                        _jniFireMethod = methods[i];
-                    } else if (name.equals("initialize")) {
-                        _jniInitializeMethod = methods[i];
-                    } else if (name.equals("wrapup")) {
-                        _jniWrapupMethod = methods[i];
+                    //System.out.println("CompiledCompositeActor: "
+                    //        + _generatedCodeVersion + " "
+                    //        + _loadedCodeVersion + " "
+                    //        + _workspace.getVersion());
+                    String jniClassName = _sanitizedActorName;
+                    Class jniClass = null;
+                    try {
+                        URL url = codeDirectory.asFile().toURL();
+                        URL[] urls = new URL[] { url };
+
+                        ClassLoader classLoader = new URLClassLoader(urls);
+                        jniClass = classLoader.loadClass(jniClassName);
+                    
+                    } catch (MalformedURLException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "The class URL for "
+                                + jniClassName + "is malformed");
+                    } catch (ClassNotFoundException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Cannot load the class " + jniClassName);
                     }
-                }
-                if (_jniFireMethod == null) {
-                    throw new IllegalActionException(this,
-                            "Cannot find fire "
-                            + "method in the jni wrapper class.");
-                }
-                if (_jniInitializeMethod == null) {
-                    throw new IllegalActionException(this,
-                            "Cannot find initialize "
-                            + "method in the jni wrapper class.");
-                }
-                if (_jniWrapupMethod == null) {
-                    throw new IllegalActionException(this,
-                            "Cannot find wrapup "
-                            + "method in the jni wrapper class.");
-                }
 
+                    try {
+                        _jniWrapper = jniClass.newInstance();
+                    } catch (Throwable throwable) {
+                        throw new IllegalActionException(this, throwable,
+                                "Cannot instantiate the wrapper object.");
+                    }
+
+                    Method[] methods = jniClass.getMethods();
+                    for (int i = 0; i < methods.length; i++) {
+                        String name = methods[i].getName();
+                        if (name.equals("fire")) {
+                            _jniFireMethod = methods[i];
+                        } else if (name.equals("initialize")) {
+                            _jniInitializeMethod = methods[i];
+                        } else if (name.equals("wrapup")) {
+                            _jniWrapupMethod = methods[i];
+                        }
+                    }
+                    if (_jniFireMethod == null) {
+                        throw new IllegalActionException(this,
+                                "Cannot find fire "
+                                + "method in the jni wrapper class.");
+                    }
+                    if (_jniInitializeMethod == null) {
+                        throw new IllegalActionException(this,
+                                "Cannot find initialize "
+                                + "method in the jni wrapper class.");
+                    }
+                    if (_jniWrapupMethod == null) {
+                        throw new IllegalActionException(this,
+                                "Cannot find wrapup "
+                                + "method in the jni wrapper class.");
+                    }
+                    _loadedCodeVersion = _workspace.getVersion();
+                }
             }
-
+                
             try {
                 // Java 1.4, used by Kepler, requires the two arg invoke()
                 // Cast to Object() to supress Java 1.5 warning
@@ -537,36 +549,28 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         String message = "CompiledCompositeActor: Building shared object: ";
         File sharedObjectFile = new File(_sharedObjectPath(_sanitizedActorName));
         if (sharedObjectFile == null || !(sharedObjectFile.canRead())) {
-            if (_debugging) {
-                _debug(message + "Can't read the shared object file.");
-            }
+            System.out.println(message + "Can't read the shared object file.");
             return true;
         } 
         Effigy effigy = Configuration.findEffigy(this.toplevel());
         if (effigy == null) {
-            if (_debugging) {
-                _debug(message + "Could not find the effigy");
-            }
+            System.out.println(message + "Could not find the effigy");
             return true;
         }             
         if (effigy.isModified()) {
-            if (_debugging) {
-                _debug(message
-                        + "The effigy " + effigy + "(model : "
-                        + ((PtolemyEffigy) effigy).getModel()
-                        + ") says the model was modified and thus it does not matter "
-                        + "if the shared object file is newer than the model file "
-                        + "because the model file is out of date.");
-            }
+            System.out.println(message
+                    + "The effigy " + effigy + "(model : "
+                    + ((PtolemyEffigy) effigy).getModel()
+                    + ") says the model was modified and thus it does not matter "
+                    + "if the shared object file is newer than the model file "
+                    + "because the model file is out of date.");
             return true;
         }
 
         URI modelURI = URIAttribute.getModelURI(this);
         if (modelURI == null) {
-            if (_debugging) {
-                _debug(message
-                        + "This model does not have a _uri parameter.");
-            }
+            System.out.println(message
+                    + "This model does not have a _uri parameter.");
             return true;
         }
         String modelPath = modelURI.getPath();
@@ -578,11 +582,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         }
         if (modelFile == null 
                 || sharedObjectFile.lastModified() < modelFile.lastModified()) {
-            if (_debugging) {
-                _debug(message
-                        + "The sharedObjectFile has a modification time "
-                        + "that is earlier than the modelFile modification time.");
-            }
+            System.out.println(message
+                    + "The sharedObjectFile has a modification time "
+                    + "that is earlier than the modelFile modification time.");
             return true;
         }
         return false;
@@ -789,6 +791,19 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         }
     }
 
+    /** Update the _sanitizedActorName variable.
+     *  Consider calling this method each time _version is updated.
+     */
+    private void _updateSanitizedActorName() {
+        _sanitizedActorName = StringUtilities.sanitizeName(getFullName());
+        // Remove all underscores to avoid confusion for JNI
+        // related functions.  Each time a .dll file is
+        // generated, we must use a different name for it so
+        // that it can be loaded without restarting vergil.
+        _sanitizedActorName = _sanitizedActorName.replace("_", "") 
+            + _version;
+    }
+
     private ExecuteCommands _executeCommands;
 
     private Object _jniWrapper;
@@ -799,9 +814,29 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
     private Method _jniWrapupMethod;
 
+    /** The sanitized actor name.  The name has the underscores
+     *  removed and the value of the _version variable appended.  Call
+     *  _updateSanitizedActorName() to properly set this variable.
+     */
     private String _sanitizedActorName;
     
+    /** The workspace version for which the code was generated.
+     *  If the workspace version and this variable differ,
+     *  Then there is a chance we should regenerate the code.
+     */   
     private long _generatedCodeVersion = -1;
+
+    /** The workspace version for which the code was loaded.  If the
+     *  workspace version and this variable differ, then we should
+     *  reload the code.  Note that we don't want to reload the same
+     *  dll multiple times or we will get "Native Library foo.dll
+     *  already loaded in another classloader"
+     */   
+    private long _loadedCodeVersion = -1;
     
+    /** The version of the shared object.  Each time we rebuild, the
+     *  version number gets incremented.  If you change _version, then
+     *  consider calling _updateSanitizedActorName.
+     */
     private int _version = 0;
 }
