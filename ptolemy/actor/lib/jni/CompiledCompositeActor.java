@@ -381,7 +381,14 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         boolean invoked = ((BooleanToken) invokeJNI.getToken()).booleanValue();
+
         if (invoked) {
+            if (_jniWrapper == null) {
+                System.out.println("CompiledCompositeActor.wrapup(): "
+                        + "_jniWrapper = null");
+                return;
+            }
+
             try {
                 // Java 1.4, used by Kepler, requires the two arg invoke()
                 // Cast to Object() to supress Java 1.5 warning
