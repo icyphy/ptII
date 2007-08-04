@@ -634,9 +634,19 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         "_bufferSizes is null?");
             }
             if (_bufferSizes.get(port) == null) {
+                StringBuffer buffers = new StringBuffer();
+                Iterator ports = _bufferSizes.keySet().iterator();
+                while (ports.hasNext()) {
+                    IOPort aPort = (IOPort) ports.next();
+                    if (buffers.length() > 0) {
+                        buffers.append(", ");
+                    }
+                    buffers.append(aPort.getName());
+                }
                 throw new InternalErrorException(this, null,
                         "_bufferSizes.get(" + port 
-                        + ") is null?");
+                        + ") is null?, _bufferSizes.size(): "
+                        + _bufferSizes.size() + " ports: " + buffers.toString());
             }
             return ((int[]) _bufferSizes.get(port))[channelNumber];
         } else {
