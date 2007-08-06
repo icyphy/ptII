@@ -173,7 +173,6 @@ implements ChangeListener {
             }
             if (_graphPanner != null) {
                 _graphPanner.setCanvas((JGraph) selected);
-                _graphPanner.repaint();
             }
         }
     }
