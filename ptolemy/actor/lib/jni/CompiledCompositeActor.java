@@ -63,6 +63,7 @@ import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
@@ -384,8 +385,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         if (invoked) {
             if (_jniWrapper == null) {
-                System.out.println("CompiledCompositeActor.wrapup(): "
-                        + "_jniWrapper = null");
+                // If we are generating code for an entire model,
+                // we might end up here.
                 return;
             }
 
@@ -676,6 +677,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             invokeJNI = new Parameter(this, "invokeJNI");
             invokeJNI.setTypeEquals(BaseType.BOOLEAN);
             invokeJNI.setExpression("false");
+            // Hide the invokeJNI parameter from the user.
+            invokeJNI.setVisibility(Settable.NONE);
 
             overwriteFiles = new Parameter(this, "overwriteFiles");
             overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
