@@ -57,6 +57,7 @@ JSRCS = \
 	AudioWriteBuffer.java \
 	ClipPlayer.java \
 	LiveSoundActor.java \
+	SoundActor.java \
 	SoundPlayer.java
 
 # We include voice.wav so that we can include the voice.wav file in
