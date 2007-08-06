@@ -29,6 +29,7 @@
  */
 package ptolemy.caltrop.ddi;
 
+import ptolemy.actor.Initializable;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -42,6 +43,13 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (cxh)
  */
 public abstract class AbstractDDI implements DDI {
+
+    /** Do nothing. Cal doesn't support this.
+     *  @param initializable The object whose methods should be invoked.
+     *  @see #removeInitializable(Initializable)
+     */
+    public void addInitializable(Initializable initializable) {
+    }
 
     /** Return true. Most actors are written so that the prefire() and
      *  fire() methods do not change the state of the actor. Hence, for
@@ -68,6 +76,13 @@ public abstract class AbstractDDI implements DDI {
 
     public int iterate(int i) throws IllegalActionException {
         return 0;
+    }
+
+    /** Do nothing. Cal doesn't support this.
+     *  @param initializable The object whose methods should be invoked.
+     *  @see #addInitializable(Initializable)
+     */
+    public void removeInitializable(Initializable initializable) {
     }
 
     public void stop() {

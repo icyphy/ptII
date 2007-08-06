@@ -42,6 +42,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
+import ptolemy.actor.Initializable;
 import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
@@ -204,6 +205,21 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add the specified object to the list of objects whose
+     *  preinitialize(), intialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object.
+     *  @param initializable The object whose methods should be invoked.
+     *  @see #removeInitializable(Initializable)
+     *  @see #addPiggyback(Executable)
+     */
+    public void addInitializable(Initializable initializable) {
+        if (_initializables == null) {
+            _initializables = new LinkedList<Initializable>();
+        }
+        _initializables.add(initializable);        
+    }
 
     /** React to a change in an attribute.
      *  @param attribute The attribute that changed.
@@ -558,6 +574,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
+        
+        // First invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.initialize();                    
+            }
+        }
+
         // Even though reset() is called in preinitialize(),
         // we have to call it again because if a reset transition is
         // taken, preinitialize() is not called.
@@ -794,6 +818,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   initial state.
      */
     public void preinitialize() throws IllegalActionException {
+        // First invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.preinitialize();                    
+            }
+        }
+
         _stopRequested = false;
         _reachedFinalState = false;
         if (_receiversVersion != workspace().getVersion()) {
@@ -867,6 +898,24 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 if (_isRefinementOutput(p, channel)) {
                     _readInputs(p, channel);
                 }
+            }
+        }
+    }
+
+    /** Remove the specified object from the list of objects whose
+     *  preinitialize(), intialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object. If the specified object is not
+     *  on the list, do nothing.
+     *  @param initializable The object whose methods should no longer be invoked.
+     *  @see #addInitializable(Initializable)
+     *  @see #removePiggyback(Executable)
+     */
+    public void removeInitializable(Initializable initializable) {
+        if (_initializables != null) {
+            _initializables.remove(initializable);
+            if (_initializables.size() == 0) {
+                _initializables = null;
             }
         }
     }
@@ -981,7 +1030,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-    /** Do nothing.  Derived classes override this method to define
+    /** Do nothing except invoke the wrapup method of any objects
+     *  that have been added using addInitializable().
+     *  Derived classes override this method to define
      *  operations to be performed exactly once at the end of a complete
      *  execution of an application.  It typically closes
      *  files, displays final results, etc.
@@ -989,6 +1040,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException {
+        // First invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.initialize();                    
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1299,6 +1356,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     /** Current state. */
     protected State _currentState = null;
+
+    /** List of objects whose (pre)initialize() and wrapup() methods
+     *  should be slaved to these.
+     */
+    protected transient List<Initializable> _initializables;
 
     /** A map from ports to corresponding input variables. */
     protected Map _inputTokenMap = new HashMap();
