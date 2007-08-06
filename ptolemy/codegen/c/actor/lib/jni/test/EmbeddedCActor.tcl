@@ -61,4 +61,4 @@ test EmbeddedCActor-1.1 {Don't generate code each time the model } {
 	error "The file $codegenHome/ScaleEmbeddedCActor0.java was updated even though the model did not change"
 }
     list 1
-} {}
+} {1}
