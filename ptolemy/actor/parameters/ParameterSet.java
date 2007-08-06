@@ -35,11 +35,14 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Executable;
+import ptolemy.actor.Initializable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -153,6 +156,21 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add the specified object to the list of objects whose
+     *  preinitialize(), intialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object.
+     *  @param initializable The object whose methods should be invoked.
+     *  @see #removeInitializable(Initializable)
+     *  @see #addPiggyback(Executable)
+     */
+    public void addInitializable(Initializable initializable) {
+        if (_initializables == null) {
+            _initializables = new LinkedList<Initializable>();
+        }
+        _initializables.add(initializable);        
+    }
+
     /** If the parameter is <i>fileOrURL</i>, and the specified file
      *  name is not null, then open and read the file.
      *  @param attribute The attribute that changed.
@@ -182,9 +200,19 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      */
     public void fire() throws IllegalActionException {}
 
-    /** Do nothing.
+    /** Do nothing except invoke the initialize methods
+     *  of objects that have been added using addInitializable().
+     *  @exception IllegalActionException If one of the added objects
+     *   throws it.
      */
-    public void initialize() {}
+    public void initialize() throws IllegalActionException {
+        // Invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.initialize();                    
+            }
+        }
+    }
 
     /** Return true.
      *  @return True.
@@ -234,10 +262,18 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     }
 
     /** Check to see whether the specified file has changed, and if so,
-     *  re-read it.
-     *  @exception IllegalActionException If re-reading the file fails.
+     *  re-read it, and invoke the preinitialize() methods
+     *  of objects that have been added using addInitializable().
+     *  @exception IllegalActionException If one of the added objects
+     *   throws it, or if re-reading the file fails.
      */
     public void preinitialize() throws IllegalActionException {
+        // Invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.preinitialize();                    
+            }
+        }
         _reReadIfNeeded();
     }
 
@@ -328,6 +364,24 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
         validateSettables();
     }
 
+    /** Remove the specified object from the list of objects whose
+     *  preinitialize(), intialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object. If the specified object is not
+     *  on the list, do nothing.
+     *  @param initializable The object whose methods should no longer be invoked.
+     *  @see #addInitializable(Initializable)
+     *  @see #removePiggyback(Executable)
+     */
+    public void removeInitializable(Initializable initializable) {
+        if (_initializables != null) {
+            _initializables.remove(initializable);
+            if (_initializables.size() == 0) {
+                _initializables = null;
+            }
+        }
+    }
+
     /** Override the base class to register as a piggyback with the nearest opaque
      *  composite actor above in the hierarchy.
      *  @param container The proposed container.
@@ -369,10 +423,18 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     public void terminate() {}
 
     /** Check to see whether the specified file has changed, and if so,
-     *  re-read it.
-     *  @exception IllegalActionException If re-reading the file fails.
+     *  re-read it, and invoke the wrapup() methods
+     *  of objects that have been added using addInitializable().
+     *  @exception IllegalActionException If one of the added objects
+     *   throws it, or if re-reading the file fails.
      */
     public void wrapup() throws IllegalActionException {
+        // Invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.preinitialize();                    
+            }
+        }
         _reReadIfNeeded();
     }
 
@@ -420,6 +482,11 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     
     /** The previously read file name. */
     private String _fileName;
+
+    /** List of objects whose (pre)initialize() and wrapup() methods
+     *  should be slaved to these.
+     */
+    private transient List<Initializable> _initializables;
 
     /** Cached copy of the last hashset of properties, used to remove old
      *  properties.
