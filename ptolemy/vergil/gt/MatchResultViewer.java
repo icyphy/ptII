@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.util.Set;
 
+import javax.swing.SwingUtilities;
+
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Tableau;
@@ -85,6 +87,20 @@ public class MatchResultViewer extends ExtendedGraphFrame {
             public void rerender() {
                 super.rerender();
                 highlightMatchedObjects();
+                
+                // Redraw the graph panner after a while.
+                // If this is not done, the graph panner will not show the
+                // highlights after this controller rerenders.
+                // Repainting here directly doesn't seem to work, eigher. Maybe
+                // some other callbacks are invoked after this and removes the
+                // highlighting decorations.
+                if (_graphPanner != null) {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            _graphPanner.repaint();
+                        }
+                    });
+                }
             }
         };
         _controller.setConfiguration(getConfiguration());

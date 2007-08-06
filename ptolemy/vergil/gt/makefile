@@ -78,6 +78,7 @@ OPTIONAL_FILES = \
 	'GTRuleGraphFrame$$NewRelationAction.class' \
 	'GTRuleGraphTableau$$Factory.class' \
 	'MatchResultTableau$$Factory.class' \
+	'MatchResultViewer$$1$$1.class' \
 	'MatchResultViewer$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
