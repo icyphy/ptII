@@ -5,7 +5,9 @@
   <configure>
     <?moml
       <group>
-        <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator"/>
+        <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+	    <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false"/>
+	</property>
       </group>
     ?>
   </configure>

@@ -116,6 +116,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         generateComment.setTypeEquals(BaseType.BOOLEAN);
         generateComment.setExpression("true");
 
+        generateJNI = new Parameter(this, "generateJNI");
+        generateJNI.setTypeEquals(BaseType.BOOLEAN);
+        generateJNI.setExpression("true");
+        // Hide the generateJNI parameter from the user.
+        generateJNI.setVisibility(Settable.EXPERT);
+
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
         inline.setExpression("false");
@@ -177,6 +183,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  "ptolemy.codegen.c".
      */
     public StringParameter generatorPackage;
+
+    /** If true, then generate code for that uses the JNI interface.
+     *  The default value is truie and this parameter is not usually
+     *  editable by the user.  This parameter is set to true when
+     *  CompiledCompositeActor is run in an interpreted Ptolemy model
+     *  and C code is generated and called from Java.  This parameter
+     *  is set to false when a model contains one or more
+     *  CompiledCompositeActors and C code is being generated for the
+     *  model.
+     */
+    public Parameter generateJNI;
 
     /** If true, generate file with no functions.  If false, generate
      *  file with functions. The default value is a parameter with the 
@@ -556,6 +573,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     }
 
                     codeGenerator._updateParameters(toplevel);
+                    
+                    codeGenerator.generateJNI.setExpression("false");
+
                     try {
                         codeGenerator.generateCode();
                     } catch (KernelException ex) {

@@ -117,15 +117,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     /** Do nothing. Since the outside domain is the simulation domain. 
      *  @exception IllegalActionException Not thrown here.
      */
-    protected void _createInputBufferSizeAndOffsetMap()
-            throws IllegalActionException {
-    }
+//     protected void _createInputBufferSizeAndOffsetMap()
+//             throws IllegalActionException {
+//     }
 
     /** Return nothing. Since the outside domain is the simulation domain. 
      *  @exception IllegalActionException Not thrown here.
      */
-    protected String _generateInputVariableDeclaration()
-            throws IllegalActionException {
-        return "";
-    }
+//     protected String _generateInputVariableDeclaration()
+//             throws IllegalActionException {
+//         return "";
+//     }
 }

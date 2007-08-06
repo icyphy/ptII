@@ -173,7 +173,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper 
                 = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
-        if (container instanceof CompiledCompositeActor) {
+        if (container instanceof CompiledCompositeActor
+            && ((BooleanToken)_codeGenerator.generateJNI.getToken()).booleanValue()) {
 
             Type type = ((TypedIOPort) inputPort).getType();
             String portName = inputPort.getName();
@@ -282,7 +283,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper 
                 = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
-        if (container instanceof CompiledCompositeActor) {
+        if (container instanceof CompiledCompositeActor
+            && ((BooleanToken)_codeGenerator.generateJNI.getToken()).booleanValue()) {
 
             if (_portNumber == 0) {
                 int numberOfOutputPorts = container.outputPortList().size();

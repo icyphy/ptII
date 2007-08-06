@@ -41,6 +41,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.Director;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -192,9 +193,11 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         ptolemy.actor.Director director = compositeActor.getDirector();
         Director directorHelper = (Director) _getHelper(director);
         code.append(directorHelper.generateFireFunctionCode());
-        if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor)) {
+        if (! (compositeActor instanceof
+                    ptolemy.actor.lib.jni.CompiledCompositeActor
+                    && ((BooleanToken)_codeGenerator.generateJNI.getToken()).booleanValue())) {
             code.append(super.generateFireFunctionCode());
-        }    
+        }
         return code.toString();
     }
 
