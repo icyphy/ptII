@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data
 
-DIRS = 		expr test type unit
+DIRS = 		expr test type properties unit
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -71,7 +71,7 @@ JSRCS = \
 	FixMatrixToken.java \
 	FixToken.java \
 	Function.java \
-  FunctionToken.java \
+	FunctionToken.java \
 	ImageToken.java \
 	IntMatrixToken.java \
 	IntToken.java \
