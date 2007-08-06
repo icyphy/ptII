@@ -35,31 +35,32 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.Action;
-import javax.swing.JButton;
+import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
-import ptolemy.actor.gt.GraphTransformationException;
-import ptolemy.actor.gt.SingleRuleTransformer;
 import ptolemy.actor.gt.RecursiveGraphMatcher;
+import ptolemy.actor.gt.SingleRuleTransformer;
+import ptolemy.actor.gt.data.MatchResult;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.ComponentDialog;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
@@ -68,13 +69,15 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.actor.ActorEditorGraphController.NewRelationAction;
 import ptolemy.vergil.basic.EditorDropTarget;
-import ptolemy.vergil.basic.WithIconGraphController.NewPortAction;
+import ptolemy.vergil.basic.ExtendedGraphFrame;
+import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.SnapConstraint;
+import diva.canvas.Figure;
 import diva.canvas.event.LayerAdapter;
 import diva.canvas.event.LayerEvent;
 import diva.graph.GraphPane;
@@ -94,7 +97,7 @@ import diva.gui.GUIUtilities;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GTRuleGraphFrame extends ActorGraphFrame
+public class GTRuleGraphFrame extends ExtendedGraphFrame
 implements ChangeListener {
 
     /** Construct a frame associated with the specified case actor.
@@ -135,9 +138,6 @@ implements ChangeListener {
         // helpFile = "ptolemy/configs/doc/vergilFsmEditorHelp.htm";
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** Set the center location of the visible part of the pane.
      *  This will cause the panner to center on the specified location
      *  with the current zoom factor.
@@ -161,9 +161,6 @@ implements ChangeListener {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                          public methods                   ////
-
     /** React to a change in the state of the tabbed pane.
      *  @param event The event.
      */
@@ -182,13 +179,378 @@ implements ChangeListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// GTNewRelationAction
+    ////                         public methods                    ////
+
+    /** Create the menus that are used by this frame.
+     *  It is essential that _createGraphPane() be called before this.
+     */
+    protected void _addMenus() {
+        super._addMenus();
+
+        _ruleMenu = new JMenu("Rule");
+        _ruleMenu.setMnemonic(KeyEvent.VK_R);
+        _menubar.add(_ruleMenu);
+
+        MatchAction matchAction = new MatchAction();
+        GUIUtilities.addMenuItem(_ruleMenu, matchAction);
+
+        _ruleMenu.addSeparator();
+
+        CreateHierarchyAction createHierarchyAction =
+            new CreateHierarchyAction();
+        GUIUtilities.addMenuItem(_ruleMenu, createHierarchyAction);
+
+        LayoutAction layoutAction = new LayoutAction();
+        GUIUtilities.addMenuItem(_ruleMenu, layoutAction);
+
+        NewRelationAction newRelationAction = new NewRelationAction();
+        GUIUtilities.addMenuItem(_ruleMenu, newRelationAction);
+
+        GUIUtilities.addToolBarButton(_toolbar, newRelationAction);
+        GUIUtilities.addToolBarButton(_toolbar, matchAction);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          public methods                   ////
+
+    protected GraphPane _createGraphPane(NamedObj entity) {
+        _controller = new ActorEditorGraphController();
+        _controller.setConfiguration(getConfiguration());
+        _controller.setFrame(this);
+
+        // The cast is safe because the constructor only accepts
+        // CompositeEntity.
+        final ActorGraphModel graphModel = new ActorGraphModel(entity);
+        return new GraphPane(_controller, graphModel);
+    }
+
+    /** Create the component that goes to the right of the library.
+     *  NOTE: This is called in the base class constructor, before
+     *  things have been initialized. Hence, it cannot reference
+     *  local variables.
+     *  @param entity The entity to display in the component.
+     *  @return The component that goes to the right of the library.
+     */
+    protected JComponent _createRightComponent(NamedObj entity) {
+        if (!(entity instanceof SingleRuleTransformer)) {
+            return super._createRightComponent(entity);
+        }
+
+        _graphs = new LinkedList<JGraph>();
+
+        _tabbedPane = new JTabbedPane() {
+            public void setMinimumSize(Dimension minimumSize) {
+                Iterator<JGraph> graphsIterator = _graphs.iterator();
+                while (graphsIterator.hasNext()) {
+                    graphsIterator.next().setMinimumSize(minimumSize);
+                }
+            }
+
+            public void setPreferredSize(Dimension preferredSize) {
+                Iterator<JGraph> graphsIterator = _graphs.iterator();
+                while (graphsIterator.hasNext()) {
+                    graphsIterator.next().setPreferredSize(preferredSize);
+                }
+            }
+
+            public void setSize(int width, int height) {
+                Iterator<JGraph> graphsIterator = _graphs.iterator();
+                while (graphsIterator.hasNext()) {
+                    graphsIterator.next().setSize(width, height);
+                }
+            }
+
+            /** Serial ID */
+            private static final long serialVersionUID = -4998226270980176175L;
+        };
+        _tabbedPane.addChangeListener(this);
+        Iterator<?> cases = ((SingleRuleTransformer) entity).entityList(
+                CompositeActorMatcher.class).iterator();
+        boolean first = true;
+        while (cases.hasNext()) {
+            CompositeActorMatcher matcher = (CompositeActorMatcher) cases.next();
+            JGraph jgraph = _addTabbedPane(matcher, false);
+            // The first JGraph is the one with the focus.
+            if (first) {
+                first = false;
+                setJGraph(jgraph);
+            }
+            _graphs.add(jgraph);
+        }
+        return _tabbedPane;
+    }
+
+    /** The graph controller.  This is created in _createGraphPane(). */
+    protected ActorEditorGraphController _controller;
+
+    /** The case menu. */
+    protected JMenu _ruleMenu;
+
+    /** Add a tabbed pane for the specified case.
+     *  @param refinement The case.
+     *  @param newPane True to add the pane prior to the last pane.
+     *  @return The pane.
+     */
+    private JGraph _addTabbedPane(CompositeActorMatcher matcher,
+            boolean newPane) {
+        GraphPane pane = _createGraphPane(matcher);
+        pane.getForegroundLayer().setPickHalo(2);
+        pane.getForegroundEventLayer().setConsuming(false);
+        pane.getForegroundEventLayer().setEnabled(true);
+        pane.getForegroundEventLayer().addLayerListener(new LayerAdapter() {
+            /** Invoked when the mouse is pressed on a layer
+             * or figure.
+             */
+            public void mousePressed(LayerEvent event) {
+                Component component = event.getComponent();
+
+                if (!component.hasFocus()) {
+                    component.requestFocus();
+                }
+            }
+        });
+        JGraph jgraph = new JGraph(pane);
+        String name = matcher.getName();
+        jgraph.setName(name);
+        int index = _tabbedPane.getComponentCount();
+        // Put before the default pane, unless this is the default.
+        if (newPane) {
+            index--;
+        }
+        _tabbedPane.add(jgraph, index);
+        jgraph.setBackground(BACKGROUND_COLOR);
+        // Create a drop target for the jgraph.
+        // FIXME: Should override _setDropIntoEnabled to modify all the drop
+        //        targets created.
+        new EditorDropTarget(jgraph);
+        return jgraph;
+    }
+
+    private SingleRuleTransformer _getTransformer() {
+        ActorGraphModel graphModel =
+            (ActorGraphModel) _controller.getGraphModel();
+        CompositeActorMatcher matcher =
+            (CompositeActorMatcher) graphModel.getPtolemyModel();
+        SingleRuleTransformer transformer =
+            (SingleRuleTransformer) matcher.getContainer();
+        return transformer;
+    }
+
+    private List<JGraph> _graphs;
+
+    /** The tabbed pane for cases. */
+    private JTabbedPane _tabbedPane;
+
+    /** Serial ID */
+    private static final long serialVersionUID = 5919681658644668772L;
+
+
+
+    /** Create a hierarchy, which is semantically flattened when the matching or
+        transformation is performed.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 6.1
+     @see ActorGraphFrame.CreateHierarchyAction
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
+    private class CreateHierarchyAction extends AbstractAction {
+
+        /**  Create a new action to introduce a level of hierarchy.
+         */
+        public CreateHierarchyAction() {
+            super("Create Hierarchy");
+            putValue("tooltip",
+                    "Create a TypedCompositeActor that contains the"
+                            + " selected actors.");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            createHierarchy();
+        }
+
+        private static final long serialVersionUID = -4212552714361210815L;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Action to automatically layout the graph.
+
+     @author Thomas Huining Feng
+     @version $Id$
+     @since Ptolemy II 6.1
+     @see ActorGraphFrame.LayoutAction
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
+    private class LayoutAction extends AbstractAction {
+
+        /** Create a new action to automatically lay out the graph. */
+        public LayoutAction() {
+            super("Automatic Layout");
+            putValue("tooltip", "Layout the Graph (Ctrl+T)");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_T, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+            putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
+        }
+
+        /** Lay out the graph. */
+        public void actionPerformed(ActionEvent e) {
+            try {
+                layoutGraph();
+            } catch (Exception ex) {
+                MessageHandler.error("Layout failed", ex);
+            }
+        }
+
+        private static final long serialVersionUID = -31790471585661407L;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private class MatchAction extends FigureAction {
+
+        public MatchAction() {
+            super("Match Model");
+
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/gt/img/match.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/gt/img/match_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/gt/img/match_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/gt/img/match_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", "Match a Ptolemy model in an external file");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_1, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+
+            _attribute = new Attribute((Workspace) null);
+
+            try {
+                _inputModel = new FileParameter(_attribute, "inputModel");
+                _inputModel.setDisplayName("Input model");
+            } catch (KernelException e) {
+                throw new KernelRuntimeException(e, "Unable to create action " +
+                        "instance.");
+            }
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            MatchFileChooser filesChooser =
+                new MatchFileChooser(getFrame(), _attribute);
+            if (filesChooser.buttonPressed().equals(
+                    MatchFileChooser._moreButtons[0])) {
+                File input = null;
+                try {
+                    input = _inputModel.asFile();
+                } catch (IllegalActionException ex) {
+                }
+                if (input == null) {
+                    MessageHandler.message("Input model must not be empty.");
+                    return;
+                }
+                if (!input.exists()) {
+                    MessageHandler.message("Unable to read input model " +
+                            _inputModel.getExpression() + ".");
+                    return;
+                }
+
+                try {
+                    NamedObj toplevel =
+                        GTRuleGraphFrame.this.getTableau().toplevel();
+                    if (!(toplevel instanceof Configuration)) {
+                        throw new InternalErrorException(
+                                "Expected top-level to be a Configuration: "
+                                        + toplevel.getFullName());
+                    }
+
+                    _parser.reset();
+                    CompositeEntity model = (CompositeEntity) _parser.parse(
+                            null, input.toURL().openStream());
+
+                    SingleRuleTransformer transformerActor = _getTransformer();
+                    CompositeActorMatcher matcher =
+                        transformerActor.getLeftHandSide();
+                    if (_matcher.match(matcher, model)) {
+                        MatchResultViewer._setTableauFactory(this, model);
+
+                        Configuration configuration = (Configuration) toplevel;
+                        Tableau tableau = configuration.openModel(model);
+                        MatchResultViewer viewer =
+                            (MatchResultViewer) tableau.getFrame();
+
+                        MatchResult result = _matcher.getMatchResult();
+                        viewer.setMatchResult(result);
+                    }
+                } catch (MalformedURLException ex) {
+                    MessageHandler.message("Unable to obtain URL from the " +
+                            "input file name.");
+                    return;
+                } catch (Exception ex) {
+                    throw new InternalErrorException(ex);
+                }
+            }
+        }
+
+        public void highlightObject(MatchResultViewer frame, NamedObj object) {
+            Object location =
+                object.getAttribute("_location");
+
+            ActorEditorGraphController controller =
+                (ActorEditorGraphController)
+                frame.getJGraph().getGraphPane()
+                .getGraphController();
+            Figure figure = controller.getFigure(location);
+            new AnimationRenderer().renderSelected(figure);
+        }
+
+        private Attribute _attribute;
+
+        private FileParameter _inputModel;
+
+        private RecursiveGraphMatcher _matcher = new RecursiveGraphMatcher();
+
+        private MoMLParser _parser = new MoMLParser();
+
+        private static final long serialVersionUID = -696919249330217870L;
+    }
+
+    private static class MatchFileChooser extends ComponentDialog {
+
+        public MatchFileChooser(Frame owner, NamedObj target) {
+            super(owner, "Choose Input File", new Configurer(target),
+                    _moreButtons);
+        }
+
+        private static final String[] _moreButtons = new String[] {
+            "Match", "Cancel"
+        };
+
+        private static final long serialVersionUID = 2369054217750135740L;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    ///////////////////////////////////////////////////////////////////
+    //// NewRelationAction
     /** An action to create a new relation. */
-    public class GTNewRelationAction extends FigureAction {
+    private class NewRelationAction extends FigureAction {
 
         /** Create an action that creates a new relation.
          */
-        public GTNewRelationAction() {
+        public NewRelationAction() {
             super("New Relation");
 
             String[][] iconRoles = new String[][] {
@@ -249,9 +611,9 @@ implements ChangeListener {
         private static final long serialVersionUID = 2208151447002268749L;
     }
 
-    public class GTRunAction extends FigureAction {
+    /*private class TransformAction extends FigureAction {
 
-        public GTRunAction() {
+        public TransformAction() {
             super("Perform Transformation");
 
             GUIUtilities.addIcons(this, new String[][] {
@@ -331,13 +693,9 @@ implements ChangeListener {
                     return;
                 }
 
-                SingleRuleTransformer transformerActor = _getTransformer();
-                try {
-                    _transformer.transform(model, transformerActor);
-                } catch (GraphTransformationException ex) {
-                    throw new KernelRuntimeException(ex,
-                            "Unable to transform model.");
-                }
+                // TODO
+                throw new KernelRuntimeException(
+                        "Model transformation to be implemented.");
             }
         }
 
@@ -349,14 +707,11 @@ implements ChangeListener {
 
         private MoMLParser _parser = new MoMLParser();
 
-        private RecursiveGraphMatcher _transformer =
-            new RecursiveGraphMatcher();
-
         private static final long serialVersionUID = -3272455226789715544L;
 
-    }
+    }*/
 
-    public static class TransformationFilesChooser extends ComponentDialog {
+    /*private static class TransformationFilesChooser extends ComponentDialog {
 
         public TransformationFilesChooser(Frame owner, NamedObj target) {
             super(owner, "Choose Input/Output Files", new Configurer(target),
@@ -368,211 +723,5 @@ implements ChangeListener {
         };
 
         private static final long serialVersionUID = -8150952956122992910L;
-    }
-
-    /** Create the menus that are used by this frame.
-     *  It is essential that _createGraphPane() be called before this.
-     */
-    protected void _addMenus() {
-        super._addMenus();
-        _ruleMenu = new JMenu("Rule");
-        _ruleMenu.setMnemonic(KeyEvent.VK_R);
-        _menubar.add(_ruleMenu);
-
-        // Remove create new port actions in the tool bar.
-        Component[] components = _toolbar.getComponents();
-        for (int i = 0, del = 0; i < components.length; i++) {
-            if (components[i] instanceof JButton) {
-                Action action = ((JButton) components[i]).getAction();
-                if (action != null && (action instanceof NewPortAction
-                        || action instanceof NewRelationAction)) {
-                    _toolbar.remove(i - del);
-                    del++;
-                }
-            }
-        }
-
-        // Remove create new port actions in the menu.
-        components = _graphMenu.getMenuComponents();
-        for (int i = 0, del = 0; i < components.length; i++) {
-            if (components[i] instanceof JMenuItem) {
-                Action action = ((JMenuItem) components[i]).getAction();
-                if (action != null && (action instanceof NewPortAction
-                        || action instanceof NewRelationAction)) {
-                    _graphMenu.remove(i - del);
-                    del++;
-                }
-            }
-        }
-
-        // Remove duplicated menu separators.
-        for (int i = _graphMenu.getMenuComponentCount() - 1; i >= 0; i--) {
-            if (_graphMenu.getMenuComponent(i)
-                    instanceof JPopupMenu.Separator) {
-                if (i == 0 || _graphMenu.getMenuComponent(i - 1)
-                    instanceof JPopupMenu.Separator) {
-                    _graphMenu.remove(i);
-                }
-            }
-        }
-
-        // Replace the "Run" action if the current composite actor is toplevel.
-        NamedObj model = getModel();
-        if (model == model.toplevel()) {
-            components = _toolbar.getComponents();
-            int position = -1;
-            for (int i = 0, del = 0; i < components.length; i++) {
-                if (components[i] instanceof JButton) {
-                    Action action = ((JButton) components[i]).getAction();
-                    if (action != null && action.getClass().getName().equals(
-                            "ptolemy.vergil.basic.RunnableGraphController" +
-                            "$RunModelAction")) {
-                        _toolbar.remove(i - del);
-                        if (del == 0) {
-                            position = i;
-                        }
-                    }
-                }
-            }
-            if (position >= 0) {
-                GUIUtilities.addToolBarButton(_toolbar, new GTRunAction());
-
-                // Move the newly added component to the original position.
-                int index = _toolbar.getComponentCount() - 1;
-                Component runComponent = _toolbar.getComponent(index);
-                _toolbar.remove(index);
-                _toolbar.add(runComponent, position);
-            }
-        }
-
-        GTNewRelationAction newRelationAction = new GTNewRelationAction();
-        diva.gui.GUIUtilities.addMenuItem(_graphMenu, newRelationAction);
-        diva.gui.GUIUtilities.addToolBarButton(_toolbar, newRelationAction);
-    }
-
-    /** Create the component that goes to the right of the library.
-     *  NOTE: This is called in the base class constructor, before
-     *  things have been initialized. Hence, it cannot reference
-     *  local variables.
-     *  @param entity The entity to display in the component.
-     *  @return The component that goes to the right of the library.
-     */
-    protected JComponent _createRightComponent(NamedObj entity) {
-        if (!(entity instanceof SingleRuleTransformer)) {
-            return super._createRightComponent(entity);
-        }
-
-        _graphs = new LinkedList<JGraph>();
-
-        _tabbedPane = new JTabbedPane() {
-            public void setMinimumSize(Dimension minimumSize) {
-                Iterator<JGraph> graphsIterator = _graphs.iterator();
-                while (graphsIterator.hasNext()) {
-                    graphsIterator.next().setMinimumSize(minimumSize);
-                }
-            }
-
-            public void setPreferredSize(Dimension preferredSize) {
-                Iterator<JGraph> graphsIterator = _graphs.iterator();
-                while (graphsIterator.hasNext()) {
-                    graphsIterator.next().setPreferredSize(preferredSize);
-                }
-            }
-
-            public void setSize(int width, int height) {
-                Iterator<JGraph> graphsIterator = _graphs.iterator();
-                while (graphsIterator.hasNext()) {
-                    graphsIterator.next().setSize(width, height);
-                }
-            }
-
-            /** Serial ID */
-            private static final long serialVersionUID = -4998226270980176175L;
-        };
-        _tabbedPane.addChangeListener(this);
-        Iterator<?> cases = ((SingleRuleTransformer) entity).entityList(
-                CompositeActorMatcher.class).iterator();
-        boolean first = true;
-        while (cases.hasNext()) {
-            CompositeActorMatcher matcher = (CompositeActorMatcher) cases.next();
-            JGraph jgraph = _addTabbedPane(matcher, false);
-            // The first JGraph is the one with the focus.
-            if (first) {
-                first = false;
-                setJGraph(jgraph);
-            }
-            _graphs.add(jgraph);
-        }
-        return _tabbedPane;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The case menu. */
-    protected JMenu _ruleMenu;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Add a tabbed pane for the specified case.
-     *  @param refinement The case.
-     *  @param newPane True to add the pane prior to the last pane.
-     *  @return The pane.
-     */
-    private JGraph _addTabbedPane(CompositeActorMatcher matcher,
-            boolean newPane) {
-        GraphPane pane = _createGraphPane(matcher);
-        pane.getForegroundLayer().setPickHalo(2);
-        pane.getForegroundEventLayer().setConsuming(false);
-        pane.getForegroundEventLayer().setEnabled(true);
-        pane.getForegroundEventLayer().addLayerListener(new LayerAdapter() {
-            /** Invoked when the mouse is pressed on a layer
-             * or figure.
-             */
-            public void mousePressed(LayerEvent event) {
-                Component component = event.getComponent();
-
-                if (!component.hasFocus()) {
-                    component.requestFocus();
-                }
-            }
-        });
-        JGraph jgraph = new JGraph(pane);
-        String name = matcher.getName();
-        jgraph.setName(name);
-        int index = _tabbedPane.getComponentCount();
-        // Put before the default pane, unless this is the default.
-        if (newPane) {
-            index--;
-        }
-        _tabbedPane.add(jgraph, index);
-        jgraph.setBackground(BACKGROUND_COLOR);
-        // Create a drop target for the jgraph.
-        // FIXME: Should override _setDropIntoEnabled to modify all the drop
-        //        targets created.
-        new EditorDropTarget(jgraph);
-        return jgraph;
-    }
-
-    private SingleRuleTransformer _getTransformer() {
-        ActorGraphModel graphModel =
-            (ActorGraphModel) _controller.getGraphModel();
-        CompositeActorMatcher matcher =
-            (CompositeActorMatcher) graphModel.getPtolemyModel();
-        SingleRuleTransformer transformer =
-            (SingleRuleTransformer) matcher.getContainer();
-        return transformer;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private List<JGraph> _graphs;
-
-    /** The tabbed pane for cases. */
-    private JTabbedPane _tabbedPane;
-
-    /** Serial ID */
-    private static final long serialVersionUID = 5919681658644668772L;
+    }*/
 }

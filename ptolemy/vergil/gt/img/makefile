@@ -1,10 +1,9 @@
-# Makefile for the ptolemy/vergil/gt package
+# Makefile for the Ptolemy II vergil/actor/img directory
 #
-# @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
+# Author: Christopher Hylands (makefile only)
+# Version: $Id$
 #
-# @Version: $Id$
-#
-# @Copyright (c) 2007 The Regents of the University of California.
+# Copyright (c) 2001-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,62 +27,41 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+##########################################################################
 
+ME =		ptolemy/vergil/gt/img
 
-ME =		ptolemy/vergil/gt
+# Sub directories to run make in.
+DIRS =
 
-DIRS =		img
-
-# Root of the Java directory
-ROOT =		../../..
-
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# Root of Ptolemy II directory
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =	gt
+PTPACKAGE = 	img
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	img/img.jar
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	match.gif \
+	match_o.gif \
+	match_on.gif \
+	match_ov.gif
 
-JSRCS = \
-	GTRuleGraphFrame.java \
-	GTRuleGraphTableau.java \
-	MatchResultTableau.java \
-	MatchResultViewer.java
-
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'GTRuleGraphFrame$$1.class' \
-	'GTRuleGraphFrame$$2.class' \
-	'GTRuleGraphFrame$$CreateHierarchyAction.class' \
-	'GTRuleGraphFrame$$LayoutAction.class' \
-	'GTRuleGraphFrame$$MatchAction.class' \
-	'GTRuleGraphFrame$$MatchFileChooser.class' \
-	'GTRuleGraphFrame$$NewRelationAction.class' \
-	'GTRuleGraphTableau$$Factory.class' \
-	'MatchResultTableau$$Factory.class' \
-	'MatchResultViewer$$1.class'
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
-
-all: jclass
-install: jclass $(PTCLASSJAR)
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+include $(ROOT)/mk/ptno-compile.mk

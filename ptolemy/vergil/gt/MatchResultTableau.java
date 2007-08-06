@@ -28,7 +28,6 @@ package ptolemy.vergil.gt;
 
 import java.awt.Color;
 
-import ptolemy.actor.gt.SingleRuleTransformer;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
@@ -53,7 +52,7 @@ import ptolemy.vergil.fsm.CaseGraphTableau;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GTRuleGraphTableau extends Tableau {
+public class MatchResultTableau extends Tableau {
 
     /** Create a new case editor tableau with the specified container
      *  and name.
@@ -64,7 +63,7 @@ public class GTRuleGraphTableau extends Tableau {
      *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
-    public GTRuleGraphTableau(PtolemyEffigy container, String name)
+    public MatchResultTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
@@ -79,19 +78,19 @@ public class GTRuleGraphTableau extends Tableau {
      *  @exception NameDuplicationException If the container already
      *   contains an object with the specified name.
      */
-    public GTRuleGraphTableau(PtolemyEffigy container, String name,
+    public MatchResultTableau(PtolemyEffigy container, String name,
             LibraryAttribute defaultLibrary) throws IllegalActionException,
             NameDuplicationException {
         super(container, name);
 
         NamedObj model = container.getModel();
 
-        if (!(model instanceof SingleRuleTransformer)) {
+        if (!(model instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-                    "Cannot edit a model that is not a SingleRuleTransformer.");
+                    "Cannot view a model that is not a CompositeEntity.");
         }
 
-        createGraphFrame((SingleRuleTransformer) model, defaultLibrary);
+        createGraphFrame((CompositeEntity) model, defaultLibrary);
     }
 
     /** Create the graph frame that displays the model associated with
@@ -116,12 +115,12 @@ public class GTRuleGraphTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        if (!(model instanceof SingleRuleTransformer)) {
+        if (!(model instanceof CompositeEntity)) {
             throw new InternalErrorException(this, null, "Composite Entity \""
-                    + model.getFullName() + "\" is not an instance of SingleRuleTransformer.");
+                    + model.getFullName() + "\" is not an instance of CompositeEntity.");
         }
-        GTRuleGraphFrame frame = new GTRuleGraphFrame((SingleRuleTransformer) model, this,
-                defaultLibrary);
+        MatchResultViewer frame = new MatchResultViewer((CompositeEntity) model,
+                this, defaultLibrary);
 
         try {
             setFrame(frame);
@@ -167,13 +166,13 @@ public class GTRuleGraphTableau extends Tableau {
 
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
-            if (model instanceof SingleRuleTransformer) {
+            if (model instanceof CompositeEntity) {
                 // Check to see whether this factory contains a
                 // default library.
                 LibraryAttribute library = (LibraryAttribute) getAttribute(
                         "_library", LibraryAttribute.class);
 
-                GTRuleGraphTableau tableau = new GTRuleGraphTableau(
+                MatchResultTableau tableau = new MatchResultTableau(
                         (PtolemyEffigy) effigy, effigy.uniqueName("tableau"),
                         library);
                 return tableau;
@@ -182,7 +181,7 @@ public class GTRuleGraphTableau extends Tableau {
             }
         }
 
-        private static final long serialVersionUID = 6829386631711081500L;
+        private static final long serialVersionUID = 3382841404529365973L;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -194,5 +193,5 @@ public class GTRuleGraphTableau extends Tableau {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private static final long serialVersionUID = -3310269457296135596L;
+    private static final long serialVersionUID = 5437117715702385793L;
 }

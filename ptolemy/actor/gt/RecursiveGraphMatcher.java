@@ -147,14 +147,6 @@ public class RecursiveGraphMatcher {
         return matcher;
     }
 
-    /* TODO: This method is to be removed. */
-    public NamedObj transform(NamedObj from, SingleRuleTransformer transformer)
-    throws GraphTransformationException {
-        CompositeActorMatcher leftHandSide = transformer.getLeftHandSide();
-        match(leftHandSide, from);
-        return null;
-    }
-
     private ComponentEntity _findFirstChild(CompositeEntity top,
             FastLinkedList<MarkedEntityList> markedList,
             Collection<Object> excludedEntities) {
