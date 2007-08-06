@@ -28,16 +28,18 @@
  */
 package ptolemy.moml;
 
+import java.io.Writer;
 import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.ApplicationConfigurer;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Executable;
+import ptolemy.actor.Initializable;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -93,7 +95,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (acataldo)
  */
-public class SharedParameter extends Parameter implements Executable {
+public class SharedParameter extends Parameter implements Initializable {
     /** Construct a parameter with the given container and name.
      *  The container class will be used to determine which other
      *  instances of SharedParameter are shared with this one.
@@ -163,6 +165,54 @@ public class SharedParameter extends Parameter implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add the specified object to the list of objects whose
+     *  preinitialize(), intialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object.
+     *  @param initializable The object whose methods should be invoked.
+     *  @see #removeInitializable(Initializable)
+     *  @see #addPiggyback(Executable)
+     */
+    public void addInitializable(Initializable initializable) {
+        if (_initializables == null) {
+            _initializables = new LinkedList<Initializable>();
+        }
+        _initializables.add(initializable);        
+    }
+
+    /** Override the base class to register the object, since setName()
+     *  will not be called.
+     *  @param workspace The workspace for the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     *  @see #exportMoML(Writer, int, String)
+     *  @see #setDeferringChangeRequests(boolean)
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SharedParameter newObject = (SharedParameter) super.clone(workspace);
+        SharedParameterRegistry registry = _getSharedParameterRegistry(workspace());
+        registry.register(newObject);
+        return newObject;
+    }
+    
+    /** Get the token contained by this variable.  The type of the returned
+     *  token is always that returned by getType().  Calling this method
+     *  will trigger evaluation of the expression, if the value has been
+     *  given by setExpression(). Notice the evaluation of the expression
+     *  can trigger an exception if the expression is not valid, or if the
+     *  result of the expression violates type constraints specified by
+     *  setTypeEquals() or setTypeAtMost(), or if the result of the expression
+     *  is null and there are other variables that depend on this one.
+     *  The returned value will be null if neither an expression nor a
+     *  token has been set, or either has been set to null.
+     *  @return The token contained by this variable converted to the
+     *   type of this variable, or null if there is none.
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated, or if the result of evaluation
+     *   violates type constraints, or if the result of evaluation is null
+     *   and there are variables that depend on this one.
+     */
     public Token getToken() throws IllegalActionException {
         if (_delayValidation) {
             boolean previousSuppressing = _suppressingPropagation;
@@ -177,10 +227,6 @@ public class SharedParameter extends Parameter implements Executable {
             return super.getToken();
         }
     }
-
-    /** Do nothing.
-     */
-    public void fire() throws IllegalActionException {}
 
     /** Return the top level of the containment hierarchy, unless
      *  one of the containers is an instance of EntityLibrary,
@@ -232,9 +278,19 @@ public class SharedParameter extends Parameter implements Executable {
         }
     }
 
-    /** Do nothing.
+    /** Do nothing except invoke the initialize methods
+     *  of objects that have been added using addInitializable().
+     *  @exception IllegalActionException If one of the added objects
+     *   throws it.
      */
-    public void initialize() {}
+    public void initialize() throws IllegalActionException {
+        // Invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.initialize();                    
+            }
+        }
+    }
 
     /** Return true.
      *  @return True.
@@ -260,43 +316,44 @@ public class SharedParameter extends Parameter implements Executable {
         return _suppressingPropagation;
     }
 
-    /** Do nothing.
-     *  @param count The number of iterations to perform, ignored by this
-     *  method.
-     *  @exception IllegalActionException Not thrown in this base class.
-     *  @return Executable.COMPLETED.
-     */
-    public int iterate(int count) throws IllegalActionException {
-        return Executable.COMPLETED;
-    }
-
-    /** Do nothing.
-     *  @return True.
-     */
-    public boolean postfire() {
-        return true;
-    }
-    
-    /** Do nothing.
-     *  @return True.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public boolean prefire() throws IllegalActionException {
-        return true;
-    }
-
     /** Traverse the model and update values.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void preinitialize() throws IllegalActionException {
+        // Invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.preinitialize();                    
+            }
+        }
         if (_delayValidation) { 
             _suppressingPropagation = false;
             validate();
         }
     }
+    
+    /** Remove the specified object from the list of objects whose
+     *  preinitialize(), intialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object. If the specified object is not
+     *  on the list, do nothing.
+     *  @param initializable The object whose methods should no longer be invoked.
+     *  @see #addInitializable(Initializable)
+     *  @see #removePiggyback(Executable)
+     */
+    public void removeInitializable(Initializable initializable) {
+        if (_initializables != null) {
+            _initializables.remove(initializable);
+            if (_initializables.size() == 0) {
+                _initializables = null;
+            }
+        }
+    }
 
-    /** Override the base class to register as a piggyback with the
-     *  nearest opaque composite actor above in the hierarchy.
+    /** Override the base class to register as an initializable slave with the
+     *  new container. This results in the preinitialize(), initialize(), and
+     *  wrapup() methods of this instance being invoked when the corresponding
+     *  method of the container are invoked.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
@@ -306,28 +363,16 @@ public class SharedParameter extends Parameter implements Executable {
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
-        if (container != getContainer()) {
-            // May need to unregister as a piggyback with the previous container.
-            NamedObj previousContainer = getContainer();
-            while (previousContainer != null) {
-                if (previousContainer instanceof CompositeActor
-                        && ((CompositeActor)previousContainer).isOpaque()) {
-                    ((CompositeActor)previousContainer).removePiggyback(this);
-                    break;
-                }
-                previousContainer = previousContainer.getContainer();
+        NamedObj previousContainer = getContainer();
+        if (previousContainer != container) {
+            if (previousContainer instanceof Initializable) {
+                ((Initializable)previousContainer).removeInitializable(this);
+            }
+            if (container instanceof Initializable) {
+                ((Initializable)container).addInitializable(this);
             }
         }
         super.setContainer(container);
-        NamedObj piggybackContainer = container;
-        while (piggybackContainer != null) {
-            if (piggybackContainer instanceof CompositeActor 
-                    && ((CompositeActor)piggybackContainer).isOpaque()) {
-                ((CompositeActor)piggybackContainer).addPiggyback(this);
-                break;
-            }
-            piggybackContainer = piggybackContainer.getContainer();
-        }
     }
 
     /** Override the base class to register as a shared parameter in the workspace.
@@ -438,33 +483,15 @@ public class SharedParameter extends Parameter implements Executable {
     }
 
     /** Supress propagation.
-     */
-    public void stop() {
-        if (_delayValidation) { 
-            _suppressingPropagation = true;
-        }
-    }
-
-    /** Supress propagation.
-     */
-    public void stopFire() {
-        if (_delayValidation) { 
-            _suppressingPropagation = true;
-        }
-    }
-
-    /** Supress propagation.
-     */
-    public void terminate() {
-        if (_delayValidation) { 
-            _suppressingPropagation = true;
-        }
-    }
-
-    /** Supress propagation.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException {
+        // Invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.wrapup();                    
+            }
+        }
         if (_delayValidation) {
             _suppressingPropagation = true;
         }
@@ -607,7 +634,13 @@ public class SharedParameter extends Parameter implements Executable {
     private static final boolean _delayValidation = false;
 
     /** Empty list. */
-    private static Collection<WeakReference<SharedParameter>> _EMPTY_LIST = new LinkedList<WeakReference<SharedParameter>>();
+    private static Collection<WeakReference<SharedParameter>> _EMPTY_LIST 
+            = new LinkedList<WeakReference<SharedParameter>>();
+    
+    /** List of objects whose (pre)initialize() and wrapup() methods
+     *  should be slaved to these.
+     */
+    private transient List<Initializable> _initializables;
 
     /** Cached version of a shared parameter. */
     private SharedParameter _sharedParameter;
