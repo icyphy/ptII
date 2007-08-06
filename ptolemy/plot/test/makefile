@@ -62,7 +62,7 @@ JGRAPHICAL_TESTS = \
 	Pxgraph.tcl
 
 EXTRA_SRCS = \
-	testpxgraph \
+	onePointStem.plt testpxgraph \
 	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
