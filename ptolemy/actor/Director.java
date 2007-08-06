@@ -34,6 +34,8 @@ package ptolemy.actor;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.util.Time;
@@ -175,6 +177,21 @@ public class Director extends Attribute implements Executable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add the specified object to the list of objects whose
+     *  preinitialize(), intialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object.
+     *  @param initializable The object whose methods should be invoked.
+     *  @see #removeInitializable(Initializable)
+     *  @see #addPiggyback(Executable)
+     */
+    public void addInitializable(Initializable initializable) {
+        if (_initializables == null) {
+            _initializables = new LinkedList<Initializable>();
+        }
+        _initializables.add(initializable);        
+    }
 
     /** Override the base class to update local variables.
      *  @param attribute The attribute that changed.
@@ -555,6 +572,13 @@ public class Director extends Attribute implements Executable {
             _debug("Called initialize().");
         }
 
+        // First invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.initialize();                    
+            }
+        }
+
         _actorsFinishedExecution = new HashSet();
 
         Nameable container = getContainer();
@@ -810,6 +834,14 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug(getFullName(), "Preinitializing ...");
         }
+        
+        // First invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.preinitialize();                    
+            }
+        }
+
         // validate all settable attributes.
         Iterator attributes = attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
@@ -835,6 +867,24 @@ public class Director extends Attribute implements Executable {
         }
         if (_debugging) {
             _debug(getFullName(), "Finished preinitialize().");
+        }
+    }
+
+    /** Remove the specified object from the list of objects whose
+     *  preinitialize(), intialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object. If the specified object is not
+     *  on the list, do nothing.
+     *  @param initializable The object whose methods should no longer be invoked.
+     *  @see #addInitializable(Initializable)
+     *  @see #removePiggyback(Executable)
+     */
+    public void removeInitializable(Initializable initializable) {
+        if (_initializables != null) {
+            _initializables.remove(initializable);
+            if (_initializables.size() == 0) {
+                _initializables = null;
+            }
         }
     }
 
@@ -1143,6 +1193,13 @@ public class Director extends Attribute implements Executable {
             _debug("Director: Called wrapup().");
         }
 
+        // First invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.wrapup();                    
+            }
+        }
+
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
@@ -1349,6 +1406,11 @@ public class Director extends Attribute implements Executable {
 
     /** The current time of the model. */
     protected Time _currentTime;
+    
+    /** List of objects whose (pre)initialize() and wrapup() methods
+     *  should be slaved to these.
+     */
+    protected transient List<Initializable> _initializables;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;

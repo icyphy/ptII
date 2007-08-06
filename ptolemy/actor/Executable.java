@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (davisj)
  */
-public interface Executable {
+public interface Executable extends Initializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -69,17 +69,6 @@ public interface Executable {
      *  @exception IllegalActionException If firing is not permitted.
      */
     public void fire() throws IllegalActionException;
-
-    /** Begin execution of the actor.  This is invoked exactly once
-     *  after the preinitialization phase.  Since type resolution is done
-     *  in the preinitialization phase, along with topology changes that
-     *  may be requested by higher-order function actors, an actor
-     *  can produce output data and schedule events in the initialize()
-     *  method.
-     *
-     *  @exception IllegalActionException If execution is not permitted.
-     */
-    public void initialize() throws IllegalActionException;
 
     /** Return true if this executable does not change state in either
      *  the prefire() or the fire() method. A class that returns true
@@ -156,16 +145,6 @@ public interface Executable {
      */
     public boolean prefire() throws IllegalActionException;
 
-    /** This method should be invoked exactly once per execution
-     *  of a model, before any of these other methods are invoked.
-     *  For actors, this is invoked prior to type resolution and
-     *  may trigger changes in the topology, changes in the
-     *  type constraints.
-     *
-     *  @exception IllegalActionException If initializing is not permitted.
-     */
-    public void preinitialize() throws IllegalActionException;
-
     /** Request that execution of this Executable stop as soon
      *  as possible.  An implementation of this method should
      *  pass on the request to any contained executable objects.
@@ -213,16 +192,6 @@ public interface Executable {
      *  happen as soon as possible, no matter what.
      */
     public void terminate();
-
-    /** This method is invoked exactly once per execution
-     *  of an application.  None of the other action methods should be
-     *  be invoked after it.  It finalizes an execution, typically closing
-     *  files, displaying final results, etc.  When this method is called,
-     *  no further execution should occur.
-     *
-     *  @exception IllegalActionException If wrapup is not permitted.
-     */
-    public void wrapup() throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////

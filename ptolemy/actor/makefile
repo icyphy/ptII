@@ -76,6 +76,7 @@ JSRCS = \
 	ExecutionListener.java \
 	FiringEvent.java \
 	GraphReader.java \
+	Initializable.java \
 	InvariantViolationException.java \
 	IOPort.java \
 	IORelation.java \

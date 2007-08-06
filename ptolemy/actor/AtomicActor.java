@@ -103,6 +103,21 @@ public class AtomicActor extends ComponentEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add the specified object to the list of objects whose
+     *  preinitialize(), intialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object.
+     *  @param initializable The object whose methods should be invoked.
+     *  @see #removeInitializable(Initializable)
+     *  @see #addPiggyback(Executable)
+     */
+    public void addInitializable(Initializable initializable) {
+        if (_initializables == null) {
+            _initializables = new LinkedList<Initializable>();
+        }
+        _initializables.add(initializable);        
+    }
+
     /** Clone this actor into the specified workspace. The new actor is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -240,6 +255,12 @@ public class AtomicActor extends ComponentEntity implements Actor {
     public void initialize() throws IllegalActionException {
         if (_debugging) {
             _debug("Called initialize()");
+        }
+        // First invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.initialize();                    
+            }
         }
         // Update the version only after everything has been
         // preinitialized because there might have been additional
@@ -483,6 +504,13 @@ public class AtomicActor extends ComponentEntity implements Actor {
         }
 
         _stopRequested = false;
+        
+        // First invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.preinitialize();                    
+            }
+        }
 
         // As an optimization, avoid creating receivers if
         // the workspace version has not changed.
@@ -525,6 +553,24 @@ public class AtomicActor extends ComponentEntity implements Actor {
     public void removeDependency(IOPort input, IOPort output) {
         FunctionDependencyOfAtomicActor functionDependency = (FunctionDependencyOfAtomicActor) getFunctionDependency();
         functionDependency.removeDependency(input, output);
+    }
+
+    /** Remove the specified object from the list of objects whose
+     *  preinitialize(), intialize(), and wrapup()
+     *  methods should be invoked upon invocation of the corresponding
+     *  methods of this object. If the specified object is not
+     *  on the list, do nothing.
+     *  @param initializable The object whose methods should no longer be invoked.
+     *  @see #addInitializable(Initializable)
+     *  @see #removePiggyback(Executable)
+     */
+    public void removeInitializable(Initializable initializable) {
+        if (_initializables != null) {
+            _initializables.remove(initializable);
+            if (_initializables.size() == 0) {
+                _initializables = null;
+            }
+        }
     }
 
     /** Override the base class to invalidate the schedule and
@@ -599,7 +645,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
         stop();
     }
 
-    /** Do nothing.  Derived classes override this method to define
+    /** Do nothing except invoke the wrapup() methods of any
+     *  objects that have been registered with addInitializable().
+     *  Derived classes override this method to define
      *  operations to be performed exactly once at the end of a complete
      *  execution of an application.  It typically closes
      *  files, displays final results, etc.
@@ -609,6 +657,12 @@ public class AtomicActor extends ComponentEntity implements Actor {
     public void wrapup() throws IllegalActionException {
         if (_debugging) {
             _debug("Called wrapup()");
+        }
+        // Invoke initializable methods.
+        if (_initializables != null) {
+            for (Initializable initializable : _initializables) {
+                initializable.wrapup();                    
+            }
         }
     }
 
@@ -662,6 +716,11 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
+    
+    /** List of objects whose (pre)initialize() and wrapup() methods
+     *  should be slaved to these.
+     */
+    protected transient List<Initializable> _initializables;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
