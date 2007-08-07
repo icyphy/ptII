@@ -52,7 +52,7 @@ JSRCS =
 JSIMPLE_TESTS = \
 	MatchingTest1.tcl \
 	MatchingTest2.tcl \
-	MatchingTest3.tcl
+	XMLTest1.tcl
 
 # Graphical Java tests.
 # If there are no tests, we use a dummy file so that the script that builds

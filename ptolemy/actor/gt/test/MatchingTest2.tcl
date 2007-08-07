@@ -40,42 +40,80 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test Match-1.1 {Test rule1.xml with host1.1.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.1.xml]
-    [$matchResult getMatchResult] toString
-} {{.Rule.Left Hand Side.A.a:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.A.a] = .host1.A.output:[.host1.relation, .host1.A.output], .Rule.Left Hand Side.A.a:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.C.c] = .host1.A.output:[.host1.relation, .host1.C.input], .Rule.Left Hand Side.B.b:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.B.b] = .host1.B.output:[.host1.relation2, .host1.B.output], .Rule.Left Hand Side.B.b:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.C.c] = .host1.B.output:[.host1.relation2, .host1.C.input], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.A.a] = .host1.C.input:[.host1.relation, .host1.A.output], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.C.c] = .host1.C.input:[.host1.relation, .host1.C.input], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.B.b] = .host1.C.input:[.host1.relation2, .host1.B.output], ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.A.a} = ptolemy.actor.TypedIOPort {.host1.A.output}, ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.B.b} = ptolemy.actor.TypedIOPort {.host1.B.output}, ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.C.c} = ptolemy.actor.TypedIOPort {.host1.C.input}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.A} = ptolemy.actor.lib.Const {.host1.A}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.B} = ptolemy.actor.lib.Const {.host1.B}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.C} = ptolemy.actor.lib.gui.Display {.host1.C}, ptolemy.actor.gt.CompositeActorMatcher {.Rule.Left Hand Side} = ptolemy.actor.TypedCompositeActor {.host1}}}
-
-test Match-1.2 {Test rule1.xml with host1.2.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.2.xml]
-    [$matchResult getMatchResult] toString
+test Match-1.1 {An lhs with a CompositeActor matching an empty host} {
+    set e0 [sdfModel 3]
+    set transformer [java::new ptolemy.actor.gt.RecursiveGraphMatcher]
+    set lhs [java::new ptolemy.actor.gt.CompositeActorMatcher $e0 lhs]
+    set host [java::new ptolemy.actor.TypedCompositeActor $e0 host]
+    
+    set lhsA1 [java::new ptolemy.actor.gt.AtomicActorMatcher $lhs A1]
+    set lhsA1PortRule [java::new ptolemy.actor.gt.rules.PortRule "output" "type" false true false]
+    set lhsA1PortRuleList [java::new ptolemy.actor.gt.RuleList]
+    $lhsA1PortRuleList add [java::cast ptolemy.actor.gt.Rule $lhsA1PortRule]
+    set lhsA1Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$lhsA1 getAttribute ruleList]]
+    $lhsA1Attr setExpression [$lhsA1PortRuleList toString]
+    
+    set lhsC1 [java::new ptolemy.actor.TypedCompositeActor $lhs C1]
+    set lhsC1Port1 [java::new ptolemy.actor.TypedIOPort $lhsC1 input true false]
+    
+    set lhsC1A1 [java::new ptolemy.actor.gt.AtomicActorMatcher $lhsC1 A1]
+    set lhsC1A1PortRule [java::new ptolemy.actor.gt.rules.PortRule "input" "type" true false true]
+    set lhsC1A1PortRuleList [java::new ptolemy.actor.gt.RuleList]
+    $lhsC1A1PortRuleList add [java::cast ptolemy.actor.gt.Rule $lhsC1A1PortRule]
+    set lhsC1A1Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$lhsC1A1 getAttribute ruleList]]
+    $lhsC1A1Attr setExpression [$lhsC1A1PortRuleList toString]
+    
+    set lhsR1 [java::new ptolemy.actor.TypedIORelation $lhs R1]
+    [java::cast ptolemy.kernel.Port [[$lhsA1 portList] get 0]] link $lhsR1
+    $lhsC1Port1 link $lhsR1
+    
+    set lhsC1R1 [java::new ptolemy.actor.TypedIORelation $lhsC1 C1R1]
+    $lhsC1Port1 link $lhsC1R1
+    [java::cast ptolemy.kernel.Port [[$lhsC1A1 portList] get 0]] link $lhsC1R1
+    
+    $transformer match $lhs $host
+    [$transformer getMatchResult] toString
 } {{}}
 
-test Match-1.3 {Test rule1.xml with host1.3.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.3.xml]
-    [$matchResult getMatchResult] toString
-} {{.Rule.Left Hand Side.A.a:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.A.a] = .model.A.output:[.model.relation, .model.A.output], .Rule.Left Hand Side.A.a:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.C.c] = .model.A.output:[.model.relation, .model.CompositeActor.compositeInput, .model.CompositeActor.relation, .model.CompositeActor.C.input], .Rule.Left Hand Side.B.b:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.B.b] = .model.B.output:[.model.relation2, .model.B.output], .Rule.Left Hand Side.B.b:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.C.c] = .model.B.output:[.model.relation2, .model.CompositeActor.compositeInput, .model.CompositeActor.relation, .model.CompositeActor.C.input], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.A.a] = .model.CompositeActor.C.input:[.model.CompositeActor.relation, .model.CompositeActor.compositeInput, .model.relation, .model.A.output], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.C.c] = .model.CompositeActor.C.input:[.model.CompositeActor.relation, .model.CompositeActor.C.input], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.B.b] = .model.CompositeActor.C.input:[.model.CompositeActor.relation, .model.CompositeActor.compositeInput, .model.relation2, .model.B.output], ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.A.a} = ptolemy.actor.TypedIOPort {.model.A.output}, ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.B.b} = ptolemy.actor.TypedIOPort {.model.B.output}, ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.C.c} = ptolemy.actor.TypedIOPort {.model.CompositeActor.C.input}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.A} = ptolemy.actor.lib.Const {.model.A}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.B} = ptolemy.actor.lib.Const {.model.B}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.C} = ptolemy.actor.lib.gui.Display {.model.CompositeActor.C}, ptolemy.actor.gt.CompositeActorMatcher {.Rule.Left Hand Side} = ptolemy.actor.TypedCompositeActor {.model}}}
-
-test Match-1.4 {Test rule1.xml with host1.4.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.4.xml]
-    [$matchResult getMatchResult] toString
-} {{.Rule.Left Hand Side.A.a:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.A.a] = .host1.CompositeActor.A.output:[.host1.CompositeActor.relation2, .host1.CompositeActor.A.output], .Rule.Left Hand Side.A.a:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.C.c] = .host1.CompositeActor.A.output:[.host1.CompositeActor.relation2, .host1.CompositeActor.output1, .host1.relation, .host1.C.input], .Rule.Left Hand Side.B.b:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.B.b] = .host1.CompositeActor.B.output:[.host1.CompositeActor.relation, .host1.CompositeActor.B.output], .Rule.Left Hand Side.B.b:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.C.c] = .host1.CompositeActor.B.output:[.host1.CompositeActor.relation, .host1.CompositeActor.output2, .host1.relation2, .host1.C.input], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.A.a] = .host1.C.input:[.host1.relation, .host1.CompositeActor.output1, .host1.relation, .host1.CompositeActor.A.output], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.C.c] = .host1.C.input:[.host1.relation, .host1.C.input], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.B.b] = .host1.C.input:[.host1.relation2, .host1.CompositeActor.output2, .host1.relation2, .host1.CompositeActor.B.output], ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.A.a} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.A.output}, ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.B.b} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.B.output}, ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.C.c} = ptolemy.actor.TypedIOPort {.host1.C.input}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.A} = ptolemy.actor.lib.Const {.host1.CompositeActor.A}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.B} = ptolemy.actor.lib.Const {.host1.CompositeActor.B}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.C} = ptolemy.actor.lib.gui.Display {.host1.C}, ptolemy.actor.gt.CompositeActorMatcher {.Rule.Left Hand Side} = ptolemy.actor.TypedCompositeActor {.host1}}}
-
-test Match-1.5 {Test rule1.xml with host1.5.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.5.xml]
-    [$matchResult getMatchResult] toString
-} {{.Rule.Left Hand Side.A.a:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.A.a] = .host1.CompositeActor.A.output:[.host1.CompositeActor.relation2, .host1.CompositeActor.A.output], .Rule.Left Hand Side.A.a:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.C.c] = .host1.CompositeActor.A.output:[.host1.CompositeActor.relation2, .host1.CompositeActor.output1, .host1.relation, .host1.CompositeActor2.compositeInput, .host1.CompositeActor2.relation, .host1.CompositeActor2.C.input], .Rule.Left Hand Side.B.b:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.B.b] = .host1.CompositeActor.B.output:[.host1.CompositeActor.relation, .host1.CompositeActor.B.output], .Rule.Left Hand Side.B.b:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.C.c] = .host1.CompositeActor.B.output:[.host1.CompositeActor.relation, .host1.CompositeActor.output2, .host1.relation2, .host1.CompositeActor2.compositeInput, .host1.CompositeActor2.relation, .host1.CompositeActor2.C.input], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.A.a] = .host1.CompositeActor2.C.input:[.host1.CompositeActor2.relation, .host1.CompositeActor2.compositeInput, .host1.relation, .host1.CompositeActor.output1, .host1.relation, .host1.CompositeActor.A.output], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.C.c] = .host1.CompositeActor2.C.input:[.host1.CompositeActor2.relation, .host1.CompositeActor2.C.input], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.B.b] = .host1.CompositeActor2.C.input:[.host1.CompositeActor2.relation, .host1.CompositeActor2.compositeInput, .host1.relation2, .host1.CompositeActor.output2, .host1.relation2, .host1.CompositeActor.B.output], ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.A.a} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.A.output}, ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.B.b} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.B.output}, ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.C.c} = ptolemy.actor.TypedIOPort {.host1.CompositeActor2.C.input}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.A} = ptolemy.actor.lib.Const {.host1.CompositeActor.A}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.B} = ptolemy.actor.lib.Const {.host1.CompositeActor.B}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.C} = ptolemy.actor.lib.gui.Display {.host1.CompositeActor2.C}, ptolemy.actor.gt.CompositeActorMatcher {.Rule.Left Hand Side} = ptolemy.actor.TypedCompositeActor {.host1}}}
-
-test Match-1.6 {Test rule1.xml with host1.6.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.6.xml]
-    [$matchResult getMatchResult] toString
+test Match-1.2 {An lhs with a CompositeActor matching a host without the CompositeActor} {
+    set hostA1 [java::new ptolemy.actor.gt.AtomicActorMatcher $host A1]
+    set hostA1PortRule [java::new ptolemy.actor.gt.rules.PortRule "output" "type" false true false]
+    set hostA1PortRuleList [java::new ptolemy.actor.gt.RuleList]
+    $hostA1PortRuleList add [java::cast ptolemy.actor.gt.Rule $hostA1PortRule]
+    set hostA1Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$hostA1 getAttribute ruleList]]
+    $hostA1Attr setExpression [$hostA1PortRuleList toString]
+    
+    set hostA2 [java::new ptolemy.actor.gt.AtomicActorMatcher $host A2]
+    set hostA2PortRule [java::new ptolemy.actor.gt.rules.PortRule "input" "type" true false true]
+    set hostA2PortRuleList [java::new ptolemy.actor.gt.RuleList]
+    $hostA2PortRuleList add [java::cast ptolemy.actor.gt.Rule $hostA2PortRule]
+    set hostA2Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$hostA2 getAttribute ruleList]]
+    $hostA2Attr setExpression [$hostA2PortRuleList toString]
+    
+    set hostR1 [java::new ptolemy.actor.TypedIORelation $host R1]
+    [java::cast ptolemy.kernel.Port [[$hostA1 portList] get 0]] link $hostR1
+    [java::cast ptolemy.kernel.Port [[$hostA2 portList] get 0]] link $hostR1
+    
+    $transformer match $lhs $host
+    [$transformer getMatchResult] toString
 } {{}}
 
-test Match-1.7 {Test rule1.xml with host1.7.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.7.xml]
-    [$matchResult getMatchResult] toString
-} {{.Rule.Left Hand Side.A.a:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.A.a] = .host1.CompositeActor.A.output:[.host1.CompositeActor.relation2, .host1.CompositeActor.A.output], .Rule.Left Hand Side.A.a:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.C.c] = .host1.CompositeActor.A.output:[.host1.CompositeActor.relation2, .host1.CompositeActor.output1, .host1.relation, .host1.C.input], .Rule.Left Hand Side.B.b:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.B.b] = .host1.CompositeActor.B.output:[.host1.CompositeActor.relation, .host1.CompositeActor.B.output], .Rule.Left Hand Side.B.b:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.C.c] = .host1.CompositeActor.B.output:[.host1.CompositeActor.relation, .host1.CompositeActor.output2, .host1.relation2, .host1.C.input], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.A.a] = .host1.C.input:[.host1.relation, .host1.CompositeActor.output1, .host1.relation, .host1.CompositeActor.A.output], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.C.c] = .host1.C.input:[.host1.relation, .host1.C.input], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.B.b] = .host1.C.input:[.host1.relation2, .host1.CompositeActor.output2, .host1.relation2, .host1.CompositeActor.B.output], ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.A.a} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.A.output}, ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.B.b} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.B.output}, ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.C.c} = ptolemy.actor.TypedIOPort {.host1.C.input}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.A} = ptolemy.actor.lib.Const {.host1.CompositeActor.A}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.B} = ptolemy.actor.lib.Const {.host1.CompositeActor.B}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.C} = ptolemy.actor.lib.gui.Display {.host1.C}, ptolemy.actor.gt.CompositeActorMatcher {.Rule.Left Hand Side} = ptolemy.actor.TypedCompositeActor {.host1}}}
-
-test Match-1.8 {Test rule1.xml with host1.8.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.8.xml]
-    [$matchResult getMatchResult] toString
-} {{.Rule.Left Hand Side.A.a:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.A.a] = .host1.CompositeActor.A.output:[.host1.CompositeActor.relation2, .host1.CompositeActor.A.output], .Rule.Left Hand Side.A.a:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.C.c] = .host1.CompositeActor.A.output:[.host1.CompositeActor.relation2, .host1.CompositeActor.output1, .host1.relation, .host1.C.input], .Rule.Left Hand Side.B.b:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.B.b] = .host1.CompositeActor.B.output:[.host1.CompositeActor.relation, .host1.CompositeActor.B.output], .Rule.Left Hand Side.B.b:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.C.c] = .host1.CompositeActor.B.output:[.host1.CompositeActor.relation, .host1.CompositeActor.output2, .host1.relation2, .host1.C.input], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.A.a] = .host1.C.input:[.host1.relation, .host1.CompositeActor.output1, .host1.CompositeActor.relation2, .host1.CompositeActor.A.output], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation, .Rule.Left Hand Side.C.c] = .host1.C.input:[.host1.relation, .host1.C.input], .Rule.Left Hand Side.C.c:[.Rule.Left Hand Side.relation2, .Rule.Left Hand Side.B.b] = .host1.C.input:[.host1.relation2, .host1.CompositeActor.output2, .host1.relation2, .host1.CompositeActor.B.output], ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.A.a} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.A.output}, ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.B.b} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.B.output}, ptolemy.actor.TypedIOPort {.Rule.Left Hand Side.C.c} = ptolemy.actor.TypedIOPort {.host1.C.input}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.A} = ptolemy.actor.lib.Const {.host1.CompositeActor.A}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.B} = ptolemy.actor.lib.Const {.host1.CompositeActor.B}, ptolemy.actor.gt.AtomicActorMatcher {.Rule.Left Hand Side.C} = ptolemy.actor.lib.gui.Display {.host1.C}, ptolemy.actor.gt.CompositeActorMatcher {.Rule.Left Hand Side} = ptolemy.actor.TypedCompositeActor {.host1}}}
+test Match-1.3 {An lhs with a CompositeActor matching a host with a CompositeActor and an extra actor} {
+    set hostC1 [java::new ptolemy.actor.TypedCompositeActor $host C1]
+    set hostC1Port1 [java::new ptolemy.actor.TypedIOPort $hostC1 input true false]
+    
+    set hostC1A1 [java::new ptolemy.actor.gt.AtomicActorMatcher $hostC1 A1]
+    set hostC1A1PortRule [java::new ptolemy.actor.gt.rules.PortRule "input" "type" true false true]
+    set hostC1A1PortRuleList [java::new ptolemy.actor.gt.RuleList]
+    $hostC1A1PortRuleList add [java::cast ptolemy.actor.gt.Rule $hostC1A1PortRule]
+    set hostC1A1Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$hostC1A1 getAttribute ruleList]]
+    $hostC1A1Attr setExpression [$hostC1A1PortRuleList toString]
+    
+    set hostC1R1 [java::new ptolemy.actor.TypedIORelation $hostC1 C1R1]
+    $hostC1Port1 link $hostC1R1
+    [java::cast ptolemy.kernel.Port [[$hostC1A1 portList] get 0]] link $hostC1R1
+    $hostC1Port1 link $hostR1
+    
+    $transformer match $lhs $host
+    [$transformer getMatchResult] toString
+} {{.top.lhs.A1.output:[.top.lhs.R1, .top.lhs.A1.output] = .top.host.A1.output:[.top.host.R1, .top.host.A1.output], .top.lhs.A1.output:[.top.lhs.R1, .top.lhs.C1.input] = .top.host.A1.output:[.top.host.R1, .top.host.C1.input], .top.lhs.C1.A1.input:[.top.lhs.C1.C1R1, .top.lhs.C1.A1.input] = .top.host.C1.A1.input:[.top.host.C1.C1R1, .top.host.C1.A1.input], .top.lhs.C1.A1.input:[.top.lhs.C1.C1R1, .top.lhs.C1.input] = .top.host.C1.A1.input:[.top.host.C1.C1R1, .top.host.C1.input], .top.lhs.C1.input:[.top.lhs.C1.C1R1, .top.lhs.C1.A1.input] = .top.host.C1.input:[.top.host.C1.C1R1, .top.host.C1.A1.input], .top.lhs.C1.input:[.top.lhs.R1, .top.lhs.A1.output] = .top.host.C1.input:[.top.host.R1, .top.host.A1.output], .top.lhs.C1.input:[.top.lhs.R1, .top.lhs.C1.input] = .top.host.C1.input:[.top.host.R1, .top.host.C1.input], ptolemy.actor.TypedCompositeActor {.top.lhs.C1} = ptolemy.actor.TypedCompositeActor {.top.host.C1}, ptolemy.actor.TypedIOPort {.top.lhs.A1.output} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.input} = ptolemy.actor.TypedIOPort {.top.host.C1.A1.input}, ptolemy.actor.TypedIOPort {.top.lhs.C1.input} = ptolemy.actor.TypedIOPort {.top.host.C1.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.C1.A1}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}, ptolemy.domains.sdf.kernel.SDFDirector {.top.} = ptolemy.domains.sdf.kernel.SDFDirector {.top.}}}
