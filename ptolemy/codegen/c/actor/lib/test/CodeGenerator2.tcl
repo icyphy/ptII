@@ -49,3 +49,11 @@ test CodeGenerator-2.1 {Call main} {
     set args [java::new {String[]} 1  auto/Ramp.xml]
     java::call ptolemy.codegen.kernel.CodeGenerator main $args
 } {}
+
+#####
+test CodeGenerator-3.1 {Call main and generate code in the current directory } {
+    file delete -force Ramp.c Ramp.mk 
+    set args [java::new {String[]} 3 [list {-codeDirectory} {$CWD} {auto/Ramp.xml}]]
+    java::call ptolemy.codegen.kernel.CodeGenerator main $args
+    list [file exists Ramp.c] [file exists Ramp.mk]
+} {1 1}
