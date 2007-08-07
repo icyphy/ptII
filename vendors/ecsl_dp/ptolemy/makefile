@@ -1,10 +1,10 @@
-# Makefile for ECSL actor classesv
+# Makefile for ECSL actor classes
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2004-2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -78,6 +78,7 @@ JSRCS = \
 	ECSLMultiPortSwitch.java \
 	ECSLMux.java \
 	ECSLProduct.java \
+	ECSLRandomNumber.java \
 	ECSLReference.java \
 	ECSLRelationalOperator.java \
 	ECSLRounding.java \
