@@ -14,6 +14,11 @@
 
 #define false 0
 #define true 1
+
+#ifdef __AVR__
+#define strdup(x) strdupa((x))
+#endif
+
 /**/
 
 /***funcHeaderBlock ($function)***/
@@ -70,7 +75,16 @@ char* DoubletoString (double d) {
 }
 
 char* BooleantoString (boolean b) {
-    return (b) ? strdup("true") : strdup("false");
+    char *results;
+    if (b) {
+        // AVR does not have strdup
+        results = malloc(sizeof(char) * 5);
+        strcpy("true", results);
+    } else {
+        results = malloc(sizeof(char) * 6);
+        strcpy("false", results);
+    }
+    return results;
 }
 
 /**/
