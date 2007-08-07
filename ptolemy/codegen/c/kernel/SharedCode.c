@@ -15,10 +15,6 @@
 #define false 0
 #define true 1
 
-#ifdef __AVR__
-#define strdup(x) strdupa((x))
-#endif
-
 /**/
 
 /***funcHeaderBlock ($function)***/
