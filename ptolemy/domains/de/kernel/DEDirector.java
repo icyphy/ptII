@@ -1050,6 +1050,7 @@ public class DEDirector extends Director implements TimedDirector {
             // method constructs them.
             _actorToDepth = null;
             _portToDepth = null;
+            _computePortDepth();
             _computeActorDepth();
         }
     }
@@ -1675,7 +1676,7 @@ public class DEDirector extends Director implements TimedDirector {
             return depth.intValue();
         } else {
             throw new IllegalActionException("Attempt to get depth of actor "
-                    + ((NamedObj) actor).getName() + " that was not sorted.");
+                    + ((NamedObj) actor).getFullName() + " that was not sorted.");
         }
     }
 
