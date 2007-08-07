@@ -87,20 +87,15 @@ public class MatchResultViewer extends ExtendedGraphFrame {
             public void rerender() {
                 super.rerender();
                 highlightMatchedObjects();
-                
-                // Redraw the graph panner after a while.
-                // If this is not done, the graph panner will not show the
-                // highlights after this controller rerenders.
-                // Repainting here directly doesn't seem to work, eigher. Maybe
-                // some other callbacks are invoked after this and removes the
-                // highlighting decorations.
-                if (_graphPanner != null) {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
+
+                // Repaint the graph panner after the decorators are rendered.
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        if (_graphPanner != null) {
                             _graphPanner.repaint();
                         }
-                    });
-                }
+                    }
+                });
             }
         };
         _controller.setConfiguration(getConfiguration());
@@ -142,7 +137,7 @@ public class MatchResultViewer extends ExtendedGraphFrame {
     }
 
     private AnimationRenderer _decorator =
-        new AnimationRenderer(new Color(255, 96, 96));
+        new AnimationRenderer(new Color(255, 64, 64));
 
     private MatchResult _result;
 
