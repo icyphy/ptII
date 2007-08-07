@@ -2,6 +2,18 @@ $Id$
 
 This directory contains the ECSL_DP release from Vanderbilt.
 
+8/7/07:
+FRED contains the executables.  Download FRED from
+https://wiki.isis.vanderbilt.edu/hcddes/index.php/Internal:FREDCodeGen
+
+
+
+
+
+
+
+
+
 10/18/2005 - How to build!
 1. Download UDM from
    http://escher.isis.vanderbilt.edu/downloads?tool=UDM
