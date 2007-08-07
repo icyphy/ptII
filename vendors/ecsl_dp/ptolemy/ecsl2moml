@@ -100,6 +100,19 @@ awk '
 # Get rid of the enclosing <ComponentModels..> </ComponentModels>
 grep -v "<ComponentModels" $tmpfile1 | grep -v "</ComponentModels" > $tmpfile2
 
+sed 's/\r//g' <$tmpfile2 >$tmpfile1
+
+# Join split lines
+awk '{ if ( $0 ~ /[^>]$/) {
+           printf("%s", $0);
+
+       } else {
+           print $0
+       }
+
+}' <$tmpfile1 >$tmpfile2
+diff $tmpfile1 $tmpfile2
+
 
 # Get rid of the enclosing <Dataflow..> </Dataflow>
 grep -v "<Dataflow" $tmpfile2 | grep -v "</Dataflow" > $tmpfile1
@@ -343,7 +356,6 @@ awk ' {
         print $0
     }
 }' < $tmpfile1 > $tmpfile2
-
 
 echo "7 of $STEPS: Convert <Primitive to <entity"
 awk 'BEGIN {
