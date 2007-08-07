@@ -1320,7 +1320,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {
             { "-codeDirectory",
-              "<directory in which to put code (default: $HOME/codegen)>" },
+              "<directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
             { "-compile", "        true|false (default: true)" },
             { "-generateComment", "true|false (default: true)" },
             { "-inline", "         true|false (default: false)" },
@@ -1432,7 +1432,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // System.out.println("model = " + model.getFullName());
             Attribute attribute = model.getAttribute(name);
             if (attribute instanceof Settable) {
-
                 // Use a MoMLChangeRequest so that visual rendition (if
                 // any) is updated and listeners are notified.
                 String moml = "<property name=\"" + name
@@ -1442,6 +1441,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 model.requestChange(request);
             } else {
                 attribute = getAttribute(name);
+
                 if (attribute instanceof Settable) {
                     // Use a MoMLChangeRequest so that visual rendition (if
                     // any) is updated and listeners are notified.
@@ -1451,6 +1451,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                             this, moml);
                     model.requestChange(request);
                 }
+                attribute = getAttribute(name);
             }
 
             if (model instanceof CompositeActor) {
