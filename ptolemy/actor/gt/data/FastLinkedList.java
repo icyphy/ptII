@@ -162,10 +162,19 @@ public class FastLinkedList<E> implements Collection<E> {
         if (entry == _tail) {
             return false;
         } else {
-            entry._next = null;
-            _tail = entry;
-            _recalculateSize = true;
-            return true;
+            if (entry == null) {
+                if (isEmpty()) {
+                    return false;
+                } else {
+                    clear();
+                    return true;
+                }
+            } else {
+                entry._next = null;
+                _tail = entry;
+                _recalculateSize = true;
+                return true;
+            }
         }
     }
 
@@ -173,10 +182,19 @@ public class FastLinkedList<E> implements Collection<E> {
         if (entry == _head) {
             return false;
         } else {
-            entry._previous = null;
-            _head = entry;
-            _recalculateSize = true;
-            return true;
+            if (entry == null) {
+                if (isEmpty()) {
+                    return false;
+                } else {
+                    clear();
+                    return true;
+                }
+            } else {
+                entry._previous = null;
+                _head = entry;
+                _recalculateSize = true;
+                return true;
+            }
         }
     }
 
