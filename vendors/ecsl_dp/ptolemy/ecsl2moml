@@ -387,6 +387,7 @@ awk 'BEGIN {
     map["MultiPortSwitch"] = "vendors.ecsl_dp.ptolemy.ECSLMultiPortSwitch"
     map["Mux"] = "vendors.ecsl_dp.ptolemy.ECSLMux"
     map["Product"] = "vendors.ecsl_dp.ptolemy.ECSLProduct"
+    map["RandomNumber"] = "vendors.ecsl_dp.ptolemy.ECSLRandomNumber"
     map["Reference"] = "vendors.ecsl_dp.ptolemy.ECSLReference"
     map["RelationalOperator"] = "vendors.ecsl_dp.ptolemy.ECSLRelationalOperator"
     map["Rounding"] = "vendors.ecsl_dp.ptolemy.ECSLRounding"
