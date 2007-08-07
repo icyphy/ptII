@@ -40,7 +40,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test Match-1.1 {An lhs with a CompositeActor matching an empty host} {
+test MatchingTest-2.1 {An lhs with a CompositeActor matching an empty host} {
     set e0 [sdfModel 3]
     set transformer [java::new ptolemy.actor.gt.RecursiveGraphMatcher]
     set lhs [java::new ptolemy.actor.gt.CompositeActorMatcher $e0 lhs]
@@ -75,7 +75,7 @@ test Match-1.1 {An lhs with a CompositeActor matching an empty host} {
     [$transformer getMatchResult] toString
 } {{}}
 
-test Match-1.2 {An lhs with a CompositeActor matching a host without the CompositeActor} {
+test MatchingTest-2.2 {An lhs with a CompositeActor matching a host without the CompositeActor} {
     set hostA1 [java::new ptolemy.actor.gt.AtomicActorMatcher $host A1]
     set hostA1PortRule [java::new ptolemy.actor.gt.rules.PortRule "output" "type" false true false]
     set hostA1PortRuleList [java::new ptolemy.actor.gt.RuleList]
@@ -96,9 +96,9 @@ test Match-1.2 {An lhs with a CompositeActor matching a host without the Composi
     
     $transformer match $lhs $host
     [$transformer getMatchResult] toString
-} {{}}
+} {{.top.lhs.A1.output:[.top.lhs.R1, .top.lhs.A1.output] = .top.host.A1.output:[.top.host.R1, .top.host.A1.output], .top.lhs.A1.output:[.top.lhs.R1, .top.lhs.C1.input, .top.lhs.R1, .top.lhs.C1.A1.input] = .top.host.A1.output:[.top.host.R1, .top.host.A2.input], .top.lhs.C1.A1.input:[.top.lhs.C1.C1R1, .top.lhs.C1.A1.input] = .top.host.A2.input:[.top.host.R1, .top.host.A2.input], .top.lhs.C1.A1.input:[.top.lhs.C1.C1R1, .top.lhs.C1.input, .top.lhs.R1, .top.lhs.A1.output] = .top.host.A2.input:[.top.host.R1, .top.host.A1.output], ptolemy.actor.TypedIOPort {.top.lhs.A1.output} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.input} = ptolemy.actor.TypedIOPort {.top.host.A2.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A2}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
 
-test Match-1.3 {An lhs with a CompositeActor matching a host with a CompositeActor and an extra actor} {
+test MatchingTest-2.3 {An lhs with a CompositeActor matching a host with a CompositeActor and an extra actor} {
     set hostC1 [java::new ptolemy.actor.TypedCompositeActor $host C1]
     set hostC1Port1 [java::new ptolemy.actor.TypedIOPort $hostC1 input true false]
     
@@ -116,4 +116,18 @@ test Match-1.3 {An lhs with a CompositeActor matching a host with a CompositeAct
     
     $transformer match $lhs $host
     [$transformer getMatchResult] toString
-} {{.top.lhs.A1.output:[.top.lhs.R1, .top.lhs.A1.output] = .top.host.A1.output:[.top.host.R1, .top.host.A1.output], .top.lhs.A1.output:[.top.lhs.R1, .top.lhs.C1.input] = .top.host.A1.output:[.top.host.R1, .top.host.C1.input], .top.lhs.C1.A1.input:[.top.lhs.C1.C1R1, .top.lhs.C1.A1.input] = .top.host.C1.A1.input:[.top.host.C1.C1R1, .top.host.C1.A1.input], .top.lhs.C1.A1.input:[.top.lhs.C1.C1R1, .top.lhs.C1.input] = .top.host.C1.A1.input:[.top.host.C1.C1R1, .top.host.C1.input], .top.lhs.C1.input:[.top.lhs.C1.C1R1, .top.lhs.C1.A1.input] = .top.host.C1.input:[.top.host.C1.C1R1, .top.host.C1.A1.input], .top.lhs.C1.input:[.top.lhs.R1, .top.lhs.A1.output] = .top.host.C1.input:[.top.host.R1, .top.host.A1.output], .top.lhs.C1.input:[.top.lhs.R1, .top.lhs.C1.input] = .top.host.C1.input:[.top.host.R1, .top.host.C1.input], ptolemy.actor.TypedCompositeActor {.top.lhs.C1} = ptolemy.actor.TypedCompositeActor {.top.host.C1}, ptolemy.actor.TypedIOPort {.top.lhs.A1.output} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.input} = ptolemy.actor.TypedIOPort {.top.host.C1.A1.input}, ptolemy.actor.TypedIOPort {.top.lhs.C1.input} = ptolemy.actor.TypedIOPort {.top.host.C1.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.C1.A1}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}, ptolemy.domains.sdf.kernel.SDFDirector {.top.} = ptolemy.domains.sdf.kernel.SDFDirector {.top.}}}
+} {{.top.lhs.A1.output:[.top.lhs.R1, .top.lhs.A1.output] = .top.host.A1.output:[.top.host.R1, .top.host.A1.output], .top.lhs.A1.output:[.top.lhs.R1, .top.lhs.C1.input, .top.lhs.R1, .top.lhs.C1.A1.input] = .top.host.A1.output:[.top.host.R1, .top.host.A2.input], .top.lhs.C1.A1.input:[.top.lhs.C1.C1R1, .top.lhs.C1.A1.input] = .top.host.A2.input:[.top.host.R1, .top.host.A2.input], .top.lhs.C1.A1.input:[.top.lhs.C1.C1R1, .top.lhs.C1.input, .top.lhs.R1, .top.lhs.A1.output] = .top.host.A2.input:[.top.host.R1, .top.host.A1.output], ptolemy.actor.TypedIOPort {.top.lhs.A1.output} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.input} = ptolemy.actor.TypedIOPort {.top.host.A2.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A2}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
+
+test MatchingTest-2.4 {Add an SDF director to the lhs CompositeActor} {
+    $lhsC1 setDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector]
+    
+    $transformer match $lhs $host
+    [$transformer getMatchResult] toString
+} {{}}
+
+test MatchingTest-2.5 {Add an SDF director to the host CompositeActor} {
+    $hostC1 setDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector]
+    
+    $transformer match $lhs $host
+    [$transformer getMatchResult] toString
+} {{.top.lhs.A1.output:[.top.lhs.R1, .top.lhs.A1.output] = .top.host.A1.output:[.top.host.R1, .top.host.A1.output], .top.lhs.A1.output:[.top.lhs.R1, .top.lhs.C1.input] = .top.host.A1.output:[.top.host.R1, .top.host.C1.input], .top.lhs.C1.A1.input:[.top.lhs.C1.C1R1, .top.lhs.C1.A1.input] = .top.host.C1.A1.input:[.top.host.C1.C1R1, .top.host.C1.A1.input], .top.lhs.C1.A1.input:[.top.lhs.C1.C1R1, .top.lhs.C1.input] = .top.host.C1.A1.input:[.top.host.C1.C1R1, .top.host.C1.input], .top.lhs.C1.input:[.top.lhs.C1.C1R1, .top.lhs.C1.A1.input] = .top.host.C1.input:[.top.host.C1.C1R1, .top.host.C1.A1.input], .top.lhs.C1.input:[.top.lhs.R1, .top.lhs.A1.output] = .top.host.C1.input:[.top.host.R1, .top.host.A1.output], .top.lhs.C1.input:[.top.lhs.R1, .top.lhs.C1.input] = .top.host.C1.input:[.top.host.R1, .top.host.C1.input], ptolemy.actor.TypedCompositeActor {.top.lhs.C1} = ptolemy.actor.TypedCompositeActor {.top.host.C1}, ptolemy.actor.TypedIOPort {.top.lhs.A1.output} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.input} = ptolemy.actor.TypedIOPort {.top.host.C1.A1.input}, ptolemy.actor.TypedIOPort {.top.lhs.C1.input} = ptolemy.actor.TypedIOPort {.top.host.C1.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.C1.A1}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}, ptolemy.domains.sdf.kernel.SDFDirector {.top.lhs.C1.} = ptolemy.domains.sdf.kernel.SDFDirector {.top.host.C1.}}}
