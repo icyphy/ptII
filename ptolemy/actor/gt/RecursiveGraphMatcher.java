@@ -40,6 +40,7 @@ import java.util.Set;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.MatchResult;
@@ -444,39 +445,78 @@ public class RecursiveGraphMatcher {
             FastLinkedList<Object>.Entry hostTail = _hostFrontier.getTail();
 
             FastLinkedList<CompositeEntity>.Entry compositeTail = null;
+            boolean success = true;
             if (firstEntrance) {
                 _visitedLHSCompositeEntities.add(lhsEntity);
                 compositeTail = _visitedLHSCompositeEntities.getTail();
-            }
 
-            FastLinkedList<MarkedEntityList> hostMarkedList =
-                new FastLinkedList<MarkedEntityList>();
-            ComponentEntity hostNextActor = _findFirstChild(hostEntity,
-                    hostMarkedList, _match.values());
-
-            while (hostNextActor != null) {
-                _lhsFrontier.add(lhsNextActor);
-                _hostFrontier.add(hostNextActor);
-
-                if (_matchEntryList(lhsTail.getNext(), hostTail.getNext())) {
-                    return true;
-                } else {
-                    _hostFrontier.removeAllAfter(hostTail);
-                    _lhsFrontier.removeAllAfter(lhsTail);
-                    if (firstEntrance) {
-                        _visitedLHSCompositeEntities.removeAllAfter(
-                                compositeTail);
+                if (lhsEntity instanceof CompositeActor) {
+                    Director lhsDirector =
+                        ((CompositeActor) lhsEntity).getDirector();
+                    if (lhsDirector != null) {
+                        if (hostEntity instanceof CompositeActor) {
+                            Director hostDirector =
+                                ((CompositeActor) hostEntity).getDirector();
+                            if (hostDirector == null) {
+                                success = false;
+                            } else {
+                                success =
+                                    _matchDirector(lhsDirector, hostDirector);
+                            }
+                        } else {
+                            success = false;
+                        }
                     }
-                    hostNextActor = _findNextChild(hostEntity,
-                            hostMarkedList, _match.values());
                 }
             }
-            if (firstEntrance) {
-                compositeTail.remove();
-                _match.remove(lhsEntity);
+
+            if (success) {
+                FastLinkedList<MarkedEntityList> hostMarkedList =
+                    new FastLinkedList<MarkedEntityList>();
+                ComponentEntity hostNextActor = _findFirstChild(hostEntity,
+                        hostMarkedList, _match.values());
+
+                success = false;
+                while (!success && hostNextActor != null) {
+                    _lhsFrontier.add(lhsNextActor);
+                    _hostFrontier.add(hostNextActor);
+
+                    if (_matchEntryList(lhsTail.getNext(), hostTail.getNext())) {
+                        success = true;
+                    } else {
+                        _hostFrontier.removeAllAfter(hostTail);
+                        _lhsFrontier.removeAllAfter(lhsTail);
+                        if (firstEntrance) {
+                            _visitedLHSCompositeEntities.removeAllAfter(
+                                    compositeTail);
+                        }
+                        hostNextActor = _findNextChild(hostEntity,
+                                hostMarkedList, _match.values());
+                    }
+                }
             }
-            return false;
+
+            if (!success && firstEntrance) {
+                _match.remove(lhsEntity);
+                compositeTail.remove();
+            }
+            return success;
         }
+    }
+
+    private boolean _matchDirector(Director lhsDirector,
+            Director hostDirector) {
+        
+        _match.put(lhsDirector, hostDirector);
+        
+        boolean success =
+            lhsDirector.getClass().equals(hostDirector.getClass());
+        
+        if (!success) {
+            _match.remove(lhsDirector);
+        }
+        
+        return success;
     }
 
     private boolean _matchDisconnectedComponents() {
