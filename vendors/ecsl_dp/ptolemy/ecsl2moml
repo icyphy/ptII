@@ -111,8 +111,6 @@ awk '{ if ( $0 ~ /[^>]$/) {
        }
 
 }' <$tmpfile1 >$tmpfile2
-diff $tmpfile1 $tmpfile2
-
 
 # Get rid of the enclosing <Dataflow..> </Dataflow>
 grep -v "<Dataflow" $tmpfile2 | grep -v "</Dataflow" > $tmpfile1
@@ -372,6 +370,7 @@ awk 'BEGIN {
     map["DiscreteIntegrator"] = "vendors.ecsl_dp.ptolemy.ECSLDiscreteIntegrator"
     map["DiscretePulseGenerator"] = "vendors.ecsl_dp.ptolemy.ECSLDiscretePulseGenerator"
     map["Display"] = "vendors.ecsl_dp.ptolemy.ECSLDisplay"
+    map["Fcn"] = "vendors.ecsl_dp.ptolemy.ECSLFcn"
     map["From"] = "vendors.ecsl_dp.ptolemy.ECSLFrom"
     map["Gain"] = "vendors.ecsl_dp.ptolemy.ECSLGain"
     map["Goto"] = "vendors.ecsl_dp.ptolemy.ECSLGoto"
@@ -403,6 +402,7 @@ awk 'BEGIN {
     map["Terminator"] = "vendors.ecsl_dp.ptolemy.ECSLTerminator"
     map["ToWorkspace"] = "vendors.ecsl_dp.ptolemy.ECSLToWorkspace"
     map["TransportDelay"] = "vendors.ecsl_dp.ptolemy.ECSLTransportDelay"
+    map["Trigonometry"] = "vendors.ecsl_dp.ptolemy.ECSLTrigonometry"
     map["UniformRandomNumber"] = "vendors.ecsl_dp.ptolemy.ECSLUniformRandomNumber"
     map["UnitDelay"] = "vendors.ecsl_dp.ptolemy.ECSLUnitDelay"
     map["VariableTransportDelay"] = "vendors.ecsl_dp.ptolemy.ECSLVariableTransportDelay"
