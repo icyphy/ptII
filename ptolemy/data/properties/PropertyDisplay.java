@@ -58,8 +58,8 @@ public class PropertyDisplay extends Attribute {
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\nResolve Property.</text></svg>");
 
-        new PropertyDisplayGUIFactory(
-                this, "PropertyDisplayGUIFactory");
+        //        new PropertyDisplayGUIFactory(
+        //                this, "PropertyDisplayGUIFactory");
     }
 
     /** The file parameter for the lattice description file.
