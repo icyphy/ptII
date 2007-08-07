@@ -292,7 +292,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_eol + "void " + generateName(getComponent()) + "() {" + _eol);
+        // FIXME: This is C specific, it should be abstracted.
+        // We use (void) so as to avoid the avr-gcc 3.4.6 warning: 
+        // "function declaration isn't a prototype"
+        code.append(_eol + "void " + generateName(getComponent()) + "(void) {" + _eol);
         code.append(generateFireCode());
         code.append(generateTypeConvertFireCode());
         code.append("}" + _eol);
