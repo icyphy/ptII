@@ -215,7 +215,9 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            return _eol + _eol + "void initialize() {" + _eol;
+            // We use (void) so as to avoid the avr-gcc 3.4.6 warning: 
+            // "function declaration isn't a prototype
+            return _eol + _eol + "void initialize(void) {" + _eol;
 
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
@@ -241,7 +243,6 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateInitializeProcedureName()
             throws IllegalActionException {
-
         return _INDENT1 + "initialize();" + _eol;
     }
 
@@ -302,7 +303,7 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            return _eol + _eol + "boolean postfire() {" + _eol;
+            return _eol + _eol + "boolean postfire(void) {" + _eol;
 
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
@@ -328,7 +329,7 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generatePostfireProcedureName() throws IllegalActionException {
 
-        return _INDENT1 + "postfire();" + _eol;
+        return _INDENT1 + "postfire(void);" + _eol;
     }
 
     /**
@@ -651,7 +652,7 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            return _eol + _eol + "void wrapup() {" + _eol;
+            return _eol + _eol + "void wrapup(void) {" + _eol;
 
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
