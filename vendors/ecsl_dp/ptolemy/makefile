@@ -63,6 +63,7 @@ JSRCS = \
 	ECSLDiscreteIntegrator.java \
 	ECSLDiscretePulseGenerator.java \
 	ECSLDisplay.java \
+	ECSLFcn.java \
 	ECSLFrom.java \
 	ECSLGain.java \
 	ECSLGoto.java \
