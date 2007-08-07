@@ -186,8 +186,6 @@ public class Clock extends TimedSource {
 
         // Set the output signal type as DISCRETE to indicate
         // that the outputs of this actor are discrete events.
-        // NOTE: ContinuousClock, a subclass of this class overrides
-        // the signal type to CONTINUOUS.
         new Parameter(output, "signalType", new StringToken("DISCRETE"));
 
         // Set the trigger signal type as DISCRETE.
