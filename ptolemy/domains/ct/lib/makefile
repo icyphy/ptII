@@ -48,7 +48,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	BaseClock.java \
 	ContinuousClock.java \
 	CTPeriodicSampler.java \
 	CTRateLimiter.java \
