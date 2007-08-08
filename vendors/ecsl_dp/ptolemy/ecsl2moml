@@ -566,7 +566,16 @@ $0 ~ /<entity/ {
                oldName = name
                name = "output"
            }
+           if (name == "") {
+               # Name is empty
+               if ($1 ~ /<OutputPort/) {
+                   name = "output"
+               } else if ($1 ~ /<InputPort/) {
+                   name = "input"
+               }
+           }
        }
+
        # Get the value of the dstLine field
        dstLine=""
        nf = split($0, f, "\"")   
