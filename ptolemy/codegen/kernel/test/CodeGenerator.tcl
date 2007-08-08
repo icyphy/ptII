@@ -185,7 +185,7 @@ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-void top() {
+void top(void) {
 
     /* Fire Composite Actor: top */
 }
@@ -226,7 +226,7 @@ test CodeGenerator-13.1 {main -help} {
 } {{java.lang.Exception: Failed to parse "-help"} {Usage: ptcg [ options ] [file ...]
 
 Options that take values:
- -codeDirectory <directory in which to put code (default: $HOME/codegen)>
+ -codeDirectory <directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>
  -compile         true|false (default: true)
  -generateComment true|false (default: true)
  -inline          true|false (default: false)
