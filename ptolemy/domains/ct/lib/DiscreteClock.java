@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// BaseClock
+//// DiscreteClock
 
 /**
  NOTE: This actor used to be ptolemy.actor.lib.Clock. But a major
@@ -87,7 +87,7 @@ import ptolemy.kernel.util.Workspace;
  There is another kind of clock called ContinuousClock, which produces
  a square wave instead of a sequence of events. The ContinuousClock
  is a special actor for continuous-time domain. One of their key differences
- is that a BaseClock outputs a DISCRETE signal while a ContinuousClock outputs
+ is that a DiscreteClock outputs a DISCRETE signal while a ContinuousClock outputs
  a CONTINUOUS signal.
 
  @see ptolemy.domains.ct.lib.ContinuousClock
@@ -97,7 +97,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (yuhong)
  */
-public class BaseClock extends TimedSource {
+public class DiscreteClock extends TimedSource {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -106,7 +106,7 @@ public class BaseClock extends TimedSource {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public BaseClock(CompositeEntity container, String name)
+    public DiscreteClock(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
@@ -227,7 +227,7 @@ public class BaseClock extends TimedSource {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        BaseClock newObject = (BaseClock) super.clone(workspace);
+        DiscreteClock newObject = (DiscreteClock) super.clone(workspace);
 
         try {
             newObject.output.setTypeAtLeast(ArrayType

@@ -69,7 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class ContinuousClock extends BaseClock {
+public class ContinuousClock extends DiscreteClock {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.

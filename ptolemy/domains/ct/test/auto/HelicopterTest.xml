@@ -60,7 +60,7 @@ Five controllers are applied sequentially to the modes.</text>
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{380.0, 303.5}">
     </property>
-    <entity name="StartClimb" class="ptolemy.actor.lib.Clock">
+    <entity name="StartClimb" class="ptolemy.domains.ct.lib.DiscreteClock">
         <property name="period" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 20.0}">

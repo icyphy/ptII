@@ -60,7 +60,7 @@ Five controllers are applied sequentially to the modes.</text>
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{380.0, 303.5}">
     </property>
-    <entity name="StartClimb" class="ptolemy.domains.ct.lib.BaseClock">
+    <entity name="StartClimb" class="ptolemy.domains.ct.lib.DiscreteClock">
         <property name="period" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 20.0}">
@@ -100,8 +100,8 @@ Five controllers are applied sequentially to the modes.</text>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Helicopter Position</title>
-<xRange min="-4.740863865534809E-5" max="212.1051725918347"/>
-<yRange min="1.5" max="10.951730556108698"/>
+<xRange min="-4.740863865534809E-5" max="212.105172594237"/>
+<yRange min="1.5" max="10.951730556127488"/>
 </plot>?>
         </configure>
     </entity>
@@ -122,7 +122,7 @@ Five controllers are applied sequentially to the modes.</text>
 <plot>
 <title>Horizontal Speed</title>
 <xRange min="0.0" max="70.0"/>
-<yRange min="-2.8601722883645636E-4" max="5.138655128806194"/>
+<yRange min="-2.8601722883645636E-4" max="5.138655128792377"/>
 </plot>?>
         </configure>
     </entity>
@@ -143,7 +143,7 @@ Five controllers are applied sequentially to the modes.</text>
 <plot>
 <title>Vertical Position</title>
 <xRange min="0.0" max="70.0"/>
-<yRange min="1.5" max="10.951730556108698"/>
+<yRange min="1.5" max="10.951730556127488"/>
 </plot>?>
         </configure>
     </entity>
@@ -198,8 +198,6 @@ Five controllers are applied sequentially to the modes.</text>
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
@@ -1833,7 +1831,7 @@ Five controllers are applied sequentially to the modes.</text>
 <plot>
 <title>Pitch Angle</title>
 <xRange min="0.0" max="70.0"/>
-<yRange min="-0.03116878046104328" max="0.04146994143073169"/>
+<yRange min="-0.031168780468547753" max="0.04146994143075682"/>
 </plot>?>
             </configure>
         </entity>

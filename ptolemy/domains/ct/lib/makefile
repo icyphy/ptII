@@ -53,6 +53,7 @@ JSRCS = \
 	CTPeriodicSampler.java \
 	CTRateLimiter.java \
 	CTTriggeredSampler.java \
+	DiscreteClock.java \
 	EventSource.java \
 	FirstOrderHold.java \
 	Integrator.java \

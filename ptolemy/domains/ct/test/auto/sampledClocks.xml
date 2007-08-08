@@ -93,7 +93,7 @@ Period: 0.5</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 390.0]">
         </property>
     </entity>
-    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+    <entity name="Clock" class="ptolemy.domains.ct.lib.DiscreteClock">
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.2}">
@@ -155,7 +155,7 @@ Period: 0.5</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Clock2" class="ptolemy.actor.lib.Clock">
+    <entity name="Clock2" class="ptolemy.domains.ct.lib.DiscreteClock">
         <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 0.2}">
@@ -177,7 +177,7 @@ Period: 0.5</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 195.0]">
         </property>
     </entity>
-    <entity name="triggers" class="ptolemy.actor.lib.Clock">
+    <entity name="triggers" class="ptolemy.domains.ct.lib.DiscreteClock">
         <property name="period" class="ptolemy.data.expr.Parameter" value="samplePeriod">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
