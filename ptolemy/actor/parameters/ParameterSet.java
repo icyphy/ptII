@@ -162,7 +162,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  methods of this object.
      *  @param initializable The object whose methods should be invoked.
      *  @see #removeInitializable(Initializable)
-     *  @see ptolemy.actor.CompositeActor.addPiggyback(Executable)
+     *  @see ptolemy.actor.CompositeActor#addPiggyback(Executable)
      */
     public void addInitializable(Initializable initializable) {
         if (_initializables == null) {
