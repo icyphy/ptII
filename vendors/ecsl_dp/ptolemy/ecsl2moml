@@ -563,7 +563,10 @@ $0 ~ /<entity/ {
                name = "input"
    
            }
+       }
 
+       #if (class != "ptolemy.actor.TypedCompositeActor") {
+       if (name == "") {
            if (name ~ /^Out[0-9]*$/) {
                oldName = name
                name = "output"
@@ -623,8 +626,10 @@ $0 ~ /<entity/ {
        # has a dstLine field
        if ($1 ~ /<OutputPort/ || $1 ~ /<COutPort/ ) {
            relation = dstLine
+           relation2PortMap[srcLine] = name
        } else { # bof
            relation = srcLine
+          relation2PortMap[dstLine] = name
        }
 
 
@@ -647,6 +652,7 @@ $0 ~ /<entity/ {
        #print "<!--", position , x, y, p[1], p[2], location, "relation =", relation, $0, "-->"
        relationLocationMap[relation] = location
        relationPortMap[relation] = name
+       #print "<!-- ", relation, name, relationPortMap[name], relation2PortMap[name], srcLine, dstLine, $0  " 6 -->"
 
        indent = substr($0, 0, index($0,"<") - 1)  
 
@@ -719,6 +725,23 @@ $0 ~ /<entity/ {
 
        print indent "</port>"
 
+       # Handle Composite ports connected to relations
+       if (class == "ptolemy.actor.TypedCompositeActor") {
+           if (srcLine != "" && dstLine != "") {
+              print indent "<!-- " $1, name, srcLine, dstLine, toBeLinked[srcLine], toBeLinked[dstLine] " 7 -->"
+
+              if ($1 ~ /<OutputPort/ || $1 ~ /<COutPort/ ) {
+                  #toBeLinked[dstLine] = name;
+                  #print indent "<!-- 10 --><link port=\"" name "\" relation=\"" dstLine "\"/>"
+              } else if ($1 ~ /<InputPort/ || $1 ~ /<CInPort/ ) {
+                  #toBeLinked[srcLine] = name;
+                  #print indent "<!-- 11 --><link port=\"" name "\" relation=\"" srcLine "\"/>"
+
+              }
+           }
+       }
+
+
        if (length(links[longName]) == 0) { 
            links[longName] = relation
        } else {
@@ -778,9 +801,19 @@ $0 ~ /<entity/ {
             }
             # Get the port, if any
             if (relationPortMap[name] != "") { 
-                print indent "<!-- " NR, $0, " 1 --><link port=\"" relationPortMap[name] "\" relation=\"" name "\"/>"
+                print indent "<!-- " NR, $0, " 1 --><!-- link port=\"" relationPortMap[name] "\" relation=\"" name "\"/ -->"
             }
-c        } else {
+            #if (class == "ptolemy.actor.TypedCompositeActor") {
+                if (relation2PortMap[name] != "") { 
+                    print indent "<!-- " NR, name, relationPortMap[name], relation2PortMap[name] " 5 --><link port=\"" relation2PortMap[name] "\" relation=\"" name "\"/>"
+                }
+            #}
+            #print "<!-- 9 -" name "-" toBeLinked[name] "- -->"
+            #if (toBeLinked[name] != "") {
+            #    print indent "<!-- 8 --><link port=\"" toBeLinked[name] "\" relation=\"" name "\"/>"
+            #    toBeLinked[name] = ""
+            #}
+        } else {
             print $0   
         }
     }
@@ -806,7 +839,7 @@ $1 ~ /<\/entity>/ {
     # Sometimes, containers are nested, getting the links right is tricky.
     for ( link in links) {
        if ( length(links[link]) > 0 \
-          &&  substr(link, 0, length(container)) == container ) {
+          &&  substr(link, 0, length(container) + 1) == container "." ) {
           # We have not yet printed this link, and it is for
           # the container we just exited.
 
