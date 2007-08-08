@@ -65,6 +65,7 @@ JSRCS = \
 	ECSLDisplay.java \
 	ECSLFcn.java \
 	ECSLFrom.java \
+	ECSLFromWorkspace.java \
 	ECSLGain.java \
 	ECSLGoto.java \
 	ECSLGround.java \
