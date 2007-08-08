@@ -877,7 +877,7 @@ public class Director extends Attribute implements Executable {
      *  on the list, do nothing.
      *  @param initializable The object whose methods should no longer be invoked.
      *  @see #addInitializable(Initializable)
-     *  @see #removePiggyback(Executable)
+     *  @see ptolemy.actor.CompositeActor#removePiggyback(Executable)
      */
     public void removeInitializable(Initializable initializable) {
         if (_initializables != null) {
