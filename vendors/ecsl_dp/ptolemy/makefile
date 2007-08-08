@@ -95,6 +95,7 @@ JSRCS = \
 	ECSLSwitch.java \
 	ECSLTerminator.java \
 	ECSLToWorkspace.java \
+	ECSLTransferFcn.java \
 	ECSLTransportDelay.java \
 	ECSLTrigonometry.java \
 	ECSLUniformRandomNumber.java \
