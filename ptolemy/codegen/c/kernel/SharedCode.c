@@ -75,10 +75,10 @@ char* BooleantoString (boolean b) {
     if (b) {
         // AVR does not have strdup
         results = malloc(sizeof(char) * 5);
-        strcpy("true", results);
+        strcpy(results, "true");
     } else {
         results = malloc(sizeof(char) * 6);
-        strcpy("false", results);
+        strcpy(results, "false");
     }
     return results;
 }
