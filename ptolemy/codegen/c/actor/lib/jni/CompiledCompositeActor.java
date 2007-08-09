@@ -35,6 +35,7 @@ import ptolemy.codegen.kernel.StaticSchedulingCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.StringBufferExec;
 
 //////////////////////////////////////////////////////////////////////////
 //// CompiledCompositeActor
@@ -106,11 +107,24 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             throw new IllegalActionException(actor, e, "Name duplication.");
         }
 
+        final StringBufferExec exec = new StringBufferExec();
+        int returnValue = 0;
         try {
-            codeGenerator.generateCode();
-        } catch (KernelException e) {
+            codeGenerator.setExecuteCommands(exec);
+            returnValue = codeGenerator.generateCode();
+        } catch (Exception e) {
             throw new IllegalActionException(actor, e,
                     "Failed to generate code.");
+        }
+
+        if (returnValue != 0) {
+            // Throw outside the above try so that we don't get as many nested
+            // exceptions;
+            String message = "Last process returned non-zero: " + returnValue
+                + "Failed to generate code:\n"
+                + exec.buffer.toString();
+            System.err.println(message);
+            throw new IllegalActionException(message);
         }
     }
 
