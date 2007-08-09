@@ -55,13 +55,14 @@ import java.util.List;
 
 
  <p>Loosely based on Example1.java from
- http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
+ <a href="http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html">http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html</a>
  <p>See also
- http://developer.java.sun.com/developer/qow/archive/135/index.jsp
+ <a href="http://developer.java.sun.com/developer/qow/archive/135/index.jsp">http://developer.java.sun.com/developer/qow/archive/135/index.jsp</a>
  and
- http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html
+ <a href="http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html">http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
 
  @see ptolemy.gui.JTextAreaExec
+ @see ptolemy.util.StringBufferExec
 
  @author Christopher Hylands
  @version $Id$
