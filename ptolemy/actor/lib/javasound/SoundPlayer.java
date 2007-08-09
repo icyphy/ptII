@@ -43,20 +43,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// SoundPlayer
 
 /**
- FIXME: Update.
- This actor plays audio samples provided on the input port
- starting at a time corresponding to the time stamp of the input.
+ This actor plays audio samples provided on the input port.
  The audio samples that are supplied to
- this actor should be doubles in the range [-1.0, 1.0], provided
+ this actor should be doubles in the range -1.0 to 1.0, provided
  as a DoubleMatrix, where the first index of the matrix represents
- the channel and the second index is the sample number. Any input
+ the channel and the second index is the sample number. That is,
+ each row is a sequence of samples for the channel corresponding
+ to the row number. Any input
  value that is outside of the valid range will be hard-clipped
  to fall within the range [-1.0, 1.0] before it is written
  to the audio output port of the computer.
- <p>
- If this actor is invoked multiple times with overlapping
- audio segments, then it will add the audio signals before sending
- to the hardware.
  <p>
  The parameters are as follows:
  <ul>
@@ -69,6 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  channels. Allowable values are 1 (for mono) and 2 (for stereo).
  The default value is 1. Some sound cards support more than two
  audio channels, but this is not supported in Java.
+ FIXME: If this differs from the input dimensions?
  <li><i>transferSize</i> The number of samples that will
  be transferred to the audio driver
  together.  This is an integer with default 128. 
@@ -215,7 +212,7 @@ public class SoundPlayer extends SoundActor {
     ////                         protected variables               ////
     
     /** Byte buffer used for playback data. */
-    private static byte[] _playbackData;
+    private byte[] _playbackData;
 
     /** The data line being used for playback. */
     protected SourceDataLine _sourceDataLine;
