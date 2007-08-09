@@ -151,9 +151,9 @@ public class EmbeddedCActor extends CompiledCompositeActor {
                 newPort.link(relation);
             }    
         } catch (NameDuplicationException ex) {
-            throw new IllegalActionException(this, "name duplication.");
+            throw new IllegalActionException(this, ex, "Name duplication.");
         } catch (CloneNotSupportedException ex) {
-            throw new IllegalActionException(this, "clone not supported.");
+            throw new IllegalActionException(this, ex, "Clone not supported.");
         } 
         super.preinitialize();
     }
