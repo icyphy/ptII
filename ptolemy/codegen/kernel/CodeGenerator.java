@@ -517,6 +517,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
             MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
 
+            // Reset the list each time we parse a parameter set.
+            // Otherwise two calls to this method will share params!
+            _parameterNames = new LinkedList();
+            _parameterValues = new LinkedList();
             for (int i = 0; i < args.length; i++) {
                 if (parseArg(args[i])) {
                     continue;
@@ -573,7 +577,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     }
 
                     codeGenerator._updateParameters(toplevel);
-                    
                     codeGenerator.generateJNI.setExpression("false");
 
                     try {
@@ -1051,6 +1054,30 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return the value of the codeDirectory parameter.
+     *  The 
+     *  @exception IOException If the <i>codeDirectory</i> parameter
+     *  names a file or a directory cannot be created.
+     */
+    File _codeDirectoryAsFile() throws IOException, IllegalActionException  {
+        // This method is here to avoid code duplication.
+        // It is package protected so we can read it in CodeGeneratorHelper
+        File codeDirectoryFile = codeDirectory.asFile();
+        if (codeDirectoryFile.isFile()) {
+            throw new IOException("Error: " + codeDirectory.stringValue()
+                    + " is a file, " + "it should be a directory.");
+        }
+        if (!codeDirectoryFile.isDirectory() && !codeDirectoryFile.mkdirs()) {
+            throw new IOException("Failed to make the \""
+                    + codeDirectory.stringValue() + "\" directory.");
+        }
+
+        // FIXME: Note that we need to make the directory before calling
+        // getBaseDirectory()
+        codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+        return codeDirectoryFile;
+    }
+
     /** Execute the compile and run commands in the
      *  <i>codeDirectory</i> directory. In this base class, 0 is
      *  returned by default.
@@ -1248,19 +1275,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Write the code to a file with the same name as the model into
         // the directory named by the codeDirectory parameter.
         try {
-            File codeDirectoryFile = codeDirectory.asFile();
-            if (codeDirectoryFile.isFile()) {
-                throw new IOException("Error: " + codeDirectory.stringValue()
-                        + " is a file, " + "it should be a directory.");
-            }
-            if (!codeDirectoryFile.isDirectory() && !codeDirectoryFile.mkdirs()) {
-                throw new IOException("Failed to make the \""
-                        + codeDirectory.stringValue() + "\" directory.");
-            }
-
-            // FIXME: Note that we need to make the directory before calling
-            // getBaseDirectory()
-            codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+            File codeDirectoryFile = _codeDirectoryAsFile();
 
             _executeCommands.stdout("Writing " + codeFileName + " in " +
                     codeDirectory.getBaseDirectory() + " (" +
@@ -1491,9 +1506,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     private int _indent;
 
     // List of parameter names seen on the command line.
-    private static List _parameterNames = new LinkedList();
+    private static List _parameterNames;
 
     // List of parameter values seen on the command line.
-    private static List _parameterValues = new LinkedList();
+    private static List _parameterValues;
     
 }
