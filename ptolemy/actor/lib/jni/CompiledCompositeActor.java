@@ -451,8 +451,13 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     "Cannot find helper class " + helperClassName);
         }
         
+        // We use reflection to avoid a compile time dependency
+        // on the codegen package.
         Method generateMethod = null;
         try {
+            // Find the
+            // ptolemy.codegen.c.actor.lib.jni.CompiledCompositeActor.generateCode()
+            // method.
             generateMethod = helperClass.getMethod("generateCode", 
                     new Class[] {ptolemy.actor.TypedCompositeActor.class});
         } catch (NoSuchMethodException ex) {
