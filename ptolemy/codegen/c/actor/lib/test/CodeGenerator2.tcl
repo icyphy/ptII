@@ -57,3 +57,19 @@ test CodeGenerator-3.1 {Call main and generate code in the current directory } {
     java::call ptolemy.codegen.kernel.CodeGenerator main $args
     list [file exists Ramp.c] [file exists Ramp.mk]
 } {1 1}
+
+#####
+test CodeGenerator-4.1 {Call main and copy a file to the codeDirectory} {
+    set codeDirectory [java::call ptolemy.util.StringUtilities getProperty user.home]
+    set necessaryFile1 [file join $codeDirectory codegen necessaryFile1]
+    set necessaryFile2 [file join $codeDirectory codegen necessaryFile2]
+    file delete -force $necessaryFile1
+    file delete -force $necessaryFile2
+
+    set args [java::new {String[]} 1 [list {auto/RampNecessaryFiles.xml}]]
+    java::call ptolemy.codegen.kernel.CodeGenerator main $args
+
+    list \
+	[file exists $necessaryFile1] \
+	[file exists $necessaryFile2]
+} {1 1}
