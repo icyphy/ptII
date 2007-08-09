@@ -27,8 +27,10 @@
  */
 package ptolemy.codegen.kernel;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,12 +97,6 @@ import ptolemy.util.StringUtilities;
  *     return processCode(CodeStream.indent(code.toString()));
  * </pre>
  *
- * <p>If the actor has a <i>necessaryFiles</i> parameter, then that
- * parameter is assumed to contain an ArrayToken where each element
- * is a string that names a file to be copied to the directory
- * named by the <i>codeDirectory</i> parameter.
- *
- * 
  * @author Ye Zhou, Gang Zhou, Edward A. Lee, Contributors: Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 6.0
@@ -2275,68 +2271,90 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     protected final static String _INDENT2 = StringUtilities.getIndentPrefix(2);
 
-    /** Copy files necessary files to the code directory.  The
-     *  optional <i>necessaryFiles</i> parameter of the actor is an
-     *  array of Strings where each element names a file that should
-     *  be copied to the directory named by the <i>codeDirectory</i>
-     *  parameter of the code generator. The file is only copied
-     *  if a file by that name does not exist in <i>codeDirectory</i>
-     *  or if the source file was more recently modified than
-     *  the destination file.
+    /** Copy files to the code directory.  The optional
+     *  <code>fileDependencies</code> codeBlock consists of one or
+     *  more lines where each line names a file that should be copied
+     *  to the directory named by the <i>codeDirectory</i> parameter
+     *  of the code generator. The file is only copied if a file by
+     *  that name does not exist in <i>codeDirectory</i> or if the
+     *  source file was more recently modified than the destination
+     *  file.
+     *  <p>Using the <code>fileDependencies</code> code block allows
+     *  actor writers to refer to code defined in other files.
+     *  
      *  @exception IOException If there is a problem reading the 
      *  <i>codeDirectory</i> parameter.
      *  @exception IllegalActionException If there is a problem reading the 
      *  <i>codeDirectory</i> parameter.
      */
     private void _copyFilesToCodeDirectory() throws IOException, IllegalActionException {
-        Parameter necessaryFilesParameter = (Parameter)_component.getAttribute("necessaryFiles");
-        if (necessaryFilesParameter != null) {
+        _codeStream.clear();
+        String fileDependencies = _generateBlockByName("fileDependencies");
+        _codeStream.clear();
+        if (fileDependencies.length() > 0) {
             File codeDirectoryFile = _codeGenerator._codeDirectoryAsFile();
-            ArrayToken necessaryFilesToken = (ArrayToken) necessaryFilesParameter.getToken();
-            // Iterate through the necessary file names and copy if necessary
-            for (int i = 0; i < necessaryFilesToken.length(); i++) {
-                String necessaryFileName = ((StringToken) necessaryFilesToken
-                        .getElement(i)).stringValue();
+            BufferedReader bufferedReader = null;
+            try {
+                bufferedReader = new BufferedReader(new StringReader(fileDependencies));
+                String necessaryFileName = null;
+                while ((necessaryFileName = bufferedReader.readLine()) != null) {
+                    necessaryFileName = necessaryFileName.trim();
+                    if (necessaryFileName.length() == 0
+                            || necessaryFileName.startsWith("/*")
+                            || necessaryFileName.startsWith("//")) {
+                        continue;
+                    }
 
-                // Look up the file as a resource.  We do this so we can possibly
-                // get it from a jar file in the release.
-                URL necessaryURL = null;
-                try {
-                    necessaryURL = FileUtilities.nameToURL(necessaryFileName, null, null);
-                } catch (IOException ex) {
-                    // If the filename has no slashes, try prepending file:./
-                    if (necessaryFileName.indexOf("/") == -1
-                            || necessaryFileName.indexOf("\\") == -1) {
-                        try {
-                            necessaryURL = FileUtilities.nameToURL("file:./" + necessaryFileName, null, null);                            
-                        } catch (IOException ex2) {
+                    // Look up the file as a resource.  We do this so we can possibly
+                    // get it from a jar file in the release.
+                    URL necessaryURL = null;
+                    try {
+                        necessaryURL = FileUtilities.nameToURL(necessaryFileName, null, null);
+                    } catch (IOException ex) {
+                        // If the filename has no slashes, try prepending file:./
+                        if (necessaryFileName.indexOf("/") == -1
+                                || necessaryFileName.indexOf("\\") == -1) {
+                            try {
+                                necessaryURL = FileUtilities.nameToURL("file:./" + necessaryFileName, null, null);                            
+                            } catch (IOException ex2) {
+                                // Throw the original exception
+                                throw ex;
+                            }
+                        } else {
                             // Throw the original exception
                             throw ex;
-                        }
-                    } else {
-                        // Throw the original exception
-                        throw ex;
-                    }  
-                }
-                // Get the base filename (text after last /)
-                String necessaryFileShortName = necessaryURL.getPath();
-                if (necessaryURL.getPath().lastIndexOf("/") > -1) {
-                    necessaryFileShortName = necessaryFileShortName.substring(necessaryFileShortName.lastIndexOf("/"));
-                }
+                        }  
+                    }
+                    // Get the base filename (text after last /)
+                    String necessaryFileShortName = necessaryURL.getPath();
+                    if (necessaryURL.getPath().lastIndexOf("/") > -1) {
+                        necessaryFileShortName = necessaryFileShortName.substring(necessaryFileShortName.lastIndexOf("/"));
+                    }
 
-                File necessaryFileDestination = new File(codeDirectoryFile,
-                        necessaryFileShortName);
-                File necessaryFileSource = new File(necessaryFileName);
-                if (!necessaryFileDestination.exists() 
-                        || (necessaryFileSource.exists() &&
-                                necessaryFileSource.lastModified()
-                                > necessaryFileDestination.lastModified())) {
-                    // If the dest file does not exist or is older than the 
-                    // source file, we do the copy
-                    System.out.println("Copying " + necessaryFileSource
-                            + " to " + necessaryFileDestination);
-                            
-                    FileUtilities.binaryCopyURLToFile(necessaryURL, necessaryFileDestination);
+                    File necessaryFileDestination = new File(codeDirectoryFile,
+                            necessaryFileShortName);
+                    File necessaryFileSource = new File(necessaryFileName);
+                    if (!necessaryFileDestination.exists() 
+                            || (necessaryFileSource.exists() &&
+                                    necessaryFileSource.lastModified()
+                                    > necessaryFileDestination.lastModified())) {
+                        // If the dest file does not exist or is older than the 
+                        // source file, we do the copy
+                        System.out.println("Copying " + necessaryFileSource
+                                + " to " + necessaryFileDestination);
+                        
+                        FileUtilities.binaryCopyURLToFile(necessaryURL, necessaryFileDestination);
+                    }
+                
+                }
+            } finally {
+                if (bufferedReader != null) {
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException ex) {
+                        // Ignore
+                        ex.printStackTrace();
+                    }
                 }
             }
         }
@@ -2416,7 +2434,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /** Generate code for a given block.  The comment includes
      *  the portion of the blockName parameter up until the string
      *  "Block".  
-     *  @param blockName The name of the block 
+     *  @param blockName The name of the block, which usually ends
+     *  with the string "Block".
      *  @return The generated wrapup code.
      *  @exception IllegalActionException If thrown while appending to the
      *  the block or processing the macros.
@@ -2427,11 +2446,18 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         _codeStream.appendCodeBlock(blockName, true);
         // There is no need to generate comment for empty code block.
         if (!_codeStream.isEmpty()) {
+            // Don't die if the blockName ends not in "Block".
+            String shortBlockName = null;
+            int index = blockName.lastIndexOf("Block");
+            if (index != -1) {
+                shortBlockName = blockName.substring(0, index);
+            } else {
+                shortBlockName = blockName;
+            }
             _codeStream.insert(0, _eol
                     + CodeStream.indent(
                             _codeGenerator.comment(
-                                    blockName.substring(0,
-                                            blockName.lastIndexOf("Block"))
+                                    shortBlockName
                                     + getComponent().getName())));
         }
         return processCode(_codeStream.toString());
@@ -2496,7 +2522,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     private static final String[] _defaultBlocks = { "preinitBlock",
             "initBlock", "fireBlock", "postfireBlock",
-            "wrapupBlock" };
+            "wrapupBlock"};
 
     private boolean printedNullPortWarnings = false;
 }
