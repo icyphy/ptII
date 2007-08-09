@@ -312,11 +312,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Generate code and write it to the file specified by the
      *  <i>codeDirectory</i> parameter.
+     *  @return The return value of the last subprocess that was executed.
+     *  or -1 if no commands were executed.
      *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
-    public void generateCode() throws KernelException {
-        generateCode(new StringBuffer());
+    public int generateCode() throws KernelException {
+        return generateCode(new StringBuffer());
     }
 
     /** Generate code and append it to the given string buffer.
