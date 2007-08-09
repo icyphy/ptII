@@ -23,7 +23,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Ramp actors have a necessaryFiles&#10;parameter that lists a file that should&#10;be copied to the codeDirectory when&#10;code is generated.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The RampNecessaryFiles actors have a necessaryFiles&#10;parameter that lists a file that should&#10;be copied to the codeDirectory when&#10;code is generated.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{130, 295}">
         </property>
@@ -40,20 +40,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 195.0]">
         </property>
     </entity>
-    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+    <entity name="RampNecessaryFiles" class="ptolemy.actor.lib.test.RampNecessaryFiles">
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="2">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 140}">
         </property>
-        <property name="necessaryFiles" class="ptolemy.data.expr.Parameter" value="{&quot;file:./necessaryFile1&quot;}">
-        </property>
     </entity>
-    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+    <entity name="RampNecessaryFiles2" class="ptolemy.actor.lib.test.RampNecessaryFiles">
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 235.0]">
-        </property>
-        <property name="necessaryFiles" class="ptolemy.data.expr.Parameter" value="{&quot;necessaryFile1&quot;, &quot;necessaryFile2&quot;}">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -77,7 +73,7 @@
     <link port="AddSubtract.plus" relation="relation2"/>
     <link port="AddSubtract.minus" relation="relation3"/>
     <link port="AddSubtract.output" relation="relation"/>
-    <link port="Ramp.output" relation="relation2"/>
-    <link port="Ramp2.output" relation="relation3"/>
+    <link port="RampNecessaryFiles.output" relation="relation2"/>
+    <link port="RampNecessaryFiles2.output" relation="relation3"/>
     <link port="Test.input" relation="relation4"/>
 </entity>
