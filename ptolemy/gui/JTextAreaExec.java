@@ -59,19 +59,28 @@ import ptolemy.util.ExecuteCommands;
 import ptolemy.util.StringUtilities;
 
 /** Execute commands in a subprocess and display them in a JTextArea.
- For a non-graphical version, see {@link ptolemy.util.StreamExec}.
+ 
+ <p>As an alternative to this class, see 
+ {@link ptolemy.util.StringBufferExec}, which writes to a StringBuffer,
+ and 
+ {@link ptolemy.util.StreamExec}, which writes to stderr and stdout.
+
  <p>Loosely based on Example1.java from
- http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
+ <a href="http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html">http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html</a>
  <p>See also
- http://developer.java.sun.com/developer/qow/archive/135/index.jsp
+ <a href="http://developer.java.sun.com/developer/qow/archive/135/index.jsp">http://developer.java.sun.com/developer/qow/archive/135/index.jsp</a>
  and
- http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html
+ <a href="http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html">http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
+
+ @see ptolemy.util.StringBufferExec
+ @see ptolemy.util.StreamExec
 
  @author Christopher Hylands
  @version $Id$
  @since Ptolemy II 2.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
+
  */
 public class JTextAreaExec extends JPanel implements ExecuteCommands {
     /** Create the JTextArea, progress bar, status text field and
