@@ -56,6 +56,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
@@ -151,6 +152,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     public StringParameter generatorPackage;
 
+    /** Files to be copied to the code generation directory.
+     *  This parameter is an ArrayToken where each element
+     * is a string that names a file to be copied to the directory
+     * named by the <i>codeDirectory</i> parameter.
+     * The initial default is the an array of length 0, meaning
+     * that no files should be copied.
+     */
+    public Parameter necessaryFiles;
+   
     /** If true, generate file with no functions.  If false, generate
      *  file with functions. The default value is a parameter with the 
      *  value true.
@@ -561,11 +571,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             return true;
         } 
         Effigy effigy = Configuration.findEffigy(this.toplevel());
-        if (effigy == null) {
-            System.out.println(message + "Could not find the effigy");
-            return true;
-        }             
-        if (effigy.isModified()) {
+        if (effigy != null
+                && effigy.isModified()) {
             System.out.println(message
                     + "The effigy " + effigy + "(model : "
                     + ((PtolemyEffigy) effigy).getModel()
@@ -674,6 +681,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             new Parameter(codeDirectory, "allowFiles", BooleanToken.FALSE);
             new Parameter(codeDirectory, "allowDirectories", BooleanToken.TRUE);
             
+            necessaryFiles = new Parameter(this, "necessaryFiles");
+            necessaryFiles.setTypeEquals(new ArrayType(BaseType.STRING));
+            necessaryFiles.setExpression("{}");
+
             invokeJNI = new Parameter(this, "invokeJNI");
             invokeJNI.setTypeEquals(BaseType.BOOLEAN);
             invokeJNI.setExpression("false");
