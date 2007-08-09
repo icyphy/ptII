@@ -902,9 +902,8 @@ public class RealTimeComposite extends MirrorComposite {
                             }
                         }
                         boolean postfireReturnsTrue = fireContainedActors();
-                        // FIXME: If outputs are produced by the firing, then
-                        // we need to trigger a transferOutputs!  Should we just
-                        // call it here, or do fireAt()?  Try just doing it here.
+                        // If outputs are produced by the firing, then
+                        // we need to trigger a transferOutputs() call.
                         // Note that this does not have to be done if the delay
                         // is 0.0, since it will be done by the superclass.
                         if (_delayValue != 0.0) {
