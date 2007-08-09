@@ -74,6 +74,8 @@ MISC_FILES =	alljtests.tcl \
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	Exit.xml
+	necessaryFile1 \
+	necessaryFile2
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
