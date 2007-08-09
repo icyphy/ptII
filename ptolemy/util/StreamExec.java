@@ -34,8 +34,10 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 
-/** Execute commands in a subprocess.  This class does not use swing,
- for a graphical interface, see {@link ptolemy.gui.JTextAreaExec}.
+/** Execute commands in a subprocess and send the results to stderr and stdout.
+ <p>As an alternative to this class, see 
+ {@link ptolemy.gui.JTextAreaExec}, which uses Swing; and
+ {@link ptolemy.util.StringBufferExec}, which writes to a StringBuffer.
 
  <p>Sample usage:
  <pre> 

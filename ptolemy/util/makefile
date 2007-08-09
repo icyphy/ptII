@@ -54,6 +54,7 @@ JSRCS = \
 	FileUtilities.java \
 	MessageHandler.java \
 	StreamExec.java \
+	StringBufferExec.java \
 	StringUtilities.java \
 	XSLTUtilities.java
 
