@@ -88,7 +88,7 @@ public class StringBufferExec extends StreamExec {
      *  @param text The text to append to standard error.
      */
     public void stderr(final String text) {
-        buffer.append(text);
+        stdout(text);
     }
 
     /** Append the text message to the StringBuffer
@@ -97,11 +97,26 @@ public class StringBufferExec extends StreamExec {
      */
     public void stdout(final String text) {
         buffer.append(text);
+        if (!text.endsWith(_eol)) {
+            buffer.append(_eol);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
     public StringBuffer buffer;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                  ////
+
+    /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
+     *  We use a end of line charactor so that the files we generate
+     *  have the proper end of line character for use by other native tools.
+     */
+    private static String _eol;
+    static {
+        _eol = StringUtilities.getProperty("line.separator");
+    }
 
 }
