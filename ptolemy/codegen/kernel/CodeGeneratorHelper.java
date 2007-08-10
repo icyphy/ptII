@@ -288,15 +288,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         _codeStream.appendCodeBlock(_defaultBlocks[2], true); // fireBlock
 
-        // FIXME: _copyFilesToCodeDirectory breaks many tests, 
-        // so I'm commenting it out.
-
-//         try {
-//              _copyFilesToCodeDirectory();
-//         } catch (IOException ex) {
-//             throw new IllegalActionException(this, ex,
-//                     "Problem copying files from the necessaryFiles parameter.");
-//         }
+        try {
+             _copyFilesToCodeDirectory();
+       } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Problem copying files from the necessaryFiles parameter.");
+         }
         return processCode(_codeStream.toString());
     }
 
@@ -2292,15 +2289,18 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  <i>codeDirectory</i> parameter.
      */
     private void _copyFilesToCodeDirectory() throws IOException, IllegalActionException {
-        _codeStream.clear();
-        String fileDependencies = _generateBlockByName("fileDependencies");
-        _codeStream.clear();
+        // Read in the optional fileDependencies code block.
+        CodeStream codeStream = new CodeStream(this);
+        codeStream.appendCodeBlock("fileDependencies", true);
+        String fileDependencies = codeStream.toString();
+
         if (fileDependencies.length() > 0) {
             File codeDirectoryFile = _codeGenerator._codeDirectoryAsFile();
             BufferedReader bufferedReader = null;
             try {
                 bufferedReader = new BufferedReader(new StringReader(fileDependencies));
                 String necessaryFileName = null;
+                // Read line by line, skipping comments. 
                 while ((necessaryFileName = bufferedReader.readLine()) != null) {
                     necessaryFileName = necessaryFileName.trim();
                     if (necessaryFileName.length() == 0
