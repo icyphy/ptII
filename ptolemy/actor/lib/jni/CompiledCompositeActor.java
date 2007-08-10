@@ -442,22 +442,12 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     }
     
     /** Generate and compile C code.
-     *  @exception IllegalActionException If the helper class cannot be
-     *  found, or if the generateCode() method in the helper class
-     *  cannot be found or invoked.
+     *  @exception IllegalActionException If the helper class cannot
+     *  be found, or if the static generateCode(TypedCompositeActor)
+     *  method in the helper class cannot be found or invoked.
      */
     protected void _generateAndCompileCCode() throws IllegalActionException {
-        Method generateCodeMethod = _findHelperMethod("generateCode",
-                new Class[] {ptolemy.actor.TypedCompositeActor.class});
-        
-        try {
-            generateCodeMethod.invoke(null, new Object[]{this});
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable,
-                    "Failed to invoke the static " + 
-                    "generateCodeMethod(TypedCompositeActor) " +
-                    "in the helper class");
-        }
+        _invokeHelperMethod("generateCode");
     }
 
     /** Generate and compile the Java code.
@@ -584,21 +574,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     + "that is earlier than the modelFile modification time.");
             return true;
         }
-        Method copyFilesToCodeDirectoryMethod = _findHelperMethod("copyFilesToCodeDirectory",
-                new Class[] {ptolemy.actor.TypedCompositeActor.class});
 
-        try {
-            Boolean filesWereCopied = (Boolean) copyFilesToCodeDirectoryMethod.invoke(null, new Object[]{this});
-            if (filesWereCopied.booleanValue()) {
+        // Look for the fileDependencies code block and copy files if
+        // necessary.  If we copy files, then we should rebuild.
+        if (((Boolean) _invokeHelperMethod("copyFilesToCodeDirectory")).booleanValue()) {
             System.out.println(message
                     + "Files were copied from the fileDependencies code block.");
-                return true;
-            }
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable,
-                    "Failed to invoke the copyFilesToCodeDirectory()" +
-                    "method in the helper class.");
+            return true;
         }
+
         return false;
     }
 
@@ -657,13 +641,13 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
     /** Invoke a method in the corresponding helper class.
      *  @param methodName The name of a method in the helper class.
-     *  @param methodClasses An array of method Class objects for the arguments
-     *  of the method.
+     *  The method must be static and take a TypedCompositeArgument as its
+     *  only argument.
      *  @return The return value from the method, see java.lang.Method.invoke().
      *  @exception IllegalActionException If the helper class can't be
      *  found or if the method cannot be invoked.
      */
-    private Method _findHelperMethod(String methodName, Class[] methodClasses) throws IllegalActionException {
+    private Object _invokeHelperMethod(String methodName) throws IllegalActionException {
         // We use reflection to avoid a compile time dependency
         // on the codegen package.
         String packageName = generatorPackage.stringValue();
@@ -683,11 +667,21 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             // Find the
             // ptolemy.codegen.c.actor.lib.jni.CompiledCompositeActor.generateCode()
             // method.
-            return generateMethod = helperClass.getMethod(methodName, 
-                    methodClasses);
+            generateMethod = helperClass.getMethod(methodName, 
+                    new Class[] {ptolemy.actor.TypedCompositeActor.class});
         } catch (NoSuchMethodException ex) {
             throw new IllegalActionException(this, ex,
                     "Cannot find the \"" + methodName + "\" method in \"" 
+                    + helperClassName + "\".");
+        }
+
+        try {
+            // Invoke the static method that takes a TypedCompositeActor
+            // as an argument.
+            return generateMethod.invoke(null, new Object[]{this});
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Failed to invoke the \"" + methodName + "\" method in \""
                     + helperClassName + "\".");
         }
     }
