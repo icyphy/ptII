@@ -60,6 +60,9 @@ public class EmbeddedCActor extends CompiledCompositeActor {
         super(component);
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
     /** A placeholder or dummy actor used in Embedded C code generation.
      */
     public static class DummyActor extends CCodeGeneratorHelper {

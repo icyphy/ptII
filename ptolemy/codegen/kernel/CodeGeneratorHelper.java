@@ -46,6 +46,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
@@ -244,6 +245,122 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return result;
     }
 
+    /** Copy files to the code directory.  The optional
+     *  <code>fileDependencies</code> codeBlock consists of one or
+     *  more lines where each line names a file that should be copied
+     *  to the directory named by the <i>codeDirectory</i> parameter
+     *  of the code generator. The file is only copied if a file by
+     *  that name does not exist in <i>codeDirectory</i> or if the
+     *  source file was more recently modified than the destination
+     *  file.
+     *  <p>Using the <code>fileDependencies</code> code block allows
+     *  actor writers to refer to code defined in other files.
+     *  
+     *  @param compositeActor If this argument is an instance of
+     *  ptolemy.actor.lib.jni.EmbeddedCActor, then the code blocks
+     *  from EmbeddedCActor's <i>embeddedCCode</i> parameter are used.
+     *  @param codeGenerator The code generator from which the
+     *  <i>codeDirectory</i> parameter is read.
+     *  @return True if any files were copied.
+     *  @exception IOException If there is a problem reading the 
+     *  <i>codeDirectory</i> parameter.
+     *  @exception IllegalActionException If there is a problem reading the 
+     *  <i>codeDirectory</i> parameter.
+     */
+    public static boolean copyFilesToCodeDirectory(TypedCompositeActor compositeActor,
+            CodeGenerator codeGenerator) throws IOException, IllegalActionException {
+
+        // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
+        // will not depend on ptolemy.codegen.
+
+        boolean filesWereCopied = false;
+
+        CodeGeneratorHelper helper = (CodeGeneratorHelper)codeGenerator._getHelper(codeGenerator.getContainer());
+        CodeStream codeStream = new CodeStream(helper);
+
+        if (compositeActor != null && compositeActor instanceof ptolemy.actor.lib.jni.EmbeddedCActor) {
+            // We have an EmbeddedCActor, read the codeBlocks from
+            // the embeddedCCode parameter.
+            codeStream.setCodeBlocks(
+                    ((ptolemy.actor.lib.jni.EmbeddedCActor)compositeActor)
+                    .embeddedCCode.getExpression());
+        }
+
+        // Read in the optional fileDependencies code block.
+        codeStream.appendCodeBlock("fileDependencies", true);
+        String fileDependencies = codeStream.toString();
+        if (fileDependencies.length() > 0) {
+            File codeDirectoryFile = codeGenerator._codeDirectoryAsFile();
+            BufferedReader bufferedReader = null;
+            try {
+                bufferedReader = new BufferedReader(new StringReader(fileDependencies));
+                String necessaryFileName = null;
+                // Read line by line, skipping comments. 
+                while ((necessaryFileName = bufferedReader.readLine()) != null) {
+                    necessaryFileName = necessaryFileName.trim();
+                    if (necessaryFileName.length() == 0
+                            || necessaryFileName.startsWith("/*")
+                            || necessaryFileName.startsWith("//")) {
+                        continue;
+                    }
+
+                    // Look up the file as a resource.  We do this so we can possibly
+                    // get it from a jar file in the release.
+                    URL necessaryURL = null;
+                    try {
+                        necessaryURL = FileUtilities.nameToURL(necessaryFileName, null, null);
+                    } catch (IOException ex) {
+                        // If the filename has no slashes, try prepending file:./
+                        if (necessaryFileName.indexOf("/") == -1
+                                || necessaryFileName.indexOf("\\") == -1) {
+                            try {
+                                necessaryURL = FileUtilities.nameToURL("file:./" + necessaryFileName, null, null);                            
+                            } catch (IOException ex2) {
+                                // Throw the original exception
+                                throw ex;
+                            }
+                        } else {
+                            // Throw the original exception
+                            throw ex;
+                        }  
+                    }
+                    // Get the base filename (text after last /)
+                    String necessaryFileShortName = necessaryURL.getPath();
+                    if (necessaryURL.getPath().lastIndexOf("/") > -1) {
+                        necessaryFileShortName = necessaryFileShortName.substring(necessaryFileShortName.lastIndexOf("/"));
+                    }
+
+                    File necessaryFileDestination = new File(codeDirectoryFile,
+                            necessaryFileShortName);
+                    File necessaryFileSource = new File(necessaryFileName);
+                    if (!necessaryFileDestination.exists() 
+                            || (necessaryFileSource.exists() &&
+                                    necessaryFileSource.lastModified()
+                                    > necessaryFileDestination.lastModified())) {
+                        // If the dest file does not exist or is older than the 
+                        // source file, we do the copy
+                        System.out.println("Copying " + necessaryFileSource
+                                + " to " + necessaryFileDestination);
+                        
+                        FileUtilities.binaryCopyURLToFile(necessaryURL, necessaryFileDestination);
+                        filesWereCopied = true;
+                    }
+                
+                }
+            } finally {
+                if (bufferedReader != null) {
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException ex) {
+                        // Ignore
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }
+        return filesWereCopied;
+    }
+
     /** Generate code for declaring read and write offset variables if needed.
      *  Return empty string in this base class. 
      * 
@@ -289,11 +406,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         _codeStream.appendCodeBlock(_defaultBlocks[2], true); // fireBlock
 
         try {
-             _copyFilesToCodeDirectory();
-       } catch (IOException ex) {
+             copyFilesToCodeDirectory(null, _codeGenerator);
+        } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Problem copying files from the necessaryFiles parameter.");
-         }
+        }
         return processCode(_codeStream.toString());
     }
 
@@ -2271,98 +2388,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */
     protected final static String _INDENT2 = StringUtilities.getIndentPrefix(2);
-
-    /** Copy files to the code directory.  The optional
-     *  <code>fileDependencies</code> codeBlock consists of one or
-     *  more lines where each line names a file that should be copied
-     *  to the directory named by the <i>codeDirectory</i> parameter
-     *  of the code generator. The file is only copied if a file by
-     *  that name does not exist in <i>codeDirectory</i> or if the
-     *  source file was more recently modified than the destination
-     *  file.
-     *  <p>Using the <code>fileDependencies</code> code block allows
-     *  actor writers to refer to code defined in other files.
-     *  
-     *  @exception IOException If there is a problem reading the 
-     *  <i>codeDirectory</i> parameter.
-     *  @exception IllegalActionException If there is a problem reading the 
-     *  <i>codeDirectory</i> parameter.
-     */
-    private void _copyFilesToCodeDirectory() throws IOException, IllegalActionException {
-        // Read in the optional fileDependencies code block.
-        CodeStream codeStream = new CodeStream(this);
-        codeStream.appendCodeBlock("fileDependencies", true);
-        String fileDependencies = codeStream.toString();
-
-        if (fileDependencies.length() > 0) {
-            File codeDirectoryFile = _codeGenerator._codeDirectoryAsFile();
-            BufferedReader bufferedReader = null;
-            try {
-                bufferedReader = new BufferedReader(new StringReader(fileDependencies));
-                String necessaryFileName = null;
-                // Read line by line, skipping comments. 
-                while ((necessaryFileName = bufferedReader.readLine()) != null) {
-                    necessaryFileName = necessaryFileName.trim();
-                    if (necessaryFileName.length() == 0
-                            || necessaryFileName.startsWith("/*")
-                            || necessaryFileName.startsWith("//")) {
-                        continue;
-                    }
-
-                    // Look up the file as a resource.  We do this so we can possibly
-                    // get it from a jar file in the release.
-                    URL necessaryURL = null;
-                    try {
-                        necessaryURL = FileUtilities.nameToURL(necessaryFileName, null, null);
-                    } catch (IOException ex) {
-                        // If the filename has no slashes, try prepending file:./
-                        if (necessaryFileName.indexOf("/") == -1
-                                || necessaryFileName.indexOf("\\") == -1) {
-                            try {
-                                necessaryURL = FileUtilities.nameToURL("file:./" + necessaryFileName, null, null);                            
-                            } catch (IOException ex2) {
-                                // Throw the original exception
-                                throw ex;
-                            }
-                        } else {
-                            // Throw the original exception
-                            throw ex;
-                        }  
-                    }
-                    // Get the base filename (text after last /)
-                    String necessaryFileShortName = necessaryURL.getPath();
-                    if (necessaryURL.getPath().lastIndexOf("/") > -1) {
-                        necessaryFileShortName = necessaryFileShortName.substring(necessaryFileShortName.lastIndexOf("/"));
-                    }
-
-                    File necessaryFileDestination = new File(codeDirectoryFile,
-                            necessaryFileShortName);
-                    File necessaryFileSource = new File(necessaryFileName);
-                    if (!necessaryFileDestination.exists() 
-                            || (necessaryFileSource.exists() &&
-                                    necessaryFileSource.lastModified()
-                                    > necessaryFileDestination.lastModified())) {
-                        // If the dest file does not exist or is older than the 
-                        // source file, we do the copy
-                        System.out.println("Copying " + necessaryFileSource
-                                + " to " + necessaryFileDestination);
-                        
-                        FileUtilities.binaryCopyURLToFile(necessaryURL, necessaryFileDestination);
-                    }
-                
-                }
-            } finally {
-                if (bufferedReader != null) {
-                    try {
-                        bufferedReader.close();
-                    } catch (IOException ex) {
-                        // Ignore
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
 
     /** Find the paired close parenthesis given a string and an index
      *  which is the position of an open parenthesis. Return -1 if no

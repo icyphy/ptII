@@ -1,6 +1,6 @@
 /* Code generator helper for composite actor with co-simulation option.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,10 +27,12 @@
  */
 package ptolemy.codegen.c.actor.lib.jni;
 
+import java.io.IOException;
 import java.util.List;
 
 import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.kernel.CodeGenerator;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.StaticSchedulingCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -41,11 +43,12 @@ import ptolemy.util.StringBufferExec;
 //// CompiledCompositeActor
 
 /**
- Code generator helper for composite actor with co-simulation option.
-
- @author Gang Zhou
+ Code generator helper for a composite actor that contains an actor
+ with a body written in C.
+ 
+ @author Gang Zhou, Christopher Brooks
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Red (zgang)
  */
@@ -59,22 +62,81 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         super(component);
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** If necessary, copy files from the fileDependencies code block.
+     *  @param compositeActor  The compositeActor, which is usually
+     *  an EmbeddedCActor.
+     *  @return True if a file was copied.
+     *  @see ptolemy.codegen.kernel.CodeGeneratorHelper#copyFilesToCodeDirectory(TypedCompositeActor, CodeGenerator)
+     */
+    public static boolean copyFilesToCodeDirectory(
+            ptolemy.actor.TypedCompositeActor compositeActor)
+            throws IOException, IllegalActionException {
+        // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
+        // will not depend on ptolemy.codegen.
+        CodeGenerator codeGenerator = _getCodeGenerator(compositeActor);        
+        return CodeGeneratorHelper.copyFilesToCodeDirectory(compositeActor, codeGenerator);
+    }
+
     /** Generate code for a given actor.
      *  @param compositeActor The actor for which code is generated.
      *  @exception IllegalActionException If there are problems
      *  accessing the actor.
      */   
     public static void generateCode(
-            ptolemy.actor.TypedCompositeActor compositeActor) 
+            ptolemy.actor.TypedCompositeActor compositeActor)
             throws IllegalActionException {
+
+        // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
+        // will not depend on ptolemy.codegen.
         
         ptolemy.actor.lib.jni.CompiledCompositeActor actor 
                 = (ptolemy.actor.lib.jni.CompiledCompositeActor) compositeActor; 
+        CodeGenerator codeGenerator = _getCodeGenerator(compositeActor);
 
-        List codeGenerators = actor.attributeList(CodeGenerator.class);
+        final StringBufferExec exec = new StringBufferExec();
+        int returnValue = 0;
+        try {
+            codeGenerator.setExecuteCommands(exec);
+            returnValue = codeGenerator.generateCode();
+        } catch (Exception e) {
+            throw new IllegalActionException(actor, e,
+                    "Failed to generate code.");
+        }
 
+        if (returnValue != 0) {
+            // Throw outside the above try so that we don't get as many nested
+            // exceptions;
+            String message = "Last process returned non-zero: " + returnValue
+                + "Failed to generate code:\n"
+                + exec.buffer.toString();
+            System.err.println(message);
+            throw new IllegalActionException(message);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Find the codeGenerator for a given actor.
+     *  If there is no CodeGenerator, then one is added.
+     *  @param compositeActor The actor for which code is generated.
+     *  @exception IllegalActionException If there are problems
+     *  accessing the actor.
+     */   
+    private static CodeGenerator _getCodeGenerator(
+            ptolemy.actor.TypedCompositeActor compositeActor) 
+            throws IllegalActionException {
+        // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
+        // will not depend on ptolemy.codegen
         CodeGenerator codeGenerator = null;
         try {
+            ptolemy.actor.lib.jni.CompiledCompositeActor actor 
+                = (ptolemy.actor.lib.jni.CompiledCompositeActor) compositeActor; 
+            List codeGenerators = actor.attributeList(CodeGenerator.class);
+
             if (codeGenerators.size() == 0) {
                 // Add a codeGenerator
                 codeGenerator = new StaticSchedulingCodeGenerator(actor,
@@ -103,43 +165,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             codeGenerator.overwriteFiles.setExpression(actor.overwriteFiles
                     .getExpression());
 
-        } catch (NameDuplicationException e) {
-            throw new IllegalActionException(actor, e, "Name duplication.");
+        } catch (NameDuplicationException ex) {
+            throw new IllegalActionException(compositeActor, ex, "Name duplication.");
         }
-
-        final StringBufferExec exec = new StringBufferExec();
-        int returnValue = 0;
-        try {
-            codeGenerator.setExecuteCommands(exec);
-            returnValue = codeGenerator.generateCode();
-        } catch (Exception e) {
-            throw new IllegalActionException(actor, e,
-                    "Failed to generate code.");
-        }
-
-        if (returnValue != 0) {
-            // Throw outside the above try so that we don't get as many nested
-            // exceptions;
-            String message = "Last process returned non-zero: " + returnValue
-                + "Failed to generate code:\n"
-                + exec.buffer.toString();
-            System.err.println(message);
-            throw new IllegalActionException(message);
-        }
+        return codeGenerator;
     }
-
-    /** Do nothing. Since the outside domain is the simulation domain. 
-     *  @exception IllegalActionException Not thrown here.
-     */
-//     protected void _createInputBufferSizeAndOffsetMap()
-//             throws IllegalActionException {
-//     }
-
-    /** Return nothing. Since the outside domain is the simulation domain. 
-     *  @exception IllegalActionException Not thrown here.
-     */
-//     protected String _generateInputVariableDeclaration()
-//             throws IllegalActionException {
-//         return "";
-//     }
 }

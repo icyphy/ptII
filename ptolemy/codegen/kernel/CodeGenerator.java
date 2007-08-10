@@ -339,7 +339,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *   or write-to-file throw any exception.
      */
     public int generateCode(StringBuffer code) throws KernelException {
-
+        System.out.println("CodeGenerator.generateCode()");
         long startTime = (new Date()).getTime();
         long overallStartTime = startTime;
         // List actors = get all actors
@@ -641,6 +641,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception IllegalActionException If thrown while generating fire code.
      */
     public String generateFireFunctionCode() throws IllegalActionException {
+        System.out.println("CodeGenerator.generateFireFunctionCode()");
         StringBuffer code = new StringBuffer();
         ActorCodeGenerator helper = _getHelper(getContainer());
         code.append(helper.generateFireFunctionCode());
