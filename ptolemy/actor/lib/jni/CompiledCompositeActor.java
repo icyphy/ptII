@@ -70,6 +70,7 @@ import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StreamExec;
+import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -416,7 +417,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     protected void _compileJavaCode() throws IllegalActionException {
         if (_executeCommands == null) {
-            _executeCommands = new StreamExec();
+            // Append the results to a StringBuffer and to stderr/stdout.
+            _executeCommands = new StringBufferExec(true);
         }
 
         List commands = new LinkedList();
@@ -430,6 +432,13 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         _executeCommands.setWorkingDirectory(codeDirectory.asFile());
         _executeCommands.setCommands(commands);
         _executeCommands.start();
+        int lastSubprocessReturnCode = _executeCommands.getLastSubprocessReturnCode();
+        if (lastSubprocessReturnCode != 0) {
+            throw new IllegalActionException(this,
+                    "Execution of subcommands failed, last process returned "
+                    + lastSubprocessReturnCode + ", which is not 0:\n" 
+                    + _executeCommands.buffer.toString());
+        }
     }
     
     /** Generate and compile C code.
@@ -438,38 +447,16 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  cannot be found or invoked.
      */
     protected void _generateAndCompileCCode() throws IllegalActionException {
-        
-        String packageName = generatorPackage.stringValue();
-        String helperClassName 
-                = getClass().getName().replaceFirst("ptolemy", packageName);
-        
-        Class helperClass = null;
-        try {
-            helperClass = Class.forName(helperClassName);
-        } catch (ClassNotFoundException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot find helper class " + helperClassName);
-        }
-        
-        // We use reflection to avoid a compile time dependency
-        // on the codegen package.
-        Method generateMethod = null;
-        try {
-            // Find the
-            // ptolemy.codegen.c.actor.lib.jni.CompiledCompositeActor.generateCode()
-            // method.
-            generateMethod = helperClass.getMethod("generateCode", 
-                    new Class[] {ptolemy.actor.TypedCompositeActor.class});
-        } catch (NoSuchMethodException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot find the generateCode method.");
-        }
+        Method generateCodeMethod = _findHelperMethod("generateCode",
+                new Class[] {ptolemy.actor.TypedCompositeActor.class});
         
         try {
-            generateMethod.invoke(null, new Object[]{this});
+            generateCodeMethod.invoke(null, new Object[]{this});
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
-                    "Failed to invoke the generateCode method.");
+                    "Failed to invoke the static " + 
+                    "generateCodeMethod(TypedCompositeActor) " +
+                    "in the helper class");
         }
     }
 
@@ -549,7 +536,6 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
    
-
     /** Return true if the shared object file should be built.  The
      *  shared object file must be built if shared object file does
      *  not exist or if the model has been modified and not saved or
@@ -597,6 +583,21 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     + "The sharedObjectFile has a modification time "
                     + "that is earlier than the modelFile modification time.");
             return true;
+        }
+        Method copyFilesToCodeDirectoryMethod = _findHelperMethod("copyFilesToCodeDirectory",
+                new Class[] {ptolemy.actor.TypedCompositeActor.class});
+
+        try {
+            Boolean filesWereCopied = (Boolean) copyFilesToCodeDirectoryMethod.invoke(null, new Object[]{this});
+            if (filesWereCopied.booleanValue()) {
+            System.out.println(message
+                    + "Files were copied from the fileDependencies code block.");
+                return true;
+            }
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Failed to invoke the copyFilesToCodeDirectory()" +
+                    "method in the helper class.");
         }
         return false;
     }
@@ -654,6 +655,45 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         return arguments.toString();
     }
 
+    /** Invoke a method in the corresponding helper class.
+     *  @param methodName The name of a method in the helper class.
+     *  @param methodClasses An array of method Class objects for the arguments
+     *  of the method.
+     *  @return The return value from the method, see java.lang.Method.invoke().
+     *  @exception IllegalActionException If the helper class can't be
+     *  found or if the method cannot be invoked.
+     */
+    private Method _findHelperMethod(String methodName, Class[] methodClasses) throws IllegalActionException {
+        // We use reflection to avoid a compile time dependency
+        // on the codegen package.
+        String packageName = generatorPackage.stringValue();
+        String helperClassName 
+                = getClass().getName().replaceFirst("ptolemy", packageName);
+        
+        Class helperClass = null;
+        try {
+            helperClass = Class.forName(helperClassName);
+        } catch (ClassNotFoundException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Cannot find helper class " + helperClassName);
+        }
+
+        Method generateMethod = null;
+        try {
+            // Find the
+            // ptolemy.codegen.c.actor.lib.jni.CompiledCompositeActor.generateCode()
+            // method.
+            return generateMethod = helperClass.getMethod(methodName, 
+                    methodClasses);
+        } catch (NoSuchMethodException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Cannot find the \"" + methodName + "\" method in \"" 
+                    + helperClassName + "\".");
+        }
+    }
+
+    /** Initialize parameters.
+     */
     private void _init() {
         
         // The base class identifies the class name as TypedCompositeActor
@@ -817,7 +857,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             + _version;
     }
 
-    private ExecuteCommands _executeCommands;
+    private StringBufferExec _executeCommands;
 
     private Object _jniWrapper;
 
