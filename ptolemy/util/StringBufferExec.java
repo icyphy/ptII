@@ -73,29 +73,71 @@ import java.util.List;
  */
 public class StringBufferExec extends StreamExec {
 
-    /** Create a StringBufferExec. */
+    /** Create a StringBufferExec.  As the commands are executed,
+     *  output is appended to the StringBuffer - no output will appear
+     *  on stderr and stdout.
+     */
     public StringBufferExec() {
         super();
+        buffer = new StringBuffer();
+    }
+
+    /** Create a StringBufferExec and optionally append to stderr
+     *  and stdout as the commands are executed.
+     *  @param appendToStderrAndStdout If true, then as the commands
+     *  are executed, the output is append to stderr and stdout.
+     */
+    public StringBufferExec(boolean appendToStderrAndStdout) {
+        super();
+        _appendToStderrAndStdout = appendToStderrAndStdout;
         buffer = new StringBuffer();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Append the text message to the StringBuffer.
-     *  The output automatically gets a trailing newline
+    /** Append the text message to the StringBuffer.  The output
+     *  automatically gets a trailing end of line character(s)
      *  appended.
-     *  @param text The text to append to standard error.
+     *  Optionally, the text also appears on stderr
+     *  @param text The text to append.
      */
     public void stderr(final String text) {
-        stdout(text);
+        if (_appendToStderrAndStdout) {
+            super.stderr(text);
+        }
+        _appendToBuffer(text);
     }
 
-    /** Append the text message to the StringBuffer
-     *  The output automatically gets a trailing newline appended.
-     *  @param text The text to append to standard out.
+    /** Append the text message to the StringBuffer.  The output
+     *  automatically gets end of line character(s) appended.
+     *  Optionally, the text also appears on stdout.
+     *  @param text The text to append.
      */
     public void stdout(final String text) {
+        if (_appendToStderrAndStdout) {
+            super.stdout(text);
+        }
+        _appendToBuffer(text);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The StringBuffer to which the output is appended.  This
+     *  variable is public so that callers can clear the buffer as
+     *  necessary.
+     */
+    public StringBuffer buffer;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Append to the internal StringBuffer.
+     *  @param text The text to append.  If the text does not
+     *  end with an end of line character(s), then _eol is appended.
+     */ 
+    private void _appendToBuffer(final String text) {
         buffer.append(text);
         if (!text.endsWith(_eol)) {
             buffer.append(_eol);
@@ -103,12 +145,11 @@ public class StringBufferExec extends StreamExec {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                         private variables                 ////
 
-    public StringBuffer buffer;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                  ////
+    /** If true, append to stderr and stdout as the commands are executed.
+     */
+    private boolean _appendToStderrAndStdout = false;
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line charactor so that the files we generate
