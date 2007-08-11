@@ -138,9 +138,6 @@ import ptolemy.util.MessageHandler;
  it seems that the delay needs to be no larger than the smallest
  increment between calls to fireAt(). Is this correct?  Why?
  <p>
- FIXME On a finite run, the associated threads just hangs on a take().
- How to stop it?
- <p>
  FIXME: If there is a PortParameter, the parameter gets updated when the
  fire() method of this composite is invoked, which creates a nondeterminate
  interaction with the deferred execution. See CompositeActor.fire().
@@ -828,6 +825,16 @@ public class RealTimeComposite extends MirrorComposite {
          */
         public void wrapup() throws IllegalActionException {
             if (_delayValue != 0) {
+                // First, post a "stop frame" in case one has not been posted.
+                // In the case of a finite run, one will likely have not been posted.
+                Time environmentTime = RealTimeComposite.this.getExecutiveDirector().getModelTime();
+                if (RealTimeComposite.this._debugging) {
+                    RealTimeComposite.this._debug(
+                            "Queueing a stop-frame token for the associated thread with time: "
+                            + environmentTime);
+                }
+                // A "stop frame" has a null token list.
+                _inputFrames.put(new InputFrame(environmentTime, null));
                 try {
                     if (RealTimeComposite.this._debugging) {
                         RealTimeComposite.this._debug("Waiting for associated thread to stop.");
