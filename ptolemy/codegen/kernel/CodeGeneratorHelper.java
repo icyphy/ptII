@@ -261,19 +261,19 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  from EmbeddedCActor's <i>embeddedCCode</i> parameter are used.
      *  @param codeGenerator The code generator from which the
      *  <i>codeDirectory</i> parameter is read.
-     *  @return True if any files were copied.
+     *  @return The modification time of the most recent file. 
      *  @exception IOException If there is a problem reading the 
      *  <i>codeDirectory</i> parameter.
      *  @exception IllegalActionException If there is a problem reading the 
      *  <i>codeDirectory</i> parameter.
      */
-    public static boolean copyFilesToCodeDirectory(TypedCompositeActor compositeActor,
+    public static long copyFilesToCodeDirectory(TypedCompositeActor compositeActor,
             CodeGenerator codeGenerator) throws IOException, IllegalActionException {
 
         // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
         // will not depend on ptolemy.codegen.
 
-        boolean filesWereCopied = false;
+        long lastModified = 0;
 
         CodeGeneratorHelper helper = (CodeGeneratorHelper)codeGenerator._getHelper(codeGenerator.getContainer());
         CodeStream codeStream = new CodeStream(helper);
@@ -343,9 +343,16 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                                 + " to " + necessaryFileDestination);
                         
                         FileUtilities.binaryCopyURLToFile(necessaryURL, necessaryFileDestination);
-                        filesWereCopied = true;
                     }
-                
+                    // Reopen the destination file and get its time for
+                    // comparison
+                    File necessaryFileDestination2 = new File(codeDirectoryFile,
+                            necessaryFileShortName);
+                    if (necessaryFileDestination2.lastModified() > lastModified) {
+                        lastModified = necessaryFileDestination2.lastModified();
+                    }
+
+               
                 }
             } finally {
                 if (bufferedReader != null) {
@@ -358,7 +365,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 }
             }
         }
-        return filesWereCopied;
+        return lastModified;
     }
 
     /** Generate code for declaring read and write offset variables if needed.

@@ -531,12 +531,21 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  not exist or if the model has been modified and not saved or
      *  if the modification time of the shared object file is earlier
      *  than the modification time of the model file.
+     *  This method always copies files listed in the fileDependency
+     *  block.
      *  @return true if the shared object file should be built.
      *  @exception IllegalActionException If there is a problem
      *  generating the path to the shared object.
      */
     private boolean _buildSharedObjectFile() throws IllegalActionException {
         String message = "CompiledCompositeActor: Building shared object: ";
+
+        // Look for the fileDependencies code block and copy files if
+        // necessary.  If we copy files, then we should rebuild.
+        // FIXME: this is a side effect, and we should be sure to do
+        // it before returning from this method.
+        long fileDependenciesModificationTime = ((Long) _invokeHelperMethod("copyFilesToCodeDirectory")).longValue();
+
         File sharedObjectFile = new File(_sharedObjectPath(_sanitizedActorName));
         if (sharedObjectFile == null || !(sharedObjectFile.canRead())) {
             System.out.println(message + "Can't read the shared object file.");
@@ -575,11 +584,12 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             return true;
         }
 
-        // Look for the fileDependencies code block and copy files if
-        // necessary.  If we copy files, then we should rebuild.
-        if (((Boolean) _invokeHelperMethod("copyFilesToCodeDirectory")).booleanValue()) {
+        if (modelFile == null 
+                || sharedObjectFile.lastModified() < fileDependenciesModificationTime) {
             System.out.println(message
-                    + "Files were copied from the fileDependencies code block.");
+                    + "The sharedObjectFile has a modification time "
+                    + "that is earlier than modification time of one of the "
+                    + "files in the fileDependency block.");
             return true;
         }
 

@@ -71,7 +71,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  @return True if a file was copied.
      *  @see ptolemy.codegen.kernel.CodeGeneratorHelper#copyFilesToCodeDirectory(TypedCompositeActor, CodeGenerator)
      */
-    public static boolean copyFilesToCodeDirectory(
+    public static long copyFilesToCodeDirectory(
             ptolemy.actor.TypedCompositeActor compositeActor)
             throws IOException, IllegalActionException {
         // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
@@ -96,22 +96,24 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 = (ptolemy.actor.lib.jni.CompiledCompositeActor) compositeActor; 
         CodeGenerator codeGenerator = _getCodeGenerator(compositeActor);
 
-        final StringBufferExec exec = new StringBufferExec();
-        int returnValue = 0;
+        // Append the output to stderr, stdout and the StringBuffer; 
+        final StringBufferExec executeCommands = new StringBufferExec(true);
+        int returnCode = 0;
         try {
-            codeGenerator.setExecuteCommands(exec);
-            returnValue = codeGenerator.generateCode();
+            codeGenerator.setExecuteCommands(executeCommands);
+            returnCode = codeGenerator.generateCode();
         } catch (Exception e) {
             throw new IllegalActionException(actor, e,
                     "Failed to generate code.");
         }
 
-        if (returnValue != 0) {
+        if (returnCode != 0) {
             // Throw outside the above try so that we don't get as many nested
             // exceptions;
-            String message = "Last process returned non-zero: " + returnValue
-                + "Failed to generate code:\n"
-                + exec.buffer.toString();
+            String message = "Execution of subcommands to generate code for "
+                + "CompiledCompositeActor failed, last process returned '"
+                + returnCode + "', which is not 0:\n" 
+                + executeCommands.buffer.toString();
             System.err.println(message);
             throw new IllegalActionException(message);
         }
