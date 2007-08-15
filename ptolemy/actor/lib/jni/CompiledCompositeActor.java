@@ -505,6 +505,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
             Writer writer = null;
             try {
+                System.out.println("Writing \"" + codeFileName
+                        + "\" in \"" + codeDirectory.getBaseDirectory()
+                        + "\"");
                 writer = FileUtilities.openForWriting(codeFileName,
                         codeDirectory.getBaseDirectory(), false);
                 writer.write(code.toString());
@@ -642,7 +645,12 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 i++;
                 //FIXME: need to consider carefully for structured data type
                 Type type = ((TypedIOPort) inputPort).getType();
-                arguments.append(type.toString() + "[][] "
+                String typeName = type.toString();
+                if (typeName.equals("unknown")) {
+                    // If a port is not connected, then use int as a default.
+                    typeName = "int";
+                }
+                arguments.append(typeName + "[][] "
                         + inputPort.getName());
             }
         }
