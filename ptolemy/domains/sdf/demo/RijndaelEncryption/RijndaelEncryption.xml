@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RijndaelEncryption" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[546, 503]">
     </property>
@@ -45,7 +45,7 @@ http://home.ecn.ab.ca/~jsavard/crypto/co040801.htm</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 240.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 0, 761, 621}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 25, 762, 621}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -437,7 +437,7 @@ internal models.
             <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, -100.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 51, 996, 685}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 51, 997, 685}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
@@ -598,7 +598,7 @@ internal models.
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="430.0, 305.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 300.0]">
                 </property>
                 <port name="a1" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1236,7 +1236,7 @@ internal models.
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4 * blockSize">
                     </property>
                 </port>
             </entity>
@@ -1398,7 +1398,7 @@ the 128 bit user key as a seed.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 420.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {58, 90, 894, 511}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={58, 90, 895, 520}, maximized=false}">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
             </property>
@@ -1668,7 +1668,7 @@ the 128 bit user key as a seed.</text></svg></configure>
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
-                        <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
+                        <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4 * blockSize">
                         </property>
                     </port>
                 </entity>
@@ -1966,14 +1966,12 @@ the 128 bit user key as a seed.</text></svg></configure>
                 </property>
                 <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
                     <property name="input"/>
-                    <property name="_type" class="ptolemy.actor.TypeAttribute" value="{unsignedByte}">
-                    </property>
                 </port>
                 <port name="output" class="ptolemy.domains.fsm.modal.ModalPort">
                     <property name="output"/>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="SubRotWord">
+                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                     <property name="_library" class="ptolemy.moml.LibraryAttribute">
                         <configure>
@@ -2003,7 +2001,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     </property>
                     <property name="cycle" class="ptolemy.data.expr.Parameter" value="3">
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {136, 154, 751, 459}, maximized = false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={424, 365, 752, 469}, maximized=false}">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
@@ -2096,7 +2094,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 50.0">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {50, 147, 849, 459}, maximized = false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={424, 171, 850, 468}, maximized=false}">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
@@ -2221,7 +2219,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         </property>
                         <port name="output" class="ptolemy.actor.TypedIOPort">
                             <property name="output"/>
-                            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4">
+                            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="4 * blockSize">
                             </property>
                         </port>
                     </entity>
@@ -2537,7 +2535,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 85.0">
                         </property>
                     </property>
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {270, 154, 582, 459}, maximized = false}">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 154, 583, 468}, maximized=false}">
                     </property>
                     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                     </property>
@@ -2647,7 +2645,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 <property name="input"/>
             </port>
             <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
+                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
@@ -2675,7 +2673,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="round" class="ptolemy.data.expr.Parameter" value="9">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={149, 150, 725, 468}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={437, 365, 726, 469}, maximized=false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -2828,7 +2826,7 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 305.0">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 154, 882, 468}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 154, 883, 468}, maximized=false}">
                 </property>
                 <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
                 </property>
@@ -3426,9 +3424,11 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
             </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Intermediate Round Output">
-            </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={323, 534, 330, 237}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+            </property>
+            <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Intermediate Round Output">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 135.0]">
             </property>
@@ -3765,9 +3765,11 @@ This makes encryption and decryption more symmetric.</text></svg></configure>
         <link port="SequenceToArray3.output" relation="relation13"/>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Encrypted Block">
-        </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={632, 533, 330, 237}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Encrypted Block">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 175.0]">
         </property>
