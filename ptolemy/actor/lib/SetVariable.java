@@ -77,7 +77,13 @@ import ptolemy.util.MessageHandler;
  the system. If you are trying to communicate with another
  actor without wiring, use the Publisher and Subscriber
  actors instead.
-
+ </p><p>
+ The <i>output</i> port produces the same token provided at
+ the <i>input</i> port when the actor fires, after the
+ specified variable has been set. This can be used, even with
+ <i>delayed</i> set to false, to ensure determinacy, by
+ triggering downstream actions only after the variable has
+ been set.
  </p><p>
  The variable can be either any attribute that implements
  the Settable interface. If it is in addition an instance of
@@ -115,6 +121,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
+        output = new TypedIOPort(this, "output", false, true);
 
         variableName = new StringAttribute(this, "variableName");
         variableName.setExpression("parameter");
@@ -135,6 +142,9 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
 
     /** Parameter that determines when reconfiguration occurs. */
     public Parameter delayed;
+
+    /** The output port. */
+    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -261,6 +271,9 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
                 requestChange(request);
             } else {
                 _setValue(value);
+            }
+            if (output.getWidth() > 0) {
+                output.send(0, value);
             }
         }
 
