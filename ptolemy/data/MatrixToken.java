@@ -467,6 +467,7 @@ public abstract class MatrixToken extends Token {
      */
     public MatrixToken crop(
             int rowStart, int colStart, int rowSpan, int colSpan)
+            throws IllegalActionException {
         throw new IllegalActionException("crop: Operation not supported on class " 
                 + getClass()
                 + ".");
