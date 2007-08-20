@@ -172,13 +172,17 @@ public class Configuration extends CompositeEntity implements
 
                     // Make sure the constraints are the same.
                     StringBuffer constraintsDescription = new StringBuffer();
-                    Iterator constraintIterator = constraints.iterator();
-                    while (constraintIterator.hasNext()) {
-                        Inequality constraint = (Inequality) constraintIterator
+                    try {
+                        Iterator constraintIterator = constraints.iterator();
+                        while (constraintIterator.hasNext()) {
+                            Inequality constraint = (Inequality) constraintIterator
                                 .next();
-                        constraintsDescription.append(constraint.toString());
+                            constraintsDescription.append(constraint.toString());
+                        }
+                    } catch (Throwable throwable) {
+                        throw new IllegalActionException(actor, throwable,
+                                "Failed to iterate through constraints.");
                     }
-
                     StringBuffer cloneConstraintsDescription = new StringBuffer();
                     Iterator cloneConstraintIterator = cloneConstraints
                             .iterator();
