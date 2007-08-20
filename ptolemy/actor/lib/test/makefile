@@ -38,7 +38,7 @@ DIRS =		performance
 ROOT =		../../../..
 
 # auto/SequenceToArray2.xml uses mapss.jar
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/automaton.jar$(CLASSPATHSEPARATOR)$(PSDF_DIR)/mapss.jar"
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/automaton.jar$(CLASSPATHSEPARATOR)$(PSDF_DIR)/mapss.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
