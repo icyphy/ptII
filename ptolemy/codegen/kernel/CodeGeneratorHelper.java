@@ -267,7 +267,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @exception IllegalActionException If there is a problem reading the 
      *  <i>codeDirectory</i> parameter.
      */
-    public static long copyFilesToCodeDirectory(TypedCompositeActor compositeActor,
+    public static long copyFilesToCodeDirectory(/*TypedCompositeActor compositeActor*/ NamedObj namedObj,
             CodeGenerator codeGenerator) throws IOException, IllegalActionException {
 
         // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
@@ -275,16 +275,22 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         long lastModified = 0;
 
-        CodeGeneratorHelper helper = (CodeGeneratorHelper)codeGenerator._getHelper(codeGenerator.getContainer());
-        CodeStream codeStream = new CodeStream(helper);
+        CodeGeneratorHelper helper = null;
+        CodeStream codeStream = null;
 
-        if (compositeActor != null && compositeActor instanceof ptolemy.actor.lib.jni.EmbeddedCActor) {
+        if (namedObj != null && namedObj instanceof ptolemy.actor.lib.jni.EmbeddedCActor) {
+            helper = (CodeGeneratorHelper)codeGenerator._getHelper(codeGenerator.getContainer());
+            codeStream = new CodeStream(helper);
             // We have an EmbeddedCActor, read the codeBlocks from
             // the embeddedCCode parameter.
             codeStream.setCodeBlocks(
-                    ((ptolemy.actor.lib.jni.EmbeddedCActor)compositeActor)
+                    ((ptolemy.actor.lib.jni.EmbeddedCActor)namedObj)
                     .embeddedCCode.getExpression());
+        } else {
+            helper = (CodeGeneratorHelper)codeGenerator._getHelper(namedObj);
+            codeStream = new CodeStream(helper);
         }
+
 
         // Read in the optional fileDependencies code block.
         codeStream.appendCodeBlock("fileDependencies", true);
@@ -413,7 +419,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         _codeStream.appendCodeBlock(_defaultBlocks[2], true); // fireBlock
 
         try {
-             copyFilesToCodeDirectory(null, _codeGenerator);
+             copyFilesToCodeDirectory(getComponent(), _codeGenerator);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Problem copying files from the necessaryFiles parameter.");
