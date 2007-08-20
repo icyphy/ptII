@@ -24,6 +24,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{455, 90}">
         </property>
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model copies the file EmbeddedCActorFileDependencyDefinition.c&#10;from the current directory to the codegen directory.&#10;Thus, this model should be run from the test/ directory, not&#10;the auto/ directory.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 270.0]">
+        </property>
+    </property>
     <entity name="EmbeddedCActor" class="ptolemy.actor.lib.jni.EmbeddedCActor">
         <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies ***/&#10;EmbeddedCActorFileDependencyDefinition.c&#10;/**/&#10;&#10;/***preinitBlock***/&#10;#include &quot;EmbeddedCActorFileDependencyDefinition.c&quot;&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;$ref(output) = fortytwo($ref(input));&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
         </property>
