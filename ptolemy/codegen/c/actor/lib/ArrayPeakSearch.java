@@ -92,6 +92,7 @@ public class ArrayPeakSearch extends CCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
+        files.addAll(super.getHeaderFiles());
         files.add("<math.h>");
         return files;
     }

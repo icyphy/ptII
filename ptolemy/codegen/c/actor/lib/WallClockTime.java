@@ -85,6 +85,7 @@ public class WallClockTime extends CCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
+        files.addAll(super.getHeaderFiles());
         files.add("<time.h>");
         return files;
     }

@@ -91,10 +91,9 @@ public class Display extends CCodeGeneratorHelper {
      * @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
-        super.getHeaderFiles();
-
         Set files = new HashSet();
-        files.add("<stdio.h>");
+        files.addAll(super.getHeaderFiles());
+        files.add("<math.h>");
         return files;
     }
 }
