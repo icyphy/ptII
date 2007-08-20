@@ -236,7 +236,7 @@ public class KeplerDocumentationAttribute extends Attribute implements
         try {
             DocAttribute da = new DocAttribute(target.workspace());
             da.setContainer(target);
-            da.setName("keplerFormattedPTIIDocumentation");
+            //da.setName("keplerFormattedPTIIDocumentation");
             da.author = new StringAttribute(da, "author");
             da.author.setExpression(author);
             da.version = new StringAttribute(da, "version");
