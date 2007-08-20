@@ -62,3 +62,20 @@ test EmbeddedCActor-1.1 {Don't generate code each time the model } {
 }
     list 1
 } {1}
+
+######################################################################
+####
+#
+test EmbeddedCActor-2.1 {Copy a file to the codeDirectory} {
+
+    set codeDirectory [java::call ptolemy.util.StringUtilities getProperty user.home]
+    set necessaryFile1 [file join $codeDirectory codegen EmbeddedCActorFileDependency.c]
+    file delete -force $necessaryFile1
+
+    set args [java::new {String[]} 1 [list {auto/EmbeddedCActorFileDependency.xml}]]
+    java::call ptolemy.codegen.kernel.CodeGenerator main $args
+
+    list \
+	[file exists $necessaryFile1] \
+} {1}
+
