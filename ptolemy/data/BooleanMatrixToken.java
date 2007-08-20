@@ -207,6 +207,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  @param colStart The column to start on.
      *  @param rowSpan The number of rows to copy.
      *  @param colSpan The number of columns to copy.
+     *  @return a sub-matrix of this matrix.
      *  @exception IllegalActionException If the returned matrix is empty or if the specified
      *   parameters result in out of bounds accesses.
      */

@@ -456,7 +456,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  compiling the Java file.   
      */
     protected void _generateAndCompileJavaCode()
-    {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         String sharedObjectPath = _sharedObjectPath(_sanitizedActorName);

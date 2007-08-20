@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 
 /**
- * Generate C code for an actor that computes the moving average
+ * Generate C code for an actor that computes the moving average.
  *
  * @see ptolemy.actor.lib.MovingAverage
  * @author Christopher Brooks

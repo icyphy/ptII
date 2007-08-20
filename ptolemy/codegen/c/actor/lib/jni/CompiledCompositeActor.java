@@ -69,6 +69,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  @param compositeActor  The compositeActor, which is usually
      *  an EmbeddedCActor.
      *  @return True if a file was copied.
+     *  @exception IOException If there is a problem reading the 
+     *  <i>codeDirectory</i> parameter.
+     *  @exception IllegalActionException If there is a problem reading the 
+     *  <i>codeDirectory</i> parameter.
      *  @see ptolemy.codegen.kernel.CodeGeneratorHelper#copyFilesToCodeDirectory(NamedObj, CodeGenerator)
      */
     public static long copyFilesToCodeDirectory(
