@@ -451,9 +451,12 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     }
 
     /** Generate and compile the Java code.
+     *  @exception IllegalActionException If thrown while getting the path
+     *  to the shared object, while writing the Java file, or while
+     *  compiling the Java file.   
      */
     protected void _generateAndCompileJavaCode()
-            throws IllegalActionException {
+    {
         StringBuffer code = new StringBuffer();
 
         String sharedObjectPath = _sharedObjectPath(_sanitizedActorName);

@@ -1,6 +1,6 @@
 /* Base class for actors performing audio I/O.
 
- @Copyright (c) 2003-2005 The Regents of the University of California.
+ @Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -47,7 +47,7 @@ import ptolemy.moml.SharedParameter;
  Note: Requires Java 5.0.
  @author Edward A. Lee (based on code by Steve Neuendorffer)
  @version  $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (chf)
  @see ptolemy.media.javasound.LiveSound
@@ -189,7 +189,7 @@ public class SoundActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /* Convert a double array of audio samples into a byte array of
+    /** Convert a double array of audio samples into a byte array of
      * audio samples in linear signed PCM big endian format. The
      * samples contained in <i>doubleArray</i> should be in the
      * range (-1, 1). Samples outside this range will be hard clipped

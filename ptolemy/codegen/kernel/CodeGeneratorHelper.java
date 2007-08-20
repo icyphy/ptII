@@ -256,7 +256,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  <p>Using the <code>fileDependencies</code> code block allows
      *  actor writers to refer to code defined in other files.
      *  
-     *  @param compositeActor If this argument is an instance of
+     *  @param namedObj If this argument is an instance of
      *  ptolemy.actor.lib.jni.EmbeddedCActor, then the code blocks
      *  from EmbeddedCActor's <i>embeddedCCode</i> parameter are used.
      *  @param codeGenerator The code generator from which the
@@ -267,7 +267,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @exception IllegalActionException If there is a problem reading the 
      *  <i>codeDirectory</i> parameter.
      */
-    public static long copyFilesToCodeDirectory(/*TypedCompositeActor compositeActor*/ NamedObj namedObj,
+    public static long copyFilesToCodeDirectory(NamedObj namedObj,
             CodeGenerator codeGenerator) throws IOException, IllegalActionException {
 
         // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor

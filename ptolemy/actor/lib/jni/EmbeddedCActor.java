@@ -115,8 +115,9 @@ public class EmbeddedCActor extends CompiledCompositeActor {
                 + "style=\"font-size:10; fill:white; font-family:SansSerif\">"
                 + "EmbeddedC</text>\n" + "</svg>\n");
         
-        // For embeddedCActor, there is only C code specifying its functionality.
-        // Therefore JNI has to be invoked when it is executed.
+        // For embeddedCActor, there is only C code specifying its
+        // functionality.  Therefore JNI has to be invoked when it is
+        // executed.
         invokeJNI.setExpression("true");
         
         new SDFDirector(this, "SDFDirector");
@@ -131,8 +132,15 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** Input to the actor.  The C code can refer to the value of this
+     *  port with <code>$ref(input)</code>.  Add other ports as necessary.
+     */   
     public TypedIOPort input;
     
+
+    /** Output from the actor.  The C code can refer to the value of this
+     *  port with <code>$ref(output)</code>.  Add other ports as necessary.
+     */   
     public TypedIOPort output;
     
     /** The C code that specifies the function of this actor.
@@ -202,6 +210,11 @@ public class EmbeddedCActor extends CompiledCompositeActor {
        
     private DummyActor _dummyActor = null;
     
+    /** An actor inside the EmbeddedCActor that is used as a dummy
+     *  placeholder.  The DummyActor is created in preinitialize() where
+     *  ports from the outer EmbeddedCActor are connected to the DummyActor.
+     *  The DummyActor is destroyed in wrapup().   
+     */
     public static class DummyActor extends TypedAtomicActor {
         /** Create a new instance of DummyActor.
          *  @param container The container.
