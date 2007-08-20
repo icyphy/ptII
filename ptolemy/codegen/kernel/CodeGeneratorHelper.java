@@ -295,6 +295,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         // Read in the optional fileDependencies code block.
         codeStream.appendCodeBlock("fileDependencies", true);
         String fileDependencies = codeStream.toString();
+
         if (fileDependencies.length() > 0) {
             File codeDirectoryFile = codeGenerator._codeDirectoryAsFile();
             BufferedReader bufferedReader = null;
@@ -348,7 +349,21 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         System.out.println("Copying " + necessaryFileSource
                                 + " to " + necessaryFileDestination);
                         
-                        FileUtilities.binaryCopyURLToFile(necessaryURL, necessaryFileDestination);
+                        try {
+                            FileUtilities.binaryCopyURLToFile(necessaryURL, necessaryFileDestination);
+                        } catch (IOException ex) {
+                            String directory = "unknown";
+                            if (StringUtilities.getProperty("user.dir") != "") {
+                                directory = "\""
+                                    + StringUtilities.getProperty("user.dir")
+                                    + "\"";
+                            }
+                            throw new IllegalActionException(namedObj, ex, 
+                                    "Failed to copy \"" + necessaryURL + "\" to \""
+                                    + necessaryFileDestination
+                                    + "\". Current directory is "
+                                    + directory);
+                        }
                     }
                     // Reopen the destination file and get its time for
                     // comparison
