@@ -60,6 +60,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	ActorTypeUtil.java \
 	CalendarQueue.java \
 	ConstVariableModelAnalysis.java \
 	CQComparator.java \
