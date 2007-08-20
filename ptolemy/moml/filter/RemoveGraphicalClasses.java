@@ -87,7 +87,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // Try uncommenting the next lines to see what is being
         // expanding before the error:
         //System.out.println("filterAttributeValue: " + container + "\t"
-            //   +  attributeName + "\t" + attributeValue);
+        //       +  attributeName + "\t" + attributeValue);
         if (attributeValue == null) {
             return null;
         } else if (_graphicalClasses.containsKey(attributeValue)) {
@@ -296,6 +296,8 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.icon.NameIcon", null);
 
+        // Exclude DependencyHighlighter
+        _graphicalClasses.put("ptolemy.actor.gui.DependencyHighlighter", null);
     }
 
     /** True if we should remove the GR domain. */
