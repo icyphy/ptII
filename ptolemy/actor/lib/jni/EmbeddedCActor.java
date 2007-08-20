@@ -82,6 +82,9 @@ public class EmbeddedCActor extends CompiledCompositeActor {
 
         // initialize the code to provide a template for identity function:
         //
+        // /***fileDependencies***/
+        // /**/
+        //
         // /***preinitBlock***/
         // /**/
         //
@@ -95,7 +98,9 @@ public class EmbeddedCActor extends CompiledCompositeActor {
         // /***wrapupBlock***/
         // /**/
         //
-        embeddedCCode.setExpression("/***preinitBlock***/\n" 
+        embeddedCCode.setExpression("/***fileDependencies***/\n"
+                + "/**/\n\n"
+                + "/***preinitBlock***/\n" 
                 + "/**/\n\n"
                 + "/***initBlock***/\n"
                 + "/**/\n\n"
