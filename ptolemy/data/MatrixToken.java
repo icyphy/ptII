@@ -460,13 +460,14 @@ public abstract class MatrixToken extends Token {
      *  @param colStart The column to start on.
      *  @param rowSpan The number of rows to copy.
      *  @param colSpan The number of columns to copy.
-     *  @return a sub-matrix of this matrix.
-     *  @exception IllegalActionException If the operation is not supported. Always thrown
-     *   in this base class.
+     *  @return subclasses return a sub-matrix of this matrix.  This
+     *  base class does not return, it always throwns an exception.
+     *  @exception IllegalActionException If the operation is not
+     *  supported. Always thrown in this base class.
      */
     public MatrixToken crop(
             int rowStart, int colStart, int rowSpan, int colSpan)
-            throws IllegalActionException {
+            throw new IllegalActionException(null, ex, notSupportedMessage(
         throw new IllegalActionException("crop: Operation not supported on class " 
                 + getClass()
                 + ".");
