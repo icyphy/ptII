@@ -28,6 +28,7 @@
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
@@ -38,6 +39,7 @@ import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.Typeable;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -141,7 +143,7 @@ public class Autocorrelation extends SDFTransformer {
         input.setTypeAtLeast(new FunctionTerm(input));
 
         // Set the output type to be an ArrayType.
-        output.setTypeAtLeast(ArrayType.arrayOf(input));
+        output.setTypeAtLeast(new OutputTypeTerm());
 
         attributeChanged(numberOfInputs);
     }
@@ -366,5 +368,85 @@ public class Autocorrelation extends SDFTransformer {
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
         private TypedIOPort _port;
+    }
+
+    /** Monotonic function that determines the type of the output port.
+     */
+    private class OutputTypeTerm extends MonotonicFunction {
+
+        ///////////////////////////////////////////////////////////////
+        ////                   public inner methods                ////
+
+        /** Return an array type with element types given by the
+         *  associated typeable.
+         *  @return An ArrayType.
+         *  @exception IllegalActionException If the type of the
+         *  associated typeable cannot be determined.
+         */
+        public Object getValue() throws IllegalActionException {
+            ConstVariableModelAnalysis analysis = 
+                ConstVariableModelAnalysis.getAnalysis(symmetricOutput);
+            if(analysis.isConstant(symmetricOutput) && 
+               analysis.isConstant(numberOfLags)) {
+                Token symmetricOutputToken = 
+                  analysis.getConstantValue(symmetricOutput);
+                Token numberOfLagsToken =
+                  analysis.getConstantValue(numberOfLags);
+                int lags = ((IntToken) numberOfLagsToken).intValue();
+                if(((BooleanToken)symmetricOutputToken).booleanValue()) {
+                    return _getArrayTypeRaw(2 * lags + 1);
+                } else {
+                    return _getArrayTypeRaw(2 * lags);
+                }
+            }
+            return _getArrayTypeRaw();
+        }
+
+        /** Return an array containing the type term for the actor's
+         *  input port.
+         *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+            InequalityTerm[] array = new InequalityTerm[1];
+            array[0] = input.getTypeTerm();
+            return array;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                   private methods                     ////
+
+        /** Get an array type with element type matching the type
+         *  of the associated typeable.
+         *  @return An array type for the associated typeable.
+         *  @exception IllegalActionException If the type of the typeable
+         *   cannot be determined.
+         */
+        private ArrayType _getArrayTypeRaw() throws IllegalActionException {
+            Type type = input.getType();
+            if (_arrayType == null || !_arrayType.getElementType().equals(type)) {
+                _arrayType = new ArrayType(type);
+            }
+            return _arrayType;
+        }
+
+        /** Get an array type with element type matching the type
+         *  of the associated typeable.
+         *  @return An array type for the associated typeable.
+         *  @exception IllegalActionException If the type of the typeable
+         *   cannot be determined.
+         */
+        private ArrayType _getArrayTypeRaw(int length) throws IllegalActionException {
+            Type type = input.getType();
+            if (_arrayType == null || !_arrayType.getElementType().equals(type)) {
+                _arrayType = new ArrayType(type, length);
+            }
+            return _arrayType;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                   private members                     ////
+
+        /** The array type with element types matching the typeable. */
+        private ArrayType _arrayType;
     }
 }
