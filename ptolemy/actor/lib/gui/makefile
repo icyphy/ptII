@@ -53,6 +53,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	ArrayPlotter.java \
+	ArrayPlotterXY.java \
 	ArrowKeySensor.java \
 	BarGraph.java \
 	Display.java \

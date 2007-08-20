@@ -5,8 +5,9 @@
   <configure>
     <?moml
       <group>
-<doc>Sinks that are time based. </doc>
+<doc>Sinks that work with any style of input (timed or not). </doc>
 
+<entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY"/>
 <entity name="Discard" class="ptolemy.actor.lib.Discard"/>
 <entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
 
