@@ -147,9 +147,10 @@ public class WindowPropertiesAttribute extends Parameter implements
      *  value of this attribute is malformed in any way, then just
      *  return false.
      *
-     *  <p>If the x or y position is less than 0 or greater than the
-     *  width or height height of the screen, then offset the position
-     *  by 30 pixels so the user can drag the window.
+     *  <p>If the x or y position is less than 0 pixels or greater
+     *  than (width - 10 pixels) or (height - 10) pixels of the
+     *  screen, then offset the position by 30 pixels so the user can
+     *  drag the window.
      *
      *  @param frame The frame whose properties are to be set.
      *  @return True if successful.
@@ -179,7 +180,7 @@ public class WindowPropertiesAttribute extends Parameter implements
             int height = ((IntToken) boundsToken.getElement(3)).intValue();
 
             // If x or y is less than 0 or greater than the width or
-            // height of the screen, then offset them by 30 pixels so
+            // height of the screen - 10, then offset them by 30 pixels so
             // the user can drag the window.
             // FIXME: If we change the size, should we mark the model
             // as dirty so it gets saved?
@@ -189,9 +190,9 @@ public class WindowPropertiesAttribute extends Parameter implements
             y = (y < 0 ? 30 : y);
 
             Toolkit tk = Toolkit.getDefaultToolkit();
-            x = (x > tk.getScreenSize().width ? tk.getScreenSize().width - 30
+            x = (x > tk.getScreenSize().width - 10 ? tk.getScreenSize().width - 30
                     : x);
-            y = (y > tk.getScreenSize().height ? tk.getScreenSize().height - 30
+            y = (y > tk.getScreenSize().height - 10 ? tk.getScreenSize().height - 30
                     : y);
 
             frame.setBounds(x, y, width, height);
