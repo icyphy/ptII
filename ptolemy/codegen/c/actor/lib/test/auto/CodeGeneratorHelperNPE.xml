@@ -9,36 +9,36 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 65.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={129, 29, 815, 516}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={40, 29, 854, 470}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 354]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{461.0175978535354, 450.9912997159091}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{319.5, 177.0}">
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
         <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{525, 315}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 70.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model used to throw a NullPointerException (NPE) in CodeGeneratorHelper.&#10;For a graphical version of this model, see&#10;codegen/c/actor/lib/gui/test/auto/SoSlow.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 525.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 280.0]">
         </property>
     </property>
     <port name="port" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 450.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 185.0]">
         </property>
     </port>
     <entity name="PolarToCartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, 430.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 185.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -48,7 +48,7 @@
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="PI/180.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 475.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 230.0]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
@@ -58,7 +58,7 @@
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 140.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -66,7 +66,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{605.0, 430.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 185.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -76,7 +76,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="{405.0, 385.0}">
+        <vertex name="vertex1" value="[270.0, 140.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
