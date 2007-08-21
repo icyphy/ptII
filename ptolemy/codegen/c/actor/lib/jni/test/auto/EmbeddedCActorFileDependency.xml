@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{185, 55}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -31,7 +31,7 @@
         </property>
     </property>
     <entity name="EmbeddedCActor" class="ptolemy.actor.lib.jni.EmbeddedCActor">
-        <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies ***/&#10;EmbeddedCActorFileDependencyDefinition.c&#10;/**/&#10;&#10;/***preinitBlock***/&#10;#include &quot;EmbeddedCActorFileDependencyDefinition.c&quot;&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;$ref(output) = fortytwo($ref(input));&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+        <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies ***/&#10;$CLASSPATH/ptolemy/codegen/c/actor/lib/jni/test/EmbeddedCActorFileDependencyDefinition.c&#10;/**/&#10;&#10;/***preinitBlock***/&#10;#include &quot;EmbeddedCActorFileDependencyDefinition.c&quot;&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;$ref(output) = fortytwo($ref(input));&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{185, 195}">
         </property>
@@ -61,12 +61,6 @@
             <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
