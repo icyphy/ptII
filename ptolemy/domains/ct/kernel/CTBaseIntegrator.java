@@ -325,7 +325,13 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
      *  parameter does not contain a valid token.
      */
     public void initialize() throws IllegalActionException {
-        CTDirector dir = (CTDirector) getDirector();
+        CTDirector dir = null;
+        try { 
+            dir = (CTDirector) getDirector();
+        } catch (ClassCastException ex) {
+            throw new IllegalActionException(this, ex, "Failed to cast \""
+                    + getDirector() + "\" to a CTDirector.");
+        }
 
         if (dir == null) {
             throw new IllegalActionException(this, " no director available");
