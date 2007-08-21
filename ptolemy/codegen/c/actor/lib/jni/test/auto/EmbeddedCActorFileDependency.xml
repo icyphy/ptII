@@ -33,7 +33,7 @@
     <entity name="EmbeddedCActor" class="ptolemy.actor.lib.jni.EmbeddedCActor">
         <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies ***/&#10;$CLASSPATH/ptolemy/codegen/c/actor/lib/jni/test/EmbeddedCActorFileDependencyDefinition.c&#10;/**/&#10;&#10;/***preinitBlock***/&#10;#include &quot;EmbeddedCActorFileDependencyDefinition.c&quot;&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;$ref(output) = fortytwo($ref(input));&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{185, 195}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 145.0]">
         </property>
         <property name="CodeGenerator_AutoAdded" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
             <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen/">
@@ -61,6 +61,12 @@
             <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
@@ -75,16 +81,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{400, 205}">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="EmbeddedCActor.input" relation="relation"/>
-    <link port="EmbeddedCActor.output" relation="relation2"/>
-    <link port="Ramp.output" relation="relation"/>
-    <link port="Test.input" relation="relation2"/>
+    <link port="EmbeddedCActor.input" relation="relation4"/>
+    <link port="EmbeddedCActor.output" relation="relation3"/>
+    <link port="Ramp.output" relation="relation4"/>
+    <link port="Test.input" relation="relation3"/>
 </entity>

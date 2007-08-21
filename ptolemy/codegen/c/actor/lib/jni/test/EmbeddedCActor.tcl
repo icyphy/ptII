@@ -55,9 +55,9 @@ test EmbeddedCActor-1.1 {Don't generate code each time the model } {
     java::new ptolemy.actor.gui.MoMLSimpleApplication auto/Scale.xml
     set userHome [java::call ptolemy.util.StringUtilities getProperty user.home]
     set codegenHome "$userHome/codegen"
-    set javaFileMtime [file mtime $codegenHome/ScaleEmbeddedCActor0.java]
+    set javaFileMtime [file mtime $codegenHome/ScaleEmbeddedCActor20.java]
     java::new ptolemy.actor.gui.MoMLSimpleApplication auto/Scale.xml
-    if {$javaFileMtime != [file mtime $codegenHome/ScaleEmbeddedCActor0.java]} {
+    if {$javaFileMtime != [file mtime $codegenHome/ScaleEmbeddedCActor20.java]} {
 	error "The file $codegenHome/ScaleEmbeddedCActor0.java was updated even though the model did not change"
 }
     list 1
