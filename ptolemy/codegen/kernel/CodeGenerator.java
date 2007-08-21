@@ -344,6 +344,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // List actors = get all actors
         // for each actor in actors
         // 		actor._analyzeActor();
+        // Reset the indent to zero.
+        _indent = 0;
 
         _codeFileName = null;
         _sanitizedModelName = CodeGeneratorHelper.generateName(_model);
@@ -1415,7 +1417,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      * A static list of all primitive types supported by the code generator. 
      */
     protected static final List _primitiveTypes = Arrays.asList(new String[] {
-        "Int", "Double", "String", "Long", "Boolean" });
+        "Int", "Double", "String", "Long", "Boolean", "UnsignedByte" });
 
     /** The sanitized model name. */
     protected String _sanitizedModelName;

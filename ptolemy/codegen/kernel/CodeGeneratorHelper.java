@@ -234,9 +234,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         : ptType == BaseType.STRING ? "String"
                                 : ptType == BaseType.DOUBLE ? "Double"
                                         : ptType == BaseType.BOOLEAN ? "Boolean"
-                                                : ptType instanceof ArrayType ? "Array"
-                                                        : ptType instanceof MatrixType ? "Matrix"
-                                                                : "Token";
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
+                                                        : ptType instanceof ArrayType ? "Array"
+                                                                : ptType instanceof MatrixType ? "Matrix"
+                                                                        : "Token";
 
         //if (result.length() == 0) {
         //    throw new IllegalActionException(
@@ -411,7 +412,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         : ptType == BaseType.DOUBLE ? "double"
                                 : ptType == BaseType.BOOLEAN ? "boolean"
                                         : ptType == BaseType.LONG ? "long"
-                                               : "Token";
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "unsigned char"
+                                                        : "Token";
     }
 
     /**
@@ -1996,9 +1998,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             //}
             int[] bufferSizes = new int[length];
             _bufferSizes.put(port, bufferSizes);
-
-            Director directorHelper = (Director) _getHelper(((Actor) _component)
-                    .getExecutiveDirector());
+            
+            ptolemy.actor.Director director = ((Actor) _component).getExecutiveDirector();
+            if (director == null) {
+                // _component is at the top level. Use it's local director.
+                director = ((Actor) _component).getDirector();
+            }
+            Director directorHelper = (Director) _getHelper(director);
 
             for (int i = 0; i < port.getWidth(); i++) {
                 int bufferSize = directorHelper.getBufferSize(port, i);
