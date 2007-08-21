@@ -652,7 +652,7 @@ public class CTScheduler extends Scheduler {
         DirectedAcyclicGraph arithmeticGraph = _toGraph(arithmeticActors);
 
         if (!arithmeticGraph.isAcyclic()) {
-            throw new NotSchedulableException(
+            throw new NotSchedulableException(this,
                     "Arithmetic loops are not allowed in the CT domain.");
         }
 
