@@ -27,16 +27,10 @@
  */
 package ptolemy.codegen.c.actor.lib.jni;
 
-import java.util.List;
 import java.util.Set;
 
-import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.codegen.kernel.CodeGenerator;
-import ptolemy.codegen.kernel.StaticSchedulingCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// EmbeddedCActor
@@ -65,12 +59,12 @@ public class EmbeddedCActor extends CompiledCompositeActor {
 
     /** A placeholder or dummy actor used in Embedded C code generation.
      */
-    public static class DummyActor extends CCodeGeneratorHelper {
+    public static class EmbeddedActor extends CCodeGeneratorHelper {
 
-        /** Create a DummyActor.
+        /** Create a EmbeddedActor.
          *  @param actor The associated actor.
          */   
-        public DummyActor(ptolemy.actor.lib.jni.EmbeddedCActor.DummyActor
+        public EmbeddedActor(ptolemy.actor.lib.jni.EmbeddedCActor.EmbeddedActor
                 actor) {
             super(actor);
         }
