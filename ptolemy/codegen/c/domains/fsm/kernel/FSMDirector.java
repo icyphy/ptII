@@ -111,7 +111,7 @@ public class FSMDirector extends Director {
                     }
                 });
 
-        code.append("}");
+        code.append("}" + _eol);
 
         return code.toString();
     }
