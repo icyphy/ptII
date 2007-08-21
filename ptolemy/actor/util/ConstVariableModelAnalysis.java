@@ -94,6 +94,13 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Yellow (neuendor)
  */
 public class ConstVariableModelAnalysis {
+    /** Create a dummy analysis for actors that are not contained
+     *  in a model.
+     */
+    public ConstVariableModelAnalysis() {
+        _variableToChangeContext = new HashMap();
+    }
+
     /** Analyze the given model to determine which variables must be
      *  constants and which variables may change dynamically during
      *  execution.  In addition, store the intermediate results for
@@ -156,18 +163,22 @@ public class ConstVariableModelAnalysis {
      */
     public static ConstVariableModelAnalysis getAnalysis(NamedObj object)
             throws IllegalActionException {
-        CompositeActor toplevel = (CompositeActor) object.toplevel();
-        Manager manager = toplevel.getManager();
-
-        ConstVariableModelAnalysis analysis = (ConstVariableModelAnalysis) manager
-                .getAnalysis("ConstVariableModelAnalysis");
-
-        if (analysis == null) {
-            analysis = new ConstVariableModelAnalysis(toplevel);
-            manager.addAnalysis("ConstVariableModelAnalysis", analysis);
+        if(object.toplevel() instanceof CompositeActor) {
+            CompositeActor toplevel = (CompositeActor) object.toplevel();
+            Manager manager = toplevel.getManager();
+  
+            ConstVariableModelAnalysis analysis = (ConstVariableModelAnalysis) manager
+                    .getAnalysis("ConstVariableModelAnalysis");
+  
+            if (analysis == null) {
+                analysis = new ConstVariableModelAnalysis(toplevel);
+                manager.addAnalysis("ConstVariableModelAnalysis", analysis);
+            }
+  
+            return analysis;
+        } else {
+            return new ConstVariableModelAnalysis();
         }
-
-        return analysis;
     }
 
     /** Return the change context of the given variable.  This an
