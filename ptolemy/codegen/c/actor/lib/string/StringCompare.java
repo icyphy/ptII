@@ -60,8 +60,7 @@ public class StringCompare extends CCodeGeneratorHelper {
      * @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
-        Set files = new HashSet();
-        files.addAll(super.getHeaderFiles());
+        Set files = super.getHeaderFiles();
         files.add("<string.h>");
         return files;
     }

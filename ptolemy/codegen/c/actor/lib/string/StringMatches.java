@@ -60,8 +60,7 @@ public class StringMatches extends CCodeGeneratorHelper {
      * @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
-        Set files = new HashSet();
-        files.addAll(super.getHeaderFiles());
+        Set files = super.getHeaderFiles();
         // FIXME: This uses the GNU Regex library, which is only
         // supported on *nix. It is *NOT* a feature of Standard C.
         files.add("<regex.h>");

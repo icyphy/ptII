@@ -86,7 +86,7 @@ public class Round extends CCodeGeneratorHelper {
      * @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
-        Set files = new HashSet();
+        Set files = super.getHeaderFiles();
         files.add("<limits.h>");
         files.add("<math.h>");
         return files;

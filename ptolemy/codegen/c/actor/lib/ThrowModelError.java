@@ -84,8 +84,7 @@ public class ThrowModelError extends Sink {
      * @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
-        Set files = new HashSet();
-        files.addAll(super.getHeaderFiles());
+        Set files = super.getHeaderFiles();
         files.add("<stdio.h>");
         return files;
     }

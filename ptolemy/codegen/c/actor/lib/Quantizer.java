@@ -106,8 +106,7 @@ public class Quantizer extends CCodeGeneratorHelper {
      * @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
-        super.getHeaderFiles();
-        Set files = new HashSet();
+        Set files = super.getHeaderFiles();
         files.add("<stdio.h>");
         files.add("<math.h>");
         return files;

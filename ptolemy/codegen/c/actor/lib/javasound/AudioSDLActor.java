@@ -66,7 +66,7 @@ public class AudioSDLActor extends CCodeGeneratorHelper {
      * @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
-        Set files = new HashSet();
+        Set files = super.getHeaderFiles();
 
         _codeGenerator.addInclude("-I/usr/local/include/SDL");
 

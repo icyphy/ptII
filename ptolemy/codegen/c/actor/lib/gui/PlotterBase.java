@@ -183,6 +183,8 @@ public class PlotterBase extends CCodeGeneratorHelper {
      *  @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
-        return getJVMHeaderFiles();
+        Set files = super.getHeaderFiles();
+        files.addAll(getJVMHeaderFiles());
+        return files;
     }
 }
