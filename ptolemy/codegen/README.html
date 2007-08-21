@@ -49,7 +49,20 @@ $PTII/bin/vergil -codegen
 </ul>
 
 <h2><a name="FAQ">FAQ</a>
+<h3><a name="ProblemsGeneratingCode">Problems Generating Code</a></h3>
+
 <dl>
+<dt> Generating code results in <code>IOException: java.io.IOException: CreateProcess: make -f <i>Model</i>.mk error=2</code>
+<dl> This will happen if <code>make</code> is not in your path.
+Under Windows, you may need to install Cygwin, see the
+<a
+href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm">Ptolemy
+II Cygwin installer</a>.  Under Windows, if Cygwin is installed, then
+be sure that <code>C:\cygwin\bin</code> is in your Windows path.
+To edit your path, do <CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt;
+<CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt;
+<CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>.
+
 <dt> Models that use a plotter fail to compile.
 <dd> Models that use the plotter use the Java Native Interface (JNI)
 to invoke the plotter from within the C process. This is done
@@ -64,6 +77,11 @@ with message like:
 <pre>
 make: *** [Ramp] Error 1
 </pre>
+
+</dl>
+
+<h3><a name="ProblemsRunninge">Problems Running</a></h3>
+<dl>
 
 <dt> Models that use the plotter require setup
 <dd> To properly run a model that has a plotter, you must have jvm.dll
@@ -89,20 +107,54 @@ and adding <CODE>C:\cygwin\bin</CODE> to the path.
 <pre>
 make -f <I>Model</I>.mk CC_FLAGS=-mwindows
 </pre>
-
-<dt> Generating code results in <code>IOException: java.io.IOException: CreateProcess: make -f <i>Model</i>.mk error=2</code>
-<dl> This will happen if <code>make</code> is not in your path.
-Under Windows, you may need to install Cygwin, see the
-<a
-href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/cygwin.htm">Ptolemy
-II Cygwin installer</a>.  Under Windows, if Cygwin is installed, then
-be sure that <code>C:\cygwin\bin</code> is in your Windows path.
-To edit your path, do <CODE>Start Menu </CODE> -&gt; <CODE>Settings</CODE> -&gt;
-<CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt;
-<CODE>Advanced</CODE> -&gt; <CODE>Environment Variables</CODE>.
-
 </dl>
 
+<h3><a name="Extending">Extending the Code Generator</a></h3>
+
+<dl>
+<dt> Why are some of my ports being generated as Tokens in the C output?
+<dd> 
+
+The simple rule for the the type resolution in codegen is that any
+resolved Ptolemy types the codegen kernel defines to be non-primitive
+will be Token type in the generated code. User code (helper classes)
+is responsible for making the distinction between different data
+types, which mean the helper code may have different code blocks for
+handling different resolved type in the generated code.  The
+CodeGeneratorHelper.isPrimitive() method is what is used to determine
+if a type is primitive.  Also, a good example to look at is the
+codegen/c/actor/lib/ArrayElement helper.
+
+
+<dt> How do I get timing data from the C output
+<dd> At the top of the generated C file, insert
+<pre>
+#include <sys/time.h>
+</pre>
+At the beginning of <code>main()</code> method, insert:
+<pre>
+struct timespec start, end;
+double dT = 0.0;
+clock_gettime(CLOCK_REALTIME, &start);
+</pre>
+
+Toward the end of <code>main()</code> method, insert:
+
+<pre>
+clock_gettime(CLOCK_REALTIME, &end);
+dT = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) * 1.0e-9;
+printf("execution time: %g seconds\n", dT);
+</pre>
+
+You can also get the time resolution of your system by inserting the following code:
+
+<pre>
+struct timespec res;
+clock_getres(CLOCK_REALTIME, &res);
+printf(" time resolution: %ld ns\n", res.tv_nsec);
+</pre>
+
+</dl>
 
 </body>
 </html>
