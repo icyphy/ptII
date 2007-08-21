@@ -110,8 +110,8 @@ public class EmbeddedCActor extends CompiledCompositeActor {
                 + "/***fireBlock***/\n"
                 + "// Assuming you have added an input port named \"input\"\n"
                 + "// and an output port named \"output\", then the following\n"
-                + "// line results in the input being copied to the output."
-                + "$ref(output) = $ref(input);\n"
+                + "// line results in the input being copied to the output.\n"
+                + "//$ref(output) = $ref(input);\n"
                 + "/**/\n\n" 
                 + "/***wrapupBlock***/\n"
                 + "/**/\n\n");
