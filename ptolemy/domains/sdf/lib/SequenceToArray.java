@@ -127,7 +127,7 @@ public class SequenceToArray extends SDFTransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SequenceToArray newObject = (SequenceToArray) (super.clone(workspace));
         try {
-            newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.input));
+            newObject.output.setTypeAtLeast(ActorTypeUtil.arrayOf(newObject.input, newObject.arrayLength));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

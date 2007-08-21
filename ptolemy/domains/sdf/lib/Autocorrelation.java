@@ -228,12 +228,8 @@ public class Autocorrelation extends SDFTransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Autocorrelation newObject = (Autocorrelation) super.clone(workspace);
         newObject.input.setTypeAtLeast(new FunctionTerm(newObject.input));
-        try {
-            newObject.output.setTypeAtLeast(ArrayType.arrayOf(newObject.input));
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(e);
-        }
-
+        newObject.output.setTypeAtLeast(newObject.new OutputTypeTerm());
+        
         return newObject;
     }
 
