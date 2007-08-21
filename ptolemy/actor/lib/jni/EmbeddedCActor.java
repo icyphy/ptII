@@ -43,7 +43,11 @@ import ptolemy.vergil.toolbox.TextEditorConfigureFactory;
 ////EmbeddedCActor
 
 /**
- An actor of this class executes compiled embedded C Code.  
+ An actor of this class executes compiled embedded C Code.
+ To use it, double click on the actor and insert C code into
+ the code templates, as indicated by the sample template.
+ Normally you will also need to add ports to the actor.
+ You may need to set the types of these ports as well.
 
  @author Gang Zhou
  @version $Id$
@@ -68,10 +72,6 @@ public class EmbeddedCActor extends CompiledCompositeActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
-        input = new TypedIOPort(this, "input", true, false);
-        
-        output = new TypedIOPort(this, "output", false, true);
-        
         embeddedCCode = new StringAttribute(this, "embeddedCCode");
 
         // Set the visibility to expert, as casual users should
@@ -92,6 +92,9 @@ public class EmbeddedCActor extends CompiledCompositeActor {
         // /**/
         //
         // /***fireBlock***/
+        // // Assuming you have added an input port named "input"
+        // // and an output port named "output", then the following
+        // // line results in the input being copied to the output.
         // $ref(output) = $ref(input);   
         // /**/
         //
@@ -105,6 +108,9 @@ public class EmbeddedCActor extends CompiledCompositeActor {
                 + "/***initBlock***/\n"
                 + "/**/\n\n"
                 + "/***fireBlock***/\n"
+                + "// Assuming you have added an input port named \"input\"\n"
+                + "// and an output port named \"output\", then the following\n"
+                + "// line results in the input being copied to the output."
                 + "$ref(output) = $ref(input);\n"
                 + "/**/\n\n" 
                 + "/***wrapupBlock***/\n"
@@ -132,17 +138,6 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input to the actor.  The C code can refer to the value of this
-     *  port with <code>$ref(input)</code>.  Add other ports as necessary.
-     */   
-    public TypedIOPort input;
-    
-
-    /** Output from the actor.  The C code can refer to the value of this
-     *  port with <code>$ref(output)</code>.  Add other ports as necessary.
-     */   
-    public TypedIOPort output;
-    
     /** The C code that specifies the function of this actor.
      *  The default value provides a template for an identity function.
      */
@@ -150,14 +145,14 @@ public class EmbeddedCActor extends CompiledCompositeActor {
 
     public void preinitialize() throws IllegalActionException {
         try {
-            _dummyActor = new DummyActor(this, "DummyActor");
+            _embeddedActor = new EmbeddedActor(this, "EmbeddedActor");
             
             int i = 0;
             Iterator ports = portList().iterator();
             while (ports.hasNext()) {
                 TypedIOPort port = (TypedIOPort) ports.next();
                 TypedIOPort newPort = (TypedIOPort) port.clone(workspace());
-                newPort.setContainer(_dummyActor);
+                newPort.setContainer(_embeddedActor);
                 TypedIORelation relation 
                         = new TypedIORelation(this, "relation" + i++); 
                 port.link(relation);
@@ -180,7 +175,7 @@ public class EmbeddedCActor extends CompiledCompositeActor {
                         = (TypedIORelation) port.insideRelationList().get(0);
                 relation.setContainer(null);
             }
-            _dummyActor.setContainer(null);
+            _embeddedActor.setContainer(null);
         } catch (NameDuplicationException ex) {
             // should not happen.
             throw new IllegalActionException(this, "name duplication.");
@@ -208,15 +203,15 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     }
     */
        
-    private DummyActor _dummyActor = null;
+    private EmbeddedActor _embeddedActor = null;
     
     /** An actor inside the EmbeddedCActor that is used as a dummy
-     *  placeholder.  The DummyActor is created in preinitialize() where
-     *  ports from the outer EmbeddedCActor are connected to the DummyActor.
-     *  The DummyActor is destroyed in wrapup().   
+     *  placeholder.  The EmbeddedActor is created in preinitialize() where
+     *  ports from the outer EmbeddedCActor are connected to the EmbeddedActor.
+     *  The EmbeddedActor is destroyed in wrapup().   
      */
-    public static class DummyActor extends TypedAtomicActor {
-        /** Create a new instance of DummyActor.
+    public static class EmbeddedActor extends TypedAtomicActor {
+        /** Create a new instance of EmbeddedActor.
          *  @param container The container.
          *  @param name The name of this actor within the container.
          *  @exception IllegalActionException If this actor cannot be contained
@@ -224,7 +219,7 @@ public class EmbeddedCActor extends CompiledCompositeActor {
          *  @exception NameDuplicationException If the name coincides with
          *   an entity already in the container.
          */
-        public DummyActor(CompositeEntity container, String name)
+        public EmbeddedActor(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
