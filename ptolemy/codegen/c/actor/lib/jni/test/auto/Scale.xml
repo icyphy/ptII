@@ -34,6 +34,9 @@
     <entity name="EmbeddedCActor2" class="ptolemy.actor.lib.jni.EmbeddedCActor">
         <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies***/&#10;/**/&#10;&#10;/***preinitBlock***/&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;// Assuming you have added an input port named &quot;input&quot;&#10;// and an output port named &quot;output&quot;, then the following&#10;// line results in the input being copied to the output.&#10;$ref(output) = 2 * $ref(input);&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
         </property>
+            <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode"/>
+            </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{265, 135}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">

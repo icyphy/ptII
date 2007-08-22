@@ -127,12 +127,6 @@ public class EmbeddedCActor extends CompiledCompositeActor {
         invokeJNI.setExpression("true");
         
         new SDFDirector(this, "SDFDirector");
-        
-        // FIXME: We may not want this GUI dependency here...
-        // This attribute could be put in the MoML in the library instead
-        // of here in the Java code.
-        new TextEditorConfigureFactory(this, "_textEditorConfigureFactory")
-                .attributeName.setExpression("embeddedCCode");
     }
 
     ///////////////////////////////////////////////////////////////////

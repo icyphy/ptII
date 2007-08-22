@@ -33,6 +33,9 @@
     <entity name="EmbeddedCActor" class="ptolemy.actor.lib.jni.EmbeddedCActor">
         <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies ***/&#10;$CLASSPATH/ptolemy/codegen/c/actor/lib/jni/test/EmbeddedCActorFileDependencyDefinition.c&#10;/**/&#10;&#10;/***preinitBlock***/&#10;#include &quot;EmbeddedCActorFileDependencyDefinition.c&quot;&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;$ref(output) = fortytwo($ref(input));&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
         </property>
+            <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode"/>
+            </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 145.0]">
         </property>
         <property name="CodeGenerator_AutoAdded" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
