@@ -77,10 +77,10 @@ import ptolemy.util.StringUtilities;
 //// CompiledCompositeActor
 
 /**
- A CompiledCompositeActor is an aggregation of typed actors with 
- cosimulation option.
+ A composite actor that can be optionally code generated and then
+ invoked via the Java Native Interface (JNI).
 
- @author Gang Zhou, contributor: Christopher Brooks
+ @author Gang Zhou, contributors: Christopher Brooks, Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.1
  @Pt.ProposedRating red (zgang)
@@ -159,8 +159,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     public Parameter inline;
     
-    /** If true, then invoke the Java Native Interface (JNI).
-     *  The default value is false.  Classes like EmbeddedCActor
+    /** If true, then invoke the generated code in the action methods
+     *  (fire(), etc.) using the Java Native Interface (JNI).
+     *  The default value is false, which results in this actor
+     *  executing like an ordinary composite actor.  Classes like EmbeddedCActor
      *  set invokeJNI to true when there is only C code specifying
      *  the functionality of an actor.   
      */
@@ -174,11 +176,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read the inputs, invoke the jni fire() method and transfer
-     *  data to the outputs.  If the <i>invokeJNI</i> parameter is false
-     *  then super.fire() is called, otherwise we invoke the jni fire()
-     *  method of the wrapper class.
-     *
+    // FIXME: preinitialize(), prefire(), and postfire() are all automatically
+    // delegated to the superclass, because they are not overridden here.
+    // Is that right?  It seems that codegen is not following the actor
+    // semantics yet.
+    
+    /** If <i>invokeJNI</i> is true, then execute the fire() method
+     *  of the generated code via JNI. Otherwise, delegate to the
+     *  superclass, which executes this actor like an ordinary composite
+     *  actor.
      *  @exception IllegalActionException If thrown by the super
      *  class, or if there are problems invoking the fire() method of
      *  wrapper class.   
@@ -261,13 +267,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         return _sanitizedActorName;
     }
 
-    /** Initialize this actor by optionally generating and compiling
-     *  code and invoking the initialize method of the JNI wrapper
-     *  class.
-     *  If the <i>invokeJNI</i> parameter is false, then only the
-     *  parent method is called and code is not generated, compiled
-     *  nor invoked.
-     *   
+    /** If <i>invokeJNI</i> is true, then generate and compile the
+     *  code (if necessary), and then execute the initialize() method
+     *  of the generated code via JNI. Otherwise, delegate to the
+     *  superclass, which initializes this actor like an ordinary composite
+     *  actor.
      *  @exception IllegalActionException If there is no director, or
      *   if the director's initialize() method throws it, or if the
      *   actor is not opaque.
@@ -374,9 +378,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         }
     }
 
-    /** If this actor is opaque, then invoke the wrapup() method of the local
-     *  director. This method is read-synchronized on the workspace.
-     *
+    /** If <i>invokeJNI</i> is true, then execute the wrapup() method
+     *  of the generated code via JNI. Otherwise, delegate to the
+     *  superclass, which executes this actor like an ordinary composite
+     *  actor.
      *  @exception IllegalActionException If there is no director,
      *   or if the director's wrapup() method throws it, or if this
      *   actor is not opaque.
@@ -407,7 +412,6 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
 
     /** Compile the Java code.
      *  The <code>javac</code> and <code>javah</code> commands are
