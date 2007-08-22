@@ -125,6 +125,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
         inline.setExpression("false");
+        
+        measureTime = new Parameter(this, "measureTime");
+        measureTime.setTypeEquals(BaseType.BOOLEAN);
+        measureTime.setExpression("false");
 
         overwriteFiles = new Parameter(this, "overwriteFiles");
         overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
@@ -200,6 +204,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  value false.
      */
     public Parameter inline;
+    
+    /** If true, generate code to meausre the execution time. 
+     *  The default value is a parameter with the value false.
+     */
+    public Parameter measureTime;
 
     /** If true, overwrite preexisting files.  The default
      *  value is a parameter with the value true.
@@ -456,6 +465,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
+            if (((BooleanToken) measureTime.getToken()).booleanValue()) {
+                code.append(_measureStartTime());
+            }
+            
             if (containsCode(variableInitCode)
                     || containsCode(initializeCode)) {
                 code.append(initializeProcedureName);
@@ -466,8 +479,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // If the container is in the top level, we are generating code 
         // for the whole model.
-        if (isTopLevel() && containsCode(wrapupCode)) {
-            code.append(wrapupProcedureName);
+        if (isTopLevel()) {
+            if (((BooleanToken) measureTime.getToken()).booleanValue()) {
+                code.append(_measureEndTime());
+            }
+            if (containsCode(wrapupCode)) {
+                code.append(wrapupProcedureName);
+            }
         }
 
         code.append(mainExitCode);
@@ -1235,6 +1253,22 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return false;
     }
 
+    /** Generate the code for measuring the execution end time and total
+     *  execution time.
+     *  @return Return the code for measuring the execution end time and total
+     *  execution time.
+     */
+    protected String _measureEndTime() {
+        return comment("measure end time");
+    }  
+    
+    /** Generate the code for measuring the execution start time.
+     *  @return Return the code for measuring the execution start time.
+     */
+    protected String _measureStartTime() {
+        return comment("measure start time");
+    }    
+    
     /** Print the elapsed time.
      *  @param startTime The starting time.  Usually set to the value
      *  of <code>(new Date()).getTime()</code>.

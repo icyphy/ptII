@@ -163,6 +163,10 @@ public class CCodeGenerator extends CodeGenerator {
         Set includingFiles = compositeActorHelper.getHeaderFiles();
 
         includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
+        
+        if (isTopLevel() && ((BooleanToken) measureTime.getToken()).booleanValue()) {
+            includingFiles.add("<sys/time.h>");
+        }
 
         if (!isTopLevel()) {
             includingFiles.add("\"" + _sanitizedModelName + ".h\"");
@@ -195,10 +199,10 @@ public class CCodeGenerator extends CodeGenerator {
 
         while (files.hasNext()) {
             String file = (String) files.next();
-
+            
             // Not all embedded platforms have all .h files.
             // For example, the AVR does not have time.h
-            code.append("#ifndef PT_NO_" + file.substring(1, file.length() - 3).toUpperCase() + "_H" + _eol
+            code.append("#ifndef PT_NO_" + file.substring(1, file.length() - 3).replace('/', '_').toUpperCase() + "_H" + _eol
                     + "#include " + file + _eol
                     + "#endif" + _eol);
         }
@@ -794,6 +798,34 @@ public class CCodeGenerator extends CodeGenerator {
         return code;
     }
     
+    /** Generate the code for measuring the execution end time and total
+     *  execution time.
+     *  @return Return the code for measuring the execution end time and total
+     *  execution time.
+     */
+    protected String _measureEndTime() {
+        StringBuffer endCode = new StringBuffer();
+        endCode.append(super._measureEndTime());
+        endCode.append("clock_gettime(CLOCK_REALTIME, &end);\n" +
+                       "dT = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) * 1.0e-9;\n" +
+                       "printf(\"execution time: %g seconds\\n\", dT);\n\n");
+        
+        return endCode.toString();
+    }  
+    
+    /** Generate the code for measuring the execution start time.
+     *  @return Return the code for measuring the execution start time.
+     */
+    protected String _measureStartTime() {
+        
+        StringBuffer startCode = new StringBuffer();
+        startCode.append(super._measureStartTime());
+        startCode.append("struct timespec start, end;\n" +
+                         "double dT = 0.0;\n" +
+                         "clock_gettime(CLOCK_REALTIME, &start);\n\n");
+        
+        return startCode.toString();
+    }
     
     /** Read in a template makefile, substitute variables and write
      *  the resulting makefile.
