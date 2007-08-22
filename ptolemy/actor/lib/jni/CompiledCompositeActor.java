@@ -700,6 +700,17 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             // Invoke the static method that takes a TypedCompositeActor
             // as an argument.
             return generateMethod.invoke(null, new Object[]{this});
+        } catch (java.lang.reflect.InvocationTargetException ex) {
+            // If we get an InvocationTargetException, rethrow the
+            // exception with the proper cause exception so that we
+            // get a better message.
+            Throwable cause = ex.getCause();
+            if (cause instanceof java.lang.reflect.InvocationTargetException) {
+                cause = cause.getCause();
+            }
+            throw new IllegalActionException(this, cause,
+                    "Failed to invoke the \"" + methodName + "\" method in \""
+                    + helperClassName + "\".");
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Failed to invoke the \"" + methodName + "\" method in \""
