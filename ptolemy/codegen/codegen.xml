@@ -8,6 +8,7 @@
         <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
 	    <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false"/>
 	</property>
+        <entity name="CompiledCompositeActor" class="ptolemy.actor.lib.jni.CompiledCompositeActor"/>
         <entity name="EmbeddedCActor" class="ptolemy.actor.lib.jni.EmbeddedCActor">
             <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode"/>
