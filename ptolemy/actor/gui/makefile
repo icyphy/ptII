@@ -64,6 +64,7 @@ PTCLASSJAR =
 # because it requires lib/ptjacl.jar
 PTCLASSALLJARS = \
 	doc/doc.jar \
+	run/run.jar \
 	style/style.jar \
 	unit/unit.jar
 
