@@ -92,6 +92,7 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	ConstClassDefinition.xml \
 	UndoDeleteEntityComposite.xml \
 	p1.moml \
 	p2.moml \
