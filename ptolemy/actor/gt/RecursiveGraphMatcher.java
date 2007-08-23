@@ -188,7 +188,7 @@ public class RecursiveGraphMatcher {
             Set<Relation> visitedRelations, Set<Port> visitedPorts) {
         List<?> relationList = startPort.linkedRelationList();
         if (startPort instanceof ComponentPort) {
-            relationList.addAll(((TypedIOPort) startPort).insideRelationList());
+            ((List) relationList).addAll(((TypedIOPort) startPort).insideRelationList());
         }
 
         int i = 0;
