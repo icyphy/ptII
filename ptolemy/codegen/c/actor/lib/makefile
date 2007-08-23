@@ -79,6 +79,7 @@ JSRCS = \
 	ArrayLevelCrossing.java \
 	ArrayMaximum.java \
 	ArrayMinimum.java \
+	ArrayPeakSearch.java \
 	ArrayToElements.java \
 	Average.java \
 	Bernoulli.java \
@@ -146,6 +147,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ArrayLevelCrossing.c \
 	ArrayMaximum.c \
 	ArrayMinimum.c \
+	ArrayPeakSearch.c \
 	ArrayToElements.c \
 	Average.c \
 	Bernoulli.c \
@@ -171,7 +173,9 @@ OTHER_FILES_TO_BE_JARED = \
 	Maximum.c \
 	Minimum.c \
 	MonitorValue.c \
+	MovingAverage.c \
 	MultiplyDivide.c \
+	Publisher.c \
 	Pulse.c \
 	Quantizer.c \
 	Ramp.c \
@@ -185,6 +189,8 @@ OTHER_FILES_TO_BE_JARED = \
 	Sleep.c \
 	Stop.c \
 	StringConst.c \
+	Subscriber.c \
+	SubscriptionAggregator.c 
 	Synchronizer.c \
 	Test.c \
 	ThrowException.c \
@@ -192,6 +198,8 @@ OTHER_FILES_TO_BE_JARED = \
 	TrigFunction.c \
 	UnaryMathFunction.c \
 	Uniform.c \
+	VectorAssembler.c \
+	VectorDisassembler.c \
 	WallClockTime.c \
 	aggregators.xml \
 	array.xml \
