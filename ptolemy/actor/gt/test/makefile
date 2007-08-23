@@ -71,6 +71,16 @@ EXTRA_SRCS = \
 	host1.6.xml \
 	host1.7.xml \
 	host1.8.xml \
+	host2.1.xml \
+	host2.2.xml \
+	host2.3.xml \
+	host2.4.xml \
+	host2.5.xml \
+	MatchingTest1.tcl \
+	MatchingTest2.tcl \
+	rule2.xml \
+	XMLTest1.tcl \
+	XMLTest2.tcl
 	rule1.xml \
 	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
