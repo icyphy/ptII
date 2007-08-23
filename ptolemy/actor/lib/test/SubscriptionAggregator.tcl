@@ -131,23 +131,23 @@ Called stopFire()
 Added attribute firingsPerIteration to .top.subagg
 Called initialize()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called iterate(1)
-Called prefire(), which returns true
+Called prefire()
 Called fire()
 Called postfire()
 Called wrapup()
