@@ -85,6 +85,7 @@ JSIMPLE_TESTS = \
 	Sinewave.tcl \
 	Scale.tcl \
 	SetVariable.tcl \
+	SubscriptionAggregator.tcl \
 	Test.tcl \
 	TestExceptionHandler.tcl \
 	VariableClock.tcl
@@ -99,6 +100,8 @@ JGRAPHICAL_TESTS = \
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	Exit.xml \
 	FileWriter.xml \
+	PublisherSubscriber2class.xml \
+	PublisherSubscriberInClass.xml \
 	subaggtest.xml \
 	#$(JGRAPHICAL_TESTS)
 
