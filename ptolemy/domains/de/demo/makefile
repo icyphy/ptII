@@ -35,7 +35,8 @@ ME =		ptolemy/domains/de/demo
 ROOT =		../../../..
 
 DIRS =		AssemblyLine HierarchicalModel Inspection LongRuns ModalModel \
-		QueueAndServer TimingParadox SmartSender VariableDelay
+		QueueAndServer TimingParadox RealTimeComposite \
+		SmartSender VariableDelay
 
 CLASSPATH =	$(ROOT)
 
@@ -55,6 +56,7 @@ PTCLASSALLJARS = \
 	Inspection/Inspection.jar \
 	ModalModel/ModalModel.jar \
 	LongRuns/LongRuns.jar \
+	RealTimeComposite/RealTimeComposite.jar \
 	QueueAndServer/QueueAndServer.jar \
 	SmartSender/SmartSender.jar \
 	TimingParadox/TimingParadox.jar \
