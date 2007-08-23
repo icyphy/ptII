@@ -56,8 +56,10 @@ PTCLASSALLJARS = \
 	c/c.jar \
 	demo/demo.jar \
 	gui/gui.jar \
-	kernel/kernel.jar \
-	vhdl/vhdl.jar
+	kernel/kernel.jar
+
+# The vhdl work is incomplete, so we don't include it in the jar
+#	vhdl/vhdl.jar
 
 # Keep this list alphabetized.
 JSRCS =
