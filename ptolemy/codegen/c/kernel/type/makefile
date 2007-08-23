@@ -55,6 +55,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Complex.c \
 	Double.c \
 	Int.c \
+	Long.c \
 	Matrix.c \
 	String.c
 
