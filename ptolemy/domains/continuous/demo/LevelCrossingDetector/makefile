@@ -49,7 +49,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	LevelCrossingDetector.xml \
-	LevelCrossingDetectorAnimated.xml
+	LevelCrossingDetectorDetectingDirections.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
