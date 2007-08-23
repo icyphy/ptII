@@ -30,10 +30,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.actor.AtomicActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.c.kernel.CParseTreeCodeGenerator;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -199,7 +201,6 @@ public class Expression extends CCodeGeneratorHelper {
         Set files = super.getHeaderFiles();
         files.add("<math.h>");
         files.add("<string.h>");
-        files.add("<time.h>"); // Expression has time an iteration keywords.
         return files;
     }
 
@@ -227,7 +228,21 @@ public class Expression extends CCodeGeneratorHelper {
         public Token get(String name) {
             try {
                 if (name.equals("time")) {
-                    return new ObjectToken("time(NULL)");
+                    // If the director has the period set to something other
+                    // than 0, then return the value of _currentTime
+                    // See codegen/kernel/StaticSchedulingCodeGenerator.java.
+                    // FIXME: should we check for period being set anywhere
+                    // in the hierarchy?
+                    Director director = _actor.getDirector();
+                    Attribute period = director.getAttribute("period");
+                    if (period != null) {
+                        Double periodValue = ((DoubleToken) ((Variable) period)
+                                .getToken()).doubleValue();
+                        if (periodValue != 0.0) {
+                            return new ObjectToken("_currentTime");
+                        }
+                    }                            
+                    return new DoubleToken("0.0");
                 } else if (name.equals("iteration")) {
                     return new ObjectToken("$actorSymbol(iterationCount)");
                 }
