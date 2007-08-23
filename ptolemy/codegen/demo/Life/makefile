@@ -55,6 +55,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Life.xml \
 	LifeCG.xml \
 	LifeCGAVR.xml \
+	LifePtalon.ptln \
 	CycleLEDs.mk.in \
 	CycleLEDs.xml \
 	LifeCGAVR.mk.in \
