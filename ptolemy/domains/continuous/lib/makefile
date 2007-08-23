@@ -66,7 +66,7 @@ OTHER_FILES_TO_BE_JARED = \
 	IntegratorIcon.xml \
 	LevelCrossingDetectorIcon.xml \
 	wavegenerators.xml \
-	ZeroCrossingDetector.java
+	ZeroCrossingDetectorIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
