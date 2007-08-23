@@ -94,7 +94,7 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 
 # We need an all rule because doc/makefile has an suball rule
 all:
-	echo "To run the tests, run make tests"
+	@echo "To run the tests, run make tests"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
