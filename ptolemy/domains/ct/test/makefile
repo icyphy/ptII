@@ -62,6 +62,8 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	CTinDEinCT2.xml \
+	CTinDEinCTbase.xml \
 	RampSample.tcl \
 	RandomRamp.tcl \
 	#$(JGRAPHICAL_TESTS)
