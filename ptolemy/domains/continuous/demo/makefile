@@ -34,7 +34,8 @@ ME =		ptolemy/domains/continuous/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		ContinuousInsideDE Integration Lorenz NewtonsCradle Sinusoid Switch
+DIRS =		ContinuousInsideDE HierarchicalModalModel Integration \
+		LevelCrossingDetector Lorenz NewtonsCradle Sinusoid Switch
 
 CLASSPATH =	$(ROOT)
 
@@ -50,8 +51,10 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	ContinuousInsideDE/ContinuousInsideDE.jar \
+	HierarchicalModalModel/HierarchicalModalModel.jar \
 	Integration/Integration.jar \
 	Lorenz/Lorenz.jar \
+	LevelCrossingDetector/LevelCrossingDetector.jar \
 	NewtonsCradle/NewtonsCradle.jar \
 	Sinusoid/Sinusoid.jar \
 	Switch/Switch.jar 
