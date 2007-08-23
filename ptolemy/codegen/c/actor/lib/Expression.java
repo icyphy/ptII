@@ -199,6 +199,7 @@ public class Expression extends CCodeGeneratorHelper {
         Set files = super.getHeaderFiles();
         files.add("<math.h>");
         files.add("<string.h>");
+        files.add("<time.h>"); // Expression has time an iteration keywords.
         return files;
     }
 
