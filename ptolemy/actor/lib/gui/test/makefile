@@ -59,6 +59,7 @@ JGRAPHICAL_TESTS = dummy.tcl
 EXTRA_SRCS =	\
 	$(TCL_SRCS) $(JSRCS) \
 	Display.xml \
+	DisplayArray2.xml \
 	HistogramPlotter.xml \
 	LEDArray.xml \
 	Placeables.xml \
