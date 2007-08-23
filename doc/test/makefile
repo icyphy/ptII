@@ -92,7 +92,9 @@ JAVAFLAGS = -Xmx300m
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
 
-
+# We need an all rule because doc/makefile has an suball rule
+all:
+	echo "To run the tests, run make tests"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
