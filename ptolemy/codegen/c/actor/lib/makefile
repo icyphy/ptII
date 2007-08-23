@@ -190,7 +190,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Stop.c \
 	StringConst.c \
 	Subscriber.c \
-	SubscriptionAggregator.c 
+	SubscriptionAggregator.c \
 	Synchronizer.c \
 	Test.c \
 	ThrowException.c \

@@ -80,7 +80,7 @@ EXTRA_SRCS = \
 	MatchingTest2.tcl \
 	rule2.xml \
 	XMLTest1.tcl \
-	XMLTest2.tcl
+	XMLTest2.tcl \
 	rule1.xml \
 	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
