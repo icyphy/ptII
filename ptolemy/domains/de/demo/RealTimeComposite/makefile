@@ -48,7 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	RealTimeComposite1.xml \
+	RealTimeComposite.xml \
 	RealTimeComposite2.xml \
 	RealTimeComposite3.xml \
 	RealTimeCompositeTones2.xml \
