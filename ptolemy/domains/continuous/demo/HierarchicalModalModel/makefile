@@ -49,7 +49,10 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	HierarchicalModalModel.xml \
-	HierarchicalModalModelAnimated.xml
+	HierarchicalModalModel1.xml \
+	HierarchicalModalModel2.xml \
+	HierarchicalModalModel3.xml \
+	HierarchicalModalModel4.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
