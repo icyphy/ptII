@@ -90,6 +90,7 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityFileParameter.xml \
 	utilityIntRangeParameter.xml \
 	utilityModalModel.xml \
+	utilityNameParameter.xml \
 	utilityParameter.xml \
 	utilityParameters.xml \
 	utilityPortParameter.xml \
