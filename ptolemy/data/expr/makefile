@@ -90,6 +90,7 @@ JSRCS = \
 	MatlabUtilities.java \
 	ModelScope.java \
         NamedConstantsScope.java \
+	NameParameter.java \
         NestedScope.java \
 	Parameter.java \
 	ParseTreeDumper.java \
