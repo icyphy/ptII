@@ -28,6 +28,7 @@ package ptolemy.vergil.gt;
 
 import java.awt.Color;
 
+import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.SingleRuleTransformer;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -86,12 +87,14 @@ public class GTRuleGraphTableau extends Tableau {
 
         NamedObj model = container.getModel();
 
-        if (!(model instanceof SingleRuleTransformer)) {
+        if (!(model instanceof SingleRuleTransformer
+                || model instanceof CompositeActorMatcher)) {
             throw new IllegalActionException(this,
-                    "Cannot edit a model that is not a SingleRuleTransformer.");
+                    "Cannot edit a model that is not a SingleRuleTransformer " +
+                    "or a CompositeActorMatcher.");
         }
 
-        createGraphFrame((SingleRuleTransformer) model, defaultLibrary);
+        createGraphFrame((CompositeEntity) model, defaultLibrary);
     }
 
     /** Create the graph frame that displays the model associated with
@@ -116,12 +119,14 @@ public class GTRuleGraphTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        if (!(model instanceof SingleRuleTransformer)) {
+        if (!(model instanceof SingleRuleTransformer
+                || model instanceof CompositeActorMatcher)) {
             throw new InternalErrorException(this, null, "Composite Entity \""
-                    + model.getFullName() + "\" is not an instance of SingleRuleTransformer.");
+                    + model.getFullName() + "\" is not an instance of " +
+                    "SingleRuleTransformer or CompositeActorMatcher.");
         }
-        GTRuleGraphFrame frame = new GTRuleGraphFrame((SingleRuleTransformer) model, this,
-                defaultLibrary);
+        GTRuleGraphFrame frame = new GTRuleGraphFrame(
+                (CompositeEntity) model, this, defaultLibrary);
 
         try {
             setFrame(frame);
@@ -167,7 +172,8 @@ public class GTRuleGraphTableau extends Tableau {
 
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
-            if (model instanceof SingleRuleTransformer) {
+            if (model instanceof SingleRuleTransformer
+                    || model instanceof CompositeActorMatcher) {
                 // Check to see whether this factory contains a
                 // default library.
                 LibraryAttribute library = (LibraryAttribute) getAttribute(

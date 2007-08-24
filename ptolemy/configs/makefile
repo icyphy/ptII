@@ -77,6 +77,10 @@ OTHER_FILES_TO_BE_JARED = \
 	fsmTableauFactory.xml \
 	graphEffigyFactory.xml \
 	graphTableauFactory.xml \
+	gtActorLibrary.xml \
+	gtEffigyFactory.xml \
+	gtLibrary.xml \
+	gtRuleTableauFactory.xml \
 	iaEffigyFactory.xml \
 	iaTableauFactory.xml \
 	ptIIplanet.gif \
@@ -90,7 +94,6 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityFileParameter.xml \
 	utilityIntRangeParameter.xml \
 	utilityModalModel.xml \
-	utilityNameParameter.xml \
 	utilityParameter.xml \
 	utilityParameters.xml \
 	utilityPortParameter.xml \

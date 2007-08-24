@@ -111,7 +111,7 @@ implements ChangeListener {
      *  @param entity The model to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      */
-    public GTRuleGraphFrame(SingleRuleTransformer entity, Tableau tableau) {
+    public GTRuleGraphFrame(CompositeEntity entity, Tableau tableau) {
         this(entity, tableau, null);
     }
 
@@ -129,7 +129,7 @@ implements ChangeListener {
      *  @param defaultLibrary An attribute specifying the default library
      *   to use if the model does not have a library.
      */
-    public GTRuleGraphFrame(SingleRuleTransformer entity, Tableau tableau,
+    public GTRuleGraphFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
 
@@ -325,14 +325,19 @@ implements ChangeListener {
         return jgraph;
     }
 
-    private SingleRuleTransformer _getTransformer() {
+    private CompositeActorMatcher _getMatcher() {
         ActorGraphModel graphModel =
             (ActorGraphModel) _controller.getGraphModel();
-        CompositeActorMatcher matcher =
-            (CompositeActorMatcher) graphModel.getPtolemyModel();
-        SingleRuleTransformer transformer =
-            (SingleRuleTransformer) matcher.getContainer();
-        return transformer;
+        return (CompositeActorMatcher) graphModel.getPtolemyModel();
+    }
+
+    private SingleRuleTransformer _getTransformer() {
+        CompositeActorMatcher matcher = _getMatcher();
+        NamedObj parent = matcher.getContainer();
+        while (!(parent instanceof SingleRuleTransformer)) {
+            parent = parent.getContainer();
+        }
+        return (SingleRuleTransformer) parent;
     }
 
     private List<JGraph> _graphs;
@@ -342,8 +347,6 @@ implements ChangeListener {
 
     /** Serial ID */
     private static final long serialVersionUID = 5919681658644668772L;
-
-
 
     /** Create a hierarchy, which is semantically flattened when the matching or
         transformation is performed.
@@ -574,21 +577,30 @@ implements ChangeListener {
             double x;
             double y;
 
-            JGraph graph = (JGraph) _tabbedPane.getSelectedComponent();
+            JGraph graph;
+            NamedObj namedObj;
+            if (_tabbedPane == null) {
+                graph = getJGraph();
+                namedObj = _getMatcher();
+
+            } else {
+                graph = (JGraph) _tabbedPane.getSelectedComponent();
+
+                SingleRuleTransformer transformerActor = _getTransformer();
+                List<?> entityList =
+                    transformerActor.entityList(CompositeActorMatcher.class);
+                Iterator<?> iterator = entityList.iterator();
+                for (int i = 0; i < _tabbedPane.getSelectedIndex(); i++) {
+                    iterator.next();
+                }
+
+                namedObj = (NamedObj) iterator.next();
+            }
+
             Dimension size = graph.getSize();
             x = size.getWidth() / 2;
             y = size.getHeight() / 2;
             double[] point = SnapConstraint.constrainPoint(x, y);
-
-            SingleRuleTransformer transformerActor = _getTransformer();
-            List<?> entityList =
-                transformerActor.entityList(CompositeActorMatcher.class);
-            Iterator<?> iterator = entityList.iterator();
-            for (int i = 0; i < _tabbedPane.getSelectedIndex(); i++) {
-                iterator.next();
-            }
-
-            NamedObj namedObj = (NamedObj) iterator.next();
 
             final String relationName = namedObj.uniqueName("relation");
             final String vertexName = "vertex1";
@@ -609,6 +621,8 @@ implements ChangeListener {
 
         private static final long serialVersionUID = 2208151447002268749L;
     }
+
+    /* Function not available yet. */
 
     /*private class TransformAction extends FigureAction {
 
