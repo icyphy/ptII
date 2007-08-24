@@ -25,28 +25,20 @@
  */
 package ptolemy.vergil.gt;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
-import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.RecursiveGraphMatcher;
@@ -72,15 +64,10 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.basic.EditorDropTarget;
-import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.canvas.Figure;
-import diva.canvas.event.LayerAdapter;
-import diva.canvas.event.LayerEvent;
-import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
 
@@ -97,8 +84,7 @@ import diva.gui.GUIUtilities;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GTRuleGraphFrame extends ExtendedGraphFrame
-implements ChangeListener {
+public class GTRuleGraphFrame extends AbstractGTFrame {
 
     /** Construct a frame associated with the specified case actor.
      *  After constructing this, it is necessary
@@ -138,48 +124,6 @@ implements ChangeListener {
         // helpFile = "ptolemy/configs/doc/vergilFsmEditorHelp.htm";
     }
 
-    /** Set the center location of the visible part of the pane.
-     *  This will cause the panner to center on the specified location
-     *  with the current zoom factor.
-     *  @param center The center of the visible part.
-     *  @see #getCenter()
-     */
-    public void setCenter(Point2D center) {
-        if (_graphs != null) {
-            Rectangle2D visibleRect = getVisibleCanvasRectangle();
-            AffineTransform newTransform = getJGraph().getCanvasPane()
-                    .getTransformContext().getTransform();
-
-            newTransform.translate(visibleRect.getCenterX() - center.getX(),
-                    visibleRect.getCenterY() - center.getY());
-
-            Iterator<JGraph> graphsIterator = _graphs.iterator();
-            while (graphsIterator.hasNext()) {
-                graphsIterator.next().getCanvasPane().setTransform(
-                        newTransform);
-            }
-        }
-    }
-
-    /** React to a change in the state of the tabbed pane.
-     *  @param event The event.
-     */
-    public void stateChanged(ChangeEvent event) {
-        Object source = event.getSource();
-        if (source instanceof JTabbedPane) {
-            Component selected = ((JTabbedPane) source).getSelectedComponent();
-            if (selected instanceof JGraph) {
-                setJGraph((JGraph) selected);
-            }
-            if (_graphPanner != null) {
-                _graphPanner.setCanvas((JGraph) selected);
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
      */
@@ -209,125 +153,16 @@ implements ChangeListener {
         GUIUtilities.addToolBarButton(_toolbar, matchAction);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                          public methods                   ////
-
-    protected GraphPane _createGraphPane(NamedObj entity) {
-        _controller = new ActorEditorGraphController();
-        _controller.setConfiguration(getConfiguration());
-        _controller.setFrame(this);
-
-        // The cast is safe because the constructor only accepts
-        // CompositeEntity.
-        final ActorGraphModel graphModel = new ActorGraphModel(entity);
-        return new GraphPane(_controller, graphModel);
+    protected ActorEditorGraphController _createController() {
+        return new ActorEditorGraphController();
     }
-
-    /** Create the component that goes to the right of the library.
-     *  NOTE: This is called in the base class constructor, before
-     *  things have been initialized. Hence, it cannot reference
-     *  local variables.
-     *  @param entity The entity to display in the component.
-     *  @return The component that goes to the right of the library.
-     */
-    protected JComponent _createRightComponent(NamedObj entity) {
-        if (!(entity instanceof SingleRuleTransformer)) {
-            return super._createRightComponent(entity);
-        }
-
-        _graphs = new LinkedList<JGraph>();
-
-        _tabbedPane = new JTabbedPane() {
-            public void setMinimumSize(Dimension minimumSize) {
-                Iterator<JGraph> graphsIterator = _graphs.iterator();
-                while (graphsIterator.hasNext()) {
-                    graphsIterator.next().setMinimumSize(minimumSize);
-                }
-            }
-
-            public void setPreferredSize(Dimension preferredSize) {
-                Iterator<JGraph> graphsIterator = _graphs.iterator();
-                while (graphsIterator.hasNext()) {
-                    graphsIterator.next().setPreferredSize(preferredSize);
-                }
-            }
-
-            public void setSize(int width, int height) {
-                Iterator<JGraph> graphsIterator = _graphs.iterator();
-                while (graphsIterator.hasNext()) {
-                    graphsIterator.next().setSize(width, height);
-                }
-            }
-
-            /** Serial ID */
-            private static final long serialVersionUID = -4998226270980176175L;
-        };
-        _tabbedPane.addChangeListener(this);
-        Iterator<?> cases = ((SingleRuleTransformer) entity).entityList(
-                CompositeActorMatcher.class).iterator();
-        boolean first = true;
-        while (cases.hasNext()) {
-            CompositeActorMatcher matcher = (CompositeActorMatcher) cases.next();
-            JGraph jgraph = _addTabbedPane(matcher, false);
-            // The first JGraph is the one with the focus.
-            if (first) {
-                first = false;
-                setJGraph(jgraph);
-            }
-            _graphs.add(jgraph);
-        }
-        return _tabbedPane;
-    }
-
-    /** The graph controller.  This is created in _createGraphPane(). */
-    protected ActorEditorGraphController _controller;
 
     /** The case menu. */
     protected JMenu _ruleMenu;
 
-    /** Add a tabbed pane for the specified case.
-     *  @param refinement The case.
-     *  @param newPane True to add the pane prior to the last pane.
-     *  @return The pane.
-     */
-    private JGraph _addTabbedPane(CompositeActorMatcher matcher,
-            boolean newPane) {
-        GraphPane pane = _createGraphPane(matcher);
-        pane.getForegroundLayer().setPickHalo(2);
-        pane.getForegroundEventLayer().setConsuming(false);
-        pane.getForegroundEventLayer().setEnabled(true);
-        pane.getForegroundEventLayer().addLayerListener(new LayerAdapter() {
-            /** Invoked when the mouse is pressed on a layer
-             * or figure.
-             */
-            public void mousePressed(LayerEvent event) {
-                Component component = event.getComponent();
-
-                if (!component.hasFocus()) {
-                    component.requestFocus();
-                }
-            }
-        });
-        JGraph jgraph = new JGraph(pane);
-        String name = matcher.getName();
-        jgraph.setName(name);
-        int index = _tabbedPane.getComponentCount();
-        // Put before the default pane, unless this is the default.
-        if (newPane) {
-            index--;
-        }
-        _tabbedPane.add(jgraph, index);
-        jgraph.setBackground(BACKGROUND_COLOR);
-        // Create a drop target for the jgraph.
-        // FIXME: Should override _setDropIntoEnabled to modify all the drop
-        //        targets created.
-        new EditorDropTarget(jgraph);
-        return jgraph;
-    }
-
     private CompositeActorMatcher _getMatcher() {
         ActorGraphModel graphModel =
-            (ActorGraphModel) _controller.getGraphModel();
+            (ActorGraphModel) _getGraphController().getGraphModel();
         return (CompositeActorMatcher) graphModel.getPtolemyModel();
     }
 
@@ -339,11 +174,6 @@ implements ChangeListener {
         }
         return (SingleRuleTransformer) parent;
     }
-
-    private List<JGraph> _graphs;
-
-    /** The tabbed pane for cases. */
-    private JTabbedPane _tabbedPane;
 
     /** Serial ID */
     private static final long serialVersionUID = 5919681658644668772L;
@@ -579,18 +409,19 @@ implements ChangeListener {
 
             JGraph graph;
             NamedObj namedObj;
-            if (_tabbedPane == null) {
+            JTabbedPane tabbedPane = _getTabbedPane();
+            if (tabbedPane == null) {
                 graph = getJGraph();
                 namedObj = _getMatcher();
 
             } else {
-                graph = (JGraph) _tabbedPane.getSelectedComponent();
+                graph = (JGraph) tabbedPane.getSelectedComponent();
 
                 SingleRuleTransformer transformerActor = _getTransformer();
                 List<?> entityList =
                     transformerActor.entityList(CompositeActorMatcher.class);
                 Iterator<?> iterator = entityList.iterator();
-                for (int i = 0; i < _tabbedPane.getSelectedIndex(); i++) {
+                for (int i = 0; i < tabbedPane.getSelectedIndex(); i++) {
                     iterator.next();
                 }
 

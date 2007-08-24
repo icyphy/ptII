@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.util.Set;
 
+import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.AtomicActor;
+import ptolemy.actor.gt.SingleRuleTransformer;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
@@ -14,13 +16,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.actor.ActorEditorGraphController;
-import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import diva.canvas.Figure;
-import diva.graph.GraphPane;
 
-public class MatchResultViewer extends ExtendedGraphFrame {
+public class MatchResultViewer extends AbstractGTFrame {
 
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -60,14 +59,31 @@ public class MatchResultViewer extends ExtendedGraphFrame {
     }
 
     public void highlightMatchedObject(NamedObj object) {
+        ActorEditorGraphController controller;
+        JTabbedPane tabbedPane = _getTabbedPane();
+        if (tabbedPane == null) {
+            controller = (ActorEditorGraphController) _getGraphController();
+        } else {
+            int index = tabbedPane.getSelectedIndex();
+            controller = (ActorEditorGraphController)
+                    _getGraphs().get(index).getGraphPane().getGraphController();
+        }
         Object location = object.getAttribute("_location");
-        Figure figure = _controller.getFigure(location);
+        Figure figure = controller.getFigure(location);
         _decorator.renderSelected(figure);
     }
 
     public void highlightMatchedObjects() {
         if (_result != null) {
             CompositeEntity model = (CompositeEntity) getModel();
+            if (model instanceof SingleRuleTransformer) {
+                int index = _getTabbedPane().getSelectedIndex();
+                if (index == 0) {
+                    model = ((SingleRuleTransformer) model).getLeftHandSide();
+                } else {
+                    model = ((SingleRuleTransformer) model).getRightHandSide();
+                }
+            }
             Set<?> matchedHostObjects = _result.values();
             for (Object child : model.entityList(AtomicActor.class)) {
                 if (matchedHostObjects.contains(child)) {
@@ -82,29 +98,26 @@ public class MatchResultViewer extends ExtendedGraphFrame {
         highlightMatchedObjects();
     }
 
-    protected GraphPane _createGraphPane(NamedObj entity) {
-        _controller = new ActorEditorGraphController() {
+    protected ActorEditorGraphController _createController() {
+        return new ActorEditorGraphController() {
             public void rerender() {
                 super.rerender();
-                highlightMatchedObjects();
 
                 // Repaint the graph panner after the decorators are rendered.
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
+                        highlightMatchedObjects();
                         if (_graphPanner != null) {
-                            _graphPanner.repaint();
+                            SwingUtilities.invokeLater(new Runnable() {
+                                public void run() {
+                                    _graphPanner.repaint();
+                                }
+                            });
                         }
                     }
                 });
             }
         };
-        _controller.setConfiguration(getConfiguration());
-        _controller.setFrame(this);
-
-        // The cast is safe because the constructor only accepts
-        // CompositeEntity.
-        final ActorGraphModel graphModel = new ActorGraphModel(entity);
-        return new GraphPane(_controller, graphModel);
     }
 
     protected static void _setTableauFactory(Object originator,
@@ -120,9 +133,6 @@ public class MatchResultViewer extends ExtendedGraphFrame {
             _setTableauFactory(originator, (CompositeEntity) subentity);
         }
     }
-
-    /** The graph controller.  This is created in _createGraphPane(). */
-    protected ActorEditorGraphController _controller;
 
     private void _checkContainingViewer() {
         NamedObj toplevel = getModel().toplevel();

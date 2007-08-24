@@ -55,6 +55,7 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	AbstractGTFrame.java \
 	GTRuleGraphFrame.java \
 	GTRuleGraphTableau.java \
 	MatchResultTableau.java \
@@ -69,8 +70,8 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'GTRuleGraphFrame$$1.class' \
-	'GTRuleGraphFrame$$2.class' \
+	'AbstractGTFrame$$1.class' \
+	'AbstractGTFrame$$2.class' \
 	'GTRuleGraphFrame$$CreateHierarchyAction.class' \
 	'GTRuleGraphFrame$$LayoutAction.class' \
 	'GTRuleGraphFrame$$MatchAction.class' \
@@ -78,6 +79,7 @@ OPTIONAL_FILES = \
 	'GTRuleGraphFrame$$NewRelationAction.class' \
 	'GTRuleGraphTableau$$Factory.class' \
 	'MatchResultTableau$$Factory.class' \
+	'MatchResultViewer$$1$$1$$1.class' \
 	'MatchResultViewer$$1$$1.class' \
 	'MatchResultViewer$$1.class'
 
