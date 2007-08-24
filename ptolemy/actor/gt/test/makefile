@@ -26,73 +26,81 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/actor/gt/test
+ME =        ptolemy/actor/gt/test
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =      ../../../..
 
 # XSLTransformer requires saxon
-CLASSPATH =	$(ROOT)
+CLASSPATH = $(ROOT)
 
 # Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
+CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
-	testDefs.tcl
+    testDefs.tcl
 
 JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	MatchingTest1.tcl \
-	MatchingTest2.tcl \
-	XMLTest1.tcl \
-	XMLTest2.tcl
+    MatchingTest1.tcl \
+    MatchingTest2.tcl \
+    XMLTest1.tcl \
+    XMLTest2.tcl \
+    XMLTest3.tcl
 
 # Graphical Java tests.
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JGRAPHICAL_TESTS) to EXTRA_SRCS
 JGRAPHICAL_TESTS = \
-	dummy.tcl
+    dummy.tcl
 
 EXTRA_SRCS = \
-	host1.1.xml \
-	host1.2.xml \
-	host1.3.xml \
-	host1.4.xml \
-	host1.5.xml \
-	host1.6.xml \
-	host1.7.xml \
-	host1.8.xml \
-	host2.1.xml \
-	host2.2.xml \
-	host2.3.xml \
-	host2.4.xml \
-	host2.5.xml \
-	MatchingTest1.tcl \
-	MatchingTest2.tcl \
-	rule2.xml \
-	XMLTest1.tcl \
-	XMLTest2.tcl \
-	rule1.xml \
-	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+    host1.1.xml \
+    host1.2.xml \
+    host1.3.xml \
+    host1.4.xml \
+    host1.5.xml \
+    host1.6.xml \
+    host1.7.xml \
+    host1.8.xml \
+    host2.1.xml \
+    host2.2.xml \
+    host2.3.xml \
+    host2.4.xml \
+    host2.5.xml \
+    host2.6.xml \
+    host3.1.xml \
+    host3.2.xml \
+    host3.3.xml \
+    host3.4.xml \
+    MatchingTest1.tcl \
+    MatchingTest2.tcl \
+    rule1.xml \
+    rule2.xml \
+    rule3.xml \
+    XMLTest1.tcl \
+    XMLTest2.tcl \
+    XMLTest3.tcl \
+    $(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl
+MISC_FILES =    alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-JCLASS =	$(JSRCS:%.java=%.class)
+JCLASS =    $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
@@ -106,7 +114,7 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
-	$(JTCLSH) alljtests.tcl
+    $(JTCLSH) alljtests.tcl
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
