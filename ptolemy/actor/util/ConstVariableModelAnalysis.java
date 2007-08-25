@@ -75,17 +75,21 @@ import ptolemy.kernel.util.NamedObj;
  constant.  This class also recognizes dependence declarations
  represented by the {@link DependencyDeclaration} class.
 
- <p> This class also keeps track of the "change context" of each
- dynamic variable.  The change context of a variable is an actor that
- contains that variable.  During a firing of the actor, the variable's
- value should not change.  This is important for supporting parameter
- changes in the context of domains that perform scheduling based on
- parameter values, like SDF.  The change context of a PortParameter
- with an external connection is the container of the PortParameter.
- The change context of a variable assigned by a finite state machine in
- a modal model is the container of the finite state machine.  The
- change context of asserted not constant variables and variables with
- no expression are assumed to be the toplevel of the model.
+ <p> This class also determines the "least change context" of each
+ dynamic variable.  The least change context of a variable is
+ typically an actor that contains that variable.  During a firing of
+ the least change context, the variable's value is guaraunteed to not
+ change.  This analysis is important for supporting parameter changes
+ in the context of domains that perform scheduling based on parameter
+ values, like SDF and PSDF.  The least change context of a
+ PortParameter with an external connection must be a container of the
+ PortParameter.  The least change context of a variable assigned by a
+ finite state machine in a modal model must be a container of the
+ finite state machine.  The change context of asserted not constant
+ variables and variables with no expression are assumed to be the
+ toplevel of the model.  Note that in some cases (typically when a
+ variable is modified from multiple sources which are not
+ hierarchically related), no least change context may exist.
 
  @author Stephen Neuendorffer
  @version $Id$
@@ -184,6 +188,8 @@ public class ConstVariableModelAnalysis {
     /** Return the change context of the given variable.  This an
      *  actor containing the variable, such that the variable is
      *  guaranteed not to change values during a firing of the actor.
+     *  If the variable is constant, or no change context exists, then
+     *  return null.
      *  @param variable The given variable.
      *  @return The change context of the given variable.
      */
@@ -438,41 +444,46 @@ public class ConstVariableModelAnalysis {
     // return true if a change occurred
     private final boolean _updateChangeContext(Variable variable,
             Entity changeContext) {
-        Entity oldChangeContext = (Entity) _variableToChangeContext
-                .get(variable);
+        if(_variableToChangeContext.keySet().contains(variable)) {
+            Entity oldChangeContext = 
+                (Entity) _variableToChangeContext.get(variable);
+            
+            System.out.println("variable = " + variable);
+            System.out.println("oldChangeContext = " + oldChangeContext);
+            System.out.println("updatedChangeContext = " + changeContext);
+            Entity newChangeContext =
+                _computeBound(changeContext, oldChangeContext);
 
-        //         System.out.println("variable = " + variable);
-        //         System.out.println("oldChangeContext = " + oldChangeContext);
-        //         System.out.println("undatedChangeContext = " + changeContext);
-        Entity newChangeContext = _computeBound(changeContext, oldChangeContext);
-
-        //         System.out.println("newChangeContext = " + newChangeContext);
-        if (newChangeContext != oldChangeContext) {
-            if (newChangeContext != null) {
+            System.out.println("newChangeContext = " + newChangeContext);
+            if (newChangeContext != oldChangeContext) {
                 _variableToChangeContext.put(variable, newChangeContext);
+                      
+                return true;
             }
-
+            return false;
+        } else {
+            _variableToChangeContext.put(variable, changeContext);
             return true;
         }
-
-        return false;
     }
 
     // Return the entity which is contained by the other in the ptolemy
     // hierarchy.  If neither contains the other, then throw an
-    // exception.  If entity2 is null (corresponding to a static
-    // change context), then return entity1.
+    // exception.  If either entity is null (corresponding to a change context
+    // which doesn't exist, then return null.
     private final Entity _computeBound(Entity entity1, Entity entity2) {
-        if ((entity2 == null) || entity2.equals(entity1)) {
+        if((entity1 == null) || (entity2 == null)) {
+            return null;
+        }
+        if (entity2.equals(entity1)) {
             return entity1;
         }
-
         if (entity2.deepContains(entity1)) {
             return entity1;
         } else if (entity1.deepContains(entity2)) {
             return entity2;
         } else {
-            throw new RuntimeException("Illegal change context");
+            return null;
         }
     }
 
