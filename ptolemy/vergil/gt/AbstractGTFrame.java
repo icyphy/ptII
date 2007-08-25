@@ -171,10 +171,12 @@ implements ChangeListener {
     }
 
     protected GraphController _getGraphController() {
-        if (_controller == null) {
-            _controller = null;
+        if (_tabbedPane == null) {
+            return _controller;
+        } else {
+            int index = _tabbedPane.getSelectedIndex();
+            return _graphs.get(index).getGraphPane().getGraphController();
         }
-        return _controller;
     }
 
     protected List<JGraph> _getGraphs() {
