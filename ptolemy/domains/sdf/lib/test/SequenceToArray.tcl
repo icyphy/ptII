@@ -89,7 +89,7 @@ test SequenceToArray-2.1 {test double array, test prefire} {
 test SequenceToArray-2.3 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$recIn getType] toString]
-} {double double arrayType(double) arrayType(double)}
+} {double double arrayType(double,2) arrayType(double,2)}
 
 ######################################################################
 #### Test string array
@@ -107,7 +107,7 @@ test SequenceToArray-2.4 {test string array} {
 test SequenceToArray-2.5 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$recIn getType] toString]
-} {string string arrayType(string) arrayType(string)}
+} {string string arrayType(string,2) arrayType(string,2)}
 
 ######################################################################
 #### Test cascading SequenceToArray
@@ -140,7 +140,7 @@ test SequenceToArray-2.7 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$s2a2In getType] toString] \
 	[[$s2a2Out getType] toString] [[$recIn getType] toString]
-} {int int arrayType(int) arrayType(int) arrayType(arrayType(int)) arrayType(arrayType(int))}
+} {int int arrayType(int,2) arrayType(int,2) arrayType(arrayType(int,2),2) arrayType(arrayType(int,2),2)}
 
 ######################################################################
 #### Test array of array of string
@@ -160,5 +160,5 @@ test SequenceToArray-2.9 {check types} {
     list [[$rampOut getType] toString] [[$s2aIn getType] toString] \
 	[[$s2aOut getType] toString] [[$s2a2In getType] toString] \
 	[[$s2a2Out getType] toString] [[$recIn getType] toString]
-} {string string arrayType(string) arrayType(string) arrayType(arrayType(string)) arrayType(arrayType(string))}
+} {string string arrayType(string,2) arrayType(string,2) arrayType(arrayType(string,2),2) arrayType(arrayType(string,2),2)}
 

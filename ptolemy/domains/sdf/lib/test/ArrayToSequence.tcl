@@ -164,7 +164,7 @@ test ArrayToSequence-2.6 {check types} {
 	[[$s2a2Out getType] toString] [[$a2s2In getType] toString] \
 	[[$a2s2Out getType] toString] [[$a2sIn getType] toString] \
 	[[$a2sOut getType] toString] [[$recIn getType] toString]
-} {int int arrayType(int,2) arrayType(int,2) arrayType(arrayType(int,2)) arrayType(arrayType(int,2)) arrayType(int,2) arrayType(int,2) int int}
+} {int int arrayType(int,2) arrayType(int,2) arrayType(arrayType(int,2),2) arrayType(arrayType(int,2),2) arrayType(int,2) arrayType(int,2) int int}
 
 ######################################################################
 #### Test array of array of string
@@ -186,4 +186,4 @@ test ArrayToSequence-2.8 {check types} {
 	[[$s2a2Out getType] toString] [[$a2s2In getType] toString] \
 	[[$a2s2Out getType] toString] [[$a2sIn getType] toString] \
 	[[$a2sOut getType] toString] [[$recIn getType] toString]
-} {string string arrayType(string,2) arrayType(string,2) arrayType(arrayType(string,2)) arrayType(arrayType(string,2)) arrayType(string,2) arrayType(string,2) string string}
+} {string string arrayType(string,2) arrayType(string,2) arrayType(arrayType(string,2),2) arrayType(arrayType(string,2),2) arrayType(string,2) arrayType(string,2) string string}
