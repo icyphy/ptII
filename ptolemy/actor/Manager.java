@@ -886,6 +886,13 @@ public class Manager extends NamedObj implements Runnable {
             // it would seem counterintuitive to have to do so.
             // _container.validateSettables();
 
+            // Clear the preinitialization analyses... Ensure that
+            // We get current analysis.
+            if (_nameToAnalysis != null) {
+                _nameToAnalysis.clear();
+                _nameToAnalysis = null;
+            }
+
             // Initialize the topology.
             // NOTE: Some actors require that parameters be set prior
             // to preinitialize().  Hence, this occurs after the call
