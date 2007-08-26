@@ -4,11 +4,11 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.util.Set;
 
-import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
 
 import ptolemy.actor.AtomicActor;
-import ptolemy.actor.gt.SingleRuleTransformer;
+import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
@@ -59,33 +59,16 @@ public class MatchResultViewer extends AbstractGTFrame {
     }
 
     public void highlightMatchedObject(NamedObj object) {
-        ActorEditorGraphController controller;
-        JTabbedPane tabbedPane = _getTabbedPane();
-        if (tabbedPane == null) {
-            controller = (ActorEditorGraphController) _getGraphController();
-        } else {
-            int index = tabbedPane.getSelectedIndex();
-            controller = (ActorEditorGraphController)
-                    _getGraphs().get(index).getGraphPane().getGraphController();
-        }
         Object location = object.getAttribute("_location");
-        Figure figure = controller.getFigure(location);
+        Figure figure = _getGraphController().getFigure(location);
         _decorator.renderSelected(figure);
     }
 
     public void highlightMatchedObjects() {
         if (_result != null) {
-            CompositeEntity model = (CompositeEntity) getModel();
-            if (model instanceof SingleRuleTransformer) {
-                int index = _getTabbedPane().getSelectedIndex();
-                if (index == 0) {
-                    model = ((SingleRuleTransformer) model).getLeftHandSide();
-                } else {
-                    model = ((SingleRuleTransformer) model).getRightHandSide();
-                }
-            }
+            CompositeActorMatcher matcher = _getCurrentMatcher();
             Set<?> matchedHostObjects = _result.values();
-            for (Object child : model.entityList(AtomicActor.class)) {
+            for (Object child : matcher.entityList(AtomicActor.class)) {
                 if (matchedHostObjects.contains(child)) {
                     highlightMatchedObject((NamedObj) child);
                 }
@@ -98,24 +81,24 @@ public class MatchResultViewer extends AbstractGTFrame {
         highlightMatchedObjects();
     }
 
+    /** React to a change in the state of the tabbed pane.
+     *  @param event The event.
+     */
+    public void stateChanged(ChangeEvent event) {
+        super.stateChanged(event);
+
+        if (event.getSource() == _getTabbedPane()) {
+            _asynchronousHighlight();
+        }
+    }
+
     protected ActorEditorGraphController _createController() {
         return new ActorEditorGraphController() {
             public void rerender() {
                 super.rerender();
 
                 // Repaint the graph panner after the decorators are rendered.
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        highlightMatchedObjects();
-                        if (_graphPanner != null) {
-                            SwingUtilities.invokeLater(new Runnable() {
-                                public void run() {
-                                    _graphPanner.repaint();
-                                }
-                            });
-                        }
-                    }
-                });
+                _asynchronousHighlight();
             }
         };
     }
@@ -132,6 +115,22 @@ public class MatchResultViewer extends AbstractGTFrame {
         for (Object subentity : entity.entityList(CompositeEntity.class)) {
             _setTableauFactory(originator, (CompositeEntity) subentity);
         }
+    }
+
+    private void _asynchronousHighlight() {
+        // Repaint the graph panner after the decorators are rendered.
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                highlightMatchedObjects();
+                if (_graphPanner != null) {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            _graphPanner.repaint();
+                        }
+                    });
+                }
+            }
+        });
     }
 
     private void _checkContainingViewer() {

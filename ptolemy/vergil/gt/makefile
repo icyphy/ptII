@@ -72,16 +72,15 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'AbstractGTFrame$$1.class' \
 	'AbstractGTFrame$$2.class' \
-	'GTRuleGraphFrame$$CreateHierarchyAction.class' \
 	'GTRuleGraphFrame$$LayoutAction.class' \
 	'GTRuleGraphFrame$$MatchAction.class' \
 	'GTRuleGraphFrame$$MatchFileChooser.class' \
 	'GTRuleGraphFrame$$NewRelationAction.class' \
 	'GTRuleGraphTableau$$Factory.class' \
 	'MatchResultTableau$$Factory.class' \
-	'MatchResultViewer$$1$$1$$1.class' \
-	'MatchResultViewer$$1$$1.class' \
-	'MatchResultViewer$$1.class'
+	'MatchResultViewer$$1.class' \
+	'MatchResultViewer$$2$$1.class' \
+	'MatchResultViewer$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

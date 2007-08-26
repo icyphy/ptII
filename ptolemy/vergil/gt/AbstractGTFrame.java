@@ -2,9 +2,6 @@ package ptolemy.vergil.gt;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,38 +64,29 @@ implements ChangeListener {
         super(entity, tableau, defaultLibrary);
     }
 
-    /** Set the center location of the visible part of the pane.
-     *  This will cause the panner to center on the specified location
-     *  with the current zoom factor.
-     *  @param center The center of the visible part.
-     *  @see #getCenter()
+    /** Return the JGraph instance that this view uses to represent the
+     *  ptolemy model.
+     *  @return the JGraph.
+     *  @see #setJGraph(JGraph)
      */
-    public void setCenter(Point2D center) {
-        if (_graphs == null) {
-            super.setCenter(center);
+    public JGraph getJGraph() {
+        if (hasTabs()) {
+            return (JGraph) _tabbedPane.getSelectedComponent();
         } else {
-            Rectangle2D visibleRect = getVisibleCanvasRectangle();
-            AffineTransform newTransform = getJGraph().getCanvasPane()
-                    .getTransformContext().getTransform();
-
-            newTransform.translate(visibleRect.getCenterX() - center.getX(),
-                    visibleRect.getCenterY() - center.getY());
-
-            Iterator<JGraph> graphsIterator = _graphs.iterator();
-            while (graphsIterator.hasNext()) {
-                graphsIterator.next().getCanvasPane().setTransform(
-                        newTransform);
-            }
+            return super.getJGraph();
         }
+    }
+
+    public boolean hasTabs() {
+        return _tabbedPane != null;
     }
 
     /** React to a change in the state of the tabbed pane.
      *  @param event The event.
      */
     public void stateChanged(ChangeEvent event) {
-        Object source = event.getSource();
-        if (source instanceof JTabbedPane) {
-            Component selected = ((JTabbedPane) source).getSelectedComponent();
+        if (event.getSource() == _tabbedPane) {
+            Component selected = _tabbedPane.getSelectedComponent();
             if (selected instanceof JGraph) {
                 setJGraph((JGraph) selected);
             }
@@ -153,6 +141,7 @@ implements ChangeListener {
             /** Serial ID */
             private static final long serialVersionUID = -4998226270980176175L;
         };
+        
         _tabbedPane.addChangeListener(this);
         Iterator<?> cases = ((SingleRuleTransformer) entity).entityList(
                 CompositeActorMatcher.class).iterator();
@@ -170,21 +159,44 @@ implements ChangeListener {
         return _tabbedPane;
     }
 
-    protected GraphController _getGraphController() {
-        if (_tabbedPane == null) {
-            return _controller;
-        } else {
+    protected CompositeActorMatcher _getCurrentMatcher() {
+        ActorGraphModel graphModel =
+            (ActorGraphModel) _controller.getGraphModel();
+        CompositeActorMatcher matcher =
+            (CompositeActorMatcher) graphModel.getPtolemyModel();
+        if (hasTabs()) {
             int index = _tabbedPane.getSelectedIndex();
-            return _graphs.get(index).getGraphPane().getGraphController();
+            NamedObj parent = matcher.getContainer();
+            while (!(parent instanceof SingleRuleTransformer)) {
+                parent = parent.getContainer();
+            }
+            List<?> entityList =
+                ((SingleRuleTransformer) parent).entityList(
+                        CompositeActorMatcher.class);
+            return (CompositeActorMatcher) entityList.get(index);
+        } else {
+            return matcher;
         }
     }
 
-    protected List<JGraph> _getGraphs() {
-        return _graphs;
+    protected GraphController _getGraphController() {
+        if (hasTabs()) {
+            return getJGraph().getGraphPane().getGraphController();
+        } else {
+            return _controller;
+        }
     }
 
     protected JTabbedPane _getTabbedPane() {
         return _tabbedPane;
+    }
+
+    protected SingleRuleTransformer _getTransformer() {
+        CompositeEntity model = _getCurrentMatcher();
+        while (!(model instanceof SingleRuleTransformer)) {
+            model = (CompositeEntity) model.getContainer();
+        }
+        return (SingleRuleTransformer) model;
     }
 
     /** Add a tabbed pane for the specified case.

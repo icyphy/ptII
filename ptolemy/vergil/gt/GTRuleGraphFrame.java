@@ -32,12 +32,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JMenu;
-import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
@@ -63,7 +60,6 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
-import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.SnapConstraint;
@@ -139,10 +135,6 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
         _ruleMenu.addSeparator();
 
-        CreateHierarchyAction createHierarchyAction =
-            new CreateHierarchyAction();
-        GUIUtilities.addMenuItem(_ruleMenu, createHierarchyAction);
-
         LayoutAction layoutAction = new LayoutAction();
         GUIUtilities.addMenuItem(_ruleMenu, layoutAction);
 
@@ -160,51 +152,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
     /** The case menu. */
     protected JMenu _ruleMenu;
 
-    private CompositeActorMatcher _getMatcher() {
-        ActorGraphModel graphModel =
-            (ActorGraphModel) _getGraphController().getGraphModel();
-        return (CompositeActorMatcher) graphModel.getPtolemyModel();
-    }
-
-    private SingleRuleTransformer _getTransformer() {
-        CompositeActorMatcher matcher = _getMatcher();
-        NamedObj parent = matcher.getContainer();
-        while (!(parent instanceof SingleRuleTransformer)) {
-            parent = parent.getContainer();
-        }
-        return (SingleRuleTransformer) parent;
-    }
-
     /** Serial ID */
     private static final long serialVersionUID = 5919681658644668772L;
-
-    /** Create a hierarchy, which is semantically flattened when the matching or
-        transformation is performed.
-
-     @author Thomas Huining Feng
-     @version $Id$
-     @since Ptolemy II 6.1
-     @see ActorGraphFrame.CreateHierarchyAction
-     @Pt.ProposedRating Red (tfeng)
-     @Pt.AcceptedRating Red (tfeng)
-     */
-    private class CreateHierarchyAction extends AbstractAction {
-
-        /**  Create a new action to introduce a level of hierarchy.
-         */
-        public CreateHierarchyAction() {
-            super("Create Hierarchy");
-            putValue("tooltip",
-                    "Create a TypedCompositeActor that contains the"
-                            + " selected actors.");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            createHierarchy();
-        }
-
-        private static final long serialVersionUID = -4212552714361210815L;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -407,26 +356,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
             double x;
             double y;
 
-            JGraph graph;
-            NamedObj namedObj;
-            JTabbedPane tabbedPane = _getTabbedPane();
-            if (tabbedPane == null) {
-                graph = getJGraph();
-                namedObj = _getMatcher();
-
-            } else {
-                graph = (JGraph) tabbedPane.getSelectedComponent();
-
-                SingleRuleTransformer transformerActor = _getTransformer();
-                List<?> entityList =
-                    transformerActor.entityList(CompositeActorMatcher.class);
-                Iterator<?> iterator = entityList.iterator();
-                for (int i = 0; i < tabbedPane.getSelectedIndex(); i++) {
-                    iterator.next();
-                }
-
-                namedObj = (NamedObj) iterator.next();
-            }
+            NamedObj namedObj = _getCurrentMatcher();
+            JGraph graph = getJGraph();
 
             Dimension size = graph.getSize();
             x = size.getWidth() / 2;
