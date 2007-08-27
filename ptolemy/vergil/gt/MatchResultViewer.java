@@ -8,7 +8,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 
 import ptolemy.actor.AtomicActor;
-import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
@@ -66,7 +65,7 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     public void highlightMatchedObjects() {
         if (_result != null) {
-            CompositeActorMatcher matcher = _getCurrentMatcher();
+            CompositeEntity matcher = _getCurrentMatcher();
             Set<?> matchedHostObjects = _result.values();
             for (Object child : matcher.entityList(AtomicActor.class)) {
                 if (matchedHostObjects.contains(child)) {

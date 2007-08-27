@@ -159,14 +159,14 @@ implements ChangeListener {
         return _tabbedPane;
     }
 
-    protected CompositeActorMatcher _getCurrentMatcher() {
+    protected CompositeEntity _getCurrentMatcher() {
         ActorGraphModel graphModel =
             (ActorGraphModel) _controller.getGraphModel();
-        CompositeActorMatcher matcher =
-            (CompositeActorMatcher) graphModel.getPtolemyModel();
+        CompositeEntity model =
+            (CompositeEntity) graphModel.getPtolemyModel();
         if (hasTabs()) {
             int index = _tabbedPane.getSelectedIndex();
-            NamedObj parent = matcher.getContainer();
+            NamedObj parent = model.getContainer();
             while (!(parent instanceof SingleRuleTransformer)) {
                 parent = parent.getContainer();
             }
@@ -175,7 +175,7 @@ implements ChangeListener {
                         CompositeActorMatcher.class);
             return (CompositeActorMatcher) entityList.get(index);
         } else {
-            return matcher;
+            return model;
         }
     }
 
