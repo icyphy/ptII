@@ -69,32 +69,36 @@ public class RecursiveGraphMatcher {
      */
     public MatchResult getMatchResult() {
         return _match;
-    }
+    };
 
     public boolean isSuccessful() {
         return _success;
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 2) {
-            System.err.println("USAGE: java "
+        if (!(args.length == 2 ||
+                (args.length == 3 && args[0].equalsIgnoreCase("-A")))) {
+            System.err.println("USAGE: java [-A] "
                     + RecursiveGraphMatcher.class.getName()
                     + " <lhs.xml> <host.xml>");
             System.exit(1);
         }
 
-        ObjectComparator comparator = new ObjectComparator();
+        final boolean all = args.length == 3 && args[0].equalsIgnoreCase("-A");
+        String lhsXMLFile = all ? args[1] : args[0];
+        String hostXMLFile = all ? args[2] : args[1];
 
-        RecursiveGraphMatcher matcher = match(args[0], args[1]);
-        if (matcher.isSuccessful()) {
-            MatchResult match = matcher.getMatchResult();
-            List<Object> keyList = new LinkedList<Object>(match.keySet());
-            Collections.sort(keyList, comparator);
-            for (Object lhsObject : keyList) {
-                System.out.println(_getNameString(lhsObject) + " : " +
-                        _getNameString(match.get(lhsObject)));
+        MatchCallback matchCallback = new MatchCallback() {
+            public boolean foundMatch(RecursiveGraphMatcher matcher) {
+                MatchResult match = matcher.getMatchResult();
+                System.out.println("--- Match " + ++count + " ---");
+                _printMatch(match);
+                return !all;
             }
-        }
+            
+            private int count = 0;
+        };
+        match(lhsXMLFile, hostXMLFile, matchCallback);
     }
 
     /** Match the LHS graph with the host graph. If the match is successful,
@@ -112,30 +116,39 @@ public class RecursiveGraphMatcher {
 
         // Matching result.
         _match = new MatchResult();
-
+        
         // Temporary data structures.
         _lhsFrontier = new FastLinkedList<Object>();
         _hostFrontier = new FastLinkedList<Object>();
         _visitedLHSCompositeEntities = new FastLinkedList<CompositeEntity>();
+        _lhsObjects = new HashSet<Object>();
 
         _lhsFrontier.add(lhsGraph);
+        _lhsObjects.add(lhsGraph);
         _hostFrontier.add(hostGraph);
 
         _success = _matchEntryList(_lhsFrontier.getHead(),
                 _hostFrontier.getHead());
         if (!_success) {
-            _match.clear();
+            assert _match.isEmpty();
         }
 
         // Clear temporary data structures to free memory.
         _lhsFrontier = null;
         _hostFrontier = null;
         _visitedLHSCompositeEntities = null;
+        _lhsObjects = null;
         return _success;
     }
 
     public static RecursiveGraphMatcher match(String lhsXMLFile,
             String hostXMLFile) throws MalformedURLException, Exception {
+        return match(lhsXMLFile, hostXMLFile, null);
+    }
+
+    public static RecursiveGraphMatcher match(String lhsXMLFile,
+            String hostXMLFile, MatchCallback callback)
+    throws MalformedURLException, Exception {
         MoMLParser parser = new MoMLParser();
         SingleRuleTransformer rule = (SingleRuleTransformer)
                 parser.parse(null, new File(lhsXMLFile).toURI().toURL());
@@ -144,8 +157,15 @@ public class RecursiveGraphMatcher {
             parser.parse(null, new File(hostXMLFile).toURI().toURL());
 
         RecursiveGraphMatcher matcher = new RecursiveGraphMatcher();
+        if (callback != null) {
+            matcher.setMatchCallback(callback);
+        }
         matcher.match(rule.getLeftHandSide(), host);
         return matcher;
+    }
+
+    public void setMatchCallback(MatchCallback callback) {
+        _callback = callback;
     }
 
     private ComponentEntity _findFirstChild(CompositeEntity top,
@@ -383,13 +403,16 @@ public class RecursiveGraphMatcher {
         return container instanceof CompositeActor
                 && ((CompositeActor) container).isOpaque();
     }
+    
+    private Set<Object> _lhsObjects;
 
     private boolean _matchAtomicActor(AtomicActor lhsActor,
             AtomicActor hostActor) {
 
+        int matchSize = _match.size();
         FastLinkedList<Object>.Entry lhsTail = _lhsFrontier.getTail();
         FastLinkedList<Object>.Entry hostTail = _hostFrontier.getTail();
-
+        
         _match.put(lhsActor, hostActor);
         boolean success = true;
 
@@ -398,6 +421,7 @@ public class RecursiveGraphMatcher {
             Port hostMatchedPort = (Port) _match.get(port);
             if (hostMatchedPort == null) {
                 _lhsFrontier.add(port);
+                _lhsObjects.add(port);
             } else if (!(hostMatchedPort instanceof Port)
                     || hostMatchedPort.getContainer() != hostActor) {
                 success = false;
@@ -417,7 +441,7 @@ public class RecursiveGraphMatcher {
         success = success && _matchLoop(lhsTail, hostTail);
 
         if (!success) {
-            _match.remove(lhsActor);
+            _match.retain(matchSize);
             _lhsFrontier.removeAllAfter(lhsTail);
             _hostFrontier.removeAllAfter(hostTail);
         }
@@ -427,6 +451,8 @@ public class RecursiveGraphMatcher {
 
     private boolean _matchCompositeEntity(CompositeEntity lhsEntity,
             CompositeEntity hostEntity) {
+
+        int matchSize = _match.size();
 
         FastLinkedList<MarkedEntityList> lhsMarkedList =
             new FastLinkedList<MarkedEntityList>();
@@ -438,7 +464,7 @@ public class RecursiveGraphMatcher {
         boolean firstEntrance = !_match.containsKey(lhsEntity);
         if (firstEntrance) {
             _match.put(lhsEntity, hostEntity);
-            
+
             if (lhsEntity instanceof CompositeActor
                     && ((CompositeActor) lhsEntity).isOpaque()) {
                 Director lhsDirector =
@@ -454,47 +480,55 @@ public class RecursiveGraphMatcher {
             }
         }
 
-        if (success && lhsNextActor != null) {
-            FastLinkedList<Object>.Entry lhsTail = _lhsFrontier.getTail();
-            FastLinkedList<Object>.Entry hostTail = _hostFrontier.getTail();
+        if (success) {
+            if (lhsNextActor != null) {
+                int matchSize2 = _match.size();
+                FastLinkedList<Object>.Entry lhsTail = _lhsFrontier.getTail();
+                FastLinkedList<Object>.Entry hostTail = _hostFrontier.getTail();
 
-            FastLinkedList<CompositeEntity>.Entry compositeTail = null;
-            if (firstEntrance) {
-                _visitedLHSCompositeEntities.add(lhsEntity);
-                compositeTail = _visitedLHSCompositeEntities.getTail();
-            }
-
-            FastLinkedList<MarkedEntityList> hostMarkedList =
-                new FastLinkedList<MarkedEntityList>();
-            ComponentEntity hostNextActor = _findFirstChild(hostEntity,
-                    hostMarkedList, _match.values());
-
-            success = false;
-            while (!success && hostNextActor != null) {
-                _lhsFrontier.add(lhsNextActor);
-                _hostFrontier.add(hostNextActor);
-
-                if (_matchEntryList(lhsTail.getNext(), hostTail.getNext())) {
-                    success = true;
-                } else {
-                    _hostFrontier.removeAllAfter(hostTail);
-                    _lhsFrontier.removeAllAfter(lhsTail);
-                    if (firstEntrance) {
-                        _visitedLHSCompositeEntities.removeAllAfter(
-                                compositeTail);
-                    }
-                    hostNextActor = _findNextChild(hostEntity,
-                            hostMarkedList, _match.values());
+                FastLinkedList<CompositeEntity>.Entry compositeTail = null;
+                if (firstEntrance) {
+                    _visitedLHSCompositeEntities.add(lhsEntity);
+                    compositeTail = _visitedLHSCompositeEntities.getTail();
                 }
-            }
 
-            if (!success && firstEntrance) {
-                compositeTail.remove();
+                FastLinkedList<MarkedEntityList> hostMarkedList =
+                    new FastLinkedList<MarkedEntityList>();
+                ComponentEntity hostNextActor = _findFirstChild(hostEntity,
+                        hostMarkedList, _match.values());
+
+                success = false;
+                while (!success && hostNextActor != null) {
+                    _lhsFrontier.add(lhsNextActor);
+                    _lhsObjects.add(lhsNextActor);
+                    _hostFrontier.add(hostNextActor);
+
+                    if (_matchEntryList(lhsTail.getNext(), hostTail.getNext())) {
+                        success = true;
+                    } else {
+                        _match.retain(matchSize2);
+                        _hostFrontier.removeAllAfter(hostTail);
+                        _lhsFrontier.removeAllAfter(lhsTail);
+                        if (firstEntrance) {
+                            _visitedLHSCompositeEntities.removeAllAfter(
+                                    compositeTail);
+                        }
+                        hostNextActor = _findNextChild(hostEntity,
+                                hostMarkedList, _match.values());
+                    }
+                }
+
+                if (!success && firstEntrance) {
+                    compositeTail.remove();
+                }
+            } else {
+                success = _lhsObjects.size() == _match.size() ?
+                        _callback.foundMatch(this) : true;
             }
         }
 
         if (!success && firstEntrance) {
-            _match.remove(lhsEntity);
+            _match.retain(matchSize);
         }
 
         return success;
@@ -503,13 +537,15 @@ public class RecursiveGraphMatcher {
     private boolean _matchDirector(Director lhsDirector,
             Director hostDirector) {
 
+        int matchSize = _match.size();
+
         _match.put(lhsDirector, hostDirector);
 
         boolean success =
             lhsDirector.getClass().equals(hostDirector.getClass());
 
         if (!success) {
-            _match.remove(lhsDirector);
+            _match.retain(matchSize);
         }
 
         return success;
@@ -518,16 +554,21 @@ public class RecursiveGraphMatcher {
     private boolean _matchDisconnectedComponents() {
         FastLinkedList<CompositeEntity>.Entry lhsEntry =
             _visitedLHSCompositeEntities.getTail();
-        while (lhsEntry != null) {
-            CompositeEntity lhsEntity = lhsEntry.getValue();
-            CompositeEntity hostMatchedEntity =
-                (CompositeEntity) _match.get(lhsEntity);
-            if (!_matchCompositeEntity(lhsEntity, hostMatchedEntity)) {
-                return false;
+        if (lhsEntry == null) {
+            return _lhsObjects.size() == _match.size() ?
+                    _callback.foundMatch(this) : true;
+        } else {
+            while (lhsEntry != null) {
+                CompositeEntity lhsEntity = lhsEntry.getValue();
+                CompositeEntity hostMatchedEntity =
+                    (CompositeEntity) _match.get(lhsEntity);
+                if (!_matchCompositeEntity(lhsEntity, hostMatchedEntity)) {
+                    return false;
+                }
+                lhsEntry = lhsEntry.getPrevious();
             }
-            lhsEntry = lhsEntry.getPrevious();
+            return true;
         }
-        return true;
     }
 
     /** Match a list of LHS entries with a list of host entries. All LHS entries
@@ -541,7 +582,8 @@ public class RecursiveGraphMatcher {
     private boolean _matchEntryList(FastLinkedList<Object>.Entry lhsEntry,
             FastLinkedList<Object>.Entry hostEntry) {
         if (lhsEntry == null) {
-            return true;
+            return _lhsObjects.size() == _match.size() ?
+                    _callback.foundMatch(this) : true;
         } else {
             // Arbitrarily pick an object in _lhsFrontier to match.
             Object lhsObject = lhsEntry.getValue();
@@ -571,13 +613,20 @@ public class RecursiveGraphMatcher {
             return _matchDisconnectedComponents();
         } else {
             FastLinkedList<Object>.Entry lhsEntry = lhsChildStart;
-            while (lhsEntry != null) {
-                if (!_matchEntryList(lhsEntry, hostChildStart)) {
-                    return false;
+            if (lhsEntry == null) {
+                return _lhsObjects.size() == _match.size() ?
+                        _callback.foundMatch(this) : true;
+            } else {
+                while (lhsEntry != null) {
+                    Object lhsObject = lhsEntry.getValue();
+                    if (!_match.containsKey(lhsObject)
+                            && !_matchEntryList(lhsEntry, hostChildStart)) {
+                        return false;
+                    }
+                    lhsEntry = lhsEntry.getNext();
                 }
-                lhsEntry = lhsEntry.getNext();
+                return true;
             }
-            return true;
         }
     }
 
@@ -607,6 +656,7 @@ public class RecursiveGraphMatcher {
     }
 
     private boolean _matchPath(Path lhsPath, Path hostPath) {
+        int matchSize = _match.size();
         FastLinkedList<Object>.Entry lhsTail = _lhsFrontier.getTail();
         FastLinkedList<Object>.Entry hostTail = _hostFrontier.getTail();
 
@@ -619,7 +669,9 @@ public class RecursiveGraphMatcher {
         if (success) {
             Port hostMatchedPort = (Port) _match.get(lhsPort);
             if (hostMatchedPort == null) {
-                _lhsFrontier.add(lhsPath.getEndPort());
+                Port endPort = lhsPath.getEndPort();
+                _lhsFrontier.add(endPort);
+                _lhsObjects.add(endPort);
             } else if (hostMatchedPort != hostPort) {
                 success = false;
             }
@@ -634,7 +686,7 @@ public class RecursiveGraphMatcher {
         success = success && _matchLoop(lhsTail, hostTail);
 
         if (!success) {
-            _match.remove(lhsPath);
+            _match.retain(matchSize);
             _hostFrontier.removeAllAfter(hostTail);
             _lhsFrontier.removeAllAfter(lhsTail);
         }
@@ -648,6 +700,7 @@ public class RecursiveGraphMatcher {
             return false;
         }
 
+        int matchSize = _match.size();
         FastLinkedList<Object>.Entry lhsTail = _lhsFrontier.getTail();
         FastLinkedList<Object>.Entry hostTail = _hostFrontier.getTail();
 
@@ -658,6 +711,7 @@ public class RecursiveGraphMatcher {
         NamedObj hostMatchedContainer = (NamedObj) _match.get(lhsContainer);
         if (hostMatchedContainer == null) {
             _lhsFrontier.add(lhsContainer);
+            _lhsObjects.add(lhsContainer);
         } else if (hostMatchedContainer != hostPort.getContainer()) {
             success = false;
         }
@@ -678,7 +732,9 @@ public class RecursiveGraphMatcher {
             while (foundPath) {
                 Path hostMatchedPath = (Path) _match.get(lhsPath);
                 if (hostMatchedPath == null) {
-                    _lhsFrontier.add(lhsPath.clone());
+                    Path lhsPathCopy = (Path) lhsPath.clone();
+                    _lhsFrontier.add(lhsPathCopy);
+                    _lhsObjects.add(lhsPathCopy);
                 } else if (hostMatchedPath.getStartPort() != hostPort) {
                     success = false;
                     break;
@@ -706,12 +762,21 @@ public class RecursiveGraphMatcher {
         success = success && _matchLoop(lhsTail, hostTail);
 
         if (!success) {
-            _match.remove(lhsPort);
+            _match.retain(matchSize);
             _lhsFrontier.removeAllAfter(lhsTail);
             _hostFrontier.removeAllAfter(hostTail);
         }
 
         return success;
+    }
+
+    private static void _printMatch(MatchResult match) {
+        List<Object> keyList = new LinkedList<Object>(match.keySet());
+        Collections.sort(keyList, _comparator);
+        for (Object lhsObject : keyList) {
+            System.out.println(_getNameString(lhsObject) + " : " +
+                    _getNameString(match.get(lhsObject)));
+        }
     }
 
     private boolean _shallowMatchPath(Path lhsPath, Path hostPath) {
@@ -746,6 +811,14 @@ public class RecursiveGraphMatcher {
             return true;
         }
     }
+
+    private MatchCallback _callback = new MatchCallback() {
+        public boolean foundMatch(RecursiveGraphMatcher matcher) {
+            return true;
+        }
+    };
+
+    private static ObjectComparator _comparator = new ObjectComparator();
 
     /** The list of host entities that can be used to match the LHS entities.
      */

@@ -6,31 +6,49 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 
 public class MatchResult extends HashMap<Object, Object> {
 
     public void clear() {
-        _objects.clear();
         super.clear();
+        _keys.clear();
+        _values.clear();
     }
 
     public boolean containsValue(Object value) {
-        return _objects.contains(value);
+        return _values.contains(value);
     }
 
     public Object put(Object key, Object value) {
+        if (!super.containsKey(key)) {
+            _keys.add(key);
+        }
         Object oldValue = super.put(key, value);
-        _objects.add(value);
+        _values.add(value);
         return oldValue;
     }
 
     public Object remove(Object key) {
         Object oldValue = super.remove(key);
         if (oldValue != null) {
-            _objects.remove(oldValue);
+            _keys.remove(key);
+            _values.remove(oldValue);
         }
         return oldValue;
+    }
+
+    public void retain(int count) {
+        int size = _keys.size();
+        if (size > count) {
+            ListIterator<Object> iterator = _keys.listIterator(size);
+            for (; size > count; size--) {
+                Object key = iterator.previous();
+                iterator.remove();
+                _values.remove(super.remove(key));
+            }
+        }
     }
 
     public String toString() {
@@ -58,10 +76,12 @@ public class MatchResult extends HashMap<Object, Object> {
     }
 
     public Set<Object> values() {
-        return Collections.unmodifiableSet(_objects);
+        return Collections.unmodifiableSet(_values);
     }
 
-    private Set<Object> _objects = new HashSet<Object>();
+    private List<Object> _keys = new LinkedList<Object>();
+
+    private Set<Object> _values = new HashSet<Object>();
 
     private static final long serialVersionUID = -539612130819642425L;
 

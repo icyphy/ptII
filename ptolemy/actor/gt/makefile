@@ -80,6 +80,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'RecursiveGraphMatcher$$1.class' \
+	'RecursiveGraphMatcher$$2.class' \
 	'RecursiveGraphMatcher$$MarkedEntityList.class' \
 	'RecursiveGraphMatcher$$ObjectComparator.class' \
 	'RecursiveGraphMatcher$$Path.class' \
