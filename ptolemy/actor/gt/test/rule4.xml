@@ -1,0 +1,75 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="rule4" class="ptolemy.actor.gt.SingleRuleTransformer">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={273, 183, 853, 683}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[630, 568]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="Left Hand Side" class="ptolemy.actor.TypedCompositeActor">
+        <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;output1&quot;/&quot;a&quot;/false/true/false)(ptolemy.actor.gt.rules.PortRule/&quot;output2&quot;/&quot;b&quot;/false/true/false)">
+            </property>
+            <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 115.0}">
+            </property>
+        </entity>
+        <entity name="B" class="ptolemy.actor.gt.AtomicActorMatcher">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;input&quot;/&quot;a&quot;/true/false/false)">
+            </property>
+            <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
+            </property>
+        </entity>
+        <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;input&quot;/&quot;a&quot;/true/false/false)(ptolemy.actor.gt.rules.PortRule/&quot;output&quot;/&quot;b&quot;/false/true/false)">
+            </property>
+            <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 125.0]">
+            </property>
+        </entity>
+        <entity name="D" class="ptolemy.actor.gt.AtomicActorMatcher">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;input&quot;/&quot;a&quot;/true/false/false)">
+            </property>
+            <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 125.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="A.output1" relation="relation2"/>
+        <link port="A.output2" relation="relation"/>
+        <link port="B.input" relation="relation2"/>
+        <link port="C.input" relation="relation"/>
+        <link port="C.output" relation="relation3"/>
+        <link port="D.input" relation="relation3"/>
+    </entity>
+</entity>

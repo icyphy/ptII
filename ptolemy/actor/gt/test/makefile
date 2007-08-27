@@ -46,7 +46,8 @@ include $(CONFIG)
 TCL_SRCS = \
     testDefs.tcl
 
-JSRCS =
+JSRCS = \
+    AllMatchingTestHelper.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -54,7 +55,8 @@ JSIMPLE_TESTS = \
     MatchingTest2.tcl \
     XMLTest1.tcl \
     XMLTest2.tcl \
-    XMLTest3.tcl
+    XMLTest3.tcl \
+    XMLTest4.tcl
 
 # Graphical Java tests.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -82,14 +84,19 @@ EXTRA_SRCS = \
     host3.2.xml \
     host3.3.xml \
     host3.4.xml \
+    host4.1.xml \
+    host4.2.xml \
+    host4.3.xml \
     MatchingTest1.tcl \
     MatchingTest2.tcl \
     rule1.xml \
     rule2.xml \
     rule3.xml \
+    rule4.xml \
     XMLTest1.tcl \
     XMLTest2.tcl \
     XMLTest3.tcl \
+    XMLTest4.tcl \
     $(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -98,7 +105,8 @@ MISC_FILES =    alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+    'AllMatchingTestHelper$$1.class'
 
 JCLASS =    $(JSRCS:%.java=%.class)
 
