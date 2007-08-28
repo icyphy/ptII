@@ -32,12 +32,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JMenu;
 import javax.swing.KeyStroke;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
+import ptolemy.actor.gt.MatchCallback;
 import ptolemy.actor.gt.RecursiveGraphMatcher;
 import ptolemy.actor.gt.SingleRuleTransformer;
 import ptolemy.actor.gt.data.MatchResult;
@@ -263,7 +266,11 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
                     SingleRuleTransformer transformerActor = _getTransformer();
                     CompositeActorMatcher matcher =
                         transformerActor.getLeftHandSide();
-                    if (_matcher.match(matcher, model)) {
+                    MatchResultRecorder recorder = new MatchResultRecorder();
+                    _matcher.setMatchCallback(recorder);
+                    _matcher.match(matcher, model);
+                    List<MatchResult> results = recorder.getResults();
+                    if (!results.isEmpty()) {
                         MatchResultViewer._setTableauFactory(this, model);
 
                         Configuration configuration = (Configuration) toplevel;
@@ -271,8 +278,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
                         MatchResultViewer viewer =
                             (MatchResultViewer) tableau.getFrame();
 
-                        MatchResult result = _matcher.getMatchResult();
-                        viewer.setMatchResult(result);
+                        viewer.setMatchResult(results);
                     }
                 } catch (MalformedURLException ex) {
                     MessageHandler.message("Unable to obtain URL from the " +
@@ -284,18 +290,6 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
             }
         }
 
-        public void highlightObject(MatchResultViewer frame, NamedObj object) {
-            Object location =
-                object.getAttribute("_location");
-
-            ActorEditorGraphController controller =
-                (ActorEditorGraphController)
-                frame.getJGraph().getGraphPane()
-                .getGraphController();
-            Figure figure = controller.getFigure(location);
-            new AnimationRenderer().renderSelected(figure);
-        }
-
         private Attribute _attribute;
 
         private FileParameter _inputModel;
@@ -305,6 +299,20 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
         private MoMLParser _parser = new MoMLParser();
 
         private static final long serialVersionUID = -696919249330217870L;
+    }
+    
+    private static class MatchResultRecorder implements MatchCallback {
+
+        public boolean foundMatch(RecursiveGraphMatcher matcher) {
+            _results.add((MatchResult) matcher.getMatchResult().clone());
+            return false;
+        }
+        
+        public List<MatchResult> getResults() {
+            return _results;
+        }
+        
+        private List<MatchResult> _results = new LinkedList<MatchResult>();
     }
 
     private static class MatchFileChooser extends ComponentDialog {

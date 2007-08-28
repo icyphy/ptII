@@ -29,8 +29,15 @@ package ptolemy.vergil.gt;
 
 import java.awt.Color;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.swing.JButton;
+import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 
@@ -43,7 +50,9 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.kernel.AnimationRenderer;
+import ptolemy.vergil.toolbox.FigureAction;
 import diva.canvas.Figure;
+import diva.gui.GUIUtilities;
 
 public class MatchResultViewer extends AbstractGTFrame {
 
@@ -80,8 +89,21 @@ public class MatchResultViewer extends AbstractGTFrame {
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
 
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                _windowClosed();
+            }
+        });
+
         _checkContainingViewer();
+        _enableOrDisable();
         highlightMatchedObjects();
+    }
+
+    public void dehighlightMatchedObject(NamedObj object) {
+        Object location = object.getAttribute("_location");
+        Figure figure = _getGraphController().getFigure(location);
+        _decorator.renderDeselected(figure);
     }
 
     public void highlightMatchedObject(NamedObj object) {
@@ -91,19 +113,23 @@ public class MatchResultViewer extends AbstractGTFrame {
     }
 
     public void highlightMatchedObjects() {
-        if (_result != null) {
+        if (_results != null) {
             CompositeEntity matcher = _getCurrentMatcher();
-            Set<?> matchedHostObjects = _result.values();
+            Set<?> matchedHostObjects = _results.get(_currentPosition).values();
             for (Object child : matcher.entityList(AtomicActor.class)) {
                 if (matchedHostObjects.contains(child)) {
                     highlightMatchedObject((NamedObj) child);
+                } else {
+                    dehighlightMatchedObject((NamedObj) child);
                 }
             }
         }
     }
 
-    public void setMatchResult(MatchResult result) {
-        _result = result;
+    public void setMatchResult(List<MatchResult> results) {
+        _results = results;
+        _currentPosition = 0;
+        _enableOrDisable();
         highlightMatchedObjects();
     }
 
@@ -116,6 +142,26 @@ public class MatchResultViewer extends AbstractGTFrame {
         if (event.getSource() == _getTabbedPane()) {
             _asynchronousHighlight();
         }
+    }
+
+    /** Create the menus that are used by this frame.
+     *  It is essential that _createGraphPane() be called before this.
+     */
+    protected void _addMenus() {
+        super._addMenus();
+        
+        PreviousAction previousAction = new PreviousAction();
+        NextAction nextAction = new NextAction();
+        
+        _viewMenu.addSeparator();
+        _previousItem = GUIUtilities.addMenuItem(_viewMenu, previousAction);
+        _nextItem = GUIUtilities.addMenuItem(_viewMenu, nextAction);
+        
+        _previousButton =
+            GUIUtilities.addToolBarButton(_toolbar, previousAction);
+        _nextButton = GUIUtilities.addToolBarButton(_toolbar, nextAction);
+        
+        _enableOrDisable();
     }
 
     protected ActorEditorGraphController _createController() {
@@ -143,6 +189,14 @@ public class MatchResultViewer extends AbstractGTFrame {
         }
     }
 
+    protected void _windowClosed() {
+        if (_topFrame != null) {
+            synchronized (_topFrame) {
+                _topFrame._subviewers.remove(this);
+            }
+        }
+    }
+
     private void _asynchronousHighlight() {
         // Repaint the graph panner after the decorators are rendered.
         SwingUtilities.invokeLater(new Runnable() {
@@ -158,6 +212,10 @@ public class MatchResultViewer extends AbstractGTFrame {
             }
         });
     }
+    
+    private JMenuItem _previousItem;
+    
+    private JMenuItem _nextItem;
 
     private void _checkContainingViewer() {
         NamedObj toplevel = getModel().toplevel();
@@ -165,17 +223,138 @@ public class MatchResultViewer extends AbstractGTFrame {
             if (frame != this && frame instanceof MatchResultViewer) {
                 MatchResultViewer viewer = (MatchResultViewer) frame;
                 if (viewer.getModel() == toplevel) {
-                    _result = viewer._result;
+                    synchronized (viewer) {
+                        _results = viewer._results;
+                        _currentPosition = viewer._currentPosition;
+                        viewer._subviewers.add(this);
+                        _topFrame = viewer;
+                    }
+                    break;
                 }
             }
         }
+        if (_topFrame == null) {
+            _subviewers = new HashSet<MatchResultViewer>();
+        }
     }
+
+    private void _enableOrDisable() {
+        if (_previousItem != null && _results != null) {
+            _previousItem.setEnabled(_currentPosition > 0);
+        }
+        if (_previousButton != null && _results != null) {
+            _previousButton.setEnabled(_currentPosition > 0);
+        }
+        if (_nextItem != null && _results != null) {
+            _nextItem.setEnabled(_currentPosition < _results.size() - 1);
+        }
+        if (_nextButton != null && _results != null) {
+            _nextButton.setEnabled(_currentPosition < _results.size() - 1);
+        }
+    }
+
+    private void _next() {
+        if (_currentPosition < _results.size() - 1) {
+            _currentPosition++;
+            _asynchronousHighlight();
+            if (_topFrame == null) {
+                for (MatchResultViewer viewer : _subviewers) {
+                    viewer._next();
+                }
+            }
+            _enableOrDisable();
+        }
+    }
+
+    private void _previous() {
+        if (_currentPosition > 0) {
+            _currentPosition--;
+            _asynchronousHighlight();
+            if (_topFrame == null) {
+                for (MatchResultViewer viewer : _subviewers) {
+                    viewer._previous();
+                }
+            }
+            _enableOrDisable();
+        }
+    }
+
+    private int _currentPosition;
 
     private AnimationRenderer _decorator =
         new AnimationRenderer(new Color(255, 64, 64));
 
-    private MatchResult _result;
+    private JButton _nextButton;
+
+    private JButton _previousButton;
+
+    private List<MatchResult> _results;
+
+    private Set<MatchResultViewer> _subviewers;
+
+    /** The top frame that shows the toplevel model, or <tt>null</tt> if the top
+     *  frame is this frame itself.
+     */
+    private MatchResultViewer _topFrame;
 
     private static final long serialVersionUID = 2459501522934657116L;
+
+    private class NextAction extends FigureAction {
+
+        public NextAction() {
+            super("Next");
+
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/gt/img/next.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/gt/img/next_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/gt/img/next_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/gt/img/next_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            if (_topFrame != null) {
+                _topFrame._next();
+            } else {
+                _next();
+            }
+        }
+
+        private static final long serialVersionUID = -4164485619951340333L;
+    }
+
+    private class PreviousAction extends FigureAction {
+
+        public PreviousAction() {
+            super("Previous");
+
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/gt/img/previous.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/gt/img/previous_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/gt/img/previous_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/gt/img/previous_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            if (_topFrame != null) {
+                _topFrame._previous();
+            } else {
+                _previous();
+            }
+        }
+
+        private static final long serialVersionUID = 6583982647474946917L;
+    }
 
 }
