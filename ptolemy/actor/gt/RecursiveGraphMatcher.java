@@ -519,9 +519,6 @@ public class RecursiveGraphMatcher {
 
         FastLinkedList<MarkedEntityList> lhsMarkedList =
             new FastLinkedList<MarkedEntityList>();
-        ComponentEntity lhsNextActor =
-            _findFirstChild(lhsEntity, lhsMarkedList, _match.keySet());
-
         boolean success = true;
 
         boolean firstEntrance = !_match.containsKey(lhsEntity);
@@ -544,6 +541,9 @@ public class RecursiveGraphMatcher {
         }
 
         if (success) {
+            ComponentEntity lhsNextActor =
+                _findFirstChild(lhsEntity, lhsMarkedList, _match.keySet());
+
             if (lhsNextActor != null) {
                 int matchSize2 = _match.size();
                 FastLinkedList<Object>.Entry lhsTail = _lhsFrontier.getTail();
