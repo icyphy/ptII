@@ -1,4 +1,4 @@
-/* Model transformer based on graph isomorphism.
+/* A recursive algorithm to match a subgraph to the given pattern.
 
  Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
@@ -28,7 +28,6 @@
 package ptolemy.actor.gt;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -63,18 +62,45 @@ import ptolemy.moml.MoMLParser;
  */
 public class RecursiveGraphMatcher {
 
-    /** Get the last matching result as an unmodifiable map.
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Get the latest matching result. This result is not made unmodifiable,
+     *  but the user is not supposed to modify it. During the matching process,
+     *  if a callback routine (an object of {@link MatchCallback}) is invoked,
+     *  it can call this method to retrieve the new match result. However, the
+     *  returned object may be changed by future matching. To maintain a copy of
+     *  this result, {@link MatchResult#clone()} may be called that returns a
+     *  clone of it.
      *
-     *  @return The last matching result.
+     *  @return The latest matching result.
      */
     public MatchResult getMatchResult() {
         return _match;
     };
 
+    /** Return whether the last matching was successful. The success of a match
+     *  does not only mean that at least one match was found, but it also means
+     *  that the callback (an object of {@link MatchCallback}) returned
+     *  <tt>true</tt> when it was invoked with the last match result.
+     *
+     *  @return Whether the last matching was successful.
+     */
     public boolean isSuccessful() {
         return _success;
     }
 
+    /** Match the given model file with a rule file. This main method takes a
+     *  parameter array of length 2 or 3. If the array has 2 elements, the first
+     *  string is the rule file name, and the second is the model file name. An
+     *  arbitrary match is printed to the console. If it has 3 elements, the
+     *  first string should be "<tt>-A</tt>", the second string is the rule file
+     *  name, and the third is the model file name. All the matches are printed
+     *  to to console in that case.
+     * 
+     *  @param args The parameter array.
+     *  @exception Exception If the rule file or the model file cannot be read.
+     */
     public static void main(String[] args) throws Exception {
         if (!(args.length == 2 ||
                 (args.length == 3 && args[0].equalsIgnoreCase("-A")))) {
@@ -95,7 +121,7 @@ public class RecursiveGraphMatcher {
                 _printMatch(match);
                 return !all;
             }
-            
+
             private int count = 0;
         };
         match(lhsXMLFile, hostXMLFile, matchCallback);
@@ -109,14 +135,12 @@ public class RecursiveGraphMatcher {
      *  @param hostGraph The host graph.
      *  @return <tt>true</tt> if the match is successful; <tt>false</tt>
      *   otherwise.
-     *  @throws SubgraphMatchingException If errors occur during the match.
      */
-    public boolean match(CompositeActorMatcher lhsGraph, NamedObj hostGraph)
-    throws SubgraphMatchingException {
+    public boolean match(CompositeActorMatcher lhsGraph, NamedObj hostGraph) {
 
         // Matching result.
         _match = new MatchResult();
-        
+
         // Temporary data structures.
         _lhsFrontier = new FastLinkedList<Object>();
         _hostFrontier = new FastLinkedList<Object>();
@@ -141,14 +165,47 @@ public class RecursiveGraphMatcher {
         return _success;
     }
 
+    /** Match the host model stored in the file with name <tt>hostXMLFile</tt>
+     *  with the rule stored in the file with name <tt>lhsXMLFile</tt>, and
+     *  record the first matching (which is arbitrarily decided by the recursive
+     *  algorithm) in the returned matcher object. The match result can be
+     *  obtained with {@link #getMatchResult()}.
+     *
+     *  @param lhsXMLFile The name of the file in which the rule is stored.
+     *  @param hostXMLFile The name of the file in which the model to be matched
+     *   is stored.
+     *  @return A matcher object with the first match result stored in it. If no
+     *   match is found, {@link #isSuccessful()} of the matcher object returns
+     *   <tt>false</tt>, and {@link #getMatchResult()} returns an empty match.
+     *  @exception Exception If the rule file or the model file cannot be read.
+     */
     public static RecursiveGraphMatcher match(String lhsXMLFile,
-            String hostXMLFile) throws MalformedURLException, Exception {
+            String hostXMLFile) throws Exception {
         return match(lhsXMLFile, hostXMLFile, null);
     }
 
+    /** Match the host model stored in the file with name <tt>hostXMLFile</tt>
+     *  with the rule stored in the file with name <tt>lhsXMLFile</tt>, and
+     *  invoke <tt>callback</tt>'s {@link
+     *  MatchCallback#foundMatch(RecursiveGraphMatcher)} method whenever a match
+     *  is found. If the callback returns <tt>true</tt>, the match will
+     *  terminate and no more matches will be reported; otherwise, the match
+     *  process continues, and if one more match is found, the callback will be
+     *  invoked again.
+     *
+     *  @param lhsXMLFile The name of the file in which the rule is stored.
+     *  @param hostXMLFile The name of the file in which the model to be matched
+     *   is stored.
+     *  @param callback The callback to be invoked when matches are found.
+     *  @return A matcher object with the last match result stored in it. If no
+     *   match is found, or though matches are found, the callback returns
+     *   <tt>false</tt> for all the matches, then {@link #isSuccessful()} of the
+     *   matcher object returns <tt>false</tt>, and {@link #getMatchResult()}
+     *   returns an empty match.
+     *  @exception Exception If the rule file or the model file cannot be read.
+     */
     public static RecursiveGraphMatcher match(String lhsXMLFile,
-            String hostXMLFile, MatchCallback callback)
-    throws MalformedURLException, Exception {
+            String hostXMLFile, MatchCallback callback) throws Exception {
         MoMLParser parser = new MoMLParser();
         SingleRuleTransformer rule = (SingleRuleTransformer)
                 parser.parse(null, new File(lhsXMLFile).toURI().toURL());
@@ -164,9 +221,17 @@ public class RecursiveGraphMatcher {
         return matcher;
     }
 
+    /** Set the callback to be invoked by future calls to {@link
+     *  #match(CompositeActorMatcher, NamedObj)}.
+     *
+     *  @param callback The callback.
+     */
     public void setMatchCallback(MatchCallback callback) {
         _callback = callback;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     private ComponentEntity _findFirstChild(CompositeEntity top,
             FastLinkedList<MarkedEntityList> markedList,
@@ -403,8 +468,6 @@ public class RecursiveGraphMatcher {
         return container instanceof CompositeActor
                 && ((CompositeActor) container).isOpaque();
     }
-    
-    private Set<Object> _lhsObjects;
 
     private boolean _matchAtomicActor(AtomicActor lhsActor,
             AtomicActor hostActor) {
@@ -412,7 +475,7 @@ public class RecursiveGraphMatcher {
         int matchSize = _match.size();
         FastLinkedList<Object>.Entry lhsTail = _lhsFrontier.getTail();
         FastLinkedList<Object>.Entry hostTail = _hostFrontier.getTail();
-        
+
         _match.put(lhsActor, hostActor);
         boolean success = true;
 
@@ -465,14 +528,14 @@ public class RecursiveGraphMatcher {
         if (firstEntrance) {
             _match.put(lhsEntity, hostEntity);
 
-            if (lhsEntity instanceof CompositeActor
-                    && ((CompositeActor) lhsEntity).isOpaque()) {
-                Director lhsDirector =
-                    ((CompositeActor) lhsEntity).getDirector();
-                if (hostEntity instanceof CompositeActor
-                        && ((CompositeActor) hostEntity).isOpaque()) {
-                    Director hostDirector =
-                        ((CompositeActor) hostEntity).getDirector();
+            if (lhsEntity instanceof CompositeActor) {
+                CompositeActor lhsComposite = (CompositeActor) lhsEntity;
+                Director lhsDirector = lhsComposite.isOpaque() ?
+                        lhsComposite.getDirector() : null;
+                if (hostEntity instanceof CompositeActor) {
+                    CompositeActor hostComposite = (CompositeActor) hostEntity;
+                    Director hostDirector = hostComposite.isOpaque() ?
+                            hostComposite.getDirector() : null;
                     success = _matchDirector(lhsDirector, hostDirector);
                 } else {
                     success = false;
@@ -537,6 +600,12 @@ public class RecursiveGraphMatcher {
     private boolean _matchDirector(Director lhsDirector,
             Director hostDirector) {
 
+        if (lhsDirector == null && hostDirector == null) {
+            return true;
+        } else if (lhsDirector == null || hostDirector == null) {
+            return false;
+        }
+        
         int matchSize = _match.size();
 
         _match.put(lhsDirector, hostDirector);
@@ -812,6 +881,9 @@ public class RecursiveGraphMatcher {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
+
     private MatchCallback _callback = new MatchCallback() {
         public boolean foundMatch(RecursiveGraphMatcher matcher) {
             return true;
@@ -827,6 +899,8 @@ public class RecursiveGraphMatcher {
     /** The list of LHS entities that need to be matched.
      */
     private FastLinkedList<Object> _lhsFrontier;
+
+    private Set<Object> _lhsObjects;
 
     /** The map that matches objects in the LHS to the objects in the host.
      *  These objects include actors, ports, relations, etc.
@@ -844,6 +918,9 @@ public class RecursiveGraphMatcher {
      *  operation.
      */
     private FastLinkedList<CompositeEntity> _visitedLHSCompositeEntities;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      private inner classes                ////
 
     private static class MarkedEntityList extends Pair<List<?>, Integer> {
 
