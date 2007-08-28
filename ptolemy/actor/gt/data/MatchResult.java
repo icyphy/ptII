@@ -44,6 +44,13 @@ public class MatchResult extends HashMap<Object, Object> {
         _values.clear();
     }
 
+    public Object clone() {
+        MatchResult result = (MatchResult) super.clone();
+        result._keys = new LinkedList<Object>(_keys);
+        result._values = new HashSet<Object>(_values);
+        return result;
+    }
+
     public boolean containsValue(Object value) {
         return _values.contains(value);
     }
