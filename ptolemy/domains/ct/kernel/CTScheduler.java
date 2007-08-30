@@ -652,8 +652,18 @@ public class CTScheduler extends Scheduler {
         DirectedAcyclicGraph arithmeticGraph = _toGraph(arithmeticActors);
 
         if (!arithmeticGraph.isAcyclic()) {
-            throw new NotSchedulableException(this,
-                    "Arithmetic loops are not allowed in the CT domain.");
+            Object[] cycleNodes = arithmeticGraph.cycleNodes();
+            LinkedList nodesAsList = new LinkedList();
+            StringBuffer inCycle = new StringBuffer("Cycle includes: ");
+            for (int i = 0; i < cycleNodes.length; i++) {
+                inCycle.append(((NamedObj)cycleNodes[i]).getFullName());
+                if (i < cycleNodes.length - 1) {
+                    inCycle.append(", ");
+                }
+                nodesAsList.add(cycleNodes[i]);
+            }
+            throw new NotSchedulableException(nodesAsList, null,
+                    "Algebraic loop. " + inCycle.toString());
         }
 
         // We do not allow loops of dynamic actors, either.
@@ -1006,6 +1016,9 @@ public class CTScheduler extends Scheduler {
         return ctSchedule;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /** Set or create a not-visible, not-persistent parameter
      *  with the specified name in the specified container with
      *  the specified value.
@@ -1333,7 +1346,10 @@ public class CTScheduler extends Scheduler {
 
                     setType(nextPort, getType(port));
                 } else if (getType(port) != getType(nextPort)) {
-                    throw new NotSchedulableException("Signal type conflict: "
+                    LinkedList offendingPorts = new LinkedList();
+                    offendingPorts.add(port);
+                    offendingPorts.add(nextPort);
+                    throw new NotSchedulableException(offendingPorts, null, "Signal type conflict: "
                             + port.getFullName() + " (of type "
                             + signalTypeToString(getType(port)) + ") and "
                             + nextPort.getFullName() + " (of type "
