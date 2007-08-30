@@ -30,6 +30,7 @@ package ptolemy.kernel.util;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Collection;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// KernelRuntimeException
@@ -108,6 +109,9 @@ public class KernelRuntimeException extends RuntimeException {
      */
     public KernelRuntimeException(Nameable object1, Nameable object2,
             Throwable cause, String detail) {
+        _causes = new LinkedList();
+        _causes.add(object1);
+        _causes.add(object2);
         _setMessage(KernelException.generateMessage(object1, object2, cause,
                 detail));
         _setCause(cause);
@@ -121,6 +125,7 @@ public class KernelRuntimeException extends RuntimeException {
      */
     public KernelRuntimeException(Collection objects, Throwable cause,
             String detail) {
+        _causes = objects;
         _setMessage(KernelException.generateMessage(objects, cause, detail));
         _setCause(cause);
     }
@@ -145,6 +150,14 @@ public class KernelRuntimeException extends RuntimeException {
      */
     public String getMessage() {
         return _message;
+    }
+    
+    /** Get the first Nameable, if any, that was passed as an argument.
+     *  @return The first Nameable that was passed in.  If no Nameable
+     *  was passed in, then return null.
+     */
+    public Collection getNameables() {
+        return _causes;
     }
 
     /** Print a stack trace message to stderr including
@@ -219,9 +232,13 @@ public class KernelRuntimeException extends RuntimeException {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The detail message.
-    private String _message;
 
     // The cause of this exception.
     private Throwable _cause;
+
+    // The Nameable objects that caused the exception.
+    private Collection _causes;
+
+    // The detail message.
+    private String _message;
 }

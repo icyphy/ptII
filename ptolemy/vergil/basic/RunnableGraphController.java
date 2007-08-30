@@ -53,6 +53,7 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -137,6 +138,11 @@ public abstract class RunnableGraphController extends WithIconGraphController
                         }
                     }
                 }
+            }
+        } else if (throwable instanceof KernelRuntimeException) {
+            Iterator causes = ((KernelRuntimeException)throwable).getNameables().iterator();
+            while (causes.hasNext()) {
+                _highlightError((Nameable)causes.next());
             }
         }
     }
