@@ -97,7 +97,7 @@ public class RecursiveGraphMatcher {
      *  first string should be "<tt>-A</tt>", the second string is the rule file
      *  name, and the third is the model file name. All the matches are printed
      *  to to console in that case.
-     * 
+     *
      *  @param args The parameter array.
      *  @exception Exception If the rule file or the model file cannot be read.
      */
@@ -142,26 +142,20 @@ public class RecursiveGraphMatcher {
         _match = new MatchResult();
 
         // Temporary data structures.
-        _lhsFrontier = new FastLinkedList<Object>();
-        _hostFrontier = new FastLinkedList<Object>();
-        _visitedLHSCompositeEntities = new FastLinkedList<CompositeEntity>();
-        _lhsObjects = new HashSet<Object>();
+        _lookbackList = new FastLinkedList<LookbackEntry>();
+        _completedObjects = new HashSet<Object>();
 
-        _lhsFrontier.add(lhsGraph);
-        _lhsObjects.add(lhsGraph);
-        _hostFrontier.add(hostGraph);
+        _success = _matchObject(lhsGraph, hostGraph);
 
-        _success = _matchEntryList(_lhsFrontier.getHead(),
-                _hostFrontier.getHead());
+        assert _lookbackList.isEmpty();
         if (!_success) {
             assert _match.isEmpty();
         }
 
         // Clear temporary data structures to free memory.
-        _lhsFrontier = null;
-        _hostFrontier = null;
-        _visitedLHSCompositeEntities = null;
-        _lhsObjects = null;
+        _lookbackList = null;
+        _completedObjects = null;
+
         return _success;
     }
 
@@ -233,32 +227,77 @@ public class RecursiveGraphMatcher {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private ComponentEntity _findFirstChild(CompositeEntity top,
+    private boolean _checkBackward() {
+        FastLinkedList<LookbackEntry>.Entry lhsEntry = _lookbackList.getTail();
+        LookbackEntry entry = null;
+        Object data = null;
+        while (lhsEntry != null) {
+            entry = lhsEntry.getValue();
+            data = entry.getData();
+            if (!_completedObjects.contains(data)) {
+                break;
+            }
+            lhsEntry = lhsEntry.getPrevious();
+        }
+        if (lhsEntry == null) {
+            return _callback.foundMatch(this);
+        } else {
+            LookbackEntryType type = entry.getType();
+            boolean success;
+
+            switch (type) {
+            case ATOMIC_ACTOR:
+                success = _matchAtomicActor((AtomicActor) data,
+                        (AtomicActor) _match.get(data));
+                break;
+            case COMPOSITE_ENTITY:
+                success = _matchCompositeEntity((CompositeEntity) data,
+                        (CompositeEntity) _match.get(data));
+                break;
+            case PATH_LIST:
+                success = _matchPathList((PathList) data,
+                        (PathList) _match.get(data));
+                break;
+            case PORT:
+                success = _matchPort((Port) data, (Port) _match.get(data));
+                break;
+            default:
+                success = true;
+            }
+            return success;
+        }
+    }
+
+    private static ComponentEntity _findFirstChild(CompositeEntity top,
             FastLinkedList<MarkedEntityList> markedList,
             Collection<Object> excludedEntities) {
 
-        FastLinkedList<MarkedEntityList>.Entry tail = markedList.getTail();
         List<?> entities = top.entityList(ComponentEntity.class);
 
         if (!entities.isEmpty()) {
             int i = 0;
+            MarkedEntityList currentList = new MarkedEntityList(entities, 0);
+            markedList.add(currentList);
+
+            FastLinkedList<MarkedEntityList>.Entry tail = markedList.getTail();
+
             for (Object entityObject : entities) {
-                if (!excludedEntities.contains(entityObject)) {
-                    markedList.add(new MarkedEntityList(entities, i));
-                    if (entityObject instanceof AtomicActor
-                            || entityObject instanceof CompositeEntity
-                            && _isNewLevel((CompositeEntity) entityObject)) {
+                currentList.setSecond(i);
+                if (entityObject instanceof AtomicActor
+                        || entityObject instanceof CompositeEntity
+                        && _isNewLevel((CompositeEntity) entityObject)) {
+                    if (!excludedEntities.contains(entityObject)) {
                         return (ComponentEntity) entityObject;
+                    }
+                } else {
+                    CompositeEntity compositeEntity =
+                        (CompositeEntity) entityObject;
+                    ComponentEntity child = _findFirstChild(compositeEntity,
+                            markedList, excludedEntities);
+                    if (child != null && !excludedEntities.contains(child)) {
+                        return child;
                     } else {
-                        CompositeEntity compositeEntity =
-                            (CompositeEntity) entityObject;
-                        ComponentEntity child = _findFirstChild(compositeEntity,
-                                markedList, excludedEntities);
-                        if (child != null) {
-                            return child;
-                        } else {
-                            markedList.removeAllAfter(tail);
-                        }
+                        markedList.removeAllAfter(tail);
                     }
                 }
                 i++;
@@ -269,8 +308,9 @@ public class RecursiveGraphMatcher {
     }
 
     @SuppressWarnings("unchecked")
-    private boolean _findFirstPath(Port startPort, Path path,
-            Set<Relation> visitedRelations, Set<Port> visitedPorts) {
+    private static boolean _findFirstPath(Port startPort, Path path,
+            Set<? super Relation> visitedRelations,
+            Set<? super Port> visitedPorts) {
         List<?> relationList = startPort.linkedRelationList();
         if (startPort instanceof ComponentPort) {
             ((List) relationList).addAll(((TypedIOPort) startPort).insideRelationList());
@@ -281,6 +321,7 @@ public class RecursiveGraphMatcher {
         for (Object relationObject : relationList) {
             Relation relation = (Relation) relationObject;
             if (visitedRelations.contains(relation)) {
+                i++;
                 continue;
             }
 
@@ -330,7 +371,7 @@ public class RecursiveGraphMatcher {
         return false;
     }
 
-    private ComponentEntity _findNextChild(CompositeEntity top,
+    private static ComponentEntity _findNextChild(CompositeEntity top,
             FastLinkedList<MarkedEntityList> markedList,
             Collection<Object> excludedEntities) {
         if (markedList.isEmpty()) {
@@ -365,12 +406,13 @@ public class RecursiveGraphMatcher {
                 }
                 entry = entry.getPrevious();
             }
+            markedList.clear();
             return null;
         }
     }
 
     @SuppressWarnings("unchecked")
-    private boolean _findNextPath(Path path, Set<Relation> visitedRelations,
+    private static boolean _findNextPath(Path path, Set<Relation> visitedRelations,
             Set<Port> visitedPorts) {
         FastLinkedList<MarkedEntityList>.Entry entry = path.getTail();
         while (entry != null) {
@@ -464,66 +506,77 @@ public class RecursiveGraphMatcher {
      *  @return <tt>true</tt> if the composite entity starts a new level;
      *   <tt>false</tt> otherwise.
      */
-    private boolean _isNewLevel(CompositeEntity container) {
+    private static boolean _isNewLevel(CompositeEntity container) {
         return container instanceof CompositeActor
                 && ((CompositeActor) container).isOpaque();
     }
 
     private boolean _matchAtomicActor(AtomicActor lhsActor,
             AtomicActor hostActor) {
-
         int matchSize = _match.size();
-        FastLinkedList<Object>.Entry lhsTail = _lhsFrontier.getTail();
-        FastLinkedList<Object>.Entry hostTail = _hostFrontier.getTail();
-
-        _match.put(lhsActor, hostActor);
         boolean success = true;
+        boolean lhsChildChecked = false;
 
-        for (Object portObject : lhsActor.portList()) {
-            Port port = (Port) portObject;
-            Port hostMatchedPort = (Port) _match.get(port);
-            if (hostMatchedPort == null) {
-                _lhsFrontier.add(port);
-                _lhsObjects.add(port);
-            } else if (!(hostMatchedPort instanceof Port)
-                    || hostMatchedPort.getContainer() != hostActor) {
+        boolean firstEntrance = !_match.containsKey(lhsActor);
+        FastLinkedList<LookbackEntry>.Entry lookbackTail = null;
+        if (firstEntrance) {
+            _match.put(lhsActor, hostActor);
+            _lookbackList.add(new LookbackEntry(
+                    LookbackEntryType.ATOMIC_ACTOR, lhsActor));
+            lookbackTail = _lookbackList.getTail();
+        }
+
+        for (Object lhsPortObject : lhsActor.portList()) {
+            if (!_match.containsKey(lhsPortObject)) {
+                lhsChildChecked = true;
                 success = false;
+                for (Object hostPortObject : hostActor.portList()) {
+                    if (!_match.containsValue(hostPortObject)) {
+                        if (_matchObject(lhsPortObject, hostPortObject)) {
+                            success = true;
+                            break;
+                        }
+                    }
+                }
                 break;
             }
         }
 
         if (success) {
-            for (Object portObject : hostActor.portList()) {
-                Port port = (Port) portObject;
-                if (!_match.containsValue(port)) {
-                    _hostFrontier.add(port);
+            if (!lhsChildChecked) {
+                _completedObjects.add(lhsActor);
+                success = _checkBackward();
+                _completedObjects.remove(lhsActor);
+                if (!success) {
+                    _match.retain(matchSize);
+                    if (firstEntrance) {
+                        lookbackTail.remove();
+                    }
                 }
             }
-        }
-
-        success = success && _matchLoop(lhsTail, hostTail);
-
-        if (!success) {
+            return success;
+        } else {
             _match.retain(matchSize);
-            _lhsFrontier.removeAllAfter(lhsTail);
-            _hostFrontier.removeAllAfter(hostTail);
+            if (firstEntrance) {
+                lookbackTail.remove();
+            }
+            return false;
         }
-
-        return success;
     }
 
     private boolean _matchCompositeEntity(CompositeEntity lhsEntity,
             CompositeEntity hostEntity) {
-
         int matchSize = _match.size();
-
-        FastLinkedList<MarkedEntityList> lhsMarkedList =
-            new FastLinkedList<MarkedEntityList>();
         boolean success = true;
+        boolean lhsChildChecked = false;
 
         boolean firstEntrance = !_match.containsKey(lhsEntity);
+        FastLinkedList<LookbackEntry>.Entry lookbackTail = null;
         if (firstEntrance) {
             _match.put(lhsEntity, hostEntity);
+            _lookbackList.add(new LookbackEntry(
+                    LookbackEntryType.COMPOSITE_ENTITY, lhsEntity));
+            lookbackTail = _lookbackList.getTail();
 
             if (lhsEntity instanceof CompositeActor) {
                 CompositeActor lhsComposite = (CompositeActor) lhsEntity;
@@ -541,20 +594,14 @@ public class RecursiveGraphMatcher {
         }
 
         if (success) {
+            FastLinkedList<MarkedEntityList> lhsMarkedList =
+                new FastLinkedList<MarkedEntityList>();
+
             ComponentEntity lhsNextActor =
                 _findFirstChild(lhsEntity, lhsMarkedList, _match.keySet());
 
             if (lhsNextActor != null) {
-                int matchSize2 = _match.size();
-                FastLinkedList<Object>.Entry lhsTail = _lhsFrontier.getTail();
-                FastLinkedList<Object>.Entry hostTail = _hostFrontier.getTail();
-
-                FastLinkedList<CompositeEntity>.Entry compositeTail = null;
-                if (firstEntrance) {
-                    _visitedLHSCompositeEntities.add(lhsEntity);
-                    compositeTail = _visitedLHSCompositeEntities.getTail();
-                }
-
+                lhsChildChecked = true;
                 FastLinkedList<MarkedEntityList> hostMarkedList =
                     new FastLinkedList<MarkedEntityList>();
                 ComponentEntity hostNextActor = _findFirstChild(hostEntity,
@@ -562,39 +609,36 @@ public class RecursiveGraphMatcher {
 
                 success = false;
                 while (!success && hostNextActor != null) {
-                    _lhsFrontier.add(lhsNextActor);
-                    _lhsObjects.add(lhsNextActor);
-                    _hostFrontier.add(hostNextActor);
-
-                    if (_matchEntryList(lhsTail.getNext(), hostTail.getNext())) {
+                    if (_matchObject(lhsNextActor, hostNextActor)) {
                         success = true;
                     } else {
-                        _match.retain(matchSize2);
-                        _hostFrontier.removeAllAfter(hostTail);
-                        _lhsFrontier.removeAllAfter(lhsTail);
-                        if (firstEntrance) {
-                            _visitedLHSCompositeEntities.removeAllAfter(
-                                    compositeTail);
-                        }
                         hostNextActor = _findNextChild(hostEntity,
                                 hostMarkedList, _match.values());
                     }
                 }
-
-                if (!success && firstEntrance) {
-                    compositeTail.remove();
-                }
-            } else {
-                success = _lhsObjects.size() == _match.size() ?
-                        _callback.foundMatch(this) : true;
             }
         }
 
-        if (!success && firstEntrance) {
+        if (success) {
+            if (!lhsChildChecked) {
+                _completedObjects.add(lhsEntity);
+                success = _checkBackward();
+                _completedObjects.remove(lhsEntity);
+                if (!success) {
+                    _match.retain(matchSize);
+                    if (firstEntrance) {
+                        lookbackTail.remove();
+                    }
+                }
+            }
+            return success;
+        } else {
             _match.retain(matchSize);
+            if (firstEntrance) {
+                lookbackTail.remove();
+            }
+            return false;
         }
-
-        return success;
     }
 
     private boolean _matchDirector(Director lhsDirector,
@@ -605,7 +649,7 @@ public class RecursiveGraphMatcher {
         } else if (lhsDirector == null || hostDirector == null) {
             return false;
         }
-        
+
         int matchSize = _match.size();
 
         _match.put(lhsDirector, hostDirector);
@@ -620,92 +664,15 @@ public class RecursiveGraphMatcher {
         return success;
     }
 
-    private boolean _matchDisconnectedComponents() {
-        FastLinkedList<CompositeEntity>.Entry lhsEntry =
-            _visitedLHSCompositeEntities.getTail();
-        if (lhsEntry == null) {
-            return _lhsObjects.size() == _match.size() ?
-                    _callback.foundMatch(this) : true;
-        } else {
-            while (lhsEntry != null) {
-                CompositeEntity lhsEntity = lhsEntry.getValue();
-                CompositeEntity hostMatchedEntity =
-                    (CompositeEntity) _match.get(lhsEntity);
-                if (!_matchCompositeEntity(lhsEntity, hostMatchedEntity)) {
-                    return false;
-                }
-                lhsEntry = lhsEntry.getPrevious();
-            }
-            return true;
-        }
-    }
-
-    /** Match a list of LHS entries with a list of host entries. All LHS entries
-     *  must be matched with some or all of the host entries.
-     *
-     *  @param lhsEntry The start of the LHS entries.
-     *  @param hostEntry The start of the host entries.
-     *  @return <tt>true</tt> is the match is successful; <tt>false</tt>
-     *   otherwise.
-     */
-    private boolean _matchEntryList(FastLinkedList<Object>.Entry lhsEntry,
-            FastLinkedList<Object>.Entry hostEntry) {
-        if (lhsEntry == null) {
-            return _lhsObjects.size() == _match.size() ?
-                    _callback.foundMatch(this) : true;
-        } else {
-            // Arbitrarily pick an object in _lhsFrontier to match.
-            Object lhsObject = lhsEntry.getValue();
-            while (hostEntry != null) {
-                Object hostObject = hostEntry.getValue();
-                if (_matchObject(lhsObject, hostObject)) {
-                    return true;
-                } else {
-                    hostEntry = hostEntry.getNext();
-                }
-            }
-            return false;
-        }
-    }
-
-    private boolean _matchLoop(FastLinkedList<Object>.Entry lhsStart,
-            FastLinkedList<Object>.Entry hostStart) {
-
-        // The real start of the two frontiers.
-        // For the 1st check for disconnected components, the parameters have to
-        // be non-null, and the following variables are the actual parameters to
-        // the loop.
-        FastLinkedList<Object>.Entry lhsChildStart = lhsStart.getNext();
-        FastLinkedList<Object>.Entry hostChildStart = hostStart.getNext();
-
-        if (lhsChildStart == null) {
-            return _matchDisconnectedComponents();
-        } else {
-            FastLinkedList<Object>.Entry lhsEntry = lhsChildStart;
-            if (lhsEntry == null) {
-                return _lhsObjects.size() == _match.size() ?
-                        _callback.foundMatch(this) : true;
-            } else {
-                while (lhsEntry != null) {
-                    Object lhsObject = lhsEntry.getValue();
-                    if (!_match.containsKey(lhsObject)
-                            && !_matchEntryList(lhsEntry, hostChildStart)) {
-                        return false;
-                    }
-                    lhsEntry = lhsEntry.getNext();
-                }
-                return true;
-            }
-        }
-    }
-
     private boolean _matchObject(Object lhsObject, Object hostObject) {
-        if (_match.containsKey(lhsObject)) {
-            return _match.get(lhsObject) == hostObject
-                    && _matchDisconnectedComponents();
-        } else if (_match.containsValue(hostObject)) {
+        Object match = _match.get(lhsObject);
+        if (match == hostObject) {
+            return _checkBackward();
+        } else if (match != null || _match.containsValue(hostObject)) {
             return false;
-        } else if (lhsObject instanceof AtomicActor
+        }
+
+        if (lhsObject instanceof AtomicActor
                 && hostObject instanceof AtomicActor) {
             return _matchAtomicActor((AtomicActor) lhsObject,
                     (AtomicActor) hostObject);
@@ -713,138 +680,175 @@ public class RecursiveGraphMatcher {
                 && hostObject instanceof CompositeEntity) {
             return _matchCompositeEntity((CompositeEntity) lhsObject,
                     (CompositeEntity) hostObject);
-        } else if (lhsObject instanceof Port
-                && hostObject instanceof Port) {
+        } else if (lhsObject instanceof Port && hostObject instanceof Port) {
             return _matchPort((Port) lhsObject, (Port) hostObject);
-        } else if (lhsObject instanceof Path
-                && hostObject instanceof Path) {
+        } else if (lhsObject instanceof Path && hostObject instanceof Path) {
             return _matchPath((Path) lhsObject, (Path) hostObject);
+        } else if (lhsObject instanceof PathList
+                && hostObject instanceof PathList) {
+            return _matchPathList((PathList) lhsObject, (PathList) hostObject);
         } else {
             return false;
         }
     }
 
     private boolean _matchPath(Path lhsPath, Path hostPath) {
+
+        if (!_shallowMatchPath(lhsPath, hostPath)) {
+            return false;
+        }
+
         int matchSize = _match.size();
-        FastLinkedList<Object>.Entry lhsTail = _lhsFrontier.getTail();
-        FastLinkedList<Object>.Entry hostTail = _hostFrontier.getTail();
 
         _match.put(lhsPath, hostPath);
-        boolean success = _shallowMatchPath(lhsPath, hostPath);
 
         Port lhsPort = lhsPath.getEndPort();
         Port hostPort = hostPath.getEndPort();
 
-        if (success) {
-            Port hostMatchedPort = (Port) _match.get(lhsPort);
-            if (hostMatchedPort == null) {
-                Port endPort = lhsPath.getEndPort();
-                _lhsFrontier.add(endPort);
-                _lhsObjects.add(endPort);
-            } else if (hostMatchedPort != hostPort) {
-                success = false;
-            }
-        }
-
-        if (success) {
-            if (!_match.containsValue(hostPort)) {
-                _hostFrontier.add(hostPath.getEndPort());
-            }
-        }
-
-        success = success && _matchLoop(lhsTail, hostTail);
+        boolean success = _matchObject(lhsPort, hostPort);
 
         if (!success) {
             _match.retain(matchSize);
-            _hostFrontier.removeAllAfter(hostTail);
-            _lhsFrontier.removeAllAfter(lhsTail);
         }
 
         return success;
     }
 
-    private boolean _matchPort(Port lhsPort, Port hostPort) {
+    private boolean _matchPathList(PathList lhsPathList,
+            PathList hostPathList) {
+        int matchSize = _match.size();
+        boolean success = true;
+        boolean lhsChildChecked = false;
 
-        if (!_shallowMatchPort(lhsPort, hostPort)) {
+        boolean firstEntrance = !_match.containsKey(lhsPathList);
+        FastLinkedList<LookbackEntry>.Entry lookbackTail = null;
+        if (firstEntrance) {
+            _match.put(lhsPathList, hostPathList);
+            _lookbackList.add(new LookbackEntry(
+                    LookbackEntryType.PATH_LIST, lhsPathList));
+            lookbackTail = _lookbackList.getTail();
+        }
+
+        for (Object lhsPathObject : lhsPathList) {
+            if (!_match.containsKey(lhsPathObject)) {
+                lhsChildChecked = true;
+                success = false;
+                for (Object hostPathObject : hostPathList) {
+                    if (!_match.containsValue(hostPathObject)) {
+                        if (_matchObject(lhsPathObject, hostPathObject)) {
+                            success = true;
+                            break;
+                        }
+                    }
+                }
+                break;
+            }
+        }
+
+        if (success) {
+            if (!lhsChildChecked) {
+                _completedObjects.add(lhsPathList);
+                success = _checkBackward();
+                _completedObjects.remove(lhsPathList);
+                if (!success) {
+                    _match.retain(matchSize);
+                    if (firstEntrance) {
+                        lookbackTail.remove();
+                    }
+                }
+            }
+            return success;
+        } else {
+            _match.retain(matchSize);
+            if (firstEntrance) {
+                lookbackTail.remove();
+            }
             return false;
         }
+    }
+
+    private boolean _matchPort(Port lhsPort, Port hostPort) {
 
         int matchSize = _match.size();
-        FastLinkedList<Object>.Entry lhsTail = _lhsFrontier.getTail();
-        FastLinkedList<Object>.Entry hostTail = _hostFrontier.getTail();
-
-        _match.put(lhsPort, hostPort);
         boolean success = true;
+        boolean lhsChildChecked = false;
 
-        NamedObj lhsContainer = lhsPort.getContainer();
-        NamedObj hostMatchedContainer = (NamedObj) _match.get(lhsContainer);
-        if (hostMatchedContainer == null) {
-            _lhsFrontier.add(lhsContainer);
-            _lhsObjects.add(lhsContainer);
-        } else if (hostMatchedContainer != hostPort.getContainer()) {
-            success = false;
+        boolean firstEntrance = !_match.containsKey(lhsPort);
+        FastLinkedList<LookbackEntry>.Entry lookbackTail = null;
+        if (firstEntrance) {
+            _match.put(lhsPort, hostPort);
+            _lookbackList.add(new LookbackEntry(LookbackEntryType.PORT,
+                    lhsPort));
+            lookbackTail = _lookbackList.getTail();
+
+            if (!_shallowMatchPort(lhsPort, hostPort)) {
+                success = false;
+            }
         }
 
-        if (success) {
-            NamedObj hostContainer = hostPort.getContainer();
-            if (!_match.containsValue(hostContainer)) {
-                _hostFrontier.add(hostContainer);
+        if (success && !lhsChildChecked) {
+            if (firstEntrance) {
+                lhsChildChecked = true;
+                success = success && _matchObject(lhsPort.getContainer(),
+                        hostPort.getContainer());
             }
         }
 
         if (success) {
-            Path lhsPath = new Path(lhsPort);
-            Set<Relation> visitedRelations = new HashSet<Relation>();
-            Set<Port> visitedPorts = new HashSet<Port>();
-            boolean foundPath = _findFirstPath(lhsPort, lhsPath,
-                    visitedRelations, visitedPorts);
-            while (foundPath) {
-                Path hostMatchedPath = (Path) _match.get(lhsPath);
-                if (hostMatchedPath == null) {
-                    Path lhsPathCopy = (Path) lhsPath.clone();
-                    _lhsFrontier.add(lhsPathCopy);
-                    _lhsObjects.add(lhsPathCopy);
-                } else if (hostMatchedPath.getStartPort() != hostPort) {
-                    success = false;
-                    break;
+            if (!lhsChildChecked) {
+                _completedObjects.add(lhsPort);
+                PathList lhsPaths = new PathList();
+                Path lhsPath = new Path(lhsPort);
+                Set<Relation> visitedRelations = new HashSet<Relation>();
+                Set<Port> visitedPorts = new HashSet<Port>();
+                boolean foundPath = _findFirstPath(lhsPort, lhsPath,
+                        visitedRelations, visitedPorts);
+                while (foundPath) {
+                    lhsPaths.add((Path) lhsPath.clone());
+                    foundPath =
+                        _findNextPath(lhsPath, visitedRelations, visitedPorts);
                 }
-                foundPath = _findNextPath(lhsPath, visitedRelations,
-                        visitedPorts);
-            }
-        }
 
-        if (success) {
-            Path hostPath = new Path(hostPort);
-            Set<Relation> visitedRelations = new HashSet<Relation>();
-            Set<Port> visitedPorts = new HashSet<Port>();
-            boolean foundPath = _findFirstPath(hostPort, hostPath,
-                    visitedRelations, visitedPorts);
-            while (foundPath) {
-                if (!_match.containsValue(hostPath)) {
-                    _hostFrontier.add(hostPath.clone());
+                PathList hostPaths = new PathList();
+                Path hostPath = new Path(hostPort);
+                visitedRelations = new HashSet<Relation>();
+                visitedPorts = new HashSet<Port>();
+                foundPath = _findFirstPath(hostPort, hostPath, visitedRelations,
+                        visitedPorts);
+                while (foundPath) {
+                    hostPaths.add((Path) hostPath.clone());
+                    foundPath =
+                        _findNextPath(hostPath, visitedRelations, visitedPorts);
                 }
-                foundPath = _findNextPath(hostPath, visitedRelations,
-                        visitedPorts);
+
+                lhsChildChecked = true;
+                success = success && _matchObject(lhsPaths, hostPaths);
+                _completedObjects.remove(lhsPort);
+                if (!success) {
+                    _match.retain(matchSize);
+                    if (firstEntrance) {
+                        lookbackTail.remove();
+                    }
+                }
             }
-        }
-
-        success = success && _matchLoop(lhsTail, hostTail);
-
-        if (!success) {
+            return success;
+        } else {
             _match.retain(matchSize);
-            _lhsFrontier.removeAllAfter(lhsTail);
-            _hostFrontier.removeAllAfter(hostTail);
+            if (firstEntrance) {
+                lookbackTail.remove();
+            }
+            return false;
         }
-
-        return success;
     }
 
     private static void _printMatch(MatchResult match) {
         List<Object> keyList = new LinkedList<Object>(match.keySet());
         Collections.sort(keyList, _comparator);
         for (Object lhsObject : keyList) {
-            System.out.println(_getNameString(lhsObject) + " : " +
-                    _getNameString(match.get(lhsObject)));
+            if (lhsObject instanceof NamedObj) {
+                System.out.println(_getNameString(lhsObject) + " : " +
+                        _getNameString(match.get(lhsObject)));
+            }
         }
     }
 
@@ -860,7 +864,7 @@ public class RecursiveGraphMatcher {
                 && _shallowMatchPort(lhsEndPort, hostEndPort);
     }
 
-    private boolean _shallowMatchPort(Port lhsPort, Port hostPort) {
+    private static boolean _shallowMatchPort(Port lhsPort, Port hostPort) {
         if (lhsPort instanceof TypedIOPort) {
             if (hostPort instanceof TypedIOPort) {
                 TypedIOPort lhsTypedPort = (TypedIOPort) lhsPort;
@@ -881,26 +885,20 @@ public class RecursiveGraphMatcher {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private fields                    ////
-
     private MatchCallback _callback = new MatchCallback() {
         public boolean foundMatch(RecursiveGraphMatcher matcher) {
             return true;
         }
     };
 
-    private static ObjectComparator _comparator = new ObjectComparator();
+    ///////////////////////////////////////////////////////////////////
+    ////                         private fields                    ////
 
-    /** The list of host entities that can be used to match the LHS entities.
-     */
-    private FastLinkedList<Object> _hostFrontier;
+    private static final ObjectComparator _comparator = new ObjectComparator();
 
-    /** The list of LHS entities that need to be matched.
-     */
-    private FastLinkedList<Object> _lhsFrontier;
+    private Set<Object> _completedObjects;
 
-    private Set<Object> _lhsObjects;
+    private FastLinkedList<LookbackEntry> _lookbackList;
 
     /** The map that matches objects in the LHS to the objects in the host.
      *  These objects include actors, ports, relations, etc.
@@ -912,15 +910,28 @@ public class RecursiveGraphMatcher {
      */
     private boolean _success = false;
 
-    /** The list of composite entities (only the top-level one and those with
-     *  directors in them) that have been visited during the current match
-     *  process. This is a temporary variable and is cleared after the match
-     *  operation.
-     */
-    private FastLinkedList<CompositeEntity> _visitedLHSCompositeEntities;
-
     ///////////////////////////////////////////////////////////////////
     ////                      private inner classes                ////
+
+    private static class LookbackEntry {
+
+        public Object getData() {
+            return _data;
+        }
+
+        public LookbackEntryType getType() {
+            return _type;
+        }
+
+        LookbackEntry(LookbackEntryType type, Object data) {
+            _type = type;
+            _data = data;
+        }
+
+        private Object _data;
+
+        private LookbackEntryType _type;
+    }
 
     private static class MarkedEntityList extends Pair<List<?>, Integer> {
 
@@ -1010,5 +1021,19 @@ public class RecursiveGraphMatcher {
         }
 
         private Port _startPort;
+    }
+
+    private static class PathList extends LinkedList<Path> {
+
+        public boolean equals(Object object) {
+            return this == object;
+        }
+
+        private static final long serialVersionUID = 1609066286409133731L;
+
+    }
+
+    private static enum LookbackEntryType {
+        ATOMIC_ACTOR, COMPOSITE_ENTITY, PATH_LIST, PORT
     }
 }
