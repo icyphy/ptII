@@ -150,6 +150,7 @@ public class RecursiveGraphMatcher {
         assert _lookbackList.isEmpty();
         if (!_success) {
             assert _match.isEmpty();
+            assert _completedObjects.isEmpty();
         }
 
         // Clear temporary data structures to free memory.
@@ -231,6 +232,12 @@ public class RecursiveGraphMatcher {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    public static final MatchCallback DEFAULT_CALLBACK = new MatchCallback() {
+        public boolean foundMatch(RecursiveGraphMatcher matcher) {
+            return true;
+        }
+    };
+
     private boolean _checkBackward() {
         FastLinkedList<LookbackEntry>.Entry lhsEntry = _lookbackList.getTail();
         LookbackEntry entry = null;
@@ -273,17 +280,15 @@ public class RecursiveGraphMatcher {
     }
 
     private static ComponentEntity _findFirstChild(CompositeEntity top,
-            FastLinkedList<MarkedEntityList> markedList,
-            Collection<Object> excludedEntities) {
+            MarkedLists markedLists, Collection<Object> excludedEntities) {
 
         List<?> entities = top.entityList(ComponentEntity.class);
 
         if (!entities.isEmpty()) {
             int i = 0;
             MarkedEntityList currentList = new MarkedEntityList(entities, 0);
-            markedList.add(currentList);
-
-            FastLinkedList<MarkedEntityList>.Entry tail = markedList.getTail();
+            markedLists.add(currentList);
+            MarkedLists.Entry currentListEntry = markedLists.getTail();
 
             for (Object entityObject : entities) {
                 currentList.setSecond(i);
@@ -297,15 +302,15 @@ public class RecursiveGraphMatcher {
                     CompositeEntity compositeEntity =
                         (CompositeEntity) entityObject;
                     ComponentEntity child = _findFirstChild(compositeEntity,
-                            markedList, excludedEntities);
+                            markedLists, excludedEntities);
                     if (child != null && !excludedEntities.contains(child)) {
                         return child;
-                    } else {
-                        markedList.removeAllAfter(tail);
                     }
                 }
                 i++;
             }
+
+            currentListEntry.remove();
         }
 
         return null;
@@ -317,11 +322,15 @@ public class RecursiveGraphMatcher {
             Set<? super Port> visitedPorts) {
         List<?> relationList = startPort.linkedRelationList();
         if (startPort instanceof ComponentPort) {
-            ((List) relationList).addAll(((TypedIOPort) startPort).insideRelationList());
+            ((List) relationList).addAll(
+                    ((TypedIOPort) startPort).insideRelationList());
         }
 
         int i = 0;
-        FastLinkedList<MarkedEntityList>.Entry tail = path.getTail();
+        MarkedEntityList currentList = new MarkedEntityList(relationList, 0);
+        path.add(currentList);
+        Path.Entry currentListEntry = path.getTail();
+
         for (Object relationObject : relationList) {
             Relation relation = (Relation) relationObject;
             if (visitedRelations.contains(relation)) {
@@ -329,13 +338,15 @@ public class RecursiveGraphMatcher {
                 continue;
             }
 
-            path.add(new MarkedEntityList(relationList, i));
+            currentList.setSecond(i);
             visitedRelations.add(relation);
-
             List<?> portList = relation.linkedPortList();
 
             int j = 0;
-            FastLinkedList<MarkedEntityList>.Entry tail2 = path.getTail();
+            MarkedEntityList currentList2 = new MarkedEntityList(portList, 0);
+            path.add(currentList2);
+            Path.Entry currentListEntry2 = path.getTail();
+
             for (Object portObject : portList) {
                 Port port = (Port) portObject;
                 if (visitedPorts.contains(port)) {
@@ -343,9 +354,10 @@ public class RecursiveGraphMatcher {
                     continue;
                 }
 
-                path.add(new MarkedEntityList(portList, j));
+                currentList2.setSecond(j);
                 visitedPorts.add(port);
                 NamedObj container = port.getContainer();
+
                 boolean reachEnd = true;
                 if (container instanceof CompositeEntity) {
                     if (!_isNewLevel((CompositeEntity) container)) {
@@ -361,27 +373,27 @@ public class RecursiveGraphMatcher {
                 if (reachEnd) {
                     return true;
                 } else {
-                    path.removeAllAfter(tail2);
                     visitedPorts.remove(port);
                     j++;
                 }
             }
 
-            path.removeAllAfter(tail);
+            currentListEntry2.remove();
             visitedRelations.remove(relation);
             i++;
         }
+
+        currentListEntry.remove();
 
         return false;
     }
 
     private static ComponentEntity _findNextChild(CompositeEntity top,
-            FastLinkedList<MarkedEntityList> markedList,
-            Collection<Object> excludedEntities) {
-        if (markedList.isEmpty()) {
-            return _findFirstChild(top, markedList, excludedEntities);
+            MarkedLists markedLists, Collection<Object> excludedEntities) {
+        if (markedLists.isEmpty()) {
+            return _findFirstChild(top, markedLists, excludedEntities);
         } else {
-            FastLinkedList<MarkedEntityList>.Entry entry = markedList.getTail();
+            MarkedLists.Entry entry = markedLists.getTail();
             while (entry != null) {
                 MarkedEntityList markedEntityList = entry.getValue();
                 List<?> entityList = markedEntityList.getFirst();
@@ -391,7 +403,7 @@ public class RecursiveGraphMatcher {
                     ComponentEntity entity =
                         (ComponentEntity) entityList.get(index);
                     if (!excludedEntities.contains(entity)) {
-                        markedList.removeAllAfter(entry);
+                        markedLists.removeAllAfter(entry);
                         if (entity instanceof AtomicActor
                                 || entity instanceof CompositeEntity
                                 && _isNewLevel((CompositeEntity) entity)) {
@@ -400,7 +412,7 @@ public class RecursiveGraphMatcher {
                             CompositeEntity compositeEntity =
                                 (CompositeEntity) entity;
                             ComponentEntity child = _findFirstChild(
-                                    compositeEntity, markedList,
+                                    compositeEntity, markedLists,
                                     excludedEntities);
                             if (child != null) {
                                 return child;
@@ -410,7 +422,7 @@ public class RecursiveGraphMatcher {
                 }
                 entry = entry.getPrevious();
             }
-            markedList.clear();
+            markedLists.clear();
             return null;
         }
     }
@@ -418,7 +430,7 @@ public class RecursiveGraphMatcher {
     @SuppressWarnings("unchecked")
     private static boolean _findNextPath(Path path, Set<Relation> visitedRelations,
             Set<Port> visitedPorts) {
-        FastLinkedList<MarkedEntityList>.Entry entry = path.getTail();
+        Path.Entry entry = path.getTail();
         while (entry != null) {
             MarkedEntityList markedEntityList = entry.getValue();
             List<?> entityList = markedEntityList.getFirst();
@@ -457,8 +469,6 @@ public class RecursiveGraphMatcher {
                     visitedRelations.add(relation);
                     List<?> portList = relation.linkedPortList();
 
-                    FastLinkedList<MarkedEntityList>.Entry tail =
-                        path.getTail();
                     int i = 0;
                     for (Object portObject : portList) {
                         Port port = (Port) portObject;
@@ -479,7 +489,6 @@ public class RecursiveGraphMatcher {
                                 visitedPorts)) {
                             return true;
                         } else {
-                            path.removeAllAfter(tail);
                             visitedPorts.remove(port);
                         }
                     }
@@ -598,16 +607,14 @@ public class RecursiveGraphMatcher {
         }
 
         if (success) {
-            FastLinkedList<MarkedEntityList> lhsMarkedList =
-                new FastLinkedList<MarkedEntityList>();
+            MarkedLists lhsMarkedList = new MarkedLists();
 
             ComponentEntity lhsNextActor =
                 _findFirstChild(lhsEntity, lhsMarkedList, _match.keySet());
 
             if (lhsNextActor != null) {
                 lhsChildChecked = true;
-                FastLinkedList<MarkedEntityList> hostMarkedList =
-                    new FastLinkedList<MarkedEntityList>();
+                MarkedLists hostMarkedList = new MarkedLists();
                 ComponentEntity hostNextActor = _findFirstChild(hostEntity,
                         hostMarkedList, _match.values());
 
@@ -891,10 +898,10 @@ public class RecursiveGraphMatcher {
 
     private MatchCallback _callback = DEFAULT_CALLBACK;
 
-    private static final ObjectComparator _comparator = new ObjectComparator();
-
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
+
+    private static final ObjectComparator _comparator = new ObjectComparator();
 
     private Set<Object> _completedObjects;
 
@@ -909,12 +916,6 @@ public class RecursiveGraphMatcher {
      *  successful. (See {@link #match(CompositeActorMatcher, NamedObj)})
      */
     private boolean _success = false;
-
-    private static final MatchCallback DEFAULT_CALLBACK = new MatchCallback() {
-        public boolean foundMatch(RecursiveGraphMatcher matcher) {
-            return true;
-        }
-    };
 
     ///////////////////////////////////////////////////////////////////
     ////                      private inner classes                ////
@@ -963,6 +964,9 @@ public class RecursiveGraphMatcher {
 
     }
 
+    private static class MarkedLists extends FastLinkedList<MarkedEntityList> {
+    }
+
     private static class ObjectComparator implements Comparator<Object> {
 
         public int compare(Object object1, Object object2) {
@@ -970,8 +974,7 @@ public class RecursiveGraphMatcher {
         }
     }
 
-    private static class Path extends FastLinkedList<MarkedEntityList>
-    implements Cloneable {
+    private static class Path extends MarkedLists implements Cloneable {
 
         public Object clone() {
             Path path = new Path(_startPort);

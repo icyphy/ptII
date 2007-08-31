@@ -81,9 +81,14 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'RecursiveGraphMatcher$$1.class' \
 	'RecursiveGraphMatcher$$2.class' \
+	'RecursiveGraphMatcher$$3.class' \
+	'RecursiveGraphMatcher$$LookbackEntry.class' \
+	'RecursiveGraphMatcher$$LookbackEntryType.class' \
 	'RecursiveGraphMatcher$$MarkedEntityList.class' \
+	'RecursiveGraphMatcher$$MarkedLists.class' \
 	'RecursiveGraphMatcher$$ObjectComparator.class' \
 	'RecursiveGraphMatcher$$Path.class' \
+	'RecursiveGraphMatcher$$PathList.class' \
 	'RuleEditor$$1.class' \
 	'RuleEditor$$2.class' \
 	'RuleEditor$$3.class' \
