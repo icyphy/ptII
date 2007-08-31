@@ -36,6 +36,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
+import ptolemy.kernel.util.NamedObj;
+
 public class MatchResult extends HashMap<Object, Object> {
 
     public void clear() {
@@ -86,6 +88,10 @@ public class MatchResult extends HashMap<Object, Object> {
     }
 
     public String toString() {
+        return toString(false);
+    }
+    
+    public String toString(boolean allMatches) {
         Comparator<Object> keyComparator = new Comparator<Object>() {
             public int compare(Object key1, Object key2) {
                 return key1.toString().compareTo(key2.toString());
@@ -98,6 +104,9 @@ public class MatchResult extends HashMap<Object, Object> {
         Collections.sort(keys, keyComparator);
         int i = 0;
         for (Object key : keys) {
+            if (!allMatches && !(key instanceof NamedObj)) {
+                continue;
+            }
             if (i++ != 0) {
                 buffer.append(", ");
             }
