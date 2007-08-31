@@ -34,14 +34,7 @@ public class FastLinkedList<E> implements Collection<E> {
 
     public boolean add(E element) {
         Entry entry = new Entry(element);
-        if (_head == null) {
-            _head = _tail = entry;
-        } else {
-            entry._previous = _tail;
-            _tail._next = entry;
-            _tail = entry;
-        }
-        _size++;
+        addEntry(entry);
         return true;
     }
 
@@ -50,6 +43,30 @@ public class FastLinkedList<E> implements Collection<E> {
             add(element);
         }
         return true;
+    }
+
+    public void addEntry(Entry entry) {
+        entry._previous = _tail;
+        entry._next = null;
+        if (_head == null) {
+            _head = _tail = entry;
+        } else {
+            _tail._next = entry;
+            _tail = entry;
+        }
+        _size++;
+    }
+
+    public void addEntryToHead(Entry entry) {
+        entry._previous = null;
+        entry._next = _head;
+        if (_head == null) {
+            _head = _tail = entry;
+        } else {
+            _head._previous = entry;
+            _head = entry;
+        }
+        _size++;
     }
 
     public void clear() {
@@ -265,6 +282,14 @@ public class FastLinkedList<E> implements Collection<E> {
 
         public E getValue() {
             return _value;
+        }
+
+        public boolean hasNext() {
+            return _next != null;
+        }
+
+        public boolean hasPrevious() {
+            return _previous != null;
         }
 
         public void remove() {
