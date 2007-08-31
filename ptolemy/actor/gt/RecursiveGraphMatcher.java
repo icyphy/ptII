@@ -221,7 +221,11 @@ public class RecursiveGraphMatcher {
      *  @param callback The callback.
      */
     public void setMatchCallback(MatchCallback callback) {
-        _callback = callback;
+        if (callback == null) {
+            _callback = DEFAULT_CALLBACK;
+        } else {
+            _callback = callback;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -852,7 +856,7 @@ public class RecursiveGraphMatcher {
         }
     }
 
-    private boolean _shallowMatchPath(Path lhsPath, Path hostPath) {
+    private static boolean _shallowMatchPath(Path lhsPath, Path hostPath) {
         Port lhsStartPort = lhsPath.getStartPort();
         Port hostStartPort = hostPath.getStartPort();
         Port lhsEndPort = lhsPath.getEndPort();
@@ -885,16 +889,12 @@ public class RecursiveGraphMatcher {
         }
     }
 
-    private MatchCallback _callback = new MatchCallback() {
-        public boolean foundMatch(RecursiveGraphMatcher matcher) {
-            return true;
-        }
-    };
+    private MatchCallback _callback = DEFAULT_CALLBACK;
+
+    private static final ObjectComparator _comparator = new ObjectComparator();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
-    private static final ObjectComparator _comparator = new ObjectComparator();
 
     private Set<Object> _completedObjects;
 
@@ -909,6 +909,12 @@ public class RecursiveGraphMatcher {
      *  successful. (See {@link #match(CompositeActorMatcher, NamedObj)})
      */
     private boolean _success = false;
+
+    private static final MatchCallback DEFAULT_CALLBACK = new MatchCallback() {
+        public boolean foundMatch(RecursiveGraphMatcher matcher) {
+            return true;
+        }
+    };
 
     ///////////////////////////////////////////////////////////////////
     ////                      private inner classes                ////
