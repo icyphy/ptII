@@ -25,10 +25,13 @@
  */
 package ptolemy.vergil.gt;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -36,7 +39,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
@@ -51,7 +57,6 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
@@ -63,11 +68,10 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
-import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.SnapConstraint;
-import diva.canvas.Figure;
 import diva.graph.JGraph;
+import diva.gui.ExtensionFileFilter;
 import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -155,11 +159,17 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
     /** The case menu. */
     protected JMenu _ruleMenu;
 
-    /** Serial ID */
-    private static final long serialVersionUID = 5919681658644668772L;
+    private static final String[] _MATCH_FILE_CHOOSER_BUTTONS = new String[] {
+        "Match", "Cancel"
+    };
+
+    private String _matchFileName;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private methods                   ////
+
+    /** Serial ID */
+    private static final long serialVersionUID = 5919681658644668772L;
 
     /** Action to automatically layout the graph.
 
@@ -193,9 +203,6 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
         private static final long serialVersionUID = -31790471585661407L;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     private class MatchAction extends FigureAction {
 
@@ -231,22 +238,18 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
-            MatchFileChooser filesChooser =
+            MatchFileChooser fileChooser =
                 new MatchFileChooser(getFrame(), _attribute);
-            if (filesChooser.buttonPressed().equals(
-                    MatchFileChooser._moreButtons[0])) {
-                File input = null;
-                try {
-                    input = _inputModel.asFile();
-                } catch (IllegalActionException ex) {
-                }
+            if (fileChooser.buttonPressed().equals(_MATCH_FILE_CHOOSER_BUTTONS[0])) {
+                _matchFileName = fileChooser.getFileName();
+                File input = new File(_matchFileName);
                 if (input == null) {
                     MessageHandler.message("Input model must not be empty.");
                     return;
                 }
                 if (!input.exists()) {
                     MessageHandler.message("Unable to read input model " +
-                            _inputModel.getExpression() + ".");
+                            _matchFileName + ".");
                     return;
                 }
 
@@ -300,33 +303,114 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
         private static final long serialVersionUID = -696919249330217870L;
     }
-    
+
+    private class MatchFileChooser extends ComponentDialog
+    implements ActionListener {
+
+        public MatchFileChooser(Frame owner, NamedObj target) {
+            super(owner, "Choose Input File", new Configurer(target),
+                    _MATCH_FILE_CHOOSER_BUTTONS);
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            Object source = e.getSource();
+            if (source == _textField) {
+                _buttonPressed = _MATCH_FILE_CHOOSER_BUTTONS[0];
+                setVisible(false);
+            } else if (source == _button) {
+                String currentFileName = _textField.getText();
+                JFileChooser fileChooser = null;
+                if (currentFileName.length() > 0) {
+                    File currentFile = new File(currentFileName);
+                    File parentFile = currentFile.getParentFile();
+                    if (parentFile != null) {
+                        fileChooser = new JFileChooser(parentFile);
+                    }
+                }
+                if (fileChooser == null) {
+                    fileChooser = new JFileChooser(".");
+                }
+                fileChooser.setApproveButtonText("Select");
+
+                // FIXME: The following doesn't have any effect.
+                fileChooser.setApproveButtonMnemonic('S');
+
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                fileChooser.setFileFilter(new ExtensionFileFilter("xml"));
+                if (fileChooser.showOpenDialog(MatchFileChooser.this)
+                        == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    _textField.setText(selectedFile.getPath());
+                }
+            }
+        }
+
+        public String getFileName() {
+            return _textField == null ? null : _textField.getText();
+        }
+
+        public void pack() {
+            super.pack();
+
+            Configurer configurer = (Configurer) contents;
+            List<JTextField> textFields = new LinkedList<JTextField>();
+            List<JButton> buttons = new LinkedList<JButton>();
+            _findComponents(configurer, JTextField.class, textFields);
+            _findComponents(configurer, JButton.class, buttons);
+            for (JTextField textField : textFields) {
+                for (ActionListener listener : textField.getActionListeners()) {
+                    textField.removeActionListener(listener);
+                }
+                textField.addActionListener(this);
+                if (_matchFileName != null) {
+                    textField.setText(_matchFileName);
+                }
+                _textField = textField;
+            }
+            for (JButton button : buttons) {
+                if (!button.getText().equals("Browse")) {
+                    continue;
+                }
+                for (ActionListener listener : button.getActionListeners()) {
+                    button.removeActionListener(listener);
+                }
+                button.addActionListener(this);
+                _button = button;
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        private <E extends Component> void _findComponents(Container container,
+                Class<? extends E> componentClass, List<E> list) {
+            for (Component component : container.getComponents()) {
+                if (componentClass.isInstance(component)) {
+                    list.add((E) component);
+                } else if (component instanceof Container) {
+                    _findComponents((Container) component, componentClass,
+                            list);
+                }
+            }
+        }
+
+        private JButton _button;
+
+        private JTextField _textField;
+
+        private static final long serialVersionUID = 2369054217750135740L;
+    }
+
     private static class MatchResultRecorder implements MatchCallback {
 
         public boolean foundMatch(RecursiveGraphMatcher matcher) {
             _results.add((MatchResult) matcher.getMatchResult().clone());
             return false;
         }
-        
+
         public List<MatchResult> getResults() {
             return _results;
         }
-        
+
         private List<MatchResult> _results = new LinkedList<MatchResult>();
-    }
-
-    private static class MatchFileChooser extends ComponentDialog {
-
-        public MatchFileChooser(Frame owner, NamedObj target) {
-            super(owner, "Choose Input File", new Configurer(target),
-                    _moreButtons);
-        }
-
-        private static final String[] _moreButtons = new String[] {
-            "Match", "Cancel"
-        };
-
-        private static final long serialVersionUID = 2369054217750135740L;
     }
 
     ///////////////////////////////////////////////////////////////////
