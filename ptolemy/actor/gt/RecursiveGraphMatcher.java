@@ -212,7 +212,7 @@ public class RecursiveGraphMatcher {
         if (callback != null) {
             matcher.setMatchCallback(callback);
         }
-        matcher.match(rule.getLeftHandSide(), host);
+        matcher.match(rule.getPattern(), host);
         return matcher;
     }
 

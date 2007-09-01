@@ -57,27 +57,27 @@ public class SingleRuleTransformer extends MultiCompositeActor {
         _init();
     }
 
-    public CompositeActorMatcher getLeftHandSide() {
-        return _leftHandSide;
+    public CompositeActorMatcher getPattern() {
+        return _pattern;
     }
 
-    public CompositeActorMatcher getRightHandSide() {
-        return _rightHandSide;
+    public CompositeActorMatcher getReplacement() {
+        return _replacement;
     }
 
     protected void _init()
     throws IllegalActionException, NameDuplicationException {
         // Create the default refinement.
-        _leftHandSide = new CompositeActorMatcher(this, "Left Hand Side");
-        _rightHandSide = new CompositeActorMatcher(this, "Right Hand Side");
+        _pattern = new CompositeActorMatcher(this, "Pattern");
+        _replacement = new CompositeActorMatcher(this, "Replacement");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                          private variables                ////
 
-    private CompositeActorMatcher _leftHandSide;
+    private CompositeActorMatcher _pattern;
 
-    private CompositeActorMatcher _rightHandSide;
+    private CompositeActorMatcher _replacement;
 
     private static final long serialVersionUID = -456353254196458127L;
 

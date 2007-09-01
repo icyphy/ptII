@@ -12,7 +12,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <entity name="Left Hand Side" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="Pattern" class="ptolemy.actor.TypedCompositeActor">
         <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 145}">
             </property>

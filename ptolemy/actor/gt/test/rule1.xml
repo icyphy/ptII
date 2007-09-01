@@ -12,7 +12,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <entity name="Left Hand Side" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="Pattern" class="ptolemy.actor.TypedCompositeActor">
         <entity name="B" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;b&quot;/&quot;b&quot;/false/true/false)">
             </property>

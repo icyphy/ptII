@@ -265,7 +265,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
                     SingleRuleTransformer transformerActor = _getTransformer();
                     CompositeActorMatcher matcher =
-                        transformerActor.getLeftHandSide();
+                        transformerActor.getPattern();
                     MatchResultRecorder recorder = new MatchResultRecorder();
                     _matcher.setMatchCallback(recorder);
                     _matcher.match(matcher, model);
