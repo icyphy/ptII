@@ -197,12 +197,6 @@ public class Queue extends Transformer {
     public void fire() throws IllegalActionException {
         super.fire();
         int sizeOutput = _queue.size();
-        if (input.hasToken(0)) {
-            _token = input.get(0);
-            sizeOutput++;
-        } else {
-            _token = null;
-        }
         boolean gotTrigger = false;
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
@@ -210,6 +204,20 @@ public class Queue extends Transformer {
                 trigger.get(i);
                 gotTrigger = true;
             }
+        }
+        // Increment the size only either the queue has infinite capacity,
+        // the capacity is greater than the current size, or a trigger
+        // input was received (which will reduce the queue size by one,
+        // making room for a new token).
+        if (input.hasToken(0)) {
+            _token = input.get(0);
+            if (_queue.getCapacity() == FIFOQueue.INFINITE_CAPACITY
+                    || _queue.getCapacity() > _queue.size()
+                    || gotTrigger) {
+                sizeOutput++;
+            }
+        } else {
+            _token = null;
         }
         if (gotTrigger) {
             if (sizeOutput > 0) {
@@ -300,6 +308,18 @@ public class Queue extends Transformer {
     public void pruneDependencies() {
         super.pruneDependencies();
         removeDependency(input, output);
+    }
+
+    /** Clear the queue tokens.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void wrapup() throws IllegalActionException {
+        // If we don't clear the queue, then you can't set the capacity
+        // to smaller than the final size on the last run.  So we
+        // need to either clear the queue or somehow allow that change
+        // in capacity.
+        _queue.clear();
+        super.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////
