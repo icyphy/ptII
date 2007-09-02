@@ -47,7 +47,7 @@ import javax.swing.KeyStroke;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.MatchCallback;
-import ptolemy.actor.gt.RecursiveGraphMatcher;
+import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.SingleRuleTransformer;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Configuration;
@@ -297,7 +297,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
         private FileParameter _inputModel;
 
-        private RecursiveGraphMatcher _matcher = new RecursiveGraphMatcher();
+        private GraphMatcher _matcher = new GraphMatcher();
 
         private MoMLParser _parser = new MoMLParser();
 
@@ -401,7 +401,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
     private static class MatchResultRecorder implements MatchCallback {
 
-        public boolean foundMatch(RecursiveGraphMatcher matcher) {
+        public boolean foundMatch(GraphMatcher matcher) {
             _results.add((MatchResult) matcher.getMatchResult().clone());
             return false;
         }

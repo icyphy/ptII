@@ -42,7 +42,7 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test MatchingTest-1.1 {An empty graph with an empty lhs} {
     set e0 [sdfModel 3]
-    set transformer [java::new ptolemy.actor.gt.RecursiveGraphMatcher]
+    set transformer [java::new ptolemy.actor.gt.GraphMatcher]
     set lhs [java::new ptolemy.actor.gt.CompositeActorMatcher $e0 lhs]
     set host [java::new ptolemy.actor.TypedCompositeActor $e0 host]
     

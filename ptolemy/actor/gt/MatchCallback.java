@@ -38,7 +38,7 @@ import ptolemy.actor.gt.data.MatchResult;
  @author Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 6.1
- @see RecursiveGraphMatcher#setMatchCallback(MatchCallback)
+ @see GraphMatcher#setMatchCallback(MatchCallback)
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
 */
@@ -46,7 +46,7 @@ public interface MatchCallback {
 
     /** A routine to be called when a match is found in the graph matching. The
      *  graph matcher is passed in as the parameter, and the current match can
-     *  be obtained by calling {@link RecursiveGraphMatcher#getMatchResult()}.
+     *  be obtained by calling {@link GraphMatcher#getMatchResult()}.
      *  This match result should not be kept, however, because it may be changed
      *  by future matching operations. To keep a copy of this result, invoke
      *  {@link MatchResult#clone()} and keep the cloned copy. The return value
@@ -57,6 +57,6 @@ public interface MatchCallback {
      *  @param matcher The graph matcher.
      *  @return Whether the matching should terminate right away.
      */
-    public boolean foundMatch(RecursiveGraphMatcher matcher);
+    public boolean foundMatch(GraphMatcher matcher);
 
 }

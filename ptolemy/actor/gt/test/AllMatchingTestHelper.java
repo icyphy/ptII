@@ -32,7 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.gt.MatchCallback;
-import ptolemy.actor.gt.RecursiveGraphMatcher;
+import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.data.MatchResult;
 
 /**
@@ -69,7 +69,7 @@ public class AllMatchingTestHelper {
      *  algorithm executing until all matches are found.
      */
     public final MatchCallback callback = new MatchCallback() {
-        public boolean foundMatch(RecursiveGraphMatcher matcher) {
+        public boolean foundMatch(GraphMatcher matcher) {
             _results.add((MatchResult) matcher.getMatchResult().clone());
             return false;
         }

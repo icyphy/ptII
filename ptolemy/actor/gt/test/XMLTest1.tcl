@@ -41,41 +41,41 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test XMLTest-1.1 {Test rule1.xml with host1.1.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.1.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule1.xml host1.1.xml]
     [$matchResult getMatchResult] toString
 } {{ptolemy.actor.TypedIOPort {.rule1.Pattern.A.a} = ptolemy.actor.TypedIOPort {.host1.A.output}, ptolemy.actor.TypedIOPort {.rule1.Pattern.B.b} = ptolemy.actor.TypedIOPort {.host1.B.output}, ptolemy.actor.TypedIOPort {.rule1.Pattern.C.c} = ptolemy.actor.TypedIOPort {.host1.C.input}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.A} = ptolemy.actor.lib.Const {.host1.A}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.B} = ptolemy.actor.lib.Const {.host1.B}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.C} = ptolemy.actor.lib.gui.Display {.host1.C}, ptolemy.actor.gt.CompositeActorMatcher {.rule1.Pattern} = ptolemy.actor.TypedCompositeActor {.host1}}}
 
 test XMLTest-1.2 {Test rule1.xml with host1.2.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.2.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule1.xml host1.2.xml]
     [$matchResult getMatchResult] toString
 } {{}}
 
 test XMLTest-1.3 {Test rule1.xml with host1.3.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.3.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule1.xml host1.3.xml]
     [$matchResult getMatchResult] toString
 } {{ptolemy.actor.TypedIOPort {.rule1.Pattern.A.a} = ptolemy.actor.TypedIOPort {.model.A.output}, ptolemy.actor.TypedIOPort {.rule1.Pattern.B.b} = ptolemy.actor.TypedIOPort {.model.B.output}, ptolemy.actor.TypedIOPort {.rule1.Pattern.C.c} = ptolemy.actor.TypedIOPort {.model.CompositeActor.C.input}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.A} = ptolemy.actor.lib.Const {.model.A}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.B} = ptolemy.actor.lib.Const {.model.B}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.C} = ptolemy.actor.lib.gui.Display {.model.CompositeActor.C}, ptolemy.actor.gt.CompositeActorMatcher {.rule1.Pattern} = ptolemy.actor.TypedCompositeActor {.model}}}
 
 test XMLTest-1.4 {Test rule1.xml with host1.4.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.4.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule1.xml host1.4.xml]
     [$matchResult getMatchResult] toString
 } {{ptolemy.actor.TypedIOPort {.rule1.Pattern.A.a} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.A.output}, ptolemy.actor.TypedIOPort {.rule1.Pattern.B.b} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.B.output}, ptolemy.actor.TypedIOPort {.rule1.Pattern.C.c} = ptolemy.actor.TypedIOPort {.host1.C.input}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.A} = ptolemy.actor.lib.Const {.host1.CompositeActor.A}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.B} = ptolemy.actor.lib.Const {.host1.CompositeActor.B}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.C} = ptolemy.actor.lib.gui.Display {.host1.C}, ptolemy.actor.gt.CompositeActorMatcher {.rule1.Pattern} = ptolemy.actor.TypedCompositeActor {.host1}}}
 
 test XMLTest-1.5 {Test rule1.xml with host1.5.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.5.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule1.xml host1.5.xml]
     [$matchResult getMatchResult] toString
 } {{ptolemy.actor.TypedIOPort {.rule1.Pattern.A.a} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.A.output}, ptolemy.actor.TypedIOPort {.rule1.Pattern.B.b} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.B.output}, ptolemy.actor.TypedIOPort {.rule1.Pattern.C.c} = ptolemy.actor.TypedIOPort {.host1.CompositeActor2.C.input}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.A} = ptolemy.actor.lib.Const {.host1.CompositeActor.A}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.B} = ptolemy.actor.lib.Const {.host1.CompositeActor.B}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.C} = ptolemy.actor.lib.gui.Display {.host1.CompositeActor2.C}, ptolemy.actor.gt.CompositeActorMatcher {.rule1.Pattern} = ptolemy.actor.TypedCompositeActor {.host1}}}
 
 test XMLTest-1.6 {Test rule1.xml with host1.6.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.6.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule1.xml host1.6.xml]
     [$matchResult getMatchResult] toString
 } {{}}
 
 test XMLTest-1.7 {Test rule1.xml with host1.7.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.7.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule1.xml host1.7.xml]
     [$matchResult getMatchResult] toString
 } {{ptolemy.actor.TypedIOPort {.rule1.Pattern.A.a} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.A.output}, ptolemy.actor.TypedIOPort {.rule1.Pattern.B.b} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.B.output}, ptolemy.actor.TypedIOPort {.rule1.Pattern.C.c} = ptolemy.actor.TypedIOPort {.host1.C.input}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.A} = ptolemy.actor.lib.Const {.host1.CompositeActor.A}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.B} = ptolemy.actor.lib.Const {.host1.CompositeActor.B}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.C} = ptolemy.actor.lib.gui.Display {.host1.C}, ptolemy.actor.gt.CompositeActorMatcher {.rule1.Pattern} = ptolemy.actor.TypedCompositeActor {.host1}}}
 
 test XMLTest-1.8 {Test rule1.xml with host1.8.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule1.xml host1.8.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule1.xml host1.8.xml]
     [$matchResult getMatchResult] toString
 } {{ptolemy.actor.TypedIOPort {.rule1.Pattern.A.a} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.A.output}, ptolemy.actor.TypedIOPort {.rule1.Pattern.B.b} = ptolemy.actor.TypedIOPort {.host1.CompositeActor.B.output}, ptolemy.actor.TypedIOPort {.rule1.Pattern.C.c} = ptolemy.actor.TypedIOPort {.host1.C.input}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.A} = ptolemy.actor.lib.Const {.host1.CompositeActor.A}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.B} = ptolemy.actor.lib.Const {.host1.CompositeActor.B}, ptolemy.actor.gt.AtomicActorMatcher {.rule1.Pattern.C} = ptolemy.actor.lib.gui.Display {.host1.C}, ptolemy.actor.gt.CompositeActorMatcher {.rule1.Pattern} = ptolemy.actor.TypedCompositeActor {.host1}}}

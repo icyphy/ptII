@@ -41,31 +41,31 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test XMLTest-2.1 {Test rule2.xml with host2.1.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule2.xml host2.1.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule2.xml host2.1.xml]
     [$matchResult getMatchResult] toString
 } {{}}
 
 test XMLTest-2.2 {Test rule2.xml with host2.2.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule2.xml host2.2.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule2.xml host2.2.xml]
     [$matchResult getMatchResult] toString
 } {{}}
 
 test XMLTest-2.3 {Test rule2.xml with host2.3.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule2.xml host2.3.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule2.xml host2.3.xml]
     [$matchResult getMatchResult] toString
 } {{}}
 
 test XMLTest-2.4 {Test rule2.xml with host2.4.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule2.xml host2.4.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule2.xml host2.4.xml]
     [$matchResult getMatchResult] toString
 } {{ptolemy.actor.TypedIOPort {.rule2.Pattern.AtomicActorMatcher.output} = ptolemy.actor.TypedIOPort {.host2.CompositeActor2.Const.output}, ptolemy.actor.TypedIOPort {.rule2.Pattern.CompositeActorMatcher.AtomicActorMatcher.input} = ptolemy.actor.TypedIOPort {.host2.CompositeActor.Display.input}, ptolemy.actor.TypedIOPort {.rule2.Pattern.CompositeActorMatcher.port} = ptolemy.actor.TypedIOPort {.host2.CompositeActor.port}, ptolemy.actor.gt.AtomicActorMatcher {.rule2.Pattern.AtomicActorMatcher} = ptolemy.actor.lib.Const {.host2.CompositeActor2.Const}, ptolemy.actor.gt.AtomicActorMatcher {.rule2.Pattern.CompositeActorMatcher.AtomicActorMatcher} = ptolemy.actor.lib.gui.Display {.host2.CompositeActor.Display}, ptolemy.actor.gt.CompositeActorMatcher {.rule2.Pattern.CompositeActorMatcher} = ptolemy.actor.TypedCompositeActor {.host2.CompositeActor}, ptolemy.actor.gt.CompositeActorMatcher {.rule2.Pattern} = ptolemy.actor.TypedCompositeActor {.host2}, ptolemy.domains.sdf.kernel.SDFDirector {.rule2.Pattern.CompositeActorMatcher.SDF Director} = ptolemy.domains.sdf.kernel.SDFDirector {.host2.CompositeActor.SDF Director}}}
 
 test XMLTest-2.5 {Test rule2.xml with host2.5.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule2.xml host2.5.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule2.xml host2.5.xml]
     [$matchResult getMatchResult] toString
 } {{ptolemy.actor.TypedIOPort {.rule2.Pattern.AtomicActorMatcher.output} = ptolemy.actor.TypedIOPort {.host2.CompositeActor2.CompositeActor.Const.output}, ptolemy.actor.TypedIOPort {.rule2.Pattern.CompositeActorMatcher.AtomicActorMatcher.input} = ptolemy.actor.TypedIOPort {.host2.CompositeActor.CompositeActor.CompositeActor2.Display.input}, ptolemy.actor.TypedIOPort {.rule2.Pattern.CompositeActorMatcher.port} = ptolemy.actor.TypedIOPort {.host2.CompositeActor.port}, ptolemy.actor.gt.AtomicActorMatcher {.rule2.Pattern.AtomicActorMatcher} = ptolemy.actor.lib.Const {.host2.CompositeActor2.CompositeActor.Const}, ptolemy.actor.gt.AtomicActorMatcher {.rule2.Pattern.CompositeActorMatcher.AtomicActorMatcher} = ptolemy.actor.lib.gui.Display {.host2.CompositeActor.CompositeActor.CompositeActor2.Display}, ptolemy.actor.gt.CompositeActorMatcher {.rule2.Pattern.CompositeActorMatcher} = ptolemy.actor.TypedCompositeActor {.host2.CompositeActor}, ptolemy.actor.gt.CompositeActorMatcher {.rule2.Pattern} = ptolemy.actor.TypedCompositeActor {.host2}, ptolemy.domains.sdf.kernel.SDFDirector {.rule2.Pattern.CompositeActorMatcher.SDF Director} = ptolemy.domains.sdf.kernel.SDFDirector {.host2.CompositeActor.SDF Director}}}
 
 test XMLTest-2.6 {Test rule2.xml with host2.6.xml} {
-    set matchResult [java::call ptolemy.actor.gt.RecursiveGraphMatcher match rule2.xml host2.6.xml]
+    set matchResult [java::call ptolemy.actor.gt.GraphMatcher match rule2.xml host2.6.xml]
     [$matchResult getMatchResult] toString
 } {{}}

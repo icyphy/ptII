@@ -57,10 +57,11 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AtomicActorMatcher.java \
 	CompositeActorMatcher.java \
+	GraphMatcher.java \
 	GraphTransformationException.java \
 	MalformedStringException.java \
+	MatchCallback.java \
 	NoMatchFoundException.java \
-	RecursiveGraphMatcher.java \
 	Rule.java \
 	RuleAttribute.java \
 	RuleEditor.java \
@@ -79,16 +80,15 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'RecursiveGraphMatcher$$1.class' \
-	'RecursiveGraphMatcher$$2.class' \
-	'RecursiveGraphMatcher$$3.class' \
-	'RecursiveGraphMatcher$$LookbackEntry.class' \
-	'RecursiveGraphMatcher$$LookbackEntryType.class' \
-	'RecursiveGraphMatcher$$MarkedEntityList.class' \
-	'RecursiveGraphMatcher$$MarkedLists.class' \
-	'RecursiveGraphMatcher$$ObjectComparator.class' \
-	'RecursiveGraphMatcher$$Path.class' \
-	'RecursiveGraphMatcher$$PathList.class' \
+	'GraphMatcher$$1.class' \
+	'GraphMatcher$$2.class' \
+	'GraphMatcher$$IndexedList.class' \
+	'GraphMatcher$$IndexedLists.class' \
+	'GraphMatcher$$LookbackEntry.class' \
+	'GraphMatcher$$LookbackList.class' \
+	'GraphMatcher$$NameComparator.class' \
+	'GraphMatcher$$ObjectList.class' \
+	'GraphMatcher$$Path.class' \
 	'RuleEditor$$1.class' \
 	'RuleEditor$$2.class' \
 	'RuleEditor$$3.class' \

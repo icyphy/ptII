@@ -33,8 +33,8 @@ import java.util.Iterator;
 public class FastLinkedList<E> implements Collection<E> {
 
     public boolean add(E element) {
-        Entry entry = new Entry(element);
-        addEntry(entry);
+        Entry entry = new Entry(this, element);
+        addEntryToTail(entry);
         return true;
     }
 
@@ -45,16 +45,38 @@ public class FastLinkedList<E> implements Collection<E> {
         return true;
     }
 
-    public void addEntry(Entry entry) {
-        entry._previous = _tail;
-        entry._next = null;
-        if (_head == null) {
-            _head = _tail = entry;
+    public void addEntryAfter(Entry entry, Entry previousEntry) {
+        if (previousEntry == null) {
+            addEntryToHead(entry);
         } else {
-            _tail._next = entry;
-            _tail = entry;
+            entry._previous = previousEntry;
+            entry._next = previousEntry._next;
+            entry._list = this;
+            previousEntry._next = entry;
+            if (entry._next != null) {
+                entry._next._previous = entry;
+            } else {
+                _tail = entry;
+            }
+            _size++;
         }
-        _size++;
+    }
+
+    public void addEntryBefore(Entry entry, Entry nextEntry) {
+        if (nextEntry == null) {
+            addEntryToTail(entry);
+        } else {
+            entry._next = nextEntry;
+            entry._previous = nextEntry._previous;
+            entry._list = this;
+            nextEntry._previous = entry;
+            if (entry._previous != null) {
+                entry._previous._next = entry;
+            } else {
+                _head = entry;
+            }
+            _size++;
+        }
     }
 
     public void addEntryToHead(Entry entry) {
@@ -69,8 +91,23 @@ public class FastLinkedList<E> implements Collection<E> {
         _size++;
     }
 
+    public void addEntryToTail(Entry entry) {
+        entry._previous = _tail;
+        entry._next = null;
+        entry._list = this;
+        if (_head == null) {
+            _head = _tail = entry;
+        } else {
+            _tail._next = entry;
+            _tail = entry;
+        }
+        _size++;
+    }
+
     public void clear() {
         _head = _tail = null;
+        _size = 0;
+        _recalculateSize = false;
     }
 
     @SuppressWarnings("unchecked")
@@ -89,20 +126,24 @@ public class FastLinkedList<E> implements Collection<E> {
 
     @SuppressWarnings("unchecked")
     public boolean equals(Object object) {
-        if (object instanceof FastLinkedList) {
-            Entry entry1 = getHead();
-            FastLinkedList.Entry entry2 =
-                ((FastLinkedList) object).getHead();
-            while (entry1 != null && entry2 != null) {
-                if (!entry1.getValue().equals(entry2.getValue())) {
-                    return false;
+        if (this == object) {
+            return true;
+        } else {
+            if (object instanceof FastLinkedList) {
+                Entry entry1 = getHead();
+                FastLinkedList.Entry entry2 =
+                    ((FastLinkedList) object).getHead();
+                while (entry1 != null && entry2 != null) {
+                    if (!entry1.getValue().equals(entry2.getValue())) {
+                        return false;
+                    }
+                    entry1 = entry1.getNext();
+                    entry2 = entry2.getNext();
                 }
-                entry1 = entry1.getNext();
-                entry2 = entry2.getNext();
+                return entry1 == null && entry2 == null;
             }
-            return entry1 == null && entry2 == null;
+            return false;
         }
-        return false;
     }
 
     public Entry findEntry(E element) {
@@ -122,17 +163,6 @@ public class FastLinkedList<E> implements Collection<E> {
 
     public Entry getTail() {
         return _tail;
-    }
-
-    public int hashCode() {
-        int hashCode = 1;
-        Entry entry = getHead();
-        while (entry != null) {
-            E value = entry.getValue();
-            hashCode = 31*hashCode + (value == null ? 0 : value.hashCode());
-            entry = entry.getNext();
-        }
-        return hashCode;
     }
 
     public boolean isEmpty() {
@@ -269,7 +299,7 @@ public class FastLinkedList<E> implements Collection<E> {
     public class Entry {
 
         public FastLinkedList<E> getList() {
-            return FastLinkedList.this;
+            return _list;
         }
 
         public Entry getNext() {
@@ -296,19 +326,22 @@ public class FastLinkedList<E> implements Collection<E> {
             if (_previous != null) {
                 _previous._next = _next;
             } else {
-                _head = _next;
+                _list._head = _next;
             }
             if (_next != null) {
                 _next._previous = _previous;
             } else {
-                _tail = _previous;
+                _list._tail = _previous;
             }
-            _size--;
+            _list._size--;
         }
 
-        private Entry(E value) {
-            this._value = value;
+        private Entry(FastLinkedList<E> list, E value) {
+            _list = list;
+            _value = value;
         }
+
+        private FastLinkedList<E> _list;
 
         private Entry _next;
 
