@@ -228,7 +228,7 @@ public class GraphMatcher {
     }
 
     /** Set the callback to be invoked by future calls to {@link
-     *  #match(CompositeActorMatcher, NamedObj)}.
+     *  #match(CompositeActorMatcher, CompositeEntity)}.
      *
      *  @param callback The callback. If it is <tt>null</tt>, the callback is
      *   set to {@link #DEFAULT_CALLBACK}.
@@ -245,6 +245,12 @@ public class GraphMatcher {
     ///////////////////////////////////////////////////////////////////
     ////                          public fields                    ////
 
+    /** The default callback that always returns <tt>true</tt>. A callback is
+     *  invoked whenever a match is found. Because this callback always returns
+     *  <tt>true</tt>, it terminates the matching process after the first match
+     *  is found, and the match result can be obtained later using {@link
+     *  #getMatchResult()}.
+     */
     public static final MatchCallback DEFAULT_CALLBACK = new MatchCallback() {
         public boolean foundMatch(GraphMatcher matcher) {
             return true;
@@ -254,6 +260,16 @@ public class GraphMatcher {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Check the items in the lookback list for more matching requirements. If
+     *  no more requirements are found (i.e., all the lists in the lookback list
+     *  have been fully explored), then a match is found, and the callback's
+     *  {@link MatchCallback#foundMatch(GraphMatcher)} is invoked. If that
+     *  method returns true, the matching process terminates; otherwise, the
+     *  matching proceeds by backtracking.
+     * 
+     *  @return Whether the match is successful.
+     *  @see #_lookbackList
+     */
     private boolean _checkBackward() {
         FastLinkedList<LookbackEntry>.Entry entry = _lookbackList.getTail();
         LookbackEntry lists = null;
