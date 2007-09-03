@@ -287,6 +287,19 @@ public class GraphMatcher {
         }
     }
 
+    /** Find the first child within the top composite entity. The child is
+     *  either an atomic actor ({@link AtomicActor}) or an opaque composite
+     *  entity, one that has a director in it. If the top composite entity does
+     *  not have any child, <tt>null</tt> is returned.
+     * 
+     *  @param top The top composite entity in which the search is performed.
+     *  @param indexedLists A list that is used to encode the composite entities
+     *   visited.
+     *  @param excludedEntities The atomic actor or opaque composite entities
+     *   that should not be returned.
+     *  @return The child found, or <tt>null</tt> if none.
+     *  @see #_findNextChild(CompositeEntity, IndexedLists, Collection)
+     */
     private static ComponentEntity _findFirstChild(CompositeEntity top,
             IndexedLists indexedLists, Collection<Object> excludedEntities) {
 
@@ -302,7 +315,7 @@ public class GraphMatcher {
                 currentList.setSecond(i);
                 if (entityObject instanceof AtomicActor
                         || entityObject instanceof CompositeEntity
-                        && _isNewLevel((CompositeEntity) entityObject)) {
+                        && _isOpaque((CompositeEntity) entityObject)) {
                     if (!excludedEntities.contains(entityObject)) {
                         return (ComponentEntity) entityObject;
                     }
@@ -324,6 +337,25 @@ public class GraphMatcher {
         return null;
     }
 
+    /** Find the first path starting from the <tt>startPort</tt>, and store it
+     *  in the <tt>path</tt> parameter if found. A path is a sequence of
+     *  alternating ports ({@link Port}) and relations ({@link Relation}),
+     *  starting and ending with two ports (which may be equal, in which case
+     *  the path is a loop). If a path contains ports between the start port and
+     *  the end port, those ports in between must be ports of a transparent
+     *  composite entities (those with no directors inside). If no path is found
+     *  starting from the <tt>startPort</tt>, <tt>null</tt> is returned.
+     * 
+     *  @param startPort The port from which the search starts.
+     *  @param path The path to obtain the result.
+     *  @param visitedRelations A set that records all the relations that have
+     *   been visited during the search.
+     *  @param visitedPorts A set that records all the ports that have been
+     *   visited during the search.
+     *  @return <tt>true</tt> if a path is found and stored in the <tt>path</tt>
+     *   parameter; <tt>false</tt> otherwise.
+     *  @see #_findNextPath(Path, Set, Set)
+     */
     @SuppressWarnings("unchecked")
     private static boolean _findFirstPath(Port startPort, Path path,
             Set<? super Relation> visitedRelations,
@@ -367,7 +399,7 @@ public class GraphMatcher {
 
                 boolean reachEnd = true;
                 if (container instanceof CompositeEntity) {
-                    if (!_isNewLevel((CompositeEntity) container)) {
+                    if (!_isOpaque((CompositeEntity) container)) {
                         if (_findFirstPath(port, path, visitedRelations,
                                 visitedPorts)) {
                             return true;
@@ -395,6 +427,19 @@ public class GraphMatcher {
         return false;
     }
 
+    /** Find the next child within the top composite entity. The child is either
+     *  an atomic actor ({@link AtomicActor}) or an opaque composite entity, one
+     *  that has a director in it. If the top composite entity does not have any
+     *  more child, <tt>null</tt> is returned.
+     * 
+     *  @param top The top composite entity in which the search is performed.
+     *  @param indexedLists A list that is used to encode the composite entities
+     *   visited.
+     *  @param excludedEntities The atomic actor or opaque composite entities
+     *   that should not be returned.
+     *  @return The child found, or <tt>null</tt> if none.
+     *  @see #_findFirstChild(CompositeEntity, IndexedLists, Collection)
+     */
     private static ComponentEntity _findNextChild(CompositeEntity top,
             IndexedLists indexedLists, Collection<Object> excludedEntities) {
         if (indexedLists.isEmpty()) {
@@ -413,7 +458,7 @@ public class GraphMatcher {
                         indexedLists.removeAllAfter(entry);
                         if (entity instanceof AtomicActor
                                 || entity instanceof CompositeEntity
-                                && _isNewLevel((CompositeEntity) entity)) {
+                                && _isOpaque((CompositeEntity) entity)) {
                             return entity;
                         } else {
                             CompositeEntity compositeEntity =
@@ -434,6 +479,23 @@ public class GraphMatcher {
         }
     }
 
+    /** Find the next path, and store it in the <tt>path</tt> parameter if
+     *  found. A path is a sequence of alternating ports ({@link Port}) and
+     *  relations ({@link Relation}), starting and ending with two ports (which
+     *  may be equal, in which case the path is a loop). If a path contains
+     *  ports between the start port and the end port, those ports in between
+     *  must be ports of a transparent composite entities (those with no
+     *  directors inside). If no more path is found, <tt>null</tt> is returned.
+     * 
+     *  @param path The path to obtain the result.
+     *  @param visitedRelations A set that records all the relations that have
+     *   been visited during the search.
+     *  @param visitedPorts A set that records all the ports that have been
+     *   visited during the search.
+     *  @return <tt>true</tt> if a path is found and stored in the <tt>path</tt>
+     *   parameter; <tt>false</tt> otherwise.
+     *  @see #_findFirstPath(Port, Path, Set, Set)
+     */
     @SuppressWarnings("unchecked")
     private static boolean _findNextPath(Path path,
             Set<Relation> visitedRelations, Set<Port> visitedPorts) {
@@ -457,7 +519,7 @@ public class GraphMatcher {
 
                     NamedObj container = port.getContainer();
                     if (!(container instanceof CompositeEntity)
-                            || _isNewLevel((CompositeEntity) container)) {
+                            || _isOpaque((CompositeEntity) container)) {
                         return true;
                     }
 
@@ -488,7 +550,7 @@ public class GraphMatcher {
                         visitedPorts.add(port);
                         NamedObj container = port.getContainer();
                         if (!(container instanceof CompositeEntity)
-                                || _isNewLevel((CompositeEntity) container)) {
+                                || _isOpaque((CompositeEntity) container)) {
                             return true;
                         }
 
@@ -512,23 +574,32 @@ public class GraphMatcher {
         return false;
     }
 
+    /** Get a string that represents the object. If the object is an instance of
+     *  {@link NamedObj}, the returned string is its name retrieved by {@link
+     *  NamedObj#getFullName()}; otherwise, the <tt>toString</tt> method of the
+     *  object is called to get the string.
+     * 
+     *  @param object The object.
+     *  @return The string that represents the object.
+     */
     private static String _getNameString(Object object) {
         return object instanceof NamedObj ? ((NamedObj) object).getFullName()
                 : object.toString();
     }
 
-    /** Test whether the composite entity starts a new level of composition.
-     *  Return <tt>true</tt> if the composite entity is the top-level composite
-     *  entity of the match operation, or the composite entity has a director
-     *  defined in it.
+    /** Test whether the composite entity is opaque or not. Return <tt>true</tt>
+     *  if the composite entity is an instance of {@link CompositeActor} and it
+     *  is opaque. A composite actor is opaque if it has a director inside,
+     *  which means the new level of hierarchy that it creates cannot be
+     *  flattened.
      *
-     *  @param container The composite entity to be tested.
-     *  @return <tt>true</tt> if the composite entity starts a new level;
-     *   <tt>false</tt> otherwise.
+     *  @param entity The composite entity to be tested.
+     *  @return <tt>true</tt> if the composite entity is an instance of {@link
+     *   CompositeActor} and it is opaque.
      */
-    private static boolean _isNewLevel(CompositeEntity container) {
-        return container instanceof CompositeActor
-                && ((CompositeActor) container).isOpaque();
+    private static boolean _isOpaque(CompositeEntity entity) {
+        return entity instanceof CompositeActor
+                && ((CompositeActor) entity).isOpaque();
     }
 
     private boolean _matchAtomicActor(AtomicActor lhsActor,
