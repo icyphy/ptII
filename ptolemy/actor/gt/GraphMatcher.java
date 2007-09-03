@@ -1,4 +1,4 @@
-/* A recursive algorithm to match a subgraph to the given pattern.
+/* A recursive algorithm to match a pattern to subgraphs of a graph.
 
  Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
@@ -52,7 +52,11 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
-/** A recursive algorithm to match a subgraph to the given pattern.
+/**
+ A recursive algorithm to match a pattern to subgraphs of a graph. The pattern
+ is specified as the <em>pattern</em> part of a graph transformation rule. The
+ graph to be matched to, called <em>host graph</em>, is an arbitrary Ptolemy II
+ model, whose top level is an instance of {@link CompositeEntity}.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -65,24 +69,23 @@ public class GraphMatcher {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the latest matching result. This result is not made unmodifiable,
-     *  but the user is not supposed to modify it. During the matching process,
-     *  if a callback routine (an object of {@link MatchCallback}) is invoked,
-     *  it can call this method to retrieve the new match result. However, the
-     *  returned object may be changed by future matching. To maintain a copy of
-     *  this result, {@link MatchResult#clone()} may be called that returns a
-     *  clone of it.
+    /** Return the most recent match result, which the user should not modify.
+     *  During the matching process, when a callback routine (an instance
+     *  implementing {@link MatchCallback}) is invoked (see {@link
+     *  #setMatchCallback(MatchCallback)}), that callback routine can call this
+     *  method to retrieve the match result that has just been found.
+     *  <p>
+     *  Note that the returned match result object may be changed by future
+     *  matching. To maintain a copy, {@link MatchResult#clone()} may be called
+     *  that returns a clone of it.
      *
-     *  @return The latest matching result.
+     *  @return The most recent match result.
      */
     public MatchResult getMatchResult() {
         return _match;
     };
 
-    /** Return whether the last matching was successful. The success of a match
-     *  does not only mean that at least one match was found, but it also means
-     *  that the callback (an object of {@link MatchCallback}) returned
-     *  <tt>true</tt> when it was invoked with the last match result.
+    /** Return whether the last matching was successful.
      *
      *  @return Whether the last matching was successful.
      */
@@ -90,13 +93,14 @@ public class GraphMatcher {
         return _success;
     }
 
-    /** Match the given model file with a rule file. This main method takes a
-     *  parameter array of length 2 or 3. If the array has 2 elements, the first
-     *  string is the rule file name, and the second is the model file name. An
-     *  arbitrary match is printed to the console. If it has 3 elements, the
-     *  first string should be "<tt>-A</tt>", the second string is the rule file
-     *  name, and the third is the model file name. All the matches are printed
-     *  to to console in that case.
+    /** Match a rule file to a model file. This main method takes a parameter
+     *  array of length 2 or 3. If the array's length is 2, the first string is
+     *  the rule file name, and the second is the model file name. In this case,
+     *  an arbitrary match (the first one found) is printed to the console. If
+     *  the array has 3 elements, the first string should be "<tt>-A</tt>"
+     *  (meaning "all matches"), the second string is the rule file name, and
+     *  the third is the model file name. In that case, all the matches are
+     *  printed to to console one by one.
      *
      *  @param args The parameter array.
      *  @exception Exception If the rule file or the model file cannot be read.
@@ -105,8 +109,7 @@ public class GraphMatcher {
         if (!(args.length == 2 ||
                 (args.length == 3 && args[0].equalsIgnoreCase("-A")))) {
             System.err.println("USAGE: java [-A] "
-                    + GraphMatcher.class.getName()
-                    + " <lhs.xml> <host.xml>");
+                    + GraphMatcher.class.getName() + " <lhs.xml> <host.xml>");
             System.exit(1);
         }
 
@@ -127,16 +130,21 @@ public class GraphMatcher {
         match(lhsXMLFile, hostXMLFile, matchCallback);
     }
 
-    /** Match the LHS graph with the host graph. If the match is successful,
-     *  <tt>true</tt> is returned, and the match result is stored internally,
-     *  which can be retrieved with {@link #getMatchResult()}.
+    /** Match a pattern specified in the <tt>lhsGraph</tt> to a model in
+     *  <tt>hostGraph</tt>. If the match is successful, <tt>true</tt> is
+     *  returned, and the match result is stored internally, which can be
+     *  retrieved with {@link #getMatchResult()}. A matching was successful if
+     *  at least one match result was found, and the callback (an instance
+     *  implementing {@link MatchCallback}) returned <tt>true</tt> when it was
+     *  invoked.
      *
-     *  @param lhsGraph The LHS graph.
+     *  @param lhsGraph The pattern.
      *  @param hostGraph The host graph.
      *  @return <tt>true</tt> if the match is successful; <tt>false</tt>
      *   otherwise.
      */
-    public boolean match(CompositeActorMatcher lhsGraph, NamedObj hostGraph) {
+    public boolean match(CompositeActorMatcher lhsGraph,
+            CompositeEntity hostGraph) {
 
         // Matching result.
         _match = new MatchResult();
@@ -157,11 +165,14 @@ public class GraphMatcher {
         return _success;
     }
 
-    /** Match the host model stored in the file with name <tt>hostXMLFile</tt>
-     *  with the rule stored in the file with name <tt>lhsXMLFile</tt>, and
-     *  record the first matching (which is arbitrarily decided by the recursive
-     *  algorithm) in the returned matcher object. The match result can be
-     *  obtained with {@link #getMatchResult()}.
+    /** Match the rule stored in the file with name <tt>lhsXMLFile</tt> to the
+     *  model stored in the file with name <tt>hostXMLFile</tt>, whose top-level
+     *  should be an instanceof {@link CompositeEntity}. The first match result
+     *  (which is arbitrarily decided by the recursive algorithm) is recorded in
+     *  the returned matcher object. This result can be obtained with {@link
+     *  #getMatchResult()}. If the match is unsuccessful, the match result is
+     *  empty, and {@link #isSuccessful()} of the returned matcher object
+     *  returns <tt>false</tt>.
      *
      *  @param lhsXMLFile The name of the file in which the rule is stored.
      *  @param hostXMLFile The name of the file in which the model to be matched
@@ -170,20 +181,22 @@ public class GraphMatcher {
      *   match is found, {@link #isSuccessful()} of the matcher object returns
      *   <tt>false</tt>, and {@link #getMatchResult()} returns an empty match.
      *  @exception Exception If the rule file or the model file cannot be read.
+     *  @see #match(String, String, MatchCallback)
      */
-    public static GraphMatcher match(String lhsXMLFile,
-            String hostXMLFile) throws Exception {
+    public static GraphMatcher match(String lhsXMLFile, String hostXMLFile)
+    throws Exception {
         return match(lhsXMLFile, hostXMLFile, null);
     }
 
-    /** Match the host model stored in the file with name <tt>hostXMLFile</tt>
-     *  with the rule stored in the file with name <tt>lhsXMLFile</tt>, and
-     *  invoke <tt>callback</tt>'s {@link
-     *  MatchCallback#foundMatch(GraphMatcher)} method whenever a match
-     *  is found. If the callback returns <tt>true</tt>, the match will
-     *  terminate and no more matches will be reported; otherwise, the match
-     *  process continues, and if one more match is found, the callback will be
-     *  invoked again.
+    /** Match the rule stored in the file with name <tt>lhsXMLFile</tt> to the
+     *  model stored in the file with name <tt>hostXMLFile</tt>, whose top-level
+     *  should be an instanceof {@link CompositeEntity}, and invoke
+     *  <tt>callback</tt>'s {@link MatchCallback#foundMatch(GraphMatcher)}
+     *  method whenever a match is found. If the callback returns <tt>true</tt>,
+     *  the match will terminate and no more matches will be reported;
+     *  otherwise, the match process continues, and the callback may be invoked
+     *  again. If <tt>callback</tt> is <tt>null</tt>, the behavior is the same
+     *  as {@link #match(String, String)}.
      *
      *  @param lhsXMLFile The name of the file in which the rule is stored.
      *  @param hostXMLFile The name of the file in which the model to be matched
@@ -195,14 +208,15 @@ public class GraphMatcher {
      *   matcher object returns <tt>false</tt>, and {@link #getMatchResult()}
      *   returns an empty match.
      *  @exception Exception If the rule file or the model file cannot be read.
+     *  @see #match(String, String)
      */
-    public static GraphMatcher match(String lhsXMLFile,
-            String hostXMLFile, MatchCallback callback) throws Exception {
+    public static GraphMatcher match(String lhsXMLFile, String hostXMLFile,
+            MatchCallback callback) throws Exception {
         MoMLParser parser = new MoMLParser();
         SingleRuleTransformer rule = (SingleRuleTransformer)
                 parser.parse(null, new File(lhsXMLFile).toURI().toURL());
         parser.reset();
-        NamedObj host =
+        CompositeEntity host = (CompositeEntity)
             parser.parse(null, new File(hostXMLFile).toURI().toURL());
 
         GraphMatcher matcher = new GraphMatcher();
@@ -216,7 +230,9 @@ public class GraphMatcher {
     /** Set the callback to be invoked by future calls to {@link
      *  #match(CompositeActorMatcher, NamedObj)}.
      *
-     *  @param callback The callback.
+     *  @param callback The callback. If it is <tt>null</tt>, the callback is
+     *   set to {@link #DEFAULT_CALLBACK}.
+     *  @see #match(CompositeActorMatcher, CompositeEntity)
      */
     public void setMatchCallback(MatchCallback callback) {
         if (callback == null) {
@@ -227,7 +243,7 @@ public class GraphMatcher {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                          public fields                    ////
 
     public static final MatchCallback DEFAULT_CALLBACK = new MatchCallback() {
         public boolean foundMatch(GraphMatcher matcher) {
@@ -235,9 +251,11 @@ public class GraphMatcher {
         }
     };
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     private boolean _checkBackward() {
-        FastLinkedList<LookbackEntry>.Entry entry =
-            _lookbackList.getTail();
+        FastLinkedList<LookbackEntry>.Entry entry = _lookbackList.getTail();
         LookbackEntry lists = null;
         while (entry != null) {
             lists = entry.getValue();
@@ -296,8 +314,7 @@ public class GraphMatcher {
             Set<? super Port> visitedPorts) {
         List<?> relationList = startPort.linkedRelationList();
         if (startPort instanceof ComponentPort) {
-            relationList.addAll(
-                    ((TypedIOPort) startPort).insideRelationList());
+            relationList.addAll(((TypedIOPort) startPort).insideRelationList());
         }
 
         int i = 0;
@@ -806,10 +823,10 @@ public class GraphMatcher {
         }
     }
 
-    private MatchCallback _callback = DEFAULT_CALLBACK;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
+
+    private MatchCallback _callback = DEFAULT_CALLBACK;
 
     private static final NameComparator _comparator = new NameComparator();
 
