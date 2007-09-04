@@ -39,12 +39,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  A Wire is a stateful actor in DE.  It should have an equal number 
  of input and output channels.  If it receives input on <i>any</i> of 
- its channels, it should produce the most recent received on each
+ its channels, it will produce the most recent received on each
  input channel to the corresponding output channel for <i>all</i>
  channels. We can think its behavior similar to a wire in VHDL, where 
- the value is always the most recently received.
+ the value is always the most recently received. If no input has been
+ received on an input channel, then the corresponding output channel
+ will get the value given by <i>initialValue</i>, possibly converted
+ to the type of the output. The type of the output is at least that
+ of the input and that of <i>initialValue</i>. Hence, for example,
+ if the input
+ is a double and <i>initialValue</i> is an int, then the output will
+ be a double.
 
- @author Adam Cataldo
+ @author Adam Cataldo, Edward A. Lee (contributor)
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Red (acataldo)
@@ -69,6 +76,8 @@ public class Wire extends DETransformer {
         output.setTypeAtLeast(input);
 
         initialValue = new Parameter(this, "initialValue");
+        output.setTypeAtLeast(initialValue);
+        initialValue.setExpression("0");
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"2\" "
@@ -79,6 +88,16 @@ public class Wire extends DETransformer {
                 + "width=\"40\" height=\"2\" " + "style=\"fill:black\"/>\n"
                 + "</svg>\n");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The value that is output when no input has yet been received
+     *  on the corresponding channel. The output type at least the type
+     *  of this parameter and the type of the input. The default value
+     *  is 0 (an int).
+     */
+    public Parameter initialValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -98,6 +117,10 @@ public class Wire extends DETransformer {
         // width of the input has changed.
         if ((_lastInputs == null) || (_lastInputs.length != inputWidth)) {
             _lastInputs = new Token[inputWidth];
+            Token defaultValue = initialValue.getToken();
+            for (int i = 0; i < inputWidth; i++) {
+                _lastInputs[i] = defaultValue;
+            }
         }
 
         for (int i = 0; i < commonWidth; i++) {
@@ -107,7 +130,15 @@ public class Wire extends DETransformer {
             output.send(i, _lastInputs[i]);
         }
     }
-
+    
+    /** Initialize the actor.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _lastInputs = null;
+    }
+    
     /** Return true if there is any token on an input port.
      *  @exception IllegalActionException If the base class throws it.
      */
@@ -121,15 +152,6 @@ public class Wire extends DETransformer {
 
         return writeRequest || super.prefire();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** The value that is output when no input has yet been received.
-     *  The type should be the same as the input port.
-     *  @see #typeConstraintList()
-     */
-    public Parameter initialValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
