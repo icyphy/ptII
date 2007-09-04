@@ -48,10 +48,12 @@ public class ActorAttributeRule extends Rule {
     }
 
     public ActorAttributeRule(String values) {
+        this(null, null, null);
         setValues(values);
     }
 
     public ActorAttributeRule(String name, String type, String value) {
+        super(3);
         _attributeName = name;
         _attributeType = type;
         _attributeValue = value;
@@ -75,9 +77,11 @@ public class ActorAttributeRule extends Rule {
     }
 
     public String getValues() {
-        return escapeStringAttribute(_attributeName) + FIELD_SEPARATOR
-                + escapeStringAttribute(_attributeType) + FIELD_SEPARATOR
-                + escapeStringAttribute(_attributeValue);
+        StringBuffer buffer = new StringBuffer();
+        _encodeStringField(buffer, 0, _attributeName);
+        _encodeStringField(buffer, 1, _attributeType);
+        _encodeStringField(buffer, 2, _attributeValue);
+        return buffer.toString();
     }
 
     public void setAttributeValue(int index, Object value) {
@@ -95,9 +99,10 @@ public class ActorAttributeRule extends Rule {
     }
 
     public void setValues(String values) {
-        _attributeName = unescapeStringAttribute(_getFirstField(values));
-        _attributeType = unescapeStringAttribute(_getNextField());
-        _attributeValue = unescapeStringAttribute(_getLastField());
+        FieldIterator fieldIterator = new FieldIterator(values);
+        _attributeName = _decodeStringField(0, fieldIterator);
+        _attributeType = _decodeStringField(1, fieldIterator);
+        _attributeValue = _decodeStringField(2, fieldIterator);
     }
 
     public void validate() throws RuleValidationException {

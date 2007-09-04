@@ -60,7 +60,7 @@ public class RuleList extends LinkedList<Rule> {
         RuleList list = new RuleList();
         int startPos = 0;
         while (startPos < expression.length()) {
-            int endPos = Rule.findMatchingParen(expression, startPos);
+            int endPos = Rule._findMatchingParen(expression, startPos);
             if (endPos < 0) {
                 throw new MalformedStringException(expression);
             }

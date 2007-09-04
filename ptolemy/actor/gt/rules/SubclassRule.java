@@ -49,6 +49,7 @@ public class SubclassRule extends Rule {
     }
 
     public SubclassRule(String values) {
+        super(1);
         setValues(values);
     }
 
@@ -66,7 +67,9 @@ public class SubclassRule extends Rule {
     }
 
     public String getValues() {
-        return escapeStringAttribute(_superclass);
+        StringBuffer buffer = new StringBuffer();
+        _encodeStringField(buffer, 0, _superclass);
+        return buffer.toString();
     }
 
     public void setAttributeValue(int index, Object value) {
@@ -78,7 +81,8 @@ public class SubclassRule extends Rule {
     }
 
     public void setValues(String values) {
-        _superclass = unescapeStringAttribute(values);
+        FieldIterator fieldIterator = new FieldIterator(values);
+        _superclass = _decodeStringField(0, fieldIterator);
     }
 
     public void validate() throws RuleValidationException {

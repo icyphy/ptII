@@ -89,14 +89,17 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$NameComparator.class' \
 	'GraphMatcher$$ObjectList.class' \
 	'GraphMatcher$$Path.class' \
+	'Rule$$FieldIterator.class' \
 	'RuleEditor$$1.class' \
 	'RuleEditor$$2.class' \
 	'RuleEditor$$3.class' \
+	'RuleEditor$$4.class' \
 	'RuleEditor$$AttributesEditor.class' \
 	'RuleEditor$$ComboElement.class' \
 	'RuleEditor$$Factory.class' \
 	'RuleEditor$$JPanelCellEditor.class' \
 	'RuleEditor$$Row$$1.class' \
+	'RuleEditor$$Row$$CheckBoxActionListener.class' \
 	'RuleEditor$$Row.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

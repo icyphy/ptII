@@ -14,7 +14,7 @@
     </property>
     <entity name="Pattern" class="ptolemy.actor.TypedCompositeActor">
         <entity name="B" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;b&quot;/&quot;b&quot;/false/true/false)">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;b&quot;/true/&quot;b&quot;/true/false/true/true/true/false)">
             </property>
             <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
@@ -24,7 +24,7 @@
             </property>
         </entity>
         <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;c&quot;/&quot;c&quot;/true/false/true)">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;c&quot;/true/&quot;c&quot;/true/true/true/false/true/true)">
             </property>
             <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
@@ -34,7 +34,7 @@
             </property>
         </entity>
         <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;a&quot;/&quot;a&quot;/false/true/false)">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;a&quot;/true/&quot;a&quot;/true/false/true/true/true/false)">
             </property>
             <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">

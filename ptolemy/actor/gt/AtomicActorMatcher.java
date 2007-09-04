@@ -88,9 +88,8 @@ public class AtomicActorMatcher extends TypedAtomicActor {
                             port.setMultiport(portRule.isMultiport());
                             port.setPersistent(false);
                         } else {
-                            port = new TypedIOPort(this,
-                                    portRule.getPortName(), portRule.isInput(),
-                                    portRule.isOutput());
+                            port = new TypedIOPort(this, portRule.getPortName(),
+                                    portRule.isInput(), portRule.isOutput());
                             port.setMultiport(portRule.isMultiport());
                             port.setPersistent(false);
                         }

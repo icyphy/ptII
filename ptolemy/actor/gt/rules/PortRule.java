@@ -38,11 +38,13 @@ public class PortRule extends Rule {
     }
 
     public PortRule(String values) {
+        this(null, null, false, false, false);
         setValues(values);
     }
 
     public PortRule(String portName, String portType, boolean input,
             boolean output, boolean multiport) {
+        super(5);
         _portName = portName;
         _portType = portType;
         _input = input;
@@ -80,10 +82,13 @@ public class PortRule extends Rule {
     }
 
     public String getValues() {
-        return escapeStringAttribute(_portName) + FIELD_SEPARATOR
-                + escapeStringAttribute(_portType) + FIELD_SEPARATOR
-                + _input + FIELD_SEPARATOR + _output + FIELD_SEPARATOR
-                + _multiport;
+        StringBuffer buffer = new StringBuffer();
+        _encodeStringField(buffer, 0, _portName);
+        _encodeStringField(buffer, 1, _portType);
+        _encodeBooleanField(buffer, 2, _input);
+        _encodeBooleanField(buffer, 3, _output);
+        _encodeBooleanField(buffer, 4, _multiport);
+        return buffer.toString();
     }
 
     public boolean isInput() {
@@ -119,11 +124,12 @@ public class PortRule extends Rule {
     }
 
     public void setValues(String values) {
-        _portName = unescapeStringAttribute(_getFirstField(values));
-        _portType = unescapeStringAttribute(_getNextField());
-        _input = _getNextField().equals("true") ? true : false;
-        _output = _getNextField().equals("true") ? true : false;
-        _multiport = _getLastField().equals("true") ? true : false;
+        FieldIterator fieldIterator = new FieldIterator(values);
+        _portName = _decodeStringField(0, fieldIterator);
+        _portType = _decodeStringField(1, fieldIterator);
+        _input = _decodeBooleanField(2, fieldIterator);
+        _output = _decodeBooleanField(3, fieldIterator);
+        _multiport = _decodeBooleanField(4, fieldIterator);
     }
 
     public void validate() throws RuleValidationException {

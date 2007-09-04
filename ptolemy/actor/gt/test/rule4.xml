@@ -14,7 +14,7 @@
     </property>
     <entity name="Pattern" class="ptolemy.actor.TypedCompositeActor">
         <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;output1&quot;/&quot;a&quot;/false/true/false)(ptolemy.actor.gt.rules.PortRule/&quot;output2&quot;/&quot;b&quot;/false/true/false)">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;output1&quot;/true/&quot;a&quot;/true/false/true/true/true/false)(ptolemy.actor.gt.rules.PortRule/true/&quot;output2&quot;/true/&quot;b&quot;/true/false/true/true/true/false)">
             </property>
             <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
@@ -24,7 +24,7 @@
             </property>
         </entity>
         <entity name="B" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;input&quot;/&quot;a&quot;/true/false/false)">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;input&quot;/true/&quot;a&quot;/true/true/true/false/true/false)">
             </property>
             <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
@@ -34,7 +34,7 @@
             </property>
         </entity>
         <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;input&quot;/&quot;a&quot;/true/false/false)(ptolemy.actor.gt.rules.PortRule/&quot;output&quot;/&quot;b&quot;/false/true/false)">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;input&quot;/true/&quot;a&quot;/true/true/true/false/true/false)(ptolemy.actor.gt.rules.PortRule/true/&quot;output&quot;/true/&quot;b&quot;/true/false/true/true/true/false)">
             </property>
             <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
@@ -44,7 +44,7 @@
             </property>
         </entity>
         <entity name="D" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;input&quot;/&quot;a&quot;/true/false/false)">
+            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;input&quot;/true/&quot;a&quot;/true/true/true/false/true/false)">
             </property>
             <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">

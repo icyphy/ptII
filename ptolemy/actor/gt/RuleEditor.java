@@ -37,6 +37,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -322,7 +324,22 @@ public class RuleEditor extends JDialog implements ActionListener {
         _table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         _table.setSelectionBackground(ROW_SELECTED_COLOR);
         _table.setSelectionForeground(Color.BLACK);
+        _table.addKeyListener(new KeyListener() {
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    commit();
+                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    cancel();
+                }
+            }
 
+            public void keyReleased(KeyEvent e) {
+            }
+
+            public void keyTyped(KeyEvent e) {
+            }
+        });
+        
         JTableHeader header = _table.getTableHeader();
 
         header.setFont(new Font("Dialog", Font.BOLD, 11));
@@ -382,8 +399,8 @@ public class RuleEditor extends JDialog implements ActionListener {
         indexRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         column0.setCellRenderer(indexRenderer);
 
-        model.getColumn(1).setPreferredWidth(100);
-        model.getColumn(2).setPreferredWidth(300);
+        model.getColumn(1).setPreferredWidth(120);
+        model.getColumn(2).setPreferredWidth(480);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -391,6 +408,8 @@ public class RuleEditor extends JDialog implements ActionListener {
                 cancel();
             }
         });
+        
+        setPreferredSize(new Dimension(600, 420));
     }
 
     @SuppressWarnings("unchecked")
@@ -414,13 +433,18 @@ public class RuleEditor extends JDialog implements ActionListener {
             (Vector<?>) attributeModel.getDataVector().get(0);
         for (int i = 1; i < attributeVector.size(); i++) {
             JPanel attributePanel = (JPanel) attributeVector.get(i);
-            Component attributeField = attributePanel.getComponent(0);
-            if (attributeField instanceof JTextField) {
+            // The first component (index 0) is the enablement.
+            Component component = attributePanel.getComponent(0);
+            rule.setAttributeEnabled(i - 1, Boolean.valueOf(
+                    ((JCheckBox) component).isSelected()));
+            // The second component (index 1) is the value.
+            component = attributePanel.getComponent(1);
+            if (component instanceof JTextField) {
                 rule.setAttributeValue(i - 1,
-                        ((JTextField) attributeField).getText());
-            } else if (attributeField instanceof JCheckBox) {
+                        ((JTextField) component).getText());
+            } else if (component instanceof JCheckBox) {
                 rule.setAttributeValue(i - 1, Boolean.valueOf(
-                        ((JCheckBox) attributeField).isSelected()));
+                        ((JCheckBox) component).isSelected()));
             }
         }
 
@@ -485,8 +509,6 @@ public class RuleEditor extends JDialog implements ActionListener {
                 isSelected ? ROW_SELECTED_COLOR : ROW_UNSELECTED_COLOR;
             leftPanel.setBackground(color);
             rightPanel.setBackground(color);
-            _currentRow.getAttributeTable().getTableHeader()
-                    .setBackground(color);
             return column == 1 ? leftPanel : rightPanel;
         }
 
@@ -500,8 +522,6 @@ public class RuleEditor extends JDialog implements ActionListener {
                 isSelected ? ROW_SELECTED_COLOR : ROW_UNSELECTED_COLOR;
             leftPanel.setBackground(color);
             rightPanel.setBackground(color);
-            currentRow.getAttributeTable().getTableHeader()
-                    .setBackground(color);
 
             if (column == 1) {
                 DefaultTableModel attributeModel =
@@ -556,21 +576,17 @@ public class RuleEditor extends JDialog implements ActionListener {
             return _currentValue;
         }
 
-        public Component getTableCellEditorComponent(JTable table,
-                Object value,
-                boolean isSelected,
-                int row,
-                int column) {
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
             JPanel panel = (JPanel) value;
             _setCaretForAllJTextFields(panel, true);
             _currentValue = panel;
             return panel;
         }
 
-        public Component getTableCellRendererComponent(
-                JTable table, Object value,
-                boolean isSelected, boolean hasFocus,
-                int row, int column) {
+        public Component getTableCellRendererComponent(JTable table,
+                Object value, boolean isSelected, boolean hasFocus, int row,
+                int column) {
             JPanel panel = (JPanel) value;
             _setCaretForAllJTextFields(panel, false);
             return panel;
@@ -599,7 +615,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             _attributeTable.setIntercellSpacing(new Dimension(10, 0));
             _attributeTable.setShowGrid(false);
             _attributeTable.setOpaque(false);
-            _attributeTable.setRowHeight(ROW_HEIGHT - 18);
+            _attributeTable.setRowHeight(ROW_HEIGHT);
 
             JScrollPane scrollPane = new JScrollPane(_attributeTable,
                     JScrollPane.VERTICAL_SCROLLBAR_NEVER,
@@ -672,7 +688,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             if (component instanceof JTextField) {
                 return 80;
             } else if (component instanceof JCheckBox) {
-                return 30;
+                return 50;
             } else {
                 return 80;
             }
@@ -690,8 +706,27 @@ public class RuleEditor extends JDialog implements ActionListener {
                 component = new JTextField();
                 break;
             }
-            component.setOpaque(false);
+            component.setBackground(new Color(240, 240, 240));
             return component;
+        }
+        
+        private class CheckBoxActionListener implements ActionListener {
+            
+            CheckBoxActionListener(int index) {
+                _index = index;
+            }
+
+            public void actionPerformed(ActionEvent e) {
+                boolean selected = ((JCheckBox) e.getSource()).isSelected();
+                _setEnablement(_components[_index], selected);
+            }
+            
+            private int _index;
+        }
+        
+        private void _setEnablement(JComponent component, boolean enabled) {
+            component.setEnabled(enabled);
+            component.setOpaque(!enabled);
         }
 
         protected void _initRightPanel() {
@@ -705,20 +740,30 @@ public class RuleEditor extends JDialog implements ActionListener {
             DefaultTableModel tableModel =
                 new DefaultTableModel(new Object[] {null}, 1);
             _attributeTable.setModel(tableModel);
+            _attributeTable.setTableHeader(null);
 
             TableColumnModel columnModel = _attributeTable.getColumnModel();
 
             for (int i = 0; i < attributes.length; i++) {
                 RuleAttribute attribute = attributes[i];
 
-                JComponent component = _getComponent(attribute);
-                _setComponentValue(attribute, component,
-                        rule.getAttributeValue(i));
-                _components[i] = component;
-
                 JPanel panel = new JPanel(new BorderLayout());
                 panel.setBorder(new EmptyBorder(2, 0, 4, 0));
                 panel.setOpaque(false);
+                
+                String columnName = attribute.getName();
+                JCheckBox checkBox = new JCheckBox(columnName);
+                checkBox.setOpaque(false);
+                checkBox.setBorder(new EmptyBorder(0, 0, 0, 0));
+                checkBox.setHorizontalAlignment(SwingConstants.CENTER);
+                checkBox.setPreferredSize(new Dimension(0, 18));
+                checkBox.setVerticalAlignment(SwingConstants.TOP);
+                checkBox.addActionListener(new CheckBoxActionListener(i));
+                panel.add(checkBox, BorderLayout.NORTH);
+
+                JComponent component = _getComponent(attribute);
+                _setComponentValue(attribute, component,
+                        rule.getAttributeValue(i));
                 panel.add(component, BorderLayout.CENTER);
 
                 tableModel.addColumn(attribute.getName(), new Object[] {panel});
@@ -726,6 +771,12 @@ public class RuleEditor extends JDialog implements ActionListener {
                 TableColumn column =
                     _attributeTable.getColumnModel().getColumn(i + 1);
                 column.setHeaderValue(attribute.getName());
+
+                _components[i] = component;
+                
+                boolean enabled = rule.isAttributeEnabled(i);
+                checkBox.setSelected(enabled);
+                _setEnablement(component, enabled);
             }
 
             columnModel.removeColumn(columnModel.getColumn(0));

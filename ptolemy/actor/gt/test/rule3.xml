@@ -26,7 +26,7 @@
                 </property>
             </port>
             <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
-                <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;output&quot;/&quot;unknown&quot;/false/true/false)">
+                <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;output&quot;/true/&quot;unknown&quot;/true/false/true/true/true/false)">
                 </property>
                 <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
@@ -58,7 +58,7 @@
                 </property>
             </port>
             <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
-                <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/&quot;input&quot;/&quot;unknown&quot;/true/false/false)">
+                <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;input&quot;/true/&quot;unknown&quot;/true/true/true/false/true/false)">
                 </property>
                 <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">

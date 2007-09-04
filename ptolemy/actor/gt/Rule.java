@@ -26,6 +26,10 @@
  */
 package ptolemy.actor.gt;
 
+import java.util.Iterator;
+
+import ptolemy.kernel.util.KernelRuntimeException;
+
 //////////////////////////////////////////////////////////////////////////
 //// Rule
 
@@ -39,7 +43,77 @@ package ptolemy.actor.gt;
 */
 public abstract class Rule {
 
-    public static String escapeStringAttribute(String attribute) {
+    public abstract RuleAttribute[] getAttributes();
+
+    public abstract Object getAttributeValue(int index);
+
+    public abstract String getValues();
+
+    public boolean isAttributeEnabled(int index) {
+        return _enablements[index];
+    }
+
+    public void setAttributeEnabled(int index, boolean isEnabled) {
+        _enablements[index] = isEnabled;
+    }
+
+    public abstract void setAttributeValue(int index, Object value);
+
+    public abstract void setValues(String values);
+
+    public String toString() {
+        return getValues();
+    }
+
+    public abstract void validate() throws RuleValidationException;
+
+    public static final String FIELD_SEPARATOR = "/";
+
+    protected Rule(int attributeCount) {
+        _enablements = new boolean[attributeCount];
+    }
+
+    protected boolean _decodeBooleanField(int index, FieldIterator iterator) {
+        if (iterator.hasNext()) {
+            _enablements[index] = Boolean.parseBoolean(iterator.next());
+        } else {
+            _enablements[index] = false;
+        }
+        return iterator.hasNext() ? Boolean.parseBoolean(iterator.next())
+                : false;
+    }
+
+    protected String _decodeStringField(int index, FieldIterator iterator) {
+        if (iterator.hasNext()) {
+            _enablements[index] = Boolean.parseBoolean(iterator.next());
+        } else {
+            _enablements[index] = false;
+        }
+        return iterator.hasNext() ? _unescapeStringAttribute(iterator.next())
+                : "";
+    }
+
+    protected void _encodeBooleanField(StringBuffer buffer, int index,
+            boolean value) {
+        if (buffer.length() > 0) {
+            buffer.append(FIELD_SEPARATOR);
+        }
+        buffer.append(_enablements[index]);
+        buffer.append(FIELD_SEPARATOR);
+        buffer.append(value);
+    }
+
+    protected void _encodeStringField(StringBuffer buffer, int index,
+            String value) {
+        if (buffer.length() > 0) {
+            buffer.append(FIELD_SEPARATOR);
+        }
+        buffer.append(_enablements[index]);
+        buffer.append(FIELD_SEPARATOR);
+        buffer.append(_escapeStringAttribute(value));
+    }
+
+    protected static String _escapeStringAttribute(String attribute) {
         if (attribute.equals("")) {
             return "";
         }
@@ -50,7 +124,7 @@ public abstract class Rule {
         return "\"" + attribute + "\"";
     }
 
-    public static int findMatchingParen(String s, int startPos) {
+    protected static int _findMatchingParen(String s, int startPos) {
         if (s.charAt(startPos) == '(') {
             int parenNum = 1;
             boolean inDblQuote = false;
@@ -81,7 +155,7 @@ public abstract class Rule {
         return -1;
     }
 
-    public static int findSeparator(String s, int startPos, char separator) {
+    protected static int _findSeparator(String s, int startPos, char separator) {
         boolean inDblQuote = false;
         boolean inSngQuote = false;
         boolean escaped = false;
@@ -105,21 +179,7 @@ public abstract class Rule {
         return -1;
     }
 
-    public abstract Object getAttributeValue(int index);
-
-    public abstract RuleAttribute[] getAttributes();
-
-    public abstract String getValues();
-
-    public abstract void setAttributeValue(int index, Object value);
-
-    public abstract void setValues(String values);
-
-    public String toString() {
-        return getValues();
-    }
-
-    public static String unescapeStringAttribute(String attribute) {
+    protected static String _unescapeStringAttribute(String attribute) {
         if (attribute.equals("")) {
             return "";
         }
@@ -135,46 +195,35 @@ public abstract class Rule {
         return buffer.toString();
     }
 
-    public abstract void validate() throws RuleValidationException;
+    protected static class FieldIterator implements Iterator<String> {
 
-    public static final String FIELD_SEPARATOR = "/";
-
-    protected String _getFirstField(String values) {
-        _currentValues = values;
-        _currentPosition = _currentValues.indexOf(FIELD_SEPARATOR);
-        if (_currentPosition < 0) {
-            return _currentValues;
-        } else {
-            return _currentValues.substring(0, _currentPosition++);
+        public FieldIterator(String values) {
+            _values = values;
         }
-    }
 
-    protected String _getLastField() {
-        if (_currentPosition < 0) {
-            return "";
-        } else {
-            return _currentValues.substring(_currentPosition);
+        public boolean hasNext() {
+            return _values != null && _values.length() > 0;
         }
-    }
 
-    protected String _getNextField() {
-        if (_currentPosition < 0) {
-            return "";
-        } else {
-            int newPosition =
-                _currentValues.indexOf(FIELD_SEPARATOR, _currentPosition);
-            if (newPosition < 0) {
-                return _currentValues.substring(_currentPosition);
+        public String next() {
+            int position = _values.indexOf(FIELD_SEPARATOR);
+            String next;
+            if (position < 0) {
+                next = _values;
+                _values = null;
             } else {
-                String result =
-                    _currentValues.substring(_currentPosition, newPosition);
-                _currentPosition = newPosition + 1;
-                return result;
+                next = _values.substring(0, position);
+                _values = _values.substring(position + 1);
             }
+            return next;
         }
+
+        public void remove() {
+            throw new KernelRuntimeException();
+        }
+
+        private String _values;
     }
 
-    private int _currentPosition;
-
-    private String _currentValues;
+    private boolean[] _enablements;
 }
