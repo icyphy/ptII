@@ -194,6 +194,35 @@ public class IOPort extends ComponentPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Append a listener to the current set of token got listeners.
+     *  If the listener is already in the set, it will not be added again.
+     *  Note that this method is basically the same as addDebugListener
+     *  in the class NamedObj.
+     *  @param listener The listener to which to send token got messages.
+     *  @see #removeTokenGotListener(TokenGotListener)
+     */
+    public void addTokenGotListener(TokenGotListener listener) {
+        // NOTE: This method needs to be synchronized to prevent two
+        // threads from each creating a new _tokenGotListeners list.
+        synchronized (this) {
+            if (_tokenGotListeners == null) {
+                _tokenGotListeners = new LinkedList();
+            }
+        }
+
+        // NOTE: This has to be synchronized to prevent
+        // concurrent modification exceptions.
+        synchronized (_tokenGotListeners) {
+            if (_tokenGotListeners.contains(listener)) {
+                return;
+            } else {
+                _tokenGotListeners.add(listener);
+            }
+
+            _notifyingTokensGot = true;
+        }
+    }
+
     /** Append a listener to the current set of token sent listeners.
      *  If the listener is already in the set, it will not be added again.
      *  Note that this method is basically the same as addDebugListener
@@ -777,6 +806,9 @@ public class IOPort extends ComponentPort {
 
             if (token == null) {
                 token = localToken;
+                if (_notifyingTokensGot) {
+                    _tokenGot(new TokenGotEvent(this, channelIndex, token, true));
+                }
             }
         }
 
@@ -852,6 +884,10 @@ public class IOPort extends ComponentPort {
         if (retArray == null) {
             throw new NoTokenException(this, "get: No token array "
                     + "to return.");
+        }
+
+        if (_notifyingTokensGot) {
+            _tokenGot(new TokenGotEvent(this, channelIndex, retArray, vectorLength, true));
         }
 
         int index = 1;
@@ -976,6 +1012,9 @@ public class IOPort extends ComponentPort {
 
             if (token == null) {
                 token = localToken;
+                if (_notifyingTokensGot) {
+                    _tokenGot(new TokenGotEvent(this, channelIndex, token, false));
+                }
             }
         }
 
@@ -2302,6 +2341,31 @@ public class IOPort extends ComponentPort {
             return _numberOfSources;
         } finally {
             _workspace.doneReading();
+        }
+    }
+
+    /** Unregister a token got listener.  If the specified listener has not
+     *  been previously registered, then do nothing.  Note that this method
+     *  is basically the same as removeDebugListener in the class NamedObj.
+     *  @param listener The listener to remove from the list of listeners
+     *   to which token got messages are sent.
+     *  @see #addTokenGotListener(TokenGottListener)
+     */
+    public void removeTokenGotListener(TokenGotListener listener) {
+        if (_tokenGotListeners == null) {
+            return;
+        }
+
+        // NOTE: This has to be synchronized to prevent
+        // concurrent modification exceptions.
+        synchronized (_tokenGotListeners) {
+            _tokenGotListeners.remove(listener);
+
+            if (_tokenGotListeners.size() == 0) {
+                _notifyingTokensGot = false;
+            }
+
+            return;
         }
     }
 
@@ -3714,6 +3778,20 @@ public class IOPort extends ComponentPort {
         }
     }
 
+    /** Send a token got event to all token got listeners that 
+     *  have registered with this IOPort.
+     *  @param event The event.
+     */
+    protected final void _tokenGot(TokenGotEvent event) {
+        if (_notifyingTokensGot) {
+            Iterator listeners = _tokenGotListeners.iterator();
+
+            while (listeners.hasNext()) {
+                ((TokenGotListener) listeners.next()).tokenGotEvent(event);
+            }
+        }
+    }
+
     /** Send a token sent event to all token sent listeners that 
      *  have registered with this IOPort.
      *  @param event The event.
@@ -3731,8 +3809,17 @@ public class IOPort extends ComponentPort {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** Flag that is true if there are token got listeners. */
+    protected boolean _notifyingTokensGot = false;
+
     /** Flag that is true if there are token sent listeners. */
     protected boolean _notifyingTokensSent = false;
+
+    /** The list of TokenGotListeners registered with this object.
+     *  NOTE: Because of the way we synchronize on this object, it should
+     *  never be reset to null after the first list is created.
+     */
+    protected LinkedList _tokenGotListeners = null;
 
     /** The list of TokenSentListeners registered with this object.
      *  NOTE: Because of the way we synchronize on this object, it should
