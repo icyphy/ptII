@@ -56,7 +56,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  @since Ptolemy II 5.2
  @Pt.ProposedRating Red (acataldo)
  @Pt.AcceptedRating Red (acataldo)
- @see ptolemy.domains.de.lib.Wire
+ @see ptolemy.domains.de.lib.Sampler
+ @deprecated Use Sampler instead.
  */
 public class Wire extends DETransformer {
     /** Construct an actor with the given container and name.

@@ -56,8 +56,8 @@
 <entity name="WaitingTime" class="ptolemy.domains.de.lib.WaitingTime">
 </entity>
 
-<entity name="Wire" class="ptolemy.domains.de.lib.Wire">
-</entity>
+<!-- entity name="Wire" class="ptolemy.domains.de.lib.Wire" -->
+<!-- /entity -->
       </group>
     ?>
   </configure>
