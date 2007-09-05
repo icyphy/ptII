@@ -28,8 +28,10 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -73,12 +75,22 @@ public class VectorAssembler extends Transformer {
         input.setMultiport(true);
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
         output.setMultiport(false);
+        isColumn = new Parameter(this, "isColumn", BooleanToken.TRUE);
+        isColumn.setTypeEquals(BaseType.BOOLEAN);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"0\" y=\"0\" width=\"6\" "
                 + "height=\"40\" style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** True if the output vector is a column matrix. Otherwise,
+     *  the output is a row matrix. The default value is true.
+     */
+    public Parameter isColumn;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -91,12 +103,26 @@ public class VectorAssembler extends Transformer {
         super.fire();
         int size = input.getWidth();
 
-        double[][] data = new double[size][1];
-
-        for (int i = 0; i < size; i++) {
-            data[i][0] = ((DoubleToken) input.get(i)).doubleValue();
+        
+        double[][] data;
+        
+        boolean isColumnValue = 
+            ((BooleanToken) isColumn.getToken()).booleanValue();
+        
+        if (isColumnValue) {
+            data = new double[size][1];
+    
+            for (int i = 0; i < size; i++) {
+                data[i][0] = ((DoubleToken) input.get(i)).doubleValue();
+            }
+        } else {
+            data = new double[1][size];
+            
+            for (int i = 0; i < size; i++) {
+                data[0][i] = ((DoubleToken) input.get(i)).doubleValue();
+            }            
         }
-
+        
         DoubleMatrixToken result = new DoubleMatrixToken(data);
 
         output.send(0, result);

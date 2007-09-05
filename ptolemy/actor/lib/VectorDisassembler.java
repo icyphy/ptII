@@ -27,7 +27,9 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -38,12 +40,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  <p>An actor that disassembles a DoubleMatrixToken to a multiport output.
- </p><p>On each firing, read one column vector (i.e. a DoubleMatrixToken with
- one column) from the <i>input</i> port and send out individual
- DoubleTokens to each channel of the <i>output</i> port.  If the width
- of the <i>output</i> port (say, <i>n</i>) is less than the number of
- rows (say, <i>m</i>) in the input token, then the first <i>n</i>
- elements in the vector will be sent, and the remaining tokens are
+ </p><p>On each firing, read one column or row vector (i.e. a 
+ DoubleMatrixToken with one column or row) from the <i>input</i> port and
+ send out individual DoubleTokens to each channel of the <i>output</i>
+ port.  If the width of the <i>output</i> port (say, <i>n</i>) is less than
+ the number of rows (say, <i>m</i>) in the input token, then the first
+ <i>n</i> elements in the vector will be sent, and the remaining tokens are
  discarded.  If <i>n</i> is greater than <i>m</i>, then the last
  <i>n-m</i> channels of the output port will never send tokens out.
  This class throws an exception if the input is not a column vector.
@@ -77,42 +79,49 @@ public class VectorDisassembler extends Transformer {
         input.setMultiport(false);
         output.setTypeEquals(BaseType.DOUBLE);
         output.setMultiport(true);
-
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"0\" y=\"0\" width=\"6\" "
                 + "height=\"40\" style=\"fill:blue\"/>\n" + "</svg>\n");
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there is a token at the input, read one column vector
-     *  (i.e. a DoubleMatrixToken with one column) from the input port,
-     *  and for each channel i of the output port, send send the ith
-     *  element of this column vector to this channel.  Otherwise, do
-     *  nothing.
+    /** If there is a token at the input, read one column or row vector
+     *  (i.e. a DoubleMatrixToken with one column or row) from the 
+     *  input port, and for each channel i of the output port, 
+     *  send send the ith element of this column or row vector to this
+     *  channel.  Otherwise, do nothing.
      *
      *  Note: The output tokens are copies of the corresponding
      *  elements in the input token.
      *
      *  @exception IllegalActionException If there is no director, or
-     *  the input token has more than one column.
+     *  the input token has more than one columns and rows.
      */
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.hasToken(0)) {
             DoubleMatrixToken vector = (DoubleMatrixToken) input.get(0);
 
-            if (vector.getColumnCount() != 1) {
+            if (vector.getColumnCount() == 1) {
+                int min = Math.min(vector.getRowCount(), output.getWidth());
+
+                for (int i = 0; i < min; i++) {
+                    output.send(i, vector.getElementAsToken(i, 0));
+                }
+            } else if (vector.getRowCount() == 1) {
+                int min = Math.min(vector.getColumnCount(), output.getWidth());
+
+                for (int i = 0; i < min; i++) {
+                    output.send(i, vector.getElementAsToken(0, i));
+                }
+            } else {
                 throw new IllegalActionException(this, "The input must "
-                        + "be a DoubleMatrixToken with one column.");
+                    + "be a DoubleMatrixToken with one column or row. "
+                    + "But the input is " + vector);
             }
-
-            int min = Math.min(vector.getRowCount(), output.getWidth());
-
-            for (int i = 0; i < min; i++) {
-                output.send(i, vector.getElementAsToken(i, 0));
-            }
+            
         }
     }
 }
