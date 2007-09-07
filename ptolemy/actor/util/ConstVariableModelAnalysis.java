@@ -448,13 +448,13 @@ public class ConstVariableModelAnalysis {
             Entity oldChangeContext = 
                 (Entity) _variableToChangeContext.get(variable);
             
-            System.out.println("variable = " + variable);
-            System.out.println("oldChangeContext = " + oldChangeContext);
-            System.out.println("updatedChangeContext = " + changeContext);
+            // System.out.println("variable = " + variable);
+            // System.out.println("oldChangeContext = " + oldChangeContext);
+            // System.out.println("updatedChangeContext = " + changeContext);
             Entity newChangeContext =
                 _computeBound(changeContext, oldChangeContext);
 
-            System.out.println("newChangeContext = " + newChangeContext);
+            // System.out.println("newChangeContext = " + newChangeContext);
             if (newChangeContext != oldChangeContext) {
                 _variableToChangeContext.put(variable, newChangeContext);
                       
