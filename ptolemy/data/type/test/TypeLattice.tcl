@@ -45,6 +45,8 @@ if {[string compare test [info procs test]] == 1} then {
 
 set unknownType [java::field ptolemy.data.type.BaseType UNKNOWN]
 set generalType [java::field ptolemy.data.type.BaseType GENERAL]
+set generalArrayType [java::new ptolemy.data.type.ArrayType $generalType]
+set generalSizedArrayType [java::new ptolemy.data.type.ArrayType $generalType 1]
 set baseTypes [list \
                    [java::field ptolemy.data.type.BaseType ARRAY_BOTTOM] \
                    [java::field ptolemy.data.type.BaseType BOOLEAN] \
@@ -178,6 +180,8 @@ foreach type $baseTypes {
     set sized1ArrayType [java::new ptolemy.data.type.ArrayType $type 1]
     set sized2ArrayType [java::new ptolemy.data.type.ArrayType $type 2]
 
+    testTypeIsLessThan $type $generalArrayType
+    testTypeIsLessThan $type $generalSizedArrayType
     testTypeIsLessThan $type $arrayType
     testTypeIsLessThan $type $sized1ArrayType
     testTypesIncomparable $type $sized2ArrayType
@@ -185,6 +189,9 @@ foreach type $baseTypes {
     testTypeIsLessThan $sized2ArrayType $arrayType
     testTypesIncomparable $sized1ArrayType $sized2ArrayType
 }
+testTypeIsLessThan $generalArrayType $generalType
+testTypeIsLessThan $generalSizedArrayType $generalType
+
            
         
 ######################################################################

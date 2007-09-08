@@ -249,6 +249,7 @@ public class TypeLattice {
                 } else if (t1Rep instanceof ArrayType
                         && !(t2Rep instanceof ArrayType)
                         && !t2.equals(BaseType.UNKNOWN)
+                        && !t2.equals(BaseType.GENERAL)
                         && !t2.equals(BaseType.ARRAY_BOTTOM)) {
                     // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
                     ArrayType arrayType = (ArrayType) t1;
@@ -272,6 +273,7 @@ public class TypeLattice {
                 } else if (t2Rep instanceof ArrayType
                         && !(t1Rep instanceof ArrayType)
                         && !t1.equals(BaseType.UNKNOWN)
+                        && !t1.equals(BaseType.GENERAL)
                         && !t1.equals(BaseType.ARRAY_BOTTOM)) {
                     // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
                     ArrayType arrayType = (ArrayType) t2;
@@ -561,6 +563,7 @@ public class TypeLattice {
                 } else if (t1Rep instanceof ArrayType
                         && !(t2Rep instanceof ArrayType)
                         && !t2.equals(BaseType.UNKNOWN)
+                        && !t2.equals(BaseType.GENERAL)
                         && !t2.equals(BaseType.ARRAY_BOTTOM)) {
                     // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
                     ArrayType arrayType = (ArrayType) t1;
@@ -595,6 +598,7 @@ public class TypeLattice {
                 } else if (t2Rep instanceof ArrayType
                         && !(t1Rep instanceof ArrayType)
                         && !t1.equals(BaseType.UNKNOWN)
+                        && !t1.equals(BaseType.GENERAL)
                         && !t1.equals(BaseType.ARRAY_BOTTOM)) {
                     // NOTE: Added by EAL, 7/16/06, to make scalar < {scalar}
                     ArrayType arrayType = (ArrayType) t2;

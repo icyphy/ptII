@@ -76,6 +76,21 @@ test ArrayType-1.1 {Create a {string}} {
 ######################################################################
 ####
 # 
+test ArrayType-1.2 {Create a {general}} {
+    set gen [java::field ptolemy.data.type.BaseType GENERAL]
+    set genArrayTypeMaster [java::new ptolemy.data.type.ArrayType $gen]
+
+    set genArrayType [java::cast ptolemy.data.type.ArrayType \
+                                                 [$genArrayTypeMaster clone]]
+
+    list [$genArrayTypeMaster toString] [$genArrayType toString] \
+         [[$genArrayTypeMaster getElementType] toString] \
+         [[$genArrayType getElementType] toString]
+} {arrayType(general) arrayType(general) general general}
+
+######################################################################
+####
+# 
 test ArrayType-2.0 {Test isCompatible} {
     set int0 [java::new ptolemy.data.IntToken 0]
     set int1 [java::new ptolemy.data.IntToken 1]
@@ -85,14 +100,14 @@ test ArrayType-2.0 {Test isCompatible} {
     list [$natArrayType isCompatible [$intArrayToken getType]] \
          [$strArrayType isCompatible [$intArrayToken getType]]
 } {1 1}
-
 ####
 # 
-#test ArrayType-2.0.5 {Test isCompatible with GENERAL} {
-#    # Connecting a const with an array of ints to a Display was failing.
-#    list [$natArrayType isCompatible [java::field ptolemy.data.type.BaseType GENERAL]] \
-#	 [$strArrayType isCompatible [java::field ptolemy.data.type.BaseType GENERAL]]
-#} {1 1}
+test ArrayType-2.0.5 {Test isCompatible with GENERAL} {
+    # Connecting a const with an array of ints to a Display was failing.
+    list [$natArrayType isCompatible [java::field ptolemy.data.type.BaseType GENERAL]] \
+        [$strArrayType isCompatible [java::field ptolemy.data.type.BaseType GENERAL]] \
+        [$genArrayType isCompatible [java::field ptolemy.data.type.BaseType GENERAL]]
+} {1 1 1}
 
 ######################################################################
 ####
