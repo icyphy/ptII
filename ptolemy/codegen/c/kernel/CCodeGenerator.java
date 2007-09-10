@@ -790,7 +790,7 @@ public class CCodeGenerator extends CodeGenerator {
                 }
             }
             
-            if (lastLine.trim().length() != 0) {
+            if (lastLine != null && lastLine.trim().length() != 0) {
                 code.append(lastLine + _eol);            
             }
         }
