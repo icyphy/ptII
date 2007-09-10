@@ -2349,7 +2349,7 @@ public class IOPort extends ComponentPort {
      *  is basically the same as removeDebugListener in the class NamedObj.
      *  @param listener The listener to remove from the list of listeners
      *   to which token got messages are sent.
-     *  @see #addTokenGotListener(TokenGottListener)
+     *  @see #addTokenGotListener(TokenGotListener)
      */
     public void removeTokenGotListener(TokenGotListener listener) {
         if (_tokenGotListeners == null) {
