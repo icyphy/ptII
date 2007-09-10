@@ -27,18 +27,18 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{200, 45}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={472, 189, 876, 909}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={133, 73, 875, 780}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[660, 791]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[660, 664]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{330.0, 395.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{330.0, 332.0}">
     </property>
     <entity name="SDFmodel" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 340.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={301, 615, 816, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={158, 147, 815, 516}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -133,14 +133,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 230.0]">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 666, 572, 246}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[562, 192]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 140.0]">
-        </property>
-    </entity>
     <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
         <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="boolFlag">
         </property>
@@ -155,6 +147,14 @@
         <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 230.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{380, 115}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -183,8 +183,8 @@
     <link port="Const2.trigger" relation="relation3"/>
     <link port="Const3.output" relation="relation4"/>
     <link port="Const3.trigger" relation="relation"/>
-    <link port="Display.input" relation="relation"/>
     <link port="SetVariable.input" relation="relation5"/>
     <link port="SetVariable.output" relation="relation3"/>
     <link port="SetVariable2.input" relation="relation4"/>
+    <link port="Test.input" relation="relation"/>
 </entity>
