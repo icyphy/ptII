@@ -235,7 +235,14 @@ public class DelayChannel extends ErasureChannel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    private class Reception {
+
+    /** Data structure for storing reception data.
+     */
+    private static class Reception {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public Token token;
 
         public WirelessIOPort sender;

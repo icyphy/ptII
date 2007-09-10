@@ -484,7 +484,10 @@ public class CollisionDetector extends TypedAtomicActor {
 
     /** Data structure for storing reception data.
      */
-    private class Reception {
+    private static class Reception {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         // The message token.
         public Token data;
 

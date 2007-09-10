@@ -1186,7 +1186,10 @@ public class CodeStream {
     /** 
      * A private class for representing a code block signature. 
      */
-    private class Signature {
+    private static class Signature {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
 
         /**
          * Constructor for a code block signature. It consists of the

@@ -184,7 +184,11 @@ public class DECQEventQueue implements DEEventQueue {
     // it has a smaller microstep, or when both time stamps and
     // microsteps are identical, it has a smaller depth.
     // The default binWidth is 1.0, and the default zeroReference is 0.0.
-    private class DECQComparator implements CQComparator {
+    private static class DECQComparator implements CQComparator {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** Construct a new comparator.
          */
         public DECQComparator() {

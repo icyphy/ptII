@@ -129,7 +129,11 @@ public class HuffmanBasic extends Transformer {
     /** A class that defines the node in binary tree that is used
      *  to construct the codebook of Huffman code.
      */
-    public class Node {
+    public static class Node {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** Construct the node with the given probability value
          *  and its index in the <i>pmf</i> array.
          * @param prob The given probability value.

@@ -187,14 +187,22 @@ public class SequenceToMatrix extends SDFTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    // This class implements a monotonic function of the input port
-    // type. The result of the function is a matrix type with elements
-    // that are the same as the input type. If there is no such matrix
-    // type, then the result is unknown.
-    private class FunctionTerm extends MonotonicFunction {
-        // The constructor takes a port argument so that the clone()
-        // method can construct an instance of this class for the
-        // input port on the clone.
+
+    /** A monotonic function of the input port type. The result of the
+     * function is a matrix type with elements that are the same as
+     * the input type. If there is no such matrix type, then the
+     * result is unknown.
+     */
+    private static class FunctionTerm extends MonotonicFunction {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
+        /** The constructor takes a port argument so that the clone()
+         *  method can construct an instance of this class for the
+         *  input port on the clone.
+         *  @parm port The port
+         */
         private FunctionTerm(TypedIOPort port) {
             _port = port;
         }

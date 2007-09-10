@@ -280,15 +280,24 @@ public class StreamExec implements ExecuteCommands {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    // Private class that reads a stream in a thread and updates the
-    // JTextArea.
-    private class _StreamReaderThread extends Thread {
+    /** Private class that reads a stream in a thread and updates the
+     *  the StreamExec.
+     */
+    private static class _StreamReaderThread extends Thread {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
+        /** Construct a StreamReaderThread.
+         *  @param inputStream the stream from which to read.
+         *  @param streamExec The StreamExec to be written.
+         */
         _StreamReaderThread(InputStream inputStream, StreamExec streamExec) {
             _inputStream = inputStream;
             _streamExec = streamExec;
         }
 
-        // Read lines from the _inputStream and output them.
+        /** Read lines from the _inputStream and output them. */
         public void run() {
             try {
                 InputStreamReader inputStreamReader = new InputStreamReader(
@@ -306,9 +315,10 @@ public class StreamExec implements ExecuteCommands {
             }
         }
 
-        // Stream to read from.
+        /** Stream from which to read. */
         private InputStream _inputStream;
 
+        /** StreamExec which is written. */ 
         private StreamExec _streamExec;
     }
 

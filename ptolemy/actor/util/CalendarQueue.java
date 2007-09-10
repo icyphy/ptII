@@ -994,24 +994,30 @@ public class CalendarQueue implements Debuggable {
         public CQCell tail;
     }
 
-    // Simplified and specialized linked list cell.  This is based on
-    // Doug Lea's implementation in collections, but with most of the
-    // functionality stripped out.
-    private class CQCell {
-        // Construct a cell with the specified contents, pointing to the
-        // specified next cell.
-        // @param contents The contents.
-        // @param next The next cell, or null if this is the end of the list.
+    /** Simplified and specialized linked list cell.  This is based on
+     * Doug Lea's implementation in collections, but with most of the
+     * functionality stripped out.
+     */
+    private static class CQCell {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
+        /** Construct a cell with the specified contents, pointing to the
+         * specified next cell.
+         * @param contents The contents.
+         * @param next The next cell, or null if this is the end of the list.
+         */
         public CQCell(Object contents, CQCell next) {
             this.contents = contents;
             this.next = next;
         }
 
-        // Search the list for the specified element (using equals() to
-        // identify a match).  Note that this does a linear search
-        // starting at the beginning of the list.
-        // @param element Element to look for.
-        // @return The cell containing the element, or null if there is none.
+        /** Search the list for the specified element (using equals() to
+         * identify a match).  Note that this does a linear search
+         * starting at the beginning of the list.
+         * @param element Element to look for.
+         * @return The cell containing the element, or null if there is none.
+         */
         public final CQCell find(Object element) {
             for (CQCell p = this; p != null; p = p.next) {
                 if (p.contents.equals(element)) {
@@ -1022,10 +1028,10 @@ public class CalendarQueue implements Debuggable {
             return null;
         }
 
-        // The contents of the cell.
+        /** The contents of the cell. */
         public Object contents;
 
-        // The next cell in the list, or null if there is none.
+        /** The next cell in the list, or null if there is none. */
         public CQCell next;
     }
 

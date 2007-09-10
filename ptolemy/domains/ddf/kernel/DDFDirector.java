@@ -1368,7 +1368,11 @@ public class DDFDirector extends Director {
     /** This private class is data structure for recording an actor's
      *  information during the execution.
      */
-    private class ActorInfo {
+    private static class ActorInfo {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** This field records the enabling status of the actor.
          */
         public ActorEnablingStatus status;

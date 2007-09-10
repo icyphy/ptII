@@ -354,7 +354,11 @@ public class RealTimeComposite extends MirrorComposite {
     /** Bundle of a token and the input port and channel
      *  at which it arrived.
      */
-    private class QueuedToken {
+    private static class QueuedToken {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public QueuedToken(IOPort thePort, int theChannel, Token theToken) {
             token = theToken;
             channel = theChannel;
@@ -375,7 +379,11 @@ public class RealTimeComposite extends MirrorComposite {
      *  @param theTime The model time of the output events.
      *  @param theTokens The tokens in the output events.
      */
-    private class OutputFrame {
+    private static class OutputFrame {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public OutputFrame(Time theTime, List<QueuedToken> theTokens) {
             tokens = theTokens;
             time = theTime;

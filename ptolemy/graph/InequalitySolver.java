@@ -280,7 +280,11 @@ public class InequalitySolver {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
     // Each instance of this class is an entry in _Ilist.
-    private class Info {
+    private static class Info {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         private Info(Inequality ineq) {
             _ineq = ineq;
         }
