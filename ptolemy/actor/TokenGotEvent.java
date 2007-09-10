@@ -50,7 +50,7 @@ import ptolemy.data.Token;
 public class TokenGotEvent {
     /** Create a new token got event with the given parameters.  This
      *  constructor is used when an array of tokens is taken.
-     *  @param source The IOPort the token is stored at.
+     *  @param sink The IOPort the token is stored at.
      *  @param channel Channel the token was received on.
      *  @param tokens The token array used for the get.
      *  @param vectorLength The number of tokens taken.
@@ -68,7 +68,7 @@ public class TokenGotEvent {
 
     /** Create a new token got event with the given parameters.  This
      *  constructor is used when a token is taken using get or getInside.
-     *  @param source The IOPort the token is stored at.
+     *  @param sink The IOPort the token is stored at.
      *  @param channel Channel the token was received on.
      *  @param token The token that was received.
      *  @param outside True if the token was taken on outside channel, false otherwise.
