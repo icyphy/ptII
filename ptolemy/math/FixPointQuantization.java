@@ -173,6 +173,15 @@ public class FixPointQuantization extends Quantization {
         return _precision;
     }
 
+    /** Return a hash code value for this FixPointQuantization. This
+     *  method returns the bitwise xor of the hashcode of the
+     *  superclass (Quantization) and the hashcode of the precision.
+     *  @return A hash code value for this Quantization.
+     */
+    public int hashCode() {
+        return super.hashCode() >>> _precision.hashCode();
+    }
+
     /** Return a FixPointQuantization with a changed overflow strategy.
      *  @param overflow The new overflow strategy.
      *  @return A new quantization.

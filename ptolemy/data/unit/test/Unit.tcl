@@ -1,10 +1,10 @@
-# Tests for the Quantization Class
+# Tests for Unit
 #
-# @Author: Ed.Willink
+# @author: Christopher Brooks
 #
-# @Version: $Id$
+# @Version $Id$
 #
-# @Copyright (c) 1998-2005 The Regents of the University of California.
+# @Copyright (c) 2007 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -26,7 +26,7 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 # 
-# 						PT_COPYRIGHT_VERSION_2
+# 						PT_COPYRIGHT_VERSION_3
 # 						COPYRIGHTENDKEY
 #######################################################################
 
@@ -38,53 +38,23 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-# set VERBOSE 1
+#set VERBOSE 1
 
-####################################################################
+# 
+#
 
-test Quantization-1.0 {gets} {
-    set q0 [java::new ptolemy.math.FixPointQuantization "2.1,modulo,nearest" ]
-    list "
-[$q0 getEpsilonValue]
-[$q0 getExactOverflow]
-[$q0 getExactRounding]
-[$q0 getFractionBitLength]
-[$q0 getIntegerBitLength]
-[$q0 getMantissaBitLength]
-[$q0 getExponentBitLength]
-[$q0 getNumberOfBits]
-[$q0 getNumberOfLevels]
-[$q0 getMaximumValue]
-[$q0 getMinimumValue]
-[[$q0 getModuloUnscaledValue] toString]
-[[$q0 getOverflow] toString]
-[[$q0 getRounding] toString]
-[$q0 getTinyValue] "
-} {{
-0.5
-0
-0
-1
-2
-3
-0
-3
-8.0
-1.5
--2.0
-8
-modulo
-half_ceiling
-0.5 }}
+######################################################################
+####
+# 
+test Unit-1.0 {Construct a Unit} {
+    set unit0 [java::new ptolemy.data.unit.Unit]
+    set unit1 [java::new ptolemy.data.unit.Unit myUnit]
+    list [$unit0 equals $unit1] \
+	[$unit1 equals $unit1] \
+	[$unit0 equals $unit0] \
+	[expr {[$unit0 hashCode] == [$unit0 hashCode]}] \
+	[expr {[$unit1 hashCode] == [$unit1 hashCode]}] \
+	[expr {[$unit0 hashCode] == [$unit1 hashCode]}]
+} {0 1 1 1 1 0}
 
-####################################################################
-test Quantization-2.0 {clone, equals and hashCode} {
-    set clone [$q0 clone]
-    list [$clone equals $q0] [expr {[$q0 hashCode] == [$clone hashCode]}]
-} {1 1}
 
-test Quantization-3.0 {unequal } {
-    set q1 [java::new ptolemy.math.FixPointQuantization "2.1,modulo,nearest" ]
-    set q2 [java::new ptolemy.math.FixPointQuantization "2.0,modulo,nearest" ]
-    list [$q1 equals $q2] [expr {[$q1 hashCode] == [$q2 hashCode]}]
-} {0 0}

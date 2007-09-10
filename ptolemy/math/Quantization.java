@@ -291,6 +291,16 @@ public abstract class Quantization implements Cloneable, Serializable {
         return getEpsilonValue();
     }
 
+    /** Return a hash code value for this Quantization. This method returns the
+     *  bitwise and of the hashcode of the overflow and the hashcode of
+     *  the rounding.
+     *  @return A hash code value for this Quantization.
+     */
+    public int hashCode() {
+        return _overflow.hashCode()
+            & _rounding.hashCode();
+    }
+
     /** Return a string representing this quantization.
      *  @return A string representing this quantization.
      */

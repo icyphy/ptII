@@ -86,6 +86,8 @@ public class LeftRightDirector extends StaticSchedulingDirector {
                     return false;
                 }
             }
+            // FindBugs: java.util.Comparator declares equals(Object),
+            // but not hashcode().
         }
     }
 }

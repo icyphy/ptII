@@ -213,6 +213,10 @@ public class Unit implements UnitPresentation {
             return false;
         }
 
+        if (!getLabelsString().equals(otherUnit.getLabelsString())) {
+            return false;
+        }
+
         return true;
     }
 
@@ -323,6 +327,22 @@ public class Unit implements UnitPresentation {
      */
     public int[] getType() {
         return _type;
+    }
+
+    /** Return a hash code value for this Unit. This method returns
+     *  the bitwise xor of the hashCode of the label String, the
+     *  categories and the hashCode() of the scale.
+     *  @return A hash code value for this Unit.
+     */
+    public int hashCode() {
+        int hashCode = getLabelsString().hashCode();
+        for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {
+            hashCode >>>= _type[i];
+        }
+
+        hashCode >>>= Double.valueOf(_scale).hashCode();
+
+        return hashCode;
     }
 
     /** Return true if the Unit has the same type as another Unit.

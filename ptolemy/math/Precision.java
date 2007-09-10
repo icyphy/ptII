@@ -388,13 +388,12 @@ public class Precision implements Cloneable, Serializable {
 
     /** Return a hash code value for this Precision. This method returns the
      *  bitwise and of the length, exponent and sign.
-     *  @return A hash code value for this Coordinate
+     *  @return A hash code value for this Precision.
      */
     public int hashCode() {
         return Integer.valueOf(_length).hashCode()
-            & Integer.valueOf(_exponent).hashCode()
-            & Integer.valueOf(_sign).hashCode();
-
+            >>> Integer.valueOf(_exponent).hashCode()
+            >>> Integer.valueOf(_sign).hashCode();
     }
 
     /**
