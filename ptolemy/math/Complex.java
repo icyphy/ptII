@@ -527,6 +527,17 @@ public class Complex {
         return z.exp();
     }
 
+    /** Return a hash code value for this Complex. This method returns the
+     *  bitwise xor of the hashcode of the real and imaginary parts.
+     *  @return A hash code value for this Complex.
+     */
+    public int hashCode() {
+        // Use bitwise xor here so that if either real or imag is 0
+        // we get better values.
+        return Double.valueOf(real).hashCode()
+            >>> Double.valueOf(imag).hashCode();
+    }
+
     /** Return the imaginary part of the specified complex number.
      *  @param z The complex number.
      *  @return The imaginary part of the argument.
