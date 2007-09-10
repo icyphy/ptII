@@ -108,27 +108,14 @@ public class DocBuilderEffigy extends PtolemyEffigy {
                 String extension = getExtension(input);
                 if (extension.equals("xml")) {
                     // Check for DTD designation.
-                    String dtd = "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML";
-                    InputStream stream = input.openStream();
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(stream));
-                    int lineCount = 0;
-                    while (lineCount < 5) {
-                        String contents = reader.readLine();
-                        lineCount++;
-                        if (contents == null) {
-                            reader.close();
-                            return null;
-                        }
-                        if (contents.startsWith(dtd)) {
-                            // This is a doc file.
-                            reader.close();
-                            DocBuilderEffigy effigy = new DocBuilderEffigy(
-                                    container, container.uniqueName("effigy"));
-                            return effigy;
-                        }
+                    if (checkForDTD(input,
+                                "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML",
+                                null)) {
+                        // This is a doc file.
+                        DocBuilderEffigy effigy = new DocBuilderEffigy(
+                                container, container.uniqueName("effigy"));
+                        return effigy;
                     }
-                    reader.close();
                 }
             }
             return null;

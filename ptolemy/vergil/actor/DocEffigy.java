@@ -140,28 +140,15 @@ public class DocEffigy extends Effigy {
                 String extension = getExtension(input);
                 if (extension.equals("xml")) {
                     // Check for DTD designation.
-                    String dtd = "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML";
-                    InputStream stream = input.openStream();
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(stream));
-                    int lineCount = 0;
-                    while (lineCount < 5) {
-                        String contents = reader.readLine();
-                        lineCount++;
-                        if (contents == null) {
-                            reader.close();
-                            return null;
-                        }
-                        if (contents.startsWith(dtd)) {
-                            // This is a doc file.
-                            reader.close();
-                            DocEffigy effigy = new DocEffigy(container,
-                                    container.uniqueName("effigy"));
-                            effigy.uri.setURL(input);
-                            return effigy;
-                        }
+                    if (checkForDTD(input,
+                                "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML",
+                                null)) {
+                        // This is a doc file.
+                        DocEffigy effigy = new DocEffigy(container,
+                                container.uniqueName("effigy"));
+                        effigy.uri.setURL(input);
+                        return effigy;
                     }
-                    reader.close();
                 }
             }
             return null;

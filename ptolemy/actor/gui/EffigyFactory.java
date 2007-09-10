@@ -28,6 +28,10 @@
  */
 package ptolemy.actor.gui;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Iterator;
 
@@ -35,6 +39,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.ClassUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// EffigyFactory
@@ -99,6 +104,69 @@ public class EffigyFactory extends CompositeEntity {
         }
 
         return false;
+    }
+
+    /** Check the URL input for a DTD.  Only the first 5 lines are read
+     *  from the URL.   
+     *  @param input The DTD to check.
+     *  @param dtdStart The start of the DTD, typically "<!DOCTYPE".
+     *  @param dtdEndRegExp The optional ending regular expression.  If
+     *  this parameter is null, then it is ignored.
+     *  @return True if the input starts with dtdStart and, if dtdEndRegExp
+     *  is non-null, ends with dtdEndRegExp.
+     *  @exception IOException if there is a problem opening or reading
+     *  the input.
+     */
+    public static boolean checkForDTD(URL input, String dtdStart,
+            String dtdEndRegExp) throws IOException {
+        // This method is a convenience method used to avoid code duplication.
+        InputStream stream = null;
+        try {
+            stream = input.openStream();
+        } catch (IOException ex) {
+            // If we are running under Web Start, we
+            // might have a URL that refers to another
+            // jar file.
+            URL anotherURL = ClassUtilities.jarURLEntryResource(input
+                    .toExternalForm());
+            if (anotherURL == null) {
+                throw ex;
+
+            }
+            stream = anotherURL.openStream();
+        }
+
+        boolean foundDTD = false;
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(
+                    new InputStreamReader(stream));
+            int lineCount = 0;
+            while (lineCount < 5) {
+                String contents = reader.readLine();
+                lineCount++;
+                if (contents == null) {
+                    break;
+                }
+                if (dtdEndRegExp != null) {
+                    if (contents.startsWith(dtdStart)
+                        && contents.matches(dtdEndRegExp)) {
+                        // This file has the DTD for which we are looking.
+                        foundDTD = true;                    
+                        break;
+                    }
+                } else if (contents.startsWith(dtdStart)) {
+                    // dtdEndRegExp is null so we don't check it
+                    foundDTD = true;                    
+                    break;
+                }
+            }
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
+        return foundDTD;
     }
 
     /** Create a new blank effigy in the given container. This base class

@@ -384,45 +384,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                     return null;
                 }
 
-                // Check for DTD designation.
-                String dtdStart = "<!DOCTYPE";
-                String dtdEnd = "PUBLIC \"-//UC Berkeley//DTD MoML";
-                String dtdEndRegExp = ".*" + dtdEnd + ".*";
-                InputStream stream = null;
-                try {
-                    stream = input.openStream();
-                } catch (IOException ex) {
-                    // If we are running under Web Start, we
-                    // might have a URL that refers to another
-                    // jar file.
-                    URL anotherURL = ClassUtilities.jarURLEntryResource(input
-                            .toExternalForm());
-                    if (anotherURL == null) {
-                        throw ex;
-
-                    }
-                    stream = anotherURL.openStream();
-                }
-
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(stream));
-                int lineCount = 0;
-                boolean foundDTD = false;
-                while (lineCount < 5) {
-                    String contents = reader.readLine();
-                    lineCount++;
-                    if (contents == null) {
-                        break;
-                    }
-                    if (contents.startsWith(dtdStart)
-                            && contents.matches(dtdEndRegExp)) {
-                        // This is a MoML file.
-                        foundDTD = true;
-                        break;
-                    }
-                }
-                reader.close();
-                if (!foundDTD) {
+                if (!checkForDTD(input,
+                            "<!DOCTYPE",
+                            ".*PUBLIC \"-//UC Berkeley//DTD MoML.*")) {
                     return null;
                 }
 

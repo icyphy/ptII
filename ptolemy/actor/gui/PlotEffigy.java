@@ -182,29 +182,15 @@ public class PlotEffigy extends Effigy {
                 String extension = getExtension(input);
 
                 if (extension.equals("xml")) {
-                    // Check for DTD designation.
-                    String dtd = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML";
-                    InputStream stream = input.openStream();
-                    BufferedReader reader = new BufferedReader(
-                            new InputStreamReader(stream));
-                    int lineCount = 0;
-                    while (lineCount < 5) {
-                        String contents = reader.readLine();
-                        lineCount++;
-                        if (contents == null) {
-                            reader.close();
-                            return null;
-                        }
-                        if (contents.startsWith(dtd)) {
-                            // This is a plot file.
-                            reader.close();
-                            PlotEffigy effigy = new PlotEffigy(container,
-                                    container.uniqueName("effigy"));
-                            effigy.uri.setURL(input);
-                            return effigy;
-                        }
+                    if (checkForDTD(input,
+                                "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML",
+                                null)) {
+                        // This is a plot file.
+                        PlotEffigy effigy = new PlotEffigy(container,
+                                container.uniqueName("effigy"));
+                        effigy.uri.setURL(input);
+                        return effigy;
                     }
-                    reader.close();
                 } else if (extension.equals("plt") || extension.equals("plot")) {
                     PlotEffigy effigy = new PlotEffigy(container, container
                             .uniqueName("effigy"));
