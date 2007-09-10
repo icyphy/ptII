@@ -46,6 +46,10 @@ if {[string compare test [info procs removeGraphicalClasses]] == 1} then {
 ####
 #
 test ActorIndex-1.1 {Run the ActorIndex on some test files } {
+    # This test will fail if the network is not available because
+    # testModels.txt refers to 
+    # $CLASSPATH/ptolemy/moml/demo/Networked/Networked.xml
+    # which downloads an actor from http://ptolemy.eecs.berkeley.edu
     file delete -force codeDoc
     file mkdir codeDoc
 
