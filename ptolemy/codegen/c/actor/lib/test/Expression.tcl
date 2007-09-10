@@ -55,7 +55,7 @@ test Expression-1.1 { VariableScope.get()} {
 	[[$variableScope get time] toString] \
 	[[$variableScope get iteration] toString] \
 	[java::isnull [$variableScope get foo] ]
-} {object(time(NULL)) {object($actorSymbol(iterationCount))} 1}
+} {0.0 {object($actorSymbol(iterationCount))} 1}
 
 
 ######################################################################
