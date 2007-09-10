@@ -111,53 +111,58 @@ public class StandardOutEffigy extends Effigy {
         if (in != null) {
             // A URL has been given.  Read it.
             BufferedReader reader = null;
-
             try {
-                InputStream inputStream = null;
-
                 try {
-                    inputStream = in.openStream();
-                } catch (NullPointerException npe) {
-                    throw new IOException("Failed to open '" + in
-                            + "', base: '" + base + "' : openStream() threw a "
-                            + "NullPointerException");
+                    InputStream inputStream = null;
+
+                    try {
+                        inputStream = in.openStream();
+                    } catch (NullPointerException npe) {
+                        throw new IOException("Failed to open '" + in
+                                + "', base: '" + base
+                                + "' : openStream() threw a "
+                                + "NullPointerException");
+                    }
+
+                    reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                    // openStream throws an IOException, not a
+                    // FileNotFoundException
+                } catch (IOException ex) {
+                    try {
+                        // If we are running under WebStart, and try
+                        // view source on a .html file that is not in
+                        // ptsupport.jar, then we may end up here,
+                        // so we look for the file as a resource.
+                        URL jarURL = ClassUtilities.jarURLEntryResource(in
+                                .toString());
+                        reader = new BufferedReader(new InputStreamReader(jarURL
+                                                            .openStream()));
+
+                        // We were able to open the URL, so update the
+                        // original URL so that the title bar accurately
+                        // reflects the location of the file.
+                        in = jarURL;
+                    } catch (Exception ex2) {
+                        // Looking for the file as a resource did not work,
+                        // so we rethrow the original exception.
+                        throw ex;
+                    }
                 }
 
-                reader = new BufferedReader(new InputStreamReader(inputStream));
+                String line = reader.readLine();
 
-                // openStream throws an IOException, not a
-                // FileNotFoundException
-            } catch (IOException ex) {
-                try {
-                    // If we are running under WebStart, and try
-                    // view source on a .html file that is not in
-                    // ptsupport.jar, then we may end up here,
-                    // so we look for the file as a resource.
-                    URL jarURL = ClassUtilities.jarURLEntryResource(in
-                            .toString());
-                    reader = new BufferedReader(new InputStreamReader(jarURL
-                            .openStream()));
+                while (line != null) {
+                    // Translate newlines to Java form.
+                    System.out.println(line);
+                    line = reader.readLine();
+                }
 
-                    // We were able to open the URL, so update the
-                    // original URL so that the title bar accurately
-                    // reflects the location of the file.
-                    in = jarURL;
-                } catch (Exception ex2) {
-                    // Looking for the file as a resource did not work,
-                    // so we rethrow the original exception.
-                    throw ex;
+            } finally {
+                if (reader != null) {
+                    reader.close();
                 }
             }
-
-            String line = reader.readLine();
-
-            while (line != null) {
-                // Translate newlines to Java form.
-                System.out.println(line);
-                line = reader.readLine();
-            }
-
-            reader.close();
 
             // Check the URL to see whether it is a file,
             // and if so, whether it is writable.

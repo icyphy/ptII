@@ -116,7 +116,9 @@ public class HSIFEffigyFactory extends EffigyFactory {
             }
         }
 
-        if (input != null && _isHSIF(input)) {
+        if (input != null && 
+                checkForDTD(input, "<!DOCTYPE", ".*HSIF.dtd.*")) {
+            FileWriter outputFileWriter = null;
             try {
                 _inCreateEffigy = true;
 
@@ -139,8 +141,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
                         + "_moml.xml";
 
                 // Try to open the output file before we go through
-                // the trouble of ding the conversion.
-                FileWriter outputFileWriter = null;
+                // the trouble of doing the conversion.
 
                 try {
                     outputFileWriter = new FileWriter(temporaryOutputFileName);
@@ -210,62 +211,13 @@ public class HSIFEffigyFactory extends EffigyFactory {
                 return effigy;
             } finally {
                 _inCreateEffigy = false;
+                if (outputFileWriter != null) {
+                    outputFileWriter.close();
+                }
             }
         }
 
         return null;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    // Return true if the input file is a HSIF file.
-    private static boolean _isHSIF(URL inputURL) throws IOException {
-        InputStream inputStream = null;
-
-        try {
-            inputStream = inputURL.openStream();
-        } catch (FileNotFoundException ex) {
-            // Try it as a jar URL
-            try {
-                URL jarURL = ClassUtilities.jarURLEntryResource(inputURL
-                        .toString());
-
-                if (jarURL == null) {
-                    throw new Exception("'" + inputURL + "' was not a jar "
-                            + "URL, or was not found");
-                }
-
-                inputStream = jarURL.openStream();
-            } catch (Exception ex2) {
-                // FIXME: IOException does not take a cause argument
-                throw ex;
-            }
-        }
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                inputStream));
-
-        String inputLine;
-
-        int lineCount = 0;
-
-        try {
-            while ((inputLine = reader.readLine()) != null) {
-                // FIXME:  all we are doing is looking for the
-                // string HSIF.dtd in the first 20 lines
-                if (inputLine.indexOf("HSIF.dtd") != -1) {
-                    return true;
-                }
-
-                if (lineCount++ > 20) {
-                    return false;
-                }
-            }
-
-            return false;
-        } finally {
-            reader.close();
-        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -93,9 +93,16 @@ public class HSIFUtilities {
      */
     public static void HSIFToMoML(String input, String output) throws Exception {
         // This method makes it much easier to test the conversion,
-        FileWriter fileWriter = new FileWriter(output);
-        HSIFToMoML(input, fileWriter);
-        fileWriter.close();
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(output);
+            HSIFToMoML(input, fileWriter);
+        } finally {
+            if (fileWriter != null) {
+                fileWriter.close();
+            }
+        }
+
     }
 
     /** Convert the first argument from a HSIF file into a MoML file
