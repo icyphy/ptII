@@ -47,6 +47,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////
@@ -176,6 +177,11 @@ public class SDFDirector extends StaticSchedulingDirector {
         if (container instanceof CompiledCompositeActor
             && ((BooleanToken)_codeGenerator.generateJNI.getToken()).booleanValue()) {
 
+            // FindBugs wants this instanceof check.
+            if (! (inputPort instanceof TypedIOPort)) {
+                throw new InternalErrorException(inputPort, null,
+                        " is not an instance of TypedIOPort.");
+            }
             Type type = ((TypedIOPort) inputPort).getType();
             String portName = inputPort.getName();
 
@@ -301,6 +307,12 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             String portName = outputPort.getName();
             String tokensToThisPort = "tokensTo" + portName;
+
+            // FindBugs wants this instanceof check.
+            if (! (outputPort instanceof TypedIOPort)) {
+                throw new InternalErrorException(outputPort, null,
+                        " is not an instance of TypedIOPort.");
+            }
 
             Type type = ((TypedIOPort) outputPort).getType();
 

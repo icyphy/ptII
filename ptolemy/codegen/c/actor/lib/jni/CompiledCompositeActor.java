@@ -35,6 +35,7 @@ import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.StaticSchedulingCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.StringBufferExec;
@@ -96,6 +97,13 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
         // will not depend on ptolemy.codegen.
         
+        // FindBugs wants this.
+        if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor)) {
+            throw new InternalErrorException(compositeActor, null,
+                    " is not an instance of "
+                    + "ptolemy.actor.lib.jni.CompiledCompositeActor.");
+        }
+
         ptolemy.actor.lib.jni.CompiledCompositeActor actor 
                 = (ptolemy.actor.lib.jni.CompiledCompositeActor) compositeActor; 
         CodeGenerator codeGenerator = _getCodeGenerator(compositeActor);
@@ -139,6 +147,13 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // will not depend on ptolemy.codegen
         CodeGenerator codeGenerator = null;
         try {
+            // FindBugs wants this.
+            if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor)) {
+                throw new InternalErrorException(compositeActor, null,
+                        " is not an instance of "
+                        + "ptolemy.actor.lib.jni.CompiledCompositeActor.");
+            }
+
             ptolemy.actor.lib.jni.CompiledCompositeActor actor 
                 = (ptolemy.actor.lib.jni.CompiledCompositeActor) compositeActor; 
             List codeGenerators = actor.attributeList(CodeGenerator.class);
