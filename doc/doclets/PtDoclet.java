@@ -103,73 +103,87 @@ public class PtDoclet {
             allNamedObjsWriter = new FileWriter(_outputDirectory
                     + File.separator + "allNamedObjs.txt");
 
-            Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
-            Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
-            // The expression in the Expression actor is a StringAttribute.
-            Class stringAttributeClass = Class
-                    .forName("ptolemy.kernel.util.StringAttribute");
+            ClassDoc typedAtomicActorDoc =
+                root.classNamed("ptolemy.actor.TypedAtomicActor");
 
-            ClassDoc[] classes = root.classes();
-            for (int i = 0; i < classes.length; i++) {
-                String className = classes[i].toString();
-                //System.out.println(className);
-                Class theClass = null;
-                try {
-                    if (className
-                            .equals("ptolemy.vergil.toolbox.PtolemyTransferable")
-                            || className
-                                    .equals("ptolemy.vergil.toolbox.GraphicElement")) {
-                        throw new Exception("Skipping " + className
-                                + ",it starts up X11 and interferes with the "
-                                + "nightly build");
-                    }
-                    if (className.equals("ptolemy.matlab.Engine")) {
-                        throw new Exception("Skipping " + className
-                                + ",it tends to hang javadoc.");
-                    }
-                    theClass = Class.forName(className);
-                } catch (Throwable ex) {
-                    // Might be an inner class.
-                    // Change the last . to a $ and try again
-                    int lastDotIndex = className.lastIndexOf(".");
-                    if (lastDotIndex != -1) {
-                        String innerClassName = className.substring(0,
-                                lastDotIndex)
-                                + "$" + className.substring(lastDotIndex + 1);
-                        try {
-                            theClass = Class.forName(innerClassName);
-                        } catch (Throwable ex2) {
-                            // FIXME: Use the doclet error handling mechanism
-                            System.err.println("Failed to process " + className
-                                    + ", tried " + innerClassName);
-                            ex2.printStackTrace();
-                            continue;
-                        }
+             Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
+             Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
+             // The expression in the Expression actor is a StringAttribute.
+             Class stringAttributeClass = Class
+                     .forName("ptolemy.kernel.util.StringAttribute");
 
-                    } else {
-                        // Print a message and move on.
-                        // FIXME: Use the doclet error handling mechanism
-                        System.err.println("Failed to process " + className);
-                        ex.printStackTrace();
-                        continue;
-                    }
-                }
-                if (!_namedObjClass.isAssignableFrom(theClass)) {
-                    // The class does not extend TypedAtomicActor, so we skip.
-                    continue;
-                }
+             ClassDoc[] classes = root.classes();
+             for (int i = 0; i < classes.length; i++) {
+                 String className = classes[i].toString();
+//                 //System.out.println(className);
+//                 Class theClass = null;
+//                 try {
+//                     if (className
+//                             .equals("ptolemy.vergil.toolbox.PtolemyTransferable")
+//                             || className
+//                                     .equals("ptolemy.vergil.toolbox.GraphicElement")) {
+//                         throw new Exception("Skipping " + className
+//                                 + ",it starts up X11 and interferes with the "
+//                                 + "nightly build");
+//                     }
+//                     if (className.equals("ptolemy.matlab.Engine")) {
+//                         throw new Exception("Skipping " + className
+//                                 + ",it tends to hang javadoc.");
+//                     }
+//                     theClass = Class.forName(className);
+//                 } catch (Throwable ex) {
+//                     // Might be an inner class.
+//                     // Change the last . to a $ and try again
+//                     int lastDotIndex = className.lastIndexOf(".");
+//                     if (lastDotIndex != -1) {
+//                         String innerClassName = className.substring(0,
+//                                 lastDotIndex)
+//                                 + "$" + className.substring(lastDotIndex + 1);
+//                         try {
+//                             theClass = Class.forName(innerClassName);
+//                         } catch (Throwable ex2) {
+//                             // FIXME: Use the doclet error handling mechanism
+//                             System.err.println("Failed to process " + className
+//                                     + ", tried " + innerClassName);
+//                             ex2.printStackTrace();
+//                             continue;
+//                         }
 
-                StringBuffer documentation = _generateClassLevelDocumentation(classes[i]);
-                documentation.append(_generateFieldDocumentation(classes[i],
-                        typedIOPortClass, "port"));
-                documentation.append(_generateFieldDocumentation(classes[i],
-                        parameterClass, "property"));
-                documentation.append(_generateFieldDocumentation(classes[i],
-                        stringAttributeClass, "property"));
-                documentation.append("</doc>\n");
-                _writeDoc(className, documentation.toString());
-                allNamedObjsWriter.write(className + "\n");
-            }
+//                     } else {
+//                         // Print a message and move on.
+//                         // FIXME: Use the doclet error handling mechanism
+//                         System.err.println("Failed to process " + className);
+//                         ex.printStackTrace();
+//                         continue;
+//                     }
+//                 }
+//                 if (!_namedObjClass.isAssignableFrom(theClass)) {
+//                     // The class does not extend TypedAtomicActor, so we skip.
+//                     continue;
+//                 }
+
+//                 StringBuffer documentation = _generateClassLevelDocumentation(classes[i]);
+//                 documentation.append(_generateFieldDocumentation(classes[i],
+//                         typedIOPortClass, "port"));
+//                 documentation.append(_generateFieldDocumentation(classes[i],
+//                         parameterClass, "property"));
+//                 documentation.append(_generateFieldDocumentation(classes[i],
+//                         stringAttributeClass, "property"));
+//                 documentation.append("</doc>\n");
+//                 _writeDoc(className, documentation.toString());
+//                 allNamedObjsWriter.write(className + "\n");
+                 if (classes[i].subclassOf(typedAtomicActorDoc)) {
+                     StringBuffer documentation = _generateClassLevelDocumentation(classes[i]);
+                     documentation.append(_generateFieldDocumentation(classes[i],
+                                                  typedIOPortClass, "port"));
+                     documentation.append(_generateFieldDocumentation(classes[i],
+                                                  parameterClass, "property"));
+                     documentation.append(_generateFieldDocumentation(classes[i],
+                                                  stringAttributeClass, "property"));                documentation.append("</doc>\n");
+                     _writeDoc(className, documentation.toString());
+                     allNamedObjsWriter.write(className + "\n");
+                 }
+             }
         } finally {
             if (allNamedObjsWriter != null) {
                 allNamedObjsWriter.close();
