@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.AbstractCellEditor;
+import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -339,7 +340,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             public void keyTyped(KeyEvent e) {
             }
         });
-        
+
         JTableHeader header = _table.getTableHeader();
 
         header.setFont(new Font("Dialog", Font.BOLD, 11));
@@ -408,7 +409,7 @@ public class RuleEditor extends JDialog implements ActionListener {
                 cancel();
             }
         });
-        
+
         setPreferredSize(new Dimension(600, 420));
     }
 
@@ -627,6 +628,9 @@ public class RuleEditor extends JDialog implements ActionListener {
 
             Class<?> ruleClass = rule.getClass();
             _classSelector.addItemListener(this);
+            _classSelector.setEditable(true);
+            _classSelector.setOpaque(false);
+            _classSelector.setEditor(new ClassSelectorEditor());
             for (Class<? extends Rule> listedRule : _ruleClasses) {
                 if (listedRule == null && ruleClass == null ||
                         listedRule != null && listedRule.equals(ruleClass)) {
@@ -709,25 +713,6 @@ public class RuleEditor extends JDialog implements ActionListener {
             component.setBackground(new Color(240, 240, 240));
             return component;
         }
-        
-        private class CheckBoxActionListener implements ActionListener {
-            
-            CheckBoxActionListener(int index) {
-                _index = index;
-            }
-
-            public void actionPerformed(ActionEvent e) {
-                boolean selected = ((JCheckBox) e.getSource()).isSelected();
-                _setEnablement(_components[_index], selected);
-            }
-            
-            private int _index;
-        }
-        
-        private void _setEnablement(JComponent component, boolean enabled) {
-            component.setEnabled(enabled);
-            component.setOpaque(!enabled);
-        }
 
         protected void _initRightPanel() {
             ComboElement selectedElement =
@@ -750,7 +735,7 @@ public class RuleEditor extends JDialog implements ActionListener {
                 JPanel panel = new JPanel(new BorderLayout());
                 panel.setBorder(new EmptyBorder(2, 0, 4, 0));
                 panel.setOpaque(false);
-                
+
                 String columnName = attribute.getName();
                 JCheckBox checkBox = new JCheckBox(columnName);
                 checkBox.setOpaque(false);
@@ -773,7 +758,7 @@ public class RuleEditor extends JDialog implements ActionListener {
                 column.setHeaderValue(attribute.getName());
 
                 _components[i] = component;
-                
+
                 boolean enabled = rule.isAttributeEnabled(i);
                 checkBox.setSelected(enabled);
                 _setEnablement(component, enabled);
@@ -818,6 +803,11 @@ public class RuleEditor extends JDialog implements ActionListener {
             }
         }
 
+        private void _setEnablement(JComponent component, boolean enabled) {
+            component.setEnabled(enabled);
+            component.setOpaque(!enabled);
+        }
+
         private JTable _attributeTable = new JTable() {
             public void doLayout() {
                 _setColumnWidths();
@@ -836,6 +826,53 @@ public class RuleEditor extends JDialog implements ActionListener {
         private JPanel _leftPanel = new JPanel(new BorderLayout());
 
         private JPanel _rightPanel = new JPanel(new BorderLayout());
+
+        private class CheckBoxActionListener implements ActionListener {
+
+            public void actionPerformed(ActionEvent e) {
+                boolean selected = ((JCheckBox) e.getSource()).isSelected();
+                _setEnablement(_components[_index], selected);
+            }
+
+            CheckBoxActionListener(int index) {
+                _index = index;
+            }
+
+            private int _index;
+        }
+
+        private class ClassSelectorEditor implements ComboBoxEditor {
+
+            public void addActionListener(ActionListener l) {
+            }
+
+            public Component getEditorComponent() {
+                return _label;
+            }
+
+            public Object getItem() {
+                return _value;
+            }
+
+            public void removeActionListener(ActionListener l) {
+            }
+
+            public void selectAll() {
+            }
+
+            public void setItem(Object value) {
+                _value = value;
+                if (value == null) {
+                    _label.setText("");
+                } else {
+                    _label.setText(value.toString());
+                }
+            }
+
+            private JLabel _label = new JLabel();
+
+            private Object _value;
+        }
     }
 
     static {

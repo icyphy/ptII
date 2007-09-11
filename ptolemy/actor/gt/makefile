@@ -100,6 +100,7 @@ OPTIONAL_FILES = \
 	'RuleEditor$$JPanelCellEditor.class' \
 	'RuleEditor$$Row$$1.class' \
 	'RuleEditor$$Row$$CheckBoxActionListener.class' \
+	'RuleEditor$$Row$$ClassSelectorEditor.class' \
 	'RuleEditor$$Row.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
