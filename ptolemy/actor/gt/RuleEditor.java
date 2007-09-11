@@ -35,10 +35,14 @@ import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -630,7 +634,8 @@ public class RuleEditor extends JDialog implements ActionListener {
             _classSelector.addItemListener(this);
             _classSelector.setEditable(true);
             _classSelector.setOpaque(false);
-            _classSelector.setEditor(new ClassSelectorEditor());
+            _classSelector.setBorder(new EmptyBorder(0, 0, 0, 0));
+            _classSelector.setEditor(new ClassSelectorEditor(_classSelector));
             for (Class<? extends Rule> listedRule : _ruleClasses) {
                 if (listedRule == null && ruleClass == null ||
                         listedRule != null && listedRule.equals(ruleClass)) {
@@ -841,17 +846,45 @@ public class RuleEditor extends JDialog implements ActionListener {
             private int _index;
         }
 
-        private class ClassSelectorEditor implements ComboBoxEditor {
+        private class ClassSelectorEditor implements ComboBoxEditor,
+        MouseListener, FocusListener {
 
             public void addActionListener(ActionListener l) {
             }
 
+            public void focusGained(FocusEvent e) {
+            }
+
+            public void focusLost(FocusEvent e) {
+                _comboBox.hidePopup();
+            }
+
             public Component getEditorComponent() {
-                return _label;
+                return _textField;
             }
 
             public Object getItem() {
                 return _value;
+            }
+
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            public void mouseExited(MouseEvent e) {
+            }
+
+            public void mousePressed(MouseEvent e) {
+                if (_comboBox.isPopupVisible()) {
+                    _comboBox.hidePopup();
+                } else {
+                    _comboBox.showPopup();
+                }
+            }
+
+            public void mouseReleased(MouseEvent e) {
             }
 
             public void removeActionListener(ActionListener l) {
@@ -863,13 +896,23 @@ public class RuleEditor extends JDialog implements ActionListener {
             public void setItem(Object value) {
                 _value = value;
                 if (value == null) {
-                    _label.setText("");
+                    _textField.setText("");
                 } else {
-                    _label.setText(value.toString());
+                    _textField.setText(value.toString());
                 }
             }
 
-            private JLabel _label = new JLabel();
+            ClassSelectorEditor(JComboBox comboBox) {
+                _comboBox = comboBox;
+                _textField.setEditable(false);
+                _textField.setOpaque(false);
+                _textField.addMouseListener(this);
+                _textField.addFocusListener(this);
+            }
+
+            private JComboBox _comboBox;
+
+            private JTextField _textField = new JTextField();
 
             private Object _value;
         }
