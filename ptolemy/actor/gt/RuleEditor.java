@@ -69,6 +69,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -251,11 +252,15 @@ public class RuleEditor extends JDialog implements ActionListener {
         }
     }
 
+    public static Color DISABLED_COLOR = new Color(220, 220, 220);
+
+    public static Border EMPTY_BORDER = new EmptyBorder(0, 0, 0, 0);
+
     public static int ROW_HEIGHT = 45;
 
-    public static Color ROW_SELECTED_COLOR = new Color(230, 230, 255);
+    public static Color SELECTED_COLOR = new Color(230, 230, 255);
 
-    public static Color ROW_UNSELECTED_COLOR = Color.WHITE;
+    public static Color UNSELECTED_COLOR = Color.WHITE;
 
     /**
      * @author tfeng
@@ -327,7 +332,7 @@ public class RuleEditor extends JDialog implements ActionListener {
         _table = new JTable(_tableModel);
         _table.setRowHeight(ROW_HEIGHT);
         _table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        _table.setSelectionBackground(ROW_SELECTED_COLOR);
+        _table.setSelectionBackground(SELECTED_COLOR);
         _table.setSelectionForeground(Color.BLACK);
         _table.addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent e) {
@@ -508,37 +513,20 @@ public class RuleEditor extends JDialog implements ActionListener {
         public Component getTableCellEditorComponent(JTable table, Object value,
                 boolean isSelected, int row, int column) {
             _currentRow = (Row) value;
-            JPanel leftPanel = _currentRow.getLeftPanel();
-            JPanel rightPanel = _currentRow.getRightPanel();
-            Color color =
-                isSelected ? ROW_SELECTED_COLOR : ROW_UNSELECTED_COLOR;
-            leftPanel.setBackground(color);
-            rightPanel.setBackground(color);
-            return column == 1 ? leftPanel : rightPanel;
+            _currentRow.setSelected(isSelected, false);
+
+            return column == 1 ? _currentRow.getLeftPanel()
+                    : _currentRow.getRightPanel();
         }
 
         public Component getTableCellRendererComponent(JTable table,
                 Object value, boolean isSelected, boolean hasFocus, int row,
                 int column) {
             Row currentRow = (Row) value;
-            JPanel leftPanel = currentRow.getLeftPanel();
-            JPanel rightPanel = currentRow.getRightPanel();
-            Color color =
-                isSelected ? ROW_SELECTED_COLOR : ROW_UNSELECTED_COLOR;
-            leftPanel.setBackground(color);
-            rightPanel.setBackground(color);
+            currentRow.setSelected(isSelected, true);
 
-            if (column == 1) {
-                DefaultTableModel attributeModel =
-                    (DefaultTableModel) currentRow._attributeTable.getModel();
-                for (int i = 0; i < attributeModel.getColumnCount(); i++) {
-                    JPanel panel = (JPanel) attributeModel.getValueAt(0, i);
-                    if (panel != null) {
-                        _setCaretForAllJTextFields(panel, false);
-                    }
-                }
-            }
-            return column == 1 ? leftPanel : rightPanel;
+            return column == 1 ? currentRow.getLeftPanel()
+                    : currentRow.getRightPanel();
         }
 
         private Row _currentRow;
@@ -605,7 +593,7 @@ public class RuleEditor extends JDialog implements ActionListener {
     private class Row implements ItemListener {
 
         public Row(Rule rule) {
-            _rightPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+            _rightPanel.setBorder(EMPTY_BORDER);
 
             JTableHeader header = _attributeTable.getTableHeader();
             DefaultTableCellRenderer renderer =
@@ -627,15 +615,16 @@ public class RuleEditor extends JDialog implements ActionListener {
                     JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
             scrollPane.setOpaque(false);
             scrollPane.getViewport().setOpaque(false);
-            scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+            scrollPane.setBorder(EMPTY_BORDER);
             _rightPanel.add(scrollPane, BorderLayout.CENTER);
 
             Class<?> ruleClass = rule.getClass();
             _classSelector.addItemListener(this);
             _classSelector.setEditable(true);
-            _classSelector.setOpaque(false);
-            _classSelector.setBorder(new EmptyBorder(0, 0, 0, 0));
-            _classSelector.setEditor(new ClassSelectorEditor(_classSelector));
+            _classSelector.setOpaque(true);
+            _classSelector.setBorder(EMPTY_BORDER);
+            _classSelectorEditor = new ClassSelectorEditor(_classSelector);
+            _classSelector.setEditor(_classSelectorEditor);
             for (Class<? extends Rule> listedRule : _ruleClasses) {
                 if (listedRule == null && ruleClass == null ||
                         listedRule != null && listedRule.equals(ruleClass)) {
@@ -660,7 +649,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             classLabel.setVerticalAlignment(SwingConstants.TOP);
             _leftPanel.add(classLabel, BorderLayout.NORTH);
             _leftPanel.add(_classSelector, BorderLayout.CENTER);
-            _leftPanel.setBorder(new EmptyBorder(0, 5, 3, 5));
+            _leftPanel.setBorder(new EmptyBorder(2, 5, 4, 5));
         }
 
         public JTable getAttributeTable() {
@@ -689,6 +678,30 @@ public class RuleEditor extends JDialog implements ActionListener {
                         tableModel.fireTableRowsUpdated(i, i);
                         break;
                     }
+                }
+            }
+        }
+
+        public void setSelected(boolean selected, boolean renderOnly) {
+            Color color = selected ? SELECTED_COLOR : UNSELECTED_COLOR;
+            _leftPanel.setBackground(color);
+            _rightPanel.setBackground(color);
+            _classSelectorEditor.setBackground(color);
+
+            if (renderOnly) {
+                for (JComponent component : _components) {
+                    if (component instanceof JTextField) {
+                        ((JTextField) component).getCaret().setVisible(false);
+                    }
+                }
+            }
+
+            for (int i = 0; i < _checkBoxes.length; i++) {
+                if (_checkBoxes[i].isSelected()) {
+                    _components[i].setBackground(selected ? SELECTED_COLOR
+                            : UNSELECTED_COLOR);
+                } else {
+                    _components[i].setBackground(DISABLED_COLOR);
                 }
             }
         }
@@ -725,6 +738,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             Rule rule = selectedElement.getRule();
             RuleAttribute[] attributes = rule.getAttributes();
             _components = new JComponent[attributes.length];
+            _checkBoxes = new JCheckBox[attributes.length];
 
             // Create a table with one empty column (will be deleted)
             DefaultTableModel tableModel =
@@ -744,7 +758,7 @@ public class RuleEditor extends JDialog implements ActionListener {
                 String columnName = attribute.getName();
                 JCheckBox checkBox = new JCheckBox(columnName);
                 checkBox.setOpaque(false);
-                checkBox.setBorder(new EmptyBorder(0, 0, 0, 0));
+                checkBox.setBorder(EMPTY_BORDER);
                 checkBox.setHorizontalAlignment(SwingConstants.CENTER);
                 checkBox.setPreferredSize(new Dimension(0, 18));
                 checkBox.setVerticalAlignment(SwingConstants.TOP);
@@ -762,6 +776,7 @@ public class RuleEditor extends JDialog implements ActionListener {
                     _attributeTable.getColumnModel().getColumn(i + 1);
                 column.setHeaderValue(attribute.getName());
 
+                _checkBoxes[i] = checkBox;
                 _components[i] = component;
 
                 boolean enabled = rule.isAttributeEnabled(i);
@@ -810,7 +825,7 @@ public class RuleEditor extends JDialog implements ActionListener {
 
         private void _setEnablement(JComponent component, boolean enabled) {
             component.setEnabled(enabled);
-            component.setOpaque(!enabled);
+            component.setBackground(enabled ? SELECTED_COLOR : DISABLED_COLOR);
         }
 
         private JTable _attributeTable = new JTable() {
@@ -824,7 +839,11 @@ public class RuleEditor extends JDialog implements ActionListener {
 
         private JPanelCellEditor _cellEditor = new JPanelCellEditor();
 
+        private JCheckBox[] _checkBoxes;
+
         private JComboBox _classSelector = new JComboBox();
+
+        private ClassSelectorEditor _classSelectorEditor;
 
         private JComponent[] _components;
 
@@ -893,6 +912,10 @@ public class RuleEditor extends JDialog implements ActionListener {
             public void selectAll() {
             }
 
+            public void setBackground(Color color) {
+                _textField.setBackground(color);
+            }
+
             public void setItem(Object value) {
                 _value = value;
                 if (value == null) {
@@ -905,7 +928,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             ClassSelectorEditor(JComboBox comboBox) {
                 _comboBox = comboBox;
                 _textField.setEditable(false);
-                _textField.setOpaque(false);
+                _textField.setOpaque(true);
                 _textField.addMouseListener(this);
                 _textField.addFocusListener(this);
             }
