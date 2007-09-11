@@ -246,7 +246,7 @@ public class RuleEditor extends JDialog implements ActionListener {
         }
     }
 
-    public static int ROW_HEIGHT = 42;
+    public static int ROW_HEIGHT = 45;
 
     public static Color ROW_SELECTED_COLOR = new Color(230, 230, 255);
 
