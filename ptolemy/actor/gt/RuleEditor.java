@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.AbstractCellEditor;
+import javax.swing.BorderFactory;
 import javax.swing.ComboBoxEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -130,8 +131,12 @@ public class RuleEditor extends JDialog implements ActionListener {
     public void addNewRow() {
         try {
             Row row = new Row(_ruleClasses.get(0).newInstance());
-            _tableModel.addRow(new Object[] {_tableModel.getRowCount() + 1, row,
+            int rowCount = _tableModel.getRowCount();
+            _tableModel.addRow(new Object[] {rowCount, row,
                     row});
+            if (rowCount == 0) {
+                _table.getSelectionModel().addSelectionInterval(0, 0);
+            }
         } catch (Exception e) {
             throw new KernelRuntimeException(e, "Unable to create a new " +
                     "rule instance.");
@@ -210,6 +215,9 @@ public class RuleEditor extends JDialog implements ActionListener {
             Row row = new Row(rule);
             _tableModel.addRow(new Object[] {i++ + 1, row, row});
         }
+        if (i > 0) {
+            _table.getSelectionModel().addSelectionInterval(0, 0);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -254,7 +262,7 @@ public class RuleEditor extends JDialog implements ActionListener {
 
     public static Color DISABLED_COLOR = new Color(220, 220, 220);
 
-    public static Border EMPTY_BORDER = new EmptyBorder(0, 0, 0, 0);
+    public static Border EMPTY_BORDER = BorderFactory.createEmptyBorder();
 
     public static int ROW_HEIGHT = 45;
 
@@ -896,11 +904,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             }
 
             public void mousePressed(MouseEvent e) {
-                if (_comboBox.isPopupVisible()) {
-                    _comboBox.hidePopup();
-                } else {
-                    _comboBox.showPopup();
-                }
+                _comboBox.setPopupVisible(!_comboBox.isPopupVisible());
             }
 
             public void mouseReleased(MouseEvent e) {
