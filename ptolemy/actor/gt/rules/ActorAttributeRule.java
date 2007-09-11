@@ -109,9 +109,9 @@ public class ActorAttributeRule extends Rule {
     }
 
     private static final RuleAttribute[] _ATTRIBUTES = {
-        new RuleAttribute(RuleAttribute.STRING, "Attribute Name"),
-        new RuleAttribute(RuleAttribute.STRING, "Attribute Type"),
-        new RuleAttribute(RuleAttribute.STRING, "Attribute Value")
+        new RuleAttribute(RuleAttribute.STRING, "name"),
+        new RuleAttribute(RuleAttribute.STRING, "type"),
+        new RuleAttribute(RuleAttribute.STRING, "value")
     };
 
     private String _attributeName;

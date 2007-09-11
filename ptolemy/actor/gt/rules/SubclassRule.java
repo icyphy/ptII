@@ -106,7 +106,7 @@ public class SubclassRule extends Rule {
     }
 
     private static final RuleAttribute[] _ATTRIBUTES = {
-        new RuleAttribute(RuleAttribute.STRING, "Superclass")
+        new RuleAttribute(RuleAttribute.STRING, "superclass")
     };
 
     private String _superclass;

@@ -688,7 +688,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             if (component instanceof JTextField) {
                 return 80;
             } else if (component instanceof JCheckBox) {
-                return 50;
+                return 40;
             } else {
                 return 80;
             }

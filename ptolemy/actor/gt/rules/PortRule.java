@@ -146,11 +146,11 @@ public class PortRule extends Rule {
     }
 
     private static final RuleAttribute[] _ATTRIBUTES = {
-        new RuleAttribute(RuleAttribute.STRING, "Port Name"),
-        new RuleAttribute(RuleAttribute.STRING, "Port Type"),
-        new RuleAttribute(RuleAttribute.BOOLEAN, "Input"),
-        new RuleAttribute(RuleAttribute.BOOLEAN, "Output"),
-        new RuleAttribute(RuleAttribute.BOOLEAN, "Multiport")
+        new RuleAttribute(RuleAttribute.STRING, "name"),
+        new RuleAttribute(RuleAttribute.STRING, "type"),
+        new RuleAttribute(RuleAttribute.BOOLEAN, "input"),
+        new RuleAttribute(RuleAttribute.BOOLEAN, "output"),
+        new RuleAttribute(RuleAttribute.BOOLEAN, "multi")
     };
 
     private boolean _input;
