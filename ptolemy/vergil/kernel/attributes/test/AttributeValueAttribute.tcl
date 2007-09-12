@@ -356,5 +356,5 @@ test AttributeValueAttribute-10.1 {updateContent} {
 test AttributeValueAttribute-11.1 {validate} {
     set n [java::new ptolemy.kernel.util.NamedObj top]
     set c [java::new ptolemy.vergil.kernel.attributes.AttributeValueAttribute $n C]
-    java::isnull $c validate
+    java::isnull [$c validate]
 } {1}
