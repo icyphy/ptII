@@ -116,10 +116,10 @@ public class PtDoclet {
              for (int i = 0; i < classes.length; i++) {
                  String className = classes[i].toString();
                  if (classes[i].subclassOf(typedAtomicActorDoc)) {
-                     _writeDoc(className, documentation.toString()
-                             + _generateClassLevelDocumentation(classes[i])
+                     _writeDoc(className, 
+                             _generateClassLevelDocumentation(classes[i])
                              + _generateFieldDocumentation(classes[i],
-                                     typedIOPortClass, "port");
+                                     typedIOPortClass, "port")
                              + _generateFieldDocumentation(classes[i],
                                      parameterClass, "property")
                              + _generateFieldDocumentation(classes[i],
