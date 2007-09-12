@@ -73,7 +73,7 @@ public class PtDoclet {
     }
 
     /** Process the java files and generate PtDoc XML.  Only classes
-     *  that extend ptolemy.kernel.util.NamedObj are processed, all
+     *  that extend ptolemy.actor.TypedAtomicActor are processed, all
      *  other classes are ignored.
      *  @param root The root of the java doc tree.
      *  @return Always return true;
