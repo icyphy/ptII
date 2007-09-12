@@ -122,7 +122,8 @@ public class PtDoclet {
                      documentation.append(_generateFieldDocumentation(classes[i],
                                                   parameterClass, "property"));
                      documentation.append(_generateFieldDocumentation(classes[i],
-                                                  stringAttributeClass, "property"));                documentation.append("</doc>\n");
+                                                  stringAttributeClass, "property"));
+                     documentation.append("</doc>\n");
                      _writeDoc(className, documentation.toString());
                      allNamedObjsWriter.write(className + "\n");
                  }
