@@ -55,7 +55,7 @@ import com.sun.javadoc.Tag;
  *  <p>This doclet writes the names of all the classes for which
  *  documentation was generated in a file called allNamedObjs.txt
  *
- *  @author Christopher Brooks, Edward A. Lee, Contributor: Nandita Mangal
+ *  @author Christopher Brooks, Edward A. Lee, Contributors: Nandita Mangal, Ian Brown
  *  @version $Id$
  *  @since Ptolemy II 5.2
  */
