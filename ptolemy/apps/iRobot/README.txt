@@ -16,6 +16,15 @@ instructions here:
 To use the Ptolemy models, open one of the .xml files
 in a subdirectory of the ptolemy directory, and double
 click on the code generator to generate code. Then
+use the Programmers Notepad IDE (which is part of
+WinAVR, available by download or on the iRobot CD)
+to open the "project file" (the .pnproj file) in the
+same directory as the .xml file. Compile it using
+the Tools menu "Make All".  Then connect the command
+module to your USB port, turn it on, push the red
+reset button, and select Tools->Program.  Disconnect
+the cable and push the reset button again to start
+your program.
 
 Overall information about the iRobot Create can be
 found here:
