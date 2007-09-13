@@ -301,14 +301,12 @@ public class RuleEditor extends JDialog implements ActionListener {
 
                 if (!_editor.isCanceled()) {
                     RuleList list = _editor.getRuleList();
-                    String listString = list.toString();
-                    attributeToEdit.setExpression(listString);
-
                     String moml = "<property name=\"" + name + "\" value=\""
-                            + StringUtilities.escapeForXML(listString)
+                            + StringUtilities.escapeForXML(list.toString())
                             + "\"/>";
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
                             object, moml, null);
+                    request.setUndoable(true);
                     attributeToEdit.requestChange(request);
                 }
             } catch (KernelException ex) {
