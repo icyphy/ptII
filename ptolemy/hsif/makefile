@@ -56,24 +56,6 @@ JSRCS = \
 	HSIFEffigyFactory.java \
 	HSIFUtilities.java
 
-# make clean will remove these derived files
-KRUFT = \
-	data/Thermostat_mid_g.xml \
-	data/SwimmingPool_mid_g.xml \
-	data/Thermostat_mid_sg.xml \
-	data/SwimmingPool_mid_sg.xml \
-	data/Thermostat_mid_l.xml \
-	data/SwimmingPool_mid_l.xml \
-	data/Thermostat_mid_sl.xml \
-	data/SwimmingPool_mid_sl.xml \
-	data/Thermostat_mid.xml \
-	data/SwimmingPool_mid.xml \
-	Thermostat_moml.xml \
-	SwimmingPool_moml.xml \
-	test/Thermostat_moml.xml \
-	test/SwimmingPool_moml.xml
-
-
 # Files to be included in the jar file
 OTHER_FILES_TO_BE_JARED =
 
