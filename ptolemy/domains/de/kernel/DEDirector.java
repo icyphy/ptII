@@ -410,6 +410,8 @@ public class DEDirector extends Director implements TimedDirector {
 
                 // Nothing more needs to be done in the current iteration.
                 // Simply return.
+                // Since we are now actually stopping the firing, we can set this false.
+                _stopFireRequested = false;
                 return;
             }
 
@@ -427,6 +429,8 @@ public class DEDirector extends Director implements TimedDirector {
             // FIXME: However, there may be more than one output port,
             // should all the events be removed from the event queue?
             if (actorToFire == getContainer()) {
+                // Since we are now actually stopping the firing, we can set this false.
+                _stopFireRequested = false;
                 return;
             }
 
@@ -529,7 +533,7 @@ public class DEDirector extends Director implements TimedDirector {
                         }
                     }
                 }
-            } while (refire); // close the do {...} while () loop
+            } while (refire && !_stopFireRequested); // close the do {...} while () loop
 
             // The following code enforces that a firing of a
             // DE director only handles events with the same tag.
@@ -574,6 +578,9 @@ public class DEDirector extends Director implements TimedDirector {
                 }
             }
         } // Close the BIG while loop.
+        
+        // Since we are now actually stopping the firing, we can set this false.
+        _stopFireRequested = false;
 
         if (_debugging) {
             _debug("DE director fired!");
@@ -776,6 +783,7 @@ public class DEDirector extends Director implements TimedDirector {
         _microstep = 0;
         _noMoreActorsToFire = false;
         _realStartTime = System.currentTimeMillis();
+        _stopFireRequested = false;
 
         super.initialize();
 
@@ -1099,6 +1107,7 @@ public class DEDirector extends Director implements TimedDirector {
     public void stopFire() {
         if (_eventQueue != null) {
             synchronized (_eventQueue) {
+                _stopFireRequested = true;
                 _eventQueue.notifyAll();
             }
         }
@@ -1820,7 +1829,8 @@ public class DEDirector extends Director implements TimedDirector {
 
                 // Otherwise, if the event queue is empty,
                 // a blocking read is performed on the queue.
-                while (_eventQueue.isEmpty() && !_stopRequested) {
+                // stopFire() needs to also cause this to fall out!
+                while (_eventQueue.isEmpty() && !_stopRequested && !_stopFireRequested) {
                     if (_debugging) {
                         _debug("Queue is empty. Waiting for input events.");
                     }
@@ -1828,7 +1838,8 @@ public class DEDirector extends Director implements TimedDirector {
                     Thread.yield();
 
                     synchronized (_eventQueue) {
-                        if (_eventQueue.isEmpty()) {
+                        if (_eventQueue.isEmpty() && !_stopFireRequested) {
+                            _stopFireRequested = false;
                             try {
                                 // NOTE: Release the read access held
                                 // by this thread to prevent deadlocks.
@@ -1843,7 +1854,7 @@ public class DEDirector extends Director implements TimedDirector {
                 } // Close the blocking read while loop
 
                 // To reach this point, either the event queue is not empty,
-                // or the _stopRequested is true, or an interrupted exception
+                // or _stopRequested or _stopFireRequested is true, or an interrupted exception
                 // happened.
                 if (_eventQueue.isEmpty()) {
                     // Stop is requested or this method is interrupted.
@@ -1881,7 +1892,7 @@ public class DEDirector extends Director implements TimedDirector {
                 if (_synchronizeToRealTime) {
                     // If synchronized to the real time.
                     synchronized (_eventQueue) {
-                        while (!_stopRequested) {
+                        while (!_stopRequested && !_stopFireRequested) {
                             lastFoundEvent = _eventQueue.get();
                             currentTime = lastFoundEvent.timeStamp();
 
@@ -1914,6 +1925,13 @@ public class DEDirector extends Director implements TimedDirector {
                                     // UI interactions and may cause deadlocks.
                                     // SOLUTION: workspace.wait(object, long).
                                     _workspace.wait(_eventQueue, timeToWait);
+                                    // If we get here and either stop() or stopFire()
+                                    // was called, then it is not time to process any event,
+                                    // so we should leave it in the event queue.
+                                    if (_stopRequested || _stopFireRequested) {
+                                        _stopFireRequested = false;
+                                        return null;
+                                    }
                                 } catch (InterruptedException ex) {
                                     // Continue executing.
                                 }
@@ -1921,7 +1939,7 @@ public class DEDirector extends Director implements TimedDirector {
                         } // while
                     } // sync
                 } // if (_synchronizeToRealTime)
-
+                
                 // Consume the earliest event from the queue. The event must be
                 // obtained here, since a new event could have been enqueued
                 // into the queue while the queue was waiting. For example,
@@ -2120,6 +2138,9 @@ public class DEDirector extends Director implements TimedDirector {
 
     /** Start time. */
     private Time _startTime;
+    
+    /** Flag that stopFire() has been called. */
+    private boolean _stopFireRequested = false;
 
     /** Stop time. */
     private Time _stopTime;
