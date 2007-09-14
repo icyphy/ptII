@@ -533,7 +533,13 @@ public class DEDirector extends Director implements TimedDirector {
                         }
                     }
                 }
-            } while (refire && !_stopFireRequested); // close the do {...} while () loop
+            } while (refire); // close the do {...} while () loop
+            // NOTE: On the above, it would be nice to be able to
+            // check _stopFireRequested, but this doesn't actually work.
+            // In particular, firing an actor may trigger a call to stopFire(),
+            // for example if the actor makes a change request, as for example
+            // an FSM actor will do.  This will prevent subsequent firings,
+            // incorrectly.
 
             // The following code enforces that a firing of a
             // DE director only handles events with the same tag.
@@ -1838,8 +1844,9 @@ public class DEDirector extends Director implements TimedDirector {
                     Thread.yield();
 
                     synchronized (_eventQueue) {
+                        // Need to check _stopFireRequested again inside
+                        // the synchronized block, because it may have changed.
                         if (_eventQueue.isEmpty() && !_stopFireRequested) {
-                            _stopFireRequested = false;
                             try {
                                 // NOTE: Release the read access held
                                 // by this thread to prevent deadlocks.
@@ -1929,7 +1936,6 @@ public class DEDirector extends Director implements TimedDirector {
                                     // was called, then it is not time to process any event,
                                     // so we should leave it in the event queue.
                                     if (_stopRequested || _stopFireRequested) {
-                                        _stopFireRequested = false;
                                         return null;
                                     }
                                 } catch (InterruptedException ex) {
@@ -1998,6 +2004,9 @@ public class DEDirector extends Director implements TimedDirector {
                 // event and a trigger event that go to the same actor.
                 if (nextEvent.hasTheSameTagAndDepthAs(lastFoundEvent)) {
                     // Consume the event from the queue and discard it.
+                    // FIXME: This isn't right!  The microstep is only incremented
+                    // by fireAt() calls. The Repeat actor, for one, produces a sequence
+                    // of outputs, each of which will have the same microstep.
                     _eventQueue.take();
                 } else if (nextEvent.hasTheSameTagAs(lastFoundEvent)) {
                     // The actor to be fired is the container, we remove all 
