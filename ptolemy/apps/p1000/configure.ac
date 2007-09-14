@@ -18,6 +18,7 @@ AC_CONFIG_FILES([
 	c/demo/Makefile
 	c/demo/get_time/Makefile
 	c/demo/scheduler/Makefile
+	c/demo/sensor_actuator/Makefile
 	c/transformer/Makefile
 	c/transformer/test/Makefile
 	cpp/Makefile

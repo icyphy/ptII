@@ -1,1 +1,1 @@
-SUBDIRS = get_time scheduler
+SUBDIRS = get_time scheduler sensor_actuator
