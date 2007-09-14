@@ -12,4 +12,5 @@ sensor_actuator_SOURCES = \
 	$(common_srcdir)/ptpHwP1000LinuxDr.h \
 	$(common_srcdir)/p1000_utils.h \
 	PTIDES.h \
-	PTIDES.c
+	PTIDES.c \
+	EnDecode.c 
