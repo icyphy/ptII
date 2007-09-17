@@ -236,6 +236,7 @@ GRAPHTRANSFORMATIONPACKAGES = \
 # Packages used by HyVisual
 HYVISUALPACKAGES = \
 	$(PTCOLT_PACKAGES) \
+	$(PTJYTHON_PACKAGES) \
 	ptolemy.actor.lib.javasound \
 	ptolemy.actor.lib \
 	ptolemy.actor.lib.comm \
@@ -244,7 +245,6 @@ HYVISUALPACKAGES = \
 	ptolemy.actor.lib.image \
 	ptolemy.actor.lib.io \
 	ptolemy.actor.lib.logic \
-	ptolemy.actor.lib.python \
 	ptolemy.actor.lib.security \
 	ptolemy.actor.lib.string \
 	ptolemy.actor.lib.xslt \
@@ -621,7 +621,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/lib/net/*.java \
 			../ptolemy/actor/lib/gui/*.java \
 			../ptolemy/actor/lib/logic/*.java \
-			../ptolemy/actor/lib/python/*.java \
 			../ptolemy/actor/lib/security/*.java \
 			../ptolemy/actor/lib/string/*.java \
 			../ptolemy/actor/lib/vhdl/*.java \

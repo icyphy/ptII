@@ -1763,7 +1763,7 @@ if test ! -d "$JYTHON_USER_DIR"; then
     AC_MSG_RESULT([$JYTHON_USER_DIR is not present,
     so we need not find the Jython, the java implementation of Python.])
 else
-    AC_MSG_CHECKING([for Jython, the Java implementation of Jython])
+    AC_MSG_CHECKING([for Jython, the Java implementation of Python])
     AC_ARG_WITH(jython, [  --with-jython=DIR       use jython.jar from DIR,
                           defaults to \$PTII/vendors/jython],
 	JYTHON_DIR=$withval,
@@ -1771,18 +1771,21 @@ else
 
     if test -f "$JYTHON_DIR/jython.jar"; then
 	AC_MSG_RESULT([$JYTHON_DIR])
-	# FIXME: This is ugly, but we set to python instead of jythong
+	# FIXME: This is ugly, but we set to python instead of jython
 	# $PTII/ptolemy/actor/lib/makefile if jython was found
 	PTJYTHON_DIR=python
+	# PTJYTHON_PACKAGES is used in ptII/doc/makefile
+	PTJYTHON_PACKAGES=ptolemy.actor.lib.python
     fi	
 
     if test "$PTJYTHON_DIR" = ""; then
         if test -f "$PTII/vendors/jython/jython.jar"; then
 	    JYTHON_DIR="$PTII/vendors/jython"
 	    AC_MSG_RESULT([$JYTHON_DIR])
-	    # FIXME: This is ugly, but we set to python instead of jythong
+	    # FIXME: This is ugly, but we set to python instead of jython
  	    # $PTII/ptolemy/actor/lib/makefile if jython was found
 	    PTJYTHON_DIR=python
+   	    PTJYTHON_PACKAGES=ptolemy.actor.lib.python
 	else     
             AC_MSG_WARN([Failed to find PTII/lib/jython.jar
     perhaps Jython is not installed?
@@ -3699,6 +3702,10 @@ AC_SUBST(PTJOYSTICK_PACKAGES)
 
 # Set to python if jython.jar was found
 AC_SUBST(PTJYTHON_DIR)
+
+# Ptolemy II packages that use Jython
+# PTJYTHON_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTJYTHON_PACKAGES)
 
 # Set to jxta ans used in
 # $PTII/actor/lib/makefile if jxta.jar was found

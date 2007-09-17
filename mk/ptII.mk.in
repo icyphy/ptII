@@ -514,6 +514,10 @@ PTJOYSTICK_PACKAGES =	@PTJOYSTICK_PACKAGES@
 # $PTII/ptolemy/actor/lib/makefile if Jython was found.
 PTJYTHON_DIR=	@PTJYTHON_DIR@
 
+# Ptolemy II packages that use Python
+# PTJYTHON_PACKAGES is used in ptII/doc/makefile
+PTJYTHON_PACKAGES = @PTJYTHON_PACKAGES@
+
 # Set to jxta and used in
 # $PTII/actor/lib/makefile if jxta.jar was found
 PTJXTA_DIR =	@PTJXTA_DIR@
