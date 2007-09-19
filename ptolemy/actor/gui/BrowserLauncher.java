@@ -265,10 +265,6 @@ public class BrowserLauncher {
             throw new IOException("Unable to locate browser: " + errorMessage);
         }
 
-        // The return code returned by process.waitFor()
-        // 0 usually indicates normal execution.
-        int exitCode = 0;
-
         String errorMessage = "";
         String args[];
 
@@ -379,6 +375,10 @@ public class BrowserLauncher {
                     + "\nNote: Under Windows, make sure that the file named by "
                     + "the url is executable.";
 
+
+            // The return code returned by process.waitFor()
+            // 0 usually indicates normal execution.
+            int exitCode = 0;
             // This avoids a memory leak on some versions of Java on Windows.
             // That's hinted at in
             // <http://developer.java.sun.com/developer/qow/archive/68/>.
@@ -390,6 +390,12 @@ public class BrowserLauncher {
                         + "launching browser: " + ie.getMessage());
             }
 
+            if (exitCode != 0) {
+                throw new IOException("Process exec'd by BrowserLauncher returned "
+                        + exitCode + "." + "\n url was: " + url
+                        + "\n browser was: " + browser + "\n " + errorMessage);
+            }
+            
             break;
 
         case OTHER:
@@ -408,9 +414,7 @@ public class BrowserLauncher {
                     + args[2];
 
             try {
-                exitCode = process.waitFor();
-
-                if (exitCode != 0) { // if Netscape was not open
+                if (process.waitFor() != 0) { // if Netscape was not open
                     Runtime.getRuntime().exec(
                             new String[] { (String) browser, url });
                 }
@@ -430,11 +434,6 @@ public class BrowserLauncher {
             break;
         }
 
-        if (exitCode != 0) {
-            throw new IOException("Process exec'd by BrowserLauncher returned "
-                    + exitCode + "." + "\n url was: " + url
-                    + "\n browser was: " + browser + "\n " + errorMessage);
-        }
     }
 
     /** Set to true if we copied a file out of a jar file so that
