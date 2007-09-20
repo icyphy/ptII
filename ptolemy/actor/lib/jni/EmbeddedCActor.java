@@ -169,7 +169,13 @@ public class EmbeddedCActor extends CompiledCompositeActor {
                         = (TypedIORelation) port.insideRelationList().get(0);
                 relation.setContainer(null);
             }
-            _embeddedActor.setContainer(null);
+            // If an exception occurred earlier, then
+            // _embeddedActor may be null, and we don't want
+            // the null pointer exception masking the real
+            // one.
+            if (_embeddedActor != null) {
+                _embeddedActor.setContainer(null);
+            }
         } catch (NameDuplicationException ex) {
             // should not happen.
             throw new IllegalActionException(this, "name duplication.");
@@ -216,6 +222,9 @@ public class EmbeddedCActor extends CompiledCompositeActor {
         public EmbeddedActor(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
+            // In case an exception occurs and wrapup can't destroy
+            // it, at least make sure it isn't saved.
+            setPersistent(false);
         }
     }
 }
