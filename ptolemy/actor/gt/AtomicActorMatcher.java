@@ -41,7 +41,7 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.icon.EditorIcon;
@@ -68,43 +68,18 @@ public class AtomicActorMatcher extends TypedAtomicActor {
     }
     
     public Port newPort(String name) throws NameDuplicationException {
-        TypedIOPort port = (TypedIOPort) super.newPort(name);
-        
-        try {
-            RuleList ruleList = this.ruleList.getRuleList();
-            TypedIOPort typedIOPort = (TypedIOPort) port;
-            String type = typedIOPort.getType().toString();
-            boolean isInput = typedIOPort.isInput();
-            boolean isOutput = typedIOPort.isOutput();
-            boolean isMultiport = typedIOPort.isMultiport();
-            PortRule portRule = new PortRule(port.getName(), type, isInput,
-                    isOutput, isMultiport);
-            portRule.enableAllAttributes();
-            ruleList.add(portRule);
-        } catch (MalformedStringException e) {
-            throw new KernelRuntimeException(e, "Unable to add port.");
-        }
-        
-        return port;
-    }
-    
-    protected void _removePort(Port port) {
-        super._removePort(port);
-        
-        String name = port.getName();
-        try {
-            RuleList ruleList = this.ruleList.getRuleList();
-            int i = 0;
-            for (Rule rule : ruleList) {
-                if (rule instanceof PortRule
-                        && ((PortRule) rule).getPortName().equals(name)) {
-                    ruleList.remove(i);
-                    break;
-                }
-                i++;
-            }
-        } catch (MalformedStringException e) {
-            throw new KernelRuntimeException(e, "Unable to add port.");
+    	try {
+            _workspace.getWriteAccess();
+
+            AtomicActorMatcherPort port =
+            	new AtomicActorMatcherPort(this, name);
+            return port;
+        } catch (IllegalActionException ex) {
+            // This exception should not occur, so we throw a runtime
+            // exception.
+            throw new InternalErrorException(this, ex, null);
+        } finally {
+            _workspace.doneWriting();
         }
     }
 
@@ -125,31 +100,22 @@ public class AtomicActorMatcher extends TypedAtomicActor {
                         preservedPortNames.add(portName);
 
                         TypedIOPort port = (TypedIOPort) getPort(portName);
+                        if (port != null) {
+                        	port.setInput(portRule.isInput());
+                            port.setOutput(portRule.isOutput());
+                            port.setMultiport(portRule.isMultiport());
+                            port.setPersistent(false);
+                        } else {
+                        	port = new AtomicActorMatcherPort(this, portName,
+                        			portRule.isInput(), portRule.isOutput());
+                        	port.setMultiport(portRule.isMultiport());
+                        	port.setPersistent(false);
+                        }
                         if (port == null) {
                             port = (TypedIOPort) super.newPort(portRule.getPortName());
                             port.propagateExistence();
                         }
-                        port.setInput(portRule.isInput());
-                        port.setOutput(portRule.isOutput());
-                        port.setMultiport(portRule.isMultiport());
                         port.setPersistent(false);
-                        
-                        /*StringBuffer moml = new StringBuffer(
-                                "<group><port name=\"" + portRule.getPortName()
-                                + "\">");
-                        if (portRule.isInput()) {
-                            moml.append("<property name=\"input\"/>");
-                        }
-                        if (portRule.isOutput()) {
-                            moml.append("<property name=\"output\"/>");
-                        }
-                        if (portRule.isMultiport()) {
-                            moml.append("<property name=\"multiport\"/>");
-                        }
-                        moml.append("<property name=\"_type\" class = \"ptolemy.actor.TypeAttribute\" value = \"boolean\"/>");
-                        moml.append("</port></group>");
-                        MoMLChangeRequest request = new MoMLChangeRequest(this, moml.toString());
-                        requestChange(request);*/
                     } else if (rule instanceof SubclassRule && !isIconSet) {
                         SubclassRule subclassRule = (SubclassRule) rule;
                         String superclass = subclassRule.getSuperclass();

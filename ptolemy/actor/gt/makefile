@@ -56,6 +56,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	AtomicActorMatcher.java \
+	AtomicActorMatcherPort.java \
 	CompositeActorMatcher.java \
 	GraphMatcher.java \
 	GraphTransformationException.java \
