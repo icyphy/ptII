@@ -392,7 +392,12 @@ public class DEDirector extends Director implements TimedDirector {
 
                     // Setting the follow variable to true makes the
                     // postfire method return false.
-                    _noMoreActorsToFire = true;
+                    // Do not do this if _stopFireRequested is true,
+                    // since there may in fact be actors to fire, but
+                    // their firing has been deferred.
+                    if (!_stopFireRequested) {
+                        _noMoreActorsToFire = true;
+                    }
                 } else {
                     // Case 2:
                     // If this director belongs to an opaque composite model,
