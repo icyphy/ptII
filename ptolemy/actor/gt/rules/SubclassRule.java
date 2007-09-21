@@ -53,6 +53,10 @@ public class SubclassRule extends Rule {
         setValues(values);
     }
 
+    public RuleAttribute[] getAttributes() {
+        return _ATTRIBUTES;
+    }
+
     public Object getAttributeValue(int index) {
         switch (index) {
         case 0:
@@ -62,8 +66,8 @@ public class SubclassRule extends Rule {
         }
     }
 
-    public RuleAttribute[] getAttributes() {
-        return _ATTRIBUTES;
+    public String getSuperclass() {
+        return _superclass;
     }
 
     public String getValues() {
