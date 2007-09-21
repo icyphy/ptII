@@ -44,6 +44,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.data.Pair;
+import ptolemy.actor.gt.rules.SubclassRule;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -601,6 +602,39 @@ public class GraphMatcher {
         return entity instanceof CompositeActor
                 && ((CompositeActor) entity).isOpaque();
     }
+    
+    private boolean _shallowMatchAtomicActor(AtomicActor lhsActor,
+            AtomicActor hostActor) {
+        boolean success = true;
+        
+        if (lhsActor instanceof AtomicActorMatcher) {
+            AtomicActorMatcher matcher = (AtomicActorMatcher) lhsActor;
+            try {
+                for (Rule rule : matcher.ruleList.getRuleList()) {
+                    if (rule instanceof SubclassRule) {
+                        try {
+                            Class<?> superclass =
+                                Class.forName(((SubclassRule) rule)
+                                        .getSuperclass());
+                            if (!superclass.isInstance(hostActor)) {
+                                success = false;
+                                break;
+                            }
+                        } catch (ClassNotFoundException e) {
+                            success = false;
+                            break;
+                        }
+                    }
+                }
+            } catch (MalformedStringException e) {
+                success = false;
+            }
+        } else {
+            success = lhsActor.getClass().isInstance(hostActor);
+        }
+        
+        return success;
+    }
 
     private boolean _matchAtomicActor(AtomicActor lhsActor,
             AtomicActor hostActor) {
@@ -608,18 +642,24 @@ public class GraphMatcher {
         boolean success = true;
 
         _match.put(lhsActor, hostActor);
-
-        ObjectList lhsList = new ObjectList();
-        for (Object lhsPortObject : lhsActor.portList()) {
-            lhsList.add(lhsPortObject);
+        
+        if (!_shallowMatchAtomicActor(lhsActor, hostActor)) {
+            success = false;
         }
 
-        ObjectList hostList = new ObjectList();
-        for (Object hostPortObject : hostActor.portList()) {
-            hostList.add(hostPortObject);
+        if (success) {
+            ObjectList lhsList = new ObjectList();
+            for (Object lhsPortObject : lhsActor.portList()) {
+                lhsList.add(lhsPortObject);
+            }
+    
+            ObjectList hostList = new ObjectList();
+            for (Object hostPortObject : hostActor.portList()) {
+                hostList.add(hostPortObject);
+            }
+    
+            success = _matchObject(lhsList, hostList);
         }
-
-        success = _matchObject(lhsList, hostList);
 
         if (!success) {
             _match.retain(matchSize);

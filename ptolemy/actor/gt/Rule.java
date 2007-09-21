@@ -43,6 +43,18 @@ import ptolemy.kernel.util.KernelRuntimeException;
 */
 public abstract class Rule {
 
+    public void disableAllAttributes() {
+        for (int i = 0; i < _enablements.length; i++) {
+            _enablements[i] = false;
+        }
+    }
+
+    public void enableAllAttributes() {
+        for (int i = 0; i < _enablements.length; i++) {
+            _enablements[i] = true;
+        }
+    }
+
     public abstract RuleAttribute[] getAttributes();
 
     public abstract Object getAttributeValue(int index);
