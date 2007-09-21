@@ -30,14 +30,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.rules.PortRule;
+import ptolemy.actor.gt.rules.SubclassRule;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.icon.EditorIcon;
 
 //////////////////////////////////////////////////////////////////////////
 //// AtomicActorMatcher
@@ -58,22 +64,18 @@ public class AtomicActorMatcher extends TypedAtomicActor {
         ruleList = new RuleListAttribute(this, "ruleList");
 
         ruleList.setExpression("");
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-30\" y=\"-15\" " + "width=\"60\" height=\"30\" "
-                + "style=\"fill:#C0C0C0\"/>\n" + "<text x=\"-18\" y=\"5\""
-                + "style=\"font-size:14; fill:blue; font-family:SansSerif\">"
-                + "Match</text>\n" + "</svg>\n");
     }
 
     public void attributeChanged(Attribute attribute)
     throws IllegalActionException {
         super.attributeChanged(attribute);
-        
+
         if (attribute == ruleList) {
             try {
                 _workspace.getWriteAccess();
-                
+
                 Set<String> preservedPortNames = new HashSet<String>();
+                boolean isIconSet = false;
                 for (Rule rule : ruleList.getRuleList()) {
                     if (rule instanceof PortRule) {
                         PortRule portRule = (PortRule) rule;
@@ -93,8 +95,17 @@ public class AtomicActorMatcher extends TypedAtomicActor {
                             port.setMultiport(portRule.isMultiport());
                             port.setPersistent(false);
                         }
+                    } else if (rule instanceof SubclassRule && !isIconSet) {
+                        SubclassRule subclassRule = (SubclassRule) rule;
+                        String superclass = subclassRule.getSuperclass();
+                        isIconSet = _loadActorIcon(superclass);
                     }
                 }
+                if (!isIconSet) {
+                    _removeEditorIcons();
+                    _setIconDescription(_ICON_DESCRIPTION);
+                }
+
                 List<?> portList = portList();
                 for (int i = 0; i < portList.size();) {
                     Port port = (Port) portList.get(i);
@@ -122,10 +133,84 @@ public class AtomicActorMatcher extends TypedAtomicActor {
         }
     }
 
+    public RuleListAttribute ruleList;
+
+    private boolean _loadActorIcon(String actorClassName) {
+        try {
+            Class<?> actorClass = Class.forName(actorClassName);
+            CompositeActor container = new CompositeActor();
+            String moml = "<group>"
+                + "<entity name=\"NewActor\" class=\"" + actorClassName + "\"/>"
+                + "</group>";
+            container.requestChange(new MoMLChangeRequest(this, container, moml));
+            ComponentEntity actor =
+                (ComponentEntity) container.entityList(actorClass).get(0);
+
+            ConfigurableAttribute actorAttribute =
+                (ConfigurableAttribute) actor.getAttribute("_iconDescription");
+            String iconDescription = actorAttribute.getConfigureText();
+            _setIconDescription(iconDescription);
+
+            _removeEditorIcons();
+            List<?> editorIconList = actor.attributeList(EditorIcon.class);
+            for (Object editorIconObject : editorIconList) {
+                if (!editorIconObject.getClass().getName().equals(
+                        "ptolemy.vergil.icon.EditorIcon")) {
+                    continue;
+                }
+                EditorIcon editorIcon = (EditorIcon) editorIconObject;
+                requestChange(new MoMLChangeRequest(this, this,
+                        editorIcon.exportMoML()));
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void _removeEditorIcons() {
+        for (Object editorIconObject
+                : attributeList(EditorIcon.class)) {
+            if (!editorIconObject.getClass().getName().equals(
+                    "ptolemy.vergil.icon.EditorIcon")) {
+                continue;
+            }
+            EditorIcon editorIcon = (EditorIcon) editorIconObject;
+            String moml =
+                "<deleteProperty name=\"" + editorIcon.getName() + "\"/>";
+            requestChange(new MoMLChangeRequest(this, this, moml));
+        }
+    }
+
+    private void _setIconDescription(String iconDescription) {
+        String moml = "<property name=\"_iconDescription\""
+            + "  class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
+            + "  <configure>" + iconDescription + "</configure>"
+            + "</property>";
+        requestChange(new MoMLChangeRequest(this, this, moml));
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    public RuleListAttribute ruleList;
+    private static final String _ICON_DESCRIPTION =
+        "<svg>"
+        + "<rect x=\"0\" y=\"0\" width=\"60\" height=\"30\""
+        + "  style=\"fill:#C0C0C0\"/>"
+        + "<rect x=\"5\" y=\"11\" width=\"16\" height=\"10\""
+        + "  style=\"fill:#FFFFFF; stroke:#B00000\"/>"
+        + "<rect x=\"39\" y=\"16\" width=\"16\" height=\"10\""
+        + "  style=\"fill:#FFFFFF; stroke:#B00000\"/>"
+        + "<line x1=\"25\" y1=\"16\" x2=\"30\" y2=\"16\""
+        + "  style=\"stroke:#404040\"/>"
+        + "<line x1=\"30\" y1=\"16\" x2=\"30\" y2=\"21\""
+        + "  style=\"stroke:#404040\"/>"
+        + "<line x1=\"30\" y1=\"21\" x2=\"35\" y2=\"21\""
+        + "  style=\"stroke:#404040\"/>"
+        + "<text x=\"20\" y=\"11\""
+        + "  style=\"font-size:10; fill:#E00000; font-family:SansSerif\">"
+        + "  match</text>"
+        + "</svg>";
 
     private static final long serialVersionUID = 8775143612221394893L;
 }
