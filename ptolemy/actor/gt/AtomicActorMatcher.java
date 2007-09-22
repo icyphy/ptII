@@ -41,7 +41,6 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.icon.EditorIcon;
@@ -66,22 +65,6 @@ public class AtomicActorMatcher extends TypedAtomicActor {
 
         ruleList.setExpression("");
     }
-    
-    public Port newPort(String name) throws NameDuplicationException {
-    	try {
-            _workspace.getWriteAccess();
-
-            AtomicActorMatcherPort port =
-            	new AtomicActorMatcherPort(this, name);
-            return port;
-        } catch (IllegalActionException ex) {
-            // This exception should not occur, so we throw a runtime
-            // exception.
-            throw new InternalErrorException(this, ex, null);
-        } finally {
-            _workspace.doneWriting();
-        }
-    }
 
     public void attributeChanged(Attribute attribute)
     throws IllegalActionException {
@@ -101,19 +84,15 @@ public class AtomicActorMatcher extends TypedAtomicActor {
 
                         TypedIOPort port = (TypedIOPort) getPort(portName);
                         if (port != null) {
-                        	port.setInput(portRule.isInput());
+                            port.setInput(portRule.isInput());
                             port.setOutput(portRule.isOutput());
                             port.setMultiport(portRule.isMultiport());
                             port.setPersistent(false);
                         } else {
-                        	port = new AtomicActorMatcherPort(this, portName,
-                        			portRule.isInput(), portRule.isOutput());
-                        	port.setMultiport(portRule.isMultiport());
-                        	port.setPersistent(false);
-                        }
-                        if (port == null) {
-                            port = (TypedIOPort) super.newPort(portRule.getPortName());
-                            port.propagateExistence();
+                            port = new TypedIOPort(this, portName,
+                                    portRule.isInput(), portRule.isOutput());
+                            port.setMultiport(portRule.isMultiport());
+                            port.setPersistent(false);
                         }
                         port.setPersistent(false);
                     } else if (rule instanceof SubclassRule && !isIconSet) {

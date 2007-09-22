@@ -39,15 +39,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
+import ptolemy.actor.gt.AtomicActorMatcher;
 import ptolemy.actor.gt.CompositeActorMatcher;
-import ptolemy.actor.gt.MatchCallback;
 import ptolemy.actor.gt.GraphMatcher;
+import ptolemy.actor.gt.MatchCallback;
 import ptolemy.actor.gt.SingleRuleTransformer;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Configuration;
@@ -68,11 +71,16 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphFrame;
+import ptolemy.vergil.actor.ActorInstanceController;
+import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.graph.JGraph;
 import diva.gui.ExtensionFileFilter;
 import diva.gui.GUIUtilities;
+import diva.gui.toolbox.JContextMenu;
 
 //////////////////////////////////////////////////////////////////////////
 //// GTRuleGraphFrame
@@ -153,7 +161,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
     }
 
     protected ActorEditorGraphController _createController() {
-        return new ActorEditorGraphController();
+        return new HideActionGraphController();
     }
 
     /** The case menu. */
@@ -165,11 +173,82 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
     private String _matchFileName;
 
+    /** Serial ID */
+    private static final long serialVersionUID = 5919681658644668772L;
+
+    private static class HideActionGraphController
+    extends ActorEditorGraphController {
+
+        protected void _createControllers() {
+            super._createControllers();
+            _entityController = new EntityController();
+        }
+
+        private class EntityController extends ActorInstanceController {
+            EntityController() {
+                super(HideActionGraphController.this);
+
+                MenuActionFactory newFactory = new HideActionMenuFactory(
+                        _configureMenuFactory, _configureAction);
+                List<?> factories = _menuFactory.menuItemFactoryList();
+                int size = factories.size();
+                for (int i = 0; i < size; i++) {
+                    MenuItemFactory factory =
+                        (MenuItemFactory) factories.get(0);
+                    _menuFactory.removeMenuItemFactory(factory);
+                    if (factory == _configureMenuFactory) {
+                        _menuFactory.addMenuItemFactory(newFactory);
+                    } else {
+                        _menuFactory.addMenuItemFactory(factory);
+                    }
+                }
+                _configureMenuFactory = newFactory;
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Serial ID */
-    private static final long serialVersionUID = 5919681658644668772L;
+    private static class HideActionMenuFactory extends MenuActionFactory {
+        public void addAction(Action action, String label) {
+            _oldFactory.addAction(action, label);
+        }
+
+        public void addActions(Action[] actions, String label) {
+            _oldFactory.addActions(actions, label);
+        }
+
+        public JMenuItem create(JContextMenu menu, NamedObj object) {
+            JMenuItem menuItem = _oldFactory.create(menu, object);
+            if (object instanceof AtomicActorMatcher
+                    && menuItem instanceof JMenu) {
+                JMenu subMenu = (JMenu) menuItem;
+                if (subMenu.getText().equals("Customize")) {
+                    Component[] menuItems = subMenu.getMenuComponents();
+                    for (Component itemComponent : menuItems) {
+                        JMenuItem item = (JMenuItem) itemComponent;
+                        if (item.getAction() instanceof PortDialogAction) {
+                            // Remove the PortDialogAction from the context
+                            // menu.
+                            subMenu.remove(item);
+                            break;
+                        }
+                    }
+                }
+            }
+            return menuItem;
+        }
+
+        HideActionMenuFactory(MenuActionFactory oldFactory,
+                Action configureAction) {
+            super(configureAction);
+
+            _oldFactory = oldFactory;
+        }
+
+        private MenuActionFactory _oldFactory;
+    }
 
     /** Action to automatically layout the graph.
 
