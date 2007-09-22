@@ -76,6 +76,7 @@ import ptolemy.vergil.kernel.PortDialogAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
+import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.graph.JGraph;
 import diva.gui.ExtensionFileFilter;
@@ -184,24 +185,38 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
             _entityController = new EntityController();
         }
 
+        protected void initializeInteraction() {
+            super.initializeInteraction();
+
+            MenuActionFactory newFactory = new HideActionMenuFactory(
+                    _configureMenuFactory, _configureAction);
+            _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
+            _configureMenuFactory = newFactory;
+        }
+
+        private static void _replaceFactory(PtolemyMenuFactory menuFactory,
+                MenuItemFactory replacedFactory, MenuItemFactory replacement) {
+            List<?> factories = menuFactory.menuItemFactoryList();
+            int size = factories.size();
+            for (int i = 0; i < size; i++) {
+                MenuItemFactory factory = (MenuItemFactory) factories.get(0);
+                menuFactory.removeMenuItemFactory(factory);
+                if (factory == replacedFactory) {
+                    menuFactory.addMenuItemFactory(replacement);
+                } else {
+                    menuFactory.addMenuItemFactory(factory);
+                }
+            }
+        }
+
         private class EntityController extends ActorInstanceController {
             EntityController() {
                 super(HideActionGraphController.this);
 
                 MenuActionFactory newFactory = new HideActionMenuFactory(
                         _configureMenuFactory, _configureAction);
-                List<?> factories = _menuFactory.menuItemFactoryList();
-                int size = factories.size();
-                for (int i = 0; i < size; i++) {
-                    MenuItemFactory factory =
-                        (MenuItemFactory) factories.get(0);
-                    _menuFactory.removeMenuItemFactory(factory);
-                    if (factory == _configureMenuFactory) {
-                        _menuFactory.addMenuItemFactory(newFactory);
-                    } else {
-                        _menuFactory.addMenuItemFactory(factory);
-                    }
-                }
+                _replaceFactory(_menuFactory, _configureMenuFactory,
+                        newFactory);
                 _configureMenuFactory = newFactory;
             }
         }
@@ -221,8 +236,9 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
         public JMenuItem create(JContextMenu menu, NamedObj object) {
             JMenuItem menuItem = _oldFactory.create(menu, object);
-            if (object instanceof AtomicActorMatcher
-                    && menuItem instanceof JMenu) {
+            if (menuItem instanceof JMenu &&
+                    (object instanceof AtomicActorMatcher
+                            || object instanceof CompositeActorMatcher)) {
                 JMenu subMenu = (JMenu) menuItem;
                 if (subMenu.getText().equals("Customize")) {
                     Component[] menuItems = subMenu.getMenuComponents();
