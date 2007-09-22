@@ -602,10 +602,13 @@ public class GraphMatcher {
         return entity instanceof CompositeActor
                 && ((CompositeActor) entity).isOpaque();
     }
-    
-    private boolean _shallowMatchAtomicActor(AtomicActor lhsActor,
+
+    private boolean _matchAtomicActor(AtomicActor lhsActor,
             AtomicActor hostActor) {
+        int matchSize = _match.size();
         boolean success = true;
+
+        _match.put(lhsActor, hostActor);
         
         if (lhsActor instanceof AtomicActorMatcher) {
             AtomicActorMatcher matcher = (AtomicActorMatcher) lhsActor;
@@ -632,31 +635,13 @@ public class GraphMatcher {
         } else {
             success = lhsActor.getClass().isInstance(hostActor);
         }
-        
-        return success;
-    }
-
-    private boolean _matchAtomicActor(AtomicActor lhsActor,
-            AtomicActor hostActor) {
-        int matchSize = _match.size();
-        boolean success = true;
-
-        _match.put(lhsActor, hostActor);
-        
-        if (!_shallowMatchAtomicActor(lhsActor, hostActor)) {
-            success = false;
-        }
 
         if (success) {
             ObjectList lhsList = new ObjectList();
-            for (Object lhsPortObject : lhsActor.portList()) {
-                lhsList.add(lhsPortObject);
-            }
+            lhsList.addAll((Collection<?>) lhsActor.portList());
     
             ObjectList hostList = new ObjectList();
-            for (Object hostPortObject : hostActor.portList()) {
-                hostList.add(hostPortObject);
-            }
+            hostList.addAll((Collection<?>) hostActor.portList());
     
             success = _matchObject(lhsList, hostList);
         }

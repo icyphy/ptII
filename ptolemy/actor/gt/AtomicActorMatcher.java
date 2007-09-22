@@ -76,10 +76,11 @@ public class AtomicActorMatcher extends TypedAtomicActor {
 
                 Set<String> preservedPortNames = new HashSet<String>();
                 boolean isIconSet = false;
+                int i = 1;
                 for (Rule rule : ruleList.getRuleList()) {
                     if (rule instanceof PortRule) {
                         PortRule portRule = (PortRule) rule;
-                        String portName = portRule.getPortName();
+                        String portName = "Rule" + i;
                         preservedPortNames.add(portName);
 
                         TypedIOPort port = (TypedIOPort) getPort(portName);
@@ -100,6 +101,7 @@ public class AtomicActorMatcher extends TypedAtomicActor {
                         String superclass = subclassRule.getSuperclass();
                         isIconSet = _loadActorIcon(superclass);
                     }
+                    i++;
                 }
                 if (!isIconSet) {
                     _removeEditorIcons();
@@ -107,7 +109,7 @@ public class AtomicActorMatcher extends TypedAtomicActor {
                 }
 
                 List<?> portList = portList();
-                for (int i = 0; i < portList.size();) {
+                for (i = 0; i < portList.size();) {
                     Port port = (Port) portList.get(i);
                     if (!preservedPortNames.contains(port.getName())) {
                         port.setContainer(null);

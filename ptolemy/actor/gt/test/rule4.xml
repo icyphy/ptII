@@ -4,9 +4,9 @@
 <entity name="rule4" class="ptolemy.actor.gt.SingleRuleTransformer">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={273, 183, 853, 683}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={286, 253, 828, 543}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[630, 568]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 428]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -20,7 +20,7 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 115.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 125.0}">
             </property>
         </entity>
         <entity name="B" class="ptolemy.actor.gt.AtomicActorMatcher">
@@ -30,7 +30,7 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 55.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 65.0}">
             </property>
         </entity>
         <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
@@ -40,7 +40,7 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 125.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 135.0}">
             </property>
         </entity>
         <entity name="D" class="ptolemy.actor.gt.AtomicActorMatcher">
@@ -50,14 +50,14 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 125.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 135.0}">
             </property>
         </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
@@ -65,11 +65,11 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <link port="A.output1" relation="relation2"/>
-        <link port="A.output2" relation="relation"/>
-        <link port="B.input" relation="relation2"/>
-        <link port="C.input" relation="relation"/>
-        <link port="C.output" relation="relation3"/>
-        <link port="D.input" relation="relation3"/>
+        <link port="A.Rule1" relation="relation"/>
+        <link port="A.Rule2" relation="relation2"/>
+        <link port="B.Rule1" relation="relation"/>
+        <link port="C.Rule1" relation="relation2"/>
+        <link port="C.Rule2" relation="relation3"/>
+        <link port="D.Rule1" relation="relation3"/>
     </entity>
 </entity>

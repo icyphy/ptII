@@ -20,7 +20,7 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 200.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 210.0}">
             </property>
         </entity>
         <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
@@ -30,7 +30,7 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 160.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 175.0}">
             </property>
         </entity>
         <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
@@ -40,7 +40,7 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 125.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 135.0}">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -51,9 +51,9 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <link port="B.b" relation="relation2"/>
-        <link port="C.c" relation="relation"/>
-        <link port="C.c" relation="relation2"/>
-        <link port="A.a" relation="relation"/>
+        <link port="B.Rule1" relation="relation2"/>
+        <link port="C.Rule1" relation="relation"/>
+        <link port="C.Rule1" relation="relation2"/>
+        <link port="A.Rule1" relation="relation"/>
     </entity>
 </entity>
