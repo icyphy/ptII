@@ -47,7 +47,12 @@ public class CompositeActorMatcher extends TypedCompositeActor {
     public CompositeActorMatcher(CompositeEntity container, String name)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
+        ruleListAttribute = new RuleListAttribute(this, "ruleList");
+        ruleListAttribute.setExpression("");
     }
+
+    public RuleListAttribute ruleListAttribute;
 
     private static final long serialVersionUID = -3093694369352820033L;
 

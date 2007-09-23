@@ -44,6 +44,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.data.Pair;
+import ptolemy.actor.gt.rules.PortRule;
 import ptolemy.actor.gt.rules.SubclassRule;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
@@ -267,7 +268,7 @@ public class GraphMatcher {
      *  {@link MatchCallback#foundMatch(GraphMatcher)} is invoked. If that
      *  method returns true, the matching process terminates; otherwise, the
      *  matching proceeds by backtracking.
-     * 
+     *
      *  @return Whether the match is successful.
      *  @see #_lookbackList
      */
@@ -292,7 +293,7 @@ public class GraphMatcher {
      *  either an atomic actor ({@link AtomicActor}) or an opaque composite
      *  entity, one that has a director in it. If the top composite entity does
      *  not have any child, <tt>null</tt> is returned.
-     * 
+     *
      *  @param top The top composite entity in which the search is performed.
      *  @param indexedLists A list that is used to encode the composite entities
      *   visited.
@@ -346,7 +347,7 @@ public class GraphMatcher {
      *  the end port, those ports in between must be ports of a transparent
      *  composite entities (those with no directors inside). If no path is found
      *  starting from the <tt>startPort</tt>, <tt>null</tt> is returned.
-     * 
+     *
      *  @param startPort The port from which the search starts.
      *  @param path The path to obtain the result.
      *  @param visitedRelations A set that records all the relations that have
@@ -432,7 +433,7 @@ public class GraphMatcher {
      *  an atomic actor ({@link AtomicActor}) or an opaque composite entity, one
      *  that has a director in it. If the top composite entity does not have any
      *  more child, <tt>null</tt> is returned.
-     * 
+     *
      *  @param top The top composite entity in which the search is performed.
      *  @param indexedLists A list that is used to encode the composite entities
      *   visited.
@@ -487,7 +488,7 @@ public class GraphMatcher {
      *  ports between the start port and the end port, those ports in between
      *  must be ports of a transparent composite entities (those with no
      *  directors inside). If no more path is found, <tt>null</tt> is returned.
-     * 
+     *
      *  @param path The path to obtain the result.
      *  @param visitedRelations A set that records all the relations that have
      *   been visited during the search.
@@ -579,7 +580,7 @@ public class GraphMatcher {
      *  {@link NamedObj}, the returned string is its name retrieved by {@link
      *  NamedObj#getFullName()}; otherwise, the <tt>toString</tt> method of the
      *  object is called to get the string.
-     * 
+     *
      *  @param object The object.
      *  @return The string that represents the object.
      */
@@ -607,13 +608,23 @@ public class GraphMatcher {
             AtomicActor hostActor) {
         int matchSize = _match.size();
         boolean success = true;
+        ObjectList lhsList = new ObjectList();
+        ObjectList hostList = new ObjectList();
 
         _match.put(lhsActor, hostActor);
-        
+
         if (lhsActor instanceof AtomicActorMatcher) {
             AtomicActorMatcher matcher = (AtomicActorMatcher) lhsActor;
+
+            RuleList ruleList = null;
             try {
-                for (Rule rule : matcher.ruleList.getRuleList()) {
+                ruleList = matcher.ruleListAttribute.getRuleList();
+            } catch (MalformedStringException e) {
+                success = false;
+            }
+
+            if (success) {
+                for (Rule rule : ruleList) {
                     if (rule instanceof SubclassRule) {
                         try {
                             Class<?> superclass =
@@ -629,22 +640,17 @@ public class GraphMatcher {
                         }
                     }
                 }
-            } catch (MalformedStringException e) {
-                success = false;
             }
         } else {
             success = lhsActor.getClass().isInstance(hostActor);
         }
-
+        
         if (success) {
-            ObjectList lhsList = new ObjectList();
             lhsList.addAll((Collection<?>) lhsActor.portList());
-    
-            ObjectList hostList = new ObjectList();
             hostList.addAll((Collection<?>) hostActor.portList());
-    
-            success = _matchObject(lhsList, hostList);
         }
+
+        success = success && _matchObject(lhsList, hostList);
 
         if (!success) {
             _match.retain(matchSize);
@@ -767,7 +773,7 @@ public class GraphMatcher {
 
     private boolean _matchObject(Object lhsObject, Object hostObject) {
         Object match = _match.get(lhsObject);
-        if (match == hostObject) {
+        if (match != null && match.equals(hostObject)) {
             return _checkBackward();
         } else if (match != null || _match.containsValue(hostObject)) {
             return false;
@@ -808,7 +814,6 @@ public class GraphMatcher {
 
         Port lhsPort = lhsPath.getEndPort();
         Port hostPort = hostPath.getEndPort();
-
         success = _matchObject(lhsPort, hostPort);
 
         if (!success) {
@@ -919,17 +924,56 @@ public class GraphMatcher {
             if (hostPort instanceof TypedIOPort) {
                 TypedIOPort lhsTypedPort = (TypedIOPort) lhsPort;
                 TypedIOPort hostTypedPort = (TypedIOPort) hostPort;
-                if (lhsTypedPort.isInput() && !hostTypedPort.isInput()) {
-                    return false;
-                } else if (lhsTypedPort.isOutput()
-                        && !hostTypedPort.isOutput()) {
-                    return false;
+                PortRule portRule = _getPortRule(lhsTypedPort);
+                if (portRule == null) {
+                    return lhsTypedPort.isInput() == hostTypedPort.isInput()
+                            && lhsTypedPort.isOutput()
+                                    == hostTypedPort.isOutput()
+                            && lhsTypedPort.isMultiport()
+                                    == hostTypedPort.isMultiport();
                 } else {
-                    return true;
+                    return _shallowMatchPortRule(portRule, hostTypedPort);
                 }
             } else {
                 return false;
             }
+        } else {
+            return true;
+        }
+    }
+    
+    private static PortRule _getPortRule(TypedIOPort port) {
+        NamedObj container = port.getContainer();
+        if (container instanceof AtomicActorMatcher) {
+            try {
+                RuleList ruleList = ((AtomicActorMatcher) container)
+                        .ruleListAttribute.getRuleList();
+                String portID = port.getName();
+                for (Rule rule : ruleList) {
+                    if (rule instanceof PortRule) {
+                        PortRule portRule = (PortRule) rule;
+                        if (portRule.getPortID(ruleList).equals(portID)) {
+                            return portRule;
+                        }
+                    }
+                }
+            } catch (MalformedStringException e) {
+            }
+        }
+        return null;
+    }
+
+    private static boolean _shallowMatchPortRule(PortRule lhsRule,
+            TypedIOPort hostPort) {
+        if (lhsRule.isInputEnabled()
+                && lhsRule.isInput() != hostPort.isInput()) {
+            return false;
+        } else if (lhsRule.isOutputEnabled()
+                && lhsRule.isOutput() != hostPort.isOutput()) {
+            return false;
+        } else if (lhsRule.isMultiportEnabled()
+                && lhsRule.isMultiport() != hostPort.isMultiport()) {
+            return false;
         } else {
             return true;
         }

@@ -61,36 +61,37 @@ public class AtomicActorMatcher extends TypedAtomicActor {
     public AtomicActorMatcher(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        ruleList = new RuleListAttribute(this, "ruleList");
-
-        ruleList.setExpression("");
+        
+        ruleListAttribute = new RuleListAttribute(this, "ruleList");
+        ruleListAttribute.setExpression("");
     }
 
     public void attributeChanged(Attribute attribute)
     throws IllegalActionException {
         super.attributeChanged(attribute);
 
-        if (attribute == ruleList) {
+        if (attribute == ruleListAttribute) {
             try {
                 _workspace.getWriteAccess();
 
                 Set<String> preservedPortNames = new HashSet<String>();
                 boolean isIconSet = false;
                 int i = 1;
-                for (Rule rule : ruleList.getRuleList()) {
+                RuleList ruleList = ruleListAttribute.getRuleList();
+                for (Rule rule : ruleList) {
                     if (rule instanceof PortRule) {
                         PortRule portRule = (PortRule) rule;
-                        String portName = "Rule" + i;
-                        preservedPortNames.add(portName);
+                        String portID = portRule.getPortID(ruleList);
+                        preservedPortNames.add(portID);
 
-                        TypedIOPort port = (TypedIOPort) getPort(portName);
+                        TypedIOPort port = (TypedIOPort) getPort(portID);
                         if (port != null) {
                             port.setInput(portRule.isInput());
                             port.setOutput(portRule.isOutput());
                             port.setMultiport(portRule.isMultiport());
                             port.setPersistent(false);
                         } else {
-                            port = new TypedIOPort(this, portName,
+                            port = new TypedIOPort(this, portID,
                                     portRule.isInput(), portRule.isOutput());
                             port.setMultiport(portRule.isMultiport());
                             port.setPersistent(false);
@@ -135,7 +136,7 @@ public class AtomicActorMatcher extends TypedAtomicActor {
         }
     }
 
-    public RuleListAttribute ruleList;
+    public RuleListAttribute ruleListAttribute;
 
     private boolean _loadActorIcon(String actorClassName) {
         try {
@@ -144,7 +145,8 @@ public class AtomicActorMatcher extends TypedAtomicActor {
             String moml = "<group>"
                 + "<entity name=\"NewActor\" class=\"" + actorClassName + "\"/>"
                 + "</group>";
-            container.requestChange(new MoMLChangeRequest(this, container, moml));
+            container.requestChange(
+                    new MoMLChangeRequest(this, container, moml));
             ComponentEntity actor =
                 (ComponentEntity) container.entityList(actorClass).get(0);
 
@@ -171,8 +173,7 @@ public class AtomicActorMatcher extends TypedAtomicActor {
     }
 
     private void _removeEditorIcons() {
-        for (Object editorIconObject
-                : attributeList(EditorIcon.class)) {
+        for (Object editorIconObject : attributeList(EditorIcon.class)) {
             if (!editorIconObject.getClass().getName().equals(
                     "ptolemy.vergil.icon.EditorIcon")) {
                 continue;

@@ -128,7 +128,7 @@ test MatchingTest-1.8 {Relations added to the graph} {
 } {{ptolemy.actor.TypedIOPort {.top.lhs.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.A2.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A2.output}, ptolemy.actor.TypedIOPort {.top.lhs.A3.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A3.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2} = ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3} = ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
 
 test MatchingTest-1.9 {LHS's A1 has an input port} {
-    set lhsA1PortRule2 [java::new ptolemy.actor.gt.rules.PortRule "input" "type" true false false]
+    set lhsA1PortRule2 [java::new ptolemy.actor.gt.rules.PortRule "input" "type" true false true]
     $lhsA1PortRuleList add [java::cast ptolemy.actor.gt.Rule $lhsA1PortRule2]
     $lhsA1Attr setExpression [$lhsA1PortRuleList toString]
     

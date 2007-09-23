@@ -98,6 +98,9 @@ import diva.gui.toolbox.JContextMenu;
  */
 public class GTRuleGraphFrame extends AbstractGTFrame {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                          constructors                     ////
+
     /** Construct a frame associated with the specified case actor.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -136,6 +139,9 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
         // helpFile = "ptolemy/configs/doc/vergilFsmEditorHelp.htm";
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
      */
@@ -154,15 +160,20 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
         LayoutAction layoutAction = new LayoutAction();
         GUIUtilities.addMenuItem(_ruleMenu, layoutAction);
 
-        NewRelationAction newRelationAction = new NewRelationAction();
-        GUIUtilities.addMenuItem(_ruleMenu, newRelationAction);
+        if (hasTabs()) {
+            NewRelationAction newRelationAction = new NewRelationAction();
+            GUIUtilities.addMenuItem(_ruleMenu, newRelationAction);
+            GUIUtilities.addToolBarButton(_toolbar, newRelationAction);
+        } else {
+            ((ActorEditorGraphController) _getGraphController())
+                    .addToMenuAndToolbar(_ruleMenu, _toolbar);
+        }
 
-        GUIUtilities.addToolBarButton(_toolbar, newRelationAction);
         GUIUtilities.addToolBarButton(_toolbar, matchAction);
     }
 
     protected ActorEditorGraphController _createController() {
-        return new HideActionGraphController();
+        return new GTActionGraphController();
     }
 
     /** The case menu. */
@@ -174,10 +185,12 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
     private String _matchFileName;
 
-    /** Serial ID */
     private static final long serialVersionUID = 5919681658644668772L;
 
-    private static class HideActionGraphController
+    ///////////////////////////////////////////////////////////////////
+    ////                      private inner classes                ////
+
+    private static class GTActionGraphController
     extends ActorEditorGraphController {
 
         protected void _createControllers() {
@@ -188,7 +201,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
         protected void initializeInteraction() {
             super.initializeInteraction();
 
-            MenuActionFactory newFactory = new HideActionMenuFactory(
+            MenuActionFactory newFactory = new GTMenuActionFactory(
                     _configureMenuFactory, _configureAction);
             _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
             _configureMenuFactory = newFactory;
@@ -211,9 +224,9 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
         private class EntityController extends ActorInstanceController {
             EntityController() {
-                super(HideActionGraphController.this);
+                super(GTActionGraphController.this);
 
-                MenuActionFactory newFactory = new HideActionMenuFactory(
+                MenuActionFactory newFactory = new GTMenuActionFactory(
                         _configureMenuFactory, _configureAction);
                 _replaceFactory(_menuFactory, _configureMenuFactory,
                         newFactory);
@@ -222,10 +235,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    private static class GTMenuActionFactory extends MenuActionFactory {
 
-    private static class HideActionMenuFactory extends MenuActionFactory {
         public void addAction(Action action, String label) {
             _oldFactory.addAction(action, label);
         }
@@ -236,19 +247,19 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
         public JMenuItem create(JContextMenu menu, NamedObj object) {
             JMenuItem menuItem = _oldFactory.create(menu, object);
-            if (menuItem instanceof JMenu &&
-                    (object instanceof AtomicActorMatcher
-                            || object instanceof CompositeActorMatcher)) {
-                JMenu subMenu = (JMenu) menuItem;
-                if (subMenu.getText().equals("Customize")) {
-                    Component[] menuItems = subMenu.getMenuComponents();
-                    for (Component itemComponent : menuItems) {
-                        JMenuItem item = (JMenuItem) itemComponent;
-                        if (item.getAction() instanceof PortDialogAction) {
-                            // Remove the PortDialogAction from the context
-                            // menu.
-                            subMenu.remove(item);
-                            break;
+            if (menuItem instanceof JMenu) {
+                if (object instanceof AtomicActorMatcher) {
+                    JMenu subMenu = (JMenu) menuItem;
+                    if (subMenu.getText().equals("Customize")) {
+                        Component[] menuItems = subMenu.getMenuComponents();
+                        for (Component itemComponent : menuItems) {
+                            JMenuItem item = (JMenuItem) itemComponent;
+                            if (item.getAction() instanceof PortDialogAction) {
+                                // Disable the PortDialogAction from the context
+                                // menu.
+                                item.setEnabled(false);
+                                break;
+                            }
                         }
                     }
                 }
@@ -256,7 +267,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
             return menuItem;
         }
 
-        HideActionMenuFactory(MenuActionFactory oldFactory,
+        GTMenuActionFactory(MenuActionFactory oldFactory,
                 Action configureAction) {
             super(configureAction);
 
@@ -335,7 +346,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
             MatchFileChooser fileChooser =
                 new MatchFileChooser(getFrame(), _attribute);
-            if (fileChooser.buttonPressed().equals(_MATCH_FILE_CHOOSER_BUTTONS[0])) {
+            if (fileChooser.buttonPressed().equals(
+                    _MATCH_FILE_CHOOSER_BUTTONS[0])) {
                 _matchFileName = fileChooser.getFileName();
                 File input = new File(_matchFileName);
                 if (input == null) {

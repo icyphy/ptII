@@ -89,6 +89,7 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$NameComparator.class' \
 	'GraphMatcher$$ObjectList.class' \
 	'GraphMatcher$$Path.class' \
+	'GraphMatcher$$PortRulePair.class' \
 	'Rule$$FieldIterator.class' \
 	'RuleEditor$$1.class' \
 	'RuleEditor$$2.class' \

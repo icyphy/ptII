@@ -29,6 +29,7 @@ package ptolemy.actor.gt.rules;
 
 import ptolemy.actor.gt.Rule;
 import ptolemy.actor.gt.RuleAttribute;
+import ptolemy.actor.gt.RuleList;
 import ptolemy.actor.gt.RuleValidationException;
 
 public class PortRule extends Rule {
@@ -52,6 +53,10 @@ public class PortRule extends Rule {
         _multiport = multiport;
     }
 
+    public RuleAttribute[] getAttributes() {
+        return _ATTRIBUTES;
+    }
+
     public Object getAttributeValue(int index) {
         switch (index) {
         case 0:
@@ -69,8 +74,9 @@ public class PortRule extends Rule {
         }
     }
 
-    public RuleAttribute[] getAttributes() {
-        return _ATTRIBUTES;
+    public String getPortID(RuleList list) {
+        int position = list.indexOf(this);
+        return "Rule" + (position + 1);
     }
 
     public String getPortName() {
@@ -95,12 +101,32 @@ public class PortRule extends Rule {
         return _input;
     }
 
+    public boolean isInputEnabled() {
+        return isAttributeEnabled(2);
+    }
+
     public boolean isMultiport() {
         return _multiport;
     }
 
+    public boolean isMultiportEnabled() {
+        return isAttributeEnabled(4);
+    }
+
     public boolean isOutput() {
         return _output;
+    }
+
+    public boolean isOutputEnabled() {
+        return isAttributeEnabled(3);
+    }
+
+    public boolean isPortNameEnabled() {
+        return isAttributeEnabled(0);
+    }
+
+    public boolean isPortTypeEnabled() {
+        return isAttributeEnabled(1);
     }
 
     public void setAttributeValue(int index, Object value) {
