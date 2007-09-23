@@ -159,13 +159,13 @@ public class PortRule extends Rule {
     }
 
     public void validate() throws RuleValidationException {
-        if (_portName.equals("")) {
+        if (isPortNameEnabled() && _portName.equals("")) {
             throw new RuleValidationException("Port name must not be empty.");
         }
-        if (_portType.equals("")) {
+        if (isPortTypeEnabled() && _portType.equals("")) {
             throw new RuleValidationException("Port type must not be empty.");
         }
-        if (!(_input ^ _output)) {
+        if (!((isInputEnabled() && _input) ^ (isOutputEnabled() && _output))) {
             throw new RuleValidationException("A port should be either an "
                     + "input port or an output port.");
         }
