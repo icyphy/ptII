@@ -46,6 +46,7 @@ import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.data.Pair;
 import ptolemy.actor.gt.rules.PortRule;
 import ptolemy.actor.gt.rules.SubclassRule;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -589,6 +590,27 @@ public class GraphMatcher {
                 : object.toString();
     }
 
+    private static PortRule _getPortRule(TypedIOPort port) {
+        NamedObj container = port.getContainer();
+        if (container instanceof AtomicActorMatcher) {
+            try {
+                RuleList ruleList = ((AtomicActorMatcher) container)
+                        .ruleListAttribute.getRuleList();
+                String portID = port.getName();
+                for (Rule rule : ruleList) {
+                    if (rule instanceof PortRule) {
+                        PortRule portRule = (PortRule) rule;
+                        if (portRule.getPortID(ruleList).equals(portID)) {
+                            return portRule;
+                        }
+                    }
+                }
+            } catch (MalformedStringException e) {
+            }
+        }
+        return null;
+    }
+
     /** Test whether the composite entity is opaque or not. Return <tt>true</tt>
      *  if the composite entity is an instance of {@link CompositeActor} and it
      *  is opaque. A composite actor is opaque if it has a director inside,
@@ -644,7 +666,7 @@ public class GraphMatcher {
         } else {
             success = lhsActor.getClass().isInstance(hostActor);
         }
-        
+
         if (success) {
             lhsList.addAll((Collection<?>) lhsActor.portList());
             hostList.addAll((Collection<?>) hostActor.portList());
@@ -926,11 +948,32 @@ public class GraphMatcher {
                 TypedIOPort hostTypedPort = (TypedIOPort) hostPort;
                 PortRule portRule = _getPortRule(lhsTypedPort);
                 if (portRule == null) {
-                    return lhsTypedPort.isInput() == hostTypedPort.isInput()
-                            && lhsTypedPort.isOutput()
-                                    == hostTypedPort.isOutput()
-                            && lhsTypedPort.isMultiport()
-                                    == hostTypedPort.isMultiport();
+                    boolean isInputEqual =
+                        lhsTypedPort.isInput() == hostTypedPort.isInput();
+                    
+                    boolean isOutputEqual =
+                        lhsTypedPort.isOutput() == hostTypedPort.isOutput();
+                    
+                    boolean isMultiportEqual = lhsTypedPort.isMultiport()
+                            == hostTypedPort.isMultiport();
+                    
+                    boolean isTypeCompatible = true;
+                    Type lhsType = lhsTypedPort.getType();
+                    Type hostType = hostTypedPort.getType();
+                    if (lhsTypedPort.isInput() && hostTypedPort.isInput()) {
+                        isTypeCompatible =
+                            isTypeCompatible && lhsType.isCompatible(hostType);
+                    }
+                    if (lhsTypedPort.isOutput() && hostTypedPort.isOutput()) {
+                        isTypeCompatible =
+                            isTypeCompatible && lhsType.isCompatible(hostType);
+                    }
+                    
+                    boolean isNameEqual =
+                        lhsTypedPort.getName().equals(hostTypedPort.getName());
+                    
+                    return isInputEqual && isOutputEqual && isMultiportEqual
+                            && isTypeCompatible && isNameEqual;
                 } else {
                     return _shallowMatchPortRule(portRule, hostTypedPort);
                 }
@@ -940,27 +983,6 @@ public class GraphMatcher {
         } else {
             return true;
         }
-    }
-    
-    private static PortRule _getPortRule(TypedIOPort port) {
-        NamedObj container = port.getContainer();
-        if (container instanceof AtomicActorMatcher) {
-            try {
-                RuleList ruleList = ((AtomicActorMatcher) container)
-                        .ruleListAttribute.getRuleList();
-                String portID = port.getName();
-                for (Rule rule : ruleList) {
-                    if (rule instanceof PortRule) {
-                        PortRule portRule = (PortRule) rule;
-                        if (portRule.getPortID(ruleList).equals(portID)) {
-                            return portRule;
-                        }
-                    }
-                }
-            } catch (MalformedStringException e) {
-            }
-        }
-        return null;
     }
 
     private static boolean _shallowMatchPortRule(PortRule lhsRule,
