@@ -95,7 +95,7 @@ import ptolemy.util.StringUtilities;
  *     code.append("// Local wrapup code");
  *     return processCode(CodeStream.indent(code.toString()));
  * </pre>
- *
+ * 
  * @author Ye Zhou, Gang Zhou, Edward A. Lee, Contributors: Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 6.0
@@ -103,7 +103,10 @@ import ptolemy.util.StringUtilities;
  * @Pt.AcceptedRating Yellow (eal)
  */
 public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator {
-
+    public CodeGeneratorHelper() {
+        this(null);
+    }
+    
     /** Construct the code generator helper associated
      *  with the given component.
      *  @param component The associated component.
@@ -224,19 +227,28 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @exception IllegalActionException Thrown if the given ptolemy cannot
      *  be resolved.
      */
-    public static String codeGenType(Type ptType) throws IllegalActionException {
+    public static String codeGenType(Type ptType) {
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
-        String result = ptType == BaseType.INT ? "Int"
-                : ptType == BaseType.LONG ? "Long"
-                        : ptType == BaseType.STRING ? "String"
-                                : ptType == BaseType.DOUBLE ? "Double"
-                                        : ptType == BaseType.BOOLEAN ? "Boolean"
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
-                                                        : ptType instanceof ArrayType ? "Array"
-                                                                : ptType instanceof MatrixType ? "Matrix"
-                                                                        : "Token";
-
+        String result = 
+            ptType == BaseType.INT ? "Int" : 
+            ptType == BaseType.LONG ? "Long" : 
+            ptType == BaseType.STRING ? "String" : 
+            ptType == BaseType.DOUBLE ? "Double" : 
+            ptType == BaseType.BOOLEAN ? "Boolean" :
+            ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte" :
+            null;
+        
+        if (result == null) {
+            if (ptType instanceof ArrayType) {
+                //result = codeGenType(((ArrayType) ptType).getElementType()) + "Array";
+                result = "Array";
+            } else if (ptType instanceof MatrixType) {
+                //result = ptType.getClass().getSimpleName().replace("Type", "");
+                result = "Matrix";
+            }
+        }
+        
         //if (result.length() == 0) {
         //    throw new IllegalActionException(
         //            "Cannot resolved codegen type from Ptolemy type: " + ptType);
@@ -398,6 +410,34 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return "";
     }
 
+    public static Type ptolemyType(String cgType) {
+        Type result = 
+            cgType.equals("Int") ? BaseType.INT :
+            cgType.equals("Long") ? BaseType.LONG :
+            cgType.equals("String") ? BaseType.STRING :
+            cgType.equals("Boolean") ? BaseType.BOOLEAN :
+            cgType.equals("Double") ? BaseType.DOUBLE :
+            cgType.equals("Complex") ? BaseType.COMPLEX : null;
+                                    
+        
+        if (cgType.endsWith("Array")) {
+            String elementType = cgType.replace("Array", ""); 
+            result = new ArrayType(ptolemyType(elementType));
+            
+        } else if (cgType.endsWith("Matrix")) {
+            String elementType = cgType.replace("Matrix", ""); 
+            result = 
+                elementType.equals("Int") ? BaseType.INT_MATRIX :
+                elementType.equals("Complex") ? BaseType.COMPLEX_MATRIX :
+                elementType.equals("Double") ? BaseType.DOUBLE_MATRIX :
+                elementType.equals("Boolean") ? BaseType.BOOLEAN_MATRIX :
+                elementType.equals("Fix") ? BaseType.FIX_MATRIX :
+                elementType.equals("Long") ? BaseType.LONG_MATRIX : null;
+                    
+        }
+        return result;
+    }
+    
     /**
      * Get the corresponding type in C from the given Ptolemy type. 
      * @param ptType The given Ptolemy type.
@@ -410,8 +450,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         : ptType == BaseType.DOUBLE ? "double"
                                 : ptType == BaseType.BOOLEAN ? "boolean"
                                         : ptType == BaseType.LONG ? "long"
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "unsigned char"
-                                                        : "Token";
+		                                : ptType == BaseType.UNSIGNED_BYTE ? "unsigned char"
+                                               : "Token";
     }
 
     /**
@@ -1493,8 +1533,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
 
         return sinkChannels;
-    
-}
+    }
+
     /** Get the size of a parameter. The size of a parameter
      *  is the length of its array if the parameter's type is array,
      *  and 1 otherwise.
@@ -1785,7 +1825,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /** A class that defines a channel object. A channel object is
      *  specified by its port and its channel index in that port.
      */
-    public static class Channel {
+    public class Channel {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 
@@ -1999,6 +2039,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             //}
             int[] bufferSizes = new int[length];
             _bufferSizes.put(port, bufferSizes);
+
             
             ptolemy.actor.Director director = ((Actor) _component).getExecutiveDirector();
             if (director == null) {
@@ -2586,7 +2627,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     private static final String[] _defaultBlocks = { "preinitBlock",
             "initBlock", "fireBlock", "postfireBlock",
-            "wrapupBlock"};
+            "wrapupBlock" };
 
     private boolean printedNullPortWarnings = false;
 }
