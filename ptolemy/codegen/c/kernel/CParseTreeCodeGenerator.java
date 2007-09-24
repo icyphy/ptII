@@ -183,7 +183,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      *  @return The generated code.
      */
     public String generateFireCode() {
-        return _fireCode.toString();
+        return _childCode.toString();
     }
 
     /** Generate code that corresponds with the initialize() method.
@@ -253,7 +253,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
+            //_fireCode.append(_evaluatedChildToken.toString());
+            _childCode = _evaluatedChildToken.toString();
             return;
         }
 
@@ -262,25 +263,30 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[numChildren];
 
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
-        _fireCode.append("$new(Array(" + numChildren + ", " + numChildren);
-
+        //_fireCode.append("$new(Array(" + numChildren + ", " + numChildren);
+        String[] elements = new String[numChildren];
+        String result = "$new(Array(" + numChildren + ", " + numChildren;
+        
         // Convert up to LUB. 
         // Assume UNKNOWN is the lower type.
         ptolemy.data.type.Type elementType = BaseType.UNKNOWN;
 
         for (int i = 0; i < numChildren; i++) {
-            _fireCode.append(", ");
+            //_fireCode.append(", ");
+            result += ", ";
 
-            int nextIndex = _fireCode.length();
+            //int nextIndex = _fireCode.length();
 
             tokens[i] = _evaluateChild(node, i);
 
             Type valueType = tokens[i].getType();
 
             if (CodeGeneratorHelper.isPrimitive(valueType)) {
-                _fireCode.insert(nextIndex, "$new("
-                        + CodeGeneratorHelper.codeGenType(valueType) + "(");
-                _fireCode.append("))");
+                //_fireCode.insert(nextIndex, "$new(" + CodeGeneratorHelper.codeGenType(valueType) + "(");
+                //_fireCode.append("))");
+                result += "$new(" + CodeGeneratorHelper.codeGenType(valueType) + "(" + _childCode + "))";
+            } else {
+                result += _childCode;
             }
 
             if (!elementType.equals(valueType)) { // find max type
@@ -294,13 +300,16 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         }
 
         // Insert the elementType of the array as the last argument.
-        if (CodeGeneratorHelper.codeGenType(elementType).equals("Token")) {
-            _fireCode.append(", -1");
+        if (CodeGeneratorHelper.targetType(elementType).equals("Token")) {
+            //_fireCode.append(", -1");
+            result += ", -1";
         } else {
-            _fireCode.append(", TYPE_"
-                    + CodeGeneratorHelper.codeGenType(elementType));
+            //_fireCode.append(", TYPE_" + CodeGeneratorHelper.codeGenType(elementType));
+            result += ", TYPE_" + CodeGeneratorHelper.codeGenType(elementType);
         }
-        _fireCode.append("))");
+        
+        //_fireCode.append("))");
+        _childCode = result + "))";
 
         _evaluatedChildToken = (new ArrayToken(elementType, tokens));
 
@@ -319,7 +328,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
+            //_fireCode.append(_evaluatedChildToken.toString());
+            _childCode = _evaluatedChildToken.toString();
             return;
         }
 
@@ -329,18 +339,20 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
 
-        _fireCode.append("(");
+        //_fireCode.append("(");
+        String result = "";
 
         //ptolemy.data.Token result = tokens[0];
-        ptolemy.data.Token result = _evaluateChild(node, 0);
-
-        if (!(result instanceof BitwiseOperationToken)) {
+        ptolemy.data.Token childToken = _evaluateChild(node, 0);
+        result += _childCode;
+        
+        if (!(childToken instanceof BitwiseOperationToken)) {
             throw new IllegalActionException("Operation "
-                    + node.getOperator().image + " not defined on " + result
+                    + node.getOperator().image + " not defined on " + childToken
                     + " which does not support bitwise operations.");
         }
 
-        BitwiseOperationToken bitwiseResult = (BitwiseOperationToken) result;
+        BitwiseOperationToken bitwiseResult = (BitwiseOperationToken) childToken;
 
         // Make sure that exactly one of AND, OR, XOR is set.
         _assert(node.isBitwiseAnd() ^ node.isBitwiseOr() ^ node.isBitwiseXor(),
@@ -348,20 +360,24 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         for (int i = 1; i < numChildren; i++) {
             if (node.isBitwiseAnd()) {
-                _fireCode.append("&");
+                //_fireCode.append("&");
+                result += "&";
             } else if (node.isBitwiseOr()) {
-                _fireCode.append("|");
+                //_fireCode.append("|");
+                result += "|";
             } else {
-                _fireCode.append("^");
+                //_fireCode.append("^");
+                result += "^";
             }
 
             //ptolemy.data.Token nextToken = tokens[i];
             ptolemy.data.Token nextToken = _evaluateChild(node, i);
-
+            result += _childCode;
+            
             if (!(nextToken instanceof BitwiseOperationToken)) {
                 throw new IllegalActionException("Operation "
                         + node.getOperator().image + " not defined on "
-                        + result
+                        + childToken
                         + " which does not support bitwise operations.");
             }
 
@@ -374,7 +390,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 //             }
         }
 
-        _fireCode.append(")");
+        //_fireCode.append(")");
+        _childCode = "(" + result + ")";
 
         _evaluatedChildToken = ((ptolemy.data.Token) bitwiseResult);
 
@@ -419,7 +436,11 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      */
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
+        
+        String result = "";
+
         // First check to see if the name references a valid variable.
+
         ptolemy.data.Token value = null;
         Type type = null;
         String functionName = node.getFunctionName();
@@ -439,9 +460,15 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 if (label.startsWith("object(")) {
                     label = label.substring(7, label.length() - 1);
                     int position = label.indexOf("(@)");
-                    _fireCode.append(label.substring(0, position + 1));
+                    
+                    //_fireCode.append(label.substring(0, position + 1));
+                    result += label.substring(0, position + 1);
+                    
                     _evaluateChild(node, 1);
-                    _fireCode.append(label.substring(position + 2));
+                    
+                    //_fireCode.append(label.substring(position + 2));
+                    result += _childCode + label.substring(position + 2);
+                    
                     return;
                 }
             }
@@ -561,17 +588,21 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
          }
          */
 
-        _fireCode.append(functionName + "(");
+        //_fireCode.append(functionName + "(");
+        result += functionName + "(";
 
         for (int i = 0; i < argCount; i++) {
             if (i != 0) {
-                _fireCode.append(", ");
+                //_fireCode.append(", ");
+                result += ", ";
             }
 
             _evaluateChild(node, i + 1);
+            result += _childCode;
         }
 
-        _fireCode.append(")");
+        //_fireCode.append(")");
+        _childCode = result + ")";
     }
 
     /** Define a function, where the children specify the argument types
@@ -613,7 +644,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
+            //_fireCode.append(_evaluatedChildToken.toString());
+            _childCode = _evaluatedChildToken.toString();
+
             return;
         }
 
@@ -627,9 +660,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                             + "three children in the parse tree.");
         }
 
+        String result = "";
+        
         // evaluate the first sub-expression
         _evaluateChild(node, 0);
-
+        result += _childCode;
+        
         /*
          ptolemy.data.Token test = _evaluatedChildToken;
 
@@ -652,16 +688,25 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
          if (value) {
          */
-        _fireCode.append(" ? ");
+        //_fireCode.append(" ? ");
+        result += " ? ";
 
+        
         ASTPtRootNode tokenChild1 = (ASTPtRootNode) node.jjtGetChild(1);
         ASTPtRootNode tokenChild2 = (ASTPtRootNode) node.jjtGetChild(2);
 
         tokenChild1.visit(this);
-        _fireCode.append(" : ");
-
+        result += _childCode;
+        
+        //_fireCode.append(" : ");
+        result += " : ";
+        
         tokenChild2.visit(this);
-
+        result += _childCode;
+        
+        _childCode = "(" + result + ")";
+        
+        
         ptolemy.data.Token token1 = _evaluatedChildToken;
         ptolemy.data.Token token2 = _evaluatedChildToken;
 
@@ -688,13 +733,17 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             if (_evaluatedChildToken instanceof StringToken) {
                 // In C, Strings should have \n tags substituted. 
                 // See Test 17.2
-                _fireCode.append(escapeForTargetLanguage(_evaluatedChildToken
-                        .toString()));
+                
+                //_fireCode.append(escapeForTargetLanguage(_evaluatedChildToken.toString()));
+                
+                _childCode = escapeForTargetLanguage(_evaluatedChildToken.toString());
+                
             } else if (_evaluatedChildToken instanceof LongToken) {
-                _fireCode.append(((LongToken) _evaluatedChildToken).longValue()
-                        + "LL");
+                //_fireCode.append(((LongToken) _evaluatedChildToken).longValue() + "LL");
+                _childCode = ((LongToken) _evaluatedChildToken).longValue() + "LL";
             } else {
-                _fireCode.append(_evaluatedChildToken.toString());
+                //_fireCode.append(_evaluatedChildToken.toString());
+                _childCode = _evaluatedChildToken.toString();
             }
             return;
         }
@@ -723,9 +772,11 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
             if (label.startsWith("object(")) {
                 // If this is an ObjectToken, we only wants the label.
-                _fireCode.append(label.substring(7, label.length() - 1));
+                //_fireCode.append(label.substring(7, label.length() - 1));
+                _childCode = label.substring(7, label.length() - 1);
             } else {
-                _fireCode.append(label);
+                //_fireCode.append(label);
+                _childCode = label;
             }
 
             return;
@@ -743,11 +794,13 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
+            //_fireCode.append(_evaluatedChildToken.toString());
+            _childCode = _evaluatedChildToken.toString();
             return;
         }
 
-        _fireCode.append("(");
+        //_fireCode.append("(");
+        String result = "";
 
         // Note that we do not always evaluate all of the children...
         // We perform short-circuit evaluation instead and evaluate the
@@ -759,6 +812,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         _evaluateChild(node, 0);
 
+        result += _childCode;
+        
         //ptolemy.data.Token result = _evaluatedChildToken;
 
         /*
@@ -780,11 +835,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         for (int i = 1; i < numChildren; i++) {
             /*ASTPtRootNode child = (ASTPtRootNode)*/node.jjtGetChild(i);
 
-            _fireCode.append(flag ? " && " : " || ");
+            result += flag ? " && " : " || ";
 
             // Evaluate the child
             //child.visit(this);
             _evaluateChild(node, i);
+            result += _childCode;
 
             // Get its value.
             //ptolemy.data.Token nextToken = _evaluatedChildToken;
@@ -805,7 +861,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
              */
         }
 
-        _fireCode.append(")");
+        _childCode = "(" + result + ")";
 
         _evaluatedChildToken = (BooleanToken.getInstance(flag));
 
@@ -823,7 +879,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
+            //_fireCode.append(_evaluatedChildToken.toString());
+            _childCode = _evaluatedChildToken.toString();
             return;
         }
 
@@ -831,51 +888,55 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         int row = node.getRowCount();
         int column = node.getColumnCount();
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[row * column];
-        _fireCode.append("($new(Matrix(" + row + ", " + column
-                + ", " + row * column);
 
-        ptolemy.data.Token result = null;
+        //_fireCode.append("((Token*) $new(Matrix(" + row + ", " + column);
+        String result = "" + row + ", " + column + ", " + row * column;
+            
+        ptolemy.data.Token childToken = null;
+        ptolemy.data.type.Type elementType = BaseType.UNKNOWN;
 
         if (node.getForm() == 1) {
-            Type valueType = null;
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < column; j++) {
-                    _fireCode.append(", ");
-
+                    //_fireCode.append(", ");
+                    result += ", ";
+                    
                     int index = (i * column) + j;
 
-                    int nextIndex = _fireCode.length();
+                    //int nextIndex = _fireCode.length();
                     tokens[index] = _evaluateChild(node, index);
 
-                    valueType = tokens[index].getType();
+                    Type valueType = tokens[index].getType();
 
-                    if (valueType.equals(BaseType.INT)) {
-                        _fireCode.insert(nextIndex, "$new(Int(");
-                        _fireCode.append("))");
-
-                        //_fireCode.append(")), TYPE_Int");
-                    } else if (valueType.equals(BaseType.LONG)) {
-                        _fireCode.insert(nextIndex, "$new(Long(");
-                        _fireCode.append("))");
-                        //_fireCode.append(")), TYPE_Long");
-                    } else if (valueType.equals(BaseType.DOUBLE)) {
-                        _fireCode.insert(nextIndex, "$new(Double(");
-                        _fireCode.append("))");
-                        //_fireCode.append(")), TYPE_Double");
-                    } else if (valueType.equals(BaseType.STRING)) {
-                        _fireCode.insert(nextIndex, "$new(String(");
-                        _fireCode.append("))");
-                        //_fireCode.append(")), TYPE_String");
-                    } else if (valueType instanceof ArrayType) {
-                        //_fireCode.append(", TYPE_Array");
+                    if (CodeGeneratorHelper.isPrimitive(valueType)) {
+                        //_fireCode.insert(nextIndex, "$new(" + CodeGeneratorHelper.codeGenType(valueType) + "(");
+                        //_fireCode.append("))");
+                        result += "$new(" + CodeGeneratorHelper.codeGenType(valueType) + "(" + _childCode + "))";
                     }
+                    
+                    if (!elementType.equals(valueType)) { // find max type
+                        elementType = TypeLattice.leastUpperBound(elementType,
+                                valueType);
+                    }                    
                 }
             }
 
-            _fireCode.append(", TYPE_"
-                    + CodeGeneratorHelper.codeGenType(valueType));
+            String codegenType = CodeGeneratorHelper.codeGenType(elementType);
+                
+            // Insert the elementType of the array as the last argument.
+            if (CodeGeneratorHelper.targetType(elementType).equals("Token")) {
+                //_fireCode.append(", -1");
+                result += ", -1";
+            } else {
+                //_fireCode.append(", TYPE_" + CodeGeneratorHelper.codeGenType(elementType));
+                result += ", TYPE_" + codegenType;
+            }
+            //_fireCode.append(")))");
+            result = "$new(" + /*codegenType + */ "Matrix(" + result;
+            _childCode = result + "))";
+            
 
-            result = MatrixToken.arrayToMatrix(tokens, node.getRowCount(), node
+            childToken = MatrixToken.arrayToMatrix(tokens, node.getRowCount(), node
                     .getColumnCount());
         } else if (node.getForm() == 2) {
             try {
@@ -909,7 +970,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                             * i, columnCount);
                 }
 
-                result = MatrixToken.arrayToMatrix(matrixTokens, node
+                childToken = MatrixToken.arrayToMatrix(matrixTokens, node
                         .getRowCount(), columnCount);
             } catch (IllegalActionException ex) {
                 // FIXME: better detail message that includes the thing
@@ -919,13 +980,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             }
         }
 
-        _evaluatedChildToken = (result);
+
+        _evaluatedChildToken = (childToken);
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
-
-        _fireCode.append(")))");
     }
 
     /** Apply a method to the children of the specified node, where the
@@ -942,7 +1002,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         // every time the tree is evaluated.
         int argCount = node.jjtGetNumChildren();
         ptolemy.data.Token token = _evaluateChild(node, 0);
-
+        String result = _childCode;
+        
         // Handle indexing into a record.
         if ((argCount == 1) && token instanceof RecordToken) {
             RecordToken record = (RecordToken) token;
@@ -961,15 +1022,20 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         // First try to find a signature using argument token values.
         for (int i = 1; i < argCount; i++) {
-            _fireCode.append(", ");
+            //_fireCode.append(", ");
+            result += ", ";
 
             // Save the resulting value.
             token = _evaluateChild(node, i);
+            result += _childCode;
+            
             argValues[i] = token;
             argTypes[i] = token.getType();
         }
 
-        _fireCode.append("->" + node.getMethodName() + "()");
+        //_fireCode.append("->" + node.getMethodName() + "()");
+        result += "->" + node.getMethodName() + "()";
+        
     }
 
     /** Evaluate the power operator on the children of the specified node.
@@ -980,33 +1046,38 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
+            //_fireCode.append(_evaluatedChildToken.toString());
+            _childCode = _evaluatedChildToken.toString();
             return;
         }
 
-        _fireCode.append("(");
-
+        //_fireCode.append("(");
+        String result = "";
+        
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
 
-        int startIndex = _fireCode.length();
+        int startIndex = _childCode.length();
 
         // Operator is always exponentiation
         // Note that since we use an iterative integer method, instead of
         // a logarithmic method, the fastest thing is to apply the
         // exponentiation inside out, i.e. left to right.
         //ptolemy.data.Token result = tokens[0];
-        ptolemy.data.Token result = _evaluateChild(node, 0);
-
+        ptolemy.data.Token childToken = _evaluateChild(node, 0);
+        result += _childCode;
+        
         for (int i = 1; i < numChildren; i++) {
             //int times = 1;
-            _fireCode.insert(startIndex, "pow(");
-            _fireCode.append(", ");
+            //_fireCode.insert(startIndex, "pow(");
+            //_fireCode.append(", ");
 
             //ptolemy.data.Token token = tokens[i];
             ptolemy.data.Token token = _evaluateChild(node, i);
+
+            result = "pow(" + result + ", " + _childCode;
 
             // Note that we check for ScalarTokens because anything
             // that has a meaningful intValue() method, such as
@@ -1028,17 +1099,19 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                         + "Use pow(10, 3.5) for non-integer exponents");
             }
 
-            //result = result.pow(times);
-            _fireCode.append(")");
+            //childToken = childToken.pow(times);
+            //_fireCode.append(")");
+            result += ")";
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = (childToken);
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
 
-        _fireCode.append(")");
+        //_fireCode.append(")");
+        _childCode = "(" + result + ")";
     }
 
     /** Multiply the children of the specified node.
@@ -1049,7 +1122,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
+            //_fireCode.append(_evaluatedChildToken.toString());
+            _childCode = _evaluatedChildToken.toString();
             return;
         }
 
@@ -1062,38 +1136,46 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 "The number of child nodes is "
                         + "not equal to number of operators plus one");
 
-        _fireCode.append("(");
+        //_fireCode.append("(");
+        String result = "";
 
         //ptolemy.data.Token result = tokens[0];
-        ptolemy.data.Token result = _evaluateChild(node, 0);
-
+        ptolemy.data.Token childToken = _evaluateChild(node, 0);
+        result += _childCode;
+        
         for (int i = 1; i < numChildren; i++) {
             Token operator = (Token) lexicalTokenList.get(i - 1);
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
-                _fireCode.append("*");
+                //_fireCode.append("*");
+                result += "*";
             } else if (operator.kind == PtParserConstants.DIVIDE) {
-                _fireCode.append("/");
+                //_fireCode.append("/");
+                result += "/";
             } else if (operator.kind == PtParserConstants.MODULO) {
-                _fireCode.append("%");
+                //_fireCode.append("%");
+                result += "%";
             }
 
             //ptolemy.data.Token nextToken = tokens[i];
             /*ptolemy.data.Token nextToken =*/_evaluateChild(node, i);
-
+            result += _childCode;
+            
             if (operator.kind == PtParserConstants.MULTIPLY) {
-                //result = result.multiply(nextToken);
+                //childToken = childToken.multiply(nextToken);
             } else if (operator.kind == PtParserConstants.DIVIDE) {
-                //result = result.divide(nextToken);
+                //childToken = childToken.divide(nextToken);
             } else if (operator.kind == PtParserConstants.MODULO) {
-                //result = result.modulo(nextToken);
+                //childToken = childToken.modulo(nextToken);
             } else {
                 _assert(false, node, "Invalid operation");
             }
         }
 
-        _fireCode.append(")");
-        _evaluatedChildToken = (result);
+        //_fireCode.append(")");
+        _childCode = "(" + result + ")";
+
+        _evaluatedChildToken = (childToken);
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -1134,41 +1216,53 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
+            //_fireCode.append(_evaluatedChildToken.toString());
+            _childCode = _evaluatedChildToken.toString();
             return;
         }
 
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
-        _fireCode.append("(");
+        //_fireCode.append("(");
+        String result = "";
 
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren == 2, node, "The number of child nodes must be two");
 
         Token operator = node.getOperator();
         ptolemy.data.Token leftToken = _evaluateChild(node, 0);
-
+        result += _childCode;
+        
         if (operator.kind == PtParserConstants.EQUALS) {
-            _fireCode.append(" == ");
+            //_fireCode.append(" == ");
+            result += " == ";
         } else if (operator.kind == PtParserConstants.NOTEQUALS) {
-            _fireCode.append(" != ");
+            //_fireCode.append(" != ");
+            result += " != ";
         } else if (operator.kind == PtParserConstants.GTE) {
-            _fireCode.append(" >= ");
+            //_fireCode.append(" >= ");
+            result += " >= ";
         } else if (operator.kind == PtParserConstants.GT) {
-            _fireCode.append(" > ");
+            //_fireCode.append(" > ");
+            result += " > ";
         } else if (operator.kind == PtParserConstants.LTE) {
-            _fireCode.append(" <= ");
+            //_fireCode.append(" <= ");
+            result += " <= ";
         } else if (operator.kind == PtParserConstants.LT) {
-            _fireCode.append(" < ");
+            //_fireCode.append(" < ");
+            result += " < ";
         }
 
         ptolemy.data.Token rightToken = _evaluateChild(node, 1);
-        ptolemy.data.Token result = null;
-        _fireCode.append(")");
+        ptolemy.data.Token resultToken = null;
+        
+        //_fireCode.append(")");
+        _childCode = "(" + result + _childCode + ")";
+        
 
         if (operator.kind == PtParserConstants.EQUALS) {
-            //result = leftToken.isEqualTo(rightToken);
+            //resultToken = leftToken.isEqualTo(rightToken);
         } else if (operator.kind == PtParserConstants.NOTEQUALS) {
-            //result = leftToken.isEqualTo(rightToken).not();
+            //resultToken = leftToken.isEqualTo(rightToken).not();
         } else { /*
          if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
          throw new IllegalActionException("The " + operator.image
@@ -1195,7 +1289,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             }
         }
 
-        _evaluatedChildToken = result;
+        _evaluatedChildToken = (resultToken);
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -1210,11 +1304,13 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
+            //_fireCode.append(_evaluatedChildToken.toString());
+            _childCode = _evaluatedChildToken.toString();
             return;
         }
 
-        _fireCode.append("(");
+        //_fireCode.append("(");
+        String result = "";
 
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         int numChildren = node.jjtGetNumChildren();
@@ -1227,16 +1323,21 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         ptolemy.data.Token token = _evaluateChild(node, 0);
 
         if (operator.kind == PtParserConstants.SHL) {
-            _fireCode.append(" << ");
+            //_fireCode.append(" << ");
+            result += " << ";
         } else if (operator.kind == PtParserConstants.SHR) {
-            _fireCode.append(" >> ");
+            //_fireCode.append(" >> ");
+            result += " >> ";
         } else if (operator.kind == PtParserConstants.LSHR) {
-            _fireCode.append(" >>> ");
+            //_fireCode.append(" >>> ");
+            result += " >>> ";
         }
 
         ptolemy.data.Token bitsToken = _evaluateChild(node, 1);
-        ptolemy.data.Token result = null;
-        _fireCode.append(")");
+        ptolemy.data.Token resultToken = null;
+
+        //_fireCode.append(")");
+        _childCode = "(" + result + _childCode + ")";
 
         if (!(token instanceof ScalarToken)) {
             throw new IllegalActionException("The " + operator
@@ -1255,13 +1356,13 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         // we need a try...catch to generate a proper error message.
         try {
             if (operator.kind == PtParserConstants.SHL) {
-                result = ((ScalarToken) token)
+                resultToken = ((ScalarToken) token)
                         .leftShift(((ScalarToken) bitsToken).intValue());
             } else if (operator.kind == PtParserConstants.SHR) {
-                result = ((ScalarToken) token)
+                resultToken = ((ScalarToken) token)
                         .rightShift(((ScalarToken) bitsToken).intValue());
             } else if (operator.kind == PtParserConstants.LSHR) {
-                result = ((ScalarToken) token)
+                resultToken = ((ScalarToken) token)
                         .logicalRightShift(((ScalarToken) bitsToken).intValue());
             } else {
                 _assert(false, node, "Invalid operation");
@@ -1272,7 +1373,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                     + "the right operand to have an integer value.");
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = (resultToken);
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -1286,7 +1387,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
+            //_fireCode.append(_evaluatedChildToken.toString());
+            _childCode = _evaluatedChildToken.toString();
             return;
         }
 
@@ -1300,32 +1402,40 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                         + "not equal to number of operators plus one");
 
         //ptolemy.data.Token result = tokens[0];
-        _fireCode.append("(");
+        //_fireCode.append("(");
+        String result = "";
 
-        ptolemy.data.Token result = _evaluateChild(node, 0);
-
+        ptolemy.data.Token childToken = _evaluateChild(node, 0);
+        result += _childCode;
+        
         for (int i = 1; i < numChildren; i++) {
             Token operator = (Token) lexicalTokenList.get(i - 1);
 
             //ptolemy.data.Token nextToken = tokens[i];
             if (operator.kind == PtParserConstants.PLUS) {
-                _fireCode.append("+");
+                //_fireCode.append("+");
+                result += " + ";
 
-                //result = result.add(_evaluateChild(node, i));
+                //childToken = childToken.add(_evaluateChild(node, i));
             } else if (operator.kind == PtParserConstants.MINUS) {
-                _fireCode.append("-");
+                //_fireCode.append("-");
 
-                //result = result.subtract(_evaluateChild(node, i));
+                result += " - ";
+
+                //childToken = childToken.subtract(_evaluateChild(node, i));
             } else {
                 _assert(false, node, "Invalid operation");
             }
 
             _evaluateChild(node, i);
+            result += _childCode;
         }
 
-        _fireCode.append(")");
+        //_fireCode.append(")");
+        _childCode = "(" + result + ")";
 
-        _evaluatedChildToken = (result);
+
+        _evaluatedChildToken = (childToken);
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -1340,7 +1450,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
+            //_fireCode.append(_evaluatedChildToken.toString());
+            _childCode = _evaluatedChildToken.toString();
             return;
         }
 
@@ -1348,17 +1459,23 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         _assert(node.jjtGetNumChildren() == 1, node,
                 "Unary node must have exactly one child!");
 
+        String result = "";
+        
         if (node.isMinus()) {
-            _fireCode.append("-");
+            //_fireCode.append("-");
+            result = "-";
         } else if (node.isNot()) {
-            _fireCode.append("!");
+            //_fireCode.append("!");
+            result = "!";
         } else if (node.isBitwiseNot()) {
-            _fireCode.append("~");
+            //_fireCode.append("~");
+            result = "~";
         }
 
         //ptolemy.data.Token result = tokens[0];
-        ptolemy.data.Token result = _evaluateChild(node, 0);
-
+        ptolemy.data.Token childToken = _evaluateChild(node, 0);
+        _childCode = result + _childCode;
+        
         /*
          if (node.isMinus()) {
          result = result.zero().subtract(result);
@@ -1383,7 +1500,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
          _assert(false, node, "Unrecognized unary node");
          }
          */
-        _evaluatedChildToken = (result);
+        _evaluatedChildToken = (childToken);
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
@@ -1440,22 +1557,25 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
     protected void _evaluateArrayIndex(ASTPtRootNode node,
             ptolemy.data.Token value, Type type) throws IllegalActionException {
 
-        _fireCode.append("Array_get(");
-
+        //_fireCode.append("Array_get(");
+        String result = "Array_get(";
+        
         String name = value.toString();
         if (name.startsWith("object(")) {
-            _fireCode.append(name.substring(7, name.length() - 1) + ", ");
+            //_fireCode.append(name.substring(7, name.length() - 1) + ", ");
+            result += name.substring(7, name.length() - 1) + ", ";
         }
 
         // get the array index
         _evaluateChild(node, 1);
-
-        _fireCode.append(")");
+        
+        //_fireCode.append(")");
+        result += _childCode + ")";
 
         Type elementType = ((ArrayType) type).getElementType();
 
-        _fireCode.append(".payload."
-                + CodeGeneratorHelper.codeGenType(elementType));
+        //_fireCode.append(".payload." + CodeGeneratorHelper.codeGenType(elementType));
+        _childCode = result + ".payload." + CodeGeneratorHelper.codeGenType(elementType);       
     }
 
     /** Evaluate the child with the given index of the given node.
@@ -1574,8 +1694,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
     protected ptolemy.data.Token _evaluatedChildToken = null;
 
     /** The fire() method code. */
-    protected StringBuffer _fireCode = new StringBuffer();
-
+    //protected StringBuffer _fireCode = new StringBuffer();
+    protected String _childCode;
+    
     /** The initialize() method code. */
     protected StringBuffer _initializeCode = new StringBuffer();
 
