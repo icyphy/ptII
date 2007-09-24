@@ -71,35 +71,45 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
         boolean divideOnly = actor.multiply.getWidth() == 0;
 
         ArrayList args = new ArrayList();
-        args.add(Integer.valueOf(0));
 
         String blockType = isPrimitive(type) ? "" : "Token";
+        
+        boolean upgradeMultiply = isPrimitive(actor.multiply.getType()) && !isPrimitive(type); 
+        boolean upgradeDivide = isPrimitive(actor.divide.getType()) && !isPrimitive(type); 
 
         if (!divideOnly) {
-            _codeStream.appendCodeBlock("SetNumeratorBlock");
+            if (upgradeMultiply) {
+                args.add(codeGenType(actor.multiply.getType()));
+            }                
+            _codeStream.appendCodeBlock("SetNumeratorBlock", args);
+            
         } else {
             _codeStream.appendCodeBlock(blockType + "SetNumeratorOneBlock");
         }
 
+        args.clear();
         if (actor.divide.getWidth() > 0) {
-            if (type == actor.divide.getType() 
-                || (isPrimitive(type)
-                        && isPrimitive(actor.divide.getType()))) {
-                _codeStream.appendCodeBlock("SetDenominatorBlock");
-            } else {
-                args.set(0, codeGenType(actor.divide.getType()));
-                _codeStream.appendCodeBlock("SetDenominatorBlockType", args);
-            }
-
+            if (upgradeDivide) {
+                args.add(codeGenType(actor.divide.getType()));
+            }                
+            _codeStream.appendCodeBlock("SetDenominatorBlock", args);
         }
 
+        args.clear();
+        args.add(Integer.valueOf(0));
         for (int i = 1; i < actor.multiply.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
+            if (upgradeMultiply) {
+                args.add(codeGenType(actor.multiply.getType()));
+            }                
             _codeStream.appendCodeBlock(blockType + "MultiplyBlock", args);
         }
 
         for (int i = 1; i < actor.divide.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
+            if (upgradeDivide) {
+                args.add(codeGenType(actor.divide.getType()));
+            }                
             _codeStream.appendCodeBlock(blockType + "DivideBlock", args);
         }
 
@@ -108,29 +118,6 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
         } else {
             _codeStream.appendCodeBlock(blockType + "OutputBlock");
         }
-
-        return processCode(_codeStream.toString());
-    }
-
-    /**
-     * Generate preinitialize code.
-     * Read the <code>preinitBlock</code> from MultiplyDivide.c,
-     * replace macros with their values and return the processed code
-     * block.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-
-        ptolemy.actor.lib.MultiplyDivide actor = (ptolemy.actor.lib.MultiplyDivide) getComponent();
-
-        ArrayList args = new ArrayList();
-
-        Type type = actor.output.getType();
-        args.add(targetType(type));
-        _codeStream.appendCodeBlock("preinitBlock", args);
 
         return processCode(_codeStream.toString());
     }

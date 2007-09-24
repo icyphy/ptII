@@ -1,12 +1,17 @@
-/***preinitBlock($type)***/
+/*** preinitBlock ***/
 //int $actorSymbol(i);
-$type $actorSymbol(numerator);
-$type $actorSymbol(denominator);
+$targetType(output) $actorSymbol(numerator);
+$targetType(output) $actorSymbol(denominator);
 /**/
 
 /***SetNumeratorBlock***/
 $actorSymbol(numerator) = $ref(multiply#0);
 /**/
+
+/***SetNumeratorBlock ($type) ***/
+$actorSymbol(numerator) = $new($type($ref(multiply#0)));
+/**/
+
 
 /***SetNumeratorOneBlock***/
 $actorSymbol(numerator) = 1;
@@ -20,9 +25,10 @@ $actorSymbol(numerator) = $tokenFunc($ref(divide#0)::one());
 $actorSymbol(denominator) = $ref(divide#0);
 /**/
 
-/***SetDenominatorBlockType($type)***/
+/***SetDenominatorBlock ($type) ***/
 $actorSymbol(denominator) = $new($type($ref(divide#0)));
 /**/
+
 
 
 
@@ -35,12 +41,20 @@ $actorSymbol(numerator) *= $ref(multiply#$channel);
 $actorSymbol(numerator) = $tokenFunc($actorSymbol(numerator)::multiply($ref(multiply#$channel)));
 /**/
 
+/***TokenMultiplyBlock($channel, $type)***/
+$actorSymbol(numerator) = $tokenFunc($actorSymbol(numerator)::multiply($new($type($ref(multiply#$channel)))));
+/**/
+
 /***DivideBlock($channel)***/
 $actorSymbol(denominator) *= $ref(divide#$channel);
 /**/
 
 /***TokenDivideBlock($channel)***/
-$actorSymbol(denominator) = $tokenFunc($actorSymbol(denominator)::multiply($ref(divide#$channel)));
+$actorSymbol(denominator) = $tokenFunc($actorSymbol(denominator)::divide($ref(divide#$channel)));
+/**/
+
+/***TokenDivideBlock($channel, $type)***/
+$actorSymbol(denominator) = $tokenFunc($actorSymbol(denominator)::divide($new($type($ref(divide#$channel)))));
 /**/
 
 
