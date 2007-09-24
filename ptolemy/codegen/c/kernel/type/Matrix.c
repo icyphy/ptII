@@ -267,6 +267,56 @@ Token Matrix_toString(Token this, ...) {
 
 
 
+/***addBlock***/
+// Assume the given otherToken is array type.
+// Return a new Array token.
+Token Matrix_add(Token this, ...) {
+    int i, j;
+    va_list argp; 
+    Token result; 
+    Token otherToken;
+    
+    va_start(argp, this);
+    otherToken = va_arg(argp, Token);
+
+    result = Matrix_new(this.payload.Matrix->row, this.payload.Matrix->column, 0);
+    
+    for (i = 0; i < this.payload.Matrix->column; i++) {
+        for (j = 0; j < this.payload.Matrix->row; j++) {
+            Matrix_set(result, j, i, functionTable[(int)Matrix_get(this, i, j).type][FUNC_add](Matrix_get(this, i, j), Matrix_get(otherToken, i, j)));
+        }
+    }
+
+    va_end(argp);
+    return result;
+}
+/**/
+
+
+/***subtractBlock***/
+// Assume the given otherToken is array type.
+// Return a new Array token.
+Token Matrix_subtract(Token this, ...) {
+    int i, j;
+    va_list argp; 
+    Token result; 
+    Token otherToken;
+    
+    va_start(argp, this);
+    otherToken = va_arg(argp, Token);
+
+    result = Matrix_new(this.payload.Matrix->row, this.payload.Matrix->column, 0);
+    
+    for (i = 0; i < this.payload.Matrix->column; i++) {
+        for (j = 0; j < this.payload.Matrix->row; j++) {
+            Matrix_set(result, j, i, functionTable[(int)Matrix_get(this, i, j).type][FUNC_subtract](Matrix_get(this, i, j), Matrix_get(otherToken, i, j)));
+        }
+    }
+
+    va_end(argp);
+    return result;
+}
+/**/
 
 
 
