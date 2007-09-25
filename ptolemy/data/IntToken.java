@@ -127,7 +127,7 @@ public class IntToken extends ScalarToken {
                     notSupportedIncomparableConversionMessage(token, "int"));
         }
 
-        compare = TypeLattice.compare(BaseType.UNSIGNED_BYTE, token);
+        compare = TypeLattice.compare(BaseType.SHORT, token);
 
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
             UnsignedByteToken unsignedByteToken = UnsignedByteToken
