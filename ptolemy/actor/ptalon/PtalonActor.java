@@ -254,6 +254,10 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         return _configureSource;
     }
 
+    /** FIXME: this doesn't seem to be used.  Rename to getCodeManager?
+     *  Get the code manager.
+     *  @return The code manager.
+     */
     public NestedActorManager getActorManager() {
         return _codeManager;
     }
@@ -288,6 +292,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  corresponding Foo container will have depth 1.
      *  @return The depth of this actor declaration with respect to
      *  its creator.
+     *  @see #setNestedDepth
      */
     public int getNestedDepth() {
         return _nestedDepth;
@@ -321,6 +326,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  container will have depth 1.
      *  @param depth The of this actor declaration with respect to its
      *  creator.
+     *  @see #getNestedDepth
      */
     public void setNestedDepth(int depth) {
         _nestedDepth = depth;
