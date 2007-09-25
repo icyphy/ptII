@@ -271,7 +271,11 @@ public class NCApp2MoML {
         pflags.setAttribute("name", "pflags");
         pflags.setAttribute("class", "ptolemy.data.expr.StringParameter");
         pflags.setAttribute("value", opts.trim());
-        director.addContent(pflags);
+        if (director == null) {
+            throw new InternalErrorException("Could not find PtinyOSDirector element.");
+        } else {
+            director.addContent(pflags);
+        }
 
         // Set the destination directory parameter of the PtinyOSDirector.
         // <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/Blink/output">
@@ -292,7 +296,11 @@ public class NCApp2MoML {
         annotation.setAttribute("name", "Annotation");
         annotation.setAttribute("class",
                 "ptolemy.vergil.kernel.attributes.TextAttribute");
-        root.addContent(annotation);
+        if (root == null) {
+            throw new InternalErrorException("Could not find root element.");
+        } else {
+            root.addContent(annotation);
+        }
 
         Element text = new Element("property");
         text.setAttribute("name", "text");
