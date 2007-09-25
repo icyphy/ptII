@@ -749,6 +749,7 @@ public class TypeLattice {
                 _basicLattice.addNodeWeight(BaseType.OBJECT);
                 _basicLattice.addNodeWeight(BaseType.XMLTOKEN);
                 _basicLattice.addNodeWeight(BaseType.SCALAR);
+                _basicLattice.addNodeWeight(BaseType.SHORT);
                 _basicLattice.addNodeWeight(BaseType.STRING);
                 _basicLattice.addNodeWeight(BaseType.EVENT);
                 _basicLattice.addNodeWeight(BaseType.GENERAL);
@@ -801,8 +802,12 @@ public class TypeLattice {
                 _basicLattice.addEdge(BaseType.COMPLEX, BaseType.COMPLEX_MATRIX);
 
                 _basicLattice.addEdge(BaseType.DOUBLE, BaseType.COMPLEX);
-                _basicLattice.addEdge(BaseType.INT, BaseType.DOUBLE);
-                _basicLattice.addEdge(BaseType.UNSIGNED_BYTE, BaseType.INT);
+                //_basicLattice.addEdge(BaseType.INT, BaseType.DOUBLE);
+                // NOTE: Added SHORT to the type lattice. ILIU 09/20/07.
+                _basicLattice.addEdge(BaseType.UNSIGNED_BYTE, BaseType.SHORT);
+                _basicLattice.addEdge(BaseType.SHORT, BaseType.INT);
+                
+                
 
                 _basicLattice.addEdge(BaseType.EVENT, BaseType.GENERAL);
                 _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.EVENT);

@@ -43,6 +43,7 @@ import ptolemy.data.MatrixToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.PetiteToken;
 import ptolemy.data.ScalarToken;
+import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
@@ -444,6 +445,26 @@ public abstract class BaseType implements Type, Serializable {
     /** The fix matrix data type. */
     public static final MatrixType.FixMatrixType FIX_MATRIX = new MatrixType.FixMatrixType();
 
+    // NOTE: Added SHORT data type. ILIU 09/20/07. 
+    /** The short data type. */
+    public static class ShortType extends BaseType {
+        private ShortType() {
+            super(ShortToken.class, "short");
+        }
+
+        public Token convert(Token t) throws IllegalActionException {
+            return ShortToken.convert(t);
+        }
+        //NOTE: Need to change to correct HASH (any number that's not currently used). ILIU 09/20/07    
+        public int getTypeHash() {
+            return 5;
+        }
+    }
+
+    /** The integer data type. */
+    public static final ShortType SHORT = new ShortType();
+    
+    
     /** The integer data type. */
     public static class IntType extends BaseType {
         private IntType() {

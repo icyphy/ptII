@@ -318,6 +318,13 @@ public class UnsignedByteToken extends ScalarToken {
         return new UnsignedByteToken(_value >>> bits);
     }
 
+    /** Return the value in the token as a short.
+     *  @return The value contained in this token as a short.
+     */
+    public short shortValue() {
+        return _value;
+    }
+    
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
      *  If this token has a unit, the return string also includes a unit
