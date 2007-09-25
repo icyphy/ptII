@@ -10,7 +10,7 @@ import java.util.List;
  * 
  * For instance, IfTree extends NamedTree &lt IfTree &gt
  * 
- * @author acataldo
+ * @author Adam Cataldo, Elaine Cheong
  *
  */
 public abstract class NamedTree<TreeType extends NamedTree> {
