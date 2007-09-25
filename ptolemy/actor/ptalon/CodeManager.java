@@ -388,6 +388,7 @@ public class CodeManager {
     /** Add an invisible Parameter to the PtalonActor with the
      *  specified name and the given expression as its value.
      *  @param name The name of the parameter.
+     *  @param expression The expression representing the parameter.
      *  @exception PtalonRuntimeException If the symbol does not
      *  exist, or if the symbol already has a parameter associated
      *  with it, or if an IllegalActionException is thrown trying to
@@ -935,14 +936,15 @@ public class CodeManager {
     }
 
     /** Push into the scope of a new if statement contained as a
-     *  sublock of the current if statement.
+     *  sub-block of the current if statement.
      */
     public void pushIfStatement() {
         String name = _getNextIfSymbol();
         _currentIfTree = _currentIfTree.addChild(name);
     }
 
-    /** Push into the scope of a new for statement contained
+    /** Push into the scope of a new for statement contained as a 
+     *  sub-block of the current (FIXME: if or for) statement.
      *  @param variable The variable associated with the for statement.
      *  @param initExpr The expression representing the initial value
      *  for the variable.
@@ -1333,6 +1335,7 @@ public class CodeManager {
         /** Return the active branch, which may be null if it has not
          *  yet been set.
          *  @return the active branch
+         *  @see #setActiveBranch
          */
         public Boolean getActiveBranch() {
             return _activeBranch;
@@ -1350,6 +1353,7 @@ public class CodeManager {
         /** Return true if we are in the main scope or the true part
          *  of a true branch.
          *  @return true if in main scope or true part of a true branch.
+         *  @see #setCurrentBranch
          */
         public boolean getCurrentBranch() {
             return _currentBranch;
@@ -1411,6 +1415,8 @@ public class CodeManager {
         /** Get the iteration (number of times this if/for block has
          *  been entered) in which this symbol is created.
          *  @param symbol The symbol created.
+         *  @return The interation number.
+         *  @see #setEnteredIteration
          */
         public int getEnteredIteration(String symbol) {
             Integer entered = _createdIteration.get(symbol);
@@ -1611,6 +1617,7 @@ public class CodeManager {
 
         /** Set the active branch to true or false.
          *  @param branch The branch to set it to.
+         *  @see #getActiveBranch
          */
         public void setActiveBranch(boolean branch) {
             _activeBranch = branch;
@@ -1618,6 +1625,7 @@ public class CodeManager {
 
         /** Set the current branch that's being walked.
          *  @param branch True if the true branch is being walked.
+         *  @see #getCurrentBranch
          */
         public void setCurrentBranch(boolean branch) {
             _currentBranch = branch;
@@ -1627,6 +1635,7 @@ public class CodeManager {
          *  been entered) in which this symbol is created.
          *  @param symbol The symbol created.
          *  @param iteration The iteration of the symbol.
+         *  @see #getEnteredIteration
          */
         public void setEnteredIteration(String symbol, int iteration) {
             _createdIteration.put(symbol, iteration);
@@ -1770,9 +1779,10 @@ public class CodeManager {
             _variables.put(name, value);
         }
 
-        /** Look up and return the value with the specified name in
+        /** Look up and return the value of the variable or parameter with the specified name in
          *  the scope. Return null if the name is not defined in this
          *  scope.
+         *  @param name The name of the variable or parameter.
          *  @return The token associated with the given name in the
          *  scope.
          *  @exception IllegalActionException If a value in the scope
@@ -1795,9 +1805,10 @@ public class CodeManager {
             }
         }
 
-        /** Look up and return the type of the value with the
+        /** Look up and return the type of the variable or parameter with the
          *  specified name in the scope. Return null if the name is
          *  not defined in this scope.
+         *  @param name The name of the variable or parameter.
          *  @return The token associated with the given name in the
          *  scope.
          *  @exception IllegalActionException If a value in the scope
@@ -1820,9 +1831,10 @@ public class CodeManager {
             }
         }
 
-        /** Look up and return the type term for the specified name in
+        /** Look up and return the type term for the variable or parameter with the specified name in
          *  the scope. Return null if the name is not defined in this
          *  scope, or is a constant type.
+         *  @param name The name of the variable or parameter.
          *  @return The InequalityTerm associated with the given name
          *  in the scope.
          *  @exception IllegalActionException If a value in the scope
@@ -1853,6 +1865,7 @@ public class CodeManager {
          *  list is extremely expensive to compute, and users should
          *  avoid calling it.  It is primarily used for debugging
          *  purposes.
+         *  @return A set of identifier names.
          *  @exception IllegalActionException If constructing the list
          *  causes it.
          */
