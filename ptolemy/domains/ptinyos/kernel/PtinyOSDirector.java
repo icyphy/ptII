@@ -1830,9 +1830,11 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         // the values are not equal, use the regular node ID value.
         String baseStationValue = ((StringToken)baseStation.getToken()).stringValue();
         NamedObj obj = this.getContainer();
-        NamedObj temp = obj.getContainer();
-        if (temp != null) {
-            obj = temp;
+        if (obj != null) {
+            NamedObj temp = obj.getContainer();
+            if (temp != null) {
+                obj = temp;
+            }
         }
         String containerName = obj.getName();
         if (baseStationValue.equals(containerName)) {
