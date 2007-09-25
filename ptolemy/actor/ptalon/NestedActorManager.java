@@ -224,8 +224,12 @@ public class NestedActorManager extends CodeManager {
                     String description = "<entity name =\"" +
                         uniqueName + "\" class =\"" + actor + "\"/>";
                     momlParser.parse(null, description);
-                    ComponentEntity entity = _actor.getEntity(uniqueName);
-                    if (entity == null) {
+                    
+                    ComponentEntity entity = null;
+                    if (_actor != null) {
+                        entity = _actor.getEntity(uniqueName);
+                    }
+                    if (_actor == null || entity == null) {
                         throw new PtalonRuntimeException(
                                 "Could not create new actor.");
                     }
