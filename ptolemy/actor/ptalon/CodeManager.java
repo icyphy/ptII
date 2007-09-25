@@ -1648,18 +1648,19 @@ public class CodeManager {
         /** Enumerate the info from this scope.
          */
         public String toString() {
-            String output = "Scope: " + getName() + ":\n\n";
+            StringBuffer buffer = new StringBuffer("Scope: " + getName() + ":\n\n");
             for (String s : getSymbols()) {
                 try {
-                    output += s + "\t" + getType(s) + "\n";
+                    buffer.append(s + "\t" + getType(s) + "\n");
                 } catch (PtalonScopeException ex) {
-
+                    // FIXME: is this ok to do nothing?
                 }
             }
-            output += "---------------\n";
+            buffer.append("---------------\n");
             for (IfTree child : getChildren()) {
-                output += child.toString();
+                buffer.append(child.toString());
             }
+            String output = buffer.toString();
             return output;
         }
 
