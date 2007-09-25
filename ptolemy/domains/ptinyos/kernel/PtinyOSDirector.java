@@ -1823,17 +1823,18 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         text.addLine("PFLAGS +=" + " -DCOMMAND_PORT=" + commandPort.getToken()
                 + " -DEVENT_PORT=" + eventPort.getToken());
 
-        // If the value of <i>baseStation</i> is the same as the Ptolemy II name of
-        // the node, then make this node a base station by setting _PTII_NODEID in the
-        // makefile to 0.  A non-zero value of the nodeID parameter will be ignored.
-        // If the values are not equal, use the regular node ID value.
+        // If the value of <i>baseStation</i> is the same as the
+        // Ptolemy II name of the node, then make this node a base
+        // station by setting _PTII_NODEID in the makefile to 0.  A
+        // non-zero value of the nodeID parameter will be ignored.  If
+        // the values are not equal, use the regular node ID value.
         String baseStationValue = ((StringToken)baseStation.getToken()).stringValue();
         NamedObj obj = this.getContainer();
         NamedObj temp = obj.getContainer();
         if (temp != null) {
             obj = temp;
         }
-        String containerName = temp.getName();
+        String containerName = obj.getName();
         if (baseStationValue.equals(containerName)) {
             text.addLine("PFLAGS +=" + "-D_PTII_NODEID=" + "0");
         } else {
