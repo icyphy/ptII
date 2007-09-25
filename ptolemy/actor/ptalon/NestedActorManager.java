@@ -1029,22 +1029,23 @@ public class NestedActorManager extends CodeManager {
             } catch (PtalonScopeException ex) {
                 throw new PtalonRuntimeException("Scope Exception", ex);
             }
-            String output = "";
+            StringBuffer buffer = new StringBuffer();
             if (type.equals("import")) {
-                output += "ptalonActor:" + _imports.get(_symbol);
+                buffer.append("ptalonActor:" + _imports.get(_symbol));
             } else if (type.equals("actorparameter")) {
                 Parameter parameter = _actor.getPtalonParameter(_symbol);
-                output += parameter.getExpression();
+                buffer.append(parameter.getExpression());
             } else {
                 throw new PtalonRuntimeException(
                         "Not assigned a parameter name");
             }
             for (ActorTree child : _children) {
-                output += "(" + child.getExpression() + ")";
+                buffer.append("(" + child.getExpression() + ")");
             }
             for (String param : _parameters.keySet()) {
-                output += "(" + param + " := " + _parameters.get(param) + ")";
+                buffer.append("(" + param + " := " + _parameters.get(param) + ")");
             }
+            String output = buffer.toString();
             return output;
         }
 
