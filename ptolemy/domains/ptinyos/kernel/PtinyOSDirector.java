@@ -1757,7 +1757,7 @@ MY_PTCC_FLAGS += -D_PTII_NODE_NAME=_1SenseToLeds_1InWireless_1MicaBoard_1MicaCom
 PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
 include /home/celaine/ptII/mk/ptII.mk
 include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
-===== End example makefile (from Dec 9, 20060) =====
+===== End example makefile (from Dec 9, 2006) =====
      *
      * @exception IllegalActionException If thrown when accessing a
      * parameter or if there is an error writing to the file.
@@ -1770,9 +1770,8 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         // Check to make sure that tosRoot exists
         if (tosRoot == null || tosRoot.asFile() == null
                 || !tosRoot.asFile().isDirectory()) {
-            String fileName = (tosRoot == null ? "null"
-                    : (tosRoot.asFile() == null ? "null" : tosRoot.asFile()
-                            .toString()));
+            String fileName = ((tosRoot == null || tosRoot.asFile() == null) 
+                    ? "null" : tosRoot.asFile().toString());
             String tosRootMessage = "The TOSROOT directory \"" + fileName
                     + "\" does not exist?  Compilation "
                     + "is likely to fail.  The TOSROOT environment "
@@ -1788,9 +1787,8 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         // Check to make sure that tosDir exists
         if (tosDir == null || tosDir.asFile() == null
                 || !tosDir.asFile().isDirectory()) {
-            String fileName = (tosDir == null ? "null" : tosDir.asFile()
-                    .toString());
-            fileName = (fileName == null ? "null" : fileName);
+            String fileName = ((tosDir == null || tosDir.asFile() == null)
+                    ? "null" : tosDir.asFile().toString());
             String tosDirMessage = "The TOSDIR directory \"" + fileName
                     + "\" does not exist?  Compilation "
                     + "is likely to fail.  The TOSDIR environment "
