@@ -130,19 +130,19 @@ public class IntToken extends ScalarToken {
         compare = TypeLattice.compare(BaseType.SHORT, token);
 
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
-            UnsignedByteToken unsignedByteToken = UnsignedByteToken
+            ShortToken shortToken = ShortToken
                     .convert(token);
-            IntToken result = new IntToken(unsignedByteToken.intValue());
-            if (unsignedByteToken._unitCategoryExponents != null
+            IntToken result = new IntToken(shortToken.intValue());
+            if (shortToken._unitCategoryExponents != null
                     && !UnitUtilities
-                            .isUnitless(unsignedByteToken._unitCategoryExponents)) {
-                result._unitCategoryExponents = unsignedByteToken
+                            .isUnitless(shortToken._unitCategoryExponents)) {
+                result._unitCategoryExponents = shortToken
                         ._copyOfCategoryExponents();
             }
             return result;
         }
 
-        // The argument is below UnsignedByteToken in the type hierarchy,
+        // The argument is below ShortToken in the type hierarchy,
         // but I don't recognize it.
         throw new IllegalActionException(notSupportedConversionMessage(token,
                 "int"));
