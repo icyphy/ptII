@@ -1,6 +1,6 @@
 # Tests for the ShortToken class
 #
-# @Author: Isaac Liu, Neil Smyth, Yuhong Xiong, contributor: Christopher Brooks
+# @Author: Isaac Liu, based on IntToken.tcl by Neil Smyth, Yuhong Xiong, contributor: Christopher Brooks
 #
 # @Version $Id$
 #
@@ -261,7 +261,7 @@ test ShortToken-8.1 {Test shift operator between shorts.} {
     set res6 [$tok2 logicalRightShift 1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] [$res5 toString] [$res6 toString]
-} {14 -14 3 -4 3 2147483644}
+} {14 -14 3 -4 3 32764}
 
 ######################################################################
 ####
@@ -334,6 +334,26 @@ test ShortToken-10.1 {test isLessThan} {
 	 [[$l3 isLessThan $i3] booleanValue] \
 	 [[$l2 isLessThan $l3] booleanValue] \
 	 [[$l3 isLessThan $l2] booleanValue]
+} {1 0 1 0 0 0 0 0 1 0 1 0}
+
+test ShortToken-10.2 {test isLessThan} {
+    set i2 [java::new ptolemy.data.ShortToken 2]
+    set i3 [java::new ptolemy.data.ShortToken 3]
+    set d2 [java::new ptolemy.data.IntToken 2]
+    set d3 [java::new ptolemy.data.IntToken 3]
+
+    list [[$i2 isLessThan $i3] booleanValue] \
+         [[$i2 isLessThan $d2] booleanValue] \
+	 [[$i2 isLessThan $d3] booleanValue] \
+         [[$i3 isLessThan $i2] booleanValue] \
+         [[$d2 isLessThan $i2] booleanValue] \
+	 [[$d3 isLessThan $i2] booleanValue] \
+	 [[$i3 isLessThan $d2] booleanValue] \
+	 [[$i3 isLessThan $d3] booleanValue] \
+	 [[$d2 isLessThan $i3] booleanValue] \
+	 [[$d3 isLessThan $i3] booleanValue] \
+	 [[$d2 isLessThan $d3] booleanValue] \
+	 [[$d3 isLessThan $d2] booleanValue]
 } {1 0 1 0 0 0 0 0 1 0 1 0}
 
 ######################################################################
