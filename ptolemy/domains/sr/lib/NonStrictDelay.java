@@ -99,14 +99,6 @@ public class NonStrictDelay extends Transformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (input.isKnown(0)) {
-            if (input.hasToken(0)) {
-                _currentToken = input.get(0);
-            } else {
-                _currentToken = AbsentToken.ABSENT;
-            }
-        }
-
         if (_previousToken != null) {
             if (_previousToken == AbsentToken.ABSENT) {
                 output.sendClear(0);
@@ -124,7 +116,6 @@ public class NonStrictDelay extends Transformer {
     public void initialize() throws IllegalActionException {
         // Note that this will default to null if there is no initialValue set.
         _previousToken = initialValue.getToken();
-        _currentToken = null;
         super.initialize();
     }
 
@@ -141,9 +132,13 @@ public class NonStrictDelay extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        _previousToken = _currentToken;
-        _currentToken = null;
-
+        if (input.isKnown(0)) {
+            if (input.hasToken(0)) {
+                _previousToken = input.get(0);
+            } else {
+                _previousToken = AbsentToken.ABSENT;
+            }
+        }
         return super.postfire();
     }
 
@@ -187,9 +182,4 @@ public class NonStrictDelay extends Transformer {
      *  current iteration.
      */
     protected Token _previousToken;
-
-    /** The most recent token received on the current iteration to be
-     * output on the next iteration.
-     */
-    protected Token _currentToken;
 }
