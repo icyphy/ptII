@@ -91,9 +91,13 @@ public class CodeGeneratorGUI extends PtolemyFrame {
 
         setTitle(codeGenerator.getName());
 
+        // FIXME: The following is pretty lame.  If the model hasn't been saved,
+        // then we throw an exception as below, but why can't we just make
+        // it work?
         if ((getEffigy() == null) || (getEffigy().uri == null)
                 || (getEffigy().uri.getURI() == null)) {
-            throw new InternalErrorException("Cannot get an effigy!");
+            throw new IllegalActionException(
+                    "No effigy: Please save the model to a file before generating code.");
         }
 
         // Caveats panel.
