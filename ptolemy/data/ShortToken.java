@@ -260,7 +260,9 @@ public class ShortToken extends ScalarToken {
         if (isNil()) {
             return ShortToken.NIL;
         }
-        return new ShortToken(_value >>> bits);
+        short returnValue = (short)(_value >>> bits);
+        returnValue = (short) (returnValue & 0x7FFF);
+        return new ShortToken(returnValue);
     }
 
     /** Return the value in the token as a long.
