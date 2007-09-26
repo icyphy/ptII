@@ -455,9 +455,8 @@ public abstract class BaseType implements Type, Serializable {
         public Token convert(Token t) throws IllegalActionException {
             return ShortToken.convert(t);
         }
-        //NOTE: Need to change to correct HASH (any number that's not currently used). ILIU 09/20/07    
         public int getTypeHash() {
-            return 5;
+            return 15;
         }
     }
 
