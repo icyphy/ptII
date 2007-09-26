@@ -39,6 +39,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.ExceptionHandler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -642,7 +643,12 @@ public class Manager extends NamedObj implements Runnable {
 
                 while (actors.hasNext()) {
                     Actor actor = (Actor) actors.next();
-                    actor.preinitialize();
+                    // Do not attempt to preinitialize transparent composite actors.
+                    // Note that the cast is safe, as everything in Ptolemy that
+                    // is an actor is also a ComponentEntity.
+                    if (((ComponentEntity)actor).isOpaque()) {
+                        actor.preinitialize();
+                    }
 
                     // NOTE: To see why this is no longer needed, see the comment
                     // above for the commented out call to validateSettables().
