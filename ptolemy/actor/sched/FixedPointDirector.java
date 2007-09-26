@@ -36,6 +36,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -43,6 +44,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -94,6 +96,12 @@ import ptolemy.kernel.util.Workspace;
  the same iteration can call clear() or put() with a token with
  a different value.
  These constraints ensure determinacy.
+ </p><p>
+ If <i>synchronizeToRealTime</i> is set to <code>true</code>,
+ then the prefire() method stalls until the real time elapsed
+ since the model started matches the current time.
+ This ensures that the director does not get ahead of real time. However,
+ of course, this does not ensure that the director keeps up with real time.
  <p>
  This class is based on the original SRDirector, written by Paul Whitaker.
  
@@ -162,6 +170,16 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  thus the execution can continue forever.
      */
     public Parameter iterations;
+    
+    /** Specify whether the execution should synchronize to the
+     *  real time. This parameter has type boolean and defaults
+     *  to false. If set to true, then this director stalls in the
+     *  prefire() method until the elapsed real real time matches
+     *  the current time. If the <i>period</i> parameter has value
+     *  0.0 (the default), then changing this parameter to true
+     *  has no effect.
+     */
+    public Parameter synchronizeToRealTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -243,6 +261,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         _functionalPropertyVersion = -1;
 
         super.initialize();
+        
+        _realStartTime = System.currentTimeMillis();
     }
 
     /** Return true if all the controlled actors' isFireFunctional()
@@ -364,7 +384,62 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
         _resetAllReceivers();
 
-        return super.prefire();
+        // Set current time based on the enclosing model.
+        boolean result = super.prefire();
+        
+        boolean synchronizeValue = ((BooleanToken) synchronizeToRealTime
+                .getToken()).booleanValue();
+
+        if (synchronizeValue) {
+            synchronized (this) {
+                while (true) {
+                    long elapsedTime = System.currentTimeMillis()
+                            - _realStartTime;
+
+                    // NOTE: We assume that the elapsed time can be
+                    // safely cast to a double.  This means that
+                    // the SR domain has an upper limit on running
+                    // time of Double.MAX_VALUE milliseconds.
+                    double elapsedTimeInSeconds = elapsedTime / 1000.0;
+                    double currentTime = getModelTime().getDoubleValue();
+
+                    if (currentTime <= elapsedTimeInSeconds) {
+                        break;
+                    }
+
+                    long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
+
+                    if (_debugging) {
+                        _debug("Waiting for real time to pass: " + timeToWait);
+                    }
+
+                    try {
+                        // NOTE: The built-in Java wait() method
+                        // does not release the
+                        // locks on the workspace, which would block
+                        // UI interactions and may cause deadlocks.
+                        // SOLUTION: workspace.wait(object, long).
+                        if (timeToWait > 0) {
+                            // Bug fix from J. S. Senecal:
+                            //
+                            //  The problem was that sometimes, the
+                            //  method Object.wait(timeout) was called
+                            //  with timeout = 0. According to java
+                            //  documentation:
+                            //
+                            // " If timeout is zero, however, then
+                            // real time is not taken into
+                            // consideration and the thread simply
+                            // waits until notified."
+                            _workspace.wait(this, timeToWait);
+                        }
+                    } catch (InterruptedException ex) {
+                        // Continue executing.
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     /** Return an array of suggested directors to be used with
@@ -590,6 +665,13 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             NameDuplicationException {
         iterations = new Parameter(this, "iterations", new IntToken(0));
         iterations.setTypeEquals(BaseType.INT);
+        
+        synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
+        synchronizeToRealTime.setExpression("false");
+        synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
+        
+        timeResolution.setVisibility(Settable.FULL);
+        timeResolution.moveToLast();
 
         FixedPointScheduler scheduler = new FixedPointScheduler(this,
                 uniqueName("Scheduler"));
@@ -682,4 +764,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  actor firings.
      */
     private int _lastNumberOfKnownReceivers;
+
+    /** The real time at which the model begins executing. */
+    private long _realStartTime = 0L;
 }
