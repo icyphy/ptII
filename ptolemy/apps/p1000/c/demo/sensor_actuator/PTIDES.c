@@ -1046,9 +1046,6 @@ void sensor_run(Actor* this_sensor)     //this listens for the next signal to se
         Die("Failed to bind server socket at sensor_run");
     }
 
-    unsigned int secs;
-    unsigned int nsecs;
-
     do {
         // listens for messages from the client
         clientlen = sizeof(echoclient);
