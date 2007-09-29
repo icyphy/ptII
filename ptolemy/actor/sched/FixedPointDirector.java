@@ -98,10 +98,12 @@ import ptolemy.kernel.util.Workspace;
  These constraints ensure determinacy.
  </p><p>
  If <i>synchronizeToRealTime</i> is set to <code>true</code>,
- then the prefire() method stalls until the real time elapsed
+ then the postfire() method stalls until the real time elapsed
  since the model started matches the current time.
  This ensures that the director does not get ahead of real time. However,
  of course, this does not ensure that the director keeps up with real time.
+ Note that this synchronization occurs <i>after</i> actors have been fired,
+ but before they have been postfired.
  <p>
  This class is based on the original SRDirector, written by Paul Whitaker.
  
@@ -314,7 +316,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     }
 
     /** Call postfire() on all contained actors that were fired on the last
-     *  invocation of fire().  Return false if the model
+     *  invocation of fire().  If <i>synchronizeToRealTime</i> is true, then
+     *  wait for real time elapse to match or exceed model time. Return false if the model
      *  has finished executing, either by reaching the iteration limit, or if
      *  no actors in the model return true in postfire(), or if stop has
      *  been requested. This method is called only once for each iteration.
@@ -328,6 +331,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         if (_debugging) {
             _debug("FixedPointDirector: Called postfire().");
         }
+        _synchronizeToRealTime();
 
         boolean needMoreIterations = true;
         int numberOfActors = getScheduler().getSchedule().size();
@@ -387,58 +391,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // Set current time based on the enclosing model.
         boolean result = super.prefire();
         
-        boolean synchronizeValue = ((BooleanToken) synchronizeToRealTime
-                .getToken()).booleanValue();
-
-        if (synchronizeValue) {
-            synchronized (this) {
-                while (true) {
-                    long elapsedTime = System.currentTimeMillis()
-                            - _realStartTime;
-
-                    // NOTE: We assume that the elapsed time can be
-                    // safely cast to a double.  This means that
-                    // the SR domain has an upper limit on running
-                    // time of Double.MAX_VALUE milliseconds.
-                    double elapsedTimeInSeconds = elapsedTime / 1000.0;
-                    double currentTime = getModelTime().getDoubleValue();
-
-                    if (currentTime <= elapsedTimeInSeconds) {
-                        break;
-                    }
-
-                    long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
-
-                    if (_debugging) {
-                        _debug("Waiting for real time to pass: " + timeToWait);
-                    }
-
-                    try {
-                        // NOTE: The built-in Java wait() method
-                        // does not release the
-                        // locks on the workspace, which would block
-                        // UI interactions and may cause deadlocks.
-                        // SOLUTION: workspace.wait(object, long).
-                        if (timeToWait > 0) {
-                            // Bug fix from J. S. Senecal:
-                            //
-                            //  The problem was that sometimes, the
-                            //  method Object.wait(timeout) was called
-                            //  with timeout = 0. According to java
-                            //  documentation:
-                            //
-                            // " If timeout is zero, however, then
-                            // real time is not taken into
-                            // consideration and the thread simply
-                            // waits until notified."
-                            _workspace.wait(this, timeToWait);
-                        }
-                    } catch (InterruptedException ex) {
-                        // Continue executing.
-                    }
-                }
-            }
-        }
         return result;
     }
 
@@ -532,6 +484,65 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         Iterator receiverIterator = _receivers.iterator();
         while (receiverIterator.hasNext()) {
             ((FixedPointReceiver) receiverIterator.next()).reset();
+        }
+    }
+
+    /** Synchronize to real time, if appropriate.
+     *  @exception IllegalActionException If the <i>synchronizeToRealTime</i>
+     *   parameter is ill formed.
+     */
+    protected void _synchronizeToRealTime() throws IllegalActionException {
+        boolean synchronizeValue = ((BooleanToken) synchronizeToRealTime
+                .getToken()).booleanValue();
+
+        if (synchronizeValue) {
+            synchronized (this) {
+                while (true) {
+                    long elapsedTime = System.currentTimeMillis()
+                            - _realStartTime;
+
+                    // NOTE: We assume that the elapsed time can be
+                    // safely cast to a double.  This means that
+                    // the SR domain has an upper limit on running
+                    // time of Double.MAX_VALUE milliseconds.
+                    double elapsedTimeInSeconds = elapsedTime / 1000.0;
+                    double currentTime = getModelTime().getDoubleValue();
+
+                    if (currentTime <= elapsedTimeInSeconds) {
+                        break;
+                    }
+
+                    long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
+
+                    if (_debugging) {
+                        _debug("Waiting for real time to pass: " + timeToWait);
+                    }
+
+                    try {
+                        // NOTE: The built-in Java wait() method
+                        // does not release the
+                        // locks on the workspace, which would block
+                        // UI interactions and may cause deadlocks.
+                        // SOLUTION: workspace.wait(object, long).
+                        if (timeToWait > 0) {
+                            // Bug fix from J. S. Senecal:
+                            //
+                            //  The problem was that sometimes, the
+                            //  method Object.wait(timeout) was called
+                            //  with timeout = 0. According to java
+                            //  documentation:
+                            //
+                            // " If timeout is zero, however, then
+                            // real time is not taken into
+                            // consideration and the thread simply
+                            // waits until notified."
+                            _workspace.wait(this, timeToWait);
+                        }
+                    } catch (InterruptedException ex) {
+                        // Continue executing.
+                    }
+                }
+            }
         }
     }
 

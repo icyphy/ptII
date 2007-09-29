@@ -42,7 +42,6 @@ import ptolemy.actor.util.GeneralComparator;
 import ptolemy.actor.util.SuperdenseTime;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TotallyOrderedSet;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -282,11 +281,6 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  simulation starts.
      */
     public Parameter stopTime;
-
-    /** Indicator whether the execution will synchronize to real time. The
-     *  default value is false, and the type is boolean.
-     */
-    public Parameter synchronizeToRealTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -1103,11 +1097,6 @@ public class ContinuousDirector extends FixedPointDirector implements
             errorTolerance.setExpression("1e-4");
             errorTolerance.setTypeEquals(BaseType.DOUBLE);
 
-            synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
-            synchronizeToRealTime.setExpression("false");
-            synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
-
-            timeResolution.setVisibility(Settable.FULL);
             iterations.setVisibility(Settable.NONE);
 
             ODESolver = new StringParameter(this, "ODESolver");
@@ -1194,7 +1183,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     ////                         private methods                   ////
 
     /** Commit the current state by postfiring the actors under the
-     *  control of this director and FIXME.
+     *  control of this director.
      *  @return True if it is OK to fire again.
      */
     private boolean _commit() throws IllegalActionException {
@@ -1258,9 +1247,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         // The iterationBegintime will be used for roll back when the current
         // step size is incorrect.
         _iterationBeginTime = _currentTime;
-
-        // Synchronize to real time if necessary.
-        _synchronizeToRealTime();
 
         return result;
     }
@@ -1426,9 +1412,6 @@ public class ContinuousDirector extends FixedPointDirector implements
         // The iterationBegintime will be used for roll back when the current
         // step size is incorrect.
         _iterationBeginTime = _currentTime;
-
-        // Synchronize to real time if necessary.
-        _synchronizeToRealTime();
 
         return result;
     }
@@ -1805,36 +1788,6 @@ public class ContinuousDirector extends FixedPointDirector implements
             _stepSizeControllersVersion = _workspace.getVersion();
         }
         return _stepSizeControllers;
-    }
-
-    /** Synchronize to real time, if appropriate.
-     *  @exception IllegalActionException If evaluating the parameter fails
-     *   or if an exception occurs during sleeping.
-     */
-    private void _synchronizeToRealTime() throws IllegalActionException {
-        if (((BooleanToken) synchronizeToRealTime.getToken()).booleanValue()) {
-            long realTime = System.currentTimeMillis() - _timeBase;
-            long simulationTime = (long) ((_iterationBeginTime
-                    .subtract(_startTime).getDoubleValue()) * 1000);
-            long timeDifference = simulationTime - realTime;
-            // If the time difference is large enough, go to sleep.
-            if (timeDifference > 20) {
-                try {
-                    if (_debugging) {
-                        _debug("Sleep for " + timeDifference + "ms.");
-                    }
-                    Thread.sleep(timeDifference - 20);
-                } catch (Exception e) {
-                    throw new IllegalActionException(this, "Sleep Interrupted"
-                            + e.getMessage());
-                }
-            } else {
-                if (_debugging) {
-                    _debug("Warning: cannot achieve real-time performance"
-                            + " at simulation time " + _iterationBeginTime);
-                }
-            }
-        }
     }
 
     /** Transfer inputs from the environment to inside. 
