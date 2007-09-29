@@ -28,7 +28,7 @@
             <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
                 <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;output&quot;/true/&quot;unknown&quot;/true/false/true/true/true/false)">
                 </property>
-                <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+                <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                     </property>
                 </property>
@@ -67,7 +67,7 @@
             <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
                 <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;input&quot;/true/&quot;unknown&quot;/true/true/true/false/true/true)">
                 </property>
-                <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+                <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                     </property>
                 </property>

@@ -17,12 +17,12 @@
     </configure>
   </entity>
   <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
-    <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+    <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
       <property name="attributeName" value="ruleList"/>
     </property>
   </entity>
   <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
-    <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+    <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
       <property name="attributeName" value="ruleList"/>
     </property>
   </entity>

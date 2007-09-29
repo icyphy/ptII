@@ -16,7 +16,7 @@
         <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;output1&quot;/true/&quot;a&quot;/true/false/true/true/true/false)(ptolemy.actor.gt.rules.PortRule/true/&quot;output2&quot;/true/&quot;b&quot;/true/false/true/true/true/false)(ptolemy.actor.gt.rules.SubclassRule/true/&quot;ptolemy.actor.lib.BooleanSwitch&quot;)">
             </property>
-            <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+            <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                 </property>
             </property>
@@ -146,7 +146,7 @@
         <entity name="B" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;input&quot;/true/&quot;a&quot;/true/true/true/false/false/false)(ptolemy.actor.gt.rules.PortRule/true/&quot;output&quot;/true/&quot;b&quot;/true/false/true/true/true/false)">
             </property>
-            <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+            <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                 </property>
             </property>
@@ -156,7 +156,7 @@
         <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;input&quot;/true/&quot;a&quot;/true/true/true/false/true/false)(ptolemy.actor.gt.rules.PortRule/true/&quot;output&quot;/true/&quot;b&quot;/true/false/true/true/true/false)(ptolemy.actor.gt.rules.SubclassRule/true/&quot;ptolemy.actor.lib.AbsoluteValue&quot;)">
             </property>
-            <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+            <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                 </property>
             </property>
@@ -166,7 +166,7 @@
         <entity name="D" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;input&quot;/true/&quot;a&quot;/true/true/false/false/true/true)">
             </property>
-            <property name="_editorFactory" class="ptolemy.actor.gt.RuleEditor$Factory">
+            <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                 </property>
             </property>
