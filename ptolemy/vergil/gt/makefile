@@ -59,7 +59,8 @@ JSRCS = \
 	GTRuleGraphFrame.java \
 	GTRuleGraphTableau.java \
 	MatchResultTableau.java \
-	MatchResultViewer.java
+	MatchResultViewer.java \
+	RuleEditor.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -89,6 +90,18 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$3.class' \
 	'MatchResultViewer$$NextAction.class' \
 	'MatchResultViewer$$PreviousAction.class' \
+	'RuleEditor$$1.class' \
+	'RuleEditor$$2.class' \
+	'RuleEditor$$3.class' \
+	'RuleEditor$$4.class' \
+	'RuleEditor$$AttributesEditor.class' \
+	'RuleEditor$$ClassSelectorEditor.class' \
+	'RuleEditor$$ComboElement.class' \
+	'RuleEditor$$Factory.class' \
+	'RuleEditor$$JPanelCellEditor.class' \
+	'RuleEditor$$Row$$1.class' \
+	'RuleEditor$$Row$$CheckBoxActionListener.class' \
+	'RuleEditor$$Row.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

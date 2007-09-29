@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gt;
+package ptolemy.vergil.gt;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -80,6 +80,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import ptolemy.actor.gt.Rule;
+import ptolemy.actor.gt.RuleAttribute;
+import ptolemy.actor.gt.RuleList;
+import ptolemy.actor.gt.RuleListAttribute;
+import ptolemy.actor.gt.RuleValidationException;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;

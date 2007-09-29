@@ -64,7 +64,6 @@ JSRCS = \
 	NoMatchFoundException.java \
 	Rule.java \
 	RuleAttribute.java \
-	RuleEditor.java \
 	RuleList.java \
 	RuleListAttribute.java \
 	RuleValidationException.java \
@@ -90,19 +89,7 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$ObjectList.class' \
 	'GraphMatcher$$Path.class' \
 	'GraphMatcher$$PortRulePair.class' \
-	'Rule$$FieldIterator.class' \
-	'RuleEditor$$1.class' \
-	'RuleEditor$$2.class' \
-	'RuleEditor$$3.class' \
-	'RuleEditor$$4.class' \
-	'RuleEditor$$AttributesEditor.class' \
-	'RuleEditor$$ClassSelectorEditor.class' \
-	'RuleEditor$$ComboElement.class' \
-	'RuleEditor$$Factory.class' \
-	'RuleEditor$$JPanelCellEditor.class' \
-	'RuleEditor$$Row$$1.class' \
-	'RuleEditor$$Row$$CheckBoxActionListener.class' \
-	'RuleEditor$$Row.class'
+	'Rule$$FieldIterator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
