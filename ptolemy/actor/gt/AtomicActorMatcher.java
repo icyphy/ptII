@@ -167,7 +167,7 @@ public class AtomicActorMatcher extends TypedAtomicActor {
                         editorIcon.exportMoML()));
             }
             return true;
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             return false;
         }
     }

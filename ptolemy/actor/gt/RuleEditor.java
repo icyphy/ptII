@@ -260,15 +260,15 @@ public class RuleEditor extends JDialog implements ActionListener {
         }
     }
 
-    public static Color DISABLED_COLOR = new Color(220, 220, 220);
+    public static final Color DISABLED_COLOR = new Color(220, 220, 220);
 
-    public static Border EMPTY_BORDER = BorderFactory.createEmptyBorder();
+    public static final Border EMPTY_BORDER = BorderFactory.createEmptyBorder();
 
-    public static int ROW_HEIGHT = 45;
+    public static final int ROW_HEIGHT = 45;
 
-    public static Color SELECTED_COLOR = new Color(230, 230, 255);
+    public static final Color SELECTED_COLOR = new Color(230, 230, 255);
 
-    public static Color UNSELECTED_COLOR = Color.WHITE;
+    public static final Color UNSELECTED_COLOR = Color.WHITE;
 
     /**
      * @author tfeng
@@ -539,6 +539,77 @@ public class RuleEditor extends JDialog implements ActionListener {
 
         private static final long serialVersionUID = -8545086228933217848L;
 
+    }
+
+    private static class ClassSelectorEditor implements ComboBoxEditor,
+    MouseListener, FocusListener {
+
+        public void addActionListener(ActionListener l) {
+        }
+
+        public void focusGained(FocusEvent e) {
+        }
+
+        public void focusLost(FocusEvent e) {
+            _comboBox.hidePopup();
+        }
+
+        public Component getEditorComponent() {
+            return _textField;
+        }
+
+        public Object getItem() {
+            return _value;
+        }
+
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        public void mouseExited(MouseEvent e) {
+        }
+
+        public void mousePressed(MouseEvent e) {
+            _comboBox.setPopupVisible(!_comboBox.isPopupVisible());
+        }
+
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        public void removeActionListener(ActionListener l) {
+        }
+
+        public void selectAll() {
+        }
+
+        public void setBackground(Color color) {
+            _textField.setBackground(color);
+        }
+
+        public void setItem(Object value) {
+            _value = value;
+            if (value == null) {
+                _textField.setText("");
+            } else {
+                _textField.setText(value.toString());
+            }
+        }
+
+        ClassSelectorEditor(JComboBox comboBox) {
+            _comboBox = comboBox;
+            _textField.setEditable(false);
+            _textField.setOpaque(true);
+            _textField.addMouseListener(this);
+            _textField.addFocusListener(this);
+        }
+
+        private JComboBox _comboBox;
+
+        private JTextField _textField = new JTextField();
+
+        private Object _value;
     }
 
     private static class ComboElement {
@@ -869,77 +940,6 @@ public class RuleEditor extends JDialog implements ActionListener {
             }
 
             private int _index;
-        }
-
-        private class ClassSelectorEditor implements ComboBoxEditor,
-        MouseListener, FocusListener {
-
-            public void addActionListener(ActionListener l) {
-            }
-
-            public void focusGained(FocusEvent e) {
-            }
-
-            public void focusLost(FocusEvent e) {
-                _comboBox.hidePopup();
-            }
-
-            public Component getEditorComponent() {
-                return _textField;
-            }
-
-            public Object getItem() {
-                return _value;
-            }
-
-            public void mouseClicked(MouseEvent e) {
-            }
-
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            public void mouseExited(MouseEvent e) {
-            }
-
-            public void mousePressed(MouseEvent e) {
-                _comboBox.setPopupVisible(!_comboBox.isPopupVisible());
-            }
-
-            public void mouseReleased(MouseEvent e) {
-            }
-
-            public void removeActionListener(ActionListener l) {
-            }
-
-            public void selectAll() {
-            }
-
-            public void setBackground(Color color) {
-                _textField.setBackground(color);
-            }
-
-            public void setItem(Object value) {
-                _value = value;
-                if (value == null) {
-                    _textField.setText("");
-                } else {
-                    _textField.setText(value.toString());
-                }
-            }
-
-            ClassSelectorEditor(JComboBox comboBox) {
-                _comboBox = comboBox;
-                _textField.setEditable(false);
-                _textField.setOpaque(true);
-                _textField.addMouseListener(this);
-                _textField.addFocusListener(this);
-            }
-
-            private JComboBox _comboBox;
-
-            private JTextField _textField = new JTextField();
-
-            private Object _value;
         }
     }
 

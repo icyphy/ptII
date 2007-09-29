@@ -350,10 +350,6 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
                     _MATCH_FILE_CHOOSER_BUTTONS[0])) {
                 _matchFileName = fileChooser.getFileName();
                 File input = new File(_matchFileName);
-                if (input == null) {
-                    MessageHandler.message("Input model must not be empty.");
-                    return;
-                }
                 if (!input.exists()) {
                     MessageHandler.message("Unable to read input model " +
                             _matchFileName + ".");

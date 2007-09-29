@@ -27,8 +27,11 @@
  */
 package ptolemy.actor.gt.data;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+
+import ptolemy.kernel.util.KernelRuntimeException;
 
 public class FastLinkedList<E> implements Collection<E> {
 
@@ -165,13 +168,25 @@ public class FastLinkedList<E> implements Collection<E> {
         return _tail;
     }
 
+    public int hashCode() {
+        int[] hashCodes = new int[size()];
+        Entry entry = _head;
+        int i = 0;
+        while (entry != null) {
+            E value = entry._value;
+            hashCodes[i++] = value == null ? 0 : value.hashCode();
+            entry = entry._next;
+        }
+        return Arrays.hashCode(hashCodes);
+    }
+
     public boolean isEmpty() {
         return _head == null;
     }
 
     public Iterator<E> iterator() {
         // FIXME: Implement later.
-        return null;
+        throw new KernelRuntimeException("Not implemented.");
     }
 
     @SuppressWarnings("unchecked")

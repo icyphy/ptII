@@ -115,10 +115,6 @@ public class MatchResultTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        if (!(model instanceof CompositeEntity)) {
-            throw new InternalErrorException(this, null, "Composite Entity \""
-                    + model.getFullName() + "\" is not an instance of CompositeEntity.");
-        }
         MatchResultViewer frame = new MatchResultViewer((CompositeEntity) model,
                 this, defaultLibrary);
 
