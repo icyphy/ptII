@@ -42,8 +42,8 @@ import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -56,7 +56,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
@@ -64,12 +63,9 @@ import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StreamExec;
 import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
@@ -78,7 +74,7 @@ import ptolemy.util.StringUtilities;
 
 /**
  A composite actor that can be optionally code generated and then
- invoked via the Java Native Interface (JNI).
+ be invoked via the Java Native Interface (JNI).
 
  @author Gang Zhou, contributors: Christopher Brooks, Edward A. Lee
  @version $Id$
@@ -159,17 +155,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     public Parameter inline;
     
-    /** If true, then invoke the generated code in the action methods
+    /** If true (the default), then invoke the generated code in the action methods
      *  (fire(), etc.) using the Java Native Interface (JNI).
-     *  The default value is false, which results in this actor
-     *  executing like an ordinary composite actor.  Classes like EmbeddedCActor
-     *  set invokeJNI to true when there is only C code specifying
-     *  the functionality of an actor.   
+     *  If the value is changed to false, then this actor
+     *  executes like an ordinary composite actor.
      */
     public Parameter invokeJNI;
 
-    /** If true, overwrite preexisting files.  The default
-     *  value is a parameter with the value true.
+    /** If true, overwrite preexisting files.  This is a boolean
+     *  with default value true.
      */
     public Parameter overwriteFiles;
 
@@ -191,8 +185,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     public void fire() throws IllegalActionException {
 
-        boolean invoked = ((BooleanToken) invokeJNI.getToken()).booleanValue();
-        if (invoked) {
+        boolean invokeJNIValue = ((BooleanToken) invokeJNI.getToken()).booleanValue();
+        if (invokeJNIValue) {
             if (_debugging) {
                 _debug("Calling fire()");
             }
@@ -280,8 +274,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         super.initialize();
 
-        boolean invoked = ((BooleanToken) invokeJNI.getToken()).booleanValue();
-        if (invoked) {
+        boolean invokeJNIValue = ((BooleanToken) invokeJNI.getToken()).booleanValue();
+        if (invokeJNIValue) {
             if ( _generatedCodeVersion != _workspace.getVersion()) {
                 
                 _updateSanitizedActorName();
@@ -388,9 +382,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        boolean invoked = ((BooleanToken) invokeJNI.getToken()).booleanValue();
+        boolean invokeJNIValue = ((BooleanToken) invokeJNI.getToken()).booleanValue();
 
-        if (invoked) {
+        if (invokeJNIValue) {
             if (_jniWrapper == null) {
                 // If we are generating code for an entire model,
                 // we might end up here.
@@ -749,9 +743,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             
             invokeJNI = new Parameter(this, "invokeJNI");
             invokeJNI.setTypeEquals(BaseType.BOOLEAN);
-            invokeJNI.setExpression("false");
+            invokeJNI.setExpression("true");
             // Hide the invokeJNI parameter from the user.
-            invokeJNI.setVisibility(Settable.NONE);
+            // invokeJNI.setVisibility(Settable.NONE);
 
             overwriteFiles = new Parameter(this, "overwriteFiles");
             overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
