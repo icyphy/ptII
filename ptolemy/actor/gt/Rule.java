@@ -29,6 +29,7 @@ package ptolemy.actor.gt;
 import java.util.Iterator;
 
 import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// Rule
@@ -65,6 +66,8 @@ public abstract class Rule {
         return _enablements[index];
     }
 
+    public abstract NamedObjMatchResult match(NamedObj object);
+
     public void setAttributeEnabled(int index, boolean isEnabled) {
         _enablements[index] = isEnabled;
     }
@@ -80,6 +83,10 @@ public abstract class Rule {
     public abstract void validate() throws RuleValidationException;
 
     public static final String FIELD_SEPARATOR = "/";
+
+    public enum NamedObjMatchResult {
+        MATCHING, UNAPPLICABLE, UNMATCHING
+    }
 
     protected Rule(int attributeCount) {
         _enablements = new boolean[attributeCount];

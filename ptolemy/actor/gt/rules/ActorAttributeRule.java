@@ -29,6 +29,7 @@ package ptolemy.actor.gt.rules;
 import ptolemy.actor.gt.Rule;
 import ptolemy.actor.gt.RuleAttribute;
 import ptolemy.actor.gt.RuleValidationException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorAttributeRule
@@ -59,6 +60,10 @@ public class ActorAttributeRule extends Rule {
         _attributeValue = value;
     }
 
+    public RuleAttribute[] getAttributes() {
+        return _ATTRIBUTES;
+    }
+
     public Object getAttributeValue(int index) {
         switch (index) {
         case 0:
@@ -72,16 +77,17 @@ public class ActorAttributeRule extends Rule {
         }
     }
 
-    public RuleAttribute[] getAttributes() {
-        return _ATTRIBUTES;
-    }
-
     public String getValues() {
         StringBuffer buffer = new StringBuffer();
         _encodeStringField(buffer, 0, _attributeName);
         _encodeStringField(buffer, 1, _attributeType);
         _encodeStringField(buffer, 2, _attributeValue);
         return buffer.toString();
+    }
+
+    public NamedObjMatchResult match(NamedObj object) {
+        // FIXME: Check actor's attribute.
+        return NamedObjMatchResult.UNAPPLICABLE;
     }
 
     public void setAttributeValue(int index, Object value) {
@@ -108,13 +114,13 @@ public class ActorAttributeRule extends Rule {
     public void validate() throws RuleValidationException {
     }
 
+    private String _attributeName;
+
     private static final RuleAttribute[] _ATTRIBUTES = {
         new RuleAttribute(RuleAttribute.STRING, "name"),
         new RuleAttribute(RuleAttribute.STRING, "type"),
         new RuleAttribute(RuleAttribute.STRING, "value")
     };
-
-    private String _attributeName;
 
     private String _attributeType;
 

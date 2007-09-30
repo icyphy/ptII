@@ -27,7 +27,6 @@
  */
 package ptolemy.actor.gt.data;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -127,28 +126,6 @@ public class FastLinkedList<E> implements Collection<E> {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        } else {
-            if (object instanceof FastLinkedList) {
-                Entry entry1 = getHead();
-                FastLinkedList.Entry entry2 =
-                    ((FastLinkedList) object).getHead();
-                while (entry1 != null && entry2 != null) {
-                    if (!entry1.getValue().equals(entry2.getValue())) {
-                        return false;
-                    }
-                    entry1 = entry1.getNext();
-                    entry2 = entry2.getNext();
-                }
-                return entry1 == null && entry2 == null;
-            }
-            return false;
-        }
-    }
-
     public Entry findEntry(E element) {
         Entry entry = _head;
         while (entry != null) {
@@ -166,18 +143,6 @@ public class FastLinkedList<E> implements Collection<E> {
 
     public Entry getTail() {
         return _tail;
-    }
-
-    public int hashCode() {
-        int[] hashCodes = new int[size()];
-        Entry entry = _head;
-        int i = 0;
-        while (entry != null) {
-            E value = entry._value;
-            hashCodes[i++] = value == null ? 0 : value.hashCode();
-            entry = entry._next;
-        }
-        return Arrays.hashCode(hashCodes);
     }
 
     public boolean isEmpty() {

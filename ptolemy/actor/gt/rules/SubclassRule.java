@@ -30,6 +30,8 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.gt.Rule;
 import ptolemy.actor.gt.RuleAttribute;
 import ptolemy.actor.gt.RuleValidationException;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// SubclassRule
@@ -74,6 +76,23 @@ public class SubclassRule extends Rule {
         StringBuffer buffer = new StringBuffer();
         _encodeStringField(buffer, 0, _superclass);
         return buffer.toString();
+    }
+
+    public NamedObjMatchResult match(NamedObj object) {
+        if (object instanceof ComponentEntity) {
+            try {
+                Class<?> superclass = Class.forName(getSuperclass());
+                if (superclass.isInstance(object)) {
+                    return NamedObjMatchResult.MATCHING;
+                } else {
+                    return NamedObjMatchResult.UNMATCHING;
+                }
+            } catch (ClassNotFoundException e) {
+                return NamedObjMatchResult.UNMATCHING;
+            }
+        } else {
+            return NamedObjMatchResult.UNAPPLICABLE;
+        }
     }
 
     public void setAttributeValue(int index, Object value) {

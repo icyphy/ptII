@@ -41,6 +41,7 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gt.Rule.NamedObjMatchResult;
 import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.data.Pair;
@@ -648,16 +649,9 @@ public class GraphMatcher {
             if (success) {
                 for (Rule rule : ruleList) {
                     if (rule instanceof SubclassRule) {
-                        try {
-                            Class<?> superclass =
-                                Class.forName(((SubclassRule) rule)
-                                        .getSuperclass());
-                            if (!superclass.isInstance(hostActor)) {
-                                success = false;
-                                break;
-                            }
-                        } catch (ClassNotFoundException e) {
-                            success = false;
+                        success = rule.match(hostActor) ==
+                            NamedObjMatchResult.MATCHING;
+                        if (!success) {
                             break;
                         }
                     }
@@ -975,27 +969,12 @@ public class GraphMatcher {
                     return isInputEqual && isOutputEqual && isMultiportEqual
                             && isTypeCompatible && isNameEqual;
                 } else {
-                    return _shallowMatchPortRule(portRule, hostTypedPort);
+                    return portRule.match(hostTypedPort) ==
+                        NamedObjMatchResult.MATCHING;
                 }
             } else {
                 return false;
             }
-        } else {
-            return true;
-        }
-    }
-
-    private static boolean _shallowMatchPortRule(PortRule lhsRule,
-            TypedIOPort hostPort) {
-        if (lhsRule.isInputEnabled()
-                && lhsRule.isInput() != hostPort.isInput()) {
-            return false;
-        } else if (lhsRule.isOutputEnabled()
-                && lhsRule.isOutput() != hostPort.isOutput()) {
-            return false;
-        } else if (lhsRule.isMultiportEnabled()
-                && lhsRule.isMultiport() != hostPort.isMultiport()) {
-            return false;
         } else {
             return true;
         }

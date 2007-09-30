@@ -99,6 +99,7 @@ OPTIONAL_FILES = \
 	'RuleEditor$$ComboElement.class' \
 	'RuleEditor$$Factory.class' \
 	'RuleEditor$$JPanelCellEditor.class' \
+	'RuleEditor$$RETextField.class' \
 	'RuleEditor$$Row$$1.class' \
 	'RuleEditor$$Row$$CheckBoxActionListener.class' \
 	'RuleEditor$$Row.class'

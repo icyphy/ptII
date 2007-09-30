@@ -40,8 +40,18 @@ package ptolemy.actor.gt;
 public class RuleAttribute {
 
     public RuleAttribute(int type, String name) {
+        this(type, name, false);
+    }
+
+    public RuleAttribute(int type, String name,
+            boolean acceptRegularExpression) {
         _type = type;
         _name = name;
+        _acceptRegularExpression = acceptRegularExpression;
+    }
+
+    public boolean getAcceptRegularExpression() {
+        return _acceptRegularExpression;
     }
 
     public String getName() {
@@ -55,6 +65,8 @@ public class RuleAttribute {
     public static final int BOOLEAN = 0;
 
     public static final int STRING = 1;
+
+    private boolean _acceptRegularExpression = false;
 
     private String _name;
 

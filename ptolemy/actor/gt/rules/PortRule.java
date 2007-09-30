@@ -27,10 +27,17 @@
  */
 package ptolemy.actor.gt.rules;
 
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.Rule;
 import ptolemy.actor.gt.RuleAttribute;
 import ptolemy.actor.gt.RuleList;
 import ptolemy.actor.gt.RuleValidationException;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.NamedObj;
 
 public class PortRule extends Rule {
 
@@ -129,6 +136,30 @@ public class PortRule extends Rule {
         return isAttributeEnabled(1);
     }
 
+    public NamedObjMatchResult match(NamedObj object) {
+        if (object instanceof IOPort) {
+            IOPort port = (IOPort) object;
+            if (isInputEnabled() && isInput() != port.isInput()) {
+                return NamedObjMatchResult.UNMATCHING;
+            } else if (isOutputEnabled() && isOutput() != port.isOutput()) {
+                return NamedObjMatchResult.UNMATCHING;
+            } else if (isMultiportEnabled()
+                    && isMultiport() != port.isMultiport()) {
+                return NamedObjMatchResult.UNMATCHING;
+            } else {
+                return NamedObjMatchResult.MATCHING;
+            }
+        } else if (object instanceof Port) {
+            if (isInputEnabled() || isOutputEnabled() || isMultiportEnabled()) {
+                return NamedObjMatchResult.UNMATCHING;
+            } else {
+                return NamedObjMatchResult.MATCHING;
+            }
+        } else {
+            return NamedObjMatchResult.UNAPPLICABLE;
+        }
+    }
+
     public void setAttributeValue(int index, Object value) {
         switch (index) {
         case 0:
@@ -162,6 +193,12 @@ public class PortRule extends Rule {
         if (isPortNameEnabled() && _portName.equals("")) {
             throw new RuleValidationException("Port name must not be empty.");
         }
+        try {
+            Pattern.compile(_portName);
+        } catch (PatternSyntaxException e) {
+            throw new RuleValidationException("Regular expression \""
+                    + _portName + "\" cannot be compiled.", e);
+        }
         if (isPortTypeEnabled() && _portType.equals("")) {
             throw new RuleValidationException("Port type must not be empty.");
         }
@@ -172,7 +209,7 @@ public class PortRule extends Rule {
     }
 
     private static final RuleAttribute[] _ATTRIBUTES = {
-        new RuleAttribute(RuleAttribute.STRING, "name"),
+        new RuleAttribute(RuleAttribute.STRING, "name", true),
         new RuleAttribute(RuleAttribute.STRING, "type"),
         new RuleAttribute(RuleAttribute.BOOLEAN, "input"),
         new RuleAttribute(RuleAttribute.BOOLEAN, "output"),
