@@ -887,6 +887,11 @@ ChangeLog:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
+	(cd $(PTIIHOME); \
+	    if [ ! -d adm/dists/CVS ]; then \
+		echo "Removing adm/dists because adm/dists/CVS not found"; \
+	        rm -rf adm/dists; \
+	    fi) 
 	(cd $(PTIIHOME); rm -f ChangeLog; \
 		 $(MAKE) -k ChangeLog; \
 		rm -f ChangeLog.txt; ln -s ChangeLog ChangeLog.txt)
