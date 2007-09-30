@@ -139,6 +139,41 @@ public class SRDirector extends FixedPointDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Request a firing of the given actor at the given absolute
+     *  time.  This method delegates to the enclosing director
+     *  if there is one, and otherwise ignores the request.
+     *  @param actor The actor scheduled to be fired.
+     *  @param time The scheduled time.
+     *  @exception IllegalActionException If the operation is not
+     *    permissible (e.g. the given time is in the past).
+     */
+    public void fireAt(Actor actor, Time time) throws IllegalActionException {
+        Actor container = (Actor)getContainer();
+        if (container != null) {
+            Director executiveDirector = container.getExecutiveDirector();
+            if (executiveDirector != null) {
+                executiveDirector.fireAt(container, time);
+            }
+        }
+    }
+
+    /** Request a firing of the given actor at the current
+     *  time.  This method delegates to the enclosing director
+     *  if there is one, and otherwise ignores the request.
+     *  @param actor The actor scheduled to be fired.
+     *  @exception IllegalActionException If the enclosing director
+     *   throws it.
+     */
+    public void fireAtCurrentTime(Actor actor) throws IllegalActionException {
+        Actor container = (Actor)getContainer();
+        if (container != null) {
+            Director executiveDirector = container.getExecutiveDirector();
+            if (executiveDirector != null) {
+                executiveDirector.fireAtCurrentTime(container);
+            }
+        }
+    }
+
     /** Return the time value of the next iteration.
      *  If this director is at the top level, then the returned value
      *  is the current time plus the period. Otherwise, this method
