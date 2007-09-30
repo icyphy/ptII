@@ -31,13 +31,13 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example simply drives forward if the play button&#10;is pushed, backward if the advance button is pushed and&#10;stops if the bump sensor is triggered.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 75.0]">
         </property>
     </property>
     <entity name="InitializeAndRun" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 105.0]">
         </property>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
