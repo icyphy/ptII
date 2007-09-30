@@ -215,11 +215,11 @@ Token Matrix_print(Token this, ...) {
     printf("[");
     for (i = 0; i < this.payload.Matrix->column; i++) {
         if (i != 0) {
-            printf("; ");
+            printf(", ");
         }
         for (j = 0; j < this.payload.Matrix->row; j++) {
             if (j != 0) {
-                printf(", ");
+                printf("; ");
             }
             functionTable[this.payload.Matrix->elements[i * this.payload.Matrix->row + j].type][FUNC_print](this.payload.Matrix->elements[i]);
         }
