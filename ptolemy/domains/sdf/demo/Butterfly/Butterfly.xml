@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Butterfly" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2400">
@@ -22,21 +22,6 @@
            <svg>
            <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The expression in the Expression actor is
 -2.0*cos(4.0*ramp) + exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4).</text>
-           </svg>
-           </configure>
-        </property>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-    </property>
-    <property name="13:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 85.0]">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model traces an elaborate curve
-called the butterfly curve. It was described by T. Fay,
-American Mathematical Monthly, 96(5), May, 1989.</text>
            </svg>
            </configure>
         </property>
@@ -77,6 +62,22 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 225.0}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To execute the generated code, you need to have the&#10;directory containing jvm.dll in your path variable.&#10;jvm.dll is found in directories like&#10;C:\Program Files\Java\jdk1.5.0_06\jre\bin\client or&#10;C:\Program Files\Java\jdk1.5.0_06\jre\bin\server.&#10;It is used for invoking JVM to load GUI interface only. ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 25.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model traces an elaborate curve&#10;called the butterfly curve. It was&#10;described by T. Fay, American&#10;Mathematical Monthly, 96(5), May, 1989&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 80.0]">
+        </property>
+    </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -94,9 +95,9 @@ American Mathematical Monthly, 96(5), May, 1989.</text>
     <entity name="XY Plotter" class="ptolemy.actor.lib.gui.XYPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 355}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
