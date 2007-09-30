@@ -480,15 +480,15 @@ public class RuleEditor extends JDialog implements ActionListener {
             JPanel attributePanel = (JPanel) attributeVector.get(i);
             // The first component (index 0) is the enablement.
             Component component = attributePanel.getComponent(0);
-            rule.setAttributeEnabled(i - 1, Boolean.valueOf(
+            rule.setEnabled(i - 1, Boolean.valueOf(
                     ((JCheckBox) component).isSelected()));
             // The second component (index 1) is the value.
             component = attributePanel.getComponent(1);
             if (component instanceof JTextField) {
-                rule.setAttributeValue(i - 1,
+                rule.setValue(i - 1,
                         ((JTextField) component).getText());
             } else if (component instanceof JCheckBox) {
-                rule.setAttributeValue(i - 1, Boolean.valueOf(
+                rule.setValue(i - 1, Boolean.valueOf(
                         ((JCheckBox) component).isSelected()));
             }
         }
@@ -875,7 +875,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             ComboElement selectedElement =
                 (ComboElement) _classSelector.getSelectedItem();
             Rule rule = selectedElement.getRule();
-            RuleAttribute[] attributes = rule.getAttributes();
+            RuleAttribute[] attributes = rule.getRuleAttributes();
             _components = new JComponent[attributes.length];
             _checkBoxes = new JCheckBox[attributes.length];
 
@@ -905,8 +905,7 @@ public class RuleEditor extends JDialog implements ActionListener {
                 panel.add(checkBox, BorderLayout.NORTH);
 
                 JComponent component = _getComponent(attribute);
-                _setComponentValue(attribute, component,
-                        rule.getAttributeValue(i));
+                _setComponentValue(attribute, component, rule.getValue(i));
                 panel.add(component, BorderLayout.CENTER);
 
                 tableModel.addColumn(attribute.getName(), new Object[] {panel});
@@ -918,7 +917,7 @@ public class RuleEditor extends JDialog implements ActionListener {
                 _checkBoxes[i] = checkBox;
                 _components[i] = component;
 
-                boolean enabled = rule.isAttributeEnabled(i);
+                boolean enabled = rule.isEnabled(i);
                 checkBox.setSelected(enabled);
                 _setEnablement(component, enabled);
             }

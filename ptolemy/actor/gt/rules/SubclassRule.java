@@ -55,11 +55,15 @@ public class SubclassRule extends Rule {
         setValues(values);
     }
 
-    public RuleAttribute[] getAttributes() {
+    public RuleAttribute[] getRuleAttributes() {
         return _ATTRIBUTES;
     }
 
-    public Object getAttributeValue(int index) {
+    public String getSuperclass() {
+        return _superclass;
+    }
+
+    public Object getValue(int index) {
         switch (index) {
         case 0:
             return _superclass;
@@ -68,34 +72,42 @@ public class SubclassRule extends Rule {
         }
     }
 
-    public String getSuperclass() {
-        return _superclass;
-    }
-
     public String getValues() {
         StringBuffer buffer = new StringBuffer();
         _encodeStringField(buffer, 0, _superclass);
         return buffer.toString();
     }
 
+    public boolean isSuperclassEnabled() {
+        return isEnabled(0);
+    }
+
     public NamedObjMatchResult match(NamedObj object) {
         if (object instanceof ComponentEntity) {
-            try {
-                Class<?> superclass = Class.forName(getSuperclass());
-                if (superclass.isInstance(object)) {
-                    return NamedObjMatchResult.MATCHING;
-                } else {
-                    return NamedObjMatchResult.UNMATCHING;
+            if (isSuperclassEnabled()) {
+                try {
+                    Class<?> superclass = Class.forName(getSuperclass());
+                    if (superclass.isInstance(object)) {
+                        return NamedObjMatchResult.MATCH;
+                    } else {
+                        return NamedObjMatchResult.NOT_MATCH;
+                    }
+                } catch (ClassNotFoundException e) {
+                    return NamedObjMatchResult.NOT_MATCH;
                 }
-            } catch (ClassNotFoundException e) {
-                return NamedObjMatchResult.UNMATCHING;
+            } else {
+                return NamedObjMatchResult.MATCH;
             }
         } else {
             return NamedObjMatchResult.UNAPPLICABLE;
         }
     }
 
-    public void setAttributeValue(int index, Object value) {
+    public void setSuperclassEnabled(boolean enabled) {
+        setEnabled(0, enabled);
+    }
+
+    public void setValue(int index, Object value) {
         switch (index) {
         case 0:
             _superclass = (String) value;

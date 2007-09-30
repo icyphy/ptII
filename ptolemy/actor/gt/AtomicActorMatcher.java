@@ -61,7 +61,7 @@ public class AtomicActorMatcher extends TypedAtomicActor {
     public AtomicActorMatcher(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         ruleListAttribute = new RuleListAttribute(this, "ruleList");
         ruleListAttribute.setExpression("");
     }
@@ -155,16 +155,19 @@ public class AtomicActorMatcher extends TypedAtomicActor {
             String iconDescription = actorAttribute.getConfigureText();
             _setIconDescription(iconDescription);
 
-            _removeEditorIcons();
             List<?> editorIconList = actor.attributeList(EditorIcon.class);
-            for (Object editorIconObject : editorIconList) {
-                if (!editorIconObject.getClass().getName().equals(
-                        "ptolemy.vergil.icon.EditorIcon")) {
-                    continue;
+            if (editorIconList.isEmpty()) {
+                _removeEditorIcons();
+            } else {
+                for (Object editorIconObject : editorIconList) {
+                    if (!editorIconObject.getClass().getName().equals(
+                            "ptolemy.vergil.icon.EditorIcon")) {
+                        continue;
+                    }
+                    EditorIcon editorIcon = (EditorIcon) editorIconObject;
+                    requestChange(new MoMLChangeRequest(this, this,
+                            editorIcon.exportMoML()));
                 }
-                EditorIcon editorIcon = (EditorIcon) editorIconObject;
-                requestChange(new MoMLChangeRequest(this, this,
-                        editorIcon.exportMoML()));
             }
             return true;
         } catch (ClassNotFoundException e) {
@@ -174,10 +177,6 @@ public class AtomicActorMatcher extends TypedAtomicActor {
 
     private void _removeEditorIcons() {
         for (Object editorIconObject : attributeList(EditorIcon.class)) {
-            if (!editorIconObject.getClass().getName().equals(
-                    "ptolemy.vergil.icon.EditorIcon")) {
-                continue;
-            }
             EditorIcon editorIcon = (EditorIcon) editorIconObject;
             String moml =
                 "<deleteProperty name=\"" + editorIcon.getName() + "\"/>";

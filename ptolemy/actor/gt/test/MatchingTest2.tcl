@@ -47,7 +47,9 @@ test MatchingTest-2.1 {An lhs with a CompositeActor matching an empty host} {
     set host [java::new ptolemy.actor.TypedCompositeActor $e0 host]
     
     set lhsA1 [java::new ptolemy.actor.gt.AtomicActorMatcher $lhs A1]
-    set lhsA1PortRule [java::new ptolemy.actor.gt.rules.PortRule "output" "type" false true false]
+    set lhsA1PortRule [java::new ptolemy.actor.gt.rules.PortRule "" "" false true false]
+    $lhsA1PortRule setPortNameEnabled false
+    $lhsA1PortRule setPortTypeEnabled false
     set lhsA1PortRuleList [java::new ptolemy.actor.gt.RuleList]
     $lhsA1PortRuleList add [java::cast ptolemy.actor.gt.Rule $lhsA1PortRule]
     set lhsA1Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$lhsA1 getAttribute ruleList]]
@@ -57,7 +59,9 @@ test MatchingTest-2.1 {An lhs with a CompositeActor matching an empty host} {
     set lhsC1Port1 [java::new ptolemy.actor.TypedIOPort $lhsC1 input true false]
     
     set lhsC1A1 [java::new ptolemy.actor.gt.AtomicActorMatcher $lhsC1 A1]
-    set lhsC1A1PortRule [java::new ptolemy.actor.gt.rules.PortRule "input" "type" true false true]
+    set lhsC1A1PortRule [java::new ptolemy.actor.gt.rules.PortRule "" "" true false true]
+    $lhsC1A1PortRule setPortNameEnabled false
+    $lhsC1A1PortRule setPortTypeEnabled false
     set lhsC1A1PortRuleList [java::new ptolemy.actor.gt.RuleList]
     $lhsC1A1PortRuleList add [java::cast ptolemy.actor.gt.Rule $lhsC1A1PortRule]
     set lhsC1A1Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$lhsC1A1 getAttribute ruleList]]
@@ -77,14 +81,18 @@ test MatchingTest-2.1 {An lhs with a CompositeActor matching an empty host} {
 
 test MatchingTest-2.2 {An lhs with a CompositeActor matching a host without the CompositeActor} {
     set hostA1 [java::new ptolemy.actor.gt.AtomicActorMatcher $host A1]
-    set hostA1PortRule [java::new ptolemy.actor.gt.rules.PortRule "output" "type" false true false]
+    set hostA1PortRule [java::new ptolemy.actor.gt.rules.PortRule "" "" false true false]
+    $hostA1PortRule setPortNameEnabled false
+    $hostA1PortRule setPortTypeEnabled false
     set hostA1PortRuleList [java::new ptolemy.actor.gt.RuleList]
     $hostA1PortRuleList add [java::cast ptolemy.actor.gt.Rule $hostA1PortRule]
     set hostA1Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$hostA1 getAttribute ruleList]]
     $hostA1Attr setExpression [$hostA1PortRuleList toString]
     
     set hostA2 [java::new ptolemy.actor.gt.AtomicActorMatcher $host A2]
-    set hostA2PortRule [java::new ptolemy.actor.gt.rules.PortRule "input" "type" true false true]
+    set hostA2PortRule [java::new ptolemy.actor.gt.rules.PortRule "" "" true false true]
+    $hostA2PortRule setPortNameEnabled false
+    $hostA2PortRule setPortTypeEnabled false
     set hostA2PortRuleList [java::new ptolemy.actor.gt.RuleList]
     $hostA2PortRuleList add [java::cast ptolemy.actor.gt.Rule $hostA2PortRule]
     set hostA2Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$hostA2 getAttribute ruleList]]
@@ -103,7 +111,9 @@ test MatchingTest-2.3 {An lhs with a CompositeActor matching a host with a Compo
     set hostC1Port1 [java::new ptolemy.actor.TypedIOPort $hostC1 input true false]
     
     set hostC1A1 [java::new ptolemy.actor.gt.AtomicActorMatcher $hostC1 A1]
-    set hostC1A1PortRule [java::new ptolemy.actor.gt.rules.PortRule "input" "type" true false true]
+    set hostC1A1PortRule [java::new ptolemy.actor.gt.rules.PortRule "" "" true false true]
+    $hostC1A1PortRule setPortNameEnabled false
+    $hostC1A1PortRule setPortTypeEnabled false
     set hostC1A1PortRuleList [java::new ptolemy.actor.gt.RuleList]
     $hostC1A1PortRuleList add [java::cast ptolemy.actor.gt.Rule $hostC1A1PortRule]
     set hostC1A1Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$hostC1A1 getAttribute ruleList]]

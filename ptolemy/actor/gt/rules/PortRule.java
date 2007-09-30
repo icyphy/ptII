@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.gt.rules;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -36,6 +37,7 @@ import ptolemy.actor.gt.Rule;
 import ptolemy.actor.gt.RuleAttribute;
 import ptolemy.actor.gt.RuleList;
 import ptolemy.actor.gt.RuleValidationException;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.NamedObj;
 
@@ -60,11 +62,24 @@ public class PortRule extends Rule {
         _multiport = multiport;
     }
 
-    public RuleAttribute[] getAttributes() {
+    public String getPortID(RuleList list) {
+        int position = list.indexOf(this);
+        return "Rule" + (position + 1);
+    }
+
+    public String getPortName() {
+        return _portName;
+    }
+
+    public String getPortType() {
+        return _portType;
+    }
+
+    public RuleAttribute[] getRuleAttributes() {
         return _ATTRIBUTES;
     }
 
-    public Object getAttributeValue(int index) {
+    public Object getValue(int index) {
         switch (index) {
         case 0:
             return _portName;
@@ -79,19 +94,6 @@ public class PortRule extends Rule {
         default:
             return null;
         }
-    }
-
-    public String getPortID(RuleList list) {
-        int position = list.indexOf(this);
-        return "Rule" + (position + 1);
-    }
-
-    public String getPortName() {
-        return _portName;
-    }
-
-    public String getPortType() {
-        return _portType;
     }
 
     public String getValues() {
@@ -109,7 +111,7 @@ public class PortRule extends Rule {
     }
 
     public boolean isInputEnabled() {
-        return isAttributeEnabled(2);
+        return isEnabled(2);
     }
 
     public boolean isMultiport() {
@@ -117,7 +119,7 @@ public class PortRule extends Rule {
     }
 
     public boolean isMultiportEnabled() {
-        return isAttributeEnabled(4);
+        return isEnabled(4);
     }
 
     public boolean isOutput() {
@@ -125,42 +127,78 @@ public class PortRule extends Rule {
     }
 
     public boolean isOutputEnabled() {
-        return isAttributeEnabled(3);
+        return isEnabled(3);
     }
 
     public boolean isPortNameEnabled() {
-        return isAttributeEnabled(0);
+        return isEnabled(0);
     }
 
     public boolean isPortTypeEnabled() {
-        return isAttributeEnabled(1);
+        return isEnabled(1);
     }
 
     public NamedObjMatchResult match(NamedObj object) {
+        // Check the input/output/multiport type
         if (object instanceof IOPort) {
             IOPort port = (IOPort) object;
-            if (isInputEnabled() && isInput() != port.isInput()) {
-                return NamedObjMatchResult.UNMATCHING;
-            } else if (isOutputEnabled() && isOutput() != port.isOutput()) {
-                return NamedObjMatchResult.UNMATCHING;
+            if (isInputEnabled() && _input != port.isInput()) {
+                return NamedObjMatchResult.NOT_MATCH;
+            } else if (isOutputEnabled() && _output != port.isOutput()) {
+                return NamedObjMatchResult.NOT_MATCH;
             } else if (isMultiportEnabled()
-                    && isMultiport() != port.isMultiport()) {
-                return NamedObjMatchResult.UNMATCHING;
-            } else {
-                return NamedObjMatchResult.MATCHING;
+                    && _multiport != port.isMultiport()) {
+                return NamedObjMatchResult.NOT_MATCH;
             }
         } else if (object instanceof Port) {
             if (isInputEnabled() || isOutputEnabled() || isMultiportEnabled()) {
-                return NamedObjMatchResult.UNMATCHING;
-            } else {
-                return NamedObjMatchResult.MATCHING;
+                return NamedObjMatchResult.NOT_MATCH;
             }
         } else {
             return NamedObjMatchResult.UNAPPLICABLE;
         }
+
+        // Check port name
+        if (isPortNameEnabled()) {
+            Pattern pattern = Pattern.compile(_portName);
+            Matcher matcher = pattern.matcher(object.getName());
+            if (!matcher.matches()) {
+                return NamedObjMatchResult.NOT_MATCH;
+            }
+        }
+        
+        // Check port type
+        if (isPortTypeEnabled()) {
+            if (object instanceof TypedIOPort) {
+                Type type = ((TypedIOPort) object).getType();
+                
+            }
+        }
+        
+        return NamedObjMatchResult.MATCH;
     }
 
-    public void setAttributeValue(int index, Object value) {
+    public void setInputEnabled(boolean enabled) {
+        setEnabled(2, enabled);
+    }
+
+    public void setMultiportEnabled(boolean enabled) {
+        setEnabled(4, enabled);
+    }
+
+    public void setOutputEnabled(boolean enabled) {
+        setEnabled(3, enabled);
+    }
+
+    public void setPortNameEnabled(boolean enabled) {
+        setEnabled(0, enabled);
+    }
+
+    public void setPortTypeEnabled(boolean enabled) {
+        setEnabled(1, enabled);
+    }
+
+    public void setValue(int index, Object value) {
         switch (index) {
         case 0:
             _portName = (String) value;

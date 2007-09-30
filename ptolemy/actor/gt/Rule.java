@@ -26,6 +26,7 @@
  */
 package ptolemy.actor.gt;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 import ptolemy.kernel.util.KernelRuntimeException;
@@ -44,35 +45,31 @@ import ptolemy.kernel.util.NamedObj;
 */
 public abstract class Rule {
 
-    public void disableAllAttributes() {
-        for (int i = 0; i < _enablements.length; i++) {
-            _enablements[i] = false;
-        }
+    public void disableAll() {
+        Arrays.fill(_enablements, false);
     }
 
-    public void enableAllAttributes() {
-        for (int i = 0; i < _enablements.length; i++) {
-            _enablements[i] = true;
-        }
+    public void enableAll() {
+        Arrays.fill(_enablements, true);
     }
 
-    public abstract RuleAttribute[] getAttributes();
+    public abstract RuleAttribute[] getRuleAttributes();
 
-    public abstract Object getAttributeValue(int index);
+    public abstract Object getValue(int index);
 
     public abstract String getValues();
 
-    public boolean isAttributeEnabled(int index) {
+    public boolean isEnabled(int index) {
         return _enablements[index];
     }
 
     public abstract NamedObjMatchResult match(NamedObj object);
 
-    public void setAttributeEnabled(int index, boolean isEnabled) {
+    public void setEnabled(int index, boolean isEnabled) {
         _enablements[index] = isEnabled;
     }
 
-    public abstract void setAttributeValue(int index, Object value);
+    public abstract void setValue(int index, Object value);
 
     public abstract void setValues(String values);
 
@@ -85,11 +82,12 @@ public abstract class Rule {
     public static final String FIELD_SEPARATOR = "/";
 
     public enum NamedObjMatchResult {
-        MATCHING, UNAPPLICABLE, UNMATCHING
+        MATCH, NOT_MATCH, UNAPPLICABLE
     }
 
     protected Rule(int attributeCount) {
         _enablements = new boolean[attributeCount];
+        enableAll();
     }
 
     protected boolean _decodeBooleanField(int index, FieldIterator iterator) {

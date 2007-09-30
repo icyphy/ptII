@@ -60,11 +60,11 @@ public class ActorAttributeRule extends Rule {
         _attributeValue = value;
     }
 
-    public RuleAttribute[] getAttributes() {
+    public RuleAttribute[] getRuleAttributes() {
         return _ATTRIBUTES;
     }
 
-    public Object getAttributeValue(int index) {
+    public Object getValue(int index) {
         switch (index) {
         case 0:
             return _attributeName;
@@ -85,12 +85,36 @@ public class ActorAttributeRule extends Rule {
         return buffer.toString();
     }
 
+    public boolean isAttributeNameEnabled() {
+        return isEnabled(0);
+    }
+
+    public boolean isAttributeTypeEnabled() {
+        return isEnabled(0);
+    }
+
+    public boolean isAttributeValueEnabled() {
+        return isEnabled(0);
+    }
+
     public NamedObjMatchResult match(NamedObj object) {
         // FIXME: Check actor's attribute.
         return NamedObjMatchResult.UNAPPLICABLE;
     }
 
-    public void setAttributeValue(int index, Object value) {
+    public void setAttributeNameEnabled(boolean enabled) {
+        setEnabled(0, enabled);
+    }
+
+    public void setAttributeTypeEnabled(boolean enabled) {
+        setEnabled(1, enabled);
+    }
+
+    public void setAttributeValueEnabled(boolean enabled) {
+        setEnabled(2, enabled);
+    }
+
+    public void setValue(int index, Object value) {
         switch (index) {
         case 0:
             _attributeName = (String) value;

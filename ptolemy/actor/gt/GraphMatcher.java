@@ -650,7 +650,7 @@ public class GraphMatcher {
                 for (Rule rule : ruleList) {
                     if (rule instanceof SubclassRule) {
                         success = rule.match(hostActor) ==
-                            NamedObjMatchResult.MATCHING;
+                            NamedObjMatchResult.MATCH;
                         if (!success) {
                             break;
                         }
@@ -970,7 +970,7 @@ public class GraphMatcher {
                             && isTypeCompatible && isNameEqual;
                 } else {
                     return portRule.match(hostTypedPort) ==
-                        NamedObjMatchResult.MATCHING;
+                        NamedObjMatchResult.MATCH;
                 }
             } else {
                 return false;

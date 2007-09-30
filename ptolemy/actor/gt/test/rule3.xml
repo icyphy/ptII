@@ -4,9 +4,9 @@
 <entity name="rule3" class="ptolemy.actor.gt.SingleRuleTransformer">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 239, 833, 571}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={286, 253, 828, 543}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[610, 456]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 428]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -14,25 +14,29 @@
     </property>
     <entity name="Pattern" class="ptolemy.actor.TypedCompositeActor">
         <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 155.0}">
+            <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 150}">
             </property>
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 50.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 60.0}">
                 </property>
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 115.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 125.0}">
                 </property>
             </port>
             <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
-                <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;output&quot;/true/&quot;unknown&quot;/true/false/true/true/true/false)">
+                <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/false//false//true/false/true/true/true/false)">
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 135.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 145.0}">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -43,35 +47,31 @@
             <link port="AtomicActorMatcher.Rule1" relation="relation"/>
         </entity>
         <entity name="CompositeActorMatcher2" class="ptolemy.actor.gt.CompositeActorMatcher">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 155.0}">
-            </property>
-            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 80.0}">
+            <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 267, 823, 515}, maximized=false}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 150.0]">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
-            </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 90.0}">
+                </property>
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 230.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 240.0}">
                 </property>
                 <property name="width" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
             </port>
             <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
-                <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/true/&quot;input&quot;/true/&quot;unknown&quot;/true/true/true/false/true/true)">
+                <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/false//false//true/true/true/false/true/true)">
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 230.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 240.0}">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
