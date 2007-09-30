@@ -1243,6 +1243,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rendezvous \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/sr \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop/actors \
