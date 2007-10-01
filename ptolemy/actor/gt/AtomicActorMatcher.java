@@ -105,8 +105,8 @@ public class AtomicActorMatcher extends TypedAtomicActor {
                     i++;
                 }
                 if (!isIconSet) {
-                    _removeEditorIcons();
-                    _setIconDescription(_ICON_DESCRIPTION);
+                    //_removeEditorIcons();
+                    //_setIconDescription(_ICON_DESCRIPTION);
                 }
 
                 List<?> portList = portList();
@@ -139,61 +139,13 @@ public class AtomicActorMatcher extends TypedAtomicActor {
     public RuleListAttribute ruleListAttribute;
 
     private boolean _loadActorIcon(String actorClassName) {
-        try {
-            Class<?> actorClass = Class.forName(actorClassName);
             CompositeActor container = new CompositeActor();
-            String moml = "<group>"
-                + "<entity name=\"NewActor\" class=\"" + actorClassName + "\"/>"
-                + "</group>";
+            String moml = "<group><entity name=\"NewActor\" class=\""
+                + actorClassName + "\"/></group>";
             container.requestChange(
-                    new MoMLChangeRequest(this, container, moml));
-            ComponentEntity actor =
-                (ComponentEntity) container.entityList(actorClass).get(0);
-
-            ConfigurableAttribute actorAttribute =
-                (ConfigurableAttribute) actor.getAttribute("_iconDescription");
-            String iconDescription = actorAttribute.getConfigureText();
-            _setIconDescription(iconDescription);
-
-            List<?> editorIconList = actor.attributeList(EditorIcon.class);
-            if (editorIconList.isEmpty()) {
-                _removeEditorIcons();
-            } else {
-                for (Object editorIconObject : editorIconList) {
-                    if (!editorIconObject.getClass().getName().equals(
-                            "ptolemy.vergil.icon.EditorIcon")) {
-                        continue;
-                    }
-                    EditorIcon editorIcon = (EditorIcon) editorIconObject;
-                    requestChange(new MoMLChangeRequest(this, this,
-                            editorIcon.exportMoML()));
-                }
-            }
+                    new LoadActorIconChangeRequest(container, moml));
             return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
     }
-
-    private void _removeEditorIcons() {
-        for (Object editorIconObject : attributeList(EditorIcon.class)) {
-            EditorIcon editorIcon = (EditorIcon) editorIconObject;
-            String moml =
-                "<deleteProperty name=\"" + editorIcon.getName() + "\"/>";
-            requestChange(new MoMLChangeRequest(this, this, moml));
-        }
-    }
-
-    private void _setIconDescription(String iconDescription) {
-        String moml = "<property name=\"_iconDescription\""
-            + "  class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
-            + "  <configure>" + iconDescription + "</configure>"
-            + "</property>";
-        requestChange(new MoMLChangeRequest(this, this, moml));
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
 
     private static final String _ICON_DESCRIPTION =
         "<svg>"
@@ -214,5 +166,70 @@ public class AtomicActorMatcher extends TypedAtomicActor {
         + "  match</text>"
         + "</svg>";
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
     private static final long serialVersionUID = 8775143612221394893L;
+
+    private class LoadActorIconChangeRequest extends MoMLChangeRequest {
+
+        public LoadActorIconChangeRequest(CompositeEntity container,
+                String request) {
+            super(AtomicActorMatcher.this, container, request);
+
+            _container = container;
+        }
+
+        protected void _execute() {
+            try {
+                super._execute();
+
+                ComponentEntity actor =
+                    (ComponentEntity) _container.entityList().get(0);
+
+                ConfigurableAttribute actorAttribute = (ConfigurableAttribute)
+                        actor.getAttribute("_iconDescription");
+                String iconDescription = actorAttribute.getConfigureText();
+                _setIconDescription(iconDescription);
+
+                List<?> editorIconList = actor.attributeList(EditorIcon.class);
+
+                _removeEditorIcons();
+                for (Object editorIconObject : editorIconList) {
+                    EditorIcon editorIcon = (EditorIcon) editorIconObject;
+                    editorIcon.setName("_icon");
+                    String iconMoML = editorIcon.exportMoML();
+                    new MoMLChangeRequest(this, AtomicActorMatcher.this,
+                            iconMoML).execute();
+                }
+            } catch (Exception e) {
+                // Catches exceptions like KernelException,
+                //     NullPointerException, IndexOutOfBoundsException, etc.
+                // Rerestore the actor's original appearance.
+                _removeEditorIcons();
+                _setIconDescription(_ICON_DESCRIPTION);
+            }
+        }
+
+        private void _removeEditorIcons() {
+            for (Object editorIconObject : attributeList(EditorIcon.class)) {
+                EditorIcon editorIcon = (EditorIcon) editorIconObject;
+                String moml =
+                    "<deleteProperty name=\"" + editorIcon.getName() + "\"/>";
+                new MoMLChangeRequest(this, AtomicActorMatcher.this,
+                        moml).execute();
+            }
+        }
+
+        private void _setIconDescription(String iconDescription) {
+            String moml = "<property name=\"_iconDescription\" class="
+                + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
+                + "  <configure>" + iconDescription + "</configure>"
+                + "</property>";
+            new MoMLChangeRequest(this, AtomicActorMatcher.this,
+                    moml).execute();
+        }
+
+        private CompositeEntity _container;
+    }
 }
