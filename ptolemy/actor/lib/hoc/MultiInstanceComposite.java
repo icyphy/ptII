@@ -274,6 +274,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                                                 container, "r_" + getName()
                                                         + "_" + i + "_"
                                                         + port.getName());
+                                        relation.setPersistent(false);
                                         isRelationCreated = true;
 
                                         if (_debugging) {
@@ -346,10 +347,11 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         while (true) {
             // FIXME: Using a naming convention here is fragile!
             MultiInstanceComposite clone = (MultiInstanceComposite) container
-                    .getEntity(getName() + "_" + ++i);
+                    .getEntity(getName() + "_" + i);
             if (clone == null) {
                 break;
             }
+            ++i;
             Iterator ports = clone.portList().iterator();
             while (ports.hasNext()) {
                 TypedIOPort port = (TypedIOPort) ports.next();
@@ -418,6 +420,9 @@ public class MultiInstanceComposite extends TypedCompositeActor {
         MultiInstanceComposite newObject = (MultiInstanceComposite) super
                 .clone(workspace);
         newObject._isMasterCopy = false;
+        // The following is necessary in case an exception occurs
+        // during execution because then wrapup might not properly complete.
+        newObject.setPersistent(false);
 
         try {
             new Attribute(newObject, "_hide");
