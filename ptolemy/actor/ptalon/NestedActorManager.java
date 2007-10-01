@@ -1343,7 +1343,6 @@ public class NestedActorManager extends CodeManager {
                                 _actor.uniqueName("relation");
                             TypedIORelation rel = new TypedIORelation(_actor,
                                     relationName);
-                            port.link(rel);
                             if (port == null) {
                                 port = new TypedIOPort(actor, actor
                                         .uniqueName(portName));
@@ -1372,6 +1371,7 @@ public class NestedActorManager extends CodeManager {
                                     }
                                 }
                             }
+                            port.link(rel);
                             connectionPoint.link(rel);
                         } else {
                             if (port == null) {
