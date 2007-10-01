@@ -511,7 +511,7 @@ public class RuleEditor extends JDialog implements ActionListener {
         }
     }
 
-    private static void _setCaretForAllJTextFields(JPanel panel,
+    private static void _setCaretForAllTextFields(JPanel panel,
             boolean visible) {
         for (Component c : panel.getComponents()) {
             if (c instanceof JTextField) {
@@ -633,7 +633,7 @@ public class RuleEditor extends JDialog implements ActionListener {
         public Component getTableCellEditorComponent(JTable table, Object value,
                 boolean isSelected, int row, int column) {
             JPanel panel = (JPanel) value;
-            _setCaretForAllJTextFields(panel, true);
+            _setCaretForAllTextFields(panel, true);
             _currentValue = panel;
             return panel;
         }
@@ -642,7 +642,7 @@ public class RuleEditor extends JDialog implements ActionListener {
                 Object value, boolean isSelected, boolean hasFocus, int row,
                 int column) {
             JPanel panel = (JPanel) value;
-            _setCaretForAllJTextFields(panel, false);
+            _setCaretForAllTextFields(panel, false);
             return panel;
         }
 
@@ -691,21 +691,30 @@ public class RuleEditor extends JDialog implements ActionListener {
 
         private static final long serialVersionUID = -1020598266173440301L;
 
-        private class Editor extends MouseAdapter implements ComboBoxEditor,
+        private class Editor extends MouseAdapter implements ActionListener, ComboBoxEditor,
         FocusListener {
+
+            public void actionPerformed(ActionEvent e) {
+                if (_textField.isEditable()) {
+                    setSelectedItem(_textField.getText());
+                }
+                setPopupVisible(!isPopupVisible());
+            }
 
             public void addActionListener(ActionListener l) {
             }
 
             public void focusGained(FocusEvent e) {
+                if (_textField.isEditable()) {
+                    _textField.getCaret().setVisible(true);
+                }
             }
 
             public void focusLost(FocusEvent e) {
-                if (_textField.isEnabled()) {
-                    hidePopup();
-                    if (_textField.isEditable()) {
-                        setSelectedItem(_textField.getText());
-                    }
+                hidePopup();
+                if (_textField.isEditable()) {
+                    setSelectedItem(_textField.getText());
+                    _textField.getCaret().setVisible(false);
                 }
             }
 
@@ -754,6 +763,7 @@ public class RuleEditor extends JDialog implements ActionListener {
                 _textField.setOpaque(true);
                 _textField.addMouseListener(this);
                 _textField.addFocusListener(this);
+                _textField.addActionListener(this);
             }
 
             private JTextField _textField = new JTextField();
