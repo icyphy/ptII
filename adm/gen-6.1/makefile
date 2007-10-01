@@ -1445,6 +1445,11 @@ remote1ChangeLog:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
+	(cd $(REMOTE1PTIIDIST); \
+	    if [ ! -d adm/dists/CVS ]; then \
+		echo "Removing adm/dists because adm/dists/CVS not found"; \
+	        rm -rf adm/dists; \
+	    fi) 
 	(cd $(REMOTE1PTIIDIST);	rm -f ChangeLog; \
 		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k ChangeLog; \
 		rm -f ChangeLog.txt; ln -s ChangeLog ChangeLog.txt)
