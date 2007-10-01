@@ -886,7 +886,7 @@ public class NCApp2MoML {
 
     /** Class to store the file location of the specified component.
      */
-    private class _ComponentFile {
+    static private class _ComponentFile {
         _ComponentFile(Xcomponent component, String filename) {
             _component = component;
             _filename = filename;
@@ -927,7 +927,7 @@ public class NCApp2MoML {
 
     /** Class to represent link between ports and relations.
      */
-    private class _Link {
+    static private class _Link {
         _Link(Object to, Object from) {
             this.to = to;
             this.from = from;
@@ -942,7 +942,7 @@ public class NCApp2MoML {
 
     /** Class to create new relation names.
      */
-    private class _Relations {
+    static private class _Relations {
         private int currentCount() {
             return _relationCounter;
         }
