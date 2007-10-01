@@ -29,6 +29,7 @@ package ptolemy.actor.gt.rules;
 import ptolemy.actor.gt.Rule;
 import ptolemy.actor.gt.RuleAttribute;
 import ptolemy.actor.gt.RuleValidationException;
+import ptolemy.actor.gt.StringRuleAttribute;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
@@ -141,9 +142,9 @@ public class ActorAttributeRule extends Rule {
     private String _attributeName;
 
     private static final RuleAttribute[] _ATTRIBUTES = {
-        new RuleAttribute(RuleAttribute.STRING, "name"),
-        new RuleAttribute(RuleAttribute.STRING, "type"),
-        new RuleAttribute(RuleAttribute.STRING, "value")
+        new StringRuleAttribute("name", true),
+        new StringRuleAttribute("type"),
+        new StringRuleAttribute("value", true)
     };
 
     private String _attributeType;

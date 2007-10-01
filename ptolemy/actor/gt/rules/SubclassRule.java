@@ -30,6 +30,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.gt.Rule;
 import ptolemy.actor.gt.RuleAttribute;
 import ptolemy.actor.gt.RuleValidationException;
+import ptolemy.actor.gt.StringRuleAttribute;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.NamedObj;
 
@@ -141,7 +142,7 @@ public class SubclassRule extends Rule {
     }
 
     private static final RuleAttribute[] _ATTRIBUTES = {
-        new RuleAttribute(RuleAttribute.STRING, "superclass")
+        new StringRuleAttribute("superclass")
     };
 
     private String _superclass;

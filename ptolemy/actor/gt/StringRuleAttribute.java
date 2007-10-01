@@ -26,26 +26,20 @@
  */
 package ptolemy.actor.gt;
 
-//////////////////////////////////////////////////////////////////////////
-//// RuleAttribute
+public class StringRuleAttribute extends RuleAttribute {
 
-/**
-
-@author Thomas Huining Feng
-@version $Id$
-@since Ptolemy II 6.1
-@Pt.ProposedRating Red (tfeng)
-@Pt.AcceptedRating Red (tfeng)
-*/
-public class RuleAttribute {
-
-    public RuleAttribute(String name) {
-        _name = name;
+    public StringRuleAttribute(String name) {
+        this(name, false);
     }
-
-    public String getName() {
-        return _name;
+    
+    public StringRuleAttribute(String name, boolean acceptRegularExpression) {
+        super(name);
+        _acceptRegularExpression = acceptRegularExpression;
     }
-
-    private String _name;
+    
+    public boolean acceptRegularExpression() {
+        return _acceptRegularExpression;
+    }
+    
+    private boolean _acceptRegularExpression;
 }

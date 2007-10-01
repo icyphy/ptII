@@ -81,11 +81,14 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import ptolemy.actor.gt.BooleanRuleAttribute;
+import ptolemy.actor.gt.ChoiceRuleAttribute;
 import ptolemy.actor.gt.Rule;
 import ptolemy.actor.gt.RuleAttribute;
 import ptolemy.actor.gt.RuleList;
 import ptolemy.actor.gt.RuleListAttribute;
 import ptolemy.actor.gt.RuleValidationException;
+import ptolemy.actor.gt.StringRuleAttribute;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -138,7 +141,7 @@ public class RuleEditor extends JDialog implements ActionListener {
         try {
             Row row = new Row(_ruleClasses.get(0).newInstance());
             int rowCount = _tableModel.getRowCount();
-            _tableModel.addRow(new Object[] {rowCount, row,
+            _tableModel.addRow(new Object[] {rowCount + 1, row,
                     row});
             if (rowCount == 0) {
                 _table.getSelectionModel().addSelectionInterval(0, 0);
@@ -382,16 +385,16 @@ public class RuleEditor extends JDialog implements ActionListener {
         JPanel helpPanel = new JPanel(gridLayout);
         helpPanel.setBorder(BorderFactory.createEmptyBorder(3, 5, 0, 5));
         helpPanel.setPreferredSize(new Dimension(0, 25));
-        Border textFieldBorder = new JTextField().getBorder();
+        Border textFieldBorder = _TEXT_FIELD_BORDER;
         JLabel textLabel =
             new JLabel("Normal text only", SwingConstants.CENTER);
-        textLabel.setBackground(RETextField._NON_RE_ENABLED_BACKGROUND);
+        textLabel.setBackground(_NON_RE_ENABLED_BACKGROUND);
         textLabel.setOpaque(true);
         textLabel.setBorder(textFieldBorder);
         helpPanel.add(textLabel);
         JLabel reLabel =
             new JLabel("Regular expression", SwingConstants.CENTER);
-        reLabel.setBackground(RETextField._RE_ENABLED_BACKGROUND);
+        reLabel.setBackground(_RE_ENABLED_BACKGROUND);
         reLabel.setOpaque(true);
         reLabel.setBorder(textFieldBorder);
         helpPanel.add(reLabel);
@@ -485,8 +488,10 @@ public class RuleEditor extends JDialog implements ActionListener {
             // The second component (index 1) is the value.
             component = attributePanel.getComponent(1);
             if (component instanceof JTextField) {
+                rule.setValue(i - 1, ((JTextField) component).getText());
+            } else if (component instanceof JComboBox) {
                 rule.setValue(i - 1,
-                        ((JTextField) component).getText());
+                        ((JComboBox) component).getSelectedItem().toString());
             } else if (component instanceof JCheckBox) {
                 rule.setValue(i - 1, Boolean.valueOf(
                         ((JCheckBox) component).isSelected()));
@@ -533,6 +538,12 @@ public class RuleEditor extends JDialog implements ActionListener {
 
     private boolean _isCanceled = false;
 
+    private static final Color _NON_RE_ENABLED_BACKGROUND =
+        new Color(230, 230, 255);
+
+    private static final Color _RE_ENABLED_BACKGROUND =
+        new Color(200, 255, 255);
+
     private JButton _removeButton;
 
     private static final int _ROW_HEIGHT = 45;
@@ -545,6 +556,9 @@ public class RuleEditor extends JDialog implements ActionListener {
     private JTable _table;
 
     private DefaultTableModel _tableModel;
+
+    private static final Border _TEXT_FIELD_BORDER =
+        new JTextField().getBorder();
 
     private static final Color _UNSELECTED_COLOR = Color.WHITE;
 
@@ -580,65 +594,6 @@ public class RuleEditor extends JDialog implements ActionListener {
 
         private static final long serialVersionUID = -8545086228933217848L;
 
-    }
-
-    private static class ClassSelectorEditor extends MouseAdapter
-    implements ComboBoxEditor, FocusListener {
-
-        public void addActionListener(ActionListener l) {
-        }
-
-        public void focusGained(FocusEvent e) {
-        }
-
-        public void focusLost(FocusEvent e) {
-            _comboBox.hidePopup();
-        }
-
-        public Component getEditorComponent() {
-            return _textField;
-        }
-
-        public Object getItem() {
-            return _value;
-        }
-
-        public void mousePressed(MouseEvent e) {
-            _comboBox.setPopupVisible(!_comboBox.isPopupVisible());
-        }
-
-        public void removeActionListener(ActionListener l) {
-        }
-
-        public void selectAll() {
-        }
-
-        public void setBackground(Color color) {
-            _textField.setBackground(color);
-        }
-
-        public void setItem(Object value) {
-            _value = value;
-            if (value == null) {
-                _textField.setText("");
-            } else {
-                _textField.setText(value.toString());
-            }
-        }
-
-        ClassSelectorEditor(JComboBox comboBox) {
-            _comboBox = comboBox;
-            _textField.setEditable(false);
-            _textField.setOpaque(true);
-            _textField.addMouseListener(this);
-            _textField.addFocusListener(this);
-        }
-
-        private JComboBox _comboBox;
-
-        private JTextField _textField = new JTextField();
-
-        private Object _value;
     }
 
     private static class ComboElement {
@@ -696,6 +651,117 @@ public class RuleEditor extends JDialog implements ActionListener {
         private static final long serialVersionUID = -3898792308707116805L;
     }
 
+    private static class REComboBox extends JComboBox {
+
+        public Color getCustomBackground() {
+            if (_supportRE) {
+                return _RE_ENABLED_BACKGROUND;
+            } else {
+                return _NON_RE_ENABLED_BACKGROUND;
+            }
+        }
+
+        public void setBackground(Color color) {
+            super.setBackground(color);
+            ComboBoxEditor editor = getEditor();
+            if (editor != null) {
+                editor.getEditorComponent().setBackground(color);
+            }
+        }
+
+        public void setEditable(boolean editable) {
+            ((JTextField) _editor.getEditorComponent()).setEditable(editable);
+        }
+
+        REComboBox() {
+            this(false);
+        }
+
+        REComboBox(boolean supportRE) {
+            super.setEditable(true);
+
+            _supportRE = supportRE;
+            setBorder(_EMPTY_BORDER);
+            setEditor(_editor);
+        }
+
+        private Editor _editor = new Editor();
+
+        private boolean _supportRE;
+
+        private static final long serialVersionUID = -1020598266173440301L;
+
+        private class Editor extends MouseAdapter implements ComboBoxEditor,
+        FocusListener {
+
+            public void addActionListener(ActionListener l) {
+            }
+
+            public void focusGained(FocusEvent e) {
+            }
+
+            public void focusLost(FocusEvent e) {
+                if (_textField.isEnabled()) {
+                    hidePopup();
+                    if (_textField.isEditable()) {
+                        setSelectedItem(_textField.getText());
+                    }
+                }
+            }
+
+            public Component getEditorComponent() {
+                return _textField;
+            }
+
+            public Object getItem() {
+                return _textField.isEditable() ? _textField.getText() : _value;
+            }
+
+            public void mousePressed(MouseEvent e) {
+                if (_textField.isEnabled()) {
+                    if (_textField.isEditable()) {
+                        if (!isPopupVisible()) {
+                            setPopupVisible(true);
+                        }
+                    } else {
+                        setPopupVisible(!isPopupVisible());
+                    }
+                }
+            }
+
+            public void removeActionListener(ActionListener l) {
+            }
+
+            public void selectAll() {
+                _textField.selectAll();
+            }
+
+            public void setBackground(Color color) {
+                _textField.setBackground(color);
+            }
+
+            public void setItem(Object value) {
+                _value = value;
+                if (value == null) {
+                    _textField.setText("");
+                } else {
+                    _textField.setText(value.toString());
+                }
+            }
+
+            Editor() {
+                _textField.setEditable(false);
+                _textField.setOpaque(true);
+                _textField.addMouseListener(this);
+                _textField.addFocusListener(this);
+            }
+
+            private JTextField _textField = new JTextField();
+
+            private Object _value;
+        }
+    }
+
     private static class RETextField extends JTextField {
 
         public Color getCustomBackground() {
@@ -709,10 +775,6 @@ public class RuleEditor extends JDialog implements ActionListener {
         RETextField(boolean supportRE) {
             _supportRE = supportRE;
         }
-
-        private static final Color _NON_RE_ENABLED_BACKGROUND = _SELECTED_COLOR;
-
-        private static final Color _RE_ENABLED_BACKGROUND = new Color(200, 255, 255);
 
         private boolean _supportRE;
 
@@ -749,11 +811,7 @@ public class RuleEditor extends JDialog implements ActionListener {
 
             Class<?> ruleClass = rule.getClass();
             _classSelector.addItemListener(this);
-            _classSelector.setEditable(true);
-            _classSelector.setOpaque(true);
-            _classSelector.setBorder(_EMPTY_BORDER);
-            _classSelectorEditor = new ClassSelectorEditor(_classSelector);
-            _classSelector.setEditor(_classSelectorEditor);
+            _classSelector.setEditable(false);
             for (Class<? extends Rule> listedRule : _ruleClasses) {
                 if (listedRule == null && ruleClass == null ||
                         listedRule != null && listedRule.equals(ruleClass)) {
@@ -815,10 +873,14 @@ public class RuleEditor extends JDialog implements ActionListener {
             Color color = selected ? _SELECTED_COLOR : _UNSELECTED_COLOR;
             _leftPanel.setBackground(color);
             _rightPanel.setBackground(color);
-            _classSelectorEditor.setBackground(color);
+            _classSelector.setBackground(color);
 
             if (renderOnly) {
-                for (JComponent component : _components) {
+                for (Component component : _components) {
+                    if (component instanceof JComboBox) {
+                        component = ((JComboBox) component).getEditor()
+                                .getEditorComponent();
+                    }
                     if (component instanceof JTextField) {
                         ((JTextField) component).getCaret().setVisible(false);
                     }
@@ -831,8 +893,12 @@ public class RuleEditor extends JDialog implements ActionListener {
                     if (selected) {
                         if (component instanceof RETextField) {
                             RETextField reTextField = (RETextField) component;
-                            component.setBackground(
+                            reTextField.setBackground(
                                     reTextField.getCustomBackground());
+                        } else if (component instanceof REComboBox) {
+                            REComboBox reComboBox = (REComboBox) component;
+                            reComboBox.setBackground(
+                                    reComboBox.getCustomBackground());
                         } else {
                             component.setBackground(_SELECTED_COLOR);
                         }
@@ -846,7 +912,8 @@ public class RuleEditor extends JDialog implements ActionListener {
         }
 
         protected int _getColumnWidth(JComponent component) {
-            if (component instanceof JTextField) {
+            if (component instanceof JTextField
+                    || component instanceof JComboBox) {
                 return 80;
             } else if (component instanceof JCheckBox) {
                 return 40;
@@ -857,16 +924,25 @@ public class RuleEditor extends JDialog implements ActionListener {
 
         protected JComponent _getComponent(RuleAttribute attribute) {
             JComponent component = null;
-            switch (attribute.getType()) {
-            case RuleAttribute.BOOLEAN:
+            if (attribute instanceof BooleanRuleAttribute) {
                 JCheckBox checkBox = new JCheckBox();
                 checkBox.setHorizontalAlignment(SwingConstants.CENTER);
                 component = checkBox;
-                break;
-            case RuleAttribute.STRING:
-                component =
-                    new RETextField(attribute.getAcceptRegularExpression());
-                break;
+            } else if (attribute instanceof StringRuleAttribute) {
+                boolean acceptRE = ((StringRuleAttribute) attribute)
+                        .acceptRegularExpression();
+                if (attribute instanceof ChoiceRuleAttribute) {
+                    ChoiceRuleAttribute choiceAttr =
+                        (ChoiceRuleAttribute) attribute;
+                    REComboBox comboBox = new REComboBox(acceptRE);
+                    comboBox.setEditable(choiceAttr.isEditable());
+                    for (Object choice : choiceAttr.getChoices()) {
+                        comboBox.addItem(choice);
+                    }
+                    component = comboBox;
+                } else {
+                    component = new RETextField(acceptRE);
+                }
             }
             return component;
         }
@@ -950,14 +1026,15 @@ public class RuleEditor extends JDialog implements ActionListener {
 
         protected void _setComponentValue(RuleAttribute attribute,
                 JComponent component, Object value) {
-            switch (attribute.getType()) {
-            case RuleAttribute.BOOLEAN:
+            if (attribute instanceof BooleanRuleAttribute) {
                 ((JCheckBox) component).setSelected(
                         ((Boolean) value).booleanValue());
-                break;
-            case RuleAttribute.STRING:
-                ((JTextField) component).setText((String) value);
-                break;
+            } else if (attribute instanceof StringRuleAttribute) {
+                if (attribute instanceof ChoiceRuleAttribute) {
+                    ((JComboBox) component).setSelectedItem((String) value);
+                } else {
+                    ((JTextField) component).setText((String) value);
+                }
             }
         }
 
@@ -966,7 +1043,11 @@ public class RuleEditor extends JDialog implements ActionListener {
             if (enabled) {
                 if (component instanceof RETextField) {
                     RETextField reTextField = (RETextField) component;
-                    component.setBackground(reTextField.getCustomBackground());
+                    reTextField.setBackground(
+                            reTextField.getCustomBackground());
+                } else if (component instanceof REComboBox) {
+                    REComboBox reComboBox = (REComboBox) component;
+                    reComboBox.setBackground(reComboBox.getCustomBackground());
                 } else {
                     component.setBackground(_SELECTED_COLOR);
                 }
@@ -988,9 +1069,7 @@ public class RuleEditor extends JDialog implements ActionListener {
 
         private JCheckBox[] _checkBoxes;
 
-        private JComboBox _classSelector = new JComboBox();
-
-        private ClassSelectorEditor _classSelectorEditor;
+        private JComboBox _classSelector = new REComboBox();
 
         private JComponent[] _components;
 

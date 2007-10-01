@@ -40,6 +40,7 @@ import java.util.Set;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.Rule.NamedObjMatchResult;
 import ptolemy.actor.gt.data.FastLinkedList;
@@ -591,7 +592,7 @@ public class GraphMatcher {
                 : object.toString();
     }
 
-    private static PortRule _getPortRule(TypedIOPort port) {
+    private static PortRule _getPortRule(Port port) {
         NamedObj container = port.getContainer();
         if (container instanceof AtomicActorMatcher) {
             try {
@@ -936,40 +937,47 @@ public class GraphMatcher {
     }
 
     private static boolean _shallowMatchPort(Port lhsPort, Port hostPort) {
-        if (lhsPort instanceof TypedIOPort) {
-            if (hostPort instanceof TypedIOPort) {
-                TypedIOPort lhsTypedPort = (TypedIOPort) lhsPort;
-                TypedIOPort hostTypedPort = (TypedIOPort) hostPort;
-                PortRule portRule = _getPortRule(lhsTypedPort);
+        if (lhsPort instanceof IOPort) {
+            if (hostPort instanceof IOPort) {
+                IOPort lhsIOPort = (IOPort) lhsPort;
+                IOPort hostIOPort = (IOPort) hostPort;
+                PortRule portRule = _getPortRule(lhsIOPort);
                 if (portRule == null) {
                     boolean isInputEqual =
-                        lhsTypedPort.isInput() == hostTypedPort.isInput();
+                        lhsIOPort.isInput() == hostIOPort.isInput();
                     
                     boolean isOutputEqual =
-                        lhsTypedPort.isOutput() == hostTypedPort.isOutput();
+                        lhsIOPort.isOutput() == hostIOPort.isOutput();
                     
-                    boolean isMultiportEqual = lhsTypedPort.isMultiport()
-                            == hostTypedPort.isMultiport();
-                    
-                    boolean isTypeCompatible = true;
-                    Type lhsType = lhsTypedPort.getType();
-                    Type hostType = hostTypedPort.getType();
-                    if (lhsTypedPort.isInput() && hostTypedPort.isInput()) {
-                        isTypeCompatible =
-                            isTypeCompatible && lhsType.isCompatible(hostType);
-                    }
-                    if (lhsTypedPort.isOutput() && hostTypedPort.isOutput()) {
-                        isTypeCompatible =
-                            isTypeCompatible && lhsType.isCompatible(hostType);
-                    }
+                    boolean isMultiportEqual = lhsIOPort.isMultiport()
+                            == hostIOPort.isMultiport();
                     
                     boolean isNameEqual =
-                        lhsTypedPort.getName().equals(hostTypedPort.getName());
+                        lhsIOPort.getName().equals(hostIOPort.getName());
+                    
+                    boolean isTypeCompatible = true;
+                    if (lhsIOPort instanceof TypedIOPort) {
+                        if (hostIOPort instanceof TypedIOPort) {
+                            Type lhsType = ((TypedIOPort) lhsIOPort).getType();
+                            Type hostType =
+                                ((TypedIOPort) hostIOPort).getType();
+                            if (lhsIOPort.isInput() && hostIOPort.isInput()) {
+                                isTypeCompatible = isTypeCompatible
+                                        && hostType.isCompatible(lhsType);
+                            }
+                            if (lhsIOPort.isOutput() && hostIOPort.isOutput()) {
+                                isTypeCompatible = isTypeCompatible
+                                        && lhsType.isCompatible(hostType);
+                            }
+                        } else {
+                            isTypeCompatible = false;
+                        }
+                    }
                     
                     return isInputEqual && isOutputEqual && isMultiportEqual
-                            && isTypeCompatible && isNameEqual;
+                            && isNameEqual && isTypeCompatible;
                 } else {
-                    return portRule.match(hostTypedPort) ==
+                    return portRule.match(hostIOPort) ==
                         NamedObjMatchResult.MATCH;
                 }
             } else {
