@@ -155,7 +155,7 @@ public class SurgeVisualizer extends LinkVisualizer {
                                         linkVisualizerThread.start();
                                     }
                                 }
-                            } catch (Exception e) {
+                            } catch (IllegalActionException ex) {
                                 // Do nothing.
                             }
                         }
