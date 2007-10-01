@@ -82,6 +82,9 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'AtomicActorMatcher$$1.class' \
+	'AtomicActorMatcher$$LoadActorIconChangeRequest.class' \
+	'AtomicActorMatcher$$RestoreAppearanceChangeRequest.class' \
 	'GraphMatcher$$1.class' \
 	'GraphMatcher$$2.class' \
 	'GraphMatcher$$IndexedList.class' \

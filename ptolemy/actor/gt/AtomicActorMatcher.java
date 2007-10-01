@@ -39,6 +39,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -64,8 +65,6 @@ public class AtomicActorMatcher extends TypedAtomicActor {
 
         ruleListAttribute = new RuleListAttribute(this, "ruleList");
         ruleListAttribute.setExpression("");
-        
-        _attachText("_iconDescription", _ICON_DESCRIPTION);
     }
 
     public void attributeChanged(Attribute attribute)
@@ -101,14 +100,19 @@ public class AtomicActorMatcher extends TypedAtomicActor {
                         port.setPersistent(false);
                     } else if (rule instanceof SubclassRule && !isIconSet) {
                         SubclassRule subclassRule = (SubclassRule) rule;
-                        String superclass = subclassRule.getSuperclass();
-                        isIconSet = _loadActorIcon(superclass);
+                        final String superclass = subclassRule.getSuperclass();
+                        requestChange(new ChangeRequest(this,
+                                "Deferred load actor icon action.") {
+                            protected void _execute() {
+                                _loadActorIcon(superclass);
+                            }
+                        });
+                        isIconSet = true;
                     }
                     i++;
                 }
                 if (!isIconSet) {
-                    //_removeEditorIcons();
-                    //_setIconDescription(_ICON_DESCRIPTION);
+                    requestChange(new RestoreAppearanceChangeRequest());
                 }
 
                 List<?> portList = portList();
@@ -140,14 +144,37 @@ public class AtomicActorMatcher extends TypedAtomicActor {
 
     public RuleListAttribute ruleListAttribute;
 
-    private boolean _loadActorIcon(String actorClassName) {
-            CompositeActor container = new CompositeActor();
-            String moml = "<group><entity name=\"NewActor\" class=\""
-                + actorClassName + "\"/></group>";
-            container.requestChange(
-                    new LoadActorIconChangeRequest(container, moml));
-            return true;
+    private void _loadActorIcon(String actorClassName) {
+        CompositeActor container = new CompositeActor();
+        String moml = "<group><entity name=\"NewActor\" class=\""
+            + actorClassName + "\"/></group>";
+        container.requestChange(
+                new LoadActorIconChangeRequest(container, moml));
     }
+
+    private void _removeEditorIcons() {
+        for (Object editorIconObject : attributeList(EditorIcon.class)) {
+            EditorIcon editorIcon = (EditorIcon) editorIconObject;
+            String moml =
+                "<deleteProperty name=\"" + editorIcon.getName() + "\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    AtomicActorMatcher.this, moml);
+            request.execute();
+        }
+    }
+
+    private void _setIconDescription(String iconDescription) {
+        String moml = "<property name=\"_iconDescription\" class="
+            + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
+            + "  <configure>" + iconDescription + "</configure>"
+            + "</property>";
+        MoMLChangeRequest request = new MoMLChangeRequest(this,
+                AtomicActorMatcher.this, moml);
+          request.execute();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
 
     private static final String _ICON_DESCRIPTION =
         "<svg>"
@@ -168,9 +195,6 @@ public class AtomicActorMatcher extends TypedAtomicActor {
         + "  match</text>"
         + "</svg>";
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
     private static final long serialVersionUID = 8775143612221394893L;
 
     private class LoadActorIconChangeRequest extends MoMLChangeRequest {
@@ -189,6 +213,8 @@ public class AtomicActorMatcher extends TypedAtomicActor {
                 ComponentEntity actor =
                     (ComponentEntity) _container.entityList().get(0);
 
+                _removeEditorIcons();
+
                 ConfigurableAttribute actorAttribute = (ConfigurableAttribute)
                         actor.getAttribute("_iconDescription");
                 String iconDescription = actorAttribute.getConfigureText();
@@ -196,13 +222,13 @@ public class AtomicActorMatcher extends TypedAtomicActor {
 
                 List<?> editorIconList = actor.attributeList(EditorIcon.class);
 
-                _removeEditorIcons();
                 for (Object editorIconObject : editorIconList) {
                     EditorIcon editorIcon = (EditorIcon) editorIconObject;
                     editorIcon.setName("_icon");
                     String iconMoML = editorIcon.exportMoML();
                     new MoMLChangeRequest(this, AtomicActorMatcher.this,
                             iconMoML).execute();
+                    break;
                 }
             } catch (Exception e) {
                 // Catches exceptions like KernelException,
@@ -213,25 +239,18 @@ public class AtomicActorMatcher extends TypedAtomicActor {
             }
         }
 
-        private void _removeEditorIcons() {
-            for (Object editorIconObject : attributeList(EditorIcon.class)) {
-                EditorIcon editorIcon = (EditorIcon) editorIconObject;
-                String moml =
-                    "<deleteProperty name=\"" + editorIcon.getName() + "\"/>";
-                new MoMLChangeRequest(this, AtomicActorMatcher.this,
-                        moml).execute();
-            }
-        }
-
-        private void _setIconDescription(String iconDescription) {
-            String moml = "<property name=\"_iconDescription\" class="
-                + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
-                + "  <configure>" + iconDescription + "</configure>"
-                + "</property>";
-            new MoMLChangeRequest(this, AtomicActorMatcher.this,
-                    moml).execute();
-        }
-
         private CompositeEntity _container;
+    }
+
+    private class RestoreAppearanceChangeRequest extends ChangeRequest {
+
+        protected void _execute() throws Exception {
+            _removeEditorIcons();
+            _setIconDescription(_ICON_DESCRIPTION);
+        }
+
+        RestoreAppearanceChangeRequest() {
+            super(AtomicActorMatcher.this, "Restore the default appearance.");
+        }
     }
 }
