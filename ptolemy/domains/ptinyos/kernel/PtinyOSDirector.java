@@ -1834,6 +1834,9 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
                 obj = temp;
             }
         }
+        if (obj == null) {
+            throw new InternalErrorException("Could not get name of container.");
+        }
         String containerName = obj.getName();
         if (baseStationValue.equals(containerName)) {
             text.addLine("PFLAGS +=" + "-D_PTII_NODEID=" + "0");
