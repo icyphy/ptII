@@ -1299,7 +1299,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             } else if (!presentFiring.equals(desiredFiring)) {
                 // So we've already propagated here, but the
                 // firingsPerIteration don't match.
-                throw new NotSchedulableException("No solution "
+                throw new NotSchedulableException(this, "No solution "
                         + "exists for the balance equations.\n"
                         + "Graph is not " + "consistent under the SDF domain "
                         + "detected on external port "
