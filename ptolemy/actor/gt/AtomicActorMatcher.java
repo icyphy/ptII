@@ -64,6 +64,8 @@ public class AtomicActorMatcher extends TypedAtomicActor {
 
         ruleListAttribute = new RuleListAttribute(this, "ruleList");
         ruleListAttribute.setExpression("");
+        
+        _attachText("_iconDescription", _ICON_DESCRIPTION);
     }
 
     public void attributeChanged(Attribute attribute)
