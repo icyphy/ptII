@@ -56,6 +56,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	AtomicActorMatcher.java \
+	BooleanRuleAttribute.java \
+	ChoiceRuleAttribute.java \
 	CompositeActorMatcher.java \
 	GraphMatcher.java \
 	GraphTransformationException.java \
@@ -68,6 +70,7 @@ JSRCS = \
 	RuleListAttribute.java \
 	RuleValidationException.java \
 	SingleRuleTransformer.java \
+	StringRuleAttribute.java \
 	SubgraphMatchingException.java
 
 EXTRA_SRCS =	$(JSRCS)
@@ -88,8 +91,8 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$NameComparator.class' \
 	'GraphMatcher$$ObjectList.class' \
 	'GraphMatcher$$Path.class' \
-	'GraphMatcher$$PortRulePair.class' \
-	'Rule$$FieldIterator.class'
+	'Rule$$FieldIterator.class' \
+	'Rule$$NamedObjMatchResult.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
