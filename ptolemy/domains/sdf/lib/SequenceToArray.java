@@ -32,7 +32,6 @@ import ptolemy.actor.util.ActorTypeUtil;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.ArrayType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -44,7 +43,8 @@ import ptolemy.kernel.util.Workspace;
 //// SequenceToArray
 
 /**
- <p>This actor bundles a specified number of input tokens into a single array.
+ <p>This actor bundles a specified number of input tokens into a single array
+ and broadcasts the resulting array on all output channels.
  The number of tokens to be bundled is specified by the <i>arrayLength</i>
  parameter.
  </p><p>
@@ -73,6 +73,8 @@ public class SequenceToArray extends SDFTransformer {
         super(container, name);
 
         input_tokenConsumptionRate.setExpression("arrayLength");
+        
+        output.setMultiport(true);
 
         // Set parameters.
         arrayLength = new PortParameter(this, "arrayLength");
@@ -146,7 +148,7 @@ public class SequenceToArray extends SDFTransformer {
         Token[] valueArray = new Token[length];
         System.arraycopy(input.get(0, length), 0, valueArray, 0, length);
 
-        output.send(0, new ArrayToken(input.getType(), valueArray));
+        output.broadcast(new ArrayToken(input.getType(), valueArray));
     }
 
     /** Return true if the input port has enough tokens for this actor to
