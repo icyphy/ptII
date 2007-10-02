@@ -167,13 +167,13 @@ public class RealTimeComposite extends MirrorComposite {
         super(container, name);
         setClassName("ptolemy.actor.lib.hoc.RealTimeComposite");
         new RealTimeDirector(this, "RealTimeDirector");
-        
+
         // Hidden parameter defining "UNDEFINED".
         Parameter UNDEFINED = new Parameter(this, "UNDEFINED");
         UNDEFINED.setVisibility(Settable.EXPERT);
         UNDEFINED.setPersistent(false);
         UNDEFINED.setExpression("-1.0");
-        
+
         delay = new Parameter(this, "delay");
         delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("UNDEFINED");
@@ -186,7 +186,7 @@ public class RealTimeComposite extends MirrorComposite {
      *  output events. This is a double that defaults to <i>UNDEFINED</i>.
      */
     public Parameter delay;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -277,13 +277,13 @@ public class RealTimeComposite extends MirrorComposite {
         }
         return postfireReturns;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The cached value of the <i>delay</i> parameter. */
     private double _delayValue = 0.0;
-    
+
     /** Queue of times at which inside actors have requested firings.
      *  This queue is accessed from multiple threads, so it must be
      *  thread safe.
@@ -294,7 +294,7 @@ public class RealTimeComposite extends MirrorComposite {
     /** Queue of unprocessed input events.
      */
     private DelayQueue<InputFrame> _inputFrames = new DelayQueue<InputFrame>();
-    
+
     /** Queue of unprocessed output events.
      *  This queue is accessed from multiple threads, so it must be
      *  thread safe.
@@ -310,7 +310,7 @@ public class RealTimeComposite extends MirrorComposite {
      *  in a single thread, so it need not by thread safe.
      */
     private Queue<Time> _responseTimes = new LinkedList<Time>();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -421,7 +421,7 @@ public class RealTimeComposite extends MirrorComposite {
 
         /** If current model time of the environment matches the time at which outputs
          *  that have been queued should be produced, then produce them.
-         *  Yield to other threads. 
+         *  Yield to other threads.
          *  @exception IllegalActionException If production of an output
          *   fails (e.g. type error).
          */
@@ -448,7 +448,7 @@ public class RealTimeComposite extends MirrorComposite {
             } else {
                 // Delay is either UNDEFINED or positive,
                 // so we are running in separate thread.
-                
+
                 // If the delay value is positive, then we may need
                 // to stall to prevent model time from getting too
                 // far ahead of real time.
@@ -557,7 +557,7 @@ public class RealTimeComposite extends MirrorComposite {
                 director.fireAt(RealTimeComposite.this, time);
             }
         }
-        
+
         /** Return the current time of the enclosing actor if the delay
          *  is zero. Otherwise, get the local notion of current time.
          *  @return The current time.
@@ -693,7 +693,7 @@ public class RealTimeComposite extends MirrorComposite {
 
                                 // Queue an indicator to stall when that firing occurs.
                                 _responseTimes.add(responseTime);
-                            }                        
+                            }
                         }
                     }
                 }
@@ -714,7 +714,7 @@ public class RealTimeComposite extends MirrorComposite {
             }
             return result;
         }
-        
+
         /** Override the base class to post a "stop frame" on the queue
          *  if there is an associated thread.
          */
@@ -860,7 +860,7 @@ public class RealTimeComposite extends MirrorComposite {
 
         //////////////////////////////////////////////////////////////
         ////                   private variables                  ////
-        
+
         /** List of input events in the current iteration. */
         private List<QueuedToken> _inputTokens;
 
@@ -905,7 +905,7 @@ public class RealTimeComposite extends MirrorComposite {
                         // Current time of the director should match the frame time.
                         // This is the view of time that should be presented to any inside actors.
                         _currentTime = frame.time;
-                        
+
                         // Note that there may not be any tokens here, since there
                         // may not be any inputs. We still want to iterate the
                         // enclosed model at the specified time because the firing
