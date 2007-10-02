@@ -60,6 +60,7 @@ JSIMPLE_TESTS = \
 	EventToken.tcl \
 	FixMatrixToken.tcl \
 	FixToken.tcl \
+	FloatToken.tcl \
 	FunctionToken.tcl \
 	IntMatrixToken.tcl \
 	IntToken.tcl \

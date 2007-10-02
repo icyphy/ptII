@@ -37,6 +37,7 @@ import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.EventToken;
 import ptolemy.data.FixToken;
+import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.MatrixToken;
@@ -394,6 +395,24 @@ public abstract class BaseType implements Type, Serializable {
     /** The complex matrix data type. */
     public static final MatrixType.ComplexMatrixType COMPLEX_MATRIX = new MatrixType.ComplexMatrixType();
 
+    /** The float data type. */
+    public static class FloatType extends BaseType {
+        private FloatType() {
+            super(FloatToken.class, "float");
+        }
+
+        public Token convert(Token t) throws IllegalActionException {
+            return FloatToken.convert(t);
+        }
+
+        public int getTypeHash() {
+            return 16;
+        }
+    }
+
+    /** The float data type. */
+    public static final FloatType FLOAT = new FloatType();
+    
     /** The double data type. */
     public static class DoubleType extends BaseType {
         private DoubleType() {
@@ -445,8 +464,7 @@ public abstract class BaseType implements Type, Serializable {
     /** The fix matrix data type. */
     public static final MatrixType.FixMatrixType FIX_MATRIX = new MatrixType.FixMatrixType();
 
-    // NOTE: Added SHORT data type. ILIU 09/20/07. 
-    /** The short data type. */
+    /** The short integer data type. */
     public static class ShortType extends BaseType {
         private ShortType() {
             super(ShortToken.class, "short");
@@ -460,7 +478,7 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
-    /** The integer data type. */
+    /** The short integer data type. */
     public static final ShortType SHORT = new ShortType();
     
     

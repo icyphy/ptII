@@ -738,6 +738,7 @@ public class TypeLattice {
                 _basicLattice.addNodeWeight(BaseType.UNSIZED_FIX);
                 _basicLattice.addNodeWeight(BaseType.SIZED_FIX);
                 _basicLattice.addNodeWeight(BaseType.FIX_MATRIX);
+                _basicLattice.addNodeWeight(BaseType.FLOAT);
                 _basicLattice.addNodeWeight(BaseType.INT);
                 _basicLattice.addNodeWeight(BaseType.INT_MATRIX);
                 _basicLattice.addNodeWeight(BaseType.LONG);
@@ -806,6 +807,8 @@ public class TypeLattice {
                 // NOTE: Added SHORT to the type lattice. ILIU 09/20/07.
                 _basicLattice.addEdge(BaseType.UNSIGNED_BYTE, BaseType.SHORT);
                 _basicLattice.addEdge(BaseType.SHORT, BaseType.INT);
+                _basicLattice.addEdge(BaseType.SHORT, BaseType.FLOAT);
+                _basicLattice.addEdge(BaseType.FLOAT, BaseType.DOUBLE);
                 
                 
 

@@ -200,6 +200,13 @@ public class ShortToken extends ScalarToken {
         return new FixPoint(_value);
     }
 
+    /** Return the value in the token as a float.
+     *  @return The value contained in this token as a float.
+     */
+    public float floatValue() {
+        return (float) _value;
+    }
+
     /** Return the type of this token.
      *  @return BaseType.SHORT
      */
