@@ -53,6 +53,7 @@ JSRCS = \
 	Case.java \
 	CaseDirector.java \
 	MultiCompositeActor.java \
+	MultiInstanceComposite.java \
 	Refinement.java
 
 OTHER_FILES_TO_BE_JARED = \
