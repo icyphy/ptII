@@ -290,7 +290,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
 			port_declaration_AST = (PtalonAST)currentAST.root;
 			
 					if (dynamic_name) {
-						port_declaration_AST.addChild((PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(DYNAMIC_NAME,"dynamic")).add(d_AST).add(e_AST)));
+						port_declaration_AST.addChild(astFactory.make( (new ASTArray(3)).add(astFactory.create(DYNAMIC_NAME,"dynamic")).add(d_AST).add(e_AST)));
 					} else {
 						port_declaration_AST.addChild(d_AST);
 					}

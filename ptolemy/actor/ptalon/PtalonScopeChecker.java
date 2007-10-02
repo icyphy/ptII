@@ -51,14 +51,12 @@ public class PtalonScopeChecker extends antlr.TreeParser       implements Ptalon
 		return info;
 	}
 	
-	private String scopeName;
-public PtalonScopeChecker() {
+	public PtalonScopeChecker() {
 	tokenNames = _tokenNames;
 }
 
 	public final void port_declaration(AST _t) throws RecognitionException, PtalonScopeException {
 		
-		PtalonAST port_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
 		returnAST = null;
 		ASTPair currentAST = new ASTPair();
 		PtalonAST port_declaration_AST = null;
@@ -75,15 +73,15 @@ public PtalonScopeChecker() {
 		PtalonAST f = null;
 		PtalonAST f_AST = null;
 		
-		if (_t==null) _t=ASTNULL;
+		if (_t==null) {
+            _t=ASTNULL;
+        }
 		switch ( _t.getType()) {
 		case PORT:
 		{
 			AST __t2 = _t;
 			PtalonAST tmp1_AST = null;
-			PtalonAST tmp1_AST_in = null;
-			tmp1_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
-			tmp1_AST_in = (PtalonAST)_t;
+			tmp1_AST = (PtalonAST)astFactory.create(_t);
 			astFactory.addASTChild(currentAST, tmp1_AST);
 			ASTPair __currentAST2 = currentAST.copy();
 			currentAST.root = currentAST.child;
@@ -91,12 +89,13 @@ public PtalonScopeChecker() {
 			match(_t,PORT);
 			_t = _t.getFirstChild();
 			{
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			switch ( _t.getType()) {
 			case ID:
 			{
 				a = (PtalonAST)_t;
-				PtalonAST a_AST_in = null;
 				a_AST = (PtalonAST)astFactory.create(a);
 				astFactory.addASTChild(currentAST, a_AST);
 				match(_t,ID);
@@ -110,9 +109,7 @@ public PtalonScopeChecker() {
 			{
 				AST __t4 = _t;
 				PtalonAST tmp2_AST = null;
-				PtalonAST tmp2_AST_in = null;
-				tmp2_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
-				tmp2_AST_in = (PtalonAST)_t;
+				tmp2_AST = (PtalonAST)astFactory.create(_t);
 				astFactory.addASTChild(currentAST, tmp2_AST);
 				ASTPair __currentAST4 = currentAST.copy();
 				currentAST.root = currentAST.child;
@@ -120,16 +117,12 @@ public PtalonScopeChecker() {
 				match(_t,DYNAMIC_NAME);
 				_t = _t.getFirstChild();
 				PtalonAST tmp3_AST = null;
-				PtalonAST tmp3_AST_in = null;
-				tmp3_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
-				tmp3_AST_in = (PtalonAST)_t;
+				tmp3_AST = (PtalonAST)astFactory.create(_t);
 				astFactory.addASTChild(currentAST, tmp3_AST);
 				match(_t,ID);
 				_t = _t.getNextSibling();
 				PtalonAST tmp4_AST = null;
-				PtalonAST tmp4_AST_in = null;
-				tmp4_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
-				tmp4_AST_in = (PtalonAST)_t;
+				tmp4_AST = (PtalonAST)astFactory.create(_t);
 				astFactory.addASTChild(currentAST, tmp4_AST);
 				match(_t,EXPRESSION);
 				_t = _t.getNextSibling();
@@ -154,9 +147,7 @@ public PtalonScopeChecker() {
 		{
 			AST __t5 = _t;
 			PtalonAST tmp5_AST = null;
-			PtalonAST tmp5_AST_in = null;
-			tmp5_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
-			tmp5_AST_in = (PtalonAST)_t;
+			tmp5_AST = (PtalonAST)astFactory.create(_t);
 			astFactory.addASTChild(currentAST, tmp5_AST);
 			ASTPair __currentAST5 = currentAST.copy();
 			currentAST.root = currentAST.child;
@@ -164,12 +155,13 @@ public PtalonScopeChecker() {
 			match(_t,INPORT);
 			_t = _t.getFirstChild();
 			{
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			switch ( _t.getType()) {
 			case ID:
 			{
 				b = (PtalonAST)_t;
-				PtalonAST b_AST_in = null;
 				b_AST = (PtalonAST)astFactory.create(b);
 				astFactory.addASTChild(currentAST, b_AST);
 				match(_t,ID);
@@ -183,9 +175,7 @@ public PtalonScopeChecker() {
 			{
 				AST __t7 = _t;
 				PtalonAST tmp6_AST = null;
-				PtalonAST tmp6_AST_in = null;
-				tmp6_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
-				tmp6_AST_in = (PtalonAST)_t;
+				tmp6_AST = (PtalonAST)astFactory.create(_t);
 				astFactory.addASTChild(currentAST, tmp6_AST);
 				ASTPair __currentAST7 = currentAST.copy();
 				currentAST.root = currentAST.child;
@@ -193,16 +183,12 @@ public PtalonScopeChecker() {
 				match(_t,DYNAMIC_NAME);
 				_t = _t.getFirstChild();
 				PtalonAST tmp7_AST = null;
-				PtalonAST tmp7_AST_in = null;
-				tmp7_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
-				tmp7_AST_in = (PtalonAST)_t;
+				tmp7_AST = (PtalonAST)astFactory.create(_t);
 				astFactory.addASTChild(currentAST, tmp7_AST);
 				match(_t,ID);
 				_t = _t.getNextSibling();
 				PtalonAST tmp8_AST = null;
-				PtalonAST tmp8_AST_in = null;
-				tmp8_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
-				tmp8_AST_in = (PtalonAST)_t;
+				tmp8_AST = (PtalonAST)astFactory.create(_t);
 				astFactory.addASTChild(currentAST, tmp8_AST);
 				match(_t,EXPRESSION);
 				_t = _t.getNextSibling();
@@ -227,9 +213,7 @@ public PtalonScopeChecker() {
 		{
 			AST __t8 = _t;
 			PtalonAST tmp9_AST = null;
-			PtalonAST tmp9_AST_in = null;
 			tmp9_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
-			tmp9_AST_in = (PtalonAST)_t;
 			astFactory.addASTChild(currentAST, tmp9_AST);
 			ASTPair __currentAST8 = currentAST.copy();
 			currentAST.root = currentAST.child;
@@ -237,7 +221,9 @@ public PtalonScopeChecker() {
 			match(_t,OUTPORT);
 			_t = _t.getFirstChild();
 			{
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			switch ( _t.getType()) {
 			case ID:
 			{
@@ -310,7 +296,9 @@ public PtalonScopeChecker() {
 			match(_t,MULTIPORT);
 			_t = _t.getFirstChild();
 			{
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			switch ( _t.getType()) {
 			case ID:
 			{
@@ -383,7 +371,9 @@ public PtalonScopeChecker() {
 			match(_t,MULTIINPORT);
 			_t = _t.getFirstChild();
 			{
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			switch ( _t.getType()) {
 			case ID:
 			{
@@ -456,7 +446,9 @@ public PtalonScopeChecker() {
 			match(_t,MULTIOUTPORT);
 			_t = _t.getFirstChild();
 			{
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			switch ( _t.getType()) {
 			case ID:
 			{
@@ -535,7 +527,9 @@ public PtalonScopeChecker() {
 		PtalonAST b = null;
 		PtalonAST b_AST = null;
 		
-		if (_t==null) _t=ASTNULL;
+		if (_t==null) {
+            _t=ASTNULL;
+        }
 		switch ( _t.getType()) {
 		case PARAMETER:
 		{
@@ -551,7 +545,9 @@ public PtalonScopeChecker() {
 			match(_t,PARAMETER);
 			_t = _t.getFirstChild();
 			{
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			switch ( _t.getType()) {
 			case ID:
 			{
@@ -658,7 +654,9 @@ public PtalonScopeChecker() {
 		PtalonAST b = null;
 		PtalonAST b_AST = null;
 		
-		if (_t==null) _t=ASTNULL;
+		if (_t==null) {
+            _t=ASTNULL;
+        }
 		switch ( _t.getType()) {
 		case PARAM_EQUALS:
 		{
@@ -685,7 +683,9 @@ public PtalonScopeChecker() {
 			match(_t,PARAMETER);
 			_t = _t.getFirstChild();
 			{
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			switch ( _t.getType()) {
 			case ID:
 			{
@@ -833,7 +833,9 @@ public PtalonScopeChecker() {
 		match(_t,RELATION);
 		_t = _t.getFirstChild();
 		{
-		if (_t==null) _t=ASTNULL;
+		if (_t==null) {
+            _t=ASTNULL;
+        }
 		switch ( _t.getType()) {
 		case ID:
 		{
@@ -915,7 +917,9 @@ public PtalonScopeChecker() {
 		match(_t,TRANSPARENT);
 		_t = _t.getFirstChild();
 		{
-		if (_t==null) _t=ASTNULL;
+		if (_t==null) {
+            _t=ASTNULL;
+        }
 		switch ( _t.getType()) {
 		case ID:
 		{
@@ -1012,7 +1016,9 @@ public PtalonScopeChecker() {
 		match(_t,ASSIGN);
 		_t = _t.getFirstChild();
 		{
-		if (_t==null) _t=ASTNULL;
+		if (_t==null) {
+            _t=ASTNULL;
+        }
 		switch ( _t.getType()) {
 		case ID:
 		{
@@ -1065,13 +1071,17 @@ public PtalonScopeChecker() {
 		}
 		}
 		{
-		if (_t==null) _t=ASTNULL;
+		if (_t==null) {
+            _t=ASTNULL;
+        }
 		switch ( _t.getType()) {
 		case ID:
 		case DYNAMIC_NAME:
 		{
 			{
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			switch ( _t.getType()) {
 			case ID:
 			{
@@ -1197,7 +1207,9 @@ public PtalonScopeChecker() {
 		{
 		_loop54:
 		do {
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			if ((_t.getType()==ASSIGN)) {
 				b = _t==ASTNULL ? null : (PtalonAST)_t;
 				assignment(_t);
@@ -1251,7 +1263,9 @@ public PtalonScopeChecker() {
 		{
 		_loop50:
 		do {
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			if ((_t.getType()==ASSIGN)) {
 				b = _t==ASTNULL ? null : (PtalonAST)_t;
 				assignment(_t);
@@ -1286,7 +1300,9 @@ public PtalonScopeChecker() {
 		PtalonAST atomic_statement_AST = null;
 		
 		{
-		if (_t==null) _t=ASTNULL;
+		if (_t==null) {
+            _t=ASTNULL;
+        }
 		switch ( _t.getType()) {
 		case PORT:
 		case INPORT:
@@ -1393,7 +1409,9 @@ public PtalonScopeChecker() {
 		{
 		_loop61:
 		do {
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			switch ( _t.getType()) {
 			case PORT:
 			case INPORT:
@@ -1455,7 +1473,9 @@ public PtalonScopeChecker() {
 		{
 		_loop64:
 		do {
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			switch ( _t.getType()) {
 			case PORT:
 			case INPORT:
@@ -1604,7 +1624,9 @@ public PtalonScopeChecker() {
 		{
 		_loop71:
 		do {
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			switch ( _t.getType()) {
 			case PORT:
 			case INPORT:
@@ -1710,7 +1732,9 @@ public PtalonScopeChecker() {
 				info.setDanglingPortsOkay(true);
 			
 		{
-		if (_t==null) _t=ASTNULL;
+		if (_t==null) {
+            _t=ASTNULL;
+        }
 		switch ( _t.getType()) {
 		case DANGLING_PORTS_OKAY:
 		{
@@ -1750,7 +1774,9 @@ public PtalonScopeChecker() {
 		}
 		}
 		{
-		if (_t==null) _t=ASTNULL;
+		if (_t==null) {
+            _t=ASTNULL;
+        }
 		switch ( _t.getType()) {
 		case ATTACH_DANGLING_PORTS:
 		{
@@ -1794,7 +1820,9 @@ public PtalonScopeChecker() {
 		{
 		_loop78:
 		do {
-			if (_t==null) _t=ASTNULL;
+			if (_t==null) {
+                _t=ASTNULL;
+            }
 			switch ( _t.getType()) {
 			case PORT:
 			case INPORT:
