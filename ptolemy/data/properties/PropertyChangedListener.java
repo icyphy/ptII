@@ -27,6 +27,8 @@
  */
 package ptolemy.data.properties;
 
+import ptolemy.actor.IOPort;
+
 //////////////////////////////////////////////////////////////////////////
 //// PropertyChangedListener
 

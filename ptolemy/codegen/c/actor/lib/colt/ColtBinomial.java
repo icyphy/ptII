@@ -28,9 +28,6 @@
  */
 package ptolemy.codegen.c.actor.lib.colt;
 
-import ptolemy.codegen.c.actor.lib.RandomSource;
-
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 

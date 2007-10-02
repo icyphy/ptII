@@ -29,6 +29,8 @@
 //// Gaussian
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
+import org.python.parser.ast.If;
+
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;

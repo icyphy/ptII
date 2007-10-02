@@ -28,6 +28,8 @@
  */
 package ptolemy.data;
 
+import org.python.parser.ast.If;
+
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;

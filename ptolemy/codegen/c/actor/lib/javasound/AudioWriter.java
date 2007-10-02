@@ -31,7 +31,6 @@ package ptolemy.codegen.c.actor.lib.javasound;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;

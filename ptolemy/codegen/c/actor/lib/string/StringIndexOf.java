@@ -28,7 +28,6 @@
 package ptolemy.codegen.c.actor.lib.string;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;

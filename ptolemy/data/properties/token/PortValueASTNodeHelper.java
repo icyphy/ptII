@@ -5,7 +5,6 @@ import java.util.List;
 
 import ptolemy.data.properties.Property;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 public class PortValueASTNodeHelper extends PortValueHelper {
 

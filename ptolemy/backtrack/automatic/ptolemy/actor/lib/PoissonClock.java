@@ -29,7 +29,6 @@
 //// PoissonClock
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.TimedSource;
 import ptolemy.actor.util.Time;

@@ -31,8 +31,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ptolemy.actor.gt.MatchCallback;
 import ptolemy.actor.gt.GraphMatcher;
+import ptolemy.actor.gt.MatchCallback;
 import ptolemy.actor.gt.data.MatchResult;
 
 /**

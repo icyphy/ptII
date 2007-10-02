@@ -27,6 +27,8 @@
  */
 package ptolemy.actor.lib;
 
+import org.python.parser.ast.If;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;

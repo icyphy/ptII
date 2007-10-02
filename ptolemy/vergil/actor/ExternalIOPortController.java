@@ -54,11 +54,8 @@ import diva.canvas.connector.PerimeterSite;
 import diva.canvas.connector.TerminalFigure;
 import diva.canvas.toolbox.BasicFigure;
 import diva.canvas.toolbox.LabelFigure;
-import diva.canvas.toolbox.PaintedFigure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
-import diva.util.java2d.PaintedList;
-import diva.util.java2d.PaintedPath;
 import diva.util.java2d.Polygon2D;
 
 //////////////////////////////////////////////////////////////////////////

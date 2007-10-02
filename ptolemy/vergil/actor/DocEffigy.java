@@ -26,9 +26,6 @@
  */
 package ptolemy.vergil.actor;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URL;
 
 import ptolemy.actor.gui.Effigy;

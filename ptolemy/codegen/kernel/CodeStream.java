@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ptolemy.codegen.c.kernel.CCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;

@@ -76,7 +76,6 @@ import javax.swing.SwingUtilities;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
-import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.PtolemyFrame;

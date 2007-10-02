@@ -34,7 +34,6 @@ import java.util.Iterator;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.kernel.util.IllegalActionException;

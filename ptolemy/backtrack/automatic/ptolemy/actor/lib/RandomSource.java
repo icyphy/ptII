@@ -29,8 +29,8 @@
 //// RandomSource
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import java.lang.Object;
 import java.util.Random;
+
 import ptolemy.actor.lib.Source;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;

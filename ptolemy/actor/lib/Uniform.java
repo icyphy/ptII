@@ -27,6 +27,8 @@
  */
 package ptolemy.actor.lib;
 
+import org.python.parser.ast.If;
+
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;

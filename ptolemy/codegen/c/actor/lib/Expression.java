@@ -26,7 +26,6 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.actor.AtomicActor;

@@ -30,11 +30,11 @@ package ptolemy.codegen.c.domains.sdf.kernel;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.lib.jni.CompiledCompositeActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.jni.CompiledCompositeActor;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.c.actor.sched.StaticSchedulingDirector;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;

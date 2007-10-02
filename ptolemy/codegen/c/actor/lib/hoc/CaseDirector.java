@@ -33,9 +33,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
-
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////

@@ -27,9 +27,7 @@
  */
 package ptolemy.actor.lib;
 
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

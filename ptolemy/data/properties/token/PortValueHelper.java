@@ -8,7 +8,6 @@ import ptolemy.data.properties.Property;
 import ptolemy.data.properties.PropertyHelper;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
 
 public class PortValueHelper extends PropertyHelper {
 
