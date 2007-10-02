@@ -5,13 +5,15 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="C:\eal\iRobot\ptolemy\Sensors">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/apps/iRobot/ptolemy/Sensors">
         </property>
         <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="run" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 45.0}">
         </property>
@@ -20,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 26, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 26, 815, 516}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
