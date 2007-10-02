@@ -623,7 +623,7 @@ public class RealTimeComposite extends MirrorComposite {
             Time environmentTime = RealTimeComposite.this.getExecutiveDirector().getModelTime();
             if (RealTimeComposite.this._debugging) {
                 RealTimeComposite.this._debug(
-                        "======= Current environment time is: "
+                        "----- Current environment time is: "
                         + environmentTime);
             }
 
