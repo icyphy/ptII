@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -65,17 +66,15 @@ public class ArrayToSequence extends CCodeGeneratorHelper {
 
         ptolemy.domains.sdf.lib.ArrayToSequence actor = (ptolemy.domains.sdf.lib.ArrayToSequence) getComponent();
 
-        ArrayList args = new ArrayList();
-
-        if (actor.input.getType() instanceof ArrayType) {
-            args.add(codeGenType(((ArrayType) actor.input.getType())
-                    .getElementType()));
+        Type type = ((ArrayType) actor.input.getType()).getElementType();
+        
+        if (isPrimitive(type)) {
+            ArrayList args = new ArrayList();
+            args.add(codeGenType(type));
+            _codeStream.appendCodeBlock("fireBlock", args);
         } else {
-            throw new IllegalActionException("Unhandled type for input: ("
-                    + actor.input.getType() + ")");
+            _codeStream.appendCodeBlock("TokenFireBlock");
         }
-
-        _codeStream.appendCodeBlock("fireBlock", args);
 
         return processCode(_codeStream.toString());
     }
