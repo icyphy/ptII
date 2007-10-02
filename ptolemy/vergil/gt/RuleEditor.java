@@ -120,8 +120,10 @@ public class RuleEditor extends JDialog implements ActionListener {
 
     public RuleEditor(Frame owner, String title, RuleList initialRules) {
         super(owner, title, true);
+
+        _initialRules = initialRules;
         _createComponents();
-        resetTable(initialRules);
+        resetTable(_initialRules);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -181,11 +183,14 @@ public class RuleEditor extends JDialog implements ActionListener {
             message += "\nPress Edit to return to modify the rules, or press "
                 + "Cancel to cancel all the changes.";
 
-            String[] options = new String[] {"Edit", "Cancel"};
+            String[] options = new String[] {"Edit", "Revert", "Cancel"};
             int selected = JOptionPane.showOptionDialog(null, message,
                     "Validation Error", JOptionPane.OK_CANCEL_OPTION,
                     JOptionPane.ERROR_MESSAGE, null, options, options[0]);
             if (selected == 0) {
+                return;
+            } else if (selected == 1) {
+                resetTable(_initialRules);
                 return;
             } else {
                 _isCanceled = true;
@@ -218,14 +223,24 @@ public class RuleEditor extends JDialog implements ActionListener {
     }
 
     public void resetTable(RuleList ruleList) {
-        _tableModel.getDataVector().removeAllElements();
+        int[] selectedRows = _table.getSelectedRows();
+        _editor.stopCellEditing();
+        while (_tableModel.getRowCount() > 0) {
+            _tableModel.removeRow(0);
+        }
         int i = 0;
         for (Rule rule : ruleList) {
             Row row = new Row(rule);
             _tableModel.addRow(new Object[] {i++ + 1, row, row});
         }
-        if (i > 0) {
-            _table.getSelectionModel().addSelectionInterval(0, 0);
+        if (selectedRows.length == 0) {
+            if (i > 0) {
+                _table.getSelectionModel().addSelectionInterval(0, 0);
+            }
+        } else {
+            for (i = 0; i < selectedRows.length; i++) {
+                _table.getSelectionModel().addSelectionInterval(selectedRows[i], selectedRows[i]);
+            }
         }
     }
 
@@ -447,8 +462,8 @@ public class RuleEditor extends JDialog implements ActionListener {
         indexRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         column0.setCellRenderer(indexRenderer);
 
-        model.getColumn(1).setPreferredWidth(120);
-        model.getColumn(2).setPreferredWidth(480);
+        model.getColumn(1).setPreferredWidth(150);
+        model.getColumn(2).setPreferredWidth(550);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
@@ -457,7 +472,7 @@ public class RuleEditor extends JDialog implements ActionListener {
             }
         });
 
-        setPreferredSize(new Dimension(600, 420));
+        setPreferredSize(new Dimension(700, 500));
     }
 
     @SuppressWarnings("unchecked")
@@ -535,6 +550,8 @@ public class RuleEditor extends JDialog implements ActionListener {
 
     private static final Border _EMPTY_BORDER =
         BorderFactory.createEmptyBorder();
+
+    private RuleList _initialRules;
 
     private boolean _isCanceled = false;
 
