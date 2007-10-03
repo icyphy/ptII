@@ -1450,6 +1450,7 @@ remote1ChangeLog:
 		echo "Removing adm/dists because adm/dists/CVS not found"; \
 	        rm -rf adm/dists; \
 	    fi) 
+	ls -l $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
 	(cd $(REMOTE1PTIIDIST);	rm -f ChangeLog; \
 		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k ChangeLog; \
 		rm -f ChangeLog.txt; ln -s ChangeLog ChangeLog.txt)
