@@ -282,10 +282,6 @@ public class PortRule extends Rule {
                         + _portType + "\" cannot be parsed.", e);
             }
         }
-        if (!((isInputEnabled() && _input) || (isOutputEnabled() && _output))) {
-            throw new RuleValidationException("A port must be an input port, "
-                    + "or an output port, or both.");
-        }
     }
 
     private Pattern _getPortNamePattern() {
