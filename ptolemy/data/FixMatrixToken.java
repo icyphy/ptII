@@ -28,8 +28,6 @@
  */
 package ptolemy.data;
 
-import org.python.parser.ast.If;
-
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
@@ -229,8 +227,9 @@ public class FixMatrixToken extends MatrixToken {
      *  @param rowSpan The number of rows to copy.
      *  @param colSpan The number of columns to copy.
      *  @return a sub-matrix of this matrix.
-     *  @exception If the returned matrix is empty or if the specified
-     *   parameters result in out of bounds accesses.
+     *  @exception IllegalActionException If the returned matrix is
+     *  empty or if the specified parameters result in out of bounds
+     *  accesses.
      */
     public MatrixToken crop(
             int rowStart, int colStart, int rowSpan, int colSpan)
