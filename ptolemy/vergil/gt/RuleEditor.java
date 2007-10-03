@@ -62,7 +62,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -83,21 +82,26 @@ import javax.swing.table.TableColumnModel;
 
 import ptolemy.actor.gt.BooleanRuleAttribute;
 import ptolemy.actor.gt.ChoiceRuleAttribute;
+import ptolemy.actor.gt.MalformedStringException;
 import ptolemy.actor.gt.Rule;
 import ptolemy.actor.gt.RuleAttribute;
 import ptolemy.actor.gt.RuleList;
 import ptolemy.actor.gt.RuleListAttribute;
 import ptolemy.actor.gt.RuleValidationException;
 import ptolemy.actor.gt.StringRuleAttribute;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.EditorFactory;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.PtolemyDialog;
+import ptolemy.actor.gui.TableauFrame;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
@@ -112,18 +116,22 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class RuleEditor extends JDialog implements ActionListener {
+public class RuleEditor extends PtolemyDialog implements ActionListener {
 
-    public RuleEditor(Frame owner, RuleList initialRules) {
-        this(owner, "Rule Editor", initialRules);
-    }
+    public RuleEditor(DialogTableau tableau, Frame owner,
+            Entity target, Configuration configuration) {
+        super("Rule editor for " + target.getName(), tableau, owner, target,
+                configuration);
 
-    public RuleEditor(Frame owner, String title, RuleList initialRules) {
-        super(owner, title, true);
-
-        _initialRules = initialRules;
-        _createComponents();
-        resetTable(_initialRules);
+        _target = target;
+        try {
+            _attribute = (RuleListAttribute) target.getAttribute("ruleList",
+                    RuleListAttribute.class);
+            _createComponents();
+        } catch (IllegalActionException e) {
+            throw new KernelRuntimeException(e, "Cannot locate attribute "
+                    + "\"ruleList\" in entity " + _target.getName() + ".");
+        }
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -134,6 +142,8 @@ public class RuleEditor extends JDialog implements ActionListener {
             removeSelectedRows();
         } else if ("commit".equals(command)) {
             commit();
+        } else if ("apply".equals(command)) {
+            apply();
         } else if ("cancel".equals(command)) {
             cancel();
         }
@@ -154,9 +164,44 @@ public class RuleEditor extends JDialog implements ActionListener {
         }
     }
 
+    public boolean apply() {
+        RuleList ruleList = new RuleList();
+        Vector<?> dataVector = _tableModel.getDataVector();
+        for (Object rowData : dataVector) {
+            Vector<?> rowVector = (Vector<?>) rowData;
+            Row row = (Row) rowVector.get(1);
+            Rule rule = _createRuleFromRow(row);
+            ruleList.add(rule);
+        }
+
+        try {
+            ruleList.validate();
+        } catch (RuleValidationException e) {
+            String message = e.getMessage();
+            message += "\nPress Edit to return to modify the rules, or press "
+                + "Cancel to cancel all the changes.";
+
+            String[] options = new String[] {"Edit", "Revert"};
+            int selected = JOptionPane.showOptionDialog(null, message,
+                    "Validation Error", JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.ERROR_MESSAGE, null, options, options[1]);
+            if (selected == 1) {
+                resetTable(_initialRules);
+            }
+            return false;
+        }
+
+        String moml = "<property name=\"" + _attribute.getName() + "\" value=\""
+            + StringUtilities.escapeForXML(ruleList.toString()) + "\"/>";
+        MoMLChangeRequest request =
+            new MoMLChangeRequest(this, _target, moml, null);
+        request.setUndoable(true);
+        _attribute.requestChange(request);
+        return true;
+    }
+
     public void cancel() {
         setVisible(false);
-        _isCanceled = true;
     }
 
     public void centerOnScreen() {
@@ -166,46 +211,9 @@ public class RuleEditor extends JDialog implements ActionListener {
     }
 
     public void commit() {
-        _committedRuleList.clear();
-        Vector<?> dataVector = _tableModel.getDataVector();
-        for (Object rowData : dataVector) {
-            Vector<?> rowVector = (Vector<?>) rowData;
-            Row row = (Row) rowVector.get(1);
-            Rule rule = _createRuleFromRow(row);
-            _committedRuleList.add(rule);
+        if (apply()) {
+            setVisible(false);
         }
-
-        try {
-            _committedRuleList.validate();
-            _isCanceled = false;
-        } catch (RuleValidationException e) {
-            String message = e.getMessage();
-            message += "\nPress Edit to return to modify the rules, or press "
-                + "Cancel to cancel all the changes.";
-
-            String[] options = new String[] {"Edit", "Revert", "Cancel"};
-            int selected = JOptionPane.showOptionDialog(null, message,
-                    "Validation Error", JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.ERROR_MESSAGE, null, options, options[0]);
-            if (selected == 0) {
-                return;
-            } else if (selected == 1) {
-                resetTable(_initialRules);
-                return;
-            } else {
-                _isCanceled = true;
-            }
-        }
-
-        setVisible(false);
-    }
-
-    public RuleList getRuleList() {
-        return _committedRuleList;
-    }
-
-    public boolean isCanceled() {
-        return _isCanceled;
     }
 
     public void removeSelectedRows() {
@@ -284,6 +292,19 @@ public class RuleEditor extends JDialog implements ActionListener {
         }
     }
 
+    public void setVisible(boolean visible) {
+        if (visible) {
+            try {
+                _initialRules = _attribute.getRuleList();
+                resetTable(_initialRules);
+            } catch (MalformedStringException e) {
+                throw new KernelRuntimeException(e, "Attribute \"ruleList\" of "
+                        + "entity " + _target.getName() + " is malformed.");
+            }
+        }
+        super.setVisible(visible);
+    }
+
     public static String REGULAR_EXPRESSION_HELP_FILE =
         "ptolemy/configs/doc/basicHelp.htm";
 
@@ -302,44 +323,26 @@ public class RuleEditor extends JDialog implements ActionListener {
         }
 
         public void createEditor(NamedObj object, Frame parent) {
-            try {
-                String name = attributeName.getExpression();
-                NamedObj container = getContainer();
-                RuleListAttribute attributeToEdit =
-                    (RuleListAttribute) container.getAttribute(name,
-                            RuleListAttribute.class);
-                _editor = new RuleEditor(parent,
-                        "Editor for " + name + " of " + container.getFullName(),
-                        attributeToEdit.getRuleList());
-
-                _editor.pack();
-                _editor.centerOnScreen();
-                _editor.setVisible(true);
-
-                if (!_editor.isCanceled()) {
-                    RuleList list = _editor.getRuleList();
-                    String moml = "<property name=\"" + name + "\" value=\""
-                            + StringUtilities.escapeForXML(list.toString())
-                            + "\"/>";
-                    MoMLChangeRequest request = new MoMLChangeRequest(this,
-                            object, moml, null);
-                    request.setUndoable(true);
-                    attributeToEdit.requestChange(request);
-                }
-            } catch (KernelException ex) {
-                MessageHandler.error(
-                        "Cannot get specified string attribute to edit.", ex);
+            Configuration configuration =
+                ((TableauFrame) parent).getConfiguration();
+            Effigy effigy = ((TableauFrame) parent).getEffigy();
+            DialogTableau dialogTableau = DialogTableau.createDialog(parent,
+                    configuration, effigy, RuleEditor.class,
+                    (Entity) object);
+            if (dialogTableau != null) {
+                dialogTableau.show();
             }
         }
 
         public StringAttribute attributeName;
 
-        private RuleEditor _editor;
-
         private static final long serialVersionUID = 6581490244784855795L;
     }
 
     protected void _createComponents() {
+        // Clear all the buttons and panels created by superclasses.
+        getContentPane().removeAll();
+
         _tableModel = new DefaultTableModel(
                 new Object[] {"", "Class", "Attributes"}, 0) {
                     public boolean isCellEditable(int row, int column) {
@@ -422,24 +425,28 @@ public class RuleEditor extends JDialog implements ActionListener {
         bottomPanel.add(helpPanel, BorderLayout.NORTH);
 
         JPanel buttonsPanel = new JPanel();
-        _addButton = new JButton("Add");
-        _addButton.setActionCommand("add");
-        _addButton.addActionListener(this);
-        buttonsPanel.add(_addButton);
-        _removeButton = new JButton("Remove");
-        _removeButton.setActionCommand("remove");
-        _removeButton.addActionListener(this);
-        buttonsPanel.add(_removeButton);
-        _commitButton = new JButton("Commit");
-        _commitButton.setActionCommand("commit");
-        _commitButton.addActionListener(this);
-        buttonsPanel.add(_commitButton);
-        getRootPane().setDefaultButton(_commitButton);
-        _cancelButton = new JButton("Cancel");
-        _cancelButton.setActionCommand("cancel");
-        _cancelButton.addActionListener(this);
+        JButton addButton = new JButton("Add");
+        addButton.setActionCommand("add");
+        addButton.addActionListener(this);
+        buttonsPanel.add(addButton);
+        JButton removeButton = new JButton("Remove");
+        removeButton.setActionCommand("remove");
+        removeButton.addActionListener(this);
+        buttonsPanel.add(removeButton);
+        JButton commitButton = new JButton("Commit");
+        commitButton.setActionCommand("commit");
+        commitButton.addActionListener(this);
+        buttonsPanel.add(commitButton);
+        getRootPane().setDefaultButton(commitButton);
+        JButton applyButton = new JButton("Apply");
+        applyButton.setActionCommand("apply");
+        applyButton.addActionListener(this);
+        buttonsPanel.add(applyButton);
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.setActionCommand("cancel");
+        cancelButton.addActionListener(this);
 
-        buttonsPanel.add(_cancelButton);
+        buttonsPanel.add(cancelButton);
         bottomPanel.add(buttonsPanel, BorderLayout.SOUTH);
 
         getContentPane().add(bottomPanel, BorderLayout.SOUTH);
@@ -473,6 +480,9 @@ public class RuleEditor extends JDialog implements ActionListener {
         });
 
         setPreferredSize(new Dimension(700, 500));
+    }
+
+    protected void _createExtendedButtons(JPanel _buttons) {
     }
 
     @SuppressWarnings("unchecked")
@@ -516,6 +526,12 @@ public class RuleEditor extends JDialog implements ActionListener {
         return rule;
     }
 
+    protected URL _getHelpURL() {
+        URL helpURL = getClass().getClassLoader().getResource(
+                REGULAR_EXPRESSION_HELP_FILE);
+        return helpURL;
+    }
+
     private static boolean _isSubclass(Class<?> subclass, Class<?> superclass) {
         if (subclass == null) {
             return false;
@@ -536,13 +552,7 @@ public class RuleEditor extends JDialog implements ActionListener {
         }
     }
 
-    private JButton _addButton;
-
-    private JButton _cancelButton;
-
-    private JButton _commitButton;
-
-    private RuleList _committedRuleList = new RuleList();
+    private RuleListAttribute _attribute;
 
     private static final Color _DISABLED_COLOR = new Color(220, 220, 220);
 
@@ -553,15 +563,11 @@ public class RuleEditor extends JDialog implements ActionListener {
 
     private RuleList _initialRules;
 
-    private boolean _isCanceled = false;
-
     private static final Color _NON_RE_ENABLED_BACKGROUND =
         new Color(230, 230, 255);
 
     private static final Color _RE_ENABLED_BACKGROUND =
         new Color(200, 255, 255);
-
-    private JButton _removeButton;
 
     private static final int _ROW_HEIGHT = 45;
 
@@ -573,6 +579,8 @@ public class RuleEditor extends JDialog implements ActionListener {
     private JTable _table;
 
     private DefaultTableModel _tableModel;
+
+    private Entity _target;
 
     private static final Border _TEXT_FIELD_BORDER =
         new JTextField().getBorder();
