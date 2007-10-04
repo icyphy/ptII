@@ -46,6 +46,7 @@ import ptolemy.actor.gt.Rule.NamedObjMatchResult;
 import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.data.Pair;
+import ptolemy.actor.gt.rules.AttributeRule;
 import ptolemy.actor.gt.rules.PortRule;
 import ptolemy.actor.gt.rules.SubclassRule;
 import ptolemy.data.type.Type;
@@ -649,7 +650,8 @@ public class GraphMatcher {
 
             if (success) {
                 for (Rule rule : ruleList) {
-                    if (rule instanceof SubclassRule) {
+                    if (rule instanceof AttributeRule
+                            || rule instanceof SubclassRule) {
                         success = rule.match(hostActor) ==
                             NamedObjMatchResult.MATCH;
                         if (!success) {

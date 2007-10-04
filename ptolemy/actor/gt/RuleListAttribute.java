@@ -89,7 +89,7 @@ public class RuleListAttribute extends StringAttribute {
 
     private void _parse() throws MalformedStringException {
         _parsed = true;
-        _ruleList = RuleList.parse(super.getExpression());
+        _ruleList = RuleList.parse(this, super.getExpression());
     }
 
     private boolean _parsed = false;

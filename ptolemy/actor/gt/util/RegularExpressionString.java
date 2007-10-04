@@ -1,6 +1,6 @@
 /*
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -23,31 +23,47 @@
 
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
+
  */
-package ptolemy.actor.gt;
 
-public class StringRuleAttribute extends RuleAttribute {
+package ptolemy.actor.gt.util;
 
-    public StringRuleAttribute(String name) {
-        this(name, false, false);
+import java.util.regex.Pattern;
+
+public class RegularExpressionString {
+
+    public RegularExpressionString() {
+        this("");
     }
 
-    public StringRuleAttribute(String name, boolean acceptRegularExpression,
-            boolean acceptPtolemyExpression) {
-        super(name);
-        _acceptRegularExpression = acceptRegularExpression;
-        _acceptPtolemyExpression = acceptPtolemyExpression;
+    public RegularExpressionString(String value) {
+        set(value);
     }
 
-    public boolean acceptPtolemyExpression() {
-        return _acceptPtolemyExpression;
+    public String get() {
+        return _value;
     }
 
-    public boolean acceptRegularExpression() {
-        return _acceptRegularExpression;
+    public Pattern getPattern() {
+        if (_needReparse) {
+            _pattern = Pattern.compile(_value);
+            _needReparse = false;
+        }
+        return _pattern;
     }
 
-    private boolean _acceptPtolemyExpression;
+    public void set(String value) {
+        _value = value;
+        _needReparse = true;
+    }
 
-    private boolean _acceptRegularExpression;
+    public String toString() {
+        return get();
+    }
+
+    private boolean _needReparse;
+
+    private Pattern _pattern;
+
+    private String _value;
 }

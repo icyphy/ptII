@@ -53,6 +53,10 @@ public abstract class Rule {
         Arrays.fill(_enablements, true);
     }
 
+    public RuleList getOwner() {
+        return _owner;
+    }
+
     public abstract RuleAttribute[] getRuleAttributes();
 
     public abstract Object getValue(int index);
@@ -85,7 +89,12 @@ public abstract class Rule {
         MATCH, NOT_MATCH, UNAPPLICABLE
     }
 
-    protected Rule(int attributeCount) {
+    protected Rule(RuleList owner) {
+        _owner = owner;
+    }
+
+    protected Rule(RuleList owner, int attributeCount) {
+        this(owner);
         _enablements = new boolean[attributeCount];
         enableAll();
     }
@@ -243,4 +252,6 @@ public abstract class Rule {
     }
 
     private boolean[] _enablements;
+
+    private RuleList _owner;
 }

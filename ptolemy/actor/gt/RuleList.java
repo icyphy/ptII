@@ -42,22 +42,29 @@ import java.util.LinkedList;
 */
 public class RuleList extends LinkedList<Rule> {
 
-    public RuleList() {
+    public RuleList(RuleListAttribute owner) {
+        _owner = owner;
     }
 
-    public RuleList(RuleList initRules) {
-        super(initRules);
-    }
-    
-    public RuleList(Rule ... rules) {
+    public RuleList(RuleListAttribute owner, Rule ... rules) {
         for (Rule rule : rules) {
             add(rule);
         }
+        _owner = owner;
     }
 
-    public static RuleList parse(String expression)
+    public RuleList(RuleListAttribute owner, RuleList initRules) {
+        super(initRules);
+        _owner = owner;
+    }
+
+    public RuleListAttribute getOwner() {
+        return _owner;
+    }
+
+    public static RuleList parse(RuleListAttribute owner, String expression)
     throws MalformedStringException {
-        RuleList list = new RuleList();
+        RuleList list = new RuleList(owner);
         int startPos = 0;
         while (startPos < expression.length()) {
             int endPos = Rule._findMatchingParen(expression, startPos);
@@ -65,7 +72,7 @@ public class RuleList extends LinkedList<Rule> {
                 throw new MalformedStringException(expression);
             }
             String ruleString = expression.substring(startPos + 1, endPos);
-            Rule rule = _parseRule(ruleString);
+            Rule rule = list._parseRule(ruleString);
             list.add(rule);
             startPos = endPos + 1;
         }
@@ -97,7 +104,7 @@ public class RuleList extends LinkedList<Rule> {
         }
     }
 
-    private static Rule _parseRule(String ruleString) {
+    private Rule _parseRule(String ruleString) {
         int separator = ruleString.indexOf(Rule.FIELD_SEPARATOR);
         if (separator < 0) {
             return null;
@@ -108,8 +115,8 @@ public class RuleList extends LinkedList<Rule> {
                 Class<? extends Rule> ruleClass =
                     namedClass.asSubclass(Rule.class);
                 String values = ruleString.substring(separator + 1);
-                return (Rule)
-                    ruleClass.getConstructor(String.class).newInstance(values);
+                return (Rule) ruleClass.getConstructor(RuleList.class,
+                        String.class).newInstance(this, values);
             } catch (ClassNotFoundException e) {
             } catch (IllegalAccessException e) {
             } catch (InstantiationException e) {
@@ -119,6 +126,8 @@ public class RuleList extends LinkedList<Rule> {
             return null;
         }
     }
+
+    private RuleListAttribute _owner;
 
     private static final long serialVersionUID = -5344621368362493745L;
 }

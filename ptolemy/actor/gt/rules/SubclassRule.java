@@ -29,6 +29,7 @@ package ptolemy.actor.gt.rules;
 import ptolemy.actor.Actor;
 import ptolemy.actor.gt.Rule;
 import ptolemy.actor.gt.RuleAttribute;
+import ptolemy.actor.gt.RuleList;
 import ptolemy.actor.gt.RuleValidationException;
 import ptolemy.actor.gt.StringRuleAttribute;
 import ptolemy.kernel.ComponentEntity;
@@ -47,12 +48,12 @@ import ptolemy.kernel.util.NamedObj;
 */
 public class SubclassRule extends Rule {
 
-    public SubclassRule() {
-        this("");
+    public SubclassRule(RuleList owner) {
+        this(owner, "");
     }
 
-    public SubclassRule(String values) {
-        super(1);
+    public SubclassRule(RuleList owner, String values) {
+        super(owner, 1);
         setValues(values);
     }
 

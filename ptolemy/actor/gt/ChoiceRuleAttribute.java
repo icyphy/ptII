@@ -44,16 +44,12 @@ import java.util.List;
 public class ChoiceRuleAttribute extends StringRuleAttribute {
 
     public ChoiceRuleAttribute(String name) {
-        this(name, false, false);
-    }
-
-    public ChoiceRuleAttribute(String name, boolean editable) {
-        this(name, false, true);
+        this(name, false, false, false);
     }
 
     public ChoiceRuleAttribute(String name, boolean acceptRegularExpression,
-            boolean editable) {
-        super(name, acceptRegularExpression);
+            boolean acceptPtolemyExpression, boolean editable) {
+        super(name, acceptRegularExpression, acceptPtolemyExpression);
         _editable = editable;
     }
 

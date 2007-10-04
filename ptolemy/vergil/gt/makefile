@@ -95,12 +95,12 @@ OPTIONAL_FILES = \
 	'RuleEditor$$3.class' \
 	'RuleEditor$$4.class' \
 	'RuleEditor$$AttributesEditor.class' \
+	'RuleEditor$$ColorizedComboBox$$Editor.class' \
+	'RuleEditor$$ColorizedComboBox.class' \
+	'RuleEditor$$ColorizedTextField.class' \
 	'RuleEditor$$ComboElement.class' \
 	'RuleEditor$$Factory.class' \
 	'RuleEditor$$JPanelCellEditor.class' \
-	'RuleEditor$$REComboBox$$Editor.class' \
-	'RuleEditor$$REComboBox.class' \
-	'RuleEditor$$RETextField.class' \
 	'RuleEditor$$Row$$1.class' \
 	'RuleEditor$$Row$$CheckBoxActionListener.class' \
 	'RuleEditor$$Row.class'

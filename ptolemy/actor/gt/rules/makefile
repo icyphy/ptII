@@ -48,7 +48,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	ActorAttributeRule.java \
+	AttributeRule.java \
 	PortRule.java \
 	SubclassRule.java
 

@@ -40,11 +40,9 @@ import ptolemy.actor.gt.RuleAttribute;
 import ptolemy.actor.gt.RuleList;
 import ptolemy.actor.gt.RuleValidationException;
 import ptolemy.actor.gt.StringRuleAttribute;
-import ptolemy.data.Token;
-import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.actor.gt.util.PtolemyExpressionString;
+import ptolemy.actor.gt.util.RegularExpressionString;
 import ptolemy.data.expr.Constants;
-import ptolemy.data.expr.ParseTreeEvaluator;
-import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
@@ -52,21 +50,22 @@ import ptolemy.kernel.util.NamedObj;
 
 public class PortRule extends Rule {
 
-    public PortRule() {
-        this("");
+    public PortRule(RuleList owner) {
+        this(owner, "");
     }
 
-    public PortRule(String values) {
-        this(null, null, false, false, false);
+    public PortRule(RuleList owner, String values) {
+        this(owner, null, null, false, false, false);
         setValues(values);
     }
 
-    public PortRule(String portName, String portType, boolean input,
-            boolean output, boolean multiport) {
-        super(5);
-
-        _setPortName(portName);
-        _setPortType(portType);
+    public PortRule(RuleList owner, String portName, String portType,
+            boolean input, boolean output, boolean multiport) {
+        super(owner, 5);
+        
+        NamedObj container = owner.getOwner().getContainer();
+        _portName = new RegularExpressionString(portName);
+        _portType = new PtolemyExpressionString(container, portType);
         _input = input;
         _output = output;
         _multiport = multiport;
@@ -78,11 +77,11 @@ public class PortRule extends Rule {
     }
 
     public String getPortName() {
-        return _portName;
+        return _portName.get();
     }
 
     public String getPortType() {
-        return _portType;
+        return _portType.get();
     }
 
     public RuleAttribute[] getRuleAttributes() {
@@ -108,8 +107,8 @@ public class PortRule extends Rule {
 
     public String getValues() {
         StringBuffer buffer = new StringBuffer();
-        _encodeStringField(buffer, 0, _portName);
-        _encodeStringField(buffer, 1, _portType);
+        _encodeStringField(buffer, 0, _portName.get());
+        _encodeStringField(buffer, 1, _portType.get());
         _encodeBooleanField(buffer, 2, _input);
         _encodeBooleanField(buffer, 3, _output);
         _encodeBooleanField(buffer, 4, _multiport);
@@ -170,7 +169,7 @@ public class PortRule extends Rule {
 
         // Check port name
         if (isPortNameEnabled()) {
-            Pattern pattern = _getPortNamePattern();
+            Pattern pattern = _portName.getPattern();
             Matcher matcher = pattern.matcher(object.getName());
             if (!matcher.matches()) {
                 return NamedObjMatchResult.NOT_MATCH;
@@ -182,7 +181,7 @@ public class PortRule extends Rule {
             if (object instanceof TypedIOPort) {
                 TypedIOPort typedIOPort = (TypedIOPort) object;
                 try {
-                    Type lhsType = _getPortTypeTokenType();
+                    Type lhsType = _portType.getToken().getType();
                     Type hostType = typedIOPort.getType();
                     boolean isTypeCompatible = true;
                     if (isInputEnabled() && _input) {
@@ -228,10 +227,10 @@ public class PortRule extends Rule {
     public void setValue(int index, Object value) {
         switch (index) {
         case 0:
-            _setPortName((String) value);
+            _portName.set((String) value);
             break;
         case 1:
-            _setPortType((String) value);
+            _portType.set((String) value);
             break;
         case 2:
             _input = ((Boolean) value).booleanValue();
@@ -247,8 +246,8 @@ public class PortRule extends Rule {
 
     public void setValues(String values) {
         FieldIterator fieldIterator = new FieldIterator(values);
-        _setPortName(_decodeStringField(0, fieldIterator));
-        _setPortType(_decodeStringField(1, fieldIterator));
+        _portName.set(_decodeStringField(0, fieldIterator));
+        _portType.set(_decodeStringField(1, fieldIterator));
         _input = _decodeBooleanField(2, fieldIterator);
         _output = _decodeBooleanField(3, fieldIterator);
         _multiport = _decodeBooleanField(4, fieldIterator);
@@ -256,13 +255,13 @@ public class PortRule extends Rule {
 
     public void validate() throws RuleValidationException {
         if (isPortNameEnabled()) {
-            if (_portName.equals("")) {
+            if (_portName.get().equals("")) {
                 throw new RuleValidationException(
                         "Port name must not be empty.");
             }
 
             try {
-                _getPortNamePattern();
+                _portName.getPattern();
             } catch (PatternSyntaxException e) {
                 throw new RuleValidationException("Regular expression \""
                         + _portName + "\" cannot be compiled.", e);
@@ -270,13 +269,13 @@ public class PortRule extends Rule {
         }
 
         if (isPortTypeEnabled()) {
-            if (_portType.equals("")) {
+            if (_portType.get().equals("")) {
                 throw new RuleValidationException(
                         "Port type must not be empty.");
             }
 
             try {
-                _getPortTypeTokenType();
+                _portType.getToken().getType();
             } catch (IllegalActionException e) {
                 throw new RuleValidationException("Type expression \""
                         + _portType + "\" cannot be parsed.", e);
@@ -284,35 +283,9 @@ public class PortRule extends Rule {
         }
     }
 
-    private Pattern _getPortNamePattern() {
-        if (_portNamePatternNeedCompile) {
-            _portNamePattern = Pattern.compile(_portName);
-        }
-        return _portNamePattern;
-    }
-
-    private Type _getPortTypeTokenType() throws IllegalActionException {
-        if (_portTypeTokenTypeNeedCompile) {
-            ASTPtRootNode tree = _TYPE_PARSER.generateParseTree(_portType);
-            Token token = _TYPE_EVALUATOR.evaluateParseTree(tree, null);
-            _portTypeTokenType = token.getType();
-        }
-        return _portTypeTokenType;
-    }
-
-    private void _setPortName(String portName) {
-        _portName = portName;
-        _portNamePatternNeedCompile = true;
-    }
-    
-    private void _setPortType(String portType) {
-        _portType = portType;
-        _portTypeTokenTypeNeedCompile = true;
-    }
-    
     private static final RuleAttribute[] _ATTRIBUTES = {
-        new StringRuleAttribute("name", true),
-        new ChoiceRuleAttribute("type", true),
+        new StringRuleAttribute("name", true, false),
+        new ChoiceRuleAttribute("type", false, true, true),
         new BooleanRuleAttribute("input"),
         new BooleanRuleAttribute("output"),
         new BooleanRuleAttribute("multi")
@@ -324,22 +297,9 @@ public class PortRule extends Rule {
 
     private boolean _output;
 
-    private String _portName;
+    private RegularExpressionString _portName;
 
-    private Pattern _portNamePattern;
-
-    private boolean _portNamePatternNeedCompile = false;
-
-    private String _portType;
-    
-    private Type _portTypeTokenType;
-    
-    private boolean _portTypeTokenTypeNeedCompile = false;
-
-    private static final ParseTreeEvaluator _TYPE_EVALUATOR =
-        new ParseTreeEvaluator();
-
-    private static final PtParser _TYPE_PARSER = new PtParser();
+    private PtolemyExpressionString _portType;
 
     static {
         ChoiceRuleAttribute portTypes = (ChoiceRuleAttribute) _ATTRIBUTES[1];

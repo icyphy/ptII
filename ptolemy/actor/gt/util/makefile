@@ -1,4 +1,4 @@
-# Makefile for the ptolemy/actor/gt package
+# Makefile for the ptolemy/actor/gt/rules package
 #
 # @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/gt
+ME =		ptolemy/actor/gt/util
 
-DIRS = 		data rules test util
+DIRS = 		
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH = 	$(ROOT)
 
@@ -43,35 +43,14 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	gt
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	data/data.jar \
-	rules/rules.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	rules
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	AtomicActorMatcher.java \
-	BooleanRuleAttribute.java \
-	ChoiceRuleAttribute.java \
-	CompositeActorMatcher.java \
-	GraphMatcher.java \
-	GraphTransformationException.java \
-	MalformedStringException.java \
-	MatchCallback.java \
-	NoMatchFoundException.java \
-	Rule.java \
-	RuleAttribute.java \
-	RuleList.java \
-	RuleListAttribute.java \
-	RuleValidationException.java \
-	SingleRuleTransformer.java \
-	StringRuleAttribute.java \
-	SubgraphMatchingException.java
+	PtolemyExpressionString.java \
+	RegularExpressionString.java \
+	VariableScope.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -81,26 +60,12 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'AtomicActorMatcher$$1.class' \
-	'AtomicActorMatcher$$LoadActorIconChangeRequest.class' \
-	'AtomicActorMatcher$$RestoreAppearanceChangeRequest.class' \
-	'GraphMatcher$$1.class' \
-	'GraphMatcher$$2.class' \
-	'GraphMatcher$$IndexedList.class' \
-	'GraphMatcher$$IndexedLists.class' \
-	'GraphMatcher$$LookbackEntry.class' \
-	'GraphMatcher$$LookbackList.class' \
-	'GraphMatcher$$NameComparator.class' \
-	'GraphMatcher$$ObjectList.class' \
-	'GraphMatcher$$Path.class' \
-	'Rule$$FieldIterator.class' \
-	'Rule$$NamedObjMatchResult.class'
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass jars
+install: jclass $(PTCLASSJAR)
 
 
 # Get the rest of the rules

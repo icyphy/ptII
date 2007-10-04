@@ -48,6 +48,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
@@ -127,6 +129,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         try {
             _attribute = (RuleListAttribute) target.getAttribute("ruleList",
                     RuleListAttribute.class);
+            _temporaryRuleList = new RuleList(_attribute);
             _createComponents();
         } catch (IllegalActionException e) {
             throw new KernelRuntimeException(e, "Cannot locate attribute "
@@ -151,10 +154,11 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
 
     public void addNewRow() {
         try {
-            Row row = new Row(_ruleClasses.get(0).newInstance());
+            Class<? extends Rule> ruleClass = _ruleClasses.get(0);
+            Rule rule = _createTemporaryRule(ruleClass);
+            Row row = new Row(rule);
             int rowCount = _tableModel.getRowCount();
-            _tableModel.addRow(new Object[] {rowCount + 1, row,
-                    row});
+            _tableModel.addRow(new Object[] { rowCount + 1, row, row });
             if (rowCount == 0) {
                 _table.getSelectionModel().addSelectionInterval(0, 0);
             }
@@ -165,7 +169,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
     }
 
     public boolean apply() {
-        RuleList ruleList = new RuleList();
+        RuleList ruleList = new RuleList(_attribute);
         Vector<?> dataVector = _tableModel.getDataVector();
         for (Object rowData : dataVector) {
             Vector<?> rowVector = (Vector<?>) rowData;
@@ -247,7 +251,8 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
             }
         } else {
             for (i = 0; i < selectedRows.length; i++) {
-                _table.getSelectionModel().addSelectionInterval(selectedRows[i], selectedRows[i]);
+                _table.getSelectionModel().addSelectionInterval(selectedRows[i],
+                        selectedRows[i]);
             }
         }
     }
@@ -416,6 +421,12 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         reLabel.setOpaque(true);
         reLabel.setBorder(textFieldBorder);
         helpPanel.add(reLabel);
+        JLabel evalLabel =
+            new JLabel("Evaluated expression", SwingConstants.CENTER);
+        evalLabel.setBackground(_EXPRESSION_BACKGROUND);
+        evalLabel.setOpaque(true);
+        evalLabel.setBorder(textFieldBorder);
+        helpPanel.add(evalLabel);
         JLabel notMatchLabel =
             new JLabel("Do not match", SwingConstants.CENTER);
         notMatchLabel.setBackground(_DISABLED_COLOR);
@@ -493,7 +504,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
             (Class<? extends Rule>) element.getRuleClass();
         Rule rule;
         try {
-            rule = ruleClass.newInstance();
+            rule = _createTemporaryRule(ruleClass);
         } catch (Exception e) {
             throw new KernelRuntimeException(e, "Unable to create rule from " +
                     "class \"" + ruleClass.getName() + "\".");
@@ -532,6 +543,14 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         return helpURL;
     }
 
+    private Rule _createTemporaryRule(Class<? extends Rule> ruleClass)
+    throws SecurityException, NoSuchMethodException, IllegalArgumentException,
+    InstantiationException, IllegalAccessException, InvocationTargetException {
+        Constructor<? extends Rule> constructor =
+            ruleClass.getConstructor(RuleList.class);
+        return constructor.newInstance(new Object[] { _temporaryRuleList });
+    }
+
     private static boolean _isSubclass(Class<?> subclass, Class<?> superclass) {
         if (subclass == null) {
             return false;
@@ -561,13 +580,16 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
     private static final Border _EMPTY_BORDER =
         BorderFactory.createEmptyBorder();
 
+    private static final Color _EXPRESSION_BACKGROUND =
+        new Color(255, 200, 200);
+
     private RuleList _initialRules;
 
     private static final Color _NON_RE_ENABLED_BACKGROUND =
         new Color(230, 230, 255);
 
     private static final Color _RE_ENABLED_BACKGROUND =
-        new Color(200, 255, 255);
+        new Color(150, 255, 255);
 
     private static final int _ROW_HEIGHT = 45;
 
@@ -581,6 +603,8 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
     private DefaultTableModel _tableModel;
 
     private Entity _target;
+
+    private RuleList _temporaryRuleList;
 
     private static final Border _TEXT_FIELD_BORDER =
         new JTextField().getBorder();
@@ -621,69 +645,10 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
 
     }
 
-    private static class ComboElement {
-
-        public ComboElement(Rule rule) {
-            _ruleClass = rule.getClass();
-            _rule = rule;
-        }
-
-        public Rule getRule() {
-            return _rule;
-        }
-
-        public Class<?> getRuleClass() {
-            return _ruleClass;
-        }
-
-        public String toString() {
-            return _ruleClass.getSimpleName();
-        }
-
-        private Rule _rule;
-
-        private Class<?> _ruleClass;
-    }
-
-    private static class JPanelCellEditor extends AbstractCellEditor
-    implements TableCellEditor, TableCellRenderer, ActionListener {
-
-        public void actionPerformed(ActionEvent e) {
-        }
-
-        public Object getCellEditorValue() {
-            return _currentValue;
-        }
-
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                boolean isSelected, int row, int column) {
-            JPanel panel = (JPanel) value;
-            _setCaretForAllTextFields(panel, true);
-            _currentValue = panel;
-            return panel;
-        }
-
-        public Component getTableCellRendererComponent(JTable table,
-                Object value, boolean isSelected, boolean hasFocus, int row,
-                int column) {
-            JPanel panel = (JPanel) value;
-            _setCaretForAllTextFields(panel, false);
-            return panel;
-        }
-
-        private JPanel _currentValue;
-
-        private static final long serialVersionUID = -3898792308707116805L;
-    }
-
-    private static class REComboBox extends JComboBox {
+    private static class ColorizedComboBox extends JComboBox {
 
         public Color getCustomBackground() {
-            if (_supportRE) {
-                return _RE_ENABLED_BACKGROUND;
-            } else {
-                return _NON_RE_ENABLED_BACKGROUND;
-            }
+            return _background;
         }
 
         public void setBackground(Color color) {
@@ -698,26 +663,21 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
             ((JTextField) _editor.getEditorComponent()).setEditable(editable);
         }
 
-        REComboBox() {
-            this(false);
-        }
-
-        REComboBox(boolean supportRE) {
+        ColorizedComboBox(Color background) {
             super.setEditable(true);
-
-            _supportRE = supportRE;
+            _background = background;
             setBorder(_EMPTY_BORDER);
             setEditor(_editor);
         }
 
-        private Editor _editor = new Editor();
+        private Color _background;
 
-        private boolean _supportRE;
+        private Editor _editor = new Editor();
 
         private static final long serialVersionUID = -1020598266173440301L;
 
-        private class Editor extends MouseAdapter implements ActionListener, ComboBoxEditor,
-        FocusListener {
+        private class Editor extends MouseAdapter implements ActionListener,
+        ComboBoxEditor, FocusListener {
 
             public void actionPerformed(ActionEvent e) {
                 if (_textField.isEditable()) {
@@ -797,23 +757,74 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         }
     }
 
-    private static class RETextField extends JTextField {
+    private static class ColorizedTextField extends JTextField {
 
         public Color getCustomBackground() {
-            if (_supportRE) {
-                return _RE_ENABLED_BACKGROUND;
-            } else {
-                return _NON_RE_ENABLED_BACKGROUND;
-            }
+            return _background;
         }
 
-        RETextField(boolean supportRE) {
-            _supportRE = supportRE;
+        ColorizedTextField(Color background) {
+            _background = background;
         }
 
-        private boolean _supportRE;
+        private Color _background;
 
         private static final long serialVersionUID = -7148402579177864107L;
+    }
+
+    private static class ComboElement {
+
+        public ComboElement(Rule rule) {
+            _ruleClass = rule.getClass();
+            _rule = rule;
+        }
+
+        public Rule getRule() {
+            return _rule;
+        }
+
+        public Class<?> getRuleClass() {
+            return _ruleClass;
+        }
+
+        public String toString() {
+            return _ruleClass.getSimpleName();
+        }
+
+        private Rule _rule;
+
+        private Class<?> _ruleClass;
+    }
+
+    private static class JPanelCellEditor extends AbstractCellEditor
+    implements TableCellEditor, TableCellRenderer, ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+        }
+
+        public Object getCellEditorValue() {
+            return _currentValue;
+        }
+
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
+            JPanel panel = (JPanel) value;
+            _setCaretForAllTextFields(panel, true);
+            _currentValue = panel;
+            return panel;
+        }
+
+        public Component getTableCellRendererComponent(JTable table,
+                Object value, boolean isSelected, boolean hasFocus, int row,
+                int column) {
+            JPanel panel = (JPanel) value;
+            _setCaretForAllTextFields(panel, false);
+            return panel;
+        }
+
+        private JPanel _currentValue;
+
+        private static final long serialVersionUID = -3898792308707116805L;
     }
 
     private class Row implements ItemListener {
@@ -855,7 +866,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
                     _classSelector.setSelectedItem(element);
                 } else {
                     try {
-                        Rule newRule = listedRule.newInstance();
+                        Rule newRule = _createTemporaryRule(listedRule);
                         ComboElement element = new ComboElement(newRule);
                         _classSelector.addItem(element);
                     } catch (Exception e) {
@@ -926,14 +937,16 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
                 JComponent component = _components[i];
                 if (_checkBoxes[i].isSelected()) {
                     if (selected) {
-                        if (component instanceof RETextField) {
-                            RETextField reTextField = (RETextField) component;
-                            reTextField.setBackground(
-                                    reTextField.getCustomBackground());
-                        } else if (component instanceof REComboBox) {
-                            REComboBox reComboBox = (REComboBox) component;
-                            reComboBox.setBackground(
-                                    reComboBox.getCustomBackground());
+                        if (component instanceof ColorizedTextField) {
+                            ColorizedTextField textField =
+                                (ColorizedTextField) component;
+                            textField.setBackground(
+                                    textField.getCustomBackground());
+                        } else if (component instanceof ColorizedComboBox) {
+                            ColorizedComboBox comboBox =
+                                (ColorizedComboBox) component;
+                            comboBox.setBackground(
+                                    comboBox.getCustomBackground());
                         } else {
                             component.setBackground(_SELECTED_COLOR);
                         }
@@ -964,19 +977,31 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
                 checkBox.setHorizontalAlignment(SwingConstants.CENTER);
                 component = checkBox;
             } else if (attribute instanceof StringRuleAttribute) {
-                boolean acceptRE = ((StringRuleAttribute) attribute)
-                        .acceptRegularExpression();
+                StringRuleAttribute stringAttribute =
+                    (StringRuleAttribute) attribute;
+                boolean acceptRE = stringAttribute.acceptRegularExpression();
+                boolean acceptExp = stringAttribute.acceptPtolemyExpression();
+                Color background;
+                if (acceptRE) {
+                    background = _RE_ENABLED_BACKGROUND;
+                } else if (acceptExp) {
+                    background = _EXPRESSION_BACKGROUND;
+                } else {
+                    background = _NON_RE_ENABLED_BACKGROUND;
+                }
+
                 if (attribute instanceof ChoiceRuleAttribute) {
                     ChoiceRuleAttribute choiceAttr =
                         (ChoiceRuleAttribute) attribute;
-                    REComboBox comboBox = new REComboBox(acceptRE);
+                    ColorizedComboBox comboBox =
+                        new ColorizedComboBox(background);
                     comboBox.setEditable(choiceAttr.isEditable());
                     for (Object choice : choiceAttr.getChoices()) {
                         comboBox.addItem(choice);
                     }
                     component = comboBox;
                 } else {
-                    component = new RETextField(acceptRE);
+                    component = new ColorizedTextField(background);
                 }
             }
             return component;
@@ -1066,9 +1091,9 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
                         ((Boolean) value).booleanValue());
             } else if (attribute instanceof StringRuleAttribute) {
                 if (attribute instanceof ChoiceRuleAttribute) {
-                    ((JComboBox) component).setSelectedItem((String) value);
+                    ((JComboBox) component).setSelectedItem(value.toString());
                 } else {
-                    ((JTextField) component).setText((String) value);
+                    ((JTextField) component).setText(value.toString());
                 }
             }
         }
@@ -1076,13 +1101,13 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         private void _setEnablement(JComponent component, boolean enabled) {
             component.setEnabled(enabled);
             if (enabled) {
-                if (component instanceof RETextField) {
-                    RETextField reTextField = (RETextField) component;
-                    reTextField.setBackground(
-                            reTextField.getCustomBackground());
-                } else if (component instanceof REComboBox) {
-                    REComboBox reComboBox = (REComboBox) component;
-                    reComboBox.setBackground(reComboBox.getCustomBackground());
+                if (component instanceof ColorizedTextField) {
+                    ColorizedTextField textField =
+                        (ColorizedTextField) component;
+                    textField.setBackground(textField.getCustomBackground());
+                } else if (component instanceof ColorizedComboBox) {
+                    ColorizedComboBox comboBox = (ColorizedComboBox) component;
+                    comboBox.setBackground(comboBox.getCustomBackground());
                 } else {
                     component.setBackground(_SELECTED_COLOR);
                 }
@@ -1104,7 +1129,8 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
 
         private JCheckBox[] _checkBoxes;
 
-        private JComboBox _classSelector = new REComboBox();
+        private JComboBox _classSelector =
+            new ColorizedComboBox(_NON_RE_ENABLED_BACKGROUND);
 
         private JComponent[] _components;
 
