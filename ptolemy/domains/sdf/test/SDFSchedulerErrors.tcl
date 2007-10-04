@@ -68,7 +68,8 @@ test SDFSchedulerErrors-1.0 {} {
     catch {createAndExecute "rateConsistency.xml"} foo
     list $foo
 } {{ptolemy.actor.sched.NotSchedulableException: No solution exists for the balance equations.
-Graph is not consistent under the SDF domain detected on external port .rateConsistency.actor.port2}}
+Graph is not consistent under the SDF domain detected on external port .rateConsistency.actor.port2
+  in .rateConsistency.SDF Director.Scheduler}}
 
 test SDFSchedulerErrors-1.1 {} {
     catch {createAndExecute "badRateChanges.xml"} foo
