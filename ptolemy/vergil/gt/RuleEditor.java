@@ -220,6 +220,14 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         }
     }
 
+    public Dimension getPreferredSize() {
+        if (isPreferredSizeSet()) {
+            return super.getPreferredSize();
+        } else {
+            return _PREFERRED_SIZE;
+        }
+    }
+
     public void removeSelectedRows() {
         _editor.stopCellEditing();
         int[] rows = _table.getSelectedRows();
@@ -490,7 +498,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
             }
         });
 
-        setPreferredSize(new Dimension(700, 500));
+        setPreferredSize(_PREFERRED_SIZE);
     }
 
     protected void _createExtendedButtons(JPanel _buttons) {
@@ -587,6 +595,8 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
 
     private static final Color _NON_RE_ENABLED_BACKGROUND =
         new Color(230, 230, 255);
+
+    private static final Dimension _PREFERRED_SIZE = new Dimension(700, 500);
 
     private static final Color _RE_ENABLED_BACKGROUND =
         new Color(150, 255, 255);
