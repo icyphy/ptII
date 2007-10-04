@@ -27,8 +27,6 @@
  */
 package ptolemy.actor.lib;
 
-import org.python.parser.ast.If;
-
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
@@ -108,7 +106,7 @@ public class Bernoulli extends RandomSource {
     ////                         protected methods                 ////
 
     /** Generate a new random number.
-     *  @exception If parameter values are incorrect.
+     *  @exception IllegalActionoException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         if (_random.nextDouble() < ((DoubleToken) (trueProbability.getToken()))

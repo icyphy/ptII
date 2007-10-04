@@ -27,8 +27,6 @@
  */
 package ptolemy.actor.lib;
 
-import org.python.parser.ast.If;
-
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -117,7 +115,7 @@ public class Uniform extends RandomSource {
     ////                         protected methods                 ////
 
     /** Generate a new random number.
-     *  @exception If parameter values are incorrect.
+     *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         double lowerValue = ((DoubleToken) (lowerBound.getToken()))

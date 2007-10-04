@@ -27,8 +27,6 @@
  */
 package ptolemy.actor.lib;
 
-import org.python.parser.ast.If;
-
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -176,7 +174,7 @@ public class DiscreteRandomSource extends RandomSource {
     /** Choose one of the tokens in <i>values</i> randomly, using
      *  the <i>pmf</i> parameter to select one.  The chosen token
      *  will be sent to the output in the fire() method.
-     *  @exception If parameter values are incorrect.
+     *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         // Generate a double between 0 and 1, uniformly distributed.

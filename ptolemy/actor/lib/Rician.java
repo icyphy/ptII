@@ -27,8 +27,6 @@
  */
 package ptolemy.actor.lib;
 
-import org.python.parser.ast.If;
-
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -128,7 +126,7 @@ public class Rician extends RandomSource {
     ////                         protected methods                 ////
 
     /** Generate a new random number.
-     *  @exception If parameter values are incorrect.
+     *  @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException {
         double xMeanValue = ((DoubleToken) (xMean.getToken())).doubleValue();
