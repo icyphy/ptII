@@ -468,7 +468,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                     
                     //_fireCode.append(label.substring(position + 2));
                     result += _childCode + label.substring(position + 2);
-                    
+                    _childCode = result;
                     return;
                 }
             }
@@ -932,8 +932,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 result += ", TYPE_" + codegenType;
             }
             //_fireCode.append(")))");
-            result = "$new(" + /*codegenType + */ "Matrix(" + result;
-            _childCode = result + "))";
+            result = "($new(" + /*codegenType + */ "Matrix(" + result;
+            _childCode = result + ")))";
             
 
             childToken = MatrixToken.arrayToMatrix(tokens, node.getRowCount(), node
@@ -1035,7 +1035,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         //_fireCode.append("->" + node.getMethodName() + "()");
         result += "->" + node.getMethodName() + "()";
-        
+        _childCode = result;
     }
 
     /** Evaluate the power operator on the children of the specified node.
@@ -1059,7 +1059,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
 
-        int startIndex = _childCode.length();
+        //int startIndex = _childCode.length();
 
         // Operator is always exponentiation
         // Note that since we use an iterative integer method, instead of
@@ -1193,10 +1193,16 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             _evaluatedChildToken = node.getToken();
             return;
         }
+        int numChildren = node.jjtGetNumChildren();        
 
-        ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
-
-        int numChildren = node.jjtGetNumChildren();
+        String result = "";
+        
+        //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
+        ptolemy.data.Token[] tokens = new ptolemy.data.Token[numChildren]; 
+        for (int i = 0; i < numChildren; i++) {
+            tokens[i] = _evaluateChild(node, i);
+            result += _childCode;
+        }
 
         _assert(node.getFieldNames().size() == numChildren, node,
                 "The number of labels and values does not "
@@ -1210,6 +1216,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
+        
+        _childCode = result;
     }
 
     public void visitRelationalNode(ASTPtRelationalNode node)
@@ -1309,8 +1317,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             return;
         }
 
-        //_fireCode.append("(");
-        String result = "";
 
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         int numChildren = node.jjtGetNumChildren();
@@ -1320,8 +1326,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         //ptolemy.data.Token token = tokens[0];
         //ptolemy.data.Token bitsToken = tokens[1];
-        ptolemy.data.Token token = _evaluateChild(node, 0);
 
+        //_fireCode.append("(");
+
+        ptolemy.data.Token token = _evaluateChild(node, 0);
+        String result = _childCode;
+        
         if (operator.kind == PtParserConstants.SHL) {
             //_fireCode.append(" << ");
             result += " << ";
@@ -1414,13 +1424,13 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             //ptolemy.data.Token nextToken = tokens[i];
             if (operator.kind == PtParserConstants.PLUS) {
                 //_fireCode.append("+");
-                result += " + ";
+                result += "+";
 
                 //childToken = childToken.add(_evaluateChild(node, i));
             } else if (operator.kind == PtParserConstants.MINUS) {
                 //_fireCode.append("-");
 
-                result += " - ";
+                result += "-";
 
                 //childToken = childToken.subtract(_evaluateChild(node, i));
             } else {
