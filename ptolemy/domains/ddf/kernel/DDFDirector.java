@@ -784,6 +784,10 @@ public class DDFDirector extends Director {
             // of any inside actors.
             if (getContainer() != actor) {
                 ActorInfo actorInfo = (ActorInfo) _actorsInfo.get(actor);
+                if (actorInfo == null) {
+                    actorInfo = new ActorInfo();
+                    _actorsInfo.put(actor, actorInfo);
+                }
                 actorInfo.status = _getActorStatus(actor);
             }
         }
