@@ -168,9 +168,8 @@ public class AtomicActorMatcher extends TypedAtomicActor {
             + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
             + "  <configure>" + iconDescription + "</configure>"
             + "</property>";
-        MoMLChangeRequest request = new MoMLChangeRequest(this,
-                AtomicActorMatcher.this, moml);
-          request.execute();
+        MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
+        request.execute();
     }
 
     ///////////////////////////////////////////////////////////////////

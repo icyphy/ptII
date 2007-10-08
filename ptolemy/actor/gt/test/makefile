@@ -57,7 +57,8 @@ JSIMPLE_TESTS = \
     XMLTest2.tcl \
     XMLTest3.tcl \
     XMLTest4.tcl \
-    XMLTest5.tcl
+    XMLTest5.tcl \
+    XMLTest6.tcl
 
 # Graphical Java tests.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -94,6 +95,7 @@ EXTRA_SRCS = \
     host5.1.xml \
     host5.2.xml \
     host5.3.xml \
+    host6.1.xml \
     MatchingTest1.tcl \
     MatchingTest2.tcl \
     rule1.xml \
@@ -101,11 +103,13 @@ EXTRA_SRCS = \
     rule3.xml \
     rule4.xml \
     rule5.xml \
+    rule6.xml \
     XMLTest1.tcl \
     XMLTest2.tcl \
     XMLTest3.tcl \
     XMLTest4.tcl \
     XMLTest5.tcl \
+    XMLTest6.tcl \
     $(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't

@@ -30,7 +30,6 @@ package ptolemy.actor.gt.data;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -43,18 +42,22 @@ public class MatchResult extends HashMap<Object, Object> {
     public void clear() {
         super.clear();
         _keys.clear();
-        _values.clear();
+        _reverseMap.clear();
     }
 
     public Object clone() {
         MatchResult result = (MatchResult) super.clone();
         result._keys = new LinkedList<Object>(_keys);
-        result._values = new HashSet<Object>(_values);
+        result._reverseMap = new HashMap<Object, Object>(_reverseMap);
         return result;
     }
 
     public boolean containsValue(Object value) {
-        return _values.contains(value);
+        return _reverseMap.containsKey(value);
+    }
+
+    public Object getKey(Object value) {
+        return _reverseMap.get(value);
     }
 
     public Object put(Object key, Object value) {
@@ -62,7 +65,7 @@ public class MatchResult extends HashMap<Object, Object> {
             _keys.add(key);
         }
         Object oldValue = super.put(key, value);
-        _values.add(value);
+        _reverseMap.put(value, key);
         return oldValue;
     }
 
@@ -70,7 +73,7 @@ public class MatchResult extends HashMap<Object, Object> {
         Object oldValue = super.remove(key);
         if (oldValue != null) {
             _keys.remove(key);
-            _values.remove(oldValue);
+            _reverseMap.remove(oldValue);
         }
         return oldValue;
     }
@@ -82,7 +85,7 @@ public class MatchResult extends HashMap<Object, Object> {
             for (; size > count; size--) {
                 Object key = iterator.previous();
                 iterator.remove();
-                _values.remove(super.remove(key));
+                _reverseMap.remove(super.remove(key));
             }
         }
     }
@@ -90,7 +93,7 @@ public class MatchResult extends HashMap<Object, Object> {
     public String toString() {
         return toString(false);
     }
-    
+
     public String toString(boolean allMatches) {
         Comparator<Object> keyComparator = new Comparator<Object>() {
             public int compare(Object key1, Object key2) {
@@ -119,12 +122,12 @@ public class MatchResult extends HashMap<Object, Object> {
     }
 
     public Set<Object> values() {
-        return Collections.unmodifiableSet(_values);
+        return Collections.unmodifiableSet(_reverseMap.keySet());
     }
 
     private List<Object> _keys = new LinkedList<Object>();
 
-    private Set<Object> _values = new HashSet<Object>();
+    private HashMap<Object, Object> _reverseMap = new HashMap<Object, Object>();
 
     private static final long serialVersionUID = -539612130819642425L;
 

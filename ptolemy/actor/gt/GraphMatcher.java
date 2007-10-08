@@ -49,12 +49,14 @@ import ptolemy.actor.gt.data.Pair;
 import ptolemy.actor.gt.rules.AttributeRule;
 import ptolemy.actor.gt.rules.PortRule;
 import ptolemy.actor.gt.rules.SubclassRule;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
@@ -306,7 +308,7 @@ public class GraphMatcher {
      *  @return The child found, or <tt>null</tt> if none.
      *  @see #_findNextChild(CompositeEntity, IndexedLists, Collection)
      */
-    private static ComponentEntity _findFirstChild(CompositeEntity top,
+    private ComponentEntity _findFirstChild(CompositeEntity top,
             IndexedLists indexedLists, Collection<Object> excludedEntities) {
 
         List<?> entities = top.entityList(ComponentEntity.class);
@@ -363,7 +365,7 @@ public class GraphMatcher {
      *  @see #_findNextPath(Path, Set, Set)
      */
     @SuppressWarnings("unchecked")
-    private static boolean _findFirstPath(Port startPort, Path path,
+    private boolean _findFirstPath(Port startPort, Path path,
             Set<? super Relation> visitedRelations,
             Set<? super Port> visitedPorts) {
         List<?> relationList = startPort.linkedRelationList();
@@ -446,7 +448,7 @@ public class GraphMatcher {
      *  @return The child found, or <tt>null</tt> if none.
      *  @see #_findFirstChild(CompositeEntity, IndexedLists, Collection)
      */
-    private static ComponentEntity _findNextChild(CompositeEntity top,
+    private ComponentEntity _findNextChild(CompositeEntity top,
             IndexedLists indexedLists, Collection<Object> excludedEntities) {
         if (indexedLists.isEmpty()) {
             return _findFirstChild(top, indexedLists, excludedEntities);
@@ -503,8 +505,8 @@ public class GraphMatcher {
      *  @see #_findFirstPath(Port, Path, Set, Set)
      */
     @SuppressWarnings("unchecked")
-    private static boolean _findNextPath(Path path,
-            Set<Relation> visitedRelations, Set<Port> visitedPorts) {
+    private boolean _findNextPath(Path path, Set<Relation> visitedRelations,
+            Set<Port> visitedPorts) {
         Path.Entry entry = path.getTail();
         while (entry != null) {
             IndexedList markedEntityList = entry.getValue();
@@ -624,9 +626,45 @@ public class GraphMatcher {
      *  @return <tt>true</tt> if the composite entity is an instance of {@link
      *   CompositeActor} and it is opaque.
      */
-    private static boolean _isOpaque(CompositeEntity entity) {
-        return entity instanceof CompositeActor
-                && ((CompositeActor) entity).isOpaque();
+    private boolean _isOpaque(CompositeEntity entity) {
+        if (entity instanceof CompositeActor
+                && ((CompositeActor) entity).isOpaque()) {
+            return true;
+        } else {
+            NamedObj container = entity.getContainer();
+            boolean isOpaque = false;
+            
+            while (container != null) {
+                List<?> attributeList =
+                    container.attributeList(HierarchyFlatteningAttribute.class);
+                if (attributeList.isEmpty()
+                        && _match.containsValue(container)) {
+                    attributeList = ((NamedObj) _match.getKey(container))
+                            .attributeList(HierarchyFlatteningAttribute.class);
+                }
+                if (!attributeList.isEmpty()) {
+                    HierarchyFlatteningAttribute attribute =
+                        (HierarchyFlatteningAttribute) attributeList.get(0);
+                    try {
+                        BooleanToken token =
+                            (BooleanToken) attribute.flatteningAttribute
+                                    .getToken();
+                        isOpaque = !token.booleanValue();
+                        break;
+                    } catch (IllegalActionException e) {
+                        // Quite impossible, but if this happens, return the
+                        // default opacity, which is false.
+                        return false;
+                    }
+                }
+                container = container.getContainer();
+            }
+            
+            return isOpaque;
+        }
+        
+        //return entity instanceof CompositeActor
+        //        && ((CompositeActor) entity).isOpaque();
     }
 
     private boolean _matchAtomicActor(AtomicActor lhsActor,

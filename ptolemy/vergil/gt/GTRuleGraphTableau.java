@@ -34,12 +34,14 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.vergil.actor.ActorGraphTableau;
 import ptolemy.vergil.fsm.CaseGraphTableau;
 
 //////////////////////////////////////////////////////////////////////////
@@ -169,6 +171,11 @@ public class GTRuleGraphTableau extends Tableau {
             if (!(effigy instanceof PtolemyEffigy)) {
                 return null;
             }
+            
+            ComponentEntity entity = effigy.getEntity("gtRuleGraphTableau");
+            if (entity != null && entity instanceof GTRuleGraphTableau) {
+                return (Tableau) entity;
+            }
 
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
@@ -179,9 +186,9 @@ public class GTRuleGraphTableau extends Tableau {
                 LibraryAttribute library = (LibraryAttribute) getAttribute(
                         "_library", LibraryAttribute.class);
 
-                GTRuleGraphTableau tableau = new GTRuleGraphTableau(
-                        (PtolemyEffigy) effigy, effigy.uniqueName("tableau"),
-                        library);
+                GTRuleGraphTableau tableau =
+                    new GTRuleGraphTableau((PtolemyEffigy) effigy,
+                            effigy.uniqueName("gtRuleGraphTableau"), library);
                 return tableau;
             } else {
                 return null;

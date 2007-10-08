@@ -61,6 +61,7 @@ JSRCS = \
 	CompositeActorMatcher.java \
 	GraphMatcher.java \
 	GraphTransformationException.java \
+	HierarchyFlatteningAttribute.java \
 	MalformedStringException.java \
 	MatchCallback.java \
 	NoMatchFoundException.java \

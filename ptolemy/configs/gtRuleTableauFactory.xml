@@ -4,7 +4,7 @@
 <!-- Factory for graph rewriting rule editor.  -->
 <property name="grRuleFactory" class="ptolemy.actor.gui.PtolemyTableauFactory">
   <!-- These will appear in the View menu of a graph rewriting rule tableau. -->
-  <property name="Rule Editor"
+  <property name="Transformation Editor"
             class="ptolemy.vergil.gt.GTRuleGraphTableau$Factory">
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
       <configure>

@@ -1,0 +1,147 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="rule6" class="ptolemy.actor.gt.SingleRuleTransformer">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={278, 211, 843, 627}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[620, 512]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="Pattern" class="ptolemy.actor.TypedCompositeActor">
+        <property name="HierarchyFlattening" class="ptolemy.actor.gt.HierarchyFlatteningAttribute">
+            <property name="flattening" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 15.0}">
+            </property>
+        </property>
+        <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
+            <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 150.0}">
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 200.0]">
+                </property>
+            </port>
+            <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
+                <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/false//false//false/false/true/true/false/false)">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 135.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <link port="port" relation="relation"/>
+            <link port="AtomicActorMatcher.Rule1" relation="relation"/>
+        </entity>
+        <entity name="CompositeActorMatcher2" class="ptolemy.actor.gt.CompositeActorMatcher">
+            <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 150.0]">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 267, 823, 515}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+            </property>
+            <property name="HierarchyFlattening" class="ptolemy.actor.gt.HierarchyFlatteningAttribute">
+                <property name="flattening" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 25.0}">
+                </property>
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+            </port>
+            <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
+                <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/false//false//true/true/false/false/false/false)">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 145.0]">
+                </property>
+            </entity>
+            <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
+                <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 240.0]">
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 267, 823, 515}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+                <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+                </property>
+                <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+                </property>
+                <port name="port" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                    </property>
+                </port>
+                <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
+                    <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/false//false//true/true/false/false/false/false)">
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 160.0}">
+                    </property>
+                </entity>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                </relation>
+                <link port="port" relation="relation"/>
+                <link port="AtomicActorMatcher.Rule1" relation="relation"/>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <link port="port" relation="relation"/>
+            <link port="port" relation="relation2"/>
+            <link port="AtomicActorMatcher.Rule1" relation="relation"/>
+            <link port="CompositeActorMatcher.port" relation="relation2"/>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="CompositeActorMatcher.port" relation="relation"/>
+        <link port="CompositeActorMatcher2.port" relation="relation"/>
+    </entity>
+</entity>
