@@ -41,7 +41,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.vergil.actor.ActorGraphTableau;
 import ptolemy.vergil.fsm.CaseGraphTableau;
 
 //////////////////////////////////////////////////////////////////////////
@@ -171,7 +170,7 @@ public class GTRuleGraphTableau extends Tableau {
             if (!(effigy instanceof PtolemyEffigy)) {
                 return null;
             }
-            
+
             ComponentEntity entity = effigy.getEntity("gtRuleGraphTableau");
             if (entity != null && entity instanceof GTRuleGraphTableau) {
                 return (Tableau) entity;

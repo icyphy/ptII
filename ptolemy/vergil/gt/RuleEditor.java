@@ -29,6 +29,7 @@ package ptolemy.vergil.gt;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -44,12 +45,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Enumeration;
@@ -95,6 +98,7 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.HTMLViewer;
 import ptolemy.actor.gui.PtolemyDialog;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.Entity;
@@ -125,6 +129,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         super("Rule editor for " + target.getName(), tableau, owner, target,
                 configuration);
 
+        _owner = owner;
         _target = target;
         try {
             _attribute = (RuleListAttribute) target.getAttribute("ruleList",
@@ -181,9 +186,9 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         try {
             ruleList.validate();
         } catch (RuleValidationException e) {
-            String message = e.getMessage();
-            message += "\nPress Edit to return to modify the rules, or press "
-                + "Cancel to cancel all the changes.";
+            String message = e.getMessage()
+                    + "\nPress Edit to return to modify the rules, or press "
+                    + "Cancel to cancel all the changes.";
 
             String[] options = new String[] {"Edit", "Revert"};
             int selected = JOptionPane.showOptionDialog(null, message,
@@ -416,31 +421,25 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         JPanel helpPanel = new JPanel(gridLayout);
         helpPanel.setBorder(BorderFactory.createEmptyBorder(3, 5, 0, 5));
         helpPanel.setPreferredSize(new Dimension(0, 25));
-        Border textFieldBorder = _TEXT_FIELD_BORDER;
-        JLabel textLabel =
-            new JLabel("Normal text only", SwingConstants.CENTER);
-        textLabel.setBackground(_NON_RE_ENABLED_BACKGROUND);
-        textLabel.setOpaque(true);
-        textLabel.setBorder(textFieldBorder);
-        helpPanel.add(textLabel);
-        JLabel reLabel =
-            new JLabel("Regular expression", SwingConstants.CENTER);
-        reLabel.setBackground(_RE_ENABLED_BACKGROUND);
-        reLabel.setOpaque(true);
-        reLabel.setBorder(textFieldBorder);
-        helpPanel.add(reLabel);
-        JLabel evalLabel =
-            new JLabel("Evaluated expression", SwingConstants.CENTER);
-        evalLabel.setBackground(_EXPRESSION_BACKGROUND);
-        evalLabel.setOpaque(true);
-        evalLabel.setBorder(textFieldBorder);
-        helpPanel.add(evalLabel);
-        JLabel notMatchLabel =
-            new JLabel("Do not match", SwingConstants.CENTER);
-        notMatchLabel.setBackground(_DISABLED_COLOR);
-        notMatchLabel.setOpaque(true);
-        notMatchLabel.setBorder(textFieldBorder);
-        helpPanel.add(notMatchLabel);
+
+        TableauFrame owner = _owner instanceof TableauFrame ?
+                (TableauFrame) _owner : null;
+
+        helpPanel.add(new HelpLabel("Normal text only",
+                _NON_REGULAR_EXPRESSION_BACKGROUND));
+        try {
+            helpPanel.add(new HelpLabel("Regular expression",
+                    _REGULAR_EXPRESSION_BACKGROUND,
+                    new URL(_REGULAR_EXPRESSION_HELP_FILE), owner));
+        } catch (MalformedURLException e1) {
+            helpPanel.add(new HelpLabel("Regular expression",
+                    _REGULAR_EXPRESSION_BACKGROUND));
+        }
+        helpPanel.add(new HelpLabel("Evaluated expression",
+                _PTOLEMY_EXPRESSION_BACKGROUND, _PTOLEMY_EXPRESSION_HELP_FILE,
+                owner));
+        helpPanel.add(new HelpLabel("Do not match", _DISABLED_BACKGROUND));
+
         bottomPanel.add(helpPanel, BorderLayout.NORTH);
 
         JPanel buttonsPanel = new JPanel();
@@ -581,25 +580,33 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
 
     private RuleListAttribute _attribute;
 
-    private static final Color _DISABLED_COLOR = new Color(220, 220, 220);
+    private static final Color _DISABLED_BACKGROUND = new Color(220, 220, 220);
 
     private AttributesEditor _editor;
 
     private static final Border _EMPTY_BORDER =
         BorderFactory.createEmptyBorder();
 
-    private static final Color _EXPRESSION_BACKGROUND =
-        new Color(255, 200, 200);
-
     private RuleList _initialRules;
 
-    private static final Color _NON_RE_ENABLED_BACKGROUND =
+    private static final Color _NON_REGULAR_EXPRESSION_BACKGROUND =
         new Color(230, 230, 255);
+
+    private Frame _owner;
 
     private static final Dimension _PREFERRED_SIZE = new Dimension(700, 500);
 
-    private static final Color _RE_ENABLED_BACKGROUND =
-        new Color(150, 255, 255);
+    private static final Color _PTOLEMY_EXPRESSION_BACKGROUND =
+        new Color(255, 200, 200);
+
+    private static final String _PTOLEMY_EXPRESSION_HELP_FILE =
+        "doc/expressions.htm";
+
+    private static final Color _REGULAR_EXPRESSION_BACKGROUND =
+        new Color(200, 255, 255);
+
+    private static final String _REGULAR_EXPRESSION_HELP_FILE =
+        "http://java.sun.com/j2se/1.5.0/docs/api/java/util/regex/Pattern.html";
 
     private static final int _ROW_HEIGHT = 45;
 
@@ -806,6 +813,99 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         private Class<?> _ruleClass;
     }
 
+    private static class HelpLabel extends JLabel implements MouseListener {
+
+        public void mouseClicked(MouseEvent event) {
+            if (_help != null) {
+                String host = _help.getHost();
+                if (host.length() > 0) {
+                    // The help file is located on another server.
+                    String message = "The help file is located on server "
+                            + host + ". Do you want to open it? (A network "
+                            + "connection is required.)";
+
+                    int selected = JOptionPane.showConfirmDialog(null, message,
+                            "Validation Error", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.ERROR_MESSAGE, null);
+                    if (selected == 1) {
+                        return;
+                    }
+                }
+
+                try {
+                    Configuration configuration = _owner.getConfiguration();
+                    configuration.openModel(null, _help,
+                            _help.toExternalForm());
+                } catch (Exception e1) {
+                    HTMLViewer viewer = new HTMLViewer();
+                    try {
+                        viewer.setPage(_help);
+                        viewer.pack();
+                        viewer.show();
+                    } catch (IOException e2) {
+                        throw new KernelRuntimeException("Cannot open help "
+                                + "file.");
+                    }
+                }
+            }
+        }
+
+        public void mouseEntered(MouseEvent e) {
+            Color color = new Color(
+                    Math.min((int) (_background.getRed() * 1.1), 255),
+                    Math.min((int) (_background.getGreen() * 1.1), 255),
+                    Math.min((int) (_background.getBlue() * 1.1), 255));
+            setBackground(color);
+        }
+
+        public void mouseExited(MouseEvent e) {
+            setBackground(_background);
+        }
+
+        public void mousePressed(MouseEvent e) {
+        }
+
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        HelpLabel(String label, Color background) {
+            this(label, background, (URL) null, null);
+        }
+
+        HelpLabel(String label, Color background, String helpFile,
+                TableauFrame owner) {
+            this(label, background,
+                    HelpLabel.class.getClassLoader().getResource(helpFile),
+                    owner);
+        }
+
+        HelpLabel(String label, Color background, URL help,
+                TableauFrame owner) {
+            super(label, SwingConstants.CENTER);
+
+            setBackground(background);
+            setBorder(_TEXT_FIELD_BORDER);
+            setOpaque(true);
+
+            _background = background;
+            _help = help;
+            if (_help != null) {
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                addMouseListener(this);
+            }
+            _owner = owner;
+        }
+
+        private Color _background;
+
+        private URL _help;
+
+        private TableauFrame _owner;
+
+        private static final long serialVersionUID = -566278924482709077L;
+
+    }
+
     private static class JPanelCellEditor extends AbstractCellEditor
     implements TableCellEditor, TableCellRenderer, ActionListener {
 
@@ -964,7 +1064,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
                         component.setBackground(_UNSELECTED_COLOR);
                     }
                 } else {
-                    component.setBackground(_DISABLED_COLOR);
+                    component.setBackground(_DISABLED_BACKGROUND);
                 }
             }
         }
@@ -993,11 +1093,11 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
                 boolean acceptExp = stringAttribute.acceptPtolemyExpression();
                 Color background;
                 if (acceptRE) {
-                    background = _RE_ENABLED_BACKGROUND;
+                    background = _REGULAR_EXPRESSION_BACKGROUND;
                 } else if (acceptExp) {
-                    background = _EXPRESSION_BACKGROUND;
+                    background = _PTOLEMY_EXPRESSION_BACKGROUND;
                 } else {
-                    background = _NON_RE_ENABLED_BACKGROUND;
+                    background = _NON_REGULAR_EXPRESSION_BACKGROUND;
                 }
 
                 if (attribute instanceof ChoiceRuleAttribute) {
@@ -1122,7 +1222,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
                     component.setBackground(_SELECTED_COLOR);
                 }
             } else {
-                component.setBackground(_DISABLED_COLOR);
+                component.setBackground(_DISABLED_BACKGROUND);
             }
         }
 
@@ -1140,7 +1240,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         private JCheckBox[] _checkBoxes;
 
         private JComboBox _classSelector =
-            new ColorizedComboBox(_NON_RE_ENABLED_BACKGROUND);
+            new ColorizedComboBox(_NON_REGULAR_EXPRESSION_BACKGROUND);
 
         private JComponent[] _components;
 

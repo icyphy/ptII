@@ -100,6 +100,7 @@ OPTIONAL_FILES = \
 	'RuleEditor$$ColorizedTextField.class' \
 	'RuleEditor$$ComboElement.class' \
 	'RuleEditor$$Factory.class' \
+	'RuleEditor$$HelpLabel.class' \
 	'RuleEditor$$JPanelCellEditor.class' \
 	'RuleEditor$$Row$$1.class' \
 	'RuleEditor$$Row$$CheckBoxActionListener.class' \
