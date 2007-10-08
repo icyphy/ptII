@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class PtolemyExpressionString {
-    
+
     public PtolemyExpressionString() {
         this(null, "");
     }
@@ -93,5 +93,5 @@ public class PtolemyExpressionString {
     private String _value;
 
     private VariableScope _variableScope;
-        
+
 }

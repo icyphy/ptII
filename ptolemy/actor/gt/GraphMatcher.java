@@ -50,6 +50,7 @@ import ptolemy.actor.gt.rules.AttributeRule;
 import ptolemy.actor.gt.rules.PortRule;
 import ptolemy.actor.gt.rules.SubclassRule;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
@@ -584,6 +585,32 @@ public class GraphMatcher {
         return false;
     }
 
+    private Token _getAttribute(NamedObj container,
+            Class<? extends CompositeEntityPatternAttribute> attributeClass) {
+
+        while (container != null) {
+            if (_match.containsValue(container)) {
+                container = (NamedObj) _match.getKey(container);
+            } else if (_temporaryMatch.containsValue(container)) {
+                container = (NamedObj) _temporaryMatch.getKey(container);
+            }
+            List<?> attributeList = container.attributeList(attributeClass);
+            if (!attributeList.isEmpty()) {
+                CompositeEntityPatternAttribute attribute =
+                    (CompositeEntityPatternAttribute) attributeList.get(0);
+                try {
+                    return attribute.parameter.getToken();
+                } catch (IllegalActionException e) {
+                    // The attribute's value cannot be obtained.
+                    return null;
+                }
+            }
+            container = container.getContainer();
+        }
+
+        return null;
+    }
+
     /** Get a string that represents the object. If the object is an instance of
      *  {@link NamedObj}, the returned string is its name retrieved by {@link
      *  NamedObj#getFullName()}; otherwise, the <tt>toString</tt> method of the
@@ -633,38 +660,11 @@ public class GraphMatcher {
                 && ((CompositeActor) entity).isOpaque()) {
             return true;
         } else {
-            if (entity.getName().equals("CompositeActor")) {
-                boolean x = false;
-                x = !x;
-            }
             NamedObj container = entity.getContainer();
-            boolean isOpaque = false;
-
-            while (container != null) {
-                if (_match.containsValue(container)) {
-                    container = (NamedObj) _match.getKey(container);
-                } else if (_temporaryMatch.containsValue(container)) {
-                    container = (NamedObj) _temporaryMatch.getKey(container);
-                }
-                List<?> attributeList =
-                    container.attributeList(HierarchyFlatteningAttribute.class);
-                if (!attributeList.isEmpty()) {
-                    HierarchyFlatteningAttribute attribute =
-                        (HierarchyFlatteningAttribute) attributeList.get(0);
-                    try {
-                        BooleanToken token =
-                            (BooleanToken) attribute.parameter.getToken();
-                        isOpaque = !token.booleanValue();
-                        break;
-                    } catch (IllegalActionException e) {
-                        // Quite impossible, but if this happens, return the
-                        // default opacity, which is false.
-                        return false;
-                    }
-                }
-                container = container.getContainer();
-            }
-
+            Token value =
+                _getAttribute(container, HierarchyFlatteningAttribute.class);
+            boolean isOpaque = value == null ?
+                    false : !((BooleanToken) value).booleanValue();
             return isOpaque;
         }
     }
@@ -842,19 +842,28 @@ public class GraphMatcher {
                 && hostObject instanceof AtomicActor) {
             return _matchAtomicActor((AtomicActor) lhsObject,
                     (AtomicActor) hostObject);
+
         } else if (lhsObject instanceof CompositeEntity
                 && hostObject instanceof CompositeEntity) {
             return _matchCompositeEntity((CompositeEntity) lhsObject,
                     (CompositeEntity) hostObject);
-        } else if (lhsObject instanceof Port && hostObject instanceof Port) {
-            return _matchPort((Port) lhsObject, (Port) hostObject);
-        } else if (lhsObject instanceof Path && hostObject instanceof Path) {
-            return _matchPath((Path) lhsObject, (Path) hostObject);
+
         } else if (lhsObject instanceof ObjectList
                 && hostObject instanceof ObjectList) {
             LookbackEntry matchedObjectLists = new LookbackEntry(
                     (ObjectList) lhsObject, (ObjectList) hostObject);
             return _matchList(matchedObjectLists);
+
+        } else if (lhsObject instanceof Path && hostObject instanceof Path) {
+            return _matchPath((Path) lhsObject, (Path) hostObject);
+
+        } else if (lhsObject instanceof Port && hostObject instanceof Port) {
+            return _matchPort((Port) lhsObject, (Port) hostObject);
+
+        } else if (lhsObject instanceof Relation
+                && hostObject instanceof Relation) {
+            return _matchRelation((Relation) lhsObject, (Relation) hostObject);
+
         } else {
             return false;
         }
@@ -882,6 +891,7 @@ public class GraphMatcher {
         return success;
     }
 
+    @SuppressWarnings("unchecked")
     private boolean _matchPort(Port lhsPort, Port hostPort) {
 
         int matchSize = _match.size();
@@ -911,37 +921,76 @@ public class GraphMatcher {
         }
 
         if (success) {
-            _temporaryMatch.put(lhsContainer, hostContainer);
-
             ObjectList lhsList = new ObjectList();
             lhsList.add(lhsContainer);
-
-            Path lhsPath = new Path(lhsPort);
-            Set<Relation> visitedRelations = new HashSet<Relation>();
-            Set<Port> visitedPorts = new HashSet<Port>();
-            boolean foundPath = _findFirstPath(lhsPort, lhsPath,
-                    visitedRelations, visitedPorts);
-            while (foundPath) {
-                lhsList.add(lhsPath.clone());
-                foundPath =
-                    _findNextPath(lhsPath, visitedRelations, visitedPorts);
-            }
-
             ObjectList hostList = new ObjectList();
             hostList.add(hostContainer);
 
-            Path hostPath = new Path(hostPort);
-            visitedRelations = new HashSet<Relation>();
-            visitedPorts = new HashSet<Port>();
-            foundPath = _findFirstPath(hostPort, hostPath, visitedRelations,
-                    visitedPorts);
-            while (foundPath) {
-                hostList.add(hostPath.clone());
-                foundPath =
-                    _findNextPath(hostPath, visitedRelations, visitedPorts);
+            Token collapsingToken = _getAttribute(lhsContainer.getContainer(),
+                        RelationCollapsingAttribute.class);
+            boolean collapsing = collapsingToken == null ?
+                    true : ((BooleanToken) collapsingToken).booleanValue();
+
+            if (collapsing) {
+                _temporaryMatch.put(lhsContainer, hostContainer);
+
+                Path lhsPath = new Path(lhsPort);
+                Set<Relation> visitedRelations = new HashSet<Relation>();
+                Set<Port> visitedPorts = new HashSet<Port>();
+                boolean foundPath = _findFirstPath(lhsPort, lhsPath,
+                        visitedRelations, visitedPorts);
+                while (foundPath) {
+                    lhsList.add(lhsPath.clone());
+                    foundPath =
+                        _findNextPath(lhsPath, visitedRelations, visitedPorts);
+                }
+
+                Path hostPath = new Path(hostPort);
+                visitedRelations = new HashSet<Relation>();
+                visitedPorts = new HashSet<Port>();
+                foundPath = _findFirstPath(hostPort, hostPath, visitedRelations,
+                        visitedPorts);
+                while (foundPath) {
+                    hostList.add(hostPath.clone());
+                    foundPath =
+                        _findNextPath(hostPath, visitedRelations, visitedPorts);
+                }
+
+                _temporaryMatch.remove(lhsContainer);
+            } else {
+                lhsList.addAll(lhsPort.linkedRelationList());
+                hostList.addAll(hostPort.linkedRelationList());
             }
 
-            _temporaryMatch.remove(lhsContainer);
+            success = _matchObject(lhsList, hostList);
+        }
+
+        if (!success) {
+            _match.retain(matchSize);
+        }
+
+        return success;
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean _matchRelation(Relation lhsRelation,
+            Relation hostRelation) {
+
+        int matchSize = _match.size();
+        boolean success = true;
+
+        _match.put(lhsRelation, hostRelation);
+
+        if (!_shallowMatchRelation(lhsRelation, hostRelation)) {
+            success = false;
+        }
+
+        if (success) {
+            ObjectList lhsList = new ObjectList();
+            lhsList.addAll(lhsRelation.linkedObjectsList());
+
+            ObjectList hostList = new ObjectList();
+            hostList.addAll(hostRelation.linkedObjectsList());
 
             success = _matchObject(lhsList, hostList);
         }
@@ -1049,6 +1098,12 @@ public class GraphMatcher {
         } else {
             return true;
         }
+    }
+
+    private boolean _shallowMatchRelation(Relation lhsRelation,
+            Relation hostRelation) {
+        // TODO
+        return true;
     }
 
     private MatchCallback _callback = DEFAULT_CALLBACK;

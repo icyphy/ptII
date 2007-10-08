@@ -30,7 +30,6 @@ package ptolemy.actor.gt;
 
 import java.util.List;
 
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -52,7 +51,7 @@ public abstract class CompositeEntityPatternAttribute
 extends SingletonAttribute {
 
     public CompositeEntityPatternAttribute(NamedObj container, String name,
-            String parameterName, Type type, Token defaultToken)
+            String parameterName, Type type, String defaultExpression)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
@@ -85,8 +84,25 @@ extends SingletonAttribute {
 
         parameter = new Parameter(this, parameterName);
         parameter.setTypeEquals(type);
-        parameter.setToken(defaultToken);
+        parameter.setExpression(defaultExpression);
+
+        _attachText("_iconDescription", _LIBRARY_ICON);
     }
 
     public Parameter parameter;
+
+    protected void _setIconDescription(String iconDescription) {
+        String moml = "<property name=\"_iconDescription\" class="
+            + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
+            + "  <configure>" + iconDescription + "</configure>"
+            + "</property>";
+        MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
+        request.execute();
+    }
+
+    protected static final String _LIBRARY_ICON =
+        "<svg>"
+        + "<rect x=\"0\" y=\"0\" width=\"30\" height=\"20\""
+        + "  style=\"fill:#00FFFF\"/>"
+        + "</svg>";
 }

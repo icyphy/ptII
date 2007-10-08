@@ -36,7 +36,6 @@ import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.EntityLibrary;
-import ptolemy.moml.MoMLChangeRequest;
 
 /**
 
@@ -56,11 +55,9 @@ extends CompositeEntityPatternAttribute {
      * @throws IllegalActionException
      */
     public HierarchyFlatteningAttribute(NamedObj container, String name)
-            throws NameDuplicationException, IllegalActionException {
-        super(container, name, "hierarchyFlattening", BaseType.BOOLEAN,
-                BooleanToken.TRUE);
+    throws NameDuplicationException, IllegalActionException {
 
-        _attachText("_iconDescription", _LIBRARY_ICON);
+        super(container, name, "hierarchyFlattening", BaseType.BOOLEAN, "true");
     }
 
     public void attributeChanged(Attribute attribute) {
@@ -81,15 +78,6 @@ extends CompositeEntityPatternAttribute {
                         "Cannot get token from the attribute.");
             }
         }
-    }
-
-    private void _setIconDescription(String iconDescription) {
-        String moml = "<property name=\"_iconDescription\" class="
-            + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
-            + "  <configure>" + iconDescription + "</configure>"
-            + "</property>";
-        MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
-        request.execute();
     }
 
     private static final String _FLATTENING_ICON =
@@ -116,12 +104,6 @@ extends CompositeEntityPatternAttribute {
         + "  style=\"fill:#FF0000\"/>"
         + "<rect x=\"61\" y=\"7\" width=\"26\" height=\"18\""
         + "  style=\"fill:#C0C0C0\"/>"
-        + "</svg>";
-
-    private static final String _LIBRARY_ICON =
-        "<svg>"
-        + "<rect x=\"0\" y=\"0\" width=\"30\" height=\"20\""
-        + "  style=\"fill:#00FFFF\"/>"
         + "</svg>";
 
     private static final String _NOT_FLATTENING_ICON =

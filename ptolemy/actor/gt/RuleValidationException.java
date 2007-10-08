@@ -31,15 +31,15 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Nameable;
 
 public class RuleValidationException extends KernelException {
-    
+
     public RuleValidationException(String message) {
         super(null, null, message);
     }
-    
+
     public RuleValidationException(String message, Throwable cause) {
         super(null, null, cause, message);
     }
-    
+
     public static String generateMessage(Nameable object1, Nameable object2,
             Throwable cause, String detail) {
         return detail;

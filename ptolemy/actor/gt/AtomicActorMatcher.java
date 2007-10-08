@@ -176,20 +176,20 @@ public class AtomicActorMatcher extends TypedAtomicActor {
 
     private static final String _ICON_DESCRIPTION =
         "<svg>"
-        + "<rect x=\"0\" y=\"0\" width=\"60\" height=\"35\""
+        + "<rect x=\"0\" y=\"0\" width=\"60\" height=\"40\""
         + "  style=\"fill:#C0C0C0\"/>"
-        + "<rect x=\"5\" y=\"12\" width=\"16\" height=\"10\""
+        + "<rect x=\"5\" y=\"17\" width=\"16\" height=\"10\""
         + "  style=\"fill:#FFFFFF; stroke:#B00000\"/>"
-        + "<rect x=\"39\" y=\"20\" width=\"16\" height=\"10\""
+        + "<rect x=\"39\" y=\"25\" width=\"16\" height=\"10\""
         + "  style=\"fill:#FFFFFF; stroke:#B00000\"/>"
-        + "<line x1=\"25\" y1=\"17\" x2=\"30\" y2=\"17\""
+        + "<line x1=\"25\" y1=\"22\" x2=\"30\" y2=\"22\""
         + "  style=\"stroke:#404040\"/>"
-        + "<line x1=\"30\" y1=\"17\" x2=\"30\" y2=\"25\""
+        + "<line x1=\"30\" y1=\"22\" x2=\"30\" y2=\"30\""
         + "  style=\"stroke:#404040\"/>"
-        + "<line x1=\"30\" y1=\"25\" x2=\"35\" y2=\"25\""
+        + "<line x1=\"30\" y1=\"30\" x2=\"35\" y2=\"30\""
         + "  style=\"stroke:#404040\"/>"
-        + "<text x=\"20\" y=\"11\""
-        + "  style=\"font-size:10; fill:#E00000; font-family:SansSerif\">"
+        + "<text x=\"17\" y=\"13\""
+        + "  style=\"font-size:12; fill:#E00000; font-family:SansSerif\">"
         + "  match</text>"
         + "</svg>";
 

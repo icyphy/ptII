@@ -47,7 +47,7 @@ import ptolemy.actor.gt.data.MatchResult;
 public class AllMatchingTestHelper {
 
     /** Generate a string that represents all the received match results.
-     * 
+     *
      *  @return The string of match results.
      */
     public String toString() {

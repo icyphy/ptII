@@ -4,9 +4,9 @@
 <entity name="rule6" class="ptolemy.actor.gt.SingleRuleTransformer">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={278, 211, 843, 627}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={276, 197, 848, 655}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[620, 512]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 540]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -14,9 +14,9 @@
     </property>
     <entity name="Pattern" class="ptolemy.actor.TypedCompositeActor">
         <property name="HierarchyFlattening" class="ptolemy.actor.gt.HierarchyFlatteningAttribute">
-            <property name="flattening" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="hierarchyFlattening" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 15.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 5.0]">
             </property>
         </property>
         <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
@@ -64,9 +64,7 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <property name="HierarchyFlattening" class="ptolemy.actor.gt.HierarchyFlatteningAttribute">
-                <property name="flattening" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 25.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 55.0]">
                 </property>
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">

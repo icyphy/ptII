@@ -66,6 +66,7 @@ JSRCS = \
 	MalformedStringException.java \
 	MatchCallback.java \
 	NoMatchFoundException.java \
+	RelationCollapsingAttribute.java \
 	Rule.java \
 	RuleAttribute.java \
 	RuleList.java \

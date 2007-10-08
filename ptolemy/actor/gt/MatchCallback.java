@@ -53,7 +53,7 @@ public interface MatchCallback {
      *  indicates whether the match is the one looked for. If it is
      *  <tt>true</tt>, the matching will terminate after this routine returns,
      *  and no more match result will be reported.
-     * 
+     *
      *  @param matcher The graph matcher.
      *  @return Whether the matching should terminate right away.
      */

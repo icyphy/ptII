@@ -62,7 +62,7 @@ public class PortRule extends Rule {
     public PortRule(RuleList owner, String portName, String portType,
             boolean input, boolean output, boolean multiport) {
         super(owner, 5);
-        
+
         NamedObj container = owner.getOwner().getContainer();
         _portName = new RegularExpressionString(portName);
         _portType = new PtolemyExpressionString(container, portType);
