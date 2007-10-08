@@ -59,6 +59,7 @@ JSRCS = \
 	BooleanRuleAttribute.java \
 	ChoiceRuleAttribute.java \
 	CompositeActorMatcher.java \
+	CompositeEntityPatternAttribute.java \
 	GraphMatcher.java \
 	GraphTransformationException.java \
 	HierarchyFlatteningAttribute.java \

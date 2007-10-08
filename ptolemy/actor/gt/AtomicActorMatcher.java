@@ -157,8 +157,7 @@ public class AtomicActorMatcher extends TypedAtomicActor {
             EditorIcon editorIcon = (EditorIcon) editorIconObject;
             String moml =
                 "<deleteProperty name=\"" + editorIcon.getName() + "\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this,
-                    AtomicActorMatcher.this, moml);
+            MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
             request.execute();
         }
     }

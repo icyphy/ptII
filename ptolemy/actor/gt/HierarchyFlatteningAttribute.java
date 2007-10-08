@@ -28,17 +28,13 @@
 
 package ptolemy.actor.gt;
 
-import java.util.List;
-
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.MoMLChangeRequest;
 
@@ -50,7 +46,8 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class HierarchyFlatteningAttribute extends SingletonAttribute {
+public class HierarchyFlatteningAttribute
+extends CompositeEntityPatternAttribute {
 
     /**
      * @param container
@@ -60,44 +57,8 @@ public class HierarchyFlatteningAttribute extends SingletonAttribute {
      */
     public HierarchyFlatteningAttribute(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
-        super(container, name);
-        
-        if (!(container instanceof EntityLibrary)) {
-            if (!(container instanceof CompositeActorMatcher)) {
-                throw new IllegalActionException("HierarchyFlatteningAttribute "
-                        + "can only be added to CompositeActorMatcher.");
-            }
-
-            CompositeActorMatcher matcher = (CompositeActorMatcher) container;
-            NamedObj firstChild = matcher;
-            NamedObj parent = matcher.getContainer();
-            while (parent != null
-                    && !(parent instanceof SingleRuleTransformer)) {
-                firstChild = parent;
-                parent = parent.getContainer();
-            }
-
-            if (parent == null || ((SingleRuleTransformer) parent).getPattern()
-                    != firstChild) {
-                throw new IllegalActionException("HierarchyFlatteningAttribute "
-                        + "must be added to the pattern of a "
-                        + "SingleRuleTransformer.");
-            }
-
-            List<?> attributeList =
-                matcher.attributeList(HierarchyFlatteningAttribute.class);
-            for (Object attributeObject : attributeList) {
-                if (attributeObject != this) {
-                    throw new IllegalActionException("Only 1 "
-                            + "HierarchyFlatteningAttribute can be used for "
-                            + "each CompositeActorMatcher.");
-                }
-            }
-        }
-
-        flatteningAttribute = new Parameter(this, "flattening");
-        flatteningAttribute.setTypeEquals(BaseType.BOOLEAN);
-        flatteningAttribute.setToken(BooleanToken.TRUE);
+        super(container, name, "hierarchyFlattening", BaseType.BOOLEAN,
+                BooleanToken.TRUE);
 
         _attachText("_iconDescription", _LIBRARY_ICON);
     }
@@ -107,9 +68,9 @@ public class HierarchyFlatteningAttribute extends SingletonAttribute {
             return;
         }
 
-        if (attribute == flatteningAttribute) {
+        if (attribute == parameter) {
             try {
-                if (((BooleanToken) flatteningAttribute.getToken()).equals(
+                if (((BooleanToken) parameter.getToken()).equals(
                         BooleanToken.TRUE)) {
                     _setIconDescription(_FLATTENING_ICON);
                 } else {
@@ -121,8 +82,6 @@ public class HierarchyFlatteningAttribute extends SingletonAttribute {
             }
         }
     }
-
-    public Parameter flatteningAttribute;
 
     private void _setIconDescription(String iconDescription) {
         String moml = "<property name=\"_iconDescription\" class="

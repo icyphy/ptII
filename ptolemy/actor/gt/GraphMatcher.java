@@ -653,8 +653,7 @@ public class GraphMatcher {
                         (HierarchyFlatteningAttribute) attributeList.get(0);
                     try {
                         BooleanToken token =
-                            (BooleanToken) attribute.flatteningAttribute
-                                    .getToken();
+                            (BooleanToken) attribute.parameter.getToken();
                         isOpaque = !token.booleanValue();
                         break;
                     } catch (IllegalActionException e) {
