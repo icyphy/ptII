@@ -159,10 +159,12 @@ public class GraphMatcher {
 
         // Temporary data structures.
         _lookbackList = new LookbackList();
+        _temporaryMatch = new MatchResult();
 
         _success = _matchObject(lhsGraph, hostGraph);
 
         assert _lookbackList.isEmpty();
+        assert _temporaryMatch.isEmpty();
         if (!_success) {
             assert _match.isEmpty();
         }
@@ -631,17 +633,21 @@ public class GraphMatcher {
                 && ((CompositeActor) entity).isOpaque()) {
             return true;
         } else {
+            if (entity.getName().equals("CompositeActor")) {
+                boolean x = false;
+                x = !x;
+            }
             NamedObj container = entity.getContainer();
             boolean isOpaque = false;
-            
+
             while (container != null) {
+                if (_match.containsValue(container)) {
+                    container = (NamedObj) _match.getKey(container);
+                } else if (_temporaryMatch.containsValue(container)) {
+                    container = (NamedObj) _temporaryMatch.getKey(container);
+                }
                 List<?> attributeList =
                     container.attributeList(HierarchyFlatteningAttribute.class);
-                if (attributeList.isEmpty()
-                        && _match.containsValue(container)) {
-                    attributeList = ((NamedObj) _match.getKey(container))
-                            .attributeList(HierarchyFlatteningAttribute.class);
-                }
                 if (!attributeList.isEmpty()) {
                     HierarchyFlatteningAttribute attribute =
                         (HierarchyFlatteningAttribute) attributeList.get(0);
@@ -659,12 +665,9 @@ public class GraphMatcher {
                 }
                 container = container.getContainer();
             }
-            
+
             return isOpaque;
         }
-        
-        //return entity instanceof CompositeActor
-        //        && ((CompositeActor) entity).isOpaque();
     }
 
     private boolean _matchAtomicActor(AtomicActor lhsActor,
@@ -884,6 +887,8 @@ public class GraphMatcher {
 
         int matchSize = _match.size();
         boolean success = true;
+        NamedObj lhsContainer = null;
+        NamedObj hostContainer = null;
 
         _match.put(lhsPort, hostPort);
 
@@ -892,8 +897,25 @@ public class GraphMatcher {
         }
 
         if (success) {
+            lhsContainer = lhsPort.getContainer();
+            hostContainer = hostPort.getContainer();
+
+            Object lhsMatch = _match.get(lhsContainer);
+            if (lhsMatch != null && lhsMatch != hostContainer) {
+                success = false;
+            } else {
+                Object hostMatch = _match.getKey(hostContainer);
+                if (hostMatch != null  && hostMatch != lhsContainer) {
+                    success = false;
+                }
+            }
+        }
+
+        if (success) {
+            _temporaryMatch.put(lhsContainer, hostContainer);
+
             ObjectList lhsList = new ObjectList();
-            lhsList.add(lhsPort.getContainer());
+            lhsList.add(lhsContainer);
 
             Path lhsPath = new Path(lhsPort);
             Set<Relation> visitedRelations = new HashSet<Relation>();
@@ -907,7 +929,7 @@ public class GraphMatcher {
             }
 
             ObjectList hostList = new ObjectList();
-            hostList.add(hostPort.getContainer());
+            hostList.add(hostContainer);
 
             Path hostPath = new Path(hostPort);
             visitedRelations = new HashSet<Relation>();
@@ -919,6 +941,8 @@ public class GraphMatcher {
                 foundPath =
                     _findNextPath(hostPath, visitedRelations, visitedPorts);
             }
+
+            _temporaryMatch.remove(lhsContainer);
 
             success = _matchObject(lhsList, hostList);
         }
@@ -985,16 +1009,16 @@ public class GraphMatcher {
                 if (portRule == null) {
                     boolean isInputEqual =
                         lhsIOPort.isInput() == hostIOPort.isInput();
-                    
+
                     boolean isOutputEqual =
                         lhsIOPort.isOutput() == hostIOPort.isOutput();
-                    
+
                     boolean isMultiportEqual = lhsIOPort.isMultiport()
                             == hostIOPort.isMultiport();
-                    
+
                     boolean isNameEqual =
                         lhsIOPort.getName().equals(hostIOPort.getName());
-                    
+
                     boolean isTypeCompatible = true;
                     if (lhsIOPort instanceof TypedIOPort) {
                         if (hostIOPort instanceof TypedIOPort) {
@@ -1013,7 +1037,7 @@ public class GraphMatcher {
                             isTypeCompatible = false;
                         }
                     }
-                    
+
                     return isInputEqual && isOutputEqual && isMultiportEqual
                             && isNameEqual && isTypeCompatible;
                 } else {
@@ -1028,10 +1052,10 @@ public class GraphMatcher {
         }
     }
 
+    private MatchCallback _callback = DEFAULT_CALLBACK;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
-
-    private MatchCallback _callback = DEFAULT_CALLBACK;
 
     private static final NameComparator _comparator = new NameComparator();
 
@@ -1046,6 +1070,8 @@ public class GraphMatcher {
      *  successful. (See {@link #match(CompositeActorMatcher, NamedObj)})
      */
     private boolean _success = false;
+
+    private MatchResult _temporaryMatch;
 
     ///////////////////////////////////////////////////////////////////
     ////                      private inner classes                ////

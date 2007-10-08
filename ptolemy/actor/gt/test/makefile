@@ -96,6 +96,7 @@ EXTRA_SRCS = \
     host5.2.xml \
     host5.3.xml \
     host6.1.xml \
+    host6.2.xml \
     MatchingTest1.tcl \
     MatchingTest2.tcl \
     rule1.xml \
