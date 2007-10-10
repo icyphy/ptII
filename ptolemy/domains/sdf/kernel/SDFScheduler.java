@@ -274,6 +274,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
                 .getAnalysis(getContainer());
 
+        // Save the rate variables that we already listen to.
+        LinkedList oldList = new LinkedList();
+        oldList.addAll(rateVariables);
+
+        LinkedList newList = new LinkedList();
         for (Iterator entities = model.deepEntityList().iterator(); entities
                 .hasNext();) {
             Entity entity = (Entity) entities.next();
@@ -285,6 +290,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 variable = DFUtilities.getRateVariable(port,
                         "tokenInitProduction");
                 _listenToRateVariable(variable, rateVariables);
+                newList.add(variable);
 
                 if (set.contains(variable)) {
                     _assertDynamicRateVariable(model, variable, rateVariables,
@@ -294,6 +300,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 variable = DFUtilities.getRateVariable(port,
                         "tokenConsumptionRate");
                 _listenToRateVariable(variable, rateVariables);
+                newList.add(variable);
 
                 if (set.contains(variable)) {
                     _assertDynamicRateVariable(model, variable, rateVariables,
@@ -303,12 +310,25 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 variable = DFUtilities.getRateVariable(port,
                         "tokenProductionRate");
                 _listenToRateVariable(variable, rateVariables);
+                newList.add(variable);
 
                 if (set.contains(variable)) {
                     _assertDynamicRateVariable(model, variable, rateVariables,
                             analysis);
                 }
             }
+        }
+
+        // Don't listen to old rate variables anymore.
+        oldList.removeAll(newList);
+        for (Iterator oldRateVariables = oldList.iterator();
+             oldRateVariables.hasNext();) {
+            Variable variable = (Variable) oldRateVariables.next();
+            if (_debugging) {
+                _debug("No longer listening to rate variable " + variable);
+            }
+            variable.removeValueListener(this);
+            rateVariables.remove(variable);
         }
     }
 
