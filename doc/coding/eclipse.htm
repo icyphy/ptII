@@ -8,7 +8,7 @@
 <body>
 <h1>Setting up Ptolemy II and Eclipse</h1>
 <p>
-These instructions assume you are using Eclipse 3.1 under Windows.
+These instructions assume you are using Eclipse 3.3 under Windows.
 Other ways of setting up and building Ptolemy II are described on the
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm">
 Ptolemy II install page</a>. Contents of this page:
@@ -26,6 +26,10 @@ Ptolemy II install page</a>. Contents of this page:
 <li>
 Download the latest version of Eclipse from
 <a href="http://www.eclipse.org" target="_top">http://www.eclipse.org</a>.
+ <br>In October, 2007, we chose <B>Eclipse Classic</B>, which corresponds with
+<CODE>eclipse-SDK-3.3.1-win32.zip</CODE>.  Eclipse Europa might work,
+we did not try it.
+
 <li>
 Unzip the download file into an appropriate place (such as <CODE>C:\Program Files</CODE>).
 <li>
@@ -92,19 +96,28 @@ to format comments.  We hope to change this policy in the future.
   <li> While still in the preferences window (Window -&gt; Preferences).
 
   <li> Expand the Java tree, select "Code Style" -&gt; "Formatter"
-  <li> Under "Select a profile" select "Java Conventions" and then 
-       Click on "Show".  We use Java Conventions over the "Eclipse"
-       setting because the Eclipse style uses tabs
-  <li> Under the "Indentation" tab, in Eclipse 3.2 and later, change
-       the Tab policy to "Spaces only".  In Eclipse 3.1.2 and earlier,
+  <li> Under "Active profile", Click on "New..."
+  <li> In the "New Profile" window, enter "Ptolemy II" into
+       the "Profile Name" entry.
+
+  <li> Under "Initialize settings with the following profile",
+       select "Java Conventions [built-in]"
+       (We use Java Conventions over the "Eclipse"
+       setting because the Eclipse style uses tabs.)
+  
+  <li> Click on "OK" to close the "New Profile" window
+   
+  <li> A "Profile 'Ptolemy II' window will appear.
+       Under the "Indentation" tab, change the Tab policy to "Spaces only". 
        verify that the Tab policy is "Spaces only".
   <li> Under the "New Lines" tab, select "at end of file"
-  <li> Under the "Comments" tab, <b>unselect</b> "Enable comment formatting"
+  <li> Under the "Comments" tab, <b>unselect</b> "Enable block comment formatting"
   <li> Click OK.
 
-  <li> You will be prompted to save the style with a new name, we
-suggest "Ptolemy II", but you can select any name. 
-  <li> Click Apply
+  <li> In the Preferences Window, click Apply
+
+
+
  </ol>
 
 <li>
@@ -114,8 +127,8 @@ which require Java 5.0
 Set Eclipse to use Java 5.0 source code compliance.
 <ol>
  <li> While still in the preferences window (Window -&gt; Preferences).
- <li> Expand the Java tree, select "Compiler" -&gt; "JDK Compliance:"
- <li> Set "Compiler compliance level" to "5.0".
+ <li> Expand the Java tree, select "Compiler" -&gt; "Building"
+ <li> Make sure that Set "Compiler compliance level" is "5.0".
  <li> Click Apply. 
 </ol>
 
@@ -128,6 +141,8 @@ if you are tightly managing serialization, we turn it off:
   <li> Expand the Java tree, select "Compiler" -&gt; "Errors/Warning"
   <li> Under "Potential programming problems", change
   "Serializable class without serialVersionUID" to "Ignore"
+  <li> Under "Generic Types", change
+  "Usage of a raw type" to "Ignore".
   <li> Click Apply.  If you are prompted for a full rebuild, click OK.
  </ol>
 
@@ -209,7 +224,7 @@ below.
 Eclipse will manage your ptII code tree as a <em>project</em> called
 the ptII project.  Assuming Eclipse is running:
 <ol>
-<li> Set up the pserver CVS connection:
+<li> Set up the pserver CVS or read/write CVS connection:
 
 <ol>
 <li> Expose the CVS repositories view by selecting
@@ -243,7 +258,7 @@ for details.
 <li> <a name="CVSDSL">If you are connecting via a DSL connection</a>, you may
 want to use compression to transfer files:
 In Window -&gt; Preferences -&gt; Team -&gt; CVS -&gt; Connection tab, change Compression Level
-to 9. 
+to 5. 
 <p>
 <li> In the CVS Repositories View window, click + sign to the left of the repository and then on the + sign to the left of HEAD until you see the <CODE>ptII</CODE> Head.
 
@@ -252,18 +267,18 @@ to 9.
 then Select the "Check Out As..." option.  Follow the wizard,
 creating selections as follows:
 <ul>
-<li> Check out as a project configured using the New Project Wizard
-<li> Java project
-<li> Name of the project: <CODE>ptII</CODE>
-<li> We recommend that you select "Create project at external location:"
-     and specify a directory you will find easily, such as
-     <CODE>C:\ptII</CODE>, rather than the default, which is within the
-     Eclipse workspace directory. 
+<li> In the "Check Out As" window, check out as a project configured using the New Project Wizard, then hit "Next".
+
+<li> In the "Select Tag" window, hit "Finish".
+
+<li> In the "Select a wizard" window, select "Java Project", then "Next".
+<li> In the "Create a Java Project" window set "Project Name"
+     to: <CODE>ptII</CODE>
 <li> Click Finish.
 </ul>
 
 <p>
-<li> Wait for the checkout to finish. Go get coffee. 
+<li> Wait for the checkout to finish. <I>Go get coffee.</I>
  <br><B>Note:</B>If you did not disable build automatically, as
 suggested above, then Eclipse will build the project and produce
 <B>thousands of errors</B>. This is not really a problem.  You will
@@ -286,7 +301,7 @@ the file in the ptII home directory called
 <CODE>.classpath</CODE>.
  <br>Note that you can use the Eclipse Navigator browse to the
 <CODE>.classpath.default</CODE> file, open the file, copy the contents,
-open <CODE>.classpath</CODE>, paste the contents and save.
+open <CODE>.classpath</CODE>, paste the contents and save <CODE>.classpath</CODE>.
  <br>Or, you can use Windows Explorer or the shell.
 
 <li> In Eclipse, perform a Refresh on the ptII project
@@ -317,7 +332,7 @@ You will get many warnings that you can ignore, but hopefully no errors.
 <h3><a name="runningPtolemy">Running Ptolemy II</a></h3>
 
 <ol>
- <li> In the Run menu, select "Run...".
+ <li> In the Run menu, select "Open Run Dialog".
 
 <p> <li> In the resulting dialog, select "Java Application" and click "New".
 
