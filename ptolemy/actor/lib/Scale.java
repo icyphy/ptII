@@ -27,18 +27,9 @@
  */
 package ptolemy.actor.lib;
 
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.MonotonicFunction;
-import ptolemy.data.type.Type;
-import ptolemy.data.type.TypeLattice;
-import ptolemy.graph.CPO;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -51,11 +42,9 @@ import ptolemy.kernel.util.Workspace;
  Produce an output token on each firing with a value that is
  equal to a scaled version of the input.  The actor is polymorphic
  in that it can support any token type that supports multiplication
- by the <i>factor</i> parameter.  If the input type is a scalar, the output
+ by the <i>factor</i> parameter.  The output
  type is constrained to be at least as general as both the input and the
- <i>factor</i> parameter; if the input is an array, the output is also
- an array with the elements scaled. The input can be an array of array,
- in which case the elements of the inner most array will be scaled.
+ <i>factor</i> parameter.
  For data types where multiplication is not commutative (such
  as matrices), whether the factor is multiplied on the left is controlled
  by the <i>scaleOnLeft</i> parameter. Setting the parameter to true means
@@ -86,7 +75,8 @@ public class Scale extends Transformer {
         scaleOnLeft.setExpression("true");
 
         // set the type constraints.
-        output.setTypeAtLeast(new PortParameterFunction(input, factor));
+        output.setTypeAtLeast(input);
+        output.setTypeAtLeast(factor);
 
         // icon
         _attachText("_iconDescription", "<svg>\n"
@@ -123,9 +113,8 @@ public class Scale extends Transformer {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Scale newObject = (Scale) super.clone(workspace);
-        PortParameterFunction function = new PortParameterFunction(
-                newObject.input, newObject.factor);
-        newObject.output.setTypeAtLeast(function);
+        newObject.output.setTypeAtLeast(newObject.input);
+        newObject.output.setTypeAtLeast(newObject.factor);
         return newObject;
     }
 
@@ -142,148 +131,12 @@ public class Scale extends Transformer {
 
             if (((BooleanToken) scaleOnLeft.getToken()).booleanValue()) {
                 // Scale on the left.
-                result = _scaleOnLeft(in, factorToken, output.getType());
+                result = factorToken.multiply(in);
             } else {
                 // Scale on the right.
-                result = _scaleOnRight(in, factorToken, output.getType());
+                result = in.multiply(factorToken);
             }
-
             output.send(0, result);
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Scale the given input token on the left by the given factor.
-     *  If the input is an ArrayToken, then the resultType is required
-     *  to be an ArrayType.
-     *  @param input The input token.
-     *  @param factor The scale factor.
-     *  @param resultType The type of the result.
-     *  @return The result of scaling.
-     */
-    private Token _scaleOnLeft(Token input, Token factor, Type resultType)
-            throws IllegalActionException {
-        if (input instanceof ArrayToken) {
-            Token[] argArray = ((ArrayToken) input).arrayValue();
-            Token[] result = new Token[argArray.length];
-
-            for (int i = 0; i < argArray.length; i++) {
-                result[i] = _scaleOnLeft(argArray[i], factor,
-                        ((ArrayType) resultType).getElementType());
-            }
-
-            return new ArrayToken(result);
-        } else {
-            return factor.multiply(input);
-        }
-    }
-
-    /** Scale the given input token on the right by the given factor.
-     *  If the input is an ArrayToken, then the resultType is required
-     *  to be an ArrayType.
-     *  @param input The input token.
-     *  @param factor The scale factor.
-     *  @param resultType The type of the result.
-     *  @return The result of scaling.
-     */
-    private Token _scaleOnRight(Token input, Token factor, Type resultType)
-            throws IllegalActionException {
-        if (input instanceof ArrayToken) {
-            Token[] argArray = ((ArrayToken) input).arrayValue();
-            Token[] result = new Token[argArray.length];
-
-            for (int i = 0; i < argArray.length; i++) {
-                result[i] = _scaleOnRight(argArray[i], factor,
-                        ((ArrayType) resultType).getElementType());
-            }
-
-            return new ArrayToken(result);
-        } else {
-            return input.multiply(factor);
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-    // This class implements a monotonic function of the type of a
-    // port and a parameter.
-    // The function value is determined by:
-    // f(portType, paramType) =
-    //     UNKNOWN,                  if portType = UNKNOWN
-    //     LUB(portType, paramType), if portType is a BaseType
-    //     {f(elemType(portType), paramType)}, if portType is an array type.
-    //
-    // The last case is a recursive one. If portType is an array type, the
-    // function value is also an array. The element type of the function value
-    // array is the result of a recursive call to this function. This allows
-    // the port type to be an array or array, for example.
-    private static class PortParameterFunction extends MonotonicFunction {
-        // FindBugs suggested making this class a static inner class:
-        //
-        // "This class is an inner class, but does not use its embedded
-        // reference to the object which created it. This reference makes
-        // the instances of the class larger, and may keep the reference
-        // to the creator object alive longer than necessary. If
-        // possible, the class should be made into a static inner class."
-
-        private PortParameterFunction(TypedIOPort port, Parameter param) {
-            _port = port;
-            _param = param;
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       public inner methods            ////
-
-        /** Return the function result.
-         *  @return A Type.
-         */
-        public Object getValue() {
-            Type portType = _port.getType();
-            Type paramType = _param.getType();
-            return compute(portType, paramType);
-        }
-
-        /** Return the type variable in this inequality term. If the type
-         *  of the input port is not declared, return an one element array
-         *  containing the inequality term representing the type of the port;
-         *  otherwise, return an empty array.
-         *  @return An array of InequalityTerm.
-         */
-        public InequalityTerm[] getVariables() {
-            InequalityTerm portTerm = _port.getTypeTerm();
-
-            if (portTerm.isSettable()) {
-                InequalityTerm[] variable = new InequalityTerm[1];
-                variable[0] = portTerm;
-                return variable;
-            }
-
-            return (new InequalityTerm[0]);
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                      private inner methods            ////
-        // compute the function value based on the types of the port
-        // and the parameter.
-        private Object compute(Type portType, Type paramType) {
-            if (portType == BaseType.UNKNOWN) {
-                return BaseType.UNKNOWN;
-            } else if (portType instanceof ArrayType) {
-                Type elementType = ((ArrayType) portType).getElementType();
-                Type newElementType = (Type) compute(elementType, paramType);
-                return new ArrayType(newElementType);
-            } else {
-                CPO lattice = TypeLattice.lattice();
-                return lattice.leastUpperBound(portType, paramType);
-            }
-        }
-
-        ///////////////////////////////////////////////////////////////
-        ////                       private inner variable          ////
-        private TypedIOPort _port;
-
-        private Parameter _param;
     }
 }
