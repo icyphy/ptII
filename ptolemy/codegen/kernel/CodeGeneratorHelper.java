@@ -1546,7 +1546,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public String getSize(String name) throws IllegalActionException {
 
         // Try if the name is a parameter.
-        Attribute attribute = _component.getAttribute(name);
+        Attribute attribute = 
+            ModelScope.getScopedVariable(null, _component, name);
 
         if (attribute != null) {
             // FIXME:  Could it be something other than variable?
