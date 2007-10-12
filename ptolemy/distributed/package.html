@@ -14,11 +14,56 @@ Daniel Lazaro Cuadrado (Aalborg University).
  <p>The ptolemy.distributed package uses Jini, which is "<a
 href="http://en.wikipedia.org/wiki/Jini">a network architecture for
 the construction of distributed systems in the form of modular
-co-operating services</a>".  We include Jini jar files
+co-operating services</a>".
+
+<h2>Building the ptolemy.distributed package</h2>
+
+We include Jini jar files
 in <CODE>$PTII/ptolemy/distributed/jini/jar/</CODE>.
-When <CODE>./configure</CODE> in the <CODE>$PTII</CODE>
-directory, the script searches for the Jini jar files
+
+ <p>When <CODE>./configure</CODE> in the <CODE>$PTII</CODE>
+directory, is run, it searches for the Jini jar files
 and sets corresponding variables in <CODE>$PTII/mk/ptII.mk</CODE>
+for use by <CODE>make</CODE>
+and <CODE>$PTII/.classpath</CODE> for use by Eclipse.
+
+<h3>Building Ptolemy using configure</h3>
+
+ <p>If you are running <CODE>configure</CODE> to setup
+your environment and then running
+<CODE>make</CODE> or using Eclipse, then do:
+<pre>
+cd $PTII
+./configure
+</pre>
+You should see:
+<pre>
+checking for jini directory... /home/eecs/cxh/ptII/ptolemy/distributed/jini
+checking for jars used by jini... jini-core.jar jini-ext.jar sun-util.jar ok
+</pre>
+If, instead, you see
+<pre>
+checking for jini directory... configure: WARNING: Perhaps Jini is not installed?
+    You need not download Jini unless you plan on use the
+    distributed Ptolemy feature in ptolemy/distributed.
+    Jini can be downloaded from http://www.jini.org, the
+    jini-core.jar jini-ext.jar sun-util.jar copied to
+    $PTII/ptolemy/distributed/jini/jars
+    and configure rerun.
+</pre>
+Then you need to obtain jini from <a href="http://www.jini.org"><CODE>http://www.jini.org</CODE></a>,
+place <CODE>jini-core.jar</CODE>, <CODE>jini-ext.jar</CODE> and <CODE>sun-util.jar</CODE>
+in <CODE>$PTII/ptolemy/jini/jars</CODE> and rerun <CODE>configure.</CODE>
+
+ <p>If you are not using <CODE>configure</CODE>, then
+you will need to add the jar files by hand to the classpath
+of your tool.
+ <p>Note that the <CODE>$PTII/.classpath.default</CODE> file
+that can be used to set up Eclipse <B>excludes</B> 
+<CODE>ptolemy/distributed</CODE>, so if you are using
+Eclipse <B>do not</B> use <CODE>$PTII/.classpath.default</CODE>.
+Instead, use <CODE>configure</CODE> as per
+<a href="http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/coding/eclipse.htm"><CODE>$PTII/doc/coding/eclipse.htm</CODE></a>.
 
 
 <p>
