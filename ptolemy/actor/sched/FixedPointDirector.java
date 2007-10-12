@@ -69,7 +69,11 @@ import ptolemy.kernel.util.Workspace;
  The postfire() methods of the contained actors are invoked only
  in the postfire() method of this director, and they are invoked
  in arbitrary order.
- <p>
+ </p><p>
+ If the prefire() method of an actor returns false, then this director
+ assumes that all the outputs of the actor are absent. The actor has
+ declined to fire.
+ </p><p>
  Although this director does not require any specific ordering of actor 
  firings, a scheduler is used to choose an efficient ordering. 
  <p>
