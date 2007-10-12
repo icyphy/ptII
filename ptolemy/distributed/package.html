@@ -4,7 +4,23 @@
 <title>ptolemy.distributed</title>
 </head>
 <body>
-The ptolemy.distributed package.
+The ptolemy.distributed package domain is an extended 
+version of the existing Synchronous Dataflow (SDF) domain
+that performs the simulation in a distributed manner.
+
+ <p>The ptolemy.distributed package was developed by
+Daniel Lazaro Cuadrado (Aalborg University).
+
+ <p>The ptolemy.distributed package uses Jini, which is "<a
+href="http://en.wikipedia.org/wiki/Jini">a network architecture for
+the construction of distributed systems in the form of modular
+co-operating services</a>".  We include Jini jar files
+in <CODE>$PTII/ptolemy/distributed/jini/jar/</CODE>.
+When <CODE>./configure</CODE> in the <CODE>$PTII</CODE>
+directory, the script searches for the Jini jar files
+and sets corresponding variables in <CODE>$PTII/mk/ptII.mk</CODE>
+
+
 <p>
     @since Ptolemy II 5.1
 </body>
