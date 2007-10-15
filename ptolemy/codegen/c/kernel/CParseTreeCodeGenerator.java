@@ -631,6 +631,34 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 .getArgumentNameList(), node.getArgumentTypes(), cloneTree);
         FunctionToken result = new FunctionToken(definedFunction, type);
         _evaluatedChildToken = (result);
+
+        
+        
+        String functionCode = new String();
+
+        /*
+        // FIXME: Generate function declaration in _preinitCode.
+        functionCode += type.getReturnType().toString();
+        functionCode += " $actorSymbol(function) (";
+        List argumentNames = node.getArgumentNameList();
+        Type[] argumentTypes = node.getArgumentTypes();
+        
+        if (argumentNames.size() > 0) {
+            functionCode += argumentTypes[0] + " ";
+            functionCode += argumentNames.get(0);
+            
+            for (int i = 1; i < argumentNames.size(); i++) {
+                functionCode += ", " + argumentTypes[i] + " ";
+                functionCode += argumentNames.get(i);
+            }
+        }
+        functionCode += ") {\n";
+        functionCode += "    return ";
+        functionCode += evaluateParseTree(node.getExpressionTree(), _scope);
+        functionCode += ";\n}\n";
+        */
+        
+        _childCode = functionCode;
         return;
     }
 
