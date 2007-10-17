@@ -26,10 +26,14 @@
  */
 package ptolemy.actor.gt;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import ptolemy.actor.lib.hoc.MultiCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -57,6 +61,10 @@ public class SingleRuleTransformer extends MultiCompositeActor {
         _init();
     }
 
+    public Map<String, String> getCorrespondence() {
+        return _correspondence;
+    }
+
     public CompositeActorMatcher getPattern() {
         return _pattern;
     }
@@ -65,20 +73,65 @@ public class SingleRuleTransformer extends MultiCompositeActor {
         return _replacement;
     }
 
+    public StringAttribute _correspondenceAttribute;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                          private variables                ////
+
     protected void _init()
     throws IllegalActionException, NameDuplicationException {
         // Create the default refinement.
         _pattern = new CompositeActorMatcher(this, "Pattern");
         _replacement = new CompositeActorMatcher(this, "Replacement");
+        _correspondence = new HashMap<String, String>();
+        _correspondenceAttribute =
+            new CorrespondenceAttribute("correspondence");
+        _correspondenceAttribute.setExpression("");
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                          private variables                ////
+    private Map<String, String> _correspondence;
 
     private CompositeActorMatcher _pattern;
 
     private CompositeActorMatcher _replacement;
 
     private static final long serialVersionUID = -456353254196458127L;
+
+    private class CorrespondenceAttribute extends StringAttribute {
+
+        public String getExpression() {
+            StringBuffer buffer = new StringBuffer();
+            for (String patternObject : _correspondence.keySet()) {
+                String replacementObject = _correspondence.get(patternObject);
+                String correspondence =
+                    patternObject + "<..>" + replacementObject;
+                if (buffer.length() > 0) {
+                    buffer.append("<..>");
+                }
+                buffer.append(correspondence);
+            }
+            return buffer.toString();
+        }
+
+        public void setExpression(String expression)
+        throws IllegalActionException {
+            String[] correspondences = expression.split("<\\.\\.>");
+            _correspondence.clear();
+            for (int i = 0; i < correspondences.length; i += 2) {
+                if (i + 1 < correspondences.length) {
+                    _correspondence.put(correspondences[i],
+                            correspondences[i + 1]);
+                }
+            }
+            super.setExpression(expression);
+        }
+
+        CorrespondenceAttribute(String name) throws IllegalActionException,
+        NameDuplicationException {
+            super(SingleRuleTransformer.this, name);
+        }
+
+        private static final long serialVersionUID = 1805180151377867487L;
+    }
 
 }

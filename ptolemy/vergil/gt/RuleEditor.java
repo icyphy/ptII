@@ -31,8 +31,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -395,11 +398,10 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         });
 
         JTableHeader header = _table.getTableHeader();
-
         header.setFont(new Font("Dialog", Font.BOLD, 11));
-
         header.setForeground(Color.BLUE);
         header.setReorderingAllowed(false);
+
         DefaultTableCellRenderer renderer =
             (DefaultTableCellRenderer) header.getDefaultRenderer();
         renderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -517,27 +519,19 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
                     "class \"" + ruleClass.getName() + "\".");
         }
 
-        JTable attributeTable = row.getAttributeTable();
-        DefaultTableModel attributeModel =
-            (DefaultTableModel) attributeTable.getModel();
-        Vector<?> attributeVector =
-            (Vector<?>) attributeModel.getDataVector().get(0);
-        for (int i = 1; i < attributeVector.size(); i++) {
-            JPanel attributePanel = (JPanel) attributeVector.get(i);
-            // The first component (index 0) is the enablement.
-            Component component = attributePanel.getComponent(0);
-            rule.setEnabled(i - 1, Boolean.valueOf(
-                    ((JCheckBox) component).isSelected()));
-            // The second component (index 1) is the value.
-            component = attributePanel.getComponent(1);
-            if (component instanceof JTextField) {
-                rule.setValue(i - 1, ((JTextField) component).getText());
-            } else if (component instanceof JComboBox) {
-                rule.setValue(i - 1,
-                        ((JComboBox) component).getSelectedItem().toString());
-            } else if (component instanceof JCheckBox) {
-                rule.setValue(i - 1, Boolean.valueOf(
-                        ((JCheckBox) component).isSelected()));
+        JCheckBox[] checkBoxes = row.getCheckBoxs();
+        JComponent[] components = row.getEditingComponents();
+        for (int i = 0; i < checkBoxes.length; i++) {
+            rule.setEnabled(i, Boolean.valueOf(checkBoxes[i].isSelected()));
+            JComponent editor = components[i];
+            if (editor instanceof JTextField) {
+                rule.setValue(i, ((JTextField) editor).getText());
+            } else if (editor instanceof JComboBox) {
+                rule.setValue(i,
+                        ((JComboBox) editor).getSelectedItem().toString());
+            } else if (editor instanceof JCheckBox) {
+                rule.setValue(i, Boolean.valueOf(
+                        ((JCheckBox) editor).isSelected()));
             }
         }
 
@@ -565,16 +559,6 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
             return true;
         } else {
             return _isSubclass(subclass.getSuperclass(), superclass);
-        }
-    }
-
-    private static void _setCaretForAllTextFields(JPanel panel,
-            boolean visible) {
-        for (Component c : panel.getComponents()) {
-            if (c instanceof JTextField) {
-                JTextField textField = (JTextField) c;
-                textField.getCaret().setVisible(visible);
-            }
         }
     }
 
@@ -709,6 +693,9 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
             public void focusGained(FocusEvent e) {
                 if (_textField.isEditable()) {
                     _textField.getCaret().setVisible(true);
+                    if (_textField.isEnabled()) {
+                        setPopupVisible(true);
+                    }
                 }
             }
 
@@ -729,14 +716,8 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
             }
 
             public void mousePressed(MouseEvent e) {
-                if (_textField.isEnabled()) {
-                    if (_textField.isEditable()) {
-                        if (!isPopupVisible()) {
-                            setPopupVisible(true);
-                        }
-                    } else {
-                        setPopupVisible(!isPopupVisible());
-                    }
+                if (_textField.hasFocus() && _textField.isEnabled()) {
+                    setPopupVisible(!isPopupVisible());
                 }
             }
 
@@ -906,64 +887,10 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
 
     }
 
-    private static class JPanelCellEditor extends AbstractCellEditor
-    implements TableCellEditor, TableCellRenderer, ActionListener {
-
-        public void actionPerformed(ActionEvent e) {
-        }
-
-        public Object getCellEditorValue() {
-            return _currentValue;
-        }
-
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                boolean isSelected, int row, int column) {
-            JPanel panel = (JPanel) value;
-            _setCaretForAllTextFields(panel, true);
-            _currentValue = panel;
-            return panel;
-        }
-
-        public Component getTableCellRendererComponent(JTable table,
-                Object value, boolean isSelected, boolean hasFocus, int row,
-                int column) {
-            JPanel panel = (JPanel) value;
-            _setCaretForAllTextFields(panel, false);
-            return panel;
-        }
-
-        private JPanel _currentValue;
-
-        private static final long serialVersionUID = -3898792308707116805L;
-    }
-
     private class Row implements ItemListener {
 
         public Row(Rule rule) {
             _rightPanel.setBorder(_EMPTY_BORDER);
-
-            JTableHeader header = _attributeTable.getTableHeader();
-            DefaultTableCellRenderer renderer =
-                (DefaultTableCellRenderer) header.getDefaultRenderer();
-            header.setReorderingAllowed(false);
-            renderer.setHorizontalAlignment(SwingConstants.CENTER);
-            header.setPreferredSize(new Dimension(0, 18));
-            header.setOpaque(false);
-            header.setBackground(Color.WHITE);
-
-            _attributeTable.setCellSelectionEnabled(false);
-            _attributeTable.setIntercellSpacing(new Dimension(10, 0));
-            _attributeTable.setShowGrid(false);
-            _attributeTable.setOpaque(false);
-            _attributeTable.setRowHeight(_ROW_HEIGHT);
-
-            JScrollPane scrollPane = new JScrollPane(_attributeTable,
-                    JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-                    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-            scrollPane.setOpaque(false);
-            scrollPane.getViewport().setOpaque(false);
-            scrollPane.setBorder(_EMPTY_BORDER);
-            _rightPanel.add(scrollPane, BorderLayout.CENTER);
 
             Class<?> ruleClass = rule.getClass();
             _classSelector.addItemListener(this);
@@ -995,12 +922,16 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
             _leftPanel.setBorder(new EmptyBorder(2, 5, 4, 5));
         }
 
-        public JTable getAttributeTable() {
-            return _attributeTable;
+        public JCheckBox[] getCheckBoxs() {
+            return _checkBoxes;
         }
 
         public JComboBox getClassSelector() {
             return _classSelector;
+        }
+
+        public JComponent[] getEditingComponents() {
+            return _components;
         }
 
         public JPanel getLeftPanel() {
@@ -1118,6 +1049,8 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         }
 
         protected void _initRightPanel() {
+            _rightPanel.removeAll();
+
             ComboElement selectedElement =
                 (ComboElement) _classSelector.getSelectedItem();
             Rule rule = selectedElement.getRule();
@@ -1125,40 +1058,38 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
             _components = new JComponent[attributes.length];
             _checkBoxes = new JCheckBox[attributes.length];
 
-            // Create a table with one empty column (will be deleted)
-            DefaultTableModel tableModel =
-                new DefaultTableModel(new Object[] {null}, 1);
-            _attributeTable.setModel(tableModel);
-            _attributeTable.setTableHeader(null);
-
-            TableColumnModel columnModel = _attributeTable.getColumnModel();
-
+            GridBagConstraints c = new GridBagConstraints();
             for (int i = 0; i < attributes.length; i++) {
                 RuleAttribute attribute = attributes[i];
 
                 JPanel panel = new JPanel(new BorderLayout());
-                panel.setBorder(new EmptyBorder(2, 0, 4, 0));
+                panel.setBorder(new EmptyBorder(0, 3, 2, 3));
                 panel.setOpaque(false);
 
                 String columnName = attribute.getName();
+                JPanel checkBoxPanel =
+                    new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+                checkBoxPanel.setOpaque(false);
+                checkBoxPanel.setPreferredSize(new Dimension(0, 18));
                 JCheckBox checkBox = new JCheckBox(columnName);
                 checkBox.setOpaque(false);
                 checkBox.setBorder(_EMPTY_BORDER);
                 checkBox.setHorizontalAlignment(SwingConstants.CENTER);
-                checkBox.setPreferredSize(new Dimension(0, 18));
                 checkBox.setVerticalAlignment(SwingConstants.TOP);
                 checkBox.addActionListener(new CheckBoxActionListener(i));
-                panel.add(checkBox, BorderLayout.NORTH);
+                checkBoxPanel.add(checkBox);
+                panel.add(checkBoxPanel, BorderLayout.NORTH);
 
                 JComponent component = _getComponent(attribute);
+                component.setPreferredSize(new Dimension(0, 20));
                 _setComponentValue(attribute, component, rule.getValue(i));
                 panel.add(component, BorderLayout.CENTER);
 
-                tableModel.addColumn(attribute.getName(), new Object[] {panel});
-
-                TableColumn column =
-                    _attributeTable.getColumnModel().getColumn(i + 1);
-                column.setHeaderValue(attribute.getName());
+                c.fill = GridBagConstraints.HORIZONTAL;
+                c.weightx = _getColumnWidth(component);
+                c.gridx = i;
+                c.gridy = 0;
+                _rightPanel.add(panel, c);
 
                 _checkBoxes[i] = checkBox;
                 _components[i] = component;
@@ -1166,31 +1097,6 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
                 boolean enabled = rule.isEnabled(i);
                 checkBox.setSelected(enabled);
                 _setEnablement(component, enabled);
-            }
-
-            columnModel.removeColumn(columnModel.getColumn(0));
-
-            int columnCount = columnModel.getColumnCount();
-            for (int i = 0; i < columnCount; i++) {
-                columnModel.getColumn(i).setCellEditor(_cellEditor);
-                columnModel.getColumn(i).setCellRenderer(_cellEditor);
-            }
-        }
-
-        protected void _setColumnWidths() {
-            int totalWidth = 0;
-            int[] widths = new int[_components.length];
-            for (int i = 0; i < _components.length; i++) {
-                widths[i] = _getColumnWidth(_components[i]);
-                totalWidth += widths[i];
-            }
-
-            TableColumnModel columnModel = _attributeTable.getColumnModel();
-            int tableWidth = _attributeTable.getWidth();
-            for (int i = 0; i < widths.length; i++) {
-                float percentage = (float) widths[i] / totalWidth;
-                columnModel.getColumn(i).setPreferredWidth(
-                        (int) (tableWidth * percentage));
             }
         }
 
@@ -1226,17 +1132,6 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
             }
         }
 
-        private JTable _attributeTable = new JTable() {
-            public void doLayout() {
-                _setColumnWidths();
-                super.doLayout();
-            }
-
-            private static final long serialVersionUID = -1516263162184646883L;
-        };
-
-        private JPanelCellEditor _cellEditor = new JPanelCellEditor();
-
         private JCheckBox[] _checkBoxes;
 
         private JComboBox _classSelector =
@@ -1246,7 +1141,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
 
         private JPanel _leftPanel = new JPanel(new BorderLayout());
 
-        private JPanel _rightPanel = new JPanel(new BorderLayout());
+        private JPanel _rightPanel = new JPanel(new GridBagLayout());
 
         private class CheckBoxActionListener implements ActionListener {
 

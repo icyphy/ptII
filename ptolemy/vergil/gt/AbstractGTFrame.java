@@ -27,16 +27,35 @@
  */
 package ptolemy.vergil.gt;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.SingleRuleTransformer;
@@ -55,7 +74,7 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 
 public abstract class AbstractGTFrame extends ExtendedGraphFrame
-implements ChangeListener {
+implements ChangeListener, ActionListener {
 
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -91,6 +110,33 @@ implements ChangeListener {
         super(entity, tableau, defaultLibrary);
     }
 
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+        if (command.equals("add")) {
+            int number = _correspondenceTableModel.getRowCount() + 1;
+            _correspondenceTableModel.addRow(new Object[] {
+                    _createCellPanel(Integer.toString(number)),
+                    _createCellPanel("aaa"), _createCellPanel("bbb")
+            });
+        } else if (command.equals("remove")) {
+            TableCellEditor editor = _correspondenceTable.getCellEditor();
+            if (editor != null) {
+                editor.stopCellEditing();
+            }
+            int[] rows = _correspondenceTable.getSelectedRows();
+            int size = _correspondenceTableModel.getRowCount();
+            for (int i = 0, deleted = 0; i < size; i++) {
+                if (deleted < rows.length && i == rows[deleted]) {
+                    _correspondenceTableModel.removeRow(i - deleted);
+                    deleted++;
+                } else {
+                    _correspondenceTableModel.setValueAt(i - deleted + 1,
+                            i - deleted, 0);
+                }
+            }
+        }
+    }
+
     /** Return the JGraph instance that this view uses to represent the
      *  ptolemy model.
      *  @return the JGraph.
@@ -98,7 +144,12 @@ implements ChangeListener {
      */
     public JGraph getJGraph() {
         if (hasTabs()) {
-            return (JGraph) _tabbedPane.getSelectedComponent();
+            Component selected = _tabbedPane.getSelectedComponent();
+            if (selected instanceof JGraph) {
+                return (JGraph) selected;
+            } else {
+                return null;
+            }
         } else {
             return super.getJGraph();
         }
@@ -116,9 +167,13 @@ implements ChangeListener {
             Component selected = _tabbedPane.getSelectedComponent();
             if (selected instanceof JGraph) {
                 setJGraph((JGraph) selected);
-            }
-            if (_graphPanner != null) {
-                _graphPanner.setCanvas((JGraph) selected);
+                if (_graphPanner != null) {
+                    _graphPanner.setCanvas((JGraph) selected);
+                }
+            } else {
+                if (_graphPanner != null) {
+                    _graphPanner.setCanvas(null);
+                }
             }
         }
     }
@@ -168,7 +223,7 @@ implements ChangeListener {
             /** Serial ID */
             private static final long serialVersionUID = -4998226270980176175L;
         };
-        
+
         _tabbedPane.addChangeListener(this);
         Iterator<?> cases = ((SingleRuleTransformer) entity).entityList(
                 CompositeActorMatcher.class).iterator();
@@ -183,6 +238,9 @@ implements ChangeListener {
             }
             _graphs.add(jgraph);
         }
+
+        _createCorrespondenceTab((SingleRuleTransformer) entity);
+
         return _tabbedPane;
     }
 
@@ -207,11 +265,7 @@ implements ChangeListener {
     }
 
     protected GraphController _getGraphController() {
-        if (hasTabs()) {
-            return getJGraph().getGraphPane().getGraphController();
-        } else {
-            return _controller;
-        }
+        return _controller;
     }
 
     protected JTabbedPane _getTabbedPane() {
@@ -260,16 +314,106 @@ implements ChangeListener {
         _tabbedPane.add(jgraph, index);
         jgraph.setBackground(BACKGROUND_COLOR);
         // Create a drop target for the jgraph.
-        // FIXME: Should override _setDropIntoEnabled to modify all the drop
-        //        targets created.
         new EditorDropTarget(jgraph);
         return jgraph;
+    }
+
+    private JPanel _createCellPanel(String value) {
+        JPanel panel = new JPanel(new BorderLayout());
+        JLabel label = new JLabel(value, SwingConstants.CENTER);
+        panel.add(label, BorderLayout.CENTER);
+        return panel;
+    }
+
+    private void _createCorrespondenceTab(SingleRuleTransformer transformer) {
+        JPanel panel = new JPanel(new BorderLayout());
+
+        _correspondenceTableModel = new DefaultTableModel(
+                new Object[] {"", "Pattern Object", "Replacement Object"}, 0) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+
+            private static final long serialVersionUID = -3761868358642028952L;
+        };
+
+        _correspondenceTable = new JTable(_correspondenceTableModel);
+        _correspondenceTable.setSelectionMode(
+                ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        _correspondenceTable.setEnabled(true);
+        _correspondenceTable.setRowHeight(22);
+        _correspondenceTable.setSelectionBackground(_SELECTED_COLOR);
+        _correspondenceTable.setSelectionForeground(Color.BLACK);
+
+        TableColumnModel model = _correspondenceTable.getColumnModel();
+        TableColumn indexColumn = model.getColumn(0);
+        indexColumn.setMinWidth(10);
+        indexColumn.setPreferredWidth(15);
+        indexColumn.setMaxWidth(30);
+        DefaultTableCellRenderer indexRenderer =
+            new DefaultTableCellRenderer();
+        indexRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        CellPanelEditor editor = new CellPanelEditor();
+        for (int i = 0; i < 3; i++) {
+            TableColumn column = model.getColumn(i);
+            column.setCellRenderer(editor);
+        }
+
+        JTableHeader header = _correspondenceTable.getTableHeader();
+        header.setFont(new Font("Dialog", Font.BOLD, 11));
+        header.setForeground(Color.BLUE);
+        header.setReorderingAllowed(false);
+        header.setPreferredSize(new Dimension(0, 25));
+
+        DefaultTableCellRenderer renderer =
+            (DefaultTableCellRenderer) header.getDefaultRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setBorder(new EtchedBorder());
+        JButton addButton = new JButton("add");
+        addButton.addActionListener(this);
+        JButton removeButton = new JButton("remove");
+        removeButton.addActionListener(this);
+        buttonsPanel.add(addButton);
+        buttonsPanel.add(removeButton);
+
+        panel.add(header, BorderLayout.NORTH);
+        panel.add(_correspondenceTable, BorderLayout.CENTER);
+        panel.add(buttonsPanel, BorderLayout.SOUTH);
+
+        int index = _tabbedPane.getComponentCount();
+        _tabbedPane.add(panel, index);
+        _tabbedPane.setTitleAt(index, "Correspondence");
+
+        _updateCorrespondenceTable();
+    }
+
+    private void _updateCorrespondenceTable() {
+        while (_correspondenceTableModel.getRowCount() > 0) {
+            _correspondenceTableModel.removeRow(0);
+        }
+
+        SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
+        Map<String, String> correspondence = transformer.getCorrespondence();
+        for (String patternObject : correspondence.keySet()) {
+            String replacementObject = correspondence.get(patternObject);
+            _correspondenceTableModel.addRow(
+                    new Object[] {patternObject, replacementObject});
+        }
     }
 
     /** The graph controller.  This is created in _createGraphPane(). */
     private ActorEditorGraphController _controller;
 
+    private JTable _correspondenceTable;
+
+    private DefaultTableModel _correspondenceTableModel;
+
     private List<JGraph> _graphs;
+
+    private static final Color _SELECTED_COLOR = new Color(230, 230, 255);
 
     private JTabbedPane _tabbedPane;
 

@@ -367,7 +367,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
                     _parser.reset();
                     CompositeEntity model = (CompositeEntity) _parser.parse(
-                            null, input.toURL().openStream());
+                            null, input.toURI().toURL().openStream());
 
                     SingleRuleTransformer transformerActor = _getTransformer();
                     CompositeActorMatcher matcher =

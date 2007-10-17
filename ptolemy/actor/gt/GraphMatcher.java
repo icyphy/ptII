@@ -373,7 +373,8 @@ public class GraphMatcher {
             Set<? super Port> visitedPorts) {
         List<?> relationList = startPort.linkedRelationList();
         if (startPort instanceof ComponentPort) {
-            relationList.addAll(((TypedIOPort) startPort).insideRelationList());
+            ((Collection<?>) relationList).addAll(
+                    ((TypedIOPort) startPort).insideRelationList());
         }
 
         int i = 0;

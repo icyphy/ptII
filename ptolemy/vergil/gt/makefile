@@ -56,6 +56,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	AbstractGTFrame.java \
+	CellPanelEditor.java \
 	GTRuleGraphFrame.java \
 	GTRuleGraphTableau.java \
 	MatchResultTableau.java \

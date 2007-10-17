@@ -59,11 +59,6 @@ public class RuleListAttribute extends StringAttribute {
         super(workspace);
     }
 
-    public String getExpression() {
-        // FIXME: serialize _ruleList
-        return super.getExpression();
-    }
-
     public RuleList getRuleList() throws MalformedStringException {
         if (!_parsed) {
             _parse();
