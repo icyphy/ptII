@@ -209,6 +209,8 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     protected String _generateInputVariableDeclaration()
             throws IllegalActionException {
+        boolean dynamicReferencesAllowed = _codeGenerator.dynamicMultiportReferenceAllowed();
+        
         StringBuffer code = new StringBuffer();
 
         Iterator inputPorts = ((Actor) getComponent()).inputPortList()
@@ -224,15 +226,18 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
             code.append("static " + targetType(inputPort.getType()) + " "
                     + generateName(inputPort));
 
+            int bufferSize = getBufferSize(inputPort);
             if (inputPort.isMultiport()) {
                 code.append("[" + inputPort.getWidth() + "]");
+                if (bufferSize > 1 || dynamicReferencesAllowed) {
+                    code.append("[" + bufferSize + "]");
+                }
+            } else {
+                if (bufferSize > 1) {
+                    code.append("[" + bufferSize + "]");
+                }
             }
 
-            int bufferSize = getBufferSize(inputPort);
-
-            if (bufferSize > 1) {
-                code.append("[" + bufferSize + "]");
-            }
             code.append(";" + _eol);
         }
 

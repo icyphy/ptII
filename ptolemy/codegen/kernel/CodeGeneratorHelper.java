@@ -455,6 +455,29 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
+     * Generate a string that represents the offset for a dynamically determined
+     *  channel of a multiport.
+     * @param port The referenced port.
+     * @param isWrite Whether to generate the write or read offset.
+     * @param channelString The string that will determine the channel.
+     * @return The expression that represents the offset for a channel determined
+     *  dynamically in the generated code.
+     */
+    public static String generateChannelOffset(IOPort port, boolean isWrite,
+            String channelString) {
+        // By default, return the channel offset for the first channel.
+        if (channelString == "") {
+            channelString = "0";
+        }
+        
+        String channelOffset = CodeGeneratorHelper.generateName(port);
+        channelOffset += (isWrite) ? "_writeOffset" : "_readOffset";
+        channelOffset += "[" + channelString + "]";
+        
+        return channelOffset;
+    }
+
+    /**
      * Generate the fire code. In this base class, add the name of the
      * associated component in the comment. Subclasses may extend this
      * method to generate the fire code of the associated component.
@@ -570,11 +593,20 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String generateOffset(String offsetString, IOPort port, int channel,
             boolean isWrite) throws IllegalActionException {
+        boolean dynamicReferencesAllowed = _codeGenerator.dynamicMultiportReferenceAllowed();
+        boolean padBuffers = _codeGenerator.padBuffers();
 
-        // if the max buffer size of the port is not larger than 1,
-        // offset is not needed.
-        if (!(getBufferSize(port) > 1)) {
-            return "";
+
+        // When dynamic references are allowed, any input ports require
+        // offsets.
+        if (dynamicReferencesAllowed && port.isInput()) {
+            if (!(port.isMultiport() || getBufferSize(port) > 1)) {
+                return "";
+            }
+        } else {
+            if (!(getBufferSize(port) > 1)) {
+                return "";
+            }
         }
 
         String result = null;
@@ -609,26 +641,21 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                  */
 
             } else {
-                // Note: This assumes the director helper will increase
-                // the buffer size of the channel to the power of two.
-                // Otherwise, use "%" instead.
                 // FIXME: We haven't check if modulo is 0. But this
                 // should never happen. For offsets that need to be
                 // represented by string expression,
                 // getBufferSize(port, channelNumber) will always
                 // return a value at least 2.
 
-                /*
-                 * FIXME: The following pointer math does not give the correct
-                 * result. Maybe the original author wanted to optimize by
-                 * avoiding the "%" operator.   
-                 int modulo = getBufferSize(port, channel) - 1;
-                 temp = "(" + offsetObject.toString() + " + " + 
-                 offsetString + ")&" + modulo;
-                 */
-                int modulo = getBufferSize(port, channel);
-                temp = "(" + offsetObject.toString() + " + " + offsetString
-                        + ")%" + modulo;
+                if (padBuffers) {
+                    int modulo = getBufferSize(port, channel) - 1;
+                    temp = "(" + offsetObject.toString() + " + " + 
+                            offsetString + ")&" + modulo;
+                } else {
+                    int modulo = getBufferSize(port, channel);
+                    temp = "(" + offsetObject.toString() + " + " + offsetString
+                            + ")%" + modulo;
+                }
             }
 
             result = "[" + temp + "]";
@@ -644,10 +671,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
                 result = "[" + offset + "]";
             } else {
-
-                int modulo = getBufferSize(port, channel) - 1;
-
-                result = "[" + offsetObject + "&" + modulo + "]";
+                if (padBuffers) {
+                    int modulo = getBufferSize(port, channel) - 1;
+                    result = "[" + offsetObject + "&" + modulo + "]";
+                } else {
+                    result = "[" + offsetObject + "%" +
+                        getBufferSize(port, channel) + "]";
+                }
             }
         }
         return result;
@@ -1222,6 +1252,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String getReference(String name, boolean isWrite)
             throws IllegalActionException {
+        boolean dynamicReferencesAllowed = _codeGenerator.dynamicMultiportReferenceAllowed();
+
         name = processCode(name);
 
         String castType = null;
@@ -1278,10 +1310,48 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             refType = codeGenType(port.getType());
 
             int channelNumber = 0;
+            boolean isChannelNumberInt = true;
             if (!channelAndOffset[0].equals("")) {
-                channelNumber = (Integer.valueOf(channelAndOffset[0])).intValue();
+                // If dynamic multiport references are allowed, catch errors
+                // when the channel specification is not an integer.
+                if (dynamicReferencesAllowed) {
+                    try {
+                        channelNumber = (Integer.valueOf(channelAndOffset[0])).intValue();
+                    } catch (Exception ex) {
+                        isChannelNumberInt = false;
+                    }
+                } else {
+                    channelNumber = (Integer.valueOf(channelAndOffset[0])).intValue();
+                }
             }
 
+            if (!isChannelNumberInt) { // variable channel reference.
+                if (port.isOutput()) {
+                    throw new IllegalActionException (
+                            "Variable channel reference not supported" +
+                                    "for output ports");
+                } else {
+                    
+                    String channelOffset;
+                    if (channelAndOffset[1] == "") {
+                        channelOffset = CodeGeneratorHelper.generateChannelOffset(port,
+                                isWrite, channelAndOffset[0]);
+                    } else {
+                        channelOffset = channelAndOffset[1];
+                    }
+    
+                    result.append(generateName(_component));
+                    result.append("_");
+                    result.append(port.getName());
+                    if (port.isMultiport()) {
+                        result.append("[" + channelAndOffset[0] + "]");
+                    }
+                    result.append("[" + channelOffset + "]");
+
+                    return result.toString();
+                }
+            }                    
+                
             // To support modal model, we need to check the following condition
             // first because an output port of a modal controller should be
             // mainly treated as an output port. However, during choice action,
@@ -1331,14 +1401,23 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                             }
                             result.append(_getTypeConvertReference(sourceChannel));
                             
-                            int rate = Math
+                            if (dynamicReferencesAllowed && port.isInput()) {
+                                if (channelAndOffset[1].trim().length() > 0) {
+                                    result.append("[" + channelAndOffset[1].trim() + "]");
+                                } else {
+                                    result.append("[" + CodeGeneratorHelper.generateChannelOffset(
+                                            port, isWrite, channelAndOffset[0]) + "]");
+                                }
+                            } else {
+                                int rate = Math
                                     .max(
                                             DFUtilities
                                                     .getTokenProductionRate(sourceChannel.port),
                                             DFUtilities
                                                     .getTokenConsumptionRate(sourceChannel.port));
-                            if (rate > 1 && channelAndOffset[1].trim().length() > 0) {
-                                result.append("[" + channelAndOffset[1].trim() + "]");
+                                if (rate > 1 && channelAndOffset[1].trim().length() > 0) {
+                                    result.append("[" + channelAndOffset[1].trim() + "]");
+                                }
                             }
                             hasTypeConvertReference = true;
                         } else {
@@ -1353,6 +1432,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
                         if (sinkPort.isMultiport()) {
                             result.append("[" + sinkChannelNumber + "]");
+                        }
+                        if (channelAndOffset[1].equals("")) {
+                            channelAndOffset[1] = "0";
                         }
                         result.append(generateOffset(channelAndOffset[1],
                                 sinkPort, sinkChannelNumber, true));

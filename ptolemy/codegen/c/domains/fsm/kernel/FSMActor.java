@@ -39,6 +39,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.codegen.kernel.ComponentCodeGenerator;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
@@ -286,13 +287,21 @@ public class FSMActor extends CCodeGeneratorHelper {
                             // FSMActor is used as a modal controller.
 
                             if (((IOPort) destination).isInput()) {
-                                codeBuffer.append(generateName(destination));
-
+                                ComponentCodeGenerator containerHelper = 
+                                    _getHelper(((IOPort) destination)
+                                            .getContainer().getContainer());
+                                StringBuffer containerReference = new StringBuffer();
+                                
+                                containerReference.append("$ref(" + destination.getName());
+                                
                                 if (((IOPort) destination).isMultiport()) {
-                                    codeBuffer.append("[" + channel + "]");
+                                    containerReference.append("#" + channel);
                                 }
-
-                                codeBuffer.append(" = ");
+                                
+                                containerReference.append(")");
+                                
+                                codeBuffer.append(((CodeGeneratorHelper) containerHelper)
+                                        .processCode(containerReference.toString()) + " = ");
                             }
                         } else { // broadcast
 
@@ -311,14 +320,21 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 // a modal controller.
 
                                 if (((IOPort) destination).isInput()) {
-                                    codeBuffer
-                                            .append(generateName(destination));
-
+                                    ComponentCodeGenerator containerHelper = 
+                                        _getHelper(((IOPort) destination).getContainer()
+                                                .getContainer());
+                                    StringBuffer containerReference = new StringBuffer();
+                                    
+                                    containerReference.append("$ref(" + destination.getName());
+                                    
                                     if (((IOPort) destination).isMultiport()) {
-                                        codeBuffer.append("[" + i + "]");
+                                        containerReference.append("#" + i);
                                     }
-
-                                    codeBuffer.append(" = ");
+                                    
+                                    containerReference.append(")");
+                                    
+                                    codeBuffer.append(((CodeGeneratorHelper) containerHelper)
+                                            .processCode(containerReference.toString()) + " = ");
                                 }
                             }
                         }
@@ -610,7 +626,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 channelNumber);
                         // Note here inputPortNameArray in the original expression 
                         // is converted to 
-                        // inputPortVariable[(writeoffset - 1 
+                        // inputPortVariable[(writeOffset - 1 
                         // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)] 
                         // in the generated C code.
                         code.append("[(" + writeOffset + " + "
@@ -655,7 +671,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                         // ParseTreeCodeGenerator.
                         // Note here inputPortNameArray(i) in the original expression 
                         // is converted to 
-                        // inputPortVariable[(writeoffset - i - 1 
+                        // inputPortVariable[(writeOffset - i - 1 
                         // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)] 
                         // in the generated C code.
                         code.append("[(" + writeOffset + " - (@)" + " + "

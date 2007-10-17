@@ -42,39 +42,3 @@ $actorSymbol(trialsRemaining) -= $actorSymbol(selected);
 $actorSymbol(sourcePool) -= $actorSymbol(sourceValues_$num);
 /**/
 
-/*** reference ***/
-int trials
-long populations[]
-
-nextint()
-long sourceValues[populations.length]
-long sourceTotal = 0
-for (i from 0 to sourceValues.length) {
-	sourceValues[i] = populations[i]
-	if (sourceValues[i] < 0) {
-		break;
-	}
-	sourceTotal += sourceValues[i]
-}
-
-int trialsRemaining = trials
-long sourcePool = sourceTotal
-_current.length = sourceValues.length
-int selected
-double p
-for (i from 0 to _current.length) {
-	selected = 0
-	if ((trialsRemaining > 0) && (sourceValues[i] > 0)) {
-		p = sourceValues[i] / sourcePool
-		if (p < 1.0) {
-			selected = binomial(trialsRemaining, p)
-		} else {
-			selected = trialsRemaining
-		}
-	}
-	current[i] = selected
-	trialsRemaining -= selected
-	sourcePool -= sourceValues[i]
-}
-/**/
-

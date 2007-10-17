@@ -75,6 +75,48 @@ test Test-2.2 {TestFailure2Channel should fail because the expected values are n
 ######################################################################
 ####
 #
+test Test-2.3 {TestFailureTolerance should fail because the expected values are not correct} {
+    testCG TestFailureTolerance.xml
+} {255}
+
+######################################################################
+####
+#
+test Test-2.4 {TestFailureString should fail because the expected values are not correct} {
+    testCG TestFailureString.xml
+} {255}
+
+######################################################################
+####
+#
+test Test-2.5 {TestFailureNullString should fail because the expected values are not correct} {
+    testCG TestFailureNullString.xml
+} {255}
+
+######################################################################
+####
+#
+test Test-2.6 {TestFailureTypes should fail because the expected values are not correct} {
+    testCG TestFailureTypes.xml
+} {2}
+
+######################################################################
+####
+#
+test Test-2.7 {TestFailureArraySize should fail because the expected values are not correct} {
+    testCG TestFailureArraySize.xml
+} {255}
+
+######################################################################
+####
+#
+test Test-2.8 {TestFailureArrayContents should fail because the expected values are not correct} {
+    testCG TestFailureArrayContents.xml
+} {255}
+
+######################################################################
+####
+#
 test Test-3.1 {TestNotEnoughTokens.xml should fail because we don't have enoughtokens} {
     testCG TestNotEnoughTokens.xml
 } {254}

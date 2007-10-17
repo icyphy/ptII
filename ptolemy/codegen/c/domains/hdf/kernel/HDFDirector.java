@@ -763,8 +763,8 @@ public class HDFDirector extends SDFDirector {
                 channelWriteOffset.append("_" + channel);
             }
 
-            channelReadOffset.append("_readoffset");
-            channelWriteOffset.append("_writeoffset");
+            channelReadOffset.append("_readOffset");
+            channelWriteOffset.append("_writeOffset");
 
             String channelReadOffsetVariable = channelReadOffset.toString();
             String channelWriteOffsetVariable = channelWriteOffset.toString();

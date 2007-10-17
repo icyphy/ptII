@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NamedObj;
  Code generator helper associated with the SDFDirector class. This class
  is also associated with a code generator.
 
- @author Ye Zhou, Gang Zhou
+ @author Ye Zhou, Gang Zhou, Teale Fristoe
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (zgang)  
@@ -499,8 +499,67 @@ public class SDFDirector extends StaticSchedulingDirector {
         //}
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    /** Create offset variables for the channels of the given port.
+     *  The offset variables are generated unconditionally, but this
+     *  method is only called when dynamic multiport references are
+     *  desired.  The buffers should be padded before this method is
+     *  called.
+     *
+     *  @param port The port whose offset variables are generated.
+     *  @return Code that declares the read and write offset variables.
+     *  @exception IllegalActionException If getting the rate or
+     *   reading parameters throws it.   
+     */
+    protected String _createDynamicOffsetVariables(IOPort port)
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
+                .getContainer());
+
+        int width;
+        if (port.isInput()) {
+            width = port.getWidth();
+        } else {
+            width = port.getWidthInside();
+        }
+
+        if (width != 0) {
+            // Declare the read offset variable.
+            String channelReadOffset = CodeGeneratorHelper.generateName(port);
+            channelReadOffset += "_readOffset";
+
+            // Now replace the concrete offset with the variable.
+            for (int i = 0; i < width; i++) {
+                helper.setReadOffset(port, i,
+                        channelReadOffset + "[" + i + "]");
+            }
+            channelReadOffset += "[" + width + "]";
+            code.append("static int " + channelReadOffset + ";\n");
+
+            // Declare the write offset variable.
+            String channelWriteOffset = CodeGeneratorHelper
+                    .generateName(port);
+
+            channelWriteOffset += "_writeOffset";
+
+            // Now replace the concrete offset with the variable.
+            for (int i = 0; i < width; i++) {
+                helper.setWriteOffset(port, i,
+                        channelWriteOffset + "[" + i + "]");
+            }
+            channelWriteOffset += "[" + width + "]";
+            code.append("static int " + channelWriteOffset + ";\n");
+        }
+        return code.toString();
+    }
+
     /** Check to see if variables are needed to represent read and
-     *  write offsets for the given port.
+     *  write offsets for the ports in the director's container.  If
+     *  variables are needed, create them.
      *  @return Code that declares the read and write offset variables.
      *  @exception IllegalActionException If getting the rate or
      *   reading parameters throws it.   
@@ -513,59 +572,74 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
+        boolean dynamicReferencesAllowed = _codeGenerator.dynamicMultiportReferenceAllowed();
+        boolean padBuffers = _codeGenerator.padBuffers();
 
         StringBuffer tempCode = new StringBuffer();
         Iterator outputPorts = container.outputPortList().iterator();
         while (outputPorts.hasNext()) {
 
             IOPort outputPort = (IOPort) outputPorts.next();
-            for (int i = 0; i < outputPort.getWidthInside(); i++) {
-                int readTokens = 0;
-                int writeTokens = 0;
-                // If each actor firing is inlined in the code, then read
-                // and write positions in the buffer must return to the 
-                // previous values after one iteration of the container actor
-                // in order to avoid using read and write offset variables.
-                if (inline) {
-                    readTokens = DFUtilities.getRate(outputPort);
-                    writeTokens = readTokens;
-                    // If each actor firing is wrapped in a function, then read
+            // If dynamic references are desired, conditionally pad buffers
+            // and append the dynamic offset variables for output ports.
+            if (dynamicReferencesAllowed) {
+                if (padBuffers) {
+                    for (int i = 0; i < outputPort.getWidthInside(); i++) {
+                        _padBuffer(outputPort, i);
+                    }
+                }
+                tempCode.append(_createDynamicOffsetVariables(outputPort));
+            // Otherwise, append the offset variables (padding is handled
+            // in _createOffsetVariablesIfNeeded()) for output ports.
+            } else {
+                for (int i = 0; i < outputPort.getWidthInside(); i++) {
+                    int readTokens = 0;
+                    int writeTokens = 0;
+                    // If each actor firing is inlined in the code, then read
                     // and write positions in the buffer must return to the 
-                    // previous values after one firing of this actor or one
-                    // firing of the actor that produces tokens consumed by the 
-                    // inside receiver of this actor in order to avoid using 
-                    // read and write offset variables.
-                } else {
-                    readTokens = DFUtilities.getRate(outputPort);
-                    Iterator sourcePorts = outputPort.insideSourcePortList()
-                            .iterator();
-                    label1: while (sourcePorts.hasNext()) {
-                        IOPort sourcePort = (IOPort) sourcePorts.next();
-                        CodeGeneratorHelper helper = (CodeGeneratorHelper) 
-                                _getHelper(sourcePort.getContainer());
-                        int width;
-                        if (sourcePort.isInput()) {
-                            width = sourcePort.getWidthInside();
-                        } else {
-                            width = sourcePort.getWidth();
-                        }
-                        for (int j = 0; j < width; j++) {
-                            Iterator channels = helper.getSinkChannels(
-                                    sourcePort, j).iterator();
-                            while (channels.hasNext()) {
-                                Channel channel = (Channel) channels.next();
-                                if (channel.port == outputPort
-                                        && channel.channelNumber == i) {
-                                    writeTokens = DFUtilities
-                                            .getRate(sourcePort);
-                                    break label1;
+                    // previous values after one iteration of the container actor
+                    // in order to avoid using read and write offset variables.
+                    if (inline) {
+                        readTokens = DFUtilities.getRate(outputPort);
+                        writeTokens = readTokens;
+                        // If each actor firing is wrapped in a function, then read
+                        // and write positions in the buffer must return to the 
+                        // previous values after one firing of this actor or one
+                        // firing of the actor that produces tokens consumed by the 
+                        // inside receiver of this actor in order to avoid using 
+                        // read and write offset variables.
+                    } else {
+                        readTokens = DFUtilities.getRate(outputPort);
+                        Iterator sourcePorts = outputPort.insideSourcePortList()
+                                .iterator();
+                        label1: while (sourcePorts.hasNext()) {
+                            IOPort sourcePort = (IOPort) sourcePorts.next();
+                            CodeGeneratorHelper helper = (CodeGeneratorHelper) 
+                                    _getHelper(sourcePort.getContainer());
+                            int width;
+                            if (sourcePort.isInput()) {
+                                width = sourcePort.getWidthInside();
+                            } else {
+                                width = sourcePort.getWidth();
+                            }
+                            for (int j = 0; j < width; j++) {
+                                Iterator channels = helper.getSinkChannels(
+                                        sourcePort, j).iterator();
+                                while (channels.hasNext()) {
+                                    Channel channel = (Channel) channels.next();
+                                    if (channel.port == outputPort
+                                            && channel.channelNumber == i) {
+                                        writeTokens = DFUtilities
+                                                .getRate(sourcePort);
+                                        break label1;
+                                    }
                                 }
                             }
                         }
                     }
+                    tempCode.append(_createOffsetVariablesIfNeeded(outputPort, i,
+                            readTokens, writeTokens));
                 }
-                tempCode.append(_createOffsetVariablesIfNeeded(outputPort, i,
-                        readTokens, writeTokens));
             }
         }
         if (tempCode.length() > 0) {
@@ -582,62 +656,75 @@ public class SDFDirector extends StaticSchedulingDirector {
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
-                for (int i = 0; i < inputPort.getWidth(); i++) {
-                    int readTokens = 0;
-                    int writeTokens = 0;
-                    // If each actor firing is inlined in the code,
-                    // then read and write positions in the buffer
-                    // must return to the previous values after one
-                    // iteration of the container actor in order to
-                    // avoid using read and write offset variables.
-                    if (inline) {
-                        Variable firings = (Variable) ((NamedObj) actor)
-                                .getAttribute("firingsPerIteration");
-                        int firingsPerIteration = ((IntToken) firings
-                                .getToken()).intValue();
-                        readTokens = DFUtilities.getRate(inputPort)
-                                * firingsPerIteration;
-                        writeTokens = readTokens;
-
-                        // If each actor firing is wrapped in a
-                        // function, then read and write positions in
-                        // the buffer must return to the previous
-                        // values after one firing of this actor or
-                        // one firing of the actor that produces
-                        // tokens consumed by this actor in order to
-                        // avoid using read and write offset
-                        // variables.
-                    } else {
-                        readTokens = DFUtilities.getRate(inputPort);
-                        Iterator sourcePorts = inputPort.sourcePortList()
-                                .iterator();
-                        label2: while (sourcePorts.hasNext()) {
-                            IOPort sourcePort = (IOPort) sourcePorts.next();
-                            CodeGeneratorHelper helper = (CodeGeneratorHelper) 
-                                    _getHelper(sourcePort.getContainer());
-                            int width;
-                            if (sourcePort.isInput()) {
-                                width = sourcePort.getWidthInside();
-                            } else {
-                                width = sourcePort.getWidth();
-                            }
-                            for (int j = 0; j < width; j++) {
-                                Iterator channels = helper.getSinkChannels(
-                                        sourcePort, j).iterator();
-                                while (channels.hasNext()) {
-                                    Channel channel = (Channel) channels.next();
-                                    if (channel.port == inputPort
-                                            && channel.channelNumber == i) {
-                                        writeTokens = DFUtilities
-                                                .getRate(sourcePort);
-                                        break label2;
+                // If dynamic references are desired, conditionally pad buffers
+                // and append the dynamic offset variables for input ports.
+                if (dynamicReferencesAllowed) {
+                    if (padBuffers) {
+                        for (int i = 0; i < inputPort.getWidth(); i++) {
+                            _padBuffer(inputPort, i);
+                        }
+                    }
+                    tempCode2.append(_createDynamicOffsetVariables(inputPort));
+                // Otherwise, append the offset variables (padding is handled
+                // in _createOffsetVariablesIfNeeded()) for input ports.
+                } else {
+                    for (int i = 0; i < inputPort.getWidth(); i++) {
+                        int readTokens = 0;
+                        int writeTokens = 0;
+                        // If each actor firing is inlined in the code,
+                        // then read and write positions in the buffer
+                        // must return to the previous values after one
+                        // iteration of the container actor in order to
+                        // avoid using read and write offset variables.
+                        if (inline) {
+                            Variable firings = (Variable) ((NamedObj) actor)
+                                    .getAttribute("firingsPerIteration");
+                            int firingsPerIteration = ((IntToken) firings
+                                    .getToken()).intValue();
+                            readTokens = DFUtilities.getRate(inputPort)
+                                    * firingsPerIteration;
+                            writeTokens = readTokens;
+    
+                            // If each actor firing is wrapped in a
+                            // function, then read and write positions in
+                            // the buffer must return to the previous
+                            // values after one firing of this actor or
+                            // one firing of the actor that produces
+                            // tokens consumed by this actor in order to
+                            // avoid using read and write offset
+                            // variables.
+                        } else {
+                            readTokens = DFUtilities.getRate(inputPort);
+                            Iterator sourcePorts = inputPort.sourcePortList()
+                                    .iterator();
+                            label2: while (sourcePorts.hasNext()) {
+                                IOPort sourcePort = (IOPort) sourcePorts.next();
+                                CodeGeneratorHelper helper = (CodeGeneratorHelper) 
+                                        _getHelper(sourcePort.getContainer());
+                                int width;
+                                if (sourcePort.isInput()) {
+                                    width = sourcePort.getWidthInside();
+                                } else {
+                                    width = sourcePort.getWidth();
+                                }
+                                for (int j = 0; j < width; j++) {
+                                    Iterator channels = helper.getSinkChannels(
+                                            sourcePort, j).iterator();
+                                    while (channels.hasNext()) {
+                                        Channel channel = (Channel) channels.next();
+                                        if (channel.port == inputPort
+                                                && channel.channelNumber == i) {
+                                            writeTokens = DFUtilities
+                                                    .getRate(sourcePort);
+                                            break label2;
+                                        }
                                     }
                                 }
                             }
                         }
+                        tempCode2.append(_createOffsetVariablesIfNeeded(inputPort,
+                                i, readTokens, writeTokens));
                     }
-                    tempCode2.append(_createOffsetVariablesIfNeeded(inputPort,
-                            i, readTokens, writeTokens));
                 }
             }
             if (tempCode2.length() > 0) {
@@ -649,14 +736,15 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
         return code.toString();
     }
-
+    
     /** Check for the given channel of the given port to see if
      *  variables are needed for recording read offset and write
      *  offset. If the buffer size of a channel divides the readTokens
      *  and writeTokens given in the argument, then there is no need
      *  for the variables. Otherwise the integer offsets are replaced
      *  with variables and the code to initialize these variables are
-     *  generated.
+     *  generated.  If padded buffers are desired (based on the padBuffers
+     *  parameter of the CodeGenerator), pad the buffers.
      *
      *  @param port The port to be checked.
      *  @param channelNumber The channel number.
@@ -673,14 +761,16 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
                 .getContainer());
+        boolean padBuffers = _codeGenerator.padBuffers();
 
         int bufferSize = helper.getBufferSize(port, channelNumber);
         if (bufferSize != 0
                 && (readTokens % bufferSize != 0 || writeTokens % bufferSize != 0)) {
 
             // Increase the buffer size of that channel to the power of two.
-            int newBufferSize = _ceilToPowerOfTwo(bufferSize);
-            helper.setBufferSize(port, channelNumber, newBufferSize);
+            if (padBuffers) {
+                bufferSize = _padBuffer(port, channelNumber);
+            }
 
             int width;
             if (port.isInput()) {
@@ -692,7 +782,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             // We check again if the new bufferSize divides readTokens or 
             // writeTokens. If yes, we could avoid using variable to represent 
             // offset.
-            if (readTokens % newBufferSize != 0) {
+            if (readTokens % bufferSize != 0) {
 
                 // Declare the read offset variable.
                 StringBuffer channelReadOffset = new StringBuffer();
@@ -701,7 +791,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 if (width > 1) {
                     channelReadOffset.append("_" + channelNumber);
                 }
-                channelReadOffset.append("_readoffset");
+                channelReadOffset.append("_readOffset");
                 String channelReadOffsetVariable = channelReadOffset.toString();
                 //code.append("static int " + channelReadOffsetVariable + " = "
                 //        + helper.getReadOffset(port, channelNumber) + ";\n");
@@ -711,7 +801,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                         channelReadOffsetVariable);
             }
 
-            if (writeTokens % newBufferSize != 0) {
+            if (writeTokens % bufferSize != 0) {
 
                 // Declare the write offset variable.
                 StringBuffer channelWriteOffset = new StringBuffer();
@@ -720,7 +810,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 if (width > 1) {
                     channelWriteOffset.append("_" + channelNumber);
                 }
-                channelWriteOffset.append("_writeoffset");
+                channelWriteOffset.append("_writeOffset");
                 String channelWriteOffsetVariable = channelWriteOffset
                         .toString();
                 code.append("static int " + channelWriteOffsetVariable + ";\n");
@@ -777,6 +867,29 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private methods                        ////
+
+    /** Pad the buffer for the channel of the given port with the given
+     *  channel number to a power of two.  Return the new buffer size. 
+     * @param port The port which has the buffer to pad.
+     * @param channelNumber The number of the channel which has the buffer
+     * to pad.
+     * @return The size of the new buffer.
+     * @throws IllegalActionException If thrown when getting the port's helper.
+     */
+    private int _padBuffer(IOPort port, int channelNumber) 
+            throws IllegalActionException {
+        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port.
+                getContainer());
+        
+        int bufferSize = helper.getBufferSize(port, channelNumber);
+        int newBufferSize = _ceilToPowerOfTwo(bufferSize);
+        helper.setBufferSize(port, channelNumber, newBufferSize);
+        
+        return newBufferSize;
+    }
+        
     private int _portNumber = 0;
 
     private boolean _intFlag;

@@ -94,6 +94,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public CodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        allowDynamicMultiportReference = new Parameter(this, "allowDynamicMultiportReference");
+        allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
+        allowDynamicMultiportReference.setExpression("true");
 
         codeDirectory = new FileParameter(this, "codeDirectory");
         codeDirectory.setExpression("$HOME/codegen/");
@@ -134,6 +138,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
         overwriteFiles.setExpression("true");
         
+        padBuffers = new Parameter(this, "padBuffers");
+        padBuffers.setTypeEquals(BaseType.BOOLEAN);
+        padBuffers.setExpression("true");
+
         run = new Parameter(this, "run");
         run.setTypeEquals(BaseType.BOOLEAN);
         run.setExpression("true");
@@ -158,6 +166,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
+    
+    /** If true, then channels in multiports can be dynamically
+     *  referenced using the $ref macro.
+     */
+    public Parameter allowDynamicMultiportReference;
 
     /** The directory in which to put the generated code.
      *  This is a file parameter that must specify a directory.
@@ -215,6 +228,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public Parameter overwriteFiles;
 
+    /** If true, then buffers are padded to powers of two.
+     */
+    public Parameter padBuffers;
+    
     /** If true, then run the generated code. The default   
      *  value is a parameter with the value true.
      */
@@ -305,6 +322,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String formatComment(String comment) {
         return "/* " + comment + " */" + _eol;
+    }
+
+    /**
+     * Return true if dynamic reference of multiport channels is allowed.
+     * @return True if dynamic reference of multiport channels is allowed
+     * in the generated code.
+     * @exception IllegalActionException If getting the token throws it.
+     */
+    public boolean dynamicMultiportReferenceAllowed()
+            throws IllegalActionException {
+        return ((BooleanToken) allowDynamicMultiportReference.getToken()).booleanValue();
     }
 
     /** Generate the body code that lies between initialize and wrapup.
@@ -1033,6 +1061,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public static void main(String[] args) throws Exception {
         generateCode(args);
+    }
+
+    /** Return true if buffers in generated code should be padded.
+     *  @return True if size of buffers in generated code should
+     *  be padded to powers of two.
+     *  @exception IllegalActionException If getting the token throws it.
+     */
+    public boolean padBuffers()
+            throws IllegalActionException {
+        return ((BooleanToken) padBuffers.getToken()).booleanValue();
     }
 
     /** This method is used to set the code generator for a helper class.

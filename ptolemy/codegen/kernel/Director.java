@@ -517,6 +517,7 @@ public class Director implements ActorCodeGenerator {
      */
     protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
             throws IllegalActionException {
+        boolean padBuffers = _codeGenerator.padBuffers();
 
         if (rate == 0) {
             return;
@@ -545,11 +546,17 @@ public class Director implements ActorCodeGenerator {
                 }
                 helper.setReadOffset(port, j, Integer.valueOf(offset));
             } else { // If offset is a variable.
-                int modulo = helper.getBufferSize(port, j) - 1;
                 String offsetVariable = (String) helper.getReadOffset(port, j);
-                code.append(CodeStream.indent(offsetVariable + " = ("
-                        + offsetVariable + " + " + rate + ")&" + modulo + ";"
-                        + _eol));
+                if (padBuffers) {                    
+                    int modulo = helper.getBufferSize(port, j) - 1;
+                    code.append(CodeStream.indent(offsetVariable + " = ("
+                            + offsetVariable + " + " + rate + ")&" + modulo + ";"
+                            + _eol));
+                } else {
+                    code.append(CodeStream.indent(offsetVariable + " = ("
+                            + offsetVariable + " + " + rate + ") % "
+                            + helper.getBufferSize(port, j) + ";" + _eol));
+                }
             }
         }
     }
@@ -566,6 +573,7 @@ public class Director implements ActorCodeGenerator {
      */
     protected void _updateConnectedPortsOffset(IOPort port, StringBuffer code,
             int rate) throws IllegalActionException {
+        boolean padBuffers = _codeGenerator.padBuffers();
 
         if (rate == 0) {
             return;
@@ -603,14 +611,21 @@ public class Director implements ActorCodeGenerator {
                     }
                     helper.setWriteOffset(sinkPort, sinkChannelNumber,
                             Integer.valueOf(offset));
-                } else { // If offset is a variable. 
-                    int modulo = helper.getBufferSize(sinkPort,
-                            sinkChannelNumber) - 1;
+                } else { // If offset is a variable.
                     String offsetVariable = (String) helper.getWriteOffset(
                             sinkPort, sinkChannelNumber);
-                    code.append(CodeStream.indent(offsetVariable + " = ("
-                            + offsetVariable + " + " + rate + ")&" + modulo
-                            + ";" + _eol));
+                    if (padBuffers) {
+                        int modulo = helper.getBufferSize(sinkPort,
+                                sinkChannelNumber) - 1;
+                        code.append(CodeStream.indent(offsetVariable + " = ("
+                                + offsetVariable + " + " + rate + ")&" + modulo
+                                + ";" + _eol));
+                    } else {
+                        code.append(CodeStream.indent(offsetVariable + " = ("
+                                + offsetVariable + " + " + rate + ") % "
+                                + helper.getBufferSize(sinkPort, sinkChannelNumber)
+                                + ";" + _eol));
+                    }
                 }
             }
         }

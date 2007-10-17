@@ -89,7 +89,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  @param compositeActor The actor for which code is generated.
      *  @exception IllegalActionException If there are problems
      *  accessing the actor.
-     */   
+     */
     public static void generateCode(
             ptolemy.actor.TypedCompositeActor compositeActor)
             throws IllegalActionException {
@@ -139,7 +139,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  @param compositeActor The actor for which code is generated.
      *  @exception IllegalActionException If there are problems
      *  accessing the actor.
-     */   
+     */
     private static CodeGenerator _getCodeGenerator(
             ptolemy.actor.TypedCompositeActor compositeActor) 
             throws IllegalActionException {

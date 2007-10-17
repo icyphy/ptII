@@ -27,6 +27,7 @@
 package ptolemy.actor.lib.jni;
 
 import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -100,20 +101,14 @@ public class EmbeddedCActor extends CompiledCompositeActor {
         // /***wrapupBlock***/
         // /**/
         //
-        embeddedCCode.setExpression("/***fileDependencies***/\n"
-                + "/**/\n\n"
-                + "/***preinitBlock***/\n" 
-                + "/**/\n\n"
-                + "/***initBlock***/\n"
-                + "/**/\n\n"
-                + "/***fireBlock***/\n"
-                + "// Assuming you have added an input port named \"input\"\n"
-                + "// and an output port named \"output\", then the following\n"
-                + "// line results in the input being copied to the output.\n"
-                + "//$ref(output) = $ref(input);\n"
-                + "/**/\n\n" 
-                + "/***wrapupBlock***/\n"
-                + "/**/\n\n");
+        String code = "";
+        code = code + _getFileDependencies();
+        code = code + _getPreinitBlock();
+        code = code + _getInitBlock();
+        code = code + _getFireBlock();
+        code = code + _getWrapupBlock();
+        embeddedCCode.setExpression(code);
+        
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-15\" " + "width=\"62\" height=\"30\" "
                 + "style=\"fill:black\"/>\n" + "<text x=\"-29\" y=\"4\""
@@ -136,55 +131,9 @@ public class EmbeddedCActor extends CompiledCompositeActor {
      */
     public StringAttribute embeddedCCode;
 
-    public void preinitialize() throws IllegalActionException {
-        try {
-            _embeddedActor = new EmbeddedActor(this, "EmbeddedActor");
-            
-            int i = 0;
-            Iterator ports = portList().iterator();
-            while (ports.hasNext()) {
-                TypedIOPort port = (TypedIOPort) ports.next();
-                TypedIOPort newPort = (TypedIOPort) port.clone(workspace());
-                newPort.setContainer(_embeddedActor);
-                TypedIORelation relation 
-                        = new TypedIORelation(this, "relation" + i++); 
-                port.link(relation);
-                newPort.link(relation);
-            }    
-        } catch (NameDuplicationException ex) {
-            throw new IllegalActionException(this, ex, "Name duplication.");
-        } catch (CloneNotSupportedException ex) {
-            throw new IllegalActionException(this, ex, "Clone not supported.");
-        } 
-        super.preinitialize();
-    }
-    
-    public void wrapup() throws IllegalActionException {
-        try {
-            Iterator ports = portList().iterator();
-            while (ports.hasNext()) {
-                TypedIOPort port = (TypedIOPort) ports.next();
-                TypedIORelation relation 
-                        = (TypedIORelation) port.insideRelationList().get(0);
-                relation.setContainer(null);
-            }
-            // If an exception occurred earlier, then
-            // _embeddedActor may be null, and we don't want
-            // the null pointer exception masking the real
-            // one.
-            if (_embeddedActor != null) {
-                _embeddedActor.setContainer(null);
-            }
-        } catch (NameDuplicationException ex) {
-            // should not happen.
-            throw new IllegalActionException(this, "name duplication.");
-        }   
-        super.wrapup();
-    }
-    
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
+    ////                     public methods                        ////
+    
     //FIXME: Note that the next block is not a javadoc, I changed /** to /* 
     /* If <i>embeddedCCode</i> is changed, compile the changed C Code. 
      *  @param attribute The attribute that changed.
@@ -201,7 +150,113 @@ public class EmbeddedCActor extends CompiledCompositeActor {
         }
     }
     */
-       
+
+    public void preinitialize() throws IllegalActionException {
+        try {
+            _embeddedActor = new EmbeddedActor(this, "EmbeddedActor");
+            
+            int i = 0;
+            Iterator ports = portList().iterator();
+            while (ports.hasNext()) {
+                TypedIOPort port = (TypedIOPort) ports.next();
+                TypedIOPort newPort = (TypedIOPort) port.clone(workspace());
+                newPort.setContainer(_embeddedActor);
+                for (int channel = 0; channel < port.getWidth(); channel++) {
+                    TypedIORelation relation 
+                        = new TypedIORelation(this, "relation" + i++); 
+                    port.link(relation);
+                    newPort.link(relation);                    
+                }
+            }    
+        } catch (NameDuplicationException ex) {
+            throw new IllegalActionException(this, ex, "Name duplication.");
+        } catch (CloneNotSupportedException ex) {
+            throw new IllegalActionException(this, ex, "Clone not supported.");
+        } 
+        super.preinitialize();
+    }
+    
+    public void wrapup() throws IllegalActionException {
+        try {
+            Iterator ports = portList().iterator();
+            while (ports.hasNext()) {
+                TypedIOPort port = (TypedIOPort) ports.next();
+                List insideRelationList = port.insideRelationList();
+                Iterator insideRelationIterator = insideRelationList.iterator();
+                while (insideRelationIterator.hasNext()) {
+                    TypedIORelation relation = (TypedIORelation) insideRelationIterator.next();
+                    relation.setContainer(null);
+                }
+            }
+            // If an exception occurred earlier, then
+            // _embeddedActor may be null, and we don't want
+            // the null pointer exception masking the real
+            // one.
+            if (_embeddedActor != null) {
+                _embeddedActor.setContainer(null);
+            }
+        } catch (NameDuplicationException ex) {
+            // should not happen.
+            throw new IllegalActionException(this, "name duplication.");
+        }   
+        super.wrapup();
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    /** Get the fileDependencies part of the generated code.
+     *  @return The string containing the codegen fileDependencies function.
+     */
+    protected String _getFileDependencies() {
+                String code = "/***fileDependencies***/\n"
+            + "/**/\n\n";
+                return code;
+        }
+        
+    /** Get the fireBlock part of the generated code.
+     *  @return The string containing the codegen fireBlock function.
+     */
+        protected String _getFireBlock() {
+                String code = "/***fireBlock***/\n"
+            + "// Assuming you have added an input port named \"input\"\n"
+            + "// and an output port named \"output\", then the following\n"
+            + "// line results in the input being copied to the output.\n"
+            + "//$ref(output) = $ref(input);\n"
+            + "/**/\n\n";
+                return code;
+        }
+        
+    /** Get the initBlock part of the generated code.
+     *  @return The string containing the codegen initBlock function.
+     */
+        protected String _getInitBlock() {
+                String code = "/***initBlock***/\n"
+            + "/**/\n\n";
+                return code;
+        }
+        
+    /** Get the preinitBlock part of the generated code.
+     *  @return The string containing the codegen preinitBlock function.
+     */
+        protected String _getPreinitBlock() {
+                String code = "/***preinitBlock***/\n" 
+            + "/**/\n\n";
+                return code;
+        }
+        
+    /** Get the wrapupBlock part of the generated code.
+     *  @return The string containing the codegen wrapupBlock function.
+     */
+        protected String _getWrapupBlock() {
+                String code = "/***wrapupBlock***/\n"
+            + "/**/\n\n";
+        return code;
+        }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     private EmbeddedActor _embeddedActor = null;
     
     /** An actor inside the EmbeddedCActor that is used as a dummy
