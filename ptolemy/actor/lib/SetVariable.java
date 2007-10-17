@@ -162,6 +162,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      *  @param exception The exception that resulted.
      */
     public void changeFailed(ChangeRequest change, java.lang.Exception exception) {
+        _setFailed = true;
         MessageHandler.error("Failed to set variable.", exception);
     }
 
@@ -257,6 +258,14 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
             final Token value = input.get(0);
 
             if (delayed.getToken().equals(BooleanToken.TRUE)) {
+                // If the previous set failed, then return false.
+                // We cannot just proceed with another request because
+                // it will likely trigger the same exception again,
+                // and the model will just repeatedly pop up exception
+                // windows, with no escape.
+                if (_setFailed) {
+                    return false;
+                }
                 ChangeRequest request = new ChangeRequest(this,
                         "SetVariable change request") {
                     protected void _execute() throws IllegalActionException {
@@ -295,6 +304,8 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         if (attribute instanceof Variable) {
             ((Variable) attribute).setTypeAtLeast(input);
         }
+        
+        _setFailed = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -333,4 +344,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
     
     /** Workspace version for the cached attribute reference. */
     private long _attributeVersion = -1;
+    
+    /** Indicator that setting the variable failed. */
+    private boolean _setFailed = false;
 }
