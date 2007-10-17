@@ -5,7 +5,7 @@
   <configure>
     <?moml
       <group>
-        <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="CCodeGenerator" class="ptolemy.codegen.c.kernel.CCodeGenerator">
 	    <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false"/>
 	</property>
         <entity name="CompiledCompositeActor" class="ptolemy.actor.lib.jni.CompiledCompositeActor"/>
