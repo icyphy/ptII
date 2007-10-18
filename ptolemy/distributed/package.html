@@ -65,7 +65,73 @@ Eclipse <B>do not</B> use <CODE>$PTII/.classpath.default</CODE>.
 Instead, use <CODE>configure</CODE> as per
 <a href="http://chess.eecs.berkeley.edu/ptexternal/nightly/doc/coding/eclipse.htm"><CODE>$PTII/doc/coding/eclipse.htm</CODE></a>.
 
+<h2>Problems</h2>
+<h3>Eclipse Problems</h3>
+Note that under Eclipse you <b>must</b> run <code>configure</code> 
+and add the jini jar files to your build path.  See above for details.
 
+<h3>access denied error while running</h3>
+<pre>
+ptolemy.kernel.util.IllegalActionException: Failed to initialize Jini
+  in .Sleep.Distributed SDF Director
+Because:
+Failed to initialize ClientServerInteractionManager using "c:/Documents and Settings/cxh/workspace/ptII\ptolemy\distributed\config\ClientServerInteractionManager.config"
+	at ptolemy.distributed.domains.sdf.kernel.DistributedSDFDirector.initializeJini(DistributedSDFDirector.java:764)
+	at ptolemy.distributed.domains.sdf.kernel.DistributedSDFDirector.initialize(DistributedSDFDirector.java:306)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:605)
+	at ptolemy.actor.Manager.initialize(Manager.java:585)
+	at ptolemy.actor.Manager.execute(Manager.java:321)
+	at ptolemy.actor.Manager.run(Manager.java:1070)
+	at ptolemy.actor.Manager$3.run(Manager.java:1111)
+Caused by: java.lang.RuntimeException: Failed to initialize ClientServerInteractionManager using "c:/Documents and Settings/cxh/workspace/ptII\ptolemy\distributed\config\ClientServerInteractionManager.config"
+	at ptolemy.distributed.client.ClientServerInteractionManager.init(ClientServerInteractionManager.java:172)
+	at ptolemy.distributed.domains.sdf.kernel.DistributedSDFDirector.initializeJini(DistributedSDFDirector.java:760)
+	... 6 more
+Caused by: java.security.AccessControlException: access denied (java.security.SecurityPermission getPolicy)
+	at java.security.AccessControlContext.checkPermission(AccessControlContext.java:323)
+	at java.security.AccessController.checkPermission(AccessController.java:546)
+	at java.lang.SecurityManager.checkPermission(SecurityManager.java:532)
+	at java.security.Policy.getPolicy(Policy.java:137)
+	at net.jini.security.Security$6.run(Security.java:779)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at net.jini.security.Security.getPolicy(Security.java:778)
+	at net.jini.security.Security.getContext(Security.java:468)
+	at net.jini.discovery.LookupDiscovery.<init>(LookupDiscovery.java:690)
+	at net.jini.discovery.LookupDiscoveryManager.beginDiscovery(LookupDiscoveryManager.java:1508)
+	at net.jini.discovery.LookupDiscoveryManager.<init>(LookupDiscoveryManager.java:887)
+	at ptolemy.distributed.client.ClientServerInteractionManager.init(ClientServerInteractionManager.java:166)
+	... 7 more
+Caused by: java.lang.RuntimeException: Failed to initialize ClientServerInteractionManager using "c:/Documents and Settings/cxh/workspace/ptII\ptolemy\distributed\config\ClientServerInteractionManager.config"
+	at ptolemy.distributed.client.ClientServerInteractionManager.init(ClientServerInteractionManager.java:172)
+	at ptolemy.distributed.domains.sdf.kernel.DistributedSDFDirector.initializeJini(DistributedSDFDirector.java:760)
+	at ptolemy.distributed.domains.sdf.kernel.DistributedSDFDirector.initialize(DistributedSDFDirector.java:306)
+	at ptolemy.actor.CompositeActor.initialize(CompositeActor.java:605)
+	at ptolemy.actor.Manager.initialize(Manager.java:585)
+	at ptolemy.actor.Manager.execute(Manager.java:321)
+	at ptolemy.actor.Manager.run(Manager.java:1070)
+	at ptolemy.actor.Manager$3.run(Manager.java:1111)
+Caused by: java.security.AccessControlException: access denied (java.security.SecurityPermission getPolicy)
+	at java.security.AccessControlContext.checkPermission(AccessControlContext.java:323)
+	at java.security.AccessController.checkPermission(AccessController.java:546)
+	at java.lang.SecurityManager.checkPermission(SecurityManager.java:532)
+	at java.security.Policy.getPolicy(Policy.java:137)
+	at net.jini.security.Security$6.run(Security.java:779)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at net.jini.security.Security.getPolicy(Security.java:778)
+	at net.jini.security.Security.getContext(Security.java:468)
+	at net.jini.discovery.LookupDiscovery.<init>(LookupDiscovery.java:690)
+	at net.jini.discovery.LookupDiscoveryManager.beginDiscovery(LookupDiscoveryManager.java:1508)
+	at net.jini.discovery.LookupDiscoveryManager.<init>(LookupDiscoveryManager.java:887)
+	at ptolemy.distributed.client.ClientServerInteractionManager.init(ClientServerInteractionManager.java:166)
+	... 7 more
+</pre>
+Solution:
+<p>In Eclipse, go to Run -&gt; Open Run Dialog -&gt;
+In the "Arguments" tab, enter the following line <b>including the double
+quotes</b>.
+<pre>
+"-Djava.security.policy=${workspace_loc:ptII/bin/policy.all}"
+</pre>
 <p>
     @since Ptolemy II 5.1
 </body>
