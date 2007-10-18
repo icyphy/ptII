@@ -1,4 +1,6 @@
 /***declareBlock***/
+
+// Definition of the array struct.
 struct array {
     int size;           			// size of the array.
     Token* elements;    			// array of Token elements.
@@ -8,20 +10,28 @@ typedef struct array* ArrayToken;
 /**/
 
 /***funcDeclareBlock***/
-Token Array_new(int size, int given, ...);   
+
+Token Array_new(int size, int given, ...); 
+
+// Array_get: get an element of an array.  
 Token Array_get(Token array, int i) {   
     return array.payload.Array->elements[i];
 }
 
+// Array_set: set an element of an array.  
 void Array_set(Token array, int i, Token element) {
 	array.payload.Array->elements[i] = element;
 }
 
+// Array_resize: Change the size of an array,
+// preserving those elements that fit.  
 void Array_resize(Token array, int size) {
 	array.payload.Array->size = size;
+	// FIXME: Does realloc() initialize memory? If not, then we need to do that.
 	array.payload.Array->elements = (Token*) realloc(array.payload.Array->elements, size * sizeof(Token));
 }
 
+// Array_insert: Append the specified element to the end of an array.
 void Array_insert(Token array, Token token) {
     int oldSize = array.payload.Array->size++;
     Array_resize(array, array.payload.Array->size);
@@ -31,10 +41,14 @@ void Array_insert(Token array, Token token) {
 /**/
 
 /***newBlock***/
-// make a new array from the given values
-// assume that number of the rest of the arguments == length,
-// and they are in the form of (element, element, ...).
-// The rest of the arguments should be of type Token *.
+
+// Array_new: Create a new array with the specified elements.
+// The "size" argument specifies the size of the array, and
+// the "given" argument specifies the number of provided elements
+// (which will typically be <= size).
+// The rest of the arguments are the provided elements (there
+// should be "given" of them). The given elements
+// should be of type Token *.
 Token Array_new(int size, int given, ...) {   
     va_list argp; 
     int i;
@@ -80,6 +94,8 @@ Token Array_new(int size, int given, ...) {
 
 
 /***deleteBlock***/
+
+// Array_delete: FIXME: What does this do?
 Token Array_delete(Token token, ...) { 
     int i;  
     Token element, emptyToken;
@@ -100,6 +116,8 @@ Token Array_delete(Token token, ...) {
 
 
 /***equalsBlock***/
+
+// Array_equals: Test an array for equality with a second array.
 Token Array_equals(Token this, ...) {
     int i;
     va_list argp; 
@@ -111,7 +129,8 @@ Token Array_equals(Token this, ...) {
         return Boolean_new(false);
     }
     for (i = 0; i < this.payload.Array->size; i++) {
-        if (!functionTable[(int)Array_get(this, i).type][FUNC_equals](Array_get(this, i), Array_get(otherToken, i)).payload.Boolean) {
+        if (!functionTable[(int)Array_get(this, i).type][FUNC_equals]
+        		(Array_get(this, i), Array_get(otherToken, i)).payload.Boolean) {
             return Boolean_new(false);
         }
     }
@@ -122,6 +141,8 @@ Token Array_equals(Token this, ...) {
 /**/
 
 /***isCloseToBlock***/
+
+// Array_isCloseTo: Test an array to see whether it is close in value to another.
 Token Array_isCloseTo(Token this, ...) {
     int i;
     va_list argp; 
@@ -146,6 +167,8 @@ Token Array_isCloseTo(Token this, ...) {
 /**/
 
 /***printBlock***/
+
+// Array_print: Print the contents of an array to standard out.
 Token Array_print(Token this, ...) {
     // Token string = Array_toString(this);
     // printf(string.payload.String);
@@ -164,6 +187,9 @@ Token Array_print(Token this, ...) {
 /**/
 
 /***toStringBlock***/
+
+// Array_toString: Return a string token with a string representation
+// of the specified array.
 Token Array_toString(Token this, ...) {
     int i;
     int currentSize, allocatedSize;
@@ -196,6 +222,8 @@ Token Array_toString(Token this, ...) {
 /**/
 
 /***addBlock***/
+
+// Array_add: Add an array to another array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
 Token Array_add(Token this, ...) {
@@ -220,7 +248,12 @@ Token Array_add(Token this, ...) {
 
 
 /***subtractBlock***/
-// Assume the given otherToken is array type.
+
+// Array_subtract: Subtract the second argument array
+// from the first argument array.
+// Assume the given otherToken is an array.
+// FIXME: Arrays can have scalars subtracted!
+// This will cause a nasty seg fault.
 // Return a new Array token.
 Token Array_subtract(Token this, ...) {
     int i;
@@ -234,7 +267,9 @@ Token Array_subtract(Token this, ...) {
     result = Array_new(this.payload.Array->size, 0);
 	
     for (i = 0; i < this.payload.Array->size; i++) {
-        result.payload.Array->elements[i] = functionTable[(int)Array_get(this, i).type][FUNC_subtract](Array_get(this, i), Array_get(otherToken, i));
+        result.payload.Array->elements[i]
+        		= functionTable[(int)Array_get(this, i).type][FUNC_subtract]
+        		(Array_get(this, i), Array_get(otherToken, i));
     }
 
     va_end(argp);
@@ -244,6 +279,9 @@ Token Array_subtract(Token this, ...) {
 
 
 /***multiplyBlock***/
+
+// Array_multiply: Multiply an array by another array.
+// Multiplication is element-wise.
 // Assume the given otherToken is array type.
 // Return a new Array token.
 Token Array_multiply(Token this, ...) {
@@ -275,6 +313,9 @@ Token Array_multiply(Token this, ...) {
 /**/
 
 /***divideBlock***/
+
+// Array_divide: Divide the elements of the first array
+// by the elements of the second array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
 Token Array_divide(Token this, ...) {
@@ -293,20 +334,25 @@ Token Array_divide(Token this, ...) {
     	element = Array_get(this, i);
         switch (otherToken.type) {
         case TYPE_Array:
-            result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_divide](element, Array_get(otherToken, i));
+            result.payload.Array->elements[i]
+            		= functionTable[(int)element.type][FUNC_divide]
+            		(element, Array_get(otherToken, i));
             break;
         default:
-            result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_divide](element, otherToken);
+            result.payload.Array->elements[i]
+            		= functionTable[(int)element.type][FUNC_divide]
+            		(element, otherToken);
             break;
         }
     }
-
     va_end(argp);
     return result;
 }
 /**/
 
 /***negateBlock***/
+
+// Array_negate: Negate each element of an array.
 // Return a new Array token.
 Token Array_negate(Token this, ...) {
     int i;
@@ -315,13 +361,18 @@ Token Array_negate(Token this, ...) {
     result = Array_new(this.payload.Array->size, 0);
 
     for (i = 0; i < this.payload.Array->size; i++) {
-        result.payload.Array->elements[i] = functionTable[(int)Array_get(this, i).type][FUNC_negate](Array_get(this, i));
+        result.payload.Array->elements[i]
+        		= functionTable[(int)Array_get(this, i).type][FUNC_negate]
+        		(Array_get(this, i));
     }
     return result;
 }
 /**/
 
 /***zeroBlock***/
+
+// Array_zero: Return an array like the specified
+// array but with zeros of the same type.
 Token Array_zero(Token token, ...) {
     Token result;
     Token element;
@@ -330,13 +381,17 @@ Token Array_zero(Token token, ...) {
     result = Array_new(token.payload.Array->size, 0);
     for (i = 0; i < token.payload.Array->size; i++) {
         element = Array_get(token, i);
-        result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_zero](element);
+        result.payload.Array->elements[i]
+        		= functionTable[(int)element.type][FUNC_zero](element);
     }
     return result;
 }
 /**/
 
 /***oneBlock***/
+
+// Array_one: Return an array like the specified
+// array but with ones of the same type.
 Token Array_one(Token token, ...) {
     Token result;
     Token element;
@@ -345,14 +400,17 @@ Token Array_one(Token token, ...) {
     result = Array_new(token.payload.Array->size, 0);
     for (i = 0; i < token.payload.Array->size; i++) {
         element = Array_get(token, i);
-        result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_one](element);
+        result.payload.Array->elements[i]
+        		= functionTable[(int)element.type][FUNC_one](element);
     }
     return result;
 }
 /**/
 
-
 /***cloneBlock***/
+
+// Array_clone: Return a new array just like the
+// specified array.
 Token Array_clone(Token token, ...) {
     Token result;
     Token element;
@@ -373,7 +431,9 @@ Token Array_clone(Token token, ...) {
 ------------ static function -----------------------------------------------
 
 /***convertBlock***/
-// Convert between different types of Array.
+
+// Array_convert: Convert the first argument array
+// into the type specified by the second argument.
 // @param token The token to be converted.
 // @param targetType The type to convert the elements of the given token to.
 Token Array_convert(Token token, ...) {
