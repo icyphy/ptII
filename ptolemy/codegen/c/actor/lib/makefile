@@ -87,6 +87,7 @@ JSRCS = \
 	BooleanSelect.java \
 	BooleanSwitch.java \
 	Commutator.java \
+	CodegenActor.java \
 	Const.java \
 	Counter.java \
 	CurrentTime.java \
