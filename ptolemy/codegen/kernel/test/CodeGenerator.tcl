@@ -86,12 +86,6 @@ test CodeGenerator-5.1 {getCodeFileName} {
 } {}
 
 #####
-test CodeGenerator-5.5 {generateFunctionTable} {
-    list [$codeGenerator generateFunctionTable [java::null] [java::null] ] \
-	[$codeGenerator generateIncludeFiles] 
-} {{} {}}
-
-#####
 test CodeGenerator-6.1 {generateMainEntryCode, generateMainExitCode} {
     list [$codeGenerator generateMainEntryCode] \
 	[$codeGenerator generateMainExitCode] 
