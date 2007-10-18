@@ -139,7 +139,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 25.0]">
         </property>
     </property>
-    <property name="Cyel" class="ptolemy.data.expr.Parameter" value="0">
+    <property name="Cyel" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -290,7 +290,7 @@ implementations.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={14, -15, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -409,6 +409,21 @@ implementations.</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{41.80078125, 23.1328125}">
             </property>
+            <property name="annotation" class="ptolemy.kernel.util.Attribute">
+                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                </property>
+                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model just blinks the yellow lights
+on the car control and turns off the
+pedestrian lights.</text></svg></configure>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, 100.0]">
+                </property>
+                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+                </property>
+                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+                </property>
+            </property>
             <port name="Sec" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-200.0, 90.0]">
@@ -472,8 +487,6 @@ implementations.</text></svg></configure>
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pred = 0; Pgrn = 0; Cred = 0; Cyel = 1; Cgrn = 0">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-                </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.8012887899190636">
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.22014170213408008">
@@ -486,15 +499,11 @@ implementations.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Cyel = 0">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -508,15 +517,11 @@ implementations.</text></svg></configure>
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Cyel = 1">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -529,8 +534,6 @@ implementations.</text></svg></configure>
                 <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <link port="Init.outgoingPort" relation="relation"/>
@@ -553,50 +556,56 @@ implementations.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-225.0, -175.0]">
                 </property>
             </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The NormalC actor generates the control signals&#10;for the car stoplights under normal operating conditions.&#10;The NormalP actor reacts to these controls to generate&#10;the control signals for the pedestrian lights.&#10;Look inside each actor to see its implementation.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-160.0, -205.0]">
+                </property>
+            </property>
             <port name="Sec" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 0.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 20.0]">
                 </property>
             </port>
             <port name="Pred" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -115.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -70.0]">
                 </property>
             </port>
             <port name="Pgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -40.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -20.0]">
                 </property>
             </port>
             <port name="Cred" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 30.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 50.0]">
                 </property>
             </port>
             <port name="Cyel" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 65.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 85.0]">
                 </property>
             </port>
             <port name="Cgrn" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 105.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 125.0]">
                 </property>
             </port>
             <port name="Ok" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 75.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 95.0]">
                 </property>
             </port>
             <port name="Error" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 40.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 60.0]">
                 </property>
             </port>
             <entity name="NormalP" class="ptolemy.domains.fsm.modal.ModalModel">
                 <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -80.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -60.0]">
                 </property>
                 <port name="Pgo" class="ptolemy.domains.fsm.modal.ModalPort">
                     <property name="input"/>
@@ -634,15 +643,10 @@ implementations.</text></svg></configure>
                         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                         </property>
                         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states.  Create transitions
-by holding the control key and dragging from one state
-to another.  Right click to configure the properties 
-of this model, including setting the initial state.
-Then delete this annotation.</text>
-</svg></configure>
+                            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model turns the pedestrian lights
+green when the car control lights go red.</text></svg></configure>
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 230.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 105.0}">
                         </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                         </property>
@@ -810,7 +814,7 @@ Then delete this annotation.</text>
             <entity name="NormalC" class="ptolemy.domains.fsm.modal.ModalModel">
                 <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-190.0, -65.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-190.0, -45.0]">
                 </property>
                 <port name="Pgo" class="ptolemy.domains.fsm.modal.ModalPort">
                     <property name="output"/>
@@ -879,7 +883,7 @@ three seconds and to stay green for two.</text></svg></configure>
                     </property>
                     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{151.6117424242424, 70.2168560606061}">
                     </property>
-                    <property name="count" class="ptolemy.data.expr.Parameter" value="2">
+                    <property name="count" class="ptolemy.data.expr.Parameter" value="0">
                         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                         </property>
                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1072,8 +1076,6 @@ three seconds and to stay green for two.</text></svg></configure>
                     <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; count &lt; 2">
                         </property>
-                        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-                        </property>
                         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = count + 1">
                         </property>
                         <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.218072053441859">
@@ -1088,13 +1090,9 @@ three seconds and to stay green for two.</text></svg></configure>
                         </property>
                         <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
-                        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                        </property>
                     </relation>
                     <relation name="relation7" class="ptolemy.domains.fsm.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent &amp;&amp; count &lt; 1">
-                        </property>
-                        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                         </property>
                         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = count + 1">
                         </property>
@@ -1109,8 +1107,6 @@ three seconds and to stay green for two.</text></svg></configure>
                         <property name="defaultTransition" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                         <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
-                        </property>
-                        <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                         </property>
                     </relation>
                     <link port="Cinit.outgoingPort" relation="relation"/>
@@ -1196,7 +1192,7 @@ three seconds and to stay green for two.</text></svg></configure>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <vertex name="vertex1" value="{-255.0, 0.0}">
+                <vertex name="vertex1" value="[-255.0, 20.0]">
                 </vertex>
             </relation>
             <link port="Sec" relation="relation3"/>
