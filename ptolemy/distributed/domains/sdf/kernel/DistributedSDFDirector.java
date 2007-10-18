@@ -39,6 +39,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.ScheduleElement;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -413,7 +414,7 @@ public class DistributedSDFDirector extends SDFDirector {
         commandsMap = new HashMap();
 
         while (levels.hasNext() && !_stopRequested) {
-            Schedule level = (Schedule) levels.next();
+            ScheduleElement level = (Schedule) levels.next();
 
             Iterator firings = level.firingIterator();
 
