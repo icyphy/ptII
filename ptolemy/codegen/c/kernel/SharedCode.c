@@ -1,4 +1,6 @@
 /***constantsBlock***/
+
+// Constants.
 #define MISSING 0
 #define boolean unsigned char
 
@@ -18,10 +20,13 @@
 /**/
 
 /***funcHeaderBlock ($function)***/
+
 Token $function (Token this, ...);
 /**/
 
 /***tokenDeclareBlock ($types)***/
+
+// Token structure containing the specified types.
 struct token {         // Base type for tokens.
     char type;         // TYPE field has to be the first field.
     union typeMembers {
