@@ -150,65 +150,6 @@ public class CCodeGenerator extends CodeGenerator {
         return code.toString();
     }
 
-    /** Generate include files.
-     *  @return The include files.
-     *  @exception IllegalActionException If the helper class for some actor 
-     *   cannot be found.
-     */
-    public String generateIncludeFiles() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
-        Set includingFiles = compositeActorHelper.getHeaderFiles();
-
-        includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
-        
-        if (isTopLevel() && ((BooleanToken) measureTime.getToken()).booleanValue()) {
-            includingFiles.add("<sys/time.h>");
-        }
-
-        if (!isTopLevel()) {
-            includingFiles.add("\"" + _sanitizedModelName + ".h\"");
-            
-            // FIXME: This only works under windows.
-            String javaHome = StringUtilities.getProperty("java.home");
-            javaHome = javaHome.replace('\\', '/');
-            int index = javaHome.lastIndexOf("jre");
-            javaHome = javaHome.substring(0, index);
-            addInclude("-I\"" + javaHome + "include\"");
-
-            String osName = StringUtilities.getProperty("os.name");
-            if (osName != null) {
-                if (osName.startsWith("Windows")) {
-                    addInclude("-I\"" + javaHome + "include/win32\"");
-                } else if (osName.startsWith("SunOS")) {
-                    addInclude("-I\"" + javaHome + "include/solaris\"");
-                } else if (osName.startsWith("Linux")) {
-                    addInclude("-I\"" + javaHome + "include/linux\"");
-                } else if (osName.startsWith("Darwin")) {
-                    addInclude("-I\"" + javaHome + "include/darwin\"");
-                }
-            }
-        }
-
-        includingFiles.add("<stdarg.h>");
-        includingFiles.add("<stdio.h>");
-        includingFiles.add("<string.h>");
-        Iterator files = includingFiles.iterator();
-
-        while (files.hasNext()) {
-            String file = (String) files.next();
-            
-            // Not all embedded platforms have all .h files.
-            // For example, the AVR does not have time.h
-            code.append("#ifndef PT_NO_" + file.substring(1, file.length() - 3).replace('/', '_').toUpperCase() + "_H" + _eol
-                    + "#include " + file + _eol
-                    + "#endif" + _eol);
-        }
-
-        return code.toString();
-    }
-
     /** Generate the initialization procedure entry point.
      *  @return a string for the initialization procedure entry point.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -796,33 +737,94 @@ public class CCodeGenerator extends CodeGenerator {
         
         return code;
     }
-    
-    /** Generate the code for measuring the execution end time and total
-     *  execution time.
-     *  @return Return the code for measuring the execution end time and total
-     *  execution time.
+
+    /** Generate include files. FIXME: State what is included.
+     *  @return The #include statements, surrounded by #ifndef to ensure
+     *   that the files are included only once.
+     *  @exception IllegalActionException If the helper class for some actor 
+     *   cannot be found.
      */
-    protected String _measureEndTime() {
+    protected String _generateIncludeFiles() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
+        Set includingFiles = compositeActorHelper.getHeaderFiles();
+
+        includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
+        
+        if (isTopLevel() && ((BooleanToken) measureTime.getToken()).booleanValue()) {
+            includingFiles.add("<sys/time.h>");
+        }
+
+        if (!isTopLevel()) {
+            includingFiles.add("\"" + _sanitizedModelName + ".h\"");
+            
+            // FIXME: This only works under windows.
+            // FIXME: Shouldn't this be included only if used?
+            String javaHome = StringUtilities.getProperty("java.home");
+            javaHome = javaHome.replace('\\', '/');
+            int index = javaHome.lastIndexOf("jre");
+            javaHome = javaHome.substring(0, index);
+            addInclude("-I\"" + javaHome + "include\"");
+
+            // FIXME: Need a better way to handle this OS dependency.
+            String osName = StringUtilities.getProperty("os.name");
+            if (osName != null) {
+                if (osName.startsWith("Windows")) {
+                    addInclude("-I\"" + javaHome + "include/win32\"");
+                } else if (osName.startsWith("SunOS")) {
+                    addInclude("-I\"" + javaHome + "include/solaris\"");
+                } else if (osName.startsWith("Linux")) {
+                    addInclude("-I\"" + javaHome + "include/linux\"");
+                } else if (osName.startsWith("Darwin")) {
+                    addInclude("-I\"" + javaHome + "include/darwin\"");
+                }
+            }
+        }
+
+        includingFiles.add("<stdarg.h>");
+        includingFiles.add("<stdio.h>");
+        includingFiles.add("<string.h>");
+        Iterator files = includingFiles.iterator();
+
+        while (files.hasNext()) {
+            String file = (String) files.next();
+            
+            // Not all embedded platforms have all .h files.
+            // For example, the AVR does not have time.h
+            // FIXME: Surely we can control whether the files are
+            // included more than once rather than relying on #ifndef!
+            code.append("#ifndef PT_NO_" + file.substring(1, file.length() - 3).replace('/', '_').toUpperCase() + "_H" + _eol
+                    + "#include " + file + _eol
+                    + "#endif" + _eol);
+        }
+
+        return code.toString();
+    }
+
+    /** Generate the code for printing the execution time since
+     *  the code generated by _recordStartTime() was called.
+     *  @return Return the code for printing the total execution time.
+     */
+    protected String _printExecutionTime() {
         StringBuffer endCode = new StringBuffer();
-        endCode.append(super._measureEndTime());
+        endCode.append(super._printExecutionTime());
         endCode.append("clock_gettime(CLOCK_REALTIME, &end);\n" +
                        "dT = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) * 1.0e-9;\n" +
                        "printf(\"execution time: %g seconds\\n\", dT);\n\n");
-        
         return endCode.toString();
     }  
     
-    /** Generate the code for measuring the execution start time.
-     *  @return Return the code for measuring the execution start time.
+    /** Generate the code for recording the current time.
+     *  This writes current time into a timespec struct called "start".
+     *  @return Return the code for recording the current time.
      */
-    protected String _measureStartTime() {
-        
+    protected String _recordStartTime() {
         StringBuffer startCode = new StringBuffer();
-        startCode.append(super._measureStartTime());
+        startCode.append(super._recordStartTime());
         startCode.append("struct timespec start, end;\n" +
                          "double dT = 0.0;\n" +
                          "clock_gettime(CLOCK_REALTIME, &start);\n\n");
-        
         return startCode.toString();
     }
     

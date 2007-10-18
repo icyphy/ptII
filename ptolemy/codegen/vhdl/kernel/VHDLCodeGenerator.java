@@ -96,43 +96,6 @@ public class VHDLCodeGenerator extends CodeGenerator {
         return "-- " + comment + "\n";
     }
 
-    /**
-     * Generate the body code that sits between the main entry and
-     * exit code.
-     */
-    public String generateBodyCode() throws IllegalActionException {
-
-        StringBuffer result = new StringBuffer();
-
-        VHDLCodeGeneratorHelper compositeActorHelper = (VHDLCodeGeneratorHelper) _getHelper(getContainer());
-
-        Iterator gateways = _gatewayPorts.iterator();
-
-        while (gateways.hasNext()) {
-            TypedIOPort port = (TypedIOPort) gateways.next();
-            VHDLCodeGeneratorHelper helper = _getHelper(port.getContainer());
-
-            String signal = helper.getReference(port.getName() + "#" + 0);
-            String portName = helper.getReference(port.getName() + "#" + 0)
-                    + "_port";
-
-            boolean isOutput = helper.doGenerate();
-
-            if (isOutput) {
-                result.append(_eol + "        " + portName + " <= " + signal
-                        + ";" + _eol);
-            } else {
-                result.append(_eol + "        " + signal + " <= " + portName
-                        + ";" + _eol);
-            }
-
-        }
-
-        result.append(compositeActorHelper.generateFireCode());
-
-        return result.toString();
-    }
-
     /** Generate code and append it to the given string buffer.
      *  Write the code to the directory specified by the codeDirectory
      *  parameter.  The file name is a sanitized version of the model
@@ -158,16 +121,16 @@ public class VHDLCodeGenerator extends CodeGenerator {
             // This seems wrong?
             //code = new StringBuffer();
 
-            String includeFiles = generateIncludeFiles();
+            String includeFiles = _generateIncludeFiles();
 
-            String preinitializeCode = generatePreinitializeCode();
+            String preinitializeCode = _generatePreinitializeCode();
 
             String mainEntryCode = generateMainEntryCode();
 
             CodeStream.setIndentLevel(1);
-            String sharedCode = generateSharedCode();
+            String sharedCode = _generateSharedCode();
             String signalDeclarationCode = generateVariableDeclaration();
-            String bodyCode = generateBodyCode();
+            String bodyCode = _generateBodyCode();
 
             CodeStream.setIndentLevel(0);
             String mainExitCode = generateMainExitCode();
@@ -204,40 +167,6 @@ public class VHDLCodeGenerator extends CodeGenerator {
         return 0;
     }
 
-    /** Generate library and use statements.
-     *  @return Return a string that contains the library and use statements.
-     *  @exception IllegalActionException If the helper class for some actor 
-     *   cannot be found.
-     */
-    public String generateIncludeFiles() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
-        Set includingFiles = compositeActorHelper.getHeaderFiles();
-
-        Iterator files = includingFiles.iterator();
-
-        HashSet librarySet = new HashSet();
-        librarySet.add("STD");
-
-        while (files.hasNext()) {
-            String file = (String) files.next();
-            StringTokenizer tokens = new StringTokenizer(file, ".");
-            String libraryName = tokens.nextToken();
-            if (librarySet.add(libraryName)) { // true if not already exists.
-                code.append("library " + libraryName + ";\n");
-            }
-        }
-
-        files = includingFiles.iterator();
-        while (files.hasNext()) {
-            code.append("use " + files.next() + ";" + _eol);
-        }
-        code.append("use work.pt_utility.all;\n");
-
-        return code.toString();
-    }
-
     /** Generate the main entry point.
      *  @return Return a string that declares the start of the
      *   archecture block.
@@ -257,84 +186,6 @@ public class VHDLCodeGenerator extends CodeGenerator {
     public String generateMainExitCode() throws IllegalActionException {
 
         return _eol + "end architecture composite;" + _eol;
-    }
-
-    /** Generate preinitialize code (if there is any).
-     *  This method calls the generatePreinitializeCode() method
-     *  of the code generator helper associated with the model director
-     *  @return The preinitialize code of the containing composite actor.
-     *  @exception IllegalActionException If the helper class for the model
-     *   director cannot be found, or if an error occurs when the director
-     *   helper generates preinitialize code.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-
-        StringBuffer result = new StringBuffer();
-
-        result.append(_eol + "entity " + _sanitizedModelName + " is" + _eol);
-        result.append("    port (" + _eol);
-
-        result.append("        clk : IN std_logic ;" + _eol);
-        result.append("        reset : IN std_logic ");
-
-        CompositeActor composite = (ptolemy.actor.CompositeActor) getContainer();
-
-        Iterator actors = composite.deepEntityList().iterator();
-
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-
-            VHDLCodeGeneratorHelper helper = _getHelper((NamedObj) actor);
-
-            Iterator outputPorts = actor.outputPortList().iterator();
-
-            while (outputPorts.hasNext()) {
-
-                TypedIOPort port = (TypedIOPort) outputPorts.next();
-
-                Iterator sinks = helper.getSinkChannels(port, 0).iterator();
-
-                boolean notGenerated = true;
-
-                while (sinks.hasNext()) {
-                    Port sink = ((Channel) sinks.next()).port;
-
-                    VHDLCodeGeneratorHelper sinkHelper = _getHelper(sink
-                            .getContainer());
-
-                    // Gateway exists.
-                    if (notGenerated
-                            && sinkHelper.isSynthesizable() != helper
-                                    .isSynthesizable()) {
-
-                        boolean isOutput = helper.doGenerate();
-
-                        result.append(";" + _eol + "        "
-                                + helper.getReference(port.getName() + "#" + 0)
-                                + "_port : ");
-
-                        result.append((isOutput) ? "OUT " : "IN ");
-
-                        result.append(helper._generateVHDLType(port));
-
-                        _gatewayPorts.add(port);
-
-                        notGenerated = false;
-
-                        _signals.add(port);
-
-                    } else {
-
-                        _signals.add(port);
-                    }
-                }
-            }
-        }
-
-        result.append(_eol + "    ) ;" + _eol);
-        result.append("end entity;" + _eol + _eol);
-
-        return result.toString();
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
@@ -445,6 +296,155 @@ public class VHDLCodeGenerator extends CodeGenerator {
                     + "commands:" + _eol + errorMessage);
         }
         return _executeCommands.getLastSubprocessReturnCode();
+    }
+
+    /**
+     * Generate the body code that sits between the main entry and
+     * exit code.
+     */
+    protected String _generateBodyCode() throws IllegalActionException {
+
+        StringBuffer result = new StringBuffer();
+
+        VHDLCodeGeneratorHelper compositeActorHelper = (VHDLCodeGeneratorHelper) _getHelper(getContainer());
+
+        Iterator gateways = _gatewayPorts.iterator();
+
+        while (gateways.hasNext()) {
+            TypedIOPort port = (TypedIOPort) gateways.next();
+            VHDLCodeGeneratorHelper helper = _getHelper(port.getContainer());
+
+            String signal = helper.getReference(port.getName() + "#" + 0);
+            String portName = helper.getReference(port.getName() + "#" + 0)
+                    + "_port";
+
+            boolean isOutput = helper.doGenerate();
+
+            if (isOutput) {
+                result.append(_eol + "        " + portName + " <= " + signal
+                        + ";" + _eol);
+            } else {
+                result.append(_eol + "        " + signal + " <= " + portName
+                        + ";" + _eol);
+            }
+
+        }
+
+        result.append(compositeActorHelper.generateFireCode());
+
+        return result.toString();
+    }
+
+    /** Generate library and use statements.
+     *  @return Return a string that contains the library and use statements.
+     *  @exception IllegalActionException If the helper class for some actor 
+     *   cannot be found.
+     */
+    protected String _generateIncludeFiles() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
+        Set includingFiles = compositeActorHelper.getHeaderFiles();
+
+        Iterator files = includingFiles.iterator();
+
+        HashSet librarySet = new HashSet();
+        librarySet.add("STD");
+
+        while (files.hasNext()) {
+            String file = (String) files.next();
+            StringTokenizer tokens = new StringTokenizer(file, ".");
+            String libraryName = tokens.nextToken();
+            if (librarySet.add(libraryName)) { // true if not already exists.
+                code.append("library " + libraryName + ";\n");
+            }
+        }
+
+        files = includingFiles.iterator();
+        while (files.hasNext()) {
+            code.append("use " + files.next() + ";" + _eol);
+        }
+        code.append("use work.pt_utility.all;\n");
+
+        return code.toString();
+    }
+
+    /** Generate preinitialize code (if there is any).
+     *  This method calls the generatePreinitializeCode() method
+     *  of the code generator helper associated with the model director
+     *  @return The preinitialize code of the containing composite actor.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found, or if an error occurs when the director
+     *   helper generates preinitialize code.
+     */
+    protected String _generatePreinitializeCode() throws IllegalActionException {
+
+        StringBuffer result = new StringBuffer();
+
+        result.append(_eol + "entity " + _sanitizedModelName + " is" + _eol);
+        result.append("    port (" + _eol);
+
+        result.append("        clk : IN std_logic ;" + _eol);
+        result.append("        reset : IN std_logic ");
+
+        CompositeActor composite = (ptolemy.actor.CompositeActor) getContainer();
+
+        Iterator actors = composite.deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+
+            VHDLCodeGeneratorHelper helper = _getHelper((NamedObj) actor);
+
+            Iterator outputPorts = actor.outputPortList().iterator();
+
+            while (outputPorts.hasNext()) {
+
+                TypedIOPort port = (TypedIOPort) outputPorts.next();
+
+                Iterator sinks = helper.getSinkChannels(port, 0).iterator();
+
+                boolean notGenerated = true;
+
+                while (sinks.hasNext()) {
+                    Port sink = ((Channel) sinks.next()).port;
+
+                    VHDLCodeGeneratorHelper sinkHelper = _getHelper(sink
+                            .getContainer());
+
+                    // Gateway exists.
+                    if (notGenerated
+                            && sinkHelper.isSynthesizable() != helper
+                                    .isSynthesizable()) {
+
+                        boolean isOutput = helper.doGenerate();
+
+                        result.append(";" + _eol + "        "
+                                + helper.getReference(port.getName() + "#" + 0)
+                                + "_port : ");
+
+                        result.append((isOutput) ? "OUT " : "IN ");
+
+                        result.append(helper._generateVHDLType(port));
+
+                        _gatewayPorts.add(port);
+
+                        notGenerated = false;
+
+                        _signals.add(port);
+
+                    } else {
+
+                        _signals.add(port);
+                    }
+                }
+            }
+        }
+
+        result.append(_eol + "    ) ;" + _eol);
+        result.append("end entity;" + _eol + _eol);
+
+        return result.toString();
     }
 
     /** Get the vhdl code generator helper associated with the

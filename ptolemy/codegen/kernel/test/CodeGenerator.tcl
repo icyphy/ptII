@@ -64,6 +64,13 @@ test CodeGenerator-1.1 {Instantiate a CodeGenerator, call a few methods} {
 } {{ptolemy.codegen.kernel.CodeGenerator {.top.myCodeGenerator}} {/* This is a comment */
 }}
 
+#####
+test CodeGenerator-2.1 {generateMainEntryCode, generateMainExitCode} {
+    list [$codeGenerator generateMainEntryCode] \
+	[$codeGenerator generateMainExitCode] 
+} {{/* main entry code */
+} {/* main exit code */
+}}
 
 #####
 test CodeGenerator-3.1 {getComponent()} {
@@ -137,7 +144,7 @@ test CodeGenerator-10.1 {generateWrapup* methods} {
 #####
 test CodeGenerator-11.1 {getModifiedVariables methods} {
     list [java::isnull [$codeGenerator getModifiedVariables]]
-} {1}
+} {0}
 
 
 #####
@@ -150,7 +157,7 @@ test CodeGenerator-12.1 {generateCode using actor/TypedCompositeActor.java} {
     # Set the generatorPackage parameter so we look in
     # $PTII/ptolemy/codegen/kernel/test/actor for TypedCompositeActor.java
     set generatorPackageParameter [java::cast  ptolemy.data.expr.StringParameter [$codeGenerator getAttribute generatorPackage]]
-    $generatorPackageParameter setExpression ptolemy.codegen.kernel.test
+    $generatorPackageParameter setExpression ptolemy.codegen.c
 
     set code [java::new StringBuffer]
     $codeGenerator generateCode $code

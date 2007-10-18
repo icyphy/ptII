@@ -103,6 +103,12 @@ public class CodeStream {
         _helper = helper;
         this._codeGenerator = _helper._codeGenerator;
     }
+    
+    public CodeStream(List templateArguments, CodeGeneratorHelper helper) {
+        this(helper);
+        _templateArguments = templateArguments;
+    }
+    
 
     /**
      * Construct a new code stream, given a specified file path of the
@@ -628,13 +634,23 @@ public class CodeStream {
                 }
             }    
 
+            
+            if (_templateArguments != null) {
+                // Template parameter substitution.
+                _templateParameters = _parseParameterList(
+                        codeToBeParsed, 0, codeToBeParsed.indexOf(">"), "<", ">");
+
+                codeToBeParsed = this._substituteParameters(
+                    codeToBeParsed, _templateParameters, _templateArguments);
+            }
+            
             _declarations.addScope();
 
             // repeatedly parse the file
             while (_parseCodeBlock(codeToBeParsed) != null) {
                 ;
             }
-
+            
         } catch (IllegalActionException ex) {
             _declarations = null;
             throw ex;
@@ -663,6 +679,14 @@ public class CodeStream {
                         "Error closing file: " + _filePath);
             }
         }
+    }
+
+    private List _parseTemplateParameters(StringBuffer code) {
+        String codeString = code.toString().trim();
+        if (codeString.startsWith("template")) {
+            
+        }
+        return null;
     }
 
     /**
@@ -849,6 +873,21 @@ public class CodeStream {
         return signature;
     }
 
+    
+    private static List _parseParameterList(
+            StringBuffer codeInFile, String startSymbol, String endSymbol) {
+        
+        return _parseParameterList(codeInFile, 0, 
+                codeInFile.length(), startSymbol, endSymbol);
+    }
+
+    
+    private static List _parseParameterList(
+            StringBuffer codeInFile, int start, int end) {
+        
+        return _parseParameterList(codeInFile, start, end, "(", ")");
+    }
+
     /**
      * Return a list of parameter expression contains in the given string
      * buffer. It parses comma-separated expressions and also understand
@@ -858,8 +897,10 @@ public class CodeStream {
      * @param end The given end index to stop parsing. 
      * @return The list of parameter expressions.
      */
-    private static ArrayList _parseParameterList(StringBuffer codeInFile, int start, int end) {
-        int parameterIndex = codeInFile.indexOf("(", start);
+    private static ArrayList _parseParameterList(StringBuffer codeInFile, 
+            int start, int end, String startSymbol, String endSymbol) {
+        
+        int parameterIndex = codeInFile.indexOf(startSymbol, start);
 
         ArrayList parameterList = new ArrayList();
 
@@ -874,8 +915,8 @@ public class CodeStream {
             int openIndex = 0;
             int closeIndex = 0;
             do {
-                openIndex = newParameter.indexOf("(", openIndex + 1);
-                closeIndex = newParameter.indexOf(")", closeIndex + 1);                
+                openIndex = newParameter.indexOf(startSymbol, openIndex + 1);
+                closeIndex = newParameter.indexOf(endSymbol, closeIndex + 1);                
             } while (openIndex >= 0 && closeIndex >= 0);
 
             // It matches the number of open and close parenthesis pairs
@@ -896,6 +937,42 @@ public class CodeStream {
         return parameterList;
     }
 
+    /**
+     * Substitute parameters. 
+     * This method searches all occurences of each parameter expressions
+     * in the given code block content and replace each with the given
+     * arguments using straight-forward text substitution.
+     * @param codeBlock The given code block content.
+     * @param parameters The given list of parameters.
+     * @param arguments The given list of arguments.
+     * @return The code block content after parameter substitutions.
+     * @exception IllegalActionException Thrown if 
+     *  _checkParameterName(String) throws it.
+     */
+    private static StringBuffer _substituteParameters(
+            StringBuffer codeBlock, List parameters, List arguments) 
+                throws IllegalActionException {
+        // Text-substitute for each parameters.
+        for (int i = 0; i < arguments.size(); i++) {
+                        
+            //String replaceString = arguments.get(i).toString();
+            String replaceString = _checkArgumentName(arguments.get(i).toString());
+            String parameterName = _checkParameterName(parameters.get(i).toString());
+            try {
+                codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
+                    parameterName,
+                    replaceString));
+            } catch (Exception ex) {
+                throw new IllegalActionException(null, ex,
+                        "Failed to replace \"" 
+                        + parameterName
+                        + "\" with \""
+                        + replaceString + "\"");
+            }
+        }
+        return codeBlock;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
  
@@ -1138,42 +1215,6 @@ public class CodeStream {
             }
             return signatures.iterator();
         }
-        
-        /**
-         * Substitute parameters. 
-         * This method searches all occurences of each parameter expressions
-         * in the given code block content and replace each with the given
-         * arguments using straight-forward text substitution.
-         * @param codeBlock The given code block content.
-         * @param parameters The given list of parameters.
-         * @param arguments The given list of arguments.
-         * @return The code block content after parameter substitutions.
-         * @exception IllegalActionException Thrown if 
-         *  _checkParameterName(String) throws it.
-         */
-        private StringBuffer _substituteParameters(
-                StringBuffer codeBlock, List parameters, List arguments) 
-                    throws IllegalActionException {
-            // Text-substitute for each parameters.
-            for (int i = 0; i < arguments.size(); i++) {
-                            
-                //String replaceString = arguments.get(i).toString();
-                String replaceString = _checkArgumentName(arguments.get(i).toString());
-                String parameterName = _checkParameterName(parameters.get(i).toString());
-                try {
-                    codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
-                        parameterName,
-                        replaceString));
-                } catch (Exception ex) {
-                    throw new IllegalActionException(null, ex,
-                            "Failed to replace \"" 
-                            + parameterName
-                            + "\" with \""
-                            + replaceString + "\"");
-                }
-            }
-            return codeBlock;
-        }
 
         /**
          * LinkedList of Hashtable of code blocks. Each index of the
@@ -1321,4 +1362,9 @@ public class CodeStream {
      * The content of this CodeStream.
      */
     private StringBuffer _stream = new StringBuffer();
+
+    
+    private List _templateArguments;
+
+    private List _templateParameters;
 }

@@ -145,24 +145,14 @@ public class Director implements ActorCodeGenerator {
         return new HashSet();
     }
 
-    /** Generate the main entry point.
-     *  @return In this base class, return a comment.  Subclasses
-     *  should return the definition of the main entry point for a program.
-     *  In C, this would be defining main().
+    /** Generate a main loop for an execution under the control of
+     *  this director.  In this base class, this simply delegates
+     *  to generateFireCode().
+     *  @return Whatever generateFireCode() returns.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateMainEntryCode() throws IllegalActionException {
-        return _codeGenerator.comment("main entry code");
-    }
-
-    /** Generate the main entry point.
-     *  @return In this base class, return a comment.  Subclasses
-     *  should return the a string that closes optionally calls exit
-     *  and closes the main() method 
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generateMainExitCode() throws IllegalActionException {
-        return _codeGenerator.comment("main exit code");
+    public String generateMainLoop() throws IllegalActionException {
+        return generateFireCode();
     }
 
     /** Generate the initialize code for this director.
@@ -647,7 +637,7 @@ public class Director implements ActorCodeGenerator {
         _eol = StringUtilities.getProperty("line.separator");
     }
 
-    /** The associate director.
+    /** The associated director.
      */
     protected ptolemy.actor.Director _director;
 
