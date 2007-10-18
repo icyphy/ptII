@@ -307,7 +307,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     }
 
     /** Generate variable declarations for input ports, output ports and 
-     *  parameters if necessary.
+     *  parameters if necessary, as well as for the director and the
+     *  contained actors.
      *  @return code The generated code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating variable declarations for 
@@ -315,8 +316,15 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        //code.append(_codeGenerator.comment(0,
-        //        "Composite actor's variable declarations."));
+        
+        // First do the director, if there is one.
+        ptolemy.actor.Director director
+                = ((ptolemy.actor.CompositeActor) getComponent()).getDirector();
+        if (director != null) {
+            Director directorHelper = (Director) _getHelper(director);
+            code.append(directorHelper.generateVariableDeclaration());
+        }
+
         code.append(super.generateVariableDeclaration());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
