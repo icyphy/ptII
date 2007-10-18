@@ -730,7 +730,7 @@ codeDoc/ptolemy/actor/lib/Ramp.xml:
 # All the namedObjs for which we have documentation.
 codeDoc/allNamedObjs.txt: codeDoc/ptolemy/actor/lib/Ramp.xml
 
-# Create the actor index.  See $PTII/ptolemy/vergil/basic/docViewerHelp.htm
+# Create the actor index.  See $PTII/ptolemy/vergil/actor/docViewerHelp.htm
 indexActors: codeDoc/ptolemy/actor/lib/RampIdx.xml
 codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt
 	@echo "# Create the actor index."  
