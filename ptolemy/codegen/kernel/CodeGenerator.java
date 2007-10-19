@@ -238,10 +238,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public Parameter run;
 
-    /** If true, then the generated source is binded to the line 
-     * number and file of the (helper) templates. Otherwise, the 
-     * source is binded only to the output file. The default   
-     * value is a parameter with the value false..
+    /** If true, then the generated source is bound to the line 
+     *  number and file of the (helper) templates. Otherwise, the 
+     *  source is bound only to the output file. This is a boolean   
+     *  parameter with default value false.
      */
     public Parameter sourceLineBinding;
     
