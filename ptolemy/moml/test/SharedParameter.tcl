@@ -891,3 +891,27 @@ setExpressionCount: 3
 sharedParameterSetCount: 0
 validateCount: 1
 propagateValueCount: 0}}
+
+#################################
+####
+#
+test SharedParameter-19.2 {Check that type changes with new Token type} {
+    set e [java::new {ptolemy.kernel.Entity String} entity]
+
+    set param1 [java::new ptolemy.moml.SharedParameter $e id1 [java::null] "11"]
+    set param2 [java::new ptolemy.moml.SharedParameter $e id2 [java::null] "11"]
+
+    set name1 [$param1 getFullName]
+
+    # Now put a new token into the SharedParameter
+    set tok1 [java::new  {ptolemy.data.DoubleToken double} 7.3]
+    $param1 setToken $tok1
+
+    set value1 [[$param1 getToken] toString]
+    set value2 [[$param2 getToken] toString]
+
+	# They show the same value.
+    list $name1 $value1 $value2
+
+} {.entity.id1 7.3 7.3}
+
