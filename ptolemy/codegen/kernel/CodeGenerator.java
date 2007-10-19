@@ -334,6 +334,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *   or write-to-file throw any exception.
      */
     public int generateCode() throws KernelException {
+        // FIXME: This doesn't make any sense.
+        // It writes to a string buffer and then discards the
+        // reference to that string buffer... (???)
         return generateCode(new StringBuffer());
     }
 
