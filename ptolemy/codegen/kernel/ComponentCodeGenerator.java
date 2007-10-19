@@ -49,17 +49,17 @@ public interface ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate into the specified code stream the code associated
-     *  with initialization of the container composite actor.
+    /** Generate and return the code associated
+     *  with initialization of the component.
      *  @exception IllegalActionException If something goes wrong.
-     *  @return The initialize code of the containing composite actor.
+     *  @return The initialize code of the component.
      */
     public String generateInitializeCode() throws IllegalActionException;
 
-    /** Generate into the specified code stream the code associated
-     *  with wrapping up the container composite actor.
+    /** Generate and return the code associated
+     *  with wrapping up the component.
      *  @exception IllegalActionException If something goes wrong.
-     *  @return The wrapup code of the containing composite actor.
+     *  @return The wrapup code of the component.
      */
     public String generateWrapupCode() throws IllegalActionException;
 
