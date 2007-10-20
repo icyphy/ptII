@@ -30,6 +30,7 @@ package ptolemy.vergil.gt;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -163,6 +164,12 @@ ValueListener {
         } else {
             _graphPanner.setCanvas(null);
         }
+
+        _fullScreenComponent.removeKeyListener(this);
+        if (_selectedIndexBeforeFullScreen == 2) {
+            _setOrUnsetKeyListenersForAllComponents(
+                    (JPanel) _fullScreenComponent, false);
+        }
         pack();
         show();
         GraphicalMessageHandler.setContext(_previousDefaultContext);
@@ -229,6 +236,12 @@ ValueListener {
         _screen.setResizable(false);
 
         _fullScreenComponent.addKeyListener(this);
+        if (_selectedIndexBeforeFullScreen == 2) {
+            // The correspondence table is selected before full screen.
+            // Set the key listener for the table.
+            _setOrUnsetKeyListenersForAllComponents(
+                    (JPanel) _fullScreenComponent, true);
+        }
 
         // Remove association with the graph panner.
         _graphPanner.setCanvas(null);
@@ -256,9 +269,6 @@ ValueListener {
     }
 
     public void keyPressed(KeyEvent e) {
-        if (e.getSource() != _fullScreenComponent) {
-            return;
-        }
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE || e.getKeyCode()
                 == (KeyEvent.VK_ALT | KeyEvent.VK_S)) {
             e.consume();
@@ -593,6 +603,21 @@ ValueListener {
             (JPanel) _correspondenceTableModel.getValueAt(row, column);
         JTextField textField = (JTextField) panel.getComponent(0);
         return textField.getText();
+    }
+
+    private void _setOrUnsetKeyListenersForAllComponents(Container container,
+            boolean isSet) {
+        for (Component component : container.getComponents()) {
+            if (isSet) {
+                component.addKeyListener(this);
+            } else {
+                component.removeKeyListener(this);
+            }
+            if (component instanceof Container) {
+                _setOrUnsetKeyListenersForAllComponents((Container) component,
+                        isSet);
+            }
+        }
     }
 
     private void _updateCorrespondenceAttribute(String stringifiedAttribute) {
