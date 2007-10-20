@@ -9,7 +9,7 @@
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
       <configure>
         <entity name="GTLibrary" class="ptolemy.kernel.CompositeEntity">
-          <input source="ptolemy/configs/gtLibrary.xml"/>
+          <input source="ptolemy/configs/gt/gtLibrary.xml"/>
         </entity>
       </configure>
     </property>
