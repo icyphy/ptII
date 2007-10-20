@@ -160,14 +160,9 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
         LayoutAction layoutAction = new LayoutAction();
         GUIUtilities.addMenuItem(_ruleMenu, layoutAction);
 
-        if (hasTabs()) {
-            NewRelationAction newRelationAction = new NewRelationAction();
-            GUIUtilities.addMenuItem(_ruleMenu, newRelationAction);
-            GUIUtilities.addToolBarButton(_toolbar, newRelationAction);
-        } else {
-            ((ActorEditorGraphController) _getGraphController())
-                    .addToMenuAndToolbar(_ruleMenu, _toolbar);
-        }
+        NewRelationAction newRelationAction = new NewRelationAction();
+        GUIUtilities.addMenuItem(_ruleMenu, newRelationAction);
+        GUIUtilities.addToolBarButton(_toolbar, newRelationAction);
 
         GUIUtilities.addToolBarButton(_toolbar, matchAction);
     }
@@ -549,7 +544,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
             if (getSelectedIndex() == 2) {
                 return;
             }
-            
+
             super.actionPerformed(e);
 
             double x;

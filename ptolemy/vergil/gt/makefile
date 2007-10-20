@@ -74,6 +74,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'AbstractGTFrame$$1.class' \
 	'AbstractGTFrame$$2.class' \
+	'AbstractGTFrame$$3.class' \
 	'GTRuleGraphFrame$$1.class' \
 	'GTRuleGraphFrame$$GTActionGraphController$$EntityController.class' \
 	'GTRuleGraphFrame$$GTActionGraphController.class' \
@@ -102,8 +103,6 @@ OPTIONAL_FILES = \
 	'RuleEditor$$ComboElement.class' \
 	'RuleEditor$$Factory.class' \
 	'RuleEditor$$HelpLabel.class' \
-	'RuleEditor$$JPanelCellEditor.class' \
-	'RuleEditor$$Row$$1.class' \
 	'RuleEditor$$Row$$CheckBoxActionListener.class' \
 	'RuleEditor$$Row.class'
 

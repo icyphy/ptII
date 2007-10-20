@@ -74,25 +74,28 @@ public class SingleRuleTransformer extends MultiCompositeActor {
         return _replacement;
     }
 
-    public StringAttribute _correspondenceAttribute;
+    public CorrespondenceAttribute correspondenceAttribute;
 
     public class CorrespondenceAttribute extends StringAttribute {
 
         public String getExpression() {
+            return getExpression(_correspondence);
+        }
+
+        public String getExpression(List<Pair<String, String>> correspondence) {
             StringBuffer buffer = new StringBuffer();
-            for (Pair<String, String> correspondence : _correspondence) {
+            for (Pair<String, String> pair : correspondence) {
                 if (buffer.length() > 0) {
-                    buffer.append("<..>");
+                    buffer.append(SEPARATOR);
                 }
-                buffer.append(correspondence.getFirst() + "<..>"
-                        + correspondence.getSecond());
+                buffer.append(pair.getFirst() + SEPARATOR + pair.getSecond());
             }
             return buffer.toString();
         }
 
         public void setExpression(String expression)
         throws IllegalActionException {
-            String[] correspondences = expression.split("<\\.\\.>", -1);
+            String[] correspondences = expression.split(SEPARATOR_PATTERN, -1);
             _correspondence.clear();
             for (int i = 0; i < correspondences.length; i += 2) {
                 if (i + 1 < correspondences.length) {
@@ -102,6 +105,10 @@ public class SingleRuleTransformer extends MultiCompositeActor {
             }
             super.setExpression(expression);
         }
+
+        public static final String SEPARATOR = "<..>";
+
+        public static final String SEPARATOR_PATTERN = "<\\.\\.>";
 
         CorrespondenceAttribute(String name) throws IllegalActionException,
         NameDuplicationException {
@@ -117,9 +124,9 @@ public class SingleRuleTransformer extends MultiCompositeActor {
         _pattern = new CompositeActorMatcher(this, "Pattern");
         _replacement = new CompositeActorMatcher(this, "Replacement");
         _correspondence = new LinkedList<Pair<String, String>>();
-        _correspondenceAttribute =
+        correspondenceAttribute =
             new CorrespondenceAttribute("correspondence");
-        _correspondenceAttribute.setExpression("");
+        correspondenceAttribute.setExpression("");
     }
 
     ///////////////////////////////////////////////////////////////////
