@@ -546,6 +546,10 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
+            if (getSelectedIndex() == 2) {
+                return;
+            }
+            
             super.actionPerformed(e);
 
             double x;

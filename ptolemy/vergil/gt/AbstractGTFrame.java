@@ -32,37 +32,49 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.SingleRuleTransformer;
+import ptolemy.actor.gt.data.Pair;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.EditorDropTarget;
@@ -74,7 +86,7 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 
 public abstract class AbstractGTFrame extends ExtendedGraphFrame
-implements ChangeListener, ActionListener {
+implements ActionListener, ChangeListener, KeyListener, TableModelListener, ValueListener {
 
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -108,6 +120,9 @@ implements ChangeListener, ActionListener {
     public AbstractGTFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
+
+        ((SingleRuleTransformer) entity)._correspondenceAttribute
+                .addValueListener(this);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -116,12 +131,11 @@ implements ChangeListener, ActionListener {
             int number = _correspondenceTableModel.getRowCount() + 1;
             _correspondenceTableModel.addRow(new Object[] {
                     _createCellPanel(Integer.toString(number)),
-                    _createCellPanel("aaa"), _createCellPanel("bbb")
+                    _createCellPanel(""), _createCellPanel("")
             });
         } else if (command.equals("remove")) {
-            TableCellEditor editor = _correspondenceTable.getCellEditor();
-            if (editor != null) {
-                editor.stopCellEditing();
+            if (_cellEditor != null) {
+                _cellEditor.stopCellEditing();
             }
             int[] rows = _correspondenceTable.getSelectedRows();
             int size = _correspondenceTableModel.getRowCount();
@@ -134,6 +148,72 @@ implements ChangeListener, ActionListener {
                             i - deleted, 0);
                 }
             }
+        }
+    }
+
+    public void cancelFullScreen() {
+        _screen.dispose();
+
+        // Put the component back into the original window.
+        _splitPane.setRightComponent(_getRightComponent());
+        _tabbedPane.add(_fullScreenJGraph, _selectedIndex);
+        // -1 because the index was automatically increased by 1 when the tab
+        // was deleted last time.
+        _tabbedPane.setSelectedIndex(_selectedIndex - 1);
+
+        // Restore association with the graph panner.
+        _graphPanner.setCanvas(_fullScreenJGraph);
+        pack();
+        show();
+        GraphicalMessageHandler.setContext(_previousDefaultContext);
+        toFront();
+        _getRightComponent().requestFocus();
+    }
+
+    public void fullScreen() {
+        if (_selectedIndex != 2) {
+            _screen = new JDialog();
+            _screen.getContentPane().setLayout(new BorderLayout());
+
+            // Set to full-screen size.
+            Toolkit toolkit = _screen.getToolkit();
+            int width = toolkit.getScreenSize().width;
+            int height = toolkit.getScreenSize().height;
+            _screen.setSize(width, height);
+
+            _fullScreenJGraph = getJGraph();
+            _screen.setUndecorated(true);
+            _screen.getContentPane().add(_fullScreenJGraph, BorderLayout.CENTER);
+
+            // NOTE: Have to avoid the following, which forces the
+            // dialog to resize the preferred size of _jgraph, which
+            // nullifies the call to setSize() above.
+            // _screen.pack();
+            _screen.setVisible(true);
+
+            // Make the new screen the default context for modal messages.
+            Component _previousDefaultContext = GraphicalMessageHandler.getContext();
+            GraphicalMessageHandler.setContext(_screen);
+
+            // NOTE: As usual with swing, what the UI does is pretty
+            // random, and doesn't correlate much with the documentation.
+            // The following two lines do not work if _screen is a
+            // JWindow instead of a JDialog.  There is no apparent
+            // reason for this, but this is why we use JDialog.
+            // Unfortunately, apparently the JDialog does not appear
+            // in the Windows task bar.
+            _screen.toFront();
+            _fullScreenJGraph.requestFocus();
+
+            _screen.setResizable(false);
+
+            _fullScreenJGraph.addKeyListener(this);
+
+            // Remove association with the graph panner.
+            _graphPanner.setCanvas(null);
+
+            setVisible(false);
+            GraphicalMessageHandler.setContext(_previousDefaultContext);
         }
     }
 
@@ -155,8 +235,36 @@ implements ChangeListener, ActionListener {
         }
     }
 
+    public int getSelectedIndex() {
+        return _selectedIndex;
+    }
+
     public boolean hasTabs() {
         return _tabbedPane != null;
+    }
+
+    public void keyPressed(KeyEvent e) {
+        if (e.getSource() != _fullScreenJGraph) {
+            return;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE || e.getKeyCode()
+                == (KeyEvent.VK_ALT | KeyEvent.VK_S)) {
+            e.consume();
+            cancelFullScreen();
+        }
+    }
+
+    public void keyReleased(KeyEvent e) {
+    }
+
+    public void keyTyped(KeyEvent e) {
+    }
+
+    public void redo() {
+        if (_cellEditor != null) {
+            _cellEditor.stopCellEditing();
+        }
+        super.redo();
     }
 
     /** React to a change in the state of the tabbed pane.
@@ -164,6 +272,7 @@ implements ChangeListener, ActionListener {
      */
     public void stateChanged(ChangeEvent event) {
         if (event.getSource() == _tabbedPane) {
+            _selectedIndex = _tabbedPane.getSelectedIndex();
             Component selected = _tabbedPane.getSelectedComponent();
             if (selected instanceof JGraph) {
                 setJGraph((JGraph) selected);
@@ -175,6 +284,42 @@ implements ChangeListener, ActionListener {
                     _graphPanner.setCanvas(null);
                 }
             }
+        }
+    }
+
+    public void tableChanged(TableModelEvent e) {
+        _commitCorrespondenceChange();
+    }
+
+    public void undo() {
+        if (_cellEditor != null) {
+            _cellEditor.stopCellEditing();
+        }
+        super.undo();
+    }
+
+    public void valueChanged(Settable settable) {
+        SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
+        if (settable == transformer._correspondenceAttribute) {
+            _updateCorrespondenceTable();
+        }
+    }
+
+    public void zoom(double factor) {
+        if (_selectedIndex != 2) {
+            super.zoom(factor);
+        }
+    }
+
+    public void zoomFit() {
+        if (_selectedIndex != 2) {
+            super.zoomFit();
+        }
+    }
+
+    public void zoomReset() {
+        if (_selectedIndex != 2) {
+            super.zoomReset();
         }
     }
 
@@ -250,7 +395,6 @@ implements ChangeListener, ActionListener {
         CompositeEntity model =
             (CompositeEntity) graphModel.getPtolemyModel();
         if (hasTabs()) {
-            int index = _tabbedPane.getSelectedIndex();
             NamedObj parent = model.getContainer();
             while (!(parent instanceof SingleRuleTransformer)) {
                 parent = parent.getContainer();
@@ -258,7 +402,7 @@ implements ChangeListener, ActionListener {
             List<?> entityList =
                 ((SingleRuleTransformer) parent).entityList(
                         CompositeActorMatcher.class);
-            return (CompositeActorMatcher) entityList.get(index);
+            return (CompositeActorMatcher) entityList.get(_selectedIndex);
         } else {
             return model;
         }
@@ -318,10 +462,33 @@ implements ChangeListener, ActionListener {
         return jgraph;
     }
 
+    private void _commitCorrespondenceChange() {
+        SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < _correspondenceTableModel.getRowCount(); i++) {
+            if (buffer.length() > 0) {
+                buffer.append("<..>");
+            }
+            buffer.append(_getCorrespondenceValue(i, 1));
+            buffer.append("<..>");
+            buffer.append(_getCorrespondenceValue(i, 2));
+        }
+        String moml = "<property name=\"correspondence\" value=\""
+            + StringUtilities.escapeForXML(buffer.toString())
+            + "\"/>";
+        MoMLChangeRequest request =
+            new MoMLChangeRequest(this, transformer, moml, null);
+        request.setUndoable(true);
+        transformer.requestChange(request);
+    }
+
     private JPanel _createCellPanel(String value) {
         JPanel panel = new JPanel(new BorderLayout());
-        JLabel label = new JLabel(value, SwingConstants.CENTER);
-        panel.add(label, BorderLayout.CENTER);
+        JTextField textField = new JTextField(value, SwingConstants.CENTER);
+        textField.setBorder(_EMPTY_BORDER);
+        textField.setHorizontalAlignment(SwingConstants.CENTER);
+        textField.setOpaque(false);
+        panel.add(textField, BorderLayout.CENTER);
         return panel;
     }
 
@@ -331,7 +498,7 @@ implements ChangeListener, ActionListener {
         _correspondenceTableModel = new DefaultTableModel(
                 new Object[] {"", "Pattern Object", "Replacement Object"}, 0) {
             public boolean isCellEditable(int row, int column) {
-                return false;
+                return column > 0;
             }
 
             private static final long serialVersionUID = -3761868358642028952L;
@@ -354,10 +521,13 @@ implements ChangeListener, ActionListener {
             new DefaultTableCellRenderer();
         indexRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-        CellPanelEditor editor = new CellPanelEditor();
+        _cellEditor = new CellPanelEditor();
         for (int i = 0; i < 3; i++) {
             TableColumn column = model.getColumn(i);
-            column.setCellRenderer(editor);
+            column.setCellRenderer(_cellEditor);
+            if (i > 0) {
+                column.setCellEditor(_cellEditor);
+            }
         }
 
         JTableHeader header = _correspondenceTable.getTableHeader();
@@ -390,19 +560,39 @@ implements ChangeListener, ActionListener {
         _updateCorrespondenceTable();
     }
 
+    private String _getCorrespondenceValue(int row, int column) {
+        JPanel panel =
+            (JPanel) _correspondenceTableModel.getValueAt(row, column);
+        JTextField textField = (JTextField) panel.getComponent(0);
+        return textField.getText();
+    }
+
     private void _updateCorrespondenceTable() {
+        if (_cellEditor != null) {
+            _cellEditor.stopCellEditing();
+        }
+        _correspondenceTableModel.removeTableModelListener(this);
+
         while (_correspondenceTableModel.getRowCount() > 0) {
             _correspondenceTableModel.removeRow(0);
         }
 
         SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
-        Map<String, String> correspondence = transformer.getCorrespondence();
-        for (String patternObject : correspondence.keySet()) {
-            String replacementObject = correspondence.get(patternObject);
-            _correspondenceTableModel.addRow(
-                    new Object[] {patternObject, replacementObject});
+        List<Pair<String, String>> correspondenceList =
+            transformer.getCorrespondence();
+        int i = 1;
+        for (Pair<String, String> correspondence : correspondenceList) {
+            _correspondenceTableModel.addRow(new Object[] {
+                    _createCellPanel(Integer.toString(i++)),
+                    _createCellPanel(correspondence.getFirst()),
+                    _createCellPanel(correspondence.getSecond())
+            });
         }
+
+        _correspondenceTableModel.addTableModelListener(this);
     }
+
+    private CellPanelEditor _cellEditor;
 
     /** The graph controller.  This is created in _createGraphPane(). */
     private ActorEditorGraphController _controller;
@@ -411,9 +601,20 @@ implements ChangeListener, ActionListener {
 
     private DefaultTableModel _correspondenceTableModel;
 
+    private static final Border _EMPTY_BORDER =
+        BorderFactory.createEmptyBorder();
+
+    private JGraph _fullScreenJGraph;
+
     private List<JGraph> _graphs;
 
+    private Component _previousDefaultContext;
+
+    private JDialog _screen;
+
     private static final Color _SELECTED_COLOR = new Color(230, 230, 255);
+
+    private int _selectedIndex = 0;
 
     private JTabbedPane _tabbedPane;
 

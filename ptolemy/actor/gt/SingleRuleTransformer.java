@@ -26,9 +26,10 @@
  */
 package ptolemy.actor.gt;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
+import ptolemy.actor.gt.data.Pair;
 import ptolemy.actor.lib.hoc.MultiCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -61,7 +62,7 @@ public class SingleRuleTransformer extends MultiCompositeActor {
         _init();
     }
 
-    public Map<String, String> getCorrespondence() {
+    public List<Pair<String, String>> getCorrespondence() {
         return _correspondence;
     }
 
@@ -74,53 +75,29 @@ public class SingleRuleTransformer extends MultiCompositeActor {
     }
 
     public StringAttribute _correspondenceAttribute;
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                          private variables                ////
 
-    protected void _init()
-    throws IllegalActionException, NameDuplicationException {
-        // Create the default refinement.
-        _pattern = new CompositeActorMatcher(this, "Pattern");
-        _replacement = new CompositeActorMatcher(this, "Replacement");
-        _correspondence = new HashMap<String, String>();
-        _correspondenceAttribute =
-            new CorrespondenceAttribute("correspondence");
-        _correspondenceAttribute.setExpression("");
-    }
-
-    private Map<String, String> _correspondence;
-
-    private CompositeActorMatcher _pattern;
-
-    private CompositeActorMatcher _replacement;
-
-    private static final long serialVersionUID = -456353254196458127L;
-
-    private class CorrespondenceAttribute extends StringAttribute {
+    public class CorrespondenceAttribute extends StringAttribute {
 
         public String getExpression() {
             StringBuffer buffer = new StringBuffer();
-            for (String patternObject : _correspondence.keySet()) {
-                String replacementObject = _correspondence.get(patternObject);
-                String correspondence =
-                    patternObject + "<..>" + replacementObject;
+            for (Pair<String, String> correspondence : _correspondence) {
                 if (buffer.length() > 0) {
                     buffer.append("<..>");
                 }
-                buffer.append(correspondence);
+                buffer.append(correspondence.getFirst() + "<..>"
+                        + correspondence.getSecond());
             }
             return buffer.toString();
         }
 
         public void setExpression(String expression)
         throws IllegalActionException {
-            String[] correspondences = expression.split("<\\.\\.>");
+            String[] correspondences = expression.split("<\\.\\.>", -1);
             _correspondence.clear();
             for (int i = 0; i < correspondences.length; i += 2) {
                 if (i + 1 < correspondences.length) {
-                    _correspondence.put(correspondences[i],
-                            correspondences[i + 1]);
+                    _correspondence.add(new Pair<String, String>(
+                            correspondences[i], correspondences[i + 1]));
                 }
             }
             super.setExpression(expression);
@@ -133,5 +110,27 @@ public class SingleRuleTransformer extends MultiCompositeActor {
 
         private static final long serialVersionUID = 1805180151377867487L;
     }
+
+    protected void _init()
+    throws IllegalActionException, NameDuplicationException {
+        // Create the default refinement.
+        _pattern = new CompositeActorMatcher(this, "Pattern");
+        _replacement = new CompositeActorMatcher(this, "Replacement");
+        _correspondence = new LinkedList<Pair<String, String>>();
+        _correspondenceAttribute =
+            new CorrespondenceAttribute("correspondence");
+        _correspondenceAttribute.setExpression("");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          private variables                ////
+
+    private List<Pair<String, String>> _correspondence;
+
+    private CompositeActorMatcher _pattern;
+
+    private CompositeActorMatcher _replacement;
+
+    private static final long serialVersionUID = -456353254196458127L;
 
 }
