@@ -51,6 +51,7 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -593,8 +594,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String generateOffset(String offsetString, IOPort port, int channel,
             boolean isWrite) throws IllegalActionException {
-        boolean dynamicReferencesAllowed = _codeGenerator.dynamicMultiportReferenceAllowed();
-        boolean padBuffers = _codeGenerator.padBuffers();
+        boolean dynamicReferencesAllowed =
+            ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
+                    .getToken()).booleanValue();
+        boolean padBuffers =
+            ((BooleanToken) _codeGenerator.padBuffers.getToken()).booleanValue();
 
 
         // When dynamic references are allowed, any input ports require
@@ -1252,7 +1256,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String getReference(String name, boolean isWrite)
             throws IllegalActionException {
-        boolean dynamicReferencesAllowed = _codeGenerator.dynamicMultiportReferenceAllowed();
+        boolean dynamicReferencesAllowed =
+            ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
+                    .getToken()).booleanValue();
 
         name = processCode(name);
 

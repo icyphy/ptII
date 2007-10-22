@@ -572,8 +572,11 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
-        boolean dynamicReferencesAllowed = _codeGenerator.dynamicMultiportReferenceAllowed();
-        boolean padBuffers = _codeGenerator.padBuffers();
+        boolean dynamicReferencesAllowed = 
+            ((BooleanToken) _codeGenerator.allowDynamicMultiportReference.getToken())
+            .booleanValue();
+        boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers.getToken())
+            .booleanValue();
 
         StringBuffer tempCode = new StringBuffer();
         Iterator outputPorts = container.outputPortList().iterator();
@@ -761,17 +764,18 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
                 .getContainer());
-        boolean padBuffers = _codeGenerator.padBuffers();
+        boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers.getToken())
+            .booleanValue();
 
         int bufferSize = helper.getBufferSize(port, channelNumber);
+
+        // Increase the buffer size of that channel to the power of two.
+        if (bufferSize > 0 && padBuffers) {
+            bufferSize = _padBuffer(port, channelNumber);
+        }
+        
         if (bufferSize != 0
                 && (readTokens % bufferSize != 0 || writeTokens % bufferSize != 0)) {
-
-            // Increase the buffer size of that channel to the power of two.
-            if (padBuffers) {
-                bufferSize = _padBuffer(port, channelNumber);
-            }
-
             int width;
             if (port.isInput()) {
                 width = port.getWidth();

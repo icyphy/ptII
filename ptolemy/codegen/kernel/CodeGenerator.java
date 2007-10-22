@@ -170,6 +170,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     
     /** If true, then channels in multiports can be dynamically
      *  referenced using the $ref macro.
+     *  TODO: This parameter is SDF specific.
      */
     public Parameter allowDynamicMultiportReference;
 
@@ -230,6 +231,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public Parameter overwriteFiles;
 
     /** If true, then buffers are padded to powers of two.
+     *  TODO: This parameter is SDF specific.
      */
     public Parameter padBuffers;
     
@@ -314,18 +316,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String formatComment(String comment) {
         return "/* " + comment + " */" + _eol;
     }
-
-    /**
-     * Return true if dynamic reference of multiport channels is allowed.
-     * @return True if dynamic reference of multiport channels is allowed
-     * in the generated code.
-     * @exception IllegalActionException If getting the token throws it.
-     */
-    public boolean dynamicMultiportReferenceAllowed()
-            throws IllegalActionException {
-        return ((BooleanToken) allowDynamicMultiportReference.getToken()).booleanValue();
-    }
-
+    
     /** Generate code and write it to the file specified by the
      *  <i>codeDirectory</i> parameter.
      *  @return The return value of the last subprocess that was executed.
@@ -1046,17 +1037,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Argument not recognized.
         return false;
     }
-
-    /** Return true if buffers in generated code should be padded.
-     *  @return True if size of buffers in generated code should
-     *  be padded to powers of two.
-     *  @exception IllegalActionException If getting the token throws it.
-     */
-    public boolean padBuffers()
-            throws IllegalActionException {
-        return ((BooleanToken) padBuffers.getToken()).booleanValue();
-    }
-
+    
     /** This method is used to set the code generator for a helper class.
      *  Since this is not a helper class for a component, this method does
      *  nothing.

@@ -36,6 +36,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -209,7 +210,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     protected String _generateInputVariableDeclaration()
             throws IllegalActionException {
-        boolean dynamicReferencesAllowed = _codeGenerator.dynamicMultiportReferenceAllowed();
+        boolean dynamicReferencesAllowed =
+            ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
+                    .getToken()).booleanValue();
         
         StringBuffer code = new StringBuffer();
 

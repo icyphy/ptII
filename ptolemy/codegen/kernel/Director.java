@@ -38,6 +38,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
@@ -507,7 +508,8 @@ public class Director implements ActorCodeGenerator {
      */
     protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
             throws IllegalActionException {
-        boolean padBuffers = _codeGenerator.padBuffers();
+        boolean padBuffers =
+            ((BooleanToken) _codeGenerator.padBuffers.getToken()).booleanValue();
 
         if (rate == 0) {
             return;
@@ -563,7 +565,8 @@ public class Director implements ActorCodeGenerator {
      */
     protected void _updateConnectedPortsOffset(IOPort port, StringBuffer code,
             int rate) throws IllegalActionException {
-        boolean padBuffers = _codeGenerator.padBuffers();
+        boolean padBuffers =
+            ((BooleanToken) _codeGenerator.padBuffers.getToken()).booleanValue();
 
         if (rate == 0) {
             return;
