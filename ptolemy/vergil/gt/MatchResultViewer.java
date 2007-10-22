@@ -114,7 +114,7 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     public void highlightMatchedObjects() {
         if (_results != null) {
-            CompositeEntity matcher = _getCurrentMatcher();
+            CompositeEntity matcher = _getCurrentContainer();
             Set<?> matchedHostObjects = _results.get(_currentPosition).values();
             for (Object child : matcher.entityList(AtomicActor.class)) {
                 if (matchedHostObjects.contains(child)) {
@@ -149,18 +149,18 @@ public class MatchResultViewer extends AbstractGTFrame {
      */
     protected void _addMenus() {
         super._addMenus();
-        
+
         PreviousAction previousAction = new PreviousAction();
         NextAction nextAction = new NextAction();
-        
+
         _viewMenu.addSeparator();
         _previousItem = GUIUtilities.addMenuItem(_viewMenu, previousAction);
         _nextItem = GUIUtilities.addMenuItem(_viewMenu, nextAction);
-        
+
         _previousButton =
             GUIUtilities.addToolBarButton(_toolbar, previousAction);
         _nextButton = GUIUtilities.addToolBarButton(_toolbar, nextAction);
-        
+
         _enableOrDisable();
     }
 
@@ -212,10 +212,6 @@ public class MatchResultViewer extends AbstractGTFrame {
             }
         });
     }
-    
-    private JMenuItem _previousItem;
-    
-    private JMenuItem _nextItem;
 
     private void _checkContainingViewer() {
         NamedObj toplevel = getModel().toplevel();
@@ -286,7 +282,11 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     private JButton _nextButton;
 
+    private JMenuItem _nextItem;
+
     private JButton _previousButton;
+
+    private JMenuItem _previousItem;
 
     private List<MatchResult> _results;
 

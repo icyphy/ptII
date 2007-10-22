@@ -74,16 +74,16 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'AbstractGTFrame$$1.class' \
 	'AbstractGTFrame$$2.class' \
-	'AbstractGTFrame$$3.class' \
 	'GTRuleGraphFrame$$1.class' \
+	'GTRuleGraphFrame$$CellEditor.class' \
 	'GTRuleGraphFrame$$GTActionGraphController$$EntityController.class' \
+	'GTRuleGraphFrame$$GTActionGraphController$$NewRelationAction.class' \
 	'GTRuleGraphFrame$$GTActionGraphController.class' \
 	'GTRuleGraphFrame$$GTMenuActionFactory.class' \
 	'GTRuleGraphFrame$$LayoutAction.class' \
 	'GTRuleGraphFrame$$MatchAction.class' \
 	'GTRuleGraphFrame$$MatchFileChooser.class' \
 	'GTRuleGraphFrame$$MatchResultRecorder.class' \
-	'GTRuleGraphFrame$$NewRelationAction.class' \
 	'GTRuleGraphTableau$$Factory.class' \
 	'MatchResultTableau$$Factory.class' \
 	'MatchResultViewer$$1.class' \

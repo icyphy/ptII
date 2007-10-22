@@ -27,57 +27,28 @@
  */
 package ptolemy.vergil.gt;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
-import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.SingleRuleTransformer;
-import ptolemy.actor.gt.data.Pair;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.ValueListener;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.EditorDropTarget;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import diva.canvas.event.LayerAdapter;
@@ -87,8 +58,7 @@ import diva.graph.GraphPane;
 import diva.graph.JGraph;
 
 public abstract class AbstractGTFrame extends ExtendedGraphFrame
-implements ActionListener, ChangeListener, KeyListener, TableModelListener,
-ValueListener {
+implements ChangeListener, KeyListener {
 
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -122,132 +92,6 @@ ValueListener {
     public AbstractGTFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
-
-        ((SingleRuleTransformer) entity).correspondenceAttribute
-                .addValueListener(this);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        String command = e.getActionCommand();
-        if (command.equals("add")) {
-            addRow();
-        } else if (command.equals("remove")) {
-            int[] rows = _correspondenceTable.getSelectedRows();
-            if (rows.length > 0) {
-                deleteRows(rows);
-            }
-        }
-    }
-
-    public void addRow() {
-        String correspondenceString = _getCorrespondenceString();
-        if (correspondenceString.length() > 0) {
-            correspondenceString +=
-                SingleRuleTransformer.CorrespondenceAttribute.SEPARATOR;
-        }
-        correspondenceString +=
-            SingleRuleTransformer.CorrespondenceAttribute.SEPARATOR;
-        _updateCorrespondenceAttribute(correspondenceString);
-    }
-
-    public void cancelFullScreen() {
-        _screen.dispose();
-
-        // Put the component back into the original window.
-        _splitPane.setRightComponent(_getRightComponent());
-        _tabbedPane.add(_fullScreenComponent, _selectedIndexBeforeFullScreen);
-        _tabbedPane.setSelectedIndex(_selectedIndexBeforeFullScreen);
-
-        // Restore association with the graph panner.
-        if (_fullScreenComponent instanceof JGraph) {
-            _graphPanner.setCanvas((JGraph) _fullScreenComponent);
-        } else {
-            _graphPanner.setCanvas(null);
-        }
-
-        _fullScreenComponent.removeKeyListener(this);
-        if (_selectedIndexBeforeFullScreen == 2) {
-            _setOrUnsetKeyListenersForAllComponents(
-                    (JPanel) _fullScreenComponent, false);
-        }
-        pack();
-        show();
-        GraphicalMessageHandler.setContext(_previousDefaultContext);
-        toFront();
-        _getRightComponent().requestFocus();
-    }
-
-    public void deleteRows(int[] rows) {
-        if (_cellEditor != null) {
-            // Stop editing so that the current edit value will be recorded in
-            // the undo history.
-            _cellEditor.stopCellEditing();
-        }
-        SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
-        List<Pair<String, String>> correspondence =
-            transformer.getCorrespondence();
-        List<Pair<String, String>> newCorrespondence =
-            new LinkedList<Pair<String, String>>(correspondence);
-        int deleted = 0;
-        for (int row : rows) {
-            newCorrespondence.remove(row - deleted);
-            deleted++;
-        }
-        _updateCorrespondenceAttribute(transformer.correspondenceAttribute
-                        .getExpression(newCorrespondence));
-    }
-
-    public void fullScreen() {
-        _screen = new JDialog();
-        _screen.getContentPane().setLayout(new BorderLayout());
-
-        // Set to full-screen size.
-        Toolkit toolkit = _screen.getToolkit();
-        int width = toolkit.getScreenSize().width;
-        int height = toolkit.getScreenSize().height;
-        _screen.setSize(width, height);
-
-        _selectedIndexBeforeFullScreen = _tabbedPane.getSelectedIndex();
-        _fullScreenComponent = _tabbedPane.getSelectedComponent();
-        _screen.setUndecorated(true);
-        _screen.getContentPane().add(_fullScreenComponent, BorderLayout.CENTER);
-
-        // NOTE: Have to avoid the following, which forces the
-        // dialog to resize the preferred size of _jgraph, which
-        // nullifies the call to setSize() above.
-        // _screen.pack();
-        _screen.setVisible(true);
-
-        // Make the new screen the default context for modal messages.
-        Component _previousDefaultContext =
-            GraphicalMessageHandler.getContext();
-        GraphicalMessageHandler.setContext(_screen);
-
-        // NOTE: As usual with swing, what the UI does is pretty
-        // random, and doesn't correlate much with the documentation.
-        // The following two lines do not work if _screen is a
-        // JWindow instead of a JDialog.  There is no apparent
-        // reason for this, but this is why we use JDialog.
-        // Unfortunately, apparently the JDialog does not appear
-        // in the Windows task bar.
-        _screen.toFront();
-        _fullScreenComponent.requestFocus();
-
-        _screen.setResizable(false);
-
-        _fullScreenComponent.addKeyListener(this);
-        if (_selectedIndexBeforeFullScreen == 2) {
-            // The correspondence table is selected before full screen.
-            // Set the key listener for the table.
-            _setOrUnsetKeyListenersForAllComponents(
-                    (JPanel) _fullScreenComponent, true);
-        }
-
-        // Remove association with the graph panner.
-        _graphPanner.setCanvas(null);
-
-        setVisible(false);
-        GraphicalMessageHandler.setContext(_previousDefaultContext);
     }
 
     /** Return the JGraph instance that this view uses to represent the
@@ -256,16 +100,24 @@ ValueListener {
      *  @see #setJGraph(JGraph)
      */
     public JGraph getJGraph() {
-        Component selected = _tabbedPane.getSelectedComponent();
-        if (selected instanceof JGraph) {
-            return (JGraph) selected;
+        if (hasTabs()) {
+            Component selected = _tabbedPane.getSelectedComponent();
+            if (selected instanceof JGraph) {
+                return (JGraph) selected;
+            } else {
+                return null;
+            }
         } else {
-            return null;
+            return super.getJGraph();
         }
     }
 
     public int getSelectedIndex() {
         return _selectedIndex;
+    }
+
+    public boolean hasTabs() {
+        return _tabbedPane != null;
     }
 
     public void keyPressed(KeyEvent e) {
@@ -282,113 +134,62 @@ ValueListener {
     public void keyTyped(KeyEvent e) {
     }
 
-    public void redo() {
-        if (_cellEditor != null) {
-            _cellEditor.stopCellEditing();
-        }
-        super.redo();
-    }
-
     /** React to a change in the state of the tabbed pane.
      *  @param event The event.
      */
     public void stateChanged(ChangeEvent event) {
         if (event.getSource() == _tabbedPane) {
             _selectedIndex = _tabbedPane.getSelectedIndex();
-            Component selected = _tabbedPane.getSelectedComponent();
-            if (selected instanceof JGraph) {
-                setJGraph((JGraph) selected);
-                if (_graphPanner != null) {
-                    _graphPanner.setCanvas((JGraph) selected);
+            if (_selectedIndex < _graphPanes.size()) {
+                GraphPane graphPane = _graphPanes.get(_selectedIndex);
+                _controller.setGraphPane(graphPane);
+                _controller.setGraphModel(graphPane.getGraphModel());
+            }
+            _showTab(_selectedIndex);
+        }
+    }
+
+    protected boolean _close() {
+        boolean result = super._close();
+        if (result && hasTabs()) {
+            for (Component tab : _tabbedPane.getComponents()) {
+                if (tab instanceof JGraph) {
+                    AbstractBasicGraphModel graphModel =
+                        (AbstractBasicGraphModel) ((JGraph) tab).getGraphPane()
+                                .getGraphModel();
+                    graphModel.removeListeners();
                 }
-            } else {
-                if (_graphPanner != null) {
-                    _graphPanner.setCanvas(null);
-                }
             }
         }
-    }
-
-    public void tableChanged(TableModelEvent e) {
-        if (e.getType() != TableModelEvent.UPDATE) {
-            return;
-        }
-
-        int column = e.getColumn();
-        int row = e.getFirstRow();
-        if (column != TableModelEvent.ALL_COLUMNS && row == e.getLastRow()) {
-            // Get the value in the transformer's correspondence attribute.
-            SingleRuleTransformer transformer =
-                (SingleRuleTransformer) getModel();
-            List<Pair<String, String>> correspondence =
-                transformer.getCorrespondence();
-
-            if (correspondence.size() <= row) {
-                // If some rows are deleted, then _cellEditor.stopEditing() will
-                // invoke tableChanged, and the number of rows in the table is
-                // actually greater than the number of entries in the
-                // correspondence table.
-                return;
-            }
-
-            Pair<String, String> pair = correspondence.get(row);
-
-            String newValue = _getCorrespondenceValue(row, column);
-
-            if (!pair.get(column - 1).equals(newValue)) {
-                _updateCorrespondenceAttribute(_getCorrespondenceString());
-            }
-        }
-    }
-
-    public void undo() {
-        if (_cellEditor != null) {
-            _cellEditor.stopCellEditing();
-        }
-        super.undo();
-    }
-
-    public void valueChanged(Settable settable) {
-        SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
-        if (settable == transformer.correspondenceAttribute) {
-            _updateCorrespondenceTable();
-        }
-    }
-
-    public void zoom(double factor) {
-        if (_selectedIndex != 2) {
-            super.zoom(factor);
-        }
-    }
-
-    public void zoomFit() {
-        if (_selectedIndex != 2) {
-            super.zoomFit();
-        }
-    }
-
-    public void zoomReset() {
-        if (_selectedIndex != 2) {
-            super.zoomReset();
-        }
+        return result;
     }
 
     protected abstract ActorEditorGraphController _createController();
 
     protected GraphPane _createGraphPane(NamedObj entity) {
+        // The cast is safe because the constructor only accepts
+        // CompositeEntity.
+        ActorGraphModel graphModel = new ActorGraphModel(entity);
+        GraphPane graphPane = new GraphPane(_controller, graphModel);
+        if (_graphPanes != null) {
+            _graphPanes.add(graphPane);
+        }
+        return graphPane;
+    }
+
+    protected JComponent _createRightComponent(NamedObj entity) {
+        // entity must be SingleRuleTransformer or CompositeActorMatcher.
+
         _controller = _createController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
 
-        // The cast is safe because the constructor only accepts
-        // CompositeEntity.
-        final ActorGraphModel graphModel = new ActorGraphModel(entity);
-        return new GraphPane(_controller, graphModel);
-    }
+        if (!(entity instanceof SingleRuleTransformer)) {
+            JComponent component = super._createRightComponent(entity);
+            return component;
+        }
 
-    protected JComponent _createRightComponent(NamedObj entity) {
-        // entity must be SingleRuleTransformer.
-
+        _graphPanes = new LinkedList<GraphPane>();
         _graphs = new LinkedList<JGraph>();
 
         _tabbedPane = new JTabbedPane() {
@@ -422,7 +223,8 @@ ValueListener {
                 CompositeActorMatcher.class).iterator();
         boolean first = true;
         while (cases.hasNext()) {
-            CompositeActorMatcher matcher = (CompositeActorMatcher) cases.next();
+            CompositeActorMatcher matcher =
+                (CompositeActorMatcher) cases.next();
             JGraph jgraph = _addTabbedPane(matcher, false);
             // The first JGraph is the one with the focus.
             if (first) {
@@ -432,23 +234,17 @@ ValueListener {
             _graphs.add(jgraph);
         }
 
-        _createCorrespondenceTab((SingleRuleTransformer) entity);
+        GraphPane graphPane = _graphPanes.get(0);
+        _controller.setGraphPane(graphPane);
+        _controller.setGraphModel(graphPane.getGraphModel());
 
         return _tabbedPane;
     }
 
-    protected CompositeEntity _getCurrentMatcher() {
+    protected CompositeEntity _getCurrentContainer() {
         ActorGraphModel graphModel =
-            (ActorGraphModel) _controller.getGraphModel();
-        CompositeEntity model =
-            (CompositeEntity) graphModel.getPtolemyModel();
-        NamedObj parent = model.getContainer();
-        while (!(parent instanceof SingleRuleTransformer)) {
-            parent = parent.getContainer();
-        }
-        List<?> entityList = ((SingleRuleTransformer) parent).entityList(
-                    CompositeActorMatcher.class);
-        return (CompositeActorMatcher) entityList.get(_selectedIndex);
+            (ActorGraphModel) _getGraphController().getGraphModel();
+        return (CompositeEntity) graphModel.getPtolemyModel();
     }
 
     protected GraphController _getGraphController() {
@@ -460,11 +256,12 @@ ValueListener {
     }
 
     protected SingleRuleTransformer _getTransformer() {
-        CompositeEntity model = _getCurrentMatcher();
-        while (!(model instanceof SingleRuleTransformer)) {
-            model = (CompositeEntity) model.getContainer();
+        CompositeEntity model = _getCurrentContainer();
+        NamedObj parent = model.getContainer();
+        while (!(parent instanceof SingleRuleTransformer)) {
+            parent = parent.getContainer();
         }
-        return (SingleRuleTransformer) model;
+        return (SingleRuleTransformer) parent;
     }
 
     /** Add a tabbed pane for the specified case.
@@ -505,182 +302,27 @@ ValueListener {
         return jgraph;
     }
 
-    private JPanel _createCellPanel(String value) {
-        JPanel panel = new JPanel(new BorderLayout());
-        JTextField textField = new JTextField(value, SwingConstants.CENTER);
-        textField.setBorder(_EMPTY_BORDER);
-        textField.setHorizontalAlignment(SwingConstants.CENTER);
-        textField.setOpaque(false);
-        panel.add(textField, BorderLayout.CENTER);
-        return panel;
-    }
-
-    private void _createCorrespondenceTab(SingleRuleTransformer transformer) {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setName("Correspondence");
-
-        _correspondenceTableModel = new DefaultTableModel(
-                new Object[] {"", "Pattern Object", "Replacement Object"}, 0) {
-            public boolean isCellEditable(int row, int column) {
-                return column > 0;
+    private void _showTab(int tabIndex) {
+        Component tab = _tabbedPane.getComponent(tabIndex);
+        if (tab instanceof JGraph) {
+            setJGraph((JGraph) tab);
+            if (_graphPanner != null) {
+                _graphPanner.setCanvas((JGraph) tab);
             }
-
-            private static final long serialVersionUID = -3761868358642028952L;
-        };
-
-        _correspondenceTable = new JTable(_correspondenceTableModel);
-        _correspondenceTable.setSelectionMode(
-                ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        _correspondenceTable.setEnabled(true);
-        _correspondenceTable.setRowHeight(22);
-        _correspondenceTable.setSelectionBackground(_SELECTED_COLOR);
-        _correspondenceTable.setSelectionForeground(Color.BLACK);
-
-        TableColumnModel model = _correspondenceTable.getColumnModel();
-        TableColumn indexColumn = model.getColumn(0);
-        indexColumn.setMinWidth(10);
-        indexColumn.setPreferredWidth(15);
-        indexColumn.setMaxWidth(30);
-        DefaultTableCellRenderer indexRenderer =
-            new DefaultTableCellRenderer();
-        indexRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-
-        _cellEditor = new CellPanelEditor();
-        for (int i = 0; i < 3; i++) {
-            TableColumn column = model.getColumn(i);
-            column.setCellRenderer(_cellEditor);
-            if (i > 0) {
-                column.setCellEditor(_cellEditor);
-            }
-        }
-
-        JTableHeader header = _correspondenceTable.getTableHeader();
-        header.setFont(new Font("Dialog", Font.BOLD, 11));
-        header.setForeground(Color.BLUE);
-        header.setReorderingAllowed(false);
-        header.setPreferredSize(new Dimension(0, 25));
-
-        DefaultTableCellRenderer renderer =
-            (DefaultTableCellRenderer) header.getDefaultRenderer();
-        renderer.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setBorder(new EtchedBorder());
-        JButton addButton = new JButton("add");
-        addButton.addActionListener(this);
-        JButton removeButton = new JButton("remove");
-        removeButton.addActionListener(this);
-        buttonsPanel.add(addButton);
-        buttonsPanel.add(removeButton);
-
-        panel.add(header, BorderLayout.NORTH);
-        panel.add(_correspondenceTable, BorderLayout.CENTER);
-        panel.add(buttonsPanel, BorderLayout.SOUTH);
-
-        int index = _tabbedPane.getComponentCount();
-        _tabbedPane.add(panel, index);
-
-        _updateCorrespondenceTable();
-    }
-
-    private String _getCorrespondenceString() {
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < _correspondenceTableModel.getRowCount(); i++) {
-            if (buffer.length() > 0) {
-                buffer.append(SingleRuleTransformer.CorrespondenceAttribute
-                        .SEPARATOR);
-            }
-            buffer.append(_getCorrespondenceValue(i, 1));
-            buffer.append(SingleRuleTransformer.CorrespondenceAttribute
-                    .SEPARATOR);
-            buffer.append(_getCorrespondenceValue(i, 2));
-        }
-        return buffer.toString();
-    }
-
-    private String _getCorrespondenceValue(int row, int column) {
-        JPanel panel =
-            (JPanel) _correspondenceTableModel.getValueAt(row, column);
-        JTextField textField = (JTextField) panel.getComponent(0);
-        return textField.getText();
-    }
-
-    private void _setOrUnsetKeyListenersForAllComponents(Container container,
-            boolean isSet) {
-        for (Component component : container.getComponents()) {
-            if (isSet) {
-                component.addKeyListener(this);
-            } else {
-                component.removeKeyListener(this);
-            }
-            if (component instanceof Container) {
-                _setOrUnsetKeyListenersForAllComponents((Container) component,
-                        isSet);
+        } else {
+            if (_graphPanner != null) {
+                _graphPanner.setCanvas(null);
             }
         }
     }
 
-    private void _updateCorrespondenceAttribute(String stringifiedAttribute) {
-        String moml = "<property name=\"correspondence\" value=\""
-            + StringUtilities.escapeForXML(stringifiedAttribute)
-            + "\"/>";
-        SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
-        MoMLChangeRequest request =
-            new MoMLChangeRequest(this, transformer, moml, null);
-        request.setUndoable(true);
-        transformer.requestChange(request);
-    }
-
-    private void _updateCorrespondenceTable() {
-        if (_cellEditor != null) {
-            _cellEditor.stopCellEditing();
-        }
-        _correspondenceTableModel.removeTableModelListener(this);
-
-        while (_correspondenceTableModel.getRowCount() > 0) {
-            _correspondenceTableModel.removeRow(0);
-        }
-
-        SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
-        List<Pair<String, String>> correspondenceList =
-            transformer.getCorrespondence();
-        int i = 1;
-        for (Pair<String, String> correspondence : correspondenceList) {
-            _correspondenceTableModel.addRow(new Object[] {
-                    _createCellPanel(Integer.toString(i++)),
-                    _createCellPanel(correspondence.getFirst()),
-                    _createCellPanel(correspondence.getSecond())
-            });
-        }
-
-        _correspondenceTableModel.addTableModelListener(this);
-    }
-
-    private CellPanelEditor _cellEditor;
-
-    /** The graph controller.  This is created in _createGraphPane(). */
     private ActorEditorGraphController _controller;
 
-    private JTable _correspondenceTable;
-
-    private DefaultTableModel _correspondenceTableModel;
-
-    private static final Border _EMPTY_BORDER =
-        BorderFactory.createEmptyBorder();
-
-    private Component _fullScreenComponent;
+    private List<GraphPane> _graphPanes;
 
     private List<JGraph> _graphs;
 
-    private Component _previousDefaultContext;
-
-    private JDialog _screen;
-
-    private static final Color _SELECTED_COLOR = new Color(230, 230, 255);
-
     private int _selectedIndex = 0;
-
-    private int _selectedIndexBeforeFullScreen;
 
     private JTabbedPane _tabbedPane;
 

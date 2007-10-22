@@ -26,15 +26,10 @@
  */
 package ptolemy.actor.gt;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import ptolemy.actor.gt.data.Pair;
 import ptolemy.actor.lib.hoc.MultiCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,10 +57,6 @@ public class SingleRuleTransformer extends MultiCompositeActor {
         _init();
     }
 
-    public List<Pair<String, String>> getCorrespondence() {
-        return _correspondence;
-    }
-
     public CompositeActorMatcher getPattern() {
         return _pattern;
     }
@@ -74,65 +65,15 @@ public class SingleRuleTransformer extends MultiCompositeActor {
         return _replacement;
     }
 
-    public CorrespondenceAttribute correspondenceAttribute;
-
-    public class CorrespondenceAttribute extends StringAttribute {
-
-        public String getExpression() {
-            return getExpression(_correspondence);
-        }
-
-        public String getExpression(List<Pair<String, String>> correspondence) {
-            StringBuffer buffer = new StringBuffer();
-            for (Pair<String, String> pair : correspondence) {
-                if (buffer.length() > 0) {
-                    buffer.append(SEPARATOR);
-                }
-                buffer.append(pair.getFirst() + SEPARATOR + pair.getSecond());
-            }
-            return buffer.toString();
-        }
-
-        public void setExpression(String expression)
-        throws IllegalActionException {
-            String[] correspondences = expression.split(SEPARATOR_PATTERN, -1);
-            _correspondence.clear();
-            for (int i = 0; i < correspondences.length; i += 2) {
-                if (i + 1 < correspondences.length) {
-                    _correspondence.add(new Pair<String, String>(
-                            correspondences[i], correspondences[i + 1]));
-                }
-            }
-            super.setExpression(expression);
-        }
-
-        public static final String SEPARATOR = "<..>";
-
-        public static final String SEPARATOR_PATTERN = "<\\.\\.>";
-
-        CorrespondenceAttribute(String name) throws IllegalActionException,
-        NameDuplicationException {
-            super(SingleRuleTransformer.this, name);
-        }
-
-        private static final long serialVersionUID = 1805180151377867487L;
-    }
-
     protected void _init()
     throws IllegalActionException, NameDuplicationException {
         // Create the default refinement.
         _pattern = new CompositeActorMatcher(this, "Pattern");
         _replacement = new CompositeActorMatcher(this, "Replacement");
-        _correspondence = new LinkedList<Pair<String, String>>();
-        correspondenceAttribute =
-            new CorrespondenceAttribute("correspondence");
-        correspondenceAttribute.setExpression("");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                          private variables                ////
-
-    private List<Pair<String, String>> _correspondence;
 
     private CompositeActorMatcher _pattern;
 

@@ -65,6 +65,7 @@ JSRCS = \
 	HierarchyFlatteningAttribute.java \
 	MalformedStringException.java \
 	MatchCallback.java \
+	PatternEntityAttribute.java \
 	RelationCollapsingAttribute.java \
 	Rule.java \
 	RuleAttribute.java \
@@ -97,8 +98,7 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$ObjectList.class' \
 	'GraphMatcher$$Path.class' \
 	'Rule$$FieldIterator.class' \
-	'Rule$$NamedObjMatchResult.class' \
-	'SingleRuleTransformer$$CorrespondenceAttribute.class'
+	'Rule$$NamedObjMatchResult.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

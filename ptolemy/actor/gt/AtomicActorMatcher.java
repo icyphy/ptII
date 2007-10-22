@@ -63,26 +63,30 @@ public class AtomicActorMatcher extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        ruleListAttribute = new RuleListAttribute(this, "ruleList");
-        ruleListAttribute.setExpression("");
+        ruleList = new RuleListAttribute(this, "ruleList");
+        ruleList.setExpression("");
+
+        patternEntity =
+            new PatternEntityAttribute(this, "patternEntity");
+        patternEntity.setExpression("");
     }
 
     public void attributeChanged(Attribute attribute)
     throws IllegalActionException {
         super.attributeChanged(attribute);
 
-        if (attribute == ruleListAttribute) {
+        if (attribute == ruleList) {
             try {
                 _workspace.getWriteAccess();
 
                 Set<String> preservedPortNames = new HashSet<String>();
                 boolean isIconSet = false;
                 int i = 1;
-                RuleList ruleList = ruleListAttribute.getRuleList();
-                for (Rule rule : ruleList) {
+                RuleList list = ruleList.getRuleList();
+                for (Rule rule : list) {
                     if (rule instanceof PortRule) {
                         PortRule portRule = (PortRule) rule;
-                        String portID = portRule.getPortID(ruleList);
+                        String portID = portRule.getPortID(list);
                         preservedPortNames.add(portID);
 
                         TypedIOPort port = (TypedIOPort) getPort(portID);
@@ -139,10 +143,13 @@ public class AtomicActorMatcher extends TypedAtomicActor {
             } finally {
                 _workspace.doneWriting();
             }
+
         }
     }
 
-    public RuleListAttribute ruleListAttribute;
+    public PatternEntityAttribute patternEntity;
+
+    public RuleListAttribute ruleList;
 
     private void _loadActorIcon(String actorClassName) {
         CompositeActor container = new CompositeActor();

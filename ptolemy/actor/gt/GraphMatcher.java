@@ -630,7 +630,7 @@ public class GraphMatcher {
         if (container instanceof AtomicActorMatcher) {
             try {
                 RuleList ruleList = ((AtomicActorMatcher) container)
-                        .ruleListAttribute.getRuleList();
+                        .ruleList.getRuleList();
                 String portID = port.getName();
                 for (Rule rule : ruleList) {
                     if (rule instanceof PortRule) {
@@ -684,7 +684,7 @@ public class GraphMatcher {
 
             RuleList ruleList = null;
             try {
-                ruleList = matcher.ruleListAttribute.getRuleList();
+                ruleList = matcher.ruleList.getRuleList();
             } catch (MalformedStringException e) {
                 success = false;
             }

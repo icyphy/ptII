@@ -1,4 +1,5 @@
 /* A graph editor frame for ptolemy graph transformation models.
+
  Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -25,9 +26,12 @@
  */
 package ptolemy.vergil.gt;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -40,17 +44,37 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import ptolemy.actor.gt.AtomicActorMatcher;
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.MatchCallback;
+import ptolemy.actor.gt.PatternEntityAttribute;
 import ptolemy.actor.gt.SingleRuleTransformer;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Configuration;
@@ -58,12 +82,17 @@ import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.GraphicalMessageHandler;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
@@ -77,7 +106,6 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
-import ptolemy.vergil.toolbox.SnapConstraint;
 import diva.graph.JGraph;
 import diva.gui.ExtensionFileFilter;
 import diva.gui.GUIUtilities;
@@ -96,7 +124,8 @@ import diva.gui.toolbox.JContextMenu;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GTRuleGraphFrame extends AbstractGTFrame {
+public class GTRuleGraphFrame extends AbstractGTFrame implements ActionListener,
+TableModelListener, ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                          constructors                     ////
@@ -142,6 +171,305 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+        if (command.equals("add")) {
+            addRow();
+        } else if (command.equals("remove")) {
+            int[] rows = _table.getSelectedRows();
+            if (rows.length > 0) {
+                removeRows(rows);
+            }
+        }
+    }
+
+    public void addRow() {
+        int index = _tableModel.getRowCount() + 1;
+        _tableModel.addRow(new Object[] {
+                _createCellPanel(Integer.toString(index)), _createCellPanel(""),
+                _createCellPanel("")
+        });
+    }
+
+    public void cancelFullScreen() {
+        if (!hasTabs()) {
+            super.cancelFullScreen();
+            return;
+        }
+
+        _screen.dispose();
+
+        // Put the component back into the original window.
+        _splitPane.setRightComponent(_getRightComponent());
+        JTabbedPane tabbedPane = _getTabbedPane();
+        tabbedPane.add(_fullScreenComponent, _selectedIndexBeforeFullScreen);
+        tabbedPane.setSelectedIndex(_selectedIndexBeforeFullScreen);
+
+        // Restore association with the graph panner.
+        if (_fullScreenComponent instanceof JGraph) {
+            _graphPanner.setCanvas((JGraph) _fullScreenComponent);
+        } else {
+            _graphPanner.setCanvas(null);
+        }
+
+        _fullScreenComponent.removeKeyListener(this);
+        if (_selectedIndexBeforeFullScreen == 2) {
+            _setOrUnsetKeyListenersForAllComponents(
+                    (JPanel) _fullScreenComponent, false);
+        }
+        pack();
+        show();
+        GraphicalMessageHandler.setContext(_previousDefaultContext);
+        toFront();
+        _getRightComponent().requestFocus();
+    }
+
+    public void copy() {
+        if (!_isTableActive()) {
+            if (hasTabs() && getSelectedIndex() == 0) {
+                CompositeEntity model = _getCurrentContainer();
+                _setOrClearActorCorrespondenceAttributes(model, true);
+                super.copy();
+                _setOrClearActorCorrespondenceAttributes(model, false);
+            } else {
+                super.copy();
+            }
+        }
+    }
+
+    public void delete() {
+        if (!_isTableActive()) {
+            super.delete();
+        }
+    }
+
+    public void removeRows(int[] rows) {
+        if (_cellEditor != null) {
+            // Stop editing so that the current edit value will be recorded in
+            // the undo history.
+            _cellEditor.stopCellEditing();
+        }
+        SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
+        CompositeActorMatcher replacement = transformer.getReplacement();
+        List<ComponentEntity> entities = new LinkedList<ComponentEntity>();
+        boolean needRefresh = false;
+        for (int i = 0; i < rows.length; i++) {
+            String replacementName = _getCellEditorValue(
+                    (JPanel) _tableModel.getValueAt(rows[i], 2));
+            ComponentEntity entity = replacement.getEntity(replacementName);
+            if (entity == null) {
+                needRefresh = true;
+            } else {
+                entities.add(entity);
+            }
+        }
+        int i = 0;
+        for (ComponentEntity entity : entities) {
+            _setPatternEntity(entity, "", i++ > 0);
+        }
+        if (entities.isEmpty() && needRefresh) {
+            _refreshTable();
+        }
+    }
+
+    public void fullScreen() {
+        if (!hasTabs()) {
+            super.fullScreen();
+            return;
+        }
+
+        _screen = new JDialog();
+        _screen.getContentPane().setLayout(new BorderLayout());
+
+        // Set to full-screen size.
+        Toolkit toolkit = _screen.getToolkit();
+        int width = toolkit.getScreenSize().width;
+        int height = toolkit.getScreenSize().height;
+        _screen.setSize(width, height);
+
+        JTabbedPane tabbedPane = _getTabbedPane();
+        _selectedIndexBeforeFullScreen = tabbedPane.getSelectedIndex();
+        _fullScreenComponent = tabbedPane.getSelectedComponent();
+        _screen.setUndecorated(true);
+        _screen.getContentPane().add(_fullScreenComponent, BorderLayout.CENTER);
+
+        // NOTE: Have to avoid the following, which forces the
+        // dialog to resize the preferred size of _jgraph, which
+        // nullifies the call to setSize() above.
+        // _screen.pack();
+        _screen.setVisible(true);
+
+        // Make the new screen the default context for modal messages.
+        Component _previousDefaultContext =
+            GraphicalMessageHandler.getContext();
+        GraphicalMessageHandler.setContext(_screen);
+
+        // NOTE: As usual with swing, what the UI does is pretty
+        // random, and doesn't correlate much with the documentation.
+        // The following two lines do not work if _screen is a
+        // JWindow instead of a JDialog.  There is no apparent
+        // reason for this, but this is why we use JDialog.
+        // Unfortunately, apparently the JDialog does not appear
+        // in the Windows task bar.
+        _screen.toFront();
+        _fullScreenComponent.requestFocus();
+
+        _screen.setResizable(false);
+
+        _fullScreenComponent.addKeyListener(this);
+        if (_selectedIndexBeforeFullScreen == 2) {
+            // The correspondence table is selected before full screen.
+            // Set the key listener for the table.
+            _setOrUnsetKeyListenersForAllComponents(
+                    (JPanel) _fullScreenComponent, true);
+        }
+
+        // Remove association with the graph panner.
+        _graphPanner.setCanvas(null);
+
+        setVisible(false);
+        GraphicalMessageHandler.setContext(_previousDefaultContext);
+    }
+
+    public void paste() {
+        if (!_isTableActive()) {
+            super.paste();
+            _refreshTable();
+        }
+    }
+
+    public void redo() {
+        if (_isTableActive() && _cellEditor != null) {
+            _cellEditor.stopCellEditing();
+        }
+        super.redo();
+    }
+
+    public void tableChanged(TableModelEvent e) {
+        if (e.getType() != TableModelEvent.UPDATE) {
+            return;
+        }
+
+        int row = e.getFirstRow();
+        int column = e.getColumn();
+        if (column != TableModelEvent.ALL_COLUMNS && row == e.getLastRow()) {
+            // Get the value in the transformer's correspondence attribute.
+            SingleRuleTransformer transformer =
+                (SingleRuleTransformer) getModel();
+            String newValue = _getCellEditorValue(
+                    (JPanel) _tableModel.getValueAt(row, column));
+            String previousString = _cellEditor.getPreviousString();
+
+            if (column == 1) {
+                String patternEntityName = newValue;
+                if (!patternEntityName.isEmpty()) {
+                    ComponentEntity patternEntity =
+                        (ComponentEntity) transformer.getPattern().getEntity(
+                                patternEntityName);
+                    if (patternEntity == null) {
+                        String message = "Entity with name \""
+                            + patternEntityName
+                            + "\" cannot be found in the pattern part of "
+                            + "the transformation rule.";
+                        _showTableError(message, row, column, previousString);
+                        return;
+                    }
+                }
+
+                String replacementEntityName = _getCellEditorValue(
+                        (JPanel) _tableModel.getValueAt(row, 2));
+                if (replacementEntityName.isEmpty()) {
+                    return;
+                }
+                
+                // Updated the pattern object.
+                ComponentEntity replacementEntity = (ComponentEntity)
+                        transformer.getReplacement().getEntity(
+                                replacementEntityName);
+                if (!_getPatternEntityAttribute(replacementEntity)
+                        .getExpression().equals(patternEntityName)) {
+                    _setPatternEntity(replacementEntity, patternEntityName,
+                            false);
+                }
+
+            } else if (column == 2) {
+                String replacementEntityName = _getCellEditorValue(
+                        (JPanel) _tableModel.getValueAt(row, 2));
+                if (replacementEntityName.isEmpty()) {
+                    return;
+                }
+                
+                if (!previousString.equals(replacementEntityName)) {
+                    ComponentEntity replacementEntity =
+                        (ComponentEntity) transformer.getReplacement()
+                                .getEntity(replacementEntityName);
+                    if (replacementEntity == null) {
+                        String message = "Entity with name \""
+                            + replacementEntityName
+                            + "\" cannot be found in the replacement part of "
+                            + "the transformation rule.";
+                        _showTableError(message, row, column, previousString);
+                        return;
+                    }
+
+                    PatternEntityAttribute attribute =
+                        _getPatternEntityAttribute(replacementEntity);
+                    if (attribute == null) {
+                        String message = "Entity with name \""
+                            + replacementEntityName
+                            + "\" in the replacement part of the "
+                            + "transformation rule does not have a "
+                            + "\"patternEntity\" attribute.";
+                        _showTableError(message, row, column, previousString);
+                        return;
+                    }
+
+                    _cellEditor.setPreviousString(replacementEntityName);
+                    ComponentEntity previousEntity =
+                        (ComponentEntity) transformer.getReplacement()
+                                .getEntity(previousString);
+                    String patternObject = _getCellEditorValue(
+                            (JPanel) _tableModel.getValueAt(row, 1));
+
+                    _setPatternEntity(previousEntity, "", false);
+                    _setPatternEntity(replacementEntity, patternObject, true);
+                }
+            }
+        }
+    }
+
+    public void undo() {
+        if (_isTableActive() && _cellEditor != null) {
+            _cellEditor.stopCellEditing();
+        }
+        super.undo();
+    }
+
+    public void valueChanged(Settable settable) {
+        if (_cellEditor != null) {
+            _cellEditor.stopCellEditing();
+        }
+        _refreshTable();
+    }
+
+    public void zoom(double factor) {
+        if (!_isTableActive()) {
+            super.zoom(factor);
+        }
+    }
+
+    public void zoomFit() {
+        if (!_isTableActive()) {
+            super.zoomFit();
+        }
+    }
+
+    public void zoomReset() {
+        if (!_isTableActive()) {
+            super.zoomReset();
+        }
+    }
+
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
      */
@@ -160,9 +488,17 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
         LayoutAction layoutAction = new LayoutAction();
         GUIUtilities.addMenuItem(_ruleMenu, layoutAction);
 
-        NewRelationAction newRelationAction = new NewRelationAction();
-        GUIUtilities.addMenuItem(_ruleMenu, newRelationAction);
-        GUIUtilities.addToolBarButton(_toolbar, newRelationAction);
+        ActorEditorGraphController controller =
+            (ActorEditorGraphController) _getGraphController();
+        if (hasTabs()) {
+            _ruleMenu.addSeparator();
+            Action newRelationAction = controller.new NewRelationAction();
+            GUIUtilities.addMenuItem(_ruleMenu, newRelationAction);
+            GUIUtilities.addToolBarButton(_toolbar, newRelationAction);
+        } else {
+            controller.addToMenuAndToolbar(_ruleMenu, _toolbar);
+            _removeUnusedToolbarButtons();
+        }
 
         GUIUtilities.addToolBarButton(_toolbar, matchAction);
     }
@@ -171,8 +507,279 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
         return new GTActionGraphController();
     }
 
+    protected JComponent _createRightComponent(NamedObj entity) {
+        JComponent component = super._createRightComponent(entity);
+        if (component instanceof JTabbedPane) {
+            _createCorrespondenceTab((SingleRuleTransformer) entity);
+        }
+        return component;
+    }
+
     /** The case menu. */
     protected JMenu _ruleMenu;
+
+    private JPanel _createCellPanel(String value) {
+        JPanel panel = new JPanel(new BorderLayout());
+        JTextField textField = new JTextField(value, SwingConstants.CENTER);
+        textField.setBorder(_EMPTY_BORDER);
+        textField.setHorizontalAlignment(SwingConstants.CENTER);
+        textField.setOpaque(false);
+        panel.add(textField, BorderLayout.CENTER);
+        return panel;
+    }
+
+    private void _createCorrespondenceTab(SingleRuleTransformer transformer) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setName("Correspondence");
+
+        _tableModel = new DefaultTableModel(new Object[] {
+                "", "Pattern Entity", "Replacement Entity"
+        }, 0);
+
+        _table = new JTable(_tableModel);
+        _table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        _table.setEnabled(true);
+        _table.setRowHeight(22);
+        _table.setSelectionBackground(_SELECTED_COLOR);
+        _table.setSelectionForeground(Color.BLACK);
+
+        TableColumnModel model = _table.getColumnModel();
+        TableColumn indexColumn = model.getColumn(0);
+        indexColumn.setMinWidth(10);
+        indexColumn.setPreferredWidth(15);
+        indexColumn.setMaxWidth(30);
+        DefaultTableCellRenderer indexRenderer =
+            new DefaultTableCellRenderer();
+        indexRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        _cellEditor = new CellEditor();
+        for (int i = 0; i < 3; i++) {
+            TableColumn column = model.getColumn(i);
+            column.setCellRenderer(_cellEditor);
+            if (i > 0) {
+                column.setCellEditor(_cellEditor);
+            }
+        }
+
+        JTableHeader header = _table.getTableHeader();
+        header.setFont(new Font("Dialog", Font.BOLD, 11));
+        header.setForeground(Color.BLUE);
+        header.setReorderingAllowed(false);
+        header.setPreferredSize(new Dimension(0, 25));
+
+        DefaultTableCellRenderer renderer =
+            (DefaultTableCellRenderer) header.getDefaultRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setBorder(new EtchedBorder());
+        JButton addButton = new JButton("add");
+        addButton.addActionListener(this);
+        JButton removeButton = new JButton("remove");
+        removeButton.addActionListener(this);
+        buttonsPanel.add(addButton);
+        buttonsPanel.add(removeButton);
+
+        panel.add(header, BorderLayout.NORTH);
+        panel.add(_table, BorderLayout.CENTER);
+        panel.add(buttonsPanel, BorderLayout.SOUTH);
+
+        JTabbedPane tabbedPane = _getTabbedPane();
+        int index = tabbedPane.getComponentCount();
+        tabbedPane.add(panel, index);
+
+        _refreshTable();
+    }
+
+    private static String _getCellEditorValue(JPanel editorPanel) {
+        JTextField textField = (JTextField) editorPanel.getComponent(0);
+        return textField.getText();
+    }
+
+    private static String _getNameWithinContainer(NamedObj object,
+            CompositeEntity container) {
+        StringBuffer name = new StringBuffer(object.getName());
+        NamedObj parent = object.getContainer();
+        while (parent != null && parent != container) {
+            name.insert(0, '.');
+            name.insert(0, parent.getName());
+            parent = parent.getContainer();
+        }
+        if (parent == null) {
+            return null;
+        } else {
+            return name.toString();
+        }
+    }
+
+    private PatternEntityAttribute _getPatternEntityAttribute(NamedObj object) {
+        Attribute attribute = object.getAttribute("patternEntity");
+        if (attribute != null && attribute instanceof PatternEntityAttribute) {
+            return (PatternEntityAttribute) attribute;
+        } else {
+            return null;
+        }
+    }
+
+    private boolean _isTableActive() {
+        return hasTabs() && getSelectedIndex() == 2;
+    }
+
+    private void _removeUnusedToolbarButtons() {
+        Component[] components = _toolbar.getComponents();
+        int i = 0;
+        for (Component component : components) {
+            if (component instanceof JButton) {
+                JButton button = (JButton) component;
+                Action action = button.getAction();
+                String className = action.getClass().getName();
+                if (className.endsWith("$RunModelAction")
+                        || className.endsWith("$PauseModelAction")
+                        || className.endsWith("$StopModelAction")) {
+                    _toolbar.remove(i);
+                    continue;
+                }
+            }
+            i++;
+        }
+    }
+
+    private void _setCellEditorValue(JPanel editorPanel, String value) {
+        JTextField textField = (JTextField) editorPanel.getComponent(0);
+        textField.setText(value);
+    }
+
+    private void _setCellString(int row, int column, String cellString) {
+        JPanel panel = (JPanel) _tableModel.getValueAt(row, column);
+        _setCellEditorValue(panel, cellString);
+        _tableModel.fireTableCellUpdated(row, column);
+    }
+
+    private void _setOrClearActorCorrespondenceAttributes(
+            CompositeEntity container, boolean isSet) {
+        try {
+            for (Object entityObject : container.entityList()) {
+                NamedObj object = (NamedObj) entityObject;
+                PatternEntityAttribute patternEntity =
+                    _getPatternEntityAttribute(object);
+                if (patternEntity != null) {
+                    if (isSet) {
+                        String name = _getNameWithinContainer(object,
+                                _getTransformer().getPattern());
+                        patternEntity.setPersistent(true);
+                        patternEntity.setExpression(name);
+                    } else {
+                        patternEntity.setPersistent(false);
+                        patternEntity.setExpression("");
+                    }
+                }
+                if (object instanceof CompositeEntity) {
+                    _setOrClearActorCorrespondenceAttributes(
+                            (CompositeEntity) object, isSet);
+                }
+            }
+        } catch (IllegalActionException e) {
+            throw new KernelRuntimeException(e, "Cannot set attribute.");
+        }
+    }
+
+    private void _setOrUnsetKeyListenersForAllComponents(Container container,
+            boolean isSet) {
+        for (Component component : container.getComponents()) {
+            if (isSet) {
+                component.addKeyListener(this);
+            } else {
+                component.removeKeyListener(this);
+            }
+            if (component instanceof Container) {
+                _setOrUnsetKeyListenersForAllComponents((Container) component,
+                        isSet);
+            }
+        }
+    }
+
+    private void _setPatternEntity(ComponentEntity replacementEntity,
+            String patternEntityName, boolean mergeWithPrevious) {
+        String moml = "<property name=\"patternEntity\" value=\""
+            + patternEntityName + "\"/>";
+        MoMLChangeRequest request =
+            new MoMLChangeRequest(this, replacementEntity, moml);
+        request.setUndoable(true);
+        request.setMergeWithPreviousUndo(mergeWithPrevious);
+        replacementEntity.requestChange(request);
+    }
+
+    private void _showTableError(String message, final int row,
+            final int column, final String previousString) {
+        String[] options = new String[] {"Edit", "Revert"};
+        int selected = JOptionPane.showOptionDialog(null, message,
+                "Validation Error", JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.ERROR_MESSAGE, null, options, options[1]);
+        if (selected == 0) {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    if (_table.isEditing() &&
+                            (_table.getEditingRow() != row ||
+                             _table.getEditingColumn() != column)) {
+                        _cellEditor.cancelCellEditing();
+                    }
+                    _table.editCellAt(row, column);
+                    _cellEditor.setPreviousString(previousString);
+                }
+            });
+        } else if (selected == 1) {
+            _setCellString(row, column, previousString);
+        }
+    }
+
+    private void _refreshTable() {
+        if (_cellEditor != null) {
+            _cellEditor.stopCellEditing();
+        }
+        _tableModel.removeTableModelListener(this);
+
+        while (_tableModel.getRowCount() > 0) {
+            _tableModel.removeRow(0);
+        }
+
+        SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
+        CompositeActorMatcher replacement = transformer.getReplacement();
+        _refreshTable(1, replacement);
+
+        _tableModel.addTableModelListener(this);
+    }
+
+    private int _refreshTable(int index, CompositeEntity container) {
+       for (Object entityObject : container.entityList()) {
+           NamedObj object = (NamedObj) entityObject;
+           PatternEntityAttribute attribute = _getPatternEntityAttribute(object);
+           if (attribute != null) {
+               attribute.addValueListener(this);
+               String patternEntity = attribute.getExpression();
+               if (!patternEntity.isEmpty()) {
+                   String name = _getNameWithinContainer(object,
+                           _getTransformer().getReplacement());
+                   _tableModel.addRow(new Object[] {
+                           _createCellPanel(Integer.toString(index++)),
+                           _createCellPanel(patternEntity),
+                           _createCellPanel(name)
+                   });
+               }
+           }
+           if (object instanceof CompositeEntity) {
+               index =
+                   _refreshTable(index, (CompositeEntity) object);
+           }
+       }
+       return index;
+    }
+
+    private CellEditor _cellEditor;
+
+    private static final Border _EMPTY_BORDER =
+        BorderFactory.createEmptyBorder();
+
+    private Component _fullScreenComponent;
 
     private static final String[] _MATCH_FILE_CHOOSER_BUTTONS = new String[] {
         "Match", "Cancel"
@@ -180,13 +787,62 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
     private String _matchFileName;
 
+    private Component _previousDefaultContext;
+
+    private JDialog _screen;
+
+    private static final Color _SELECTED_COLOR = new Color(230, 230, 255);
+
+    private int _selectedIndexBeforeFullScreen;
+
+    private JTable _table;
+
+    private DefaultTableModel _tableModel;
+
     private static final long serialVersionUID = 5919681658644668772L;
 
     ///////////////////////////////////////////////////////////////////
     ////                      private inner classes                ////
 
-    private static class GTActionGraphController
-    extends ActorEditorGraphController {
+    private static class CellEditor extends CellPanelEditor {
+
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
+            JPanel panel = (JPanel) super.getTableCellEditorComponent(table,
+                    value, isSelected, row, column);
+            _previousString = _getCellEditorValue(panel);
+            return panel;
+        }
+
+        private String getPreviousString() {
+            return _previousString;
+        }
+
+        private void setPreviousString(String previousString) {
+            _previousString = previousString;
+        }
+
+        private String _previousString;
+
+        private static final long serialVersionUID = 5226766789270435413L;
+    }
+
+    private class GTActionGraphController extends ActorEditorGraphController {
+
+        public class NewRelationAction
+        extends ActorEditorGraphController.NewRelationAction {
+
+            public void actionPerformed(ActionEvent e) {
+                if (_isTableActive()) {
+                    return;
+                } else {
+                    super.actionPerformed(e);
+                }
+            }
+
+            private static final long serialVersionUID = 131078285900819894L;
+
+        }
 
         protected void _createControllers() {
             super._createControllers();
@@ -202,7 +858,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
             _configureMenuFactory = newFactory;
         }
 
-        private static void _replaceFactory(PtolemyMenuFactory menuFactory,
+        private void _replaceFactory(PtolemyMenuFactory menuFactory,
                 MenuItemFactory replacedFactory, MenuItemFactory replacement) {
             List<?> factories = menuFactory.menuItemFactoryList();
             int size = factories.size();
@@ -510,187 +1166,4 @@ public class GTRuleGraphFrame extends AbstractGTFrame {
 
         private List<MatchResult> _results = new LinkedList<MatchResult>();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    ///////////////////////////////////////////////////////////////////
-    //// NewRelationAction
-    /** An action to create a new relation. */
-    private class NewRelationAction extends FigureAction {
-
-        /** Create an action that creates a new relation.
-         */
-        public NewRelationAction() {
-            super("New Relation");
-
-            String[][] iconRoles = new String[][] {
-                    { "/ptolemy/vergil/actor/img/relation.gif",
-                        GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_o.gif",
-                        GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_ov.gif",
-                        GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/actor/img/relation_on.gif",
-                        GUIUtilities.SELECTED_ICON } };
-            GUIUtilities.addIcons(this, iconRoles);
-
-            putValue("tooltip", "Control-click to create a new relation");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
-                    KeyEvent.VK_R));
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            if (getSelectedIndex() == 2) {
-                return;
-            }
-
-            super.actionPerformed(e);
-
-            double x;
-            double y;
-
-            NamedObj namedObj = _getCurrentMatcher();
-            JGraph graph = getJGraph();
-
-            Dimension size = graph.getSize();
-            x = size.getWidth() / 2;
-            y = size.getHeight() / 2;
-            double[] point = SnapConstraint.constrainPoint(x, y);
-
-            final String relationName = namedObj.uniqueName("relation");
-            final String vertexName = "vertex1";
-
-            // Create the relation.
-            StringBuffer moml = new StringBuffer();
-            moml.append("<relation name=\"" + relationName + "\">\n");
-            moml.append("<vertex name=\"" + vertexName + "\" value=\"{");
-            moml.append(point[0] + ", " + point[1]);
-            moml.append("}\"/>\n");
-            moml.append("</relation>");
-
-            MoMLChangeRequest request = new MoMLChangeRequest(this, namedObj,
-                    moml.toString());
-            request.setUndoable(true);
-            namedObj.requestChange(request);
-        }
-
-        private static final long serialVersionUID = 2208151447002268749L;
-    }
-
-    /* Function not available yet. */
-
-    /*private class TransformAction extends FigureAction {
-
-        public TransformAction() {
-            super("Perform Transformation");
-
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/basic/img/run.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/basic/img/run_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/basic/img/run_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/basic/img/run_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
-
-            putValue("tooltip", "Perform Transformation (Ctrl+R)");
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_R, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
-
-            _attribute = new Attribute((Workspace) null);
-
-            try {
-                _inputModel = new FileParameter(_attribute, "inputModel");
-                _inputModel.setDisplayName("Input model");
-
-                _outputModel = new FileParameter(_attribute, "outputModel");
-                _outputModel.setDisplayName("Output model");
-            } catch (KernelException e) {
-                throw new KernelRuntimeException(e, "Unable to create action " +
-                        "instance.");
-            }
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-
-            TransformationFilesChooser filesChooser =
-                new TransformationFilesChooser(getFrame(), _attribute);
-            if (filesChooser.buttonPressed().equals(
-                    TransformationFilesChooser._moreButtons[0])) {
-                File input = null;
-                try {
-                    input = _inputModel.asFile();
-                } catch (IllegalActionException ex) {
-                }
-                if (input == null) {
-                    MessageHandler.message("Input model must not be empty.");
-                    return;
-                }
-                if (!input.exists()) {
-                    MessageHandler.message("Unable to read input model " +
-                            _inputModel.getExpression() + ".");
-                    return;
-                }
-
-                File output = null;
-                try {
-                    output = _outputModel.asFile();
-                } catch (IllegalActionException ex) {
-                }
-                if (output == null) {
-                    MessageHandler.message("Output model must not be empty.");
-                    return;
-                }
-                if (output.exists()) {
-                    if (!MessageHandler.yesNoQuestion(
-                            "Overwrite output model " +
-                            _outputModel.getExpression() + "?")) {
-                        return;
-                    }
-                }
-
-                _parser.reset();
-                NamedObj model;
-                try {
-                    model = _parser.parse(null, input.toURL());
-                } catch (Exception ex) {
-                    MessageHandler.message("Unable to parse input model.");
-                    return;
-                }
-
-                // TODO
-                throw new KernelRuntimeException(
-                        "Model transformation to be implemented.");
-            }
-        }
-
-        private Attribute _attribute;
-
-        private FileParameter _inputModel;
-
-        private FileParameter _outputModel;
-
-        private MoMLParser _parser = new MoMLParser();
-
-        private static final long serialVersionUID = -3272455226789715544L;
-
-    }*/
-
-    /*private static class TransformationFilesChooser extends ComponentDialog {
-
-        public TransformationFilesChooser(Frame owner, NamedObj target) {
-            super(owner, "Choose Input/Output Files", new Configurer(target),
-                    _moreButtons);
-        }
-
-        private static final String[] _moreButtons = new String[] {
-            "Transform", "Cancel"
-        };
-
-        private static final long serialVersionUID = -8150952956122992910L;
-    }*/
 }
