@@ -59,7 +59,7 @@ import com.microstar.xml.XmlParser;
 /**
  A TypedCompositeActor is an aggregation of typed actors.  A PtalonActor
  is a TypedCompositeActor whose aggregation is specified by a Ptalon
- model in an external file.  This file is specified in a FileParameter, 
+ model in an external file.  This file is specified in a FileParameter,
  and it is loaded during initialization.
  <p>
 
@@ -79,7 +79,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  Increment the version of the workspace.  This actor will have no
      *  local director initially, and its executive director will be simply
      *  the director of the container.
-     *  
+     *
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the container is incompatible
@@ -92,7 +92,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         super(container, name);
 
         _initializePtalonActor();
-        
+
         setClassName("ptolemy.actor.ptalon.PtalonActor");
         ptalonCodeLocation = new FileParameter(this, "ptalonCodeLocation");
     }
@@ -112,7 +112,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
-        
+
         if (attribute == ptalonCodeLocation) {
             // The location of the Ptalon file has been set, so start
             // the Ptalon compiler.
@@ -132,7 +132,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                             return;
                         }
                     }
-                    
+
                     // Check if the parameter was not previously assigned.
                     if (!_assignedPtalonParametersCopy.containsKey(
                                 p.getName())) {
@@ -174,7 +174,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                         _initializePtalonCodeLocation();
                         return;
                     }
-                    
+
                     // FIXME: What is the code below for?
                     if ((_ast == null) || (_codeManager == null)) {
                         return;
@@ -274,7 +274,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         return null;
     }
 
-    /** Get the unique name for the symbol in the PtalonActor. 
+    /** Get the unique name for the symbol in the PtalonActor.
      *  @param ptalonName The symbol to test.
      *  @return The unique name.
      *  @exception PtalonRuntimeException If no such symbol exists.
@@ -545,7 +545,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         _codeManager = null;
         _nestedDepth = 0;
     }
-    
+
     /** Return true if the value of the given PtalonParameter has
      *  changed.  This method checks for newly assigned values (where
      *  the value was not previously asigned), changed expression
@@ -602,7 +602,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
 
     ///////////////////////////////////////////////////////////////////
     ////                      private members                      ////
-    
+
     /** A list of all ptalon parameters that have been assigned a
      *  value.  This is a subset of _ptalonParameters.
      */
@@ -628,7 +628,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      */
     private Hashtable<String, Token> _assignedPtalonParametersCopyValues =
         new Hashtable<String, Token>();
-    
+
     /** The abstract syntax tree for the PtalonActor.
      */
     private PtalonAST _ast;

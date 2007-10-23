@@ -3,15 +3,15 @@ package ptolemy.actor.ptalon;
 /**
  * An Exception that occurs while trying to populate the PtalonActor in the
  * Ptalon interpreter.
- * 
+ *
  * @author Adam Cataldo, Elaine Cheong
- * 
+ *
  */
 public class PtalonRuntimeException extends Exception {
 
     /**
      * Create a PtalonRuntimeException.
-     * 
+     *
      * @param message
      *                An explanation of the offense.
      */
@@ -21,7 +21,7 @@ public class PtalonRuntimeException extends Exception {
 
     /**
      * Create a PtalonRuntimeException.
-     * 
+     *
      * @param message
      *                An explanation of the offense.
      * @param cause

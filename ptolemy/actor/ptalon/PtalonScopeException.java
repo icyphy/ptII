@@ -2,16 +2,16 @@ package ptolemy.actor.ptalon;
 
 /**
  * An Exception related to the scope of variables in the Ptalon interpreter.
- * 
+ *
  * @author Adam Cataldo, Elaine Cheong
- * 
+ *
  */
 
 public class PtalonScopeException extends Exception {
 
     /**
      * Generate a Ptalon ScopeException.
-     * 
+     *
      * @param message
      *                An explanation of the offense
      */
@@ -21,7 +21,7 @@ public class PtalonScopeException extends Exception {
 
     /**
      * Generate a Ptalon ScopeException.
-     * 
+     *
      * @param message
      *                An explanation of the offense.
      * @param cause

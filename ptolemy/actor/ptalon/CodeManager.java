@@ -1,6 +1,6 @@
 /* A helper class to store information, like variable scope info, about
  the compiler.
-   
+
  Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
 
@@ -59,7 +59,7 @@ import antlr.RecognitionException;
 /**
  * A helper class to store information, like variable scope info, about the
  * compiler.
- * 
+ *
  * @author Adam Cataldo, Elaine Cheong
  * @version $Id$
  * @since Ptolemy II 6.1
@@ -73,7 +73,7 @@ public class CodeManager {
 
     /**
      * Create a new CodeManager in the specified actor.
-     * 
+     *
      * @param actor
      *                The actor to manage the code for.
      */
@@ -87,7 +87,7 @@ public class CodeManager {
 
     /**
      * Add a PtalonParameter to the PtalonActor with the specified name.
-     * 
+     *
      * @param name
      *                The name of the parameter.
      * @exception PtalonRuntimeException
@@ -150,7 +150,7 @@ public class CodeManager {
     /**
      * Add an invisible PtalonParameter to the PtalonActor with the specified
      * name.
-     * 
+     *
      * @param name
      *                The name of the parameter.
      * @param expression
@@ -220,7 +220,7 @@ public class CodeManager {
     /**
      * Add a TypedIOPort to the PtalonActor with the specified name, and input
      * flow type.
-     * 
+     *
      * @param name
      *                The name of the port.
      * @exception PtalonRuntimeException
@@ -283,7 +283,7 @@ public class CodeManager {
     /**
      * Add a TypedIOPort to the PtalonActor with the specified name, and output
      * flow type.
-     * 
+     *
      * @param name
      *                The name of the port.
      * @exception PtalonRuntimeException
@@ -345,7 +345,7 @@ public class CodeManager {
 
     /**
      * Add a Parameter to the PtalonActor with the specified name.
-     * 
+     *
      * @param name
      *                The name of the parameter.
      * @exception PtalonRuntimeException
@@ -409,7 +409,7 @@ public class CodeManager {
     /**
      * Add an invisible Parameter to the PtalonActor with the specified name and
      * the given expression as its value.
-     * 
+     *
      * @param name
      *                The name of the parameter.
      * @param expression
@@ -478,7 +478,7 @@ public class CodeManager {
 
     /**
      * Add a TypedIOPort to the PtalonActor with the specified name.
-     * 
+     *
      * @param name
      *                The name of the port.
      * @exception PtalonRuntimeException
@@ -540,7 +540,7 @@ public class CodeManager {
 
     /**
      * Add a TypedIORelation to the PtalonActor with the specified name.
-     * 
+     *
      * @param name
      *                The name of the relation.
      * @exception PtalonRuntimeException
@@ -589,7 +589,7 @@ public class CodeManager {
     /**
      * Add a symbol with the given name and type to the symbol table at the
      * current level of the if-tree hierarchy.
-     * 
+     *
      * @param name
      *                The symbol name.
      * @param type
@@ -619,7 +619,7 @@ public class CodeManager {
      * in that if this transparent relation is connected to an input port I,
      * then any connections made to the transparent relation will be as if they
      * were connected directly to I, instead of through a relation.
-     * 
+     *
      * @param name
      *                The name of the relation.
      * @exception PtalonRuntimeException
@@ -652,7 +652,7 @@ public class CodeManager {
 
     /**
      * Assign any internal parameters in the order they were set.
-     * 
+     *
      * @throws PtalonRuntimeException
      *                 If there is any trouble assigning parameter values.
      */
@@ -671,7 +671,7 @@ public class CodeManager {
 
     /**
      * Enter the named subscope.
-     * 
+     *
      * @param scope
      *                The named subscope.
      * @exception PtalonRuntimeException
@@ -694,7 +694,7 @@ public class CodeManager {
 
     /**
      * Enter the named for-block subscope.
-     * 
+     *
      * @param scope
      *                The named subscope.
      * @param forBlock
@@ -715,7 +715,7 @@ public class CodeManager {
      * Evaluate the given expression and return its boolean value. The
      * expression should return a boolean value, otherwise an exception is
      * thrown.
-     * 
+     *
      * @param expression
      *                The expression to evaluate.
      * @return The boolean result of evaluation.
@@ -734,7 +734,7 @@ public class CodeManager {
 
     /**
      * Evaluate the given expression and return the corresponding token.
-     * 
+     *
      * @param expression
      *                The expression to evaluate.
      * @return The result of evaluation.
@@ -759,7 +759,7 @@ public class CodeManager {
 
     /**
      * Evaluate the current for block, assuming there is one.
-     * 
+     *
      * @throws PtalonRuntimeException
      *                 If there is any trouble evaluating this for block.
      */
@@ -773,7 +773,7 @@ public class CodeManager {
     /**
      * Evaluate the given input expression and return a string representation of
      * it, or null, if there is some reason it cannot be evaluated.
-     * 
+     *
      * @param expression
      *                The input expression.
      * @return The evaluated value, or null if there is not.
@@ -796,7 +796,7 @@ public class CodeManager {
 
     /**
      * Exit the current if scope.
-     * 
+     *
      * @exception PtalonRuntimeException
      *                    If already at the top-level if scope.
      */
@@ -809,7 +809,7 @@ public class CodeManager {
 
     /**
      * Exit the current for scope.
-     * 
+     *
      * @exception PtalonRuntimeException
      *                    If not in a for-block scope.
      */
@@ -822,7 +822,7 @@ public class CodeManager {
 
     /**
      * Get the unique name for the symbol in the PtalonActor.
-     * 
+     *
      * @param symbol
      *                The symbol to test.
      * @return The unique name.
@@ -843,7 +843,7 @@ public class CodeManager {
 
     /**
      * Return true if the given symbol exists in the current scope.
-     * 
+     *
      * @param symbol
      *                The symbol to test.
      * @return true if the given symbol exists in the current scope.
@@ -864,7 +864,7 @@ public class CodeManager {
      * containing scope have been created, when all parameters in the containing
      * scope have been assigned values, and when in a branch of an if-block that
      * is active.
-     * 
+     *
      * @return true if the current if-block scope is ready to be entered.
      * @exception PtalonRuntimeException
      *                    If it is thrown trying to access a parameter.
@@ -893,7 +893,7 @@ public class CodeManager {
      * containing scope have been created, when all parameters in the containing
      * scope have been assigned values, and when in a branch of an if-block or
      * for-block that is active.
-     * 
+     *
      * @return true if the current for-block scope is ready to be entered.
      * @exception PtalonRuntimeException
      *                    If it is thrown trying to access a parameter.
@@ -908,7 +908,7 @@ public class CodeManager {
      * all ports, parameters, and relations in the containing scope have been
      * created, when all parameters in the containing scope have been assigned
      * values, and when in a branch of an if-block that is active.
-     * 
+     *
      * @return true if the current if-block scope is ready to be entered.
      * @exception PtalonRuntimeException
      *                    If it is thrown trying to access a parameter.
@@ -934,7 +934,7 @@ public class CodeManager {
     /**
      * Return true if an entity was created in PtalonActor for the given symbol.
      * This symbol is assumed to be in the current scope.
-     * 
+     *
      * @param symbol
      *                The symbol to test.
      * @return true if an entity was created for this symbol.
@@ -984,7 +984,7 @@ public class CodeManager {
     /**
      * Pop out of the scope of the current if statement and into its container
      * block's scope.
-     * 
+     *
      * @return The unique name of the if-statement block being exited.
      * @exception PtalonScopeException
      *                    If the current scope is already the outermost scope.
@@ -1002,7 +1002,7 @@ public class CodeManager {
     /**
      * Pop out of the scope of the current for statement and into its container
      * block's scope.
-     * 
+     *
      * @return The unique name of the for-statement block being exited.
      * @exception PtalonScopeException
      *                    If the current scope is already the outermost scope.
@@ -1023,7 +1023,7 @@ public class CodeManager {
     /**
      * Push into the scope of a new for statement contained as a sub-block of
      * the current (FIXME: if or for) statement.
-     * 
+     *
      * @param variable
      *                The variable associated with the for statement.
      * @param initExpr
@@ -1045,7 +1045,7 @@ public class CodeManager {
 
     /**
      * Set the active branch for the current if statement.
-     * 
+     *
      * @param branch
      *                The branch to set.
      */
@@ -1057,7 +1057,7 @@ public class CodeManager {
     /**
      * Set the symbol in the PtalonCode which represents this CodeManager's
      * actor.
-     * 
+     *
      * @param symbol
      *                The name of this actor in the Ptalon file.
      * @exception PtalonScopeException
@@ -1081,7 +1081,7 @@ public class CodeManager {
 
     /**
      * Set the current branch that's being walked.
-     * 
+     *
      * @param branch
      *                True if the true branch is being walked.
      */
@@ -1092,7 +1092,7 @@ public class CodeManager {
     /**
      * Set the next expression for the current for statement scope, assuming the
      * current scope is a for statement and not an if statement.
-     * 
+     *
      * @param nextExpr
      *                The expression to represent the next statement.
      */
@@ -1114,7 +1114,7 @@ public class CodeManager {
     /**
      * Return a number of spaces that is proportional to the argument. If the
      * argument is negative or zero, return an empty string.
-     * 
+     *
      * @param level
      *                The level of indenting represented by the spaces.
      * @return A string with zero or more spaces.
@@ -1125,7 +1125,7 @@ public class CodeManager {
 
     /**
      * Return the number of times the current if tree has been entered.
-     * 
+     *
      * @return The number of times the current if tree has been entered.
      */
     protected int _getTimesEntered() {
@@ -1134,7 +1134,7 @@ public class CodeManager {
 
     /**
      * Return the type associated with the given symbol in the current scope.
-     * 
+     *
      * @param symbol
      *                The symbol under test.
      * @return The type associated with the given symbol.
@@ -1160,7 +1160,7 @@ public class CodeManager {
      * Return the type associated with the given symbol in the current scope.
      * This is the same as getType, but it is used to avoid a name conflict in
      * NestedActorManager.PtalonExpressionScope
-     * 
+     *
      * @param symbol
      *                The symbol under test.
      * @return The type associated with the given symbol.
@@ -1174,7 +1174,7 @@ public class CodeManager {
 
     /**
      * Return true if in a new iteration of a while block.
-     * 
+     *
      * @return true if in a new iteration of a while block.
      */
     protected boolean _inNewWhileIteration() {
@@ -1244,7 +1244,7 @@ public class CodeManager {
 
     /**
      * Get the value associated with the specified parameter.
-     * 
+     *
      * @param param
      *                The parameter's name in the Ptalon code.
      * @return Its unique value.
@@ -1258,11 +1258,11 @@ public class CodeManager {
                     .getAttribute(uniqueName);
             att.toString();
             /*This previous line seems to cause some evaluation that
-             * is necessary for the next line to not throw an exception.  
-             * I don't exactly know why, but things seemed to only work 
+             * is necessary for the next line to not throw an exception.
+             * I don't exactly know why, but things seemed to only work
              * when I was in the debugger, and only when I viewed the "att"
-             * value in the debugger.  Since I figured this would require 
-             * toString() to be called, I tried adding this line, and the 
+             * value in the debugger.  Since I figured this would require
+             * toString() to be called, I tried adding this line, and the
              * exception went away.
              */
             return att.getToken();
@@ -1274,7 +1274,7 @@ public class CodeManager {
 
     /**
      * Get the type associated with the specified parameter.
-     * 
+     *
      * @param param
      *                The parameter's name in the Ptalon code.
      * @return Its type.
@@ -1295,7 +1295,7 @@ public class CodeManager {
 
     /**
      * Get the type term associated with the specified parameter.
-     * 
+     *
      * @param param
      *                The parameter's name in the Ptalon code.
      * @return Its type.
@@ -1355,7 +1355,7 @@ public class CodeManager {
 
         /**
          * Create a new if tree.
-         * 
+         *
          * @param name
          *                The name to give this if tree.
          * @param parent
@@ -1375,7 +1375,7 @@ public class CodeManager {
         /**
          * Create a new child tree to this tree with the specified name and
          * return it. Subclasses should override this if it's not the case.
-         * 
+         *
          * @param name
          *                The name of the child.
          * @return The child IfTree.
@@ -1388,7 +1388,7 @@ public class CodeManager {
 
         /**
          * Add a symbol to the scope of this if statement.
-         * 
+         *
          * @param symbol
          *                The symbol to add.
          * @param type
@@ -1408,7 +1408,7 @@ public class CodeManager {
 
         /**
          * Add a symbol to the scope of this if statement.
-         * 
+         *
          * @param symbol
          *                The symbol to add.
          * @param type
@@ -1433,7 +1433,7 @@ public class CodeManager {
 
         /**
          * Evaluate this for block, assuming this is a for block.
-         * 
+         *
          * @throws PtalonRuntimeException
          *                 If there is any trouble evaluating this for block.
          */
@@ -1463,7 +1463,7 @@ public class CodeManager {
         /**
          * Return the active branch, which may be null if it has not yet been
          * set.
-         * 
+         *
          * @return the active branch
          * @see #setActiveBranch
          */
@@ -1473,7 +1473,7 @@ public class CodeManager {
 
         /**
          * Return the ancestors of this tree, including this tree.
-         * 
+         *
          * @return The ancestors of this tree, including this tree.
          */
         public List<IfTree> getAncestors() {
@@ -1485,7 +1485,7 @@ public class CodeManager {
         /**
          * Return true if we are in the main scope or the true part of a true
          * branch.
-         * 
+         *
          * @return true if in main scope or true part of a true branch.
          * @see #setCurrentBranch
          */
@@ -1496,7 +1496,7 @@ public class CodeManager {
         /**
          * Get the unique name for the symbol in the PtalonActor, looking deep
          * into for loops for potential matches.
-         * 
+         *
          * @param symbol
          *                The symbol to test.
          * @return The unique name.
@@ -1526,7 +1526,7 @@ public class CodeManager {
         /**
          * Return the type associated with the given symbol, looking deep into
          * for loops that might add symbols to this scope.
-         * 
+         *
          * @param symbol
          *                The symbol under test.
          * @return The type associated with the given symbol.
@@ -1556,7 +1556,7 @@ public class CodeManager {
         /**
          * Get the iteration (number of times this if/for block has been
          * entered) in which this symbol is created.
-         * 
+         *
          * @param symbol
          *                The symbol created.
          * @return The interation number.
@@ -1572,7 +1572,7 @@ public class CodeManager {
 
         /**
          * Get the unique name for the symbol in the PtalonActor.
-         * 
+         *
          * @param symbol
          *                The symbol to test.
          * @return The unique name.
@@ -1597,7 +1597,7 @@ public class CodeManager {
         /**
          * Return true if an entity was created in PtalonActor for the given
          * symbol. This symbol is assumed to be in the current scope.
-         * 
+         *
          * @param symbol
          *                The symbol to test.
          * @return true if an entity was created for this symbol.
@@ -1620,7 +1620,7 @@ public class CodeManager {
         /**
          * Return true if the given symbol is in this scope, or deeply in this
          * scope through some for loop.
-         * 
+         *
          * @param symbol
          *                The symbol to test.
          * @return true if symbol is in the right scope.
@@ -1646,7 +1646,7 @@ public class CodeManager {
         /**
          * Return a set of strings representing all symbols in the scope of the
          * if-block.
-         * 
+         *
          * @return All symbols in the scope of the if-block.
          */
         public Set<String> getSymbols() {
@@ -1659,7 +1659,7 @@ public class CodeManager {
 
         /**
          * Return the type associated with the given symbol.
-         * 
+         *
          * @param symbol
          *                The symbol under test.
          * @return The type associated with the given symbol.
@@ -1686,7 +1686,7 @@ public class CodeManager {
          * value. A symbol has been assigned a value if a corresponding entity
          * for the symbol has been created in the PtalonActor, and in the case
          * of parameters, that the user has provided a value for the parameter.
-         * 
+         *
          * @return True if all the symbols in this if block have been assigned a
          *         value.
          * @exception PtalonRuntimeException
@@ -1737,7 +1737,7 @@ public class CodeManager {
 
         /**
          * Return true if in a new iteration of a while block.
-         * 
+         *
          * @return true if in a new iteration of a while block.
          */
         public boolean inNewWhileIteration() {
@@ -1753,7 +1753,7 @@ public class CodeManager {
         /**
          * Map a name of a symbol from a Ptalon program to a name in the
          * PtalonActor which creates it.
-         * 
+         *
          * @param symbol
          *                The name for the symbol in the Ptalon program.
          * @param uniqueName
@@ -1783,7 +1783,7 @@ public class CodeManager {
 
         /**
          * Set the active branch to true or false.
-         * 
+         *
          * @param branch
          *                The branch to set it to.
          * @see #getActiveBranch
@@ -1794,7 +1794,7 @@ public class CodeManager {
 
         /**
          * Set the current branch that's being walked.
-         * 
+         *
          * @param branch
          *                True if the true branch is being walked.
          * @see #getCurrentBranch
@@ -1806,7 +1806,7 @@ public class CodeManager {
         /**
          * Set the iteration (number of times this if/for block has been
          * entered) in which this symbol is created.
-         * 
+         *
          * @param symbol
          *                The symbol created.
          * @param iteration
@@ -1820,7 +1820,7 @@ public class CodeManager {
         /**
          * Set the status of the symbol to true, if the symbol is ready, and
          * false otherwise.
-         * 
+         *
          * @param symbol
          *                The symbol.
          * @param status
@@ -1969,7 +1969,7 @@ public class CodeManager {
 
         /**
          * Add the specified variable with the given value.
-         * 
+         *
          * @param name
          *                The variable name.
          * @param value
@@ -1983,7 +1983,7 @@ public class CodeManager {
          * Look up and return the value of the variable or parameter with the
          * specified name in the scope. Return null if the name is not defined
          * in this scope.
-         * 
+         *
          * @param name
          *                The name of the variable or parameter.
          * @return The token associated with the given name in the scope.
@@ -2011,7 +2011,7 @@ public class CodeManager {
          * Look up and return the type of the variable or parameter with the
          * specified name in the scope. Return null if the name is not defined
          * in this scope.
-         * 
+         *
          * @param name
          *                The name of the variable or parameter.
          * @return The token associated with the given name in the scope.
@@ -2039,7 +2039,7 @@ public class CodeManager {
          * Look up and return the type term for the variable or parameter with
          * the specified name in the scope. Return null if the name is not
          * defined in this scope, or is a constant type.
-         * 
+         *
          * @param name
          *                The name of the variable or parameter.
          * @return The InequalityTerm associated with the given name in the
@@ -2071,7 +2071,7 @@ public class CodeManager {
          * getType() will return a value for the identifier. Note that generally
          * speaking, this list is extremely expensive to compute, and users
          * should avoid calling it. It is primarily used for debugging purposes.
-         * 
+         *
          * @return A set of identifier names.
          * @exception IllegalActionException
          *                    If constructing the list causes it.
@@ -2090,7 +2090,7 @@ public class CodeManager {
 
         /**
          * Remove the specified variable from this scope.
-         * 
+         *
          * @param name
          *                The name of this variable.
          */

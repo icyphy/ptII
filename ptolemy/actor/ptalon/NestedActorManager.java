@@ -1,5 +1,5 @@
 /* FIXME comment
-  
+
  Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
 
@@ -63,19 +63,19 @@ import ptolemy.util.StringUtilities;
  * nested actors. It became clear that several methods would need to be added to
  * CodeManager to make properly deal with nested actors, so this class is
  * separated simply to make the code a bit more digestable.
- * 
+ *
  * @author Adam Cataldo, Elaine Cheong
  * @version $Id$
  * @since Ptolemy II 6.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
- * 
+ *
  */
 public class NestedActorManager extends CodeManager {
 
     /**
      * Create a new NestedActorManager.
-     * 
+     *
      * @param actor
      *                The ptalon actor for this manager.
      */
@@ -100,7 +100,7 @@ public class NestedActorManager extends CodeManager {
      * Add an actor to the PtalonActor. In the case of an actor specified by an
      * import statement, the actor will be a PtalonActor. In the case of an
      * actor specified by a parameter, the actor will be arbitrary.
-     * 
+     *
      * @param name
      *                The unique name of the actor declaration.
      * @exception PtalonRuntimeException
@@ -284,10 +284,10 @@ public class NestedActorManager extends CodeManager {
      * Add an assignment of the specified parameter of this actor declaration to
      * the specified actor declaration. This is not allowed in nested actor
      * declarations, only top-level declarations. For instance:
-     * 
+     *
      * Foo(port := containing) port is okay, but not Bar(a := Foo(port :=
      * containing))
-     * 
+     *
      * @param parameterName
      *                The name of the parameter.
      * @param expression
@@ -310,10 +310,10 @@ public class NestedActorManager extends CodeManager {
      * containing Ptalon actor connection point, which is either a port or a
      * relation. This is not allowed in nested actor declarations, only
      * top-level declarations. For instance,
-     * 
+     *
      * Foo(port := containing) port is okay, but not Bar(a := Foo(port :=
      * containing))
-     * 
+     *
      * @param portName
      *                The name of the port in this
      * @param connectPoint
@@ -336,10 +336,10 @@ public class NestedActorManager extends CodeManager {
      * containing Ptalon actor connection point, which is either a port or a
      * relation. This is not allowed in nested actor declarations, only
      * top-level declarations. For instance,
-     * 
+     *
      * Foo(port := containing) port is okay, but not Bar(a := Foo(port :=
      * containing))
-     * 
+     *
      * @param portName
      *                The name of the port in this
      * @param connectPointPrefix
@@ -362,7 +362,7 @@ public class NestedActorManager extends CodeManager {
     /**
      * Add a symbol with the given name and type to the symbol table at the
      * current level of the if-tree hierarchy.
-     * 
+     *
      * @param name
      *                The symbol name.
      * @param type
@@ -380,7 +380,7 @@ public class NestedActorManager extends CodeManager {
 
     /**
      * Add the unknown left side to this actor declaration.
-     * 
+     *
      * @param prefix
      *                The prefix for the unknown left side.
      * @param expression
@@ -392,7 +392,7 @@ public class NestedActorManager extends CodeManager {
 
     /**
      * Enter the named actor declaration.
-     * 
+     *
      * @param name
      *                The name of the actor declaration.
      * @exception PtalonRuntimeException
@@ -429,7 +429,7 @@ public class NestedActorManager extends CodeManager {
 
     /**
      * Exit the current actor declaration.
-     * 
+     *
      * @exception PtalonRuntimeException
      *                    If already at the top-level if scope.
      */
@@ -442,7 +442,7 @@ public class NestedActorManager extends CodeManager {
 
     /**
      * Returns true if the current actor declaration is ready to be created.
-     * 
+     *
      * @return true if the current actor declaration is ready to be created.
      * @exception PtalonRuntimeException
      *                    If thrown trying to access a parameter, or if there is
@@ -494,7 +494,7 @@ public class NestedActorManager extends CodeManager {
 
     /**
      * Pop an actor off of the current tree and return the name.
-     * 
+     *
      * @return The unique name of the actor declaration being popped from.
      * @exception PtalonScopeException
      *                    If not inside an actor declaration.
@@ -512,7 +512,7 @@ public class NestedActorManager extends CodeManager {
     /**
      * Push an actor name onto the current tree, or create a new tree if
      * entering a new nested actor declaration.
-     * 
+     *
      * @param actorName
      *                The name of the actor.
      * @exception PtalonScopeException
@@ -535,7 +535,7 @@ public class NestedActorManager extends CodeManager {
      * Set whether or not dangling ports are okay. If this input is false, then
      * dangling ports will be connected to the outside of this PtalonActor, the
      * default behavoir. Setting this to true means that this is not desired.
-     * 
+     *
      * @param value
      *                true if dangling ports should be left alone.
      */
@@ -546,7 +546,7 @@ public class NestedActorManager extends CodeManager {
     /**
      * Set the symbol in the PtalonCode which represents this CodeManager's
      * actor.
-     * 
+     *
      * @param symbol
      *                The name of this actor in the Ptalon file.
      * @exception PtalonScopeException
@@ -561,7 +561,7 @@ public class NestedActorManager extends CodeManager {
     /**
      * Set the parameter name for the current actor declaration, if any, to the
      * given parameter name.
-     * 
+     *
      * @param paramName
      *                The name of the parameter.
      * @exception PtalonScopeException
@@ -586,7 +586,7 @@ public class NestedActorManager extends CodeManager {
 
     /**
      * The reverse of _importToParameter
-     * 
+     *
      * @param expression
      *                The expression to convert.
      * @return The converted expression.
@@ -622,7 +622,7 @@ public class NestedActorManager extends CodeManager {
      * z
      * <p>
      * b(y : = <2/>, z := <2/>)
-     * 
+     *
      * @param expression
      *                The expression to split.
      * @return The array of expression components.
@@ -669,7 +669,7 @@ public class NestedActorManager extends CodeManager {
      * with a whole number. For instance _uniqueSymbol("Foo") may return "Foo0",
      * "Foo1", or "Foo2". The input symbol is assumed to refer to a previously
      * declared parameter or import statement.
-     * 
+     *
      * @param symbol
      *                The symbol from which to derive the unique symbol.
      * @return A unique name.
@@ -722,7 +722,7 @@ public class NestedActorManager extends CodeManager {
 
     /**
      * Each tree in this list represents a nested actor declaration, like
-     * 
+     *
      * Foo(a := Foo(a: = Bar(), b := Bar()), b := Bar())
      */
     private List<ActorTree> _trees;
@@ -733,18 +733,18 @@ public class NestedActorManager extends CodeManager {
     /**
      * This class is a tree whose structure mimics that of a nested actor
      * declaration. For instance,
-     * 
+     *
      * Foo(a := Foo(a: = Bar(), b := Bar()), b := Bar())
-     * 
+     *
      * might have a tree that looks something like:
-     * 
+     *
      * <pre>
-     *  
+     *
      *               Foo_0
      *              /     \
      *            Foo_1  Bar_0
      *            /   \
-     *         Bar_1  Bar_2 
+     *         Bar_1  Bar_2
      * </pre>
      */
     private class ActorTree extends NamedTree<ActorTree> {
@@ -760,7 +760,7 @@ public class NestedActorManager extends CodeManager {
         /**
          * Create a new child tree to this tree with the specified name and
          * return it.
-         * 
+         *
          * @param name
          *                The name of the child.
          * @return The child ActorTree.
@@ -776,13 +776,13 @@ public class NestedActorManager extends CodeManager {
          * the containing Ptalon actor connection point, which is either a port
          * or a relation. This is not allowed in nested actor declarations, only
          * top-level declarations. For instance,
-         * 
+         *
          * Foo(port := containing)
-         * 
+         *
          * port is okay, but not
-         * 
+         *
          * Bar(a := Foo(port := containing))
-         * 
+         *
          * @param parameterName
          *                The name of the parameter.
          * @param expression
@@ -797,16 +797,16 @@ public class NestedActorManager extends CodeManager {
          * the containing Ptalon actor connection point, which is either a port
          * or a relation. This is not allowed in nested actor declarations, only
          * top-level declarations. For instance,
-         * 
+         *
          * Foo(port := containing)
-         * 
+         *
          * port is okay, but not
-         * 
+         *
          * Bar(a := Foo(port := containing))
-         * 
+         *
          * If the port on the left does not exist, it will be created and given
          * a flow type if possible.
-         * 
+         *
          * @param portName
          *                The name of the port in the specified actor.
          * @param connectPoint
@@ -865,7 +865,7 @@ public class NestedActorManager extends CodeManager {
          * Add an assignment of the specified port of this actor declaration to
          * the containing Ptalon actor connection point, which is either a port
          * or a relation. Here
-         * 
+         *
          * @param portName
          *                The name of the port in this
          * @param connectPointPrefix
@@ -889,7 +889,7 @@ public class NestedActorManager extends CodeManager {
 
         /**
          * Add the unknown left side to this actor declaration.
-         * 
+         *
          * @param prefix
          *                The prefix for the unknown left side.
          * @param expression
@@ -902,7 +902,7 @@ public class NestedActorManager extends CodeManager {
         /**
          * Assign all Ptalon paramters of the specified actor their
          * corresponding value.
-         * 
+         *
          * @param actor
          *                The actor that contains these parameters.
          * @exception PtalonRuntimeException
@@ -957,7 +957,7 @@ public class NestedActorManager extends CodeManager {
         /**
          * Assign all non-Ptalon parameters of the specified non-Ptalon actor
          * their corresponding value.
-         * 
+         *
          * @param actor
          *                The actor that contains these parameters.
          * @exception PtalonRuntimeException
@@ -1067,7 +1067,7 @@ public class NestedActorManager extends CodeManager {
         /**
          * Get the name of the actor parameter, or throw an exception if there
          * is none.
-         * 
+         *
          * @return The name of the actor parameter.
          * @exception PtalonRuntimeException
          *                    If no parameter name has been assigned to this
@@ -1084,7 +1084,7 @@ public class NestedActorManager extends CodeManager {
         /**
          * Get an expression representing this actor tree, like a := b(c :=
          * d())(n := <2/>)
-         * 
+         *
          * @return A string containing the expression.
          * @throws PtalonRuntimeException
          */
@@ -1124,7 +1124,7 @@ public class NestedActorManager extends CodeManager {
          * Get the first actor tree descendent of this actor tree with the
          * specified name. This should be unique, as each subtree should have a
          * unique name.
-         * 
+         *
          * @param uniqueName
          *                Unique name of the actor tree to get.
          * @return The descendent, or null if there is none.
@@ -1143,7 +1143,7 @@ public class NestedActorManager extends CodeManager {
 
         /**
          * Get the CodeManager symbol.
-         * 
+         *
          * @return The CodeManager symbol for this actor declaration.
          */
         public String getSymbol() {
@@ -1152,7 +1152,7 @@ public class NestedActorManager extends CodeManager {
 
         /**
          * Return true if this nested actor is ready to be created.
-         * 
+         *
          * @return True if this nested actor is ready to be created.
          * @exception PtalonRuntimeException
          *                    If there is problem accessing any parameters.
@@ -1230,7 +1230,7 @@ public class NestedActorManager extends CodeManager {
 
         /**
          * Make all connections for this nested actor.
-         * 
+         *
          * @param actor
          *                The actor to connect to others.
          * @exception PtalonRuntimeException
@@ -1505,7 +1505,7 @@ public class NestedActorManager extends CodeManager {
 
         /**
          * Make all connections for this nested actor.
-         * 
+         *
          * @param actor
          *                The actor for to connect to others.
          * @exception PtalonRuntimeException
@@ -1684,7 +1684,7 @@ public class NestedActorManager extends CodeManager {
         /**
          * Set the parameter name for the current actor declaration, if any, to
          * the given parameter name.
-         * 
+         *
          * @param paramName
          *                The name of the parameter.
          */
@@ -1696,7 +1696,7 @@ public class NestedActorManager extends CodeManager {
         /**
          * Set the symbol in the CodeManager this actor declaration refers to.
          * It should have type "actorparameter" or "import".
-         * 
+         *
          * @param symbol
          *                The symbol to set.
          */
@@ -1706,7 +1706,7 @@ public class NestedActorManager extends CodeManager {
 
         /**
          * Write an xml version of this actor to the given output.
-         * 
+         *
          * @param output
          *                The writer to send the output to.
          * @param depth
