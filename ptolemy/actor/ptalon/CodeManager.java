@@ -670,6 +670,25 @@ public class CodeManager {
     }
 
     /**
+     * Enter the named for-block subscope.
+     *
+     * @param scope
+     *                The named subscope.
+     * @param forBlock
+     *                The AST for the subscope.
+     * @param populator
+     *                The PtalonPopulator that called this statement.
+     * @exception PtalonRuntimeException
+     *                    If the subscope does not exist.
+     */
+    public void enterForScope(String scope, PtalonAST forBlock,
+            PtalonPopulator populator) throws PtalonRuntimeException {
+        enterIfScope(scope);
+        _currentIfTree.forBlock = forBlock;
+        _currentIfTree.populator = populator;
+    }
+
+    /**
      * Enter the named subscope.
      *
      * @param scope
@@ -690,25 +709,6 @@ public class CodeManager {
             throw new PtalonRuntimeException("Subscope " + scope
                     + " does not exist");
         }
-    }
-
-    /**
-     * Enter the named for-block subscope.
-     *
-     * @param scope
-     *                The named subscope.
-     * @param forBlock
-     *                The AST for the subscope.
-     * @param populator
-     *                The PtalonPopulator that called this statement.
-     * @exception PtalonRuntimeException
-     *                    If the subscope does not exist.
-     */
-    public void enterForScope(String scope, PtalonAST forBlock,
-            PtalonPopulator populator) throws PtalonRuntimeException {
-        enterIfScope(scope);
-        _currentIfTree.forBlock = forBlock;
-        _currentIfTree.populator = populator;
     }
 
     /**
@@ -795,19 +795,6 @@ public class CodeManager {
     }
 
     /**
-     * Exit the current if scope.
-     *
-     * @exception PtalonRuntimeException
-     *                    If already at the top-level if scope.
-     */
-    public void exitIfScope() throws PtalonRuntimeException {
-        if (_currentIfTree.getParent() == null) {
-            throw new PtalonRuntimeException("Already at top level");
-        }
-        _currentIfTree = _currentIfTree.getParent();
-    }
-
-    /**
      * Exit the current for scope.
      *
      * @exception PtalonRuntimeException
@@ -821,13 +808,23 @@ public class CodeManager {
     }
 
     /**
+     * Exit the current if scope.
+     *
+     * @exception PtalonRuntimeException If already at the top-level if scope.
+     */
+    public void exitIfScope() throws PtalonRuntimeException {
+        if (_currentIfTree.getParent() == null) {
+            throw new PtalonRuntimeException("Already at top level");
+        }
+        _currentIfTree = _currentIfTree.getParent();
+    }
+
+    /**
      * Get the unique name for the symbol in the PtalonActor.
      *
-     * @param symbol
-     *                The symbol to test.
+     * @param symbol The symbol to test.
      * @return The unique name.
-     * @exception PtalonRuntimeException
-     *                    If no such symbol exists.
+     * @exception PtalonRuntimeException If no such symbol exists.
      */
     public String getMappedName(String symbol) throws PtalonRuntimeException {
         for (IfTree tree : _currentIfTree.getAncestors()) {
@@ -859,81 +856,9 @@ public class CodeManager {
     }
 
     /**
-     * Return true if the boolean for the current conditional is ready to be
-     * entered. It is ready when all ports, parameters, and relations in the
-     * containing scope have been created, when all parameters in the containing
-     * scope have been assigned values, and when in a branch of an if-block that
-     * is active.
-     *
-     * @return true if the current if-block scope is ready to be entered.
-     * @exception PtalonRuntimeException
-     *                    If it is thrown trying to access a parameter.
-     */
-    public boolean isIfReady() throws PtalonRuntimeException {
-        IfTree parent = _currentIfTree.getParent();
-        if (parent == null) {
-            return false; // Should never make it here.
-        } else if (parent.getActiveBranch() == null) {
-            return false;
-        } else if (parent.getActiveBranch() != parent.getCurrentBranch()) {
-            return false;
-        }
-        List<IfTree> ancestors = parent.getAncestors();
-        for (IfTree tree : ancestors) {
-            if (!tree.isFullyAssigned()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Return true if the boolean for the current conditional is ready to be
-     * entered. It is ready when all ports, parameters, and relations in the
-     * containing scope have been created, when all parameters in the containing
-     * scope have been assigned values, and when in a branch of an if-block or
-     * for-block that is active.
-     *
-     * @return true if the current for-block scope is ready to be entered.
-     * @exception PtalonRuntimeException
-     *                    If it is thrown trying to access a parameter.
-     */
-    public boolean isForReady() throws PtalonRuntimeException {
-        return isIfReady();
-    }
-
-    /**
-     * Return true if the current piece of code is ready to be entered. This is
-     * used by port, parameter, and relation declarations only. It is ready when
-     * all ports, parameters, and relations in the containing scope have been
-     * created, when all parameters in the containing scope have been assigned
-     * values, and when in a branch of an if-block that is active.
-     *
-     * @return true if the current if-block scope is ready to be entered.
-     * @exception PtalonRuntimeException
-     *                    If it is thrown trying to access a parameter.
-     */
-    public boolean isReady() throws PtalonRuntimeException {
-        IfTree parent = _currentIfTree.getParent();
-        if (parent == null) {
-            return true;
-        }
-        List<IfTree> ancestors = parent.getAncestors();
-        for (IfTree tree : ancestors) {
-            if (!tree.isFullyAssigned()) {
-                return false;
-            }
-        }
-        if (_currentIfTree.getActiveBranch() == null) {
-            return false;
-        }
-        return (_currentIfTree.getActiveBranch() == _currentIfTree
-                .getCurrentBranch());
-    }
-
-    /**
-     * Return true if an entity was created in PtalonActor for the given symbol.
-     * This symbol is assumed to be in the current scope.
+     * Return true if an entity was created in PtalonActor for the
+     * given symbol.  This symbol is assumed to be in the current
+     * scope.
      *
      * @param symbol
      *                The symbol to test.
@@ -982,21 +907,78 @@ public class CodeManager {
     }
 
     /**
-     * Pop out of the scope of the current if statement and into its container
-     * block's scope.
+     * Return true if the boolean for the current conditional is ready
+     * to be entered. It is ready when all ports, parameters, and
+     * relations in the containing scope have been created, when all
+     * parameters in the containing scope have been assigned values,
+     * and when in a branch of an if-block or for-block that is
+     * active.
      *
-     * @return The unique name of the if-statement block being exited.
-     * @exception PtalonScopeException
-     *                    If the current scope is already the outermost scope.
+     * @return true if the current for-block scope is ready to be entered.
+     * @exception PtalonRuntimeException
+     *                    If it is thrown trying to access a parameter.
      */
-    public String popIfStatement() throws PtalonScopeException {
-        String name = _currentIfTree.getName();
-        _currentIfTree = _currentIfTree.getParent();
-        if (_currentIfTree == null) {
-            throw new PtalonScopeException(
-                    "Attempt to pop out of outermost scope");
+    public boolean isForReady() throws PtalonRuntimeException {
+        return isIfReady();
+    }
+
+    /**
+     * Return true if the boolean for the current conditional is ready
+     * to be entered. It is ready when all ports, parameters, and
+     * relations in the containing scope have been created, when all
+     * parameters in the containing scope have been assigned values,
+     * and when in a branch of an if-block that is active.
+     *
+     * @return true if the current if-block scope is ready to be entered.
+     * @exception PtalonRuntimeException
+     *                    If it is thrown trying to access a parameter.
+     */
+    public boolean isIfReady() throws PtalonRuntimeException {
+        IfTree parent = _currentIfTree.getParent();
+        if (parent == null) {
+            return false; // Should never make it here.
+        } else if (parent.getActiveBranch() == null) {
+            return false;
+        } else if (parent.getActiveBranch() != parent.getCurrentBranch()) {
+            return false;
         }
-        return name;
+        List<IfTree> ancestors = parent.getAncestors();
+        for (IfTree tree : ancestors) {
+            if (!tree.isFullyAssigned()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Return true if the current piece of code is ready to be
+     * entered. This is used by port, parameter, and relation
+     * declarations only. It is ready when all ports, parameters, and
+     * relations in the containing scope have been created, when all
+     * parameters in the containing scope have been assigned values,
+     * and when in a branch of an if-block that is active.
+     *
+     * @return true if the current if-block scope is ready to be entered.
+     * @exception PtalonRuntimeException
+     *                    If it is thrown trying to access a parameter.
+     */
+    public boolean isReady() throws PtalonRuntimeException {
+        IfTree parent = _currentIfTree.getParent();
+        if (parent == null) {
+            return true;
+        }
+        List<IfTree> ancestors = parent.getAncestors();
+        for (IfTree tree : ancestors) {
+            if (!tree.isFullyAssigned()) {
+                return false;
+            }
+        }
+        if (_currentIfTree.getActiveBranch() == null) {
+            return false;
+        }
+        return (_currentIfTree.getActiveBranch() == _currentIfTree
+                .getCurrentBranch());
     }
 
     /**
@@ -1012,12 +994,21 @@ public class CodeManager {
     }
 
     /**
-     * Push into the scope of a new if statement contained as a sub-block of the
-     * current if statement.
+     * Pop out of the scope of the current if statement and into its container
+     * block's scope.
+     *
+     * @return The unique name of the if-statement block being exited.
+     * @exception PtalonScopeException
+     *                    If the current scope is already the outermost scope.
      */
-    public void pushIfStatement() {
-        String name = _getNextIfSymbol();
-        _currentIfTree = _currentIfTree.addChild(name);
+    public String popIfStatement() throws PtalonScopeException {
+        String name = _currentIfTree.getName();
+        _currentIfTree = _currentIfTree.getParent();
+        if (_currentIfTree == null) {
+            throw new PtalonScopeException(
+                    "Attempt to pop out of outermost scope");
+        }
+        return name;
     }
 
     /**
@@ -1041,6 +1032,15 @@ public class CodeManager {
         _currentIfTree.variable = variable;
         _currentIfTree.initExpr = initExpr;
         _currentIfTree.satExpr = satExpr;
+    }
+
+    /**
+     * Push into the scope of a new if statement contained as a
+     * sub-block of the current if statement.
+     */
+    public void pushIfStatement() {
+        String name = _getNextIfSymbol();
+        _currentIfTree = _currentIfTree.addChild(name);
     }
 
     /**
@@ -1242,35 +1242,6 @@ public class CodeManager {
         return output;
     }
 
-    /**
-     * Get the value associated with the specified parameter.
-     *
-     * @param param
-     *                The parameter's name in the Ptalon code.
-     * @return Its unique value.
-     * @exception PtalonRuntimeException
-     *                    If the parameter does not exist.
-     */
-    private Token _getValueOf(String param) throws PtalonRuntimeException {
-        try {
-            String uniqueName = getMappedName(param);
-            PtalonParameter att = (PtalonParameter) _actor
-                    .getAttribute(uniqueName);
-            att.toString();
-            /*This previous line seems to cause some evaluation that
-             * is necessary for the next line to not throw an exception.
-             * I don't exactly know why, but things seemed to only work
-             * when I was in the debugger, and only when I viewed the "att"
-             * value in the debugger.  Since I figured this would require
-             * toString() to be called, I tried adding this line, and the
-             * exception went away.
-             */
-            return att.getToken();
-        } catch (Exception ex) {
-            throw new PtalonRuntimeException("Unable to access int value for "
-                    + param, ex);
-        }
-    }
 
     /**
      * Get the type associated with the specified parameter.
@@ -1309,6 +1280,36 @@ public class CodeManager {
             PtalonParameter att = (PtalonParameter) _actor
                     .getAttribute(uniqueName);
             return att.getTypeTerm();
+        } catch (Exception ex) {
+            throw new PtalonRuntimeException("Unable to access int value for "
+                    + param, ex);
+        }
+    }
+
+    /**
+     * Get the value associated with the specified parameter.
+     *
+     * @param param
+     *                The parameter's name in the Ptalon code.
+     * @return Its unique value.
+     * @exception PtalonRuntimeException
+     *                    If the parameter does not exist.
+     */
+    private Token _getValueOf(String param) throws PtalonRuntimeException {
+        try {
+            String uniqueName = getMappedName(param);
+            PtalonParameter att = (PtalonParameter) _actor
+                    .getAttribute(uniqueName);
+            att.toString();
+            /*This previous line seems to cause some evaluation that
+             * is necessary for the next line to not throw an exception.
+             * I don't exactly know why, but things seemed to only work
+             * when I was in the debugger, and only when I viewed the "att"
+             * value in the debugger.  Since I figured this would require
+             * toString() to be called, I tried adding this line, and the
+             * exception went away.
+             */
+            return att.getToken();
         } catch (Exception ex) {
             throw new PtalonRuntimeException("Unable to access int value for "
                     + param, ex);

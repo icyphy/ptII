@@ -244,6 +244,14 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         }
     }
 
+    /** FIXME: this doesn't seem to be used.  Rename to getCodeManager?
+     *  Get the code manager.
+     *  @return The code manager.
+     */
+    public NestedActorManager getActorManager() {
+        return _codeManager;
+    }
+
     /** Return the input source that was specified the last time the configure
      *  method was called.
      *  @return The string representation of the input URL, or null if the
@@ -252,14 +260,6 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      */
     public String getConfigureSource() {
         return _configureSource;
-    }
-
-    /** FIXME: this doesn't seem to be used.  Rename to getCodeManager?
-     *  Get the code manager.
-     *  @return The code manager.
-     */
-    public NestedActorManager getActorManager() {
-        return _codeManager;
     }
 
     /** Return the text string that represents the current configuration of
@@ -493,6 +493,19 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
+    /** Initialize this PtalonActor.  This method may be called when
+     *  the PtalonActor is first constructed or if any of its
+     *  parameter values are changed, so we only initialize
+     *  variables that do not need to be saved when reparsing the
+     *  Ptalon file.
+     */
+    private void _initializePtalonActor() {
+        astCreated = false;
+        _ast = null;
+        _codeManager = null;
+        _nestedDepth = 0;
+    }
+
     /** This helper method is used to begin the Ptalon compiler if the
      *  ptalonCodeLocation attribute has been updated.
      * @exception IllegalActionException If any exception is thrown.
@@ -531,19 +544,6 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
             ex.printStackTrace();
             throw new IllegalActionException(this, ex, ex.getMessage());
         }
-    }
-
-    /** Initialize this PtalonActor.  This method may be called when
-     *  the PtalonActor is first constructed or if any of its
-     *  parameter values are changed, so we only initialize
-     *  variables that do not need to be saved when reparsing the
-     *  Ptalon file.
-     */
-    private void _initializePtalonActor() {
-        astCreated = false;
-        _ast = null;
-        _codeManager = null;
-        _nestedDepth = 0;
     }
 
     /** Return true if the value of the given PtalonParameter has

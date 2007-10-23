@@ -532,15 +532,20 @@ public class NestedActorManager extends CodeManager {
     }
 
     /**
-     * Set whether or not dangling ports are okay. If this input is false, then
-     * dangling ports will be connected to the outside of this PtalonActor, the
-     * default behavoir. Setting this to true means that this is not desired.
+     * Set the parameter name for the current actor declaration, if any, to the
+     * given parameter name.
      *
-     * @param value
-     *                true if dangling ports should be left alone.
+     * @param paramName
+     *                The name of the parameter.
+     * @exception PtalonScopeException
+     *                    If not inside the scope of an actor declaration.
      */
-    public void setDanglingPortsOkay(boolean value) {
-        _danglingPortsOkay = value;
+    public void setActorParameter(String paramName) throws PtalonScopeException {
+        if (_currentActorTree == null) {
+            throw new PtalonScopeException(
+                    "Not inside the scope of an actor declaration.");
+        }
+        _currentActorTree.setActorParameter(paramName);
     }
 
     /**
@@ -559,20 +564,15 @@ public class NestedActorManager extends CodeManager {
     }
 
     /**
-     * Set the parameter name for the current actor declaration, if any, to the
-     * given parameter name.
+     * Set whether or not dangling ports are okay. If this input is false, then
+     * dangling ports will be connected to the outside of this PtalonActor, the
+     * default behavoir. Setting this to true means that this is not desired.
      *
-     * @param paramName
-     *                The name of the parameter.
-     * @exception PtalonScopeException
-     *                    If not inside the scope of an actor declaration.
+     * @param value
+     *                true if dangling ports should be left alone.
      */
-    public void setActorParameter(String paramName) throws PtalonScopeException {
-        if (_currentActorTree == null) {
-            throw new PtalonScopeException(
-                    "Not inside the scope of an actor declaration.");
-        }
-        _currentActorTree.setActorParameter(paramName);
+    public void setDanglingPortsOkay(boolean value) {
+        _danglingPortsOkay = value;
     }
 
     /**
