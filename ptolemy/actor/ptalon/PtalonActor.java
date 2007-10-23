@@ -404,7 +404,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  it to a list of Ptalon parameters.
      *  @param attribute The attribute to be added.
      *  @exception NameDuplicationException If the superclass throws it.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     protected void _addAttribute(Attribute attribute)
             throws NameDuplicationException, IllegalActionException {
@@ -554,7 +554,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  @see #attributeChanged(Attribute)
      *  @param p The PtalonParameter to check.
      *  @return True if value has changed.
-     *  @throws IllegalActionException If unable to compare the token
+     *  @exception IllegalActionException If unable to compare the token
      *  value of p with its previously stored value.
      */
     private boolean _isValueChanged(PtalonParameter p)

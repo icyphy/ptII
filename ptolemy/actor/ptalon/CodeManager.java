@@ -653,7 +653,7 @@ public class CodeManager {
     /**
      * Assign any internal parameters in the order they were set.
      *
-     * @throws PtalonRuntimeException
+     * @exception PtalonRuntimeException
      *                 If there is any trouble assigning parameter values.
      */
     public void assignInternalParameters() throws PtalonRuntimeException {
@@ -719,7 +719,7 @@ public class CodeManager {
      * @param expression
      *                The expression to evaluate.
      * @return The boolean result of evaluation.
-     * @throws PtalonRuntimeException
+     * @exception PtalonRuntimeException
      *                 If the result is not a boolean.
      */
     public boolean evaluateBoolean(String expression)
@@ -738,7 +738,7 @@ public class CodeManager {
      * @param expression
      *                The expression to evaluate.
      * @return The result of evaluation.
-     * @throws PtalonRuntimeException
+     * @exception PtalonRuntimeException
      *                 If unable to evaluate the expression.
      */
     public Token evaluateExpression(String expression)
@@ -760,7 +760,7 @@ public class CodeManager {
     /**
      * Evaluate the current for block, assuming there is one.
      *
-     * @throws PtalonRuntimeException
+     * @exception PtalonRuntimeException
      *                 If there is any trouble evaluating this for block.
      */
     public void evaluateForScope() throws PtalonRuntimeException {
@@ -1227,7 +1227,7 @@ public class CodeManager {
 
     /**
      * @return The parameters in the current scope.
-     * @throws PtalonScopeException
+     * @exception PtalonScopeException
      *                 If there is any problem getting the type of a symbol.
      */
     private Set<String> _getParameters() throws PtalonScopeException {
@@ -1435,7 +1435,7 @@ public class CodeManager {
         /**
          * Evaluate this for block, assuming this is a for block.
          *
-         * @throws PtalonRuntimeException
+         * @exception PtalonRuntimeException
          *                 If there is any trouble evaluating this for block.
          */
         public void evaluateForScope() throws PtalonRuntimeException {

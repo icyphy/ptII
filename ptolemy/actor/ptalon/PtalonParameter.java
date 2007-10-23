@@ -93,7 +93,7 @@ public class PtalonParameter extends Parameter {
     /** Set the token and flag that the value has been set for this
      *  parameter.
      *  @param token The token to set.
-     *  @throws IllegalActionException If the superclass throws one.
+     *  @exception IllegalActionException If the superclass throws one.
      */
     public void setToken(Token token) throws IllegalActionException {
         _hasValue = true;
@@ -104,7 +104,7 @@ public class PtalonParameter extends Parameter {
     /** Set the token and flag that the value has been set for this
      *  parameter.
      *  @param expression The expression for this token
-     *  @throws IllegalActionException If the superclass throws one.
+     *  @exception IllegalActionException If the superclass throws one.
      */
     public void setToken(String expression) throws IllegalActionException {
         if ((expression == null) || (expression.trim().equals(""))) {

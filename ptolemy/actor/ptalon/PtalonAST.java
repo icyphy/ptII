@@ -77,7 +77,7 @@ public class PtalonAST extends CommonAST {
     /** Generate the XML for this AST.
      *  @param out The writer to write to.
      *  @param depth The depth of this node.
-     *  @throws IOException If there is any problem writing.
+     *  @exception IOException If there is any problem writing.
      */
     public void xmlSerialize(Writer out, int depth) throws IOException {
         for (AST node = this; node != null; node = node.getNextSibling()) {

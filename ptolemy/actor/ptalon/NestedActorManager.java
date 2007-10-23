@@ -1086,7 +1086,7 @@ public class NestedActorManager extends CodeManager {
          * d())(n := <2/>)
          *
          * @return A string containing the expression.
-         * @throws PtalonRuntimeException
+         * @exception PtalonRuntimeException
          */
         public String getExpression() throws PtalonRuntimeException {
             if (_actorParameter == null) {
