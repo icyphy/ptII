@@ -362,7 +362,7 @@ TableModelListener, ValueListener {
 
             if (column == 1) {
                 String patternEntityName = newValue;
-                if (!patternEntityName.isEmpty()) {
+                if (patternEntityName.length() != 0) {
                     ComponentEntity patternEntity =
                         (ComponentEntity) transformer.getPattern().getEntity(
                                 patternEntityName);
@@ -378,7 +378,7 @@ TableModelListener, ValueListener {
 
                 String replacementEntityName = _getCellEditorValue(
                         (JPanel) _tableModel.getValueAt(row, 2));
-                if (replacementEntityName.isEmpty()) {
+                if (replacementEntityName.length() == 0) {
                     return;
                 }
                 
@@ -395,7 +395,7 @@ TableModelListener, ValueListener {
             } else if (column == 2) {
                 String replacementEntityName = _getCellEditorValue(
                         (JPanel) _tableModel.getValueAt(row, 2));
-                if (replacementEntityName.isEmpty()) {
+                if (replacementEntityName.length() == 0) {
                     return;
                 }
                 
@@ -756,7 +756,7 @@ TableModelListener, ValueListener {
            if (attribute != null) {
                attribute.addValueListener(this);
                String patternEntity = attribute.getExpression();
-               if (!patternEntity.isEmpty()) {
+               if (patternEntity.length() != 0) {
                    String name = _getNameWithinContainer(object,
                            _getTransformer().getReplacement());
                    _tableModel.addRow(new Object[] {
