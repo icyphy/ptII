@@ -34,6 +34,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.Schedule;
@@ -161,7 +162,8 @@ public class GRDirector extends StaticSchedulingDirector {
     }
 
     /** Override the super class method. This method does nothing and
-     *  everything is postponed to the postfire() method.
+     *  everything is postponed to the postfire() method. This assures
+     *  that inputs are stable.
      */
     public void fire() throws IllegalActionException {
         // do nothing.
@@ -253,30 +255,28 @@ public class GRDirector extends StaticSchedulingDirector {
         _iteration = 0;
 
         // Get the ViewScreen.
-        ViewScreenInterface viewScreen = null;
-        TypedCompositeActor container = (TypedCompositeActor) getContainer();
-        Iterator actors = container.deepEntityList().iterator();
+        ViewScreenInterface viewScreen = _getViewScreen();
 
-        while (actors.hasNext()) {
-            Object actor = actors.next();
-
-            if (actor instanceof ViewScreenInterface) {
-                if (viewScreen != null) {
+        Actor container = (Actor) getContainer();
+        while (viewScreen == null) {
+            // Tolerate GR nested within GR, in which case
+            // the view screen should be that of the enclosing composite.
+            // There could be an intervening FSMDirector, etc.
+            Director executiveDirector = container.getExecutiveDirector();
+            if (executiveDirector instanceof GRDirector) {
+                viewScreen = ((GRDirector)executiveDirector)._getViewScreen();
+            } else {
+                if (executiveDirector == null) {
                     throw new IllegalActionException(this,
-                            "GR model cannot contain more than one view screen.");
+                            "GR model does not contain a view screen.");
                 }
-
-                viewScreen = (ViewScreenInterface) actor;
+                container = (Actor) container.getContainer();
             }
         }
 
-        if (viewScreen == null) {
-            throw new IllegalActionException(this,
-                    "GR model does not contain a view screen.");
-        }
-
         // Set the view screen for all the actors.
-        actors = container.deepEntityList().iterator();
+        Iterator actors = ((TypedCompositeActor)container)
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
@@ -323,8 +323,20 @@ public class GRDirector extends StaticSchedulingDirector {
      *  <i>iterations</i>.
      */
     public boolean postfire() throws IllegalActionException {
-        // iterate all actors under control of this director and fire them.
+        // Iterate all actors under control of this director and fire them.
+        // This is done in postfire() to ensure that all inputs are stable.
         _fire();
+        
+        // Have to transfer outputs! Presumably outputs are only
+        // instances of SceneGraphToken going to a higher-level
+        // GRDirector, so producing those outputs in postfire()
+        // is OK.
+        Iterator outports = ((Actor)getContainer())
+                .outputPortList().iterator();
+        while (outports.hasNext() && !_stopRequested) {
+            IOPort p = (IOPort) outports.next();
+            transferOutputs(p);
+        }
 
         // Note: actors return false on postfire(), if they wish never
         // to be fired again during the execution. This can be
@@ -498,7 +510,9 @@ public class GRDirector extends StaticSchedulingDirector {
             if (actor instanceof CompositeActor) {
                 CompositeActor compositeActor = (CompositeActor) actor;
                 Director insideDirector = compositeActor.getDirector();
-
+                // FIXME: This is bogus.  This is assuming there is no
+                // more than one inside director, and is delegating the
+                // incrementing of time to that inside director.
                 _insideDirector = insideDirector;
                 _pseudoTimeEnabled = true;
             }
@@ -539,6 +553,32 @@ public class GRDirector extends StaticSchedulingDirector {
             // FIXME: should remove actor from schedule
             // if it returns false on postfire()
         }
+    }
+
+    /** Return the one view screen in the model under the control
+     *  of this director.
+     *  @return The one view screen.
+     *  @throws IllegalActionException If there is more than one
+     *   view screen.
+     */
+    private ViewScreenInterface _getViewScreen() throws IllegalActionException {
+        ViewScreenInterface viewScreen = null;
+        TypedCompositeActor container = (TypedCompositeActor) getContainer();
+        Iterator actors = container.deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Object actor = actors.next();
+
+            if (actor instanceof ViewScreenInterface) {
+                if (viewScreen != null) {
+                    throw new IllegalActionException(this,
+                            "GR model cannot contain more than one view screen.");
+                }
+
+                viewScreen = (ViewScreenInterface) actor;
+            }
+        }
+        return viewScreen;
     }
 
     /** Most of the constructor initialization is relegated to this method.
@@ -594,6 +634,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     private long _lastIterationTime;
 
     private boolean _pseudoTimeEnabled = false;
