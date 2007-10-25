@@ -1,9 +1,10 @@
-# Makefile for PtolemyII SDF Domain
+# Makefile for Ptolemy II Gravitation demo
+#
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
 #
-# @Copyright (c) 1998-2006 The Regents of the University of California.
+# @Copyright (c) 2002-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,70 +29,58 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/demo
+ME =		ptolemy/domains/sdf/demo/Gravitation
 
-# Keep these alphabetical please.
-DIRS = 		Array Butterfly Expression Eye FixFIR FixPoint \
-		FourierSeries Gravitiation HTVQ LMSAdaptive LogisticMap \
-		MaximumEntropySpectrum ModelDisplay \
-		MultipleRuns NoisySinewave \
-		OrthogonalCom RijndaelEncryption \
-		Sketch SoundSpectrum Spectrum \
-		SynthesizedVoice Type
+# Root of the Java directory
+ROOT =		../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	Gravitation
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	Array/Array.jar \
-	Butterfly/Butterfly.jar \
-	Expression/Expression.jar \
-	Eye/Eye.jar \
-	FixFIR/FixFIR.jar \
-	FixPoint/FixPoint.jar \
-	FourierSeries/FourierSeries.jar \
-	HTVQ/HTVQ.jar \
-	LMSAdaptive/LMSAdaptive.jar \
-	LogisticMap/LogisticMap.jar \
-	MaximumEntropySpectrum/MaximumEntropySpectrum.jar \
-	ModelDisplay/ModelDisplay.jar \
-	MultipleRuns/MultipleRuns.jar \
-	NoisySinewave/NoisySinewave.jar \
-	OrthogonalCom/OrthogonalCom.jar \
-	RijndaelEncryption/RijndaelEncryption.jar \
-	Sketch/Sketch.jar \
-	SoundSpectrum/SoundSpectrum.jar \
-	Spectrum/Spectrum.jar \
-	SynthesizedVoice/SynthesizedVoice.jar \
-	Type/Type.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	Gravitation.xml \
+	Graviation.htm
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS) \
-	index.htm
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
 
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all $(PTCLASSJAR)
 
-demo: subdemo
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer FourierSeries.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" FourierSeries.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" FourierSeries.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
