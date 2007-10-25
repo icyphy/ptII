@@ -130,9 +130,7 @@ abstract public class GRActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Boolean variable to determine whether the scene graph is
-     * initialized.
-     */
+    /** Indicator of whether the scene graph is initialized. */
     protected boolean _isSceneGraphInitialized;
 
     /** Boolean variable to determine whether attribute changes are
