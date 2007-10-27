@@ -66,8 +66,7 @@ public class AtomicActorMatcher extends TypedAtomicActor {
         ruleList = new RuleListAttribute(this, "ruleList");
         ruleList.setExpression("");
 
-        patternEntity =
-            new PatternEntityAttribute(this, "patternEntity");
+        patternEntity = new PatternEntityAttribute(this, "patternEntity");
         patternEntity.setExpression("");
     }
 

@@ -226,11 +226,11 @@ TableModelListener, ValueListener {
 
     public void copy() {
         if (!_isTableActive()) {
-            if (hasTabs() && getSelectedIndex() == 0) {
-                CompositeEntity model = _getCurrentContainer();
-                _setOrClearActorCorrespondenceAttributes(model, true);
+            CompositeEntity model = getActiveModel();
+            if (_isInPattern(model)) {
+                _setOrClearPatternEntityAttributes(model, true);
                 super.copy();
-                _setOrClearActorCorrespondenceAttributes(model, false);
+                _setOrClearPatternEntityAttributes(model, false);
             } else {
                 super.copy();
             }
@@ -240,35 +240,6 @@ TableModelListener, ValueListener {
     public void delete() {
         if (!_isTableActive()) {
             super.delete();
-        }
-    }
-
-    public void removeRows(int[] rows) {
-        if (_cellEditor != null) {
-            // Stop editing so that the current edit value will be recorded in
-            // the undo history.
-            _cellEditor.stopCellEditing();
-        }
-        SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
-        CompositeActorMatcher replacement = transformer.getReplacement();
-        List<ComponentEntity> entities = new LinkedList<ComponentEntity>();
-        boolean needRefresh = false;
-        for (int i = 0; i < rows.length; i++) {
-            String replacementName = _getCellEditorValue(
-                    (JPanel) _tableModel.getValueAt(rows[i], 2));
-            ComponentEntity entity = replacement.getEntity(replacementName);
-            if (entity == null) {
-                needRefresh = true;
-            } else {
-                entities.add(entity);
-            }
-        }
-        int i = 0;
-        for (ComponentEntity entity : entities) {
-            _setPatternEntity(entity, "", i++ > 0);
-        }
-        if (entities.isEmpty() && needRefresh) {
-            _refreshTable();
         }
     }
 
@@ -345,6 +316,35 @@ TableModelListener, ValueListener {
         super.redo();
     }
 
+    public void removeRows(int[] rows) {
+        if (_cellEditor != null) {
+            // Stop editing so that the current edit value will be recorded in
+            // the undo history.
+            _cellEditor.stopCellEditing();
+        }
+        SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
+        CompositeActorMatcher replacement = transformer.getReplacement();
+        List<ComponentEntity> entities = new LinkedList<ComponentEntity>();
+        boolean needRefresh = false;
+        for (int i = 0; i < rows.length; i++) {
+            String replacementName = _getCellEditorValue(
+                    (JPanel) _tableModel.getValueAt(rows[i], 2));
+            ComponentEntity entity = replacement.getEntity(replacementName);
+            if (entity == null) {
+                needRefresh = true;
+            } else {
+                entities.add(entity);
+            }
+        }
+        int i = 0;
+        for (ComponentEntity entity : entities) {
+            _setPatternEntity(entity, "", i++ > 0);
+        }
+        if (entities.isEmpty() && needRefresh) {
+            _refreshTable();
+        }
+    }
+
     public void tableChanged(TableModelEvent e) {
         if (e.getType() != TableModelEvent.UPDATE) {
             return;
@@ -381,7 +381,7 @@ TableModelListener, ValueListener {
                 if (replacementEntityName.length() == 0) {
                     return;
                 }
-                
+
                 // Updated the pattern object.
                 ComponentEntity replacementEntity = (ComponentEntity)
                         transformer.getReplacement().getEntity(
@@ -398,7 +398,7 @@ TableModelListener, ValueListener {
                 if (replacementEntityName.length() == 0) {
                     return;
                 }
-                
+
                 if (!previousString.equals(replacementEntityName)) {
                     ComponentEntity replacementEntity =
                         (ComponentEntity) transformer.getReplacement()
@@ -510,7 +510,7 @@ TableModelListener, ValueListener {
     protected JComponent _createRightComponent(NamedObj entity) {
         JComponent component = super._createRightComponent(entity);
         if (component instanceof JTabbedPane) {
-            _createCorrespondenceTab((SingleRuleTransformer) entity);
+            _createTable((SingleRuleTransformer) entity);
         }
         return component;
     }
@@ -528,7 +528,7 @@ TableModelListener, ValueListener {
         return panel;
     }
 
-    private void _createCorrespondenceTab(SingleRuleTransformer transformer) {
+    private void _createTable(SingleRuleTransformer transformer) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setName("Correspondence");
 
@@ -612,7 +612,7 @@ TableModelListener, ValueListener {
         }
     }
 
-    private PatternEntityAttribute _getPatternEntityAttribute(NamedObj object) {
+    private static PatternEntityAttribute _getPatternEntityAttribute(NamedObj object) {
         Attribute attribute = object.getAttribute("patternEntity");
         if (attribute != null && attribute instanceof PatternEntityAttribute) {
             return (PatternEntityAttribute) attribute;
@@ -621,8 +621,76 @@ TableModelListener, ValueListener {
         }
     }
 
+    private GTRuleGraphFrame _getToplevelFrame() {
+        NamedObj toplevel = getModel().toplevel();
+        for (Frame frame : getFrames()) {
+            if (frame instanceof GTRuleGraphFrame) {
+                GTRuleGraphFrame gtRuleGraphFrame = (GTRuleGraphFrame) frame;
+                if (gtRuleGraphFrame.getModel() == toplevel) {
+                    return gtRuleGraphFrame;
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean _isInPattern(NamedObj object) {
+        CompositeActorMatcher pattern = getTransformer().getPattern();
+        NamedObj container = object;
+        while (container != null && container != pattern) {
+            container = container.getContainer();
+        }
+        return container == pattern;
+    }
+
     private boolean _isTableActive() {
         return hasTabs() && getSelectedIndex() == 2;
+    }
+
+    private void _refreshTable() {
+        GTRuleGraphFrame frame = _getToplevelFrame();
+        if (frame._cellEditor != null) {
+            frame._cellEditor.stopCellEditing();
+        }
+        frame._tableModel.removeTableModelListener(this);
+
+        while (frame._tableModel.getRowCount() > 0) {
+            frame._tableModel.removeRow(0);
+        }
+
+        SingleRuleTransformer transformer =
+            (SingleRuleTransformer) getTransformer();
+        CompositeActorMatcher replacement = transformer.getReplacement();
+        _refreshTable(frame, replacement, 1, replacement);
+
+        frame._tableModel.addTableModelListener(this);
+    }
+
+    private int _refreshTable(GTRuleGraphFrame topLevelFrame,
+            CompositeActorMatcher replacement, int index,
+            CompositeEntity container) {
+       for (Object entityObject : container.entityList()) {
+           NamedObj object = (NamedObj) entityObject;
+           PatternEntityAttribute attribute =
+               _getPatternEntityAttribute(object);
+           if (attribute != null) {
+               attribute.addValueListener(this);
+               String patternEntity = attribute.getExpression();
+               if (patternEntity.length() != 0) {
+                   String name = _getNameWithinContainer(object, replacement);
+                   topLevelFrame._tableModel.addRow(new Object[] {
+                           _createCellPanel(Integer.toString(index++)),
+                           _createCellPanel(patternEntity),
+                           _createCellPanel(name)
+                   });
+               }
+           }
+           if (object instanceof CompositeEntity) {
+               index = _refreshTable(topLevelFrame, replacement, index,
+                       (CompositeEntity) object);
+           }
+       }
+       return index;
     }
 
     private void _removeUnusedToolbarButtons() {
@@ -655,7 +723,7 @@ TableModelListener, ValueListener {
         _tableModel.fireTableCellUpdated(row, column);
     }
 
-    private void _setOrClearActorCorrespondenceAttributes(
+    private void _setOrClearPatternEntityAttributes(
             CompositeEntity container, boolean isSet) {
         try {
             for (Object entityObject : container.entityList()) {
@@ -665,7 +733,7 @@ TableModelListener, ValueListener {
                 if (patternEntity != null) {
                     if (isSet) {
                         String name = _getNameWithinContainer(object,
-                                _getTransformer().getPattern());
+                                getTransformer().getPattern());
                         patternEntity.setPersistent(true);
                         patternEntity.setExpression(name);
                     } else {
@@ -674,8 +742,8 @@ TableModelListener, ValueListener {
                     }
                 }
                 if (object instanceof CompositeEntity) {
-                    _setOrClearActorCorrespondenceAttributes(
-                            (CompositeEntity) object, isSet);
+                    _setOrClearPatternEntityAttributes((CompositeEntity) object,
+                            isSet);
                 }
             }
         } catch (IllegalActionException e) {
@@ -730,48 +798,6 @@ TableModelListener, ValueListener {
         } else if (selected == 1) {
             _setCellString(row, column, previousString);
         }
-    }
-
-    private void _refreshTable() {
-        if (_cellEditor != null) {
-            _cellEditor.stopCellEditing();
-        }
-        _tableModel.removeTableModelListener(this);
-
-        while (_tableModel.getRowCount() > 0) {
-            _tableModel.removeRow(0);
-        }
-
-        SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
-        CompositeActorMatcher replacement = transformer.getReplacement();
-        _refreshTable(1, replacement);
-
-        _tableModel.addTableModelListener(this);
-    }
-
-    private int _refreshTable(int index, CompositeEntity container) {
-       for (Object entityObject : container.entityList()) {
-           NamedObj object = (NamedObj) entityObject;
-           PatternEntityAttribute attribute = _getPatternEntityAttribute(object);
-           if (attribute != null) {
-               attribute.addValueListener(this);
-               String patternEntity = attribute.getExpression();
-               if (patternEntity.length() != 0) {
-                   String name = _getNameWithinContainer(object,
-                           _getTransformer().getReplacement());
-                   _tableModel.addRow(new Object[] {
-                           _createCellPanel(Integer.toString(index++)),
-                           _createCellPanel(patternEntity),
-                           _createCellPanel(name)
-                   });
-               }
-           }
-           if (object instanceof CompositeEntity) {
-               index =
-                   _refreshTable(index, (CompositeEntity) object);
-           }
-       }
-       return index;
     }
 
     private CellEditor _cellEditor;
@@ -1020,7 +1046,7 @@ TableModelListener, ValueListener {
                     CompositeEntity model = (CompositeEntity) _parser.parse(
                             null, input.toURI().toURL().openStream());
 
-                    SingleRuleTransformer transformerActor = _getTransformer();
+                    SingleRuleTransformer transformerActor = getTransformer();
                     CompositeActorMatcher matcher =
                         transformerActor.getPattern();
                     MatchResultRecorder recorder = new MatchResultRecorder();

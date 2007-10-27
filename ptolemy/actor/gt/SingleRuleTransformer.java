@@ -58,26 +58,22 @@ public class SingleRuleTransformer extends MultiCompositeActor {
     }
 
     public CompositeActorMatcher getPattern() {
-        return _pattern;
+        return (CompositeActorMatcher) getEntity("Pattern");
     }
 
     public CompositeActorMatcher getReplacement() {
-        return _replacement;
+        return (CompositeActorMatcher) getEntity("Replacement");
     }
 
     protected void _init()
     throws IllegalActionException, NameDuplicationException {
         // Create the default refinement.
-        _pattern = new CompositeActorMatcher(this, "Pattern");
-        _replacement = new CompositeActorMatcher(this, "Replacement");
+        new CompositeActorMatcher(this, "Pattern");
+        new CompositeActorMatcher(this, "Replacement");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                          private variables                ////
-
-    private CompositeActorMatcher _pattern;
-
-    private CompositeActorMatcher _replacement;
 
     private static final long serialVersionUID = -456353254196458127L;
 

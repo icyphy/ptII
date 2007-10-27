@@ -114,7 +114,7 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     public void highlightMatchedObjects() {
         if (_results != null) {
-            CompositeEntity matcher = _getCurrentContainer();
+            CompositeEntity matcher = getActiveModel();
             Set<?> matchedHostObjects = _results.get(_currentPosition).values();
             for (Object child : matcher.entityList(AtomicActor.class)) {
                 if (matchedHostObjects.contains(child)) {

@@ -94,6 +94,12 @@ implements ChangeListener, KeyListener {
         super(entity, tableau, defaultLibrary);
     }
 
+    public CompositeEntity getActiveModel() {
+        ActorGraphModel graphModel =
+            (ActorGraphModel) _getGraphController().getGraphModel();
+        return (CompositeEntity) graphModel.getPtolemyModel();
+    }
+
     /** Return the JGraph instance that this view uses to represent the
      *  ptolemy model.
      *  @return the JGraph.
@@ -114,6 +120,15 @@ implements ChangeListener, KeyListener {
 
     public int getSelectedIndex() {
         return _selectedIndex;
+    }
+
+    public SingleRuleTransformer getTransformer() {
+        CompositeEntity model = getActiveModel();
+        NamedObj parent = model.getContainer();
+        while (!(parent instanceof SingleRuleTransformer)) {
+            parent = parent.getContainer();
+        }
+        return (SingleRuleTransformer) parent;
     }
 
     public boolean hasTabs() {
@@ -241,27 +256,12 @@ implements ChangeListener, KeyListener {
         return _tabbedPane;
     }
 
-    protected CompositeEntity _getCurrentContainer() {
-        ActorGraphModel graphModel =
-            (ActorGraphModel) _getGraphController().getGraphModel();
-        return (CompositeEntity) graphModel.getPtolemyModel();
-    }
-
     protected GraphController _getGraphController() {
         return _controller;
     }
 
     protected JTabbedPane _getTabbedPane() {
         return _tabbedPane;
-    }
-
-    protected SingleRuleTransformer _getTransformer() {
-        CompositeEntity model = _getCurrentContainer();
-        NamedObj parent = model.getContainer();
-        while (!(parent instanceof SingleRuleTransformer)) {
-            parent = parent.getContainer();
-        }
-        return (SingleRuleTransformer) parent;
     }
 
     /** Add a tabbed pane for the specified case.
