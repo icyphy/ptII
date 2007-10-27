@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Sensors_Christine3" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Drive_and_Rotate" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
@@ -29,12 +29,6 @@
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 312.0}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example simply drives forward if the play button&#10;is pushed, backward if the advance button is pushed and&#10;stops if the bump sensor is triggered.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 75.0]">
-        </property>
     </property>
     <entity name="InitializeAndRun" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
@@ -193,7 +187,7 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 240.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 235.0]">
                 </property>
             </entity>
             <entity name="Drive2" class="ptolemy.actor.lib.jni.EmbeddedCActor">
@@ -375,7 +369,7 @@
                     <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                     </property>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 200.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 200.0}">
                 </property>
             </entity>
             <entity name="Sensors2" class="ptolemy.actor.lib.jni.EmbeddedCActor">
