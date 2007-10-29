@@ -14,7 +14,7 @@
     </property>
     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
         <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredient.pattern.PortCriterion/false//false//true/false/true/true/false/false)(ptolemy.actor.gt.ingredient.pattern.PortCriterion/false//false//true/false/true/true/false/false)">
+            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/false/true/true/false/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/false/true/true/false/false)">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
@@ -24,7 +24,7 @@
             </property>
         </entity>
         <entity name="B" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredient.pattern.PortCriterion/false//false//true/true/true/false/false/false)">
+            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/true/false/false/false)">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
@@ -34,7 +34,7 @@
             </property>
         </entity>
         <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredient.pattern.PortCriterion/false//false//true/true/true/false/false/false)(ptolemy.actor.gt.ingredient.pattern.PortCriterion/false//false//true/false/true/true/false/false)">
+            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/true/false/false/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/false/true/true/false/false)">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
@@ -44,7 +44,7 @@
             </property>
         </entity>
         <entity name="D" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredient.pattern.PortCriterion/false//false//true/true/true/false/false/false)">
+            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/true/false/false/false)">
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">

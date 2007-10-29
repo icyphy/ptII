@@ -26,8 +26,10 @@
 
  */
 
-package ptolemy.actor.gt.ingredient.pattern;
+package ptolemy.actor.gt.ingredients.criteria;
 
+import ptolemy.actor.gt.GTIngredientList;
+import ptolemy.actor.gt.GTIngredient;
 
 /**
 
@@ -37,9 +39,21 @@ package ptolemy.actor.gt.ingredient.pattern;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class BooleanCriterionElement extends CriterionElement {
+public abstract class Criterion extends GTIngredient {
 
-    public BooleanCriterionElement(String name) {
-        super(name);
+    /**
+     * @param owner
+     */
+    public Criterion(GTIngredientList owner) {
+        super(owner);
     }
+
+    /**
+     * @param owner
+     * @param attributeCount
+     */
+    public Criterion(GTIngredientList owner, int attributeCount) {
+        super(owner, attributeCount);
+    }
+
 }

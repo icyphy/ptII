@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.actor.gt.ingredient.pattern;
+package ptolemy.actor.gt.ingredients.criteria;
 
 import java.util.Collection;
 import java.util.Collections;

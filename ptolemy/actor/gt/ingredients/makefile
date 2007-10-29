@@ -1,4 +1,4 @@
-# Makefile for the ptolemy/actor/gt/ingredient package
+# Makefile for the ptolemy/actor/gt/ingredients package
 #
 # @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
 #
@@ -29,9 +29,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/gt/ingredient
+ME =		ptolemy/actor/gt/ingredients
 
-DIRS = 		pattern
+DIRS = 		criteria
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -43,12 +43,12 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ingredient
+PTPACKAGE = 	ingredients
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-    pattern/pattern.jar
+    criteria/criteria.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

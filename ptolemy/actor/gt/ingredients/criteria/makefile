@@ -1,4 +1,4 @@
-# Makefile for the ptolemy/actor/gt/ingredient/pattern package
+# Makefile for the ptolemy/actor/gt/ingredients/criteria package
 #
 # @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/gt/ingredient/pattern
+ME =		ptolemy/actor/gt/ingredients/criteria
 
 DIRS = 		
 
@@ -43,7 +43,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	pattern
+PTPACKAGE = 	criteria
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.

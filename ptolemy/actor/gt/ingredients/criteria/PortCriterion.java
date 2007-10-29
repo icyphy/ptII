@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.actor.gt.ingredient.pattern;
+package ptolemy.actor.gt.ingredients.criteria;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

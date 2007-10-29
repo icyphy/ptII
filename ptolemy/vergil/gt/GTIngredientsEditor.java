@@ -95,9 +95,9 @@ import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.GTIngredientsAttribute;
 import ptolemy.actor.gt.RuleValidationException;
-import ptolemy.actor.gt.ingredient.pattern.BooleanCriterionElement;
-import ptolemy.actor.gt.ingredient.pattern.ChoiceCriterionElement;
-import ptolemy.actor.gt.ingredient.pattern.StringCriterionElement;
+import ptolemy.actor.gt.ingredients.criteria.BooleanCriterionElement;
+import ptolemy.actor.gt.ingredients.criteria.ChoiceCriterionElement;
+import ptolemy.actor.gt.ingredients.criteria.StringCriterionElement;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.EditorFactory;
@@ -1156,7 +1156,9 @@ implements ActionListener {
     }
 
     static {
-        String[] packages = new String[] { "ptolemy.actor.gt.ingredient.pattern" };
+        String[] packages = new String[] {
+                "ptolemy.actor.gt.ingredients.criteria"
+        };
         searchRuleClasses(packages, ClassLoader.getSystemClassLoader());
     }
 }

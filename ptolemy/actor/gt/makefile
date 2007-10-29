@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/gt
 
-DIRS = 		data ingredient test util
+DIRS = 		data ingredients test util
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -49,7 +49,7 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	data/data.jar \
-	ingredient/ingredient.jar \
+	ingredients/ingredients.jar \
 	util/util.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar

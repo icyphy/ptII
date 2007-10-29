@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gt.ingredient.pattern;
+package ptolemy.actor.gt.ingredients.criteria;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.gt.GTIngredientList;
