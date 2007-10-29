@@ -40,7 +40,7 @@
   <!-- is willing to open the model. Each editor contains a list -->
   <!-- of other editors that appear in the View menu.            -->
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
-    <input source="ptolemy/configs/gt/gtRuleTableauFactory.xml"/>
+    <input source="ptolemy/configs/gt/gtTableauFactory.xml"/>
     <input source="ptolemy/configs/iaTableauFactory.xml"/>
     <input source="ptolemy/configs/fsmTableauFactory.xml"/>
     <input source="ptolemy/configs/caseTableauFactory.xml"/>

@@ -42,29 +42,29 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test MatchingTest-2.1 {An lhs with a CompositeActor matching an empty host} {
     set e0 [sdfModel 3]
-    set transformer [java::new ptolemy.actor.gt.GraphMatcher]
-    set lhs [java::new ptolemy.actor.gt.CompositeActorMatcher $e0 lhs]
-    set host [java::new ptolemy.actor.TypedCompositeActor $e0 host]
+    set matcher [java::new ptolemy.actor.gt.GraphMatcher]
+    set lhs [java::new ptolemy.actor.gt.Pattern $e0 lhs]
+    set host [java::new ptolemy.actor.gt.Pattern $e0 host]
     
     set lhsA1 [java::new ptolemy.actor.gt.AtomicActorMatcher $lhs A1]
-    set lhsA1Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$lhsA1 getAttribute ruleList]]
-    set lhsA1PortRuleList [java::new ptolemy.actor.gt.RuleList $lhsA1Attr]
-    set lhsA1PortRule [java::new ptolemy.actor.gt.rules.PortRule $lhsA1PortRuleList "" "" false true false]
+    set lhsA1Attr [java::cast ptolemy.actor.gt.GTIngredientsAttribute [$lhsA1 getAttribute criteria]]
+    set lhsA1PortRuleList [java::new ptolemy.actor.gt.GTIngredientList $lhsA1Attr]
+    set lhsA1PortRule [java::new ptolemy.actor.gt.ingredient.pattern.PortCriterion $lhsA1PortRuleList "" "" false true false]
     $lhsA1PortRule setPortNameEnabled false
     $lhsA1PortRule setPortTypeEnabled false
-    $lhsA1PortRuleList add [java::cast ptolemy.actor.gt.Rule $lhsA1PortRule]
+    $lhsA1PortRuleList add [java::cast ptolemy.actor.gt.GTIngredient $lhsA1PortRule]
     $lhsA1Attr setExpression [$lhsA1PortRuleList toString]
     
     set lhsC1 [java::new ptolemy.actor.TypedCompositeActor $lhs C1]
     set lhsC1Port1 [java::new ptolemy.actor.TypedIOPort $lhsC1 input true false]
     
     set lhsC1A1 [java::new ptolemy.actor.gt.AtomicActorMatcher $lhsC1 A1]
-    set lhsC1A1Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$lhsC1A1 getAttribute ruleList]]
-    set lhsC1A1PortRuleList [java::new ptolemy.actor.gt.RuleList $lhsC1A1Attr]
-    set lhsC1A1PortRule [java::new ptolemy.actor.gt.rules.PortRule $lhsC1A1PortRuleList "" "" true false true]
+    set lhsC1A1Attr [java::cast ptolemy.actor.gt.GTIngredientsAttribute [$lhsC1A1 getAttribute criteria]]
+    set lhsC1A1PortRuleList [java::new ptolemy.actor.gt.GTIngredientList $lhsC1A1Attr]
+    set lhsC1A1PortRule [java::new ptolemy.actor.gt.ingredient.pattern.PortCriterion $lhsC1A1PortRuleList "" "" true false true]
     $lhsC1A1PortRule setPortNameEnabled false
     $lhsC1A1PortRule setPortTypeEnabled false
-    $lhsC1A1PortRuleList add [java::cast ptolemy.actor.gt.Rule $lhsC1A1PortRule]
+    $lhsC1A1PortRuleList add [java::cast ptolemy.actor.gt.GTIngredient $lhsC1A1PortRule]
     $lhsC1A1Attr setExpression [$lhsC1A1PortRuleList toString]
     
     set lhsR1 [java::new ptolemy.actor.TypedIORelation $lhs R1]
@@ -75,48 +75,48 @@ test MatchingTest-2.1 {An lhs with a CompositeActor matching an empty host} {
     $lhsC1Port1 link $lhsC1R1
     [java::cast ptolemy.kernel.Port [[$lhsC1A1 portList] get 0]] link $lhsC1R1
     
-    $transformer match $lhs $host
-    [$transformer getMatchResult] toString
+    $matcher match $lhs $host
+    [$matcher getMatchResult] toString
 } {{}}
 
 test MatchingTest-2.2 {An lhs with a CompositeActor matching a host without the CompositeActor} {
     set hostA1 [java::new ptolemy.actor.gt.AtomicActorMatcher $host A1]
-    set hostA1Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$hostA1 getAttribute ruleList]]
-    set hostA1PortRuleList [java::new ptolemy.actor.gt.RuleList $hostA1Attr]
-    set hostA1PortRule [java::new ptolemy.actor.gt.rules.PortRule $hostA1PortRuleList "" "" false true false]
+    set hostA1Attr [java::cast ptolemy.actor.gt.GTIngredientsAttribute [$hostA1 getAttribute criteria]]
+    set hostA1PortRuleList [java::new ptolemy.actor.gt.GTIngredientList $hostA1Attr]
+    set hostA1PortRule [java::new ptolemy.actor.gt.ingredient.pattern.PortCriterion $hostA1PortRuleList "" "" false true false]
     $hostA1PortRule setPortNameEnabled false
     $hostA1PortRule setPortTypeEnabled false
-    $hostA1PortRuleList add [java::cast ptolemy.actor.gt.Rule $hostA1PortRule]
+    $hostA1PortRuleList add [java::cast ptolemy.actor.gt.GTIngredient $hostA1PortRule]
     $hostA1Attr setExpression [$hostA1PortRuleList toString]
     
     set hostA2 [java::new ptolemy.actor.gt.AtomicActorMatcher $host A2]
-    set hostA2Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$hostA2 getAttribute ruleList]]
-    set hostA2PortRuleList [java::new ptolemy.actor.gt.RuleList $hostA2Attr]
-    set hostA2PortRule [java::new ptolemy.actor.gt.rules.PortRule $hostA2PortRuleList "" "" true false true]
+    set hostA2Attr [java::cast ptolemy.actor.gt.GTIngredientsAttribute [$hostA2 getAttribute criteria]]
+    set hostA2PortRuleList [java::new ptolemy.actor.gt.GTIngredientList $hostA2Attr]
+    set hostA2PortRule [java::new ptolemy.actor.gt.ingredient.pattern.PortCriterion $hostA2PortRuleList "" "" true false true]
     $hostA2PortRule setPortNameEnabled false
     $hostA2PortRule setPortTypeEnabled false
-    $hostA2PortRuleList add [java::cast ptolemy.actor.gt.Rule $hostA2PortRule]
+    $hostA2PortRuleList add [java::cast ptolemy.actor.gt.GTIngredient $hostA2PortRule]
     $hostA2Attr setExpression [$hostA2PortRuleList toString]
     
     set hostR1 [java::new ptolemy.actor.TypedIORelation $host R1]
     [java::cast ptolemy.kernel.Port [[$hostA1 portList] get 0]] link $hostR1
     [java::cast ptolemy.kernel.Port [[$hostA2 portList] get 0]] link $hostR1
     
-    $transformer match $lhs $host
-    [$transformer getMatchResult] toString
-} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A1.Rule1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A2.Rule1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A2}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
+    $matcher match $lhs $host
+    [$matcher getMatchResult] toString
+} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A1.Rule1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A2.Rule1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A2}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.gt.Pattern {.top.host}}}
 
 test MatchingTest-2.3 {An lhs with a CompositeActor matching a host with a CompositeActor and an extra actor} {
     set hostC1 [java::new ptolemy.actor.TypedCompositeActor $host C1]
     set hostC1Port1 [java::new ptolemy.actor.TypedIOPort $hostC1 input true false]
     
     set hostC1A1 [java::new ptolemy.actor.gt.AtomicActorMatcher $hostC1 A1]
-    set hostC1A1Attr [java::cast ptolemy.actor.gt.RuleListAttribute [$hostC1A1 getAttribute ruleList]]
-    set hostC1A1PortRuleList [java::new ptolemy.actor.gt.RuleList $hostC1A1Attr]
-    set hostC1A1PortRule [java::new ptolemy.actor.gt.rules.PortRule $hostC1A1PortRuleList "" "" true false true]
+    set hostC1A1Attr [java::cast ptolemy.actor.gt.GTIngredientsAttribute [$hostC1A1 getAttribute criteria]]
+    set hostC1A1PortRuleList [java::new ptolemy.actor.gt.GTIngredientList $hostC1A1Attr]
+    set hostC1A1PortRule [java::new ptolemy.actor.gt.ingredient.pattern.PortCriterion $hostC1A1PortRuleList "" "" true false true]
     $hostC1A1PortRule setPortNameEnabled false
     $hostC1A1PortRule setPortTypeEnabled false
-    $hostC1A1PortRuleList add [java::cast ptolemy.actor.gt.Rule $hostC1A1PortRule]
+    $hostC1A1PortRuleList add [java::cast ptolemy.actor.gt.GTIngredient $hostC1A1PortRule]
     $hostC1A1Attr setExpression [$hostC1A1PortRuleList toString]
     
     set hostC1R1 [java::new ptolemy.actor.TypedIORelation $hostC1 C1R1]
@@ -124,20 +124,20 @@ test MatchingTest-2.3 {An lhs with a CompositeActor matching a host with a Compo
     [java::cast ptolemy.kernel.Port [[$hostC1A1 portList] get 0]] link $hostC1R1
     $hostC1Port1 link $hostR1
     
-    $transformer match $lhs $host
-    [$transformer getMatchResult] toString
-} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A1.Rule1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A2.Rule1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A2}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
+    $matcher match $lhs $host
+    [$matcher getMatchResult] toString
+} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A1.Rule1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A2.Rule1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A2}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.gt.Pattern {.top.host}}}
 
 test MatchingTest-2.4 {Add an SDF director to the lhs CompositeActor} {
     $lhsC1 setDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector]
     
-    $transformer match $lhs $host
-    [$transformer getMatchResult] toString
+    $matcher match $lhs $host
+    [$matcher getMatchResult] toString
 } {{}}
 
 test MatchingTest-2.5 {Add an SDF director to the host CompositeActor} {
     $hostC1 setDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector]
     
-    $transformer match $lhs $host
-    [$transformer getMatchResult] toString
-} {{ptolemy.actor.TypedCompositeActor {.top.lhs.C1} = ptolemy.actor.TypedCompositeActor {.top.host.C1}, ptolemy.actor.TypedIOPort {.top.lhs.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A1.Rule1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.C1.A1.Rule1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.input} = ptolemy.actor.TypedIOPort {.top.host.C1.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.C1.A1}, ptolemy.actor.gt.CompositeActorMatcher {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}, ptolemy.domains.sdf.kernel.SDFDirector {.top.lhs.C1.} = ptolemy.domains.sdf.kernel.SDFDirector {.top.host.C1.}}}
+    $matcher match $lhs $host
+    [$matcher getMatchResult] toString
+} {{ptolemy.actor.TypedCompositeActor {.top.lhs.C1} = ptolemy.actor.TypedCompositeActor {.top.host.C1}, ptolemy.actor.TypedIOPort {.top.lhs.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A1.Rule1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.C1.A1.Rule1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.input} = ptolemy.actor.TypedIOPort {.top.host.C1.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.C1.A1}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.gt.Pattern {.top.host}, ptolemy.domains.sdf.kernel.SDFDirector {.top.lhs.C1.} = ptolemy.domains.sdf.kernel.SDFDirector {.top.host.C1.}}}

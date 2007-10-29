@@ -33,16 +33,19 @@ import java.util.Set;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gt.rules.PortRule;
-import ptolemy.actor.gt.rules.SubclassRule;
+import ptolemy.actor.gt.ingredient.pattern.PortCriterion;
+import ptolemy.actor.gt.ingredient.pattern.SubclassCriterion;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.icon.EditorIcon;
 
@@ -57,98 +60,65 @@ import ptolemy.vergil.icon.EditorIcon;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class AtomicActorMatcher extends TypedAtomicActor {
+public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
+ValueListener {
 
     public AtomicActorMatcher(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        ruleList = new RuleListAttribute(this, "ruleList");
-        ruleList.setExpression("");
+        setClassName("ptolemy.actor.gt.AtomicActorMatcher");
+
+        criteria = new GTIngredientsAttribute(this, "criteria");
+        criteria.setExpression("");
+        criteria.addValueListener(this);
 
         patternEntity = new PatternEntityAttribute(this, "patternEntity");
         patternEntity.setExpression("");
+        patternEntity.addValueListener(this);
+
+        _attachText("_iconDescription", _ICON_DESCRIPTION);
     }
 
-    public void attributeChanged(Attribute attribute)
-    throws IllegalActionException {
-        super.attributeChanged(attribute);
+    public PatternEntityAttribute getPatternEntityAttribute() {
+        return patternEntity;
+    }
 
-        if (attribute == ruleList) {
-            try {
-                _workspace.getWriteAccess();
-
-                Set<String> preservedPortNames = new HashSet<String>();
-                boolean isIconSet = false;
-                int i = 1;
-                RuleList list = ruleList.getRuleList();
-                for (Rule rule : list) {
-                    if (rule instanceof PortRule) {
-                        PortRule portRule = (PortRule) rule;
-                        String portID = portRule.getPortID(list);
-                        preservedPortNames.add(portID);
-
-                        TypedIOPort port = (TypedIOPort) getPort(portID);
-                        if (port != null) {
-                            port.setInput(portRule.isInput());
-                            port.setOutput(portRule.isOutput());
-                            port.setMultiport(portRule.isMultiport());
-                            port.setPersistent(false);
-                        } else {
-                            port = new TypedIOPort(this, portID,
-                                    portRule.isInput(), portRule.isOutput());
-                            port.setMultiport(portRule.isMultiport());
-                            port.setPersistent(false);
-                        }
-                        port.setPersistent(false);
-                    } else if (rule instanceof SubclassRule && !isIconSet) {
-                        SubclassRule subclassRule = (SubclassRule) rule;
-                        final String superclass = subclassRule.getSuperclass();
-                        requestChange(new ChangeRequest(this,
-                                "Deferred load actor icon action.") {
-                            protected void _execute() {
-                                _loadActorIcon(superclass);
-                            }
-                        });
-                        isIconSet = true;
-                    }
-                    i++;
+    public void valueChanged(Settable settable) {
+        try {
+            if (settable == criteria) {
+                if (GTEntityTools.isInPattern(this)) {
+                    // ruleList attribute is used to set the matching rules for
+                    // this actor. It is used only for actors in the pattern of
+                    // a transformation rule. If the actor is in the
+                    // replacement, this attribute is ignored.
+                    _updateRuleListAttribute(criteria);
                 }
-                if (!isIconSet) {
-                    requestChange(new RestoreAppearanceChangeRequest());
-                }
-
-                List<?> portList = portList();
-                for (i = 0; i < portList.size();) {
-                    Port port = (Port) portList.get(i);
-                    if (!preservedPortNames.contains(port.getName())) {
-                        port.setContainer(null);
-                    } else {
-                        i++;
+            } else if (settable == patternEntity) {
+                if (GTEntityTools.isInReplacement(this)) {
+                    // Update the ports with the ruleList attribute of the
+                    // corresponding actor in the pattern of the transformation
+                    // rule.
+                    GTEntity entity =
+                        GTEntityTools.getCorrespondingPatternEntity(this);
+                    if (entity != null
+                            && entity instanceof AtomicActorMatcher) {
+                        criteria.setPersistent(false);
+                        criteria.setExpression("");
+                        _updateRuleListAttribute(
+                                ((AtomicActorMatcher) entity).criteria);
                     }
                 }
-                for (Object portObject : portList()) {
-                    Port port = (Port) portObject;
-                    if (!preservedPortNames.contains(port.getName())) {
-                        port.setContainer(null);
-                    }
-                }
-            } catch (MalformedStringException e) {
-                throw new IllegalActionException(null, e,
-                        "ruleList attribute is malformed.");
-            } catch (NameDuplicationException e) {
-                throw new IllegalActionException(null, e,
-                        "Name duplicated.");
-            } finally {
-                _workspace.doneWriting();
             }
-
+        } catch (KernelException e) {
+            throw new KernelRuntimeException(e, "Unable to update the "
+                    + settable.getName() + " attribute.");
         }
     }
 
-    public PatternEntityAttribute patternEntity;
+    public GTIngredientsAttribute criteria;
 
-    public RuleListAttribute ruleList;
+    public PatternEntityAttribute patternEntity;
 
     private void _loadActorIcon(String actorClassName) {
         CompositeActor container = new CompositeActor();
@@ -179,6 +149,74 @@ public class AtomicActorMatcher extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    private void _updateRuleListAttribute(GTIngredientsAttribute ruleList)
+    throws IllegalActionException, MalformedStringException,
+    NameDuplicationException {
+
+        try {
+            _workspace.getWriteAccess();
+
+            Set<String> preservedPortNames = new HashSet<String>();
+            boolean isIconSet = false;
+            int i = 1;
+            GTIngredientList list = ruleList.getRuleList();
+            for (GTIngredient rule : list) {
+                if (rule instanceof PortCriterion) {
+                    PortCriterion portRule = (PortCriterion) rule;
+                    String portID = portRule.getPortID(list);
+                    preservedPortNames.add(portID);
+
+                    TypedIOPort port = (TypedIOPort) getPort(portID);
+                    if (port != null) {
+                        port.setInput(portRule.isInput());
+                        port.setOutput(portRule.isOutput());
+                        port.setMultiport(portRule.isMultiport());
+                        port.setPersistent(false);
+                    } else {
+                        port = new TypedIOPort(this, portID, portRule.isInput(),
+                                portRule.isOutput());
+                        port.setMultiport(portRule.isMultiport());
+                        port.setPersistent(false);
+                    }
+                    port.setPersistent(false);
+                } else if (rule instanceof SubclassCriterion && !isIconSet) {
+                    SubclassCriterion subclassRule = (SubclassCriterion) rule;
+                    final String superclass = subclassRule.getSuperclass();
+                    requestChange(new ChangeRequest(this,
+                            "Deferred load actor icon action.") {
+                        protected void _execute() {
+                            _loadActorIcon(superclass);
+                        }
+                    });
+                    isIconSet = true;
+                }
+                i++;
+            }
+            if (!isIconSet) {
+                requestChange(new RestoreAppearanceChangeRequest());
+            }
+
+            List<?> portList = portList();
+            for (i = 0; i < portList.size();) {
+                Port port = (Port) portList.get(i);
+                if (!preservedPortNames.contains(port.getName())) {
+                    port.setContainer(null);
+                } else {
+                    i++;
+                }
+            }
+            for (Object portObject : portList()) {
+                Port port = (Port) portObject;
+                if (!preservedPortNames.contains(port.getName())) {
+                    port.setContainer(null);
+                }
+            }
+
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
 
     private static final String _ICON_DESCRIPTION =
         "<svg>"

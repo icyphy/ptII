@@ -40,39 +40,39 @@ import java.util.LinkedList;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class RuleList extends LinkedList<Rule> {
+public class GTIngredientList extends LinkedList<GTIngredient> {
 
-    public RuleList(RuleListAttribute owner) {
+    public GTIngredientList(GTIngredientsAttribute owner) {
         _owner = owner;
     }
 
-    public RuleList(RuleListAttribute owner, Rule ... rules) {
-        for (Rule rule : rules) {
+    public GTIngredientList(GTIngredientsAttribute owner, GTIngredient ... rules) {
+        for (GTIngredient rule : rules) {
             add(rule);
         }
         _owner = owner;
     }
 
-    public RuleList(RuleListAttribute owner, RuleList initRules) {
+    public GTIngredientList(GTIngredientsAttribute owner, GTIngredientList initRules) {
         super(initRules);
         _owner = owner;
     }
 
-    public RuleListAttribute getOwner() {
+    public GTIngredientsAttribute getOwner() {
         return _owner;
     }
 
-    public static RuleList parse(RuleListAttribute owner, String expression)
+    public static GTIngredientList parse(GTIngredientsAttribute owner, String expression)
     throws MalformedStringException {
-        RuleList list = new RuleList(owner);
+        GTIngredientList list = new GTIngredientList(owner);
         int startPos = 0;
         while (startPos < expression.length()) {
-            int endPos = Rule._findMatchingParen(expression, startPos);
+            int endPos = GTIngredient._findMatchingParen(expression, startPos);
             if (endPos < 0) {
                 throw new MalformedStringException(expression);
             }
             String ruleString = expression.substring(startPos + 1, endPos);
-            Rule rule = list._parseRule(ruleString);
+            GTIngredient rule = list._parseRule(ruleString);
             list.add(rule);
             startPos = endPos + 1;
         }
@@ -81,10 +81,10 @@ public class RuleList extends LinkedList<Rule> {
 
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        for (Rule rule : this) {
+        for (GTIngredient rule : this) {
             buffer.append('(');
             buffer.append(rule.getClass().getName());
-            buffer.append(Rule.FIELD_SEPARATOR);
+            buffer.append(GTIngredient.FIELD_SEPARATOR);
             buffer.append(rule.getValues());
             buffer.append(')');
         }
@@ -93,7 +93,7 @@ public class RuleList extends LinkedList<Rule> {
 
     public void validate() throws RuleValidationException {
         int i = 0;
-        for (Rule rule : this) {
+        for (GTIngredient rule : this) {
             i++;
             try {
                 rule.validate();
@@ -104,18 +104,18 @@ public class RuleList extends LinkedList<Rule> {
         }
     }
 
-    private Rule _parseRule(String ruleString) {
-        int separator = ruleString.indexOf(Rule.FIELD_SEPARATOR);
+    private GTIngredient _parseRule(String ruleString) {
+        int separator = ruleString.indexOf(GTIngredient.FIELD_SEPARATOR);
         if (separator < 0) {
             return null;
         } else {
             String ruleClassName = ruleString.substring(0, separator);
             try {
                 Class<?> namedClass = Class.forName(ruleClassName);
-                Class<? extends Rule> ruleClass =
-                    namedClass.asSubclass(Rule.class);
+                Class<? extends GTIngredient> ruleClass =
+                    namedClass.asSubclass(GTIngredient.class);
                 String values = ruleString.substring(separator + 1);
-                return (Rule) ruleClass.getConstructor(RuleList.class,
+                return (GTIngredient) ruleClass.getConstructor(GTIngredientList.class,
                         String.class).newInstance(this, values);
             } catch (ClassNotFoundException e) {
             } catch (IllegalAccessException e) {
@@ -127,7 +127,7 @@ public class RuleList extends LinkedList<Rule> {
         }
     }
 
-    private RuleListAttribute _owner;
+    private GTIngredientsAttribute _owner;
 
     private static final long serialVersionUID = -5344621368362493745L;
 }

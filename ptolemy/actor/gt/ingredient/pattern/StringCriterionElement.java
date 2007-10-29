@@ -24,15 +24,16 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gt;
+package ptolemy.actor.gt.ingredient.pattern;
 
-public class StringRuleAttribute extends RuleAttribute {
 
-    public StringRuleAttribute(String name) {
+public class StringCriterionElement extends CriterionElement {
+
+    public StringCriterionElement(String name) {
         this(name, false, false);
     }
 
-    public StringRuleAttribute(String name, boolean acceptRegularExpression,
+    public StringCriterionElement(String name, boolean acceptRegularExpression,
             boolean acceptPtolemyExpression) {
         super(name);
         _acceptRegularExpression = acceptRegularExpression;

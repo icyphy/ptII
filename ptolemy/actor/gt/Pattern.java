@@ -28,6 +28,10 @@
 
 package ptolemy.actor.gt;
 
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 /**
 
  @author Thomas Huining Feng
@@ -36,9 +40,13 @@ package ptolemy.actor.gt;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class BooleanRuleAttribute extends RuleAttribute {
+public class Pattern extends CompositeActorMatcher {
 
-    public BooleanRuleAttribute(String name) {
-        super(name);
+    public Pattern(CompositeEntity container, String name)
+    throws NameDuplicationException, IllegalActionException {
+        super(container, name);
+        setClassName("ptolemy.actor.gt.Pattern");
     }
+
+    private static final long serialVersionUID = -5619047560683809435L;
 }

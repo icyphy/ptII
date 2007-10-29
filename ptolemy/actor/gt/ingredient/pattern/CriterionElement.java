@@ -1,6 +1,6 @@
 /*
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -23,29 +23,24 @@
 
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
- */
-package ptolemy.actor.gt;
 
-//////////////////////////////////////////////////////////////////////////
-//// RuleAttribute
+ */
+
+package ptolemy.actor.gt.ingredient.pattern;
+
+import ptolemy.actor.gt.GTIngredientElement;
 
 /**
 
-@author Thomas Huining Feng
-@version $Id$
-@since Ptolemy II 6.1
-@Pt.ProposedRating Red (tfeng)
-@Pt.AcceptedRating Red (tfeng)
-*/
-public class RuleAttribute {
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 6.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
+public class CriterionElement extends GTIngredientElement {
 
-    public RuleAttribute(String name) {
-        _name = name;
+    public CriterionElement(String name) {
+        super(name);
     }
-
-    public String getName() {
-        return _name;
-    }
-
-    private String _name;
 }

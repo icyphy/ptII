@@ -1,4 +1,4 @@
-# Makefile for the ptolemy/actor/gt/rules package
+# Makefile for the ptolemy/actor/gt/ingredient package
 #
 # @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
 #
@@ -29,9 +29,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/gt/rules
+ME =		ptolemy/actor/gt/ingredient
 
-DIRS = 		
+DIRS = 		pattern
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -43,14 +43,17 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	rules
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	ingredient
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+    pattern/pattern.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	AttributeRule.java \
-	PortRule.java \
-	SubclassRule.java
+JSRCS = 
 
 EXTRA_SRCS =	$(JSRCS)
 

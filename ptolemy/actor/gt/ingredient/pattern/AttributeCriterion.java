@@ -24,18 +24,15 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gt.rules;
+package ptolemy.actor.gt.ingredient.pattern;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import ptolemy.actor.gt.ChoiceRuleAttribute;
-import ptolemy.actor.gt.Rule;
-import ptolemy.actor.gt.RuleAttribute;
-import ptolemy.actor.gt.RuleList;
+import ptolemy.actor.gt.GTIngredientList;
+import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.RuleValidationException;
-import ptolemy.actor.gt.StringRuleAttribute;
 import ptolemy.actor.gt.util.PtolemyExpressionString;
 import ptolemy.actor.gt.util.RegularExpressionString;
 import ptolemy.actor.gt.util.VariableScope;
@@ -62,18 +59,18 @@ import ptolemy.kernel.util.Settable;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class AttributeRule extends Rule {
+public class AttributeCriterion extends Criterion {
 
-    public AttributeRule(RuleList owner) {
+    public AttributeCriterion(GTIngredientList owner) {
         this(owner, "");
     }
 
-    public AttributeRule(RuleList owner, String values) {
+    public AttributeCriterion(GTIngredientList owner, String values) {
         this(owner, null, null, null);
         setValues(values);
     }
 
-    public AttributeRule(RuleList owner, String attributeName,
+    public AttributeCriterion(GTIngredientList owner, String attributeName,
             String attributeType, String attributeValue) {
         super(owner, 3);
 
@@ -84,8 +81,8 @@ public class AttributeRule extends Rule {
             new PtolemyExpressionString(container, attributeValue);
     }
 
-    public RuleAttribute[] getRuleAttributes() {
-        return _ATTRIBUTES;
+    public GTIngredientElement[] getParts() {
+        return _ELEMENTS;
     }
 
     public Object getValue(int index) {
@@ -246,10 +243,10 @@ public class AttributeRule extends Rule {
 
     private RegularExpressionString _attributeName;
 
-    private static final RuleAttribute[] _ATTRIBUTES = {
-        new StringRuleAttribute("name", true, false),
-        new ChoiceRuleAttribute("type", false, true, true),
-        new StringRuleAttribute("value", false, true)
+    private static final CriterionElement[] _ELEMENTS = {
+        new StringCriterionElement("name", true, false),
+        new ChoiceCriterionElement("type", false, true, true),
+        new StringCriterionElement("value", false, true)
     };
 
     private PtolemyExpressionString _attributeType;
@@ -262,8 +259,8 @@ public class AttributeRule extends Rule {
     private static final PtParser _TYPE_PARSER = new PtParser();
 
     static {
-        ChoiceRuleAttribute attributeTypes =
-            (ChoiceRuleAttribute) _ATTRIBUTES[1];
+        ChoiceCriterionElement attributeTypes =
+            (ChoiceCriterionElement) _ELEMENTS[1];
         attributeTypes.addChoices(Constants.types().keySet());
         attributeTypes.addChoice("arrayType(int)");
         attributeTypes.addChoice("arrayType(int,5)");

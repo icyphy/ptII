@@ -28,10 +28,9 @@
 
 package ptolemy.actor.gt;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 
@@ -41,43 +40,20 @@ import java.util.List;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class ChoiceRuleAttribute extends StringRuleAttribute {
+public class Replacement extends CompositeActorMatcher {
 
-    public ChoiceRuleAttribute(String name) {
-        this(name, false, false, false);
+    /**
+     * @param container
+     * @param name
+     * @throws NameDuplicationException
+     * @throws IllegalActionException
+     */
+    public Replacement(CompositeEntity container, String name)
+    throws NameDuplicationException, IllegalActionException {
+        super(container, name);
+        setClassName("ptolemy.actor.gt.Replacement");
     }
 
-    public ChoiceRuleAttribute(String name, boolean acceptRegularExpression,
-            boolean acceptPtolemyExpression, boolean editable) {
-        super(name, acceptRegularExpression, acceptPtolemyExpression);
-        _editable = editable;
-    }
+    private static final long serialVersionUID = -6577530721058668703L;
 
-    public void addChoice(Object choice) {
-        _choices.add(choice);
-    }
-
-    public void addChoices(Collection<?> choices) {
-        _choices.addAll(choices);
-    }
-
-    public List<Object> getChoices() {
-        return Collections.unmodifiableList(_choices);
-    }
-
-    public boolean isEditable() {
-        return _editable;
-    }
-
-    public void removeChoice(Object choice) {
-        _choices.remove(choice);
-    }
-
-    public void removeChoices(Collection<?> choices) {
-        _choices.removeAll(choices);
-    }
-
-    private List<Object> _choices = new LinkedList<Object>();
-
-    private boolean _editable;
 }

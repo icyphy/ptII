@@ -24,14 +24,12 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gt.rules;
+package ptolemy.actor.gt.ingredient.pattern;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.gt.Rule;
-import ptolemy.actor.gt.RuleAttribute;
-import ptolemy.actor.gt.RuleList;
+import ptolemy.actor.gt.GTIngredientList;
+import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.RuleValidationException;
-import ptolemy.actor.gt.StringRuleAttribute;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.NamedObj;
 
@@ -46,19 +44,19 @@ import ptolemy.kernel.util.NamedObj;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class SubclassRule extends Rule {
+public class SubclassCriterion extends Criterion {
 
-    public SubclassRule(RuleList owner) {
+    public SubclassCriterion(GTIngredientList owner) {
         this(owner, "");
     }
 
-    public SubclassRule(RuleList owner, String values) {
+    public SubclassCriterion(GTIngredientList owner, String values) {
         super(owner, 1);
         setValues(values);
     }
 
-    public RuleAttribute[] getRuleAttributes() {
-        return _ATTRIBUTES;
+    public GTIngredientElement[] getParts() {
+        return _PARTS;
     }
 
     public String getSuperclass() {
@@ -142,8 +140,8 @@ public class SubclassRule extends Rule {
         }
     }
 
-    private static final RuleAttribute[] _ATTRIBUTES = {
-        new StringRuleAttribute("superclass")
+    private static final CriterionElement[] _PARTS = {
+        new StringCriterionElement("superclass")
     };
 
     private String _superclass;

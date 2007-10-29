@@ -57,11 +57,11 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AbstractGTFrame.java \
 	CellPanelEditor.java \
+	GTIngredientsEditor.java \
 	GTRuleGraphFrame.java \
 	GTRuleGraphTableau.java \
 	MatchResultTableau.java \
-	MatchResultViewer.java \
-	RuleEditor.java
+	MatchResultViewer.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -74,6 +74,19 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'AbstractGTFrame$$1.class' \
 	'AbstractGTFrame$$2.class' \
+	'GTIngredientsEditor$$1.class' \
+	'GTIngredientsEditor$$2.class' \
+	'GTIngredientsEditor$$3.class' \
+	'GTIngredientsEditor$$4.class' \
+	'GTIngredientsEditor$$AttributesEditor.class' \
+	'GTIngredientsEditor$$ColorizedComboBox$$Editor.class' \
+	'GTIngredientsEditor$$ColorizedComboBox.class' \
+	'GTIngredientsEditor$$ColorizedTextField.class' \
+	'GTIngredientsEditor$$ComboElement.class' \
+	'GTIngredientsEditor$$Factory.class' \
+	'GTIngredientsEditor$$HelpLabel.class' \
+	'GTIngredientsEditor$$Row$$CheckBoxActionListener.class' \
+	'GTIngredientsEditor$$Row.class' \
 	'GTRuleGraphFrame$$1.class' \
 	'GTRuleGraphFrame$$CellEditor.class' \
 	'GTRuleGraphFrame$$GTActionGraphController$$EntityController.class' \
@@ -91,20 +104,7 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$3$$1.class' \
 	'MatchResultViewer$$3.class' \
 	'MatchResultViewer$$NextAction.class' \
-	'MatchResultViewer$$PreviousAction.class' \
-	'RuleEditor$$1.class' \
-	'RuleEditor$$2.class' \
-	'RuleEditor$$3.class' \
-	'RuleEditor$$4.class' \
-	'RuleEditor$$AttributesEditor.class' \
-	'RuleEditor$$ColorizedComboBox$$Editor.class' \
-	'RuleEditor$$ColorizedComboBox.class' \
-	'RuleEditor$$ColorizedTextField.class' \
-	'RuleEditor$$ComboElement.class' \
-	'RuleEditor$$Factory.class' \
-	'RuleEditor$$HelpLabel.class' \
-	'RuleEditor$$Row$$CheckBoxActionListener.class' \
-	'RuleEditor$$Row.class'
+	'MatchResultViewer$$PreviousAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

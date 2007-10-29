@@ -4,50 +4,50 @@
 <entity name="rule4" class="ptolemy.actor.gt.SingleRuleTransformer">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={278, 211, 843, 627}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={276, 197, 848, 655}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[620, 512]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 540]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <entity name="Pattern" class="ptolemy.actor.TypedCompositeActor">
+    <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
         <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/false//false//true/false/true/true/false/false)(ptolemy.actor.gt.rules.PortRule/false//false//true/false/true/true/false/false)">
+            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredient.pattern.PortCriterion/false//false//true/false/true/true/false/false)(ptolemy.actor.gt.ingredient.pattern.PortCriterion/false//false//true/false/true/true/false/false)">
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+            <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 125.0}">
             </property>
         </entity>
         <entity name="B" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/false//false//true/true/true/false/false/false)">
+            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredient.pattern.PortCriterion/false//false//true/true/true/false/false/false)">
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+            <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 65.0}">
             </property>
         </entity>
         <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/false//false//true/true/true/false/false/false)(ptolemy.actor.gt.rules.PortRule/false//false//true/false/true/true/false/false)">
+            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredient.pattern.PortCriterion/false//false//true/true/true/false/false/false)(ptolemy.actor.gt.ingredient.pattern.PortCriterion/false//false//true/false/true/true/false/false)">
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+            <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 135.0}">
             </property>
         </entity>
         <entity name="D" class="ptolemy.actor.gt.AtomicActorMatcher">
-            <property name="ruleList" class="ptolemy.actor.gt.RuleListAttribute" value="(ptolemy.actor.gt.rules.PortRule/false//false//true/true/true/false/false/false)">
+            <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredient.pattern.PortCriterion/false//false//true/true/true/false/false/false)">
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.gt.RuleEditor$Factory">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="ruleList">
+            <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 135.0]">

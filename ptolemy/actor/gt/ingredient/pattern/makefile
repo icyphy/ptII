@@ -1,4 +1,4 @@
-# Makefile for the ptolemy/actor/gt/util package
+# Makefile for the ptolemy/actor/gt/ingredient/pattern package
 #
 # @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/gt/util
+ME =		ptolemy/actor/gt/ingredient/pattern
 
 DIRS = 		
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH = 	$(ROOT)
 
@@ -43,14 +43,19 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	util
+PTPACKAGE = 	pattern
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	PtolemyExpressionString.java \
-	RegularExpressionString.java \
-	VariableScope.java
+	AttributeCriterion.java \
+	BooleanCriterionElement.java \
+	ChoiceCriterionElement.java \
+	Criterion.java \
+	CriterionElement.java \
+	PortCriterion.java \
+	StringCriterionElement.java \
+	SubclassCriterion.java
 
 EXTRA_SRCS =	$(JSRCS)
 

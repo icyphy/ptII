@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/gt
 
-DIRS = 		data rules test util
+DIRS = 		data ingredient test util
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -49,31 +49,33 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	data/data.jar \
-	rules/rules.jar
+	ingredient/ingredient.jar \
+	util/util.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
 	AtomicActorMatcher.java \
-	BooleanRuleAttribute.java \
-	ChoiceRuleAttribute.java \
 	CompositeActorMatcher.java \
 	CompositeEntityPatternAttribute.java \
+	GTEntity.java \
+	GTEntityTools.java \
+	GTIngredient.java \
+	GTIngredientElement.java \
+	GTIngredientList.java \
+	GTIngredientsAttribute.java \
 	GraphMatcher.java \
 	GraphTransformationException.java \
 	HierarchyFlatteningAttribute.java \
 	MalformedStringException.java \
 	MatchCallback.java \
+	Pattern.java \
 	PatternEntityAttribute.java \
 	RelationCollapsingAttribute.java \
-	Rule.java \
-	RuleAttribute.java \
-	RuleList.java \
-	RuleListAttribute.java \
+	Replacement.java \
 	RuleValidationException.java \
 	SingleRuleTransformer.java \
-	StringRuleAttribute.java \
 	SubgraphMatchingException.java
 
 EXTRA_SRCS =	$(JSRCS)
@@ -88,6 +90,8 @@ OPTIONAL_FILES = \
 	'AtomicActorMatcher$$1.class' \
 	'AtomicActorMatcher$$LoadActorIconChangeRequest.class' \
 	'AtomicActorMatcher$$RestoreAppearanceChangeRequest.class' \
+	'GTIngredient$$FieldIterator.class' \
+	'GTIngredient$$NamedObjMatchResult.class' \
 	'GraphMatcher$$1.class' \
 	'GraphMatcher$$2.class' \
 	'GraphMatcher$$IndexedList.class' \
@@ -96,9 +100,7 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$LookbackList.class' \
 	'GraphMatcher$$NameComparator.class' \
 	'GraphMatcher$$ObjectList.class' \
-	'GraphMatcher$$Path.class' \
-	'Rule$$FieldIterator.class' \
-	'Rule$$NamedObjMatchResult.class'
+	'GraphMatcher$$Path.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

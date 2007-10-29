@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.actor.gt.rules;
+package ptolemy.actor.gt.ingredient.pattern;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,13 +33,9 @@ import java.util.regex.PatternSyntaxException;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gt.BooleanRuleAttribute;
-import ptolemy.actor.gt.ChoiceRuleAttribute;
-import ptolemy.actor.gt.Rule;
-import ptolemy.actor.gt.RuleAttribute;
-import ptolemy.actor.gt.RuleList;
+import ptolemy.actor.gt.GTIngredientList;
+import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.RuleValidationException;
-import ptolemy.actor.gt.StringRuleAttribute;
 import ptolemy.actor.gt.util.PtolemyExpressionString;
 import ptolemy.actor.gt.util.RegularExpressionString;
 import ptolemy.data.expr.Constants;
@@ -48,19 +44,19 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
-public class PortRule extends Rule {
+public class PortCriterion extends Criterion {
 
-    public PortRule(RuleList owner) {
+    public PortCriterion(GTIngredientList owner) {
         this(owner, "");
     }
 
-    public PortRule(RuleList owner, String values) {
+    public PortCriterion(GTIngredientList owner, String values) {
         this(owner, null, null, false, false, false);
         setValues(values);
     }
 
-    public PortRule(RuleList owner, String portName, String portType,
-            boolean input, boolean output, boolean multiport) {
+    public PortCriterion(GTIngredientList owner, String portName,
+            String portType, boolean input, boolean output, boolean multiport) {
         super(owner, 5);
 
         NamedObj container = owner.getOwner().getContainer();
@@ -71,7 +67,7 @@ public class PortRule extends Rule {
         _multiport = multiport;
     }
 
-    public String getPortID(RuleList list) {
+    public String getPortID(GTIngredientList list) {
         int position = list.indexOf(this);
         return "Rule" + (position + 1);
     }
@@ -84,8 +80,8 @@ public class PortRule extends Rule {
         return _portType.get();
     }
 
-    public RuleAttribute[] getRuleAttributes() {
-        return _ATTRIBUTES;
+    public GTIngredientElement[] getParts() {
+        return _PARTS;
     }
 
     public Object getValue(int index) {
@@ -283,12 +279,12 @@ public class PortRule extends Rule {
         }
     }
 
-    private static final RuleAttribute[] _ATTRIBUTES = {
-        new StringRuleAttribute("name", true, false),
-        new ChoiceRuleAttribute("type", false, true, true),
-        new BooleanRuleAttribute("input"),
-        new BooleanRuleAttribute("output"),
-        new BooleanRuleAttribute("multi")
+    private static final CriterionElement[] _PARTS = {
+        new StringCriterionElement("name", true, false),
+        new ChoiceCriterionElement("type", false, true, true),
+        new BooleanCriterionElement("input"),
+        new BooleanCriterionElement("output"),
+        new BooleanCriterionElement("multi")
     };
 
     private boolean _input;
@@ -302,7 +298,7 @@ public class PortRule extends Rule {
     private PtolemyExpressionString _portType;
 
     static {
-        ChoiceRuleAttribute portTypes = (ChoiceRuleAttribute) _ATTRIBUTES[1];
+        ChoiceCriterionElement portTypes = (ChoiceCriterionElement) _PARTS[1];
         portTypes.addChoices(Constants.types().keySet());
         portTypes.addChoice("arrayType(int)");
         portTypes.addChoice("arrayType(int,5)");

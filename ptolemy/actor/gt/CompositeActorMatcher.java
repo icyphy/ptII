@@ -42,17 +42,29 @@ import ptolemy.kernel.util.NameDuplicationException;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class CompositeActorMatcher extends TypedCompositeActor {
+public class CompositeActorMatcher extends TypedCompositeActor
+implements GTEntity {
 
     public CompositeActorMatcher(CompositeEntity container, String name)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        ruleListAttribute = new RuleListAttribute(this, "ruleList");
-        ruleListAttribute.setExpression("");
+        setClassName("ptolemy.actor.gt.CompositeActorMatcher");
+
+        criteria = new GTIngredientsAttribute(this, "criteria");
+        criteria.setExpression("");
+
+        patternEntity = new PatternEntityAttribute(this, "patternEntity");
+        patternEntity.setExpression("");
     }
 
-    public RuleListAttribute ruleListAttribute;
+    public PatternEntityAttribute getPatternEntityAttribute() {
+        return patternEntity;
+    }
+
+    public GTIngredientsAttribute criteria;
+
+    public PatternEntityAttribute patternEntity;
 
     private static final long serialVersionUID = -3093694369352820033L;
 

@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NamedObj;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public abstract class Rule {
+public abstract class GTIngredient {
 
     public void disableAll() {
         Arrays.fill(_enablements, false);
@@ -53,11 +53,11 @@ public abstract class Rule {
         Arrays.fill(_enablements, true);
     }
 
-    public RuleList getOwner() {
+    public GTIngredientList getOwner() {
         return _owner;
     }
 
-    public abstract RuleAttribute[] getRuleAttributes();
+    public abstract GTIngredientElement[] getParts();
 
     public abstract Object getValue(int index);
 
@@ -89,11 +89,11 @@ public abstract class Rule {
         MATCH, NOT_MATCH, UNAPPLICABLE
     }
 
-    protected Rule(RuleList owner) {
+    protected GTIngredient(GTIngredientList owner) {
         _owner = owner;
     }
 
-    protected Rule(RuleList owner, int attributeCount) {
+    protected GTIngredient(GTIngredientList owner, int attributeCount) {
         this(owner);
         _enablements = new boolean[attributeCount];
         enableAll();
@@ -253,5 +253,5 @@ public abstract class Rule {
 
     private boolean[] _enablements;
 
-    private RuleList _owner;
+    private GTIngredientList _owner;
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <!-- Factory for graph rewriting rule editor.  -->
-<property name="grRuleFactory" class="ptolemy.actor.gui.PtolemyTableauFactory">
+<property name="gtTableauFactory" class="ptolemy.actor.gui.PtolemyTableauFactory">
   <!-- These will appear in the View menu of a graph rewriting rule tableau. -->
   <property name="Transformation Editor"
             class="ptolemy.vergil.gt.GTRuleGraphTableau$Factory">

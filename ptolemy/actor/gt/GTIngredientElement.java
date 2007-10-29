@@ -26,14 +26,8 @@
  */
 package ptolemy.actor.gt;
 
-import ptolemy.actor.lib.hoc.MultiCompositeActor;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
-
 //////////////////////////////////////////////////////////////////////////
-//// SingleRuleTransformer
+//// RuleAttribute
 
 /**
 
@@ -43,38 +37,15 @@ import ptolemy.kernel.util.Workspace;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class SingleRuleTransformer extends MultiCompositeActor {
+public class GTIngredientElement {
 
-    public SingleRuleTransformer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-        _init();
+    public GTIngredientElement(String name) {
+        _name = name;
     }
 
-    public SingleRuleTransformer(Workspace workspace)
-    throws IllegalActionException, NameDuplicationException {
-        super(workspace);
-        _init();
+    public String getName() {
+        return _name;
     }
 
-    public Pattern getPattern() {
-        return (Pattern) getEntity("Pattern");
-    }
-
-    public Replacement getReplacement() {
-        return (Replacement) getEntity("Replacement");
-    }
-
-    protected void _init()
-    throws IllegalActionException, NameDuplicationException {
-        // Create the default refinement.
-        new Pattern(this, "Pattern");
-        new Replacement(this, "Replacement");
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                          private variables                ////
-
-    private static final long serialVersionUID = -456353254196458127L;
-
+    private String _name;
 }

@@ -55,6 +55,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -88,15 +89,15 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
-import ptolemy.actor.gt.BooleanRuleAttribute;
-import ptolemy.actor.gt.ChoiceRuleAttribute;
 import ptolemy.actor.gt.MalformedStringException;
-import ptolemy.actor.gt.Rule;
-import ptolemy.actor.gt.RuleAttribute;
-import ptolemy.actor.gt.RuleList;
-import ptolemy.actor.gt.RuleListAttribute;
+import ptolemy.actor.gt.GTIngredient;
+import ptolemy.actor.gt.GTIngredientElement;
+import ptolemy.actor.gt.GTIngredientList;
+import ptolemy.actor.gt.GTIngredientsAttribute;
 import ptolemy.actor.gt.RuleValidationException;
-import ptolemy.actor.gt.StringRuleAttribute;
+import ptolemy.actor.gt.ingredient.pattern.BooleanCriterionElement;
+import ptolemy.actor.gt.ingredient.pattern.ChoiceCriterionElement;
+import ptolemy.actor.gt.ingredient.pattern.StringCriterionElement;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.EditorFactory;
@@ -125,9 +126,10 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class RuleEditor extends PtolemyDialog implements ActionListener {
+public class GTIngredientsEditor extends PtolemyDialog
+implements ActionListener {
 
-    public RuleEditor(DialogTableau tableau, Frame owner,
+    public GTIngredientsEditor(DialogTableau tableau, Frame owner,
             Entity target, Configuration configuration) {
         super("Rule editor for " + target.getName(), tableau, owner, target,
                 configuration);
@@ -135,13 +137,13 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         _owner = owner;
         _target = target;
         try {
-            _attribute = (RuleListAttribute) target.getAttribute("ruleList",
-                    RuleListAttribute.class);
-            _temporaryRuleList = new RuleList(_attribute);
+            _attribute = (GTIngredientsAttribute) target.getAttribute("criteria",
+                    GTIngredientsAttribute.class);
+            _temporaryRuleList = new GTIngredientList(_attribute);
             _createComponents();
         } catch (IllegalActionException e) {
-            throw new KernelRuntimeException(e, "Cannot locate attribute "
-                    + "\"ruleList\" in entity " + _target.getName() + ".");
+            throw new KernelRuntimeException(e, "Cannot find \"criteria\" "
+                    + "attribute in entity " + _target.getName() + ".");
         }
     }
 
@@ -162,8 +164,8 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
 
     public void addNewRow() {
         try {
-            Class<? extends Rule> ruleClass = _ruleClasses.get(0);
-            Rule rule = _createTemporaryRule(ruleClass);
+            Class<? extends GTIngredient> ruleClass = _ruleClasses.get(0);
+            GTIngredient rule = _createTemporaryRule(ruleClass);
             Row row = new Row(rule);
             int rowCount = _tableModel.getRowCount();
             _tableModel.addRow(new Object[] { rowCount + 1, row, row });
@@ -177,17 +179,17 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
     }
 
     public boolean apply() {
-        RuleList ruleList = new RuleList(_attribute);
+        GTIngredientList criteriaList = new GTIngredientList(_attribute);
         Vector<?> dataVector = _tableModel.getDataVector();
         for (Object rowData : dataVector) {
             Vector<?> rowVector = (Vector<?>) rowData;
             Row row = (Row) rowVector.get(1);
-            Rule rule = _createRuleFromRow(row);
-            ruleList.add(rule);
+            GTIngredient rule = _createRuleFromRow(row);
+            criteriaList.add(rule);
         }
 
         try {
-            ruleList.validate();
+            criteriaList.validate();
         } catch (RuleValidationException e) {
             String message = e.getMessage()
                     + "\nPress Edit to return to modify the rules, or press "
@@ -204,7 +206,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         }
 
         String moml = "<property name=\"" + _attribute.getName() + "\" value=\""
-            + StringUtilities.escapeForXML(ruleList.toString()) + "\"/>";
+            + StringUtilities.escapeForXML(criteriaList.toString()) + "\"/>";
         MoMLChangeRequest request =
             new MoMLChangeRequest(this, _target, moml, null);
         request.setUndoable(true);
@@ -250,14 +252,14 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         }
     }
 
-    public void resetTable(RuleList ruleList) {
+    public void resetTable(GTIngredientList ruleList) {
         int[] selectedRows = _table.getSelectedRows();
         _editor.stopCellEditing();
         while (_tableModel.getRowCount() > 0) {
             _tableModel.removeRow(0);
         }
         int i = 0;
-        for (Rule rule : ruleList) {
+        for (GTIngredient rule : ruleList) {
             Row row = new Row(rule);
             _tableModel.addRow(new Object[] {i++ + 1, row, row});
         }
@@ -287,24 +289,29 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
                         new File(URLDecoder.decode(url.getPath(), "UTF-8"));
                     File[] files = directory.listFiles();
                     for (File file : files) {
-                        if (file.exists() && file.isFile()) {
-                            String filePath = file.getName();
-                            if (filePath.endsWith(".class")) {
-                                String className = filePath.substring(0,
-                                        filePath.length() - 6);
-                                className = className.replace('$', '.');
-                                String fullClassName = pkg + "." + className;
-                                try {
-                                    Class<?> cls =
-                                        loader.loadClass(fullClassName);
-                                    if (_isSubclass(cls, Rule.class)) {
-                                        _ruleClasses.add(
-                                                (Class<? extends Rule>) cls);
-                                    }
-                                } catch (ClassNotFoundException e) {
-                                } catch (NoClassDefFoundError e) {
-                                }
+                        if (!file.exists() || !file.isFile()) {
+                            continue;
+                        }
+
+                        String filePath = file.getName();
+                        if (!filePath.endsWith(".class")) {
+                            continue;
+                        }
+
+                        String className = filePath.substring(0,
+                                filePath.length() - 6);
+                        className = className.replace('$', '.');
+                        String fullClassName = pkg + "." + className;
+                        try {
+                            Class<?> cls = loader.loadClass(fullClassName);
+                            if (!Modifier.isAbstract(cls.getModifiers())
+                                    && GTIngredient.class.isAssignableFrom(
+                                            cls)) {
+                                _ruleClasses.add(
+                                        (Class<? extends GTIngredient>) cls);
                             }
+                        } catch (ClassNotFoundException e) {
+                        } catch (NoClassDefFoundError e) {
                         }
                     }
                 }
@@ -348,7 +355,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
                 ((TableauFrame) parent).getConfiguration();
             Effigy effigy = ((TableauFrame) parent).getEffigy();
             DialogTableau dialogTableau = DialogTableau.createDialog(parent,
-                    configuration, effigy, RuleEditor.class,
+                    configuration, effigy, GTIngredientsEditor.class,
                     (Entity) object);
             if (dialogTableau != null) {
                 dialogTableau.show();
@@ -506,12 +513,12 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
     }
 
     @SuppressWarnings("unchecked")
-    protected Rule _createRuleFromRow(Row row) {
+    protected GTIngredient _createRuleFromRow(Row row) {
         JComboBox classSelector = row.getClassSelector();
         ComboElement element = (ComboElement) classSelector.getSelectedItem();
-        Class<? extends Rule> ruleClass =
-            (Class<? extends Rule>) element.getRuleClass();
-        Rule rule;
+        Class<? extends GTIngredient> ruleClass =
+            (Class<? extends GTIngredient>) element.getRuleClass();
+        GTIngredient rule;
         try {
             rule = _createTemporaryRule(ruleClass);
         } catch (Exception e) {
@@ -544,25 +551,15 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
         return helpURL;
     }
 
-    private Rule _createTemporaryRule(Class<? extends Rule> ruleClass)
+    private GTIngredient _createTemporaryRule(Class<? extends GTIngredient> ruleClass)
     throws SecurityException, NoSuchMethodException, IllegalArgumentException,
     InstantiationException, IllegalAccessException, InvocationTargetException {
-        Constructor<? extends Rule> constructor =
-            ruleClass.getConstructor(RuleList.class);
+        Constructor<? extends GTIngredient> constructor =
+            ruleClass.getConstructor(GTIngredientList.class);
         return constructor.newInstance(new Object[] { _temporaryRuleList });
     }
 
-    private static boolean _isSubclass(Class<?> subclass, Class<?> superclass) {
-        if (subclass == null) {
-            return false;
-        } else if (subclass.equals(superclass)) {
-            return true;
-        } else {
-            return _isSubclass(subclass.getSuperclass(), superclass);
-        }
-    }
-
-    private RuleListAttribute _attribute;
+    private GTIngredientsAttribute _attribute;
 
     private static final Color _DISABLED_BACKGROUND = new Color(220, 220, 220);
 
@@ -571,7 +568,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
     private static final Border _EMPTY_BORDER =
         BorderFactory.createEmptyBorder();
 
-    private RuleList _initialRules;
+    private GTIngredientList _initialRules;
 
     private static final Color _NON_REGULAR_EXPRESSION_BACKGROUND =
         new Color(230, 230, 255);
@@ -594,8 +591,8 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
 
     private static final int _ROW_HEIGHT = 45;
 
-    private static List<Class<? extends Rule>> _ruleClasses =
-        new LinkedList<Class<? extends Rule>>();
+    private static List<Class<? extends GTIngredient>> _ruleClasses =
+        new LinkedList<Class<? extends GTIngredient>>();
 
     private static final Color _SELECTED_COLOR = new Color(230, 230, 255);
 
@@ -605,7 +602,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
 
     private Entity _target;
 
-    private RuleList _temporaryRuleList;
+    private GTIngredientList _temporaryRuleList;
 
     private static final Border _TEXT_FIELD_BORDER =
         new JTextField().getBorder();
@@ -772,12 +769,12 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
 
     private static class ComboElement {
 
-        public ComboElement(Rule rule) {
+        public ComboElement(GTIngredient rule) {
             _ruleClass = rule.getClass();
             _rule = rule;
         }
 
-        public Rule getRule() {
+        public GTIngredient getRule() {
             return _rule;
         }
 
@@ -789,7 +786,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
             return _ruleClass.getSimpleName();
         }
 
-        private Rule _rule;
+        private GTIngredient _rule;
 
         private Class<?> _ruleClass;
     }
@@ -889,13 +886,13 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
 
     private class Row implements ItemListener {
 
-        public Row(Rule rule) {
+        public Row(GTIngredient rule) {
             _rightPanel.setBorder(_EMPTY_BORDER);
 
             Class<?> ruleClass = rule.getClass();
             _classSelector.addItemListener(this);
             _classSelector.setEditable(false);
-            for (Class<? extends Rule> listedRule : _ruleClasses) {
+            for (Class<? extends GTIngredient> listedRule : _ruleClasses) {
                 if (listedRule == null && ruleClass == null ||
                         listedRule != null && listedRule.equals(ruleClass)) {
                     ComboElement element = new ComboElement(rule);
@@ -903,7 +900,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
                     _classSelector.setSelectedItem(element);
                 } else {
                     try {
-                        Rule newRule = _createTemporaryRule(listedRule);
+                        GTIngredient newRule = _createTemporaryRule(listedRule);
                         ComboElement element = new ComboElement(newRule);
                         _classSelector.addItem(element);
                     } catch (Exception e) {
@@ -1011,15 +1008,15 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
             }
         }
 
-        protected JComponent _getComponent(RuleAttribute attribute) {
+        protected JComponent _getComponent(GTIngredientElement attribute) {
             JComponent component = null;
-            if (attribute instanceof BooleanRuleAttribute) {
+            if (attribute instanceof BooleanCriterionElement) {
                 JCheckBox checkBox = new JCheckBox();
                 checkBox.setHorizontalAlignment(SwingConstants.CENTER);
                 component = checkBox;
-            } else if (attribute instanceof StringRuleAttribute) {
-                StringRuleAttribute stringAttribute =
-                    (StringRuleAttribute) attribute;
+            } else if (attribute instanceof StringCriterionElement) {
+                StringCriterionElement stringAttribute =
+                    (StringCriterionElement) attribute;
                 boolean acceptRE = stringAttribute.acceptRegularExpression();
                 boolean acceptExp = stringAttribute.acceptPtolemyExpression();
                 Color background;
@@ -1031,9 +1028,9 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
                     background = _NON_REGULAR_EXPRESSION_BACKGROUND;
                 }
 
-                if (attribute instanceof ChoiceRuleAttribute) {
-                    ChoiceRuleAttribute choiceAttr =
-                        (ChoiceRuleAttribute) attribute;
+                if (attribute instanceof ChoiceCriterionElement) {
+                    ChoiceCriterionElement choiceAttr =
+                        (ChoiceCriterionElement) attribute;
                     ColorizedComboBox comboBox =
                         new ColorizedComboBox(background);
                     comboBox.setEditable(choiceAttr.isEditable());
@@ -1053,14 +1050,14 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
 
             ComboElement selectedElement =
                 (ComboElement) _classSelector.getSelectedItem();
-            Rule rule = selectedElement.getRule();
-            RuleAttribute[] attributes = rule.getRuleAttributes();
+            GTIngredient rule = selectedElement.getRule();
+            GTIngredientElement[] attributes = rule.getParts();
             _components = new JComponent[attributes.length];
             _checkBoxes = new JCheckBox[attributes.length];
 
             GridBagConstraints c = new GridBagConstraints();
             for (int i = 0; i < attributes.length; i++) {
-                RuleAttribute attribute = attributes[i];
+                GTIngredientElement attribute = attributes[i];
 
                 JPanel panel = new JPanel(new BorderLayout());
                 panel.setBorder(new EmptyBorder(0, 3, 2, 3));
@@ -1100,13 +1097,13 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
             }
         }
 
-        protected void _setComponentValue(RuleAttribute attribute,
+        protected void _setComponentValue(GTIngredientElement attribute,
                 JComponent component, Object value) {
-            if (attribute instanceof BooleanRuleAttribute) {
+            if (attribute instanceof BooleanCriterionElement) {
                 ((JCheckBox) component).setSelected(
                         ((Boolean) value).booleanValue());
-            } else if (attribute instanceof StringRuleAttribute) {
-                if (attribute instanceof ChoiceRuleAttribute) {
+            } else if (attribute instanceof StringCriterionElement) {
+                if (attribute instanceof ChoiceCriterionElement) {
                     ((JComboBox) component).setSelectedItem(value.toString());
                 } else {
                     ((JTextField) component).setText(value.toString());
@@ -1159,7 +1156,7 @@ public class RuleEditor extends PtolemyDialog implements ActionListener {
     }
 
     static {
-        String[] packages = new String[] { "ptolemy.actor.gt.rules" };
+        String[] packages = new String[] { "ptolemy.actor.gt.ingredient.pattern" };
         searchRuleClasses(packages, ClassLoader.getSystemClassLoader());
     }
 }

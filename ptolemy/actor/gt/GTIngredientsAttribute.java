@@ -45,21 +45,22 @@ import ptolemy.kernel.util.Workspace;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class RuleListAttribute extends StringAttribute {
+public class GTIngredientsAttribute extends StringAttribute {
 
-    public RuleListAttribute() {
+    public GTIngredientsAttribute() {
+        setClassName("ptolemy.actor.gt.ConfigurableItemAttribute");
     }
 
-    public RuleListAttribute(NamedObj container, String name)
+    public GTIngredientsAttribute(NamedObj container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
-    public RuleListAttribute(Workspace workspace) {
+    public GTIngredientsAttribute(Workspace workspace) {
         super(workspace);
     }
 
-    public RuleList getRuleList() throws MalformedStringException {
+    public GTIngredientList getRuleList() throws MalformedStringException {
         if (!_parsed) {
             _parse();
         }
@@ -84,12 +85,12 @@ public class RuleListAttribute extends StringAttribute {
 
     private void _parse() throws MalformedStringException {
         _parsed = true;
-        _ruleList = RuleList.parse(this, super.getExpression());
+        _ruleList = GTIngredientList.parse(this, super.getExpression());
     }
 
     private boolean _parsed = false;
 
-    private RuleList _ruleList = null;
+    private GTIngredientList _ruleList = null;
 
     private static final long serialVersionUID = 3642067100376815343L;
 

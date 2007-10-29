@@ -42,13 +42,13 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gt.Rule.NamedObjMatchResult;
+import ptolemy.actor.gt.GTIngredient.NamedObjMatchResult;
 import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.data.Pair;
-import ptolemy.actor.gt.rules.AttributeRule;
-import ptolemy.actor.gt.rules.PortRule;
-import ptolemy.actor.gt.rules.SubclassRule;
+import ptolemy.actor.gt.ingredient.pattern.AttributeCriterion;
+import ptolemy.actor.gt.ingredient.pattern.PortCriterion;
+import ptolemy.actor.gt.ingredient.pattern.SubclassCriterion;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;
@@ -625,16 +625,16 @@ public class GraphMatcher {
                 : object.toString();
     }
 
-    private static PortRule _getPortRule(Port port) {
+    private static PortCriterion _getPortRule(Port port) {
         NamedObj container = port.getContainer();
         if (container instanceof AtomicActorMatcher) {
             try {
-                RuleList ruleList = ((AtomicActorMatcher) container)
-                        .ruleList.getRuleList();
+                GTIngredientList ruleList = ((AtomicActorMatcher) container)
+                        .criteria.getRuleList();
                 String portID = port.getName();
-                for (Rule rule : ruleList) {
-                    if (rule instanceof PortRule) {
-                        PortRule portRule = (PortRule) rule;
+                for (GTIngredient rule : ruleList) {
+                    if (rule instanceof PortCriterion) {
+                        PortCriterion portRule = (PortCriterion) rule;
                         if (portRule.getPortID(ruleList).equals(portID)) {
                             return portRule;
                         }
@@ -682,17 +682,17 @@ public class GraphMatcher {
         if (lhsActor instanceof AtomicActorMatcher) {
             AtomicActorMatcher matcher = (AtomicActorMatcher) lhsActor;
 
-            RuleList ruleList = null;
+            GTIngredientList ruleList = null;
             try {
-                ruleList = matcher.ruleList.getRuleList();
+                ruleList = matcher.criteria.getRuleList();
             } catch (MalformedStringException e) {
                 success = false;
             }
 
             if (success) {
-                for (Rule rule : ruleList) {
-                    if (rule instanceof AttributeRule
-                            || rule instanceof SubclassRule) {
+                for (GTIngredient rule : ruleList) {
+                    if (rule instanceof AttributeCriterion
+                            || rule instanceof SubclassCriterion) {
                         success = rule.match(hostActor) ==
                             NamedObjMatchResult.MATCH;
                         if (!success) {
@@ -1054,7 +1054,7 @@ public class GraphMatcher {
             if (hostPort instanceof IOPort) {
                 IOPort lhsIOPort = (IOPort) lhsPort;
                 IOPort hostIOPort = (IOPort) hostPort;
-                PortRule portRule = _getPortRule(lhsIOPort);
+                PortCriterion portRule = _getPortRule(lhsIOPort);
                 if (portRule == null) {
                     boolean isInputEqual =
                         lhsIOPort.isInput() == hostIOPort.isInput();
