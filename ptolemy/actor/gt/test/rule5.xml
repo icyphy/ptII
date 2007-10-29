@@ -16,10 +16,6 @@
         <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;trueOutput&quot;/false//true/false/true/true/true/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;falseOutput&quot;/false//true/false/true/true/true/false)(ptolemy.actor.gt.ingredients.criteria.SubclassCriterion/true/&quot;ptolemy.actor.lib.BooleanSwitch&quot;)">
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 125.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
@@ -146,29 +142,17 @@
         <entity name="B" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/true/false/false/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/false/true/true/true/false)">
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 70.0}">
             </property>
         </entity>
         <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;input&quot;/false//true/true/true/false/true/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;output&quot;/false//true/false/true/true/true/false)(ptolemy.actor.gt.ingredients.criteria.SubclassCriterion/true/&quot;ptolemy.actor.lib.AbsoluteValue&quot;)">
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 165.0}">
             </property>
         </entity>
         <entity name="D" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/true/true)">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 110.0}">
             </property>

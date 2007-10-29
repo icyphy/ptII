@@ -26,7 +26,7 @@
 
  */
 
-package ptolemy.actor.gt.ingredients.criteria;
+package ptolemy.actor.gt.ingredients.operations;
 
 import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.GTIngredient;
@@ -39,12 +39,12 @@ import ptolemy.actor.gt.GTIngredient;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public abstract class Criterion extends GTIngredient {
+public abstract class Operation extends GTIngredient {
 
     /**
      * @param owner
      */
-    public Criterion(GTIngredientList owner) {
+    public Operation(GTIngredientList owner) {
         super(owner);
     }
 
@@ -52,7 +52,7 @@ public abstract class Criterion extends GTIngredient {
      * @param owner
      * @param elementCount
      */
-    public Criterion(GTIngredientList owner, int elementCount) {
+    public Operation(GTIngredientList owner, int elementCount) {
         super(owner, elementCount);
     }
 

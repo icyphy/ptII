@@ -622,7 +622,7 @@ TableModelListener, ValueListener {
     }
 
     private GTRuleGraphFrame _getToplevelFrame() {
-        NamedObj toplevel = getModel().toplevel();
+        NamedObj toplevel = getTransformer();
         for (Frame frame : getFrames()) {
             if (frame instanceof GTRuleGraphFrame) {
                 GTRuleGraphFrame gtRuleGraphFrame = (GTRuleGraphFrame) frame;

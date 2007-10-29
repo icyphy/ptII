@@ -74,9 +74,9 @@ JSRCS = \
 	PatternEntityAttribute.java \
 	RelationCollapsingAttribute.java \
 	Replacement.java \
-	RuleValidationException.java \
 	SingleRuleTransformer.java \
-	SubgraphMatchingException.java
+	SubgraphMatchingException.java \
+	ValidationException.java
 
 EXTRA_SRCS =	$(JSRCS)
 

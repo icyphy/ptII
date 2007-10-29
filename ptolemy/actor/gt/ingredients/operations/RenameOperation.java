@@ -24,7 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.actor.gt.ingredients.criteria;
+package ptolemy.actor.gt.ingredients.operations;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.gt.GTIngredientList;
@@ -44,13 +44,13 @@ import ptolemy.kernel.util.NamedObj;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class SubclassCriterion extends Criterion {
+public class RenameOperation extends Operation {
 
-    public SubclassCriterion(GTIngredientList owner) {
+    public RenameOperation(GTIngredientList owner) {
         this(owner, "");
     }
 
-    public SubclassCriterion(GTIngredientList owner, String values) {
+    public RenameOperation(GTIngredientList owner, String values) {
         super(owner, 1);
         setValues(values);
     }
@@ -59,14 +59,14 @@ public class SubclassCriterion extends Criterion {
         return _ELEMENTS;
     }
 
-    public String getSuperclass() {
-        return _superclass;
+    public String getName() {
+        return _name;
     }
 
     public Object getValue(int index) {
         switch (index) {
         case 0:
-            return _superclass;
+            return _name;
         default:
             return null;
         }
@@ -74,19 +74,19 @@ public class SubclassCriterion extends Criterion {
 
     public String getValues() {
         StringBuffer buffer = new StringBuffer();
-        _encodeStringField(buffer, 0, _superclass);
+        _encodeStringField(buffer, 0, _name);
         return buffer.toString();
     }
 
-    public boolean isSuperclassEnabled() {
+    public boolean isNameEnabled() {
         return isEnabled(0);
     }
 
     public NamedObjMatchResult match(NamedObj object) {
         if (object instanceof ComponentEntity) {
-            if (isSuperclassEnabled()) {
+            if (isNameEnabled()) {
                 try {
-                    Class<?> superclass = Class.forName(getSuperclass());
+                    Class<?> superclass = Class.forName(getName());
                     if (superclass.isInstance(object)) {
                         return NamedObjMatchResult.MATCH;
                     } else {
@@ -110,27 +110,27 @@ public class SubclassCriterion extends Criterion {
     public void setValue(int index, Object value) {
         switch (index) {
         case 0:
-            _superclass = (String) value;
+            _name = (String) value;
             break;
         }
     }
 
     public void setValues(String values) {
         FieldIterator fieldIterator = new FieldIterator(values);
-        _superclass = _decodeStringField(0, fieldIterator);
+        _name = _decodeStringField(0, fieldIterator);
     }
 
     public void validate() throws ValidationException {
-        if (_superclass.equals("")) {
+        if (_name.equals("")) {
             throw new ValidationException("Superclass name must not be "
                     + "empty.");
         }
         Class<?> superclass;
         try {
-            superclass = Class.forName(_superclass);
+            superclass = Class.forName(_name);
         } catch (ClassNotFoundException e) {
             throw new ValidationException("Cannot load class \""
-                    + _superclass + "\".");
+                    + _name + "\".");
         }
         try {
             superclass.asSubclass(Actor.class);
@@ -140,9 +140,9 @@ public class SubclassCriterion extends Criterion {
         }
     }
 
-    private static final CriterionElement[] _ELEMENTS = {
-        new StringCriterionElement("superclass")
+    private static final OperationElement[] _ELEMENTS = {
+        new StringOperationElement("name", true)
     };
 
-    private String _superclass;
+    private String _name;
 }

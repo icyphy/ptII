@@ -4,5 +4,9 @@ import ptolemy.kernel.util.Nameable;
 
 public interface GTEntity extends Nameable {
 
+    public GTIngredientsAttribute getCriteriaAttribute();
+
+    public GTIngredientsAttribute getOperationsAttribute();
+
     public PatternEntityAttribute getPatternEntityAttribute();
 }

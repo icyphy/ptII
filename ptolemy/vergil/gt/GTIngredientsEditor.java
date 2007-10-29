@@ -89,15 +89,18 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import ptolemy.actor.gt.GTEntity;
+import ptolemy.actor.gt.GTEntityTools;
 import ptolemy.actor.gt.MalformedStringException;
 import ptolemy.actor.gt.GTIngredient;
 import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.GTIngredientsAttribute;
-import ptolemy.actor.gt.RuleValidationException;
+import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.ingredients.criteria.BooleanCriterionElement;
 import ptolemy.actor.gt.ingredients.criteria.ChoiceCriterionElement;
 import ptolemy.actor.gt.ingredients.criteria.StringCriterionElement;
+import ptolemy.actor.gt.ingredients.operations.StringOperationElement;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.EditorFactory;
@@ -106,6 +109,7 @@ import ptolemy.actor.gui.HTMLViewer;
 import ptolemy.actor.gui.PtolemyDialog;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -116,7 +120,7 @@ import ptolemy.util.StringUtilities;
 import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 
 //////////////////////////////////////////////////////////////////////////
-//// RuleEditor
+//// GTIngredientsEditor
 
 /**
 
@@ -131,20 +135,35 @@ implements ActionListener {
 
     public GTIngredientsEditor(DialogTableau tableau, Frame owner,
             Entity target, Configuration configuration) {
-        super("Rule editor for " + target.getName(), tableau, owner, target,
-                configuration);
+        super("", tableau, owner, target, configuration);
 
         _owner = owner;
         _target = target;
-        try {
-            _attribute = (GTIngredientsAttribute) target.getAttribute("criteria",
-                    GTIngredientsAttribute.class);
-            _temporaryRuleList = new GTIngredientList(_attribute);
-            _createComponents();
-        } catch (IllegalActionException e) {
-            throw new KernelRuntimeException(e, "Cannot find \"criteria\" "
-                    + "attribute in entity " + _target.getName() + ".");
+        
+        Attribute attribute = null;
+        
+        if (target instanceof GTEntity) {
+            if (GTEntityTools.isInPattern((GTEntity) target)) {
+                attribute = target.getAttribute("criteria");
+                _ingredientClasses = _criterionClasses;
+                tableau.setTitle("Criteria editor for " + target.getName());
+            } else if (GTEntityTools.isInReplacement((GTEntity) target)) {
+                attribute = target.getAttribute("operations");
+                _ingredientClasses = _operationClasses;
+                tableau.setTitle("Operations editor for " + target.getName());
+            }
         }
+        
+        if (attribute == null
+                || !(attribute instanceof GTIngredientsAttribute)) {
+            throw new KernelRuntimeException("Cannot edit entity "
+                    + target.getName() + ".");
+        }
+        
+        _attribute = (GTIngredientsAttribute) attribute;
+        
+        _temporaryIngredientList = new GTIngredientList(_attribute);
+        _createComponents();
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -164,9 +183,11 @@ implements ActionListener {
 
     public void addNewRow() {
         try {
-            Class<? extends GTIngredient> ruleClass = _ruleClasses.get(0);
-            GTIngredient rule = _createTemporaryRule(ruleClass);
-            Row row = new Row(rule);
+            Class<? extends GTIngredient> ingredientClass =
+                _ingredientClasses.get(0);
+            GTIngredient ingredient =
+                _createTemporaryIngredient(ingredientClass);
+            Row row = new Row(ingredient);
             int rowCount = _tableModel.getRowCount();
             _tableModel.addRow(new Object[] { rowCount + 1, row, row });
             if (rowCount == 0) {
@@ -179,18 +200,18 @@ implements ActionListener {
     }
 
     public boolean apply() {
-        GTIngredientList criteriaList = new GTIngredientList(_attribute);
+        GTIngredientList ingredientList = new GTIngredientList(_attribute);
         Vector<?> dataVector = _tableModel.getDataVector();
         for (Object rowData : dataVector) {
             Vector<?> rowVector = (Vector<?>) rowData;
             Row row = (Row) rowVector.get(1);
-            GTIngredient rule = _createRuleFromRow(row);
-            criteriaList.add(rule);
+            GTIngredient incredient = _createIngredientFromRow(row);
+            ingredientList.add(incredient);
         }
 
         try {
-            criteriaList.validate();
-        } catch (RuleValidationException e) {
+            ingredientList.validate();
+        } catch (ValidationException e) {
             String message = e.getMessage()
                     + "\nPress Edit to return to modify the rules, or press "
                     + "Cancel to cancel all the changes.";
@@ -200,13 +221,13 @@ implements ActionListener {
                     "Validation Error", JOptionPane.OK_CANCEL_OPTION,
                     JOptionPane.ERROR_MESSAGE, null, options, options[1]);
             if (selected == 1) {
-                resetTable(_initialRules);
+                resetTable(_initialIngredientList);
             }
             return false;
         }
 
         String moml = "<property name=\"" + _attribute.getName() + "\" value=\""
-            + StringUtilities.escapeForXML(criteriaList.toString()) + "\"/>";
+            + StringUtilities.escapeForXML(ingredientList.toString()) + "\"/>";
         MoMLChangeRequest request =
             new MoMLChangeRequest(this, _target, moml, null);
         request.setUndoable(true);
@@ -252,15 +273,15 @@ implements ActionListener {
         }
     }
 
-    public void resetTable(GTIngredientList ruleList) {
+    public void resetTable(GTIngredientList ingredientList) {
         int[] selectedRows = _table.getSelectedRows();
         _editor.stopCellEditing();
         while (_tableModel.getRowCount() > 0) {
             _tableModel.removeRow(0);
         }
         int i = 0;
-        for (GTIngredient rule : ruleList) {
-            Row row = new Row(rule);
+        for (GTIngredient ingredient : ingredientList) {
+            Row row = new Row(ingredient);
             _tableModel.addRow(new Object[] {i++ + 1, row, row});
         }
         if (selectedRows.length == 0) {
@@ -276,9 +297,10 @@ implements ActionListener {
     }
 
     @SuppressWarnings("unchecked")
-    public static void searchRuleClasses(String[] packages,
-            ClassLoader loader) {
-        _ruleClasses.clear();
+    public static List<Class<? extends GTIngredient>> searchIngredientClasses(
+            String[] packages, ClassLoader loader) {
+        List<Class<? extends GTIngredient>> ingredientClasses =
+            new LinkedList<Class<? extends GTIngredient>>();
         for (String pkg : packages) {
             try {
                 Enumeration<URL> urls =
@@ -307,7 +329,7 @@ implements ActionListener {
                             if (!Modifier.isAbstract(cls.getModifiers())
                                     && GTIngredient.class.isAssignableFrom(
                                             cls)) {
-                                _ruleClasses.add(
+                                ingredientClasses.add(
                                         (Class<? extends GTIngredient>) cls);
                             }
                         } catch (ClassNotFoundException e) {
@@ -318,16 +340,18 @@ implements ActionListener {
             } catch (IOException e) {
             }
         }
+        return ingredientClasses;
     }
 
     public void setVisible(boolean visible) {
         if (visible) {
             try {
-                _initialRules = _attribute.getRuleList();
-                resetTable(_initialRules);
+                _initialIngredientList = _attribute.getRuleList();
+                resetTable(_initialIngredientList);
             } catch (MalformedStringException e) {
-                throw new KernelRuntimeException(e, "Attribute \"ruleList\" of "
-                        + "entity " + _target.getName() + " is malformed.");
+                throw new KernelRuntimeException(e, "Attribute \""
+                        + _attribute.getName() + "\" of " + "entity "
+                        + _target.getName() + " is malformed.");
             }
         }
         super.setVisible(visible);
@@ -372,7 +396,7 @@ implements ActionListener {
         getContentPane().removeAll();
 
         _tableModel = new DefaultTableModel(
-                new Object[] {"", "Class", "Attributes"}, 0) {
+                new Object[] {"", "Class", "Elements"}, 0) {
                     public boolean isCellEditable(int row, int column) {
                         if (column == 0) {
                             return false;
@@ -414,7 +438,7 @@ implements ActionListener {
         renderer.setHorizontalAlignment(SwingConstants.CENTER);
         renderer.setPreferredSize(new Dimension(0, 22));
 
-        _editor = new AttributesEditor();
+        _editor = new IngredientContentEditor();
         TableColumnModel model = _table.getColumnModel();
         model.getColumn(1).setCellEditor(_editor);
         model.getColumn(1).setCellRenderer(_editor);
@@ -513,14 +537,14 @@ implements ActionListener {
     }
 
     @SuppressWarnings("unchecked")
-    protected GTIngredient _createRuleFromRow(Row row) {
+    protected GTIngredient _createIngredientFromRow(Row row) {
         JComboBox classSelector = row.getClassSelector();
         ComboElement element = (ComboElement) classSelector.getSelectedItem();
         Class<? extends GTIngredient> ruleClass =
             (Class<? extends GTIngredient>) element.getRuleClass();
         GTIngredient rule;
         try {
-            rule = _createTemporaryRule(ruleClass);
+            rule = _createTemporaryIngredient(ruleClass);
         } catch (Exception e) {
             throw new KernelRuntimeException(e, "Unable to create rule from " +
                     "class \"" + ruleClass.getName() + "\".");
@@ -551,27 +575,34 @@ implements ActionListener {
         return helpURL;
     }
 
-    private GTIngredient _createTemporaryRule(Class<? extends GTIngredient> ruleClass)
+    private GTIngredient _createTemporaryIngredient(
+            Class<? extends GTIngredient> ruleClass)
     throws SecurityException, NoSuchMethodException, IllegalArgumentException,
     InstantiationException, IllegalAccessException, InvocationTargetException {
         Constructor<? extends GTIngredient> constructor =
             ruleClass.getConstructor(GTIngredientList.class);
-        return constructor.newInstance(new Object[] { _temporaryRuleList });
+        return constructor.newInstance(new Object[] { _temporaryIngredientList });
     }
 
     private GTIngredientsAttribute _attribute;
 
+    private static List<Class<? extends GTIngredient>> _criterionClasses;
+    
+    private List<Class<? extends GTIngredient>> _ingredientClasses;
+
     private static final Color _DISABLED_BACKGROUND = new Color(220, 220, 220);
 
-    private AttributesEditor _editor;
+    private IngredientContentEditor _editor;
 
     private static final Border _EMPTY_BORDER =
         BorderFactory.createEmptyBorder();
 
-    private GTIngredientList _initialRules;
+    private GTIngredientList _initialIngredientList;
 
     private static final Color _NON_REGULAR_EXPRESSION_BACKGROUND =
         new Color(230, 230, 255);
+
+    private static List<Class<? extends GTIngredient>> _operationClasses;
 
     private Frame _owner;
 
@@ -591,9 +622,6 @@ implements ActionListener {
 
     private static final int _ROW_HEIGHT = 45;
 
-    private static List<Class<? extends GTIngredient>> _ruleClasses =
-        new LinkedList<Class<? extends GTIngredient>>();
-
     private static final Color _SELECTED_COLOR = new Color(230, 230, 255);
 
     private JTable _table;
@@ -602,7 +630,7 @@ implements ActionListener {
 
     private Entity _target;
 
-    private GTIngredientList _temporaryRuleList;
+    private GTIngredientList _temporaryIngredientList;
 
     private static final Border _TEXT_FIELD_BORDER =
         new JTextField().getBorder();
@@ -611,7 +639,7 @@ implements ActionListener {
 
     private static final long serialVersionUID = -2788727943126991098L;
 
-    private static class AttributesEditor extends AbstractCellEditor
+    private static class IngredientContentEditor extends AbstractCellEditor
     implements TableCellEditor, TableCellRenderer {
 
         public Object getCellEditorValue() {
@@ -892,7 +920,8 @@ implements ActionListener {
             Class<?> ruleClass = rule.getClass();
             _classSelector.addItemListener(this);
             _classSelector.setEditable(false);
-            for (Class<? extends GTIngredient> listedRule : _ruleClasses) {
+            for (Class<? extends GTIngredient> listedRule
+                    : _ingredientClasses) {
                 if (listedRule == null && ruleClass == null ||
                         listedRule != null && listedRule.equals(ruleClass)) {
                     ComboElement element = new ComboElement(rule);
@@ -900,7 +929,7 @@ implements ActionListener {
                     _classSelector.setSelectedItem(element);
                 } else {
                     try {
-                        GTIngredient newRule = _createTemporaryRule(listedRule);
+                        GTIngredient newRule = _createTemporaryIngredient(listedRule);
                         ComboElement element = new ComboElement(newRule);
                         _classSelector.addItem(element);
                     } catch (Exception e) {
@@ -1008,17 +1037,17 @@ implements ActionListener {
             }
         }
 
-        protected JComponent _getComponent(GTIngredientElement attribute) {
+        protected JComponent _getComponent(GTIngredientElement element) {
             JComponent component = null;
-            if (attribute instanceof BooleanCriterionElement) {
+            if (element instanceof BooleanCriterionElement) {
                 JCheckBox checkBox = new JCheckBox();
                 checkBox.setHorizontalAlignment(SwingConstants.CENTER);
                 component = checkBox;
-            } else if (attribute instanceof StringCriterionElement) {
-                StringCriterionElement stringAttribute =
-                    (StringCriterionElement) attribute;
-                boolean acceptRE = stringAttribute.acceptRegularExpression();
-                boolean acceptExp = stringAttribute.acceptPtolemyExpression();
+            } else if (element instanceof StringCriterionElement) {
+                StringCriterionElement stringElement =
+                    (StringCriterionElement) element;
+                boolean acceptRE = stringElement.acceptRegularExpression();
+                boolean acceptExp = stringElement.acceptPtolemyExpression();
                 Color background;
                 if (acceptRE) {
                     background = _REGULAR_EXPRESSION_BACKGROUND;
@@ -1028,19 +1057,30 @@ implements ActionListener {
                     background = _NON_REGULAR_EXPRESSION_BACKGROUND;
                 }
 
-                if (attribute instanceof ChoiceCriterionElement) {
-                    ChoiceCriterionElement choiceAttr =
-                        (ChoiceCriterionElement) attribute;
+                if (element instanceof ChoiceCriterionElement) {
+                    ChoiceCriterionElement choiceElement =
+                        (ChoiceCriterionElement) element;
                     ColorizedComboBox comboBox =
                         new ColorizedComboBox(background);
-                    comboBox.setEditable(choiceAttr.isEditable());
-                    for (Object choice : choiceAttr.getChoices()) {
+                    comboBox.setEditable(choiceElement.isEditable());
+                    for (Object choice : choiceElement.getChoices()) {
                         comboBox.addItem(choice);
                     }
                     component = comboBox;
                 } else {
                     component = new ColorizedTextField(background);
                 }
+            } else if (element instanceof StringOperationElement) {
+                StringOperationElement stringElement =
+                    (StringOperationElement) element;
+                boolean acceptExp = stringElement.acceptPtolemyExpression();
+                Color background;
+                if (acceptExp) {
+                    background = _PTOLEMY_EXPRESSION_BACKGROUND;
+                } else {
+                    background = _NON_REGULAR_EXPRESSION_BACKGROUND;
+                }
+                component = new ColorizedTextField(background);
             }
             return component;
         }
@@ -1051,19 +1091,19 @@ implements ActionListener {
             ComboElement selectedElement =
                 (ComboElement) _classSelector.getSelectedItem();
             GTIngredient rule = selectedElement.getRule();
-            GTIngredientElement[] attributes = rule.getParts();
-            _components = new JComponent[attributes.length];
-            _checkBoxes = new JCheckBox[attributes.length];
+            GTIngredientElement[] elements = rule.getElements();
+            _components = new JComponent[elements.length];
+            _checkBoxes = new JCheckBox[elements.length];
 
             GridBagConstraints c = new GridBagConstraints();
-            for (int i = 0; i < attributes.length; i++) {
-                GTIngredientElement attribute = attributes[i];
+            for (int i = 0; i < elements.length; i++) {
+                GTIngredientElement element = elements[i];
 
                 JPanel panel = new JPanel(new BorderLayout());
                 panel.setBorder(new EmptyBorder(0, 3, 2, 3));
                 panel.setOpaque(false);
 
-                String columnName = attribute.getName();
+                String columnName = element.getName();
                 JPanel checkBoxPanel =
                     new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
                 checkBoxPanel.setOpaque(false);
@@ -1077,9 +1117,9 @@ implements ActionListener {
                 checkBoxPanel.add(checkBox);
                 panel.add(checkBoxPanel, BorderLayout.NORTH);
 
-                JComponent component = _getComponent(attribute);
+                JComponent component = _getComponent(element);
                 component.setPreferredSize(new Dimension(0, 20));
-                _setComponentValue(attribute, component, rule.getValue(i));
+                _setComponentValue(element, component, rule.getValue(i));
                 panel.add(component, BorderLayout.CENTER);
 
                 c.fill = GridBagConstraints.HORIZONTAL;
@@ -1097,13 +1137,13 @@ implements ActionListener {
             }
         }
 
-        protected void _setComponentValue(GTIngredientElement attribute,
+        protected void _setComponentValue(GTIngredientElement element,
                 JComponent component, Object value) {
-            if (attribute instanceof BooleanCriterionElement) {
+            if (element instanceof BooleanCriterionElement) {
                 ((JCheckBox) component).setSelected(
                         ((Boolean) value).booleanValue());
-            } else if (attribute instanceof StringCriterionElement) {
-                if (attribute instanceof ChoiceCriterionElement) {
+            } else if (element instanceof StringCriterionElement) {
+                if (element instanceof ChoiceCriterionElement) {
                     ((JComboBox) component).setSelectedItem(value.toString());
                 } else {
                     ((JTextField) component).setText(value.toString());
@@ -1156,9 +1196,11 @@ implements ActionListener {
     }
 
     static {
-        String[] packages = new String[] {
-                "ptolemy.actor.gt.ingredients.criteria"
-        };
-        searchRuleClasses(packages, ClassLoader.getSystemClassLoader());
+        _criterionClasses = searchIngredientClasses(
+                new String[] { "ptolemy.actor.gt.ingredients.criteria" },
+                ClassLoader.getSystemClassLoader());
+        _operationClasses = searchIngredientClasses(
+                new String[] { "ptolemy.actor.gt.ingredients.operations" },
+                ClassLoader.getSystemClassLoader());
     }
 }

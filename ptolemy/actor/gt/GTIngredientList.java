@@ -91,14 +91,14 @@ public class GTIngredientList extends LinkedList<GTIngredient> {
         return buffer.toString();
     }
 
-    public void validate() throws RuleValidationException {
+    public void validate() throws ValidationException {
         int i = 0;
         for (GTIngredient rule : this) {
             i++;
             try {
                 rule.validate();
-            } catch (RuleValidationException e) {
-                throw new RuleValidationException("Rule " + i + ": "
+            } catch (ValidationException e) {
+                throw new ValidationException("Rule " + i + ": "
                         + e.getMessage());
             }
         }

@@ -47,6 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.gt.GTIngredientsEditor;
 import ptolemy.vergil.icon.EditorIcon;
 
 //////////////////////////////////////////////////////////////////////////
@@ -73,11 +74,25 @@ ValueListener {
         criteria.setExpression("");
         criteria.addValueListener(this);
 
+        operations = new GTIngredientsAttribute(this, "operations");
+        operations.setExpression("");
+        operations.addValueListener(this);
+
         patternEntity = new PatternEntityAttribute(this, "patternEntity");
         patternEntity.setExpression("");
         patternEntity.addValueListener(this);
 
+        editorFactory = new GTIngredientsEditor.Factory(this, "editorFactory");
+
         _attachText("_iconDescription", _ICON_DESCRIPTION);
+    }
+
+    public GTIngredientsAttribute getCriteriaAttribute() {
+        return criteria;
+    }
+
+    public GTIngredientsAttribute getOperationsAttribute() {
+        return operations;
     }
 
     public PatternEntityAttribute getPatternEntityAttribute() {
@@ -117,6 +132,10 @@ ValueListener {
     }
 
     public GTIngredientsAttribute criteria;
+
+    public GTIngredientsEditor.Factory editorFactory;
+
+    public GTIngredientsAttribute operations;
 
     public PatternEntityAttribute patternEntity;
 

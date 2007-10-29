@@ -20,10 +20,6 @@
             </property>
         </property>
         <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
-            <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 170.0]">
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -33,10 +29,6 @@
             </port>
             <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
                 <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//false/false/true/true/false/false)">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
-                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 175.0]">
                 </property>
@@ -51,19 +43,11 @@
         <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/false/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//false/false/true/true/false/false)">
             </property>
-            <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
-                </property>
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 150.0]">
             </property>
         </entity>
         <entity name="AtomicActorMatcher2" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/false/false)">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.gt.GTIngredientsEditor$Factory">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="criteria">
-                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 150.0]">
             </property>

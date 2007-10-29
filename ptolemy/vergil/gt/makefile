@@ -78,13 +78,13 @@ OPTIONAL_FILES = \
 	'GTIngredientsEditor$$2.class' \
 	'GTIngredientsEditor$$3.class' \
 	'GTIngredientsEditor$$4.class' \
-	'GTIngredientsEditor$$AttributesEditor.class' \
 	'GTIngredientsEditor$$ColorizedComboBox$$Editor.class' \
 	'GTIngredientsEditor$$ColorizedComboBox.class' \
 	'GTIngredientsEditor$$ColorizedTextField.class' \
 	'GTIngredientsEditor$$ComboElement.class' \
 	'GTIngredientsEditor$$Factory.class' \
 	'GTIngredientsEditor$$HelpLabel.class' \
+	'GTIngredientsEditor$$IngredientContentEditor.class' \
 	'GTIngredientsEditor$$Row$$CheckBoxActionListener.class' \
 	'GTIngredientsEditor$$Row.class' \
 	'GTRuleGraphFrame$$1.class' \

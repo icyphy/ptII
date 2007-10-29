@@ -57,7 +57,7 @@ public abstract class GTIngredient {
         return _owner;
     }
 
-    public abstract GTIngredientElement[] getParts();
+    public abstract GTIngredientElement[] getElements();
 
     public abstract Object getValue(int index);
 
@@ -81,7 +81,7 @@ public abstract class GTIngredient {
         return getValues();
     }
 
-    public abstract void validate() throws RuleValidationException;
+    public abstract void validate() throws ValidationException;
 
     public static final String FIELD_SEPARATOR = "/";
 
@@ -93,9 +93,9 @@ public abstract class GTIngredient {
         _owner = owner;
     }
 
-    protected GTIngredient(GTIngredientList owner, int attributeCount) {
+    protected GTIngredient(GTIngredientList owner, int elementCount) {
         this(owner);
-        _enablements = new boolean[attributeCount];
+        _enablements = new boolean[elementCount];
         enableAll();
     }
 
@@ -115,7 +115,7 @@ public abstract class GTIngredient {
         } else {
             _enablements[index] = false;
         }
-        return iterator.hasNext() ? _unescapeStringAttribute(iterator.next())
+        return iterator.hasNext() ? _unescapeElementString(iterator.next())
                 : "";
     }
 
@@ -136,18 +136,18 @@ public abstract class GTIngredient {
         }
         buffer.append(_enablements[index]);
         buffer.append(FIELD_SEPARATOR);
-        buffer.append(_escapeStringAttribute(value));
+        buffer.append(_escapeElementString(value));
     }
 
-    protected static String _escapeStringAttribute(String attribute) {
-        if (attribute.equals("")) {
+    protected static String _escapeElementString(String elementString) {
+        if (elementString.equals("")) {
             return "";
         }
 
-        attribute = attribute.replace("\\", "\\\\");
-        attribute = attribute.replace("\"", "\\\"");
-        attribute = attribute.replace("\'", "\\\'");
-        return "\"" + attribute + "\"";
+        elementString = elementString.replace("\\", "\\\\");
+        elementString = elementString.replace("\"", "\\\"");
+        elementString = elementString.replace("\'", "\\\'");
+        return "\"" + elementString + "\"";
     }
 
     protected static int _findMatchingParen(String s, int startPos) {
@@ -205,12 +205,12 @@ public abstract class GTIngredient {
         return -1;
     }
 
-    protected static String _unescapeStringAttribute(String attribute) {
-        if (attribute.equals("")) {
+    protected static String _unescapeElementString(String elementString) {
+        if (elementString.equals("")) {
             return "";
         }
 
-        StringBuffer buffer = new StringBuffer(attribute);
+        StringBuffer buffer = new StringBuffer(elementString);
         buffer.deleteCharAt(0);
         buffer.deleteCharAt(buffer.length() - 1);
         for (int i = 0; i < buffer.length(); i++) {

@@ -30,13 +30,13 @@ package ptolemy.actor.gt;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Nameable;
 
-public class RuleValidationException extends KernelException {
+public class ValidationException extends KernelException {
 
-    public RuleValidationException(String message) {
+    public ValidationException(String message) {
         super(null, null, message);
     }
 
-    public RuleValidationException(String message, Throwable cause) {
+    public ValidationException(String message, Throwable cause) {
         super(null, null, cause, message);
     }
 

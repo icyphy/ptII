@@ -32,7 +32,7 @@ import java.util.regex.PatternSyntaxException;
 
 import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.GTIngredientElement;
-import ptolemy.actor.gt.RuleValidationException;
+import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.util.PtolemyExpressionString;
 import ptolemy.actor.gt.util.RegularExpressionString;
 import ptolemy.actor.gt.util.VariableScope;
@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
-//// ActorAttributeRule
+//// AttributeCriterion
 
 /**
 
@@ -81,7 +81,7 @@ public class AttributeCriterion extends Criterion {
             new PtolemyExpressionString(container, attributeValue);
     }
 
-    public GTIngredientElement[] getParts() {
+    public GTIngredientElement[] getElements() {
         return _ELEMENTS;
     }
 
@@ -202,31 +202,31 @@ public class AttributeCriterion extends Criterion {
         _attributeValue.set(_decodeStringField(2, fieldIterator));
     }
 
-    public void validate() throws RuleValidationException {
+    public void validate() throws ValidationException {
         if (isAttributeNameEnabled()) {
             if (_attributeName.equals("")) {
-                throw new RuleValidationException(
+                throw new ValidationException(
                         "Attribute name must not be empty.");
             }
 
             try {
                 _attributeName.getPattern();
             } catch (PatternSyntaxException e) {
-                throw new RuleValidationException("Regular expression \""
+                throw new ValidationException("Regular expression \""
                         + _attributeName + "\" cannot be compiled.", e);
             }
         }
 
         if (isAttributeTypeEnabled()) {
             if (_attributeType.equals("")) {
-                throw new RuleValidationException(
+                throw new ValidationException(
                         "Port type must not be empty.");
             }
 
             try {
                 _attributeType.getToken().getType();
             } catch (IllegalActionException e) {
-                throw new RuleValidationException("Type expression \""
+                throw new ValidationException("Type expression \""
                         + _attributeType + "\" cannot be parsed.", e);
             }
         }
@@ -235,7 +235,7 @@ public class AttributeCriterion extends Criterion {
             try {
                 _attributeValue.getToken();
             } catch (IllegalActionException e) {
-                throw new RuleValidationException("Value expression \""
+                throw new ValidationException("Value expression \""
                         + _attributeValue + "\" cannot be parsed.", e);
             }
         }

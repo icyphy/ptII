@@ -30,6 +30,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.vergil.gt.GTIngredientsEditor;
 
 //////////////////////////////////////////////////////////////////////////
 //// CompositeActorMatcher
@@ -54,8 +55,21 @@ implements GTEntity {
         criteria = new GTIngredientsAttribute(this, "criteria");
         criteria.setExpression("");
 
+        operations = new GTIngredientsAttribute(this, "operations");
+        operations.setExpression("");
+
         patternEntity = new PatternEntityAttribute(this, "patternEntity");
         patternEntity.setExpression("");
+
+        editorFactory = new GTIngredientsEditor.Factory(this, "editorFactory");
+    }
+
+    public GTIngredientsAttribute getCriteriaAttribute() {
+        return criteria;
+    }
+
+    public GTIngredientsAttribute getOperationsAttribute() {
+        return operations;
     }
 
     public PatternEntityAttribute getPatternEntityAttribute() {
@@ -63,6 +77,10 @@ implements GTEntity {
     }
 
     public GTIngredientsAttribute criteria;
+
+    public GTIngredientsEditor.Factory editorFactory;
+
+    public GTIngredientsAttribute operations;
 
     public PatternEntityAttribute patternEntity;
 

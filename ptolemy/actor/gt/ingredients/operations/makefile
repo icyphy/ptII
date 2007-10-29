@@ -1,4 +1,4 @@
-# Makefile for the ptolemy/actor/gt/ingredients package
+# Makefile for the ptolemy/actor/gt/ingredients/operations package
 #
 # @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/gt/ingredients
+ME =		ptolemy/actor/gt/ingredients/operations
 
-DIRS = 		criteria operations
+DIRS = 		
 
 # Root of the Ptolemy II directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH = 	$(ROOT)
 
@@ -43,18 +43,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	ingredients
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-    criteria/criteria.jar \
-    operations/operations.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	operations
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS = \
+	Operation.java \
+	OperationElement.java \
+	RenameOperation.java \
+	StringOperationElement.java
 
 EXTRA_SRCS =	$(JSRCS)
 

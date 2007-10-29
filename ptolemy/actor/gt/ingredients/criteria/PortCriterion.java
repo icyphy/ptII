@@ -35,7 +35,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.GTIngredientElement;
-import ptolemy.actor.gt.RuleValidationException;
+import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.util.PtolemyExpressionString;
 import ptolemy.actor.gt.util.RegularExpressionString;
 import ptolemy.data.expr.Constants;
@@ -80,8 +80,8 @@ public class PortCriterion extends Criterion {
         return _portType.get();
     }
 
-    public GTIngredientElement[] getParts() {
-        return _PARTS;
+    public GTIngredientElement[] getElements() {
+        return _ELEMENTS;
     }
 
     public Object getValue(int index) {
@@ -249,37 +249,37 @@ public class PortCriterion extends Criterion {
         _multiport = _decodeBooleanField(4, fieldIterator);
     }
 
-    public void validate() throws RuleValidationException {
+    public void validate() throws ValidationException {
         if (isPortNameEnabled()) {
             if (_portName.get().equals("")) {
-                throw new RuleValidationException(
+                throw new ValidationException(
                         "Port name must not be empty.");
             }
 
             try {
                 _portName.getPattern();
             } catch (PatternSyntaxException e) {
-                throw new RuleValidationException("Regular expression \""
+                throw new ValidationException("Regular expression \""
                         + _portName + "\" cannot be compiled.", e);
             }
         }
 
         if (isPortTypeEnabled()) {
             if (_portType.get().equals("")) {
-                throw new RuleValidationException(
+                throw new ValidationException(
                         "Port type must not be empty.");
             }
 
             try {
                 _portType.getToken().getType();
             } catch (IllegalActionException e) {
-                throw new RuleValidationException("Type expression \""
+                throw new ValidationException("Type expression \""
                         + _portType + "\" cannot be parsed.", e);
             }
         }
     }
 
-    private static final CriterionElement[] _PARTS = {
+    private static final CriterionElement[] _ELEMENTS = {
         new StringCriterionElement("name", true, false),
         new ChoiceCriterionElement("type", false, true, true),
         new BooleanCriterionElement("input"),
@@ -298,7 +298,8 @@ public class PortCriterion extends Criterion {
     private PtolemyExpressionString _portType;
 
     static {
-        ChoiceCriterionElement portTypes = (ChoiceCriterionElement) _PARTS[1];
+        ChoiceCriterionElement portTypes =
+            (ChoiceCriterionElement) _ELEMENTS[1];
         portTypes.addChoices(Constants.types().keySet());
         portTypes.addChoice("arrayType(int)");
         portTypes.addChoice("arrayType(int,5)");

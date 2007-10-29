@@ -1,6 +1,6 @@
 /*
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 2003-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -23,37 +23,25 @@
 
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
-
  */
+package ptolemy.actor.gt.ingredients.operations;
 
-package ptolemy.actor.gt.ingredients.criteria;
 
-import ptolemy.actor.gt.GTIngredientList;
-import ptolemy.actor.gt.GTIngredient;
+public class StringOperationElement extends OperationElement {
 
-/**
-
- @author Thomas Huining Feng
- @version $Id$
- @since Ptolemy II 6.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
-public abstract class Criterion extends GTIngredient {
-
-    /**
-     * @param owner
-     */
-    public Criterion(GTIngredientList owner) {
-        super(owner);
+    public StringOperationElement(String name) {
+        this(name, false);
     }
 
-    /**
-     * @param owner
-     * @param elementCount
-     */
-    public Criterion(GTIngredientList owner, int elementCount) {
-        super(owner, elementCount);
+    public StringOperationElement(String name,
+            boolean acceptPtolemyExpression) {
+        super(name);
+        _acceptPtolemyExpression = acceptPtolemyExpression;
     }
 
+    public boolean acceptPtolemyExpression() {
+        return _acceptPtolemyExpression;
+    }
+
+    private boolean _acceptPtolemyExpression;
 }
