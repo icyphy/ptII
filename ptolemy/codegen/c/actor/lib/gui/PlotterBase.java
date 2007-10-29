@@ -171,7 +171,7 @@ public class PlotterBase extends CCodeGeneratorHelper {
         // when the program runs to the end. I need to figure out a
         // better way.
         code.append("char $actorSymbol(temp)[80];" + _eol);
-        code.append("printf(\"close plot window to exit...\");" + _eol);
+        code.append("printf(\"type any key and then return to exit...\");" + _eol);
         code.append("scanf(\"%s\",$actorSymbol(temp));" + _eol);
         return processCode(CodeStream.indent(code.toString()));
     }
