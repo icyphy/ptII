@@ -1,26 +1,26 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="rule6" class="ptolemy.actor.gt.SingleRuleTransformer">
+<entity name="rule6" class="ptolemy.actor.gt.TransformationRule">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={263, 127, 873, 795}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={269, 135, 724, 504}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 680]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[501, 389]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{223.0, 40.5}">
     </property>
     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
         <property name="HierarchyFlattening" class="ptolemy.actor.gt.HierarchyFlatteningAttribute">
             <property name="hierarchyFlattening" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 5.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -95.0]">
             </property>
         </property>
         <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 150.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 50.0]">
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -38,10 +38,10 @@
                 </property>
             </relation>
             <link port="port" relation="relation"/>
-            <link port="AtomicActorMatcher.Rule1" relation="relation"/>
+            <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
         </entity>
         <entity name="CompositeActorMatcher2" class="ptolemy.actor.gt.CompositeActorMatcher">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 150.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 50.0]">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 267, 823, 515}, maximized=false}">
             </property>
@@ -96,7 +96,7 @@
                     </property>
                 </relation>
                 <link port="port" relation="relation"/>
-                <link port="AtomicActorMatcher.Rule1" relation="relation"/>
+                <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -108,7 +108,7 @@
             </relation>
             <link port="port" relation="relation"/>
             <link port="port" relation="relation2"/>
-            <link port="AtomicActorMatcher.Rule1" relation="relation"/>
+            <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
             <link port="CompositeActorMatcher.port" relation="relation2"/>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">

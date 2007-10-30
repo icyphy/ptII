@@ -6,7 +6,7 @@
   <configure>
     <?moml
       <group>
-        <entity name="SingleRuleTransformer" class="ptolemy.actor.gt.SingleRuleTransformer"/>
+        <entity name="TransformationRule" class="ptolemy.actor.gt.TransformationRule"/>
       </group>
     ?>
   </configure>

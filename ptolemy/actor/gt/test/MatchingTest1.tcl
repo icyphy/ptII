@@ -107,7 +107,7 @@ test MatchingTest-1.6 {Ports added to all the 3 matchers} {
     
     $matcher match $lhs $host
     [$matcher getMatchResult] toString
-} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.A2.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A2.output}, ptolemy.actor.TypedIOPort {.top.lhs.A3.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A3.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2} = ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3} = ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
+} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.A2.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A2.output}, ptolemy.actor.TypedIOPort {.top.lhs.A3.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A3.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2} = ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3} = ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
 
 test MatchingTest-1.7 {Relations added to the lhs} {
     set lhsR1 [java::new ptolemy.actor.TypedIORelation $lhs "R1"]
@@ -131,7 +131,7 @@ test MatchingTest-1.8 {Relations added to the graph} {
     
     $matcher match $lhs $host
     [$matcher getMatchResult] toString
-} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.A2.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A2.output}, ptolemy.actor.TypedIOPort {.top.lhs.A3.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A3.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2} = ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3} = ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
+} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.A2.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A2.output}, ptolemy.actor.TypedIOPort {.top.lhs.A3.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A3.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2} = ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3} = ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
 
 test MatchingTest-1.9 {LHS's A1 has an input port} {
     set lhsA1PortRule2 [java::new ptolemy.actor.gt.ingredients.criteria.PortCriterion $lhsA1PortRuleList "" "" true false true]
@@ -142,7 +142,7 @@ test MatchingTest-1.9 {LHS's A1 has an input port} {
     
     $matcher match $lhs $host
     [$matcher getMatchResult] toString
-} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.A1.Rule2} = ptolemy.actor.TypedIOPort {.top.host.A1.trigger}, ptolemy.actor.TypedIOPort {.top.lhs.A2.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A2.output}, ptolemy.actor.TypedIOPort {.top.lhs.A3.Rule1} = ptolemy.actor.TypedIOPort {.top.host.A3.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2} = ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3} = ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
+} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A1.output}, ptolemy.actor.TypedIOPort {.top.lhs.A1.Criterion2} = ptolemy.actor.TypedIOPort {.top.host.A1.trigger}, ptolemy.actor.TypedIOPort {.top.lhs.A2.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A2.output}, ptolemy.actor.TypedIOPort {.top.lhs.A3.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A3.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.lib.Const {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A2} = ptolemy.actor.lib.Const {.top.host.A2}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A3} = ptolemy.actor.lib.gui.Display {.top.host.A3}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}
 
 test MatchingTest-1.10 {LHS's A3 has an output port} {
     set lhsA3PortRule2 [java::new ptolemy.actor.gt.ingredients.criteria.PortCriterion $lhsA3PortRuleList "" "" false true false]

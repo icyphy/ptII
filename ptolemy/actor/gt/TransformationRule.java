@@ -43,15 +43,15 @@ import ptolemy.kernel.util.Workspace;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class SingleRuleTransformer extends MultiCompositeActor {
+public class TransformationRule extends MultiCompositeActor {
 
-    public SingleRuleTransformer(CompositeEntity container, String name)
+    public TransformationRule(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
 
-    public SingleRuleTransformer(Workspace workspace)
+    public TransformationRule(Workspace workspace)
     throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();

@@ -99,7 +99,9 @@ import ptolemy.actor.gt.GTIngredientsAttribute;
 import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.ingredients.criteria.BooleanCriterionElement;
 import ptolemy.actor.gt.ingredients.criteria.ChoiceCriterionElement;
+import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.actor.gt.ingredients.criteria.StringCriterionElement;
+import ptolemy.actor.gt.ingredients.operations.Operation;
 import ptolemy.actor.gt.ingredients.operations.StringOperationElement;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
@@ -195,7 +197,7 @@ implements ActionListener {
             }
         } catch (Exception e) {
             throw new KernelRuntimeException(e, "Unable to create a new " +
-                    "rule instance.");
+                    "criterion or operation instance.");
         }
     }
 
@@ -213,8 +215,9 @@ implements ActionListener {
             ingredientList.validate();
         } catch (ValidationException e) {
             String message = e.getMessage()
-                    + "\nPress Edit to return to modify the rules, or press "
-                    + "Cancel to cancel all the changes.";
+                    + "\nPress Edit to return to modify the criterion or "
+                    + "operation, or press Revert to revert to its previous "
+                    + "value.";
 
             String[] options = new String[] {"Edit", "Revert"};
             int selected = JOptionPane.showOptionDialog(null, message,
@@ -346,7 +349,7 @@ implements ActionListener {
     public void setVisible(boolean visible) {
         if (visible) {
             try {
-                _initialIngredientList = _attribute.getRuleList();
+                _initialIngredientList = _attribute.getIngredientList();
                 resetTable(_initialIngredientList);
             } catch (MalformedStringException e) {
                 throw new KernelRuntimeException(e, "Attribute \""
@@ -540,33 +543,35 @@ implements ActionListener {
     protected GTIngredient _createIngredientFromRow(Row row) {
         JComboBox classSelector = row.getClassSelector();
         ComboElement element = (ComboElement) classSelector.getSelectedItem();
-        Class<? extends GTIngredient> ruleClass =
-            (Class<? extends GTIngredient>) element.getRuleClass();
-        GTIngredient rule;
+        Class<? extends GTIngredient> ingredientClass =
+            (Class<? extends GTIngredient>) element.getIngredientClass();
+        GTIngredient ingredient;
         try {
-            rule = _createTemporaryIngredient(ruleClass);
+            ingredient = _createTemporaryIngredient(ingredientClass);
         } catch (Exception e) {
-            throw new KernelRuntimeException(e, "Unable to create rule from " +
-                    "class \"" + ruleClass.getName() + "\".");
+            throw new KernelRuntimeException(e, "Unable to create criterion or "
+                    + "operation from class \"" + ingredientClass.getName()
+                    + "\".");
         }
 
         JCheckBox[] checkBoxes = row.getCheckBoxs();
         JComponent[] components = row.getEditingComponents();
         for (int i = 0; i < checkBoxes.length; i++) {
-            rule.setEnabled(i, Boolean.valueOf(checkBoxes[i].isSelected()));
+            ingredient.setEnabled(i,
+                    Boolean.valueOf(checkBoxes[i].isSelected()));
             JComponent editor = components[i];
             if (editor instanceof JTextField) {
-                rule.setValue(i, ((JTextField) editor).getText());
+                ingredient.setValue(i, ((JTextField) editor).getText());
             } else if (editor instanceof JComboBox) {
-                rule.setValue(i,
+                ingredient.setValue(i,
                         ((JComboBox) editor).getSelectedItem().toString());
             } else if (editor instanceof JCheckBox) {
-                rule.setValue(i, Boolean.valueOf(
+                ingredient.setValue(i, Boolean.valueOf(
                         ((JCheckBox) editor).isSelected()));
             }
         }
 
-        return rule;
+        return ingredient;
     }
 
     protected URL _getHelpURL() {
@@ -576,12 +581,13 @@ implements ActionListener {
     }
 
     private GTIngredient _createTemporaryIngredient(
-            Class<? extends GTIngredient> ruleClass)
+            Class<? extends GTIngredient> ingredientClass)
     throws SecurityException, NoSuchMethodException, IllegalArgumentException,
     InstantiationException, IllegalAccessException, InvocationTargetException {
         Constructor<? extends GTIngredient> constructor =
-            ruleClass.getConstructor(GTIngredientList.class);
-        return constructor.newInstance(new Object[] { _temporaryIngredientList });
+            ingredientClass.getConstructor(GTIngredientList.class);
+        return constructor.newInstance(
+                new Object[] { _temporaryIngredientList });
     }
 
     private GTIngredientsAttribute _attribute;
@@ -797,26 +803,26 @@ implements ActionListener {
 
     private static class ComboElement {
 
-        public ComboElement(GTIngredient rule) {
-            _ruleClass = rule.getClass();
-            _rule = rule;
+        public ComboElement(GTIngredient ingredient) {
+            _ingredientClass = ingredient.getClass();
+            _ingredient = ingredient;
         }
 
-        public GTIngredient getRule() {
-            return _rule;
+        public GTIngredient getIngredient() {
+            return _ingredient;
         }
 
-        public Class<?> getRuleClass() {
-            return _ruleClass;
+        public Class<?> getIngredientClass() {
+            return _ingredientClass;
         }
 
         public String toString() {
-            return _ruleClass.getSimpleName();
+            return _ingredientClass.getSimpleName();
         }
 
-        private GTIngredient _rule;
+        private GTIngredient _ingredient;
 
-        private Class<?> _ruleClass;
+        private Class<?> _ingredientClass;
     }
 
     private static class HelpLabel extends JLabel implements MouseListener {
@@ -914,32 +920,42 @@ implements ActionListener {
 
     private class Row implements ItemListener {
 
-        public Row(GTIngredient rule) {
+        public Row(GTIngredient ingredient) {
             _rightPanel.setBorder(_EMPTY_BORDER);
 
-            Class<?> ruleClass = rule.getClass();
+            Class<?> ingredientClass = ingredient.getClass();
             _classSelector.addItemListener(this);
             _classSelector.setEditable(false);
-            for (Class<? extends GTIngredient> listedRule
+            for (Class<? extends GTIngredient> listedIngerdient
                     : _ingredientClasses) {
-                if (listedRule == null && ruleClass == null ||
-                        listedRule != null && listedRule.equals(ruleClass)) {
-                    ComboElement element = new ComboElement(rule);
+                if (listedIngerdient == null && ingredientClass == null
+                        || listedIngerdient != null
+                        && listedIngerdient.equals(ingredientClass)) {
+                    ComboElement element = new ComboElement(ingredient);
                     _classSelector.addItem(element);
                     _classSelector.setSelectedItem(element);
                 } else {
                     try {
-                        GTIngredient newRule = _createTemporaryIngredient(listedRule);
-                        ComboElement element = new ComboElement(newRule);
+                        GTIngredient newIngredient =
+                            _createTemporaryIngredient(listedIngerdient);
+                        ComboElement element = new ComboElement(newIngredient);
                         _classSelector.addItem(element);
                     } catch (Exception e) {
                         throw new KernelRuntimeException(e,
-                                "Unable to create rule from class \"" +
-                                listedRule.getName() + "\".");
+                                "Unable to create criterion or operation from "
+                                + "class \"" + listedIngerdient.getName()
+                                + "\".");
                     }
                 }
             }
-            JLabel classLabel = new JLabel("Rule Class");
+            JLabel classLabel;
+            if (ingredient instanceof Criterion) {
+                classLabel = new JLabel("Criterion Class");
+            } else if (ingredient instanceof Operation) {
+                classLabel = new JLabel("Operation Class");
+            } else {
+                classLabel = new JLabel();
+            }
             classLabel.setHorizontalAlignment(SwingConstants.CENTER);
             classLabel.setPreferredSize(new Dimension(0, 18));
             classLabel.setVerticalAlignment(SwingConstants.TOP);
@@ -1090,8 +1106,8 @@ implements ActionListener {
 
             ComboElement selectedElement =
                 (ComboElement) _classSelector.getSelectedItem();
-            GTIngredient rule = selectedElement.getRule();
-            GTIngredientElement[] elements = rule.getElements();
+            GTIngredient ingredient = selectedElement.getIngredient();
+            GTIngredientElement[] elements = ingredient.getElements();
             _components = new JComponent[elements.length];
             _checkBoxes = new JCheckBox[elements.length];
 
@@ -1119,7 +1135,7 @@ implements ActionListener {
 
                 JComponent component = _getComponent(element);
                 component.setPreferredSize(new Dimension(0, 20));
-                _setComponentValue(element, component, rule.getValue(i));
+                _setComponentValue(element, component, ingredient.getValue(i));
                 panel.add(component, BorderLayout.CENTER);
 
                 c.fill = GridBagConstraints.HORIZONTAL;
@@ -1131,7 +1147,7 @@ implements ActionListener {
                 _checkBoxes[i] = checkBox;
                 _components[i] = component;
 
-                boolean enabled = rule.isEnabled(i);
+                boolean enabled = ingredient.isEnabled(i);
                 checkBox.setSelected(enabled);
                 _setEnablement(component, enabled);
             }
@@ -1148,6 +1164,8 @@ implements ActionListener {
                 } else {
                     ((JTextField) component).setText(value.toString());
                 }
+            } else if (element instanceof StringOperationElement) {
+                ((JTextField) component).setText(value.toString());
             }
         }
 

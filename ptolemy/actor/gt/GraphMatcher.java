@@ -118,12 +118,12 @@ public class GraphMatcher {
         if (!(args.length == 2 ||
                 (args.length == 3 && args[0].equalsIgnoreCase("-A")))) {
             System.err.println("USAGE: java [-A] "
-                    + GraphMatcher.class.getName() + " <lhs.xml> <host.xml>");
+                    + GraphMatcher.class.getName() + " <rule.xml> <host.xml>");
             System.exit(1);
         }
 
         final boolean all = args.length == 3 && args[0].equalsIgnoreCase("-A");
-        String lhsXMLFile = all ? args[1] : args[0];
+        String ruleXMLFile = all ? args[1] : args[0];
         String hostXMLFile = all ? args[2] : args[1];
 
         MatchCallback matchCallback = new MatchCallback() {
@@ -136,10 +136,10 @@ public class GraphMatcher {
 
             private int count = 0;
         };
-        match(lhsXMLFile, hostXMLFile, matchCallback);
+        match(ruleXMLFile, hostXMLFile, matchCallback);
     }
 
-    /** Match a pattern specified in the <tt>lhsGraph</tt> to a model in
+    /** Match a pattern specified in the <tt>patternGraph</tt> to a model in
      *  <tt>hostGraph</tt>. If the match is successful, <tt>true</tt> is
      *  returned, and the match result is stored internally, which can be
      *  retrieved with {@link #getMatchResult()}. A matching was successful if
@@ -147,13 +147,12 @@ public class GraphMatcher {
      *  implementing {@link MatchCallback}) returned <tt>true</tt> when it was
      *  invoked.
      *
-     *  @param lhsGraph The pattern.
+     *  @param pattern The pattern.
      *  @param hostGraph The host graph.
      *  @return <tt>true</tt> if the match is successful; <tt>false</tt>
      *   otherwise.
      */
-    public boolean match(CompositeActorMatcher lhsGraph,
-            CompositeEntity hostGraph) {
+    public boolean match(Pattern pattern, CompositeEntity hostGraph) {
 
         // Matching result.
         _match = new MatchResult();
@@ -162,7 +161,7 @@ public class GraphMatcher {
         _lookbackList = new LookbackList();
         _temporaryMatch = new MatchResult();
 
-        _success = _matchObject(lhsGraph, hostGraph);
+        _success = _matchObject(pattern, hostGraph);
 
         assert _lookbackList.isEmpty();
         assert _temporaryMatch.isEmpty();
@@ -176,7 +175,7 @@ public class GraphMatcher {
         return _success;
     }
 
-    /** Match the rule stored in the file with name <tt>lhsXMLFile</tt> to the
+    /** Match the rule stored in the file with name <tt>ruleXMLFile</tt> to the
      *  model stored in the file with name <tt>hostXMLFile</tt>, whose top-level
      *  should be an instanceof {@link CompositeEntity}. The first match result
      *  (which is arbitrarily decided by the recursive algorithm) is recorded in
@@ -185,7 +184,7 @@ public class GraphMatcher {
      *  empty, and {@link #isSuccessful()} of the returned matcher object
      *  returns <tt>false</tt>.
      *
-     *  @param lhsXMLFile The name of the file in which the rule is stored.
+     *  @param ruleXMLFile The name of the file in which the rule is stored.
      *  @param hostXMLFile The name of the file in which the model to be matched
      *   is stored.
      *  @return A matcher object with the first match result stored in it. If no
@@ -194,12 +193,12 @@ public class GraphMatcher {
      *  @exception Exception If the rule file or the model file cannot be read.
      *  @see #match(String, String, MatchCallback)
      */
-    public static GraphMatcher match(String lhsXMLFile, String hostXMLFile)
+    public static GraphMatcher match(String ruleXMLFile, String hostXMLFile)
     throws Exception {
-        return match(lhsXMLFile, hostXMLFile, null);
+        return match(ruleXMLFile, hostXMLFile, null);
     }
 
-    /** Match the rule stored in the file with name <tt>lhsXMLFile</tt> to the
+    /** Match the rule stored in the file with name <tt>ruleXMLFile</tt> to the
      *  model stored in the file with name <tt>hostXMLFile</tt>, whose top-level
      *  should be an instanceof {@link CompositeEntity}, and invoke
      *  <tt>callback</tt>'s {@link MatchCallback#foundMatch(GraphMatcher)}
@@ -209,7 +208,7 @@ public class GraphMatcher {
      *  again. If <tt>callback</tt> is <tt>null</tt>, the behavior is the same
      *  as {@link #match(String, String)}.
      *
-     *  @param lhsXMLFile The name of the file in which the rule is stored.
+     *  @param ruleXMLFile The name of the file in which the rule is stored.
      *  @param hostXMLFile The name of the file in which the model to be matched
      *   is stored.
      *  @param callback The callback to be invoked when matches are found.
@@ -221,11 +220,11 @@ public class GraphMatcher {
      *  @exception Exception If the rule file or the model file cannot be read.
      *  @see #match(String, String)
      */
-    public static GraphMatcher match(String lhsXMLFile, String hostXMLFile,
+    public static GraphMatcher match(String ruleXMLFile, String hostXMLFile,
             MatchCallback callback) throws Exception {
         MoMLParser parser = new MoMLParser();
-        SingleRuleTransformer rule = (SingleRuleTransformer)
-                parser.parse(null, new File(lhsXMLFile).toURI().toURL());
+        TransformationRule rule = (TransformationRule)
+                parser.parse(null, new File(ruleXMLFile).toURI().toURL());
         parser.reset();
         CompositeEntity host = (CompositeEntity)
             parser.parse(null, new File(hostXMLFile).toURI().toURL());
@@ -630,7 +629,7 @@ public class GraphMatcher {
         if (container instanceof AtomicActorMatcher) {
             try {
                 GTIngredientList ruleList = ((AtomicActorMatcher) container)
-                        .criteria.getRuleList();
+                        .criteria.getIngredientList();
                 String portID = port.getName();
                 for (GTIngredient rule : ruleList) {
                     if (rule instanceof PortCriterion) {
@@ -670,21 +669,21 @@ public class GraphMatcher {
         }
     }
 
-    private boolean _matchAtomicActor(AtomicActor lhsActor,
+    private boolean _matchAtomicActor(AtomicActor patternActor,
             AtomicActor hostActor) {
         int matchSize = _match.size();
         boolean success = true;
-        ObjectList lhsList = new ObjectList();
+        ObjectList patternList = new ObjectList();
         ObjectList hostList = new ObjectList();
 
-        _match.put(lhsActor, hostActor);
+        _match.put(patternActor, hostActor);
 
-        if (lhsActor instanceof AtomicActorMatcher) {
-            AtomicActorMatcher matcher = (AtomicActorMatcher) lhsActor;
+        if (patternActor instanceof AtomicActorMatcher) {
+            AtomicActorMatcher matcher = (AtomicActorMatcher) patternActor;
 
             GTIngredientList ruleList = null;
             try {
-                ruleList = matcher.criteria.getRuleList();
+                ruleList = matcher.criteria.getIngredientList();
             } catch (MalformedStringException e) {
                 success = false;
             }
@@ -702,15 +701,15 @@ public class GraphMatcher {
                 }
             }
         } else {
-            success = lhsActor.getClass().isInstance(hostActor);
+            success = patternActor.getClass().isInstance(hostActor);
         }
 
         if (success) {
-            lhsList.addAll((Collection<?>) lhsActor.portList());
+            patternList.addAll((Collection<?>) patternActor.portList());
             hostList.addAll((Collection<?>) hostActor.portList());
         }
 
-        success = success && _matchObject(lhsList, hostList);
+        success = success && _matchObject(patternList, hostList);
 
         if (!success) {
             _match.retain(matchSize);
@@ -719,36 +718,36 @@ public class GraphMatcher {
         return success;
     }
 
-    private boolean _matchCompositeEntity(CompositeEntity lhsEntity,
+    private boolean _matchCompositeEntity(CompositeEntity patternEntity,
             CompositeEntity hostEntity) {
         int matchSize = _match.size();
         boolean success = true;
 
-        _match.put(lhsEntity, hostEntity);
+        _match.put(patternEntity, hostEntity);
 
-        if (lhsEntity instanceof CompositeActor) {
-            CompositeActor lhsComposite = (CompositeActor) lhsEntity;
-            Director lhsDirector = lhsComposite.isOpaque() ?
-                    lhsComposite.getDirector() : null;
+        if (patternEntity instanceof CompositeActor) {
+            CompositeActor patternComposite = (CompositeActor) patternEntity;
+            Director patternDirector = patternComposite.isOpaque() ?
+                    patternComposite.getDirector() : null;
             if (hostEntity instanceof CompositeActor) {
                 CompositeActor hostComposite = (CompositeActor) hostEntity;
                 Director hostDirector = hostComposite.isOpaque() ?
                         hostComposite.getDirector() : null;
-                success = _shallowMatchDirector(lhsDirector, hostDirector);
+                success = _shallowMatchDirector(patternDirector, hostDirector);
             } else {
                 success = false;
             }
         }
 
         if (success) {
-            IndexedLists lhsMarkedList = new IndexedLists();
-            ComponentEntity lhsNextActor =
-                _findFirstChild(lhsEntity, lhsMarkedList, _match.keySet());
-            ObjectList lhsList = new ObjectList();
-            while (lhsNextActor != null) {
-                lhsList.add(lhsNextActor);
-                lhsNextActor = _findNextChild(lhsEntity, lhsMarkedList,
-                        _match.keySet());
+            IndexedLists patternMarkedList = new IndexedLists();
+            ComponentEntity patternNextActor = _findFirstChild(patternEntity,
+                    patternMarkedList, _match.keySet());
+            ObjectList patternList = new ObjectList();
+            while (patternNextActor != null) {
+                patternList.add(patternNextActor);
+                patternNextActor = _findNextChild(patternEntity,
+                        patternMarkedList, _match.keySet());
             }
 
             IndexedLists hostMarkedList = new IndexedLists();
@@ -761,7 +760,7 @@ public class GraphMatcher {
                         _match.values());
             }
 
-            success = _matchObject(lhsList, hostList);
+            success = _matchObject(patternList, hostList);
         }
 
         if (!success) {
@@ -772,33 +771,33 @@ public class GraphMatcher {
     }
 
     private boolean _matchList(LookbackEntry matchedObjectLists) {
-        ObjectList lhsList = matchedObjectLists.getLHSList();
+        ObjectList patternList = matchedObjectLists.getPatternList();
         ObjectList hostList = matchedObjectLists.getHostList();
 
         int matchSize = _match.size();
         boolean success = true;
-        boolean lhsChildChecked = false;
+        boolean patternChildChecked = false;
 
-        boolean firstEntrance = !_match.containsKey(lhsList);
+        boolean firstEntrance = !_match.containsKey(patternList);
         FastLinkedList<LookbackEntry>.Entry lookbackTail = null;
         if (firstEntrance) {
-            _match.put(lhsList, hostList);
+            _match.put(patternList, hostList);
             _lookbackList.add(matchedObjectLists);
             lookbackTail = _lookbackList.getTail();
         }
 
-        ObjectList.Entry lhsEntry = lhsList.getHead();
-        if (lhsEntry != null) {
-            lhsEntry.remove();
-            Object lhsObject = lhsEntry.getValue();
-            lhsChildChecked = true;
+        ObjectList.Entry patternEntry = patternList.getHead();
+        if (patternEntry != null) {
+            patternEntry.remove();
+            Object patternObject = patternEntry.getValue();
+            patternChildChecked = true;
             success = false;
             ObjectList.Entry hostEntryPrevious = null;
             ObjectList.Entry hostEntry = hostList.getHead();
             while (hostEntry != null) {
                 hostEntry.remove();
                 Object hostObject = hostEntry.getValue();
-                if (_matchObject(lhsObject, hostObject)) {
+                if (_matchObject(patternObject, hostObject)) {
                     success = true;
                     break;
                 }
@@ -806,11 +805,11 @@ public class GraphMatcher {
                 hostEntryPrevious = hostEntry;
                 hostEntry = hostEntry.getNext();
             }
-            lhsList.addEntryToHead(lhsEntry);
+            patternList.addEntryToHead(patternEntry);
         }
 
         if (success) {
-            if (!lhsChildChecked) {
+            if (!patternChildChecked) {
                 matchedObjectLists.setFinished(true);
                 success = _checkBackward();
                 matchedObjectLists.setFinished(false);
@@ -831,59 +830,61 @@ public class GraphMatcher {
         }
     }
 
-    private boolean _matchObject(Object lhsObject, Object hostObject) {
-        Object match = _match.get(lhsObject);
+    private boolean _matchObject(Object patternObject, Object hostObject) {
+        Object match = _match.get(patternObject);
         if (match != null && match.equals(hostObject)) {
             return _checkBackward();
         } else if (match != null || _match.containsValue(hostObject)) {
             return false;
         }
 
-        if (lhsObject instanceof AtomicActor
+        if (patternObject instanceof AtomicActor
                 && hostObject instanceof AtomicActor) {
-            return _matchAtomicActor((AtomicActor) lhsObject,
+            return _matchAtomicActor((AtomicActor) patternObject,
                     (AtomicActor) hostObject);
 
-        } else if (lhsObject instanceof CompositeEntity
+        } else if (patternObject instanceof CompositeEntity
                 && hostObject instanceof CompositeEntity) {
-            return _matchCompositeEntity((CompositeEntity) lhsObject,
+            return _matchCompositeEntity((CompositeEntity) patternObject,
                     (CompositeEntity) hostObject);
 
-        } else if (lhsObject instanceof ObjectList
+        } else if (patternObject instanceof ObjectList
                 && hostObject instanceof ObjectList) {
             LookbackEntry matchedObjectLists = new LookbackEntry(
-                    (ObjectList) lhsObject, (ObjectList) hostObject);
+                    (ObjectList) patternObject, (ObjectList) hostObject);
             return _matchList(matchedObjectLists);
 
-        } else if (lhsObject instanceof Path && hostObject instanceof Path) {
-            return _matchPath((Path) lhsObject, (Path) hostObject);
+        } else if (patternObject instanceof Path
+                && hostObject instanceof Path) {
+            return _matchPath((Path) patternObject, (Path) hostObject);
 
-        } else if (lhsObject instanceof Port && hostObject instanceof Port) {
-            return _matchPort((Port) lhsObject, (Port) hostObject);
+        } else if (patternObject instanceof Port && hostObject instanceof Port) {
+            return _matchPort((Port) patternObject, (Port) hostObject);
 
-        } else if (lhsObject instanceof Relation
+        } else if (patternObject instanceof Relation
                 && hostObject instanceof Relation) {
-            return _matchRelation((Relation) lhsObject, (Relation) hostObject);
+            return _matchRelation((Relation) patternObject,
+                    (Relation) hostObject);
 
         } else {
             return false;
         }
     }
 
-    private boolean _matchPath(Path lhsPath, Path hostPath) {
+    private boolean _matchPath(Path patternPath, Path hostPath) {
 
-        if (!_shallowMatchPath(lhsPath, hostPath)) {
+        if (!_shallowMatchPath(patternPath, hostPath)) {
             return false;
         }
 
         int matchSize = _match.size();
         boolean success = true;
 
-        _match.put(lhsPath, hostPath);
+        _match.put(patternPath, hostPath);
 
-        Port lhsPort = lhsPath.getEndPort();
+        Port patternPort = patternPath.getEndPort();
         Port hostPort = hostPath.getEndPort();
-        success = _matchObject(lhsPort, hostPort);
+        success = _matchObject(patternPort, hostPort);
 
         if (!success) {
             _match.retain(matchSize);
@@ -893,57 +894,57 @@ public class GraphMatcher {
     }
 
     @SuppressWarnings("unchecked")
-    private boolean _matchPort(Port lhsPort, Port hostPort) {
+    private boolean _matchPort(Port patternPort, Port hostPort) {
 
         int matchSize = _match.size();
         boolean success = true;
-        NamedObj lhsContainer = null;
+        NamedObj patternContainer = null;
         NamedObj hostContainer = null;
 
-        _match.put(lhsPort, hostPort);
+        _match.put(patternPort, hostPort);
 
-        if (!_shallowMatchPort(lhsPort, hostPort)) {
+        if (!_shallowMatchPort(patternPort, hostPort)) {
             success = false;
         }
 
         if (success) {
-            lhsContainer = lhsPort.getContainer();
+            patternContainer = patternPort.getContainer();
             hostContainer = hostPort.getContainer();
 
-            Object lhsMatch = _match.get(lhsContainer);
-            if (lhsMatch != null && lhsMatch != hostContainer) {
+            Object patternObject = _match.get(patternContainer);
+            if (patternObject != null && patternObject != hostContainer) {
                 success = false;
             } else {
                 Object hostMatch = _match.getKey(hostContainer);
-                if (hostMatch != null  && hostMatch != lhsContainer) {
+                if (hostMatch != null  && hostMatch != patternContainer) {
                     success = false;
                 }
             }
         }
 
         if (success) {
-            ObjectList lhsList = new ObjectList();
-            lhsList.add(lhsContainer);
+            ObjectList patternList = new ObjectList();
+            patternList.add(patternContainer);
             ObjectList hostList = new ObjectList();
             hostList.add(hostContainer);
 
-            Token collapsingToken = _getAttribute(lhsContainer.getContainer(),
+            Token collapsingToken = _getAttribute(patternContainer.getContainer(),
                         RelationCollapsingAttribute.class);
             boolean collapsing = collapsingToken == null ?
                     true : ((BooleanToken) collapsingToken).booleanValue();
 
             if (collapsing) {
-                _temporaryMatch.put(lhsContainer, hostContainer);
+                _temporaryMatch.put(patternContainer, hostContainer);
 
-                Path lhsPath = new Path(lhsPort);
+                Path patternPath = new Path(patternPort);
                 Set<Relation> visitedRelations = new HashSet<Relation>();
                 Set<Port> visitedPorts = new HashSet<Port>();
-                boolean foundPath = _findFirstPath(lhsPort, lhsPath,
+                boolean foundPath = _findFirstPath(patternPort, patternPath,
                         visitedRelations, visitedPorts);
                 while (foundPath) {
-                    lhsList.add(lhsPath.clone());
-                    foundPath =
-                        _findNextPath(lhsPath, visitedRelations, visitedPorts);
+                    patternList.add(patternPath.clone());
+                    foundPath = _findNextPath(patternPath, visitedRelations,
+                            visitedPorts);
                 }
 
                 Path hostPath = new Path(hostPort);
@@ -957,13 +958,13 @@ public class GraphMatcher {
                         _findNextPath(hostPath, visitedRelations, visitedPorts);
                 }
 
-                _temporaryMatch.remove(lhsContainer);
+                _temporaryMatch.remove(patternContainer);
             } else {
-                lhsList.addAll(lhsPort.linkedRelationList());
+                patternList.addAll(patternPort.linkedRelationList());
                 hostList.addAll(hostPort.linkedRelationList());
             }
 
-            success = _matchObject(lhsList, hostList);
+            success = _matchObject(patternList, hostList);
         }
 
         if (!success) {
@@ -974,26 +975,26 @@ public class GraphMatcher {
     }
 
     @SuppressWarnings("unchecked")
-    private boolean _matchRelation(Relation lhsRelation,
+    private boolean _matchRelation(Relation patternRelation,
             Relation hostRelation) {
 
         int matchSize = _match.size();
         boolean success = true;
 
-        _match.put(lhsRelation, hostRelation);
+        _match.put(patternRelation, hostRelation);
 
-        if (!_shallowMatchRelation(lhsRelation, hostRelation)) {
+        if (!_shallowMatchRelation(patternRelation, hostRelation)) {
             success = false;
         }
 
         if (success) {
-            ObjectList lhsList = new ObjectList();
-            lhsList.addAll(lhsRelation.linkedObjectsList());
+            ObjectList patternList = new ObjectList();
+            patternList.addAll(patternRelation.linkedObjectsList());
 
             ObjectList hostList = new ObjectList();
             hostList.addAll(hostRelation.linkedObjectsList());
 
-            success = _matchObject(lhsList, hostList);
+            success = _matchObject(patternList, hostList);
         }
 
         if (!success) {
@@ -1006,29 +1007,29 @@ public class GraphMatcher {
     private static void _printMatch(MatchResult match) {
         List<Object> keyList = new LinkedList<Object>(match.keySet());
         Collections.sort(keyList, _comparator);
-        for (Object lhsObject : keyList) {
-            if (lhsObject instanceof NamedObj) {
-                System.out.println(_getNameString(lhsObject) + " : " +
-                        _getNameString(match.get(lhsObject)));
+        for (Object patternObject : keyList) {
+            if (patternObject instanceof NamedObj) {
+                System.out.println(_getNameString(patternObject) + " : " +
+                        _getNameString(match.get(patternObject)));
             }
         }
     }
 
-    private boolean _shallowMatchDirector(Director lhsDirector,
+    private boolean _shallowMatchDirector(Director patternDirector,
             Director hostDirector) {
 
-        if (lhsDirector == null && hostDirector == null) {
+        if (patternDirector == null && hostDirector == null) {
             return true;
-        } else if (lhsDirector == null || hostDirector == null) {
+        } else if (patternDirector == null || hostDirector == null) {
             return false;
         }
 
         int matchSize = _match.size();
 
-        _match.put(lhsDirector, hostDirector);
+        _match.put(patternDirector, hostDirector);
 
         boolean success =
-            lhsDirector.getClass().equals(hostDirector.getClass());
+            patternDirector.getClass().equals(hostDirector.getClass());
 
         if (!success) {
             _match.retain(matchSize);
@@ -1037,50 +1038,53 @@ public class GraphMatcher {
         return success;
     }
 
-    private static boolean _shallowMatchPath(Path lhsPath, Path hostPath) {
-        Port lhsStartPort = lhsPath.getStartPort();
+    private static boolean _shallowMatchPath(Path patternPath, Path hostPath) {
+        Port patternStartPort = patternPath.getStartPort();
         Port hostStartPort = hostPath.getStartPort();
-        Port lhsEndPort = lhsPath.getEndPort();
+        Port patternEndPort = patternPath.getEndPort();
         Port hostEndPort = hostPath.getEndPort();
 
         // TODO: Check the relations and ports in between.
 
-        return _shallowMatchPort(lhsStartPort, hostStartPort)
-                && _shallowMatchPort(lhsEndPort, hostEndPort);
+        return _shallowMatchPort(patternStartPort, hostStartPort)
+                && _shallowMatchPort(patternEndPort, hostEndPort);
     }
 
-    private static boolean _shallowMatchPort(Port lhsPort, Port hostPort) {
-        if (lhsPort instanceof IOPort) {
+    private static boolean _shallowMatchPort(Port patternPort, Port hostPort) {
+        if (patternPort instanceof IOPort) {
             if (hostPort instanceof IOPort) {
-                IOPort lhsIOPort = (IOPort) lhsPort;
+                IOPort patternIOPort = (IOPort) patternPort;
                 IOPort hostIOPort = (IOPort) hostPort;
-                PortCriterion portRule = _getPortRule(lhsIOPort);
+                PortCriterion portRule = _getPortRule(patternIOPort);
                 if (portRule == null) {
                     boolean isInputEqual =
-                        lhsIOPort.isInput() == hostIOPort.isInput();
+                        patternIOPort.isInput() == hostIOPort.isInput();
 
                     boolean isOutputEqual =
-                        lhsIOPort.isOutput() == hostIOPort.isOutput();
+                        patternIOPort.isOutput() == hostIOPort.isOutput();
 
-                    boolean isMultiportEqual = lhsIOPort.isMultiport()
+                    boolean isMultiportEqual = patternIOPort.isMultiport()
                             == hostIOPort.isMultiport();
 
                     boolean isNameEqual =
-                        lhsIOPort.getName().equals(hostIOPort.getName());
+                        patternIOPort.getName().equals(hostIOPort.getName());
 
                     boolean isTypeCompatible = true;
-                    if (lhsIOPort instanceof TypedIOPort) {
+                    if (patternIOPort instanceof TypedIOPort) {
                         if (hostIOPort instanceof TypedIOPort) {
-                            Type lhsType = ((TypedIOPort) lhsIOPort).getType();
+                            Type patternType =
+                                ((TypedIOPort) patternIOPort).getType();
                             Type hostType =
                                 ((TypedIOPort) hostIOPort).getType();
-                            if (lhsIOPort.isInput() && hostIOPort.isInput()) {
+                            if (patternIOPort.isInput()
+                                    && hostIOPort.isInput()) {
                                 isTypeCompatible = isTypeCompatible
-                                        && hostType.isCompatible(lhsType);
+                                        && hostType.isCompatible(patternType);
                             }
-                            if (lhsIOPort.isOutput() && hostIOPort.isOutput()) {
+                            if (patternIOPort.isOutput()
+                                    && hostIOPort.isOutput()) {
                                 isTypeCompatible = isTypeCompatible
-                                        && lhsType.isCompatible(hostType);
+                                        && patternType.isCompatible(hostType);
                             }
                         } else {
                             isTypeCompatible = false;
@@ -1101,7 +1105,7 @@ public class GraphMatcher {
         }
     }
 
-    private boolean _shallowMatchRelation(Relation lhsRelation,
+    private boolean _shallowMatchRelation(Relation patternRelation,
             Relation hostRelation) {
         // TODO
         return true;
@@ -1116,7 +1120,7 @@ public class GraphMatcher {
 
     private LookbackList _lookbackList;
 
-    /** The map that matches objects in the LHS to the objects in the host.
+    /** The map that matches objects in the pattern to the objects in the host.
      *  These objects include actors, ports, relations, etc.
      */
     private MatchResult _match;
@@ -1165,7 +1169,7 @@ public class GraphMatcher {
             return getFirst().getSecond();
         }
 
-        public ObjectList getLHSList() {
+        public ObjectList getPatternList() {
             return getFirst().getFirst();
         }
 
@@ -1177,8 +1181,9 @@ public class GraphMatcher {
             setSecond(finished);
         }
 
-        LookbackEntry(ObjectList lhsList, ObjectList hostList) {
-            super(new Pair<ObjectList, ObjectList>(lhsList, hostList), false);
+        LookbackEntry(ObjectList patternList, ObjectList hostList) {
+            super(new Pair<ObjectList, ObjectList>(patternList, hostList),
+                    false);
         }
 
         private static final long serialVersionUID = -2952044613606267420L;

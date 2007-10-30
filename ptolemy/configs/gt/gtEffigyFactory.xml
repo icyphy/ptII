@@ -4,6 +4,6 @@
 <group>
   <entity name="Transformation Editor"
           class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-    <entity name="blank" class="ptolemy.actor.gt.SingleRuleTransformer"/>
+    <entity name="blank" class="ptolemy.actor.gt.TransformationRule"/>
   </entity>
 </group>

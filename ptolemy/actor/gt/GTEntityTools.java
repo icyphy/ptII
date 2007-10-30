@@ -69,8 +69,8 @@ public class GTEntityTools {
             return null;
         }
 
-        SingleRuleTransformer transformer =
-            (SingleRuleTransformer) container.getContainer();
+        TransformationRule transformer =
+            (TransformationRule) container.getContainer();
         Pattern pattern = transformer.getPattern();
         return (GTEntity) pattern.getEntity(patternEntityName);
     }

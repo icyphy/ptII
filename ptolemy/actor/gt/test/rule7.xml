@@ -1,26 +1,26 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="rule7" class="ptolemy.actor.gt.SingleRuleTransformer">
+<entity name="rule7" class="ptolemy.actor.gt.TransformationRule">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={278, 211, 843, 627}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={276, 197, 850, 482}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[620, 512]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[627, 367]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{301.0, 113.5}">
     </property>
     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
         <property name="RelationCollapsing" class="ptolemy.actor.gt.RelationCollapsingAttribute">
             <property name="relationCollapsing" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 25.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[38.0, -10.0]">
             </property>
         </property>
         <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 170.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[68.0, 135.0]">
             </property>
             <port name="port" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -38,18 +38,18 @@
                 </property>
             </relation>
             <link port="port" relation="relation"/>
-            <link port="AtomicActorMatcher.Rule1" relation="relation"/>
+            <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
         </entity>
         <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/false/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//false/false/true/true/false/false)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 150.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[193.0, 115.0]">
             </property>
         </entity>
         <entity name="AtomicActorMatcher2" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/false/false)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 150.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[473.0, 115.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -59,19 +59,19 @@
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[395.0, 170.0]">
+            <vertex name="vertex1" value="[398.0, 135.0]">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[320.0, 170.0]">
+            <vertex name="vertex1" value="[323.0, 135.0]">
             </vertex>
         </relation>
         <link port="CompositeActorMatcher.port" relation="relation"/>
-        <link port="AtomicActorMatcher.Rule1" relation="relation"/>
-        <link port="AtomicActorMatcher.Rule2" relation="relation3"/>
-        <link port="AtomicActorMatcher2.Rule1" relation="relation2"/>
+        <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
+        <link port="AtomicActorMatcher.Criterion2" relation="relation3"/>
+        <link port="AtomicActorMatcher2.Criterion1" relation="relation2"/>
         <link relation1="relation2" relation2="relation3"/>
     </entity>
 </entity>

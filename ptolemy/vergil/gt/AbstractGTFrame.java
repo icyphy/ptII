@@ -41,7 +41,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
-import ptolemy.actor.gt.SingleRuleTransformer;
+import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
@@ -122,13 +122,13 @@ implements ChangeListener, KeyListener {
         return _selectedIndex;
     }
 
-    public SingleRuleTransformer getTransformer() {
+    public TransformationRule getTransformationRule() {
         CompositeEntity model = getActiveModel();
         NamedObj parent = model.getContainer();
-        while (!(parent instanceof SingleRuleTransformer)) {
+        while (!(parent instanceof TransformationRule)) {
             parent = parent.getContainer();
         }
-        return (SingleRuleTransformer) parent;
+        return (TransformationRule) parent;
     }
 
     public boolean hasTabs() {
@@ -156,6 +156,7 @@ implements ChangeListener, KeyListener {
         if (event.getSource() == _tabbedPane) {
             _selectedIndex = _tabbedPane.getSelectedIndex();
             if (_selectedIndex < _graphPanes.size()) {
+                _controller.getSelectionModel().clearSelection();
                 GraphPane graphPane = _graphPanes.get(_selectedIndex);
                 _controller.setGraphPane(graphPane);
                 _controller.setGraphModel(graphPane.getGraphModel());
@@ -199,7 +200,7 @@ implements ChangeListener, KeyListener {
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
 
-        if (!(entity instanceof SingleRuleTransformer)) {
+        if (!(entity instanceof TransformationRule)) {
             JComponent component = super._createRightComponent(entity);
             return component;
         }
@@ -234,7 +235,7 @@ implements ChangeListener, KeyListener {
         };
 
         _tabbedPane.addChangeListener(this);
-        Iterator<?> cases = ((SingleRuleTransformer) entity).entityList(
+        Iterator<?> cases = ((TransformationRule) entity).entityList(
                 CompositeActorMatcher.class).iterator();
         boolean first = true;
         while (cases.hasNext()) {

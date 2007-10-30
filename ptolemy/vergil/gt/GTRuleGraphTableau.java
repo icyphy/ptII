@@ -29,7 +29,7 @@ package ptolemy.vergil.gt;
 import java.awt.Color;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
-import ptolemy.actor.gt.SingleRuleTransformer;
+import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
@@ -88,7 +88,7 @@ public class GTRuleGraphTableau extends Tableau {
 
         NamedObj model = container.getModel();
 
-        if (!(model instanceof SingleRuleTransformer
+        if (!(model instanceof TransformationRule
                 || model instanceof CompositeActorMatcher)) {
             throw new IllegalActionException(this,
                     "Cannot edit a model that is not a SingleRuleTransformer " +
@@ -120,7 +120,7 @@ public class GTRuleGraphTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        if (!(model instanceof SingleRuleTransformer
+        if (!(model instanceof TransformationRule
                 || model instanceof CompositeActorMatcher)) {
             throw new InternalErrorException(this, null, "Composite Entity \""
                     + model.getFullName() + "\" is not an instance of " +
@@ -178,7 +178,7 @@ public class GTRuleGraphTableau extends Tableau {
 
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
-            if (model instanceof SingleRuleTransformer
+            if (model instanceof TransformationRule
                     || model instanceof CompositeActorMatcher) {
                 // Check to see whether this factory contains a
                 // default library.

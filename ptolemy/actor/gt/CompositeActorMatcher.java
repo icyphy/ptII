@@ -76,6 +76,10 @@ implements GTEntity {
         return patternEntity;
     }
 
+    public void updateAppearance(GTIngredientsAttribute attribute) {
+
+    }
+
     public GTIngredientsAttribute criteria;
 
     public GTIngredientsEditor.Factory editorFactory;

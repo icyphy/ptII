@@ -38,6 +38,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.LinkedList;
 import java.util.List;
@@ -74,8 +75,9 @@ import ptolemy.actor.gt.AtomicActorMatcher;
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.MatchCallback;
+import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.PatternEntityAttribute;
-import ptolemy.actor.gt.SingleRuleTransformer;
+import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
@@ -322,7 +324,7 @@ TableModelListener, ValueListener {
             // the undo history.
             _cellEditor.stopCellEditing();
         }
-        SingleRuleTransformer transformer = (SingleRuleTransformer) getModel();
+        TransformationRule transformer = (TransformationRule) getModel();
         CompositeActorMatcher replacement = transformer.getReplacement();
         List<ComponentEntity> entities = new LinkedList<ComponentEntity>();
         boolean needRefresh = false;
@@ -354,8 +356,8 @@ TableModelListener, ValueListener {
         int column = e.getColumn();
         if (column != TableModelEvent.ALL_COLUMNS && row == e.getLastRow()) {
             // Get the value in the transformer's correspondence attribute.
-            SingleRuleTransformer transformer =
-                (SingleRuleTransformer) getModel();
+            TransformationRule transformer =
+                (TransformationRule) getModel();
             String newValue = _getCellEditorValue(
                     (JPanel) _tableModel.getValueAt(row, column));
             String previousString = _cellEditor.getPreviousString();
@@ -510,7 +512,7 @@ TableModelListener, ValueListener {
     protected JComponent _createRightComponent(NamedObj entity) {
         JComponent component = super._createRightComponent(entity);
         if (component instanceof JTabbedPane) {
-            _createTable((SingleRuleTransformer) entity);
+            _createTable((TransformationRule) entity);
         }
         return component;
     }
@@ -528,7 +530,7 @@ TableModelListener, ValueListener {
         return panel;
     }
 
-    private void _createTable(SingleRuleTransformer transformer) {
+    private void _createTable(TransformationRule transformer) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setName("Correspondence");
 
@@ -622,7 +624,7 @@ TableModelListener, ValueListener {
     }
 
     private GTRuleGraphFrame _getToplevelFrame() {
-        NamedObj toplevel = getTransformer();
+        NamedObj toplevel = getTransformationRule();
         for (Frame frame : getFrames()) {
             if (frame instanceof GTRuleGraphFrame) {
                 GTRuleGraphFrame gtRuleGraphFrame = (GTRuleGraphFrame) frame;
@@ -635,7 +637,7 @@ TableModelListener, ValueListener {
     }
 
     private boolean _isInPattern(NamedObj object) {
-        CompositeActorMatcher pattern = getTransformer().getPattern();
+        CompositeActorMatcher pattern = getTransformationRule().getPattern();
         NamedObj container = object;
         while (container != null && container != pattern) {
             container = container.getContainer();
@@ -658,8 +660,8 @@ TableModelListener, ValueListener {
             frame._tableModel.removeRow(0);
         }
 
-        SingleRuleTransformer transformer =
-            (SingleRuleTransformer) getTransformer();
+        TransformationRule transformer =
+            (TransformationRule) getTransformationRule();
         CompositeActorMatcher replacement = transformer.getReplacement();
         _refreshTable(frame, replacement, 1, replacement);
 
@@ -733,7 +735,7 @@ TableModelListener, ValueListener {
                 if (patternEntity != null) {
                     if (isSet) {
                         String name = _getNameWithinContainer(object,
-                                getTransformer().getPattern());
+                                getTransformationRule().getPattern());
                         patternEntity.setPersistent(true);
                         patternEntity.setExpression(name);
                     } else {
@@ -807,12 +809,6 @@ TableModelListener, ValueListener {
 
     private Component _fullScreenComponent;
 
-    private static final String[] _MATCH_FILE_CHOOSER_BUTTONS = new String[] {
-        "Match", "Cancel"
-    };
-
-    private String _matchFileName;
-
     private Component _previousDefaultContext;
 
     private JDialog _screen;
@@ -851,6 +847,164 @@ TableModelListener, ValueListener {
         private String _previousString;
 
         private static final long serialVersionUID = 5226766789270435413L;
+    }
+
+    private static class FileChooser extends ComponentDialog
+    implements ActionListener {
+
+        public FileChooser(Frame owner, NamedObj target) {
+            super(owner, "Choose Input File", new Configurer(target),
+                    FILE_CHOOSER_BUTTONS);
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            Object source = e.getSource();
+            if (source == _textField) {
+                _buttonPressed = FILE_CHOOSER_BUTTONS[0];
+                setVisible(false);
+            } else if (source == _button) {
+                String currentFileName = _textField.getText();
+                JFileChooser fileChooser = null;
+                if (currentFileName.length() > 0) {
+                    File currentFile = new File(currentFileName);
+                    File parentFile = currentFile.getParentFile();
+                    if (parentFile != null) {
+                        fileChooser = new JFileChooser(parentFile);
+                    }
+                }
+                if (fileChooser == null) {
+                    fileChooser = new JFileChooser(".");
+                }
+                fileChooser.setApproveButtonText("Select");
+
+                // FIXME: The following doesn't have any effect.
+                fileChooser.setApproveButtonMnemonic('S');
+
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                fileChooser.setFileFilter(new ExtensionFileFilter("xml"));
+                if (fileChooser.showOpenDialog(FileChooser.this)
+                        == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    _textField.setText(selectedFile.getPath());
+                }
+            }
+        }
+
+        public String getFileName() {
+            return _textField == null ? null : _textField.getText();
+        }
+
+        public void pack() {
+            super.pack();
+
+            Configurer configurer = (Configurer) contents;
+            List<JTextField> textFields = new LinkedList<JTextField>();
+            List<JButton> buttons = new LinkedList<JButton>();
+            _findComponents(configurer, JTextField.class, textFields);
+            _findComponents(configurer, JButton.class, buttons);
+            for (JTextField textField : textFields) {
+                for (ActionListener listener : textField.getActionListeners()) {
+                    textField.removeActionListener(listener);
+                }
+                textField.addActionListener(this);
+                if (_fileName != null) {
+                    textField.setText(_fileName);
+                }
+                _textField = textField;
+            }
+            for (JButton button : buttons) {
+                if (!button.getText().equals("Browse")) {
+                    continue;
+                }
+                for (ActionListener listener : button.getActionListeners()) {
+                    button.removeActionListener(listener);
+                }
+                button.addActionListener(this);
+                _button = button;
+            }
+        }
+
+        public static final String[] FILE_CHOOSER_BUTTONS = new String[] {
+            "OK", "Cancel"
+        };
+
+        @SuppressWarnings("unchecked")
+        private <E extends Component> void _findComponents(Container container,
+                Class<? extends E> componentClass, List<E> list) {
+            for (Component component : container.getComponents()) {
+                if (componentClass.isInstance(component)) {
+                    list.add((E) component);
+                } else if (component instanceof Container) {
+                    _findComponents((Container) component, componentClass,
+                            list);
+                }
+            }
+        }
+
+        private JButton _button;
+
+        private String _fileName;
+
+        private JTextField _textField;
+
+        private static final long serialVersionUID = 2369054217750135740L;
+    }
+
+    private class GTAction extends FigureAction {
+
+        protected Configuration _getConfiguration() {
+            NamedObj toplevel = GTRuleGraphFrame.this.getTableau().toplevel();
+            if (toplevel instanceof Configuration) {
+                return (Configuration) toplevel;
+            } else {
+                return null;
+            }
+        }
+
+        protected CompositeEntity _getInputModel() throws MalformedURLException,
+        IOException, Exception {
+            FileChooser fileChooser = new FileChooser(getFrame(), _attribute);
+            if (fileChooser.buttonPressed().equals(
+                    FileChooser.FILE_CHOOSER_BUTTONS[0])) {
+                String matchFileName = fileChooser.getFileName();
+                File input = new File(matchFileName);
+                if (!input.exists()) {
+                    MessageHandler.message("Unable to read input model " +
+                            matchFileName + ".");
+                    return null;
+                }
+
+                _parser.reset();
+                CompositeEntity model = (CompositeEntity) _parser.parse(
+                        null, input.toURI().toURL().openStream());
+                return model;
+
+            } else {
+                return null;
+            }
+        }
+
+        protected Attribute _attribute;
+
+        protected FileParameter _inputModel;
+
+        GTAction(String name) {
+            super(name);
+
+            _attribute = new Attribute((Workspace) null);
+
+            try {
+                _inputModel = new FileParameter(_attribute, "inputModel");
+                _inputModel.setDisplayName("Input model");
+            } catch (KernelException e) {
+                throw new KernelRuntimeException(e, "Unable to create action " +
+                        "instance.");
+            }
+        }
+
+        private MoMLParser _parser = new MoMLParser();
+
+        private static final long serialVersionUID = 8202352939524637929L;
     }
 
     private class GTActionGraphController extends ActorEditorGraphController {
@@ -987,7 +1141,7 @@ TableModelListener, ValueListener {
         private static final long serialVersionUID = -31790471585661407L;
     }
 
-    private class MatchAction extends FigureAction {
+    private class MatchAction extends GTAction {
 
         public MatchAction() {
             super("Match Model");
@@ -1006,177 +1160,52 @@ TableModelListener, ValueListener {
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_1, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
-
-            _attribute = new Attribute((Workspace) null);
-
-            try {
-                _inputModel = new FileParameter(_attribute, "inputModel");
-                _inputModel.setDisplayName("Input model");
-            } catch (KernelException e) {
-                throw new KernelRuntimeException(e, "Unable to create action " +
-                        "instance.");
-            }
         }
 
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
-            MatchFileChooser fileChooser =
-                new MatchFileChooser(getFrame(), _attribute);
-            if (fileChooser.buttonPressed().equals(
-                    _MATCH_FILE_CHOOSER_BUTTONS[0])) {
-                _matchFileName = fileChooser.getFileName();
-                File input = new File(_matchFileName);
-                if (!input.exists()) {
-                    MessageHandler.message("Unable to read input model " +
-                            _matchFileName + ".");
+            try {
+                CompositeEntity model = _getInputModel();
+                if (model == null) {
                     return;
                 }
 
-                try {
-                    NamedObj toplevel =
-                        GTRuleGraphFrame.this.getTableau().toplevel();
-                    if (!(toplevel instanceof Configuration)) {
+                TransformationRule transformerActor = getTransformationRule();
+                Pattern pattern = transformerActor.getPattern();
+                MatchResultRecorder recorder = new MatchResultRecorder();
+                _matcher.setMatchCallback(recorder);
+                _matcher.match(pattern, model);
+                List<MatchResult> results = recorder.getResults();
+                if (results.isEmpty()) {
+                    MessageHandler.message("No match found.");
+                } else {
+                    MatchResultViewer._setTableauFactory(this, model);
+
+                    Configuration configuration = _getConfiguration();
+                    if (configuration == null) {
                         throw new InternalErrorException(
-                                "Expected top-level to be a Configuration: "
-                                        + toplevel.getFullName());
+                                "Cannot get configuration.");
                     }
 
-                    _parser.reset();
-                    CompositeEntity model = (CompositeEntity) _parser.parse(
-                            null, input.toURI().toURL().openStream());
+                    Tableau tableau = configuration.openModel(model);
+                    MatchResultViewer viewer =
+                        (MatchResultViewer) tableau.getFrame();
 
-                    SingleRuleTransformer transformerActor = getTransformer();
-                    CompositeActorMatcher matcher =
-                        transformerActor.getPattern();
-                    MatchResultRecorder recorder = new MatchResultRecorder();
-                    _matcher.setMatchCallback(recorder);
-                    _matcher.match(matcher, model);
-                    List<MatchResult> results = recorder.getResults();
-                    if (!results.isEmpty()) {
-                        MatchResultViewer._setTableauFactory(this, model);
-
-                        Configuration configuration = (Configuration) toplevel;
-                        Tableau tableau = configuration.openModel(model);
-                        MatchResultViewer viewer =
-                            (MatchResultViewer) tableau.getFrame();
-
-                        viewer.setMatchResult(results);
-                    }
-                } catch (MalformedURLException ex) {
-                    MessageHandler.message("Unable to obtain URL from the " +
-                            "input file name.");
-                    return;
-                } catch (Exception ex) {
-                    throw new InternalErrorException(ex);
+                    viewer.setMatchResult(results);
+                    viewer.setTransformationRule(getTransformationRule());
                 }
+            } catch (MalformedURLException ex) {
+                MessageHandler.message("Unable to obtain URL from the input " +
+                        "file name.");
+            } catch (Exception ex) {
+                throw new InternalErrorException(ex);
             }
         }
-
-        private Attribute _attribute;
-
-        private FileParameter _inputModel;
 
         private GraphMatcher _matcher = new GraphMatcher();
 
-        private MoMLParser _parser = new MoMLParser();
-
         private static final long serialVersionUID = -696919249330217870L;
-    }
-
-    private class MatchFileChooser extends ComponentDialog
-    implements ActionListener {
-
-        public MatchFileChooser(Frame owner, NamedObj target) {
-            super(owner, "Choose Input File", new Configurer(target),
-                    _MATCH_FILE_CHOOSER_BUTTONS);
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            Object source = e.getSource();
-            if (source == _textField) {
-                _buttonPressed = _MATCH_FILE_CHOOSER_BUTTONS[0];
-                setVisible(false);
-            } else if (source == _button) {
-                String currentFileName = _textField.getText();
-                JFileChooser fileChooser = null;
-                if (currentFileName.length() > 0) {
-                    File currentFile = new File(currentFileName);
-                    File parentFile = currentFile.getParentFile();
-                    if (parentFile != null) {
-                        fileChooser = new JFileChooser(parentFile);
-                    }
-                }
-                if (fileChooser == null) {
-                    fileChooser = new JFileChooser(".");
-                }
-                fileChooser.setApproveButtonText("Select");
-
-                // FIXME: The following doesn't have any effect.
-                fileChooser.setApproveButtonMnemonic('S');
-
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                fileChooser.setFileFilter(new ExtensionFileFilter("xml"));
-                if (fileChooser.showOpenDialog(MatchFileChooser.this)
-                        == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    _textField.setText(selectedFile.getPath());
-                }
-            }
-        }
-
-        public String getFileName() {
-            return _textField == null ? null : _textField.getText();
-        }
-
-        public void pack() {
-            super.pack();
-
-            Configurer configurer = (Configurer) contents;
-            List<JTextField> textFields = new LinkedList<JTextField>();
-            List<JButton> buttons = new LinkedList<JButton>();
-            _findComponents(configurer, JTextField.class, textFields);
-            _findComponents(configurer, JButton.class, buttons);
-            for (JTextField textField : textFields) {
-                for (ActionListener listener : textField.getActionListeners()) {
-                    textField.removeActionListener(listener);
-                }
-                textField.addActionListener(this);
-                if (_matchFileName != null) {
-                    textField.setText(_matchFileName);
-                }
-                _textField = textField;
-            }
-            for (JButton button : buttons) {
-                if (!button.getText().equals("Browse")) {
-                    continue;
-                }
-                for (ActionListener listener : button.getActionListeners()) {
-                    button.removeActionListener(listener);
-                }
-                button.addActionListener(this);
-                _button = button;
-            }
-        }
-
-        @SuppressWarnings("unchecked")
-        private <E extends Component> void _findComponents(Container container,
-                Class<? extends E> componentClass, List<E> list) {
-            for (Component component : container.getComponents()) {
-                if (componentClass.isInstance(component)) {
-                    list.add((E) component);
-                } else if (component instanceof Container) {
-                    _findComponents((Container) component, componentClass,
-                            list);
-                }
-            }
-        }
-
-        private JButton _button;
-
-        private JTextField _textField;
-
-        private static final long serialVersionUID = 2369054217750135740L;
     }
 
     private static class MatchResultRecorder implements MatchCallback {

@@ -1,22 +1,22 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="rule5" class="ptolemy.actor.gt.SingleRuleTransformer">
+<entity name="rule5" class="ptolemy.actor.gt.TransformationRule">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={278, 211, 843, 627}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={276, 197, 735, 491}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[620, 512]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[512, 376]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{243.5, 118.0}">
     </property>
     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
         <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;trueOutput&quot;/false//true/false/true/true/true/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;falseOutput&quot;/false//true/false/true/true/true/false)(ptolemy.actor.gt.ingredients.criteria.SubclassCriterion/true/&quot;ptolemy.actor.lib.BooleanSwitch&quot;)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 125.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 60.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -142,19 +142,19 @@
         <entity name="B" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/true/false/false/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/false/true/true/true/false)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 70.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 5.0]">
             </property>
         </entity>
         <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;input&quot;/false//true/true/true/false/true/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/true/&quot;output&quot;/false//true/false/true/true/true/false)(ptolemy.actor.gt.ingredients.criteria.SubclassCriterion/true/&quot;ptolemy.actor.lib.AbsoluteValue&quot;)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 165.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 100.0]">
             </property>
         </entity>
         <entity name="D" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/true/true)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 110.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 45.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -173,13 +173,13 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <link port="A.Rule1" relation="relation"/>
-        <link port="A.Rule2" relation="relation2"/>
-        <link port="B.Rule1" relation="relation"/>
-        <link port="B.Rule2" relation="relation3"/>
-        <link port="C.Rule1" relation="relation2"/>
-        <link port="C.Rule2" relation="relation4"/>
-        <link port="D.Rule1" relation="relation3"/>
-        <link port="D.Rule1" relation="relation4"/>
+        <link port="A.Criterion1" relation="relation"/>
+        <link port="A.Criterion2" relation="relation2"/>
+        <link port="B.Criterion1" relation="relation"/>
+        <link port="B.Criterion2" relation="relation3"/>
+        <link port="C.Criterion1" relation="relation2"/>
+        <link port="C.Criterion2" relation="relation4"/>
+        <link port="D.Criterion1" relation="relation3"/>
+        <link port="D.Criterion1" relation="relation4"/>
     </entity>
 </entity>

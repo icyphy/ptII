@@ -60,7 +60,8 @@ public class GTIngredientsAttribute extends StringAttribute {
         super(workspace);
     }
 
-    public GTIngredientList getRuleList() throws MalformedStringException {
+    public GTIngredientList getIngredientList()
+    throws MalformedStringException {
         if (!_parsed) {
             _parse();
         }

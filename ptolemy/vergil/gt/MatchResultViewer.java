@@ -42,6 +42,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 
 import ptolemy.actor.AtomicActor;
+import ptolemy.actor.gt.GraphTransformer;
+import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
@@ -96,7 +98,7 @@ public class MatchResultViewer extends AbstractGTFrame {
         });
 
         _checkContainingViewer();
-        _enableOrDisable();
+        _enableOrDisableActions();
         highlightMatchedObjects();
     }
 
@@ -106,6 +108,13 @@ public class MatchResultViewer extends AbstractGTFrame {
         _decorator.renderDeselected(figure);
     }
 
+    public void dehighlightMatchedObjects() {
+        CompositeEntity matcher = getActiveModel();
+        for (Object child : matcher.entityList(AtomicActor.class)) {
+            dehighlightMatchedObject((NamedObj) child);
+        }
+    }
+
     public void highlightMatchedObject(NamedObj object) {
         Object location = object.getAttribute("_location");
         Figure figure = _getGraphController().getFigure(location);
@@ -113,7 +122,7 @@ public class MatchResultViewer extends AbstractGTFrame {
     }
 
     public void highlightMatchedObjects() {
-        if (_results != null) {
+        if (_results != null && !_transformed) {
             CompositeEntity matcher = getActiveModel();
             Set<?> matchedHostObjects = _results.get(_currentPosition).values();
             for (Object child : matcher.entityList(AtomicActor.class)) {
@@ -129,8 +138,13 @@ public class MatchResultViewer extends AbstractGTFrame {
     public void setMatchResult(List<MatchResult> results) {
         _results = results;
         _currentPosition = 0;
-        _enableOrDisable();
+        _enableOrDisableActions();
         highlightMatchedObjects();
+    }
+
+    public void setTransformationRule(TransformationRule rule) {
+        _rule = rule;
+        _enableOrDisableActions();
     }
 
     /** React to a change in the state of the tabbed pane.
@@ -152,16 +166,20 @@ public class MatchResultViewer extends AbstractGTFrame {
 
         PreviousAction previousAction = new PreviousAction();
         NextAction nextAction = new NextAction();
+        TransformAction transformAction = new TransformAction();
 
         _viewMenu.addSeparator();
         _previousItem = GUIUtilities.addMenuItem(_viewMenu, previousAction);
         _nextItem = GUIUtilities.addMenuItem(_viewMenu, nextAction);
+        _transformItem = GUIUtilities.addMenuItem(_viewMenu, transformAction);
 
         _previousButton =
             GUIUtilities.addToolBarButton(_toolbar, previousAction);
         _nextButton = GUIUtilities.addToolBarButton(_toolbar, nextAction);
+        _transformButton = GUIUtilities.addToolBarButton(_toolbar,
+                transformAction);
 
-        _enableOrDisable();
+        _enableOrDisableActions();
     }
 
     protected ActorEditorGraphController _createController() {
@@ -197,6 +215,22 @@ public class MatchResultViewer extends AbstractGTFrame {
         }
     }
 
+    private void _asynchronousDehighlight() {
+        // Repaint the graph panner after the decorators are rendered.
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                dehighlightMatchedObjects();
+                if (_graphPanner != null) {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            _graphPanner.repaint();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     private void _asynchronousHighlight() {
         // Repaint the graph panner after the decorators are rendered.
         SwingUtilities.invokeLater(new Runnable() {
@@ -222,6 +256,8 @@ public class MatchResultViewer extends AbstractGTFrame {
                     synchronized (viewer) {
                         _results = viewer._results;
                         _currentPosition = viewer._currentPosition;
+                        _transformed = viewer._transformed;
+                        _rule = viewer._rule;
                         viewer._subviewers.add(this);
                         _topFrame = viewer;
                     }
@@ -231,22 +267,42 @@ public class MatchResultViewer extends AbstractGTFrame {
         }
         if (_topFrame == null) {
             _subviewers = new HashSet<MatchResultViewer>();
+            _transformer = new GraphTransformer();
         }
     }
 
-    private void _enableOrDisable() {
+    private void _enableOrDisableActions() {
         if (_previousItem != null && _results != null) {
-            _previousItem.setEnabled(_currentPosition > 0);
+            _previousItem.setEnabled(!_transformed && _currentPosition > 0);
         }
         if (_previousButton != null && _results != null) {
-            _previousButton.setEnabled(_currentPosition > 0);
+            _previousButton.setEnabled(!_transformed && _currentPosition > 0);
         }
         if (_nextItem != null && _results != null) {
-            _nextItem.setEnabled(_currentPosition < _results.size() - 1);
+            _nextItem.setEnabled(!_transformed
+                    && _currentPosition < _results.size() - 1);
         }
         if (_nextButton != null && _results != null) {
-            _nextButton.setEnabled(_currentPosition < _results.size() - 1);
+            _nextButton.setEnabled(!_transformed
+                    && _currentPosition < _results.size() - 1);
         }
+        if (_transformItem != null && _results != null) {
+            _transformItem.setEnabled(!_transformed && _rule != null);
+        }
+        if (_transformButton != null && _results != null) {
+            _transformButton.setEnabled(!_transformed && _rule != null);
+        }
+    }
+
+    private void _finishTransform() {
+        _transformed = true;
+        _asynchronousDehighlight();
+        if (_topFrame == null) {
+            for (MatchResultViewer viewer : _subviewers) {
+                viewer._finishTransform();
+            }
+        }
+        _enableOrDisableActions();
     }
 
     private void _next() {
@@ -258,7 +314,7 @@ public class MatchResultViewer extends AbstractGTFrame {
                     viewer._next();
                 }
             }
-            _enableOrDisable();
+            _enableOrDisableActions();
         }
     }
 
@@ -271,8 +327,14 @@ public class MatchResultViewer extends AbstractGTFrame {
                     viewer._previous();
                 }
             }
-            _enableOrDisable();
+            _enableOrDisableActions();
         }
+    }
+
+    private void _transform() {
+        _transformer.transform(_rule, _results.get(_currentPosition),
+                (CompositeEntity) getModel());
+        _finishTransform();
     }
 
     private int _currentPosition;
@@ -290,12 +352,22 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     private List<MatchResult> _results;
 
+    private TransformationRule _rule;
+
     private Set<MatchResultViewer> _subviewers;
 
     /** The top frame that shows the toplevel model, or <tt>null</tt> if the top
      *  frame is this frame itself.
      */
     private MatchResultViewer _topFrame;
+
+    private JButton _transformButton;
+
+    private boolean _transformed = false;
+
+    private GraphTransformer _transformer;
+
+    private JMenuItem _transformItem;
 
     private static final long serialVersionUID = 2459501522934657116L;
 
@@ -355,6 +427,35 @@ public class MatchResultViewer extends AbstractGTFrame {
         }
 
         private static final long serialVersionUID = 6583982647474946917L;
+    }
+
+    private class TransformAction extends FigureAction {
+
+        public TransformAction() {
+            super("Transform");
+
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/gt/img/transform.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/gt/img/transform_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/gt/img/transform_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/gt/img/transform_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            if (_topFrame != null) {
+                _topFrame._transform();
+            } else {
+                _transform();
+            }
+        }
+
+        private static final long serialVersionUID = -8751857103246738564L;
     }
 
 }

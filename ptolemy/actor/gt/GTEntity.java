@@ -9,4 +9,6 @@ public interface GTEntity extends Nameable {
     public GTIngredientsAttribute getOperationsAttribute();
 
     public PatternEntityAttribute getPatternEntityAttribute();
+    
+    public void updateAppearance(GTIngredientsAttribute attribute);
 }

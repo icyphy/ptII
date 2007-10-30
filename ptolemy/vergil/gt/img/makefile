@@ -48,10 +48,22 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
-	match.gif \
 	match_o.gif \
 	match_on.gif \
-	match_ov.gif
+	match_ov.gif \
+	match.gif \
+	next_o.gif \
+	next_on.gif \
+	next_ov.gif \
+	next.gif \
+	previous_o.gif \
+	previous_on.gif \
+	previous_ov.gif \
+	previous.gif \
+	transform_o.gif \
+	transform_on.gif \
+	transform_ov.gif \
+	transform.gif
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)

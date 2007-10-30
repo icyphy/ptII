@@ -28,8 +28,11 @@
 
 package ptolemy.actor.gt.ingredients.operations;
 
+import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.GTIngredient;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.ChangeRequest;
 
 /**
 
@@ -54,6 +57,11 @@ public abstract class Operation extends GTIngredient {
      */
     public Operation(GTIngredientList owner, int elementCount) {
         super(owner, elementCount);
+    }
+    
+    public ChangeRequest getChangeRequest(GTEntity patternEntity,
+            GTEntity replacementEntity, ComponentEntity hostEntity) {
+        return null;
     }
 
 }

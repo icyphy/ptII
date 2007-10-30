@@ -44,6 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.moml.MoMLChangeRequest;
@@ -99,79 +100,7 @@ ValueListener {
         return patternEntity;
     }
 
-    public void valueChanged(Settable settable) {
-        try {
-            if (settable == criteria) {
-                if (GTEntityTools.isInPattern(this)) {
-                    // ruleList attribute is used to set the matching rules for
-                    // this actor. It is used only for actors in the pattern of
-                    // a transformation rule. If the actor is in the
-                    // replacement, this attribute is ignored.
-                    _updateRuleListAttribute(criteria);
-                }
-            } else if (settable == patternEntity) {
-                if (GTEntityTools.isInReplacement(this)) {
-                    // Update the ports with the ruleList attribute of the
-                    // corresponding actor in the pattern of the transformation
-                    // rule.
-                    GTEntity entity =
-                        GTEntityTools.getCorrespondingPatternEntity(this);
-                    if (entity != null
-                            && entity instanceof AtomicActorMatcher) {
-                        criteria.setPersistent(false);
-                        criteria.setExpression("");
-                        _updateRuleListAttribute(
-                                ((AtomicActorMatcher) entity).criteria);
-                    }
-                }
-            }
-        } catch (KernelException e) {
-            throw new KernelRuntimeException(e, "Unable to update the "
-                    + settable.getName() + " attribute.");
-        }
-    }
-
-    public GTIngredientsAttribute criteria;
-
-    public GTIngredientsEditor.Factory editorFactory;
-
-    public GTIngredientsAttribute operations;
-
-    public PatternEntityAttribute patternEntity;
-
-    private void _loadActorIcon(String actorClassName) {
-        CompositeActor container = new CompositeActor();
-        String moml = "<group><entity name=\"NewActor\" class=\""
-            + actorClassName + "\"/></group>";
-        container.requestChange(
-                new LoadActorIconChangeRequest(container, moml));
-    }
-
-    private void _removeEditorIcons() {
-        for (Object editorIconObject : attributeList(EditorIcon.class)) {
-            EditorIcon editorIcon = (EditorIcon) editorIconObject;
-            String moml =
-                "<deleteProperty name=\"" + editorIcon.getName() + "\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
-            request.execute();
-        }
-    }
-
-    private void _setIconDescription(String iconDescription) {
-        String moml = "<property name=\"_iconDescription\" class="
-            + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
-            + "  <configure>" + iconDescription + "</configure>"
-            + "</property>";
-        MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
-        request.execute();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    private void _updateRuleListAttribute(GTIngredientsAttribute ruleList)
-    throws IllegalActionException, MalformedStringException,
-    NameDuplicationException {
+    public void updateAppearance(GTIngredientsAttribute attribute) {
 
         try {
             _workspace.getWriteAccess();
@@ -179,29 +108,31 @@ ValueListener {
             Set<String> preservedPortNames = new HashSet<String>();
             boolean isIconSet = false;
             int i = 1;
-            GTIngredientList list = ruleList.getRuleList();
-            for (GTIngredient rule : list) {
-                if (rule instanceof PortCriterion) {
-                    PortCriterion portRule = (PortCriterion) rule;
-                    String portID = portRule.getPortID(list);
+            GTIngredientList list = attribute.getIngredientList();
+            for (GTIngredient ingredient : list) {
+                if (ingredient instanceof PortCriterion) {
+                    PortCriterion criterion = (PortCriterion) ingredient;
+                    String portID = criterion.getPortID(list);
                     preservedPortNames.add(portID);
 
                     TypedIOPort port = (TypedIOPort) getPort(portID);
                     if (port != null) {
-                        port.setInput(portRule.isInput());
-                        port.setOutput(portRule.isOutput());
-                        port.setMultiport(portRule.isMultiport());
+                        port.setInput(criterion.isInput());
+                        port.setOutput(criterion.isOutput());
+                        port.setMultiport(criterion.isMultiport());
                         port.setPersistent(false);
                     } else {
-                        port = new TypedIOPort(this, portID, portRule.isInput(),
-                                portRule.isOutput());
-                        port.setMultiport(portRule.isMultiport());
+                        port = new TypedIOPort(this, portID,
+                                criterion.isInput(), criterion.isOutput());
+                        port.setMultiport(criterion.isMultiport());
                         port.setPersistent(false);
                     }
                     port.setPersistent(false);
-                } else if (rule instanceof SubclassCriterion && !isIconSet) {
-                    SubclassCriterion subclassRule = (SubclassCriterion) rule;
-                    final String superclass = subclassRule.getSuperclass();
+                } else if (ingredient instanceof SubclassCriterion
+                        && !isIconSet) {
+                    SubclassCriterion criterion =
+                        (SubclassCriterion) ingredient;
+                    final String superclass = criterion.getSuperclass();
                     requestChange(new ChangeRequest(this,
                             "Deferred load actor icon action.") {
                         protected void _execute() {
@@ -232,9 +163,92 @@ ValueListener {
                 }
             }
 
+        } catch (KernelException e) {
+            throw new KernelRuntimeException(e, "Cannot update appearance for "
+                    + "actor " + getName() + ".");
+
         } finally {
             _workspace.doneWriting();
         }
+    }
+
+    public void valueChanged(Settable settable) {
+        if (settable == criteria) {
+            if (GTEntityTools.isInPattern(this)) {
+                // criteria attribute is used to set the matching criteria for
+                // this actor. It is used only for actors in the pattern of
+                // a transformation rule. If the actor is in the
+                // replacement, this attribute is ignored.
+                updateAppearance(criteria);
+
+                // Update the appearance of corresponding entities in the
+                // replacement.
+                Pattern pattern = (Pattern)
+                    GTEntityTools.getContainingPatternOrReplacement(this);
+                NamedObj container = pattern.getContainer();
+                if (container instanceof TransformationRule) {
+                    Replacement replacement =
+                        ((TransformationRule) container).getReplacement();
+                    replacement.updateEntitiesAppearance(criteria);
+                }
+            }
+        } else if (settable == patternEntity) {
+            if (GTEntityTools.isInReplacement(this)) {
+                // Update the ports with the criteria attribute of the
+                // corresponding actor in the pattern of the transformation
+                // rule.
+                GTEntity entity =
+                    GTEntityTools.getCorrespondingPatternEntity(this);
+                if (entity != null && entity instanceof AtomicActorMatcher) {
+                    criteria.setPersistent(false);
+                    try {
+                        criteria.setExpression("");
+                    } catch (IllegalActionException e) {
+                        // Ignore because criteria is not used for
+                        // patternEntity.
+                    }
+                    updateAppearance(((AtomicActorMatcher) entity).criteria);
+                }
+            }
+        }
+    }
+
+    public GTIngredientsAttribute criteria;
+
+    public GTIngredientsEditor.Factory editorFactory;
+
+    public GTIngredientsAttribute operations;
+
+    public PatternEntityAttribute patternEntity;
+
+    private void _loadActorIcon(String actorClassName) {
+        CompositeActor container = new CompositeActor();
+        String moml = "<group><entity name=\"NewActor\" class=\""
+            + actorClassName + "\"/></group>";
+        container.requestChange(
+                new LoadActorIconChangeRequest(container, moml));
+    }
+
+    private void _removeEditorIcons() {
+        for (Object editorIconObject : attributeList(EditorIcon.class)) {
+            EditorIcon editorIcon = (EditorIcon) editorIconObject;
+            String moml =
+                "<deleteProperty name=\"" + editorIcon.getName() + "\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
+            request.execute();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    private void _setIconDescription(String iconDescription) {
+        String moml = "<property name=\"_iconDescription\" class="
+            + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
+            + "  <configure>" + iconDescription + "</configure>"
+            + "</property>";
+        MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
+        request.execute();
     }
 
     private static final String _ICON_DESCRIPTION =

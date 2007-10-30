@@ -89,13 +89,14 @@ OPTIONAL_FILES = \
 	'GTIngredientsEditor$$Row.class' \
 	'GTRuleGraphFrame$$1.class' \
 	'GTRuleGraphFrame$$CellEditor.class' \
+	'GTRuleGraphFrame$$FileChooser.class' \
+	'GTRuleGraphFrame$$GTAction.class' \
 	'GTRuleGraphFrame$$GTActionGraphController$$EntityController.class' \
 	'GTRuleGraphFrame$$GTActionGraphController$$NewRelationAction.class' \
 	'GTRuleGraphFrame$$GTActionGraphController.class' \
 	'GTRuleGraphFrame$$GTMenuActionFactory.class' \
 	'GTRuleGraphFrame$$LayoutAction.class' \
 	'GTRuleGraphFrame$$MatchAction.class' \
-	'GTRuleGraphFrame$$MatchFileChooser.class' \
 	'GTRuleGraphFrame$$MatchResultRecorder.class' \
 	'GTRuleGraphTableau$$Factory.class' \
 	'MatchResultTableau$$Factory.class' \
@@ -103,8 +104,11 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$2.class' \
 	'MatchResultViewer$$3$$1.class' \
 	'MatchResultViewer$$3.class' \
+	'MatchResultViewer$$4$$1.class' \
+	'MatchResultViewer$$4.class' \
 	'MatchResultViewer$$NextAction.class' \
-	'MatchResultViewer$$PreviousAction.class'
+	'MatchResultViewer$$PreviousAction.class' \
+	'MatchResultViewer$$TransformAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

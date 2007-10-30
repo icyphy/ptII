@@ -1,40 +1,40 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="rule4" class="ptolemy.actor.gt.SingleRuleTransformer">
+<entity name="rule4" class="ptolemy.actor.gt.TransformationRule">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={276, 197, 848, 655}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={273, 183, 723, 476}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 540]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 361]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{235.0, 96.5}">
     </property>
     <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
         <entity name="A" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/false/true/true/false/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/false/true/true/false/false)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 125.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 50.0]">
             </property>
         </entity>
         <entity name="B" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/true/false/false/false)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 65.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, -10.0]">
             </property>
         </entity>
         <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/true/false/false/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/false/true/true/false/false)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, 135.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 60.0]">
             </property>
         </entity>
         <entity name="D" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/true/false/false/false)">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 135.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 60.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -49,11 +49,11 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <link port="A.Rule1" relation="relation"/>
-        <link port="A.Rule2" relation="relation2"/>
-        <link port="B.Rule1" relation="relation"/>
-        <link port="C.Rule1" relation="relation2"/>
-        <link port="C.Rule2" relation="relation3"/>
-        <link port="D.Rule1" relation="relation3"/>
+        <link port="A.Criterion1" relation="relation"/>
+        <link port="A.Criterion2" relation="relation2"/>
+        <link port="B.Criterion1" relation="relation"/>
+        <link port="C.Criterion1" relation="relation2"/>
+        <link port="C.Criterion2" relation="relation3"/>
+        <link port="D.Criterion1" relation="relation3"/>
     </entity>
 </entity>

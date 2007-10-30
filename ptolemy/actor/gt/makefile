@@ -67,6 +67,7 @@ JSRCS = \
 	GTIngredientsAttribute.java \
 	GraphMatcher.java \
 	GraphTransformationException.java \
+	GraphTransformer.java \
 	HierarchyFlatteningAttribute.java \
 	MalformedStringException.java \
 	MatchCallback.java \
@@ -74,8 +75,8 @@ JSRCS = \
 	PatternEntityAttribute.java \
 	RelationCollapsingAttribute.java \
 	Replacement.java \
-	SingleRuleTransformer.java \
 	SubgraphMatchingException.java \
+	TransformationRule.java \
 	ValidationException.java
 
 EXTRA_SRCS =	$(JSRCS)

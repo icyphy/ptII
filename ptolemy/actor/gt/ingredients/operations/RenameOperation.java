@@ -26,12 +26,14 @@
  */
 package ptolemy.actor.gt.ingredients.operations;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.gt.GTIngredientList;
+import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTIngredientElement;
+import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.ValidationException;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
 //// SubclassRule
@@ -53,6 +55,14 @@ public class RenameOperation extends Operation {
     public RenameOperation(GTIngredientList owner, String values) {
         super(owner, 1);
         setValues(values);
+    }
+
+    public ChangeRequest getChangeRequest(GTEntity patternEntity,
+            GTEntity replacementEntity, ComponentEntity hostEntity) {
+        NamedObj parent = hostEntity.getContainer();
+        String moml = "<entity name=\"" + hostEntity.getName()
+                + "\"><rename name=\"" + _name + "\"/></entity>";
+        return new MoMLChangeRequest(this, parent, moml, null);
     }
 
     public GTIngredientElement[] getElements() {
@@ -122,21 +132,11 @@ public class RenameOperation extends Operation {
 
     public void validate() throws ValidationException {
         if (_name.equals("")) {
-            throw new ValidationException("Superclass name must not be "
-                    + "empty.");
+            throw new ValidationException("Name must not be empty.");
         }
-        Class<?> superclass;
-        try {
-            superclass = Class.forName(_name);
-        } catch (ClassNotFoundException e) {
-            throw new ValidationException("Cannot load class \""
-                    + _name + "\".");
-        }
-        try {
-            superclass.asSubclass(Actor.class);
-        } catch (ClassCastException e) {
-            throw new ValidationException("Superclass must be a subclass "
-                    + "of \"" + Actor.class.getName() + "\".");
+        if (_name.contains(".")) {
+            throw new ValidationException("Name must not have period (\".\") "
+                    + "in it.");
         }
     }
 
