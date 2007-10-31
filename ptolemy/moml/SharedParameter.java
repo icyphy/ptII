@@ -281,7 +281,8 @@ public class SharedParameter extends Parameter implements Initializable {
             }
             
         } catch (IllegalActionException e) {
-            // Should not get to this.
+            // The token is not set when this happens.
+            
         } finally {
             _suppressingPropagation = previousSuppressing;
         }
