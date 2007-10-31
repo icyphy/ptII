@@ -230,7 +230,10 @@ EXPERIMENTALPACKAGES =
 
 GRAPHTRANSFORMATIONPACKAGES = \
 	ptolemy.actor.gt \
-	ptolemy.actor.gt.rules \
+	ptolemy.actor.gt.data \
+	ptolemy.actor.gt.ingredients.criteria \
+	ptolemy.actor.gt.ingredients.operations \
+	ptolemy.actor.gt.util \
 	ptolemy.vergil.gt
 
 # Packages used by HyVisual
