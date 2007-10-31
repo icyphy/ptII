@@ -265,14 +265,23 @@ public class SharedParameter extends Parameter implements Initializable {
 
         if (toplevel != null && toplevel != this) {
             candidate = _getOneSharedParameter(toplevel);
-        }
+        }        
         if (candidate != null) {
             defaultValue = candidate.getExpression();
         }
         boolean previousSuppressing = _suppressingPropagation;
         try {
             _suppressingPropagation = true;
+
             setExpression(defaultValue);
+
+            // Try getting the evaluated token.
+            if (candidate != null && candidate.isKnown()) {
+                setToken(candidate.getToken());
+            }
+            
+        } catch (IllegalActionException e) {
+            // Should not get to this.
         } finally {
             _suppressingPropagation = previousSuppressing;
         }
@@ -429,7 +438,7 @@ public class SharedParameter extends Parameter implements Initializable {
             }
         }
     }
-
+ 
     /** Specify whether this instance should be suppressing
      *  propagation. If this is called with value true, then
      *  changes to this parameter will not propagate to other
@@ -441,6 +450,34 @@ public class SharedParameter extends Parameter implements Initializable {
         _suppressingPropagation = propagation;
     }
 
+    /** Override the base class to also set the token of shared
+     *  parameters.
+     *  @param token The token.
+     * @exception IllegalActionException Thrown if super class throws it. 
+     */
+    public void setToken(Token token) throws IllegalActionException {
+        
+        super.setToken(token);
+
+        if (!_suppressingPropagation) {
+            Iterator sharedParameters = sharedParameterSet().iterator();
+
+            while (sharedParameters.hasNext()) {
+                SharedParameter sharedParameter = 
+                    (SharedParameter) sharedParameters.next();
+
+                if (sharedParameter != this) {
+                    try {
+                        sharedParameter._suppressingPropagation = true;
+                        sharedParameter.setToken(token);
+                    } finally {
+                        sharedParameter._suppressingPropagation = false;
+                    }
+                }
+            }
+        }    
+    }
+    
     /** Return a collection of all the shared parameters within the
      *  same model as this parameter.  If there are no such parameters
      *  or if this parameter is deeply contained within an EntityLibrary, then
