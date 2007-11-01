@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModalBSC" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 10, 706, 581}, maximized=false}">
     </property>
@@ -73,7 +73,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
         </property>
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 45.0]">
         </property>
     </property>
     <entity name="ModalBinarySymmetricChannel" class="ptolemy.domains.fsm.modal.ModalModel">
@@ -113,7 +113,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
             </property>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
@@ -150,6 +150,8 @@ refinement changing the state change to double (0.5).</text></svg></configure>
             <entity name="normal" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="normal">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 115.0">
@@ -158,12 +160,16 @@ refinement changing the state change to double (0.5).</text></svg></configure>
             <entity name="bad" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="normal">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 290.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 250.0]">
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 125.0">
@@ -214,9 +220,9 @@ refinement changing the state change to double (0.5).</text></svg></configure>
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                     </property>
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.190474875859255">
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3029377206346315">
                 </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.043314367066934534">
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6334811604588172">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -252,10 +258,10 @@ refinement changing the state change to double (0.5).</text></svg></configure>
         </entity>
         <entity name="normal" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 40.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 35.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 383, 819, 517}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 383, 815, 518}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -273,7 +279,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 35.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 30.0]">
                 </property>
             </property>
             <property name="PChange" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -290,7 +296,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 55.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 50.0]">
                 </property>
             </property>
             <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -305,16 +311,16 @@ refinement changing the state change to double (0.5).</text></svg></configure>
             </port>
             <port name="stateChange" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 205.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 205.0]">
                 </property>
             </port>
             <entity name="Pe" class="ptolemy.actor.lib.Bernoulli">
-                <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="seed" class="ptolemy.moml.SharedParameter" value="0">
                 </property>
                 <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="Pe">
                 </property>
                 <doc>Create a sequence of bernoulli random variables</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 205.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 75.0]">
                 </property>
             </entity>
             <entity name="LogicFunction" class="ptolemy.actor.lib.logic.LogicFunction">
@@ -342,12 +348,12 @@ refinement changing the state change to double (0.5).</text></svg></configure>
                 </property>
             </entity>
             <entity name="PChange" class="ptolemy.actor.lib.Bernoulli">
-                <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
+                <property name="seed" class="ptolemy.moml.SharedParameter" value="0">
                 </property>
                 <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="PChange">
                 </property>
                 <doc>Create a sequence of bernoulli random variables</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 205.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 205.0]">
                 </property>
             </entity>
             <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
@@ -355,7 +361,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
                 </property>
                 <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 135.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 135.0}">
                 </property>
             </entity>
             <entity name="BooleanToAnything2" class="ptolemy.actor.lib.conversions.BooleanToAnything">
@@ -363,13 +369,13 @@ refinement changing the state change to double (0.5).</text></svg></configure>
                 </property>
                 <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 205.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 205.0]">
                 </property>
             </entity>
             <entity name="LookupTable" class="ptolemy.actor.lib.LookupTable">
                 <property name="table" class="ptolemy.data.expr.Parameter" value="{false, true}">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 135.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 135.0}">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -410,7 +416,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 40.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 37, 819, 517}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 37, 815, 518}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -550,7 +556,7 @@ from bad to normal as well</text></svg></configure>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 110.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 115.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"

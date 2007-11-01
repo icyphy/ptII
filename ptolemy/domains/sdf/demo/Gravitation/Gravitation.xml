@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="GravitationScalable" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Gravitation" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -86,7 +86,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-144.67776489257812, 283.4342346191406]">
         </property>
     </property>
-    <property name="initialPositions" class="ptolemy.data.expr.Parameter" value="{{0,0,0}, {0,0,1}, {0,1,0}, {1,0,0}}">
+    <property name="initialPositions" class="ptolemy.data.expr.Parameter" value="{{0,0,0}, {0,0,1}, {0,1,0}, {1,0,0}, {2, 0, 0}, {0, 2, 0}}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -105,7 +105,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, 40.0}">
         </property>
     </property>
-    <property name="initialVelocities" class="ptolemy.data.expr.Parameter" value="{{0,0,0}, {0,1,0}, {1,0,0}, {0,0,0}}">
+    <property name="initialVelocities" class="ptolemy.data.expr.Parameter" value="{{0,0,0}, {0,1,0}, {1,0,0}, {0,0,0}, {0,0,0}, {0,0,0}}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -311,7 +311,7 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[206.87496948242188, 373.9582977294922]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 375.0}">
         </property>
     </entity>
     <entity name="Calculate Forces" class="ptolemy.actor.lib.hoc.MultiInstanceComposite">
@@ -324,7 +324,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 65.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 921, 443}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 921, 488}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[706, 325]">
         </property>
@@ -1190,13 +1190,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 35.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={212, 30, 815, 772}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={215, 249, 815, 469}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 654]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 351]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 327.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 175.5}">
         </property>
         <property name="radius" class="ptolemy.data.expr.Parameter" value="0.05">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1236,19 +1236,31 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 90.0]">
             </property>
         </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This submodel generates the graphical&#10;animation. The MultiInstanceComposite&#10;creates a sphere for each body.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 30.0]">
+            </property>
+        </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 195.0]">
             </property>
         </port>
         <entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen3D">
-            <property name="rotatable" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="800">
+            </property>
+            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="800">
+            </property>
+            <property name="rotatable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="scalable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
+            <property name="showAxes" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.8,0.8,1.0}">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 155.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 195.0]">
             </property>
         </entity>
         <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
@@ -1259,9 +1271,9 @@
             <property name="nInstances" class="ptolemy.data.expr.Parameter" value="numberOfBodies">
             </property>
             <doc>Creates multiple instances of itself</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 210.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 190.0]">
             </property>
-            <property name="radius" class="ptolemy.data.expr.Parameter" value="0.05">
+            <property name="radius" class="ptolemy.data.expr.Parameter" value="0.03">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1280,7 +1292,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 80.0}">
                 </property>
             </property>
-            <property name="bodyColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.8,1.0}">
+            <property name="bodyColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.5,0.0,0.8,1.0}">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1302,6 +1314,20 @@
             <property name="GR Director" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 45.0}">
                 </property>
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create a sphere for one body and&#10;translate to the specified position.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 20.0]">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
             </property>
             <port name="position" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
