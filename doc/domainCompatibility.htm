@@ -11,8 +11,16 @@ A {text-decoration:none}
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<i>Below is a portion of a paper submitted to a conference</i>
-<br>Authors: Antoon Goderis, Ilkay Altintas, Christopher Brooks, Edward A. Lee
+<i>Below is a portion of a paper:</i>
+<blockquote>
+Antoon Goderis, Christopher Brooks, Ilkay Altintas, Edward
+A. Lee, Carole Goble. <a
+href="http://chess.eecs.berkeley.edu/pubs/193.html#in_browser" target="_top">Composing
+Different Models of Computation in Kepler and Ptolemy
+II</a>, 2007 Proceedings, International Conference on
+Computational Science (ICCS), May, 2007.
+</blockquote>
+See also the <a href="http://www.mygrid.org.uk/wiki/Papers/IccsPaper2007#in_browser" target="_top">ancillary site for the paper</a>
 
 
 <h2>Composing Models of Computation in Kepler/Ptolemy II</h2>
@@ -54,18 +62,14 @@ terms of actor abstract semantics. </p>
 <p>All models of computation in Kepler and Ptolemy II share a common
 abstraction that we call the actor abstract semantics.  </p>
 
-<p>In Ptolemy II, actors and directors are instances of Java classes that implement the Executable interface, which defines <i>action methods</i>. The action methods include two distinct initialization methods: </p>
+<p>Actors and directors are instances of Java classes that implement the Executable interface, which defines <i>action methods</i>. The action methods include two distinct initialization methods: </p>
 <dl>
 
-<dd>1. preinitialize(). A method that is invoked prior to execution of
-an actor, and also prior to any static analysis performed on the
+<dd>1. preinitialize(). invoked prior any static analysis performed on the
 workflow (such as static scheduling, type inference, checking for
 deadlock, etc.). </dd>
 
-<dd>2. initialize(). A method that is invoked to initialize an actor
-to its initial conditions. This is invoked prior to execution of the
-actor (but after all static analysis has been performed), but it can
-also be invoked during execution to reinitialize an actor.  </dd>
+<dd>2. initialize(). invoked to initialize an actor or director to its initial conditions. This is invoked after all static analysis has been performed, but it can also be invoked during execution to reinitialize an actor. </dd>
 
 </dl>
 
@@ -75,14 +79,9 @@ workflow: </p>
 
 <dl>
 
-<dd>3. prefire().  This method should return true if the actor is
-ready to fire (e.g., there are enough input data tokens).  </dd>
+<dd>3. prefire(): invoked to check whether an actor is ready to fire (for example, an actor may return false if there are not enough input data tokens). </dd>
 
-<dd>4. fire(). In this method, the actor should read input tokens from
-input ports and write tokens to output ports, but it should not change
-its state. That is, if the fire() method is invoked repeatedly with
-the same input tokens, then the resulting output tokens should be the
-same. </dd>
+<dd>4. fire(). In this method, the actor should read input tokens from input ports and write tokens to output ports, but it should not change its state. That is, if the fire() method is invoked repeatedly with the same input tokens, then the resulting output tokens should be the same. </dd>
 
 <dd>5. postfire(). In this method, the actor can read input tokens and
 update its state. </dd>
@@ -145,8 +144,7 @@ contract. Such a director can be used safely within opaque composite
 actors that use any of the directors. None ot the directors conforms
 to the strict actor semantics in the current version of Ptolemy II
 (version 6.0). The undiscussed <b>SR</b> director does however and in
-principle <b>CT</b> can be made to conform. CT<b> </b>and the
-<b>dataflow</b> directors all conform to the looser version of the
+principle <b>CT</b> and <b>DE</b> can be made to conform. Currently these and the <b>dataflow</b> directors all conform to the looser version of the
 abstract semantics, but still guarantee that all methods return after
 finite time. <b>PN</b> only conforms to the loosest version, providing
 no guarantees about methods ever returning. The <b>FSM</b> director
@@ -154,102 +152,238 @@ exports whatever the state refinements export.  </p>
 
 <h3>Director compatibility</h3>
 
-<p>We therefore classify directors according to two criteria. They
+<p>We classify directors according to two criteria. They
 require that the actors they control are either <i>strict</i>,
 <i>looser</i>, or <i>loosest</i>, depending on whether they must
 conform with the strictest, looser, or loosest form of abstract
 semantics. They similarly export either <i>strict</i>, <i>looser</i>,
 or <i>loosest</i>.  Ideally, any director should export the same
 version of the contract it assumes or a stricter version, but this is
-not the case in Kepler/Ptolemy II. Hopefully it will be the case in
-future versions of these directors.  </p>
+not the case in currently.</p>
 
 <p>The current status of the directors is given in Table 1. The rule
 applied to determine director compatibility is that exported abstract
 semantics should be stricter or equal to required abstract semantics.
 The table is on-line 
-(<a href="http://www.cs.man.ac.uk/%7Egoderisa/directors#in_browser">http://www.cs.man.ac.uk/~goderisa/directors</a>)
+(<a href="http://www.mygrid.org.uk/wiki/Papers/IccsPaper2007#in_browser" target="_top">http://www.mygrid.org.uk/wiki/Papers/IccsPaper2007</a>)
 and will evolve over time. Where available, the on-line version links each entry to example actors.  </p>
 
 <b>Table 1.</b> Rules for hierarchically mixing directors in Kepler and Ptolemy II </p>
-<table border="1" cellpadding="2" cellspacing="0">
-  <tbody>
-   <tr>
-     <td valign="top" rowspan="3">
-       <p align="left">Inner director ? <br>(<b>exports X</b>)  </p>
-     </td>
-     <td colspan="5" rowspan="1" valign="top">
-       <p align="center">Outer director ? (<i>requires Y</i>)  </p>
-     </td>
-   </tr>
-   <tr>
-     <td valign="top">
-<p align="left">PN </p></td><td valign="top">
-<p align="left">SDF </p></td><td valign="top">
-<p align="left">DDF </p></td><td valign="top">
-<p align="left">CT </p></td><td valign="top">
-<p align="left">FSM </p></td>
-   </tr>
 
-   <tr>
-     <td valign="top">
-<p align="left">(<i>loosest</i>) </p></td><td valign="top">
-<p align="left">(<i>loose</i>) </p></td><td valign="top">
-<p align="left">(<i>loose</i>) </p></td><td valign="top">
-<p align="left">(<i>strict</i>) </p></td><td valign="top">
-<p align="left">(<i>loose</i>) </p></td>
-   </tr>
+<TABLE align="center" border=1 cellspacing=0 cellpadding=2>
+ <TR>
+  <TD rowspan="3" align="left"  valign="top"><FONT size="+1">
+    Inner director <FONT size="+1">&darr; <br>(<B>exports X</B>)
+  </TD>
+  <TD colspan="7" valign="bottom">
+    Outer director &darr;
+     <br>(<I>requires Y</I>)
+  </TD>
+ </TR>
+ <TR>
+   <td>PN</td> 
+   <td>SDF</td>
+   <td>DDF</td>
+   <td>CT</td>
+   <td>DE</td>
+   <td>SR</td>
+   <td>FSM</td>
+ </TR>
+ <TR>
+   <td>(<I>loosest</I>)</td>
+   <td>(<I>loose</I>)</td>
+   <td>(<I>loose</I>)</td>
+   <td>(<I>strict</I>)</td>
+   <td>(<I>loose</I>)</td>
+   <td>(<I>strict</I>)</td>
+   <td>(<I>loose</I>)</td>
+ <TR>
 
-   <tr>
-     <td valign="top">
-<p align="left">PN (<b>loosest</b>) </p></td><td valign="top">
-<p align="left">Yes </p></td><td valign="top">
-<p align="left">No </p></td><td valign="top">
-<p align="left">No </p></td><td valign="top">
-<p align="left">No </p></td><td valign="top">
-<p align="left">No </p></td>
-   </tr>
+ <TR>
+  <TD align="left" valign="bottom">
+    PN (<B>loosest</B>)
+  </TD>
 
-   <tr>
-     <td valign="top">
-<p align="left">SDF (<b>loose</b>) </p></td><td valign="top">
-<p align="left">Yes </p></td><td valign="top">
-<p align="left">Yes </p></td><td valign="top">
-<p align="left">Yes </p></td><td valign="top">
-<p align="left">No </p></td><td valign="top">
-<p align="left">Yes </p></td>
-   </tr>
+  <TD>
+    Yes
+  </TD>
 
-   <tr>
-     <td valign="top">
-<p align="left">DDF (<b>loose</b>) </p></td>
-<td valign="top">
-<p align="left">Yes </p></td><td valign="top">
-<p align="left">Yes </p></td><td valign="top">
-<p align="left">Yes </p></td><td valign="top">
-<p align="left">No </p></td><td valign="top">
-<p align="left">Yes </p></td>
-   </tr>
+  <TD>
+    No
+  </TD>
 
-   <tr>
-     <td valign="top">
-<p align="left">CT (<b>loose</b>) </p></td><td valign="top">
-<p align="left">Yes </p></td><td valign="top">
-<p align="left">Yes </p></td><td valign="top">
-<p align="left">Yes </p></td><td valign="top">
-<p align="left">No </p></td><td valign="top">
-<p align="left">Yes </p></td>
-   </tr>
+  <TD>
+    No
+  </TD>
 
-   <tr>
-     <td valign="top">
-<p align="left">FSM (<b>refinement</b>) </p></td><td colspan="5" rowspan="1" valign="top">
-<p align="center">Yes if the refinement is stricter than or equal to <i>Y</i> </p>
-     </td>
-   </tr>
+  <TD>
+    No
+  </TD>
 
-  </tbody>
-</table>
+  <TD>
+    No
+  </TD>
+
+  <TD>
+    No
+  </TD>
+
+  <TD>
+    No
+  </TD>
+
+ </TR>
+
+ <TR>
+  <TD align="left" valign="bottom">
+    SDF(<B>loose</B>)
+  </TD>
+
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+
+ </TR>
+
+ <TR>
+  <TD align="left" valign="bottom">
+    DDF(<B>loose</B>)
+  </TD>
+
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+
+ </TR>
+
+ <TR>
+  <TD align="left" valign="bottom">
+    CT (<B>loose</B>)
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+ </TR>
+
+ <TR>
+  <TD align="left" valign="bottom">
+    DE (<B>loose</B>)
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    No
+  </TD>
+  <TD>
+    Yes
+  </TD>
+ </TR>
+
+ <TR>
+  <TD align="left" valign="bottom">
+    SR (<B>strict</B>)
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+  <TD>
+    Yes
+  </TD>
+ </TR>
+
+ <TR>
+  <TD align="left" valign="bottom">
+    FSM (<B>refinement</B>)
+  </TD>
+  <TD colspan="7">
+    Yes if the refinement is stricter than or equal to <i>Y</i>
+  </TD>
+ </TR>
+
+</TR>
+</TABLE>
 
 <h2>Discussion of PN, Dataflow and FSM Directors</h2>
 
@@ -326,6 +460,8 @@ in a Modal Model.  </p>
 Below is a table that lists heterogenous models by top level 
 domain and second level domain.
 
+<!--  To update this table, see $PTII/adm/bin/findsubdomains.
+      It is usually easiest to check just the new demos in the release. -->
 
 <p>Click on the + or - to see examples that work and don't work.
 
@@ -340,7 +476,7 @@ domain and second level domain.
   <tr>
    <th colspan="16">
     Outer Director
-    (<i>requires Y</i>)
+    <br>(<i>requires Y</i>)
    </th>
   </tr>
 
@@ -382,7 +518,7 @@ domain and second level domain.
   </thead>
   <tbody>
   <tr>
-   <th rowspan=14>Inner Director (<b>exports X</b>)</th>
+   <th rowspan=14>Inner Director <br>(<b>exports X</b>)</th>
    <th align="left">CSP (<b>loosest</b>)</th>
    <td>&nbsp;<!-- CSP --></td>
    <td>&nbsp;<!-- Rendezvous --></td>
@@ -529,7 +665,7 @@ domain and second level domain.
    <th align="left">PSDF (<b>loose</b>)</th>
    <td>CSP/PSDF</td>
    <td>Rendezvous/PSDF</td>
-   <td>PSDF/PN
+   <td>PSDF/PSDF
      <a href="../ptolemy/domains/psdf/kernel/test/auto/SDFDirector1.xml">+</a>
    </td>
    <td>CT/PSDF</td>
@@ -606,7 +742,9 @@ domain and second level domain.
      <a href="../ptolemy/domains/giotto/test/auto/Composite.xml">+</a>
    </td>
    <td>?<!-- FSM --></td>
-   <td>?<!-- Giotto --></td>
+   <td>Giotto/Giotto
+     <a href="../ptolemy/domains/giotto/demo/Hierarchy/Hierarchy.xml">+</a>
+   </td>
    <td>?<!-- PSDF --></td>
    <td>?<!-- SDF --></td>
    <td>?<!-- Continuous --></td>
@@ -621,12 +759,18 @@ domain and second level domain.
    <td>PN/Continuous</td>
    <td>CT/Continuous</td>
    <td>DDF/Continuous</td>
-   <td>DE/Continuous</td>
-   <td>FSM/Continuous</td>
+   <td>DE/Continuous
+       <a href="../ptolemy/domains/continuous/demo/ContinuousInsideDE/ContinuousInsideDE.xml">+</a>
+   </td>
+   <td>FSM/Continuous
+       <a href="./ptolemy/domains/continuous/demo/Switch/Switch.xml">+</a>
+   </td>
    <td>?<!-- Giotto --></td>
    <td>PSDF/Continuous</td>
    <td>SDF/Continuous</td>
-   <td>Continuous/Continuous</td>
+   <td>Continuous/Continuous
+       <a href="../ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradle.xml">+</a>
+   </td>
    <td>DE2/Continuous</td>
    <td>SR/Continuous</td>
   </tr>
@@ -662,7 +806,9 @@ domain and second level domain.
      <a href="../ptolemy/domains/test/auto/knownFailedTests/PNSRtest3.xml">-</a>   </td>
    <td>CT/SR</td>
    <td>DDF/SR</td>
-   <td>DE/SR</td>
+   <td>DE/SR
+     <a href="../ptolemy/domains/sr/demo/TrafficLight/TrafficLight.xml">+</a>   </td>
+   </td>
    <td>FSM/SR</td>
    <td>?<!-- Giotto --></td>
    <td>PSDF/SR</td>
@@ -683,7 +829,7 @@ domain and second level domain.
 <sup>1</sup> iff FSM has no CSP, Rendezvous, or PN refinement
 <br><sup>2</sup> iff FSM has continuous, DE2 or SR (all export strict) 
 <br><sup>3</sup> CT inside CT requires that the inner director
-be a CTEmbeddedDirectory.
+be a CTEmbeddedDirector.
 <br><sup>4</sup> DDF as an inner domain is exports loose if we
 annotate the graph.
 
