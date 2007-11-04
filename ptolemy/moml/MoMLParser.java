@@ -1298,7 +1298,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     /** Parse the given stream, using the specified url as the base
-     *  to expand any external references within the MoML file.
      *  The reader is wrapped in a BufferedReader before being used.
      *  Note that this
      *  bypasses the mechanism of parse(URL, URL) that returns
@@ -2236,6 +2235,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 // NOTE: deleteRelation is not supposed to have anything
                 // inside it, so we do not push the context.
+                
                 //////////////////////////////////////////////////////////////
                 //// director
             } else if (elementName.equals("director")) {
@@ -2266,6 +2266,60 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // elements are not used with class structures.
                 _current = _createInstance(newClass, arguments);
                 _namespace = _DEFAULT_NAMESPACE;
+                
+                //////////////////////////////////////////////////////////////
+                //// display
+            } else if (elementName.equals("display")) {
+                String displayName = (String) _attributes.get("name");
+                if (_current != null) {
+
+                    // Propagate.
+                    Iterator derivedObjects = _current.getDerivedList()
+                            .iterator();
+                    String currentName = _current.getName();
+                    while (derivedObjects.hasNext()) {
+                        NamedObj derived = (NamedObj) derivedObjects.next();
+
+                        // If the derived object has the same
+                        // name as the old name, then we assume it
+                        // should change.
+                        if (derived.getName().equals(currentName)) {
+                            if (displayName != null) {
+                                if (displayName.equals(currentName)) {
+                                    // The displayName is the same as the
+                                    // name, so it should be reset to null.
+                                    derived.setDisplayName(null);
+                                } else {
+                                    derived.setDisplayName(displayName);
+                                }
+                            }
+                        }
+                    }
+
+                    // Now change the display name.
+                    String oldDisplayName = _current.getDisplayName();
+                    if (displayName != null) {
+                        if (displayName.equals(currentName) || displayName.equals("")) {
+                            // The displayName is the same as the
+                            // name, so it should be reset to null.
+                            _current.setDisplayName(null);
+                        } else {
+                            _current.setDisplayName(displayName);
+                        }
+
+                        // Handle the undo aspect if needed
+                        if (_undoEnabled) {
+                            // Simply create in the undo MoML another display element.
+                            _undoContext.appendUndoMoML("<display name=\"" 
+                                    + StringUtilities.escapeForXML(oldDisplayName)
+                                    + "\"/>\n");
+
+                            // Do not need to continue generating undo MoML
+                            // as rename does not have any child elements
+                            _undoContext.setChildrenUndoable(false);
+                        }
+                    }
+                }
 
                 //////////////////////////////////////////////////////////////
                 //// doc
@@ -3301,7 +3355,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  chapter of the Ptolemy II design document for a view of the
      *  current (nondeprecated) DTD.
      */
-    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | property | relation | rename | rendition | unlink)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | port | property | relation | rename | rendition | unlink)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED source CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT deleteEntity EMPTY><!ATTLIST deleteEntity name CDATA #REQUIRED><!ELEMENT deletePort EMPTY><!ATTLIST deletePort name CDATA #REQUIRED><!ELEMENT deleteProperty EMPTY><!ATTLIST deleteProperty name CDATA #REQUIRED><!ELEMENT deleteRelation EMPTY><!ATTLIST deleteRelation name CDATA #REQUIRED><!ELEMENT director (configure | doc | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ATTLIST doc name CDATA \"_doc\"><!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | port | property | relation | rename | rendition | unlink)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED source CDATA #IMPLIED><!ELEMENT group ANY><!ATTLIST group name CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT input EMPTY><!ATTLIST input source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link insertAt CDATA #IMPLIED insertInsideAt CDATA #IMPLIED port CDATA #IMPLIED relation CDATA #IMPLIED relation1 CDATA #IMPLIED relation2 CDATA #IMPLIED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | doc | property | rename)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | doc | property | rename)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (configure | doc | property | rename | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rename EMPTY><!ATTLIST rename name CDATA #REQUIRED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT unlink EMPTY><!ATTLIST unlink index CDATA #IMPLIED insideIndex CDATA #IMPLIED port CDATA #IMPLIED relation CDATA #IMPLIED relation1 CDATA #IMPLIED relation2 CDATA #IMPLIED><!ELEMENT vertex (configure | doc | location | property | rename)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED value CDATA #IMPLIED>";
+    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | display | doc | entity | group | import | input | link | property | relation | rename | rendition | unlink)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | display | doc | entity | group | import | input | link | port | property | relation | rename | rendition | unlink)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED source CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT deleteEntity EMPTY><!ATTLIST deleteEntity name CDATA #REQUIRED><!ELEMENT deletePort EMPTY><!ATTLIST deletePort name CDATA #REQUIRED><!ELEMENT deleteProperty EMPTY><!ATTLIST deleteProperty name CDATA #REQUIRED><!ELEMENT deleteRelation EMPTY><!ATTLIST deleteRelation name CDATA #REQUIRED><!ELEMENT director (configure | doc | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT display EMPTY><!ATTLIST display name CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ATTLIST doc name CDATA #IMPLIED><!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | display | doc | entity | group | import | input | link | port | property | relation | rename | rendition | unlink)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED source CDATA #IMPLIED><!ELEMENT group ANY><!ATTLIST group name CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT input EMPTY><!ATTLIST input source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link insertAt CDATA #IMPLIED insertInsideAt CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #IMPLIED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | display | doc | property | rename)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | display | doc | property | rename)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (configure | display | doc | property | rename | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rename EMPTY><!ATTLIST rename name CDATA #REQUIRED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT unlink EMPTY><!ATTLIST unlink index CDATA #IMPLIED insideIndex CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #IMPLIED><!ELEMENT vertex (configure | display | doc | location | property | rename)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED value CDATA #IMPLIED>";
 
     // NOTE: The master file for the above DTD is at
     // $PTII/ptolemy/moml/MoML_1.dtd.  If modified, it needs to be also
@@ -5133,6 +5187,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 || elementName.equals("deletePort")
                 || elementName.equals("deleteProperty")
                 || elementName.equals("deleteRelation")
+                || elementName.equals("display")
                 || elementName.equals("entity") || elementName.equals("group")
                 || elementName.equals("link") || elementName.equals("port")
                 || elementName.equals("relation")

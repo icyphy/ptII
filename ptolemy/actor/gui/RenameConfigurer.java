@@ -42,6 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// RenameConfigurer
@@ -68,6 +69,7 @@ public class RenameConfigurer extends Query implements ChangeListener,
         setTextWidth(25);
         _object = object;
         addLine("New name", "New name", object.getName());
+        addTextArea("Display name", "Display name", object.getDisplayName());
 
         // By default, names are not shown for ports, and are shown
         // for everything else.  Note that ports are a little confusing,
@@ -93,18 +95,30 @@ public class RenameConfigurer extends Query implements ChangeListener,
     public void apply() {
         if (_changed) {
             String newName = getStringValue("New name");
+            String displayName = StringUtilities.escapeForXML(
+                    getStringValue("Display name"));
 
             NamedObj parent = _object.getContainer();
             String oldName = _object.getName();
+            String oldDisplayName = StringUtilities.escapeForXML(
+                    _object.getDisplayName());
 
             StringBuffer moml = new StringBuffer("<");
             String elementName = _object.getElementName();
             moml.append(elementName);
             moml.append(" name=\"");
             moml.append(oldName);
-            moml.append("\"><rename name=\"");
-            moml.append(newName);
-            moml.append("\"/>");
+            moml.append("\">");
+            if (!oldName.equals(newName)) {
+                moml.append("<rename name=\"");
+                moml.append(newName);
+                moml.append("\"/>");
+            }
+            if (!oldDisplayName.equals(displayName)) {
+                moml.append("<display name=\"");
+                moml.append(displayName);
+                moml.append("\"/>");
+            }
 
             // Remove or show name.
             boolean showName = getBooleanValue("Show name");
@@ -154,7 +168,7 @@ public class RenameConfigurer extends Query implements ChangeListener,
             moml.append("</");
             moml.append(elementName);
             moml.append(">");
-
+            
             MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
                     parent, // context
                     moml.toString(), // MoML code

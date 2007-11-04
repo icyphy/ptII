@@ -1,4 +1,4 @@
-<!-- MoML DTD Version 1.2, UC Berkeley -->
+<!-- MoML DTD Version 1.4, UC Berkeley -->
 <!-- $Id$ -->
 <!-- If you update this file, please also update:  -->
 <!--    ptweb/xml/dtd/MoML_1.dtd, -->
@@ -11,14 +11,14 @@
 
 <!-- The model element is deprecated.  Use entity instead. -->
 <!ELEMENT model (class | configure | deleteEntity | deletePort |
-		deleteRelation | director | doc | entity | group | import |
+		deleteRelation | director | display | doc | entity | group | import |
                 input | link | property | relation | rename | rendition |
 		unlink)*>
 <!ATTLIST model name CDATA #REQUIRED
                 class CDATA #IMPLIED>
 
 <!ELEMENT class (class | configure | deleteEntity | deletePort |
-		 deleteRelation | director | doc |
+		 deleteRelation | director | display | doc |
                  entity | group | import | input | link | port |
                  property | relation | rename | rendition | unlink)*>
 <!ATTLIST class name CDATA #REQUIRED
@@ -45,11 +45,14 @@
 <!ATTLIST director name CDATA "director"
                    class CDATA #REQUIRED>
 
+<!ELEMENT display EMPTY>
+<!ATTLIST display name CDATA #REQUIRED>
+
 <!ELEMENT doc (#PCDATA)>
 <!ATTLIST doc name CDATA #IMPLIED>
 
 <!ELEMENT entity (class | configure | deleteEntity | deletePort |
-		  deleteRelation | director | doc |
+		  deleteRelation | director | display | doc |
                   entity | group | import | input | link | port |
                   property | relation | rename | rendition | unlink)*>
 <!ATTLIST entity name CDATA #REQUIRED
@@ -80,16 +83,16 @@
 <!ELEMENT location EMPTY>
 <!ATTLIST location value CDATA #REQUIRED>
 
-<!ELEMENT port (configure | doc | property | rename)*>
+<!ELEMENT port (configure | display | doc | property | rename)*>
 <!ATTLIST port class CDATA #IMPLIED
                name CDATA #REQUIRED>
 
-<!ELEMENT property (configure | doc | property | rename)*>
+<!ELEMENT property (configure | display | doc | property | rename)*>
 <!ATTLIST property class CDATA #IMPLIED
                     name CDATA #REQUIRED
                     value CDATA #IMPLIED>
 
-<!ELEMENT relation (configure | doc | property | rename | vertex)*>
+<!ELEMENT relation (configure | display | doc | property | rename | vertex)*>
 <!ATTLIST relation name CDATA #REQUIRED
                    class CDATA #IMPLIED>
 
@@ -106,7 +109,7 @@
                  port CDATA #REQUIRED
                  relation CDATA #IMPLIED>
 
-<!ELEMENT vertex (configure | doc | location | property | rename)*>
+<!ELEMENT vertex (configure | display | doc | location | property | rename)*>
 <!ATTLIST vertex name CDATA #REQUIRED
                  pathTo CDATA #IMPLIED
                  value CDATA #IMPLIED>

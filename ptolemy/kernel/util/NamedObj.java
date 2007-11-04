@@ -879,6 +879,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         } else {
             output.write(">\n");
         }
+        // If the display name has been set, then include a display element.
+        if (_displayName != null) {
+            output.write("<display name=\"");
+            output.write(StringUtilities.escapeForXML(_displayName));
+            output.write("\"/>");
+        }
 
         _exportMoMLContents(output, depth + 1);
 
