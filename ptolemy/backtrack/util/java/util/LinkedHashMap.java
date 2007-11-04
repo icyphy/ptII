@@ -71,13 +71,9 @@ import ptolemy.backtrack.util.FieldRecord;
  * produce the same results when iterating over the copy.  This is possible
  * without needing the overhead of <code>TreeMap</code>.
  * <p>
- * When using this {
- @link #LinkedHashMap(int, float, boolean) constructor}
- ,
+ * When using this {@link #LinkedHashMap(int, float, boolean) constructor},
  * you can build an access-order mapping.  This can be used to implement LRU
- * caches, for example.  By overriding {
- @link #removeEldestEntry(Map.Entry)}
- ,
+ * caches, for example.  By overriding {@link #removeEldestEntry(Map.Entry)},
  * you can also control the removal of the oldest entry, and thereby do
  * things like keep the map at a fixed size.
  * <p>
@@ -95,10 +91,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * <p>
  * The iterators are <i>fail-fast</i>, meaning that any structural
  * modification, except for <code>remove()</code> called on the iterator
- * itself, cause the iterator to throw a{
- @link ConcurrentModificationException}
- rather than exhibit
- * non-deterministic behavior.
+ * itself, cause the iterator to throw a {@link ConcurrentModificationException}
+ * rather than exhibit non-deterministic behavior.
  * @author Eric Blake (ebb9@email.byu.edu)
  * @see Object#hashCode()
  * @see Collection
@@ -304,13 +298,7 @@ public class LinkedHashMap extends HashMap implements Rollbackable {
     /**
      * Generates a parameterized iterator. This allows traversal to follow
      * the doubly-linked list instead of the random bin order of HashMap.
-     * @param type {
-     @link #KEYS    }
-     , {
-     @link #VALUES    }
-     , or {
-     @link #ENTRIES    }
-
+     * @param type {@link #KEYS}, {@link #VALUES}, or {@link #ENTRIES}
      * @return the appropriate iterator
      */
     Iterator iterator(final int type) {

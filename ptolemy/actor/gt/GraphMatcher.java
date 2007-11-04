@@ -238,11 +238,11 @@ public class GraphMatcher {
     }
 
     /** Set the callback to be invoked by future calls to {@link
-     *  #match(CompositeActorMatcher, CompositeEntity)}.
+     *  #match(Pattern, CompositeEntity)}.
      *
      *  @param callback The callback. If it is <tt>null</tt>, the callback is
      *   set to {@link #DEFAULT_CALLBACK}.
-     *  @see #match(CompositeActorMatcher, CompositeEntity)
+     *  @see #match(Pattern, CompositeEntity)
      */
     public void setMatchCallback(MatchCallback callback) {
         if (callback == null) {

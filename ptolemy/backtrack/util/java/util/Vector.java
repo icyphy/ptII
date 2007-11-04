@@ -64,21 +64,16 @@ import ptolemy.backtrack.util.FieldRecord;
  * Vector implements the JDK 1.2 List interface, and is therefore a fully
  * compliant Collection object. The iterators are fail-fast - if external
  * code structurally modifies the vector, any operation on the iterator will
- * then throw a {
- @link ConcurrentModificationException}
- . The Vector class is
+ * then throw a {@link ConcurrentModificationException}. The Vector class is
  * fully synchronized, but the iterators are not. So, when iterating over a
  * vector, be sure to synchronize on the vector itself.  If you don't want the
  * expense of synchronization, use ArrayList instead. On the other hand, the
  * Enumeration of elements() is not thread-safe, nor is it fail-fast; so it
  * can lead to undefined behavior even in a single thread if you modify the
  * vector during iteration.<p>
- * Note: Some methods, especially those specified by List, specify throwing{
- @link IndexOutOfBoundsException}
- , but it is easier to implement by
- * throwing the subclass {
- @link ArrayIndexOutOfBoundsException}
- . Others
+ * Note: Some methods, especially those specified by List, specify throwing
+ * {@link IndexOutOfBoundsException}, but it is easier to implement by
+ * throwing the subclass {@link ArrayIndexOutOfBoundsException}. Others
  * directly specify this subclass.
  * @author Scott G. Miller
  * @author Bryce McKinlay
@@ -287,9 +282,8 @@ public class Vector extends AbstractList implements List, RandomAccess,
 
     /**
      * Copies the contents of the Vector into the provided array.  If the
-     * array is too small to fit all the elements in the Vector, an {
-     @link IndexOutOfBoundsException    }
-     is thrown without modifying the array.
+     * array is too small to fit all the elements in the Vector, an
+     * {@link IndexOutOfBoundsException} is thrown without modifying the array.
      * Old elements in the array are overwritten by the new elements.
      * @param a target array for the copy
      * @throws IndexOutOfBoundsException the array is not large enough
@@ -1058,18 +1052,15 @@ public class Vector extends AbstractList implements List, RandomAccess,
     /**
      * The amount the Vector's internal array should be increased in size when
      * a new element is added that exceeds the current size of the array,
-     * or when {
-     @link #ensureCapacity    }
-     is called. If &lt;= 0, the vector just
+     * or when {@link #ensureCapacity} is called. If &lt;= 0, the vector just
      * doubles in size.
      * @serial the amount to grow the vector by
      */
     private int capacityIncrement;
 
     /**
-     * The number of elements currently in the vector, also returned by{
-     @link #size    }
-     .
+     * The number of elements currently in the vector, also returned by
+     * {@link #size}.
      * @serial the size
      */
     private int elementCount;

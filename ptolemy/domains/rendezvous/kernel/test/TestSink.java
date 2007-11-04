@@ -47,9 +47,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class TestSink extends AtomicActor {
     /** Constructor Adds ports to the star
-     * @param initValue is the initial token that the star puts in the stream
-     * @exception NameDuplicationException indicates that an attempt to add
-     *  two ports with the same name has been made
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
     public TestSink(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {

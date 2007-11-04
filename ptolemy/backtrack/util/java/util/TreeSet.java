@@ -228,9 +228,8 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
     /**
      * Returns a view of this Set including all elements less than
      * <code>to</code>. The returned set is backed by the original, so changes
-     * in one appear in the other. The subset will throw an{
-     @link IllegalArgumentException    }
-     for any attempt to access or add an
+     * in one appear in the other. The subset will throw an
+     * {@link IllegalArgumentException} for any attempt to access or add an
      * element beyond the specified cutoff. The returned set does not include
      * the endpoint; if you want inclusion, pass the successor element.
      * @param to the (exclusive) cutoff point
@@ -293,9 +292,8 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
      * Returns a view of this Set including all elements greater or equal to
      * <code>from</code> and less than <code>to</code> (a half-open interval).
      * The returned set is backed by the original, so changes in one appear in
-     * the other. The subset will throw an {
-     @link IllegalArgumentException    }
-     for any attempt to access or add an element beyond the specified cutoffs.
+     * the other. The subset will throw an {@link IllegalArgumentException} for
+     * any attempt to access or add an element beyond the specified cutoffs.
      * The returned set includes the low endpoint but not the high; if you want
      * to reverse this behavior on either end, pass in the successor element.
      * @param from the (inclusive) low cutoff point
@@ -314,9 +312,8 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
     /**
      * Returns a view of this Set including all elements greater or equal to
      * <code>from</code>. The returned set is backed by the original, so
-     * changes in one appear in the other. The subset will throw an{
-     @link IllegalArgumentException    }
-     for any attempt to access or add an
+     * changes in one appear in the other. The subset will throw an
+     * {@link IllegalArgumentException} for any attempt to access or add an
      * element beyond the specified cutoff. The returned set includes the
      * endpoint; if you want to exclude it, pass in the successor element.
      * @param from the (inclusive) low cutoff point

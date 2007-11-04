@@ -169,7 +169,7 @@ public class RefactorAction implements IWorkbenchWindowActionDelegate {
         /** Check whether there is an IO error. This method always returns
          *  false.
          *
-         *  @param true if there is an error; false, otherwise.
+         *  @return true if there is an error; false, otherwise.
          */
         public boolean checkError() {
             return false;

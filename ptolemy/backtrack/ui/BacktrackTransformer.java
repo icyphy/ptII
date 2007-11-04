@@ -207,7 +207,7 @@ public class BacktrackTransformer {
          *  version does not have an icon associated with it.
          *
          *  @param container The container of the element.
-         *  @param The XML element to be closed.
+         *  @param elementName The XML element to be closed.
          *  @exception IllegalActionException If the MoML of the original
          *   actor's icon cannot be read and inserted into the new model.
          */

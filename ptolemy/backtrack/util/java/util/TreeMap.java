@@ -100,12 +100,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * Instantiate a new TreeMap with no elements, using the keys' natural
      * ordering to sort. All entries in the map must have a key which implements
      * Comparable, and which are <i>mutually comparable</i>, otherwise map
-     * operations may throw a {
-     @link ClassCastException    }
-     . Attempts to use
-     * a null key will throw a {
-     @link NullPointerException    }
-     .
+     * operations may throw a {@link ClassCastException}. Attempts to use
+     * a null key will throw a {@link NullPointerException}.
      * @see Comparable
      */
     public TreeMap() {
@@ -115,9 +111,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     /**
      * Instantiate a new TreeMap with no elements, using the provided comparator
      * to sort. All entries in the map must have keys which are mutually
-     * comparable by the Comparator, otherwise map operations may throw a{
-     @link ClassCastException    }
-     .
+     * comparable by the Comparator, otherwise map operations may throw a
+     * {@link ClassCastException}.
      * @param c the sort order for the keys of this map, or null
      * for the natural order
      */
@@ -131,9 +126,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * the provided Map.  The elements will be sorted using the natural
      * ordering of the keys. This algorithm runs in n*log(n) time. All entries
      * in the map must have keys which implement Comparable and are mutually
-     * comparable, otherwise map operations may throw a{
-     @link ClassCastException    }
-     .
+     * comparable, otherwise map operations may throw a
+     * {@link ClassCastException}.
      * @param map a Map, whose entries will be put into this TreeMap
      * @throws ClassCastException if the keys in the provided Map are not
      * comparable
@@ -399,9 +393,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     /**
      * Returns a view of this Map including all entries with keys less than
      * <code>toKey</code>. The returned map is backed by the original, so changes
-     * in one appear in the other. The submap will throw an{
-     @link IllegalArgumentException    }
-     for any attempt to access or add an
+     * in one appear in the other. The submap will throw an
+     * {@link IllegalArgumentException} for any attempt to access or add an
      * element beyond the specified cutoff. The returned map does not include
      * the endpoint; if you want inclusion, pass the successor element.
      * @param toKey the (exclusive) cutoff point
@@ -625,9 +618,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
      * Returns a view of this Map including all entries with keys greater or
      * equal to <code>fromKey</code> and less than <code>toKey</code> (a
      * half-open interval). The returned map is backed by the original, so
-     * changes in one appear in the other. The submap will throw an{
-     @link IllegalArgumentException    }
-     for any attempt to access or add an
+     * changes in one appear in the other. The submap will throw an
+     * {@link IllegalArgumentException} for any attempt to access or add an
      * element beyond the specified cutoffs. The returned map includes the low
      * endpoint but not the high; if you want to reverse this behavior on
      * either end, pass in the successor element.
@@ -647,9 +639,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     /**
      * Returns a view of this Map including all entries with keys greater or
      * equal to <code>fromKey</code>. The returned map is backed by the
-     * original, so changes in one appear in the other. The submap will throw an{
-     @link IllegalArgumentException    }
-     for any attempt to access or add an
+     * original, so changes in one appear in the other. The submap will throw an
+     * {@link IllegalArgumentException} for any attempt to access or add an
      * element beyond the specified cutoff. The returned map includes the
      * endpoint; if you want to exclude it, pass in the successor element.
      * @param fromKey the (inclusive) low cutoff point
@@ -1324,9 +1315,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
             $RECORD$size, $RECORD$entries, $RECORD$modCount };
 
     /**
-     * The cache for {
-     @link #entrySet()    }
-     .
+     * The cache for {@link #entrySet()}.
      */
     private transient Set entries;
 
@@ -1495,13 +1484,9 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
     }
 
     /**
-     * Implementation of {
-     @link #subMap(Object, Object)    }
-     and other map
+     * Implementation of {@link #subMap(Object, Object)} and other map
      * ranges. This class provides a view of a portion of the original backing
-     * map, and throws {
-     @link IllegalArgumentException    }
-     for attempts to
+     * map, and throws {@link IllegalArgumentException} for attempts to
      * access beyond that range.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -1972,9 +1957,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$entries };
 
         /**
-         * The cache for {
-         @link #entrySet()        }
-         .
+         * The cache for {@link #entrySet()}.
          */
         private Set entries;
 
@@ -2175,13 +2158,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
 
         /**
          * Construct a new TreeIterator with the supplied type.
-         * @param type {
-         @link #KEYS        }
-         , {
-         @link #VALUES        }
-         , or {
-         @link #ENTRIES        }
-
+         * @param type {@link #KEYS}, {@link #VALUES}, or {@link #ENTRIES}
          */
         TreeIterator(int type) {
             this.type = type;
@@ -2192,13 +2169,7 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         /**
          * Construct a new TreeIterator with the supplied type. Iteration will
          * be from "first" (inclusive) to "max" (exclusive).
-         * @param type {
-         @link #KEYS        }
-         , {
-         @link #VALUES        }
-         , or {
-         @link #ENTRIES        }
-
+         * @param type {@link #KEYS}, {@link #VALUES}, or {@link #ENTRIES}
          * @param first where to start iteration, nil for empty iterator
          * @param max the cutoff for iteration, nil for all remaining nodes
          */
@@ -2304,14 +2275,8 @@ public class TreeMap extends AbstractMap implements SortedMap, Cloneable,
         private Node next;
 
         /**
-         * The type of this Iterator: {
-         @link #KEYS        }
-         , {
-         @link #VALUES        }
-         ,
-         * or {
-         @link #ENTRIES        }
-         .
+         * The type of this Iterator: {@link #KEYS}, {@link #VALUES},
+         * or {@link #ENTRIES}.
          */
         private final int type;
 

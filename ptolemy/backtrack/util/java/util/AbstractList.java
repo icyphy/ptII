@@ -1063,9 +1063,7 @@ public abstract class AbstractList extends AbstractCollection implements List,
      * the list (that is, insertions and removals). Structural modifications
      * are ones which change the list size or affect how iterations would
      * behave. This field is available for use by Iterator and ListIterator,
-     * in order to throw a {
-     @link ConcurrentModificationException    }
-     in response
+     * in order to throw a {@link ConcurrentModificationException} in response
      * to the next operation on the iterator. This <i>fail-fast</i> behavior
      * saves the user from many subtle bugs otherwise possible from concurrent
      * modification during iteration.
@@ -1077,8 +1075,8 @@ public abstract class AbstractList extends AbstractCollection implements List,
     private transient int modCount;
 
     /**
-     * This class is a RandomAccess version of SubList, as required by{
-     @link AbstractList#subList(int, int)    }
+     * This class is a RandomAccess version of SubList, as required by
+     * {@link AbstractList#subList(int, int)}
      .
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -1115,9 +1113,8 @@ public abstract class AbstractList extends AbstractCollection implements List,
     // This follows the specification of AbstractList, but is inconsistent
     // with the one in List. Don't you love Sun's inconsistencies?
     /**
-     * This class follows the implementation requirements set forth in{
-     @link AbstractList#subList(int, int)    }
-     . It matches Sun's implementation
+     * This class follows the implementation requirements set forth in
+     * {@link AbstractList#subList(int, int)}. It matches Sun's implementation
      * by using a non-public top-level class in the same package.
      * @author Original author unknown
      * @author Eric Blake (ebb9@email.byu.edu)

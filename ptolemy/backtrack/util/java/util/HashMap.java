@@ -705,13 +705,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
     /**
      * Generates a parameterized iterator.  Must be overrideable, since
      * LinkedHashMap iterates in a different order.
-     * @param type {
-     @link #KEYS    }
-     , {
-     @link #VALUES    }
-     , or {
-     @link #ENTRIES    }
-
+     * @param type {@link #KEYS}, {@link #VALUES}, or {@link #ENTRIES}
      * @return the appropriate iterator
      */
     Iterator iterator(int type) {
@@ -797,9 +791,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
         }
 
         /**
-         * Called when this entry is accessed via {
-         @link #put(Object, Object)        }
-         .
+         * Called when this entry is accessed via {@link #put(Object, Object)}.
          * This version does nothing, but in LinkedHashMap, it must do some
          * bookkeeping for access-traversal mode.
          */
@@ -976,9 +968,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
     private transient HashEntry[] buckets;
 
     /**
-     * The cache for {
-     @link #entrySet()    }
-     .
+     * The cache for {@link #entrySet()}.
      */
     private transient Set entries;
 
@@ -1142,13 +1132,7 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
 
         /**
          * Construct a new HashIterator with the supplied type.
-         * @param type {
-         @link #KEYS        }
-         , {
-         @link #VALUES        }
-         , or {
-         @link #ENTRIES        }
-
+         * @param type {@link #KEYS}, {@link #VALUES}, or {@link #ENTRIES}
          */
         HashIterator(int type) {
             this.type = type;
@@ -1339,14 +1323,8 @@ public class HashMap extends AbstractMap implements Map, Cloneable,
         private HashEntry next;
 
         /**
-         * The type of this Iterator: {
-         @link #KEYS        }
-         , {
-         @link #VALUES        }
-         ,
-         * or {
-         @link #ENTRIES        }
-         .
+         * The type of this Iterator: {@link #KEYS}, {@link #VALUES},
+         * or {@link #ENTRIES}.
          */
         private final int type;
 

@@ -1094,16 +1094,12 @@ public abstract class AbstractMap implements Map, Rollbackable {
             $RECORD$values };
 
     /**
-     * The cache for {
-     @link #keySet()    }
-     .
+     * The cache for {@link #keySet()}.
      */
     private Set keys;
 
     /**
-     * The cache for {
-     @link #values()    }
-     .
+     * The cache for {@link #values()}.
      */
     private Collection values;
 

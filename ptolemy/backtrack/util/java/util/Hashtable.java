@@ -320,9 +320,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * proper interaction of null with this set, but has inconsistent behavior
      * in the JDK. Therefore, in this implementation, contains, remove,
      * containsAll, retainAll, removeAll, and equals just ignore a null entry,
-     * or an entry with a null key or value, rather than throwing a{
-     @link NullPointerException    }
-     . However, calling entry.setValue(null)
+     * or an entry with a null key or value, rather than throwing a
+     *  {@link NullPointerException}. However, calling entry.setValue(null)
      * will fail.
      * <p>
      * Note that the iterators for all three views, from keySet(), entrySet(),
@@ -496,9 +495,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * proper interaction of null with this set, but has inconsistent behavior
      * in the JDK. Therefore, in this implementation, contains, remove,
      * containsAll, retainAll, removeAll, and equals just ignore a null key
-     * rather than throwing a {
-     @link NullPointerException    }
-     .
+     * rather than throwing a {@link NullPointerException}.
      * @return a set view of the keys
      * @see #values()
      * @see #entrySet()
@@ -727,9 +724,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
      * hashtable.  Sun has not documented the proper interaction of null with
      * this set, but has inconsistent behavior in the JDK. Therefore, in this
      * implementation, contains, remove, containsAll, retainAll, removeAll, and
-     * equals just ignore a null value rather than throwing a{
-     @link NullPointerException    }
-     .
+     * equals just ignore a null value rather than throwing a
+     * {@link NullPointerException}.
      * @return a bag view of the values
      * @see #keySet()
      * @see #entrySet()
@@ -1085,16 +1081,12 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     private transient HashEntry[] buckets;
 
     /**
-     * The cache for {
-     @link #entrySet()    }
-     .
+     * The cache for {@link #entrySet()}.
      */
     private transient Set entries;
 
     /**
-     * The cache for {
-     @link #keySet()    }
-     .
+     * The cache for {@link #keySet()}.
      */
     private transient Set keys;
 
@@ -1131,9 +1123,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
     private int threshold;
 
     /**
-     * The cache for {
-     @link #values()    }
-     .
+     * The cache for {@link #values()}.
      */
     private transient Collection values;
 
@@ -1221,11 +1211,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
 
         /**
          * Construct the enumeration.
-         * @param type either {
-         @link #KEYS        }
-         or {
-         @link #VALUES        }
-         .
+         * @param type either {@link #KEYS} or {@link #VALUES}.
          */
         Enumerator(int type) {
             this.type = type;
@@ -1256,11 +1242,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         }
 
         /**
-         * The type of this Iterator: {
-         @link #KEYS        }
-         or {
-         @link #VALUES        }
-         .
+         * The type of this Iterator: {@link #KEYS} or {@link #VALUES}.
          */
         final int type;
 
@@ -1538,13 +1520,7 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
 
         /**
          * Construct a new HashIterator with the supplied type.
-         * @param type {
-         @link #KEYS        }
-         , {
-         @link #VALUES        }
-         , or {
-         @link #ENTRIES        }
-
+         * @param type {@link #KEYS}, {@link #VALUES}, or {@link #ENTRIES}
          */
         HashIterator(int type) {
             this.type = type;
@@ -1591,14 +1567,8 @@ public class Hashtable extends Dictionary implements Map, Cloneable,
         }
 
         /**
-         * The type of this Iterator: {
-         @link #KEYS        }
-         , {
-         @link #VALUES        }
-         ,
-         * or {
-         @link #ENTRIES        }
-         .
+         * The type of this Iterator: {@link #KEYS}, {@link #VALUES},
+         * or {@link #ENTRIES}.
          */
         final int type;
 

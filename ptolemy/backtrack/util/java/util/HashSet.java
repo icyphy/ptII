@@ -61,10 +61,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * <p>
  * The iterators are <i>fail-fast</i>, meaning that any structural
  * modification, except for <code>remove()</code> called on the iterator
- * itself, cause the iterator to throw a{
- @link ConcurrentModificationException}
- rather than exhibit
- * non-deterministic behavior.
+ * itself, cause the iterator to throw a {@link ConcurrentModificationException}
+ * rather than exhibit non-deterministic behavior.
  * @author Jon Zeppieri
  * @author Eric Blake (ebb9@email.byu.edu)
  * @see Collection

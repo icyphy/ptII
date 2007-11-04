@@ -46,8 +46,12 @@ public class GraphTransformer {
 
     public boolean transform(TransformationRule transformer,
             MatchResult matchResult, CompositeEntity hostGraph) {
-        return _performOperations(matchResult, transformer.getPattern(),
-                transformer.getReplacement());
+        boolean success = true;
+        
+        success = success && _performOperations(matchResult,
+                transformer.getPattern(), transformer.getReplacement());
+        
+        return success;
     }
 
     private boolean _performOperations(MatchResult matchResult, Pattern pattern,

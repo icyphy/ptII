@@ -59,13 +59,9 @@ import ptolemy.backtrack.util.FieldRecord;
  * multiple copies of one element, and methods which "wrap" collections to give
  * them extra properties, such as thread-safety and unmodifiability.
  * <p>
- * All methods which take a collection throw a {
- @link NullPointerException}
- if
+ * All methods which take a collection throw a {@link NullPointerException} if
  * that collection is null. Algorithms which can change a collection may, but
- * are not required, to throw the {
- @link UnsupportedOperationException}
- that
+ * are not required, to throw the {@link UnsupportedOperationException} that
  * the underlying collection would throw during an attempt at modification.
  * For example,
  * <code>Collections.singleton("").addAll(Collections.EMPTY_SET)</code>
@@ -124,12 +120,10 @@ public class Collections implements Rollbackable {
      * loop. Further, the key must be comparable with every item in the list. If
      * the list contains the key more than once, any one of them may be found.
      * <p>
-     * This algorithm behaves in log(n) time for {
-     @link RandomAccess    }
+     * This algorithm behaves in log(n) time for {@link RandomAccess}
      lists,
      * and uses a linear search with O(n) link traversals and log(n) comparisons
-     * with {
-     @link AbstractSequentialList    }
+     * with {@link AbstractSequentialList}
      lists. Note: although the
      * specification allows for an infinite loop if the list is unsorted, it will
      * not happen in this (Classpath) implementation.
@@ -155,13 +149,9 @@ public class Collections implements Rollbackable {
      * list. If the list contains the key more than once, any one of them may be
      * found. If the comparator is null, the elements' natural ordering is used.
      * <p>
-     * This algorithm behaves in log(n) time for {
-     @link RandomAccess    }
-     lists,
+     * This algorithm behaves in log(n) time for {@link RandomAccess} lists,
      * and uses a linear search with O(n) link traversals and log(n) comparisons
-     * with {
-     @link AbstractSequentialList    }
-     lists. Note: although the
+     * with {@link AbstractSequentialList} lists. Note: although the
      * specification allows for an infinite loop if the list is unsorted, it will
      * not happen in this (Classpath) implementation.
      * @param l the list to search (must be sorted)
@@ -535,16 +525,13 @@ public class Collections implements Rollbackable {
      * <code>Collections.rotate(l.subList(1, 3+1), -1)</code>, which will
      * result in <code>[t, n, k, a, s]</code>.
      * <p>
-     * If the list is small or implements {
-     @link RandomAccess    }
-     , the
+     * If the list is small or implements {@link RandomAccess}, the
      * implementation exchanges the first element to its destination, then the
      * displaced element, and so on until a circuit has been completed. The
      * process is repeated if needed on the second element, and so forth, until
      * all elements have been swapped.  For large non-random lists, the
      * implementation breaks the list into two sublists at index
-     * <code>-distance mod size</code>, calls {
-     @link #reverse(List)    }
+     * <code>-distance mod size</code>, calls {@link #reverse(List)}
      on the
      * pieces, then reverses the overall list.
      * @param list the list to rotate
@@ -600,9 +587,7 @@ public class Collections implements Rollbackable {
      * close to perfect.
      * <p>
      * This method operates in linear time. To do this on large lists which do
-     * not implement {
-     @link RandomAccess    }
-     , a temporary array is used to acheive
+     * not implement {@link RandomAccess}, a temporary array is used to acheive
      * this speed, since it would be quadratic access otherwise.
      * @param l the list to shuffle
      * @throws UnsupportedOperationException if l.listIterator() does not
@@ -631,9 +616,7 @@ public class Collections implements Rollbackable {
      * results are merely very close to perfect.
      * <p>
      * This method operates in linear time. To do this on large lists which do
-     * not implement {
-     @link RandomAccess    }
-     , a temporary array is used to acheive
+     * not implement {@link RandomAccess}, a temporary array is used to acheive
      * this speed, since it would be quadratic access otherwise.
      * @param l the list to shuffle
      * @param r the source of randomness to use for the shuffle
@@ -932,9 +915,7 @@ public class Collections implements Rollbackable {
      * Returns an unmodifiable view of the given collection. This allows
      * "read-only" access, although changes in the backing collection show up
      * in this view. Attempts to modify the collection directly or via iterators
-     * will fail with {
-     @link UnsupportedOperationException    }
-     .  Although this view
+     * will fail with {@link UnsupportedOperationException}.  Although this view
      * prevents changes to the structure of the collection and its elements, the values
      * referenced by the objects in the collection can still be modified.
      * <p>
@@ -955,9 +936,7 @@ public class Collections implements Rollbackable {
      * Returns an unmodifiable view of the given list. This allows
      * "read-only" access, although changes in the backing list show up
      * in this view. Attempts to modify the list directly, via iterators, or
-     * via sublists, will fail with {
-     @link UnsupportedOperationException    }
-     .
+     * via sublists, will fail with {@link UnsupportedOperationException}.
      * Although this view prevents changes to the structure of the list and
      * its elements, the values referenced by the objects in the list can
      * still be modified.
@@ -981,9 +960,7 @@ public class Collections implements Rollbackable {
      * Returns an unmodifiable view of the given map. This allows "read-only"
      * access, although changes in the backing map show up in this view.
      * Attempts to modify the map directly, or via collection views or their
-     * iterators will fail with {
-     @link UnsupportedOperationException    }
-     .
+     * iterators will fail with {@link UnsupportedOperationException}.
      * Although this view prevents changes to the structure of the map and its
      * entries, the values referenced by the objects in the map can still be
      * modified.
@@ -1002,9 +979,7 @@ public class Collections implements Rollbackable {
      * Returns an unmodifiable view of the given set. This allows
      * "read-only" access, although changes in the backing set show up
      * in this view. Attempts to modify the set directly or via iterators
-     * will fail with {
-     @link UnsupportedOperationException    }
-     .
+     * will fail with {@link UnsupportedOperationException}.
      * Although this view prevents changes to the structure of the set and its
      * entries, the values referenced by the objects in the set can still be
      * modified.
@@ -1023,9 +998,8 @@ public class Collections implements Rollbackable {
      * Returns an unmodifiable view of the given sorted map. This allows
      * "read-only" access, although changes in the backing map show up in this
      * view. Attempts to modify the map directly, via subviews, via collection
-     * views, or iterators, will fail with {
-     @link UnsupportedOperationException    }
-     .
+     * views, or iterators, will fail with
+     * {@link UnsupportedOperationException}.
      * Although this view prevents changes to the structure of the map and its
      * entries, the values referenced by the objects in the map can still be
      * modified.
@@ -1044,9 +1018,7 @@ public class Collections implements Rollbackable {
      * Returns an unmodifiable view of the given sorted set. This allows
      * "read-only" access, although changes in the backing set show up
      * in this view. Attempts to modify the set directly, via subsets, or via
-     * iterators, will fail with {
-     @link UnsupportedOperationException    }
-     .
+     * iterators, will fail with {@link UnsupportedOperationException}.
      * Although this view prevents changes to the structure of the set and its
      * entries, the values referenced by the objects in the set can still be
      * modified.
@@ -1103,9 +1075,7 @@ public class Collections implements Rollbackable {
 
     // class SingletonMap
     /**
-     * The implementation of {
-     @link #synchronizedCollection(Collection)    }
-     . This
+     * The implementation of {@link #synchronizedCollection(Collection)}. This
      * class name is required for compatibility with Sun's JDK serializability.
      * Package visible, so that collections such as the one for
      * Hashtable.values() can specify which object to synchronize on.
@@ -1437,9 +1407,7 @@ public class Collections implements Rollbackable {
 
     // class SynchronizedIterator
     /**
-     * The implementation of {
-     @link #synchronizedList(List)    }
-     for sequential
+     * The implementation of {@link #synchronizedList(List)} for sequential
      * lists. This class name is required for compatibility with Sun's JDK
      * serializability. Package visible, so that lists such as Vector.subList()
      * can specify which object to synchronize on.
@@ -1723,9 +1691,7 @@ public class Collections implements Rollbackable {
 
     // class SynchronizedMap
     /**
-     * The implementation of {
-     @link #synchronizedSet(Set)    }
-     . This class
+     * The implementation of {@link #synchronizedSet(Set)}. This class
      * name is required for compatibility with Sun's JDK serializability.
      * Package visible, so that sets such as Hashtable.keySet()
      * can specify which object to synchronize on.
@@ -1858,16 +1824,12 @@ public class Collections implements Rollbackable {
     // advantage by not allocating unnecessary iterators in AbstractList.
     // class CopiesList
     /**
-     * The object for {
-     @link #reverseOrder()    }
-     .
+     * The object for {@link #reverseOrder()}.
      */
     private static final ReverseComparator rcInstance = new ReverseComparator();
 
     /**
-     * The implementation of {
-     @link #nCopies(int, Object)    }
-     . This class name
+     * The implementation of {@link #nCopies(int, Object)}. This class name
      * is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -2014,9 +1976,7 @@ public class Collections implements Rollbackable {
     }
 
     /**
-     * The implementation of {
-     @link #EMPTY_LIST    }
-     . This class name is required
+     * The implementation of {@link #EMPTY_LIST}. This class name is required
      * for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -2182,9 +2142,7 @@ public class Collections implements Rollbackable {
     }
 
     /**
-     * The implementation of {
-     @link #EMPTY_MAP    }
-     . This class name is required
+     * The implementation of {@link #EMPTY_MAP}. This class name is required
      * for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -2312,9 +2270,7 @@ public class Collections implements Rollbackable {
     }
 
     /**
-     * The implementation of {
-     @link #EMPTY_SET    }
-     . This class name is required
+     * The implementation of {@link #EMPTY_SET}. This class name is required
      * for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -2457,9 +2413,7 @@ public class Collections implements Rollbackable {
     }
 
     /**
-     * The implementation of {
-     @link #reverseOrder()    }
-     . This class name
+     * The implementation of {@link #reverseOrder()}. This class name
      * is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -2531,9 +2485,7 @@ public class Collections implements Rollbackable {
 
     // class SingletonSet
     /**
-     * The implementation of {
-     @link #singletonList(Object)    }
-     . This class name
+     * The implementation of {@link #singletonList(Object)}. This class name
      * is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -2698,9 +2650,7 @@ public class Collections implements Rollbackable {
 
     // class SingletonList
     /**
-     * The implementation of {
-     @link #singletonMap(Object, Object)    }
-     . This class
+     * The implementation of {@link #singletonMap(Object, Object)}. This class
      * name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -2942,9 +2892,7 @@ public class Collections implements Rollbackable {
     // range of the random number includes the current position.
     // Swap the desired element.
     /**
-     * The implementation of {
-     @link #singleton(Object)    }
-     . This class name
+     * The implementation of {@link #singleton(Object)}. This class name
      * is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -3290,9 +3238,7 @@ public class Collections implements Rollbackable {
 
     // class SynchronizedRandomAccessList
     /**
-     * The implementation of {
-     @link SynchronizedList#listIterator()    }
-     . This
+     * The implementation of {@link SynchronizedList#listIterator()}. This
      * iterator must "sync" on the same object as the list it iterates over.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -3434,9 +3380,7 @@ public class Collections implements Rollbackable {
 
     // class SynchronizedListIterator
     /**
-     * The implementation of {
-     @link #synchronizedMap(Map)    }
-     . This
+     * The implementation of {@link #synchronizedMap(Map)}. This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -4125,9 +4069,7 @@ public class Collections implements Rollbackable {
 
     // class SynchronizedList
     /**
-     * The implementation of {
-     @link #synchronizedList(List)    }
-     for random-access
+     * The implementation of {@link #synchronizedList(List)} for random-access
      * lists. This class name is required for compatibility with Sun's JDK
      * serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
@@ -4200,9 +4142,7 @@ public class Collections implements Rollbackable {
 
     // class SynchronizedSet
     /**
-     * The implementation of {
-     @link #synchronizedSortedMap(SortedMap)    }
-     . This
+     * The implementation of {@link #synchronizedSortedMap(SortedMap)}. This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -4365,9 +4305,7 @@ public class Collections implements Rollbackable {
 
     // class SynchronizedSortedMap
     /**
-     * The implementation of {
-     @link #synchronizedSortedSet(SortedSet)    }
-     . This
+     * The implementation of {@link #synchronizedSortedSet(SortedSet)}. This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -4530,9 +4468,7 @@ public class Collections implements Rollbackable {
 
     // class SynchronizedSortedSet
     /**
-     * The implementation of {
-     @link #unmodifiableCollection(Collection)    }
-     . This
+     * The implementation of {@link #unmodifiableCollection(Collection)}. This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -4873,9 +4809,7 @@ public class Collections implements Rollbackable {
 
     // class UnmodifiableIterator
     /**
-     * The implementation of {
-     @link #unmodifiableList(List)    }
-     for sequential
+     * The implementation of {@link #unmodifiableList(List)} for sequential
      * lists. This class name is required for compatibility with Sun's JDK
      * serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
@@ -5079,9 +5013,7 @@ public class Collections implements Rollbackable {
 
     // class UnmodifiableRandomAccessList
     /**
-     * The implementation of {
-     @link UnmodifiableList#listIterator()    }
-     .
+     * The implementation of {@link UnmodifiableList#listIterator()}.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
     private static final class UnmodifiableListIterator extends
@@ -5185,9 +5117,7 @@ public class Collections implements Rollbackable {
 
     // class UnmodifiableListIterator
     /**
-     * The implementation of {
-     @link #unmodifiableMap(Map)    }
-     . This
+     * The implementation of {@link #unmodifiableMap(Map)}. This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -5505,9 +5435,7 @@ public class Collections implements Rollbackable {
         private transient Collection values;
 
         /**
-         * The implementation of {
-         @link UnmodifiableMap#entrySet()        }
-         . This class
+         * The implementation of {@link UnmodifiableMap#entrySet()}. This class
          * name is required for compatibility with Sun's JDK serializability.
          * @author Eric Blake (ebb9@email.byu.edu)
          */
@@ -5722,9 +5650,7 @@ public class Collections implements Rollbackable {
 
     // class UnmodifiableList
     /**
-     * The implementation of {
-     @link #unmodifiableList(List)    }
-     for random-access
+     * The implementation of {@link #unmodifiableList(List)} for random-access
      * lists. This class name is required for compatibility with Sun's JDK
      * serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
@@ -5762,9 +5688,7 @@ public class Collections implements Rollbackable {
 
     // class UnmodifiableMap
     /**
-     * The implementation of {
-     @link #unmodifiableSet(Set)    }
-     . This class
+     * The implementation of {@link #unmodifiableSet(Set)}. This class
      * name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */
@@ -5819,8 +5743,7 @@ public class Collections implements Rollbackable {
 
     // class UnmodifiableSet
     /**
-     * The implementation of {
-     @link #unmodifiableSortedMap(SortedMap)    }
+     * The implementation of {@link #unmodifiableSortedMap(SortedMap)}
      . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
@@ -5972,9 +5895,7 @@ public class Collections implements Rollbackable {
 
     // class UnmodifiableSortedMap
     /**
-     * The implementation of {
-     @link #synchronizedSortedMap(SortedMap)    }
-     . This
+     * The implementation of {@link #synchronizedSortedMap(SortedMap)}. This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake (ebb9@email.byu.edu)
      */

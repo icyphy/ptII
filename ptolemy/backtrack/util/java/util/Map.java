@@ -37,14 +37,14 @@
  exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
+import java.util.Dictionary;
+
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 
 /**
  * An object that maps keys onto values. Keys cannot be duplicated. This
- * interface replaces the obsolete {
- @link Dictionary}
- abstract class.
+ * interface replaces the obsolete {@link Dictionary} abstract class.
  * <p>
  * The map has three collection views, which are backed by the map
  * (modifications on one show up on the other): a set of keys, a collection

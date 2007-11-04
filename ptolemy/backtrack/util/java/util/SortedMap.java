@@ -51,9 +51,7 @@ import ptolemy.backtrack.Rollbackable;
  * All keys entered in the map must be mutually comparable; in other words,
  * <code>k1.compareTo(k2)</code> or <code>comparator.compare(k1, k2)</code>
  * must not throw a ClassCastException. The ordering must be <i>consistent
- * with equals</i> (see {
- @link Comparator}
- for this definition), if the
+ * with equals</i> (see {@link Comparator} for this definition), if the
  * map is to obey the general contract of the Map interface.  If not,
  * the results are well-defined, but probably not what you wanted.
  * <p>

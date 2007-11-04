@@ -66,9 +66,7 @@ import ptolemy.backtrack.util.FieldRecord;
  * has similar phenomenons: The size may spontaneously shrink, or an
  * entry, that was in the set before, suddenly disappears.
  * <p>A weak hash map is not meant for caches; use a normal map, with
- * soft references as values instead, or try {
- @link LinkedHashMap}
- .
+ * soft references as values instead, or try {@link LinkedHashMap}.
  * <p>The weak hash map supports null values and null keys.  The null key
  * is never deleted from the map (except explictly of course). The
  * performance of the methods are similar to that of a hash map.
