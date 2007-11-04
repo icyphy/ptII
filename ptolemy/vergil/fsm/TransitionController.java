@@ -56,6 +56,7 @@ import diva.canvas.Site;
 import diva.canvas.connector.ArcConnector;
 import diva.canvas.connector.ArcManipulator;
 import diva.canvas.connector.Arrowhead;
+import diva.canvas.connector.Blob;
 import diva.canvas.connector.Connector;
 import diva.canvas.connector.ConnectorAdapter;
 import diva.canvas.connector.ConnectorEvent;
@@ -253,6 +254,11 @@ public class TransitionController extends BasicEdgeController {
 
             Arc arc = (Arc) edge;
             Transition transition = (Transition) arc.getRelation();
+            
+            if (transition.isPreemptive()) {
+                Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE, 4.0, Color.red);
+                c.setTailEnd(blob);
+            }
 
             if (transition != null) {
                 c.setToolTipText(transition.getName());
