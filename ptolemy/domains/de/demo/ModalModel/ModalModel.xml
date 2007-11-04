@@ -124,7 +124,7 @@ to see how it works.</text></svg></configure>
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="clean">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
@@ -227,7 +227,7 @@ to view the mode switching.</text></svg></configure>
                 </property>
             </port>
             <entity name="clean" class="ptolemy.domains.fsm.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="clean">
+<display name="generate&#10;a clean&#10;sine wave"/>                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="clean">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -237,7 +237,7 @@ to view the mode switching.</text></svg></configure>
                 </property>
             </entity>
             <entity name="noisy" class="ptolemy.domains.fsm.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="noisy">
+<display name="generate&#10;a noisy&#10;sine wave"/>                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="noisy">
                 </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
@@ -735,7 +735,7 @@ and then adds noise to it.</text></svg></configure>
         </property>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0/sampleRate">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0/sampleRate">
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
