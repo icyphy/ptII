@@ -76,6 +76,7 @@ JSRCS = \
 	RelationCollapsingAttribute.java \
 	Replacement.java \
 	SubgraphMatchingException.java \
+	TransformationException.java \
 	TransformationRule.java \
 	ValidationException.java
 
@@ -101,7 +102,8 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$LookbackList.class' \
 	'GraphMatcher$$NameComparator.class' \
 	'GraphMatcher$$ObjectList.class' \
-	'GraphMatcher$$Path.class'
+	'GraphMatcher$$Path.class' \
+	'GraphTransformer$$SubstituteEntitiesChangeRequest.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

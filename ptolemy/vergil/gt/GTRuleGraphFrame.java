@@ -307,7 +307,13 @@ TableModelListener, ValueListener {
     public void paste() {
         if (!_isTableActive()) {
             super.paste();
-            _refreshTable();
+
+            CompositeEntity model = getActiveModel();
+            if (_isInPattern(model)) {
+                _setOrClearPatternEntityAttributes(model, false);
+            } else {
+                _refreshTable();
+            }
         }
     }
 
@@ -646,7 +652,7 @@ TableModelListener, ValueListener {
     }
 
     private boolean _isTableActive() {
-        return hasTabs() && getSelectedIndex() == 2;
+        return hasTabs() && getActiveTabIndex() == 2;
     }
 
     private void _refreshTable() {

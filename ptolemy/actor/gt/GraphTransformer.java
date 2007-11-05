@@ -28,11 +28,17 @@
 
 package ptolemy.actor.gt;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.actor.gt.data.MatchResult;
+import ptolemy.actor.gt.data.TwoWayHashMap;
 import ptolemy.actor.gt.ingredients.operations.Operation;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
 
 /**
 
@@ -44,22 +50,69 @@ import ptolemy.kernel.util.ChangeRequest;
  */
 public class GraphTransformer {
 
-    public boolean transform(TransformationRule transformer,
-            MatchResult matchResult, CompositeEntity hostGraph) {
-        boolean success = true;
-        
-        success = success && _performOperations(matchResult,
-                transformer.getPattern(), transformer.getReplacement());
-        
-        return success;
+    public void transform(TransformationRule transformer,
+            MatchResult matchResult, CompositeEntity hostGraph)
+    throws TransformationException {
+        Pattern pattern = transformer.getPattern();
+        Replacement replacement = transformer.getReplacement();
+        CompositeEntity hostContainer =
+            (CompositeEntity) matchResult.get(pattern);
+        if (hostContainer == null) {
+            throw new TransformationException("Match result is invalid because "
+                    + "it does not contain the pattern.");
+        }
+
+        _matchResult = matchResult;
+
+        _entityMap = new TwoWayHashMap<GTEntity, GTEntity>();
+        _initEntityMap(pattern, replacement);
+
+        _deletedObjects = new HashSet<NamedObj>();
+
+        _removeEntities(pattern);
+        _performOperations();
+        _addEntities(hostContainer, replacement);
+        hostContainer.requestChange(new SubstituteEntitiesChangeRequest(
+                pattern, hostContainer));
     }
 
-    private boolean _performOperations(MatchResult matchResult, Pattern pattern,
+    private void _addEntities(CompositeEntity hostContainer,
             CompositeEntity replacementContainer) {
         for (Object replacementObject : replacementContainer.entityList()) {
+            ComponentEntity patternEntity =
+                (ComponentEntity) _entityMap.getKey(replacementObject);
+            if (patternEntity == null) {
+                // replacementObject is newly added.
+                ComponentEntity replacementEntity =
+                    (ComponentEntity) replacementObject;
+                String moml = replacementEntity.exportMoML();
+                _addEntityMoMLRequest(hostContainer, moml);
+            } else {
+                NamedObj match = (NamedObj) _matchResult.get(patternEntity);
+                if (replacementObject instanceof CompositeEntity) {
+                    _addEntities((CompositeEntity) match,
+                            (CompositeEntity) replacementObject);
+                }
+                if (match.getContainer() != hostContainer) {
+                    String moml = match.exportMoML();
+                    _addEntityMoMLRequest(hostContainer, moml);
+                }
+            }
+        }
+    }
+
+    private void _addEntityMoMLRequest(NamedObj context, String moml) {
+        moml = "<group name=\"auto\">" + moml + "</group>";
+        MoMLChangeRequest request = new MoMLChangeRequest(this, context, moml);
+        context.requestChange(request);
+    }
+
+    private void _initEntityMap(Pattern pattern,
+            CompositeEntity replacementContainer)
+    throws TransformationException {
+        for (Object replacementObject : replacementContainer.entityList()) {
             if (replacementObject instanceof CompositeEntity) {
-                _performOperations(matchResult, pattern,
-                        (CompositeEntity) replacementObject);
+                _initEntityMap(pattern, (CompositeEntity) replacementObject);
             }
 
             if (!(replacementObject instanceof GTEntity)) {
@@ -77,12 +130,20 @@ public class GraphTransformer {
             GTEntity patternEntity =
                 (GTEntity) pattern.getEntity(patternEntityName);
             if (patternEntity == null) {
-                return false;
+                throw new TransformationException("Entity in the pattern with "
+                        + "name \"" + patternEntityName + "\" not found.");
             }
 
+            _entityMap.put(patternEntity, replacementEntity);
+        }
+    }
+
+    private void _performOperations() throws TransformationException {
+        for (GTEntity patternEntity : _entityMap.keySet()) {
+            GTEntity replacementEntity = _entityMap.get(patternEntity);
             try {
                 ComponentEntity match =
-                    (ComponentEntity) matchResult.get(patternEntity);
+                    (ComponentEntity) _matchResult.get(patternEntity);
                 GTIngredientList ingredientList = replacementEntity
                         .getOperationsAttribute().getIngredientList();
                 for (GTIngredient ingredient : ingredientList) {
@@ -92,9 +153,110 @@ public class GraphTransformer {
                     match.requestChange(request);
                 }
             } catch (MalformedStringException e) {
-                return false;
+                throw new TransformationException(
+                        "Cannot parse operation list.");
             }
         }
-        return true;
+    }
+
+    private void _removeEntities(CompositeEntity patternContainer)
+    throws TransformationException {
+        for (Object patternObject : patternContainer.entityList()) {
+            if (patternObject instanceof CompositeEntity) {
+                _removeEntities((CompositeEntity) patternObject);
+            }
+
+            if (!_entityMap.containsKey(patternObject)) {
+                // patternObject is removed in the replacement.
+                ComponentEntity match =
+                    (ComponentEntity) _matchResult.get(patternObject);
+                NamedObj container = match.getContainer();
+
+                _deletedObjects.add(match);
+                String moml =
+                    "<deleteEntity name=\"" + match.getName() + "\"/>";
+                MoMLChangeRequest request =
+                    new MoMLChangeRequest(this, container, moml);
+                container.requestChange(request);
+            }
+        }
+    }
+
+    private Set<NamedObj> _deletedObjects;
+
+    private TwoWayHashMap<GTEntity, GTEntity> _entityMap;
+
+    private MatchResult _matchResult;
+
+    private class SubstituteEntitiesChangeRequest extends ChangeRequest {
+
+        public SubstituteEntitiesChangeRequest(Pattern pattern,
+                CompositeEntity hostContainer) {
+            super(GraphTransformer.this, "Substitute replace entities.");
+
+            _hostContainer = hostContainer;
+            _pattern = pattern;
+        }
+
+        protected void _execute() throws Exception {
+            _substitute(_pattern, _hostContainer);
+        }
+
+        private void _substitute(Pattern pattern,
+                CompositeEntity hostContainer) {
+            for (Object hostObject : hostContainer.entityList()) {
+                if (hostObject instanceof GTEntity) {
+                    GTEntity hostEntity = (GTEntity) hostObject;
+                    PatternEntityAttribute pattenrEntityAttribute =
+                        hostEntity.getPatternEntityAttribute();
+                    ComponentEntity patternEntity = null;
+                    if (pattenrEntityAttribute != null) {
+                        String patternEntityName =
+                            pattenrEntityAttribute.getExpression();
+                        patternEntity = pattern.getEntity(patternEntityName);
+                    }
+
+                    if (patternEntity != null) {
+                        NamedObj match =
+                            (NamedObj) _matchResult.get(patternEntity);
+                        NamedObj container = match.getContainer();
+                        String moml;
+                        MoMLChangeRequest request;
+
+                        if (match != hostEntity) {
+                            moml = "<deleteEntity name=\""
+                                + hostEntity.getName() + "\"/>";
+                            request = new MoMLChangeRequest(
+                                    GraphTransformer.this, hostContainer, moml);
+                            hostContainer.requestChange(request);
+
+                            if (container != hostContainer) {
+                                if (container != null) {
+                                    moml = "<deleteEntity name=\""
+                                        + match.getName() + "\"/>";
+                                    request = new MoMLChangeRequest(
+                                            GraphTransformer.this, container,
+                                            moml);
+                                    container.requestChange(request);
+                                }
+                                moml = match.exportMoML();
+                                request = new MoMLChangeRequest(
+                                        GraphTransformer.this, hostContainer,
+                                        moml);
+                                hostContainer.requestChange(request);
+                            }
+                        }
+                    }
+                }
+
+                if (hostObject instanceof CompositeEntity) {
+                    _substitute(pattern, (CompositeEntity) hostObject);
+                }
+            }
+        }
+
+        private CompositeEntity _hostContainer;
+
+        private Pattern _pattern;
     }
 }

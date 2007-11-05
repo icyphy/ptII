@@ -43,10 +43,12 @@ import javax.swing.event.ChangeEvent;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.gt.GraphTransformer;
+import ptolemy.actor.gt.TransformationException;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
@@ -332,9 +334,13 @@ public class MatchResultViewer extends AbstractGTFrame {
     }
 
     private void _transform() {
-        _transformer.transform(_rule, _results.get(_currentPosition),
-                (CompositeEntity) getModel());
-        _finishTransform();
+        try {
+            _transformer.transform(_rule, _results.get(_currentPosition),
+                    (CompositeEntity) getModel());
+            _finishTransform();
+        } catch (TransformationException e) {
+            throw new KernelRuntimeException(e, "Unable to transform model.");
+        }
     }
 
     private int _currentPosition;

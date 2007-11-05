@@ -649,7 +649,8 @@ public class GraphMatcher {
      *  if the composite entity is an instance of {@link CompositeActor} and it
      *  is opaque. A composite actor is opaque if it has a director inside,
      *  which means the new level of hierarchy that it creates cannot be
-     *  flattened.
+     *  flattened, or it has a {@link HierarchyFlatteningAttribute} attribute
+     *  inside with value <tt>true.
      *
      *  @param entity The composite entity to be tested.
      *  @return <tt>true</tt> if the composite entity is an instance of {@link

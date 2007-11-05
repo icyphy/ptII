@@ -50,7 +50,8 @@ JSRCS = \
 	FastLinkedList.java \
 	MatchResult.java \
 	Pair.java \
-	Tuple.java
+	Tuple.java \
+	TwoWayHashMap.java
 
 EXTRA_SRCS =	$(JSRCS)
 

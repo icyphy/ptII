@@ -100,6 +100,10 @@ implements ChangeListener, KeyListener {
         return (CompositeEntity) graphModel.getPtolemyModel();
     }
 
+    public int getActiveTabIndex() {
+        return _activeTabIndex;
+    }
+
     /** Return the JGraph instance that this view uses to represent the
      *  ptolemy model.
      *  @return the JGraph.
@@ -116,10 +120,6 @@ implements ChangeListener, KeyListener {
         } else {
             return super.getJGraph();
         }
-    }
-
-    public int getSelectedIndex() {
-        return _selectedIndex;
     }
 
     public TransformationRule getTransformationRule() {
@@ -154,14 +154,14 @@ implements ChangeListener, KeyListener {
      */
     public void stateChanged(ChangeEvent event) {
         if (event.getSource() == _tabbedPane) {
-            _selectedIndex = _tabbedPane.getSelectedIndex();
-            if (_selectedIndex < _graphPanes.size()) {
+            _activeTabIndex = _tabbedPane.getSelectedIndex();
+            if (_activeTabIndex < _graphPanes.size()) {
                 _controller.getSelectionModel().clearSelection();
-                GraphPane graphPane = _graphPanes.get(_selectedIndex);
+                GraphPane graphPane = _graphPanes.get(_activeTabIndex);
                 _controller.setGraphPane(graphPane);
                 _controller.setGraphModel(graphPane.getGraphModel());
             }
-            _showTab(_selectedIndex);
+            _showTab(_activeTabIndex);
         }
     }
 
@@ -317,13 +317,13 @@ implements ChangeListener, KeyListener {
         }
     }
 
+    private int _activeTabIndex = 0;
+
     private ActorEditorGraphController _controller;
 
     private List<GraphPane> _graphPanes;
 
     private List<JGraph> _graphs;
-
-    private int _selectedIndex = 0;
 
     private JTabbedPane _tabbedPane;
 

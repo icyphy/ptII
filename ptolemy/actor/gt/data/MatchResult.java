@@ -29,63 +29,48 @@ package ptolemy.actor.gt.data;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Set;
 
 import ptolemy.kernel.util.NamedObj;
 
-public class MatchResult extends HashMap<Object, Object> {
+public class MatchResult extends TwoWayHashMap<Object, Object> {
 
     public void clear() {
         super.clear();
-        _keys.clear();
-        _reverseMap.clear();
+        _keySequence.clear();
     }
 
     public Object clone() {
         MatchResult result = (MatchResult) super.clone();
-        result._keys = new LinkedList<Object>(_keys);
-        result._reverseMap = new HashMap<Object, Object>(_reverseMap);
+        result._keySequence = new LinkedList<Object>(_keySequence);
         return result;
-    }
-
-    public boolean containsValue(Object value) {
-        return _reverseMap.containsKey(value);
-    }
-
-    public Object getKey(Object value) {
-        return _reverseMap.get(value);
     }
 
     public Object put(Object key, Object value) {
         if (!super.containsKey(key)) {
-            _keys.add(key);
+            _keySequence.add(key);
         }
-        Object oldValue = super.put(key, value);
-        _reverseMap.put(value, key);
-        return oldValue;
+        return super.put(key, value);
     }
 
     public Object remove(Object key) {
         Object oldValue = super.remove(key);
         if (oldValue != null) {
-            _keys.remove(key);
-            _reverseMap.remove(oldValue);
+            _keySequence.remove(key);
         }
         return oldValue;
     }
 
     public void retain(int count) {
-        int size = _keys.size();
+        int size = _keySequence.size();
         if (size > count) {
-            ListIterator<Object> iterator = _keys.listIterator(size);
+            ListIterator<Object> iterator = _keySequence.listIterator(size);
             for (; size > count; size--) {
                 Object key = iterator.previous();
                 iterator.remove();
-                _reverseMap.remove(super.remove(key));
+                super.remove(key);
             }
         }
     }
@@ -121,13 +106,7 @@ public class MatchResult extends HashMap<Object, Object> {
         return buffer.toString();
     }
 
-    public Set<Object> values() {
-        return Collections.unmodifiableSet(_reverseMap.keySet());
-    }
-
-    private List<Object> _keys = new LinkedList<Object>();
-
-    private HashMap<Object, Object> _reverseMap = new HashMap<Object, Object>();
+    private List<Object> _keySequence = new LinkedList<Object>();
 
     private static final long serialVersionUID = -539612130819642425L;
 
