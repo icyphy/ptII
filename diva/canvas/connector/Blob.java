@@ -27,7 +27,9 @@
 package diva.canvas.connector;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
@@ -62,6 +64,9 @@ public class Blob implements ConnectorEnd {
     /** The size unit
      */
     private double _unit = 8.0;
+    
+    /** The fill color. */
+    private Paint _fillColor = Color.black;
 
     /** Flag that says whether the blob is filled or not
      */
@@ -111,13 +116,22 @@ public class Blob implements ConnectorEnd {
      * Create a new blob at the given coordinates and in the given style.
      */
     public Blob(double x, double y, double normal, int style) {
+        this(x, y, normal, style, 8.0, Color.BLACK);
+    }
+
+    /**
+     * Create a new blob at the given coordinates and in the given style.
+     */
+    public Blob(double x, double y, double normal, int style, double size, Paint fillColor) {
         _originX = x;
         _originY = y;
         _normal = normal;
         _style = style;
+        _unit = size;
+        _fillColor = fillColor;
         reshape();
     }
-
+    
     /** Get the bounding box of the shape used to draw
      * this connector end.
      */
@@ -186,9 +200,12 @@ public class Blob implements ConnectorEnd {
         if (!_shapeValid) {
             reshape();
         }
-
         if (_filled) {
+            Paint oldPaint = g.getPaint();
+            g.setPaint(_fillColor);
             g.fill(_shape);
+            g.setPaint(oldPaint);
+            g.draw(_shape);
         } else {
             g.draw(_shape);
         }
