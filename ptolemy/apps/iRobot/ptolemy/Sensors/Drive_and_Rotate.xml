@@ -30,6 +30,12 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 312.0}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example: &#10;- drives forward if the play button is pushed&#10;- drives backward if the advance button is pushed&#10;- rotates if both the play and advance buttons are pushed simultaneously&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 95.0]">
+        </property>
+    </property>
     <entity name="InitializeAndRun" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
