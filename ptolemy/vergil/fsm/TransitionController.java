@@ -255,12 +255,14 @@ public class TransitionController extends BasicEdgeController {
             Arc arc = (Arc) edge;
             Transition transition = (Transition) arc.getRelation();
             
-            if (transition.isPreemptive()) {
-                Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE, 4.0, Color.red);
-                c.setTailEnd(blob);
-            }
-
+            // When first dragging out a transition, the relation
+            // may still be null.
             if (transition != null) {
+                if (transition.isPreemptive()) {
+                    Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE, 4.0, Color.red);
+                    c.setTailEnd(blob);
+                }
+
                 c.setToolTipText(transition.getName());
 
                 String labelStr = transition.getLabel();
