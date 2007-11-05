@@ -331,6 +331,60 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return generateCode(new StringBuffer());
     }
 
+    /** Generate code.  This is the main entry point.
+     *  @param code The code buffer into which to generate the code.
+     *  @return The return value of the last subprocess that was executed.
+     *  or -1 if no commands were executed.
+     *  @exception KernelException If a type conflict occurs or the model
+     *  is running.
+     */
+    public int generateCode(StringBuffer code) throws KernelException {
+
+        int returnValue = -1;
+        
+        // If the container is in the top level, we are generating code 
+        // for the whole model. We have to make sure there is a manager,
+        // and then preinitialize and resolve types.
+        if (isTopLevel()) {
+
+            // If necessary, create a manager.
+            Actor container = ((Actor) getContainer());
+            Manager manager = container.getManager();
+
+            if (manager == null) {
+                CompositeActor toplevel = (CompositeActor) ((NamedObj) container)
+                        .toplevel();
+                manager = new Manager(toplevel.workspace(), "Manager");
+                toplevel.setManager(manager);
+            }
+
+            try {
+                manager.preinitializeAndResolveTypes();
+                returnValue = _generateCode(code);
+            } finally {
+                // We call wrapup here so that the state gets set to idle.
+                // This makes it difficult to test the Exit actor.
+                try {
+                    long startTime = (new Date()).getTime();
+                    manager.wrapup();
+                    _printTimeAndMemory(startTime, "StaticSchedulingCodeGenerator: "
+                            + "wrapup consumed: ");
+                } catch (RuntimeException ex) {
+                    // The Exit actor causes Manager.wrapup() to throw this.
+                    if (!manager.isExitingAfterWrapup()) {
+                        throw ex;
+                    }
+                }
+            }
+            // If the container is not in the top level, we are generating code 
+            // for the Java and C co-simulation.   
+        } else {
+            returnValue = _generateCode(code);
+        }
+        return returnValue;
+    }
+    
+    
     /** Generate code and append it to the given string buffer.
 
      *  Write the code to the directory specified by the codeDirectory
@@ -348,7 +402,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
-    public int generateCode(StringBuffer code) throws KernelException {
+    public int _generateCode(StringBuffer code) throws KernelException {
         // Record the current time so that we can monitor performance of the
         // code generator by printing messages whenever any part of the code
         // generation process takes more than 10 seconds.
@@ -362,38 +416,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // accurately reports whether code was generated.
         _codeFileName = null;
         
-        // If the container is in the top level, we are generating code 
-        // for the whole model. We have to make sure there is a manager,
-        // and then preinitialize and resolve types.
-        if (isTopLevel()) {
-            // If necessary, create a manager.
-            Actor container = ((Actor) getContainer());
-            Manager manager = container.getManager();
-            if (manager == null) {
-                CompositeActor toplevel = (CompositeActor) ((NamedObj) container)
-                        .toplevel();
-                manager = new Manager(toplevel.workspace(), "Manager");
-                toplevel.setManager(manager);
-            }
-
-            try {
-                manager.preinitializeAndResolveTypes();
-            } finally {
-                // We call wrapup here so that the state gets set to idle.
-                // This makes it difficult to test the Exit actor.
-                try {
-                    startTime = (new Date()).getTime();
-                    manager.wrapup();
-                    _printTimeAndMemory(startTime, "StaticSchedulingCodeGenerator: "
-                            + "wrapup consumed: ");
-                } catch (RuntimeException ex) {
-                    // The Exit actor causes Manager.wrapup() to throw this.
-                    if (!manager.isExitingAfterWrapup()) {
-                        throw ex;
-                    }
-                }
-            }
-        }        
         _sanitizedModelName = CodeGeneratorHelper.generateName(_model);
 
         // Each time a .dll file is generated, we must use a different name
