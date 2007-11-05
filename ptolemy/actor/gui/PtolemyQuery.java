@@ -299,6 +299,38 @@ public class PtolemyQuery extends Query implements QueryListener,
                             preferredForegroundColor(attribute));
                     attachParameter(attribute, name);
                     foundStyle = true;
+                } else if ((attribute instanceof NamedObj)
+                        && ((((NamedObj)attribute).getAttribute("_textWidthHint") != null)
+                        || ((NamedObj)attribute).getAttribute("_textHeightHint") != null)) {
+                    // Support hints for text height and/or width so that actors
+                    // don't have to use a ParameterEditorStyle, which depends
+                    // on packages that depend on graphics.
+                    
+                    // Default values:
+                    int widthValue = 30;
+                    int heightValue = 10;
+                    
+                    Attribute widthAttribute = ((NamedObj)attribute).getAttribute("_textWidthHint");
+                    if (widthAttribute instanceof Variable) {
+                        Token token = ((Variable)widthAttribute).getToken();
+                        if (token instanceof IntToken) {
+                            widthValue = ((IntToken)token).intValue();
+                        }
+                    }
+                    Attribute heightAttribute = ((NamedObj)attribute).getAttribute("_textHeightHint");
+                    if (heightAttribute instanceof Variable) {
+                        Token token = ((Variable)heightAttribute).getToken();
+                        if (token instanceof IntToken) {
+                            heightValue = ((IntToken)token).intValue();
+                        }
+                    }
+                    
+                    addTextArea(name, displayName, attribute.getExpression(),
+                            preferredBackgroundColor(attribute),
+                            preferredForegroundColor(attribute),
+                            heightValue, widthValue);
+                    attachParameter(attribute, name);
+                    foundStyle = true;
                 } else if (attribute instanceof Variable) {
                     Type declaredType = ((Variable) attribute)
                             .getDeclaredType();
@@ -319,7 +351,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                     }
                 }
 
-                // FIXME: Other attribute classes? TextStyle?
+                // NOTE: Other attribute classes?
             } catch (IllegalActionException ex) {
                 // Ignore and create a line entry.
             }
