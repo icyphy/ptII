@@ -41,6 +41,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
@@ -368,53 +369,38 @@ public class Transition extends ComponentRelation {
         return guardExpression.getExpression();
     }
 
-    /** Return a string describing this transition. The string has two lines.
-     *  The first line is the guard expression. The second line is the
-     *  concatenation of the expressions of <i>outputActions</i> and
-     *  <i>setActions</i>.
+    /** Return a string describing this transition. The string has up to
+     *  three lines. The first line is the guard expression, preceded
+     *  by "guard: ".  The second line is the <i>outputActions</i> preceded
+     *  by the string "output: ". The third line is the
+     *  <i>setActions</i> preceded by the string "set: ". If any of these
+     *  is missing, then the corresponding line is omitted.
      *  @return A string describing this transition.
      */
     public String getLabel() {
-        StringBuffer buffer = new StringBuffer();
-        boolean aLabel = false;
-        String guard = getGuardExpression();
+        StringBuffer buffer = new StringBuffer("");
 
+        String guard = getGuardExpression();
         if (guard != null) {
+            buffer.append("guard: ");
             buffer.append(guard);
-            aLabel = true;
         }
 
-        String action = null;
         String expression = outputActions.getExpression();
-
         if ((expression != null) && !expression.trim().equals("")) {
-            action = expression;
+            buffer.append("\n");
+            buffer.append("output: ");
+            buffer.append(expression);
         }
 
         expression = setActions.getExpression();
-
         if ((expression != null) && !expression.trim().equals("")) {
-            if (action != null) {
-                action = action + "; " + expression;
-            } else {
-                action = expression;
-            }
+            buffer.append("\n");
+            buffer.append("set: ");
+            buffer.append(expression);
         }
 
-        if (action != null) {
-            if (aLabel) {
-                buffer.append("\n");
-            }
-
-            buffer.append(action);
-            aLabel = true;
-        }
-
-        if (aLabel) {
-            return buffer.toString();
-        } else {
-            return "";
-        }
+        return buffer.toString();
     }
 
     /** Return the parse tree evaluator used by this transition to evaluate
@@ -729,8 +715,23 @@ public class Transition extends ComponentRelation {
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         guardExpression = new StringAttribute(this, "guardExpression");
+        // Add a hint to indicate to the PtolemyQuery class to open with a text style.
+        Variable variable = new Variable(guardExpression, "_textHeightHint");
+        variable.setExpression("5");
+        variable.setPersistent(false);
+        
         outputActions = new OutputActionsAttribute(this, "outputActions");
+        // Add a hint to indicate to the PtolemyQuery class to open with a text style.
+        variable = new Variable(outputActions, "_textHeightHint");
+        variable.setExpression("5");
+        variable.setPersistent(false);
+
         setActions = new CommitActionsAttribute(this, "setActions");
+        // Add a hint to indicate to the PtolemyQuery class to open with a text style.
+        variable = new Variable(setActions, "_textHeightHint");
+        variable.setExpression("5");
+        variable.setPersistent(false);
+
         exitAngle = new Parameter(this, "exitAngle");
         exitAngle.setVisibility(Settable.NONE);
         exitAngle.setExpression("PI/5.0");
