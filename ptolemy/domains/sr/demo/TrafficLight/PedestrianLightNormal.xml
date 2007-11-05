@@ -63,33 +63,33 @@ green when the car control lights go red.</text></svg></configure>
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4423076923077">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{151.6117424242424, 70.2168560606061}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{140.0, 59.6666666666667}">
         </property>
         <port name="Pgo" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 30.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, -25.0]">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
         <port name="Pstop" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 75.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 20.0]">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
         <port name="Sec" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 125.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 60.0]">
             </property>
         </port>
         <port name="Pred" class="ptolemy.domains.fsm.modal.RefinementPort">
             <property name="input"/>
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, -20.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, -15.0]">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
@@ -115,7 +115,7 @@ green when the car control lights go red.</text></svg></configure>
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 45.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 30.0]">
             </property>
         </entity>
         <entity name="init" class="ptolemy.domains.fsm.kernel.State">
@@ -125,7 +125,7 @@ green when the car control lights go red.</text></svg></configure>
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -30.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, -50.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
@@ -149,7 +149,13 @@ green when the car control lights go red.</text></svg></configure>
         <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pred=1; Pgrn=0">
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="&#10;  Pred=1;&#10;  Pgrn=0">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
             </property>

@@ -55,7 +55,7 @@
 It uses the count variable to stay red for
 three seconds and to stay green for two.</text></svg></configure>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 260.0]">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
             </property>
@@ -67,13 +67,13 @@ three seconds and to stay green for two.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 658]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3935662695557">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{151.6117424242424, 70.2168560606061}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{155.1328125, 119.2099334455324}">
         </property>
         <property name="count" class="ptolemy.data.expr.Parameter" value="0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -91,7 +91,7 @@ three seconds and to stay green for two.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, -105.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, -95.0]">
             </property>
         </property>
         <port name="Pgo" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -146,7 +146,7 @@ three seconds and to stay green for two.</text></svg></configure>
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, -100.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, -20.0]">
             </property>
         </entity>
         <entity name="Cred" class="ptolemy.domains.fsm.kernel.State">
@@ -154,7 +154,7 @@ three seconds and to stay green for two.</text></svg></configure>
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, -55.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, -20.0]">
             </property>
         </entity>
         <entity name="Credyel" class="ptolemy.domains.fsm.kernel.State">
@@ -162,7 +162,7 @@ three seconds and to stay green for two.</text></svg></configure>
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 20.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 60.0]">
             </property>
         </entity>
         <entity name="Cgrn" class="ptolemy.domains.fsm.kernel.State">
@@ -170,7 +170,7 @@ three seconds and to stay green for two.</text></svg></configure>
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 90.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 175.0]">
             </property>
         </entity>
         <entity name="Cyel" class="ptolemy.domains.fsm.kernel.State">
@@ -178,19 +178,25 @@ three seconds and to stay green for two.</text></svg></configure>
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 145.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 175.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
             <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Cred=1; Cyel=0; Cgrn=0">
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="&#10;  Cred=1;&#10;  Cyel=0;&#10;  Cgrn=0">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
             </property>
             <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 0">
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4136070863151954">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6959064909713684">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.12735067370103184">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -244,9 +250,9 @@ three seconds and to stay green for two.</text></svg></configure>
             </property>
             <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Cyel=1; Cgrn=0">
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6777314519585976">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-1.4365132725447742">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.5291184226504173">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.9621434609004718">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -258,15 +264,33 @@ three seconds and to stay green for two.</text></svg></configure>
             </property>
         </relation>
         <relation name="relation5" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Sec_isPresent">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="&#10;  Sec_isPresent">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
             </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Pgo=1; Cred=1; Cyel=0; Cgrn=0">
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="&#10;  Pgo=1;&#10;  Cred=1;&#10;  Cyel=0;&#10;  Cgrn=0">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
             </property>
             <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = 0">
+                <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                    <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                    </property>
+                    <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                    </property>
+                </property>
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.8892555296488135">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.6769459824584063">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.4398317974912227">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.2443962393725467">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -282,9 +306,9 @@ three seconds and to stay green for two.</text></svg></configure>
             </property>
             <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count = count + 1">
             </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.218072053441859">
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.3928795140629">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.8228095627561287">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="3.8278891959186407">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>
