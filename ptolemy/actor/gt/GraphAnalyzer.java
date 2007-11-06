@@ -1,0 +1,434 @@
+/*
+
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
+
+package ptolemy.actor.gt;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gt.data.FastLinkedList;
+import ptolemy.actor.gt.data.Pair;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentPort;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.NamedObj;
+
+/**
+
+ @author Thomas Huining Feng
+ @version $Id$
+ @since Ptolemy II 6.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
+public abstract class GraphAnalyzer {
+
+    /** Find the first child within the top composite entity. The child is
+     *  either an atomic actor ({@link AtomicActor}) or an opaque composite
+     *  entity, one that has a director in it. If the top composite entity does
+     *  not have any child, <tt>null</tt> is returned.
+     *
+     *  @param top The top composite entity in which the search is performed.
+     *  @param indexedLists A list that is used to encode the composite entities
+     *   visited.
+     *  @param excludedEntities The atomic actor or opaque composite entities
+     *   that should not be returned.
+     *  @return The child found, or <tt>null</tt> if none.
+     *  @see #findNextChild(CompositeEntity, IndexedLists, Collection)
+     */
+    public ComponentEntity findFirstChild(CompositeEntity top,
+            IndexedLists indexedLists, Collection<Object> excludedEntities) {
+
+        List<?> entities = top.entityList(ComponentEntity.class);
+
+        if (!entities.isEmpty()) {
+            int i = 0;
+            IndexedList currentList = new IndexedList(entities, 0);
+            indexedLists.add(currentList);
+            IndexedLists.Entry currentListEntry = indexedLists.getTail();
+
+            for (Object entityObject : entities) {
+                currentList.setSecond(i);
+                if (entityObject instanceof AtomicActor
+                        || entityObject instanceof CompositeEntity
+                        && _isOpaque((CompositeEntity) entityObject)) {
+                    if (!excludedEntities.contains(entityObject)) {
+                        return (ComponentEntity) entityObject;
+                    }
+                } else {
+                    CompositeEntity compositeEntity =
+                        (CompositeEntity) entityObject;
+                    ComponentEntity child = findFirstChild(compositeEntity,
+                            indexedLists, excludedEntities);
+                    if (child != null && !excludedEntities.contains(child)) {
+                        return child;
+                    }
+                }
+                i++;
+            }
+
+            currentListEntry.remove();
+        }
+
+        return null;
+    }
+
+    /** Find the first path starting from the <tt>startPort</tt>, and store it
+     *  in the <tt>path</tt> parameter if found. A path is a sequence of
+     *  alternating ports ({@link Port}) and relations ({@link Relation}),
+     *  starting and ending with two ports (which may be equal, in which case
+     *  the path is a loop). If a path contains ports between the start port and
+     *  the end port, those ports in between must be ports of a transparent
+     *  composite entities (those with no directors inside). If no path is found
+     *  starting from the <tt>startPort</tt>, <tt>null</tt> is returned.
+     *
+     *  @param startPort The port from which the search starts.
+     *  @param path The path to obtain the result.
+     *  @param visitedRelations A set that records all the relations that have
+     *   been visited during the search.
+     *  @param visitedPorts A set that records all the ports that have been
+     *   visited during the search.
+     *  @return <tt>true</tt> if a path is found and stored in the <tt>path</tt>
+     *   parameter; <tt>false</tt> otherwise.
+     *  @see #findNextPath(Path, Set, Set)
+     */
+    @SuppressWarnings("unchecked")
+    public boolean findFirstPath(Port startPort, Path path,
+            Set<? super Relation> visitedRelations,
+            Set<? super Port> visitedPorts) {
+        List<?> relationList = startPort.linkedRelationList();
+        if (startPort instanceof ComponentPort) {
+            ((Collection<?>) relationList).addAll(
+                    ((TypedIOPort) startPort).insideRelationList());
+        }
+
+        int i = 0;
+        IndexedList currentList = new IndexedList(relationList, 0);
+        path.add(currentList);
+        Path.Entry currentListEntry = path.getTail();
+
+        for (Object relationObject : relationList) {
+            Relation relation = (Relation) relationObject;
+            if (visitedRelations.contains(relation)) {
+                i++;
+                continue;
+            }
+
+            currentList.setSecond(i);
+            visitedRelations.add(relation);
+            List<?> portList = relation.linkedPortList();
+
+            int j = 0;
+            IndexedList currentList2 = new IndexedList(portList, 0);
+            path.add(currentList2);
+            Path.Entry currentListEntry2 = path.getTail();
+
+            for (Object portObject : portList) {
+                Port port = (Port) portObject;
+                if (visitedPorts.contains(port)) {
+                    j++;
+                    continue;
+                }
+
+                currentList2.setSecond(j);
+                visitedPorts.add(port);
+                NamedObj container = port.getContainer();
+
+                boolean reachEnd = true;
+                if (container instanceof CompositeEntity) {
+                    if (!_isOpaque((CompositeEntity) container)) {
+                        if (findFirstPath(port, path, visitedRelations,
+                                visitedPorts)) {
+                            return true;
+                        } else {
+                            reachEnd = false;
+                        }
+                    }
+                }
+
+                if (reachEnd) {
+                    return true;
+                } else {
+                    visitedPorts.remove(port);
+                    j++;
+                }
+            }
+
+            currentListEntry2.remove();
+            visitedRelations.remove(relation);
+            i++;
+        }
+
+        currentListEntry.remove();
+
+        return false;
+    }
+
+    /** Find the next child within the top composite entity. The child is either
+     *  an atomic actor ({@link AtomicActor}) or an opaque composite entity, one
+     *  that has a director in it. If the top composite entity does not have any
+     *  more child, <tt>null</tt> is returned.
+     *
+     *  @param top The top composite entity in which the search is performed.
+     *  @param indexedLists A list that is used to encode the composite entities
+     *   visited.
+     *  @param excludedEntities The atomic actor or opaque composite entities
+     *   that should not be returned.
+     *  @return The child found, or <tt>null</tt> if none.
+     *  @see #findFirstChild(CompositeEntity, IndexedLists, Collection)
+     */
+    public ComponentEntity findNextChild(CompositeEntity top,
+            IndexedLists indexedLists, Collection<Object> excludedEntities) {
+        if (indexedLists.isEmpty()) {
+            return findFirstChild(top, indexedLists, excludedEntities);
+        } else {
+            IndexedLists.Entry entry = indexedLists.getTail();
+            while (entry != null) {
+                IndexedList indexedList = entry.getValue();
+                List<?> entityList = indexedList.getFirst();
+                for (int index = indexedList.getSecond() + 1;
+                       index < entityList.size(); index++) {
+                    indexedList.setSecond(index);
+                    ComponentEntity entity =
+                        (ComponentEntity) entityList.get(index);
+                    if (!excludedEntities.contains(entity)) {
+                        indexedLists.removeAllAfter(entry);
+                        if (entity instanceof AtomicActor
+                                || entity instanceof CompositeEntity
+                                && _isOpaque((CompositeEntity) entity)) {
+                            return entity;
+                        } else {
+                            CompositeEntity compositeEntity =
+                                (CompositeEntity) entity;
+                            ComponentEntity child = findFirstChild(
+                                    compositeEntity, indexedLists,
+                                    excludedEntities);
+                            if (child != null) {
+                                return child;
+                            }
+                        }
+                    }
+                }
+                entry = entry.getPrevious();
+            }
+            indexedLists.clear();
+            return null;
+        }
+    }
+
+    /** Find the next path, and store it in the <tt>path</tt> parameter if
+     *  found. A path is a sequence of alternating ports ({@link Port}) and
+     *  relations ({@link Relation}), starting and ending with two ports (which
+     *  may be equal, in which case the path is a loop). If a path contains
+     *  ports between the start port and the end port, those ports in between
+     *  must be ports of a transparent composite entities (those with no
+     *  directors inside). If no more path is found, <tt>null</tt> is returned.
+     *
+     *  @param path The path to obtain the result.
+     *  @param visitedRelations A set that records all the relations that have
+     *   been visited during the search.
+     *  @param visitedPorts A set that records all the ports that have been
+     *   visited during the search.
+     *  @return <tt>true</tt> if a path is found and stored in the <tt>path</tt>
+     *   parameter; <tt>false</tt> otherwise.
+     *  @see #findFirstPath(Port, Path, Set, Set)
+     */
+    @SuppressWarnings("unchecked")
+    public boolean findNextPath(Path path, Set<Relation> visitedRelations,
+            Set<Port> visitedPorts) {
+        Path.Entry entry = path.getTail();
+        while (entry != null) {
+            IndexedList markedEntityList = entry.getValue();
+            List<?> entityList = markedEntityList.getFirst();
+            for (int index = markedEntityList.getSecond() + 1;
+                   index < entityList.size(); index++) {
+                markedEntityList.setSecond(index);
+                path.removeAllAfter(entry);
+
+                Object nextObject = entityList.get(index);
+                if (nextObject instanceof Port) {
+                    Port port = (Port) nextObject;
+                    if (visitedPorts.contains(port)) {
+                        continue;
+                    }
+
+                    visitedPorts.add(port);
+
+                    NamedObj container = port.getContainer();
+                    if (!(container instanceof CompositeEntity)
+                            || _isOpaque((CompositeEntity) container)) {
+                        return true;
+                    }
+
+                    if (findFirstPath(port, path, visitedRelations,
+                            visitedPorts)) {
+                        return true;
+                    }
+
+                    visitedPorts.remove(port);
+                } else {
+                    Relation relation = (Relation) nextObject;
+                    if (visitedRelations.contains(relation)) {
+                        continue;
+                    }
+
+                    visitedRelations.add(relation);
+                    List<?> portList = relation.linkedPortList();
+
+                    int i = 0;
+                    for (Object portObject : portList) {
+                        Port port = (Port) portObject;
+                        if (visitedPorts.contains(port)) {
+                            i++;
+                            continue;
+                        }
+
+                        path.add(new IndexedList(portList, i));
+                        visitedPorts.add(port);
+                        NamedObj container = port.getContainer();
+                        if (!(container instanceof CompositeEntity)
+                                || _isOpaque((CompositeEntity) container)) {
+                            return true;
+                        }
+
+                        if (findFirstPath(port, path, visitedRelations,
+                                visitedPorts)) {
+                            return true;
+                        } else {
+                            visitedPorts.remove(port);
+                        }
+                    }
+
+                    visitedRelations.remove(relation);
+                }
+
+                if (findNextPath(path, visitedRelations, visitedPorts)) {
+                    return true;
+                }
+            }
+            entry = entry.getPrevious();
+        }
+        return false;
+    }
+
+    public static class IndexedList extends Pair<List<?>, Integer> {
+
+        public boolean equals(Object object) {
+            if (object instanceof IndexedList) {
+                IndexedList list = (IndexedList) object;
+                return getFirst().get(getSecond()) ==
+                    list.getFirst().get(list.getSecond());
+            } else {
+                return false;
+            }
+        }
+
+        public int hashCode() {
+            return getFirst().get(getSecond()).hashCode();
+        }
+
+        IndexedList(List<?> list, Integer mark) {
+            super(list, mark);
+        }
+
+        private static final long serialVersionUID = -8862333308144377821L;
+
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      public inner classes                 ////
+
+    public static class IndexedLists extends FastLinkedList<IndexedList> {
+    }
+
+    public static class Path extends IndexedLists implements Cloneable {
+
+        public Object clone() {
+            Path path = new Path(_startPort);
+            Entry entry = getHead();
+            while (entry != null) {
+                path.add((IndexedList) entry.getValue().clone());
+                entry = entry.getNext();
+            }
+            return path;
+        }
+
+        public boolean equals(Object object) {
+            return super.equals(object)
+                    && _startPort == ((Path) object)._startPort;
+        }
+
+        public Port getEndPort() {
+            IndexedList list = getTail().getValue();
+            return (Port) ((List<?>) list.getFirst()).get(list.getSecond());
+        }
+
+        public Port getStartPort() {
+            return _startPort;
+        }
+
+        public int hashCode() {
+            return Arrays.hashCode(new int[] {_startPort.hashCode(),
+                    super.hashCode()});
+        }
+
+        public String toString() {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(_startPort.getFullName());
+            buffer.append(":[");
+            Entry entry = getHead();
+            int i = 0;
+            while (entry != null) {
+                IndexedList markedList = entry.getValue();
+                List<?> list = (List<?>) markedList.getFirst();
+                NamedObj object = (NamedObj) list.get(markedList.getSecond());
+                if (i++ > 0) {
+                    buffer.append(", ");
+                }
+                buffer.append(object.getFullName());
+                entry = entry.getNext();
+            }
+            buffer.append("]");
+            return buffer.toString();
+        }
+
+        Path(Port startPort) {
+            _startPort = startPort;
+        }
+
+        private Port _startPort;
+    }
+
+    protected abstract boolean _isOpaque(CompositeEntity entity);
+}

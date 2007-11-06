@@ -65,6 +65,7 @@ JSRCS = \
 	GTIngredientElement.java \
 	GTIngredientList.java \
 	GTIngredientsAttribute.java \
+	GraphAnalyzer.java \
 	GraphMatcher.java \
 	GraphTransformationException.java \
 	GraphTransformer.java \
@@ -94,16 +95,15 @@ OPTIONAL_FILES = \
 	'AtomicActorMatcher$$RestoreAppearanceChangeRequest.class' \
 	'GTIngredient$$FieldIterator.class' \
 	'GTIngredient$$NamedObjMatchResult.class' \
+	'GraphAnalyzer$$IndexedList.class' \
+	'GraphAnalyzer$$IndexedLists.class' \
+	'GraphAnalyzer$$Path.class' \
 	'GraphMatcher$$1.class' \
 	'GraphMatcher$$2.class' \
-	'GraphMatcher$$IndexedList.class' \
-	'GraphMatcher$$IndexedLists.class' \
 	'GraphMatcher$$LookbackEntry.class' \
 	'GraphMatcher$$LookbackList.class' \
 	'GraphMatcher$$NameComparator.class' \
-	'GraphMatcher$$ObjectList.class' \
-	'GraphMatcher$$Path.class' \
-	'GraphTransformer$$SubstituteEntitiesChangeRequest.class'
+	'GraphMatcher$$ObjectList.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

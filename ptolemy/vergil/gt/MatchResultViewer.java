@@ -269,7 +269,6 @@ public class MatchResultViewer extends AbstractGTFrame {
         }
         if (_topFrame == null) {
             _subviewers = new HashSet<MatchResultViewer>();
-            _transformer = new GraphTransformer();
         }
     }
 
@@ -334,13 +333,8 @@ public class MatchResultViewer extends AbstractGTFrame {
     }
 
     private void _transform() {
-        try {
-            _transformer.transform(_rule, _results.get(_currentPosition),
-                    (CompositeEntity) getModel());
-            _finishTransform();
-        } catch (TransformationException e) {
-            throw new KernelRuntimeException(e, "Unable to transform model.");
-        }
+        GraphTransformer.transform(_rule, _results.get(_currentPosition));
+        _finishTransform();
     }
 
     private int _currentPosition;
@@ -370,8 +364,6 @@ public class MatchResultViewer extends AbstractGTFrame {
     private JButton _transformButton;
 
     private boolean _transformed = false;
-
-    private GraphTransformer _transformer;
 
     private JMenuItem _transformItem;
 
