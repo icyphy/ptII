@@ -1524,13 +1524,41 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     /** Purge any record of a model opened from the specified
-     *  URL.  Note that you may also need to call {@link #reset()} so
-     *  that the _toplevel is reset.
+     *  URL.  The record will not be purged if the model is
+     *  a class definition that has child instances.
+     *  Note that you may also need to call {@link #reset()} so
+     *  that the _toplevel is reset on any parser.
      *  @param url The URL.
      *  @see #parse(URL, URL)
      */
     public static void purgeModelRecord(URL url) {
         if ((_imports != null) && (url != null)) {
+            // Don't do this if the url is of a class
+            // and there are instances!!!!
+            WeakReference reference = (WeakReference) _imports.get(url);
+            if (reference != null) {
+                Object modelToPurge = reference.get();
+                // Check to see whether the model to
+                // purge is a class with instances.
+                if (modelToPurge instanceof Instantiable) {
+                    boolean keepTheModel = false;
+                    List children = ((Instantiable)modelToPurge).getChildren();
+                    if (children != null) {
+                        Iterator childrenIterator = children.iterator();
+                        while (childrenIterator.hasNext()) {
+                            WeakReference child = (WeakReference)childrenIterator.next();
+                            if (child != null && child.get() != null) {
+                                keepTheModel = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (keepTheModel) {
+                        return;
+                    }
+                }
+            }
+
             _imports.remove(url);
         }
     }
@@ -3439,7 +3467,26 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Source is given.
             classAsFile = source;
         }
-
+        // First check to see whether the object has been previously loaded.
+        URL url = fileNameToURL(classAsFile, _base);
+        if (_imports != null) {
+            WeakReference possiblePrevious = (WeakReference) _imports.get(url);
+            NamedObj previous = null;
+            if (possiblePrevious != null) {
+                previous = (NamedObj) possiblePrevious.get();
+                if (previous == null) {
+                    _imports.remove(url);
+                }
+            }
+            if (previous instanceof ComponentEntity) {
+                // NOTE: In theory, we should not even have to
+                // check whether the file has been updated, because
+                // if changes were made to model since it was loaded,
+                // they should have been propagated.
+                return (ComponentEntity)previous;
+            }
+        }
+        
         // Read external model definition in a new parser,
         // rather than in the current context.
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
@@ -3450,8 +3497,28 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             candidateReference = _findOrParse(newParser, _base, classAsFile,
                     className, source);
         } catch (Exception ex2) {
+            url = null;
             // Try the alternate file, if it's not null.
             if (altClassAsFile != null) {
+                url = fileNameToURL(altClassAsFile, _base);
+                // First check to see whether the object has been previously loaded.
+                if (_imports != null) {
+                    WeakReference possiblePrevious = (WeakReference) _imports.get(url);
+                    NamedObj previous = null;
+                    if (possiblePrevious != null) {
+                        previous = (NamedObj) possiblePrevious.get();
+                        if (previous == null) {
+                            _imports.remove(url);
+                        }
+                    }
+                    if (previous instanceof ComponentEntity) {
+                        // NOTE: In theory, we should not even have to
+                        // check whether the file has been updated, because
+                        // if changes were made to model since it was loaded,
+                        // they should have been propagated.
+                        return (ComponentEntity)previous;
+                    }
+                }
                 try {
                     candidateReference = _findOrParse(newParser, _base,
                             altClassAsFile, className, source);
@@ -3510,6 +3577,24 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Load an associated icon, if there is one.
         _loadIconForClass(className, reference);
+        
+        // Record the import to avoid repeated reading
+        if (reference != null) {
+            if (_imports == null) {
+                _imports = new HashMap();
+            }
+            // NOTE: The index into the HashMap is the URL, not
+            // its string representation. The URL class overrides
+            // equal() so that it returns true if two URLs refer
+            // to the same file, regardless of whether they have
+            // the same string representation.
+            // NOTE: The value in the HashMap is a weak reference
+            // so that we don't keep all models ever created just
+            // because of this _imports field. If there are no
+            // references to the model other than the one in
+            // _imports, it can be garbage collected.
+            _imports.put(url, new WeakReference(reference));
+        }
 
         return reference;
     }
