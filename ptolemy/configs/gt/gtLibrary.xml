@@ -10,7 +10,13 @@
     <property name="RelationCollapsing" class="ptolemy.actor.gt.RelationCollapsingAttribute"/>
   </entity>
   <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+    <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+    <class name="CompositeClassDefinition" extends="ptolemy.actor.TypedCompositeActor"/>
+	<input source="ptolemy/configs/utilityModalModel.xml"/>
     <input source="ptolemy/configs/basicUtilities.xml"/>
+    <!-- Do not include this as singleton parameters are buggy. -->
+    <!-- input source="ptolemy/configs/customize.xml"/ -->
+    <input source="ptolemy/data/unit/unitSystems.xml"/>
   </entity>
   <entity name="Directors" class="ptolemy.moml.EntityLibrary">
     <configure>
