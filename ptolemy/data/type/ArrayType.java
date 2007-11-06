@@ -46,7 +46,7 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class ArrayType extends StructuredType {
+public class ArrayType extends StructuredType  implements java.io.Serializable {
     /** Construct a new ArrayType with the specified type for the array
      *  elements. To leave the element type undeclared, use BaseType.UNKNOWN.
      *  @param elementType The type of the array elements.
