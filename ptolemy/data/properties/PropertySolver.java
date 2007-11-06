@@ -10,9 +10,9 @@ import java.util.List;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -21,6 +21,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.util.StringUtilities;
 
 public abstract class PropertySolver extends Attribute {
 
@@ -59,6 +60,37 @@ public abstract class PropertySolver extends Attribute {
 
     public abstract String getUseCaseName();
     
+    /** Parse a command-line argument. This method recognized -help
+     *  and -version command-line arguments, and prints usage or
+     *  version information. No other command-line arguments are
+     *  recognized.
+     *  @param arg The command-line argument to be parsed.
+     *  @return True if the argument is understood, false otherwise.
+     *  @exception Exception If something goes wrong.
+     */
+    public static boolean parseArg(String arg) throws Exception {
+        if (arg.equals("-help")) {
+            // TODO: _usage()??
+            //System.out.println(_usage());
+
+            StringUtilities.exit(0);
+            // If we are testing, and ptolemy.ptII.exitAfterWrapup is set
+            // then StringUtilities.exit(0) might not actually exit.
+            return true;
+        } else if (arg.equals("-version")) {
+            System.out.println("Version "
+                            + VersionAttribute.CURRENT_VERSION.getExpression()
+                            + ", Build $Id$");
+
+            StringUtilities.exit(0);
+            // If we are testing, and ptolemy.ptII.exitAfterWrapup is set
+            // then StringUtilities.exit(0) might not actually exit.
+            return true;
+        }
+        // Argument not recognized.
+        return false;
+    }
+
     public void removePropertyChangedListener(
             PropertyChangedListener listener) {
         _listeners.remove(listener);
@@ -207,7 +239,7 @@ public abstract class PropertySolver extends Attribute {
         MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
 
         for (int i = 0; i < args.length; i++) {
-            if (CodeGenerator.parseArg(args[i])) {
+            if (parseArg(args[i])) {
                 continue;
             }
             if (args[i].trim().startsWith("-")) {
