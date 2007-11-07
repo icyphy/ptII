@@ -1145,7 +1145,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(variable, throwable,
                             "Failed to generate parse tree for \""
-                            + name + "\".");
+                            + name + "\". in \"" + container + "\"");
                 }
                 parseTreeCodeGenerator.evaluateParseTree(parseTree,
                         new VariableScope(variable));
