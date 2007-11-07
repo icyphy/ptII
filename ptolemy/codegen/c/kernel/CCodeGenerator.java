@@ -48,6 +48,7 @@ import ptolemy.codegen.kernel.CodeGeneratorUtilities;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -544,11 +545,12 @@ public class CCodeGenerator extends CodeGenerator {
                     + "modified parameters"));
             Iterator modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
-                Parameter parameter = (Parameter) modifiedVariables.next();
+                // SetVariable needs this to be a Variable, not a Parameter.
+                Variable variable = (Variable) modifiedVariables.next();
 
                 code.append("static "
-                        + CodeGeneratorHelper.targetType(parameter.getType()) + " "
-                        + generateVariableName(parameter) + ";" + _eol);
+                        + CodeGeneratorHelper.targetType(variable.getType()) + " "
+                        + generateVariableName(variable) + ";" + _eol);
             }
         }
 
@@ -571,15 +573,16 @@ public class CCodeGenerator extends CodeGenerator {
                     + "modified parameters"));
             Iterator modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
-                Parameter parameter = (Parameter) modifiedVariables.next();
+                // SetVariable needs this to be a Variable, not a Parameter.
+                Variable variable = (Variable) modifiedVariables.next();
 
-                NamedObj container = parameter.getContainer();
+                NamedObj container = variable.getContainer();
                 CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
                 code.append(_INDENT1
-                        + generateVariableName(parameter)
+                        + generateVariableName(variable)
                         + " = "
                         + containerHelper.getParameterValue(
-                                parameter.getName(), parameter.getContainer())
+                                variable.getName(), variable.getContainer())
                         + ";" + _eol);
             }
         }
