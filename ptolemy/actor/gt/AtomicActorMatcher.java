@@ -79,9 +79,9 @@ ValueListener {
         operations.setExpression("");
         operations.addValueListener(this);
 
-        patternEntity = new PatternEntityAttribute(this, "patternEntity");
-        patternEntity.setExpression("");
-        patternEntity.addValueListener(this);
+        patternObject = new PatternObjectAttribute(this, "patternObject");
+        patternObject.setExpression("");
+        patternObject.addValueListener(this);
 
         editorFactory = new GTIngredientsEditor.Factory(this, "editorFactory");
 
@@ -96,8 +96,8 @@ ValueListener {
         return operations;
     }
 
-    public PatternEntityAttribute getPatternEntityAttribute() {
-        return patternEntity;
+    public PatternObjectAttribute getPatternObjectAttribute() {
+        return patternObject;
     }
 
     public void updateAppearance(GTIngredientsAttribute attribute) {
@@ -174,7 +174,7 @@ ValueListener {
 
     public void valueChanged(Settable settable) {
         if (settable == criteria) {
-            if (GTEntityTools.isInPattern(this)) {
+            if (GTTools.isInPattern(this)) {
                 // criteria attribute is used to set the matching criteria for
                 // this actor. It is used only for actors in the pattern of
                 // a transformation rule. If the actor is in the
@@ -184,7 +184,7 @@ ValueListener {
                 // Update the appearance of corresponding entities in the
                 // replacement.
                 Pattern pattern = (Pattern)
-                    GTEntityTools.getContainingPatternOrReplacement(this);
+                    GTTools.getContainingPatternOrReplacement(this);
                 NamedObj container = pattern.getContainer();
                 if (container instanceof TransformationRule) {
                     Replacement replacement =
@@ -192,20 +192,20 @@ ValueListener {
                     replacement.updateEntitiesAppearance(criteria);
                 }
             }
-        } else if (settable == patternEntity) {
-            if (GTEntityTools.isInReplacement(this)) {
+        } else if (settable == patternObject) {
+            if (GTTools.isInReplacement(this)) {
                 // Update the ports with the criteria attribute of the
                 // corresponding actor in the pattern of the transformation
                 // rule.
-                GTEntity entity =
-                    GTEntityTools.getCorrespondingPatternEntity(this);
+                NamedObj entity =
+                    GTTools.getCorrespondingPatternObject(this);
                 if (entity != null && entity instanceof AtomicActorMatcher) {
                     criteria.setPersistent(false);
                     try {
                         criteria.setExpression("");
                     } catch (IllegalActionException e) {
                         // Ignore because criteria is not used for
-                        // patternEntity.
+                        // patternObject.
                     }
                     updateAppearance(((AtomicActorMatcher) entity).criteria);
                 }
@@ -219,7 +219,7 @@ ValueListener {
 
     public GTIngredientsAttribute operations;
 
-    public PatternEntityAttribute patternEntity;
+    public PatternObjectAttribute patternObject;
 
     private void _loadActorIcon(String actorClassName) {
         CompositeActor container = new CompositeActor();

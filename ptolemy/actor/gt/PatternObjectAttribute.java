@@ -42,12 +42,13 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class PatternEntityAttribute extends StringAttribute {
+public class PatternObjectAttribute extends StringAttribute {
 
     /**
      *
      */
-    public PatternEntityAttribute() {
+    public PatternObjectAttribute() {
+    	setClassName("ptolemy.actor.gt.PatternObjectAttribute");
     }
 
     /**
@@ -56,16 +57,18 @@ public class PatternEntityAttribute extends StringAttribute {
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    public PatternEntityAttribute(NamedObj container, String name)
+    public PatternObjectAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        setClassName("ptolemy.actor.gt.PatternObjectAttribute");
     }
 
     /**
      * @param workspace
      */
-    public PatternEntityAttribute(Workspace workspace) {
+    public PatternObjectAttribute(Workspace workspace) {
         super(workspace);
+        setClassName("ptolemy.actor.gt.PatternObjectAttribute");
     }
 
     /**

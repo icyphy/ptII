@@ -28,7 +28,11 @@
 
 package ptolemy.actor.gt;
 
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 
 /**
 
@@ -38,10 +42,10 @@ import ptolemy.kernel.util.Nameable;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GTEntityTools {
+public class GTTools {
 
     public static CompositeActorMatcher getContainingPatternOrReplacement(
-            GTEntity entity) {
+            NamedObj entity) {
         Nameable parent = entity.getContainer();
         while (parent != null && !(parent instanceof Pattern)
                 && !(parent instanceof Replacement)) {
@@ -49,39 +53,62 @@ public class GTEntityTools {
         }
         return (CompositeActorMatcher) parent;
     }
+    
+    public static PatternObjectAttribute getPatternObjectAttribute(
+    		NamedObj object, boolean createNew) {
+        Attribute attribute = object.getAttribute("patternObject");
+        if (attribute == null) {
+        	if (createNew) {
+	        	try {
+					return new PatternObjectAttribute(object, "patternObject");
+				} catch (IllegalActionException e) {
+					return null;
+				} catch (NameDuplicationException e) {
+					return null;
+				}
+        	} else {
+        		return null;
+        	}
+        }
+        if (attribute instanceof PatternObjectAttribute) {
+            return (PatternObjectAttribute) attribute;
+        } else {
+            return null;
+        }
+    }
 
-    public static GTEntity getCorrespondingPatternEntity(
-            GTEntity replacementEntity) {
+    public static NamedObj getCorrespondingPatternObject(
+    		NamedObj replacementEntity) {
         CompositeActorMatcher container =
             getContainingPatternOrReplacement(replacementEntity);
         if (container == null) {
             return null;
         }
 
-        PatternEntityAttribute attribute =
-            replacementEntity.getPatternEntityAttribute();
+        PatternObjectAttribute attribute =
+        	getPatternObjectAttribute(replacementEntity, false);
         if (attribute == null) {
             return null;
         }
 
-        String patternEntityName = attribute.getExpression();
-        if (patternEntityName.equals("")) {
+        String patternObjectName = attribute.getExpression();
+        if (patternObjectName.equals("")) {
             return null;
         }
 
         TransformationRule transformer =
             (TransformationRule) container.getContainer();
         Pattern pattern = transformer.getPattern();
-        return (GTEntity) pattern.getEntity(patternEntityName);
+        return pattern.getEntity(patternObjectName);
     }
 
-    public static boolean isInPattern(GTEntity entity) {
+    public static boolean isInPattern(NamedObj entity) {
         CompositeActorMatcher container =
             getContainingPatternOrReplacement(entity);
         return container != null && container instanceof Pattern;
     }
 
-    public static boolean isInReplacement(GTEntity entity) {
+    public static boolean isInReplacement(NamedObj entity) {
         CompositeActorMatcher container =
             getContainingPatternOrReplacement(entity);
         return container != null && container instanceof Replacement;

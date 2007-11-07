@@ -60,11 +60,11 @@ JSRCS = \
 	CompositeActorMatcher.java \
 	CompositeEntityPatternAttribute.java \
 	GTEntity.java \
-	GTEntityTools.java \
 	GTIngredient.java \
 	GTIngredientElement.java \
 	GTIngredientList.java \
 	GTIngredientsAttribute.java \
+	GTTools.java \
 	GraphAnalyzer.java \
 	GraphMatcher.java \
 	GraphTransformationException.java \
@@ -73,7 +73,7 @@ JSRCS = \
 	MalformedStringException.java \
 	MatchCallback.java \
 	Pattern.java \
-	PatternEntityAttribute.java \
+	PatternObjectAttribute.java \
 	RelationCollapsingAttribute.java \
 	Replacement.java \
 	SubgraphMatchingException.java \

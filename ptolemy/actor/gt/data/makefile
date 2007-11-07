@@ -47,6 +47,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	CombinedCollection.java \
 	FastLinkedList.java \
 	MatchResult.java \
 	Pair.java \
@@ -62,6 +63,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'CombinedCollection$$Iterator.class' \
 	'FastLinkedList$$1.class' \
 	'FastLinkedList$$Entry.class' \
 	'MatchResult$$1.class'

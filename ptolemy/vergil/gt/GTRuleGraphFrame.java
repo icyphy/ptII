@@ -40,6 +40,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -73,11 +74,14 @@ import javax.swing.table.TableColumnModel;
 
 import ptolemy.actor.gt.AtomicActorMatcher;
 import ptolemy.actor.gt.CompositeActorMatcher;
+import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.MatchCallback;
 import ptolemy.actor.gt.Pattern;
-import ptolemy.actor.gt.PatternEntityAttribute;
+import ptolemy.actor.gt.PatternObjectAttribute;
+import ptolemy.actor.gt.Replacement;
 import ptolemy.actor.gt.TransformationRule;
+import ptolemy.actor.gt.data.CombinedCollection;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
@@ -230,9 +234,11 @@ TableModelListener, ValueListener {
         if (!_isTableActive()) {
             CompositeEntity model = getActiveModel();
             if (_isInPattern(model)) {
-                _setOrClearPatternEntityAttributes(model, true);
+                _setOrClearPatternObjectAttributes(model, true,
+                        _getSelectionSet());
                 super.copy();
-                _setOrClearPatternEntityAttributes(model, false);
+                _setOrClearPatternObjectAttributes(model, false,
+                        _getSelectionSet());
             } else {
                 super.copy();
             }
@@ -310,7 +316,8 @@ TableModelListener, ValueListener {
 
             CompositeEntity model = getActiveModel();
             if (_isInPattern(model)) {
-                _setOrClearPatternEntityAttributes(model, false);
+                // FIXME: modify only newly created entities and relations.
+                _setOrClearPatternObjectAttributes(model, false, null);
             } else {
                 _refreshTable();
             }
@@ -346,7 +353,7 @@ TableModelListener, ValueListener {
         }
         int i = 0;
         for (ComponentEntity entity : entities) {
-            _setPatternEntity(entity, "", i++ > 0);
+            _setPatternObject(entity, "", i++ > 0);
         }
         if (entities.isEmpty() && needRefresh) {
             _refreshTable();
@@ -362,85 +369,105 @@ TableModelListener, ValueListener {
         int column = e.getColumn();
         if (column != TableModelEvent.ALL_COLUMNS && row == e.getLastRow()) {
             // Get the value in the transformer's correspondence attribute.
-            TransformationRule transformer =
-                (TransformationRule) getModel();
+            TransformationRule transformer = (TransformationRule) getModel();
+            Pattern pattern = transformer.getPattern();
+            Replacement replacement = transformer.getReplacement();
             String newValue = _getCellEditorValue(
                     (JPanel) _tableModel.getValueAt(row, column));
             String previousString = _cellEditor.getPreviousString();
+            if (previousString.equals(newValue)) {
+                return;
+            }
 
             if (column == 1) {
-                String patternEntityName = newValue;
-                if (patternEntityName.length() != 0) {
-                    ComponentEntity patternEntity =
-                        (ComponentEntity) transformer.getPattern().getEntity(
-                                patternEntityName);
-                    if (patternEntity == null) {
-                        String message = "Entity with name \""
-                            + patternEntityName
-                            + "\" cannot be found in the pattern part of "
-                            + "the transformation rule.";
+                String patternObjectName = newValue;
+                if (patternObjectName.length() > 0) {
+                    NamedObj patternObject =
+                        pattern.getEntity(patternObjectName);
+                    if (patternObject == null) {
+                        patternObject = pattern.getRelation(patternObjectName);
+                    }
+                    if (patternObject == null) {
+                        String message = "Entity or relation with name \""
+                            + patternObjectName
+                            + "\" cannot be found in the pattern of the "
+                            + "transformation rule.";
                         _showTableError(message, row, column, previousString);
                         return;
                     }
                 }
 
-                String replacementEntityName = _getCellEditorValue(
+                String replacementObjectName = _getCellEditorValue(
                         (JPanel) _tableModel.getValueAt(row, 2));
-                if (replacementEntityName.length() == 0) {
-                    return;
-                }
+                if (replacementObjectName.length() > 0) {
+                    // Updated the pattern object.
+                    NamedObj replacementObject =
+                        replacement.getEntity(replacementObjectName);
+                    if (replacementObject == null) {
+                        replacementObject =
+                            replacement.getRelation(replacementObjectName);
+                    }
 
-                // Updated the pattern object.
-                ComponentEntity replacementEntity = (ComponentEntity)
-                        transformer.getReplacement().getEntity(
-                                replacementEntityName);
-                if (!_getPatternEntityAttribute(replacementEntity)
-                        .getExpression().equals(patternEntityName)) {
-                    _setPatternEntity(replacementEntity, patternEntityName,
-                            false);
+                    if (replacementObject == null) {
+                        String message = "Entity or relation with name \""
+                            + replacementObjectName
+                            + "\" cannot be found in the replacement of the "
+                            + "transformation rule.";
+                        _showTableError(message, row, column, previousString);
+                        return;
+                    }
+
+                    if (!GTTools.getPatternObjectAttribute(
+                            replacementObject, true).getExpression().equals(
+                                    patternObjectName)) {
+                        _setPatternObject(replacementObject, patternObjectName,
+                                false);
+                    }
                 }
 
             } else if (column == 2) {
-                String replacementEntityName = _getCellEditorValue(
-                        (JPanel) _tableModel.getValueAt(row, 2));
-                if (replacementEntityName.length() == 0) {
-                    return;
-                }
+                String replacementObjectName = newValue;
+                if (replacementObjectName.length() > 0) {
+                    NamedObj replacementObject =
+                        replacement.getEntity(replacementObjectName);
+                    if (replacementObject == null) {
+                        replacementObject =
+                            replacement.getRelation(replacementObjectName);
+                    }
 
-                if (!previousString.equals(replacementEntityName)) {
-                    ComponentEntity replacementEntity =
-                        (ComponentEntity) transformer.getReplacement()
-                                .getEntity(replacementEntityName);
-                    if (replacementEntity == null) {
-                        String message = "Entity with name \""
-                            + replacementEntityName
-                            + "\" cannot be found in the replacement part of "
-                            + "the transformation rule.";
+                    if (replacementObject == null) {
+                        String message = "Entity or relation with name \""
+                            + replacementObjectName
+                            + "\" cannot be found in the replacement of the "
+                            + "transformation rule.";
                         _showTableError(message, row, column, previousString);
                         return;
                     }
 
-                    PatternEntityAttribute attribute =
-                        _getPatternEntityAttribute(replacementEntity);
+                    PatternObjectAttribute attribute =
+                        GTTools.getPatternObjectAttribute(
+                                replacementObject, false);
                     if (attribute == null) {
-                        String message = "Entity with name \""
-                            + replacementEntityName
+                        String message = "Entity or relation with name \""
+                            + replacementObject
                             + "\" in the replacement part of the "
                             + "transformation rule does not have a "
-                            + "\"patternEntity\" attribute.";
+                            + "\"patternObject\" attribute.";
                         _showTableError(message, row, column, previousString);
                         return;
                     }
 
-                    _cellEditor.setPreviousString(replacementEntityName);
-                    ComponentEntity previousEntity =
-                        (ComponentEntity) transformer.getReplacement()
-                                .getEntity(previousString);
-                    String patternObject = _getCellEditorValue(
+                    _cellEditor.setPreviousString(replacementObjectName);
+                    String patternObjectName = _getCellEditorValue(
                             (JPanel) _tableModel.getValueAt(row, 1));
 
-                    _setPatternEntity(previousEntity, "", false);
-                    _setPatternEntity(replacementEntity, patternObject, true);
+                    if (previousString.length() > 0) {
+                        NamedObj previousObject =
+                            replacement.getEntity(previousString);
+                        _setPatternObject(previousObject, "", false);
+                    }
+                    _setPatternObject(replacementObject, patternObjectName,
+                            true);
                 }
             }
         }
@@ -620,15 +647,6 @@ TableModelListener, ValueListener {
         }
     }
 
-    private static PatternEntityAttribute _getPatternEntityAttribute(NamedObj object) {
-        Attribute attribute = object.getAttribute("patternEntity");
-        if (attribute != null && attribute instanceof PatternEntityAttribute) {
-            return (PatternEntityAttribute) attribute;
-        } else {
-            return null;
-        }
-    }
-
     private GTRuleGraphFrame _getToplevelFrame() {
         NamedObj toplevel = getTransformationRule();
         for (Frame frame : getFrames()) {
@@ -674,31 +692,34 @@ TableModelListener, ValueListener {
         frame._tableModel.addTableModelListener(this);
     }
 
+    @SuppressWarnings("unchecked")
     private int _refreshTable(GTRuleGraphFrame topLevelFrame,
             CompositeActorMatcher replacement, int index,
             CompositeEntity container) {
-       for (Object entityObject : container.entityList()) {
-           NamedObj object = (NamedObj) entityObject;
-           PatternEntityAttribute attribute =
-               _getPatternEntityAttribute(object);
-           if (attribute != null) {
-               attribute.addValueListener(this);
-               String patternEntity = attribute.getExpression();
-               if (patternEntity.length() != 0) {
-                   String name = _getNameWithinContainer(object, replacement);
-                   topLevelFrame._tableModel.addRow(new Object[] {
-                           _createCellPanel(Integer.toString(index++)),
-                           _createCellPanel(patternEntity),
-                           _createCellPanel(name)
-                   });
-               }
-           }
-           if (object instanceof CompositeEntity) {
-               index = _refreshTable(topLevelFrame, replacement, index,
-                       (CompositeEntity) object);
-           }
-       }
-       return index;
+        Collection<?> objectCollection = new CombinedCollection<Object>(
+                container.entityList(), container.relationList());
+        for (Object entityObject : objectCollection) {
+            NamedObj object = (NamedObj) entityObject;
+            PatternObjectAttribute attribute =
+                GTTools.getPatternObjectAttribute(object, false);
+            if (attribute != null) {
+                attribute.addValueListener(this);
+                String patternObject = attribute.getExpression();
+                if (patternObject.length() != 0) {
+                    String name = _getNameWithinContainer(object, replacement);
+                    topLevelFrame._tableModel.addRow(new Object[] {
+                            _createCellPanel(Integer.toString(index++)),
+                            _createCellPanel(patternObject),
+                            _createCellPanel(name)
+                    });
+                }
+            }
+            if (object instanceof CompositeEntity) {
+                index = _refreshTable(topLevelFrame, replacement, index,
+                        (CompositeEntity) object);
+            }
+        }
+        return index;
     }
 
     private void _removeUnusedToolbarButtons() {
@@ -731,27 +752,35 @@ TableModelListener, ValueListener {
         _tableModel.fireTableCellUpdated(row, column);
     }
 
-    private void _setOrClearPatternEntityAttributes(
-            CompositeEntity container, boolean isSet) {
+    @SuppressWarnings("unchecked")
+    private void _setOrClearPatternObjectAttributes(
+            CompositeEntity container, boolean isSet, Collection<?> filter) {
         try {
-            for (Object entityObject : container.entityList()) {
-                NamedObj object = (NamedObj) entityObject;
-                PatternEntityAttribute patternEntity =
-                    _getPatternEntityAttribute(object);
-                if (patternEntity != null) {
+            Collection<?> objectCollection;
+            if (filter == null) {
+                objectCollection = new CombinedCollection<Object>(
+                        container.entityList(), container.relationList());
+            } else {
+                objectCollection = filter;
+            }
+            for (Object objectObject : objectCollection) {
+                NamedObj object = (NamedObj) objectObject;
+                PatternObjectAttribute patternObject =
+                    GTTools.getPatternObjectAttribute(object, false);
+                if (patternObject != null) {
                     if (isSet) {
                         String name = _getNameWithinContainer(object,
                                 getTransformationRule().getPattern());
-                        patternEntity.setPersistent(true);
-                        patternEntity.setExpression(name);
+                        patternObject.setPersistent(true);
+                        patternObject.setExpression(name);
                     } else {
-                        patternEntity.setPersistent(false);
-                        patternEntity.setExpression("");
+                        patternObject.setPersistent(false);
+                        patternObject.setExpression("");
                     }
                 }
                 if (object instanceof CompositeEntity) {
-                    _setOrClearPatternEntityAttributes((CompositeEntity) object,
-                            isSet);
+                    _setOrClearPatternObjectAttributes((CompositeEntity) object,
+                            isSet, null);
                 }
             }
         } catch (IllegalActionException e) {
@@ -774,15 +803,15 @@ TableModelListener, ValueListener {
         }
     }
 
-    private void _setPatternEntity(ComponentEntity replacementEntity,
-            String patternEntityName, boolean mergeWithPrevious) {
-        String moml = "<property name=\"patternEntity\" value=\""
-            + patternEntityName + "\"/>";
+    private void _setPatternObject(NamedObj replacementObject,
+            String patternObjectName, boolean mergeWithPrevious) {
+        String moml = "<property name=\"patternObject\" value=\""
+            + patternObjectName + "\"/>";
         MoMLChangeRequest request =
-            new MoMLChangeRequest(this, replacementEntity, moml);
+            new MoMLChangeRequest(this, replacementObject, moml);
         request.setUndoable(true);
         request.setMergeWithPreviousUndo(mergeWithPrevious);
-        replacementEntity.requestChange(request);
+        replacementObject.requestChange(request);
     }
 
     private void _showTableError(String message, final int row,

@@ -58,8 +58,8 @@ implements GTEntity {
         operations = new GTIngredientsAttribute(this, "operations");
         operations.setExpression("");
 
-        patternEntity = new PatternEntityAttribute(this, "patternEntity");
-        patternEntity.setExpression("");
+        patternObject = new PatternObjectAttribute(this, "patternObject");
+        patternObject.setExpression("");
 
         editorFactory = new GTIngredientsEditor.Factory(this, "editorFactory");
     }
@@ -72,8 +72,8 @@ implements GTEntity {
         return operations;
     }
 
-    public PatternEntityAttribute getPatternEntityAttribute() {
-        return patternEntity;
+    public PatternObjectAttribute getPatternObjectAttribute() {
+        return patternObject;
     }
 
     public void updateAppearance(GTIngredientsAttribute attribute) {
@@ -86,7 +86,7 @@ implements GTEntity {
 
     public GTIngredientsAttribute operations;
 
-    public PatternEntityAttribute patternEntity;
+    public PatternObjectAttribute patternObject;
 
     private static final long serialVersionUID = -3093694369352820033L;
 

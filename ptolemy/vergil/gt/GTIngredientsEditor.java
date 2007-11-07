@@ -90,7 +90,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import ptolemy.actor.gt.GTEntity;
-import ptolemy.actor.gt.GTEntityTools;
+import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.MalformedStringException;
 import ptolemy.actor.gt.GTIngredient;
 import ptolemy.actor.gt.GTIngredientElement;
@@ -141,29 +141,29 @@ implements ActionListener {
 
         _owner = owner;
         _target = target;
-        
+
         Attribute attribute = null;
-        
+
         if (target instanceof GTEntity) {
-            if (GTEntityTools.isInPattern((GTEntity) target)) {
+            if (GTTools.isInPattern(target)) {
                 attribute = target.getAttribute("criteria");
                 _ingredientClasses = _criterionClasses;
                 tableau.setTitle("Criteria editor for " + target.getName());
-            } else if (GTEntityTools.isInReplacement((GTEntity) target)) {
+            } else if (GTTools.isInReplacement(target)) {
                 attribute = target.getAttribute("operations");
                 _ingredientClasses = _operationClasses;
                 tableau.setTitle("Operations editor for " + target.getName());
             }
         }
-        
+
         if (attribute == null
                 || !(attribute instanceof GTIngredientsAttribute)) {
             throw new KernelRuntimeException("Cannot edit entity "
                     + target.getName() + ".");
         }
-        
+
         _attribute = (GTIngredientsAttribute) attribute;
-        
+
         _temporaryIngredientList = new GTIngredientList(_attribute);
         _createComponents();
     }
@@ -593,8 +593,6 @@ implements ActionListener {
     private GTIngredientsAttribute _attribute;
 
     private static List<Class<? extends GTIngredient>> _criterionClasses;
-    
-    private List<Class<? extends GTIngredient>> _ingredientClasses;
 
     private static final Color _DISABLED_BACKGROUND = new Color(220, 220, 220);
 
@@ -602,6 +600,8 @@ implements ActionListener {
 
     private static final Border _EMPTY_BORDER =
         BorderFactory.createEmptyBorder();
+
+    private List<Class<? extends GTIngredient>> _ingredientClasses;
 
     private GTIngredientList _initialIngredientList;
 
@@ -644,38 +644,6 @@ implements ActionListener {
     private static final Color _UNSELECTED_COLOR = Color.WHITE;
 
     private static final long serialVersionUID = -2788727943126991098L;
-
-    private static class IngredientContentEditor extends AbstractCellEditor
-    implements TableCellEditor, TableCellRenderer {
-
-        public Object getCellEditorValue() {
-            return _currentRow;
-        }
-
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                boolean isSelected, int row, int column) {
-            _currentRow = (Row) value;
-            _currentRow.setSelected(isSelected, false);
-
-            return column == 1 ? _currentRow.getLeftPanel()
-                    : _currentRow.getRightPanel();
-        }
-
-        public Component getTableCellRendererComponent(JTable table,
-                Object value, boolean isSelected, boolean hasFocus, int row,
-                int column) {
-            Row currentRow = (Row) value;
-            currentRow.setSelected(isSelected, true);
-
-            return column == 1 ? currentRow.getLeftPanel()
-                    : currentRow.getRightPanel();
-        }
-
-        private Row _currentRow;
-
-        private static final long serialVersionUID = -8545086228933217848L;
-
-    }
 
     private static class ColorizedComboBox extends JComboBox {
 
@@ -915,6 +883,38 @@ implements ActionListener {
         private TableauFrame _owner;
 
         private static final long serialVersionUID = -566278924482709077L;
+
+    }
+
+    private static class IngredientContentEditor extends AbstractCellEditor
+    implements TableCellEditor, TableCellRenderer {
+
+        public Object getCellEditorValue() {
+            return _currentRow;
+        }
+
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
+            _currentRow = (Row) value;
+            _currentRow.setSelected(isSelected, false);
+
+            return column == 1 ? _currentRow.getLeftPanel()
+                    : _currentRow.getRightPanel();
+        }
+
+        public Component getTableCellRendererComponent(JTable table,
+                Object value, boolean isSelected, boolean hasFocus, int row,
+                int column) {
+            Row currentRow = (Row) value;
+            currentRow.setSelected(isSelected, true);
+
+            return column == 1 ? currentRow.getLeftPanel()
+                    : currentRow.getRightPanel();
+        }
+
+        private Row _currentRow;
+
+        private static final long serialVersionUID = -8545086228933217848L;
 
     }
 
