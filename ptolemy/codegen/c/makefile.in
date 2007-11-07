@@ -3,7 +3,14 @@
 # The CodeGenerator class subsitutes strings like "@modelName@" with
 # the value of parameters and writes the results in the directory
 # where the source code is created.
-# To compile, run make -f @modelName@.mk
+#
+# To use your _own_ makefile, create a makefile named "ModelName.mk.in".
+# For example, if the model is called Foo, then the code generator
+# looks for a makefile template file called "Foo.mk.in" and then
+# looks for $PTII/ptolemy/codegen/c/makefile.in.
+#
+# To compile using this makefile after substitution, run:
+#    make -f @modelName@.mk
 
 PTCGLIBRARIES = @PTCGLibraries@
 PTCGINCLUDES = @PTCGIncludes@
