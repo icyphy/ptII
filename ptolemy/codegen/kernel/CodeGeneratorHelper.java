@@ -1138,8 +1138,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 }
 
                 PtParser parser = new PtParser();
-                ASTPtRootNode parseTree = parser.generateParseTree(variable
+                ASTPtRootNode parseTree = null;
+                try {
+                    parseTree = parser.generateParseTree(variable
                         .getExpression());
+                } catch (Throwable throwable) {
+                    throw new IllegalActionException(variable, throwable,
+                            "Failed to generate parse tree for \""
+                            + name + "\".");
+                }
                 parseTreeCodeGenerator.evaluateParseTree(parseTree,
                         new VariableScope(variable));
 
