@@ -118,6 +118,7 @@ JSRCS = \
 	Rician.java \
 	Scale.java \
 	Sequence.java \
+	SetVariable.java \
 	Sink.java \
 	Sleep.java \
 	Stop.java \
@@ -186,6 +187,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Rician.c \
 	Scale.c \
 	Sequence.c \
+	SetVariable.c \
 	Sink.c \
 	Sleep.c \
 	Stop.c \
