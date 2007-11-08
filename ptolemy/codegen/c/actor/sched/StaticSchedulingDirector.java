@@ -251,8 +251,11 @@ public class StaticSchedulingDirector extends Director {
         code.append(super.generatePreinitializeCode());
 
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
-        director.invalidateSchedule();
-        director.getScheduler().getSchedule();
+        // FIXME: Why is this here?  Previously we should have
+        // called preinitialize() on the director, which will have constructed
+        // the schedule.
+        // director.invalidateSchedule();
+        // director.getScheduler().getSchedule();
 
         return code.toString();
     }
