@@ -1,4 +1,5 @@
-/* A recursive algorithm to match a pattern to subgraphs of a graph.
+/* Implementation of a recursive algorithm to match a pattern to any subgraph of
+   a graph.
 
  Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
@@ -60,10 +61,11 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
 /**
- A recursive algorithm to match a pattern to subgraphs of a graph. The pattern
- is specified as the <em>pattern</em> part of a graph transformation rule. The
- graph to be matched to, called <em>host graph</em>, is an arbitrary Ptolemy II
- model, whose top level is an instance of {@link CompositeEntity}.
+ Implementation of a recursive algorithm to match a pattern to any subgraph of a
+ a graph. The pattern is specified as the <em>pattern</em> part of a graph
+ transformation rule. The graph to be matched to, called <em>host graph</em>, is
+ an arbitrary Ptolemy II model, whose top level is an instance of {@link
+ CompositeEntity}.
 
  @author Thomas Huining Feng
  @version $Id$
@@ -604,7 +606,6 @@ public class GraphMatcher extends GraphAnalyzer {
         return success;
     }
 
-    @SuppressWarnings("unchecked")
     private boolean _matchPort(Port patternPort, Port hostPort) {
 
         int matchSize = _match.size();
@@ -671,8 +672,10 @@ public class GraphMatcher extends GraphAnalyzer {
 
                 _temporaryMatch.remove(patternContainer);
             } else {
-                patternList.addAll(patternPort.linkedRelationList());
-                hostList.addAll(hostPort.linkedRelationList());
+                patternList.addAll(
+                        (Collection<?>) patternPort.linkedRelationList());
+                hostList.addAll(
+                        (Collection<?>) hostPort.linkedRelationList());
             }
 
             success = _matchObject(patternList, hostList);
@@ -685,7 +688,6 @@ public class GraphMatcher extends GraphAnalyzer {
         return success;
     }
 
-    @SuppressWarnings("unchecked")
     private boolean _matchRelation(Relation patternRelation,
             Relation hostRelation) {
 
@@ -700,10 +702,11 @@ public class GraphMatcher extends GraphAnalyzer {
 
         if (success) {
             ObjectList patternList = new ObjectList();
-            patternList.addAll(patternRelation.linkedObjectsList());
+            patternList.addAll(
+                    (Collection<?>) patternRelation.linkedObjectsList());
 
             ObjectList hostList = new ObjectList();
-            hostList.addAll(hostRelation.linkedObjectsList());
+            hostList.addAll((Collection<?>) hostRelation.linkedObjectsList());
 
             success = _matchObject(patternList, hostList);
         }
