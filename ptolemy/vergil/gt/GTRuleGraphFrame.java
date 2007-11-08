@@ -1004,7 +1004,7 @@ TableModelListener, ValueListener {
                 String matchFileName = fileChooser.getFileName();
                 File input = new File(matchFileName);
                 if (!input.exists()) {
-                    MessageHandler.message("Unable to read input model " +
+                    MessageHandler.error("Unable to read input model " +
                             matchFileName + ".");
                     return null;
                 }
@@ -1231,8 +1231,8 @@ TableModelListener, ValueListener {
                     viewer.setTransformationRule(getTransformationRule());
                 }
             } catch (MalformedURLException ex) {
-                MessageHandler.message("Unable to obtain URL from the input " +
-                        "file name.");
+                MessageHandler.error("Unable to obtain URL from the input " +
+                        "file name.", ex);
             } catch (Exception ex) {
                 throw new InternalErrorException(ex);
             }
