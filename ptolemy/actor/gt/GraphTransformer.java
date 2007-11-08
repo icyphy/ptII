@@ -56,20 +56,25 @@ import ptolemy.moml.MoMLChangeRequest;
  */
 public class GraphTransformer extends ChangeRequest {
 
-    public GraphTransformer(TransformationRule transformer,
+    public GraphTransformer(TransformationRule transformationRule,
             MatchResult matchResult) {
         super(null, "Apply graph transformation to model.");
 
-        _pattern = transformer.getPattern();
-        _replacement = transformer.getReplacement();
+        _pattern = transformationRule.getPattern();
+        _replacement = transformationRule.getReplacement();
         _matchResult = matchResult;
     }
 
-    public static void transform(TransformationRule transformer,
-            MatchResult matchResult) {
+    public static void transform(TransformationRule transformationRule,
+            MatchResult matchResult) throws TransformationException {
         CompositeEntity hostGraph =
-            (CompositeEntity) matchResult.get(transformer.getPattern());
-        hostGraph.requestChange(new GraphTransformer(transformer, matchResult));
+            (CompositeEntity) matchResult.get(transformationRule.getPattern());
+        if (hostGraph == null) {
+            throw new TransformationException("Match result is invalid because "
+                    + "it does not include the pattern.");
+        }
+        hostGraph.requestChange(
+                new GraphTransformer(transformationRule, matchResult));
     }
 
     protected void _execute() throws TransformationException {
@@ -137,12 +142,13 @@ public class GraphTransformer extends ChangeRequest {
         new MoMLChangeRequest(this, context, moml).execute();
     }
 
-    @SuppressWarnings("unchecked")
     private void _addObjects(CompositeEntity hostContainer,
             CompositeEntity replacementContainer) {
         Collection<?> objectCollection = new CombinedCollection<Object>(
-                replacementContainer.entityList(),
-                replacementContainer.relationList());
+                new Collection<?>[] {
+                        (Collection<?>) replacementContainer.entityList(),
+                        (Collection<?>) replacementContainer.relationList()
+                });
         for (Object replacementObjectObject : objectCollection) {
             NamedObj replacementObject = (NamedObj) replacementObjectObject;
             NamedObj patternObject =
@@ -185,12 +191,13 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void _analyzeReplacementHostCorrespondence(
             CompositeEntity replacementContainer) {
         Collection<?> objectCollection = new CombinedCollection<Object>(
-                replacementContainer.entityList(),
-                replacementContainer.relationList());
+                new Collection<?>[] {
+                        replacementContainer.entityList(),
+                        replacementContainer.relationList()
+                });
         for (Object replacementObjectObject : objectCollection) {
             NamedObj replacementObject = (NamedObj) replacementObjectObject;
             NamedObj patternObject =
@@ -227,13 +234,14 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void _initObjectMap(Pattern pattern,
             CompositeEntity replacementContainer)
     throws TransformationException {
         Collection<?> objectCollection = new CombinedCollection<Object>(
-                replacementContainer.entityList(),
-                replacementContainer.relationList());
+                new Collection<?>[] {
+                        replacementContainer.entityList(),
+                        replacementContainer.relationList()
+                });
         for (Object replacementObjectObject : objectCollection) {
             NamedObj replacementObject = (NamedObj) replacementObjectObject;
 
@@ -304,11 +312,13 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void _removeObjects(CompositeEntity patternContainer)
     throws TransformationException {
         Collection<?> objectCollection = new CombinedCollection<Object>(
-                patternContainer.entityList(), patternContainer.relationList());
+                new Collection<?>[] {
+                        patternContainer.entityList(),
+                        patternContainer.relationList()
+                });
         for (Object patternObject : objectCollection) {
             if (patternObject instanceof CompositeEntity) {
                 _removeObjects((CompositeEntity) patternObject);
