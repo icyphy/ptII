@@ -586,8 +586,10 @@ proc testSetReportErrorsToHandler {reportErrorsToHandler} {
     $printStream flush	
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" output
-    list [string range $output 0 451] \
-	    [string range [$recorderErrorHandler getMessages] 0 451]
+    # We truncate the output to avoid the installation specific
+    # PTII path.  We could do a substitution here . . .	
+    list [string range $output 0 463] {...} \
+	    [string range [$recorderErrorHandler getMessages] 0 274] {...}
 }
 
 ######################################################################
@@ -607,9 +609,8 @@ test MoMLChangeRequest-6.1 {setReportErrorsToHandler true (the default) } {
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.lib.XXX
 Because:
-Could not find 'ptolemy/actor/lib/XXX.xml' or 'ptolemy/actor/lib/XXX.moml} {}}
-
-
+-- no protocol: ptolemy/actor/lib/XXX.xml
+-- XML file not found relative to classpath} ... {} ...}
 
 ######################################################################
 ####
@@ -621,14 +622,12 @@ test MoMLChangeRequest-6.2 {setReportErrorsToHandler true} {
 	    <entity name="const" class="ptolemy.actor.lib.XXX"/>
         </entity>
      succeeded
-} {RecorderErrorHandler: Error encountered in:
+} ... {RecorderErrorHandler: Error encountered in:
 <entity name="const" class="ptolemy.actor.lib.XXX">
 ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.lib.XXX
 Because:
-Could not find 'ptolemy/actor/lib/XXX.xml' or 'ptolemy/actor/lib/XXX.moml' using base 'null':  in [external stream] at line 3 and column 47
-Caused by:
- com.microstar.xml.XmlException: -- no protocol: ptolemy/actor/lib/XXX.xml
--- XML file not found relative to cl}}
+-- no protocol: ptolemy/actor/lib/XXX.xml
+-- XML file not found relative to classpath} ...}
 
 
 # Restore the original MoMLParser Error Handler
