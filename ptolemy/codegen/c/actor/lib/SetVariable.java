@@ -31,8 +31,12 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
 /**
  A code generation helper class for ptolemy.actor.lib.SetVariable.
-
-
+ * @author Man-Kit Leung
+ * @version $Id$
+ * @since Ptolemy II 6.1
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class SetVariable extends CCodeGeneratorHelper {
 
     /**
