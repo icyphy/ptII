@@ -146,7 +146,6 @@ test CodeGenerator-11.1 {getModifiedVariables methods} {
     list [java::isnull [$codeGenerator getModifiedVariables]]
 } {0}
 
-
 #####
 
 # generateCode(StringBuffer) is also tested in
@@ -171,7 +170,7 @@ test CodeGenerator-12.1 {generateCode using actor/TypedCompositeActor.java} {
     # Set the generatorPackage parameter so we look in
     # $PTII/ptolemy/codegen/kernel/test/actor for TypedCompositeActor.java
     set generatorPackageParameter [java::cast  ptolemy.data.expr.StringParameter [$codeGenerator getAttribute generatorPackage]]
-    $generatorPackageParameter setExpression ptolemy.codegen.c
+    $generatorPackageParameter setExpression ptolemy.codegen.kernel.test
 
     set code [java::new StringBuffer]
     $codeGenerator generateCode $code
@@ -203,23 +202,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 void top(void) {
 
     /* Fire Composite Actor: top */
-    /* The firing of the StaticSchedulingDirector */
 }
 /* initialization entry code */
-    /* The initialization of the director. */
 /* initialization exit code */
 /* wrapup entry code */
-    /* The wrapup of the director. */
 /* wrapup exit code */
 /* main entry code */
-
-    int iteration;
-    for (iteration = 0; iteration < 1; iteration ++) {
-        /* The firing of the StaticSchedulingDirector */
-    }
+/* The firing of the director. */
 /* main exit code */
 }}
-
 
 # main(String[]) is tested in
 # $PTII/ptolemy/codegen/c/actor/lib/test/CodeGenerator2.tcl

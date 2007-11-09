@@ -32,7 +32,7 @@
 # Location of this directory, relative to the Ptolemy II directory
 ME =		ptolemy/codegen/kernel/test
 
-DIRS = 		actor
+DIRS = 		actor domains
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -77,7 +77,8 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES =	alljtests.tcl \
-	actor
+	actor \
+	domains
 
 #	auto
 
