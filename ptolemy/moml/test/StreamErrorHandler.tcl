@@ -97,11 +97,17 @@ test StreamErrorHandler-1.2 {Create a stream that we can read} {
     # This hack is necessary because of problems with crnl under windows
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" output
+    regsub -all [[[java::new java.io.File $PTII] getCanonicalFile] toString] \
+		$output {$PTII} output2
 
     # Only take the first few characters
-    string range $output 0 272
-} {Error encountered in:
+    list [string range $output2 0 507] {...}
+} {{Error encountered in:
 <entity name="b" class="ptolemy.moml.test.notAClass">
 ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.moml.test.notAClass
 Because:
-Could not find 'ptolemy/moml/test/notAClass.xml' or 'ptolemy/moml/test/notAClass.moml' using base}
+-- $PTII/ptolemy/moml/test/ptolemy/moml/test/notAClass.xml (No such file or directory)
+-- XML file not found relative to classpath.
+-- $PTII/ptolemy/moml/test/ptolemy/moml/test/notAClass.xml
+$PTII/ptolemy/moml/test/ptolemy/moml/test/notAClass.xml (No such file or directory)
+ in file:$PTII/ptolemy/moml/test/ at line 5 and column 48} ...}
