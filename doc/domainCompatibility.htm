@@ -7,10 +7,27 @@ A {text-decoration:none}
 -->
 </STYLE>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-<title>Ptolemy II Domains</title>
+<title>Ptolemy II Domain Compatibility</title>
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+
+<h1>Ptolemy II Domain Compatibility</h1>
+In Ptolemy II, domains may be embedded within one another.
+ <p>Below we describe some of the issues and include a
+chart that describes what combinations should work.
+
+<h3>Contents</h3>
+<menu>
+<li> A portion of the "<a href="#Composing">Composing Models of Computation in Kepler/Ptolemy II</a>" paper
+<li> <a href="#DomainCompatibilityGraph">Expanded Domain Compatibility Graph</a>
+<li> <a href="#DEInsideSDF">DE inside SDF</a>
+</menu>
+ <hr>
+
+
+<h2><a name="Composing">Composing Models of Computation in Kepler/Ptolemy II</a></h2>
+
 <i>Below is a portion of a paper:</i>
 <blockquote>
 Antoon Goderis, Christopher Brooks, Ilkay Altintas, Edward
@@ -23,7 +40,6 @@ Computational Science (ICCS), May, 2007.
 See also the <a href="http://www.mygrid.org.uk/wiki/Papers/IccsPaper2007#in_browser" target="_top">ancillary site for the paper</a>.
 
 
-<h2>Composing Models of Computation in Kepler/Ptolemy II</h2>
 
 <p>Although prior work has offered formalisms for comparing MoCs,
 e.g. [Lee &amp; S.V. 98], MoC compositions have not been well
@@ -455,7 +471,7 @@ of a state. But any other of the directors described above can be used
 in a Modal Model.  </p>
 
 
-<h2>Expanded Domain Compatibility Graph</h2>
+<h2><a name="DomainCompatibilityGraph">Expanded Domain Compatibility Graph</a></h2>
 
 Below is a table that lists heterogenous models by top level 
 domain and second level domain.
@@ -902,7 +918,7 @@ Loose goes inside Strict
 Strict goes inside Strict
 </pre>
 
-<h2>DE inside SDF</h2>
+<h2><a name="DEInsideSDF">DE inside SDF</a></h2>
 A DE component inside an SDF model may not be that useful
 <menu>
 <li> SDF assumes that every actor consumes and produces a fixed number
