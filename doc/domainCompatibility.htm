@@ -491,6 +491,7 @@ domain and second level domain.
    <th>DE</th>
    <th>FSM</th>
    <th>Giotto</th>
+   <th>GR</th>
    <th>PSDF</th>
    <th>SDF</th>
    <th>Continuous</th>
@@ -509,6 +510,7 @@ domain and second level domain.
    <th><!--DE-->(<i>loose</i>)</th>
    <th><!--FSM-->(<i>loose</i>)</th>
    <th><!--Giotto-->&nbsp;</th>
+   <th><!--GR-->(<i>loose</i>)<sup>5</sup></th>
    <th><!--PSDF-->(<i>loose</i>)</th>
    <th><!--SDF-->(<i>loose</i>)</th>
    <th><!--Continuous-->(<i>strict</i>)</th>
@@ -528,6 +530,7 @@ domain and second level domain.
    <td>&nbsp;<!-- DE --></td>
    <td>&nbsp;<!-- FSM --></td>
    <td>&nbsp;<!-- Giotto --></td>
+   <td>&nbsp;<!-- GR --></td>
    <td>&nbsp;<!-- PSDF --></td>
    <td>&nbsp;<!-- SDF --></td>
    <td>&nbsp;<!-- Continuous--></td>
@@ -545,6 +548,7 @@ domain and second level domain.
    <td>&nbsp;<!-- DE --></td>
    <td>&nbsp;<!-- FSM --></td>
    <td>&nbsp;<!-- Giotto --></td>
+   <td>&nbsp;<!-- GR --></td>
    <td>&nbsp;<!-- PSDF --></td>
    <td>&nbsp;<!-- SDF --></td>
    <td>&nbsp;<!-- Continuous--></td>
@@ -566,6 +570,7 @@ domain and second level domain.
    </td>
    <td>&nbsp;<!-- FSM --></td>
    <td>&nbsp;<!-- Giotto --></td>
+   <td>&nbsp;<!-- GR --></td>
    <td>&nbsp;<!-- PSDF --></td>
    <td>&nbsp;<!-- SDF --></td>
    <td>&nbsp;<!-- Continuous--></td>
@@ -584,6 +589,7 @@ domain and second level domain.
    <td>DE/DDF</td>
    <td>FSM/DDF</td>
    <td>?<!-- Giotto --></td>
+   <td>&nbsp;<!-- GR --></td>
    <td>PSDF/DDF</td>
    <td>SDF/DDF
       <a href="../ptolemy/domains/ddf/demo/IfThenElse/IfThenElse.xml">+</a>,
@@ -617,6 +623,9 @@ domain and second level domain.
    </td>
    <td>FSM/CT</td>
    <td>?<!-- Giotto --></td>
+   <td>GR/CT 
+     <a href="../ptolemy/domains/gr/Pendulum/Pendulum.xml">+</a>
+   </td>
    <td>PSDF/CT</td>
    <td>SDF/CT</td>
    <td>&nbsp;<!-- Continuous--></td>
@@ -639,7 +648,10 @@ domain and second level domain.
      <a href="../ptolemy/actor/lib/io/demo/FilePortParameter.xml">+</a>,
      <a href="../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml">+</a>
    </td>
-   <td>&nbsp;<!-- CT --></td>
+   <td>CT/SDF
+      <a href="../ptolemy/domains/ct/demo/CarTracking/CarTracking.xml">+</a>,
+      <a href="../ptolemy/domains/gr/demo/FurutaPendulum/FurutaPendulum.xml">+</a>
+   </td>
    <td>DDF/SDF
      <a href="../ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.xml">+</a>
    </td>
@@ -648,6 +660,9 @@ domain and second level domain.
    </td>
    <td>FSM/SDF</td>
    <td>?<!-- Giotto --></td>
+   <td>GR/SDF
+     <a href="../ptolemy/domains/gr/lib/quicktime/demo/SimpleMovie/SimpleMovie.xml">+</a>
+   </td>
    <td>PSDF/SDF</td>
    <td>SDF/SDF
      <a href="../ptolemy/domains/sdf/demo/Spectrum/Spectrum.xml">+</a>
@@ -673,6 +688,7 @@ domain and second level domain.
    <td>DE/PSDF</td>
    <td>FSM/PSDF</td>
    <td>?<!-- Giotto --></td>
+   <td>GR/PSDF</td>
    <td>PN/PSDF
      <a href="../ptolemy/domains/psdf/demo/BlindCommunication/BlindCommunication.xml">+</a>
    </td>
@@ -698,6 +714,7 @@ domain and second level domain.
    </td>
    <td>FSM/DE</td>
    <td>?<!-- Giotto --></td>
+   <td>GR/DE</td>
    <td>PSDF/DE</td>
    <td><a href="../ptolemy/domains/sdf/test/auto/de_in_sdf.xml">?</a>
    </td>
@@ -720,6 +737,7 @@ domain and second level domain.
    </td>
    <td>FSM/FSM</td>
    <td>?<!-- Giotto --></td>
+   <td>GR/FSM</td>
    <td>PSDF/FSM<sup>1</sup></td>
    <td>SDF/FSM<sup>1</sup>
      <a href="../ptolemy/domains/fsm/test/auto/SDF-FSMComposite.xml">+</a>
@@ -745,6 +763,7 @@ domain and second level domain.
    <td>Giotto/Giotto
      <a href="../ptolemy/domains/giotto/demo/Hierarchy/Hierarchy.xml">+</a>
    </td>
+   <td>?<!-- GR --></td>
    <td>?<!-- PSDF --></td>
    <td>?<!-- SDF --></td>
    <td>?<!-- Continuous --></td>
@@ -766,6 +785,7 @@ domain and second level domain.
        <a href="./ptolemy/domains/continuous/demo/Switch/Switch.xml">+</a>
    </td>
    <td>?<!-- Giotto --></td>
+   <td>GR/Continuous</td>
    <td>PSDF/Continuous</td>
    <td>SDF/Continuous</td>
    <td>Continuous/Continuous
@@ -776,7 +796,7 @@ domain and second level domain.
   </tr>
 
   <tr>
-   <th align="left">DE2(<b>strict</b>)</th>
+   <th align="left">DE2(<b>strict</b>)<sup>6</sup></th>
    <td>CSP/DE2</td>
    <td>Rendezvous/DE2</td>
    <td>PN/DE2</td>
@@ -785,11 +805,42 @@ domain and second level domain.
    <td>DE/DE2</td>
    <td>FSM/DE2</td>
    <td>?<!-- Giotto --></td>
+   <td>GR/DE2</td>
    <td>PSDF/DE2</td>
    <td>SDF/DE2</td>
    <td>Continuous/DE2</td>
    <td>DE2/DE2</td>
    <td>SR/DE2</td>
+  </tr>
+
+  <tr>
+   <th align="left">GR(<b>strict</b>)</th>
+   <td>CSP/GR</td>
+   <td>Rendezvous/GR</td>
+   <td>PN/GR</td>
+   <td>CT/GR
+      <a href="../ptolemy/domains/ct/demo/BouncingBall/BouncingBall.xml">+</a>,
+      <a href="../ptolemy/domains/ct/demo/CartPendulum/CartPendulum.xml">+</a>,
+      <a href="../ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradleAnimated.xml">+</a>
+   </td>
+   <td>DDF/GR
+      <a href="../ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.xml">+</a>
+   </td>
+   <td>DE/GR
+      <a href="../ptolemy/domains/gr/demo/StickyMasses/StickyMasses.xml">+</a>
+   </td>
+   <td>FSM/GR</td>
+   <td>?<!-- Giotto --></td>
+   <td>GR/GR</td>
+   <td>PSDF/GR</td>
+   <td>SDF/GR
+      <a href="./ptolemy/domains/sdf/demo/Gravitation/Gravitation.xml">+</a>
+   </td>
+   <td>Continuous/GR
+      <a href="../ptolemy/domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml">+</a>
+   </td>
+   <td>DE2/GR</td>
+   <td>SR/GR</td>
   </tr>
 
   <tr>
@@ -811,6 +862,7 @@ domain and second level domain.
    </td>
    <td>FSM/SR</td>
    <td>?<!-- Giotto --></td>
+   <td>GR/SR</td>
    <td>PSDF/SR</td>
    <td>SDF/SR
      <a href="../ptolemy/domains/test/auto/SDFSRtest1.xml">+</a>,
@@ -832,7 +884,16 @@ domain and second level domain.
 be a CTEmbeddedDirector.
 <br><sup>4</sup> DDF as an inner domain is exports loose if we
 annotate the graph.
-
+<br><sup>5</sup> GR exports strict.
+<br>Interestingly, GR doesn't require strict however.
+This is a twist.  GR submodels never have output
+ports (except possibly to another GR model), and
+hence GR can do all its work in postfire().
+<br>Note that this lack of output ports is not enforced,
+and so one could construct models that misuse GR and
+get unexpected results.
+<br>GR requires loose, it probably does not make sense to have PN inside GR.
+<br><sup>6</sup>DE2 is a bug fix to DE
 
 <p>The rules are
 <pre>
