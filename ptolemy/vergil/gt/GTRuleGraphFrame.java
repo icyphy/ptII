@@ -92,7 +92,6 @@ import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
@@ -360,14 +359,15 @@ TableModelListener, ValueListener {
         }
     }
 
-    public void tableChanged(TableModelEvent e) {
-        if (e.getType() != TableModelEvent.UPDATE) {
+    public void tableChanged(TableModelEvent event) {
+        if (event.getType() != TableModelEvent.UPDATE) {
             return;
         }
 
-        int row = e.getFirstRow();
-        int column = e.getColumn();
-        if (column != TableModelEvent.ALL_COLUMNS && row == e.getLastRow()) {
+        int row = event.getFirstRow();
+        int column = event.getColumn();
+        if (column != TableModelEvent.ALL_COLUMNS
+                && row == event.getLastRow()) {
             // Get the value in the transformer's correspondence attribute.
             TransformationRule transformer = (TransformationRule) getModel();
             Pattern pattern = transformer.getPattern();
@@ -417,9 +417,18 @@ TableModelListener, ValueListener {
                         return;
                     }
 
-                    if (!GTTools.getPatternObjectAttribute(
-                            replacementObject, true).getExpression().equals(
-                                    patternObjectName)) {
+                    PatternObjectAttribute attribute =
+                        GTTools.getPatternObjectAttribute(replacementObject);
+                    if (attribute == null) {
+                        try {
+                            attribute = new PatternObjectAttribute(
+                                    replacementObject, "patternObject");
+                        } catch (KernelException e) {
+                            throw new KernelRuntimeException(e, "Unable to "
+                                    + "create patternObject attribute.");
+                        }
+                    }
+                    if (!attribute.getExpression().equals(patternObjectName)) {
                         _setPatternObject(replacementObject, patternObjectName,
                                 false);
                     }
@@ -445,8 +454,7 @@ TableModelListener, ValueListener {
                     }
 
                     PatternObjectAttribute attribute =
-                        GTTools.getPatternObjectAttribute(
-                                replacementObject, false);
+                        GTTools.getPatternObjectAttribute(replacementObject);
                     if (attribute == null) {
                         String message = "Entity or relation with name \""
                             + replacementObject
@@ -692,16 +700,17 @@ TableModelListener, ValueListener {
         frame._tableModel.addTableModelListener(this);
     }
 
-    @SuppressWarnings("unchecked")
     private int _refreshTable(GTRuleGraphFrame topLevelFrame,
             CompositeActorMatcher replacement, int index,
             CompositeEntity container) {
         Collection<?> objectCollection = new CombinedCollection<Object>(
-                container.entityList(), container.relationList());
+                new Collection<?>[] {
+                        container.entityList(), container.relationList()
+                });
         for (Object entityObject : objectCollection) {
             NamedObj object = (NamedObj) entityObject;
             PatternObjectAttribute attribute =
-                GTTools.getPatternObjectAttribute(object, false);
+                GTTools.getPatternObjectAttribute(object);
             if (attribute != null) {
                 attribute.addValueListener(this);
                 String patternObject = attribute.getExpression();
@@ -752,38 +761,41 @@ TableModelListener, ValueListener {
         _tableModel.fireTableCellUpdated(row, column);
     }
 
-    @SuppressWarnings("unchecked")
     private void _setOrClearPatternObjectAttributes(
             CompositeEntity container, boolean isSet, Collection<?> filter) {
         try {
             Collection<?> objectCollection;
             if (filter == null) {
                 objectCollection = new CombinedCollection<Object>(
-                        container.entityList(), container.relationList());
+                        new Collection<?>[] {
+                                container.entityList(), container.relationList()
+                        });
             } else {
                 objectCollection = filter;
             }
             for (Object objectObject : objectCollection) {
                 NamedObj object = (NamedObj) objectObject;
                 PatternObjectAttribute patternObject =
-                    GTTools.getPatternObjectAttribute(object, false);
-                if (patternObject != null) {
-                    if (isSet) {
-                        String name = _getNameWithinContainer(object,
-                                getTransformationRule().getPattern());
-                        patternObject.setPersistent(true);
-                        patternObject.setExpression(name);
-                    } else {
-                        patternObject.setPersistent(false);
-                        patternObject.setExpression("");
+                    GTTools.getPatternObjectAttribute(object);
+                if (isSet) {
+                    if (patternObject == null) {
+                        patternObject =
+                            new PatternObjectAttribute(object, "patternObject");
                     }
+                    String name = _getNameWithinContainer(object,
+                            getTransformationRule().getPattern());
+                    patternObject.setPersistent(true);
+                    patternObject.setExpression(name);
+                } else if (patternObject != null) {
+                    patternObject.setPersistent(false);
+                    patternObject.setExpression("");
                 }
                 if (object instanceof CompositeEntity) {
                     _setOrClearPatternObjectAttributes((CompositeEntity) object,
                             isSet, null);
                 }
             }
-        } catch (IllegalActionException e) {
+        } catch (KernelException e) {
             throw new KernelRuntimeException(e, "Cannot set attribute.");
         }
     }
@@ -963,12 +975,11 @@ TableModelListener, ValueListener {
             "OK", "Cancel"
         };
 
-        @SuppressWarnings("unchecked")
         private <E extends Component> void _findComponents(Container container,
                 Class<? extends E> componentClass, List<E> list) {
             for (Component component : container.getComponents()) {
                 if (componentClass.isInstance(component)) {
-                    list.add((E) component);
+                    list.add(componentClass.cast(component));
                 } else if (component instanceof Container) {
                     _findComponents((Container) component, componentClass,
                             list);

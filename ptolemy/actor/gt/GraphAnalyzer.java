@@ -67,11 +67,10 @@ public abstract class GraphAnalyzer {
      *  @return The child found, or <tt>null</tt> if none.
      *  @see #findNextChild(CompositeEntity, IndexedLists, Collection)
      */
-    public ComponentEntity findFirstChild(CompositeEntity top,
+    public NamedObj findFirstChild(CompositeEntity top,
             IndexedLists indexedLists, Collection<Object> excludedEntities) {
 
         List<?> entities = top.entityList(ComponentEntity.class);
-
         if (!entities.isEmpty()) {
             int i = 0;
             IndexedList currentList = new IndexedList(entities, 0);
@@ -80,16 +79,15 @@ public abstract class GraphAnalyzer {
 
             for (Object entityObject : entities) {
                 currentList.setSecond(i);
-                if (entityObject instanceof AtomicActor
-                        || entityObject instanceof CompositeEntity
-                        && _isOpaque((CompositeEntity) entityObject)) {
+                if (!(entityObject instanceof CompositeEntity
+                        && !_isOpaque((CompositeEntity) entityObject))) {
                     if (!excludedEntities.contains(entityObject)) {
-                        return (ComponentEntity) entityObject;
+                        return (NamedObj) entityObject;
                     }
                 } else {
                     CompositeEntity compositeEntity =
                         (CompositeEntity) entityObject;
-                    ComponentEntity child = findFirstChild(compositeEntity,
+                    NamedObj child = findFirstChild(compositeEntity,
                             indexedLists, excludedEntities);
                     if (child != null && !excludedEntities.contains(child)) {
                         return child;
@@ -208,7 +206,7 @@ public abstract class GraphAnalyzer {
      *  @return The child found, or <tt>null</tt> if none.
      *  @see #findFirstChild(CompositeEntity, IndexedLists, Collection)
      */
-    public ComponentEntity findNextChild(CompositeEntity top,
+    public NamedObj findNextChild(CompositeEntity top,
             IndexedLists indexedLists, Collection<Object> excludedEntities) {
         if (indexedLists.isEmpty()) {
             return findFirstChild(top, indexedLists, excludedEntities);
@@ -216,27 +214,24 @@ public abstract class GraphAnalyzer {
             IndexedLists.Entry entry = indexedLists.getTail();
             while (entry != null) {
                 IndexedList indexedList = entry.getValue();
-                List<?> entityList = indexedList.getFirst();
+                List<?> objectList = indexedList.getFirst();
                 for (int index = indexedList.getSecond() + 1;
-                       index < entityList.size(); index++) {
+                       index < objectList.size(); index++) {
                     indexedList.setSecond(index);
-                    ComponentEntity entity =
-                        (ComponentEntity) entityList.get(index);
-                    if (!excludedEntities.contains(entity)) {
-                        indexedLists.removeAllAfter(entry);
-                        if (entity instanceof AtomicActor
-                                || entity instanceof CompositeEntity
-                                && _isOpaque((CompositeEntity) entity)) {
-                            return entity;
-                        } else {
-                            CompositeEntity compositeEntity =
-                                (CompositeEntity) entity;
-                            ComponentEntity child = findFirstChild(
-                                    compositeEntity, indexedLists,
-                                    excludedEntities);
-                            if (child != null) {
-                                return child;
-                            }
+                    NamedObj object = (NamedObj) objectList.get(index);
+                    indexedLists.removeAllAfter(entry);
+                    if (!(object instanceof CompositeEntity
+                            && !_isOpaque((CompositeEntity) object))) {
+                        if (!excludedEntities.contains(object)) {
+                            return object;
+                        }
+                    } else {
+                        CompositeEntity compositeEntity =
+                            (CompositeEntity) object;
+                        NamedObj child = findFirstChild(compositeEntity,
+                                indexedLists, excludedEntities);
+                        if (child != null) {
+                            return child;
                         }
                     }
                 }

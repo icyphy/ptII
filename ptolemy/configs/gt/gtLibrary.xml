@@ -5,7 +5,7 @@
 <group>
   <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher"/>
   <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher"/>
-  <entity name="TransformationAttributes" class="ptolemy.moml.EntityLibrary">
+  <entity name="PatternAttributes" class="ptolemy.moml.EntityLibrary">
     <property name="HierarchyFlattening" class="ptolemy.actor.gt.HierarchyFlatteningAttribute"/>
     <property name="RelationCollapsing" class="ptolemy.actor.gt.RelationCollapsingAttribute"/>
   </entity>

@@ -48,6 +48,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	CombinedCollection.java \
+	CombinedList.java \
 	FastLinkedList.java \
 	MatchResult.java \
 	Pair.java \

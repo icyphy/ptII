@@ -28,11 +28,12 @@
 
 package ptolemy.actor.gt;
 
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
 
 /**
 
@@ -53,41 +54,18 @@ public class GTTools {
         }
         return (CompositeActorMatcher) parent;
     }
-    
-    public static PatternObjectAttribute getPatternObjectAttribute(
-    		NamedObj object, boolean createNew) {
-        Attribute attribute = object.getAttribute("patternObject");
-        if (attribute == null) {
-        	if (createNew) {
-	        	try {
-					return new PatternObjectAttribute(object, "patternObject");
-				} catch (IllegalActionException e) {
-					return null;
-				} catch (NameDuplicationException e) {
-					return null;
-				}
-        	} else {
-        		return null;
-        	}
-        }
-        if (attribute instanceof PatternObjectAttribute) {
-            return (PatternObjectAttribute) attribute;
-        } else {
-            return null;
-        }
-    }
 
     public static NamedObj getCorrespondingPatternObject(
-    		NamedObj replacementEntity) {
-        CompositeActorMatcher container =
-            getContainingPatternOrReplacement(replacementEntity);
-        if (container == null) {
+            NamedObj replacementObject) {
+        PatternObjectAttribute attribute =
+            getPatternObjectAttribute(replacementObject);
+        if (attribute == null) {
             return null;
         }
 
-        PatternObjectAttribute attribute =
-        	getPatternObjectAttribute(replacementEntity, false);
-        if (attribute == null) {
+        CompositeActorMatcher container =
+            getContainingPatternOrReplacement(replacementObject);
+        if (container == null) {
             return null;
         }
 
@@ -99,7 +77,38 @@ public class GTTools {
         TransformationRule transformer =
             (TransformationRule) container.getContainer();
         Pattern pattern = transformer.getPattern();
-        return pattern.getEntity(patternObjectName);
+        if (replacementObject instanceof Entity) {
+            return pattern.getEntity(patternObjectName);
+        } else if (replacementObject instanceof Relation) {
+            return pattern.getRelation(patternObjectName);
+        } else {
+            return null;
+        }
+    }
+
+    public static MoMLChangeRequest getDeletionChangeRequest(Object originator,
+            NamedObj object) {
+        String moml;
+        if (object instanceof Entity) {
+            moml =  "<deleteEntity name=\"" + object.getName() + "\"/>";
+        } else if (object instanceof Relation) {
+            moml =  "<deleteRelation name=\"" + object.getName() + "\"/>";
+        } else if (object instanceof Attribute) {
+            moml =  "<deleteProperty name=\"" + object.getName() + "\"/>";
+        } else {
+            return null;
+        }
+        return new MoMLChangeRequest(originator, object.getContainer(), moml);
+    }
+
+    public static PatternObjectAttribute getPatternObjectAttribute(
+            NamedObj object) {
+        Attribute attribute = object.getAttribute("patternObject");
+        if (attribute != null && attribute instanceof PatternObjectAttribute) {
+            return (PatternObjectAttribute) attribute;
+        } else {
+            return null;
+        }
     }
 
     public static boolean isInPattern(NamedObj entity) {

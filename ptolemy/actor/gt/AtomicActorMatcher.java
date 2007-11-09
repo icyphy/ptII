@@ -116,15 +116,18 @@ ValueListener {
                     preservedPortNames.add(portID);
 
                     TypedIOPort port = (TypedIOPort) getPort(portID);
+                    boolean isInput = criterion.isInput();
+                    boolean isOutput = criterion.isOutput();
+                    boolean isMultiport = !criterion.isMultiportEnabled()
+                            || criterion.isMultiport();
                     if (port != null) {
-                        port.setInput(criterion.isInput());
-                        port.setOutput(criterion.isOutput());
-                        port.setMultiport(criterion.isMultiport());
+                        port.setInput(isInput);
+                        port.setOutput(isOutput);
+                        port.setMultiport(isMultiport);
                         port.setPersistent(false);
                     } else {
-                        port = new TypedIOPort(this, portID,
-                                criterion.isInput(), criterion.isOutput());
-                        port.setMultiport(criterion.isMultiport());
+                        port = new TypedIOPort(this, portID, isInput, isOutput);
+                        port.setMultiport(isMultiport);
                         port.setPersistent(false);
                     }
                     port.setPersistent(false);
@@ -232,10 +235,7 @@ ValueListener {
     private void _removeEditorIcons() {
         for (Object editorIconObject : attributeList(EditorIcon.class)) {
             EditorIcon editorIcon = (EditorIcon) editorIconObject;
-            String moml =
-                "<deleteProperty name=\"" + editorIcon.getName() + "\"/>";
-            MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
-            request.execute();
+            GTTools.getDeletionChangeRequest(this, editorIcon).execute();
         }
     }
 

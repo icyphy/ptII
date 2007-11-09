@@ -52,7 +52,6 @@ import ptolemy.actor.gt.ingredients.criteria.SubclassCriterion;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
@@ -454,7 +453,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
         if (success) {
             IndexedLists patternMarkedList = new IndexedLists();
-            ComponentEntity patternNextActor = findFirstChild(patternEntity,
+            NamedObj patternNextActor = findFirstChild(patternEntity,
                     patternMarkedList, _match.keySet());
             ObjectList patternList = new ObjectList();
             while (patternNextActor != null) {
@@ -464,7 +463,7 @@ public class GraphMatcher extends GraphAnalyzer {
             }
 
             IndexedLists hostMarkedList = new IndexedLists();
-            ComponentEntity hostNextActor = findFirstChild(hostEntity,
+            NamedObj hostNextActor = findFirstChild(hostEntity,
                     hostMarkedList, _match.values());
             ObjectList hostList = new ObjectList();
             while (hostNextActor != null) {

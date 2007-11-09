@@ -90,7 +90,7 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
         return _reverseMap.containsKey(value);
     }
 
-    public Object getKey(Object value) {
+    public K getKey(Object value) {
         return _reverseMap.get(value);
     }
 

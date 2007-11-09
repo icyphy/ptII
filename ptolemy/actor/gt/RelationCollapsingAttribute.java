@@ -50,8 +50,10 @@ extends CompositeEntityPatternAttribute {
 
     public RelationCollapsingAttribute(NamedObj container, String name)
     throws NameDuplicationException, IllegalActionException {
-
         super(container, name, "relationCollapsing", BaseType.BOOLEAN, "true");
+
+        _checkContainerClass(Pattern.class, true);
+        _checkUniqueness();
     }
 
     public void attributeChanged(Attribute attribute) {

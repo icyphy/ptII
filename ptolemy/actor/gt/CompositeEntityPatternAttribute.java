@@ -32,6 +32,7 @@ import java.util.List;
 
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -55,33 +56,6 @@ extends SingletonAttribute {
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        if (!(container instanceof EntityLibrary)) {
-            try {
-                String simpleClassName = getClass().getSimpleName();
-
-                if (!(container instanceof CompositeActorMatcher)) {
-                    throw new IllegalActionException(simpleClassName
-                            + " can only be added to CompositeActorMatcher.");
-                }
-
-                CompositeActorMatcher matcher =
-                    (CompositeActorMatcher) container;
-                List<?> attributeList =
-                    matcher.attributeList(getClass());
-                for (Object attributeObject : attributeList) {
-                    if (attributeObject != this) {
-                        throw new IllegalActionException("Only 1 "
-                                + simpleClassName + " can be used for each "
-                                + "CompositeActorMatcher.");
-                    }
-                }
-            } catch (IllegalActionException e) {
-                String moml = "<deleteProperty name=\"" + name + "\"/>";
-                requestChange(new MoMLChangeRequest(this, container, moml));
-                throw e;
-            }
-        }
-
         parameter = new Parameter(this, parameterName);
         parameter.setTypeEquals(type);
         parameter.setExpression(defaultExpression);
@@ -90,6 +64,43 @@ extends SingletonAttribute {
     }
 
     public Parameter parameter;
+
+    protected void _checkContainerClass(
+            Class<? extends CompositeEntity> containerClass, boolean deep)
+    throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (container instanceof EntityLibrary) {
+            return;
+        }
+
+        while (deep && container != null
+                && !containerClass.isInstance(container)) {
+            container = container.getContainer();
+        }
+
+        if (container == null || !containerClass.isInstance(container)) {
+            _deleteThis();
+            throw new IllegalActionException(getClass().getSimpleName()
+                    + " can only be added to " + containerClass.getSimpleName()
+                    + ".");
+        }
+    }
+
+    protected void _checkUniqueness() throws IllegalActionException {
+        NamedObj container = getContainer();
+        if (container instanceof EntityLibrary) {
+            return;
+        }
+
+        List<?> attributeList = getContainer().attributeList(getClass());
+        for (Object attributeObject : attributeList) {
+            if (attributeObject != this) {
+                _deleteThis();
+                throw new IllegalActionException("Only 1 "
+                        + getClass().getSimpleName() + " can be used.");
+            }
+        }
+    }
 
     protected void _setIconDescription(String iconDescription) {
         String moml = "<property name=\"_iconDescription\" class="
@@ -105,4 +116,9 @@ extends SingletonAttribute {
         + "<rect x=\"0\" y=\"0\" width=\"30\" height=\"20\""
         + "  style=\"fill:#00FFFF\"/>"
         + "</svg>";
+
+    private void _deleteThis() {
+        String moml = "<deleteProperty name=\"" + getName() + "\"/>";
+        requestChange(new MoMLChangeRequest(this, getContainer(), moml));
+    }
 }

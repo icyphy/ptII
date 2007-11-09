@@ -29,8 +29,11 @@
 package ptolemy.actor.gt;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.gt.data.CombinedCollection;
@@ -42,6 +45,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
@@ -57,87 +61,78 @@ import ptolemy.moml.MoMLChangeRequest;
 public class GraphTransformer extends ChangeRequest {
 
     public GraphTransformer(TransformationRule transformationRule,
-            MatchResult matchResult) {
+            MatchResult matchResult) throws TransformationException {
         super(null, "Apply graph transformation to model.");
 
         _pattern = transformationRule.getPattern();
         _replacement = transformationRule.getReplacement();
         _matchResult = matchResult;
+        _hostGraph = (CompositeEntity) _matchResult.get(_pattern);
+
+        if (_hostGraph == null) {
+            throw new TransformationException("Match result is invalid because "
+                    + "it does not include the pattern.");
+        }
     }
 
     public static void transform(TransformationRule transformationRule,
             MatchResult matchResult) throws TransformationException {
-        CompositeEntity hostGraph =
-            (CompositeEntity) matchResult.get(transformationRule.getPattern());
-        if (hostGraph == null) {
-            throw new TransformationException("Match result is invalid because "
-                    + "it does not include the pattern.");
-        }
-        hostGraph.requestChange(
-                new GraphTransformer(transformationRule, matchResult));
+        GraphTransformer transformer =
+            new GraphTransformer(transformationRule, matchResult);
+        transformer._hostGraph.requestChange(transformer);
     }
 
     protected void _execute() throws TransformationException {
-        CompositeEntity hostGraph =
-            (CompositeEntity) _matchResult.get(_pattern);
-        if (hostGraph == null) {
-            throw new TransformationException("Match result is invalid because "
-                    + "it does not include the pattern.");
-        }
-
-        _entityMap = new TwoWayHashMap<NamedObj, NamedObj>();
-        _initObjectMap(_pattern, _replacement);
-
         _deletedObjects = new HashSet<NamedObj>();
-        _replacementHostCorrespondence =
-            new TwoWayHashMap<NamedObj, NamedObj>();
+        _patternToReplacement = new TwoWayHashMap<String, String>();
+        _replacementToHost = new TwoWayHashMap<String, String>();
+
+        _initPatternReplacementCorrespondence(_replacement);
+        _initReplacementHostCorrespondence();
 
         _removeObjects(_pattern);
         _performOperations();
-        _analyzeReplacementHostCorrespondence(_replacement);
-        _addObjects(hostGraph, _replacement);
-        _substituteGTEntities(hostGraph, _pattern);
-        _addConnections(hostGraph, _replacement);
+        _addObjects(_hostGraph, _replacement);
+        _substituteGTEntities(_hostGraph);
+        _addConnections();
     }
 
-    private void _addConnections(CompositeEntity hostGraph,
-            CompositeEntity replacementContainer)
-    throws TransformationException {
-        for (NamedObj replacementObject
-                : _replacementHostCorrespondence.keySet()) {
-            if (!(replacementObject instanceof Port)) {
+    private void _addConnections() throws TransformationException {
+        for (String replacementObjectCode : _replacementToHost.keySet()) {
+            if (!replacementObjectCode.startsWith("P:")) {
                 continue;
             }
 
-            Port replacementPort = (Port) replacementObject;
-            Port hostPort =
-                (Port) _replacementHostCorrespondence.get(replacementPort);
-            for (Object connectedReplacementRelationObject
+            Port replacementPort =
+                (Port) _getObjectFromCode(replacementObjectCode, _replacement);
+            String hostPortCode = _replacementToHost.get(replacementObjectCode);
+            Port hostPort = (Port) _getObjectFromCode(hostPortCode, _hostGraph);
+            for (Object replacementRelationObject
                     : replacementPort.linkedRelationList()) {
-                Relation connectedReplacementRelation =
-                    (Relation) connectedReplacementRelationObject;
-                Relation correspondingHostRelation =
-                    (Relation) _replacementHostCorrespondence.get(
-                            connectedReplacementRelation);
-                if (!hostPort.linkedRelationList().contains(
-                        correspondingHostRelation)) {
-                    // There is no connection between hostEntity and
-                    // correspondingHostEntity, so create a new connection.
-                    // FIXME: take into account existing relations.
+                Relation replacementRelation =
+                    (Relation) replacementRelationObject;
+                String replacementRelationCode =
+                    _getCodeFromObject(replacementRelation, _replacement);
+                String hostRelationCode =
+                    _replacementToHost.get(replacementRelationCode);
+                Relation hostRelation =
+                    (Relation) _getObjectFromCode(hostRelationCode, _hostGraph);
+                if (!hostPort.linkedRelationList().contains(hostRelation)) {
+                    // There is no link between hostPort and
+                    // correspondingHostRelation, so create a new link.
                     Entity hostPortContainer = (Entity) hostPort.getContainer();
-                    NamedObj relationContainer =
-                        correspondingHostRelation.getContainer();
+                    NamedObj hostContainer = hostRelation.getContainer();
                     String moml = "<link port=\"" + hostPortContainer.getName()
                             + "." + hostPort.getName() + "\" relation=\""
-                            + correspondingHostRelation.getName() + "\"/>";
-                    new MoMLChangeRequest(this, relationContainer, moml)
+                            + hostRelation.getName() + "\"/>";
+                    new MoMLChangeRequest(this, hostContainer, moml)
                             .execute();
                 }
             }
         }
     }
 
-    private void _addEntityMoMLRequest(NamedObj context, String moml) {
+    private void _addObjectMoMLRequest(NamedObj context, String moml) {
         moml = "<group name=\"auto\">" + moml + "</group>";
         new MoMLChangeRequest(this, context, moml).execute();
     }
@@ -146,132 +141,173 @@ public class GraphTransformer extends ChangeRequest {
             CompositeEntity replacementContainer) {
         Collection<?> objectCollection = new CombinedCollection<Object>(
                 new Collection<?>[] {
-                        (Collection<?>) replacementContainer.entityList(),
-                        (Collection<?>) replacementContainer.relationList()
+                        replacementContainer.attributeList(),
+                        replacementContainer.entityList(),
+                        replacementContainer.portList(),
+                        replacementContainer.relationList()
                 });
-        for (Object replacementObjectObject : objectCollection) {
-            NamedObj replacementObject = (NamedObj) replacementObjectObject;
-            NamedObj patternObject =
-                (NamedObj) _entityMap.getKey(replacementObject);
-            if (patternObject == null) {
+        for (Object replacementObjectRaw : objectCollection) {
+            NamedObj replacementObject = (NamedObj) replacementObjectRaw;
+            String replacementObjectCode =
+                _getCodeFromObject(replacementObject, _replacement);
+            String patternObjectCode =
+                _patternToReplacement.getKey(replacementObjectCode);
+            if (patternObjectCode == null) {
                 // replacementObject is newly added.
                 String moml = replacementObject.exportMoML();
-                _addEntityMoMLRequest(hostContainer, moml);
+                _addObjectMoMLRequest(hostContainer, moml);
 
-                List<?> objectList;
-                if (replacementObject instanceof Relation) {
-                    objectList = hostContainer.relationList();
-                } else {
-                    objectList = hostContainer.entityList();
-                }
-                int lastIndex = objectList.size() - 1;
-                _recordReplacementHostCorrespondence(replacementObject,
-                        (NamedObj) objectList.get(lastIndex));
+                _recordAddedObject(hostContainer, replacementObject,
+                        replacementObject);
             } else {
+                NamedObj patternObject =
+                    _getObjectFromCode(patternObjectCode, _pattern);
                 NamedObj match = (NamedObj) _matchResult.get(patternObject);
+                if (match == null) {
+                    continue;
+                }
+
                 if (replacementObject instanceof CompositeEntity) {
                     _addObjects((CompositeEntity) match,
                             (CompositeEntity) replacementObject);
                 }
                 if (match.getContainer() != hostContainer) {
                     String moml = match.exportMoML();
-                    _addEntityMoMLRequest(hostContainer, moml);
+                    _addObjectMoMLRequest(hostContainer, moml);
 
-                    List<?> objectList;
-                    if (replacementObject instanceof Relation) {
-                        objectList = hostContainer.relationList();
-                    } else {
-                        objectList = hostContainer.entityList();
-                    }
-                    int lastIndex = objectList.size() - 1;
-                    _recordReplacementHostCorrespondence(replacementObject,
-                            (NamedObj) objectList.get(lastIndex));
+                    _recordAddedObject(hostContainer, match, replacementObject);
                 }
             }
         }
     }
 
-    private void _analyzeReplacementHostCorrespondence(
+    private String _getCodeFromObject(NamedObj object,
+            CompositeEntity topContainer) {
+        String replacementAbbrev = _getTypeAbbreviation(object);
+        return replacementAbbrev + object.getName(topContainer);
+    }
+
+    private NamedObj _getObjectFromCode(String code, NamedObj topContainer) {
+        String abbreviation = code.substring(0, 2);
+        String name = code.substring(2);
+        if (abbreviation.equals("A:")) {
+            return topContainer.getAttribute(name);
+        } else if (abbreviation.equals("E:")) {
+            return ((CompositeEntity) topContainer).getEntity(name);
+        } else if (abbreviation.equals("P:")) {
+            return ((Entity) topContainer).getPort(name);
+        } else if (abbreviation.equals("R:")) {
+            return ((CompositeEntity) topContainer).getRelation(name);
+        } else {
+            return null;
+        }
+    }
+
+    private String _getTypeAbbreviation(NamedObj object) {
+        if (object instanceof Attribute) {
+            return "A:";
+        } else if (object instanceof Entity) {
+            return "E:";
+        } else if (object instanceof Port) {
+            return "P:";
+        } else if (object instanceof Relation) {
+            return "R:";
+        } else {
+            return null;
+        }
+    }
+
+    private void _initPatternReplacementCorrespondence(
             CompositeEntity replacementContainer) {
         Collection<?> objectCollection = new CombinedCollection<Object>(
                 new Collection<?>[] {
+                        replacementContainer.attributeList(),
                         replacementContainer.entityList(),
+                        replacementContainer.portList(),
                         replacementContainer.relationList()
                 });
-        for (Object replacementObjectObject : objectCollection) {
-            NamedObj replacementObject = (NamedObj) replacementObjectObject;
+        for (Object replacementObjectRaw : objectCollection) {
+            NamedObj replacementObject = (NamedObj) replacementObjectRaw;
+
+            if (replacementObject instanceof CompositeEntity) {
+                _initPatternReplacementCorrespondence(
+                        (CompositeEntity) replacementObject);
+            }
+
             NamedObj patternObject =
-                (NamedObj) _entityMap.getKey(replacementObject);
+                GTTools.getCorrespondingPatternObject(replacementObject);
+
             if (patternObject != null) {
-                NamedObj match = (NamedObj) _matchResult.get(patternObject);
-                if (match == null) {
+                _putPatternReplacementCorrespondence(patternObject,
+                        replacementObject);
+                
+                if (!(patternObject instanceof ComponentEntity
+                        && replacementObject instanceof ComponentEntity)) {
                     continue;
                 }
 
-                _replacementHostCorrespondence.put(replacementObject, match);
-                if (!(replacementObject instanceof ComponentEntity)) {
-                    continue;
-                }
-
+                ComponentEntity patternEntity = (ComponentEntity) patternObject;
                 ComponentEntity replacementEntity =
                     (ComponentEntity) replacementObject;
-                ComponentEntity patternEntity = (ComponentEntity) patternObject;
                 List<?> patternPortList = patternEntity.portList();
                 List<?> replacementPortList = replacementEntity.portList();
                 for (int i = 0; i < patternPortList.size(); i++) {
                     Port patternPort = (Port) patternPortList.get(i);
                     Port replacementPort = (Port) replacementPortList.get(i);
-                    Port matchPort = (Port) _matchResult.get(patternPort);
-                    _replacementHostCorrespondence.put(replacementPort,
-                            matchPort);
+                    _putPatternReplacementCorrespondence(patternPort,
+                            replacementPort);
                 }
-            }
-
-            if (replacementObject instanceof CompositeEntity) {
-                _analyzeReplacementHostCorrespondence(
-                        (CompositeEntity) replacementObject);
             }
         }
     }
 
-    private void _initObjectMap(Pattern pattern,
-            CompositeEntity replacementContainer)
-    throws TransformationException {
-        Collection<?> objectCollection = new CombinedCollection<Object>(
-                new Collection<?>[] {
-                        replacementContainer.entityList(),
-                        replacementContainer.relationList()
-                });
-        for (Object replacementObjectObject : objectCollection) {
-            NamedObj replacementObject = (NamedObj) replacementObjectObject;
-
-            if (replacementObject instanceof CompositeEntity) {
-                _initObjectMap(pattern, (CompositeEntity) replacementObject);
+    private void _initReplacementHostCorrespondence() {
+        Map<NamedObj, NamedObj> newCorrespondence =
+            new HashMap<NamedObj, NamedObj>();
+        for (String patternObjectCode : _patternToReplacement.keySet()) {
+            NamedObj patternObject =
+                _getObjectFromCode(patternObjectCode, _pattern);
+            String replacementObjectCode =
+                _patternToReplacement.get(patternObjectCode);
+            NamedObj replacementObject =
+                _getObjectFromCode(replacementObjectCode, _replacement);
+            NamedObj hostObject = (NamedObj) _matchResult.get(patternObject);
+            if (hostObject != null) {
+                newCorrespondence.put(replacementObject, hostObject);
             }
+        }
+        for (NamedObj replacementObject : newCorrespondence.keySet()) {
+            _putReplacementHostCorrespondence(replacementObject,
+                    newCorrespondence.get(replacementObject));
+        }
+    }
 
-            PatternObjectAttribute attribute =
-                GTTools.getPatternObjectAttribute(replacementObject,
-                        false);
-            if (attribute == null) {
-                continue;
-            }
-
-            String patternObjectName = attribute.getExpression();
-            NamedObj patternObject = pattern.getEntity(patternObjectName);
-            if (patternObject == null) {
-                throw new TransformationException("Object in the pattern with "
-                        + "name \"" + patternObjectName + "\" not found.");
-            }
-
-            _entityMap.put(patternObject, replacementObject);
+    private boolean _isContainedIn(String objectCode, String containerName) {
+        int length1 = objectCode.length();
+        int length2 = containerName.length();
+        if (length1 == length2 + 2) {
+            return objectCode.endsWith(containerName);
+        } else if (length1 > length2 + 2) {
+            return objectCode.substring(2, length2 + 3).equals(
+                    containerName + ".");
+        } else {
+            return false;
         }
     }
 
     private void _performOperations() throws TransformationException {
-        for (NamedObj patternObject : _entityMap.keySet()) {
-            NamedObj replacementObject = _entityMap.get(patternObject);
-            NamedObj match =
-                (NamedObj) _matchResult.get(replacementObject);
+        for (String patternObjectCode : _patternToReplacement.keySet()) {
+            NamedObj patternObject =
+                _getObjectFromCode(patternObjectCode, _pattern);
+            String replacementObjectCode =
+                _patternToReplacement.get(patternObjectCode);
+            NamedObj replacementObject =
+                _getObjectFromCode(replacementObjectCode, _replacement);
+            NamedObj match = (NamedObj) _matchResult.get(patternObject);
+            if (match == null) {
+                continue;
+            }
+
             if (patternObject instanceof GTEntity
                     && replacementObject instanceof GTEntity) {
                 try {
@@ -294,106 +330,247 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    private void _putPatternReplacementCorrespondence(NamedObj patternObject,
+            NamedObj replacementObject) {
+        String patternAbbrev = _getTypeAbbreviation(patternObject);
+        String replacementAbbrev = _getTypeAbbreviation(replacementObject);
+        if (patternAbbrev != null && patternAbbrev.equals(replacementAbbrev)) {
+            String patternObjectName = patternObject.getName(_pattern);
+            String replacementObjectName =
+                replacementObject.getName(_replacement);
+            _patternToReplacement.put(patternAbbrev + patternObjectName,
+                    replacementAbbrev + replacementObjectName);
+        }
+    }
+
+    private void _putReplacementHostCorrespondence(NamedObj replacementObject,
+            NamedObj hostObject) {
+        String replacementAbbrev = _getTypeAbbreviation(replacementObject);
+        String hostAbbrev = _getTypeAbbreviation(hostObject);
+        if (replacementAbbrev != null && replacementAbbrev.equals(hostAbbrev)) {
+            String replacementObjectName =
+                replacementObject.getName(_replacement);
+            String hostObjectName = hostObject.getName(_hostGraph);
+            _replacementToHost.put(replacementAbbrev + replacementObjectName,
+                    hostAbbrev + hostObjectName);
+        }
+    }
+
+    private void _recordAddedObject(CompositeEntity container,
+            NamedObj originalObject, NamedObj replacementObject) {
+        // Get the newly added object.
+        List<?> objectList;
+        if (originalObject instanceof Relation) {
+            objectList = container.relationList();
+        } else if (originalObject instanceof Entity) {
+            objectList = container.entityList();
+        } else if (originalObject instanceof Port) {
+            objectList = container.portList();
+        } else {
+            return;
+        }
+
+        int lastIndex = objectList.size() - 1;
+        NamedObj newlyAdded = (NamedObj) objectList.get(lastIndex);
+
+        _recordReplacementHostCorrespondence(replacementObject,
+                newlyAdded);
+    }
+
+    private void _recordDeletedObject(NamedObj hostObject) {
+        _deletedObjects.add(hostObject);
+        String hostObjectName = hostObject.getName(_hostGraph);
+        List<String> deletedReplacementCodes = new LinkedList<String>();
+        for (String hostObjectCode : _replacementToHost.values()) {
+            if (_isContainedIn(hostObjectCode, hostObjectName)) {
+                deletedReplacementCodes.add(
+                        _replacementToHost.getKey(hostObjectCode));
+            }
+        }
+        for (String replacementCode : deletedReplacementCodes) {
+            _replacementToHost.remove(replacementCode);
+        }
+    }
+
     private void _recordReplacementHostCorrespondence(
             NamedObj replacementObject, NamedObj hostObject) {
-        _replacementHostCorrespondence.put(replacementObject, hostObject);
+        String replacementObjectCode =
+            _getCodeFromObject(replacementObject, _replacement);
+        String hostObjectCode = _getCodeFromObject(hostObject, _hostGraph);
+        _replacementToHost.put(replacementObjectCode, hostObjectCode);
 
         if (replacementObject instanceof ComponentEntity) {
             ComponentEntity replacementEntity =
                 (ComponentEntity) replacementObject;
             ComponentEntity hostEntity = (ComponentEntity) hostObject;
-            List<?> replacementPortList = replacementEntity.portList();
-            List<?> hostPortList = hostEntity.portList();
-            for (int i = 0; i < replacementPortList.size(); i++) {
-                _replacementHostCorrespondence.put(
-                        (Port) replacementPortList.get(i),
-                        (Port) hostPortList.get(i));
+
+            String patternEntityCode =
+                _patternToReplacement.getKey(replacementObjectCode);
+
+            if (patternEntityCode == null) {
+                // The replacement entity is newly added.
+                List<?> replacementPortList = replacementEntity.portList();
+                List<?> hostPortList = hostEntity.portList();
+                for (int i = 0; i < replacementPortList.size(); i++) {
+                    Port replacementPort = (Port) replacementPortList.get(i);
+                    Port hostPort = (Port) hostPortList.get(i);
+                    String replacementPortCode =
+                        _getCodeFromObject(replacementPort, _replacement);
+                    String hostPortCode =
+                        _getCodeFromObject(hostPort, _hostGraph);
+                    _replacementToHost.put(replacementPortCode, hostPortCode);
+                }
+            } else {
+                ComponentEntity patternEntity = (ComponentEntity)
+                        _getObjectFromCode(patternEntityCode, _pattern);
+                List<?> patternPortList = patternEntity.portList();
+                List<?> replacementPortList = replacementEntity.portList();
+                for (int i = 0; i < patternPortList.size(); i++) {
+                    Port patternPort = (Port) patternPortList.get(i);
+                    Port replacementPort = (Port) replacementPortList.get(i);
+                    Port originalHostPort =
+                        (Port) _matchResult.get(patternPort);
+                    String hostPortName = originalHostPort.getName();
+                    Port hostPort = hostEntity.getPort(hostPortName);
+                    String replacementPortCode =
+                        _getCodeFromObject(replacementPort, _replacement);
+                    String hostPortCode =
+                        _getCodeFromObject(hostPort, _hostGraph);
+                    _replacementToHost.put(replacementPortCode, hostPortCode);
+                }
+            }
+        }
+
+        if (replacementObject instanceof CompositeEntity) {
+            CompositeEntity replacementEntity =
+                (CompositeEntity) replacementObject;
+            CompositeEntity hostEntity = (CompositeEntity) hostObject;
+
+            List<?> replacementRelationList = replacementEntity.relationList();
+            List<?> hostRelationList = hostEntity.relationList();
+            for (int i = 0; i < replacementRelationList.size(); i++) {
+                Relation replacementRelation =
+                    (Relation) replacementRelationList.get(i);
+                Relation hostRelation = (Relation) hostRelationList.get(i);
+                String replacementRelationCode =
+                    _getCodeFromObject(replacementRelation, _replacement);
+                String hostRelationCode =
+                    _getCodeFromObject(hostRelation, _hostGraph);
+                _replacementToHost.put(replacementRelationCode,
+                        hostRelationCode);
+            }
+
+            List<?> replacementEntityList = replacementEntity.entityList();
+            List<?> hostEntityList = hostEntity.entityList();
+            for (int i = 0; i < replacementEntityList.size(); i++) {
+                _recordReplacementHostCorrespondence(
+                        (NamedObj) replacementEntityList.get(i),
+                        (NamedObj) hostEntityList.get(i));
             }
         }
     }
 
-    private void _removeObjects(CompositeEntity patternContainer)
-    throws TransformationException {
+    private void _removeObjects(CompositeEntity patternContainer) {
         Collection<?> objectCollection = new CombinedCollection<Object>(
                 new Collection<?>[] {
+                        patternContainer.attributeList(),
                         patternContainer.entityList(),
+                        patternContainer.portList(),
                         patternContainer.relationList()
                 });
-        for (Object patternObject : objectCollection) {
+        for (Object patternObjectRaw : objectCollection) {
+            NamedObj patternObject = (NamedObj) patternObjectRaw;
+
             if (patternObject instanceof CompositeEntity) {
                 _removeObjects((CompositeEntity) patternObject);
             }
 
-            if (!_entityMap.containsKey(patternObject)) {
+            String patternObjectCode =
+                _getCodeFromObject(patternObject, _pattern);
+            if (!_patternToReplacement.containsKey(patternObjectCode)) {
                 // patternObject is removed in the replacement.
                 NamedObj match = (NamedObj) _matchResult.get(patternObject);
-                if (match != null) {
-                    NamedObj container = match.getContainer();
-                    _deletedObjects.add(match);
-                    String moml =
-                        "<deleteEntity name=\"" + match.getName() + "\"/>";
-                    new MoMLChangeRequest(this, container, moml).execute();
+                if (match == null) {
+                    continue;
                 }
+
+                GTTools.getDeletionChangeRequest(this, match).execute();
+                _recordDeletedObject(match);
             }
         }
     }
 
-    private void _substituteGTEntities(CompositeEntity hostContainer,
-            Pattern pattern) {
-        for (Object hostObject : hostContainer.entityList()) {
-            if (hostObject instanceof GTEntity) {
-                GTEntity hostEntity = (GTEntity) hostObject;
-                PatternObjectAttribute pattenrEntityAttribute =
-                    GTTools.getPatternObjectAttribute(
-                            (NamedObj) hostEntity, false);
-                ComponentEntity patternEntity = null;
-                if (pattenrEntityAttribute != null) {
-                    String patternEntityName =
-                        pattenrEntityAttribute.getExpression();
-                    patternEntity = pattern.getEntity(patternEntityName);
-                }
+    private void _substituteGTEntities(CompositeEntity hostContainer) {
+        Collection<?> objectCollection = new CombinedCollection<Object>(
+                new Collection<?>[] {
+                        hostContainer.attributeList(),
+                        hostContainer.entityList(),
+                        hostContainer.portList(),
+                        hostContainer.relationList()
+                });
+        for (Object hostObjectRaw : objectCollection) {
+            NamedObj hostObject = (NamedObj) hostObjectRaw;
+            String hostObjectCode = _getCodeFromObject(hostObject, _hostGraph);
+            String replacementObjectCode =
+                _replacementToHost.getKey(hostObjectCode);
+            PatternObjectAttribute patternObjectAttribute =
+                GTTools.getPatternObjectAttribute(hostObject);
 
-                if (patternEntity != null) {
-                    NamedObj match = (NamedObj) _matchResult.get(patternEntity);
+            if (patternObjectAttribute != null) {
+                String patternObjectCode = _getTypeAbbreviation(hostObject) +
+                    patternObjectAttribute.getExpression();
+                NamedObj patternObject = _getObjectFromCode(patternObjectCode,
+                        _pattern);
+
+                if (patternObject != null) {
+                    NamedObj match = (NamedObj) _matchResult.get(patternObject);
+                    if (match == null) {
+                        continue;
+                    }
+        
                     NamedObj container = match.getContainer();
-                    String moml;
-
-                    if (match != hostEntity) {
-                        moml = "<deleteEntity name=\"" + hostEntity.getName()
-                                + "\"/>";
-                        new MoMLChangeRequest(GraphTransformer.this,
-                                hostContainer, moml).execute();
-
+                    if (match != hostObject) {
+                        _recordDeletedObject(hostObject);
+                        GTTools.getDeletionChangeRequest(GraphTransformer.this,
+                                hostObject).execute();
+        
                         if (container != hostContainer) {
                             if (container != null) {
-                                moml = "<deleteEntity name=\"" + match.getName()
-                                        + "\"/>";
-                                new MoMLChangeRequest(GraphTransformer.this,
-                                        container, moml).execute();
+                                _recordDeletedObject(match);
+                                GTTools.getDeletionChangeRequest(
+                                        GraphTransformer.this, match).execute();
                             }
-                            moml = match.exportMoML();
+                            String moml = match.exportMoML();
                             new MoMLChangeRequest(GraphTransformer.this,
                                     hostContainer, moml).execute();
+                            if (replacementObjectCode != null) {
+                                NamedObj replacementObject = _getObjectFromCode(
+                                        replacementObjectCode, _replacement);
+                                _recordAddedObject(hostContainer, match,
+                                        replacementObject);
+                            }
                         }
                     }
                 }
             }
 
             if (hostObject instanceof CompositeEntity) {
-                _substituteGTEntities((CompositeEntity) hostObject, pattern);
+                _substituteGTEntities((CompositeEntity) hostObject);
             }
         }
     }
 
     private Set<NamedObj> _deletedObjects;
 
-    private TwoWayHashMap<NamedObj, NamedObj> _entityMap;
+    private CompositeEntity _hostGraph;
 
     private MatchResult _matchResult;
 
     private Pattern _pattern;
 
+    private TwoWayHashMap<String, String> _patternToReplacement;
+
     private Replacement _replacement;
 
-    private TwoWayHashMap<NamedObj, NamedObj> _replacementHostCorrespondence;
+    private TwoWayHashMap<String, String> _replacementToHost;
 }

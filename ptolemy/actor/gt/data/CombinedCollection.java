@@ -53,7 +53,7 @@ public class CombinedCollection<E> implements Collection<E> {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean add(Object o) {
+    public boolean add(E o) {
         Collection collection;
         if (_isLastListModifiable) {
             collection = _collectionList.get(_collectionList.size() - 1);
@@ -151,6 +151,10 @@ public class CombinedCollection<E> implements Collection<E> {
             array[size] = null;
 
         return array;
+    }
+
+    protected List<Collection<? extends E>> _getCollectionList() {
+        return _collectionList;
     }
 
     private List<Collection<? extends E>> _collectionList =
