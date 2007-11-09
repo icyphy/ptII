@@ -288,6 +288,9 @@ public class Director implements ActorCodeGenerator {
         code.append(CodeStream.indent(_codeGenerator
                 .comment("Transfer tokens to the inside")));
 
+        // FIXME: The codegen.kernel class should not depend on codegen.c.
+        // What if we wanted to generate code in another language.
+        // We should abstract the actor functionality into codegen.actor.
         ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(_director
                 .getContainer());
 
@@ -325,6 +328,9 @@ public class Director implements ActorCodeGenerator {
         code.append(CodeStream.indent(_codeGenerator
                 .comment("Transfer tokens to the outside")));
 
+        // FIXME: The codegen.kernel class should not depend on codegen.c.
+        // What if we wanted to generate code in another language.
+        // We should abstract the actor functionality into codegen.actor.
         ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(_director
                 .getContainer());
 
