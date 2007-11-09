@@ -541,6 +541,7 @@ set originalParserErrorHandler [$parser getErrorHandler]
 ####
 # Procedure used to test setReportErrorsToHandler
 proc testSetReportErrorsToHandler {reportErrorsToHandler} {
+    global PTII
 
     # Create a base model.
     set parser [java::new ptolemy.moml.MoMLParser]
@@ -586,10 +587,16 @@ proc testSetReportErrorsToHandler {reportErrorsToHandler} {
     $printStream flush	
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" output
-    # We truncate the output to avoid the installation specific
-    # PTII path.  We could do a substitution here . . .	
-    list [string range $output 0 463] {...} \
-	    [string range [$recorderErrorHandler getMessages] 0 274] {...}
+    regsub -all [[[java::new java.io.File $PTII] getCanonicalFile] toString] \
+		$output \
+		{$PTII} output2
+
+    # The error message contains the full path, so we substitute in $PTII
+    regsub -all [[[java::new java.io.File $PTII] getCanonicalFile] toString] \
+		[$recorderErrorHandler getMessages] \
+		{$PTII} output3
+    list $output2 \
+	    [string range $output3 0 452] {...}
 }
 
 ######################################################################
@@ -610,7 +617,11 @@ Caused by:
  ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.lib.XXX
 Because:
 -- no protocol: ptolemy/actor/lib/XXX.xml
--- XML file not found relative to classpath} ... {} ...}
+-- XML file not found relative to classpath.
+-- $PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.xml
+$PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.xml (No such file or directory)
+ in [external stream] at line 3 and column 47
+} {} ...}
 
 ######################################################################
 ####
@@ -622,12 +633,15 @@ test MoMLChangeRequest-6.2 {setReportErrorsToHandler true} {
 	    <entity name="const" class="ptolemy.actor.lib.XXX"/>
         </entity>
      succeeded
-} ... {RecorderErrorHandler: Error encountered in:
+} {RecorderErrorHandler: Error encountered in:
 <entity name="const" class="ptolemy.actor.lib.XXX">
 ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.lib.XXX
 Because:
 -- no protocol: ptolemy/actor/lib/XXX.xml
--- XML file not found relative to classpath} ...}
+-- XML file not found relative to classpath.
+-- $PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.xml
+$PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.xml (No such file or directory)
+ in [external stream] at line 3 and column 47} ...}
 
 
 # Restore the original MoMLParser Error Handler
