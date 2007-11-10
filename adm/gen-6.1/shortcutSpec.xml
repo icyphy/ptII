@@ -3,7 +3,7 @@
 <shortcuts>
   <skipIfNotSupported/>
 
-  <programGroup defaultName="Ptolemy\ptII6.0.devel"
+  <programGroup defaultName="Ptolemy\ptII6.1.devel"
                 location="applications"/>
 
   <shortcut
