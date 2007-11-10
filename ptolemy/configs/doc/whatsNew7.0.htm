@@ -30,6 +30,15 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
 
 <h2><a name="highlights">Highlights</a></h2>
 <ul>
+<li> The
+<a href="../../../ptolemy/domains/continuous/doc/main.htm">Continuous domain</a>:
+ <p>Primary Developers: Haiyang Zheng, Edward A. Lee
+ <br><i>FIXME</i>
+<li> Backtracking
+ <p>Primary Developers: Thomas Feng
+
+<li> ptolemy.data.properties
+
 <li> UI demos
   <ul>
   <li> <a href="../../domains/curriculum/demo/Curriculum/Curriculum.xml">Curriculum</a> (New in Ptolemy II 6.1)
@@ -47,11 +56,134 @@ See also <a href="whatsNew.htm">What's New in other versions</a>.
 
 <h2><a name="demos">New demonstrations</a></h2>
 
+<h3>Discrete Event (DE)</h3>
+<ul>
+<li> <a href="../../domains/de/demo/RealTimeComposite/RealTimeComposite.xml">Real Time Composite</a> 
+</ul>
+<h3>Process Network (PN)</h3>
+<ul>
+<li><a href="../../domains/pn/demo/NondeterministicMergeWithFeedback/NondeterministicMergeWithFeedback.xml">Nondeterministic Merge with Feedback</a>
+</ul>
+<h3>Synchronous Dataflow (SDF)</h3>
+<ul>
+<li><a href="../../domains/sdf/demo/Gravitation/Gravitation.xml">Gravitation</a>
+<li><a href="../../domains/sdf/demo/ModelDisplay/ModelDisplay.xml">ModelDisplay</a>
+</ul>
+<h3>Synchronous/Reactive (SR) </h3>
+<ul>
+<li><a href="../../domains/sr/demo/GuardedCount/GuardedCountTimed.xml">GuardedCountTimed</a> 
+<li><a href="../../domains/sr/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> 
+<li><a href="../../domains/sr/demo/TrafficLight/WirelessDeployment.xml">WirelessDeployment</a> 
+</ul>
+
+<h3><a name="sdfCodegen">SDF Code Generation</a></h3>
+<ul>
+<!-- Please keep the demos alphabetical -->
+<li><a href="../../domains/sdf/demo/Butterfly/Butterfly.xml">Butterfly</a>
+<li><a href="../../codegen/demo/Butterfly/Butterfly.xml">Butterfly</a> (with CompiledCompositeActor)
+<li><a href="../../actor/lib/hoc/demo/Case/Case.xml">Case</a>
+<li><a href="../../codegen/demo/Life/Life.xml">Life</a>
+<li><a href="../../domains/sdf/demo/LogisticMap/LogisticMap.xml">LogisticMap</a>
+</ul>
+
+See also the <a href="completeDemos.htm">Complete Demonstrations</a> page.
+
 <h2><a name="other">Other Key New Capabilities</a></h2>
+<ul>
+<li> UI Builder (jgoodies)
+<li><a href="ptdoc:ptolemy.actor.Initializable">Initializable</a>
+<li><a href="ptdoc:ptolemy.actor.TokenGotEvent">TokenGotEvent</a>
+<li><a href="ptdoc:ptolemy.actor.TokenGotListener">TokenGotListener</a>
+
+<li> ptolemy.actor.gt
+</ul>
 
 <h2><a name="libraries">New and Enhanced Actor Libraries</a>
 
+<!-- grep "Only in" /tmp/p.diffs | grep java | sed 's@Only in ptII6.1.devel/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"ptdoc:" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/' -->
+
+<ul>
+<li><a href="ptdoc:ptolemy.actor.lib.ArrayElementAsMatrix">ArrayElementAsMatrix</a>
+<li><a href="ptdoc:ptolemy.actor.lib.ArraySum">ArraySum</a>
+<li><a href="ptdoc:ptolemy.actor.lib.CodegenActor">CodegenActor</a>
+<li><a href="ptdoc:ptolemy.actor.lib.LimitedFiringSource">LimitedFiringSource</a>
+<li><a href="ptdoc:ptolemy.actor.lib.MovingAverage">MovingAverage</a>
+<li><a href="ptdoc:ptolemy.actor.lib.SubMatrix">SubMatrix</a>
+<li><a href="ptdoc:ptolemy.actor.lib.gui.ArrayPlotterXY">ArrayPlotterXY</a>
+<li><a href="ptdoc:ptolemy.actor.lib.gui.LEDMatrix">LEDMatrix</a>
+<li><a href="ptdoc:ptolemy.actor.lib.gui.ModelDisplay">ModelDisplay</a>
+<li><a href="ptdoc:ptolemy.actor.lib.hoc.MirrorComposite">MirrorComposite</a>
+<li><a href="ptdoc:ptolemy.actor.lib.hoc.RealTimeComposite">RealTimeComposite</a>
+<li><a href="ptdoc:ptolemy.actor.libsound.ClipPlayer.java">ClipPlayer.java</a>
+<li><a href="ptdoc:ptolemy.actor.libsound.SoundActor.java">SoundActor.java</a>
+<li><a href="ptdoc:ptolemy.actor.libsound.SoundPlayer.java">SoundPlayer.java</a>
+</ul>
+
+<li><i>New Continuous Time (CT) actors</i>:
+<ul>
+<li><a href="ptdoc:ptolemy.domains.ct.lib.DiscreteClock">DiscreteClock</a>
+</ul>
+
+<li><i>New Synchronous Dataflow (SDF) actors</i>:
+<ul>
+<li><a href="ptdoc:ptolemy.domains.sdf.lib.MatrixJoin">MatrixJoin</a>
+<li><a href="ptdoc:ptolemy.domains.sdf.lib.MatrixSplit">MatrixSplit</a>
+</ul>
+
+
 <h2><a name="features"> Additional Features </a></h2>
+
+<ul>
+<li> doc/tutorial
+<li><a href="ptdoc:ptolemy.actor.gui.AbstractPlaceableActor">AbstractPlaceableActor</a>
+<li><a href="ptdoc:ptolemy.actor.gui.DependencyHighlighter">DependencyHighlighter</a>
+<li><a href="ptdoc:ptolemy.actor.gui.DoubleClickFactory">DoubleClickFactory</a>
+<li><a href="ptdoc:ptolemy.data.FloatToken">FloatToken</a>
+<li><a href="ptdoc:ptolemy.data.ShortToken">ShortToken</a>
+<li><a href="ptdoc:ptolemy.data.UnsizedArrayToken">UnsizedArrayToken</a>
+<li><a href="ptdoc:ptolemy.data.expr.NameParameter">NameParameter</a>
+<li><a href="ptdoc:ptolemy.data.expr.UndefinedConstantOrIdentifierException">UndefinedConstantOrIdentifierException</a>
+<li><a href="ptdoc:ptolemy.moml.MissingClassException">MissingClassException</a>
+<li><a href="ptdoc:ptolemy.moml.MoMLVariableChecker">MoMLVariableChecker</a>
+<li><a href="ptdoc:ptolemy.util.StringBufferExec">StringBufferExec</a>
+<li><a href="ptdoc:ptolemy.vergil.basic.KeplerDocumentationAttribute">KeplerDocumentationAttribute</a>
+<li><a href="ptdoc:ptolemy.vergil.basic.OffsetMoMLChangeRequest">OffsetMoMLChangeRequest</a>
+<li><a href="ptdoc:ptolemy.vergil.toolbox.DoubleClickAction">DoubleClickAction</a>
+
+</ul>
+
+<li><i>New Code Generatio Actors</i>:
+<ul>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.ArrayElementAsMatrix">ArrayElementAsMatrix</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.ArrayPeakSearch">ArrayPeakSearch</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.CodegenActor">CodegenActor</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.CurrentTime">CurrentTime</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.Lattice">Lattice</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.MovingAverage">MovingAverage</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.Publisher">Publisher</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.RecursiveLattice">RecursiveLattice</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.SetVariable">SetVariable</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.Subscriber">Subscriber</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.SubscriptionAggregator">SubscriptionAggregator</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.VectorAssembler">VectorAssembler</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.VectorDisassembler">VectorDisassembler</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.WallClockTime">WallClockTime</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.conversions.CartesianToComplex">CartesianToComplex</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.conversions.ComplexToCartesian">ComplexToCartesian</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.gui.LEDMatrix">LEDMatrix</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.hoc.MultiInstanceComposite">MultiInstanceComposite</a>
+<li><a href="ptdoc:ptolemy.codegen.c.actor.lib.test.RampNecessaryFiles">RampNecessaryFiles</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.BitsToInt">BitsToInt</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.Chop">Chop</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.DownSample">DownSample</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.IntToBits">IntToBits</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.LMSAdaptive">LMSAdaptive</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.RaisedCosine">RaisedCosine</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.UpSample">UpSample</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.VariableFIR">VariableFIR</a>
+<li><a href="ptdoc:ptolemy.codegen.c.domains.sdf.lib.VariableLattice">VariableLattice</a>
+<li><a href="ptdoc:ptolemy.codegen.c.kernel.CCodegenUtilities">CCodegenUtilities</a>
+</ul>
 
 <h2><a name="bugs">Bug fixes</a></h2>
 
