@@ -105,6 +105,7 @@ doc/img/PtolemyIISplash.psd
 doc/uml
 doc/uml/*
 doc/img/*.psd
+hs_err_pid*
 java.hprof.txt
 jsdatabase
 jni/launcher/launcher.exe
