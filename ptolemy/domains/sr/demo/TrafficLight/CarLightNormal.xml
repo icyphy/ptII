@@ -162,7 +162,7 @@ three seconds and to stay green for two.</text></svg></configure>
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 60.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 70.0]">
             </property>
         </entity>
         <entity name="Cgrn" class="ptolemy.domains.fsm.kernel.State">
@@ -212,9 +212,11 @@ three seconds and to stay green for two.</text></svg></configure>
             </property>
             <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="Cyel=1; Pstop=1">
             </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="count =0">
+            </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4262866406113318">
             </property>
-            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.6783079356000257">
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.18622955007249012">
             </property>
             <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
             </property>

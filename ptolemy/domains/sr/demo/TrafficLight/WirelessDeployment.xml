@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 161, 944, 603}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[729, 485]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 658]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{364.5, 242.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{334.3049242424242, 252.3499053030303}">
     </property>
     <property name="Line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 215.0]">
@@ -73,7 +73,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model internally uses instances of two&#10;actor-oriented classes, CarLightNormal and&#10;PedestrianLightNormal, that are defined in&#10;a separate file. Instances of these classes&#10;are also used in the TrafficLight model, which&#10;is a behavioral model rather than a deployment&#10;model. Since instances of the same classes are&#10;used in both places, changes in one model are&#10;automatically reflected in the other model.&#10;As an exercise, try changing the logic so that&#10;instead of the European system of showing&#10;red and yellow lights together before green,&#10;you use the American system of going directly&#10;to green.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 240.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 235.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
