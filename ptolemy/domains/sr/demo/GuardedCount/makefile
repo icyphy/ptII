@@ -50,6 +50,7 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	GuardedCount.htm \
 	GuardedCount.xml \
+	GuardedCountTimed.xml \
 	GuardedCountVergil.htm
 
 EXTRA_SRCS = \
