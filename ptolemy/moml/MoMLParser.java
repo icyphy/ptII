@@ -3468,23 +3468,30 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             classAsFile = source;
         }
         // First check to see whether the object has been previously loaded.
-        URL url = fileNameToURL(classAsFile, _base);
-        if (_imports != null) {
-            WeakReference possiblePrevious = (WeakReference) _imports.get(url);
-            NamedObj previous = null;
-            if (possiblePrevious != null) {
-                previous = (NamedObj) possiblePrevious.get();
-                if (previous == null) {
-                    _imports.remove(url);
+        URL url = null;
+        try {
+            url = fileNameToURL(classAsFile, _base);
+            if (_imports != null) {
+                WeakReference possiblePrevious = (WeakReference) _imports.get(url);
+                NamedObj previous = null;
+                if (possiblePrevious != null) {
+                    previous = (NamedObj) possiblePrevious.get();
+                    if (previous == null) {
+                        _imports.remove(url);
+                    }
+                }
+                if (previous instanceof ComponentEntity) {
+                    // NOTE: In theory, we should not even have to
+                    // check whether the file has been updated, because
+                    // if changes were made to model since it was loaded,
+                    // they should have been propagated.
+                    return (ComponentEntity)previous;
                 }
             }
-            if (previous instanceof ComponentEntity) {
-                // NOTE: In theory, we should not even have to
-                // check whether the file has been updated, because
-                // if changes were made to model since it was loaded,
-                // they should have been propagated.
-                return (ComponentEntity)previous;
-            }
+        } catch (Exception ex) {
+            // An exception will be thrown if the class is not
+            // found under the specified file name. Below we
+            // will try again under the alternate file name.
         }
         
         // Read external model definition in a new parser,
