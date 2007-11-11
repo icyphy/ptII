@@ -605,8 +605,8 @@ proc testSetReportErrorsToHandler {reportErrorsToHandler} {
 	        $output4 \
 		{$PTII} output5
 
-    // The IOException differs between Windows and Solaris,
-    // so we truncate the message.
+    # The IOException differs between Windows and Solaris,
+    # so we truncate the message.
     list [string range $output3 0 519] {...} \
 	[string range $output5 0 330] {...}
 }
