@@ -95,19 +95,25 @@ test StreamErrorHandler-1.2 {Create a stream that we can read} {
     $printStream flush
 
     # This hack is necessary because of problems with crnl under windows
+    regsub -all {\\} \
+	[[[java::new java.io.File $PTII] getCanonicalFile] toString] \
+	{/} ptII
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" output
-    regsub -all [[[java::new java.io.File $PTII] getCanonicalFile] toString] \
-		$output {$PTII} output2
+    regsub -all {\\} $output {/} output2
+
+    regsub -all $ptII \
+		$output2 {$PTII} output3
+
 
     # Only take the first few characters
-    list [string range $output2 0 507] {...}
+    list [string range $output3 0 507] {...}
 } {{Error encountered in:
 <entity name="b" class="ptolemy.moml.test.notAClass">
 ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.moml.test.notAClass
 Because:
--- $PTII/ptolemy/moml/test/ptolemy/moml/test/notAClass.moml (No such file or directory)
+-- $PTII/ptolemy/moml/test/ptolemy/moml/test/notAClass.moml (The system cannot find the path specified)
 -- XML file not found relative to classpath.
 -- $PTII/ptolemy/moml/test/ptolemy/moml/test/notAClass.moml
-$PTII/ptolemy/moml/test/ptolemy/moml/test/notAClass.moml (No such file or directory)
- in file:$PTII/ptolemy/moml/test/ at line 5 and column} ...}
+ptolemy/moml/test/notAClass.moml (The system cannot find the path specified)
+ in file:$PTII/ptolemy/moml/test/ at line 5 an} ...}
