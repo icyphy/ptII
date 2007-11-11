@@ -29,9 +29,11 @@ package ptolemy.vergil.gt;
 import java.awt.Color;
 
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.JVMTableau;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.actor.gui.TextEditorTableau;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -39,6 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.fsm.CaseGraphTableau;
+import ptolemy.vergil.tree.TreeTableau;
 
 //////////////////////////////////////////////////////////////////////////
 //// GTRuleGraphTableau
@@ -145,6 +148,11 @@ public class MatchResultTableau extends Tableau {
         public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
+
+            treeViewFactory = new TreeTableau.Factory(this, "Tree View");
+            xmlViewFactory = new TextEditorTableau.Factory(this, "XML View");
+            javaPropertiesFactory =
+                new JVMTableau.Factory(this, "JVM Properties");
         }
 
         /** Create an instance of GRRuleGraphTableau for the specified effigy,
@@ -159,6 +167,8 @@ public class MatchResultTableau extends Tableau {
             if (!(effigy instanceof PtolemyEffigy)) {
                 return null;
             }
+
+            effigy.setTableauFactory(this);
 
             NamedObj model = ((PtolemyEffigy) effigy).getModel();
 
@@ -176,6 +186,12 @@ public class MatchResultTableau extends Tableau {
                 return null;
             }
         }
+
+        public TableauFactory javaPropertiesFactory;
+
+        public TableauFactory treeViewFactory;
+
+        public TableauFactory xmlViewFactory;
 
         private static final long serialVersionUID = 3382841404529365973L;
     }
