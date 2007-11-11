@@ -50,7 +50,7 @@ PTCLASSALLJARS = \
 	GuardedCount/GuardedCount.jar \
 	ReflexGame/ReflexGame.jar \
 	TokenRing/TokenRing.jar \
-	TrafficLight/TrafficLigt.jar
+	TrafficLight/TrafficLight.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
