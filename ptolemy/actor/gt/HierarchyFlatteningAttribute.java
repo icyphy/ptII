@@ -55,11 +55,8 @@ extends CompositeEntityPatternAttribute {
      * @throws IllegalActionException
      */
     public HierarchyFlatteningAttribute(NamedObj container, String name)
-    throws NameDuplicationException, IllegalActionException {
+    throws IllegalActionException, NameDuplicationException {
         super(container, name, "hierarchyFlattening", BaseType.BOOLEAN, "true");
-
-        _checkContainerClass(Pattern.class, true);
-        _checkUniqueness();
     }
 
     public void attributeChanged(Attribute attribute) {
@@ -79,6 +76,15 @@ extends CompositeEntityPatternAttribute {
                 throw new KernelRuntimeException(e,
                         "Cannot get token from the attribute.");
             }
+        }
+    }
+
+    public void setContainer(NamedObj container) throws IllegalActionException,
+    NameDuplicationException {
+        super.setContainer(container);
+        if (container != null) {
+            _checkContainerClass(container, Pattern.class, true);
+            _checkUniqueness(container);
         }
     }
 
