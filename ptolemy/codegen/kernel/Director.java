@@ -148,12 +148,16 @@ public class Director implements ActorCodeGenerator {
 
     /** Generate a main loop for an execution under the control of
      *  this director.  In this base class, this simply delegates
-     *  to generateFireCode().
+     *  to generateFireCode() and generatePostfireCOde().
+     *  @param callPostfire True if the C postfire() method should
+     *  be called.   
      *  @return Whatever generateFireCode() returns.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateMainLoop() throws IllegalActionException {
-        return generateFireCode();
+    public String generateMainLoop(boolean callPostfire)
+            throws IllegalActionException {
+        return generateFireCode()
+            + (callPostfire ? generatePostfireCode() : "");
     }
 
     /** Generate the initialize code for this director.

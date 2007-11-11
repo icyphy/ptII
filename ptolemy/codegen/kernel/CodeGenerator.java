@@ -58,6 +58,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException; 
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -1186,7 +1187,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         Director directorHelper = (Director)_getHelper(director);
         
         if (isTopLevel()) {
-            return directorHelper.generateMainLoop();            
+            if (_postfireCode == null) {
+                throw new InternalErrorException(getContainer(), null,
+                        "generatePostfireCode() should be called before "
+                        + "_generateBodyCode() because we need to know "
+                        + "if there is a C postfire() method "
+                        + "to be called.");
+            }
+            return directorHelper.generateMainLoop(
+                    CodeGenerator.containsCode(_postfireCode));
+
         } else {
             // Generate JNI code.
             CodeGeneratorHelper compositeHelper = 
@@ -1532,7 +1542,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             "typeFunc", "actorSymbol", "actorClass", "new" }));
 
     /** The postfire code. */
-    protected String _postfireCode;
+    protected String _postfireCode = null;
 
     /** A static list of the primitive types supported by the code generator. */
     protected static final List _primitiveTypes = Arrays.asList(new String[] {

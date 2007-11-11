@@ -35,6 +35,7 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
+import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.Director;
@@ -182,10 +183,13 @@ public class StaticSchedulingDirector extends Director {
      *  Finally, if the director has a parameter named <i>period</i>,
      *  then increment the variable _currentTime after each
      *  pass through the loop.
+     *  @param callPostfire True if the C postfire() method should
+     *  be called.   
      *  @return Code for the main loop of an execution.
      *  @exception IllegalActionException If something goes wrong.
      */
-    public String generateMainLoop() throws IllegalActionException {
+    public String generateMainLoop(boolean callPostfire)
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         Attribute iterations = _director.getAttribute("iterations");
@@ -213,16 +217,11 @@ public class StaticSchedulingDirector extends Director {
                 _getHelper(_director.getContainer());
         modelHelper.generateModeTransitionCode(code);
 
-        // FIXME: In StaticSchedulingCodeGenerator, we had
-        // the following optimization. But it's not clear to
-        // me how to do that optimization here... Where
-        // is the postfire() procedure defined?
-        // if (containsCode(_postfireCode)) {
-        /* FIXME The postfire() method doesn't get defined!
-        code.append(_INDENT2 + "if (!postfire()) {" + _eol
-                + _INDENT3 + "break;" + _eol
-                + _INDENT2 + "}" + _eol);
-                */
+        if (callPostfire) {
+            code.append(_INDENT2 + "if (!postfire()) {" + _eol
+                    + _INDENT3 + "break;" + _eol
+                    + _INDENT2 + "}" + _eol);
+        }
 
         Attribute period = _director.getAttribute("period");
         if (period != null) {
