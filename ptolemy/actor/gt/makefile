@@ -76,6 +76,7 @@ JSRCS = \
 	PatternObjectAttribute.java \
 	RelationCollapsingAttribute.java \
 	Replacement.java \
+	ReplacementObjectAttribute.java \
 	SubgraphMatchingException.java \
 	TransformationException.java \
 	TransformationRule.java \

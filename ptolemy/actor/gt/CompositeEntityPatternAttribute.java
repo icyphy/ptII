@@ -65,10 +65,9 @@ extends SingletonAttribute {
 
     public Parameter parameter;
 
-    protected void _checkContainerClass(
+    protected void _checkContainerClass(NamedObj container,
             Class<? extends CompositeEntity> containerClass, boolean deep)
     throws IllegalActionException {
-        NamedObj container = getContainer();
         if (container instanceof EntityLibrary) {
             return;
         }
@@ -86,13 +85,13 @@ extends SingletonAttribute {
         }
     }
 
-    protected void _checkUniqueness() throws IllegalActionException {
-        NamedObj container = getContainer();
+    protected void _checkUniqueness(NamedObj container)
+    throws IllegalActionException {
         if (container instanceof EntityLibrary) {
             return;
         }
 
-        List<?> attributeList = getContainer().attributeList(getClass());
+        List<?> attributeList = container.attributeList(getClass());
         for (Object attributeObject : attributeList) {
             if (attributeObject != this) {
                 _deleteThis();

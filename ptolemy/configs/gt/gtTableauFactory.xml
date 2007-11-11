@@ -18,4 +18,6 @@
             class="ptolemy.vergil.tree.TreeTableau$Factory"/>
   <property name="XML view"
             class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+  <property name="JVM Properties"
+            class="ptolemy.actor.gui.JVMTableau$Factory"/>
 </property>

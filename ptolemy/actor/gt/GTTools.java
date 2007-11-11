@@ -29,6 +29,7 @@
 package ptolemy.actor.gt;
 
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Nameable;
@@ -89,12 +90,14 @@ public class GTTools {
     public static MoMLChangeRequest getDeletionChangeRequest(Object originator,
             NamedObj object) {
         String moml;
-        if (object instanceof Entity) {
+        if (object instanceof Attribute) {
+            moml =  "<deleteProperty name=\"" + object.getName() + "\"/>";
+        } else if (object instanceof Entity) {
             moml =  "<deleteEntity name=\"" + object.getName() + "\"/>";
+        } else if (object instanceof Port) {
+            moml =  "<deletePort name=\"" + object.getName() + "\"/>";
         } else if (object instanceof Relation) {
             moml =  "<deleteRelation name=\"" + object.getName() + "\"/>";
-        } else if (object instanceof Attribute) {
-            moml =  "<deleteProperty name=\"" + object.getName() + "\"/>";
         } else {
             return null;
         }
