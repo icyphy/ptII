@@ -197,7 +197,7 @@ public class Display extends AbstractPlaceableActor {
 
                     if (_frame != null) {
                         _frame.pack();
-                        _frame.show();
+                        _frame.setVisible(true);
                     }
                 }
             }
@@ -222,7 +222,7 @@ public class Display extends AbstractPlaceableActor {
 
                     if (_frame != null) {
                         _frame.pack();
-                        _frame.show();
+                        _frame.setVisible(true);
                     }
                 }
             }
@@ -264,62 +264,7 @@ public class Display extends AbstractPlaceableActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        if (textArea == null) {
-            // No container has been specified for display.
-            // Place the text area in its own frame.
-            // Need an effigy and a tableau so that menu ops work properly.
-            Effigy containerEffigy = Configuration.findEffigy(toplevel());
-
-            if (containerEffigy == null) {
-                throw new IllegalActionException(this,
-                        "Cannot find effigy for top level: "
-                                + toplevel().getFullName());
-            }
-
-            try {
-                TextEffigy textEffigy = TextEffigy.newTextEffigy(
-                        containerEffigy, "");
-
-                // The default identifier is "Unnamed", which is no good for
-                // two reasons: Wrong title bar label, and it causes a save-as
-                // to destroy the original window.
-                textEffigy.identifier.setExpression(getFullName());
-
-                DisplayWindowTableau tableau = new DisplayWindowTableau(
-                        textEffigy, "tableau");
-                _frame = tableau.frame;
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, null, ex,
-                        "Error creating effigy and tableau");
-            }
-
-            textArea = ((TextEditor)_frame).text;
-
-            int numRows = ((IntToken) rowsDisplayed.getToken()).intValue();
-            textArea.setRows(numRows);
-
-            int numColumns = ((IntToken) columnsDisplayed.getToken())
-                    .intValue();
-            textArea.setColumns(numColumns);
-            setFrame(_frame);
-            _frame.pack();
-        } else {
-            // Erase previous text.
-            textArea.setText(null);
-        }
-
-        if (_frame != null) {
-            // show() used to override manual placement by calling pack.
-            // No more.
-            _frame.show();
-            _frame.toFront();
-        }
-
-        /*
-         int tab = ((IntToken)tabSize.getToken()).intValue();
-         // NOTE: As of jdk 1.3beta the following is ignored.
-         textArea.setTabSize(tab);
-         */
+        _initialized = false;
     }
 
     /** Specify the container in which the data should be displayed.
@@ -404,6 +349,11 @@ public class Display extends AbstractPlaceableActor {
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
+                
+                if (!_initialized) {
+                    _initialized = true;
+                    _openWindow();
+                }
 
                 // If the window has been deleted, read the rest of the inputs.
                 if (textArea == null) {
@@ -495,6 +445,66 @@ public class Display extends AbstractPlaceableActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Open the display window if it has not been opened. */
+    private void _openWindow() throws IllegalActionException {
+        if (textArea == null) {
+            // No container has been specified for display.
+            // Place the text area in its own frame.
+            // Need an effigy and a tableau so that menu ops work properly.
+            Effigy containerEffigy = Configuration.findEffigy(toplevel());
+
+            if (containerEffigy == null) {
+                throw new IllegalActionException(this,
+                        "Cannot find effigy for top level: "
+                                + toplevel().getFullName());
+            }
+
+            try {
+                TextEffigy textEffigy = TextEffigy.newTextEffigy(
+                        containerEffigy, "");
+
+                // The default identifier is "Unnamed", which is no good for
+                // two reasons: Wrong title bar label, and it causes a save-as
+                // to destroy the original window.
+                textEffigy.identifier.setExpression(getFullName());
+
+                DisplayWindowTableau tableau = new DisplayWindowTableau(
+                        textEffigy, "tableau");
+                _frame = tableau.frame;
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, null, ex,
+                        "Error creating effigy and tableau");
+            }
+
+            textArea = ((TextEditor)_frame).text;
+
+            int numRows = ((IntToken) rowsDisplayed.getToken()).intValue();
+            textArea.setRows(numRows);
+
+            int numColumns = ((IntToken) columnsDisplayed.getToken())
+                    .intValue();
+            textArea.setColumns(numColumns);
+            setFrame(_frame);
+            _frame.pack();
+        } else {
+            // Erase previous text.
+            textArea.setText(null);
+        }
+
+        if (_frame != null) {
+            // show() used to override manual placement by calling pack.
+            // No more.
+            _frame.setVisible(true);
+            _frame.toFront();
+        }
+
+        /*
+         int tab = ((IntToken)tabSize.getToken()).intValue();
+         // NOTE: As of jdk 1.3beta the following is ignored.
+         textArea.setTabSize(tab);
+         */
+    }
+    
     /** Remove the display from the current container, if there is one.
      */
     private void _remove() {
@@ -517,6 +527,9 @@ public class Display extends AbstractPlaceableActor {
     ////                         private members                   ////
     // The container for the text display, if there is one.
     private Container _container;
+    
+    // Indicator that the display window has been opened.
+    private boolean _initialized = false;
 
     // Record of previous columns.
     private int _previousNumColumns = 0;
