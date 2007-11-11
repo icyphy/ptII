@@ -585,18 +585,30 @@ proc testSetReportErrorsToHandler {reportErrorsToHandler} {
     $manager requestChange $change
     $toplevel exportMoML
     $printStream flush	
+
+    regsub -all {\\} \
+	[[[java::new java.io.File $PTII] getCanonicalFile] toString] \
+	{/} ptII
+
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" output
-    regsub -all [[[java::new java.io.File $PTII] getCanonicalFile] toString] \
-		$output \
-		{$PTII} output2
+    regsub -all {\\} $output {/} output2
+    regsub -all $ptII \
+		$output2 \
+		{$PTII} output3
 
     # The error message contains the full path, so we substitute in $PTII
-    regsub -all [[[java::new java.io.File $PTII] getCanonicalFile] toString] \
-		[$recorderErrorHandler getMessages] \
-		{$PTII} output3
-    list $output2 \
-	    [string range $output3 0 452] {...}
+    regsub -all {\\} \
+	        [$recorderErrorHandler getMessages] \
+       	        {/} output4
+    regsub -all $ptII \
+	        $output4 \
+		{$PTII} output5
+
+    // The IOException differs between Windows and Solaris,
+    // so we truncate the message.
+    list [string range $output3 0 519] {...} \
+	[string range $output5 0 330] {...}
 }
 
 ######################################################################
@@ -618,10 +630,7 @@ Caused by:
 Because:
 -- no protocol: ptolemy/actor/lib/XXX.moml
 -- XML file not found relative to classpath.
--- $PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.moml
-$PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.moml (No such file or directory)
- in [external stream] at line 3 and column 47
-} {} ...}
+-- $PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.moml} ... {} ...}
 
 ######################################################################
 ####
@@ -633,16 +642,13 @@ test MoMLChangeRequest-6.2 {setReportErrorsToHandler true} {
 	    <entity name="const" class="ptolemy.actor.lib.XXX"/>
         </entity>
      succeeded
-} {RecorderErrorHandler: Error encountered in:
+} ... {RecorderErrorHandler: Error encountered in:
 <entity name="const" class="ptolemy.actor.lib.XXX">
 ptolemy.kernel.util.IllegalActionException: Cannot find class: ptolemy.actor.lib.XXX
 Because:
 -- no protocol: ptolemy/actor/lib/XXX.moml
 -- XML file not found relative to classpath.
--- $PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.moml
-$PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.moml (No such file or directory)
- in [external stream] at line 3 and column} ...}
-
+-- $PTII/ptolemy/moml/test/ptolemy/actor/lib/XXX.moml} ...}
 
 
 # Restore the original MoMLParser Error Handler
