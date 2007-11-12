@@ -41,6 +41,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.ComponentRelation;
@@ -64,6 +65,8 @@ import ptolemy.kernel.util.Workspace;
  A Transition has a source state and a destination state. A
  transition has a guard expression, which is evaluated to a boolean value.
  Whenever a transition is enabled, it must be taken immediately.
+ That is, unlike some state machines formalisms, our guard is not just
+ an enabler for the transition but rather a trigger for the transition.
 
  <p> A transition can contain actions. The way to specify actions is
  to give value to the <i>outputActions</i> parameter and the
@@ -194,6 +197,14 @@ public class Transition extends ComponentRelation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+    
+    /** An annotation that describes the transition. If this is non-empty,
+     *  then a visual editor will be expected to put this annotation on
+     *  or near the transition to document its function. This is a string
+     *  that defaults to the empty string. Note that it can reference
+     *  variables in scope using the notation $name.
+     */
+    public StringParameter annotation;
 
     /** Indicator that this transition is a default transition. A
      *  default transition is enabled only if no other non-default
@@ -380,8 +391,23 @@ public class Transition extends ComponentRelation {
     public String getLabel() {
         StringBuffer buffer = new StringBuffer("");
 
+        boolean hasAnnotation = false;
+        String text;
+        try {
+            text = annotation.stringValue();
+        } catch (IllegalActionException e) {
+            text = "Exception evaluating annotation: " + e.getMessage();
+        }
+        if (!text.trim().equals("")) {
+            hasAnnotation = true;
+            buffer.append(text);
+        }
+
         String guard = getGuardExpression();
-        if (guard != null) {
+        if ((guard != null) && !guard.trim().equals("")) {
+            if (hasAnnotation) {
+                buffer.append("\n");
+            }
             buffer.append("guard: ");
             buffer.append(guard);
         }
@@ -714,9 +740,15 @@ public class Transition extends ComponentRelation {
     // Initialize the variables of this transition.
     private void _init() throws IllegalActionException,
             NameDuplicationException {
+        annotation = new StringParameter(this, "annotation");
+        // Add a hint to indicate to the PtolemyQuery class to open with a text style.
+        Variable variable = new Variable(annotation, "_textHeightHint");
+        variable.setExpression("5");
+        variable.setPersistent(false);
+
         guardExpression = new StringAttribute(this, "guardExpression");
         // Add a hint to indicate to the PtolemyQuery class to open with a text style.
-        Variable variable = new Variable(guardExpression, "_textHeightHint");
+        variable = new Variable(guardExpression, "_textHeightHint");
         variable.setExpression("5");
         variable.setPersistent(false);
         
