@@ -1129,20 +1129,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // NOTE: This is last because it will fail with a
                 // security exception in applets.
                 String cwd = StringUtilities.getProperty("user.dir");
-
-                if (cwd != null) {
-                    try {
-                        // We have to append a trailing "/" here for this to
-                        // work under Solaris.
-                        base = new URL("file", null, cwd + File.separator);
-                        result = new URL(base, source);
-                        input = result.openStream();
-                    } catch (Throwable throwable) {
-                        errorMessage
-                                .append("-- " + cwd + File.separator
-                                        + source + "\n"
-                                        + throwable.getMessage() + "\n");
-                    }
+                try {
+                    base = new File(cwd).toURL();
+                    result = new URL(base, source);
+                    input = result.openStream();
+                } catch (Throwable throwable) {
+                    errorMessage
+                        .append("-- " + cwd + File.separator
+                                + source + "\n"
+                                + throwable.getMessage() + "\n");
                 }
             }
         }
@@ -1430,16 +1425,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  not available.
      */
     public NamedObj parse(String text) throws Exception {
-        URL base = null;
-
         // Use the current working directory as a base.
         String cwd = StringUtilities.getProperty("user.dir");
 
-        if (cwd != null) {
-            // We have to append a trailing / here for this to
-            // work under Solaris.
-            base = new URL("file", null, cwd + "/");
-        }
+        URL base = new File(cwd).toURL();
 
         return parse(base, new StringReader(text));
     }
@@ -1487,16 +1476,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @see #purgeModelRecord(String)
      */
     public NamedObj parseFile(String filename) throws Exception {
-        URL base = null;
-
         // Use the current working directory as a base.
         String cwd = StringUtilities.getProperty("user.dir");
 
-        if (cwd != null) {
-            // We have to append a trailing / here for this to
-            // work under Solaris.
-            base = new URL("file", null, cwd + "/");
-        }
+        URL base = new File(cwd).toURL();
 
         // Java's I/O is so lame that it can't find files in the current
         // working directory...
@@ -1521,6 +1504,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             _currentCharData.append(data);
             _currentCharData.append("?>");
         }
+    }
+
+    public void dumpImports() {
+        Iterator imports = _imports.keySet().iterator();
+        while (imports.hasNext()) {
+            URL url = (URL) imports.next();
+            System.out.println("url: " + url);
+        }                                                           
+
     }
 
     /** Purge any record of a model opened from the specified
@@ -1585,11 +1577,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Use the current working directory as a base.
         String cwd = StringUtilities.getProperty("user.dir");
 
-        //        if (cwd != null) {
-        //            // We have to append a trailing / here for this to
-        //            // work under Solaris.
-        //            base = new URL("file", null, cwd + "/");
-        //        }
         // Java's I/O is so lame that it can't find files in the current
         // working directory...
         File file = new File(new File(cwd), filename);
