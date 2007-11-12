@@ -27,14 +27,14 @@ Token String_delete(Token token, ...) {
 /**/
 
 /***equalsBlock***/
-Token String_equals(Token this, ...) {
+Token String_equals(Token thisToken, ...) {
     va_list argp; 
     Token otherToken; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(!strcmp(this.payload.String, otherToken.payload.String));
+    return Boolean_new(!strcmp(thisToken.payload.String, otherToken.payload.String));
 }
 /**/
 
@@ -44,29 +44,29 @@ Token String_equals(Token this, ...) {
 /**/
 
 /***printBlock***/
-Token String_print(Token this, ...) {
-    printf("\"%s\"", this.payload.String);
+Token String_print(Token thisToken, ...) {
+    printf("\"%s\"", thisToken.payload.String);
     return emptyToken;
 }
 /**/
 
 /***toStringBlock***/
-Token String_toString(Token this, ...) {
+Token String_toString(Token thisToken, ...) {
     // Guarrantee to return a new string.
-    char* result = (char*) malloc(sizeof(char) * (3 + strlen(this.payload.String)));
-    sprintf(result, "\"%s\"", this.payload.String);
+    char* result = (char*) malloc(sizeof(char) * (3 + strlen(thisToken.payload.String)));
+    sprintf(result, "\"%s\"", thisToken.payload.String);
     return String_new(result);
 }
 /**/
 
 /***addBlock***/
-Token String_add(Token this, ...) {
+Token String_add(Token thisToken, ...) {
     va_list argp; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
 	
-    char* result = (char*) malloc(sizeof(char) * (1 + strlen(this.payload.String) + strlen(otherToken.payload.String)));
-    strcpy(result, this.payload.String);
+    char* result = (char*) malloc(sizeof(char) * (1 + strlen(thisToken.payload.String) + strlen(otherToken.payload.String)));
+    strcpy(result, thisToken.payload.String);
     strcat(result, otherToken.payload.String);
 
     va_end(argp);
@@ -87,7 +87,7 @@ Token String_add(Token this, ...) {
 /**/
 
 /***negateBlock***/
-Token String_negate(Token this, ...) {
+Token String_negate(Token thisToken, ...) {
     return emptyToken;
 }	
 /**/
@@ -103,8 +103,8 @@ Token String_zero(Token token, ...) {
 /**/
 
 /***cloneBlock***/
-Token String_clone(Token this, ...) {
-    return String_new(this.payload.String);
+Token String_clone(Token thisToken, ...) {
+    return String_new(thisToken.payload.String);
 }
 /**/
 

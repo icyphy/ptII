@@ -30,10 +30,10 @@ Token Complex_delete(Token token, ...) {
 /**/
 
 /***equalsBlock***/
-Token Complex_equals(Token this, ...) {
+Token Complex_equals(Token thisToken, ...) {
     va_list argp; 
     Token otherToken; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
     
     if (otherToken.type != TYPE_Complex) {
@@ -44,69 +44,69 @@ Token Complex_equals(Token this, ...) {
     
     // Give tolerance for testing.
     return Boolean_new(
-    (1.0E-6 > this.payload.Complex->real - otherToken.payload.Complex->real) &&
-    (1.0E-6 > this.payload.Complex->imag - otherToken.payload.Complex->imag));
+    (1.0E-6 > thisToken.payload.Complex->real - otherToken.payload.Complex->real) &&
+    (1.0E-6 > thisToken.payload.Complex->imag - otherToken.payload.Complex->imag));
 }
 /**/
 
 /***printBlock***/
-Token Complex_print(Token this, ...) {
-    printf("%g + %gi", this.payload.Complex->real, this.payload.Complex->imag);
+Token Complex_print(Token thisToken, ...) {
+    printf("%g + %gi", thisToken.payload.Complex->real, thisToken.payload.Complex->imag);
 }
 /**/
 
 /***toStringBlock***/
-Token Complex_toString(Token this, ...) {
+Token Complex_toString(Token thisToken, ...) {
     char* string = (char*) malloc(sizeof(char) * 32);
-    sprintf(string, "%.14g + %.14gi", this.payload.Complex->real, this.payload.Complex->imag);
+    sprintf(string, "%.14g + %.14gi", thisToken.payload.Complex->real, thisToken.payload.Complex->imag);
     
     return String_new(string);
 }
 /**/
 
 /***addBlock***/
-Token Complex_add(Token this, ...) {
+Token Complex_add(Token thisToken, ...) {
     va_list argp; 
     Token otherToken;    
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);   
 
     va_end(argp);
     
     return Complex_new(
-    this.payload.Complex->real + otherToken.payload.Complex->real, 
-    this.payload.Complex->imag + otherToken.payload.Complex->imag);
+    thisToken.payload.Complex->real + otherToken.payload.Complex->real, 
+    thisToken.payload.Complex->imag + otherToken.payload.Complex->imag);
 }
 /**/
 
 /***subtractBlock***/
-Token Complex_subtract(Token this, ...) {
+Token Complex_subtract(Token thisToken, ...) {
     va_list argp; 
     Token otherToken;
     
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);   
 
     va_end(argp);
 
     return Complex_new(
-    this.payload.Complex->real - otherToken.payload.Complex->real, 
-    this.payload.Complex->imag - otherToken.payload.Complex->imag);
+    thisToken.payload.Complex->real - otherToken.payload.Complex->real, 
+    thisToken.payload.Complex->imag - otherToken.payload.Complex->imag);
 }
 /**/
 
 /***multiplyBlock***/
-Token Complex_multiply(Token this, ...) {
+Token Complex_multiply(Token thisToken, ...) {
     va_list argp; 
     Token result;
     Token otherToken;
     double r1, i1, r2, i2;
     
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);   
 
-    r1 = this.payload.Complex->real;
-    i1 = this.payload.Complex->imag;
+    r1 = thisToken.payload.Complex->real;
+    i1 = thisToken.payload.Complex->imag;
     
     switch (otherToken.type) {
     case TYPE_Complex:
@@ -142,17 +142,17 @@ Token Complex_multiply(Token this, ...) {
 /**/
 
 /***divideBlock***/
-Token Complex_divide(Token this, ...) {
+Token Complex_divide(Token thisToken, ...) {
     va_list argp; 
     Token otherToken;
     Token result;
     double r1, i1, r2, i2, temp;
     
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);   
 
-    r1 = this.payload.Complex->real;
-    i1 = this.payload.Complex->imag;
+    r1 = thisToken.payload.Complex->real;
+    i1 = thisToken.payload.Complex->imag;
     r2 = otherToken.payload.Complex->real;
     i2 = otherToken.payload.Complex->imag;
     
@@ -167,10 +167,10 @@ Token Complex_divide(Token this, ...) {
 /**/
 
 /***negateBlock***/
-Token Complex_negate(Token this, ...) {
-    this.payload.Complex->real = -this.payload.Complex->real;
-    this.payload.Complex->imag = -this.payload.Complex->imag;
-    return this;
+Token Complex_negate(Token thisToken, ...) {
+    thisToken.payload.Complex->real = -thisToken.payload.Complex->real;
+    thisToken.payload.Complex->imag = -thisToken.payload.Complex->imag;
+    return thisToken;
 }
 /**/
 
@@ -188,8 +188,8 @@ Token Complex_one(Token token, ...) {
 
 
 /***cloneBlock***/
-Token Complex_clone(Token this, ...) {
-    return Complex_new(this.payload.Complex->real, this.payload.Complex->imag);
+Token Complex_clone(Token thisToken, ...) {
+    return Complex_new(thisToken.payload.Complex->real, thisToken.payload.Complex->imag);
 }
 /**/
 

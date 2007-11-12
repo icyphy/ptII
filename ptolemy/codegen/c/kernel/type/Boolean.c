@@ -21,16 +21,16 @@ Token Boolean_new(boolean b) {
 /**/
 
 /***equalsBlock***/
-Token Boolean_equals(Token this, ...) {
+Token Boolean_equals(Token thisToken, ...) {
     va_list argp; 
     Token otherToken; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
     va_end(argp);
     return Boolean_new(
-            ( this.payload.Boolean && otherToken.payload.Boolean ) || 
-            ( !this.payload.Boolean && !otherToken.payload.Boolean ));
+            ( thisToken.payload.Boolean && otherToken.payload.Boolean ) || 
+            ( !thisToken.payload.Boolean && !otherToken.payload.Boolean ));
 }
 /**/
 
@@ -40,24 +40,24 @@ Token Boolean_equals(Token this, ...) {
 /**/
 
 /***printBlock***/
-Token Boolean_print(Token this, ...) {
-    printf((this.payload.Boolean) ? "true" : "false");
+Token Boolean_print(Token thisToken, ...) {
+    printf((thisToken.payload.Boolean) ? "true" : "false");
 }
 /**/
 
 /***toStringBlock***/
-Token Boolean_toString(Token this, ...) {
-    return String_new(BooleantoString(this.payload.Boolean));
+Token Boolean_toString(Token thisToken, ...) {
+    return String_new(BooleantoString(thisToken.payload.Boolean));
 }
 /**/
 
 /***addBlock***/
-Token Boolean_add(Token this, ...) {
+Token Boolean_add(Token thisToken, ...) {
     va_list argp; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
     va_end(argp);
-    return Boolean_new(this.payload.Boolean || otherToken.payload.Boolean);
+    return Boolean_new(thisToken.payload.Boolean || otherToken.payload.Boolean);
 }
 /**/
 
@@ -74,9 +74,9 @@ Token Boolean_add(Token this, ...) {
 /**/
 
 /***negateBlock***/
-Token Boolean_negate(Token this, ...) {
-    this.payload.Boolean = !this.payload.Boolean;
-    return this;
+Token Boolean_negate(Token thisToken, ...) {
+    thisToken.payload.Boolean = !thisToken.payload.Boolean;
+    return thisToken;
 }
 /**/
 
@@ -94,8 +94,8 @@ Token Boolean_one(Token token, ...) {
 
 
 /***cloneBlock***/
-Token Boolean_clone(Token this, ...) {
-    return this;
+Token Boolean_clone(Token thisToken, ...) {
+    return thisToken;
 }
 /**/
 

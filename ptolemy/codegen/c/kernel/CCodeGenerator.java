@@ -395,7 +395,7 @@ public class CCodeGenerator extends CodeGenerator {
             sharedStream.appendCodeBlock("tokenDeclareBlock", args);
 
             if (defineEmptyToken) {
-                code.append("Token emptyToken; "
+                sharedStream.append("Token emptyToken; "
                         + comment("Used by *_delete() and others.")
                         + _eol);
             }
@@ -895,8 +895,11 @@ public class CCodeGenerator extends CodeGenerator {
             // asked, the build will hang.
             if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
                     + " exists. OK to overwrite?")) {
+                return;
+                /*
                 throw new IllegalActionException(this,
                         "Please select another file name.");
+                        */
             }
         }
 
@@ -934,6 +937,11 @@ public class CCodeGenerator extends CodeGenerator {
                     "");
             substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@",
                     "");
+            if (((BooleanToken) generateCpp.getToken()).booleanValue()) {
+                substituteMap.put("@PTCGCompiler@", "g++");
+            } else {
+                substituteMap.put("@PTCGCompiler@", "gcc");
+            }
 
             String osName = StringUtilities.getProperty("os.name");
             if (osName != null) {

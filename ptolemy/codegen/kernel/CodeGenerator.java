@@ -122,6 +122,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         generateComment.setTypeEquals(BaseType.BOOLEAN);
         generateComment.setExpression("true");
 
+        generateCpp = new Parameter(this, "generateCpp");
+        generateCpp.setTypeEquals(BaseType.BOOLEAN);
+        generateCpp.setExpression("false");
+
         generateJNI = new Parameter(this, "generateJNI");
         generateJNI.setTypeEquals(BaseType.BOOLEAN);
         generateJNI.setExpression("true");
@@ -197,6 +201,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  with the value true.
      */
     public Parameter generateComment;
+    
+    /** If true, the generated code will be C++ instead of C.
+     * FIXME: This is a temporary fix.  In the long run, C++ should
+     * be its own target language for code generation.  In the short
+     * run, this parameter will allow experimentation with C++ code
+     * generation, and should identify changes needed for correctly
+     * implemented C++ code generation.
+     */
+    public Parameter generateCpp;
 
     /** The name of the package in which to look for helper class
      *  code generators. This is a string that defaults to
@@ -1425,8 +1438,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 // asked, the build will hang.
                 if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
                             + " exists. OK to overwrite?")) {
+                    /*
                     throw new IllegalActionException(this,
                             "Please select another file name.");
+                            */
+                    return FileUtilities.nameToFile(codeFileName,
+                            codeDirectory.getBaseDirectory()).getCanonicalPath();
                 }
             }
 

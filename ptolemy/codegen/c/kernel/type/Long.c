@@ -18,14 +18,14 @@ Token Long_new(long i) {
 /**/
 
 /***equalsBlock***/
-Token Long_equals(Token this, ...) {
+Token Long_equals(Token thisToken, ...) {
     va_list argp; 
     Token otherToken; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(this.payload.Long == otherToken.payload.Long);
+    return Boolean_new(thisToken.payload.Long == otherToken.payload.Long);
 }
 /**/
 
@@ -34,61 +34,61 @@ Token Long_equals(Token this, ...) {
 /**/
 
 /***printBlock***/
-Token Long_print(Token this, ...) {
-    printf("%d", this.payload.Long);
+Token Long_print(Token thisToken, ...) {
+    printf("%d", thisToken.payload.Long);
 }
 /**/
 
 /***toStringBlock***/
-Token Long_toString(Token this, ...) {
-    return String_new(LongtoString(this.payload.Long));
+Token Long_toString(Token thisToken, ...) {
+    return String_new(LongtoString(thisToken.payload.Long));
 }
 /**/
 
 /***addBlock***/
-Token Long_add(Token this, ...) {
+Token Long_add(Token thisToken, ...) {
     va_list argp; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Long_new(this.payload.Long + otherToken.payload.Long);
+    return Long_new(thisToken.payload.Long + otherToken.payload.Long);
 }
 /**/
 
 /***subtractBlock***/
-Token Long_subtract(Token this, ...) {
+Token Long_subtract(Token thisToken, ...) {
     va_list argp; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);	
 
     va_end(argp);
-    return Long_new(this.payload.Long - otherToken.payload.Long);
+    return Long_new(thisToken.payload.Long - otherToken.payload.Long);
 }
 /**/
 
 /***multiplyBlock***/
-Token Long_multiply(Token this, ...) {
+Token Long_multiply(Token thisToken, ...) {
     va_list argp; 
     Token result;
     Token otherToken;
 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);	
 
     switch (otherToken.type) {
 #ifdef TYPE_Int
     case TYPE_Int:
-        result = Long_new(this.payload.Long * otherToken.payload.Int);
+        result = Long_new(thisToken.payload.Long * otherToken.payload.Int);
         break;
 #endif
     case TYPE_Long:
-        result = Long_new(this.payload.Long * otherToken.payload.Long);
+        result = Long_new(thisToken.payload.Long * otherToken.payload.Long);
         break;
     		
 #ifdef TYPE_Double
     case TYPE_Double:
-        result = Double_new(this.payload.Long * otherToken.payload.Double);
+        result = Double_new(thisToken.payload.Long * otherToken.payload.Double);
         break;
 #endif
 
@@ -104,20 +104,20 @@ Token Long_multiply(Token this, ...) {
 /**/
 
 /***divideBlock***/
-Token Long_divide(Token this, ...) {
+Token Long_divide(Token thisToken, ...) {
     va_list argp; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);	
 
     va_end(argp);
-    return Long_new(this.payload.Long / otherToken.payload.Long);
+    return Long_new(thisToken.payload.Long / otherToken.payload.Long);
 }
 /**/
 
 /***negateBlock***/
-Token Long_negate(Token this, ...) {
-    this.payload.Long = -this.payload.Long;
-    return this;
+Token Long_negate(Token thisToken, ...) {
+    thisToken.payload.Long = -thisToken.payload.Long;
+    return thisToken;
 }
 /**/
 
@@ -134,8 +134,8 @@ Token Long_one(Token token, ...) {
 /**/
 
 /***cloneBlock***/
-Token Long_clone(Token this, ...) {
-    return this;
+Token Long_clone(Token thisToken, ...) {
+    return thisToken;
 }
 /**/
 

@@ -21,10 +21,10 @@ Token Double_new(double d) {
 /**/
 
 /***equalsBlock***/
-Token Double_equals(Token this, ...) {
+Token Double_equals(Token thisToken, ...) {
     va_list argp; 
     Token otherToken; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 	
     if (otherToken.type != TYPE_Double) {
@@ -34,77 +34,77 @@ Token Double_equals(Token this, ...) {
     va_end(argp);
     
     // Give tolerance for testing.
-    return Boolean_new(1.0E-6 > this.payload.Double - otherToken.payload.Double);
+    return Boolean_new(1.0E-6 > thisToken.payload.Double - otherToken.payload.Double);
 }
 /**/
 
 /***isCloseToBlock***/
-Token Double_isCloseTo(Token this, ...) {
+Token Double_isCloseTo(Token thisToken, ...) {
     va_list argp;
     Token otherToken;
     Token tolerance;
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
     tolerance = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(fabs(this.payload.Double - otherToken.payload.Double) < tolerance.payload.Double);
+    return Boolean_new(fabs(thisToken.payload.Double - otherToken.payload.Double) < tolerance.payload.Double);
 }
 /**/
 
 /***printBlock***/
-Token Double_print(Token this, ...) {
-    printf("%g", this.payload.Double);
+Token Double_print(Token thisToken, ...) {
+    printf("%g", thisToken.payload.Double);
 }
 /**/
 
 /***toStringBlock***/
-Token Double_toString(Token this, ...) {
-    return String_new(DoubletoString(this.payload.Double));
+Token Double_toString(Token thisToken, ...) {
+    return String_new(DoubletoString(thisToken.payload.Double));
 }
 /**/
 
 /***addBlock***/
-Token Double_add(Token this, ...) {
+Token Double_add(Token thisToken, ...) {
     va_list argp; 
     Token otherToken;    
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);	
 
     va_end(argp);
-    return Double_new(this.payload.Double + otherToken.payload.Double);
+    return Double_new(thisToken.payload.Double + otherToken.payload.Double);
 }
 /**/
 
 /***subtractBlock***/
-Token Double_subtract(Token this, ...) {
+Token Double_subtract(Token thisToken, ...) {
     va_list argp; 
     Token otherToken;
     
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);	
 
     va_end(argp);
-    return Double_new(this.payload.Double - otherToken.payload.Double);
+    return Double_new(thisToken.payload.Double - otherToken.payload.Double);
 }
 /**/
 
 /***multiplyBlock***/
-Token Double_multiply(Token this, ...) {
+Token Double_multiply(Token thisToken, ...) {
     va_list argp; 
     Token result;
     Token otherToken;
     
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);	
 
     switch (otherToken.type) {
     case TYPE_Double:
-        result = Double_new(this.payload.Double * otherToken.payload.Double);
+        result = Double_new(thisToken.payload.Double * otherToken.payload.Double);
         break;
 #ifdef TYPE_Int
     case TYPE_Int:
-        result = Double_new(this.payload.Double * otherToken.payload.Int);
+        result = Double_new(thisToken.payload.Double * otherToken.payload.Int);
         break;
 #endif
 
@@ -120,22 +120,22 @@ Token Double_multiply(Token this, ...) {
 /**/
 
 /***divideBlock***/
-Token Double_divide(Token this, ...) {
+Token Double_divide(Token thisToken, ...) {
     va_list argp; 
     Token otherToken;
     
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);	
 
     va_end(argp);
-    return Double_new(this.payload.Double / otherToken.payload.Double);
+    return Double_new(thisToken.payload.Double / otherToken.payload.Double);
 }
 /**/
 
 /***negateBlock***/
-Token Double_negate(Token this, ...) {
-    this.payload.Double = -this.payload.Double;
-    return this;
+Token Double_negate(Token thisToken, ...) {
+    thisToken.payload.Double = -thisToken.payload.Double;
+    return thisToken;
 }
 /**/
 
@@ -153,8 +153,8 @@ Token Double_one(Token token, ...) {
 
 
 /***cloneBlock***/
-Token Double_clone(Token this, ...) {
-    return this;
+Token Double_clone(Token thisToken, ...) {
+    return thisToken;
 }
 /**/
 

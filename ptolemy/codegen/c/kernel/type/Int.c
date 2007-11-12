@@ -18,28 +18,28 @@ Token Int_new(int i) {
 /**/
 
 /***equalsBlock***/
-Token Int_equals(Token this, ...) {
+Token Int_equals(Token thisToken, ...) {
     va_list argp; 
     Token otherToken; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(this.payload.Int == otherToken.payload.Int);
+    return Boolean_new(thisToken.payload.Int == otherToken.payload.Int);
 }
 /**/
 
 /***isCloseToBlock***/
-Token Int_isCloseTo(Token this, ...) {
+Token Int_isCloseTo(Token thisToken, ...) {
     va_list argp;
     Token otherToken;
     Token tolerance;
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
     tolerance = va_arg(argp, Token);
 
     va_end(argp);
-    return Boolean_new(fabs(this.payload.Int - otherToken.payload.Int) < tolerance.payload.Double);
+    return Boolean_new(fabs(thisToken.payload.Int - otherToken.payload.Int) < tolerance.payload.Double);
 }
 /**/
 
@@ -48,56 +48,56 @@ Token Int_isCloseTo(Token this, ...) {
 /**/
 
 /***printBlock***/
-Token Int_print(Token this, ...) {
-    printf("%d", this.payload.Int);
+Token Int_print(Token thisToken, ...) {
+    printf("%d", thisToken.payload.Int);
 }
 /**/
 
 /***toStringBlock***/
-Token Int_toString(Token this, ...) {
-    return String_new(InttoString(this.payload.Int));
+Token Int_toString(Token thisToken, ...) {
+    return String_new(InttoString(thisToken.payload.Int));
 }
 /**/
 
 /***addBlock***/
-Token Int_add(Token this, ...) {
+Token Int_add(Token thisToken, ...) {
     va_list argp; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
-    return Int_new(this.payload.Int + otherToken.payload.Int);
+    return Int_new(thisToken.payload.Int + otherToken.payload.Int);
 }
 /**/
 
 /***subtractBlock***/
-Token Int_subtract(Token this, ...) {
+Token Int_subtract(Token thisToken, ...) {
     va_list argp; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);	
 
     va_end(argp);
-    return Int_new(this.payload.Int - otherToken.payload.Int);
+    return Int_new(thisToken.payload.Int - otherToken.payload.Int);
 }
 /**/
 
 /***multiplyBlock***/
-Token Int_multiply(Token this, ...) {
+Token Int_multiply(Token thisToken, ...) {
     va_list argp; 
     Token result;
     Token otherToken;
 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);	
 
     switch (otherToken.type) {
     case TYPE_Int:
-        result = Int_new(this.payload.Int * otherToken.payload.Int);
+        result = Int_new(thisToken.payload.Int * otherToken.payload.Int);
         break;
     		
 #ifdef TYPE_Double
     case TYPE_Double:
-        result = Double_new(this.payload.Int * otherToken.payload.Double);
+        result = Double_new(thisToken.payload.Int * otherToken.payload.Double);
         break;
 #endif
 
@@ -113,20 +113,20 @@ Token Int_multiply(Token this, ...) {
 /**/
 
 /***divideBlock***/
-Token Int_divide(Token this, ...) {
+Token Int_divide(Token thisToken, ...) {
     va_list argp; 
-    va_start(argp, this);
+    va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);	
 
     va_end(argp);
-    return Int_new(this.payload.Int / otherToken.payload.Int);
+    return Int_new(thisToken.payload.Int / otherToken.payload.Int);
 }
 /**/
 
 /***negateBlock***/
-Token Int_negate(Token this, ...) {
-    this.payload.Int = -this.payload.Int;
-    return this;
+Token Int_negate(Token thisToken, ...) {
+    thisToken.payload.Int = -thisToken.payload.Int;
+    return thisToken;
 }
 /**/
 
@@ -143,8 +143,8 @@ Token Int_one(Token token, ...) {
 /**/
 
 /***cloneBlock***/
-Token Int_clone(Token this, ...) {
-    return this;
+Token Int_clone(Token thisToken, ...) {
+    return thisToken;
 }
 /**/
 

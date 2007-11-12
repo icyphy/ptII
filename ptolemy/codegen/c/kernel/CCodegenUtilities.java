@@ -29,6 +29,7 @@
 
 package ptolemy.codegen.c.kernel;
 
+
 /**
 A utility class used to simplify creating c templates in EmbeddedCActors.
 
@@ -64,5 +65,95 @@ public class CCodegenUtilities {
                 + "#include \"" + file + "\"\n"
                 + "#endif\n";
         return code;
+    }
+    
+    public static String jniGetObjectArrayElement(String arrayName,
+            String index, boolean targetCpp) {
+        if (targetCpp) {
+            return "env->GetObjectArrayElement("
+                    + arrayName + ", " + index + ")";
+        } else {
+            return "(*env)->GetObjectArrayElement(env, "
+                    + arrayName + ", " + index + ")";
+        }
+    }
+    
+    public static String jniSetObjectArrayElement(String arrayName,
+            String index, String value, boolean targetCpp) {
+        if (targetCpp) {
+            return "env->SetObjectArrayElement(" + arrayName
+            + ", " + index + ", " + value + ")";
+        } else {
+            return "(*env)->SetObjectArrayElement(env, " + arrayName
+            + ", " + index + ", " + value + ")";
+        }
+    }
+    
+    public static String jniGetArrayElements(String type, 
+            String arrayName, boolean targetCpp) {
+        if (targetCpp) {
+            return "env->Get" + type
+                + "ArrayElements((j" + type.toLowerCase() + "Array)"
+                + arrayName + ", NULL)";
+        } else {
+            return "(*env)->Get" + type + "ArrayElements(env, "
+                + arrayName + ", NULL)";
+        }
+    }
+    
+    public static String jniReleaseArrayElements(String type, 
+            String arrayName, String elementsPointer, boolean targetCpp) {
+        if (targetCpp) {
+            return "env->Release" + type
+                + "ArrayElements((j" + type.toLowerCase() + "Array)"
+                + arrayName + ", " + elementsPointer + ", 0)";
+        } else {
+            return "(*env)->Release" + type + "ArrayElements(env, "
+            + arrayName + ", " + elementsPointer + ", 0)";
+        }
+    }
+    
+    public static String jniFindClass(String className, boolean targetCpp) {
+        if (targetCpp) {
+            return "env->FindClass(\"" + className + "\")";
+        } else {
+            return "(*env)->FindClass(env, \"" + className + "\")";
+        }
+    }
+    
+    public static String jniNewObjectArray(String size, String objectType,
+            boolean targetCpp) {
+        if (targetCpp) {
+            return "env->NewObjectArray(" + size + ", " + objectType + ", NULL)";
+        } else {
+            return "(*env)->NewObjectArray(env, " + size + ", " + objectType + ", NULL)";
+        }
+    }
+    
+    public static String jniNewArray(String type, String size, boolean targetCpp) {
+        if (targetCpp) {
+            return "env->New" + type + "Array(" + size + ")";
+        } else {
+            return "(*env)->New" + type + "Array(env, " + size + ")";
+        }
+    }
+    
+    public static String jniSetArrayRegion(String type, String arrayName,
+            String index, String length, String valuePointer, boolean targetCpp) {
+        if (targetCpp) {
+            return "env->Set" + type + "ArrayRegion(" + arrayName + ", "
+                + index + ", " + length + ", " + valuePointer + ")";
+        } else {
+            return "(*env)->Set" + type + "ArrayRegion(env, " + arrayName + ", "
+            + index + ", " + length + ", " + valuePointer + ")";
+        }
+    }
+    
+    public static String jniDeleteLocalRef(String reference, boolean targetCpp) {
+        if (targetCpp) {
+            return "env->DeleteLocalRef(" + reference + ")";
+        } else {
+            return "(*env)->DeleteLocalRef(env, " + reference + ")";
+        }
     }
 }

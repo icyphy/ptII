@@ -37,6 +37,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jni.CompiledCompositeActor;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.c.actor.sched.StaticSchedulingDirector;
+import ptolemy.codegen.c.kernel.CCodegenUtilities;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
@@ -168,6 +169,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         code.append(CodeStream.indent(_codeGenerator.comment("SDFDirector: "
                 + "Transfer tokens to the inside.")));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
+        boolean targetCpp = ((BooleanToken) _codeGenerator.generateCpp.getToken()).booleanValue();
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
@@ -193,22 +195,21 @@ public class SDFDirector extends StaticSchedulingDirector {
                     String pointerToTokensFromOneChannel = "pointerTo"
                             + tokensFromOneChannel;
                     code.append(_INDENT2);
-                    code.append("jobject " + tokensFromOneChannel
-                            + " = (*env)->GetObjectArrayElement(env, "
-                            + portName + ", " + i + ");" + _eol);
-
+                    code.append("jobject " + tokensFromOneChannel + " = " 
+                            + CCodegenUtilities.jniGetObjectArrayElement(
+                                    portName, String.valueOf(i), targetCpp)
+                            + ";" + _eol);
                     code.append(_INDENT2);
                     if (type == BaseType.INT) {
-                        code.append("jint * " + pointerToTokensFromOneChannel
-                                + " = (*env)->GetIntArrayElements" + "(env, "
-                                + tokensFromOneChannel + ", NULL);" + _eol);
-
+                        code.append("jint * " + pointerToTokensFromOneChannel + " = "
+                                + CCodegenUtilities.jniGetArrayElements(
+                                        "Int", tokensFromOneChannel, targetCpp)
+                                + ";" + _eol);
                     } else if (type == BaseType.DOUBLE) {
-                        code.append("jdouble * "
-                                + pointerToTokensFromOneChannel
-                                + " = (*env)->GetDoubleArrayElements"
-                                + "(env, " + tokensFromOneChannel + ", NULL);"
-                                + _eol);
+                        code.append("jdouble * " + pointerToTokensFromOneChannel + " = "
+                                + CCodegenUtilities.jniGetArrayElements(
+                                        "Double", tokensFromOneChannel, targetCpp)
+                                + ";" + _eol);
                     } else {
                         // FIXME: need to deal with other types
                     }
@@ -226,16 +227,13 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                     code.append(_INDENT2);
                     if (type == BaseType.INT) {
-                        code.append("(*env)->ReleaseIntArrayElements(env, "
-                                + tokensFromOneChannel + ", "
-                                + pointerToTokensFromOneChannel + ", 0);"
-                                + _eol);
-
+                        code.append(CCodegenUtilities.jniReleaseArrayElements("Int",
+                                tokensFromOneChannel, pointerToTokensFromOneChannel,
+                                targetCpp) + ";" + _eol);
                     } else if (type == BaseType.DOUBLE) {
-                        code.append("(*env)->ReleaseDoubleArrayElements(env, "
-                                + tokensFromOneChannel + ", "
-                                + pointerToTokensFromOneChannel + ", 0);"
-                                + _eol);
+                        code.append(CCodegenUtilities.jniReleaseArrayElements("Double",
+                                tokensFromOneChannel, pointerToTokensFromOneChannel,
+                                targetCpp) + ";" + _eol);
                     } else {
                         // FIXME: need to deal with other types
                     }
@@ -283,6 +281,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                 + "Transfer tokens to the outside.")));
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
+        boolean targetCpp = ((BooleanToken) 
+                _codeGenerator.generateCpp.getToken()).booleanValue();
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
@@ -297,12 +297,13 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 code.append(_INDENT2 + "jobjectArray tokensToAllOutputPorts;"
                         + _eol);
-                code.append(_INDENT2
-                        + "jclass objClass = (*env)->FindClass(env, "
-                        + "\"Ljava/lang/Object;\");" + _eol);
+                code.append(_INDENT2 + "jclass objClass = "
+                        + CCodegenUtilities.jniFindClass("Ljava/lang/Object;",
+                                targetCpp) + ";" + _eol);
                 code.append(_INDENT2 + "tokensToAllOutputPorts = "
-                        + "(*env)->NewObjectArray(env, " + numberOfOutputPorts
-                        + ", objClass, NULL);" + _eol);
+                        + CCodegenUtilities.jniNewObjectArray(
+                                String.valueOf(numberOfOutputPorts), "objClass", targetCpp)
+                        + ";" + _eol);
             }
 
             String portName = outputPort.getName();
@@ -322,24 +323,26 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             if (type == BaseType.INT) {
                 if (!_intFlag) {
-                    code.append(_INDENT2
-                            + "jclass objClassI = (*env)->FindClass(env, "
-                            + "\"[I\");" + _eol);
+                    code.append(_INDENT2 + "jclass objClassI = "
+                            + CCodegenUtilities.jniFindClass("[I", targetCpp)
+                            + ";" + _eol);
                     _intFlag = true;
                 }
-                code.append(_INDENT2 + tokensToThisPort
-                        + " = (*env)->NewObjectArray(env, " + numberOfChannels
-                        + ", objClassI, NULL);" + _eol);
+                code.append(_INDENT2 + tokensToThisPort + " = "
+                        + CCodegenUtilities.jniNewObjectArray(
+                                String.valueOf(numberOfChannels), "objClassI", targetCpp)
+                        + ";" + _eol);
             } else if (type == BaseType.DOUBLE) {
                 if (!_doubleFlag) {
-                    code.append(_INDENT2
-                            + "jclass objClassD = (*env)->FindClass(env, "
-                            + "\"[D\");" + _eol);
+                    code.append(_INDENT2 + "jclass objClassD = "
+                            + CCodegenUtilities.jniFindClass("[D", targetCpp)
+                            + ";" + _eol);
                     _doubleFlag = true;
                 }
-                code.append(_INDENT2 + tokensToThisPort
-                        + " = (*env)->NewObjectArray(env, " + numberOfChannels
-                        + ", objClassD, NULL);" + _eol);
+                code.append(_INDENT2 + tokensToThisPort + " = "
+                        + CCodegenUtilities.jniNewObjectArray(
+                                String.valueOf(numberOfChannels), "objClassD", targetCpp)
+                        + ";" + _eol);
             } else {
                 // FIXME: need to deal with other types
             }
@@ -381,37 +384,40 @@ public class SDFDirector extends StaticSchedulingDirector {
                 if (type == BaseType.INT) {
                     code.append(_INDENT2 + "jintArray "
                             + tokensToOneChannelArray + " = "
-                            + "(*env)->NewIntArray(env, " + rate + ");" + _eol);
-                    code.append(_INDENT2 + "(*env)->SetIntArrayRegion"
-                            + "(env, " + tokensToOneChannelArray + ", 0, "
-                            + rate + ", " + tokensToOneChannel + ");" + _eol);
-
+                            + CCodegenUtilities.jniNewArray(
+                                    "Int", String.valueOf(rate), targetCpp)
+                            + ";" + _eol);
+                    code.append(_INDENT2 + CCodegenUtilities.jniSetArrayRegion(
+                            "Int", tokensToOneChannelArray, "0", String.valueOf(rate),
+                            tokensToOneChannel, targetCpp) + ";" + _eol);
+                    
                 } else if (type == BaseType.DOUBLE) {
                     code.append(_INDENT2 + "jdoubleArray "
                             + tokensToOneChannelArray + " = "
-                            + "(*env)->NewDoubleArray(env, " + rate + ");"
-                            + _eol);
-                    code.append(_INDENT2 + "(*env)->SetDoubleArrayRegion"
-                            + "(env, " + tokensToOneChannelArray + ", 0, "
-                            + rate + ", " + tokensToOneChannel + ");" + _eol);
+                            + CCodegenUtilities.jniNewArray(
+                                    "Double", String.valueOf(rate), targetCpp)
+                            + ";" + _eol);
+                    code.append(_INDENT2 + CCodegenUtilities.jniSetArrayRegion(
+                            "Double", tokensToOneChannelArray, "0", String.valueOf(rate),
+                            tokensToOneChannel, targetCpp) + ";" + _eol);
 
                 } else {
                     // FIXME: need to deal with other types
                 }
 
-                code.append(_INDENT2 + "(*env)->SetObjectArrayElement"
-                        + "(env, " + tokensToThisPort + ", " + i + ", "
-                        + tokensToOneChannelArray + ");" + _eol);
-                code.append(_INDENT2 + "(*env)->DeleteLocalRef(env, "
-                        + tokensToOneChannelArray + ");" + _eol);
+                code.append(_INDENT2 + CCodegenUtilities.jniSetObjectArrayElement(
+                        tokensToThisPort, String.valueOf(i), tokensToOneChannelArray,
+                        targetCpp) + ";" + _eol);
+                code.append(_INDENT2 + CCodegenUtilities.jniDeleteLocalRef(
+                        tokensToOneChannelArray, targetCpp) + ";" + _eol);
 
             }
 
-            code.append(_INDENT2 + "(*env)->SetObjectArrayElement"
-                    + "(env, tokensToAllOutputPorts, " + _portNumber + ", "
-                    + tokensToThisPort + ");" + _eol);
-            code.append(_INDENT2 + "(*env)->DeleteLocalRef(env, "
-                    + tokensToThisPort + ");" + _eol);
+            code.append(_INDENT2 + CCodegenUtilities.jniSetObjectArrayElement(
+                    "tokensToAllOutputPorts", String.valueOf(_portNumber),
+                    tokensToThisPort, targetCpp) + ";" + _eol);
+            code.append(_INDENT2 + CCodegenUtilities.jniDeleteLocalRef(
+                    tokensToThisPort, targetCpp) + ";" + _eol);
             _portNumber++;
 
         } else {

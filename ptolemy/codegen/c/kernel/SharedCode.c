@@ -21,7 +21,7 @@
 
 /***funcHeaderBlock ($function)***/
 
-Token $function (Token this, ...);
+Token $function (Token thisToken, ...);
 /**/
 
 /***tokenDeclareBlock ($types)***/
@@ -79,10 +79,10 @@ char* BooleantoString (boolean b) {
     char *results;
     if (b) {
         // AVR does not have strdup
-        results = malloc(sizeof(char) * 5);
+        results = (char*) malloc(sizeof(char) * 5);
         strcpy(results, "true");
     } else {
-        results = malloc(sizeof(char) * 6);
+        results = (char*) malloc(sizeof(char) * 6);
         strcpy(results, "false");
     }
     return results;

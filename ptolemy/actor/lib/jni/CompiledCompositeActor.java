@@ -499,8 +499,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     && writeFile.exists()) {
                 if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
                         + " exists. OK to overwrite?")) {
+                    /*
                     throw new IllegalActionException(this,
                             "Please select another file name.");
+                            */
+                    return;
                 }
             }
 
