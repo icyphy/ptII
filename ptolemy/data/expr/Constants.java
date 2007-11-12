@@ -36,10 +36,12 @@ import java.util.TreeMap;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.RecordToken;
+import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.UnsizedFixToken;
@@ -207,10 +209,14 @@ public class Constants {
         // numerical bounds
         _table.put("MaxUnsignedByte", new UnsignedByteToken(255));
         _table.put("MinUnsignedByte", new UnsignedByteToken(0));
+        _table.put("MaxShort", new ShortToken(Short.MAX_VALUE));
+        _table.put("MinShort", new ShortToken(Short.MIN_VALUE));
         _table.put("MaxInt", new IntToken(Integer.MAX_VALUE));
         _table.put("MinInt", new IntToken(Integer.MIN_VALUE));
         _table.put("MaxLong", new LongToken(Long.MAX_VALUE));
         _table.put("MinLong", new LongToken(Long.MIN_VALUE));
+        _table.put("MaxFloat", new DoubleToken(Float.MAX_VALUE));
+        _table.put("MinFloat", new DoubleToken(Float.MIN_VALUE));
         _table.put("MaxDouble", new DoubleToken(Double.MAX_VALUE));
         _table.put("MinDouble", new DoubleToken(Double.MIN_VALUE));
         _table.put("PositiveInfinity",
@@ -223,9 +229,11 @@ public class Constants {
         // types in the port configurer dialog
         _types.put("boolean", BooleanToken.FALSE);
         _types.put("complex", new ComplexToken(new Complex(0.0, 0.0)));
+        _types.put("float", new FloatToken(0.0f));
         _types.put("double", new DoubleToken(0.0));
         _types.put("fixedpoint", new UnsizedFixToken());
         _types.put("general", new GeneralToken());
+        _types.put("short", new ShortToken(0));
         _types.put("int", new IntToken(0));
         _types.put("long", new LongToken(0));
         _types.put("matrix", new ConcreteMatrixToken());
