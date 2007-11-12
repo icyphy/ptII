@@ -1506,15 +1506,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
     }
 
-    public void dumpImports() {
-        Iterator imports = _imports.keySet().iterator();
-        while (imports.hasNext()) {
-            URL url = (URL) imports.next();
-            System.out.println("url: " + url);
-        }                                                           
-
-    }
-
     /** Purge any record of a model opened from the specified
      *  URL.  The record will not be purged if the model is
      *  a class definition that has child instances.
