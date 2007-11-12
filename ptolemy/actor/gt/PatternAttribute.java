@@ -30,8 +30,6 @@ package ptolemy.actor.gt;
 
 import java.util.List;
 
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -48,22 +46,12 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public abstract class CompositeEntityPatternAttribute
-extends SingletonAttribute {
+public abstract class PatternAttribute extends SingletonAttribute {
 
-    public CompositeEntityPatternAttribute(NamedObj container, String name,
-            String parameterName, Type type, String defaultExpression)
+    public PatternAttribute(NamedObj container, String name)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
-
-        parameter = new Parameter(this, parameterName);
-        parameter.setTypeEquals(type);
-        parameter.setExpression(defaultExpression);
-
-        _attachText("_iconDescription", _LIBRARY_ICON);
     }
-
-    public Parameter parameter;
 
     protected void _checkContainerClass(NamedObj container,
             Class<? extends CompositeEntity> containerClass, boolean deep)
@@ -109,12 +97,6 @@ extends SingletonAttribute {
         MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
         request.execute();
     }
-
-    protected static final String _LIBRARY_ICON =
-        "<svg>"
-        + "<rect x=\"0\" y=\"0\" width=\"30\" height=\"20\""
-        + "  style=\"fill:#00FFFF\"/>"
-        + "</svg>";
 
     private void _deleteThis() {
         String moml = "<deleteProperty name=\"" + getName() + "\"/>";

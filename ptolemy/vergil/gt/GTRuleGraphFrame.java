@@ -40,6 +40,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -74,6 +75,7 @@ import javax.swing.table.TableColumnModel;
 
 import ptolemy.actor.gt.AtomicActorMatcher;
 import ptolemy.actor.gt.CompositeActorMatcher;
+import ptolemy.actor.gt.DefaultModelAttribute;
 import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.GraphMatcher;
 import ptolemy.actor.gt.MatchCallback;
@@ -85,6 +87,7 @@ import ptolemy.actor.gt.data.CombinedCollection;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
+import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.ComponentDialog;
@@ -899,7 +902,7 @@ TableModelListener, ValueListener {
     private static class FileChooser extends ComponentDialog
     implements ActionListener {
 
-        public FileChooser(Frame owner, NamedObj target) {
+        public FileChooser(PtolemyFrame owner, NamedObj target) {
             super(owner, "Choose Input File", new Configurer(target),
                     FILE_CHOOSER_BUTTONS);
         }
@@ -910,29 +913,36 @@ TableModelListener, ValueListener {
                 _buttonPressed = FILE_CHOOSER_BUTTONS[0];
                 setVisible(false);
             } else if (source == _button) {
-                String currentFileName = _textField.getText();
-                JFileChooser fileChooser = null;
-                if (currentFileName.length() > 0) {
-                    File currentFile = new File(currentFileName);
-                    File parentFile = currentFile.getParentFile();
-                    if (parentFile != null) {
-                        fileChooser = new JFileChooser(parentFile);
+                JFileChooser fileChooser;
+                if (_currentDirectory == null) {
+                    URI uri =
+                        ((PtolemyFrame) getOwner()).getEffigy().uri.getURI();
+                    File directory = null;
+                    if (uri != null) {
+                        directory = new File(uri).getParentFile();
                     }
+                    if (directory == null) {
+                        fileChooser = new JFileChooser(".");
+                    } else {
+                        fileChooser = new JFileChooser(directory);
+                    }
+                } else {
+                    fileChooser = new JFileChooser(_currentDirectory);
                 }
-                if (fileChooser == null) {
-                    fileChooser = new JFileChooser(".");
-                }
+
                 fileChooser.setApproveButtonText("Select");
 
                 // FIXME: The following doesn't have any effect.
                 fileChooser.setApproveButtonMnemonic('S');
 
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                fileChooser.setFileFilter(new ExtensionFileFilter("xml"));
+                fileChooser.setFileFilter(new ExtensionFileFilter("xml",
+                        "Ptolemy II Model"));
                 if (fileChooser.showOpenDialog(FileChooser.this)
                         == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
                     _textField.setText(selectedFile.getPath());
+                    _currentDirectory = fileChooser.getCurrentDirectory();
                 }
             }
         }
@@ -989,6 +999,8 @@ TableModelListener, ValueListener {
 
         private JButton _button;
 
+        private File _currentDirectory;
+
         private String _fileName;
 
         private JTextField _textField;
@@ -1009,25 +1021,45 @@ TableModelListener, ValueListener {
 
         protected CompositeEntity _getInputModel() throws MalformedURLException,
         IOException, Exception {
-            FileChooser fileChooser = new FileChooser(getFrame(), _attribute);
-            if (fileChooser.buttonPressed().equals(
-                    FileChooser.FILE_CHOOSER_BUTTONS[0])) {
-                String matchFileName = fileChooser.getFileName();
-                File input = new File(matchFileName);
-                if (!input.exists()) {
-                    MessageHandler.error("Unable to read input model " +
-                            matchFileName + ".");
+            TransformationRule rule = getTransformationRule();
+            Pattern pattern = rule.getPattern();
+            DefaultModelAttribute defaultModelAttribute =
+                (DefaultModelAttribute) pattern.getAttribute("DefaultModel");
+            String defaultModel = defaultModelAttribute == null ? ""
+                    : defaultModelAttribute.parameter.getExpression();
+            File input;
+            if (defaultModel.equals("")) {
+                FileChooser fileChooser =
+                    new FileChooser(GTRuleGraphFrame.this, _attribute);
+                if (fileChooser.buttonPressed().equals(
+                        FileChooser.FILE_CHOOSER_BUTTONS[0])) {
+                    String matchFileName = fileChooser.getFileName();
+                    input = new File(matchFileName);
+                } else {
                     return null;
                 }
-
-                _parser.reset();
-                CompositeEntity model = (CompositeEntity) _parser.parse(
-                        null, input.toURI().toURL().openStream());
-                return model;
-
             } else {
+                input = new File(defaultModel);
+                if (!input.isAbsolute()) {
+                    URI uri = GTRuleGraphFrame.this.getEffigy().uri.getURI();
+                    File directory = null;
+                    if (uri != null) {
+                        directory = new File(uri).getParentFile();
+                    }
+                    input = new File(directory, defaultModel);
+                }
+            }
+
+            if (!input.exists()) {
+                MessageHandler.error("Unable to read input model " +
+                        input.getPath() + ".");
                 return null;
             }
+
+            _parser.reset();
+            CompositeEntity model = (CompositeEntity) _parser.parse(
+                    null, input.toURI().toURL().openStream());
+            return model;
         }
 
         protected Attribute _attribute;

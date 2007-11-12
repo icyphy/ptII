@@ -51,10 +51,12 @@ import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
 import ptolemy.actor.gt.ingredients.criteria.SubclassCriterion;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
@@ -286,8 +288,8 @@ public class GraphMatcher extends GraphAnalyzer {
             return true;
         } else {
             NamedObj container = entity.getContainer();
-            Token value =
-                _getAttribute(container, HierarchyFlatteningAttribute.class);
+            Token value = _getAttribute(container, "HierarchyFlattening",
+                        HierarchyFlatteningAttribute.class);
             boolean isOpaque = value == null ?
                     false : !((BooleanToken) value).booleanValue();
             return isOpaque;
@@ -321,8 +323,8 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
-    private Token _getAttribute(NamedObj container,
-            Class<? extends CompositeEntityPatternAttribute> attributeClass) {
+    private Token _getAttribute(NamedObj container, String name,
+            Class<? extends PatternAttribute> attributeClass) {
 
         while (container != null) {
             if (_match.containsValue(container)) {
@@ -330,14 +332,13 @@ public class GraphMatcher extends GraphAnalyzer {
             } else if (_temporaryMatch.containsValue(container)) {
                 container = (NamedObj) _temporaryMatch.getKey(container);
             }
-            List<?> attributeList = container.attributeList(attributeClass);
-            if (!attributeList.isEmpty()) {
-                CompositeEntityPatternAttribute attribute =
-                    (CompositeEntityPatternAttribute) attributeList.get(0);
+            Attribute attribute = container.getAttribute(name);
+            if (attribute != null && attributeClass.isInstance(attribute)) {
+                Parameter parameter =
+                    (Parameter) attribute.attributeList().get(0);
                 try {
-                    return attribute.parameter.getToken();
+                    return parameter == null ? null : parameter.getToken();
                 } catch (IllegalActionException e) {
-                    // The attribute's value cannot be obtained.
                     return null;
                 }
             }
@@ -639,7 +640,9 @@ public class GraphMatcher extends GraphAnalyzer {
             ObjectList hostList = new ObjectList();
             hostList.add(hostContainer);
 
-            Token collapsingToken = _getAttribute(patternContainer.getContainer(),
+            Token collapsingToken =
+                _getAttribute(patternContainer.getContainer(),
+                        "RelationCollapsing",
                         RelationCollapsingAttribute.class);
             boolean collapsing = collapsingToken == null ?
                     true : ((BooleanToken) collapsingToken).booleanValue();

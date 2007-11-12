@@ -128,15 +128,16 @@ public class SubclassCriterion extends Criterion {
         Class<?> superclass;
         try {
             superclass = Class.forName(_superclass);
-        } catch (ClassNotFoundException e) {
+        } catch (Throwable t) {
             throw new ValidationException("Cannot load class \""
-                    + _superclass + "\".");
+                    + _superclass + "\".", t);
         }
+
         try {
             superclass.asSubclass(Actor.class);
-        } catch (ClassCastException e) {
+        } catch (Throwable t) {
             throw new ValidationException("Superclass must be a subclass "
-                    + "of \"" + Actor.class.getName() + "\".");
+                    + "of \"" + Actor.class.getName() + "\".", t);
         }
     }
 

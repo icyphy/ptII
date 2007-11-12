@@ -29,6 +29,7 @@
 package ptolemy.actor.gt;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -45,8 +46,7 @@ import ptolemy.moml.EntityLibrary;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class HierarchyFlatteningAttribute
-extends CompositeEntityPatternAttribute {
+public class HierarchyFlatteningAttribute extends PatternAttribute {
 
     /**
      * @param container
@@ -56,7 +56,11 @@ extends CompositeEntityPatternAttribute {
      */
     public HierarchyFlatteningAttribute(NamedObj container, String name)
     throws IllegalActionException, NameDuplicationException {
-        super(container, name, "hierarchyFlattening", BaseType.BOOLEAN, "true");
+        super(container, name);
+
+        parameter = new Parameter(this, "hierarchyFlattening");
+        parameter.setTypeEquals(BaseType.BOOLEAN);
+        parameter.setExpression("true");
     }
 
     public void attributeChanged(Attribute attribute) {
@@ -87,6 +91,8 @@ extends CompositeEntityPatternAttribute {
             _checkUniqueness(container);
         }
     }
+
+    public Parameter parameter;
 
     private static final String _FLATTENING_ICON =
         "<svg>"

@@ -110,7 +110,14 @@ public class GraphTransformer extends ChangeRequest {
                     (Relation) replacementRelationObject;
                 Relation hostRelation =
                     (Relation) _replacementToHost.get(replacementRelation);
-                if (!hostPort.linkedRelationList().contains(hostRelation)) {
+                // FIXME: hostRelation shouldn't be null, but it seems if a
+                // Publisher appears in the host model, then an extra relation
+                // created by it remains after it is deleted, so there is a
+                // relation that has no match in the match result.
+                // Needs to fix this in ptolemy.actor.lib.Publisher.
+                List<?> hostRelations = hostPort.linkedRelationList();
+                if (hostRelation != null
+                        && !hostRelations.contains(hostRelation)) {
                     // There is no link between hostPort and hostRelation, so
                     // create a new link.
                     Entity hostPortContainer = (Entity) hostPort.getContainer();
