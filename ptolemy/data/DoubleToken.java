@@ -134,6 +134,21 @@ public class DoubleToken extends ScalarToken {
                     notSupportedIncomparableConversionMessage(token, "double"));
         }
 
+        compare = TypeLattice.compare(BaseType.FLOAT, token);
+
+        if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
+            FloatToken floatToken = FloatToken
+                    .convert(token);
+            DoubleToken result = new DoubleToken(floatToken.doubleValue());
+            if (floatToken._unitCategoryExponents != null
+                    && !UnitUtilities
+                            .isUnitless(floatToken._unitCategoryExponents)) {
+                result._unitCategoryExponents = floatToken
+                        ._copyOfCategoryExponents();
+            }
+            return result;
+        }
+        
         compare = TypeLattice.compare(BaseType.INT, token);
 
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
