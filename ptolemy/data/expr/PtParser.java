@@ -1964,23 +1964,15 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                         jjtn003._ptToken = new UnsignedByteToken(Integer
                                 .parseInt(x, radix));
                     } else {
-                        // Try to infer the size. 
-//                        try {                                 
-//                            jjtn003._ptToken = new UnsignedByteToken(x);
-//                        } catch (IllegalActionException iae) {
-//                            try {
-//                                jjtn003._ptToken = new ShortToken(Short.parseShort(x,
-//                                        radix));
-//                            } catch (NumberFormatException nfeS) {
-                                try {
-                                    jjtn003._ptToken = new IntToken(Integer.parseInt(x,
-                                            radix));
-                                } catch (NumberFormatException nfe) {
-                                    jjtn003._ptToken = new LongToken(Long.parseLong(x,
-                                            radix));
-                                }
-//                            }
-//                        }
+                        // Try to infer the size.  Inferred sizes are at least
+                        // integer.
+                        try {
+                            jjtn003._ptToken = new IntToken(Integer.parseInt(x,
+                                    radix));
+                        } catch (NumberFormatException nfe) {
+                            jjtn003._ptToken = new LongToken(Long.parseLong(x,
+                                    radix));
+                        }
                     }
                     jjtn003._isConstant = true;
                 } catch (NumberFormatException ee) {
