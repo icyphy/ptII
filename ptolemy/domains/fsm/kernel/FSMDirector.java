@@ -51,10 +51,8 @@ import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.ModelErrorHandler;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -589,7 +587,17 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         // Increment the workspace version such that the
         // function dependencies will be reconstructed.
         // Note that this occurs only if a transition was taken.
-        // FIXME: Replace this with conservative approximation.
+        /* This was presumably inserted for the benefit of DE,
+         * where apparently Haiyang was trying to get it to support
+         * non-strict composite actors. This never worked however,
+         * and really requires a true fixed-point semantics in DE.
+         * In SR, the function dependencies affect efficiency but
+         * not correctness.  A more complete fix would modify
+         * ModalModel to perform a conservative approximation
+         * of the dependency by aggregating the dependencies
+         * of its state refinements.
+         */
+        /*
         if (_mutationEnabled && (_enabledTransition != null)) {
             ChangeRequest request = new ChangeRequest(this,
                     "increment workspace version to force recalculation of function dependencies") {
@@ -600,6 +608,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
             request.setPersistent(false);
             getContainer().requestChange(request);
         }
+        */
 
         // If a transition was taken, then request a refiring at the current time
         // in case the destination state is a transient state.
