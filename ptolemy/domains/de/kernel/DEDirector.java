@@ -1400,7 +1400,7 @@ public class DEDirector extends Director implements TimedDirector {
 
     /** Perform a topological sort on the directed graph and use the result
      *  to set the depth for each IO port. A new Hashtable is created each
-     * time this method is called.
+     *  time this method is called.
      */
     private void _computePortDepth() throws IllegalActionException {
         DirectedAcyclicGraph portsGraph = _constructDirectedGraph();
@@ -1446,65 +1446,46 @@ public class DEDirector extends Director implements TimedDirector {
         }
 
         if (_debugging && _verbose) {
-            _debug("## adjusting port depths based "
-                    + "on the strictness constraints.");
+            _debug("## adjusting port depths to "
+                    + "make opaque composite actors and "
+                    + "actors with no output ports strict.");
         }
 
-        LinkedList actorsWithPortDepthsAdjusted = new LinkedList();
+        HashSet actorsWithPortDepthsAdjusted = new HashSet();
 
-        // The rule is simple. If an output depends on several inputs directly,
-        // all inputs must have the same depth, the biggest one.
+        // Adjusts the depths according to:
+        // - If an output depends on several inputs directly,
+        //   all inputs must have the same depth, the biggest one.
         for (int i = sort.length - 1; i >= 0; i--) {
             IOPort ioPort = (IOPort) sort[i];
 
             // Get the container actor of the current output port.
             Actor portContainer = (Actor) ioPort.getContainer();
 
-            // get the strictnessAttribute of actor.
-            Attribute strictnessAttribute = ((NamedObj) portContainer)
-                    .getAttribute(STRICT_ATTRIBUTE_NAME);
+            // Skip the ports of the container. Their depths are handled
+            // by the upper level executive director of this container.
+            if (portContainer.equals(getContainer())) {
+                continue;
+            }
 
-            // Normally, we adjust port depths based on output ports.
-            // However, if this input port belongs to a sink actor, and
-            // the sink actor has more than one input ports, adjust the depths
-            // of all the input ports to their maximum value.
-            // For exmaple, the XYPlotter in the WirelessSoundDetection demo.
-            // By default, all composite actors are non-strict. However, if
-            // a composite actor declares its strictness with an attribute,
-            // we adjust its input ports depths to their maximum. One example
-            // is the ModalModel.
-            // A third case is that if a composite actor has some of its input
-            // ports as parameter ports and the others as reguler IO ports,
-            // we need to adjust the depths of paramter ports also.
-            // The TimedSinewave (with SDF implementation) is an example.
-            // Since this actor is supposed to be a strict actor, we need to
-            // add a strictness marker such that the depths of all its inputs
-            // are adjusted to their maximum value.
-            // For non-strict composite actors, one solution is to iterate
-            // each output port and find all the parameter ports that affect
-            // that output port. Note that a parameter may depend on another
-            // parameter at the same level of hierarchy, which makes the
-            // analysis harder. One reference will be the context analysis by
-            // Steve.
-            // I prefer to leave the parameter analysis to be independent of the
-            // function dependency analysis. 02/2005 hyzheng
+            // For opaque composite actors and for actors with
+            // no output ports, adjust the depths of all input ports
+            // to match the maximum depth of the input ports.
+            // If an actor has no output ports, then the default
+            // dependencies of all input ports to all output ports
+            // will not have been created. Hence, there is no mechanism
+            // provided by this default to elevate the depth of all
+            // the input ports to the maximum of those depths.
+            // Thus, we conservatively assume that any actor with
+            // no output ports should be treated as if it had one
+            // output port (say, representing its state), and that
+            // all input ports depend on that output port.
+            // This will not be necessary in a version of DE
+            // that implements a strict fixed-point semantics.
             if (ioPort.isInput()) {
-                boolean depthNeedsAdjusted = false;
-                int numberOfOutputPorts = portContainer.outputPortList().size();
-
-                // If an actor has no output ports, adjustment is necessary.
-                if (numberOfOutputPorts == 0) {
-                    depthNeedsAdjusted = true;
-                }
-
-                // If the actor declares itself as a strict actor,
-                // adjustment is necessary.
-                if (strictnessAttribute != null) {
-                    depthNeedsAdjusted = true;
-                }
-
-                // If depth needs adjusted:
-                if (depthNeedsAdjusted) {
+                if (portContainer.outputPortList().size() == 0
+                        || (portContainer instanceof CompositeActor
+                           && ((CompositeActor)portContainer).isOpaque())) {
                     List inputPorts = portContainer.inputPortList();
 
                     if (inputPorts.size() <= 1) {
@@ -1523,14 +1504,12 @@ public class DEDirector extends Director implements TimedDirector {
 
                     Iterator inputsIterator = inputPorts.iterator();
 
-                    // Iterate all input ports of the sink actor.
+                    // Iterate all input ports of the sink or composite actor
+                    // to find the largest depth.
                     int maximumPortDepth = -1;
-
                     while (inputsIterator.hasNext()) {
-                        Object object = inputsIterator.next();
-                        IOPort input = (IOPort) object;
+                        IOPort input = (IOPort) inputsIterator.next();
                         int inputPortDepth = ports.indexOf(input);
-
                         if (maximumPortDepth < inputPortDepth) {
                             maximumPortDepth = inputPortDepth;
                         }
@@ -1538,7 +1517,6 @@ public class DEDirector extends Director implements TimedDirector {
 
                     // Set the depths of the input ports to the maximum one.
                     inputsIterator = inputPorts.iterator();
-
                     while (inputsIterator.hasNext()) {
                         IOPort input = (IOPort) inputsIterator.next();
 
@@ -1552,50 +1530,43 @@ public class DEDirector extends Director implements TimedDirector {
                     }
                 }
             }
-
-            // we skip the ports of the container and their depths are handled
-            // by the upper level executive director of this container.
-            if (portContainer.equals(getContainer())) {
-                continue;
-            }
-
+            // For an output port, adjust the depths of all the
+            // input ports on which it depends to match the largest
+            // depth of those input ports.
             // FIXME: The following is really problematic. Check the 
-            // DESchedulingTest3.xml as example. 
-            // Get the function dependency of the container actor
-            FunctionDependency functionDependency = portContainer
-                    .getFunctionDependency();
+            // DESchedulingTest3.xml as example (NOTE: I can't
+            // find this example. EAL).
+            if (ioPort.isOutput()) {
+                // Get the function dependency of the container actor
+                FunctionDependency functionDependency = portContainer
+                        .getFunctionDependency();
 
-            List inputPorts = functionDependency
-                    .getInputPortsDependentOn(ioPort);
-            Iterator inputsIterator = inputPorts.iterator();
+                List inputPorts = functionDependency
+                        .getInputPortsDependentOn(ioPort);
+                Iterator inputsIterator = inputPorts.iterator();
 
-            // Iterate all input ports the current output depends on,
-            // find their maximum depth.
-            int maximumPortDepth = -1;
-
-            while (inputsIterator.hasNext()) {
-                Object object = inputsIterator.next();
-                IOPort input = (IOPort) object;
-                int inputPortDepth = ports.indexOf(input);
-
-                if (maximumPortDepth < inputPortDepth) {
-                    maximumPortDepth = inputPortDepth;
-                }
-            }
-
-            // Set the depths of the input ports to the maximum one.
-            inputsIterator = inputPorts.iterator();
-
-            while (inputsIterator.hasNext()) {
-                IOPort input = (IOPort) inputsIterator.next();
-
-                if (_debugging && _verbose) {
-                    _debug(((Nameable) input).getFullName(),
-                            "depth is adjusted to: " + maximumPortDepth);
+                // Iterate all input ports the current output depends on to
+                // find their maximum depth.
+                int maximumPortDepth = -1;
+                while (inputsIterator.hasNext()) {
+                    IOPort input = (IOPort) inputsIterator.next();
+                    int inputPortDepth = ports.indexOf(input);
+                    if (maximumPortDepth < inputPortDepth) {
+                        maximumPortDepth = inputPortDepth;
+                    }
                 }
 
-                // Insert the hashtable entry.
-                _portToDepth.put(input, Integer.valueOf(maximumPortDepth));
+                // Set the depths of the input ports to the maximum one.
+                inputsIterator = inputPorts.iterator();
+                while (inputsIterator.hasNext()) {
+                    IOPort input = (IOPort) inputsIterator.next();
+                    if (_debugging && _verbose) {
+                        _debug(((Nameable) input).getFullName(),
+                                "depth is adjusted to: " + maximumPortDepth);
+                    }
+                    // Insert the hashtable entry.
+                    _portToDepth.put(input, Integer.valueOf(maximumPortDepth));
+                }
             }
         }
 
@@ -2171,7 +2142,4 @@ public class DEDirector extends Director implements TimedDirector {
      *  catch up with model time.
      */
     private boolean _synchronizeToRealTime;
-
-    /** The name of an attribute that marks an actor as strict. */
-    private static final String STRICT_ATTRIBUTE_NAME = "_strictMarker";
 }
