@@ -380,6 +380,9 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     private void _nextFile() {
         _fileSelectionStatus = FileSelectionStatus.NEXT;
+        for (MatchResultViewer viewer : _subviewers) {
+            viewer.setVisible(false);
+        }
         setVisible(false);
     }
 
@@ -398,6 +401,9 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     private void _previousFile() {
         _fileSelectionStatus = FileSelectionStatus.PREVIOUS;
+        for (MatchResultViewer viewer : _subviewers) {
+            viewer.setVisible(false);
+        }
         setVisible(false);
     }
 

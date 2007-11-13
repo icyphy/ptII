@@ -941,7 +941,7 @@ TableModelListener, ValueListener {
             Pattern pattern = rule.getPattern();
             DefaultDirectoryAttribute attribute = (DefaultDirectoryAttribute)
                     pattern.getAttribute("DefaultDirectory");
-            String directory = ".";
+            String directory = "";
             String fileFilter = "";
             boolean subdirs = true;
             if (attribute != null) {
@@ -1030,7 +1030,10 @@ TableModelListener, ValueListener {
             }
 
             public void windowDeactivated(WindowEvent e) {
-                MatchResultViewer viewer = (MatchResultViewer) e.getWindow();
+                MatchResultViewer viewer = _viewers[_index];
+                if (viewer.isVisible()) {
+                    return;
+                }
                 MatchResultViewer.FileSelectionStatus status =
                     viewer.getFileSelectionStatus();
                 viewer.clearFileSelectionStatus();
@@ -1043,6 +1046,16 @@ TableModelListener, ValueListener {
                     _index = _nextIndex;
                     _viewCurrentModel();
                     break;
+                default:
+                    _closeAll();
+                }
+            }
+            
+            private void _closeAll() {
+                for (MatchResultViewer viewer : _viewers) {
+                    if (viewer != null) {
+                        viewer.close();
+                    }
                 }
             }
 
