@@ -135,10 +135,6 @@ public class MultiCompositeActor extends TypedCompositeActor {
     /** Initialize the model. */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
-        // Mark this composite actor as a strict actor. This will be used for
-        // scheduling analysis, for example in the DE domain.
-        new Attribute(this, "_strictMarker");
-
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.actor.lib.hoc.MultiCompositeActor");
