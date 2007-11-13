@@ -43,9 +43,11 @@ import java.util.StringTokenizer;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.PetiteToken;
+import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.kernel.util.IllegalActionException;
@@ -1869,8 +1871,11 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 try {
                     x = token.image.toLowerCase();
                     len = x.length();
-                    if (x.endsWith("d") || x.endsWith("f") || x.endsWith("p")) {
-                        // all floating point numbers are double
+                    if (x.endsWith("f")) {
+                        Float value = new Float(x.substring(0, len - 1));
+                        jjtn002._ptToken = new FloatToken(value
+                                .floatValue());
+                    } else if (x.endsWith("d") || x.endsWith("p")) {                        
                         Double value = new Double(x.substring(0, len - 1));
                         if (x.endsWith("p")) {
                             jjtn002._ptToken = new PetiteToken(value
@@ -1912,12 +1917,15 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
 
                     int radix;
                     boolean mustBeLong = x.endsWith("l");
+                    boolean mustBeShort = x.endsWith("s");
                     boolean mustBeUnsignedByte = x.endsWith("ub");
 
                     int prefixLength;
                     int suffixLength;
 
                     if (mustBeLong) {
+                        suffixLength = 1;
+                    } else if (mustBeShort) {
                         suffixLength = 1;
                     } else if (mustBeUnsignedByte) {
                         suffixLength = 2;
@@ -1946,21 +1954,33 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                         // If the size was specified as long, then create a long.
                         jjtn003._ptToken = new LongToken(Long.parseLong(x,
                                 radix));
+                    } else if (mustBeShort) {
+                            // If the size was specified as short, then create a short.
+                            jjtn003._ptToken = new ShortToken(Integer
+                                    .parseInt(x, radix));
                     } else if (mustBeUnsignedByte) {
                         // If the size was specified as unsignedbyte, 
                         // then create an unsigned byte, truncating if necessary.
                         jjtn003._ptToken = new UnsignedByteToken(Integer
                                 .parseInt(x, radix));
                     } else {
-                        // Try to infer the size.  Inferred sizes are at least
-                        // integer.
-                        try {
-                            jjtn003._ptToken = new IntToken(Integer.parseInt(x,
-                                    radix));
-                        } catch (NumberFormatException nfe) {
-                            jjtn003._ptToken = new LongToken(Long.parseLong(x,
-                                    radix));
-                        }
+                        // Try to infer the size. 
+//                        try {                                 
+//                            jjtn003._ptToken = new UnsignedByteToken(x);
+//                        } catch (IllegalActionException iae) {
+//                            try {
+//                                jjtn003._ptToken = new ShortToken(Short.parseShort(x,
+//                                        radix));
+//                            } catch (NumberFormatException nfeS) {
+                                try {
+                                    jjtn003._ptToken = new IntToken(Integer.parseInt(x,
+                                            radix));
+                                } catch (NumberFormatException nfe) {
+                                    jjtn003._ptToken = new LongToken(Long.parseLong(x,
+                                            radix));
+                                }
+//                            }
+//                        }
                     }
                     jjtn003._isConstant = true;
                 } catch (NumberFormatException ee) {
