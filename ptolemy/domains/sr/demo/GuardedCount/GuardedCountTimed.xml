@@ -4,16 +4,16 @@
 <entity name="GuardedCountTimed" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 4, 713, 490}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 4, 947, 490}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[498, 372]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[732, 372]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{249.0, 186.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{366.0, 186.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the use of SR within DE.&#10;The SR director on the inside has a period of 1.0,&#10;so it will fire repeatedly with period 1.0.&#10;Given an input integer, the SR submodel will&#10;count down from that integer until either it&#10;reaches zero or it receives another input integer.&#10;Note that the Default actor inside the SR model&#10;performs a nondeterministic merge, as in Signal,&#10;but with the nondeterminism resolved by the&#10;environment model, which is the DE top-level model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the use of SR within DE. The SR director&#10;executes a &quot;tick&quot; of the inside model when it gets either a &quot;start&quot;&#10;event or a &quot;tick&quot; event. Since it is provided with a &quot;tick&quot; event&#10;once per second, it will tick at least that often. Given an input&#10;integer on the &quot;start&quot; input, the SR submodel will count down from&#10;that integer until either it reaches zero or it receives another&#10;input integer. Note that the Default actor inside the SR model&#10;performs a nondeterministic merge, as in Signal, but with the&#10;nondeterminism resolved by the environment model, which is the&#10;DE top-level model.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 10.0]">
         </property>
@@ -23,7 +23,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[12.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 350.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -52,7 +52,7 @@
         <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Restart the count&#10;whenever the start&#10;input is not absent.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 80.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 80.0]">
             </property>
         </property>
         <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -66,11 +66,17 @@
             </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="period" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="scheduler" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.sr.kernel.SROptimizedScheduler">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 45.0}">
+            </property>
+        </property>
+        <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Iterate the model&#10;when either a tick&#10;or a start input&#10;arrives.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 275.0]">
             </property>
         </property>
         <port name="start" class="ptolemy.actor.TypedIOPort">
@@ -83,6 +89,15 @@
         <port name="count" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 280.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="tick" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 260.0]">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
             </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
@@ -423,7 +438,12 @@
     <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
         <property name="trueValue" class="ptolemy.data.expr.Parameter" value="-1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[167.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 280.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -444,8 +464,13 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="CountDown.start" relation="relation3"/>
     <link port="CountDown.count" relation="relation2"/>
+    <link port="CountDown.tick" relation="relation5"/>
     <link port="TimedPlotter.input" relation="relation2"/>
     <link port="TimedPlotter.input" relation="relation4"/>
     <link port="Sequence.enable" relation="relation"/>
@@ -453,4 +478,5 @@
     <link port="PoissonClock.output" relation="relation"/>
     <link port="BooleanToAnything.input" relation="relation"/>
     <link port="BooleanToAnything.output" relation="relation4"/>
+    <link port="Clock.output" relation="relation5"/>
 </entity>
