@@ -45,6 +45,4 @@ public class ValidationException extends KernelException {
         return detail;
     }
 
-    private static final long serialVersionUID = -5895146104515190527L;
-
 }

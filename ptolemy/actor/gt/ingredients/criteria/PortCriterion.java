@@ -67,6 +67,10 @@ public class PortCriterion extends Criterion {
         _multiport = multiport;
     }
 
+    public GTIngredientElement[] getElements() {
+        return _ELEMENTS;
+    }
+
     public String getPortID(GTIngredientList list) {
         int position = list.indexOf(this);
         return "Criterion" + (position + 1);
@@ -78,10 +82,6 @@ public class PortCriterion extends Criterion {
 
     public String getPortType() {
         return _portType.get();
-    }
-
-    public GTIngredientElement[] getElements() {
-        return _ELEMENTS;
     }
 
     public Object getValue(int index) {

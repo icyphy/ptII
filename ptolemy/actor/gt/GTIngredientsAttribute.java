@@ -93,6 +93,4 @@ public class GTIngredientsAttribute extends StringAttribute {
 
     private GTIngredientList _ruleList = null;
 
-    private static final long serialVersionUID = 3642067100376815343L;
-
 }

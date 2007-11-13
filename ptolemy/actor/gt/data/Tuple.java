@@ -42,6 +42,4 @@ public class Tuple<E> extends LinkedList<E> {
         }
     }
 
-    private static final long serialVersionUID = -8376318257178238209L;
-
 }

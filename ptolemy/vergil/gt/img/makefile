@@ -48,6 +48,10 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
+	batchmatch_o.gif \
+	batchmatch_on.gif \
+	batchmatch_ov.gif \
+	batchmatch.gif \
 	match_o.gif \
 	match_on.gif \
 	match_ov.gif \
@@ -56,10 +60,18 @@ OTHER_FILES_TO_BE_JARED = \
 	next_on.gif \
 	next_ov.gif \
 	next.gif \
+	nextfile_o.gif \
+	nextfile_on.gif \
+	nextfile_ov.gif \
+	nextfile.gif \
 	previous_o.gif \
 	previous_on.gif \
 	previous_ov.gif \
 	previous.gif \
+	previousfile_o.gif \
+	previousfile_on.gif \
+	previousfile_ov.gif \
+	previousfile.gif \
 	transform_o.gif \
 	transform_on.gif \
 	transform_ov.gif \

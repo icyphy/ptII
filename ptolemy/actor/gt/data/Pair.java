@@ -55,6 +55,4 @@ public class Pair<E1, E2> extends Tuple<Object> {
     public void setSecond(E2 second) {
         set(1, second);
     }
-
-    private static final long serialVersionUID = -2700656323692235563L;
 }

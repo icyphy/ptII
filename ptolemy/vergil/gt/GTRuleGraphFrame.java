@@ -37,11 +37,16 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
-import java.io.IOException;
+import java.io.FilenameFilter;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -75,6 +80,7 @@ import javax.swing.table.TableColumnModel;
 
 import ptolemy.actor.gt.AtomicActorMatcher;
 import ptolemy.actor.gt.CompositeActorMatcher;
+import ptolemy.actor.gt.DefaultDirectoryAttribute;
 import ptolemy.actor.gt.DefaultModelAttribute;
 import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gt.GraphMatcher;
@@ -89,15 +95,22 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
@@ -115,7 +128,6 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import diva.graph.JGraph;
-import diva.gui.ExtensionFileFilter;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.JContextMenu;
 
@@ -526,8 +538,11 @@ TableModelListener, ValueListener {
         _ruleMenu.setMnemonic(KeyEvent.VK_R);
         _menubar.add(_ruleMenu);
 
-        MatchAction matchAction = new MatchAction();
-        GUIUtilities.addMenuItem(_ruleMenu, matchAction);
+        SingleMatchAction singleMatchAction = new SingleMatchAction();
+        GUIUtilities.addMenuItem(_ruleMenu, singleMatchAction);
+
+        BatchMatchAction batchMatchAction = new BatchMatchAction();
+        GUIUtilities.addMenuItem(_ruleMenu, batchMatchAction);
 
         _ruleMenu.addSeparator();
 
@@ -546,7 +561,8 @@ TableModelListener, ValueListener {
             _removeUnusedToolbarButtons();
         }
 
-        GUIUtilities.addToolBarButton(_toolbar, matchAction);
+        GUIUtilities.addToolBarButton(_toolbar, singleMatchAction);
+        GUIUtilities.addToolBarButton(_toolbar, batchMatchAction);
     }
 
     protected ActorEditorGraphController _createController() {
@@ -871,10 +887,319 @@ TableModelListener, ValueListener {
 
     private DefaultTableModel _tableModel;
 
-    private static final long serialVersionUID = 5919681658644668772L;
-
     ///////////////////////////////////////////////////////////////////
     ////                      private inner classes                ////
+
+    private class BatchMatchAction extends MatchAction {
+
+        public BatchMatchAction() {
+            super("Match Models in a Directory");
+
+            try {
+                _directory = new FileParameter(_attribute, "directory");
+                _directory.setDisplayName("Directory (./)");
+                _directory.setExpression(".");
+
+                _fileFilter = new StringParameter(_attribute, "filter");
+                _fileFilter.setDisplayName("File filter (*.xml)");
+                _fileFilter.setExpression("");
+
+                _subdirs = new Parameter(_attribute, "subdirs");
+                _subdirs.setDisplayName("Include subdirs");
+                _subdirs.setTypeEquals(BaseType.BOOLEAN);
+                _subdirs.setExpression("true");
+            } catch (KernelException e) {
+                throw new KernelRuntimeException(e, "Unable to create action " +
+                        "instance.");
+            }
+
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/gt/img/batchmatch.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/gt/img/batchmatch_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/gt/img/batchmatch_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/gt/img/batchmatch_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", "Match Ptolemy models in a directory (Ctrl+2)");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_2, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+        }
+
+        @SuppressWarnings("unchecked")
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            new MultipleViewController();
+        }
+
+        private File[] _getModelFiles() {
+            TransformationRule rule = getTransformationRule();
+            Pattern pattern = rule.getPattern();
+            DefaultDirectoryAttribute attribute = (DefaultDirectoryAttribute)
+                    pattern.getAttribute("DefaultDirectory");
+            String directory = ".";
+            String fileFilter = "";
+            boolean subdirs = true;
+            if (attribute != null) {
+                directory = attribute.directory.getExpression();
+                fileFilter = attribute.fileFilter.getExpression();
+                try {
+                    subdirs = ((BooleanToken) attribute.subdirs.getToken())
+                            .booleanValue();
+                } catch (IllegalActionException e) {
+                    throw new KernelRuntimeException(e, "Unable to get "
+                            + "boolean token.");
+                }
+            }
+            File dir;
+            if (directory.equals("")) {
+                _directory.setExpression(directory);
+                _fileFilter.setExpression(fileFilter);
+                _subdirs.setExpression(subdirs ? "true" : "false");
+                FileChooser fileChooser = new FileChooser(GTRuleGraphFrame.this,
+                        _attribute, false, true);
+                if (fileChooser._isConfirmed()) {
+                    String directoryName = fileChooser.getFileName();
+                    if (directoryName.equals("")) {
+                        directoryName = ".";
+                    }
+                    dir = new File(directoryName);
+                    try {
+                        subdirs =
+                            ((BooleanToken) _subdirs.getToken()).booleanValue();
+                        fileFilter = ((StringToken) _fileFilter.getToken())
+                                .stringValue();
+                    } catch (IllegalActionException e) {
+                        throw new KernelRuntimeException(e, "Unable to get "
+                                + "boolean token.");
+                    }
+                } else {
+                    return null;
+                }
+            } else {
+                dir = new File(directory);
+                if (!dir.isAbsolute()) {
+                    URI uri = getEffigy().uri.getURI();
+                    File parent = null;
+                    if (uri != null) {
+                        parent = new File(uri).getParentFile();
+                    }
+                    dir = new File(parent, directory);
+                }
+            }
+
+            if (!dir.exists()) {
+                MessageHandler.error("Directory " + dir.getPath()
+                        + " does not exist.");
+                return null;
+            }
+
+            File[] files = _listFiles(dir, subdirs, fileFilter);
+            return files;
+        }
+
+        private File[] _listFiles(File directory, boolean includeSubdir,
+                String fileFilter) {
+            XMLFileCollector collector =
+                new XMLFileCollector(includeSubdir, fileFilter);
+            directory.list(collector);
+            List<File> files = collector._files;
+            Collections.sort(files, new FileComparator());
+            return files.toArray(new File[files.size()]);
+        }
+
+        private FileParameter _directory;
+
+        private StringParameter _fileFilter;
+
+        private Parameter _subdirs;
+
+        private class MultipleViewController implements WindowListener {
+
+            public void windowActivated(WindowEvent e) {
+            }
+
+            public void windowClosed(WindowEvent e) {
+            }
+
+            public void windowClosing(WindowEvent e) {
+            }
+
+            public void windowDeactivated(WindowEvent e) {
+                MatchResultViewer viewer = (MatchResultViewer) e.getWindow();
+                MatchResultViewer.FileSelectionStatus status =
+                    viewer.getFileSelectionStatus();
+                viewer.clearFileSelectionStatus();
+                switch (status) {
+                case PREVIOUS:
+                    _index = _previousIndex;
+                    _viewCurrentModel();
+                    break;
+                case NEXT:
+                    _index = _nextIndex;
+                    _viewCurrentModel();
+                    break;
+                }
+            }
+
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            public void windowIconified(WindowEvent e) {
+            }
+
+            public void windowOpened(WindowEvent e) {
+            }
+
+            @SuppressWarnings("unchecked")
+            MultipleViewController() {
+                _files = _getModelFiles();
+                if (_files == null) {
+                    return;
+                }
+
+                _viewers = new MatchResultViewer[_files.length];
+                _models = new CompositeEntity[_files.length];
+                _allResults = (List<MatchResult>[]) new List[_files.length];
+
+                try {
+                    _index = _findNextMatch(-1);
+                    if (_index < 0) {
+                        MessageHandler.message("No match found.");
+                        return;
+                    }
+
+                    _viewCurrentModel();
+                } catch (Throwable throwable) {
+                    _handleErrors(throwable);
+                }
+            }
+
+            private int _findNextMatch(int index) throws MalformedURLException,
+            Exception {
+                for (int i = index + 1; i < _files.length; i++) {
+                    List<MatchResult> currentResult = _allResults[i];
+                    if (currentResult == null) {
+                        CompositeEntity model = _getModel(_files[i]);
+                        currentResult = _getMatchResult(model);
+
+                        _models[i] = model;
+                        _allResults[i] = currentResult;
+
+                        if (!currentResult.isEmpty()) {
+                            return i;
+                        }
+                    } else if (!currentResult.isEmpty()) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+
+            private int _findPreviousMatch(int index) {
+                for (int i = index - 1; i >= 0; i--) {
+                    if (!_allResults[i].isEmpty()) {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+
+            private void _handleErrors(Throwable throwable) {
+                for (int i = 0; i < _viewers.length; i++) {
+                    _viewers[i].removeWindowListener(this);
+                    _viewers[i].close();
+                    _viewers[i] = null;
+                }
+                if (throwable instanceof MalformedURLException) {
+                    MessageHandler.error("Unable to obtain URL from the input "
+                            + "file name.", throwable);
+                } else {
+                    throw new InternalErrorException(throwable);
+                }
+            }
+
+            private void _viewCurrentModel() {
+                try {
+                    _previousIndex = _findPreviousMatch(_index);
+                    _nextIndex = _findNextMatch(_index);
+
+                    if (_viewers[_index] != null) {
+                        _viewers[_index].setVisible(true);
+                    } else {
+                        _viewers[_index] =
+                            _showViewer(_models[_index], _allResults[_index]);
+                        _viewers[_index].setBatchMode(true);
+                        _viewers[_index].setPreviousFileEnabled(
+                                _previousIndex >= 0);
+                        _viewers[_index].setNextFileEnabled(_nextIndex >= 0);
+                        _viewers[_index].addWindowListener(this);
+                    }
+                } catch (Throwable throwable) {
+                    _handleErrors(throwable);
+                }
+            }
+
+            private List<MatchResult>[] _allResults;
+
+            private File[] _files;
+
+            private int _index;
+
+            private CompositeEntity[] _models;
+
+            private int _nextIndex;
+
+            private int _previousIndex;
+
+            private MatchResultViewer[] _viewers;
+
+        }
+
+        private class XMLFileCollector implements FilenameFilter {
+
+            public boolean accept(File dir, String name) {
+                File file = new File(dir, name);
+                boolean isDirectory = _includeSubdir && file.isDirectory();
+                boolean isFile = file.isFile() && (_pattern == null ?
+                        name.toLowerCase().endsWith(".xml") :
+                        _pattern.matcher(name).matches());
+                if (isDirectory) {
+                    file.list(this);
+                } else if (isFile) {
+                    _files.add(file);
+                }
+                return false;
+            }
+
+            XMLFileCollector(boolean includeSubdir, String fileFilter) {
+                _includeSubdir = includeSubdir;
+                if (!fileFilter.equals("")) {
+                    _pattern =
+                        java.util.regex.Pattern.compile(_escape(fileFilter));
+                }
+            }
+
+            private String _escape(String string) {
+                String escaped = _ESCAPER.matcher(string).replaceAll("\\\\$1");
+                return escaped.replaceAll("\\\\\\*", ".*")
+                        .replaceAll("\\\\\\?", ".?");
+            }
+
+            private java.util.regex.Pattern _ESCAPER =
+                java.util.regex.Pattern.compile("([^a-zA-z0-9])");
+
+            private List<File> _files = new LinkedList<File>();
+
+            private boolean _includeSubdir;
+
+            private java.util.regex.Pattern _pattern;
+        }
+    }
 
     private static class CellEditor extends CellPanelEditor {
 
@@ -895,21 +1220,22 @@ TableModelListener, ValueListener {
         }
 
         private String _previousString;
-
-        private static final long serialVersionUID = 5226766789270435413L;
     }
 
     private static class FileChooser extends ComponentDialog
     implements ActionListener {
 
-        public FileChooser(PtolemyFrame owner, NamedObj target) {
-            super(owner, "Choose Input File", new Configurer(target),
-                    FILE_CHOOSER_BUTTONS);
+        public FileChooser(PtolemyFrame owner, NamedObj target,
+                boolean allowFile, boolean allowDirectory) {
+            super(owner, "Choose Input "
+                    + (allowFile && allowDirectory ? "File/Directory" :
+                        allowFile ? "File" : "Directory"),
+                    new Configurer(target), FILE_CHOOSER_BUTTONS);
         }
 
         public void actionPerformed(ActionEvent e) {
             Object source = e.getSource();
-            if (source == _textField) {
+            if (source instanceof JTextField) {
                 _buttonPressed = FILE_CHOOSER_BUTTONS[0];
                 setVisible(false);
             } else if (source == _button) {
@@ -935,10 +1261,17 @@ TableModelListener, ValueListener {
                 // FIXME: The following doesn't have any effect.
                 fileChooser.setApproveButtonMnemonic('S');
 
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                fileChooser.setFileFilter(new ExtensionFileFilter("xml",
-                        "Ptolemy II Model"));
-                if (fileChooser.showOpenDialog(FileChooser.this)
+                String title = getTitle();
+                if (title.contains("File/Directory")) {
+                    fileChooser.setFileSelectionMode(
+                            JFileChooser.FILES_AND_DIRECTORIES);
+                } else if (title.contains("File")) {
+                    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                } else if (title.contains("Directory")) {
+                    fileChooser.setFileSelectionMode(
+                            JFileChooser.DIRECTORIES_ONLY);
+                }
+                if (fileChooser.showOpenDialog(this)
                         == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
                     _textField.setText(selectedFile.getPath());
@@ -960,14 +1293,16 @@ TableModelListener, ValueListener {
             _findComponents(configurer, JTextField.class, textFields);
             _findComponents(configurer, JButton.class, buttons);
             for (JTextField textField : textFields) {
-                for (ActionListener listener : textField.getActionListeners()) {
-                    textField.removeActionListener(listener);
+                if (_textField == null) {
+                    for (ActionListener listener : textField.getActionListeners()) {
+                        textField.removeActionListener(listener);
+                    }
+                    if (_fileName != null) {
+                        textField.setText(_fileName);
+                    }
+                    _textField = textField;
                 }
                 textField.addActionListener(this);
-                if (_fileName != null) {
-                    textField.setText(_fileName);
-                }
-                _textField = textField;
             }
             for (JButton button : buttons) {
                 if (!button.getText().equals("Browse")) {
@@ -997,6 +1332,10 @@ TableModelListener, ValueListener {
             }
         }
 
+        private boolean _isConfirmed() {
+            return buttonPressed().equals(FILE_CHOOSER_BUTTONS[0]);
+        }
+
         private JButton _button;
 
         private File _currentDirectory;
@@ -1004,85 +1343,15 @@ TableModelListener, ValueListener {
         private String _fileName;
 
         private JTextField _textField;
-
-        private static final long serialVersionUID = 2369054217750135740L;
     }
 
-    private class GTAction extends FigureAction {
+    private static class FileComparator implements Comparator<File> {
 
-        protected Configuration _getConfiguration() {
-            NamedObj toplevel = GTRuleGraphFrame.this.getTableau().toplevel();
-            if (toplevel instanceof Configuration) {
-                return (Configuration) toplevel;
-            } else {
-                return null;
-            }
+        public int compare(File file1, File file2) {
+            return file1.getAbsolutePath().compareTo(
+                    file2.getAbsolutePath());
         }
 
-        protected CompositeEntity _getInputModel() throws MalformedURLException,
-        IOException, Exception {
-            TransformationRule rule = getTransformationRule();
-            Pattern pattern = rule.getPattern();
-            DefaultModelAttribute defaultModelAttribute =
-                (DefaultModelAttribute) pattern.getAttribute("DefaultModel");
-            String defaultModel = defaultModelAttribute == null ? ""
-                    : defaultModelAttribute.parameter.getExpression();
-            File input;
-            if (defaultModel.equals("")) {
-                FileChooser fileChooser =
-                    new FileChooser(GTRuleGraphFrame.this, _attribute);
-                if (fileChooser.buttonPressed().equals(
-                        FileChooser.FILE_CHOOSER_BUTTONS[0])) {
-                    String matchFileName = fileChooser.getFileName();
-                    input = new File(matchFileName);
-                } else {
-                    return null;
-                }
-            } else {
-                input = new File(defaultModel);
-                if (!input.isAbsolute()) {
-                    URI uri = GTRuleGraphFrame.this.getEffigy().uri.getURI();
-                    File directory = null;
-                    if (uri != null) {
-                        directory = new File(uri).getParentFile();
-                    }
-                    input = new File(directory, defaultModel);
-                }
-            }
-
-            if (!input.exists()) {
-                MessageHandler.error("Unable to read input model " +
-                        input.getPath() + ".");
-                return null;
-            }
-
-            _parser.reset();
-            CompositeEntity model = (CompositeEntity) _parser.parse(
-                    null, input.toURI().toURL().openStream());
-            return model;
-        }
-
-        protected Attribute _attribute;
-
-        protected FileParameter _inputModel;
-
-        GTAction(String name) {
-            super(name);
-
-            _attribute = new Attribute((Workspace) null);
-
-            try {
-                _inputModel = new FileParameter(_attribute, "inputModel");
-                _inputModel.setDisplayName("Input model");
-            } catch (KernelException e) {
-                throw new KernelRuntimeException(e, "Unable to create action " +
-                        "instance.");
-            }
-        }
-
-        private MoMLParser _parser = new MoMLParser();
-
-        private static final long serialVersionUID = 8202352939524637929L;
     }
 
     private class GTActionGraphController extends ActorEditorGraphController {
@@ -1097,8 +1366,6 @@ TableModelListener, ValueListener {
                     super.actionPerformed(e);
                 }
             }
-
-            private static final long serialVersionUID = 131078285900819894L;
 
         }
 
@@ -1215,75 +1482,65 @@ TableModelListener, ValueListener {
                 MessageHandler.error("Layout failed", ex);
             }
         }
-
-        private static final long serialVersionUID = -31790471585661407L;
     }
 
-    private class MatchAction extends GTAction {
+    private class MatchAction extends FigureAction {
 
-        public MatchAction() {
-            super("Match Model");
-
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/gt/img/match.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/gt/img/match_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/gt/img/match_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/gt/img/match_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
-
-            putValue("tooltip", "Match a Ptolemy model in an external file");
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_1, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
+        protected Configuration _getConfiguration() {
+            NamedObj toplevel = getTableau().toplevel();
+            if (toplevel instanceof Configuration) {
+                return (Configuration) toplevel;
+            } else {
+                return null;
+            }
         }
 
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
+        protected List<MatchResult> _getMatchResult(CompositeEntity model) {
+            TransformationRule transformerActor = getTransformationRule();
+            Pattern pattern = transformerActor.getPattern();
+            MatchResultRecorder recorder = new MatchResultRecorder();
+            _matcher.setMatchCallback(recorder);
+            _matcher.match(pattern, model);
+            return recorder.getResults();
+        }
 
-            try {
-                CompositeEntity model = _getInputModel();
-                if (model == null) {
-                    return;
-                }
+        protected CompositeEntity _getModel(File file)
+        throws MalformedURLException, Exception {
+            _parser.reset();
+            InputStream stream = file.toURI().toURL().openStream();
+            CompositeEntity model =
+                (CompositeEntity) _parser.parse(null, stream);
+            return model;
+        }
 
-                TransformationRule transformerActor = getTransformationRule();
-                Pattern pattern = transformerActor.getPattern();
-                MatchResultRecorder recorder = new MatchResultRecorder();
-                _matcher.setMatchCallback(recorder);
-                _matcher.match(pattern, model);
-                List<MatchResult> results = recorder.getResults();
-                if (results.isEmpty()) {
-                    MessageHandler.message("No match found.");
-                } else {
-                    MatchResultViewer._setTableauFactory(this, model);
+        protected MatchResultViewer _showViewer(CompositeEntity model,
+                List<MatchResult> results)
+        throws IllegalActionException, NameDuplicationException {
 
-                    Configuration configuration = _getConfiguration();
-                    if (configuration == null) {
-                        throw new InternalErrorException(
-                                "Cannot get configuration.");
-                    }
-
-                    Tableau tableau = configuration.openModel(model);
-                    MatchResultViewer viewer =
-                        (MatchResultViewer) tableau.getFrame();
-
-                    viewer.setMatchResult(results);
-                    viewer.setTransformationRule(getTransformationRule());
-                }
-            } catch (MalformedURLException ex) {
-                MessageHandler.error("Unable to obtain URL from the input " +
-                        "file name.", ex);
-            } catch (Exception ex) {
-                throw new InternalErrorException(ex);
+            MatchResultViewer._setTableauFactory(this, model);
+            Configuration configuration = _getConfiguration();
+            if (configuration == null) {
+                throw new InternalErrorException("Cannot get configuration.");
             }
+
+            Tableau tableau = configuration.openModel(model);
+            MatchResultViewer viewer = (MatchResultViewer) tableau.getFrame();
+            viewer.setMatchResult(results);
+            viewer.setTransformationRule(getTransformationRule());
+            return viewer;
+        }
+
+        protected Attribute _attribute;
+
+        MatchAction(String name) {
+            super(name);
+
+            _attribute = new Attribute((Workspace) null);
         }
 
         private GraphMatcher _matcher = new GraphMatcher();
 
-        private static final long serialVersionUID = -696919249330217870L;
+        private MoMLParser _parser = new MoMLParser();
     }
 
     private static class MatchResultRecorder implements MatchCallback {
@@ -1298,5 +1555,100 @@ TableModelListener, ValueListener {
         }
 
         private List<MatchResult> _results = new LinkedList<MatchResult>();
+    }
+
+    private class SingleMatchAction extends MatchAction {
+
+        public SingleMatchAction() {
+            super("Match Model");
+
+            try {
+                _inputModel = new FileParameter(_attribute, "inputModel");
+                _inputModel.setDisplayName("Input model");
+            } catch (KernelException e) {
+                throw new KernelRuntimeException(e, "Unable to create action " +
+                        "instance.");
+            }
+
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/gt/img/match.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/gt/img/match_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/gt/img/match_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/gt/img/match_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", "Match a Ptolemy model in an external file "
+                    + "(Ctrl+1)");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_1, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            try {
+                File file = _getModelFile();
+                if (file == null) {
+                    return;
+                }
+
+                CompositeEntity model = _getModel(file);
+                List<MatchResult> results = _getMatchResult(model);
+                if (results.isEmpty()) {
+                    MessageHandler.message("No match found.");
+                } else {
+                    _showViewer(model, results);
+                }
+            } catch (MalformedURLException ex) {
+                MessageHandler.error("Unable to obtain URL from the input " +
+                        "file name.", ex);
+            } catch (Exception ex) {
+                throw new InternalErrorException(ex);
+            }
+        }
+
+        private File _getModelFile() {
+            TransformationRule rule = getTransformationRule();
+            Pattern pattern = rule.getPattern();
+            DefaultModelAttribute defaultModelAttribute =
+                (DefaultModelAttribute) pattern.getAttribute("DefaultModel");
+            String defaultModel = defaultModelAttribute == null ? ""
+                    : defaultModelAttribute.parameter.getExpression();
+            File input;
+            if (defaultModel.equals("")) {
+                FileChooser fileChooser = new FileChooser(GTRuleGraphFrame.this,
+                        _attribute, true, false);
+                if (fileChooser._isConfirmed()) {
+                    String matchFileName = fileChooser.getFileName();
+                    input = new File(matchFileName);
+                } else {
+                    return null;
+                }
+            } else {
+                input = new File(defaultModel);
+                if (!input.isAbsolute()) {
+                    URI uri = getEffigy().uri.getURI();
+                    File directory = null;
+                    if (uri != null) {
+                        directory = new File(uri).getParentFile();
+                    }
+                    input = new File(directory, defaultModel);
+                }
+            }
+
+            if (!input.exists()) {
+                MessageHandler.error("Unable to read input model " +
+                        input.getPath() + ".");
+                return null;
+            }
+
+            return input;
+        }
+
+        private FileParameter _inputModel;
     }
 }

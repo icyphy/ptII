@@ -357,8 +357,6 @@ public abstract class GraphAnalyzer {
             super(list, mark);
         }
 
-        private static final long serialVersionUID = -8862333308144377821L;
-
     }
 
     ///////////////////////////////////////////////////////////////////

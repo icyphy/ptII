@@ -128,6 +128,4 @@ public class GTIngredientList extends LinkedList<GTIngredient> {
     }
 
     private GTIngredientsAttribute _owner;
-
-    private static final long serialVersionUID = -5344621368362493745L;
 }

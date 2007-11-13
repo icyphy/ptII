@@ -46,6 +46,4 @@ public class GraphTransformationException extends KernelException {
         super(null, null, cause, null);
     }
 
-    private static final long serialVersionUID = -7656582035822778342L;
-
 }

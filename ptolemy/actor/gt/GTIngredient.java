@@ -53,11 +53,11 @@ public abstract class GTIngredient {
         Arrays.fill(_enablements, true);
     }
 
+    public abstract GTIngredientElement[] getElements();
+
     public GTIngredientList getOwner() {
         return _owner;
     }
-
-    public abstract GTIngredientElement[] getElements();
 
     public abstract Object getValue(int index);
 

@@ -194,17 +194,11 @@ public class GTRuleGraphTableau extends Tableau {
             }
         }
 
-        private static final long serialVersionUID = 6829386631711081500L;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     public inner classes                  ////
-
-    /** Background color. */
-    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private static final long serialVersionUID = -3310269457296135596L;
+    /** Background color. */
+    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 }

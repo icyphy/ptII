@@ -88,6 +88,4 @@ implements GTEntity {
 
     public PatternObjectAttribute patternObject;
 
-    private static final long serialVersionUID = -3093694369352820033L;
-
 }

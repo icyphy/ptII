@@ -29,7 +29,9 @@ package ptolemy.vergil.gt;
 
 import java.awt.Color;
 import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashSet;
@@ -38,6 +40,7 @@ import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 
@@ -104,6 +107,10 @@ public class MatchResultViewer extends AbstractGTFrame {
         highlightMatchedObjects();
     }
 
+    public void clearFileSelectionStatus() {
+        _fileSelectionStatus = FileSelectionStatus.NONE;
+    }
+
     public void dehighlightMatchedObject(NamedObj object) {
         Object location = object.getAttribute("_location");
         Figure figure = _getGraphController().getFigure(location);
@@ -115,6 +122,10 @@ public class MatchResultViewer extends AbstractGTFrame {
         for (Object child : matcher.entityList(AtomicActor.class)) {
             dehighlightMatchedObject((NamedObj) child);
         }
+    }
+
+    public FileSelectionStatus getFileSelectionStatus() {
+        return _fileSelectionStatus;
     }
 
     public void highlightMatchedObject(NamedObj object) {
@@ -137,11 +148,29 @@ public class MatchResultViewer extends AbstractGTFrame {
         }
     }
 
+    public void setBatchMode(boolean batchMode) {
+        _isBatchMode = batchMode;
+        _previousFileItem.setVisible(batchMode);
+        _nextFileItem.setVisible(batchMode);
+        _previousFileButton.setVisible(batchMode);
+        _nextFileButton.setVisible(batchMode);
+    }
+
     public void setMatchResult(List<MatchResult> results) {
         _results = results;
         _currentPosition = 0;
         _enableOrDisableActions();
         highlightMatchedObjects();
+    }
+
+    public void setNextFileEnabled(boolean nextFileEnabled) {
+        _isNextFileEnabled = nextFileEnabled;
+        _enableOrDisableActions();
+    }
+
+    public void setPreviousFileEnabled(boolean previousFileEnabled) {
+        _isPreviousFileEnabled = previousFileEnabled;
+        _enableOrDisableActions();
     }
 
     public void setTransformationRule(TransformationRule rule) {
@@ -160,6 +189,10 @@ public class MatchResultViewer extends AbstractGTFrame {
         }
     }
 
+    public enum FileSelectionStatus {
+        NEXT, NONE, PREVIOUS;
+    }
+
     /** Create the menus that are used by this frame.
      *  It is essential that _createGraphPane() be called before this.
      */
@@ -168,19 +201,30 @@ public class MatchResultViewer extends AbstractGTFrame {
 
         PreviousAction previousAction = new PreviousAction();
         NextAction nextAction = new NextAction();
+        PreviousFileAction previousFileAction = new PreviousFileAction();
+        NextFileAction nextFileAction = new NextFileAction();
         TransformAction transformAction = new TransformAction();
 
         _viewMenu.addSeparator();
         _previousItem = GUIUtilities.addMenuItem(_viewMenu, previousAction);
         _nextItem = GUIUtilities.addMenuItem(_viewMenu, nextAction);
+        _previousFileItem =
+            GUIUtilities.addMenuItem(_viewMenu, previousFileAction);
+        _nextFileItem =
+            GUIUtilities.addMenuItem(_viewMenu, nextFileAction);
         _transformItem = GUIUtilities.addMenuItem(_viewMenu, transformAction);
 
+        _previousFileButton =
+            GUIUtilities.addToolBarButton(_toolbar, previousFileAction);
         _previousButton =
             GUIUtilities.addToolBarButton(_toolbar, previousAction);
         _nextButton = GUIUtilities.addToolBarButton(_toolbar, nextAction);
+        _nextFileButton =
+            GUIUtilities.addToolBarButton(_toolbar, nextFileAction);
         _transformButton = GUIUtilities.addToolBarButton(_toolbar,
                 transformAction);
 
+        setBatchMode(_isBatchMode);
         _enableOrDisableActions();
     }
 
@@ -258,6 +302,9 @@ public class MatchResultViewer extends AbstractGTFrame {
                     synchronized (viewer) {
                         _results = viewer._results;
                         _currentPosition = viewer._currentPosition;
+                        _isBatchMode = viewer._isBatchMode;
+                        _isPreviousFileEnabled = viewer._isPreviousFileEnabled;
+                        _isNextFileEnabled = viewer._isNextFileEnabled;
                         _transformed = viewer._transformed;
                         _rule = viewer._rule;
                         viewer._subviewers.add(this);
@@ -286,6 +333,18 @@ public class MatchResultViewer extends AbstractGTFrame {
         if (_nextButton != null && _results != null) {
             _nextButton.setEnabled(!_transformed
                     && _currentPosition < _results.size() - 1);
+        }
+        if (_previousFileItem != null && _results != null) {
+            _previousFileItem.setEnabled(_isPreviousFileEnabled);
+        }
+        if (_previousFileButton != null && _results != null) {
+            _previousFileButton.setEnabled(_isPreviousFileEnabled);
+        }
+        if (_nextFileItem != null && _results != null) {
+            _nextFileItem.setEnabled(_isNextFileEnabled);
+        }
+        if (_nextFileButton != null && _results != null) {
+            _nextFileButton.setEnabled(_isNextFileEnabled);
         }
         if (_transformItem != null && _results != null) {
             _transformItem.setEnabled(!_transformed && _rule != null);
@@ -319,6 +378,11 @@ public class MatchResultViewer extends AbstractGTFrame {
         }
     }
 
+    private void _nextFile() {
+        _fileSelectionStatus = FileSelectionStatus.NEXT;
+        setVisible(false);
+    }
+
     private void _previous() {
         if (_currentPosition > 0) {
             _currentPosition--;
@@ -330,6 +394,11 @@ public class MatchResultViewer extends AbstractGTFrame {
             }
             _enableOrDisableActions();
         }
+    }
+
+    private void _previousFile() {
+        _fileSelectionStatus = FileSelectionStatus.PREVIOUS;
+        setVisible(false);
     }
 
     private void _transform() {
@@ -346,11 +415,27 @@ public class MatchResultViewer extends AbstractGTFrame {
     private AnimationRenderer _decorator =
         new AnimationRenderer(new Color(255, 64, 64));
 
+    private FileSelectionStatus _fileSelectionStatus = FileSelectionStatus.NONE;
+
+    private boolean _isBatchMode = false;
+
+    private boolean _isNextFileEnabled = false;
+
+    private boolean _isPreviousFileEnabled = false;
+
     private JButton _nextButton;
+
+    private JButton _nextFileButton;
+
+    private JMenuItem _nextFileItem;
 
     private JMenuItem _nextItem;
 
     private JButton _previousButton;
+
+    private JButton _previousFileButton;
+
+    private JMenuItem _previousFileItem;
 
     private JMenuItem _previousItem;
 
@@ -371,8 +456,6 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     private JMenuItem _transformItem;
 
-    private static final long serialVersionUID = 2459501522934657116L;
-
     private class NextAction extends FigureAction {
 
         public NextAction() {
@@ -387,6 +470,11 @@ public class MatchResultViewer extends AbstractGTFrame {
                             GUIUtilities.ROLLOVER_SELECTED_ICON },
                     { "/ptolemy/vergil/gt/img/next_on.gif",
                             GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", "Highlight next match (Ctrl+->)");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_RIGHT, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -399,7 +487,38 @@ public class MatchResultViewer extends AbstractGTFrame {
             }
         }
 
-        private static final long serialVersionUID = -4164485619951340333L;
+    }
+
+    private class NextFileAction extends FigureAction {
+
+        public NextFileAction() {
+            super("Next File");
+
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/gt/img/nextfile.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/gt/img/nextfile_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/gt/img/nextfile_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/gt/img/nextfile_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", "Match next file (Ctrl+.)");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_PERIOD, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            if (_topFrame != null) {
+                _topFrame._nextFile();
+            } else {
+                _nextFile();
+            }
+        }
     }
 
     private class PreviousAction extends FigureAction {
@@ -416,6 +535,11 @@ public class MatchResultViewer extends AbstractGTFrame {
                             GUIUtilities.ROLLOVER_SELECTED_ICON },
                     { "/ptolemy/vergil/gt/img/previous_on.gif",
                             GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", "Highlight previous match (Ctrl+<-)");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_LEFT, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -428,7 +552,38 @@ public class MatchResultViewer extends AbstractGTFrame {
             }
         }
 
-        private static final long serialVersionUID = 6583982647474946917L;
+    }
+
+    private class PreviousFileAction extends FigureAction {
+
+        public PreviousFileAction() {
+            super("Previous File");
+
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/gt/img/previousfile.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/gt/img/previousfile_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/gt/img/previousfile_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/gt/img/previousfile_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", "Match previous file (Ctrl+,)");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_COMMA, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            if (_topFrame != null) {
+                _topFrame._previousFile();
+            } else {
+                _previousFile();
+            }
+        }
     }
 
     private class TransformAction extends FigureAction {
@@ -445,6 +600,12 @@ public class MatchResultViewer extends AbstractGTFrame {
                             GUIUtilities.ROLLOVER_SELECTED_ICON },
                     { "/ptolemy/vergil/gt/img/transform_on.gif",
                             GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", "Transform the current highlighted occurrence "
+                    + "(Ctrl+/)");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_SLASH, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -457,7 +618,6 @@ public class MatchResultViewer extends AbstractGTFrame {
             }
         }
 
-        private static final long serialVersionUID = -8751857103246738564L;
     }
 
 }

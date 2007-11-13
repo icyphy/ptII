@@ -108,6 +108,4 @@ public class MatchResult extends TwoWayHashMap<Object, Object> {
 
     private List<Object> _keySequence = new LinkedList<Object>();
 
-    private static final long serialVersionUID = -539612130819642425L;
-
 }

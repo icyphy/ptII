@@ -58,6 +58,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AtomicActorMatcher.java \
 	CompositeActorMatcher.java \
+	DefaultDirectoryAttribute.java \
 	DefaultModelAttribute.java \
 	GTEntity.java \
 	GTIngredient.java \
@@ -72,6 +73,7 @@ JSRCS = \
 	HierarchyFlatteningAttribute.java \
 	MalformedStringException.java \
 	MatchCallback.java \
+	ParameterAttribute.java \
 	Pattern.java \
 	PatternAttribute.java \
 	PatternObjectAttribute.java \
@@ -95,7 +97,6 @@ OPTIONAL_FILES = \
 	'AtomicActorMatcher$$1.class' \
 	'AtomicActorMatcher$$LoadActorIconChangeRequest.class' \
 	'AtomicActorMatcher$$RestoreAppearanceChangeRequest.class' \
-	'DefaultModelAttribute$$DefaultModelParameter.class' \
 	'GTIngredient$$FieldIterator.class' \
 	'GTIngredient$$NamedObjMatchResult.class' \
 	'GraphAnalyzer$$IndexedList.class' \

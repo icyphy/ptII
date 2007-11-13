@@ -230,8 +230,6 @@ implements ChangeListener, KeyListener {
                 }
             }
 
-            /** Serial ID */
-            private static final long serialVersionUID = -4998226270980176175L;
         };
 
         _tabbedPane.addChangeListener(this);
@@ -326,6 +324,4 @@ implements ChangeListener, KeyListener {
     private List<JGraph> _graphs;
 
     private JTabbedPane _tabbedPane;
-
-    private static final long serialVersionUID = -7057287804004272089L;
 }

@@ -72,9 +72,4 @@ public class TransformationRule extends MultiCompositeActor {
         new Replacement(this, "Replacement");
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                          private variables                ////
-
-    private static final long serialVersionUID = -456353254196458127L;
-
 }

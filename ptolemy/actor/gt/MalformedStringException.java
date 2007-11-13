@@ -45,6 +45,4 @@ public class MalformedStringException extends KernelException {
         super(null, null, null, "Rule list string \"" + expression + "\" is malformed.");
     }
 
-    private static final long serialVersionUID = -7897941743479587977L;
-
 }

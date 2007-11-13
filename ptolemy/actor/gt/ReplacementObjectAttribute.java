@@ -71,9 +71,4 @@ public class ReplacementObjectAttribute extends StringAttribute {
         setClassName("ptolemy.actor.gt.ReplacementObjectAttribute");
     }
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 4651248858078652079L;
-
 }

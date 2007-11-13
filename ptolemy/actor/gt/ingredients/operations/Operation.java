@@ -58,7 +58,7 @@ public abstract class Operation extends GTIngredient {
     public Operation(GTIngredientList owner, int elementCount) {
         super(owner, elementCount);
     }
-    
+
     public ChangeRequest getChangeRequest(GTEntity patternEntity,
             GTEntity replacementEntity, ComponentEntity hostEntity) {
         return null;

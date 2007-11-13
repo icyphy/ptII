@@ -136,6 +136,4 @@ public class RelationCollapsingAttribute extends PatternAttribute {
         + "  style=\"stroke:#C00000; stroke-width:3\"/>"
         + "</svg>";
 
-    private static final long serialVersionUID = -2123989795169992926L;
-
 }

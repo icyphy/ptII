@@ -53,11 +53,11 @@ public class Replacement extends CompositeActorMatcher {
         super(container, name);
         setClassName("ptolemy.actor.gt.Replacement");
     }
-    
+
     protected void updateEntitiesAppearance(GTIngredientsAttribute attribute) {
         _updateEntitiesAppearance(this, attribute);
     }
-    
+
     private static void _updateEntitiesAppearance(CompositeEntity container,
             GTIngredientsAttribute attribute) {
         for (Object entity : container.entityList()) {
@@ -70,7 +70,5 @@ public class Replacement extends CompositeActorMatcher {
             }
         }
     }
-
-    private static final long serialVersionUID = -6577530721058668703L;
 
 }

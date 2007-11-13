@@ -48,7 +48,7 @@ public class PatternObjectAttribute extends StringAttribute {
      *
      */
     public PatternObjectAttribute() {
-    	setClassName("ptolemy.actor.gt.PatternObjectAttribute");
+        setClassName("ptolemy.actor.gt.PatternObjectAttribute");
     }
 
     /**
@@ -70,10 +70,5 @@ public class PatternObjectAttribute extends StringAttribute {
         super(workspace);
         setClassName("ptolemy.actor.gt.PatternObjectAttribute");
     }
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = 7459125304961349998L;
 
 }

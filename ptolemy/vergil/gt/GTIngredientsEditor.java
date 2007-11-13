@@ -391,7 +391,6 @@ implements ActionListener {
 
         public StringAttribute attributeName;
 
-        private static final long serialVersionUID = 6581490244784855795L;
     }
 
     protected void _createComponents() {
@@ -407,8 +406,6 @@ implements ActionListener {
                             return super.isCellEditable(row, column);
                         }
                     }
-                    private static final long serialVersionUID =
-                        -6967159767501555584L;
                 };
         _table = new JTable(_tableModel);
         _table.setRowHeight(_ROW_HEIGHT);
@@ -517,8 +514,6 @@ implements ActionListener {
                     return super.getTableCellRendererComponent(table, value,
                             isSelected, false, row, column);
                 }
-                private static final long serialVersionUID =
-                    2746000543494635898L;
         };
         indexRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         column0.setCellRenderer(indexRenderer);
@@ -643,8 +638,6 @@ implements ActionListener {
 
     private static final Color _UNSELECTED_COLOR = Color.WHITE;
 
-    private static final long serialVersionUID = -2788727943126991098L;
-
     private static class ColorizedComboBox extends JComboBox {
 
         public Color getCustomBackground() {
@@ -673,8 +666,6 @@ implements ActionListener {
         private Color _background;
 
         private Editor _editor = new Editor();
-
-        private static final long serialVersionUID = -1020598266173440301L;
 
         private class Editor extends MouseAdapter implements ActionListener,
         ComboBoxEditor, FocusListener {
@@ -766,7 +757,6 @@ implements ActionListener {
 
         private Color _background;
 
-        private static final long serialVersionUID = -7148402579177864107L;
     }
 
     private static class ComboElement {
@@ -882,8 +872,6 @@ implements ActionListener {
 
         private TableauFrame _owner;
 
-        private static final long serialVersionUID = -566278924482709077L;
-
     }
 
     private static class IngredientContentEditor extends AbstractCellEditor
@@ -913,8 +901,6 @@ implements ActionListener {
         }
 
         private Row _currentRow;
-
-        private static final long serialVersionUID = -8545086228933217848L;
 
     }
 

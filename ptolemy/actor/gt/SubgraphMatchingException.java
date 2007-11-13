@@ -44,6 +44,4 @@ public class SubgraphMatchingException extends GraphTransformationException {
         super(cause);
     }
 
-    private static final long serialVersionUID = -8394546996898251369L;
-
 }

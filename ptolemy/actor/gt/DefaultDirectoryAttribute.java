@@ -28,11 +28,15 @@
 
 package ptolemy.actor.gt;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
 
 /**
 
@@ -42,9 +46,10 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class DefaultModelAttribute extends ParameterAttribute {
+public class DefaultDirectoryAttribute extends ParameterAttribute
+implements ValueListener {
 
-    public DefaultModelAttribute(NamedObj container, String name)
+    public DefaultDirectoryAttribute(NamedObj container, String name)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
@@ -58,11 +63,51 @@ public class DefaultModelAttribute extends ParameterAttribute {
         }
     }
 
+    public void valueChanged(Settable settable) {
+        String display = directory.getExpression() + "/";
+        String filter = fileFilter.getExpression();
+        if (filter.equals("")) {
+            display += "*.xml";
+        } else {
+            display += filter;
+        }
+        try {
+            if (subdirs.getToken().equals(BooleanToken.TRUE)) {
+                display += " [...]";
+            }
+        } catch (IllegalActionException e) {
+        }
+        parameter.setExpression(display);
+    }
+
+    public StringParameter directory;
+
+    public StringParameter fileFilter;
+
+    public Parameter subdirs;
+
     protected void _initParameter() throws IllegalActionException,
-            NameDuplicationException {
-        parameter = new StringParameter(this, "model");
-        parameter.setTypeEquals(BaseType.STRING);
-        parameter.setExpression("");
+    NameDuplicationException {
+        parameter = new StringParameter(this, "display");
+        parameter.setDisplayName("Display (./)");
+        parameter.setPersistent(false);
+        parameter.setVisibility(Settable.NONE);
+
+        directory = new StringParameter(this, "directory");
+        directory.setDisplayName("Directory");
+        directory.setExpression(".");
+        directory.addValueListener(this);
+
+        fileFilter = new StringParameter(this, "filter");
+        fileFilter.setDisplayName("File filter (*.xml)");
+        fileFilter.setExpression("");
+        fileFilter.addValueListener(this);
+
+        subdirs = new Parameter(this, "subdirs");
+        subdirs.setDisplayName("Include subdirs");
+        subdirs.setTypeEquals(BaseType.BOOLEAN);
+        subdirs.setExpression("true");
+        subdirs.addValueListener(this);
     }
 
 }

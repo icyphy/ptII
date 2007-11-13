@@ -47,6 +47,4 @@ public class Pattern extends CompositeActorMatcher {
         super(container, name);
         setClassName("ptolemy.actor.gt.Pattern");
     }
-
-    private static final long serialVersionUID = -5619047560683809435L;
 }

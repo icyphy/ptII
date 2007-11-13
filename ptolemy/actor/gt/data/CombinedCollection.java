@@ -48,7 +48,7 @@ public class CombinedCollection<E> implements Collection<E> {
 
     public CombinedCollection() {
     }
-    
+
     public CombinedCollection(Collection<? extends E> ... collections) {
         for (Collection<? extends E> collection : collections) {
             _collectionList.add(collection);

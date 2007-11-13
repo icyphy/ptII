@@ -88,9 +88,13 @@ OPTIONAL_FILES = \
 	'GTIngredientsEditor$$Row$$CheckBoxActionListener.class' \
 	'GTIngredientsEditor$$Row.class' \
 	'GTRuleGraphFrame$$1.class' \
+	'GTRuleGraphFrame$$2.class' \
+	'GTRuleGraphFrame$$BatchMatchAction$$MultipleViewController.class' \
+	'GTRuleGraphFrame$$BatchMatchAction$$XMLFileCollector.class' \
+	'GTRuleGraphFrame$$BatchMatchAction.class' \
 	'GTRuleGraphFrame$$CellEditor.class' \
 	'GTRuleGraphFrame$$FileChooser.class' \
-	'GTRuleGraphFrame$$GTAction.class' \
+	'GTRuleGraphFrame$$FileComparator.class' \
 	'GTRuleGraphFrame$$GTActionGraphController$$EntityController.class' \
 	'GTRuleGraphFrame$$GTActionGraphController$$NewRelationAction.class' \
 	'GTRuleGraphFrame$$GTActionGraphController.class' \
@@ -98,6 +102,7 @@ OPTIONAL_FILES = \
 	'GTRuleGraphFrame$$LayoutAction.class' \
 	'GTRuleGraphFrame$$MatchAction.class' \
 	'GTRuleGraphFrame$$MatchResultRecorder.class' \
+	'GTRuleGraphFrame$$SingleMatchAction.class' \
 	'GTRuleGraphTableau$$Factory.class' \
 	'MatchResultTableau$$Factory.class' \
 	'MatchResultViewer$$1.class' \
@@ -106,8 +111,11 @@ OPTIONAL_FILES = \
 	'MatchResultViewer$$3.class' \
 	'MatchResultViewer$$4$$1.class' \
 	'MatchResultViewer$$4.class' \
+	'MatchResultViewer$$FileSelectionStatus.class' \
 	'MatchResultViewer$$NextAction.class' \
+	'MatchResultViewer$$NextFileAction.class' \
 	'MatchResultViewer$$PreviousAction.class' \
+	'MatchResultViewer$$PreviousFileAction.class' \
 	'MatchResultViewer$$TransformAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

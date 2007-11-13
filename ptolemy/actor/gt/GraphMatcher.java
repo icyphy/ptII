@@ -875,7 +875,6 @@ public class GraphMatcher extends GraphAnalyzer {
                     false);
         }
 
-        private static final long serialVersionUID = -2952044613606267420L;
     }
 
     private static class LookbackList extends FastLinkedList<LookbackEntry> {

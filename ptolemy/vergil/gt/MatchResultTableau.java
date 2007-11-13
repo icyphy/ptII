@@ -193,17 +193,12 @@ public class MatchResultTableau extends Tableau {
 
         public TableauFactory xmlViewFactory;
 
-        private static final long serialVersionUID = 3382841404529365973L;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     public inner classes                  ////
-
-    /** Background color. */
-    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private static final long serialVersionUID = 5437117715702385793L;
+    /** Background color. */
+    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
+
 }

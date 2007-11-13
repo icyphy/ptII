@@ -28,11 +28,14 @@
 
 package ptolemy.actor.gt;
 
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
+import java.util.Collection;
+
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.ValueListener;
 
 /**
 
@@ -42,11 +45,38 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class DefaultModelAttribute extends ParameterAttribute {
+public abstract class ParameterAttribute extends PatternAttribute
+implements Settable {
 
-    public DefaultModelAttribute(NamedObj container, String name)
+    public ParameterAttribute(NamedObj container, String name)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
+        _initParameter();
+    }
+
+    public void addValueListener(ValueListener listener) {
+        parameter.addValueListener(listener);
+    }
+
+    public String getDefaultExpression() {
+        return parameter.getDefaultExpression();
+    }
+
+    public String getExpression() {
+        return parameter.getExpression();
+    }
+
+    public String getValueAsString() {
+        return parameter.getValueAsString();
+    }
+
+    public Visibility getVisibility() {
+        return parameter.getVisibility();
+    }
+
+    public void removeValueListener(ValueListener listener) {
+        parameter.removeValueListener(listener);
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,
@@ -58,11 +88,21 @@ public class DefaultModelAttribute extends ParameterAttribute {
         }
     }
 
-    protected void _initParameter() throws IllegalActionException,
-            NameDuplicationException {
-        parameter = new StringParameter(this, "model");
-        parameter.setTypeEquals(BaseType.STRING);
-        parameter.setExpression("");
+    public void setExpression(String expression) throws IllegalActionException {
+        parameter.setExpression(expression);
     }
+
+    public void setVisibility(Visibility visibility) {
+        parameter.setVisibility(visibility);
+    }
+
+    public Collection<?> validate() throws IllegalActionException {
+        return parameter.validate();
+    }
+
+    public Parameter parameter;
+
+    protected abstract void _initParameter() throws IllegalActionException,
+    NameDuplicationException;
 
 }

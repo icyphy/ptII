@@ -114,9 +114,4 @@ public class TwoWayHashMap<K, V> extends HashMap<K, V> {
 
     private HashMap<V, K> _reverseMap = new HashMap<V, K>();
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 6186294695618961810L;
-
 }

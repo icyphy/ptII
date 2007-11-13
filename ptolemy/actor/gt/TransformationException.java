@@ -46,14 +46,6 @@ public class TransformationException extends KernelException {
      */
     public TransformationException() {
     }
-    
-    public TransformationException(String detail) {
-        this(null, null, detail);
-    }
-    
-    public TransformationException(String detail, Throwable cause) {
-        this(null, null, cause, detail);
-    }
 
     /**
      * @param object1
@@ -76,9 +68,12 @@ public class TransformationException extends KernelException {
         super(object1, object2, cause, detail);
     }
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 4419464305520872070L;
+    public TransformationException(String detail) {
+        this(null, null, detail);
+    }
+
+    public TransformationException(String detail, Throwable cause) {
+        this(null, null, cause, detail);
+    }
 
 }

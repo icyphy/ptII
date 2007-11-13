@@ -84,6 +84,4 @@ implements TableCellEditor, TableCellRenderer {
 
     private JPanel _currentValue;
 
-    private static final long serialVersionUID = -3898792308707116805L;
-
 }

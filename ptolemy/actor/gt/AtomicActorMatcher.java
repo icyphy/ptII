@@ -270,8 +270,6 @@ ValueListener {
         + "  match</text>"
         + "</svg>";
 
-    private static final long serialVersionUID = 8775143612221394893L;
-
     private class LoadActorIconChangeRequest extends MoMLChangeRequest {
 
         public LoadActorIconChangeRequest(CompositeEntity container,
