@@ -221,6 +221,8 @@ test InterfaceAutomaton-8.1 {test generating moml} {
         </port>
     </entity>
     <relation name="t0" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
+        <property name="annotation" class="ptolemy.data.expr.StringParameter" value="">
+        </property>
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="c=true">
