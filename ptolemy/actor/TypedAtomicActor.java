@@ -192,16 +192,16 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
             while (inPorts.hasNext()) {
                 TypedIOPort inPort = (TypedIOPort) inPorts.next();
-                boolean isUndeclared = inPort.getTypeTerm().isSettable();
+//                boolean isUndeclared = inPort.getTypeTerm().isSettable();
 
-                if (isUndeclared) {
+//                if (isUndeclared) {
                     // inPort has undeclared type.
                     Iterator outPorts = outputPortList().iterator();
 
                     while (outPorts.hasNext()) {
                         TypedIOPort outPort = (TypedIOPort) outPorts.next();
 
-                        isUndeclared = outPort.getTypeTerm().isSettable();
+                        boolean isUndeclared = outPort.getTypeTerm().isSettable();
 
                         if (isUndeclared && (inPort != outPort)) {
                             // output also undeclared, not bidirectional port,
@@ -223,7 +223,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
                         }
                     }
                 }
-            }
+//            }
 
             // collect constraints from contained Typeables
             Iterator ports = portList().iterator();
