@@ -741,6 +741,7 @@ public class Transition extends ComponentRelation {
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         annotation = new StringParameter(this, "annotation");
+        annotation.setExpression("");
         // Add a hint to indicate to the PtolemyQuery class to open with a text style.
         Variable variable = new Variable(annotation, "_textHeightHint");
         variable.setExpression("5");
