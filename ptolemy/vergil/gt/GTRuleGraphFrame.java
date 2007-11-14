@@ -942,29 +942,25 @@ TableModelListener, ValueListener {
             Pattern pattern = rule.getPattern();
             DefaultDirectoryAttribute attribute = (DefaultDirectoryAttribute)
                     pattern.getAttribute("DefaultDirectory");
-            String directory = "";
-            String fileFilter = "";
+            String directory = attribute == null ? ""
+                    : attribute.directory.getExpression();
+            String fileFilter = attribute == null ? ""
+                    : attribute.fileFilter.getExpression();
             boolean subdirs = true;
-            if (attribute != null) {
-                directory = attribute.directory.getExpression();
-                fileFilter = attribute.fileFilter.getExpression();
-                try {
-                    subdirs = ((BooleanToken) attribute.subdirs.getToken())
-                            .booleanValue();
-                } catch (IllegalActionException e) {
-                    throw new KernelRuntimeException(e, "Unable to get "
-                            + "boolean token.");
-                }
+            try {
+                subdirs = attribute == null ? true : ((BooleanToken)
+                        attribute.subdirs.getToken()).booleanValue();
+            } catch (IllegalActionException e) {
+                throw new KernelRuntimeException(e, "Unable to get boolean "
+                        + "token.");
             }
             File dir;
             if (directory.equals("")) {
-                _directory.setExpression(directory);
-                _fileFilter.setExpression(fileFilter);
-                _subdirs.setExpression(subdirs ? "true" : "false");
                 FileChooser fileChooser = new FileChooser(GTRuleGraphFrame.this,
                         _attribute, false, true);
                 if (fileChooser._isConfirmed()) {
                     String directoryName = fileChooser.getFileName();
+                    _directory.setExpression(directoryName);
                     if (directoryName.equals("")) {
                         directoryName = ".";
                     }
@@ -1019,31 +1015,19 @@ TableModelListener, ValueListener {
 
         private Parameter _subdirs;
 
-        private class MultipleViewController implements WindowListener {
-
-            public void windowActivated(WindowEvent e) {
-            }
-
-            public void windowClosed(WindowEvent e) {
-            }
-
-            public void windowClosing(WindowEvent e) {
-                Window window = e.getWindow();
-                if (window != GTRuleGraphFrame.this) {
-                    return;
-                }
-                _closeAll();
-            }
+        private class MultipleViewController extends ViewController {
 
             public void windowDeactivated(WindowEvent e) {
                 Window window = e.getWindow();
                 if (!(window instanceof MatchResultViewer)) {
                     return;
                 }
+
                 MatchResultViewer viewer = (MatchResultViewer) window;
                 if (viewer.isVisible()) {
                     return;
                 }
+
                 MatchResultViewer.FileSelectionStatus status =
                     viewer.getFileSelectionStatus();
                 viewer.clearFileSelectionStatus();
@@ -1057,17 +1041,23 @@ TableModelListener, ValueListener {
                     _viewCurrentModel();
                     break;
                 default:
-                    _closeAll();
+                    _close();
                 }
             }
 
-            public void windowDeiconified(WindowEvent e) {
-            }
-
-            public void windowIconified(WindowEvent e) {
-            }
-
-            public void windowOpened(WindowEvent e) {
+            protected void _close() {
+                super._close();
+                if (_viewers != null) {
+                    for (int i = 0; i < _viewers.length; i++) {
+                        MatchResultViewer viewer = _viewers[i];
+                        if (viewer != null) {
+                            viewer.removeWindowListener(this);
+                            viewer.close();
+                            _viewers[i] = null;
+                        }
+                    }
+                    _viewers = null;
+                }
             }
 
             @SuppressWarnings("unchecked")
@@ -1087,21 +1077,9 @@ TableModelListener, ValueListener {
                         MessageHandler.message("No match found.");
                         return;
                     }
-
-                    addWindowListener(this);
                     _viewCurrentModel();
                 } catch (Throwable throwable) {
                     _handleErrors(throwable);
-                }
-            }
-
-            private void _closeAll() {
-                removeWindowListener(this);
-                for (MatchResultViewer viewer : _viewers) {
-                    if (viewer != null) {
-                        viewer.removeWindowListener(this);
-                        viewer.close();
-                    }
                 }
             }
 
@@ -1133,20 +1111,6 @@ TableModelListener, ValueListener {
                     }
                 }
                 return -1;
-            }
-
-            private void _handleErrors(Throwable throwable) {
-                for (int i = 0; i < _viewers.length; i++) {
-                    _viewers[i].removeWindowListener(this);
-                    _viewers[i].close();
-                    _viewers[i] = null;
-                }
-                if (throwable instanceof MalformedURLException) {
-                    MessageHandler.error("Unable to obtain URL from the input "
-                            + "file name.", throwable);
-                } else {
-                    throw new InternalErrorException(throwable);
-                }
             }
 
             private void _viewCurrentModel() {
@@ -1300,7 +1264,8 @@ TableModelListener, ValueListener {
                 if (fileChooser.showOpenDialog(this)
                         == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fileChooser.getSelectedFile();
-                    _textField.setText(selectedFile.getPath());
+                    String fileName = selectedFile.getPath();
+                    _textField.setText(fileName);
                     _currentDirectory = fileChooser.getCurrentDirectory();
                 }
             }
@@ -1583,8 +1548,7 @@ TableModelListener, ValueListener {
         private List<MatchResult> _results = new LinkedList<MatchResult>();
     }
 
-    private class SingleMatchAction extends MatchAction
-    implements WindowListener {
+    private class SingleMatchAction extends MatchAction {
 
         public SingleMatchAction() {
             super("Match Model");
@@ -1617,59 +1581,7 @@ TableModelListener, ValueListener {
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
-            try {
-                File file = _getModelFile();
-                if (file == null) {
-                    return;
-                }
-
-                CompositeEntity model = _getModel(file);
-                List<MatchResult> results = _getMatchResult(model);
-                if (results.isEmpty()) {
-                    MessageHandler.message("No match found.");
-                } else {
-                    _viewer = _showViewer(model, results);
-                    _viewer.addWindowListener(this);
-                    addWindowListener(this);
-                }
-            } catch (MalformedURLException ex) {
-                MessageHandler.error("Unable to obtain URL from the input " +
-                        "file name.", ex);
-            } catch (Exception ex) {
-                throw new InternalErrorException(ex);
-            }
-        }
-
-        public void windowActivated(WindowEvent e) {
-        }
-
-        public void windowClosed(WindowEvent e) {
-        }
-
-        public void windowClosing(WindowEvent e) {
-            Window window = e.getWindow();
-            if (window == GTRuleGraphFrame.this) {
-                _viewer.removeWindowListener(this);
-                removeWindowListener(this);
-                _viewer.close();
-                _viewer = null;
-            } else {
-                _viewer.removeWindowListener(this);
-                removeWindowListener(this);
-                _viewer = null;
-            }
-        }
-
-        public void windowDeactivated(WindowEvent e) {
-        }
-
-        public void windowDeiconified(WindowEvent e) {
-        }
-
-        public void windowIconified(WindowEvent e) {
-        }
-
-        public void windowOpened(WindowEvent e) {
+            new SingleViewController();
         }
 
         private File _getModelFile() {
@@ -1684,8 +1596,9 @@ TableModelListener, ValueListener {
                 FileChooser fileChooser = new FileChooser(GTRuleGraphFrame.this,
                         _attribute, true, false);
                 if (fileChooser._isConfirmed()) {
-                    String matchFileName = fileChooser.getFileName();
-                    input = new File(matchFileName);
+                    String fileName = fileChooser.getFileName();
+                    _inputModel.setExpression(fileName);
+                    input = new File(fileName);
                 } else {
                     return null;
                 }
@@ -1712,6 +1625,101 @@ TableModelListener, ValueListener {
 
         private FileParameter _inputModel;
 
-        private MatchResultViewer _viewer;
+        private class SingleViewController extends ViewController {
+
+            public void windowDeactivated(WindowEvent e) {
+                Window window = e.getWindow();
+                if (!(window instanceof MatchResultViewer)) {
+                    return;
+                }
+
+                MatchResultViewer viewer = (MatchResultViewer) window;
+                if (viewer.isVisible()) {
+                    return;
+                }
+
+                _close();
+            }
+
+            protected void _close() {
+                super._close();
+                if (_viewer != null) {
+                    _viewer.removeWindowListener(this);
+                    _viewer.close();
+                    _viewer = null;
+                }
+            }
+
+            SingleViewController() {
+                try {
+                    File file = _getModelFile();
+                    if (file == null) {
+                        return;
+                    }
+
+                    CompositeEntity model = _getModel(file);
+                    List<MatchResult> results = _getMatchResult(model);
+                    if (results.isEmpty()) {
+                        MessageHandler.message("No match found.");
+                    } else {
+                        _viewer = _showViewer(model, results);
+                        _viewer.addWindowListener(this);
+                    }
+                } catch (MalformedURLException ex) {
+                    MessageHandler.error("Unable to obtain URL from the " +
+                            "input file name.", ex);
+                } catch (Exception ex) {
+                    throw new InternalErrorException(ex);
+                }
+            }
+
+            private MatchResultViewer _viewer;
+        }
+    }
+
+    private class ViewController implements WindowListener {
+
+        public void windowActivated(WindowEvent e) {
+        }
+
+        public void windowClosed(WindowEvent e) {
+        }
+
+        public void windowClosing(WindowEvent e) {
+            Window window = e.getWindow();
+            if (window == GTRuleGraphFrame.this) {
+                _close();
+            }
+        }
+
+        public void windowDeactivated(WindowEvent e) {
+        }
+
+        public void windowDeiconified(WindowEvent e) {
+        }
+
+        public void windowIconified(WindowEvent e) {
+        }
+
+        public void windowOpened(WindowEvent e) {
+        }
+
+        protected void _close() {
+            removeWindowListener(this);
+        }
+
+        protected void _handleErrors(Throwable throwable) {
+            if (throwable instanceof MalformedURLException) {
+                MessageHandler.error("Unable to obtain URL from the input "
+                        + "file name.", throwable);
+            } else {
+                throw new InternalErrorException(throwable);
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        ViewController() {
+            addWindowListener(this);
+        }
     }
 }
