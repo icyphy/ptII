@@ -102,7 +102,9 @@ OPTIONAL_FILES = \
 	'GTRuleGraphFrame$$LayoutAction.class' \
 	'GTRuleGraphFrame$$MatchAction.class' \
 	'GTRuleGraphFrame$$MatchResultRecorder.class' \
+	'GTRuleGraphFrame$$SingleMatchAction$$SingleViewController.class' \
 	'GTRuleGraphFrame$$SingleMatchAction.class' \
+	'GTRuleGraphFrame$$ViewController.class' \
 	'GTRuleGraphTableau$$Factory.class' \
 	'MatchResultTableau$$Factory.class' \
 	'MatchResultViewer$$1.class' \
