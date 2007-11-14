@@ -979,14 +979,15 @@ TableModelListener, ValueListener {
                 }
             } else {
                 dir = new File(directory);
-                if (!dir.isAbsolute()) {
-                    URI uri = getEffigy().uri.getURI();
-                    File parent = null;
-                    if (uri != null) {
-                        parent = new File(uri).getParentFile();
-                    }
-                    dir = new File(parent, directory);
+            }
+
+            if (!dir.isAbsolute()) {
+                URI uri = getEffigy().uri.getURI();
+                File parent = null;
+                if (uri != null) {
+                    parent = new File(uri).getParentFile();
                 }
+                dir = new File(parent, directory);
             }
 
             if (!dir.exists()) {
@@ -1604,14 +1605,15 @@ TableModelListener, ValueListener {
                 }
             } else {
                 input = new File(defaultModel);
-                if (!input.isAbsolute()) {
-                    URI uri = getEffigy().uri.getURI();
-                    File directory = null;
-                    if (uri != null) {
-                        directory = new File(uri).getParentFile();
-                    }
-                    input = new File(directory, defaultModel);
+            }
+
+            if (!input.isAbsolute()) {
+                URI uri = getEffigy().uri.getURI();
+                File directory = null;
+                if (uri != null) {
+                    directory = new File(uri).getParentFile();
                 }
+                input = new File(directory, defaultModel);
             }
 
             if (!input.exists()) {
