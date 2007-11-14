@@ -37,7 +37,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -53,6 +52,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Type;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
@@ -382,8 +382,8 @@ public class GraphMatcher extends GraphAnalyzer {
         return null;
     }
 
-    private boolean _matchAtomicActor(AtomicActor patternActor,
-            AtomicActor hostActor) {
+    private boolean _matchAtomicEntity(ComponentEntity patternActor,
+            ComponentEntity hostActor) {
         int matchSize = _match.size();
         boolean success = true;
         ObjectList patternList = new ObjectList();
@@ -438,18 +438,20 @@ public class GraphMatcher extends GraphAnalyzer {
 
         _match.put(patternEntity, hostEntity);
 
-        if (patternEntity instanceof CompositeActor) {
-            CompositeActor patternComposite = (CompositeActor) patternEntity;
-            Director patternDirector = patternComposite.isOpaque() ?
-                    patternComposite.getDirector() : null;
-            if (hostEntity instanceof CompositeActor) {
-                CompositeActor hostComposite = (CompositeActor) hostEntity;
-                Director hostDirector = hostComposite.isOpaque() ?
-                        hostComposite.getDirector() : null;
-                success = _shallowMatchDirector(patternDirector, hostDirector);
-            } else {
-                success = false;
-            }
+        Director patternDirector = null;
+        Director hostDirector = null;
+        if (patternEntity instanceof CompositeActor
+                && ((CompositeActor) patternEntity).isOpaque()) {
+            patternDirector = ((CompositeActor) patternEntity).getDirector();
+        }
+        if (hostEntity instanceof CompositeActor
+                && ((CompositeActor) hostEntity).isOpaque()) {
+            hostDirector = ((CompositeActor) hostEntity).getDirector();
+        }
+        if (patternDirector != null && hostDirector != null) {
+            success = _shallowMatchDirector(patternDirector, hostDirector);
+        } else if (patternDirector != null) {
+            success = false;
         }
 
         if (success) {
@@ -551,15 +553,15 @@ public class GraphMatcher extends GraphAnalyzer {
             return false;
         }
 
-        if (patternObject instanceof AtomicActor
-                && hostObject instanceof AtomicActor) {
-            return _matchAtomicActor((AtomicActor) patternObject,
-                    (AtomicActor) hostObject);
-
-        } else if (patternObject instanceof CompositeEntity
+        if (patternObject instanceof CompositeEntity
                 && hostObject instanceof CompositeEntity) {
             return _matchCompositeEntity((CompositeEntity) patternObject,
                     (CompositeEntity) hostObject);
+
+        } else if (patternObject instanceof ComponentEntity
+                    && hostObject instanceof ComponentEntity) {
+                return _matchAtomicEntity((ComponentEntity) patternObject,
+                        (ComponentEntity) hostObject);
 
         } else if (patternObject instanceof ObjectList
                 && hostObject instanceof ObjectList) {

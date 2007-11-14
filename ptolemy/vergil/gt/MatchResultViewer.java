@@ -42,7 +42,6 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
 
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.gt.GraphTransformer;
@@ -176,17 +175,6 @@ public class MatchResultViewer extends AbstractGTFrame {
     public void setTransformationRule(TransformationRule rule) {
         _rule = rule;
         _enableOrDisableActions();
-    }
-
-    /** React to a change in the state of the tabbed pane.
-     *  @param event The event.
-     */
-    public void stateChanged(ChangeEvent event) {
-        super.stateChanged(event);
-
-        if (event.getSource() == _getTabbedPane()) {
-            _asynchronousHighlight();
-        }
     }
 
     public enum FileSelectionStatus {

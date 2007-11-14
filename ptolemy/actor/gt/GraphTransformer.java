@@ -492,15 +492,17 @@ public class GraphTransformer extends ChangeRequest {
                             Port originalPort = (Port) linkedObject;
                             Entity linkedEntity = (Entity) entityMap.get(
                                     originalPort.getContainer());
-                            Port port2 =
-                                linkedEntity.getPort(originalPort.getName());
-                            String moml = "<link port=\""
-                                + linkedEntity.getName() + "." + port2.getName()
-                                + "\" relation=\"" + relation1.getName()
-                                + "\"/>";
-                            request =
-                                new MoMLChangeRequest(this, container, moml);
-                            request.execute();
+                            if (linkedEntity != null) {
+                                Port port2 = linkedEntity.getPort(
+                                        originalPort.getName());
+                                String moml = "<link port=\""
+                                    + linkedEntity.getName() + "."
+                                    + port2.getName() + "\" relation=\""
+                                    + relation1.getName() + "\"/>";
+                                request = new MoMLChangeRequest(this, container,
+                                        moml);
+                                request.execute();
+                            }
                         }
                     }
                 }
