@@ -930,7 +930,6 @@ TableModelListener, ValueListener {
                             .getMenuShortcutKeyMask()));
         }
 
-        @SuppressWarnings("unchecked")
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 
@@ -1613,7 +1612,7 @@ TableModelListener, ValueListener {
                 if (uri != null) {
                     directory = new File(uri).getParentFile();
                 }
-                input = new File(directory, defaultModel);
+                input = new File(directory, input.getPath());
             }
 
             if (!input.exists()) {
@@ -1719,7 +1718,6 @@ TableModelListener, ValueListener {
             }
         }
 
-        @SuppressWarnings("unchecked")
         ViewController() {
             addWindowListener(this);
         }
