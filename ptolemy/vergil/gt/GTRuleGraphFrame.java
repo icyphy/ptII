@@ -34,6 +34,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -1027,10 +1028,19 @@ TableModelListener, ValueListener {
             }
 
             public void windowClosing(WindowEvent e) {
+                Window window = e.getWindow();
+                if (window != GTRuleGraphFrame.this) {
+                    return;
+                }
+                _closeAll();
             }
 
             public void windowDeactivated(WindowEvent e) {
-                MatchResultViewer viewer = _viewers[_index];
+                Window window = e.getWindow();
+                if (!(window instanceof MatchResultViewer)) {
+                    return;
+                }
+                MatchResultViewer viewer = (MatchResultViewer) window;
                 if (viewer.isVisible()) {
                     return;
                 }
@@ -1048,14 +1058,6 @@ TableModelListener, ValueListener {
                     break;
                 default:
                     _closeAll();
-                }
-            }
-            
-            private void _closeAll() {
-                for (MatchResultViewer viewer : _viewers) {
-                    if (viewer != null) {
-                        viewer.close();
-                    }
                 }
             }
 
@@ -1086,9 +1088,20 @@ TableModelListener, ValueListener {
                         return;
                     }
 
+                    addWindowListener(this);
                     _viewCurrentModel();
                 } catch (Throwable throwable) {
                     _handleErrors(throwable);
+                }
+            }
+
+            private void _closeAll() {
+                removeWindowListener(this);
+                for (MatchResultViewer viewer : _viewers) {
+                    if (viewer != null) {
+                        viewer.removeWindowListener(this);
+                        viewer.close();
+                    }
                 }
             }
 
@@ -1570,7 +1583,8 @@ TableModelListener, ValueListener {
         private List<MatchResult> _results = new LinkedList<MatchResult>();
     }
 
-    private class SingleMatchAction extends MatchAction {
+    private class SingleMatchAction extends MatchAction
+    implements WindowListener {
 
         public SingleMatchAction() {
             super("Match Model");
@@ -1614,7 +1628,9 @@ TableModelListener, ValueListener {
                 if (results.isEmpty()) {
                     MessageHandler.message("No match found.");
                 } else {
-                    _showViewer(model, results);
+                    _viewer = _showViewer(model, results);
+                    _viewer.addWindowListener(this);
+                    addWindowListener(this);
                 }
             } catch (MalformedURLException ex) {
                 MessageHandler.error("Unable to obtain URL from the input " +
@@ -1622,6 +1638,38 @@ TableModelListener, ValueListener {
             } catch (Exception ex) {
                 throw new InternalErrorException(ex);
             }
+        }
+
+        public void windowActivated(WindowEvent e) {
+        }
+
+        public void windowClosed(WindowEvent e) {
+        }
+
+        public void windowClosing(WindowEvent e) {
+            Window window = e.getWindow();
+            if (window == GTRuleGraphFrame.this) {
+                _viewer.removeWindowListener(this);
+                removeWindowListener(this);
+                _viewer.close();
+                _viewer = null;
+            } else {
+                _viewer.removeWindowListener(this);
+                removeWindowListener(this);
+                _viewer = null;
+            }
+        }
+
+        public void windowDeactivated(WindowEvent e) {
+        }
+
+        public void windowDeiconified(WindowEvent e) {
+        }
+
+        public void windowIconified(WindowEvent e) {
+        }
+
+        public void windowOpened(WindowEvent e) {
         }
 
         private File _getModelFile() {
@@ -1663,5 +1711,7 @@ TableModelListener, ValueListener {
         }
 
         private FileParameter _inputModel;
+
+        private MatchResultViewer _viewer;
     }
 }
