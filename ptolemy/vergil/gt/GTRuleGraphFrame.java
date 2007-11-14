@@ -953,7 +953,7 @@ TableModelListener, ValueListener {
                 throw new KernelRuntimeException(e, "Unable to get boolean "
                         + "token.");
             }
-            File dir;
+            File directoryFile;
             if (directory.equals("")) {
                 FileChooser fileChooser = new FileChooser(GTRuleGraphFrame.this,
                         _attribute, false, true);
@@ -963,7 +963,7 @@ TableModelListener, ValueListener {
                     if (directoryName.equals("")) {
                         directoryName = ".";
                     }
-                    dir = new File(directoryName);
+                    directoryFile = new File(directoryName);
                     try {
                         subdirs =
                             ((BooleanToken) _subdirs.getToken()).booleanValue();
@@ -977,25 +977,25 @@ TableModelListener, ValueListener {
                     return null;
                 }
             } else {
-                dir = new File(directory);
+                directoryFile = new File(directory);
             }
 
-            if (!dir.isAbsolute()) {
+            if (!directoryFile.isAbsolute()) {
                 URI uri = getEffigy().uri.getURI();
                 File parent = null;
                 if (uri != null) {
                     parent = new File(uri).getParentFile();
                 }
-                dir = new File(parent, directory);
+                directoryFile = new File(parent, directoryFile.getPath());
             }
 
-            if (!dir.exists()) {
-                MessageHandler.error("Directory " + dir.getPath()
+            if (!directoryFile.exists()) {
+                MessageHandler.error("Directory " + directoryFile.getPath()
                         + " does not exist.");
                 return null;
             }
 
-            File[] files = _listFiles(dir, subdirs, fileFilter);
+            File[] files = _listFiles(directoryFile, subdirs, fileFilter);
             return files;
         }
 
@@ -1587,41 +1587,41 @@ TableModelListener, ValueListener {
         private File _getModelFile() {
             TransformationRule rule = getTransformationRule();
             Pattern pattern = rule.getPattern();
-            DefaultModelAttribute defaultModelAttribute =
+            DefaultModelAttribute attribute =
                 (DefaultModelAttribute) pattern.getAttribute("DefaultModel");
-            String defaultModel = defaultModelAttribute == null ? ""
-                    : defaultModelAttribute.parameter.getExpression();
-            File input;
-            if (defaultModel.equals("")) {
+            String model = attribute == null ? ""
+                    : attribute.parameter.getExpression();
+            File modelFile;
+            if (model.equals("")) {
                 FileChooser fileChooser = new FileChooser(GTRuleGraphFrame.this,
                         _attribute, true, false);
                 if (fileChooser._isConfirmed()) {
-                    String fileName = fileChooser.getFileName();
-                    _inputModel.setExpression(fileName);
-                    input = new File(fileName);
+                    String modelName = fileChooser.getFileName();
+                    _inputModel.setExpression(modelName);
+                    modelFile = new File(modelName);
                 } else {
                     return null;
                 }
             } else {
-                input = new File(defaultModel);
+                modelFile = new File(model);
             }
 
-            if (!input.isAbsolute()) {
+            if (!modelFile.isAbsolute()) {
                 URI uri = getEffigy().uri.getURI();
                 File directory = null;
                 if (uri != null) {
                     directory = new File(uri).getParentFile();
                 }
-                input = new File(directory, input.getPath());
+                modelFile = new File(directory, modelFile.getPath());
             }
 
-            if (!input.exists()) {
+            if (!modelFile.exists()) {
                 MessageHandler.error("Unable to read input model " +
-                        input.getPath() + ".");
+                        modelFile.getPath() + ".");
                 return null;
             }
 
-            return input;
+            return modelFile;
         }
 
         private FileParameter _inputModel;
