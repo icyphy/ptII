@@ -551,6 +551,7 @@ public class LocalClassLoader extends URLClassLoader {
             throws ClassNotFoundException {
         boolean isPrimitiveArray;
         int nameStart = 0;
+        int arrayCount = 0;
         int nameEnd = name.length() - 1; // Inclusive.
 
         // Count dimensions.
@@ -558,6 +559,7 @@ public class LocalClassLoader extends URLClassLoader {
             while (name.charAt(nameStart) == '[') {
                 nameStart++;
             }
+            arrayCount = nameStart;
 
             if (name.charAt(nameStart) == 'L') {
                 nameStart++;
@@ -576,12 +578,25 @@ public class LocalClassLoader extends URLClassLoader {
         } else {
             return null; // Not array.
         }
-
-        if (isPrimitiveArray) {
-            String typeName = name.toString();
-            Class c = super.loadClass(typeName, true);
+        
+        String basicName = name.substring(nameStart, nameEnd + 1);
+        Class c;
+        if (isPrimitiveArray || !search) {
+            c = super.loadClass(basicName, true);
+        } else {
+            c = searchForClass(new StringBuffer(basicName), _currentClass);
+        }
+        for (int i = 0; i < arrayCount; i++) {
             c = java.lang.reflect.Array.newInstance(c, 0).getClass();
-            typeName = Type.toArrayType(typeName);
+        }
+        
+        String typeName = Type.toArrayType(name.toString());
+        _loadedClasses.put(typeName, c);
+        return c;
+
+        /*if (isPrimitiveArray) {
+            String typeName = Type.toArrayType(name.toString());
+            Class c = super.loadClass(typeName, true);
             _loadedClasses.put(typeName, c);
             return c;
         } else {
@@ -592,13 +607,11 @@ public class LocalClassLoader extends URLClassLoader {
             name.delete(nameStart, nameEnd + 1);
             name.insert(nameStart, c.getName());
 
-            String typeName = name.toString();
+            String typeName = Type.toArrayType(name.toString());
             c = Class.forName(typeName, true, this);
-            c = java.lang.reflect.Array.newInstance(c, 0).getClass();
-            typeName = Type.toArrayType(typeName);
             _loadedClasses.put(typeName, c);
             return c;
-        }
+        }*/
     }
 
     /** Check if a class is explicitly imported, or is any nested class
