@@ -248,7 +248,7 @@ public class GraphTransformer extends ChangeRequest {
                     moml = _moml.get(child);
                 }
             }
-            if (moml != null && moml != "") {
+            if (moml != null && !moml.equals("")) {
                 moml = "<group name=\"auto\">\n" + moml + "</group>";
                 MoMLChangeRequest request =
                     new MoMLChangeRequest(this, host, moml);

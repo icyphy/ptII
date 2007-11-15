@@ -84,7 +84,7 @@ public class PtDoclet {
     public static boolean start(RootDoc root) throws IOException,
             ClassNotFoundException {
         System.out.println("Ptolemy version of PtDoc, with Kepler extensions");
-        if (StringUtilities.getProperty("KEPLER") != "") {
+        if (!StringUtilities.getProperty("KEPLER").equals("")) {
             System.out.println("PtDoclet: KEPLER = "
                     + StringUtilities.getProperty("KEPLER"));
         }

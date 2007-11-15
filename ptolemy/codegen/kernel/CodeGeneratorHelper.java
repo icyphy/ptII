@@ -365,7 +365,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                             FileUtilities.binaryCopyURLToFile(necessaryURL, necessaryFileDestination);
                         } catch (IOException ex) {
                             String directory = "unknown";
-                            if (StringUtilities.getProperty("user.dir") != "") {
+                            if (!StringUtilities.getProperty("user.dir").equals("")) {
                                 directory = "\""
                                     + StringUtilities.getProperty("user.dir")
                                     + "\"";
@@ -467,7 +467,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public static String generateChannelOffset(IOPort port, boolean isWrite,
             String channelString) {
         // By default, return the channel offset for the first channel.
-        if (channelString == "") {
+        if (channelString.equals("")) {
             channelString = "0";
         }
         
