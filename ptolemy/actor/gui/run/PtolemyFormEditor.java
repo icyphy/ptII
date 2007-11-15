@@ -1249,7 +1249,7 @@ public class PtolemyFormEditor extends JPanel {
     private Action _packAction = new PackAction();
 
     /** Button to pack the run control window. */
-    private JButton _packButton = new JButton(_packAction);
+    //private JButton _packButton = new JButton(_packAction);
 
     /** Properties to ignore and not present to the user. */
     private static Set<String> _propertiesToIgnore = new HashSet<String>();
