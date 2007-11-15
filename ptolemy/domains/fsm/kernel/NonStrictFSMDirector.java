@@ -238,8 +238,7 @@ public class NonStrictFSMDirector extends FSMDirector {
                 while (transitions.hasNext()) {
                     Transition transition = (Transition) transitions.next();
 
-                    // FIXME: Won't enabledTransition always be null?
-                    if (!enabledTransition.isNondeterministic()) {
+                    if (!transition.isNondeterministic()) {
                         throw new MultipleEnabledTransitionsException(
                                 controller.currentState(),
                                 "Multiple enabled transitions found but "
