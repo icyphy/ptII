@@ -318,6 +318,14 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                         throw new IllegalActionException(this, ex,
                                 "The class URL \"" + url + "\" for \""
                                 + jniClassName + "\" is malformed");
+                    } catch (UnsupportedClassVersionError ex) {
+                        // This can occur if we have two different
+                        // machines sharing ~/codegen.
+                        throw new IllegalActionException(this, ex,
+                                "Unsupported class version in the class \""
+                                + jniClassName + "\" from \"" + url
+                                + "\".  Try deleting the \"" + jniClassName
+                                + "\" class in \"" + url + "\".");
                     } catch (Throwable ex) {
                         throw new IllegalActionException(this, ex,
                                 "Cannot load the class \""
