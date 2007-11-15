@@ -102,7 +102,7 @@ public class VariableClock extends Clock {
      */
     public void fire() throws IllegalActionException {
         // FIXME
-        double time = getDirector().getModelTime().getDoubleValue();
+        //double time = getDirector().getModelTime().getDoubleValue();
         if ((periodControl.getWidth() > 0) && periodControl.hasToken(0)) {
             Token in = periodControl.get(0);
             period.setToken(in);

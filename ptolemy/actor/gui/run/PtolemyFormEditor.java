@@ -685,7 +685,7 @@ public class PtolemyFormEditor extends JPanel {
                     }
 
                     /* invoke componentDef editor on double-clicked control */
-                    String name = _getComponentName(component);
+                    //String name = _getComponentName(component);
                     editComponent(component);
                 }
             }
