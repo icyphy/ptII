@@ -471,7 +471,7 @@ public class Transformer {
                 writer = new OutputStreamWriter(stream);
                 XmlOutput.outputXmlTree(parser.getTree(), writer);
             } finally {
-                if (writer == null) {
+                if (writer != null) {
                     writer.close();
                 }
             }
