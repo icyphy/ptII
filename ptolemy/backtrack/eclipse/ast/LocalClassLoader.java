@@ -581,10 +581,31 @@ public class LocalClassLoader extends URLClassLoader {
         
         String basicName = name.substring(nameStart, nameEnd + 1);
         Class c;
-        if (isPrimitiveArray || !search) {
-            c = super.loadClass(basicName, true);
-        } else {
+        if (isPrimitiveArray) {
+            if (basicName.equals("Z")) {
+                c = boolean.class;
+            } else if (basicName.equals("B")) {
+                c = byte.class;
+            } else if (basicName.equals("C")) {
+                c = char.class;
+            } else if (basicName.equals("D")) {
+                c = double.class;
+            } else if (basicName.equals("F")) {
+                c = float.class;
+            } else if (basicName.equals("I")) {
+                c = int.class;
+            } else if (basicName.equals("J")) {
+                c = long.class;
+            } else if (basicName.equals("S")) {
+                c = short.class;
+            } else {
+                throw new ClassNotFoundException("Unknown primitive type with "
+                        + "abbreviation: " + basicName);
+            }
+        } else if (search) {
             c = searchForClass(new StringBuffer(basicName), _currentClass);
+        } else {
+            c = super.loadClass(basicName, true);
         }
         for (int i = 0; i < arrayCount; i++) {
             c = java.lang.reflect.Array.newInstance(c, 0).getClass();
