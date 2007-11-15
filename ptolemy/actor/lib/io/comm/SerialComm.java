@@ -555,8 +555,6 @@ public class SerialComm extends TypedAtomicActor {
                     _serialPort.notifyOnRingIndicator(true); // isRI
                 }
             }
-            // Direct serial events on this port to my serialEvent() method.
-            _stopFireRequested = false;
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Communication port initialization failed.");
@@ -577,7 +575,6 @@ public class SerialComm extends TypedAtomicActor {
     public synchronized void stopFire() {
         super.stopFire();
         synchronized(PortListener.class) {
-            _stopFireRequested = true;
             PortListener.class.notifyAll();
         }
     }
@@ -623,9 +620,6 @@ public class SerialComm extends TypedAtomicActor {
     // but either the director has not yet fired this actor, or it has
     // been fired but fire() has not completed.  Could be in wait().
     private boolean _directorFiredAtAlready;
-
-    // Indicator that stopFire() has been called.
-    private boolean _stopFireRequested = false;
 
     // Required for accessing the serial port.
     // Somehow the .initialize() call must do something crucial.
