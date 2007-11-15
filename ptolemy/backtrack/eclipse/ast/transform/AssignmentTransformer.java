@@ -1993,7 +1993,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
         if (needRefactor) {
             // Refactor the expression.
             AST ast = node.getAST();
-            CompilationUnit root = (CompilationUnit) node.getRoot();
+            //CompilationUnit root = (CompilationUnit) node.getRoot();
             //String typeClassName = getClassName(typeName, state, root);
 
             int nIndices = 0;
