@@ -675,9 +675,9 @@ public class PtolemyFormEditor extends JPanel {
         _table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    Point p = e.getPoint();
-                    int row = _table.rowAtPoint(p);
-                    int col = _table.columnAtPoint(p);
+                    //Point p = e.getPoint();
+                    //int row = _table.rowAtPoint(p);
+                    //int col = _table.columnAtPoint(p);
                     // support double-click:
                     Component component = _table.getSelectedControl();
                     if (component == null) {
