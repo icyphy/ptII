@@ -469,14 +469,6 @@ public class PropertyLattice {
      */
     private static HashMap <String, PropertyLattice> _lattices = new HashMap();
 
-    /**
-     * Reference count for property lattices. getPropertyLattice(X) 
-     * increments the count for X, and releasePropertyLattice(X) decrements
-     * the count. When the count equals to zero after decrement, X is removed
-     * from the _lattices HashMap.
-     */
-    private static HashMap <PropertyLattice, Integer> _referenceCount = new HashMap();
-
     public String toString() {
         String name = getClass().getPackage().getName();
         return name.substring(name.lastIndexOf('.') + 1);
