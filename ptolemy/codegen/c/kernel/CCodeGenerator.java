@@ -47,7 +47,6 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorUtilities;
 import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
