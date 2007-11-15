@@ -204,9 +204,10 @@ public class SoundActor extends TypedAtomicActor {
      * @param playbackData An array into which to put the results, which
      *  have bytes representing linear signed PCM big endian formatted
      *  audio data.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected void _doubleArrayToByteArray(
-            double[][] doubleArray, byte[] playbackData)
+            double[][] doubleArray, byte[] playbackData) {
             throws IllegalArgumentException {
         // Iterate over the samples.
         for (int currSamp = 0; currSamp < doubleArray[0].length; currSamp++) {

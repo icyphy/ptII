@@ -1131,9 +1131,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     /** Return the value of the codeDirectory parameter.
-     *  The 
+     *  @return The value of the {@link codeDirectory} parameter.
      *  @exception IOException If the <i>codeDirectory</i> parameter
      *  names a file or a directory cannot be created.
+     *  @exception IllegalActionException If thrown while reading the 
+     *  codeDirectory parameter.
      */
     protected File _codeDirectoryAsFile() throws IOException, IllegalActionException  {
         // This method is here to avoid code duplication.

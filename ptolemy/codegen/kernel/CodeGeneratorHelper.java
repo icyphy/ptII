@@ -104,6 +104,8 @@ import ptolemy.util.StringUtilities;
  * @Pt.AcceptedRating Yellow (eal)
  */
 public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator {
+    /** Construct a code generator helper.
+     */
     public CodeGeneratorHelper() {
         this(null);
     }
@@ -411,6 +413,11 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return "";
     }
 
+    /** Return the Ptolemy type that corresponds to the type named by
+     *  the argument.
+     *  @param cgType A String naming a type.
+     *  @return null if there is not corresponding Ptolemy type.
+     */
     public static Type ptolemyType(String cgType) {
         Type result = 
             cgType.equals("Int") ? BaseType.INT :

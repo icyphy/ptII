@@ -212,6 +212,7 @@ public class SharedParameter extends Parameter implements Initializable {
      *   be parsed or cannot be evaluated, or if the result of evaluation
      *   violates type constraints, or if the result of evaluation is null
      *   and there are variables that depend on this one.
+     *  @see #setToken(Token)
      */
     public Token getToken() throws IllegalActionException {
         if (_delayValidation) {
@@ -454,7 +455,8 @@ public class SharedParameter extends Parameter implements Initializable {
     /** Override the base class to also set the token of shared
      *  parameters.
      *  @param token The token.
-     * @exception IllegalActionException Thrown if super class throws it. 
+     *  @exception IllegalActionException Thrown if super class throws it. 
+     *  @see #getToken()
      */
     public void setToken(Token token) throws IllegalActionException {
         

@@ -104,6 +104,15 @@ public class CodeStream {
         this._codeGenerator = _helper._codeGenerator;
     }
     
+    /**
+     * Construct a new code stream associated with the given java actor
+     * helper. Each actor should have its own codestream during code
+     * generation.
+     * @param templateArguments Template arguments to be substituted
+     * in the code.  Template arguments begin with "<" and end with ">".
+     * @param helper The actor helper associated with this code stream,
+     * which is currently ignored.
+     */
     public CodeStream(List templateArguments, CodeGeneratorHelper helper) {
         this(helper);
         _templateArguments = templateArguments;
