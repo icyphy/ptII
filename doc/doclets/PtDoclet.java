@@ -103,8 +103,8 @@ public class PtDoclet {
             allNamedObjsWriter = new FileWriter(_outputDirectory
                     + File.separator + "allNamedObjs.txt");
 
-            ClassDoc typedAtomicActorDoc =
-                root.classNamed("ptolemy.actor.TypedAtomicActor");
+            ClassDoc namedObjDoc =
+                root.classNamed("ptolemy.kernel.util.NamedObj");
 
              Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
              Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
@@ -115,7 +115,7 @@ public class PtDoclet {
              ClassDoc[] classes = root.classes();
              for (int i = 0; i < classes.length; i++) {
                  String className = classes[i].toString();
-                 if (classes[i].subclassOf(typedAtomicActorDoc)) {
+                 if (classes[i].subclassOf(namedObjDoc)) {
                      _writeDoc(className, 
                              _generateClassLevelDocumentation(classes[i])
                              + _generateFieldDocumentation(classes[i],
@@ -462,13 +462,4 @@ public class PtDoclet {
 
     /** Header string for XML PtDoc output. */
     private static String _header = "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\"\n    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n";
-
-    private static Class _namedObjClass;
-    static {
-        try {
-            _namedObjClass = Class.forName("ptolemy.kernel.util.NamedObj");
-        } catch (ClassNotFoundException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
 }
