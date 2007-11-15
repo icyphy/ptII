@@ -1994,7 +1994,7 @@ public class AssignmentTransformer extends AbstractTransformer implements
             // Refactor the expression.
             AST ast = node.getAST();
             CompilationUnit root = (CompilationUnit) node.getRoot();
-            String typeClassName = getClassName(typeName, state, root);
+            //String typeClassName = getClassName(typeName, state, root);
 
             int nIndices = 0;
 
