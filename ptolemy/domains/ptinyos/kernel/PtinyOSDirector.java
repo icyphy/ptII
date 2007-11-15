@@ -1732,13 +1732,24 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
 
         if (_confirmOverwrite(writeFile)) {
             // Write the generated code to the file.
+            FileWriter writer = null;
             try {
-                FileWriter writer = new FileWriter(writeFile);
+                writer = new FileWriter(writeFile);
                 writer.write(text.toString());
-                writer.close();
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "Failed to open file for writing.");
+                        "Failed to open or write \"" + writeFile
+                        + "\" file for writing.");
+            } finally {
+                if (writer != null) {
+                    try {
+                        writer.close();
+                    } catch (IOException ex2) {
+                        throw new IllegalActionException(this, ex2,
+                                "Failed to close \"" 
+                                + writeFile + "\".");
+                    }
+                }
             }
         }
     }
@@ -1882,14 +1893,25 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
         if (_confirmOverwrite(writeFile)) {
             // Write the generated code to the file.
+            FileWriter writer = null;
             try {
-                FileWriter writer = new FileWriter(writeFile);
+                writer = new FileWriter(writeFile);
                 writer.write(text.toString());
-                writer.close();
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed to open file for writing.");
+            } finally {
+                if (writer != null) {
+                    try {
+                        writer.close();
+                    } catch (IOException ex2) {
+                        throw new IllegalActionException(this, ex2,
+                                "Failed to close \"" 
+                                + writeFile + "\".");
+                    }
+                }
             }
+
         }
 
         return makefileName;

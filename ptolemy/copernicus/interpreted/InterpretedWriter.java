@@ -134,14 +134,23 @@ public class InterpretedWriter extends SceneTransformer implements
         System.out.println("InterpretedWriter: about to write '"
                 + modelFileName + "'");
 
+        Writer modelFileWriter = null;
         try {
-            Writer modelFileWriter = new BufferedWriter(new OutputStreamWriter(
+            modelFileWriter = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream(modelFileName)));
             _model.exportMoML(modelFileWriter);
-            modelFileWriter.close();
         } catch (IOException ex) {
             throw new InternalErrorException("Problem writing '"
                     + modelFileName + "': " + ex);
+        } finally {
+            if (modelFileWriter != null) {
+                try {
+                    modelFileWriter.close();
+                } catch (IOException ex) {
+                    throw new RuntimeException("Failed to close "
+                            + modelFileName, ex);
+                }
+            } 
         }
     }
 

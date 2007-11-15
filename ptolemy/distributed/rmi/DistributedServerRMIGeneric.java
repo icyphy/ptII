@@ -28,6 +28,7 @@ package ptolemy.distributed.rmi;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.RMISecurityManager;
@@ -241,9 +242,15 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
             din = new DataInputStream(new FileInputStream(serviceIdFile));
             serviceID = new ServiceID(din);
             System.out.println("Found service ID in file " + serviceIdFile);
-            din.close();
+
         } catch (Throwable throwable) {
             System.out.println("Not Found: " + throwable);
+        } finally {
+            try {
+                din.close();            
+            } catch (IOException ex) {
+                System.out.println("Failed to close " + serviceIdFile);
+            }
         }
     }
 

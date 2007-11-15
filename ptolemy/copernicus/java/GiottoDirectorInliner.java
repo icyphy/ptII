@@ -110,10 +110,14 @@ public class GiottoDirectorInliner implements DirectorInliner {
             GiottoCodeGenerator giottoCodeGenerator = new GiottoCodeGenerator();
             String giottoCode = giottoCodeGenerator
                     .generateGiottoCode((TypedCompositeActor) model);
-            FileWriter writer = new FileWriter(directory + "/"
-                    + model.getName() + ".giotto");
-            writer.write(giottoCode);
-            writer.close();
+            FileWriter writer = null;
+            try {
+                writer = new FileWriter(directory + "/"
+                        + model.getName() + ".giotto");
+                writer.write(giottoCode);
+            } finally {
+                writer.close();
+            }
         } catch (Exception ex) {
             throw new RuntimeException(ex.getMessage());
         }

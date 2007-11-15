@@ -466,9 +466,15 @@ public class Transformer {
                 parser.addPackagePrefix(_prefix, classSet);
             }
 
-            OutputStreamWriter writer = new OutputStreamWriter(stream);
-            XmlOutput.outputXmlTree(parser.getTree(), writer);
-            writer.close();
+            OutputStreamWriter writer = null;
+            try {
+                writer = new OutputStreamWriter(stream);
+                XmlOutput.outputXmlTree(parser.getTree(), writer);
+            } finally {
+                if (writer == null) {
+                    writer.close();
+                }
+            }
         }
     }
 

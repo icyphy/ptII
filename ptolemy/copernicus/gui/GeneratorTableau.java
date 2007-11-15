@@ -415,9 +415,19 @@ public class GeneratorTableau extends Tableau {
             File temporaryFile = File.createTempFile("ptCopernicus", ".xml");
             temporaryFile.deleteOnExit();
 
-            FileWriter writer = new FileWriter(temporaryFile);
-            model.exportMoML(writer);
-            writer.close();
+            FileWriter writer = null;
+            try {
+                writer = new FileWriter(temporaryFile);
+                model.exportMoML(writer);
+            } finally {
+                if (writer != null) 
+                    try {
+                        writer.close();
+                    } catch (Throwable throwable) {
+                        throw new RuntimeException("Failed to close "
+                                + temporaryFile, throwable);
+                    }
+            }
 
             // Set the temporary modelPath.
             generatorAttribute.sanityCheckAndUpdateParameters(temporaryFile

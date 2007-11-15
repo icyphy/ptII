@@ -695,15 +695,25 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             return false;
         }
 
+        String fileName =_configDir + "/" + pipeAdvFile;
+        FileInputStream is = null;
         try {
-            FileInputStream is = new FileInputStream(_configDir + "/"
-                    + pipeAdvFile);
+            is = new FileInputStream(fileName);
             _ptPipeAdv = (PipeAdvertisement) AdvertisementFactory
                     .newAdvertisement(new MimeMediaType("text/xml"), is);
-            is.close();
         } catch (java.io.IOException ex) {
-            System.out.println("failed to read/parse " + "pipe advertisement"
+            System.out.println("failed to read/parse " + 
+                    "pipe advertisement"
                     + ex.getMessage());
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException ex2) {
+                    System.out.println("failed to close \""
+                            + fileName + "\": " + ex2.getMessage());
+                }
+            }
         }
 
         return true;
@@ -821,9 +831,16 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
         File clsFile = new File(destDir, pathName.substring(pathName
                 .lastIndexOf(fileSeparator) + 1, pathName.length())
                 + ".class");
-        FileOutputStream output = new FileOutputStream(clsFile);
-        output.write(buf);
-        output.close();
+
+        FileOutputStream output = null;
+        try {
+            output = new FileOutputStream(clsFile);
+            output.write(buf);
+        } finally {
+            if (output != null) {
+                output.close();
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

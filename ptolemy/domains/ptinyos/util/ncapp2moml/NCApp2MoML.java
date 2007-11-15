@@ -558,13 +558,21 @@ public class NCApp2MoML {
      */
     public static String readOptsFile(String optsInputFile) {
         String opts = "";
+        BufferedReader in = null;
         try {
-            BufferedReader in = new BufferedReader(
+            in = new BufferedReader(
                     new FileReader(optsInputFile));
             opts = in.readLine();
-            in.close();
         } catch (Exception e) {
             // Do nothing.
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException ex) {
+                    //Ignore
+                }
+            }
         }
         return opts;
     }

@@ -197,8 +197,9 @@ public class GeneratorAttribute extends SingletonAttribute implements
                     + initialParametersURL.getExpression() + "'");
         }
 
+        BufferedReader inputReader = null;
         try {
-            BufferedReader inputReader = new BufferedReader(
+            inputReader = new BufferedReader(
                     new InputStreamReader(initialParameters.openStream()));
 
             String inputLine;
@@ -221,6 +222,16 @@ public class GeneratorAttribute extends SingletonAttribute implements
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "Failed to parse '"
                     + initialParametersURL.getExpression() + "'");
+        } finally {
+            try {
+                if (inputReader != null) {
+                    inputReader.close();
+                }
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to close '"
+                        + initialParameters + "'");
+            }
         }
 
         // We sanity check after modelPath has had a chance to be

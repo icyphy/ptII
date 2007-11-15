@@ -27,6 +27,7 @@
 package ptolemy.copernicus.kernel;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -222,23 +223,33 @@ public class LibraryUsageReporter extends SceneTransformer implements
             // Add to the set of necessary classes all that they depend on.
             DependedClasses dependedClasses = new DependedClasses(
                     necessaryClasses);
-            FileWriter writer = new FileWriter(outFile);
+            FileWriter writer = null;
+            try {
+                writer = new FileWriter(outFile);
 
-            for (Iterator classes = dependedClasses.list().iterator(); classes
-                    .hasNext();) {
-                SootClass theClass = (SootClass) classes.next();
+                for (Iterator classes = dependedClasses.list().iterator();
+                     classes.hasNext();) {
+                    SootClass theClass = (SootClass) classes.next();
 
-                if (analyzeAllReachables) {
-                    // Set the class to be an application class, so we can
-                    // analyze it.
-                    theClass.setApplicationClass();
+                    if (analyzeAllReachables) {
+                        // Set the class to be an application class, so we can
+                        // analyze it.
+                        theClass.setApplicationClass();
+                    }
+
+                    writer.write(theClass.getName());
+                    writer.write("\n");
                 }
-
-                writer.write(theClass.getName());
-                writer.write("\n");
+            } finally {
+                if (writer != null) {
+                    try {
+                        writer.close();
+                    } catch (IOException ex2) {
+                        ex2.printStackTrace();
+                    }
+                }
             }
 
-            writer.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
