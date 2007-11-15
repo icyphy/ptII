@@ -578,8 +578,10 @@ public class LocalClassLoader extends URLClassLoader {
         }
 
         if (isPrimitiveArray) {
-            String typeName = Type.toArrayType(name.toString());
+            String typeName = name.toString();
             Class c = super.loadClass(typeName, true);
+            c = java.lang.reflect.Array.newInstance(c, 0).getClass();
+            typeName = Type.toArrayType(typeName);
             _loadedClasses.put(typeName, c);
             return c;
         } else {
@@ -590,8 +592,10 @@ public class LocalClassLoader extends URLClassLoader {
             name.delete(nameStart, nameEnd + 1);
             name.insert(nameStart, c.getName());
 
-            String typeName = Type.toArrayType(name.toString());
+            String typeName = name.toString();
             c = Class.forName(typeName, true, this);
+            c = java.lang.reflect.Array.newInstance(c, 0).getClass();
+            typeName = Type.toArrayType(typeName);
             _loadedClasses.put(typeName, c);
             return c;
         }
