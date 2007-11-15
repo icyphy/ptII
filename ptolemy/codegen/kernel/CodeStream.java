@@ -640,7 +640,7 @@ public class CodeStream {
                 _templateParameters = _parseParameterList(
                         codeToBeParsed, 0, codeToBeParsed.indexOf(">"), "<", ">");
 
-                codeToBeParsed = this._substituteParameters(
+                codeToBeParsed = _substituteParameters(
                     codeToBeParsed, _templateParameters, _templateArguments);
             }
             
