@@ -306,8 +306,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     //        + _workspace.getVersion());
                     String jniClassName = _sanitizedActorName;
                     Class jniClass = null;
+                    URL url = null;
                     try {
-                        URL url = codeDirectory.asFile().toURL();
+                        url = codeDirectory.asFile().toURL();
                         URL[] urls = new URL[] { url };
 
                         ClassLoader classLoader = new URLClassLoader(urls);
@@ -315,11 +316,12 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     
                     } catch (MalformedURLException ex) {
                         throw new IllegalActionException(this, ex,
-                                "The class URL for "
-                                + jniClassName + "is malformed");
-                    } catch (ClassNotFoundException ex) {
+                                "The class URL \"" + url + "\" for \""
+                                + jniClassName + "\" is malformed");
+                    } catch (Throwable ex) {
                         throw new IllegalActionException(this, ex,
-                                "Cannot load the class " + jniClassName);
+                                "Cannot load the class \""
+                                + jniClassName + "\" from \"" + url + "\"");
                     }
 
                     try {
