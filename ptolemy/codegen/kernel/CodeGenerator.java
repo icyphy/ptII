@@ -659,6 +659,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
                 try {
                     try {
+                        // Reset the parser and reload so that if
+                        // we run the model and then generate code,
+                        // we get the same results when generating code.
+                        // If we don't do this, then the nightly tests
+                        // fail because the results don't match.
+                        parser.reset();
+                        parser.purgeModelRecord(modelURL);
                         toplevel = (CompositeActor) parser.parse(null, modelURL);
                     } catch (Exception ex) {
                         throw new Exception("Failed to parse \"" + args[i] + "\"",
