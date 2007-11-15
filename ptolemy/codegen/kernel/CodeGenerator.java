@@ -280,6 +280,22 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         _libraries.add(libraryCommand);
     }
 
+    /** If the attribute is the codeDirectory parameter, then set the
+     *  base directory of the codeDirectory parameter.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == codeDirectory) {
+            // FIXME: This should not be necessary, but if we don't
+            // do it, then getBaseDirectory() thinks we are in the current dir.
+            codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
     /** Return a formatted comment containing the
      *  specified string. In this base class, the
      *  comments is a C-style comment, which begins with
