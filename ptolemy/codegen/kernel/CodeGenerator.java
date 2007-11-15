@@ -585,7 +585,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 "CodeGenerator: final pass consumed: ");
 
         _codeFileName = _writeCode(code);
-        startTime = _printTimeAndMemory(startTime,
+        /*startTime =*/ _printTimeAndMemory(startTime,
                 "CodeGenerator: writing code consumed: ");
 
         _writeMakefile();
@@ -1187,7 +1187,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception IllegalActionException If there is no director.
      */
     protected String _generateBodyCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
         CompositeEntity model = (CompositeEntity) getContainer();
 
         // NOTE: The cast is safe because setContainer ensures
@@ -1423,8 +1422,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Write the code to a file with the same name as the model into
         // the directory named by the codeDirectory parameter.
         try {
-            File codeDirectoryFile = _codeDirectoryAsFile();
-
             _executeCommands.stdout("Writing " + codeFileName + " in " +
                     codeDirectory.getBaseDirectory() + " (" +
                     code.length() + " characters)");

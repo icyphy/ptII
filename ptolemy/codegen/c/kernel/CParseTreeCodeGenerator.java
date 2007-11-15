@@ -183,7 +183,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      *  @return The generated code.
      */
     public String generateFireCode() {
-        return _childCode.toString();
+        return _childCode;
     }
 
     /** Generate code that corresponds with the initialize() method.
@@ -264,7 +264,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         //_fireCode.append("$new(Array(" + numChildren + ", " + numChildren);
-        String[] elements = new String[numChildren];
+        //String[] elements = new String[numChildren];
         String result = "$new(Array(" + numChildren + ", " + numChildren;
         
         // Convert up to LUB. 
