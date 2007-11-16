@@ -676,10 +676,18 @@ public class GraphMatcher extends GraphAnalyzer {
 
                 _temporaryMatch.remove(patternContainer);
             } else {
-                patternList.addAll(
-                        (Collection<?>) patternPort.linkedRelationList());
-                hostList.addAll(
-                        (Collection<?>) hostPort.linkedRelationList());
+                for (Object relationObject: patternPort.linkedRelationList()) {
+                    Relation relation = (Relation) relationObject;
+                    if (!_ignoreRelation(relation)) {
+                        patternList.add(relation);
+                    }
+                }
+                for (Object relationObject: hostPort.linkedRelationList()) {
+                    Relation relation = (Relation) relationObject;
+                    if (!_ignoreRelation(relation)) {
+                        hostList.add(relation);
+                    }
+                }
             }
 
             success = _matchObject(patternList, hostList);

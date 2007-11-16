@@ -74,6 +74,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'AbstractGTFrame$$1.class' \
 	'AbstractGTFrame$$2.class' \
+	'AbstractGTFrame$$GTActorGraphModel.class' \
 	'GTIngredientsEditor$$1.class' \
 	'GTIngredientsEditor$$2.class' \
 	'GTIngredientsEditor$$3.class' \
@@ -109,16 +110,19 @@ OPTIONAL_FILES = \
 	'MatchResultTableau$$Factory.class' \
 	'MatchResultViewer$$1.class' \
 	'MatchResultViewer$$2.class' \
-	'MatchResultViewer$$3$$1.class' \
 	'MatchResultViewer$$3.class' \
 	'MatchResultViewer$$4$$1.class' \
 	'MatchResultViewer$$4.class' \
+	'MatchResultViewer$$5$$1.class' \
+	'MatchResultViewer$$5.class' \
+	'MatchResultViewer$$CloseAction.class' \
 	'MatchResultViewer$$FileSelectionStatus.class' \
 	'MatchResultViewer$$NextAction.class' \
 	'MatchResultViewer$$NextFileAction.class' \
 	'MatchResultViewer$$PreviousAction.class' \
 	'MatchResultViewer$$PreviousFileAction.class' \
-	'MatchResultViewer$$TransformAction.class'
+	'MatchResultViewer$$TransformAction.class' \
+	'MatchResultViewer$$TransformAllAction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

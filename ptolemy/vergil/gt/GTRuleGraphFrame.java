@@ -182,15 +182,13 @@ TableModelListener, ValueListener {
      */
     public GTRuleGraphFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
-        super(entity, tableau, defaultLibrary);
+        super(entity, tableau, _importActorLibrary(tableau, defaultLibrary));
 
         // Override the default help file.
         // FIXME
         // helpFile = "ptolemy/configs/doc/vergilFsmEditorHelp.htm";
-    }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected methods                  ////
+    }
 
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
@@ -203,6 +201,9 @@ TableModelListener, ValueListener {
             }
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
 
     public void addRow() {
         int index = _tableModel.getRowCount() + 1;
@@ -688,6 +689,32 @@ TableModelListener, ValueListener {
         return null;
     }
 
+    private static LibraryAttribute _importActorLibrary(Tableau tableau,
+            LibraryAttribute gtLibrary) {
+        try {
+            Configuration configuration = (Configuration) tableau.toplevel();
+            CompositeEntity actorLibrary = (CompositeEntity) configuration
+                    .getEntity("actor library");
+            CompositeEntity library = gtLibrary.getLibrary();
+            for (Object entityObject : actorLibrary.entityList()) {
+                try {
+                    ComponentEntity libraryEntity =
+                        (ComponentEntity) entityObject;
+                    ComponentEntity entity = (ComponentEntity) libraryEntity
+                            .clone(library.workspace());
+                    entity.setContainer(library);
+                } catch (Exception e) {
+                    // Ignore this entity in the actor library because we don't
+                    // know how to import it.
+                }
+            }
+            gtLibrary.setLibrary(library);
+        } catch (Exception e) {
+            // Ignore, just return a library without any actors or directors.
+        }
+        return gtLibrary;
+    }
+
     private boolean _isInPattern(NamedObj object) {
         CompositeActorMatcher pattern = getTransformationRule().getPattern();
         NamedObj container = object;
@@ -1052,6 +1079,7 @@ TableModelListener, ValueListener {
                         MatchResultViewer viewer = _viewers[i];
                         if (viewer != null) {
                             viewer.removeWindowListener(this);
+                            viewer.setModified(false);
                             viewer.close();
                             _viewers[i] = null;
                         }
@@ -1257,6 +1285,8 @@ TableModelListener, ValueListener {
                             JFileChooser.FILES_AND_DIRECTORIES);
                 } else if (title.contains("File")) {
                     fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                    fileChooser.setFileFilter(new diva.gui.ExtensionFileFilter(
+                            "xml", "Ptolemy II model"));
                 } else if (title.contains("Directory")) {
                     fileChooser.setFileSelectionMode(
                             JFileChooser.DIRECTORIES_ONLY);
@@ -1476,15 +1506,6 @@ TableModelListener, ValueListener {
     }
 
     private class MatchAction extends FigureAction {
-
-        protected Configuration _getConfiguration() {
-            NamedObj toplevel = getTableau().toplevel();
-            if (toplevel instanceof Configuration) {
-                return (Configuration) toplevel;
-            } else {
-                return null;
-            }
-        }
 
         protected List<MatchResult> _getMatchResult(CompositeEntity model) {
             TransformationRule transformerActor = getTransformationRule();

@@ -228,8 +228,9 @@ ValueListener {
         CompositeActor container = new CompositeActor();
         String moml = "<group><entity name=\"NewActor\" class=\""
             + actorClassName + "\"/></group>";
-        container.requestChange(
-                new LoadActorIconChangeRequest(container, moml));
+        
+        container.requestChange(new MoMLChangeRequest(this, container, moml));
+        container.requestChange(new LoadActorIconChangeRequest(container));
     }
 
     private void _removeEditorIcons() {
@@ -270,19 +271,16 @@ ValueListener {
         + "  match</text>"
         + "</svg>";
 
-    private class LoadActorIconChangeRequest extends MoMLChangeRequest {
+    private class LoadActorIconChangeRequest extends ChangeRequest {
 
-        public LoadActorIconChangeRequest(CompositeEntity container,
-                String request) {
-            super(AtomicActorMatcher.this, container, request);
+        public LoadActorIconChangeRequest(CompositeEntity container) {
+            super(container, "Load the icon of the newly created actor");
 
             _container = container;
         }
 
         protected void _execute() {
             try {
-                super._execute();
-
                 ComponentEntity actor =
                     (ComponentEntity) _container.entityList().get(0);
 

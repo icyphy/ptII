@@ -48,6 +48,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
@@ -63,18 +64,22 @@ import ptolemy.moml.MoMLChangeRequest;
 public class GraphTransformer extends ChangeRequest {
 
     public GraphTransformer(TransformationRule transformationRule,
+            List<MatchResult> matchResults) throws TransformationException {
+        super(null, "Apply graph transformation to model.");
+
+        _pattern = transformationRule.getPattern();
+        _replacement = transformationRule.getReplacement();
+        _matchResults = matchResults;
+    }
+
+    public GraphTransformer(TransformationRule transformationRule,
             MatchResult matchResult) throws TransformationException {
         super(null, "Apply graph transformation to model.");
 
         _pattern = transformationRule.getPattern();
         _replacement = transformationRule.getReplacement();
-        _matchResult = matchResult;
-        _host = (CompositeEntity) _matchResult.get(_pattern);
-
-        if (_host == null) {
-            throw new TransformationException("Match result is invalid because "
-                    + "it does not include the pattern.");
-        }
+        _matchResults = new LinkedList<MatchResult>();
+        _matchResults.add(matchResult);
     }
 
     public MatchResult getMatchResult() {
@@ -90,52 +95,90 @@ public class GraphTransformer extends ChangeRequest {
     }
 
     public static void transform(TransformationRule transformationRule,
+            List<MatchResult> matchResults) throws TransformationException {
+        if (matchResults.isEmpty()) {
+            return;
+        }
+
+        GraphTransformer transformer =
+            new GraphTransformer(transformationRule, matchResults);
+        MatchResult matchResult = matchResults.get(0);
+        NamedObj host =
+            (NamedObj) matchResult.get(transformationRule.getPattern());
+        if (host == null) {
+            throw new TransformationException("Match result is invalid because "
+                    + "it does not include the pattern.");
+        }
+        host.requestChange(transformer);
+    }
+
+    public static void transform(TransformationRule transformationRule,
             MatchResult matchResult) throws TransformationException {
         GraphTransformer transformer =
             new GraphTransformer(transformationRule, matchResult);
-        transformer._host.requestChange(transformer);
+        NamedObj host =
+            (NamedObj) matchResult.get(transformationRule.getPattern());
+        if (host == null) {
+            throw new TransformationException("Match result is invalid because "
+                    + "it does not include the pattern.");
+        }
+        host.requestChange(transformer);
     }
 
     protected void _addConnections() throws TransformationException {
         for (NamedObj replacement : _replacementToHost.keySet()) {
-            if (!(replacement instanceof Port)) {
+            if (!(replacement instanceof Port
+                    || replacement instanceof Relation)) {
                 continue;
             }
 
-            Port replacementPort = (Port) replacement;
-            Port hostPort = (Port) _replacementToHost.get(replacement);
-            for (Object replacementRelationObject
-                    : replacementPort.linkedRelationList()) {
-                Relation replacementRelation =
-                    (Relation) replacementRelationObject;
-                Relation hostRelation =
-                    (Relation) _replacementToHost.get(replacementRelation);
+            NamedObj host = _replacementToHost.get(replacement);
+            List<?> replacementLinkedList;
+            List<?> hostLinkdList;
+            if (replacement instanceof Port) {
+                replacementLinkedList =
+                    ((Port) replacement).linkedRelationList();
+                hostLinkdList = ((Port) host).linkedRelationList();
+            } else {
+                replacementLinkedList =
+                    ((Relation) replacement).linkedObjectsList();
+                hostLinkdList = ((Relation) host).linkedObjectsList();
+            }
+
+            for (Object replacementLinkedObjectRaw : replacementLinkedList) {
+                NamedObj replacementLinkedObject =
+                    (NamedObj) replacementLinkedObjectRaw;
+                NamedObj hostLinkedObject =
+                    (NamedObj) _replacementToHost.get(replacementLinkedObject);
                 // FIXME: hostRelation shouldn't be null, but it seems if a
                 // Publisher appears in the host model, then an extra relation
                 // created by it remains after it is deleted, so there is a
                 // relation that has no match in the match result.
                 // Needs to fix this in ptolemy.actor.lib.Publisher.
-                List<?> hostRelations = hostPort.linkedRelationList();
-                if (hostRelation != null
-                        && !hostRelations.contains(hostRelation)) {
-                    // There is no link between hostPort and hostRelation, so
-                    // create a new link.
-                    Entity hostPortContainer = (Entity) hostPort.getContainer();
-                    NamedObj hostContainer = hostRelation.getContainer();
-                    String moml = "<link port=\"" + hostPortContainer.getName()
-                            + "." + hostPort.getName() + "\" relation=\""
-                            + hostRelation.getName() + "\"/>";
+                if (hostLinkedObject != null
+                        && !hostLinkdList.contains(hostLinkedObject)) {
+                    Relation relation = (hostLinkedObject instanceof Relation) ?
+                            (Relation) hostLinkedObject : (Relation) host;
+                    _makeExplicit(relation);
+
+                    NamedObj hostContainer = relation.getContainer();
+                    String moml;
+                    if (relation == hostLinkedObject) {
+                        moml = _getLinkMoML(host, relation, true);
+                    } else {
+                        moml = _getLinkMoML(hostLinkedObject, relation, true);
+                    }
                     MoMLChangeRequest request =
                         new MoMLChangeRequest(this, hostContainer, moml);
                     request.execute();
                 }
             }
 
-            if (replacementPort instanceof ComponentPort
-                    && hostPort instanceof ComponentPort) {
+            if (replacement instanceof ComponentPort
+                    && host instanceof ComponentPort) {
                 ComponentPort replacementComponentPort =
-                    (ComponentPort) replacementPort;
-                ComponentPort hostComponentPort = (ComponentPort) hostPort;
+                    (ComponentPort) replacement;
+                ComponentPort hostComponentPort = (ComponentPort) host;
                 for (Object replacementRelationObject
                         : replacementComponentPort.insideRelationList()) {
                     Relation replacementRelation =
@@ -147,9 +190,7 @@ public class GraphTransformer extends ChangeRequest {
                         // There is no link between hostPort and hostRelation,
                         // so create a new link.
                         NamedObj hostContainer = hostRelation.getContainer();
-                        String moml = "<link port=\"" + hostPort.getName()
-                                + "\" relation=\"" + hostRelation.getName()
-                                + "\"/>";
+                        String moml = _getLinkMoML(host, hostRelation, false);
                         MoMLChangeRequest request =
                             new MoMLChangeRequest(this, hostContainer, moml);
                         request.execute();
@@ -164,13 +205,22 @@ public class GraphTransformer extends ChangeRequest {
     }
 
     protected void _execute() throws TransformationException {
-        _init();
-        _performOperations();
-        _recordMoML();
-        _removeObjects();
-        _addObjects();
-        _addConnections();
-        _wrapup();
+        for (MatchResult matchResult : _matchResults) {
+            _matchResult = matchResult;
+            _host = (CompositeEntity) _matchResult.get(_pattern);
+            if (_host == null) {
+                throw new TransformationException("Match result is invalid "
+                        + "because it does not include the pattern.");
+            }
+
+            _init();
+            _performOperations();
+            _recordMoML();
+            _removeObjects();
+            _addObjects();
+            _addConnections();
+            _wrapup();
+        }
     }
 
     protected void _init() throws TransformationException {
@@ -279,6 +329,31 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    private double[] _getBestLocation(Relation relation) {
+        double x = 0;
+        double y = 0;
+        List<?> list = relation.linkedObjectsList();
+        int i;
+        int num = 0;
+        for (i = 0; i < list.size(); i++) {
+            NamedObj object = (NamedObj) list.get(i);
+            if (object instanceof Port) {
+                object = object.getContainer();
+            }
+            Location location = (Location) object.getAttribute("_location");
+            if (location != null) {
+                double[] coordinate = location.getLocation();
+                x += coordinate[0];
+                y += coordinate[1];
+                num++;
+            }
+        }
+        if (num == 0) {
+            num = 1;
+        }
+        return new double[] {x / num, y / num};
+    }
+
     private Collection<?> _getChildren(NamedObj object,
             boolean includeAttributes, boolean includePorts,
             boolean includeEntities, boolean includeRelations) {
@@ -308,6 +383,24 @@ public class GraphTransformer extends ChangeRequest {
         String name = topContainer == null ?
                 object.getName() : object.getName(topContainer);
         return replacementAbbrev + name;
+    }
+
+    private String _getLinkMoML(NamedObj object, Relation relation,
+            boolean includeObjectContainerName) {
+        String moml = null;
+        if (object instanceof Port) {
+            NamedObj portContainer = object.getContainer();
+            moml = "<link port=\"";
+            if (portContainer != relation.getContainer()) {
+                moml += portContainer.getName() + ".";
+            }
+            moml += object.getName() + "\" relation=\"" + relation.getName()
+                    + "\"/>";
+        } else if (object instanceof Relation) {
+            moml = "<link relation1=\"" + object.getName() + "\" relation2=\""
+                    + relation.getName() + "\"/>";
+        }
+        return moml;
     }
 
     private String _getMoML(NamedObj host) throws TransformationException {
@@ -434,6 +527,18 @@ public class GraphTransformer extends ChangeRequest {
                 _setReplacementObjectAttribute(host,
                         _getCodeFromObject(replacement, _replacement));
             }
+        }
+    }
+
+    private void _makeExplicit(Relation relation) {
+        Attribute vertex = relation.getAttribute("vertex1");
+        if (vertex == null) {
+            double[] location = _getBestLocation(relation);
+            String moml = "<vertex name=\"vertex1\" value=\"["
+                    + location[0] + ", " + location[1] + "]\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    relation, moml);
+            request.execute();
         }
     }
 
@@ -622,6 +727,8 @@ public class GraphTransformer extends ChangeRequest {
     private CompositeEntity _host;
 
     private MatchResult _matchResult;
+
+    private List<MatchResult> _matchResults;
 
     private Map<NamedObj, String> _moml;
 

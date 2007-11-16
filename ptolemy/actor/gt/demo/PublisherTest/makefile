@@ -1,9 +1,10 @@
-# Makefile for the Ptolemy II vergil/actor/img directory
+# Makefile for Ptolemy II Javasound Karplus-Strong Demo
 #
-# Author: Christopher Hylands (makefile only)
-# Version: $Id$
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# Copyright (c) 2001-2005 The Regents of the University of California.
+# @Version: $Id$
+#
+# @Copyright (c) 1998-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,73 +28,52 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/vergil/gt/img
+ME =		ptolemy/actor/gt/demo/PublisherTest
 
-# Sub directories to run make in.
 DIRS =
 
-# Root of Ptolemy II directory
-ROOT =		../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../../..
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	img
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE =	PublisherTest
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
+# Keep this list alphabetized.
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	batchmatch_o.gif \
-	batchmatch_on.gif \
-	batchmatch_ov.gif \
-	batchmatch.gif \
-	close.gif \
-	close_o.gif \
-	close_on.gif \
-	close_ov.gif \
-	match_o.gif \
-	match_on.gif \
-	match_ov.gif \
-	match.gif \
-	next_o.gif \
-	next_on.gif \
-	next_ov.gif \
-	next.gif \
-	nextfile_o.gif \
-	nextfile_on.gif \
-	nextfile_ov.gif \
-	nextfile.gif \
-	previous_o.gif \
-	previous_on.gif \
-	previous_ov.gif \
-	previous.gif \
-	previousfile_o.gif \
-	previousfile_on.gif \
-	previousfile_ov.gif \
-	previousfile.gif \
-	transform_o.gif \
-	transform_on.gif \
-	transform_ov.gif \
-	transform.gif \
-	transformall_o.gif \
-	transformall_on.gif \
-	transformall_ov.gif \
-	transformall.gif
+	$(JSRCS) \
+	PublisherTest.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	doc
 
-include $(ROOT)/mk/ptno-compile.mk
+JCLASS = $(JSRCS:%.java=%.class)
+
+all: jclass
+	@echo "To run the demos, run 'make demo'"
+
+install: jclass jars
+
+demo:
+	"$(PTII)/bin/vergil" PublisherTest.xml
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk

@@ -31,9 +31,11 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
@@ -42,6 +44,7 @@ import javax.swing.event.ChangeListener;
 
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.TransformationRule;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
@@ -51,10 +54,12 @@ import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.EditorDropTarget;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
+import ptolemy.vergil.kernel.Link;
 import diva.canvas.event.LayerAdapter;
 import diva.canvas.event.LayerEvent;
 import diva.graph.GraphController;
 import diva.graph.GraphPane;
+import diva.graph.GraphUtilities;
 import diva.graph.JGraph;
 
 public abstract class AbstractGTFrame extends ExtendedGraphFrame
@@ -185,7 +190,7 @@ implements ChangeListener, KeyListener {
     protected GraphPane _createGraphPane(NamedObj entity) {
         // The cast is safe because the constructor only accepts
         // CompositeEntity.
-        ActorGraphModel graphModel = new ActorGraphModel(entity);
+        GTActorGraphModel graphModel = new GTActorGraphModel(entity);
         GraphPane graphPane = new GraphPane(_controller, graphModel);
         if (_graphPanes != null) {
             _graphPanes.add(graphPane);
@@ -255,12 +260,62 @@ implements ChangeListener, KeyListener {
         return _tabbedPane;
     }
 
+    protected Configuration _getConfiguration() {
+        NamedObj toplevel = getTableau().toplevel();
+        if (toplevel instanceof Configuration) {
+            return (Configuration) toplevel;
+        } else {
+            return null;
+        }
+    }
+
     protected GraphController _getGraphController() {
         return _controller;
     }
 
     protected JTabbedPane _getTabbedPane() {
         return _tabbedPane;
+    }
+
+    protected static class GTActorGraphModel extends ActorGraphModel {
+
+        public synchronized void startUpdate() {
+            Set<?> linkSet = _getLinkSet();
+            Set<Link> linksToRemove = new HashSet<Link>();
+            for (Object linkObject : linkSet) {
+                Link link = (Link) linkObject;
+                boolean headOK = GraphUtilities.isContainedNode(link.getHead(),
+                        getRoot(), this);
+                boolean tailOK = GraphUtilities.isContainedNode(link.getTail(),
+                        getRoot(), this);
+                if (!(headOK && tailOK)) {
+                    linksToRemove.add(link);
+                }
+            }
+            for (Link link : linksToRemove) {
+                _removeLink(link);
+            }
+            _updateStopped = false;
+            _update();
+        }
+
+        public synchronized void stopUpdate() {
+            _updateStopped = true;
+        }
+
+        protected boolean _update() {
+            if (!_updateStopped) {
+                return super._update();
+            } else {
+                return true;
+            }
+        }
+
+        GTActorGraphModel(NamedObj composite) {
+            super(composite);
+        }
+
+        private boolean _updateStopped = false;
     }
 
     /** Add a tabbed pane for the specified case.

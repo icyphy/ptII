@@ -49,10 +49,16 @@ import ptolemy.actor.gt.TransformationException;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFrame;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorEditorGraphController;
 import ptolemy.vergil.kernel.AnimationRenderer;
@@ -192,6 +198,8 @@ public class MatchResultViewer extends AbstractGTFrame {
         PreviousFileAction previousFileAction = new PreviousFileAction();
         NextFileAction nextFileAction = new NextFileAction();
         TransformAction transformAction = new TransformAction();
+        TransformAllAction transformAllAction = new TransformAllAction();
+        CloseAction closeAction = new CloseAction();
 
         _viewMenu.addSeparator();
         _previousItem = GUIUtilities.addMenuItem(_viewMenu, previousAction);
@@ -201,6 +209,9 @@ public class MatchResultViewer extends AbstractGTFrame {
         _nextFileItem =
             GUIUtilities.addMenuItem(_viewMenu, nextFileAction);
         _transformItem = GUIUtilities.addMenuItem(_viewMenu, transformAction);
+        _transformAllItem = GUIUtilities.addMenuItem(_viewMenu,
+                transformAllAction);
+        GUIUtilities.addMenuItem(_viewMenu, closeAction);
 
         _previousFileButton =
             GUIUtilities.addToolBarButton(_toolbar, previousFileAction);
@@ -211,6 +222,9 @@ public class MatchResultViewer extends AbstractGTFrame {
             GUIUtilities.addToolBarButton(_toolbar, nextFileAction);
         _transformButton = GUIUtilities.addToolBarButton(_toolbar,
                 transformAction);
+        _transformAllButton = GUIUtilities.addToolBarButton(_toolbar,
+                transformAllAction);
+        GUIUtilities.addToolBarButton(_toolbar, closeAction);
 
         setBatchMode(_isBatchMode);
         _enableOrDisableActions();
@@ -228,7 +242,7 @@ public class MatchResultViewer extends AbstractGTFrame {
     }
 
     protected static void _setTableauFactory(Object originator,
-            CompositeEntity entity) {
+            final CompositeEntity entity) {
         String momlTxt =
             "<property name=\"_tableauFactory\"" +
             " class=\"ptolemy.vergil.gt.MatchResultTableau$Factory\">" +
@@ -238,6 +252,37 @@ public class MatchResultViewer extends AbstractGTFrame {
         entity.requestChange(request);
         for (Object subentity : entity.entityList(CompositeEntity.class)) {
             _setTableauFactory(originator, (CompositeEntity) subentity);
+        }
+        entity.requestChange(new ChangeRequest(originator,
+                "Unset _tableauFactory persistence") {
+            protected void _execute() throws Exception {
+                _unset(entity);
+            }
+            
+            private void _unset(CompositeEntity entity) {
+                Attribute attribute = entity.getAttribute("_tableauFactory");
+                if (attribute != null) {
+                    attribute.setPersistent(false);
+                }
+                for (Object subentity
+                        : entity.entityList(CompositeEntity.class)) {
+                    _unset((CompositeEntity) subentity);
+                }
+            }
+        });
+    }
+    
+    protected static void _unsetTableauFactory(Object originator,
+            CompositeEntity entity) {
+        if (entity.getAttribute("_tableauFactory") != null) {
+            String momlTxt =
+                "<deleteProperty name=\"_tableauFactory\"/>";
+            MoMLChangeRequest request =
+                new MoMLChangeRequest(originator, entity, momlTxt);
+            entity.requestChange(request);
+        }
+        for (Object subentity : entity.entityList(CompositeEntity.class)) {
+            _unsetTableauFactory(originator, (CompositeEntity) subentity);
         }
     }
 
@@ -340,6 +385,16 @@ public class MatchResultViewer extends AbstractGTFrame {
         if (_transformButton != null && _results != null) {
             _transformButton.setEnabled(!_transformed && _rule != null);
         }
+        if (_transformAllItem != null && _results != null) {
+            _transformAllItem.setEnabled(!_transformed && _rule != null);
+        }
+        if (_transformAllButton != null && _results != null) {
+            _transformAllButton.setEnabled(!_transformed && _rule != null);
+        }
+    }
+    
+    private void _beginTransform() {
+        ((GTActorGraphModel) _getGraphModel()).stopUpdate();
     }
 
     private void _finishTransform() {
@@ -351,6 +406,8 @@ public class MatchResultViewer extends AbstractGTFrame {
             }
         }
         _enableOrDisableActions();
+        ((GTActorGraphModel) _getGraphModel()).startUpdate();
+        _getGraphController().rerender();
     }
 
     private void _next() {
@@ -396,8 +453,19 @@ public class MatchResultViewer extends AbstractGTFrame {
     }
 
     private void _transform() {
+        _beginTransform();
         try {
             GraphTransformer.transform(_rule, _results.get(_currentPosition));
+        } catch (TransformationException e) {
+            MessageHandler.error("Unable to transform model.", e);
+        }
+        _finishTransform();
+    }
+
+    private void _transformAll() {
+        _beginTransform();
+        try {
+            GraphTransformer.transform(_rule, _results);
         } catch (TransformationException e) {
             MessageHandler.error("Unable to transform model.", e);
         }
@@ -443,6 +511,10 @@ public class MatchResultViewer extends AbstractGTFrame {
      *  frame is this frame itself.
      */
     private MatchResultViewer _topFrame;
+
+    private JButton _transformAllButton;
+
+    private JMenuItem _transformAllItem;
 
     private JButton _transformButton;
 
@@ -614,4 +686,85 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     }
 
+    private class TransformAllAction extends FigureAction {
+
+        public TransformAllAction() {
+            super("Transform All");
+
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/gt/img/transformall.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/gt/img/transformall_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/gt/img/transformall_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/gt/img/transformall_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", "Transform the current highlighted occurrence "
+                    + "(Ctrl+\\)");
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                    KeyEvent.VK_BACK_SLASH, Toolkit.getDefaultToolkit()
+                            .getMenuShortcutKeyMask()));
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            if (_topFrame != null) {
+                _topFrame._transformAll();
+            } else {
+                _transformAll();
+            }
+        }
+
+    }
+    
+    private class CloseAction extends FigureAction {
+
+        public CloseAction() {
+            super("Close Match Window");
+
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/gt/img/close.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/gt/img/close_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/gt/img/close_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/gt/img/close_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", "Close the current view and open the model in "
+                    + "model editor");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+
+            String moml = getModel().exportMoML();
+            boolean modified = isModified();
+            setModified(false);
+            close();
+            
+            MoMLParser parser = new MoMLParser();
+            try {
+                Tableau tableau =
+                    _getConfiguration().openModel(parser.parse(moml));
+                Frame frame = tableau.getFrame();
+                if (modified && (frame instanceof TableauFrame)) {
+                    ((TableauFrame) tableau.getFrame()).setModified(true);
+                }
+            } catch (IllegalActionException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } catch (NameDuplicationException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            } catch (Exception e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+        }
+    }
 }

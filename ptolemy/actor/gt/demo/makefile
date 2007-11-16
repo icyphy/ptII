@@ -1,10 +1,10 @@
-# Makefile for the ptolemy/actor/gt package
+# Makefile for Java Ptolemy II Python demo
 #
-# @Authors: Thomas Huining Feng, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2007 The Regents of the University of California.
+# @Copyright (c) 2003-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,63 +29,35 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/gt
+ME =		ptolemy/actor/gt/demo
 
-DIRS = 		data ingredients test util demo
+DIRS =		PublisherTest
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
-CLASSPATH = 	$(ROOT)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	gt
+PTPACKAGE = 	demo
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	data/data.jar \
-	ingredients/ingredients.jar \
-	util/util.jar
+	PublisherTest/PublisherTest.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	AtomicActorMatcher.java \
-	CompositeActorMatcher.java \
-	DefaultDirectoryAttribute.java \
-	DefaultModelAttribute.java \
-	GTEntity.java \
-	GTIngredient.java \
-	GTIngredientElement.java \
-	GTIngredientList.java \
-	GTIngredientsAttribute.java \
-	GTTools.java \
-	GraphAnalyzer.java \
-	GraphMatcher.java \
-	GraphTransformationException.java \
-	GraphTransformer.java \
-	HierarchyFlatteningAttribute.java \
-	MalformedStringException.java \
-	MatchCallback.java \
-	ParameterAttribute.java \
-	Pattern.java \
-	PatternAttribute.java \
-	PatternObjectAttribute.java \
-	RelationCollapsingAttribute.java \
-	Replacement.java \
-	ReplacementObjectAttribute.java \
-	SubgraphMatchingException.java \
-	TransformationException.java \
-	TransformationRule.java \
-	ValidationException.java
+JSRCS =
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+    index.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -94,26 +66,16 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'AtomicActorMatcher$$1.class' \
-	'AtomicActorMatcher$$LoadActorIconChangeRequest.class' \
-	'AtomicActorMatcher$$RestoreAppearanceChangeRequest.class' \
-	'GTIngredient$$FieldIterator.class' \
-	'GTIngredient$$NamedObjMatchResult.class' \
-	'GraphAnalyzer$$IndexedList.class' \
-	'GraphAnalyzer$$IndexedLists.class' \
-	'GraphAnalyzer$$Path.class' \
-	'GraphMatcher$$1.class' \
-	'GraphMatcher$$2.class' \
-	'GraphMatcher$$LookbackEntry.class' \
-	'GraphMatcher$$LookbackList.class' \
-	'GraphMatcher$$NameComparator.class' \
-	'GraphMatcher$$ObjectList.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+	@echo "To run the demos, run 'make demo'"
+
 install: jclass jars
 
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
