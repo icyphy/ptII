@@ -61,6 +61,7 @@ import diva.graph.modular.MutableEdgeModel;
 import diva.graph.modular.NodeModel;
 import diva.util.NullIterator;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -327,6 +328,23 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     // End of FIXME.
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    
+    /** Get an unmodifiable copy of the link set.
+     * 
+     *  @return The link set.
+     */
+    protected Set<?> _getLinkSet() {
+        return Collections.unmodifiableSet(_linkSet);
+    }
+    
+    /** Remove a link from the link set. This function is not made synchronized.
+     *  Concurrent modification on the link set should be avoided.
+     * 
+     *  @param link The link to be removed.
+     */
+    protected void _removeLink(Link link) {
+        _linkSet.remove(link);
+    }
 
     /** Update the graph model.  This is called whenever a change request is
      *  executed.  In this class the internal set of link objects is created
