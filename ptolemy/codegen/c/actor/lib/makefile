@@ -109,6 +109,7 @@ JSRCS = \
 	MovingAverage.java \
 	MultiplyDivide.java \
 	Publisher.java \
+	PublisherTest.java \
 	Pulse.java \
 	Quantizer.java \
 	Ramp.java \
