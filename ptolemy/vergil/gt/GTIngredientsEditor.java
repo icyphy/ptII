@@ -156,12 +156,6 @@ implements ActionListener {
             }
         }
 
-        if (attribute == null
-                || !(attribute instanceof GTIngredientsAttribute)) {
-            throw new KernelRuntimeException("Cannot edit entity "
-                    + target.getName() + ".");
-        }
-
         _attribute = (GTIngredientsAttribute) attribute;
 
         _temporaryIngredientList = new GTIngredientList(_attribute);
@@ -347,7 +341,7 @@ implements ActionListener {
     }
 
     public void setVisible(boolean visible) {
-        if (visible) {
+        if (visible && _attribute != null) {
             try {
                 _initialIngredientList = _attribute.getIngredientList();
                 resetTable(_initialIngredientList);
@@ -427,6 +421,7 @@ implements ActionListener {
             public void keyTyped(KeyEvent e) {
             }
         });
+        _table.setEnabled(_attribute != null);
 
         JTableHeader header = _table.getTableHeader();
         header.setFont(new Font("Dialog", Font.BOLD, 11));
@@ -479,19 +474,23 @@ implements ActionListener {
         JButton addButton = new JButton("Add");
         addButton.setActionCommand("add");
         addButton.addActionListener(this);
+        addButton.setEnabled(_attribute != null);
         buttonsPanel.add(addButton);
         JButton removeButton = new JButton("Remove");
         removeButton.setActionCommand("remove");
         removeButton.addActionListener(this);
+        removeButton.setEnabled(_attribute != null);
         buttonsPanel.add(removeButton);
         JButton commitButton = new JButton("Commit");
         commitButton.setActionCommand("commit");
         commitButton.addActionListener(this);
+        commitButton.setEnabled(_attribute != null);
         buttonsPanel.add(commitButton);
         getRootPane().setDefaultButton(commitButton);
         JButton applyButton = new JButton("Apply");
         applyButton.setActionCommand("apply");
         applyButton.addActionListener(this);
+        applyButton.setEnabled(_attribute != null);
         buttonsPanel.add(applyButton);
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setActionCommand("cancel");
