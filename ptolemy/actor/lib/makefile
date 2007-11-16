@@ -163,6 +163,8 @@ JSRCS = \
 	PhaseUnwrap.java \
 	PoissonClock.java \
 	Publisher.java \
+	PublisherNonStrictTest.java \
+	PublisherTest.java \
 	Pulse.java \
 	Quantizer.java \
 	Ramp.java \
