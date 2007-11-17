@@ -46,6 +46,11 @@ test MatchingTest-1.1 {An empty graph with an empty lhs} {
     set lhs [java::new ptolemy.actor.gt.Pattern $e0 lhs]
     set host [java::new ptolemy.actor.TypedCompositeActor $e0 host]
     
+    set hierarchyFlattening [java::new ptolemy.actor.gt.HierarchyFlatteningAttribute $lhs "HierarchyFlattening"]
+    [java::field $hierarchyFlattening parameter] setExpression true
+    set relationCollapsing [java::new ptolemy.actor.gt.RelationCollapsingAttribute $lhs "RelationCollapsing"]
+    [java::field $relationCollapsing parameter] setExpression true
+    
     $matcher match $lhs $host
     [$matcher getMatchResult] toString
 } {{ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.TypedCompositeActor {.top.host}}}

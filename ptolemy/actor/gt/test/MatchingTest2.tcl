@@ -46,6 +46,11 @@ test MatchingTest-2.1 {An lhs with a CompositeActor matching an empty host} {
     set lhs [java::new ptolemy.actor.gt.Pattern $e0 lhs]
     set host [java::new ptolemy.actor.gt.Pattern $e0 host]
     
+    set hierarchyFlattening [java::new ptolemy.actor.gt.HierarchyFlatteningAttribute $lhs "HierarchyFlattening"]
+    [java::field $hierarchyFlattening parameter] setExpression true
+    set relationCollapsing [java::new ptolemy.actor.gt.RelationCollapsingAttribute $lhs "RelationCollapsing"]
+    [java::field $relationCollapsing parameter] setExpression true
+    
     set lhsA1 [java::new ptolemy.actor.gt.AtomicActorMatcher $lhs A1]
     set lhsA1Attr [java::cast ptolemy.actor.gt.GTIngredientsAttribute [$lhsA1 getAttribute criteria]]
     set lhsA1PortRuleList [java::new ptolemy.actor.gt.GTIngredientList $lhsA1Attr]
