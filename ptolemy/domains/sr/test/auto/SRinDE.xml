@@ -81,6 +81,15 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
+        <port name="tick" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 250.0]">
+            </property>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
         <entity name="Default" class="ptolemy.domains.sr.lib.Default">
             <property name="DefaultIcon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -414,6 +423,17 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 165.0]">
         </property>
     </entity>
+    <entity name="Clock2" class="ptolemy.actor.lib.Clock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 215.0]">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -434,8 +454,13 @@
         <vertex name="vertex1" value="{315.0, 130.0}">
         </vertex>
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="CountDown.start" relation="relation3"/>
     <link port="CountDown.count" relation="relation4"/>
+    <link port="CountDown.tick" relation="relation5"/>
     <link port="Sequence.enable" relation="relation"/>
     <link port="Sequence.output" relation="relation3"/>
     <link port="Clock.output" relation="relation"/>
@@ -443,4 +468,5 @@
     <link port="NonStrictTest2.input" relation="relation2"/>
     <link port="CurrentTime.output" relation="relation2"/>
     <link port="CurrentTime.trigger" relation="relation4"/>
+    <link port="Clock2.output" relation="relation5"/>
 </entity>
