@@ -45,7 +45,7 @@ import ptolemy.kernel.util.ValueListener;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public abstract class ParameterAttribute extends PatternAttribute
+public abstract class ParameterAttribute extends TransformationAttribute
 implements Settable {
 
     public ParameterAttribute(NamedObj container, String name)

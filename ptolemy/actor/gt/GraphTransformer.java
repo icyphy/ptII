@@ -30,14 +30,19 @@ package ptolemy.actor.gt;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ptolemy.actor.gt.data.CombinedCollection;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.data.TwoWayHashMap;
 import ptolemy.actor.gt.ingredients.operations.Operation;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -206,7 +211,7 @@ public class GraphTransformer extends ChangeRequest {
 
     protected void _execute() throws TransformationException {
         for (MatchResult matchResult : _matchResults) {
-            _matchResult = matchResult;
+            _matchResult = (MatchResult) matchResult.clone();
             _host = (CompositeEntity) _matchResult.get(_pattern);
             if (_host == null) {
                 throw new TransformationException("Match result is invalid "
@@ -219,8 +224,13 @@ public class GraphTransformer extends ChangeRequest {
             _removeObjects();
             _addObjects();
             _addConnections();
+            _hideRelations();
             _wrapup();
         }
+    }
+
+    protected void _hideRelations() {
+        _hideRelations(_host);
     }
 
     protected void _init() throws TransformationException {
@@ -274,7 +284,7 @@ public class GraphTransformer extends ChangeRequest {
     }
 
     protected void _removeObjects() throws TransformationException {
-        _removeObjects(_replacement, _host);
+        _removeObjects(_host);
     }
 
     protected void _wrapup() {
@@ -327,6 +337,29 @@ public class GraphTransformer extends ChangeRequest {
             NamedObj child = (NamedObj) childObject;
             _addReplacementToHostEntries(child);
         }
+    }
+
+    private Token _getAttribute(NamedObj container, String name,
+            Class<? extends TransformationAttribute> attributeClass) {
+
+        while (container != null) {
+            if (_replacementToHost.containsValue(container)) {
+                container = (NamedObj) _replacementToHost.getKey(container);
+            }
+            Attribute attribute = container.getAttribute(name);
+            if (attribute != null && attributeClass.isInstance(attribute)) {
+                Parameter parameter =
+                    (Parameter) attribute.attributeList().get(0);
+                try {
+                    return parameter == null ? null : parameter.getToken();
+                } catch (IllegalActionException e) {
+                    return null;
+                }
+            }
+            container = container.getContainer();
+        }
+
+        return null;
     }
 
     private double[] _getBestLocation(Relation relation) {
@@ -456,6 +489,35 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    private List<NamedObj> _getPreservedChildren(CompositeEntity container) {
+        Collection<?> children =
+            _getChildren(container, false, false, true, true);
+        List<NamedObj> result = new LinkedList<NamedObj>();
+        for (Object childObject : children) {
+            NamedObj child = (NamedObj) childObject;
+            boolean addChild = true;
+            if (child instanceof Relation) {
+                Relation relation = (Relation) child;
+                int connectionOnInnerPorts = 0;
+                List<?> portList = relation.linkedPortList();
+                for (Object portObject : portList) {
+                    Port port = (Port) portObject;
+                    if (port.getContainer() == container) {
+                        connectionOnInnerPorts++;
+                    }
+                }
+                if (connectionOnInnerPorts > 0
+                        && portList.size() - connectionOnInnerPorts <= 1) {
+                    addChild = false;
+                }
+            }
+            if (addChild) {
+                result.add(child);
+            }
+        }
+        return result;
+    }
+
     private ReplacementObjectAttribute _getReplacementObjectAttribute(
             NamedObj object) {
         Attribute attribute = object.getAttribute("replacementObject");
@@ -480,8 +542,39 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    private void _hideRelations(CompositeEntity host) {
+        Token relationHidingAttribute = _getAttribute(host, "RelationHiding",
+                RelationHidingAttribute.class);
+        boolean relationHiding = relationHidingAttribute == null ? true
+                : ((BooleanToken) relationHidingAttribute).booleanValue();
+        if (relationHiding) {
+            Collection<?> relations =
+                _getChildren(host, false, false, false, true);
+            for (Object relationObject : relations) {
+                Relation relation = (Relation) relationObject;
+                if (_replacementToHost.containsValue(relation)
+                        && relation.linkedObjectsList().size() == 2
+                        && relation.getAttribute("vertex1") != null) {
+                    String moml = "<deleteProperty name=\"vertex1\"/>";
+                    MoMLChangeRequest request =
+                        new MoMLChangeRequest(this, relation, moml);
+                    request.execute();
+                }
+            }
+        }
+
+        for (Object compositeChild : host.entityList(CompositeEntity.class)) {
+            _hideRelations((CompositeEntity) compositeChild);
+        }
+    }
+
     private void _initPatternToReplacement(NamedObj replacement) {
-        NamedObj pattern = GTTools.getCorrespondingPatternObject(replacement);
+        NamedObj pattern;
+        if (replacement == _replacement) {
+            pattern = _pattern;
+        } else {
+            pattern = GTTools.getCorrespondingPatternObject(replacement);
+        }
         if (pattern != null) {
             _patternToReplacement.put(pattern, replacement);
             if (pattern instanceof Entity && replacement instanceof Entity) {
@@ -542,18 +635,16 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
-    private void _removeObject(NamedObj object) throws TransformationException {
+    private Set<NamedObj> _removeObject(NamedObj object)
+    throws TransformationException {
         if (object instanceof CompositeEntity) {
             CompositeEntity entity = (CompositeEntity) object;
             CompositeEntity container = (CompositeEntity) entity.getContainer();
-            Map<NamedObj, NamedObj> entityMap =
-                new HashMap<NamedObj, NamedObj>();
+            TwoWayHashMap<NamedObj, NamedObj> entityMap =
+                new TwoWayHashMap<NamedObj, NamedObj>();
 
             // Record the object codes in a temporary map.
-            Collection<?> children =
-                _getChildren(entity, false, false, true, true);
-            List<Object> childrenRemoved = new LinkedList<Object>();
-            childrenRemoved.addAll(children);
+            List<NamedObj> preservedChildren = _getPreservedChildren(entity);
 
             // Remove the composite entity here because when the objects are
             // added back, their names will not conflict with the name of this
@@ -564,8 +655,7 @@ public class GraphTransformer extends ChangeRequest {
             _removeReplacementToHostEntries(object);
 
             // Move the entities and relations inside to the outside.
-            for (Object childObject : childrenRemoved) {
-                NamedObj child = (NamedObj) childObject;
+            for (NamedObj child : preservedChildren) {
                 String moml = "<group name=\"auto\">\n"
                         + child.exportMoMLPlain() + "</group>";
                 request = new MoMLChangeRequest(this, container, moml);
@@ -573,6 +663,7 @@ public class GraphTransformer extends ChangeRequest {
                 NamedObj newlyAddedObject =
                     _getNewlyAddedObject(container, child.getClass());
                 _addReplacementToHostEntries(newlyAddedObject);
+                _replaceMatchResultEntries(child, newlyAddedObject);
                 entityMap.put(child, newlyAddedObject);
             }
 
@@ -612,50 +703,30 @@ public class GraphTransformer extends ChangeRequest {
                     }
                 }
             }
+
+            return entityMap.values();
         } else {
             MoMLChangeRequest request =
                 GTTools.getDeletionChangeRequest(this, object);
             request.execute();
+            return null;
         }
     }
 
-    private void _removeObjects(CompositeEntity replacement,
-            CompositeEntity host) throws TransformationException {
+    private void _removeObjects(CompositeEntity host)
+    throws TransformationException {
+        CompositeEntity replacement = (CompositeEntity) _replacementToHost.getKey(host);
+        Collection<?> children =
+            _getChildren(host, false, false, true, true);
         List<NamedObj> childrenToRemove = new LinkedList<NamedObj>();
-        boolean boxingRemoved = true;
-        while (boxingRemoved) {
-            // FIXME: Consider attributes.
-            Collection<?> children =
-                _getChildren(host, false, false, true, true);
+        Set<NamedObj> newChildren = new HashSet<NamedObj>();
+        while (!children.isEmpty()) {
             childrenToRemove.clear();
             for (Object childObject : children) {
                 NamedObj child = (NamedObj) childObject;
                 NamedObj replacementChild =
                     (NamedObj) _replacementToHost.getKey(child);
 
-                if (childObject instanceof CompositeEntity) {
-                    if (replacementChild == null
-                            && _matchResult.containsValue(child)
-                            || replacementChild != null
-                            && replacementChild.getContainer() != replacement) {
-                        childrenToRemove.add(child);
-                    }
-                }
-            }
-            for (NamedObj child : childrenToRemove) {
-                _removeObject(child);
-            }
-            boxingRemoved = childrenToRemove.size() > 0;
-        }
-
-        Collection<?> children = _getChildren(host, false, false, true, true);
-        childrenToRemove.clear();
-        for (Object childObject : children) {
-            NamedObj child = (NamedObj) childObject;
-            NamedObj replacementChild =
-                (NamedObj) _replacementToHost.getKey(child);
-
-            if (!(childObject instanceof CompositeEntity)) {
                 if (replacementChild == null
                         && _matchResult.containsValue(child)
                         || replacementChild != null
@@ -663,9 +734,18 @@ public class GraphTransformer extends ChangeRequest {
                     childrenToRemove.add(child);
                 }
             }
+            newChildren.clear();
+            for (NamedObj child : childrenToRemove) {
+                Set<NamedObj> newlyAddedChildren = _removeObject(child);
+                if (newlyAddedChildren != null) {
+                    newChildren.addAll(newlyAddedChildren);
+                }
+            }
+            children = newChildren;
         }
-        for (NamedObj child : childrenToRemove) {
-            _removeObject(child);
+
+        for (Object compositeChild : host.entityList(CompositeEntity.class)) {
+            _removeObjects((CompositeEntity) compositeChild);
         }
     }
 
@@ -703,6 +783,24 @@ public class GraphTransformer extends ChangeRequest {
         for (Object childObject : children) {
             NamedObj child = (NamedObj) childObject;
             _removeReplacementToHostEntries(child);
+        }
+    }
+
+    private void _replaceMatchResultEntries(NamedObj oldHost,
+            NamedObj newHost) {
+        NamedObj pattern = (NamedObj) _matchResult.getKey(oldHost);
+        if (pattern != null) {
+            _matchResult.put(pattern, newHost);
+        }
+
+        Collection<?> children = _getChildren(newHost, false, true, true, true);
+        for (Object childObject : children) {
+            NamedObj child = (NamedObj) childObject;
+            String code = _getCodeFromObject(child, newHost);
+            NamedObj oldChild = _getObjectFromCode(code, oldHost);
+            if (oldChild != null) {
+                _replaceMatchResultEntries(oldChild, child);
+            }
         }
     }
 

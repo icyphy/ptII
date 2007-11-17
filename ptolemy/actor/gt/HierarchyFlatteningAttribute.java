@@ -46,7 +46,7 @@ import ptolemy.moml.EntityLibrary;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class HierarchyFlatteningAttribute extends PatternAttribute {
+public class HierarchyFlatteningAttribute extends TransformationAttribute {
 
     /**
      * @param container
@@ -60,7 +60,7 @@ public class HierarchyFlatteningAttribute extends PatternAttribute {
 
         parameter = new Parameter(this, "hierarchyFlattening");
         parameter.setTypeEquals(BaseType.BOOLEAN);
-        parameter.setExpression("true");
+        parameter.setExpression("false");
     }
 
     public void attributeChanged(Attribute attribute) {

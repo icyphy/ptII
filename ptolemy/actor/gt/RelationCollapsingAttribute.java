@@ -46,7 +46,7 @@ import ptolemy.moml.EntityLibrary;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class RelationCollapsingAttribute extends PatternAttribute {
+public class RelationCollapsingAttribute extends TransformationAttribute {
 
     public RelationCollapsingAttribute(NamedObj container, String name)
     throws NameDuplicationException, IllegalActionException {
@@ -54,7 +54,7 @@ public class RelationCollapsingAttribute extends PatternAttribute {
 
         parameter = new Parameter(this, "relationCollapsing");
         parameter.setTypeEquals(BaseType.BOOLEAN);
-        parameter.setExpression("true");
+        parameter.setExpression("false");
     }
 
     public void attributeChanged(Attribute attribute) {

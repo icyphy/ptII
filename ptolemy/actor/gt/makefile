@@ -75,12 +75,13 @@ JSRCS = \
 	MatchCallback.java \
 	ParameterAttribute.java \
 	Pattern.java \
-	PatternAttribute.java \
 	PatternObjectAttribute.java \
 	RelationCollapsingAttribute.java \
+	RelationHidingAttribute.java \
 	Replacement.java \
 	ReplacementObjectAttribute.java \
 	SubgraphMatchingException.java \
+	TransformationAttribute.java \
 	TransformationException.java \
 	TransformationRule.java \
 	ValidationException.java
