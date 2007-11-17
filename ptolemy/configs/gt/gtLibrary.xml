@@ -50,5 +50,15 @@
         </configure>
       </property>
     </property>
+    <property name="RelationHiding" class="ptolemy.actor.gt.RelationHidingAttribute">
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <rect x="0" y="0" width="26" height="18" style="fill:#00FFFF"/>
+            <text x="2" y="14" style="font-size:16; font-family:SansSerif; fill:blue">RH</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
   </entity>
 </group>
