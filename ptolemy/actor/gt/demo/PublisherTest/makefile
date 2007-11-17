@@ -73,7 +73,7 @@ all: jclass
 install: jclass jars
 
 demo:
-	"$(PTII)/bin/vergil" PublisherTest.xml
+	$(ROOT)/bin/vergil PublisherTest.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
