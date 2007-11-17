@@ -162,7 +162,7 @@ public class GraphMatcher extends GraphAnalyzer {
         _lookbackList = new LookbackList();
         _temporaryMatch = new MatchResult();
 
-        _success = _matchObject(pattern, hostGraph);
+        _success = _matchChildrenCompositeEntity(pattern, hostGraph);
 
         assert _lookbackList.isEmpty();
         assert _temporaryMatch.isEmpty();
@@ -253,9 +253,6 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                          public fields                    ////
-
     /** The default callback that always returns <tt>true</tt>. A callback is
      *  invoked whenever a match is found. Because this callback always returns
      *  <tt>true</tt>, it terminates the matching process after the first match
@@ -269,7 +266,7 @@ public class GraphMatcher extends GraphAnalyzer {
     };
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                          public fields                    ////
 
     /** Test whether the composite entity is opaque or not. Return <tt>true</tt>
      *  if the composite entity is an instance of {@link CompositeActor} and it
@@ -291,10 +288,13 @@ public class GraphMatcher extends GraphAnalyzer {
             Token value = _getAttribute(container, "HierarchyFlattening",
                         HierarchyFlatteningAttribute.class);
             boolean isOpaque = value == null ?
-                    false : !((BooleanToken) value).booleanValue();
+                    true : !((BooleanToken) value).booleanValue();
             return isOpaque;
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /** Check the items in the lookback list for more matching requirements. If
      *  no more requirements are found (i.e., all the lists in the lookback list
@@ -324,7 +324,7 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     private Token _getAttribute(NamedObj container, String name,
-            Class<? extends PatternAttribute> attributeClass) {
+            Class<? extends TransformationAttribute> attributeClass) {
 
         while (container != null) {
             if (_match.containsValue(container)) {
@@ -429,6 +429,41 @@ public class GraphMatcher extends GraphAnalyzer {
         }
 
         return success;
+    }
+
+    private boolean _matchChildrenCompositeEntity(CompositeEntity patternEntity,
+            CompositeEntity hostEntity) {
+        ObjectList patternList = new ObjectList();
+        patternList.add(patternEntity);
+        ObjectList hostList = new ObjectList();
+        hostList.add(hostEntity);
+        IndexedLists markedList = new IndexedLists();
+        boolean added = true;
+        int i = 0;
+        ObjectList.Entry entry = hostList.getHead();
+
+        while (added) {
+            added = false;
+            int size = hostList.size();
+            for (; i < size; i++) {
+                markedList.clear();
+                hostEntity = (CompositeEntity) entry.getValue();
+
+                NamedObj nextActor = findFirstChild(hostEntity, markedList,
+                        _match.keySet());
+                while (nextActor != null) {
+                    if (nextActor instanceof CompositeEntity) {
+                        hostList.add(nextActor);
+                        added = true;
+                    }
+                    nextActor = findNextChild(hostEntity, markedList,
+                            _match.keySet());
+                }
+                entry = entry.getNext();
+            }
+        }
+
+        return _matchObject(patternList, hostList);
     }
 
     private boolean _matchCompositeEntity(CompositeEntity patternEntity,
@@ -647,7 +682,7 @@ public class GraphMatcher extends GraphAnalyzer {
                         "RelationCollapsing",
                         RelationCollapsingAttribute.class);
             boolean collapsing = collapsingToken == null ?
-                    true : ((BooleanToken) collapsingToken).booleanValue();
+                    false : ((BooleanToken) collapsingToken).booleanValue();
 
             if (collapsing) {
                 _temporaryMatch.put(patternContainer, hostContainer);
