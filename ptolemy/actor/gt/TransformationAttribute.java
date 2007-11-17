@@ -46,9 +46,9 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public abstract class PatternAttribute extends SingletonAttribute {
+public abstract class TransformationAttribute extends SingletonAttribute {
 
-    public PatternAttribute(NamedObj container, String name)
+    public TransformationAttribute(NamedObj container, String name)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
