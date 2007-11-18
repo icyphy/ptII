@@ -240,7 +240,9 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     protected static void _setTableauFactory(Object originator,
             final CompositeEntity entity) {
-        if (entity.getAttribute("_tableauFactory") == null) {
+        List<?> factoryList =
+            entity.attributeList(MatchResultTableau.Factory.class);
+        if (factoryList.isEmpty()) {
             String momlTxt =
                 "<group name=\"auto\">"
                 + "<property name=\"_tableauFactory\""
@@ -406,6 +408,7 @@ public class MatchResultViewer extends AbstractGTFrame {
     }
 
     private void _finishTransform() {
+        _setTableauFactory(this, (CompositeEntity) getModel());
         _transformed = true;
         _asynchronousDehighlight();
         if (_topFrame == null) {
