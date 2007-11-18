@@ -1150,7 +1150,8 @@ TableModelListener, ValueListener {
                         _viewers[_index].setVisible(true);
                     } else {
                         _viewers[_index] =
-                            _showViewer(_models[_index], _allResults[_index]);
+                            _showViewer(_models[_index], _allResults[_index],
+                                    _files[_index].getCanonicalPath());
                         _viewers[_index].setBatchMode(true);
                         _viewers[_index].setPreviousFileEnabled(
                                 _previousIndex >= 0);
@@ -1526,7 +1527,7 @@ TableModelListener, ValueListener {
         }
 
         protected MatchResultViewer _showViewer(CompositeEntity model,
-                List<MatchResult> results)
+                List<MatchResult> results, String sourceFileName)
         throws IllegalActionException, NameDuplicationException {
 
             MatchResultViewer._setTableauFactory(this, model);
@@ -1538,6 +1539,7 @@ TableModelListener, ValueListener {
             Tableau tableau = configuration.openModel(model);
             MatchResultViewer viewer = (MatchResultViewer) tableau.getFrame();
             viewer.setMatchResult(results);
+            viewer.setSourceFileName(sourceFileName);
             viewer.setTransformationRule(getTransformationRule());
             return viewer;
         }
@@ -1684,7 +1686,8 @@ TableModelListener, ValueListener {
                     if (results.isEmpty()) {
                         MessageHandler.message("No match found.");
                     } else {
-                        _viewer = _showViewer(model, results);
+                        _viewer = _showViewer(model, results,
+                                file.getCanonicalPath());
                         _viewer.addWindowListener(this);
                     }
                 } catch (MalformedURLException ex) {

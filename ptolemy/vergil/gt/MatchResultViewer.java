@@ -163,6 +163,7 @@ public class MatchResultViewer extends AbstractGTFrame {
         _currentPosition = 0;
         _enableOrDisableActions();
         highlightMatchedObjects();
+        _refreshStatusBars();
     }
 
     public void setNextFileEnabled(boolean nextFileEnabled) {
@@ -173,6 +174,11 @@ public class MatchResultViewer extends AbstractGTFrame {
     public void setPreviousFileEnabled(boolean previousFileEnabled) {
         _isPreviousFileEnabled = previousFileEnabled;
         _enableOrDisableActions();
+    }
+
+    public void setSourceFileName(String sourceFileName) {
+        _sourceFileName = sourceFileName;
+        _refreshStatusBars();
     }
 
     public void setTransformationRule(TransformationRule rule) {
@@ -189,6 +195,8 @@ public class MatchResultViewer extends AbstractGTFrame {
      */
     protected void _addMenus() {
         super._addMenus();
+
+        setSourceFileName(_sourceFileName);
 
         PreviousAction previousAction = new PreviousAction();
         NextAction nextAction = new NextAction();
@@ -354,6 +362,7 @@ public class MatchResultViewer extends AbstractGTFrame {
                         _isNextFileEnabled = viewer._isNextFileEnabled;
                         _transformed = viewer._transformed;
                         _rule = viewer._rule;
+                        _sourceFileName = viewer._sourceFileName;
                         viewer._subviewers.add(this);
                         _topFrame = viewer;
                     }
@@ -431,6 +440,7 @@ public class MatchResultViewer extends AbstractGTFrame {
                 }
             }
             _enableOrDisableActions();
+            _refreshStatusBars();
         }
     }
 
@@ -440,6 +450,7 @@ public class MatchResultViewer extends AbstractGTFrame {
             viewer.setVisible(false);
         }
         setVisible(false);
+        _refreshStatusBars();
     }
 
     private void _previous() {
@@ -452,6 +463,7 @@ public class MatchResultViewer extends AbstractGTFrame {
                 }
             }
             _enableOrDisableActions();
+            _refreshStatusBars();
         }
     }
 
@@ -461,6 +473,42 @@ public class MatchResultViewer extends AbstractGTFrame {
             viewer.setVisible(false);
         }
         setVisible(false);
+        _refreshStatusBars();
+    }
+
+    private void _refreshStatusBars() {
+        if (_topFrame != null) {
+            _topFrame._refreshStatusBars();
+        } else {
+            StringBuffer text = new StringBuffer();
+            if (_sourceFileName != null) {
+                text.append("Match: ");
+                text.append(_sourceFileName);
+                text.append("  ");
+            }
+            if (_results != null) {
+                text.append('(');
+                text.append(_currentPosition + 1);
+                text.append('/');
+                text.append(_results.size());
+                text.append(')');
+            }
+            _statusBar.setMessage(text.toString());
+            int max = 0;
+            if (_results != null) {
+                max = _results.size();
+                _statusBar.progressBar().setValue(_currentPosition + 1);
+                _statusBar.progressBar().setMaximum(max);
+            }
+            for (MatchResultViewer subviewer : _subviewers) {
+                subviewer._statusBar.setMessage(text.toString());
+                if (_results != null) {
+                    subviewer._statusBar.progressBar().setValue(
+                            _currentPosition + 1);
+                    subviewer._statusBar.progressBar().setMaximum(max);
+                }
+            }
+        }
     }
 
     private void _showInDefaultEditor() {
@@ -535,6 +583,8 @@ public class MatchResultViewer extends AbstractGTFrame {
     private List<MatchResult> _results;
 
     private TransformationRule _rule;
+
+    private String _sourceFileName;
 
     private Set<MatchResultViewer> _subviewers;
 
