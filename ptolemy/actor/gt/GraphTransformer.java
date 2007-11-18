@@ -228,9 +228,10 @@ public class GraphTransformer extends ChangeRequest {
             _removeObjects();
             _addObjects();
             _addConnections();
-            _hideRelations();
             _wrapup();
         }
+
+        _hideRelations();
     }
 
     protected void _hideRelations() {
@@ -521,13 +522,28 @@ public class GraphTransformer extends ChangeRequest {
         boolean relationHiding = relationHidingAttribute == null ? true
                 : ((BooleanToken) relationHidingAttribute).booleanValue();
         if (relationHiding) {
+            // Remove dangling relations.
             Collection<?> relations =
                 _getChildren(host, false, false, false, true);
             for (Object relationObject : relations) {
                 Relation relation = (Relation) relationObject;
-                List<?> vertices = relation.attributeList(Vertex.class);
                 List<?> linkedObjects = relation.linkedObjectsList();
+                if (linkedObjects.size() == 1) {
+                    String moml = "<deleteRelation name=\"" + relation.getName()
+                            + "\"/>";
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            relation.getContainer(), moml);
+                    request.execute();
+                }
+            }
+
+            // Combine relations if possible.
+            relations = _getChildren(host, false, false, false, true);
+            for (Object relationObject : relations) {
+                Relation relation = (Relation) relationObject;
+                List<?> vertices = relation.attributeList(Vertex.class);
                 if (vertices.isEmpty()) {
+                    List<?> linkedObjects = relation.linkedObjectsList();
                     if (linkedObjects.size() == 2) {
                         NamedObj head = (NamedObj) linkedObjects.get(0);
                         NamedObj tail = (NamedObj) linkedObjects.get(1);
@@ -538,7 +554,7 @@ public class GraphTransformer extends ChangeRequest {
                             MoMLChangeRequest request = new MoMLChangeRequest(
                                     this, relation.getContainer(), moml);
                             request.execute();
-                            
+
                             if (tail instanceof Relation) {
                                 moml = _getLinkMoML(head, (Relation) tail);
                                 request = new MoMLChangeRequest(this,
@@ -637,7 +653,7 @@ public class GraphTransformer extends ChangeRequest {
             // Record the object codes in a temporary map.
             Collection<?> preservedChildren =
                 _getChildren(entity, false, false, true, true);
-            
+
             // Record the connections to the composite entity's ports.
             Map<Port, List<Object>> portLinks =
                 new HashMap<Port, List<Object>>();
@@ -672,7 +688,7 @@ public class GraphTransformer extends ChangeRequest {
                 _replaceMatchResultEntries(child, newlyAddedObject);
                 entityMap.put(child, newlyAddedObject);
             }
-            
+
             // Create new relations for the ports.
             for (Port port : portLinks.keySet()) {
                 List<Object> linkedRelations = portLinks.get(port);
@@ -695,7 +711,7 @@ public class GraphTransformer extends ChangeRequest {
                         }
                     }
                 }
-                
+
                 String moml =
                     "<group name=\"auto\">"
                     + "<relation name=\"relation\" "
@@ -706,7 +722,7 @@ public class GraphTransformer extends ChangeRequest {
                 request.execute();
                 Relation newRelation = (Relation) _getNewlyAddedObject(
                         container, Relation.class);
-                
+
                 entityMap.put(port, newRelation);
             }
 
