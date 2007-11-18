@@ -1,0 +1,46 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HierarchyFlattening" class="ptolemy.actor.gt.TransformationRule">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={276, 250, 848, 549}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 435]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 147.5}">
+    </property>
+    <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This transformation rule flattens hierarchy in a model. A level of hierarchy is&#10;created with a composite actor. The pattern of this rule matches the composite&#10;actor and the replacement, which is empty, means to remove the composite&#10;actor as a wrapper.&#10;&#10;Note that the removal only affects the hierarchy wrapper, and the content within&#10;the composite actor, which is removed, remains and is automatically moved to&#10;the higher level. Connections between the content inside the composite actor&#10;and other actors at the higher level are made automatically.&#10;&#10;To remove a composite actor together with its content, in which case the&#10;composite actor is considered a blackbox, an AtomicActorMatcher should be&#10;used instead (with a subclass criterion with value&#10;&quot;ptolemy.actor.CompositeActor&quot;).&#10;&#10;Created by Thomas Huining Feng">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 45.0]">
+            </property>
+        </property>
+        <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute">
+            <property name="directory" class="ptolemy.data.expr.StringParameter" value="../../test">
+            </property>
+            <property name="filter" class="ptolemy.data.expr.StringParameter" value="host*.xml">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+          <svg>
+            <text style="font-size:14; font-family:SansSerif; fill:blue">-D-</text>
+          </svg>
+        </configure>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 0.0]">
+            </property>
+        </property>
+        <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 0.0]">
+            </property>
+        </entity>
+    </entity>
+</entity>

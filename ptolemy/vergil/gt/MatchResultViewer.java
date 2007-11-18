@@ -43,18 +43,15 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.gt.GraphTransformer;
 import ptolemy.actor.gt.TransformationException;
 import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
@@ -124,7 +121,7 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     public void dehighlightMatchedObjects() {
         CompositeEntity matcher = getActiveModel();
-        for (Object child : matcher.entityList(AtomicActor.class)) {
+        for (Object child : matcher.entityList(ComponentEntity.class)) {
             dehighlightMatchedObject((NamedObj) child);
         }
     }
@@ -143,7 +140,7 @@ public class MatchResultViewer extends AbstractGTFrame {
         if (_results != null && !_transformed) {
             CompositeEntity matcher = getActiveModel();
             Set<?> matchedHostObjects = _results.get(_currentPosition).values();
-            for (Object child : matcher.entityList(AtomicActor.class)) {
+            for (Object child : matcher.entityList(ComponentEntity.class)) {
                 if (matchedHostObjects.contains(child)) {
                     highlightMatchedObject((NamedObj) child);
                 } else {
@@ -243,40 +240,51 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     protected static void _setTableauFactory(Object originator,
             final CompositeEntity entity) {
-        String momlTxt =
-            "<property name=\"_tableauFactory\"" +
-            " class=\"ptolemy.vergil.gt.MatchResultTableau$Factory\">" +
-            "</property>";
-        MoMLChangeRequest request =
-            new MoMLChangeRequest(originator, entity, momlTxt);
-        entity.requestChange(request);
+        if (entity.getAttribute("_tableauFactory") == null) {
+            String momlTxt =
+                "<group name=\"auto\">"
+                + "<property name=\"_tableauFactory\""
+                + "  class=\"ptolemy.vergil.gt.MatchResultTableau$Factory\">"
+                + "</property>"
+                + "</group>";
+            MoMLChangeRequest request =
+                new MoMLChangeRequest(originator, entity, momlTxt);
+            entity.requestChange(request);
+            entity.requestChange(new ChangeRequest(originator,
+            "Unset _tableauFactory persistence") {
+                protected void _execute() throws Exception {
+                    _unsetPersistent(entity);
+                }
+
+                private void _unsetPersistent(CompositeEntity entity) {
+                    List<?> factoryList =
+                        entity.attributeList(MatchResultTableau.Factory.class);
+                    for (Object attributeObject : factoryList) {
+                        MatchResultTableau.Factory factory =
+                            (MatchResultTableau.Factory) attributeObject;
+                        factory.setPersistent(false);
+                    }
+                    for (Object subentity
+                            : entity.entityList(CompositeEntity.class)) {
+                        _unsetPersistent((CompositeEntity) subentity);
+                    }
+                }
+            });
+        }
         for (Object subentity : entity.entityList(CompositeEntity.class)) {
             _setTableauFactory(originator, (CompositeEntity) subentity);
         }
-        entity.requestChange(new ChangeRequest(originator,
-                "Unset _tableauFactory persistence") {
-            protected void _execute() throws Exception {
-                _unset(entity);
-            }
-            
-            private void _unset(CompositeEntity entity) {
-                Attribute attribute = entity.getAttribute("_tableauFactory");
-                if (attribute != null) {
-                    attribute.setPersistent(false);
-                }
-                for (Object subentity
-                        : entity.entityList(CompositeEntity.class)) {
-                    _unset((CompositeEntity) subentity);
-                }
-            }
-        });
     }
-    
+
     protected static void _unsetTableauFactory(Object originator,
             CompositeEntity entity) {
-        if (entity.getAttribute("_tableauFactory") != null) {
+        List<?> factoryList =
+            entity.attributeList(MatchResultTableau.Factory.class);
+        for (Object attributeObject : factoryList) {
+            MatchResultTableau.Factory factory =
+                (MatchResultTableau.Factory) attributeObject;
             String momlTxt =
-                "<deleteProperty name=\"_tableauFactory\"/>";
+                "<deleteProperty name=\"" + factory.getName() + "\"/>";
             MoMLChangeRequest request =
                 new MoMLChangeRequest(originator, entity, momlTxt);
             entity.requestChange(request);
@@ -324,6 +332,10 @@ public class MatchResultViewer extends AbstractGTFrame {
                 }
             }
         });
+    }
+
+    private void _beginTransform() {
+        ((GTActorGraphModel) _getGraphModel()).stopUpdate();
     }
 
     private void _checkContainingViewer() {
@@ -392,10 +404,6 @@ public class MatchResultViewer extends AbstractGTFrame {
             _transformAllButton.setEnabled(!_transformed && _rule != null);
         }
     }
-    
-    private void _beginTransform() {
-        ((GTActorGraphModel) _getGraphModel()).stopUpdate();
-    }
 
     private void _finishTransform() {
         _transformed = true;
@@ -450,6 +458,26 @@ public class MatchResultViewer extends AbstractGTFrame {
             viewer.setVisible(false);
         }
         setVisible(false);
+    }
+
+    private void _showInDefaultEditor() {
+        String moml = getModel().exportMoML();
+        boolean modified = isModified();
+        setModified(false);
+        close();
+
+        MoMLParser parser = new MoMLParser();
+        try {
+            Tableau tableau =
+                _getConfiguration().openModel(parser.parse(moml));
+            Frame frame = tableau.getFrame();
+            if (modified && (frame instanceof TableauFrame)) {
+                ((TableauFrame) tableau.getFrame()).setModified(true);
+            }
+        } catch (Exception e) {
+            MessageHandler.error("Cannot open default tableau for the "
+                    + "model.", e);
+        }
     }
 
     private void _transform() {
@@ -521,6 +549,36 @@ public class MatchResultViewer extends AbstractGTFrame {
     private boolean _transformed = false;
 
     private JMenuItem _transformItem;
+
+    private class CloseAction extends FigureAction {
+
+        public CloseAction() {
+            super("Close Match Window");
+
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/gt/img/close.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/gt/img/close_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/gt/img/close_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/gt/img/close_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
+
+            putValue("tooltip", "Close the current view and open the model in "
+                    + "model editor");
+        }
+
+        public void actionPerformed(ActionEvent event) {
+            super.actionPerformed(event);
+
+            if (_topFrame != null) {
+                _topFrame._showInDefaultEditor();
+            } else {
+                _showInDefaultEditor();
+            }
+        }
+    }
 
     private class NextAction extends FigureAction {
 
@@ -718,53 +776,5 @@ public class MatchResultViewer extends AbstractGTFrame {
             }
         }
 
-    }
-    
-    private class CloseAction extends FigureAction {
-
-        public CloseAction() {
-            super("Close Match Window");
-
-            GUIUtilities.addIcons(this, new String[][] {
-                    { "/ptolemy/vergil/gt/img/close.gif",
-                            GUIUtilities.LARGE_ICON },
-                    { "/ptolemy/vergil/gt/img/close_o.gif",
-                            GUIUtilities.ROLLOVER_ICON },
-                    { "/ptolemy/vergil/gt/img/close_ov.gif",
-                            GUIUtilities.ROLLOVER_SELECTED_ICON },
-                    { "/ptolemy/vergil/gt/img/close_on.gif",
-                            GUIUtilities.SELECTED_ICON } });
-
-            putValue("tooltip", "Close the current view and open the model in "
-                    + "model editor");
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-
-            String moml = getModel().exportMoML();
-            boolean modified = isModified();
-            setModified(false);
-            close();
-            
-            MoMLParser parser = new MoMLParser();
-            try {
-                Tableau tableau =
-                    _getConfiguration().openModel(parser.parse(moml));
-                Frame frame = tableau.getFrame();
-                if (modified && (frame instanceof TableauFrame)) {
-                    ((TableauFrame) tableau.getFrame()).setModified(true);
-                }
-            } catch (IllegalActionException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            } catch (NameDuplicationException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            } catch (Exception e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
-        }
     }
 }
