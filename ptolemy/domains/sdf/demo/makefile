@@ -32,7 +32,7 @@ ME =		ptolemy/domains/sdf/demo
 
 # Keep these alphabetical please.
 DIRS = 		Array Butterfly Expression Eye FixFIR FixPoint \
-		FourierSeries Gravitiation HTVQ LMSAdaptive LogisticMap \
+		FourierSeries Gravitation HTVQ LMSAdaptive LogisticMap \
 		MaximumEntropySpectrum ModelDisplay \
 		MultipleRuns NoisySinewave \
 		OrthogonalCom RijndaelEncryption \
