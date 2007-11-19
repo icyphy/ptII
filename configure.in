@@ -2235,11 +2235,12 @@ else
 	    AC_MSG_RESULT([$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE])
         fi
 
-        AC_MSG_CHECKING([for the proper JNI architecture])
+        AC_MSG_CHECKING([for the proper JNI library architecture])
         case "`uname -p`" in
 	    *86) PTJNI_LIB_ARCHITECTURE=i386;;
 	    sparc) PTJNI_LIB_ARCHITECTURE=sparc;;
-	    unknown) if test $PTJNI_ARCHITECTURE = "win32"; then
+	    unknown) # Some platforms do not properly implement uname -p
+                     if test $PTJNI_ARCHITECTURE = "win32" -o $PTJNI_ARCHITECTURE = "linux"; then
 		         PTJNI_LIB_ARCHITECTURE=i386
 		     else    
 		         PTJNI_LIB_ARCHITECTURE=unknown
