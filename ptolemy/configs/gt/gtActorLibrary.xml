@@ -6,6 +6,7 @@
   <configure>
     <?moml
       <group>
+        <entity name="ModelReader" class="ptolemy.actor.gt.ModelReader"/>
         <entity name="TransformationRule" class="ptolemy.actor.gt.TransformationRule"/>
       </group>
     ?>

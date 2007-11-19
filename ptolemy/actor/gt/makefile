@@ -73,6 +73,7 @@ JSRCS = \
 	HierarchyFlatteningAttribute.java \
 	MalformedStringException.java \
 	MatchCallback.java \
+	ModelReader.java \
 	ParameterAttribute.java \
 	Pattern.java \
 	PatternObjectAttribute.java \
