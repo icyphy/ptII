@@ -59,6 +59,7 @@ PTCLASSALLJARS = \
 	FixFIR/FixFIR.jar \
 	FixPoint/FixPoint.jar \
 	FourierSeries/FourierSeries.jar \
+	Gravitation/Gravitation.jar \
 	HTVQ/HTVQ.jar \
 	LMSAdaptive/LMSAdaptive.jar \
 	LogisticMap/LogisticMap.jar \
