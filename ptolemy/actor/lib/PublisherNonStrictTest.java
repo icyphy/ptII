@@ -212,7 +212,7 @@ public class PublisherNonStrictTest extends Publisher {
      *  @exception IllegalActionException If the base class throws it or
      *  if we are running under the test suite and the trainingMode
      *  parameter is set to true.
-     *  @see #ptolemy.actor.lib.NonStrictTest.isRunningNightlyBuild()
+     *  @see #ptolemy.actor.lib.NonStrictTest#isRunningNightlyBuild()
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -444,24 +444,6 @@ public class PublisherNonStrictTest extends Publisher {
      *  is used.
      *  This method differs from
      *  {@link ptolemy.data.RecordToken#_isCloseTo(Token, double)}
-     *  in that if corresponding elements are both nil tokens, then
-     *  those two elements are considered "close", see 
-     *  {@link ptolemy.data.Token#NIL}.
-     *  @param token1 The first array token to compare.
-     *  @param token2 The second array token to compare.
-     *  @param epsilon The value that we use to determine whether two
-     *   tokens are close.
-     *  @exception IllegalActionException If the elements do not support
-     *   this comparison.
-    /** Test whether the value of this token is close to the first argument,
-     *  where "close" means that the distance between them is less than
-     *  or equal to the second argument.  This method only makes sense
-     *  for tokens where the distance between them is reasonably
-     *  represented as a double. It is assumed that the argument is
-     *  an ArrayToken, and the isCloseTo() method of the array elements
-     *  is used.
-     *  This method differs from
-     *  {@link ptolemy.data.ArrayToken#_isCloseTo(Token, double)}
      *  in that if corresponding elements are both nil tokens, then
      *  those two elements are considered "close", see 
      *  {@link ptolemy.data.Token#NIL}.
