@@ -2256,7 +2256,7 @@ else
 	    AC_MSG_WARN(["$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE" was not found.
     As a result, $PTII/jni/launcher/launcher might not work.])
         else 
-	    AC_MSG_RESULT([$PTJAVA_HOME/lib/$PTJNI_ARCHITECTURE])
+	    AC_MSG_RESULT([$PTJAVA_HOME/lib/$PTJNI_LIB_ARCHITECTURE])
         fi
 
         AC_MSG_CHECKING([for if the -mno-cygwin flag is available])
