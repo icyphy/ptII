@@ -554,7 +554,7 @@ public class MatchResultViewer extends AbstractGTFrame {
     private int _currentPosition;
 
     private AnimationRenderer _decorator =
-        new AnimationRenderer(new Color(255, 64, 64));
+        new AnimationRenderer(new Color(128, 128, 255));
 
     private FileSelectionStatus _fileSelectionStatus = FileSelectionStatus.NONE;
 
