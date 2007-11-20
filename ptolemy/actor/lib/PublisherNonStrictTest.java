@@ -212,7 +212,7 @@ public class PublisherNonStrictTest extends Publisher {
      *  @exception IllegalActionException If the base class throws it or
      *  if we are running under the test suite and the trainingMode
      *  parameter is set to true.
-     *  @see #ptolemy.actor.lib.NonStrictTest#isRunningNightlyBuild()
+     *  @see ptolemy.actor.lib.NonStrictTest#isRunningNightlyBuild()
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
