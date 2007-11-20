@@ -27,10 +27,9 @@
 package ptolemy.actor.gt;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
-import ptolemy.actor.Initializable;
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.lib.hoc.MultiCompositeActor;
@@ -68,21 +67,13 @@ implements MatchCallback {
         super(workspace);
         _init();
     }
-    
-    public void stop() {
-        _stopRequested = true;
-
-        if (_debugging) {
-            _debug("Called stop()");
-        }
-    }
 
     public void fire() throws IllegalActionException {
         if (modelInput.hasToken(0)) {
             ActorToken token = (ActorToken) modelInput.get(0);
             _lastModel = (CompositeEntity) token.getEntity();
             _lastResults.clear();
-            
+
             GraphMatcher matcher = new GraphMatcher();
             matcher.setMatchCallback(this);
             matcher.match(getPattern(), _lastModel);
@@ -129,85 +120,12 @@ implements MatchCallback {
         return (Replacement) getEntity("Replacement");
     }
 
-    public void initialize() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called initialize()");
-        }
-        // First invoke initializable methods.
-        if (_initializables != null) {
-            for (Initializable initializable : _initializables) {
-                initializable.initialize();
-            }
-        }
-        // Update the version only after everything has been
-        // preinitialized because there might have been additional
-        // workspace version updates during preinitialize().
-        // We assume they were properly handled and new receivers
-        // were created if needed.
-        _receiversVersion = workspace().getVersion();
-    }
-
-    public boolean isOpaque() {
-        return true;
-    }
-
-    public boolean postfire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called postfire()");
-        }
-
-        return !_stopRequested;
-    }
-
     public boolean prefire() throws IllegalActionException {
         return modelInput.hasToken(0)
                 || matchInput.getWidth() > 0 && matchInput.hasToken(0)
                         && _lastModel != null
                 || trigger.getWidth() > 0 && trigger.hasToken(0)
                         && !_lastResults.isEmpty();
-    }
-
-    public void preinitialize() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called preinitialize()");
-        }
-
-        _stopRequested = false;
-
-        // First invoke initializable methods.
-        if (_initializables != null) {
-            for (Initializable initializable : _initializables) {
-                initializable.preinitialize();
-            }
-        }
-
-        // As an optimization, avoid creating receivers if
-        // the workspace version has not changed.
-        if (workspace().getVersion() != _receiversVersion) {
-            // NOTE:  Receivers are also getting created
-            // in connectionChanged().  Perhaps this is here to ensure
-            // that the receivers are reset?
-            _createReceivers();
-        }
-    }
-
-    public void stopFire() {
-    }
-
-    public List<?> typeConstraintList() {
-        return new LinkedList<Object>();
-    }
-
-    public void wrapup() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Called wrapup()");
-        }
-        // Invoke initializable methods.
-        if (_initializables != null) {
-            for (Initializable initializable : _initializables) {
-                initializable.wrapup();
-            }
-        }
     }
 
     public TypedIOPort matchInput;
@@ -219,6 +137,22 @@ implements MatchCallback {
     public TypedIOPort modelOutput;
 
     public TypedIOPort trigger;
+
+    public class TransformationDirector extends Director {
+
+        /**
+         * @param container
+         * @param name
+         * @throws IllegalActionException
+         * @throws NameDuplicationException
+         */
+        public TransformationDirector(CompositeEntity container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+
+            setClassName("ptolemy.actor.gt.TransformationRule$GTDirector");
+        }
+    }
 
     protected void _init()
     throws IllegalActionException, NameDuplicationException {
@@ -241,13 +175,12 @@ implements MatchCallback {
         trigger.setTypeEquals(BaseType.BOOLEAN);
         StringAttribute resetCardinal = new StringAttribute(trigger, "_cardinal");
         resetCardinal.setExpression("SOUTH");
+
+        new TransformationDirector(this, "GTDirector");
     }
 
     private CompositeEntity _lastModel;
 
     private Queue<MatchResult> _lastResults = new LinkedList<MatchResult>();
-
-    /** Record of the workspace version the last time receivers were created. */
-    private long _receiversVersion = -1;
 
 }

@@ -32,6 +32,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ActorToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -60,7 +61,9 @@ public class ModelReader extends TypedAtomicActor {
         modelEntity = new TypedIOPort(this, "modelEntity", false, true);
         modelEntity.setTypeEquals(ActorToken.TYPE);
     }
-
+    
+    public StringParameter defaultModel;
+    
     public void fire() throws IllegalActionException {
         if (modelString.hasToken(0)) {
             StringToken stringToken = (StringToken) modelString.get(0);
