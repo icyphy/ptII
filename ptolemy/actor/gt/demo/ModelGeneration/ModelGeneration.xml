@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="model" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ModelGeneration" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={329, 308, 851, 514}, maximized=false}">
@@ -16,28 +16,36 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 30.0]">
         </property>
     </property>
-    <entity name="ModelReader" class="ptolemy.actor.gt.ModelReader">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 105.0]">
-        </property>
-    </entity>
-    <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="D:\Development\ptII\ptII\ptolemy\actor\gt\test\host11_1.xml">
-        </property>
-        <doc>Read an entire file and output as a string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 105.0]">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={529, 395, 342, 260}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[326, 203]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 150.0]">
-        </property>
-    </entity>
     <entity name="TransformationRule" class="ptolemy.actor.gt.TransformationRule">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 160.0]">
         </property>
+        <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 105}">
+                </property>
+            </entity>
+            <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+                </property>
+                <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 105.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <link port="Const.output" relation="relation"/>
+            <link port="Display.input" relation="relation"/>
+        </entity>
     </entity>
     <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
         <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
@@ -153,34 +161,43 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 300.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+    <entity name="ModelSink" class="ptolemy.actor.gt.ModelSink">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 150.0]">
         </property>
-    </relation>
+    </entity>
+    <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 95.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;myModel&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 95.0]">
+        </property>
+    </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <vertex name="vertex1" value="[115.0, 160.0]">
         </vertex>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[445.0, 285.0]">
+        <vertex name="vertex1" value="[445.0, 300.0]">
         </vertex>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -189,26 +206,33 @@
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[335.0, 285.0]">
+        <vertex name="vertex1" value="[340.0, 300.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[115.0, 285.0]">
+        <vertex name="vertex1" value="{115.0, 300.0}">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="ModelReader.modelString" relation="relation"/>
-    <link port="ModelReader.modelEntity" relation="relation3"/>
-    <link port="FileReader.output" relation="relation"/>
-    <link port="FileReader.trigger" relation="relation6"/>
-    <link port="Display.input" relation="relation5"/>
-    <link port="TransformationRule.modelInput" relation="relation3"/>
-    <link port="TransformationRule.modelOutput" relation="relation5"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="TransformationRule.modelInput" relation="relation5"/>
+    <link port="TransformationRule.modelOutput" relation="relation"/>
     <link port="TransformationRule.matchInput" relation="relation10"/>
     <link port="TransformationRule.matchOutput" relation="relation4"/>
     <link port="TransformationRule.trigger" relation="relation2"/>
@@ -220,5 +244,10 @@
     <link port="Merge.output" relation="relation7"/>
     <link port="TimedDelay.input" relation="relation10"/>
     <link port="TimedDelay.output" relation="relation9"/>
+    <link port="ModelSink.input" relation="relation"/>
+    <link port="ModelGenerator.modelName" relation="relation3"/>
+    <link port="ModelGenerator.modelOutput" relation="relation5"/>
+    <link port="Const2.output" relation="relation3"/>
+    <link port="Const2.trigger" relation="relation6"/>
     <link relation1="relation4" relation2="relation10"/>
 </entity>

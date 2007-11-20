@@ -60,7 +60,6 @@ JSRCS = \
 	CompositeActorMatcher.java \
 	DefaultDirectoryAttribute.java \
 	DefaultModelAttribute.java \
-	EmptyModel.java \
 	GTEntity.java \
 	GTIngredient.java \
 	GTIngredientElement.java \
@@ -74,6 +73,7 @@ JSRCS = \
 	HierarchyFlatteningAttribute.java \
 	MalformedStringException.java \
 	MatchCallback.java \
+	ModelGenerator.java \
 	ModelReader.java \
 	ModelSink.java \
 	ParameterAttribute.java \

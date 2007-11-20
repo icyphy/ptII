@@ -8,7 +8,7 @@ import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ActorToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -17,32 +17,28 @@ import ptolemy.kernel.util.NameDuplicationException;
  * @author tfeng
  *
  */
-public class EmptyModel extends TypedAtomicActor {
+public class ModelGenerator extends TypedAtomicActor {
 
-    public EmptyModel(CompositeEntity container, String name)
+    public ModelGenerator(CompositeEntity container, String name)
     throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        setClassName("ptolemy.actor.gt.EmptyModel");
+        setClassName("ptolemy.actor.gt.ModelGenerator");
 
-        trigger = new TypedIOPort(this, "trigger", true, false);
-        trigger.setMultiport(true);
+        modelName = new TypedIOPort(this, "modelName", true, false);
+        modelName.setMultiport(true);
+        modelName.setTypeEquals(BaseType.STRING);
 
         modelOutput = new TypedIOPort(this, "modelOutput", false, true);
         modelOutput.setTypeEquals(ActorToken.TYPE);
-
-        modelName = new StringParameter(this, "modelName");
-        modelName.setExpression("generatedModel");
     }
 
     public void fire() throws IllegalActionException {
-        if (trigger.getWidth() > 0 && trigger.hasToken(0)) {
-            trigger.get(0);
-            TypedCompositeActor entity =
-                new TypedCompositeActor(workspace());
+        if (modelName.getWidth() > 0 && modelName.hasToken(0)) {
+            String name = ((StringToken) modelName.get(0)).stringValue();
+            TypedCompositeActor entity = new TypedCompositeActor(workspace());
             try {
-                entity.setName(
-                		((StringToken) modelName.getToken()).stringValue());
+                entity.setName(name);
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this, e,
                         "Unexpected exception.");
@@ -51,9 +47,7 @@ public class EmptyModel extends TypedAtomicActor {
         }
     }
 
-    public StringParameter modelName;
+    public TypedIOPort modelName;
 
     public TypedIOPort modelOutput;
-
-    public TypedIOPort trigger;
 }

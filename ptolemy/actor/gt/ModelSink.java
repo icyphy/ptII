@@ -28,6 +28,7 @@
 package ptolemy.actor.gt;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ActorToken;
 import ptolemy.kernel.CompositeEntity;
@@ -78,13 +79,25 @@ public class ModelSink extends Sink  {
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.getWidth() > 0 && input.hasToken(0)) {
+            if (_tableau != null) {
+                _tableau.close();
+                _tableau = null;
+            }
+            
             Entity model = ((ActorToken) input.get(0)).getEntity();
-            Configuration configuration = (Configuration) Configuration.findEffigy(toplevel()).toplevel();
+            Configuration configuration =
+                (Configuration) Configuration.findEffigy(toplevel()).toplevel();
         	try {
-				configuration.openModel(model);
+        	    _tableau = configuration.openModel(model);
 			} catch (NameDuplicationException e) {
-				e.printStackTrace();
+				throw new IllegalActionException(this, e, "Cannot open model.");
 			}
         }
     }
+    
+    public boolean prefire() throws IllegalActionException {
+        return input.getWidth() > 0 && input.hasToken(0) && super.prefire();
+    }
+    
+    private Tableau _tableau;
 }

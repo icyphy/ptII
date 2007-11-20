@@ -27,19 +27,24 @@
 package ptolemy.actor.gt;
 
 import java.util.LinkedList;
-import java.util.Queue;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.lib.hoc.MultiCompositeActor;
 import ptolemy.data.ActorToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,7 +59,7 @@ import ptolemy.kernel.util.Workspace;
 @Pt.AcceptedRating Red (tfeng)
 */
 public class TransformationRule extends MultiCompositeActor
-implements MatchCallback {
+implements MatchCallback, ValueListener {
 
     public TransformationRule(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -67,44 +72,65 @@ implements MatchCallback {
         super(workspace);
         _init();
     }
+    
+    public StringParameter mode;
 
     public void fire() throws IllegalActionException {
-        if (modelInput.hasToken(0)) {
-            ActorToken token = (ActorToken) modelInput.get(0);
-            _lastModel = (CompositeEntity) token.getEntity();
-            _lastResults.clear();
-
-            GraphMatcher matcher = new GraphMatcher();
-            matcher.setMatchCallback(this);
-            matcher.match(getPattern(), _lastModel);
-        }
-
-        if (matchInput.getWidth() > 0 && matchInput.hasToken(0)
-                && _lastModel != null) {
-            ObjectToken token = (ObjectToken) matchInput.get(0);
-            MatchResult match = (MatchResult) token.getValue();
-            if (match != null) {
-                CompositeEntity host =
-                    (CompositeEntity) match.get(getPattern());
-                if (_lastModel != host && !_lastModel.deepContains(host)) {
-                    throw new IllegalActionException(this, "The match result "
-                            + "cannot be used with the current model.");
-                }
-                try {
-                    GraphTransformer.transform(this, match);
+        try {
+            if (modelInput.hasToken(0)) {
+                ActorToken token = (ActorToken) modelInput.get(0);
+                _lastModel = (CompositeEntity) token.getEntity();
+                _lastModel.setDeferringChangeRequests(false);
+                _lastResults.clear();
+    
+                GraphMatcher matcher = new GraphMatcher();
+                matcher.setMatchCallback(this);
+                matcher.match(getPattern(), _lastModel);
+                
+                String modeString = mode.getExpression();
+                if (modeString.equals(Mode.REPLACE_FIRST.toString())) {
+                    if (_lastResults.isEmpty()) {
+                        modelOutput.send(0, token);
+                    } else {
+                        GraphTransformer.transform(this, _lastResults.remove());
+                        modelOutput.send(0, new ActorToken(_lastModel));
+                    }
+                    return;
+                } else if (modeString.equals(Mode.REPLACE_ALL.toString())) {
+                    GraphTransformer.transform(this, _lastResults);
                     modelOutput.send(0, new ActorToken(_lastModel));
-                } catch (Exception e) {
-                    throw new IllegalActionException(this, e,
-                            "Unable to transform model.");
+                    return;
                 }
             }
-        }
 
-        if (trigger.getWidth() > 0 && trigger.hasToken(0)
-                && !_lastResults.isEmpty()) {
-            trigger.get(0);
-            matchOutput.send(0, new ObjectToken(_lastResults.remove()));
+            if (matchInput.getWidth() > 0 && matchInput.hasToken(0)
+                    && _lastModel != null) {
+                ObjectToken token = (ObjectToken) matchInput.get(0);
+                MatchResult match = (MatchResult) token.getValue();
+                if (match != null) {
+                    CompositeEntity host =
+                        (CompositeEntity) match.get(getPattern());
+                    if (_lastModel != host && !_lastModel.deepContains(host)) {
+                        throw new IllegalActionException(this,
+                                "The match result cannot be used with the "
+                                + "current model.");
+                    }
+                    GraphTransformer.transform(this, match);
+                    modelOutput.send(0, new ActorToken(_lastModel));
+                }
+            }
+    
+            if (trigger.getWidth() > 0 && trigger.hasToken(0)
+                    && !_lastResults.isEmpty()) {
+                trigger.get(0);
+                matchOutput.send(0, new ObjectToken(_lastResults.remove()));
+            }
+        } catch (TransformationException e) {
+            throw new IllegalActionException(this, e,
+                    "Unable to transform model.");
         }
+        
+        remaining.send(0, new IntToken(_lastResults.size()));
     }
 
     public boolean foundMatch(GraphMatcher matcher) {
@@ -121,11 +147,17 @@ implements MatchCallback {
     }
 
     public boolean prefire() throws IllegalActionException {
-        return modelInput.hasToken(0)
-                || matchInput.getWidth() > 0 && matchInput.hasToken(0)
-                        && _lastModel != null
-                || trigger.getWidth() > 0 && trigger.hasToken(0)
-                        && !_lastResults.isEmpty();
+        String modeString = mode.getExpression();
+        if (modeString.equals(Mode.REPLACE_FIRST.toString())
+                || modeString.equals(Mode.REPLACE_ALL.toString())) {
+            return modelInput.hasToken(0);
+        } else {
+            return modelInput.hasToken(0)
+                    || matchInput.getWidth() > 0 && matchInput.hasToken(0)
+                            && _lastModel != null
+                    || trigger.getWidth() > 0 && trigger.hasToken(0)
+                            && !_lastResults.isEmpty();
+        }
     }
 
     public TypedIOPort matchInput;
@@ -137,6 +169,8 @@ implements MatchCallback {
     public TypedIOPort modelOutput;
 
     public TypedIOPort trigger;
+    
+    public TypedIOPort remaining;
 
     public class TransformationDirector extends Director {
 
@@ -167,20 +201,91 @@ implements MatchCallback {
         modelInput.setTypeEquals(ActorToken.TYPE);
         modelOutput = new TypedIOPort(this, "modelOutput", false, true);
         modelOutput.setTypeEquals(ActorToken.TYPE);
-        matchInput = new TypedIOPort(this, "matchInput", true, false);
-        matchInput.setTypeEquals(BaseType.OBJECT);
-        matchOutput = new TypedIOPort(this, "matchOutput", false, true);
-        matchOutput.setTypeEquals(BaseType.OBJECT);
-        trigger = new TypedIOPort(this, "trigger", true, false);
-        trigger.setTypeEquals(BaseType.BOOLEAN);
-        StringAttribute resetCardinal = new StringAttribute(trigger, "_cardinal");
-        resetCardinal.setExpression("SOUTH");
+        
+        
+        mode = new StringParameter(this, "mode");
+        for (Mode modeValue : Mode.values()) {
+            mode.addChoice(modeValue.toString());
+        };
+        mode.addValueListener(this);
+        mode.setExpression(Mode.REPLACE_FIRST.toString());
 
         new TransformationDirector(this, "GTDirector");
     }
 
     private CompositeEntity _lastModel;
 
-    private Queue<MatchResult> _lastResults = new LinkedList<MatchResult>();
+    private LinkedList<MatchResult> _lastResults =
+        new LinkedList<MatchResult>();
+    
+    public enum Mode {
+        REPLACE_FIRST { public String toString() {return "replace first";} },
+        REPLACE_ALL { public String toString() {return "replace all";} },
+        EXPERT { public String toString() {return "expert";} }
+    }
+
+    public void valueChanged(Settable settable) {
+        String modeString = mode.getExpression();
+        if (modeString.equals(Mode.REPLACE_FIRST.toString())
+                || modeString.equals(Mode.REPLACE_ALL.toString())) {
+            try {
+                if (matchInput != null) {
+                    matchInput.setContainer(null);
+                    matchInput = null;
+                }
+                if (matchOutput != null) {
+                    matchOutput.setContainer(null);
+                    matchOutput = null;
+                }
+                if (trigger != null) {
+                    trigger.setContainer(null);
+                    trigger = null;
+                }
+                if (remaining != null) {
+                    remaining.setContainer(null);
+                    remaining = null;
+                }
+            } catch (KernelException e) {
+                throw new InternalErrorException(this, e,
+                        "Cannot remove port.");
+            }
+        } else if (modeString.equals(Mode.EXPERT.toString())) {
+            try {
+                if (matchInput == null) {
+                    matchInput =
+                        new TypedIOPort(this, "matchInput", true, false);
+                    matchInput.setTypeEquals(BaseType.OBJECT);
+                    matchInput.setPersistent(false);
+                }
+                if (matchOutput == null) {
+                    matchOutput =
+                        new TypedIOPort(this, "matchOutput", false, true);
+                    matchOutput.setTypeEquals(BaseType.OBJECT);
+                    matchOutput.setPersistent(false);
+                }
+                if (trigger == null) {
+                    trigger = new TypedIOPort(this, "trigger", true, false);
+                    trigger.setTypeEquals(BaseType.BOOLEAN);
+                    trigger.setPersistent(false);
+                    new StringAttribute(trigger, "_cardinal").setExpression(
+                            "SOUTH");
+                }
+                if (remaining == null) {
+                    remaining =
+                        new TypedIOPort(this, "remaining", false, true);
+                    remaining.setTypeEquals(BaseType.INT);
+                    remaining.setPersistent(false);
+                    new StringAttribute(remaining, "_cardinal")
+                            .setExpression("SOUTH");
+                }
+            } catch (KernelException e) {
+                throw new InternalErrorException(this, e,
+                        "Cannot create port.");
+            }
+        } else {
+            throw new InternalErrorException("Cannot set mode to "
+                    + modeString + ".");
+        }
+    }
 
 }
