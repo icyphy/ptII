@@ -26,7 +26,6 @@ public class ModelGenerator extends TypedAtomicActor {
         setClassName("ptolemy.actor.gt.ModelGenerator");
 
         modelName = new TypedIOPort(this, "modelName", true, false);
-        modelName.setMultiport(true);
         modelName.setTypeEquals(BaseType.STRING);
 
         modelOutput = new TypedIOPort(this, "modelOutput", false, true);
