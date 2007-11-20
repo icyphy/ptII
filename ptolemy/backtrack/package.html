@@ -17,6 +17,15 @@ Backtracking mechanism for Ptolemy models.
 
 </menu>
 
+ <p><a href="http://www.eecs.berkeley.edu/~tfeng/backtrack.html"><CODE>http://www.eecs.berkeley.edu/~tfeng/backtrack.html</CODE></a>  - 
+This is somewhat outdated. It still talks about AspectJ,
+which we experimented some time ago. We then moved to source-to-source
+transformation.  The reason was that AspectJ didn't allow us to
+capture changes on some variables, such as individual elements of an
+array. By taking the source transformation approach, we have full
+control over the variables we need to keep track of.
+
+
 <p>
     @since Ptolemy II 6.1
 </body>
