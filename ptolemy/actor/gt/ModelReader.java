@@ -61,9 +61,7 @@ public class ModelReader extends TypedAtomicActor {
         modelEntity = new TypedIOPort(this, "modelEntity", false, true);
         modelEntity.setTypeEquals(ActorToken.TYPE);
     }
-    
-    public StringParameter defaultModel;
-    
+
     public void fire() throws IllegalActionException {
         if (modelString.hasToken(0)) {
             StringToken stringToken = (StringToken) modelString.get(0);
@@ -78,6 +76,8 @@ public class ModelReader extends TypedAtomicActor {
             }
         }
     }
+
+    public StringParameter defaultModel;
 
     public TypedIOPort modelEntity;
 

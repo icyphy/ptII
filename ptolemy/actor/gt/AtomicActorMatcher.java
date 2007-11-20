@@ -228,7 +228,7 @@ ValueListener {
         CompositeActor container = new CompositeActor();
         String moml = "<group><entity name=\"NewActor\" class=\""
             + actorClassName + "\"/></group>";
-        
+
         container.requestChange(new MoMLChangeRequest(this, container, moml));
         container.requestChange(new LoadActorIconChangeRequest(container));
     }

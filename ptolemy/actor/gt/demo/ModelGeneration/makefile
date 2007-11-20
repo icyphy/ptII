@@ -51,7 +51,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	ModelGeneration.xml
+	ModelGeneration.xml \
+	ModelGeneration2.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -73,7 +74,8 @@ all: jclass
 install: jclass jars
 
 demo:
-	$(ROOT)/bin/vergil PublisherTest.xml
+	$(ROOT)/bin/vergil ModelGeneration.xml
+	$(ROOT)/bin/vergil ModelGeneration2.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

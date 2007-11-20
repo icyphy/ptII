@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/gt/demo
 
-DIRS =		HierarchyFlattening ModelChange ModelGeneration PublisherTest
+DIRS =		HierarchyFlattening ModelGeneration PublisherTest
 
 # Root of the Ptolemy II directory
 ROOT =		../../../..
@@ -50,7 +50,6 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	HierarchyFlattening/HierarchyFlattening.jar \
-	ModelChange/ModelChange.jar \
 	ModelGeneration/ModelGeneration.jar \
 	PublisherTest/PublisherTest.jar
 

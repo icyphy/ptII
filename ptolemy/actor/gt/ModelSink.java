@@ -35,6 +35,8 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelDisplay
@@ -44,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  If inputs are provided, they are expected to be MoML strings
  that are to be applied to the model. This can be used, for
  example, to create animations.
- 
+
  @author  Thomas Huining Feng
  @version $Id$
  @since Ptolemy II 6.0
@@ -52,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (cxh)
 */
 public class ModelSink extends Sink  {
-    
+
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -64,7 +66,7 @@ public class ModelSink extends Sink  {
     public ModelSink(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         input.setTypeEquals(ActorToken.TYPE);
     }
 
@@ -83,21 +85,30 @@ public class ModelSink extends Sink  {
                 _tableau.close();
                 _tableau = null;
             }
-            
+
             Entity model = ((ActorToken) input.get(0)).getEntity();
             Configuration configuration =
                 (Configuration) Configuration.findEffigy(toplevel()).toplevel();
-        	try {
-        	    _tableau = configuration.openModel(model);
-			} catch (NameDuplicationException e) {
-				throw new IllegalActionException(this, e, "Cannot open model.");
-			}
+            try {
+                _parser.reset();
+                // Export the model into moml string and then import it again.
+                // Needed for some models (strange).
+                NamedObj newModel = _parser.parse(model.exportMoML());
+                _tableau = configuration.openInstance(newModel);
+            } catch (NameDuplicationException e) {
+                throw new IllegalActionException(this, e, "Cannot open model.");
+            } catch (Exception e) {
+                throw new IllegalActionException(this, e,
+                        "Cannot parse model.");
+            }
         }
     }
-    
+
     public boolean prefire() throws IllegalActionException {
         return input.getWidth() > 0 && input.hasToken(0) && super.prefire();
     }
-    
+
+    private MoMLParser _parser = new MoMLParser();
+
     private Tableau _tableau;
 }

@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.gt.data.CombinedCollection;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.data.TwoWayHashMap;
@@ -44,6 +45,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -59,6 +61,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
+import ptolemy.vergil.kernel.attributes.VisibleAttribute;
 
 /**
 
@@ -299,7 +302,23 @@ public class GraphTransformer extends ChangeRequest {
 
     private void _addObjects(NamedObj replacement, NamedObj host)
     throws TransformationException {
-        // FIXME: Consider attributes.
+        // Copy attributes for composite entities.
+        if (replacement instanceof CompositeEntity) {
+            for (Object attributeObject : replacement.attributeList()) {
+                Attribute attribute = (Attribute) attributeObject;
+                if (!_isAttributeCopied(attribute)) {
+                    continue;
+                }
+
+                String moml = "<group name=\"auto\">" + attribute.exportMoML()
+                        + "</group>";
+                MoMLChangeRequest request =
+                    new MoMLChangeRequest(this, host, moml);
+                request.execute();
+            }
+        }
+
+        // Copy entities and relations.
         Collection<?> children =
             _getChildren(replacement, false, false, true, true);
         for (Object childObject : children) {
@@ -640,6 +659,25 @@ public class GraphTransformer extends ChangeRequest {
                         _getCodeFromObject(replacement, _replacement));
             }
         }
+    }
+
+    private boolean _isAttributeCopied(Attribute attribute) {
+        if (!attribute.isPersistent()
+                || attribute instanceof TransformationAttribute) {
+            return false;
+        }
+
+        if (attribute instanceof Director
+                || attribute instanceof Variable
+                || attribute instanceof VisibleAttribute) {
+            return true;
+        }
+
+        if (!attribute.attributeList(Location.class).isEmpty()) {
+            return true;
+        }
+
+        return false;
     }
 
     private Set<NamedObj> _removeObject(NamedObj object, boolean shallowRemoval)

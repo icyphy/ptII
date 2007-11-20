@@ -27,6 +27,7 @@
 package ptolemy.actor.gt;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
@@ -72,8 +73,6 @@ implements MatchCallback, ValueListener {
         super(workspace);
         _init();
     }
-    
-    public StringParameter mode;
 
     public void fire() throws IllegalActionException {
         try {
@@ -82,12 +81,15 @@ implements MatchCallback, ValueListener {
                 _lastModel = (CompositeEntity) token.getEntity();
                 _lastModel.setDeferringChangeRequests(false);
                 _lastResults.clear();
-    
+
+                String modeString = mode.getExpression();
+
                 GraphMatcher matcher = new GraphMatcher();
                 matcher.setMatchCallback(this);
+                _collectAllMatches =
+                    !modeString.equals(Mode.REPLACE_FIRST.toString());
                 matcher.match(getPattern(), _lastModel);
-                
-                String modeString = mode.getExpression();
+
                 if (modeString.equals(Mode.REPLACE_FIRST.toString())) {
                     if (_lastResults.isEmpty()) {
                         modelOutput.send(0, token);
@@ -96,8 +98,19 @@ implements MatchCallback, ValueListener {
                         modelOutput.send(0, new ActorToken(_lastModel));
                     }
                     return;
+                } else if (modeString.equals(Mode.REPLACE_ANY.toString())) {
+                    if (_lastResults.isEmpty()) {
+                        modelOutput.send(0, token);
+                    } else {
+                        MatchResult result = _lastResults.remove(
+                                _random.nextInt(_lastResults.size()));
+                        GraphTransformer.transform(this, result);
+                        modelOutput.send(0, new ActorToken(_lastModel));
+                    }
+                    return;
                 } else if (modeString.equals(Mode.REPLACE_ALL.toString())) {
                     GraphTransformer.transform(this, _lastResults);
+                    _lastResults.clear();
                     modelOutput.send(0, new ActorToken(_lastModel));
                     return;
                 }
@@ -119,7 +132,7 @@ implements MatchCallback, ValueListener {
                     modelOutput.send(0, new ActorToken(_lastModel));
                 }
             }
-    
+
             if (trigger.getWidth() > 0 && trigger.hasToken(0)
                     && !_lastResults.isEmpty()) {
                 trigger.get(0);
@@ -129,13 +142,13 @@ implements MatchCallback, ValueListener {
             throw new IllegalActionException(this, e,
                     "Unable to transform model.");
         }
-        
+
         remaining.send(0, new IntToken(_lastResults.size()));
     }
 
     public boolean foundMatch(GraphMatcher matcher) {
         _lastResults.add((MatchResult) matcher.getMatchResult().clone());
-        return false;
+        return !_collectAllMatches;
     }
 
     public Pattern getPattern() {
@@ -146,9 +159,17 @@ implements MatchCallback, ValueListener {
         return (Replacement) getEntity("Replacement");
     }
 
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+
+        _lastModel = null;
+        _lastResults.clear();
+    }
+
     public boolean prefire() throws IllegalActionException {
         String modeString = mode.getExpression();
         if (modeString.equals(Mode.REPLACE_FIRST.toString())
+                || modeString.equals(Mode.REPLACE_ANY.toString())
                 || modeString.equals(Mode.REPLACE_ALL.toString())) {
             return modelInput.hasToken(0);
         } else {
@@ -160,73 +181,10 @@ implements MatchCallback, ValueListener {
         }
     }
 
-    public TypedIOPort matchInput;
-
-    public TypedIOPort matchOutput;
-
-    public TypedIOPort modelInput;
-
-    public TypedIOPort modelOutput;
-
-    public TypedIOPort trigger;
-    
-    public TypedIOPort remaining;
-
-    public class TransformationDirector extends Director {
-
-        /**
-         * @param container
-         * @param name
-         * @throws IllegalActionException
-         * @throws NameDuplicationException
-         */
-        public TransformationDirector(CompositeEntity container, String name)
-                throws IllegalActionException, NameDuplicationException {
-            super(container, name);
-
-            setClassName("ptolemy.actor.gt.TransformationRule$GTDirector");
-        }
-    }
-
-    protected void _init()
-    throws IllegalActionException, NameDuplicationException {
-        setClassName("ptolemy.actor.gt.TransformationRule");
-
-        // Create the default refinement.
-        new Pattern(this, "Pattern");
-        new Replacement(this, "Replacement");
-
-        // Create ports.
-        modelInput = new TypedIOPort(this, "modelInput", true, false);
-        modelInput.setTypeEquals(ActorToken.TYPE);
-        modelOutput = new TypedIOPort(this, "modelOutput", false, true);
-        modelOutput.setTypeEquals(ActorToken.TYPE);
-        
-        
-        mode = new StringParameter(this, "mode");
-        for (Mode modeValue : Mode.values()) {
-            mode.addChoice(modeValue.toString());
-        };
-        mode.addValueListener(this);
-        mode.setExpression(Mode.REPLACE_FIRST.toString());
-
-        new TransformationDirector(this, "GTDirector");
-    }
-
-    private CompositeEntity _lastModel;
-
-    private LinkedList<MatchResult> _lastResults =
-        new LinkedList<MatchResult>();
-    
-    public enum Mode {
-        REPLACE_FIRST { public String toString() {return "replace first";} },
-        REPLACE_ALL { public String toString() {return "replace all";} },
-        EXPERT { public String toString() {return "expert";} }
-    }
-
     public void valueChanged(Settable settable) {
         String modeString = mode.getExpression();
         if (modeString.equals(Mode.REPLACE_FIRST.toString())
+                || modeString.equals(Mode.REPLACE_ANY.toString())
                 || modeString.equals(Mode.REPLACE_ALL.toString())) {
             try {
                 if (matchInput != null) {
@@ -271,8 +229,7 @@ implements MatchCallback, ValueListener {
                             "SOUTH");
                 }
                 if (remaining == null) {
-                    remaining =
-                        new TypedIOPort(this, "remaining", false, true);
+                    remaining = new TypedIOPort(this, "remaining", false, true);
                     remaining.setTypeEquals(BaseType.INT);
                     remaining.setPersistent(false);
                     new StringAttribute(remaining, "_cardinal")
@@ -283,9 +240,80 @@ implements MatchCallback, ValueListener {
                         "Cannot create port.");
             }
         } else {
-            throw new InternalErrorException("Cannot set mode to "
-                    + modeString + ".");
+            throw new InternalErrorException("Cannot set mode to " + modeString
+                    + ".");
         }
     }
+
+    public TypedIOPort matchInput;
+
+    public TypedIOPort matchOutput;
+
+    public StringParameter mode;
+
+    public TypedIOPort modelInput;
+
+    public TypedIOPort modelOutput;
+
+    public TypedIOPort remaining;
+
+    public TypedIOPort trigger;
+
+    public class TransformationDirector extends Director {
+
+        /**
+         * @param container
+         * @param name
+         * @throws IllegalActionException
+         * @throws NameDuplicationException
+         */
+        public TransformationDirector(CompositeEntity container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+
+            setClassName("ptolemy.actor.gt.TransformationRule$GTDirector");
+        }
+    }
+
+    public enum Mode {
+        EXPERT { public String toString() {return "full control";} },
+        REPLACE_ALL { public String toString() {return "replace all";} },
+        REPLACE_ANY { public String toString() {return "replace any";} },
+        REPLACE_FIRST { public String toString() {return "replace first";} }
+    }
+
+    protected void _init()
+    throws IllegalActionException, NameDuplicationException {
+        setClassName("ptolemy.actor.gt.TransformationRule");
+
+        // Create the default refinement.
+        new Pattern(this, "Pattern");
+        new Replacement(this, "Replacement");
+
+        // Create ports.
+        modelInput = new TypedIOPort(this, "modelInput", true, false);
+        modelInput.setTypeEquals(ActorToken.TYPE);
+        modelOutput = new TypedIOPort(this, "modelOutput", false, true);
+        modelOutput.setTypeEquals(ActorToken.TYPE);
+
+
+        mode = new StringParameter(this, "mode");
+        for (int i = Mode.values().length - 1; i >= 0; i--) {
+            mode.addChoice(Mode.values()[i].toString());
+        };
+        mode.addValueListener(this);
+        mode.setExpression(Mode.REPLACE_FIRST.toString());
+
+        new TransformationDirector(this, "GTDirector");
+    }
+
+    private boolean _collectAllMatches;
+
+    private CompositeEntity _lastModel;
+
+    private LinkedList<MatchResult> _lastResults =
+        new LinkedList<MatchResult>();
+
+    private Random _random = new Random();
 
 }
