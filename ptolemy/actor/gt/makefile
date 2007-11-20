@@ -113,7 +113,15 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$LookbackEntry.class' \
 	'GraphMatcher$$LookbackList.class' \
 	'GraphMatcher$$NameComparator.class' \
-	'GraphMatcher$$ObjectList.class'
+	'GraphMatcher$$ObjectList.class' \
+	'TransformationRule$$1.class' \
+	'TransformationRule$$Mode$$1.class' \
+	'TransformationRule$$Mode$$2.class' \
+	'TransformationRule$$Mode$$3.class' \
+	'TransformationRule$$Mode$$4.class' \
+	'TransformationRule$$Mode.class' \
+	'TransformationRule$$TransformationDirector.class' \
+	demo
 
 JCLASS = $(JSRCS:%.java=%.class)
 
