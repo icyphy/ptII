@@ -53,7 +53,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
 */
-public class ModelSink extends Sink  {
+public class ModelView extends Sink  {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -63,7 +63,7 @@ public class ModelSink extends Sink  {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ModelSink(CompositeEntity container, String name)
+    public ModelView(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -80,35 +80,48 @@ public class ModelSink extends Sink  {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (input.getWidth() > 0 && input.hasToken(0)) {
-            if (_tableau != null) {
-                _tableau.close();
-                _tableau = null;
-            }
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (input.hasToken(i)) {
+                if (_tableaus[i] != null) {
+                    _tableaus[i].close();
+                    _tableaus[i] = null;
+                }
 
-            Entity model = ((ActorToken) input.get(0)).getEntity();
-            Configuration configuration =
-                (Configuration) Configuration.findEffigy(toplevel()).toplevel();
-            try {
-                _parser.reset();
-                // Export the model into moml string and then import it again.
-                // Needed for some models (strange).
-                NamedObj newModel = _parser.parse(model.exportMoML());
-                _tableau = configuration.openInstance(newModel);
-            } catch (NameDuplicationException e) {
-                throw new IllegalActionException(this, e, "Cannot open model.");
-            } catch (Exception e) {
-                throw new IllegalActionException(this, e,
-                        "Cannot parse model.");
+                Entity model = ((ActorToken) input.get(0)).getEntity();
+                Configuration configuration = (Configuration) Configuration
+                        .findEffigy(toplevel()).toplevel();
+                try {
+                    _parser.reset();
+                    // Export the model into moml string and then import it
+                    // again. Needed b some models with unnoticeable state.
+                    NamedObj newModel = _parser.parse(model.exportMoML());
+                    _tableaus[i] = configuration.openModel(newModel);
+                } catch (NameDuplicationException e) {
+                    throw new IllegalActionException(this, e,
+                            "Cannot open model.");
+                } catch (Exception e) {
+                    throw new IllegalActionException(this, e,
+                            "Cannot parse model.");
+                }
             }
         }
     }
 
-    public boolean prefire() throws IllegalActionException {
-        return input.getWidth() > 0 && input.hasToken(0) && super.prefire();
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+
+        if (_tableaus != null) {
+            for (Tableau tableau : _tableaus) {
+                if (tableau != null) {
+                    tableau.close();
+                }
+            }
+        }
+
+        _tableaus = new Tableau[input.getWidth()];
     }
 
     private MoMLParser _parser = new MoMLParser();
 
-    private Tableau _tableau;
+    private Tableau[] _tableaus;
 }

@@ -27,6 +27,7 @@
 package ptolemy.actor.gt;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import ptolemy.actor.Director;
@@ -181,6 +182,11 @@ implements MatchCallback, ValueListener {
         }
     }
 
+    public List<?> typeConstraintList() {
+        // Defeat the type constraints of all the actors inside.
+        return _EMPTY_LIST;
+    }
+
     public void valueChanged(Settable settable) {
         String modeString = mode.getExpression();
         if (modeString.equals(Mode.REPLACE_FIRST.toString())
@@ -308,6 +314,8 @@ implements MatchCallback, ValueListener {
     }
 
     private boolean _collectAllMatches;
+
+    private static final List<?> _EMPTY_LIST = new LinkedList<Object>();
 
     private CompositeEntity _lastModel;
 

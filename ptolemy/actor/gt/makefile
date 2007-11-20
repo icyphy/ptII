@@ -76,7 +76,7 @@ JSRCS = \
 	MatchCallback.java \
 	ModelGenerator.java \
 	ModelReader.java \
-	ModelSink.java \
+	ModelView.java \
 	ParameterAttribute.java \
 	Pattern.java \
 	PatternObjectAttribute.java \
