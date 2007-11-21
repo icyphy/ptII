@@ -303,8 +303,8 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
             return;
         }
 
-        URL url = FileUtilities.nameToURL(_fileName, fileOrURL
-                .getBaseDirectory(), getClass().getClassLoader());
+        URL url = fileOrURL.asURL();
+
         if (url == null) {
             throw new IOException("Could not convert \""
                     + fileOrURL.getExpression() + "\" with base \""
@@ -453,8 +453,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
                 read();
                 return;
             }
-            URL url = FileUtilities.nameToURL(_fileName, fileOrURL
-                    .getBaseDirectory(), getClass().getClassLoader());
+            URL url = fileOrURL.asURL();
             if (url == null) {
                 throw new IOException("Could not convert \""
                         + fileOrURL.getExpression() + "\" with base \""
