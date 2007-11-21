@@ -28,11 +28,11 @@
 
 package ptolemy.actor.gt;
 
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 /**
 
@@ -49,6 +49,10 @@ public class DefaultModelAttribute extends ParameterAttribute {
         super(container, name);
     }
 
+    public DefaultModelAttribute(Workspace workspace) {
+        super(workspace);
+    }
+
     public void setContainer(NamedObj container) throws IllegalActionException,
     NameDuplicationException {
         super.setContainer(container);
@@ -60,9 +64,9 @@ public class DefaultModelAttribute extends ParameterAttribute {
 
     protected void _initParameter() throws IllegalActionException,
             NameDuplicationException {
-        parameter = new StringParameter(this, "model");
-        parameter.setTypeEquals(BaseType.STRING);
-        parameter.setExpression("");
+        FileParameter fileParameter = new FileParameter(this, "model");
+
+        parameter = fileParameter;
     }
 
 }

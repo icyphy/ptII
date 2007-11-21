@@ -44,7 +44,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -57,7 +56,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -94,19 +92,14 @@ import ptolemy.actor.gt.data.CombinedCollection;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Configurer;
-import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
@@ -187,7 +180,6 @@ TableModelListener, ValueListener {
         // Override the default help file.
         // FIXME
         // helpFile = "ptolemy/configs/doc/vergilFsmEditorHelp.htm";
-
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -923,23 +915,9 @@ TableModelListener, ValueListener {
         public BatchMatchAction() {
             super("Match Models in a Directory");
 
-            try {
-                _directory = new FileParameter(_attribute, "directory");
-                _directory.setDisplayName("Directory (./)");
-                _directory.setExpression(".");
-
-                _fileFilter = new StringParameter(_attribute, "filter");
-                _fileFilter.setDisplayName("File filter (*.xml)");
-                _fileFilter.setExpression("");
-
-                _subdirs = new Parameter(_attribute, "subdirs");
-                _subdirs.setDisplayName("Include subdirs");
-                _subdirs.setTypeEquals(BaseType.BOOLEAN);
-                _subdirs.setExpression("true");
-            } catch (KernelException e) {
-                throw new KernelRuntimeException(e, "Unable to create action " +
-                        "instance.");
-            }
+            _attribute = new DefaultDirectoryAttribute((Workspace) null);
+            _attribute.directory.setBaseDirectory(URIAttribute.getModelURI(
+                    getModel()));
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/batchmatch.gif",
@@ -968,55 +946,39 @@ TableModelListener, ValueListener {
             Pattern pattern = rule.getPattern();
             DefaultDirectoryAttribute attribute = (DefaultDirectoryAttribute)
                     pattern.getAttribute("DefaultDirectory");
-            String directory = attribute == null ? ""
-                    : attribute.directory.getExpression();
-            String fileFilter = attribute == null ? ""
-                    : attribute.fileFilter.getExpression();
+            File directoryFile = null;
+            String fileFilter = "";
             boolean subdirs = true;
-            try {
-                subdirs = attribute == null ? true : ((BooleanToken)
-                        attribute.subdirs.getToken()).booleanValue();
-            } catch (IllegalActionException e) {
-                throw new KernelRuntimeException(e, "Unable to get boolean "
-                        + "token.");
+            if (attribute != null) {
+                try {
+                    directoryFile = attribute.directory.asFile();
+                    fileFilter = attribute.fileFilter.getExpression();
+                    subdirs = ((BooleanToken) attribute.subdirs.getToken())
+                            .booleanValue();
+                } catch (IllegalActionException e) {
+                    throw new KernelRuntimeException(e, "Unable to get boolean "
+                            + "token.");
+                }
             }
-            File directoryFile;
-            if (directory.equals("")) {
-                FileChooser fileChooser = new FileChooser(GTRuleGraphFrame.this,
-                        _attribute, false, true);
-                if (fileChooser._isConfirmed()) {
-                    String directoryName = fileChooser.getFileName();
-                    _directory.setExpression(directoryName);
-                    if (directoryName.equals("")) {
-                        directoryName = ".";
-                    }
-                    directoryFile = new File(directoryName);
+
+            if (directoryFile == null) {
+                ComponentDialog dialog = new ComponentDialog(
+                        GTRuleGraphFrame.this, "Select Model Directory",
+                        new Configurer(_attribute));
+                if (dialog.buttonPressed().equalsIgnoreCase("OK")) {
                     try {
-                        subdirs =
-                            ((BooleanToken) _subdirs.getToken()).booleanValue();
-                        fileFilter = ((StringToken) _fileFilter.getToken())
-                                .stringValue();
+                        directoryFile = _attribute.directory.asFile();
+                        fileFilter = _attribute.fileFilter.getExpression();
+                        subdirs = ((BooleanToken) _attribute.subdirs.getToken())
+                                .booleanValue();
                     } catch (IllegalActionException e) {
                         throw new KernelRuntimeException(e, "Unable to get "
                                 + "boolean token.");
                     }
-                } else {
-                    return null;
                 }
-            } else {
-                directoryFile = new File(directory);
             }
 
-            if (!directoryFile.isAbsolute()) {
-                URI uri = getEffigy().uri.getURI();
-                File parent = null;
-                if (uri != null) {
-                    parent = new File(uri).getParentFile();
-                }
-                directoryFile = new File(parent, directoryFile.getPath());
-            }
-
-            if (!directoryFile.exists()) {
+            if (directoryFile != null && !directoryFile.exists()) {
                 MessageHandler.error("Directory " + directoryFile.getPath()
                         + " does not exist.");
                 return null;
@@ -1028,19 +990,55 @@ TableModelListener, ValueListener {
 
         private File[] _listFiles(File directory, boolean includeSubdir,
                 String fileFilter) {
-            XMLFileCollector collector =
-                new XMLFileCollector(includeSubdir, fileFilter);
+            ModelFileFilter collector =
+                new ModelFileFilter(includeSubdir, fileFilter);
             directory.list(collector);
             List<File> files = collector._files;
             Collections.sort(files, new FileComparator());
             return files.toArray(new File[files.size()]);
         }
 
-        private FileParameter _directory;
+        private DefaultDirectoryAttribute _attribute;
 
-        private StringParameter _fileFilter;
+        private class ModelFileFilter implements FilenameFilter {
 
-        private Parameter _subdirs;
+            public boolean accept(File dir, String name) {
+                File file = new File(dir, name);
+                boolean isDirectory = _includeSubdir && file.isDirectory();
+                boolean isFile = file.isFile() && (_pattern == null ?
+                        name.toLowerCase().endsWith(".xml") :
+                        _pattern.matcher(name).matches());
+                if (isDirectory) {
+                    file.list(this);
+                } else if (isFile) {
+                    _files.add(file);
+                }
+                return false;
+            }
+
+            ModelFileFilter(boolean includeSubdir, String fileFilter) {
+                _includeSubdir = includeSubdir;
+                if (!fileFilter.equals("")) {
+                    _pattern =
+                        java.util.regex.Pattern.compile(_escape(fileFilter));
+                }
+            }
+
+            private String _escape(String string) {
+                String escaped = _ESCAPER.matcher(string).replaceAll("\\\\$1");
+                return escaped.replaceAll("\\\\\\*", ".*")
+                        .replaceAll("\\\\\\?", ".?");
+            }
+
+            private final java.util.regex.Pattern _ESCAPER =
+                java.util.regex.Pattern.compile("([^a-zA-z0-9])");
+
+            private List<File> _files = new LinkedList<File>();
+
+            private boolean _includeSubdir;
+
+            private java.util.regex.Pattern _pattern;
+        }
 
         private class MultipleViewController extends ViewController {
 
@@ -1178,46 +1176,6 @@ TableModelListener, ValueListener {
             private MatchResultViewer[] _viewers;
 
         }
-
-        private class XMLFileCollector implements FilenameFilter {
-
-            public boolean accept(File dir, String name) {
-                File file = new File(dir, name);
-                boolean isDirectory = _includeSubdir && file.isDirectory();
-                boolean isFile = file.isFile() && (_pattern == null ?
-                        name.toLowerCase().endsWith(".xml") :
-                        _pattern.matcher(name).matches());
-                if (isDirectory) {
-                    file.list(this);
-                } else if (isFile) {
-                    _files.add(file);
-                }
-                return false;
-            }
-
-            XMLFileCollector(boolean includeSubdir, String fileFilter) {
-                _includeSubdir = includeSubdir;
-                if (!fileFilter.equals("")) {
-                    _pattern =
-                        java.util.regex.Pattern.compile(_escape(fileFilter));
-                }
-            }
-
-            private String _escape(String string) {
-                String escaped = _ESCAPER.matcher(string).replaceAll("\\\\$1");
-                return escaped.replaceAll("\\\\\\*", ".*")
-                        .replaceAll("\\\\\\?", ".?");
-            }
-
-            private java.util.regex.Pattern _ESCAPER =
-                java.util.regex.Pattern.compile("([^a-zA-z0-9])");
-
-            private List<File> _files = new LinkedList<File>();
-
-            private boolean _includeSubdir;
-
-            private java.util.regex.Pattern _pattern;
-        }
     }
 
     private static class CellEditor extends CellPanelEditor {
@@ -1239,132 +1197,6 @@ TableModelListener, ValueListener {
         }
 
         private String _previousString;
-    }
-
-    private static class FileChooser extends ComponentDialog
-    implements ActionListener {
-
-        public FileChooser(PtolemyFrame owner, NamedObj target,
-                boolean allowFile, boolean allowDirectory) {
-            super(owner, "Choose Input "
-                    + (allowFile && allowDirectory ? "File/Directory" :
-                        allowFile ? "File" : "Directory"),
-                    new Configurer(target), FILE_CHOOSER_BUTTONS);
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            Object source = e.getSource();
-            if (source instanceof JTextField) {
-                _buttonPressed = FILE_CHOOSER_BUTTONS[0];
-                setVisible(false);
-            } else if (source == _button) {
-                JFileChooser fileChooser;
-                if (_currentDirectory == null) {
-                    URI uri =
-                        ((PtolemyFrame) getOwner()).getEffigy().uri.getURI();
-                    File directory = null;
-                    if (uri != null) {
-                        directory = new File(uri).getParentFile();
-                    }
-                    if (directory == null) {
-                        fileChooser = new JFileChooser(".");
-                    } else {
-                        fileChooser = new JFileChooser(directory);
-                    }
-                } else {
-                    fileChooser = new JFileChooser(_currentDirectory);
-                }
-
-                fileChooser.setApproveButtonText("Select");
-
-                // FIXME: The following doesn't have any effect.
-                fileChooser.setApproveButtonMnemonic('S');
-
-                String title = getTitle();
-                if (title.contains("File/Directory")) {
-                    fileChooser.setFileSelectionMode(
-                            JFileChooser.FILES_AND_DIRECTORIES);
-                } else if (title.contains("File")) {
-                    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                    fileChooser.setFileFilter(new diva.gui.ExtensionFileFilter(
-                            "xml", "Ptolemy II model"));
-                } else if (title.contains("Directory")) {
-                    fileChooser.setFileSelectionMode(
-                            JFileChooser.DIRECTORIES_ONLY);
-                }
-                if (fileChooser.showOpenDialog(this)
-                        == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    String fileName = selectedFile.getPath();
-                    _textField.setText(fileName);
-                    _currentDirectory = fileChooser.getCurrentDirectory();
-                }
-            }
-        }
-
-        public String getFileName() {
-            return _textField == null ? null : _textField.getText();
-        }
-
-        public void pack() {
-            super.pack();
-
-            Configurer configurer = (Configurer) contents;
-            List<JTextField> textFields = new LinkedList<JTextField>();
-            List<JButton> buttons = new LinkedList<JButton>();
-            _findComponents(configurer, JTextField.class, textFields);
-            _findComponents(configurer, JButton.class, buttons);
-            for (JTextField textField : textFields) {
-                if (_textField == null) {
-                    for (ActionListener listener : textField.getActionListeners()) {
-                        textField.removeActionListener(listener);
-                    }
-                    if (_fileName != null) {
-                        textField.setText(_fileName);
-                    }
-                    _textField = textField;
-                }
-                textField.addActionListener(this);
-            }
-            for (JButton button : buttons) {
-                if (!button.getText().equals("Browse")) {
-                    continue;
-                }
-                for (ActionListener listener : button.getActionListeners()) {
-                    button.removeActionListener(listener);
-                }
-                button.addActionListener(this);
-                _button = button;
-            }
-        }
-
-        public static final String[] FILE_CHOOSER_BUTTONS = new String[] {
-            "OK", "Cancel"
-        };
-
-        private <E extends Component> void _findComponents(Container container,
-                Class<? extends E> componentClass, List<E> list) {
-            for (Component component : container.getComponents()) {
-                if (componentClass.isInstance(component)) {
-                    list.add(componentClass.cast(component));
-                } else if (component instanceof Container) {
-                    _findComponents((Container) component, componentClass,
-                            list);
-                }
-            }
-        }
-
-        private boolean _isConfirmed() {
-            return buttonPressed().equals(FILE_CHOOSER_BUTTONS[0]);
-        }
-
-        private JButton _button;
-
-        private File _currentDirectory;
-
-        private String _fileName;
-
-        private JTextField _textField;
     }
 
     private static class FileComparator implements Comparator<File> {
@@ -1519,6 +1351,12 @@ TableModelListener, ValueListener {
 
         protected CompositeEntity _getModel(File file)
         throws MalformedURLException, Exception {
+            if (!file.exists()) {
+                MessageHandler.error("Model file " + file.getPath()
+                        + " does not exist.");
+                return null;
+            }
+
             _parser.reset();
             InputStream stream = file.toURI().toURL().openStream();
             CompositeEntity model =
@@ -1544,12 +1382,8 @@ TableModelListener, ValueListener {
             return viewer;
         }
 
-        protected Attribute _attribute;
-
         MatchAction(String name) {
             super(name);
-
-            _attribute = new Attribute((Workspace) null);
         }
 
         private GraphMatcher _matcher = new GraphMatcher();
@@ -1576,13 +1410,9 @@ TableModelListener, ValueListener {
         public SingleMatchAction() {
             super("Match Model");
 
-            try {
-                _inputModel = new FileParameter(_attribute, "inputModel");
-                _inputModel.setDisplayName("Input model");
-            } catch (KernelException e) {
-                throw new KernelRuntimeException(e, "Unable to create action " +
-                        "instance.");
-            }
+            _attribute = new DefaultModelAttribute((Workspace) null);
+            ((FileParameter) _attribute.parameter).setBaseDirectory(
+                    URIAttribute.getModelURI(getModel()));
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/match.gif",
@@ -1608,46 +1438,44 @@ TableModelListener, ValueListener {
         }
 
         private File _getModelFile() {
-            TransformationRule rule = getTransformationRule();
-            Pattern pattern = rule.getPattern();
-            DefaultModelAttribute attribute =
-                (DefaultModelAttribute) pattern.getAttribute("DefaultModel");
-            String model = attribute == null ? ""
-                    : attribute.parameter.getExpression();
-            File modelFile;
-            if (model.equals("")) {
-                FileChooser fileChooser = new FileChooser(GTRuleGraphFrame.this,
-                        _attribute, true, false);
-                if (fileChooser._isConfirmed()) {
-                    String modelName = fileChooser.getFileName();
-                    _inputModel.setExpression(modelName);
-                    modelFile = new File(modelName);
-                } else {
+            File modelFile = null;
+            try {
+                TransformationRule rule = getTransformationRule();
+                Pattern pattern = rule.getPattern();
+                DefaultModelAttribute attribute = (DefaultModelAttribute)
+                        pattern.getAttribute("DefaultModel");
+                if (attribute != null) {
+                    FileParameter parameter =
+                        (FileParameter) attribute.parameter;
+                    if (parameter.getExpression() != null) {
+                        modelFile = parameter.asFile();
+                    }
+                }
+
+                if (modelFile == null) {
+                    ComponentDialog dialog = new ComponentDialog(
+                            GTRuleGraphFrame.this, "Select Model File",
+                            new Configurer(_attribute));
+                    if (dialog.buttonPressed().equalsIgnoreCase("OK")) {
+                        modelFile =
+                            ((FileParameter) _attribute.parameter).asFile();
+                    }
+                }
+
+                if (modelFile != null && !modelFile.exists()) {
+                    MessageHandler.error("Model file " + modelFile.getPath()
+                            + " does not exist.");
                     return null;
                 }
-            } else {
-                modelFile = new File(model);
-            }
 
-            if (!modelFile.isAbsolute()) {
-                URI uri = getEffigy().uri.getURI();
-                File directory = null;
-                if (uri != null) {
-                    directory = new File(uri).getParentFile();
-                }
-                modelFile = new File(directory, modelFile.getPath());
+                return modelFile;
+            } catch (IllegalActionException e) {
+                throw new KernelRuntimeException(e,
+                        "Cannot obtain model file.");
             }
-
-            if (!modelFile.exists()) {
-                MessageHandler.error("Unable to read input model " +
-                        modelFile.getPath() + ".");
-                return null;
-            }
-
-            return modelFile;
         }
 
-        private FileParameter _inputModel;
+        private DefaultModelAttribute _attribute;
 
         private class SingleViewController extends ViewController {
 
@@ -1682,6 +1510,10 @@ TableModelListener, ValueListener {
                     }
 
                     CompositeEntity model = _getModel(file);
+                    if (model == null) {
+                        return;
+                    }
+
                     List<MatchResult> results = _getMatchResult(model);
                     if (results.isEmpty()) {
                         MessageHandler.message("No match found.");

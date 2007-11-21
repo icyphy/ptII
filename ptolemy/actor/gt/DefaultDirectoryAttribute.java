@@ -29,6 +29,7 @@
 package ptolemy.actor.gt;
 
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
@@ -37,6 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
+import ptolemy.kernel.util.Workspace;
 
 /**
 
@@ -52,6 +54,10 @@ implements ValueListener {
     public DefaultDirectoryAttribute(NamedObj container, String name)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
+    }
+
+    public DefaultDirectoryAttribute(Workspace workspace) {
+        super(workspace);
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,
@@ -80,7 +86,7 @@ implements ValueListener {
         parameter.setExpression(display);
     }
 
-    public StringParameter directory;
+    public FileParameter directory;
 
     public StringParameter fileFilter;
 
@@ -91,12 +97,19 @@ implements ValueListener {
         parameter = new StringParameter(this, "display");
         parameter.setDisplayName("Display (./)");
         parameter.setPersistent(false);
-        parameter.setVisibility(Settable.NONE);
+        parameter.setVisibility(NONE);
 
-        directory = new StringParameter(this, "directory");
+        directory = new FileParameter(this, "directory");
         directory.setDisplayName("Directory");
         directory.setExpression(".");
         directory.addValueListener(this);
+        Parameter allowFiles = new Parameter(directory, "allowFiles");
+        allowFiles.setTypeEquals(BaseType.BOOLEAN);
+        allowFiles.setToken(BooleanToken.FALSE);
+        Parameter allowDirectories =
+            new Parameter(directory, "allowDirectories");
+        allowDirectories.setTypeEquals(BaseType.BOOLEAN);
+        allowDirectories.setToken(BooleanToken.TRUE);
 
         fileFilter = new StringParameter(this, "filter");
         fileFilter.setDisplayName("File filter (*.xml)");

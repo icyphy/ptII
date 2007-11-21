@@ -20,7 +20,7 @@
             </property>
         </property>
         <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute">
-            <property name="directory" class="ptolemy.data.expr.StringParameter" value="../../test">
+            <property name="directory" class="ptolemy.data.expr.FileParameter" value="../../test">
             </property>
             <property name="filter" class="ptolemy.data.expr.StringParameter" value="host*.xml">
             </property>

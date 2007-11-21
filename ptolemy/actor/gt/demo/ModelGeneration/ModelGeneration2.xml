@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, -155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, -160.0]">
         </property>
     </property>
     <property name="n" class="ptolemy.data.expr.Parameter" value="4">
@@ -24,7 +24,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, -155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, -160.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -33,7 +33,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 215.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 86, 923, 616}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={82, 86, 931, 614}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[708, 500]">
     </property>
@@ -94,15 +94,15 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[26.083480834960938, -75.13419342041016]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[26.513137817382812, -58.140281677246094]">
         </property>
     </entity>
     <entity name="ModelView" class="ptolemy.actor.gt.ModelView">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 30.0]">
         </property>
     </entity>
     <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[246.08348083496094, -75.13419342041016]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.42965698242188, -68.00608825683594]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -115,7 +115,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[136.08348083496094, -75.13419342041016]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[136.5131378173828, -58.140281677246094]">
         </property>
     </entity>
     <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
@@ -239,14 +239,14 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 40.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 130.0]">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -258,20 +258,20 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 130.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 40.0]">
         </property>
     </entity>
     <entity name="CreateDisplay" class="ptolemy.actor.gt.TransformationRule">
         <property name="mode" class="ptolemy.data.expr.StringParameter" value="full control">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[423.41697692871094, -155.26839447021484]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[427.8567657470703, -149.66463470458984]">
         </property>
         <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -308,13 +308,13 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[376.08348083496094, -75.13419342041016]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.4296569824219, -68.00608825683594]">
         </property>
     </entity>
     <entity name="CreateNode" class="ptolemy.actor.gt.TransformationRule">
         <property name="mode" class="ptolemy.data.expr.StringParameter" value="full control">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[429.33164978027344, 76.75009155273438]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[429.33164978027344, 86.75009155273438]">
         </property>
         <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
             <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -435,7 +435,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[384.33164978027344, 161.75009155273438]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[384.33164978027344, 171.75009155273438]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -449,7 +449,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[60.0, 30.0]">
+        <vertex name="vertex1" value="[60.0, 40.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -459,25 +459,25 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[495.0, -30.0]">
+        <vertex name="vertex1" value="[495.0, -20.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[-20.0, -30.0]">
+        <vertex name="vertex1" value="[-20.0, -20.0]">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[500.0, 190.0]">
+        <vertex name="vertex1" value="[500.0, 195.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[-20.0, 190.0]">
+        <vertex name="vertex1" value="[-20.0, 195.0]">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -487,13 +487,13 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[471.08348083496094, -110.13419342041016]">
+        <vertex name="vertex1" value="[475.5232696533203, -104.53043365478516]">
         </vertex>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[366.08348083496094, -110.13419342041016]">
+        <vertex name="vertex1" value="[370.5232696533203, -104.53043365478516]">
         </vertex>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
@@ -503,19 +503,19 @@
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[321.08348083496094, -75.13419342041016]">
+        <vertex name="vertex1" value="[320.4296569824219, -68.00608825683594]">
         </vertex>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[479.33164978027344, 126.75009155273438]">
+        <vertex name="vertex1" value="[479.33164978027344, 136.75009155273438]">
         </vertex>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[374.33164978027344, 126.75009155273438]">
+        <vertex name="vertex1" value="[374.33164978027344, 136.75009155273438]">
         </vertex>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
@@ -525,7 +525,7 @@
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[344.33164978027344, 66.75009155273438]">
+        <vertex name="vertex1" value="[344.33164978027344, 76.75009155273438]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
@@ -535,7 +535,7 @@
     <link port="SingleEvent.output" relation="relation12"/>
     <link port="ModelView.input" relation="relation11"/>
     <link port="ModelGenerator.modelName" relation="relation"/>
-    <link port="ModelGenerator.modelOutput" relation="relation18"/>
+    <link port="ModelGenerator.model" relation="relation18"/>
     <link port="Const.output" relation="relation"/>
     <link port="Const.trigger" relation="relation12"/>
     <link port="BooleanSwitch.input" relation="relation4"/>

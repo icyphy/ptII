@@ -35,6 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.MoMLChangeRequest;
 
@@ -51,6 +52,10 @@ public abstract class TransformationAttribute extends SingletonAttribute {
     public TransformationAttribute(NamedObj container, String name)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
+    }
+
+    public TransformationAttribute(Workspace workspace) {
+        super(workspace);
     }
 
     protected void _checkContainerClass(NamedObj container,

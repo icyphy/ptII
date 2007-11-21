@@ -75,7 +75,6 @@ JSRCS = \
 	MalformedStringException.java \
 	MatchCallback.java \
 	ModelGenerator.java \
-	ModelReader.java \
 	ModelView.java \
 	ParameterAttribute.java \
 	Pattern.java \
