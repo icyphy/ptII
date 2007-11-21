@@ -270,6 +270,7 @@ public class FileParameter extends StringParameter {
      *  by URIAttribute.getModelURI() is returned, which is the URI
      *  of the first container above this attribute in the hierarchy that
      *  has a URIAttribute, or null if there none.
+     *  @see #setBaseDirectory(URI)
      *  @see URIAttribute#getModelURI(NamedObj)
      *  @return A directory name, or null if there is none.
      */
@@ -346,9 +347,8 @@ public class FileParameter extends StringParameter {
     }
 
     /** Set the directory to use as the base for relative file or URL names.
-     *  If this is not called, then the default is the directory
-     *  containing the file returned by URIAttribute.getModelURI().
      *  @param directory The base directory.
+     *  @see #getBaseDirectory()
      *  @see URIAttribute#getModelURI(NamedObj)
      */
     public void setBaseDirectory(URI directory) {
