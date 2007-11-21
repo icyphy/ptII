@@ -50,7 +50,7 @@ import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// SingleRuleTransformer
+//// TransformationRule
 
 /**
 
@@ -73,6 +73,14 @@ implements MatchCallback, ValueListener {
     throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        TransformationRule actor = (TransformationRule) super.clone();
+        actor._lastModel = null;
+        actor._lastResults = new LinkedList<MatchResult>();
+        actor._random = new Random();
+        return actor;
     }
 
     public void fire() throws IllegalActionException {

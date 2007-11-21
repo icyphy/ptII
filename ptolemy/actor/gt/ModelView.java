@@ -27,6 +27,12 @@
  */
 package ptolemy.actor.gt;
 
+import java.awt.Window;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
+import javax.swing.JFrame;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.lib.Sink;
@@ -39,7 +45,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
-//// ModelDisplay
+//// ModelView
 
 /**
  This actor opens a window to display the specified model.
@@ -53,7 +59,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
 */
-public class ModelView extends Sink  {
+public class ModelView extends Sink implements WindowListener  {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -73,6 +79,12 @@ public class ModelView extends Sink  {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
+    public Object clone() throws CloneNotSupportedException {
+        ModelView actor = (ModelView) super.clone();
+        actor._parser = new MoMLParser();
+        return actor;
+    }
+
     /** Read the input, if there is any, and issue a change
      *  request to apply the MoML in the input to the displayed model.
      *  @exception IllegalActionException If there is an error reading
@@ -80,28 +92,32 @@ public class ModelView extends Sink  {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
-                if (_tableaus[i] != null) {
-                    _tableaus[i].close();
-                    _tableaus[i] = null;
-                }
+                synchronized (this) {
+                    if (_tableaus[i] != null) {
+                        _tableaus[i].close();
+                        _tableaus[i] = null;
+                    }
 
-                Entity model = ((ActorToken) input.get(0)).getEntity();
-                Configuration configuration = (Configuration) Configuration
-                        .findEffigy(toplevel()).toplevel();
-                try {
-                    _parser.reset();
-                    // Export the model into moml string and then import it
-                    // again. Needed b some models with unnoticeable state.
-                    NamedObj newModel = _parser.parse(model.exportMoML());
-                    _tableaus[i] = configuration.openModel(newModel);
-                } catch (NameDuplicationException e) {
-                    throw new IllegalActionException(this, e,
-                            "Cannot open model.");
-                } catch (Exception e) {
-                    throw new IllegalActionException(this, e,
-                            "Cannot parse model.");
+                    Entity model = ((ActorToken) input.get(0)).getEntity();
+                    Configuration configuration = (Configuration) Configuration
+                            .findEffigy(toplevel()).toplevel();
+                    try {
+                        _parser.reset();
+                        // Export the model into moml string and then import it
+                        // again. Needed b some models with unnoticeable state.
+                        NamedObj newModel = _parser.parse(model.exportMoML());
+                        _tableaus[i] = configuration.openModel(newModel);
+                        _tableaus[i].getFrame().addWindowListener(this);
+                    } catch (NameDuplicationException e) {
+                        throw new IllegalActionException(this, e,
+                                "Cannot open model.");
+                    } catch (Exception e) {
+                        throw new IllegalActionException(this, e,
+                                "Cannot parse model.");
+                    }
                 }
             }
         }
@@ -110,15 +126,48 @@ public class ModelView extends Sink  {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
+        synchronized (this) {
+            if (_tableaus != null) {
+                for (Tableau tableau : _tableaus) {
+                    if (tableau != null) {
+                        tableau.close();
+                    }
+                }
+            }
+
+            _tableaus = new Tableau[input.getWidth()];
+        }
+    }
+
+    public void windowActivated(WindowEvent e) {
+    }
+
+    public synchronized void windowClosed(WindowEvent e) {
+        Window window = (Window) e.getSource();
         if (_tableaus != null) {
-            for (Tableau tableau : _tableaus) {
-                if (tableau != null) {
-                    tableau.close();
+            for (int i = 0; i < _tableaus.length; i++) {
+                JFrame frame = _tableaus[i].getFrame();
+                if (frame == window) {
+                    frame.removeWindowListener(this);
+                    _tableaus[i] = null;
                 }
             }
         }
+    }
 
-        _tableaus = new Tableau[input.getWidth()];
+    public void windowClosing(WindowEvent e) {
+    }
+
+    public void windowDeactivated(WindowEvent e) {
+    }
+
+    public void windowDeiconified(WindowEvent e) {
+    }
+
+    public void windowIconified(WindowEvent e) {
+    }
+
+    public void windowOpened(WindowEvent e) {
     }
 
     private MoMLParser _parser = new MoMLParser();
