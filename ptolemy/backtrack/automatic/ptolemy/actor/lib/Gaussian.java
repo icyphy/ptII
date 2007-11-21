@@ -29,8 +29,6 @@
 //// Gaussian
 package ptolemy.backtrack.automatic.ptolemy.actor.lib;
 
-import org.python.parser.ast.If;
-
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.FieldRecord;
@@ -114,7 +112,7 @@ public class Gaussian extends RandomSource implements Rollbackable {
 
     /**     
      * Generate a new random number.
-     * @exception If parameter values are incorrect.
+     * @exception IllegalActionException If parameter values are incorrect.
      */
     protected void _generateRandomNumber() throws IllegalActionException  {
         double meanValue = ((DoubleToken)(mean.getToken())).doubleValue();
