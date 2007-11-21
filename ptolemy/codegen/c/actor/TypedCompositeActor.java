@@ -27,6 +27,7 @@
  */
 package ptolemy.codegen.c.actor;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -51,7 +52,7 @@ import ptolemy.kernel.util.NamedObj;
 /**
  Code generator helper for typed composite actor.
 
- @author Gang Zhou
+ @author Gang Zhou, Contributors: Teale Fristoe
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (cxh)
@@ -414,6 +415,50 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         }
 
         return files;
+    }
+
+    /** Return the include directories specified in the "includeDirectories"
+     *  blocks in the templates of the actors included in this CompositeActor.
+     *  @return A Set of the include directories.
+     *  @IllegalActionException If thrown when gathering include directories.
+     */
+    public Set getIncludeDirectories() throws IllegalActionException {
+        Set includeDirectories = new LinkedHashSet();
+        includeDirectories.addAll(super.getIncludeDirectories());
+        
+        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+                .deepEntityList().iterator();
+        
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            includeDirectories.addAll(helperObject.getIncludeDirectories());
+        }
+        
+        return includeDirectories;
+    }
+
+    /** Return the libraries specified in the "libraries" blocks in the 
+     *  templates of the actors included in this CompositeActor.
+     *  @return A Set of libraries.
+     *  @IllegalActionException If thrown when gathering libraries.
+     */
+    public Set getLibraries() throws IllegalActionException {
+        Set libraries = new LinkedHashSet();
+        libraries.addAll(super.getLibraries());
+        
+        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+                .deepEntityList().iterator();
+        
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            libraries.addAll(helperObject.getLibraries());
+        }
+        
+        return libraries;
     }
 
     /** Return a set of parameters that will be modified during the

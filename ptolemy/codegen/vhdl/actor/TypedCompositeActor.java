@@ -27,6 +27,7 @@
  */
 package ptolemy.codegen.vhdl.actor;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -42,7 +43,7 @@ import ptolemy.kernel.util.NamedObj;
 /**
  Code generator helper for typed composite actor.
 
- @author Gang Zhou
+ @author Gang Zhou, Contributors: Teale Fristoe
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (cxh)
@@ -117,6 +118,53 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
             }
         }
         return files;
+    }
+
+    /** Return the include directories specified in the "includeDirectories"
+     *  blocks of the templates of the actors contained in this CompositeActor.
+     *  @return A Set of the include directories.
+     *  @exception IllegalActionException If thrown when gathering include
+     *   directories.
+     */
+    public Set getIncludeDirectories() throws IllegalActionException {
+        Set includeDirectories = new HashSet();
+        
+        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+                .deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            VHDLCodeGeneratorHelper helper = _getHelper((NamedObj) actor);
+
+            if (helper.doGenerate()) {
+                includeDirectories.addAll(helper.getIncludeDirectories());
+            }
+        }
+
+        return includeDirectories;
+    }
+
+    /** Return the libraries specified in the "libraries" blocks of the 
+     *  templates of the actors contained in this CompositeActor.
+     *  @return A Set of libraries.
+     *  @exception IllegalActionException If thrown when gathering libraries.
+     */
+    public Set getLibraries() throws IllegalActionException {
+        Set libraries = new HashSet();
+        
+        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+                .deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            VHDLCodeGeneratorHelper helper = _getHelper((NamedObj) actor);
+
+            if (helper.doGenerate()) {
+                libraries.addAll(helper.getLibraries());
+            }
+        }
+
+        return libraries;
     }
 
     /** Generate a set of shared code fragments of the associated

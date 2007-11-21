@@ -29,6 +29,7 @@ package ptolemy.util;
 
 // Note that classes in ptolemy.util do not depend on any
 // other ptolemy packages.
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
@@ -48,7 +49,7 @@ import java.util.StringTokenizer;
  A collection of utilities for manipulating strings.
  These utilities do not depend on any other ptolemy packages.
 
- @author Christopher Brooks
+ @author Christopher Brooks, Contributors: Teale Fristoe
  @version $Id$
  @since Ptolemy II 2.1
  @Pt.ProposedRating Green (eal)
@@ -542,6 +543,39 @@ public class StringUtilities {
      */
     public static String propertiesFileName() throws IOException {
         return preferencesDirectory() + "ptII.properties";
+    }
+
+    /** Return a LinkedList of the lines in a string that aren't comments.
+     * @param lines A String containing the lines to be separated.
+     * @return A LinkedList of the lines that aren't comments.
+     * @throws IOException If thrown when reading from the input String.
+     */
+    public static LinkedList readLines(String lines) throws IOException {
+        BufferedReader bufferedReader = null;
+        LinkedList returnList = new LinkedList();
+        String line = new String();
+        bufferedReader = new BufferedReader(new StringReader(lines));
+        try {
+            // Read line by line, skipping comments. 
+            while ((line = bufferedReader.readLine()) != null) {
+                line = line.trim();
+                if (!(line.length() == 0
+                        || line.startsWith("/*")
+                        || line.startsWith("//"))) {
+                    returnList.add(line);
+                }
+            }
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException ex) {
+                    // Ignore
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return returnList;
     }
 
     /** Sanitize a String so that it can be used as a Java identifier.

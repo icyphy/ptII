@@ -58,7 +58,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException; 
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -464,6 +464,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Report time consumed if appropriate.
         startTime = _printTimeAndMemory(startTime,
                 "CodeGenerator.analyzeTypeConvert() consumed: ");
+        
+        // Add include directories and libraries specified by actors.
+        _addActorIncludeDirectories();
+        _addActorLibraries();
         
         // Generate code.
         // We use the strategy pattern here, calling methods that
@@ -1146,6 +1150,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         ((CodeGeneratorHelper) _getHelper(getContainer())).analyzeTypeConvert();
     }
 
+    /** Add include directories specified by the actors in this model.
+     *  @exception IllegalActionException Never in this base class.
+     */
+    protected void _addActorIncludeDirectories() throws IllegalActionException { }
+    
+    /** Add libraries specified by the actors in this model.
+     *  @exception IllegalActionException Never in this base class.
+     */
+    protected void _addActorLibraries() throws IllegalActionException { }
+    
     /** Return the value of the codeDirectory parameter.
      *  @return The value of the {@link #codeDirectory} parameter.
      *  @exception IOException If the <i>codeDirectory</i> parameter

@@ -272,15 +272,6 @@ public class Director implements ActorCodeGenerator {
         }
     }
 
-    /**
-     * Generate the shared code. In this base class, return an empty set.
-     * @return An empty set in this base class.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    public Set getSharedCode() throws IllegalActionException {
-        return new HashSet();
-    }
-
     /** Generate code for transferring enough tokens to complete an internal 
      *  iteration.
      *  @param inputPort The port to transfer tokens.
@@ -426,6 +417,30 @@ public class Director implements ActorCodeGenerator {
         return _director;
     }
 
+    /** Return an empty HashSet.
+     *  @return An empty HashSet.
+     *  @exception IllegalActionException Not thrown in this method.
+     */
+    public Set getIncludeDirectories() throws IllegalActionException {
+        return new HashSet();
+    }
+
+    /** Return an empty HashSet.
+     *  @return An empty HashSet.
+     *  @exception IllegalActionException Not thrown in this method.
+     */
+    public Set getLibraries() throws IllegalActionException {
+        return new HashSet();
+    }
+    
+    /** Return an empty HashSet.
+     *  @return An empty HashSet.
+     *  @exception IllegalActionException Not thrown in this method.
+     */
+    public Set getLibraryDirectories() throws IllegalActionException {
+        return new HashSet();
+    }
+
     /** Return a set of parameters that will be modified during the execution
      *  of the model. The director gets those variables if it implements 
      *  ExplicitChangeContext interface. 
@@ -454,6 +469,15 @@ public class Director implements ActorCodeGenerator {
         return set;
     }
 
+    /**
+     * Generate the shared code. In this base class, return an empty set.
+     * @return An empty set in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public Set getSharedCode() throws IllegalActionException {
+        return new HashSet();
+    }
+    
     /** Set the code generator associated with this helper class.
      *  @param codeGenerator The code generator associated with this
      *   helper class.

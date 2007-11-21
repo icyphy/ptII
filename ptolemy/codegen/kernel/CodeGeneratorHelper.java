@@ -97,7 +97,7 @@ import ptolemy.util.StringUtilities;
  *     return processCode(CodeStream.indent(code.toString()));
  * </pre>
  * 
- * @author Ye Zhou, Gang Zhou, Edward A. Lee, Contributors: Christopher Brooks
+ * @author Ye Zhou, Gang Zhou, Edward A. Lee, Contributors: Christopher Brooks, Teale Fristoe
  * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Yellow (eal)
@@ -292,18 +292,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         CodeGeneratorHelper helper = null;
         CodeStream codeStream = null;
 
-        if (namedObj != null && namedObj instanceof ptolemy.actor.lib.jni.EmbeddedCActor) {
-            helper = (CodeGeneratorHelper)codeGenerator._getHelper(codeGenerator.getContainer());
-            codeStream = new CodeStream(helper);
-            // We have an EmbeddedCActor, read the codeBlocks from
-            // the embeddedCCode parameter.
-            codeStream.setCodeBlocks(
-                    ((ptolemy.actor.lib.jni.EmbeddedCActor)namedObj)
-                    .embeddedCCode.getExpression());
-        } else {
-            helper = (CodeGeneratorHelper)codeGenerator._getHelper(namedObj);
-            codeStream = new CodeStream(helper);
-        }
+        codeStream = _getActualCodeStream(namedObj, codeGenerator);
 
 
         // Read in the optional fileDependencies code block.
@@ -311,92 +300,73 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         String fileDependencies = codeStream.toString();
 
         if (fileDependencies.length() > 0) {
+            LinkedList fileDependenciesList = StringUtilities.readLines(fileDependencies);
             File codeDirectoryFile = codeGenerator._codeDirectoryAsFile();
-            BufferedReader bufferedReader = null;
-            try {
-                bufferedReader = new BufferedReader(new StringReader(fileDependencies));
-                String necessaryFileName = null;
-                // Read line by line, skipping comments. 
-                while ((necessaryFileName = bufferedReader.readLine()) != null) {
-                    necessaryFileName = necessaryFileName.trim();
-                    if (necessaryFileName.length() == 0
-                            || necessaryFileName.startsWith("/*")
-                            || necessaryFileName.startsWith("//")) {
-                        continue;
-                    }
+            String necessaryFileName = null;
+            Iterator iterator = fileDependenciesList.iterator();
+            while (iterator.hasNext()) {
+                necessaryFileName = (String) iterator.next();
 
-                    // Look up the file as a resource.  We do this so we can possibly
-                    // get it from a jar file in the release.
-                    URL necessaryURL = null;
-                    try {
-                        necessaryURL = FileUtilities.nameToURL(necessaryFileName, null, null);
-                    } catch (IOException ex) {
-                        // If the filename has no slashes, try prepending file:./
-                        if (necessaryFileName.indexOf("/") == -1
-                                || necessaryFileName.indexOf("\\") == -1) {
-                            try {
-                                necessaryURL = FileUtilities.nameToURL("file:./" + necessaryFileName, null, null);                            
-                            } catch (IOException ex2) {
-                                // Throw the original exception
-                                throw ex;
-                            }
-                        } else {
+                // Look up the file as a resource.  We do this so we can possibly
+                // get it from a jar file in the release.
+                URL necessaryURL = null;
+                try {
+                    necessaryURL = FileUtilities.nameToURL(necessaryFileName, null, null);
+                } catch (IOException ex) {
+                    // If the filename has no slashes, try prepending file:./
+                    if (necessaryFileName.indexOf("/") == -1
+                            || necessaryFileName.indexOf("\\") == -1) {
+                        try {
+                            necessaryURL = FileUtilities.nameToURL("file:./" + necessaryFileName, null, null);                            
+                        } catch (IOException ex2) {
                             // Throw the original exception
                             throw ex;
-                        }  
-                    }
-                    // Get the base filename (text after last /)
-                    String necessaryFileShortName = necessaryURL.getPath();
-                    if (necessaryURL.getPath().lastIndexOf("/") > -1) {
-                        necessaryFileShortName = necessaryFileShortName.substring(necessaryFileShortName.lastIndexOf("/"));
-                    }
-
-                    File necessaryFileDestination = new File(codeDirectoryFile,
-                            necessaryFileShortName);
-                    File necessaryFileSource = new File(necessaryFileName);
-                    if (!necessaryFileDestination.exists() 
-                            || (necessaryFileSource.exists() &&
-                                    necessaryFileSource.lastModified()
-                                    > necessaryFileDestination.lastModified())) {
-                        // If the dest file does not exist or is older than the 
-                        // source file, we do the copy
-                        System.out.println("Copying " + necessaryFileSource
-                                + " to " + necessaryFileDestination);
-                        
-                        try {
-                            FileUtilities.binaryCopyURLToFile(necessaryURL, necessaryFileDestination);
-                        } catch (IOException ex) {
-                            String directory = "unknown";
-                            if (!StringUtilities.getProperty("user.dir").equals("")) {
-                                directory = "\""
-                                    + StringUtilities.getProperty("user.dir")
-                                    + "\"";
-                            }
-                            throw new IllegalActionException(namedObj, ex, 
-                                    "Failed to copy \"" + necessaryURL + "\" to \""
-                                    + necessaryFileDestination
-                                    + "\". Current directory is "
-                                    + directory);
                         }
-                    }
-                    // Reopen the destination file and get its time for
-                    // comparison
-                    File necessaryFileDestination2 = new File(codeDirectoryFile,
-                            necessaryFileShortName);
-                    if (necessaryFileDestination2.lastModified() > lastModified) {
-                        lastModified = necessaryFileDestination2.lastModified();
-                    }
-
-               
+                    } else {
+                        // Throw the original exception
+                        throw ex;
+                    }  
                 }
-            } finally {
-                if (bufferedReader != null) {
+                // Get the base filename (text after last /)
+                String necessaryFileShortName = necessaryURL.getPath();
+                if (necessaryURL.getPath().lastIndexOf("/") > -1) {
+                    necessaryFileShortName = necessaryFileShortName.substring(necessaryFileShortName.lastIndexOf("/"));
+                }
+
+                File necessaryFileDestination = new File(codeDirectoryFile,
+                        necessaryFileShortName);
+                File necessaryFileSource = new File(necessaryFileName);
+                if (!necessaryFileDestination.exists() 
+                        || (necessaryFileSource.exists() &&
+                                necessaryFileSource.lastModified()
+                                > necessaryFileDestination.lastModified())) {
+                    // If the dest file does not exist or is older than the 
+                    // source file, we do the copy
+                    System.out.println("Copying " + necessaryFileSource
+                            + " to " + necessaryFileDestination);
+
                     try {
-                        bufferedReader.close();
+                        FileUtilities.binaryCopyURLToFile(necessaryURL, necessaryFileDestination);
                     } catch (IOException ex) {
-                        // Ignore
-                        ex.printStackTrace();
+                        String directory = "unknown";
+                        if (!StringUtilities.getProperty("user.dir").equals("")) {
+                            directory = "\""
+                                + StringUtilities.getProperty("user.dir")
+                                + "\"";
+                        }
+                        throw new IllegalActionException(namedObj, ex, 
+                                "Failed to copy \"" + necessaryURL + "\" to \""
+                                + necessaryFileDestination
+                                + "\". Current directory is "
+                                + directory);
                     }
+                }
+                // Reopen the destination file and get its time for
+                // comparison
+                File necessaryFileDestination2 = new File(codeDirectoryFile,
+                        necessaryFileShortName);
+                if (necessaryFileDestination2.lastModified() > lastModified) {
+                    lastModified = necessaryFileDestination2.lastModified();
                 }
             }
         }
@@ -453,13 +423,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public static String targetType(Type ptType) {
         // FIXME: we may need to add more primitive types.
-        return ptType == BaseType.INT ? "int"
-                : ptType == BaseType.STRING ? "char*"
-                        : ptType == BaseType.DOUBLE ? "double"
-                                : ptType == BaseType.BOOLEAN ? "boolean"
-                                        : ptType == BaseType.LONG ? "long"
-		                                : ptType == BaseType.UNSIGNED_BYTE ? "unsigned char"
-                                               : "Token";
+        return ptType == BaseType.INT ? "int" :
+            ptType == BaseType.STRING ? "char*" :
+            ptType == BaseType.DOUBLE ? "double" :
+            ptType == BaseType.BOOLEAN ? "boolean" :
+            ptType == BaseType.LONG ? "long" :
+            ptType == BaseType.UNSIGNED_BYTE ? "unsigned char" :
+            "Token";
     }
 
     /**
@@ -996,7 +966,104 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
+        
+        CodeStream codeStream = _getActualCodeStream();
+        codeStream.appendCodeBlock("includeFiles", true);
+        String includeFilesString = codeStream.toString();
+        
+        if (includeFilesString.length() > 0) {
+            LinkedList includeFilesList = new LinkedList();
+            try {
+                includeFilesList = StringUtilities.readLines(includeFilesString);
+            } catch (IOException e) {
+                throw new IllegalActionException("Unable to read include files for "
+                        + getName());
+            }
+            files.addAll(includeFilesList);
+        }
+        
         return files;
+    }
+
+    /** Return a set of directories to include for the generated code.
+     *  @return A Set containing the contents of the actor's
+     *   "includeDirectories" block in its template.
+     *  @exception IllegalActionException If thrown when getting or reading
+     *   the CodeStream.
+     */
+    public Set getIncludeDirectories() throws IllegalActionException {
+        Set includeDirectories = new HashSet();
+        CodeStream codeStream = _getActualCodeStream();
+        codeStream.appendCodeBlock("includeDirectories", true);
+        String includeDirectoriesString = codeStream.toString();
+        
+        if (includeDirectoriesString.length() > 0) {
+            LinkedList includeDirectoriesList = new LinkedList();
+            try {
+                includeDirectoriesList =
+                    StringUtilities.readLines(includeDirectoriesString);
+            } catch (IOException e) {
+                throw new IllegalActionException(
+                        "Unable to read include directories for " + getName());
+            }
+            includeDirectories.addAll(includeDirectoriesList);
+        }
+        
+        return includeDirectories;
+    }
+
+    /** Return a set of libraries to link in the generated code.
+     *  @return A Set containing the libraries in the actor's
+     *   "libraries" block in its template.
+     *  @exception IllegalActionException If thrown when getting or reading
+     *   the CodeStream.
+     */
+    public Set getLibraries() throws IllegalActionException {
+        Set libraries = new HashSet();
+        CodeStream codeStream = _getActualCodeStream();
+        codeStream.appendCodeBlock("libraries", true);
+        String librariesString = codeStream.toString();
+        
+        if (librariesString.length() > 0) {
+            LinkedList librariesList = new LinkedList();
+            try {
+                librariesList =
+                    StringUtilities.readLines(librariesString);
+            } catch (IOException e) {
+                throw new IllegalActionException(
+                        "Unable to read libraries for " + getName());
+            }
+            libraries.addAll(librariesList);
+        }
+        
+        return libraries;
+    }
+    
+    /** Return a set of directories to find libraries in.
+     *  @return A Set containing the directories in the actor's
+     *   "libraryDirectories" block in its template.
+     *  @exception IllegalActionException If thrown when getting or reading
+     *   the CodeStream.
+     */
+    public Set getLibraryDirectories() throws IllegalActionException {
+        Set libraryDirectories = new HashSet();
+        CodeStream codeStream = _getActualCodeStream();
+        codeStream.appendCodeBlock("libraryDirectories", true);
+        String libraryDirectoriesString = codeStream.toString();
+        
+        if (libraryDirectoriesString.length() > 0) {
+            LinkedList libraryDirectoryList = new LinkedList();
+            try {
+                libraryDirectoryList =
+                    StringUtilities.readLines(libraryDirectoriesString);
+            } catch (IOException e) {
+                throw new IllegalActionException(
+                        "Unable to read library directories for " + getName());
+            }
+            libraryDirectories.addAll(libraryDirectoryList);
+        }
+        
+        return libraryDirectories;
     }
 
     /** Return a set of parameters that will be modified during the execution
@@ -2671,6 +2738,45 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return processCode(_codeStream.toString());
 
     }
+    
+    /** Return the actual CodeStream for this Helper.
+     * @return The actual CodeStream.
+     * @throws IllegalActionException If thrown by a called method.
+     */
+    private CodeStream _getActualCodeStream()
+            throws IllegalActionException {
+        return _getActualCodeStream(getComponent(), _codeGenerator);
+    }
+
+    /** Return the actual CodeStream associated with the given Actor and
+     *  CodeGenerator.  Generally, this will come from the Actor's template
+     *  file, but EmbeddedCActors get their code from the embeddedCCode parameter.
+     * @param namedObj The actor whose code to return.
+     * @param codeGenerator The actor's CodeGenerator.
+     * @return The actor's actual CodeStream.
+     * @throws IllegalActionException If thrown when getting the actor's helper.
+     */
+    private static CodeStream _getActualCodeStream(NamedObj namedObj,
+            CodeGenerator codeGenerator) throws IllegalActionException {
+
+        CodeGeneratorHelper helper = null;
+        CodeStream codeStream = null;
+        if (namedObj != null && namedObj instanceof ptolemy.actor.lib.jni.EmbeddedCActor) {
+            helper = (CodeGeneratorHelper)codeGenerator._getHelper(codeGenerator.getContainer());
+            codeStream = new CodeStream(helper);
+            // We have an EmbeddedCActor, read the codeBlocks from
+            // the embeddedCCode parameter.
+            codeStream.setCodeBlocks(
+                    ((ptolemy.actor.lib.jni.EmbeddedCActor)namedObj)
+                    .embeddedCCode.getExpression());
+        } else {
+            helper = (CodeGeneratorHelper)codeGenerator._getHelper(namedObj);
+            codeStream = new CodeStream(helper);
+        }
+        
+        return codeStream;
+    }
+
     /**
      * Get the list of sink channels that the given source channel needs to
      * be type converted to.

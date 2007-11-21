@@ -61,7 +61,7 @@ import ptolemy.util.StringUtilities;
 
 /** Base class for C code generator.
  *  
- *  @author Gang Zhou
+ *  @author Gang Zhou, Contributors: Teale Fristoe
  *  @version $Id$
  *  @since Ptolemy II 6.0
  *  @Pt.ProposedRating red (zgang)
@@ -629,6 +629,40 @@ public class CCodeGenerator extends CodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Add include directories specified by the actors in this model.
+     *  @exception IllegalActionException If thrown when getting an actor's
+     *   include directories.
+     */
+    protected void _addActorIncludeDirectories() throws IllegalActionException {
+        ActorCodeGenerator helper = _getHelper(getContainer());
+        
+        Set actorIncludeDirectories = helper.getIncludeDirectories();
+        Iterator includeIterator = actorIncludeDirectories.iterator();
+        while (includeIterator.hasNext()) {
+            addInclude("-I\"" + ((String) includeIterator.next()) + "\"");
+        }
+    }
+    
+    /** Add libraries specified by the actors in this model.
+     *  @exception IllegalActionException If thrown when getting an actor's
+     *   libraries.
+     */
+    protected void _addActorLibraries() throws IllegalActionException {
+        ActorCodeGenerator helper = _getHelper(getContainer());
+        
+        Set actorLibraryDirectories = helper.getLibraryDirectories();
+        Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();
+        while (libraryDirectoryIterator.hasNext()) {
+            addLibrary("-L\"" + ((String) libraryDirectoryIterator.next()) + "\"");
+        }
+        
+        Set actorLibraries = helper.getLibraries();
+        Iterator librariesIterator = actorLibraries.iterator();
+        while (librariesIterator.hasNext()) {
+            addLibrary("-l\"" + ((String) librariesIterator.next()) + "\"");
+        }
+    }
 
     /** Execute the compile and run commands in the
      *  <i>codeDirectory</i> directory.

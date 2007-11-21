@@ -27,6 +27,7 @@
  */
 package ptolemy.codegen.kernel;
 
+import java.io.IOException;
 import java.util.Set;
 
 import ptolemy.kernel.util.IllegalActionException;
@@ -36,7 +37,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /** FIXME: class comments needed.
  *
- *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
+ *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou,
+ *   Contributors: Teale Fristoe
  *  @version $Id$
  *  @since Ptolemy II 6.0
  *  @Pt.ProposedRating Yellow (eal)
@@ -122,6 +124,24 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @exception IllegalActionException If something goes wrong.
      */
     public Set getHeaderFiles() throws IllegalActionException;
+
+    /** Return a set of the directories to search for the actor's include files.
+     * @return A set of directories to search for the actor's include files.
+     * @throws IllegalActionException If thrown when finding the directories.
+     */
+    public Set getIncludeDirectories() throws IllegalActionException;
+
+    /** Return a set of the libraries to link the generated code to.
+     * @return A set of libraries to link.
+     * @throws IllegalActionException If thrown when finding the libraries.
+     */
+    public Set getLibraries() throws IllegalActionException;
+
+    /** Return a set of the directories to search for libraries.
+     * @return A set of directories to search.
+     * @throws IllegalActionException If thrown when finding the libraries.
+     */
+    public Set getLibraryDirectories() throws IllegalActionException;
 
     /** Return a set of parameters that will be modified during the execution
      *  of the model. The actor gets those variables if it implements 
