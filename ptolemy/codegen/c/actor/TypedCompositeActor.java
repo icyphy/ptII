@@ -420,7 +420,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     /** Return the include directories specified in the "includeDirectories"
      *  blocks in the templates of the actors included in this CompositeActor.
      *  @return A Set of the include directories.
-     *  @IllegalActionException If thrown when gathering include directories.
+     *  @exception IllegalActionException If thrown when gathering
+     *  include directories.
      */
     public Set getIncludeDirectories() throws IllegalActionException {
         Set includeDirectories = new LinkedHashSet();
@@ -442,7 +443,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     /** Return the libraries specified in the "libraries" blocks in the 
      *  templates of the actors included in this CompositeActor.
      *  @return A Set of libraries.
-     *  @IllegalActionException If thrown when gathering libraries.
+     *  @exception IllegalActionException If thrown when gathering libraries.
      */
     public Set getLibraries() throws IllegalActionException {
         Set libraries = new LinkedHashSet();
