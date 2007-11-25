@@ -99,8 +99,8 @@ HelloWorld.h: HelloWorld.class
 $(SHARED_LIBRARY): HelloWorld.h HelloWorld.c
 	$(PTCC) -shared \
 		$(PTJNI_NO_CYGWIN) $(PTJNI_SHAREDLIBRARY_LDFLAG) \
-		"-I$(PTJAVA_DIR)/include" \
-		"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)" \
+		"-I$(PTJAVA_HOME)/../include" \
+		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
 		-o $@ \
 		HelloWorld.c
 
