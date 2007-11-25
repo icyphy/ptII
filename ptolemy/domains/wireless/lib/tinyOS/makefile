@@ -101,8 +101,9 @@ install: all jars
 # PTCC is set in $PTII/mk/ptII.mk
 # See also ptolemy/matlab/makefile
 $(SHARED_LIBRARY): VirtualTinyOS.h VirtualTinyOS.c 
-	$(PTCC) $(PTJNI_NO_CYGWIN) -I$(PTJAVA_DIR)/include \
-		-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE) \
+	$(PTCC) $(PTJNI_NO_CYGWIN) \
+		"-I$(PTJAVA_HOME)/../include" \
+		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
 		$(PTJNI_SHAREDLIBRARY_CFLAG) $(PTJNI_SHAREDLIBRARY_LDFLAG) \
 		-shared -o $@ \
 		Blink.c Timer.c Ledc.c BlinkMain.c VirtualTinyOS.c
