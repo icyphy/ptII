@@ -141,7 +141,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements
 
     /** Remove comparisons between equal objects in the given method.
      *  @param The method upon which to operate.
-     *  @param True if debug messages should be printed.
+     *  @param debug True if debug messages should be printed.
      *  @return True if something was done to the method.
      */
     public static boolean eliminateNamedObjComparisons(SootMethod method,
