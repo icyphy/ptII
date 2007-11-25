@@ -68,7 +68,7 @@ import soot.toolkits.scalar.UnitValueBoxPair;
 //// NamedObjEqualityEliminator
 
 /**
-
+ Replace method calls on parameter objects.
 
  @author Stephen Neuendorffer
  @version $Id$
@@ -78,7 +78,8 @@ import soot.toolkits.scalar.UnitValueBoxPair;
  */
 public class NamedObjEqualityEliminator extends SceneTransformer implements
         HasPhaseOptions {
-    /** Construct a new transformer
+
+    /** Construct a new transformer.
      */
     private NamedObjEqualityEliminator(CompositeActor model) {
         _model = model;
@@ -88,6 +89,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements
      *  the given model.  The model is assumed to already have been
      *  properly initialized so that resolved types and other static
      *  properties of the model can be inspected.
+     *  @param model The model upon which to operate.
      */
     public static NamedObjEqualityEliminator v(CompositeActor model) {
         return new NamedObjEqualityEliminator(model);
@@ -138,6 +140,9 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements
     }
 
     /** Remove comparisons between equal objects in the given method.
+     *  @param The method upon which to operate.
+     *  @param True if debug messages should be printed.
+     *  @return True if something was done to the method.
      */
     public static boolean eliminateNamedObjComparisons(SootMethod method,
             boolean debug) {
@@ -244,6 +249,13 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements
      *  defined and try to symbolically evaluate the value of the
      *  variable. If the value can be determined, then return it,
      *  otherwise throw an exception
+     *  @param method The method upon which to operate.
+     *  @param local The given local, assumted to be of type NamedObj.
+     *  @param location  The location
+     *  @param localDefs The local definitions.
+     *  @param localUses The local uses.
+     *  @return If the constant value can be returned, then return it,
+     *  otherwise throw an exception.   
      */
     public static NamedObj getNamedObjValue(SootMethod method, Local local,
             Unit location, LocalDefs localDefs, LocalUses localUses) {
