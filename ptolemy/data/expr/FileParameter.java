@@ -219,6 +219,7 @@ public class FileParameter extends StringParameter {
 
     /** Clone the attribute into the specified workspace.  The resulting
      *  object has no base directory name nor any reference to any open stream.
+     *  @param workspace The workspace for the new object.
      *  @return A new attribute.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
