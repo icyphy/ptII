@@ -346,6 +346,17 @@ public class PropertyClassChanges implements MoMLFilter {
                 "ptolemy.actor.lib.io.DirectoryListing",
                 directoryListingClassChanges);
 
+        // LineWriter
+        HashMap lineWriterClassChanges = new HashMap();
+
+        // Key = property name, Value = new class name
+        lineWriterClassChanges.put("fileName",
+                "ptolemy.actor.parameters.FilePortParameter");
+
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.actor.lib.io.LineWriter",
+                directoryListingClassChanges);
+
         // ModelReference
         HashMap modelReferenceClassChanges = new HashMap();
 
