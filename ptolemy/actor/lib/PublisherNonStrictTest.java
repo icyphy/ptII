@@ -312,9 +312,9 @@ public class PublisherNonStrictTest extends Publisher {
                 // are nil, then we consider them "close".
                 if (token.isCloseTo(referenceToken, _tolerance).booleanValue() == false
                         && !referenceToken.isNil()
-                        && !_isCloseToIfNilArrayElement(token, referenceToken,
+                        && !NonStrictTest._isCloseToIfNilArrayElement(token, referenceToken,
                                 _tolerance)
-                        && !_isCloseToIfNilRecordElement(token, referenceToken,
+                        && !NonStrictTest._isCloseToIfNilRecordElement(token, referenceToken,
                                 _tolerance)) {
                     throw new IllegalActionException(this,
                             "Test fails in iteration " + _iteration + ".\n"
@@ -429,133 +429,6 @@ public class PublisherNonStrictTest extends Publisher {
             System.err.println("Warning: '" + getFullName()
                     + "' The test produced 0 tokens.");
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected method                    ////
-
-
-    /** Test whether the value of this token is close to the first argument,
-     *  where "close" means that the distance between them is less than
-     *  or equal to the second argument.  This method only makes sense
-     *  for tokens where the distance between them is reasonably
-     *  represented as a double. It is assumed that the argument is
-     *  a Record, and the isCloseTo() method of the record elements
-     *  is used.
-     *  This method differs from
-     *  {@link ptolemy.data.RecordToken#_isCloseTo(Token, double)}
-     *  in that if corresponding elements are both nil tokens, then
-     *  those two elements are considered "close", see 
-     *  {@link ptolemy.data.Token#NIL}.
-     *  @param token1 The first array token to compare.
-     *  @param token2 The second array token to compare.
-     *  @param epsilon The value that we use to determine whether two
-     *   tokens are close.
-     *  @exception IllegalActionException If the elements do not support
-     *   this comparison.
-     *  @return True if the first argument is close
-     *  to this token.  False if the arguments are not ArrayTokens
-     */
-    protected static boolean _isCloseToIfNilArrayElement(Token token1, Token token2,
-            double epsilon) throws IllegalActionException {
-        if (!(token1 instanceof ArrayToken) || !(token2 instanceof ArrayToken)) {
-            return false;
-        }
-
-        ArrayToken array1 = (ArrayToken) token1;
-        ArrayToken array2 = (ArrayToken) token2;
-        if (array1.length() != array2.length()) {
-            return false;
-        }
-
-        for (int i = 0; i < array1.length(); i++) {
-            // Here is where isCloseTo() differs from isEqualTo().
-            // Note that we return false the first time we hit an
-            // element token that is not close to our current element token.
-            BooleanToken result = array1.getElement(i).isCloseTo(
-                    array2.getElement(i), epsilon);
-
-            // If the tokens are not close and array1[i] and is not nil, then
-            // the arrays really aren't close.
-            if (result.booleanValue() == false) {
-                if (array1.getElement(i).isNil()
-                        && array2.getElement(i).isNil()) {
-                    // They are not close, but both are nil, so for
-                    // our purposes, the are close.
-                } else {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    /** Test whether the value of this token is close to the first argument,
-     *  where "close" means that the distance between them is less than
-     *  or equal to the second argument.  This method only makes sense
-     *  for tokens where the distance between them is reasonably
-     *  represented as a double. It is assumed that the argument is
-     *  a Record, and the isCloseTo() method of the record elements
-     *  is used.
-     *  This method differs from
-     *  {@link ptolemy.data.RecordToken#_isCloseTo(Token, double)}
-     *  in that if corresponding elements are both nil tokens, then
-     *  those two elements are considered "close", see 
-     *  {@link ptolemy.data.Token#NIL}.
-     *  @param token1 The first array token to compare.
-     *  @param token2 The second array token to compare.
-     *  @param epsilon The value that we use to determine whether two
-     *   tokens are close.
-     *  @exception IllegalActionException If the elements do not support
-     *   this comparison.
-     *  @return True if the first argument is close
-     *  to this token.  False if the arguments are not ArrayTokens
-     */
-    protected static boolean _isCloseToIfNilRecordElement(Token token1, Token token2,
-            double epsilon) throws IllegalActionException {
-        if (!(token1 instanceof RecordToken)
-                || !(token2 instanceof RecordToken)) {
-            return false;
-        }
-        RecordToken record1 = (RecordToken) token1;
-        RecordToken record2 = (RecordToken) token2;
-
-        Set myLabelSet = record1.labelSet();
-        Set argLabelSet = record2.labelSet();
-
-        if (!myLabelSet.equals(argLabelSet)) {
-            return false;
-        }
-
-        // Loop through all of the fields, checking each one for closeness.
-        Iterator iterator = myLabelSet.iterator();
-
-        while (iterator.hasNext()) {
-            String label = (String) iterator.next();
-            Token innerToken1 = record1.get(label);
-            Token innerToken2 = record2.get(label);
-            boolean result = false;
-            if (innerToken1 instanceof ArrayToken) {
-                result = _isCloseToIfNilArrayElement(innerToken1, innerToken2,
-                        epsilon);
-            } else if (innerToken1 instanceof RecordToken) {
-                result = _isCloseToIfNilRecordElement(innerToken1, innerToken2,
-                        epsilon);
-            } else {
-                result = innerToken1.isCloseTo(innerToken2, epsilon)
-                        .booleanValue();
-            }
-
-            if (!result) {
-                if (innerToken1.isNil() && innerToken2.isNil()) {
-                    // They are not close, but both are nil, so for
-                    // our purposes, the are close.
-                } else {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
