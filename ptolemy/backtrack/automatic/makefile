@@ -81,7 +81,8 @@ EXTRA_TARGETS = transform build
 transform:
 	if [ "$(PTBACKTRACK_ECLIPSE_DIR)" = "eclipse" ]; then \
 		echo "Transform the source files in source.lst."; \
-		rm -rf ptolemy; \
+		echo "Remove prexisting .java files in ./ptolemy/"; \
+		find ptolemy . -name "*.java" -print -exec rm {} \; ; \
 		rm -f ./ptolemy/configs/output.xml; \
 		"$(JAVA)" \
 			-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)$(AUXCLASSPATH)" \
