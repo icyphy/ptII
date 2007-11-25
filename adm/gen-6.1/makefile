@@ -1452,9 +1452,9 @@ remote1ChangeLog:
 	    fi) 
 	@echo "Problems generating ChangeLog from ptolemy/backtrack/automatic/ptolemy"
 	ls -l $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
-	rm -rf $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
-	(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic; cvs update ptolemy)
-	ls -l $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
+	#rm -rf $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
+	#(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic; cvs update ptolemy)
+	#ls -l $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
 	(cd $(REMOTE1PTIIDIST);	rm -f ChangeLog; \
 		PTII=$(REMOTE1PTIIDIST) $(MAKE) -k ChangeLog; \
 		rm -f ChangeLog.txt; ln -s ChangeLog ChangeLog.txt)
