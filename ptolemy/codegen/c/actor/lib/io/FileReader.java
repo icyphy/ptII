@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.actor.parameters.FilePortParameter;
 
 /**
  * A helper class for ptolemy.actor.lib.io.FileReader.
@@ -86,6 +87,34 @@ public class FileReader extends CCodeGeneratorHelper {
      */
     public static String getFileName(FileParameter fileOrURL)
             throws IllegalActionException {
+        String fileNameString;
+        try {
+            // Handle $CLASSPATH, return a file name with forward slashes.
+            fileNameString = fileOrURL.asURL().getPath();
+            // Under Windows, convert /C:/foo/bar to C:/foo/bar
+            fileNameString = new File(fileNameString).getCanonicalPath()
+                    .replace('\\', '/');
+        } catch (IOException ex) {
+            throw new IllegalActionException(null, ex, "Cannot find file: "
+                    + fileOrURL.getExpression());
+        }
+        return fileNameString;
+    }
+
+
+    /** Get the file name from a parameter and convert backward slashes
+     *  to forward slashes.
+     *  @param fileOrURL The file name or URL.
+     *  @return a pathname suitable for use with C: no backslashes,
+     *  "C:/foo/bar", not "/C:/foo/bar"
+     *  @exception IllegalActionException If the file cannot be found.
+     */
+    public static String getFileName(FilePortParameter fileOrURL)
+            throws IllegalActionException {
+        // FIXME: we should not need two getFileName() methods.
+        // instead, FileParameter and FilePortParameter should 
+        // implement a common interface.
+
         String fileNameString;
         try {
             // Handle $CLASSPATH, return a file name with forward slashes.
