@@ -1,6 +1,7 @@
 adm
 #*
 #.??*
+*/autom4te.cache/*
 */build
 core
 */codeDoc/*
