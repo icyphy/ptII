@@ -490,7 +490,24 @@ public class PublisherNonStrictTest extends Publisher {
         return true;
     }
 
-    /** 
+    /** Test whether the value of this token is close to the first argument,
+     *  where "close" means that the distance between them is less than
+     *  or equal to the second argument.  This method only makes sense
+     *  for tokens where the distance between them is reasonably
+     *  represented as a double. It is assumed that the argument is
+     *  a Record, and the isCloseTo() method of the record elements
+     *  is used.
+     *  This method differs from
+     *  {@link ptolemy.data.RecordToken#_isCloseTo(Token, double)}
+     *  in that if corresponding elements are both nil tokens, then
+     *  those two elements are considered "close", see 
+     *  {@link ptolemy.data.Token#NIL}.
+     *  @param token1 The first array token to compare.
+     *  @param token2 The second array token to compare.
+     *  @param epsilon The value that we use to determine whether two
+     *   tokens are close.
+     *  @exception IllegalActionException If the elements do not support
+     *   this comparison.
      *  @return True if the first argument is close
      *  to this token.  False if the arguments are not ArrayTokens
      */
