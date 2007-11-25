@@ -2362,15 +2362,27 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         return arrayLocal;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** A map from the node to the local variable. */
     protected HashMap _nodeToLocal;
 
+    /** The code body under construction. */
     protected JimpleBody _body;
 
+    /** The units of the parse tree. */
     protected Chain _units;
 
+    /** The scope of the parse tree. */
     protected CodeGenerationScope _scope;
 
+    /** The insertion point. */
     protected Unit _insertPoint;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The number of the current function, used to generate a unique name. */
     private static int _functionCount = 0;
 }
