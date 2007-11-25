@@ -321,6 +321,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     /** Add a listener to be notified when the value of this variable changes.
      *  @param listener The listener to add.
+     *  @see #removeValueListener(ValueListener)
      */
     public synchronized void addValueListener(ValueListener listener) {
         if (_valueListeners == null) {
@@ -419,6 +420,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  of the value set by setToken(), or an empty string if no value
      *  has been set.
      *  @return The expression used by this variable.
+     *  @see #setExpression(String)
      */
     public String getExpression() {
         String value = _currentExpression;
@@ -499,6 +501,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  inner class.
      *  <p>
      *  This method is read-synchronized on the workspace.
+     *  @param object The NamedObj variable
      *  @return The variables on which this variable can depend.
      */
     public static NamedList getScope(NamedObj object) {
@@ -590,6 +593,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   be parsed or cannot be evaluated, or if the result of evaluation
      *   violates type constraints, or if the result of evaluation is null
      *   and there are variables that depend on this one.
+     *  @see #setToken(String)
+     *  @see #setToken(ptolemy.data.Token)
      */
     public ptolemy.data.Token getToken() throws IllegalActionException {
         if (_isTokenUnknown) {
@@ -665,6 +670,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     /** Look up and return the attribute with the specified name in the
      *  scope. Return null if such an attribute does not exist.
+     *  @param name The name of the variable to be looked up.
      *  @return The attribute with the specified name in the scope.
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
@@ -678,6 +684,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     /** Get the visibility of this variable, as set by setVisibility().
      *  The visibility is set by default to EXPERT.
      *  @return The visibility of this variable.
+     *  @see #setVisibility(Settable.Visibility)
      */
     public Settable.Visibility getVisibility() {
         return _visibility;
@@ -769,6 +776,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  notified when the value of this variable changes.  If no such listener
      *  exists, do nothing.
      *  @param listener The listener to remove.
+     *  @see #addValueListener(ValueListener)
      */
     public synchronized void removeValueListener(ValueListener listener) {
         if (_valueListeners != null) {
@@ -881,6 +889,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  upon evaluation, it will be verified that the type
      *  constraint is satisfied, and if not, an exception will be thrown.
      *  @param expr The expression for this variable.
+     *  @see #getExpression()
      */
     public void setExpression(String expr) {
         try {
@@ -1065,6 +1074,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *   compatible with specified constraints, or if you are attempting
      *   to set to null a variable that has value dependents, or if the
      *   container rejects the change.
+     *  @see #getToken()
      */
     public void setToken(ptolemy.data.Token token)
             throws IllegalActionException {
@@ -1092,12 +1102,13 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  also cause the container to be notified of the change,
      *  unlike setExpression().
      *  @param expression The expression.
-     *  @see #setExpression(String)
-     *  @see #validate()
      *  @exception IllegalActionException If this variable or a
      *   variable dependent on this variable cannot be evaluated (and is
      *   not lazy) and the model error handler throws an exception.
      *   Also thrown if the change is not acceptable to the container.
+     *  @see #getToken()
+     *  @see #setExpression(String)
+     *  @see #validate()
      */
     public void setToken(String expression) throws IllegalActionException {
         setExpression(expression);
@@ -1264,6 +1275,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     /** Set the visibility of this variable.  The argument should be one
      *  of the public static instances in Settable.
      *  @param visibility The visibility of this variable.
+     *  @see #getVisibility()
      */
     public void setVisibility(Settable.Visibility visibility) {
         if (_debugging) {
@@ -1875,7 +1887,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
     }
 
-    /*  Set the token value and type of the variable, and notify the
+    /**  Set the token value and type of the variable, and notify the
      *  container that the value (and type, if appropriate) has changed.
      *  Also notify value dependents that they need to be re-evaluated,
      *  and notify any listeners that have been registered with
@@ -2217,6 +2229,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          *  scope-extending attributes. If the argument is null,
          *  then use the container of the enclosing instance of
          *  Variable as the reference for the scope.
+         *  @param reference The reference for the scope.
          */
         public VariableScope(NamedObj reference) {
             _reference = reference;
@@ -2224,6 +2237,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         /** Look up and return the attribute with the specified name in the
          *  scope. Return null if such an attribute does not exist.
+         *  @param name The name of the attribute.
          *  @return The attribute with the specified name in the scope.
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
@@ -2240,6 +2254,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         /** Look up and return the type of the attribute with the
          *  specified name in the scope. Return null if such an
          *  attribute does not exist.
+         *  @param name The name of the attribute.
          *  @return The attribute with the specified name in the scope.
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
@@ -2264,6 +2279,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         /** Look up and return the type term for the specified name
          *  in the scope. Return null if the name is not defined in this
          *  scope, or is a constant type.
+         *  @param name The name of the attribute.
          *  @return The InequalityTerm associated with the given name in
          *  the scope.
          *  @exception IllegalActionException If a value in the scope
@@ -2288,6 +2304,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
         /** Look up and return the attribute with the specified name in the
          *  scope. Return null if such an attribute does not exist.
+         *  @param name The name of the attribute.
          *  @return The attribute with the specified name in the scope.
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
