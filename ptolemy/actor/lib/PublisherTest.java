@@ -216,13 +216,13 @@ public class PublisherTest extends PublisherNonStrictTest {
                 // Copernicus.
                 if (token instanceof ArrayToken
                         && reference[i] instanceof ArrayToken) {
-                    isClose |= _isCloseToIfNilArrayElement(token, reference[i],
-                            _tolerance);
+                    isClose |= NonStrictTest._isCloseToIfNilArrayElement(
+                            token, reference[i], _tolerance);
                 }
                 if (token instanceof RecordToken
                         && reference[i] instanceof RecordToken) {
-                    isClose |= _isCloseToIfNilRecordElement(token,
-                            reference[i], _tolerance);
+                    isClose |= NonStrictTest._isCloseToIfNilRecordElement(
+                            token, reference[i], _tolerance);
                 }
 
             } catch (IllegalActionException ex) {
