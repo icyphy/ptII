@@ -31,10 +31,10 @@ import java.io.File;
 import java.io.PrintWriter;
 
 import ptolemy.actor.lib.Sink;
+import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -54,7 +54,7 @@ import ptolemy.util.MessageHandler;
  If you need the enclosing quotation marks, use ExpressionWriter.</p>
  <p>
  The file is specified by the <i>fileName</i> attribute
- using any form acceptable to FileParameter.</p>
+ using any form acceptable to FilePortParameter.</p>
  <p>
  If the <i>append</i> attribute has value <i>true</i>,
  then the file will be appended to. If it has value <i>false</i>,
@@ -66,7 +66,7 @@ import ptolemy.util.MessageHandler;
  without asking.  If <i>true</i> (the default), then if the file
  exists, then this actor will ask for confirmation before overwriting.</p>
 
- @see FileParameter
+ @see FilePortParameter
  @see ExpressionWriter
  @author  Edward A. Lee
  @version $Id$
@@ -90,7 +90,7 @@ public class LineWriter extends Sink {
         input.setTypeEquals(BaseType.STRING);
         input.setMultiport(false);
 
-        fileName = new FileParameter(this, "fileName");
+        fileName = new FilePortParameter(this, "fileName");
         fileName.setExpression("System.out");
 
         append = new Parameter(this, "append");
@@ -119,11 +119,11 @@ public class LineWriter extends Sink {
     public Parameter append;
 
     /** The file name to which to write.  This is a string with
-     *  any form accepted by FileParameter.  The default value is
+     *  any form accepted by FilePortParameter.  The default value is
      *  "System.out".
-     *  @see FileParameter
+     *  @see FilePortParameter
      */
-    public FileParameter fileName;
+    public FilePortParameter fileName;
 
     /** If <i>false</i>, then overwrite the specified file if it exists
      *  without asking.  If <i>true</i> (the default), then if the file
@@ -182,6 +182,7 @@ public class LineWriter extends Sink {
      *   or created, or if the user refuses to overwrite an existing file.
      */
     public boolean postfire() throws IllegalActionException {
+        fileName.update();
         if (input.hasToken(0)) {
             Token token = input.get(0);
 
