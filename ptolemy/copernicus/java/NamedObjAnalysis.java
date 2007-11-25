@@ -60,6 +60,10 @@ import soot.jimple.JimpleBody;
  @Pt.AcceptedRating Red (cxh)
  */
 public class NamedObjAnalysis {
+    /** Create a NamedObjAnalysis.
+     *  @param method  The Soot method.
+     *  @param thisBinding The NamedObj.
+     */
     public NamedObjAnalysis(SootMethod method, NamedObj thisBinding) {
         _errorObject = new NamedObj();
 
@@ -121,6 +125,10 @@ public class NamedObjAnalysis {
         }
     }
 
+    /** Return the NameObj that corresponds with the local argument.
+     *  @param local The local variable
+     *  @return The corresponding NamedObj.
+     */
     public NamedObj getObject(Local local) {
         Object current = _localToObject.get(local);
 

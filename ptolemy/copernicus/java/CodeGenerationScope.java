@@ -49,6 +49,7 @@ public interface CodeGenerationScope extends ParserScope {
     /** Look up and return the type of the value with the specified
      *  name in the scope. Return null if the name is not defined in
      *  this scope.
+     *  @param name The name to be looked up.
      *  @return The token associated with the given name in the scope.
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.

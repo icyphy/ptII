@@ -36,7 +36,7 @@ import soot.SootClass;
 //// AtomicActorCreator
 
 /**
-
+ An interface for classes that replaces port methods.
  @author Stephen Neuendorffer
  @version $Id$
  @since Ptolemy II 2.0
@@ -47,6 +47,11 @@ public interface AtomicActorCreator {
     /** Generate a new class with the given name that can take the
      *  place of the given actor.  Use the given options when
      *  necessary.
+     * @param entity the entity.
+     * @param newClassName the name of the new class.
+     * @param constAnalysis a ConstVariableModelAnalysis object
+     * @param options the options
+     * @return a SootClass object
      */
     public SootClass createAtomicActor(Entity entity, String newClassName,
             ConstVariableModelAnalysis constAnalysis, Map options);
