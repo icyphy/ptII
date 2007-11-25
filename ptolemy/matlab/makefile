@@ -147,8 +147,8 @@ $(PTLIB)_gcc: ptmatlab.cc Engine.class
 	CLASSPATH="$(CLASSPATH)" "$(PTJAVA_DIR)/bin/javah" -jni -o ptmatlab.h ptolemy.matlab.Engine
 	$(PTCC) -shared \
 		"-I$(MATLAB_DIR)/extern/include" \
-		"-I$(PTJAVA_DIR)/include" \
-		"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)" \
+		"-I$(PTJAVA_HOME)/../include" \
+		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
 		$< \
 		-fno-exceptions \
 		-o $@ \
