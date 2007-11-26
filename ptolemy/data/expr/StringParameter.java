@@ -85,6 +85,7 @@ public class StringParameter extends Parameter {
      *  <pre>
      *     ((StringToken)this.getToken()).stringValue()
      *  </pre>
+     *  @return The string value of this parameter.
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if the result of evaluation
      *   violates type constraints, or if the result of evaluation is null

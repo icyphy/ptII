@@ -108,16 +108,22 @@ public class Token {
     }
 
     /**
-     * Returns a new Token object, by default. However, if you want, you
-     * can create and return subclass objects based on the value of ofKind.
-     * Simply add the cases to the switch for all those special cases.
+     * Return a new Token object.  In this base class, a new Token is
+     * returned.  Subclasses may return subclass objects based on the
+     * value of ofKind.
+     * Subclasses add the cases to the switch for all those special cases.
      * For example, if you have a subclass of Token called IDToken that
      * you want to create if ofKind is ID, simply add something like :
-     *
+     * <pre>
      *    case MyParserConstants.ID : return new IDToken();
-     *
+     * </pre>
      * to the following switch statement. Then you can cast matchedToken
      * variable to the appropriate type and use it in your lexical actions.
+     *
+     * @param ofKind the type of token to return.  Ignored in this base
+     * class, a Token is always returned.  Subclasses may use this argument
+     * to determine what type of token to return.
+     * @return The returned token.
      */
     public static final Token newToken(int ofKind) {
         switch (ofKind) {
