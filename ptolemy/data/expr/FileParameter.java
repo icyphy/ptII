@@ -34,6 +34,7 @@ import java.io.Writer;
 import java.net.URI;
 import java.net.URL;
 
+import ptolemy.kernel.attributes.FileOrURLAccessor;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -133,7 +134,8 @@ import ptolemy.util.FileUtilities;
  @Pt.AcceptedRating Yellow (cxh)
  @see URIAttribute
  */
-public class FileParameter extends StringParameter {
+public class FileParameter extends StringParameter
+    implements FileOrURLAccessor {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the

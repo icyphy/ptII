@@ -36,6 +36,7 @@ import java.net.URL;
 
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.attributes.FileOrURLAccessor;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -192,7 +193,8 @@ import ptolemy.util.FileUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class FilePortParameter extends PortParameter {
+public class FilePortParameter extends PortParameter
+    implements FileOrURLAccessor {
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create

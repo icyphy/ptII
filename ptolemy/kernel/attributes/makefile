@@ -52,6 +52,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	FileAttribute.java \
+	FileOrURLAccessor.java \
 	RequireVersion.java \
 	URIAttribute.java \
 	VersionAttribute.java

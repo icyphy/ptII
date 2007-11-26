@@ -1,4 +1,4 @@
-/* An attribute that specifies a file or URL.
+/* An interface for Attributes and Parameters that access files or URLs.
 
  Copyright (c) 2001-2005 The Regents of the University of California.
  All rights reserved.
@@ -38,28 +38,39 @@ import java.net.URL;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
-//// FileAttribute
+//// FileOrURLAccessor
 
 /**
- This is an attribute that specifies a file or URL.  The value of this
- attribute, accessed by getExpression(), is a string that names a file
- or URL. If the model containing this attribute has been saved to a
- MoML file, then the file name can be given relative to the directory
- containing that MoML file.  If the model has not been saved to a file,
- then the classpath is used for identifying relative file names.
- <p>
- Files can be given relative to a <i>base</i>, where the base is
+ An interface for Attributes and Parameters that access files or URLs.
+
+ <p>This interface is necessary because Java does not support multiple
+ inheritance and we have two classes (FileParameter and FilePortParameter)
+ that have a common interface, but do not have an immediate parent class.
+ In addition,
+ {@link ptolemy.kernel.attributes.FileAttribute} shares this interface.
+
+ <p>This interface is implemented by an Attribute or Parameter that
+ specifies a file or URL.  The value of this Attribute or Parameter,
+ accessed by getExpression(), is a string that names a file or URL. If
+ the model containing this attribute has been saved to a MoML file,
+ then the file name can be given relative to the directory containing
+ that MoML file.  If the model has not been saved to a file, then the
+ classpath is used for identifying relative file names.
+
+ <p> Files can be given relative to a <i>base</i>, where the base is
  the URI of the first container above this one that has a URIAttribute.
  Normally, this URI specifies the file or URL containing the model
  definition. Thus, files that are referred to here can be kept in the
  same directory as the model, or in a related directory, and can
  moved together with the model.
+
  <p>
  The following special file names are understood:
  <ul>
@@ -113,34 +124,14 @@ import ptolemy.util.StringUtilities;
  method also recognizes the "$CLASSPATH" string, but not the asFile()
  method (which is typically used when accessing a file for writing).
  <p>
- @author Edward A. Lee
+ @author Christopher Brooks, based on FileAttribute by Edward A. Lee
  @version $Id$
  @see URIAttribute
- @since Ptolemy II 3.0
- @deprecated Use {@link ptolemy.data.expr.FileParameter} instead.
- @Pt.ProposedRating Green (eal)
- @Pt.AcceptedRating Yellow (cxh)
+ @since Ptolemy II 6.1
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
-public class FileAttribute extends StringAttribute
-    implements FileOrURLAccessor {
-    /** Construct an attribute with the given name contained by the
-     *  specified container. The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This attribute will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty
-     *  string. Increment the version of the workspace.
-     *  @param container The container.
-     *  @param name The name of this attribute.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
-     */
-    public FileAttribute(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-    }
-
+public interface FileOrURLAccessor extends Settable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -171,18 +162,7 @@ public class FileAttribute extends StringAttribute
      *  @exception IllegalActionException If a parse error occurs
      *   reading the file name.
      */
-    public File asFile() throws IllegalActionException {
-        String name = _substituteSpecialStrings(getExpression());
-
-        try {
-            return FileUtilities.nameToFile(name, getBaseDirectory());
-        } catch (IllegalArgumentException ex) {
-            // Java 1.4.2 some times reports:
-            //  java.lang.IllegalArgumentException: URI is not absolute
-            throw new IllegalActionException(this, ex,
-                    "Failed to create a file with name '" + name + "'.");
-        }
-    }
+    public File asFile() throws IllegalActionException;
 
     /** Return the file as a URL.  If the file name is relative, then
      *  it is interpreted as being relative to the directory returned
@@ -193,82 +173,7 @@ public class FileAttribute extends StringAttribute
      *  @exception IllegalActionException If the file cannot be read, or
      *   if the file cannot be represented as a URL (e.g. System.in).
      */
-    public URL asURL() throws IllegalActionException {
-        String name = _substituteSpecialStrings(getExpression());
-
-        if ((name == null) || name.trim().equals("")) {
-            return null;
-        }
-
-        // If the name begins with "$CLASSPATH", then attempt to
-        // open the file relative to the classpath.
-        if (name.startsWith("$CLASSPATH")) {
-            // Try relative to classpath.
-            String trimmedName = name.substring(11);
-            URL result = getClass().getClassLoader().getResource(trimmedName);
-
-            if (result == null) {
-                throw new IllegalActionException(this,
-                        "Cannot find file in classpath: " + name);
-            }
-
-            return result;
-        }
-
-        File file = new File(name);
-
-        if (file.isAbsolute()) {
-            if (!file.canRead()) {
-                throw new IllegalActionException(this, "Cannot read file: "
-                        + name);
-            }
-
-            try {
-                return file.toURL();
-            } catch (MalformedURLException ex) {
-                throw new IllegalActionException(this, "Cannot open file: "
-                        + ex.toString());
-            }
-        } else {
-            // Try relative to the base directory.
-            URI modelURI = getBaseDirectory();
-
-            if (modelURI != null) {
-                try {
-                    // Try to resolve the URI.
-                    URI newURI = modelURI.resolve(name);
-                    return newURI.toURL();
-                } catch (MalformedURLException e) {
-                    throw new IllegalActionException(this,
-                            "Unable to open as a file or URL: " + name);
-                }
-            }
-
-            // As a last resort, try an absolute URL.
-            try {
-                // Try an absolute URL
-                return new URL(name);
-            } catch (MalformedURLException e) {
-                throw new IllegalActionException(this,
-                        "Unable to open as a file or URL: " + name);
-            }
-        }
-    }
-
-    /** Clone the attribute into the specified workspace.  The resulting
-     *  object has no base directory name nor any reference to any open stream.
-     *  @param workspace The workspace for the cloned object.
-     *  @return A new attribute.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FileAttribute newObject = (FileAttribute) super.clone(workspace);
-        newObject._baseDirectory = null;
-        newObject._reader = null;
-        newObject._writer = null;
-        return newObject;
-    }
+    public URL asURL() throws IllegalActionException;
 
     /** Close the file. If it has not been opened using openForReading()
      *  or openForWriting(), then do nothing.  Also, if the file is
@@ -277,31 +182,7 @@ public class FileAttribute extends StringAttribute
      *  @exception IllegalActionException If the file or URL cannot be
      *   closed.
      */
-    public void close() throws IllegalActionException {
-        if (_reader != null) {
-            if (_reader != FileUtilities.STD_IN) {
-                try {
-                    _reader.close();
-                } catch (IOException ex) {
-                    // This is typically caused by the stream being
-                    // already closed, so we ignore.
-                }
-            }
-        }
-
-        if (_writer != null) {
-            try {
-                _writer.flush();
-
-                if (_writer != FileUtilities.STD_OUT) {
-                    _writer.close();
-                }
-            } catch (IOException ex) {
-                // This is typically caused by the stream being
-                // already closed, so we ignore.
-            }
-        }
-    }
+    public void close() throws IllegalActionException;
 
     /** Return the directory to use as the base for relative file or URL names.
      *  If setBaseDirectory() has been called, then that directory is
@@ -313,13 +194,7 @@ public class FileAttribute extends StringAttribute
      *  @see #setBaseDirectory(URI)
      *  @see URIAttribute#getModelURI(NamedObj)
      */
-    public URI getBaseDirectory() {
-        if (_baseDirectory != null) {
-            return _baseDirectory;
-        } else {
-            return URIAttribute.getModelURI(this);
-        }
-    }
+    public URI getBaseDirectory();
 
     /** Open the file or URL for reading. If the name begins with
      *  "$CLASSPATH", then search for the file relative to the classpath.
@@ -330,16 +205,7 @@ public class FileAttribute extends StringAttribute
      *  @exception IllegalActionException If the file or URL cannot be
      *   opened.
      */
-    public BufferedReader openForReading() throws IllegalActionException {
-        try {
-            _reader = FileUtilities.openForReading(getExpression(),
-                    getBaseDirectory(), getClass().getClassLoader());
-            return _reader;
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot open file or URL");
-        }
-    }
+    public BufferedReader openForReading() throws IllegalActionException;
 
     /** Open the file for writing.  If the file does not exist, then
      *  create it.  If the file name is not absolute, the it is assumed
@@ -354,9 +220,8 @@ public class FileAttribute extends StringAttribute
      *  @exception IllegalActionException If the file cannot be opened
      *   or created.
      */
-    public Writer openForWriting() throws IllegalActionException {
-        return openForWriting(false);
-    }
+    public Writer openForWriting() throws IllegalActionException;
+
 
     /** Open the file for writing or appending.
      *  If the file does not exist, then
@@ -374,16 +239,7 @@ public class FileAttribute extends StringAttribute
      *  @exception IllegalActionException If the file cannot be opened
      *   or created.
      */
-    public Writer openForWriting(boolean append) throws IllegalActionException {
-        try {
-            _writer = FileUtilities.openForWriting(getExpression(),
-                    getBaseDirectory(), append);
-            return _writer;
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot open file for writing");
-        }
-    }
+    public Writer openForWriting(boolean append) throws IllegalActionException;
 
     /** Set the directory to use as the base for relative file or URL names.
      *  If this is not called, then the default is the directory
@@ -392,55 +248,5 @@ public class FileAttribute extends StringAttribute
      *  @see #getBaseDirectory()
      *  @see URIAttribute#getModelURI(NamedObj)
      */
-    public void setBaseDirectory(URI directory) {
-        _baseDirectory = directory;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return a string that is the current value of this attribute
-     *  with the strings "$CWD, "$HOME", "$PTII" and "$TMPDIR"
-     *  replaced by their respective values.
-     *  @param string The string in which to do the substitution.
-     *  @return A new string.
-     */
-    private static String _substituteSpecialStrings(String string) {
-        String result = string;
-
-        // Keep these alphabetized.
-        if (result.indexOf("$CWD") >= 0) {
-            result = StringUtilities.substitute(result, "$CWD", StringUtilities
-                    .getProperty("user.dir"));
-        }
-
-        if (result.indexOf("$HOME") >= 0) {
-            result = StringUtilities.substitute(result, "$HOME",
-                    StringUtilities.getProperty("user.home"));
-        }
-
-        if (result.indexOf("$PTII") >= 0) {
-            result = StringUtilities.substitute(result, "$PTII",
-                    StringUtilities.getProperty("ptolemy.ptII.dir"));
-        }
-
-        if (result.indexOf("$TMPDIR") >= 0) {
-            result = StringUtilities.substitute(result, "$TMPDIR",
-                    StringUtilities.getProperty("java.io.tmpdir"));
-        }
-
-        return result;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-
-    /** The base directory to use for relative file names. */
-    private URI _baseDirectory;
-
-    /** The current reader for the input file. */
-    private BufferedReader _reader;
-
-    /** The current writer for the output file. */
-    private Writer _writer;
+    public void setBaseDirectory(URI directory);
 }
