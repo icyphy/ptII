@@ -185,18 +185,18 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         Method method = cachedMethod.getMethod();
 
-        CachedMethod.ArgumentConversion[] conversions = cachedMethod
-                .getConversions();
+        //CachedMethod.ArgumentConversion[] conversions = cachedMethod
+        //        .getConversions();
 
-        for (int i = 0; i < argCount; i++) {
+        //for (int i = 0; i < argCount; i++) {
             // Insert the appropriate conversion.
-            String argName = (String) _nodeToLocalName.get(node
-                    .jjtGetChild(i + 1));
+        //    String argName = (String) _nodeToLocalName.get(node
+        //            .jjtGetChild(i + 1));
 
             // _convertTokenArgToJavaArg(
             //    tokenLocal, argTypes[i], conversions[i]);
             //            args.add(argLocal);
-        }
+        //}
 
         System.out.println(nodeName + " = FIXME:method invocation of "
                 + method.getName());
