@@ -713,7 +713,7 @@ public class GenericJNIActor extends TypedAtomicActor {
         try {
             File userDirAsFile = new File(StringUtilities
                     .getProperty("user.dir"));
-            tab[0] = userDirAsFile.toURL();
+            tab[0] = userDirAsFile.toURI().toURL();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "Could not create URL "
                     + "from user.dir ("
