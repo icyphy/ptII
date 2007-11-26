@@ -685,7 +685,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                         // If we don't do this, then the nightly tests
                         // fail because the results don't match.
                         parser.reset();
-                        parser.purgeModelRecord(modelURL);
+                        MoMLParser.purgeModelRecord(modelURL);
                         toplevel = (CompositeActor) parser.parse(null, modelURL);
                     } catch (Exception ex) {
                         throw new Exception("Failed to parse \"" + args[i] + "\"",
