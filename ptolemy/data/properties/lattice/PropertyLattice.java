@@ -433,32 +433,7 @@ public class PropertyLattice {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return the result for the properties that have the given two
-     * indexes as hashes.
-     */
-    private final int _getCachedPropertyComparisonResult(int index1,
-            int index2) {
-        return _compareCache[index1][index2];
-    }
-
-    
-    /** Set the result for the properties that have the given two
-     *  indexes as hashes.
-     */
-    private final void _setCachedPropertyComparisonResult(int index1,
-            int index2, int value) {
-        _compareCache[index1][index2] = value;
-    }
-
-
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The result cache for parts of the property lattice. */
-    private int[][] _compareCache;
 
     /** The infinite property lattice. */
     protected ThePropertyLattice _lattice = new ThePropertyLattice();
