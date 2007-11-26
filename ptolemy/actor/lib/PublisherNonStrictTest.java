@@ -228,7 +228,6 @@ public class PublisherNonStrictTest extends Publisher {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _running = true;
         // If this was created by instantiating a container class,
         // then the links would not have been updated when setContainer()
         // was called, so we must do it now.
@@ -326,7 +325,6 @@ public class PublisherNonStrictTest extends Publisher {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        _running = false;
 
         boolean training = ((BooleanToken) trainingMode.getToken())
                 .booleanValue();
@@ -445,87 +443,4 @@ public class PublisherNonStrictTest extends Publisher {
 
     /** List to store tokens for training mode. */
     protected List _trainingTokens;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Find subscribers.
-     *  @return A list of subscribers.
-     *  @exception IllegalActionException If there is already a publisher
-     *   using the same channel.
-     */
-    private List _findSubscribers() throws IllegalActionException {
-        LinkedList result = new LinkedList();
-        // Find the nearest opaque container above in the hierarchy.
-        CompositeEntity container = (CompositeEntity) getContainer();
-        while (container != null && !container.isOpaque()) {
-            container = (CompositeEntity) container.getContainer();
-        }
-        if (container != null) {
-            Iterator actors = container.deepEntityList().iterator();
-            while (actors.hasNext()) {
-                Object actor = actors.next();
-                if (actor instanceof Subscriber) {
-                    if (((Subscriber) actor).channelMatches(_channel)) {
-                        result.add(actor);
-                    }
-                } else if (actor instanceof Publisher && actor != this) {
-                    // Throw an exception if there is another publisher
-                    // trying to publish on the same channel.
-                    if (_channel.equals(((Publisher) actor)._channel)) {
-                        throw new IllegalActionException(this,
-                                "There is already a publisher using channel \""
-                                        + _channel
-                                        + "\": "
-                                        + ((NamedObj) actor).getFullName());
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    /** Return a channel name of the form "channelX", where X is an integer
-     *  that ensures that this channel name is not already in use.
-     *  @return A unique channel name.
-     */
-    private String _uniqueChannelName() {
-        int suffix = 1;
-        // Find the nearest opaque container above in the hierarchy.
-        CompositeEntity container = (CompositeEntity) getContainer();
-        while (container != null && !container.isOpaque()) {
-            container = (CompositeEntity) container.getContainer();
-        }
-        if (container != null) {
-            Iterator actors = container.deepEntityList().iterator();
-            while (actors.hasNext()) {
-                Object actor = actors.next();
-                if (actor instanceof Publisher && actor != this) {
-                    String nameInUse = ((Publisher) actor)._channel;
-                    if (nameInUse != null && nameInUse.startsWith("channel")) {
-                        String suffixInUse = nameInUse.substring(7);
-                        try {
-                            int suffixAsInt = Integer.parseInt(suffixInUse);
-                            if (suffix <= suffixAsInt) {
-                                suffix = suffixAsInt + 1;
-                            }
-                        } catch (NumberFormatException ex) {
-                            // Not a number suffix, so it can't collide.
-                            continue;
-                        }
-                    }
-                }
-            }
-        }
-        return "channel" + suffix;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
-
-    /** An indicator that connectionsChanged() has been called. */
-    private boolean _inConnectionsChanged = false;
-    
-    /** Indicator that preinitialize has been called and not wrapup. */
-    private boolean _running;
 }
