@@ -50,7 +50,12 @@ import ptolemy.kernel.util.InternalErrorException;
 public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    public void generateCode(ASTPtRootNode node) throws IllegalActionException {
+    /** Generate code for a node.
+     *  @param node The node for which code is generated.
+     *  @exception IllegalActionException If type inference fails.
+     */
+    public void generateCode(ASTPtRootNode node)
+            throws IllegalActionException {
         ParseTreeTypeInference typeInference = new ParseTreeTypeInference();
         typeInference.inferTypes(node); // FIXME: scope?
 
@@ -1236,6 +1241,11 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      * parse tree node is true.  If it is false, then throw a new
      * InternalErrorException that describes the node that includes
      * the given message.
+     * @param flag The value to be checked.  If false, then an 
+     * InternalErrorException is thrown.
+     * @param node The node.
+     * @param message The error message to be included in the exception 
+     * if the flag parameter is false.
      */
     protected void _assert(boolean flag, ASTPtRootNode node, String message) {
         if (!flag) {
@@ -1246,6 +1256,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     /** Loop through all of the children of this node,
      *  visiting each one of them, which will cause their token
      *  value to be determined.
+     *  @param node The node. 
      */
     protected void _generateAllChildren(ASTPtRootNode node)
             throws IllegalActionException {
@@ -1258,6 +1269,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     /** Visit the child with the given index of the given node.
      *  This is usually called while visiting the given node.
+     *  @param node The node
+     *  @param i The index of the child to be visited. 
      */
     protected void _generateChild(ASTPtRootNode node, int i)
             throws IllegalActionException {
@@ -1265,6 +1278,11 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         child.visit(this);
     }
 
+    /** Get the local name for this this name.
+     *  @param name The name to be looked up.
+     *  @return The local name.
+     *  @exception IllegalActionException  Always thrown in this base class.
+     */
     protected String _getLocalNameForName(String name)
             throws IllegalActionException {
         //   if (_scope != null) {
@@ -1273,6 +1291,13 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         throw new IllegalActionException("The ID " + name + " is undefined.");
     }
 
+    /** Return true if the name is a valid name.  This base class
+     *  always returns false.   
+     *  @param name The name to be looked up.
+     *  @return True if the name is valid.  This base class always returns
+     *  false.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
     protected boolean _isValidName(String name) throws IllegalActionException {
         //    if (_scope != null) {
         //             try {
@@ -1286,7 +1311,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         //        }
     }
 
+    /** A map from node to local node name. */
     protected HashMap _nodeToLocalName;
 
+    /** The node number, used to create unique node names. */
     protected int _nodeNumber;
 }
