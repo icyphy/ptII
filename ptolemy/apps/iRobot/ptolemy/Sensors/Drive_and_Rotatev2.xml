@@ -262,7 +262,9 @@
                 </port>
             </entity>
             <entity name="EmbeddedCFileActor" class="ptolemy.actor.lib.jni.EmbeddedCFileActor">
-                <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="senseCode.c">
+                <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="codeBlockFile" class="ptolemy.data.expr.FileParameter" value="sensorCode.c">
                 </property>
                 <property name="_tableauFactory" class="ptolemy.vergil.toolbox.FileEditorTableauFactory">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="codeBlockFile">
