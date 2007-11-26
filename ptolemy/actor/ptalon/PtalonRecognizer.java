@@ -415,9 +415,9 @@ public PtalonRecognizer(ParserSharedInputState state) {
 					parameter_declaration_AST = (PtalonAST)currentAST.root;
 					
 							if (dynamic_name) {
-								parameter_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(PARAM_EQUALS,"=")).add((PtalonAST)astFactory.make( (new ASTArray(2)).add(p_AST).add((PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(DYNAMIC_NAME,"dynamic")).add(c_AST).add(n_AST))))).add(e_AST));
+								parameter_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(3)).add(astFactory.create(PARAM_EQUALS,"=")).add(astFactory.make( (new ASTArray(2)).add(p_AST).add(astFactory.make( (new ASTArray(3)).add(astFactory.create(DYNAMIC_NAME,"dynamic")).add(c_AST).add(n_AST))))).add(e_AST));
 							} else {
-								parameter_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(PARAM_EQUALS,"=")).add((PtalonAST)astFactory.make( (new ASTArray(2)).add(p_AST).add(c_AST))).add(e_AST));
+								parameter_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(3)).add(astFactory.create(PARAM_EQUALS,"=")).add(astFactory.make( (new ASTArray(2)).add(p_AST).add(c_AST))).add(e_AST));
 							}
 							addChild = false;
 						
@@ -565,7 +565,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
 		
 		
 		{
-		if ((LA(1)==ID) && (LA(2)==COLON)) {
+		if (LA(1)==ID && LA(2)==COLON) {
 			p = LT(1);
 			p_AST = (PtalonAST)astFactory.create(p);
 			match(ID);
@@ -578,7 +578,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
 					
 			}
 		}
-		else if ((_tokenSet_0.member(LA(1))) && (LA(2)==DOT||LA(2)==SEMI)) {
+		else if (_tokenSet_0.member(LA(1)) && (LA(2)==DOT||LA(2)==SEMI)) {
 		}
 		else {
 			throw new NoViableAltException(LT(1), getFilename());
@@ -595,7 +595,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
 		{
 		_loop21:
 		do {
-			if ((LA(1)==DOT)) {
+			if (LA(1)==DOT) {
 				PtalonAST tmp11_AST = null;
 				tmp11_AST = (PtalonAST)astFactory.create(LT(1));
 				match(DOT);
@@ -1032,7 +1032,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
 		match(ASSIGN);
 		{
 		boolean synPredMatched29 = false;
-		if (((LA(1)==ID) && ((LA(2) >= RPAREN && LA(2) <= EXPRESSION)))) {
+		if (LA(1)==ID && LA(2) >= RPAREN && LA(2) <= EXPRESSION) {
 			int _m29 = mark();
 			synPredMatched29 = true;
 			inputState.guessing++;
@@ -1232,7 +1232,7 @@ inputState.guessing--;
 			{
 			_loop36:
 			do {
-				if ((LA(1)==COMMA)) {
+				if (LA(1)==COMMA) {
 					PtalonAST tmp35_AST = null;
 					tmp35_AST = (PtalonAST)astFactory.create(LT(1));
 					match(COMMA);
@@ -1647,7 +1647,7 @@ inputState.guessing--;
 		{
 		_loop50:
 		do {
-			if ((LA(1)==COMMENT)) {
+			if (LA(1)==COMMENT) {
 				PtalonAST tmp46_AST = null;
 				tmp46_AST = (PtalonAST)astFactory.create(LT(1));
 				match(COMMENT);
@@ -1782,7 +1782,7 @@ inputState.guessing--;
 		{
 		_loop56:
 		do {
-			if ((LA(1)==COMMENT)) {
+			if (LA(1)==COMMENT) {
 				PtalonAST tmp50_AST = null;
 				tmp50_AST = (PtalonAST)astFactory.create(LT(1));
 				match(COMMENT);

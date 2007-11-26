@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.c.actor;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
