@@ -287,7 +287,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         long lastModified = 0;
 
-        CodeGeneratorHelper helper = null;
         CodeStream codeStream = null;
 
         codeStream = _getActualCodeStream(namedObj, codeGenerator);
