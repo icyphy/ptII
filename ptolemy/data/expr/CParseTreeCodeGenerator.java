@@ -1269,8 +1269,10 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     /** Visit the child with the given index of the given node.
      *  This is usually called while visiting the given node.
-     *  @param node The node
+     *  @param node The node.
      *  @param i The index of the child to be visited. 
+     *  @exception IllegalActionException If thrown while visiting a child
+     *  node.
      */
     protected void _generateChild(ASTPtRootNode node, int i)
             throws IllegalActionException {

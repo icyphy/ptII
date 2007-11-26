@@ -52,6 +52,8 @@ import ptolemy.kernel.util.IllegalActionException;
 public class NamedConstantsScope implements ParserScope {
     /** Construct a new scope that contains the given map from names to
      *  value tokens.
+     *  @param map The map of names to values where the keys are Strings
+     *  that name a variable and each key is a {@link ptolemy.data.Token}.
      */
     public NamedConstantsScope(Map map) {
         _map = map;
@@ -59,6 +61,7 @@ public class NamedConstantsScope implements ParserScope {
 
     /** Look up and return the value with the specified name in the
      *  scope. Return null if the name is not defined in this scope.
+     *  @param name The name of the variable to be looked up.
      *  @return The token associated with the given name in the scope.
      */
     public ptolemy.data.Token get(String name) {
@@ -69,6 +72,7 @@ public class NamedConstantsScope implements ParserScope {
     /** Look up and return the type of the value with the specified
      *  name in the scope. Return null if the name is not defined in
      *  this scope.
+     *  @param name The name of the variable to be looked up.
      *  @return The token associated with the given name in the scope.
      */
     public ptolemy.data.type.Type getType(String name) {
@@ -84,6 +88,7 @@ public class NamedConstantsScope implements ParserScope {
     /** Look up and return the type term for the specified name
      *  in the scope. Return null if the name is not defined in this
      *  scope, or is a constant type.
+     *  @param name The name of the variable to be looked up.
      *  @return The InequalityTerm associated with the given name in
      *  the scope.
      *  @exception IllegalActionException If a value in the scope

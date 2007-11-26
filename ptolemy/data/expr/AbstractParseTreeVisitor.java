@@ -137,6 +137,10 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
         throw _unsupportedVisitException("ASTPtUnionConstructNode");
     }
 
+    /** Return an exception that describes an unsupported node type.
+     *  @param name The name of the node type.
+     *  @return An exception that describes an unsupported node type.
+     */
     protected IllegalActionException _unsupportedVisitException(String name) {
         new Exception("Unsuppported...").printStackTrace();
         return new IllegalActionException("Nodes of type " + name
@@ -146,6 +150,9 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
     /** Loop through all of the children of this node,
      *  visiting each one of them, which will cause their token
      *  value to be determined.
+     *  @param node The node whose children are to be looped through.
+     *  @exception IllegalActionException If thrown while visiting a child
+     *  node.
      */
     protected void _visitAllChildren(ASTPtRootNode node)
             throws IllegalActionException {
@@ -158,6 +165,10 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
 
     /** Visit the child with the given index of the given node.
      *  This is usually called while visiting the given node.
+     *  @param node The node.
+     *  @param i The index of the child to be visited. 
+     *  @exception IllegalActionException If thrown while visiting a child
+     *  node.
      */
     protected void _visitChild(ASTPtRootNode node, int i)
             throws IllegalActionException {

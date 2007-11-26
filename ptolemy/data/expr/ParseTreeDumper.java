@@ -46,6 +46,9 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class ParseTreeDumper extends AbstractParseTreeVisitor {
+    /** Print the contents of a parse tree.
+     *  @param root The parse tree to be displayed. 
+     */
     public void displayParseTree(ASTPtRootNode root) {
         _prefix = "";
 
@@ -139,6 +142,8 @@ public class ParseTreeDumper extends AbstractParseTreeVisitor {
 
     /** Display the given node with the current prefix, recursing into
      *  the children of the node.
+     *  @param node The node to be displayed.
+     *  @exception If there is a problem displaying the children.
      */
     protected void _displayNode(ASTPtRootNode node)
             throws IllegalActionException {

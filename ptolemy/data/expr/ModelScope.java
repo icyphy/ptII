@@ -54,6 +54,8 @@ public abstract class ModelScope implements ParserScope {
     /** Return a list of variable names in scope for variables in the
      * given container.  Exclude the given variable from being
      * considered in scope.
+     * @param exclude  The variable to exclude from the scope.
+     * @param container The container of this scope.
      */
     public static Set getAllScopedVariableNames(Variable exclude,
             NamedObj container) {
