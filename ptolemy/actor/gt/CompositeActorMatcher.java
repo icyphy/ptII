@@ -29,10 +29,10 @@ package ptolemy.actor.gt;
 import java.util.Set;
 
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.gt.GTIngredientsEditor;
 
 //////////////////////////////////////////////////////////////////////////
@@ -68,7 +68,7 @@ implements GTEntity {
         scopeExtender = new ActorScopeExtender(this, "scopeExtender");
     }
 
-    public NamedObj get(String name) {
+    public Criterion get(String name) {
         // TODO
         return null;
     }

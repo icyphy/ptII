@@ -60,8 +60,10 @@ JSRCS = \
 	ActorScopeExtender.java \
 	AtomicActorMatcher.java \
 	CompositeActorMatcher.java \
+	CriterionToken.java \
 	DefaultDirectoryAttribute.java \
 	DefaultModelAttribute.java \
+	FakedRecordToken.java \
 	GTEntity.java \
 	GTIngredient.java \
 	GTIngredientElement.java \

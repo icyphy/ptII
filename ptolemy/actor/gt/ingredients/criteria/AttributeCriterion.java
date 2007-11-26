@@ -248,7 +248,7 @@ public class AttributeCriterion extends Criterion {
     private PtolemyExpressionString _attributeValue;
 
     private static final CriterionElement[] _ELEMENTS = {
-        new StringCriterionElement("name", true, false),
+        new StringCriterionElement("name", false, false),
         new ChoiceCriterionElement("type", false, true, true),
         new StringCriterionElement("value", false, true)
     };

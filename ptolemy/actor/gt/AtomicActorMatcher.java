@@ -33,6 +33,8 @@ import java.util.Set;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
+import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
 import ptolemy.actor.gt.ingredients.criteria.SubclassCriterion;
 import ptolemy.kernel.ComponentEntity;
@@ -88,8 +90,20 @@ ValueListener {
         _attachText("_iconDescription", _ICON_DESCRIPTION);
     }
 
-    public NamedObj get(String name) {
-        // TODO
+    public Criterion get(String name) {
+        if (name.startsWith("Criterion")) {
+            String indexString = name.substring(9);
+            try {
+                int index = Integer.parseInt(indexString);
+                AttributeCriterion criterion = (AttributeCriterion) criteria
+                        .getIngredientList().get(index - 1);
+                return criterion;
+            } catch (ClassCastException e) {
+            } catch (IndexOutOfBoundsException e) {
+            } catch (MalformedStringException e) {
+            } catch (NumberFormatException e) {
+            }
+        }
         return null;
     }
 
@@ -106,9 +120,29 @@ ValueListener {
     }
 
     public Set<String> labelSet() {
-        // TODO
-        return null;
+        long version = workspace().getVersion();
+        if (_labelSet == null || version > _version) {
+            _labelSet = new HashSet<String>();
+
+            try {
+                int i = 0;
+                for (GTIngredient ingredient : criteria.getIngredientList()) {
+                    i++;
+                    Criterion criterion = (Criterion) ingredient;
+                    if (criterion instanceof AttributeCriterion) {
+                        _labelSet.add("Criterion" + i);
+                    }
+                }
+            } catch (MalformedStringException e) {
+                return _labelSet;
+            }
+        }
+        return _labelSet;
     }
+
+    private long _version = -1;
+
+    Set<String> _labelSet;
 
     public void updateAppearance(GTIngredientsAttribute attribute) {
 

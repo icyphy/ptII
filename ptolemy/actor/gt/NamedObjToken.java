@@ -32,8 +32,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.RecordToken;
+import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -47,11 +46,9 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class NamedObjToken extends RecordToken {
+public class NamedObjToken extends FakedRecordToken {
 
     public NamedObjToken(NamedObj object) throws IllegalActionException {
-        super(new String[0], new Token[0]);
-
         _object = object;
     }
 
@@ -61,6 +58,17 @@ public class NamedObjToken extends RecordToken {
     }
 
     public Token get(String label) {
+        if (_object instanceof GTEntity) {
+            Criterion criterion = ((GTEntity) _object).get(label);
+            if (criterion != null) {
+                try {
+                    return new CriterionToken(criterion);
+                } catch (IllegalActionException e) {
+                    throw new InternalErrorException(e);
+                }
+            }
+        }
+
         NamedObj child =
             GTTools.getChild(_object, label, true, true, true, true);
         if (child instanceof ActorScopeExtender) {
@@ -84,9 +92,17 @@ public class NamedObjToken extends RecordToken {
     public Set<String> labelSet() {
         long version = _object.workspace().getVersion();
         if (_labelSet == null || version > _version) {
+            _labelSet = new HashSet<String>();
+
+            if (_object instanceof GTEntity) {
+                Set<String> labelSet = ((GTEntity) _object).labelSet();
+                if (labelSet != null) {
+                    _labelSet.addAll(labelSet);
+                }
+            }
+
             Collection<?> children =
                 GTTools.getChildren(_object, true, true, true, true);
-            _labelSet = new HashSet<String>();
             for (Object childObject : children) {
                 NamedObj child = (NamedObj) childObject;
                 if (child instanceof ActorScopeExtender) {
@@ -101,51 +117,6 @@ public class NamedObjToken extends RecordToken {
 
     public int length() {
         return labelSet().size();
-    }
-
-    public Token one() throws IllegalActionException {
-        throw new IllegalActionException(
-                "Multiplicative identity (one) does not exist.");
-    }
-
-    public Token zero() throws IllegalActionException {
-        throw new IllegalActionException(
-                "Additive identity (zero) does not exist.");
-    }
-
-    protected Token _add(Token rightArgument) throws IllegalActionException {
-        throw new IllegalActionException("Add operation is not supported.");
-    }
-
-    protected Token _divide(Token rightArgument) throws IllegalActionException {
-        throw new IllegalActionException("Divide operation is not supported.");
-    }
-
-    protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
-    throws IllegalActionException {
-        throw new IllegalActionException(
-                "IsCloseTo operation is not supported.");
-    }
-
-    protected BooleanToken _isEqualTo(Token token)
-    throws IllegalActionException {
-        return BooleanToken.getInstance(equals(token));
-    }
-
-    protected Token _modulo(Token rightArgument) throws IllegalActionException {
-        throw new IllegalActionException("Modulo operation is not supported.");
-    }
-
-    protected Token _multiply(Token rightArgument)
-    throws IllegalActionException {
-        throw new IllegalActionException(
-                "Multiply operation is not supported.");
-    }
-
-    protected Token _subtract(Token rightArgument)
-    throws IllegalActionException {
-        throw new IllegalActionException(
-                "Subtract operation is not supported.");
     }
 
     private Set<String> _labelSet;
