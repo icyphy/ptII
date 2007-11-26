@@ -28,6 +28,7 @@
 
 package ptolemy.actor.gt;
 
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -51,8 +52,29 @@ public class Replacement extends CompositeActorMatcher {
     public Replacement(CompositeEntity container, String name)
     throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
         setClassName("ptolemy.actor.gt.Replacement");
     }
+
+    public void setContainer(CompositeEntity container)
+    throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+
+        if (container instanceof TransformationRule) {
+            if (patternParameter != null) {
+                patternParameter.setContainer(null);
+            }
+
+            Pattern pattern = ((TransformationRule) container).getPattern();
+            if (pattern != null) {
+                patternParameter = new Parameter(this, "pattern");
+                patternParameter.setToken(new NamedObjToken(pattern));
+                patternParameter.setPersistent(false);
+            }
+        }
+    }
+
+    public Parameter patternParameter;
 
     protected void updateEntitiesAppearance(GTIngredientsAttribute attribute) {
         _updateEntitiesAppearance(this, attribute);

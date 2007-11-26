@@ -28,6 +28,10 @@
 
 package ptolemy.actor.gt;
 
+import java.util.Collection;
+
+import ptolemy.actor.gt.data.CombinedCollection;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
@@ -45,6 +49,58 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class GTTools {
+
+    public static NamedObj getChild(NamedObj object, String name,
+            boolean allowAttribute, boolean allowPort, boolean allowEntity,
+            boolean allowRelation) {
+        NamedObj child = null;
+        if (allowAttribute) {
+            child = object.getAttribute(name);
+        }
+        if (child == null && allowPort && object instanceof Entity) {
+            child = ((Entity) object).getPort(name);
+        }
+        if (object instanceof CompositeEntity) {
+            if (child == null && allowEntity) {
+                child = ((CompositeEntity) object).getEntity(name);
+            }
+            if (child == null && allowRelation) {
+                child = ((CompositeEntity) object).getRelation(name);
+            }
+        }
+        return child;
+    }
+
+    public static Collection<?> getChildren(NamedObj object,
+            boolean includeAttributes, boolean includePorts,
+            boolean includeEntities, boolean includeRelations) {
+        Collection<Object> collection = new CombinedCollection<Object>();
+        if (includeAttributes) {
+            collection.addAll((Collection<?>) object.attributeList());
+        }
+        if (includePorts && object instanceof Entity) {
+            Entity entity = (Entity) object;
+            collection.addAll((Collection<?>) entity.portList());
+        }
+        if (object instanceof CompositeEntity) {
+            CompositeEntity entity = (CompositeEntity) object;
+            if (includeEntities) {
+                collection.addAll((Collection<?>) entity.entityList());
+            }
+            if (includeRelations) {
+                collection.addAll((Collection<?>) entity.relationList());
+            }
+        }
+        return collection;
+    }
+
+    public static String getCodeFromObject(NamedObj object,
+            NamedObj topContainer) {
+        String replacementAbbrev = getObjectTypeAbbreviation(object);
+        String name = topContainer == null ?
+                object.getName() : object.getName(topContainer);
+        return replacementAbbrev + name;
+    }
 
     public static CompositeActorMatcher getContainingPatternOrReplacement(
             NamedObj entity) {
@@ -102,6 +158,37 @@ public class GTTools {
             return null;
         }
         return new MoMLChangeRequest(originator, object.getContainer(), moml);
+    }
+
+    public static NamedObj getObjectFromCode(String code,
+            NamedObj topContainer) {
+        String abbreviation = code.substring(0, 2);
+        String name = code.substring(2);
+        if (abbreviation.equals("A:")) {
+            return topContainer.getAttribute(name);
+        } else if (abbreviation.equals("E:")) {
+            return ((CompositeEntity) topContainer).getEntity(name);
+        } else if (abbreviation.equals("P:")) {
+            return ((Entity) topContainer).getPort(name);
+        } else if (abbreviation.equals("R:")) {
+            return ((CompositeEntity) topContainer).getRelation(name);
+        } else {
+            return null;
+        }
+    }
+
+    public static String getObjectTypeAbbreviation(NamedObj object) {
+        if (object instanceof Attribute) {
+            return "A:";
+        } else if (object instanceof Entity) {
+            return "E:";
+        } else if (object instanceof Port) {
+            return "P:";
+        } else if (object instanceof Relation) {
+            return "R:";
+        } else {
+            return null;
+        }
     }
 
     public static PatternObjectAttribute getPatternObjectAttribute(

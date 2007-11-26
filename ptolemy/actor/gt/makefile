@@ -57,6 +57,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	ActorScopeExtender.java \
 	AtomicActorMatcher.java \
 	CompositeActorMatcher.java \
 	DefaultDirectoryAttribute.java \
@@ -76,6 +77,8 @@ JSRCS = \
 	MatchCallback.java \
 	ModelGenerator.java \
 	ModelView.java \
+	NamedObjToken.java \
+	NamedObjVariable.java \
 	ParameterAttribute.java \
 	Pattern.java \
 	PatternObjectAttribute.java \

@@ -37,7 +37,6 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Director;
-import ptolemy.actor.gt.data.CombinedCollection;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.data.TwoWayHashMap;
 import ptolemy.actor.gt.ingredients.operations.Operation;
@@ -320,7 +319,7 @@ public class GraphTransformer extends ChangeRequest {
 
         // Copy entities and relations.
         Collection<?> children =
-            _getChildren(replacement, false, false, true, true);
+            GTTools.getChildren(replacement, false, false, true, true);
         for (Object childObject : children) {
             NamedObj child = (NamedObj) childObject;
             NamedObj hostChild = _replacementToHost.get(child);
@@ -352,11 +351,12 @@ public class GraphTransformer extends ChangeRequest {
         if (attribute != null) {
             String replacementCode = attribute.getExpression();
             NamedObj replacement =
-                _getObjectFromCode(replacementCode, _replacement);
+                GTTools.getObjectFromCode(replacementCode, _replacement);
             _replacementToHost.put(replacement, host);
         }
 
-        Collection<?> children = _getChildren(host, false, true, true, true);
+        Collection<?> children =
+            GTTools.getChildren(host, false, true, true, true);
         for (Object childObject : children) {
             NamedObj child = (NamedObj) childObject;
             _addReplacementToHostEntries(child);
@@ -408,37 +408,6 @@ public class GraphTransformer extends ChangeRequest {
             num = 1;
         }
         return new double[] {x / num, y / num};
-    }
-
-    private Collection<?> _getChildren(NamedObj object,
-            boolean includeAttributes, boolean includePorts,
-            boolean includeEntities, boolean includeRelations) {
-        Collection<Object> collection = new CombinedCollection<Object>();
-        if (includeAttributes) {
-            collection.addAll((Collection<?>) object.attributeList());
-        }
-        if (includePorts && object instanceof Entity) {
-            Entity entity = (Entity) object;
-            collection.addAll((Collection<?>) entity.portList());
-        }
-        if (object instanceof CompositeEntity) {
-            CompositeEntity entity = (CompositeEntity) object;
-            if (includeEntities) {
-                collection.addAll((Collection<?>) entity.entityList());
-            }
-            if (includeRelations) {
-                collection.addAll((Collection<?>) entity.relationList());
-            }
-        }
-        return collection;
-    }
-
-    private static String _getCodeFromObject(NamedObj object,
-            NamedObj topContainer) {
-        String replacementAbbrev = _getTypeAbbreviation(object);
-        String name = topContainer == null ?
-                object.getName() : object.getName(topContainer);
-        return replacementAbbrev + name;
     }
 
     private String _getLinkMoML(NamedObj object, Relation relation) {
@@ -494,42 +463,11 @@ public class GraphTransformer extends ChangeRequest {
         return (NamedObj) objectList.get(lastIndex);
     }
 
-    private static NamedObj _getObjectFromCode(String code,
-            NamedObj topContainer) {
-        String abbreviation = code.substring(0, 2);
-        String name = code.substring(2);
-        if (abbreviation.equals("A:")) {
-            return topContainer.getAttribute(name);
-        } else if (abbreviation.equals("E:")) {
-            return ((CompositeEntity) topContainer).getEntity(name);
-        } else if (abbreviation.equals("P:")) {
-            return ((Entity) topContainer).getPort(name);
-        } else if (abbreviation.equals("R:")) {
-            return ((CompositeEntity) topContainer).getRelation(name);
-        } else {
-            return null;
-        }
-    }
-
     private ReplacementObjectAttribute _getReplacementObjectAttribute(
             NamedObj object) {
         Attribute attribute = object.getAttribute("replacementObject");
         if (attribute instanceof ReplacementObjectAttribute) {
             return (ReplacementObjectAttribute) attribute;
-        } else {
-            return null;
-        }
-    }
-
-    private static String _getTypeAbbreviation(NamedObj object) {
-        if (object instanceof Attribute) {
-            return "A:";
-        } else if (object instanceof Entity) {
-            return "E:";
-        } else if (object instanceof Port) {
-            return "P:";
-        } else if (object instanceof Relation) {
-            return "R:";
         } else {
             return null;
         }
@@ -543,7 +481,7 @@ public class GraphTransformer extends ChangeRequest {
         if (relationHiding) {
             // Remove dangling relations.
             Collection<?> relations =
-                _getChildren(host, false, false, false, true);
+                GTTools.getChildren(host, false, false, false, true);
             for (Object relationObject : relations) {
                 Relation relation = (Relation) relationObject;
                 List<?> linkedObjects = relation.linkedObjectsList();
@@ -557,7 +495,7 @@ public class GraphTransformer extends ChangeRequest {
             }
 
             // Combine relations if possible.
-            relations = _getChildren(host, false, false, false, true);
+            relations = GTTools.getChildren(host, false, false, false, true);
             for (Object relationObject : relations) {
                 Relation relation = (Relation) relationObject;
                 List<?> vertices = relation.attributeList(Vertex.class);
@@ -629,7 +567,7 @@ public class GraphTransformer extends ChangeRequest {
         }
 
         Collection<?> children =
-            _getChildren(replacement, false, false, true, true);
+            GTTools.getChildren(replacement, false, false, true, true);
         for (Object child : children) {
             _initPatternToReplacement((NamedObj) child);
         }
@@ -638,10 +576,10 @@ public class GraphTransformer extends ChangeRequest {
     private void _initReplacementObjectAttributes(NamedObj replacement)
     throws TransformationException {
         _setReplacementObjectAttribute(replacement,
-                _getCodeFromObject(replacement, _replacement));
+                GTTools.getCodeFromObject(replacement, _replacement));
 
         Collection<?> children =
-            _getChildren(replacement, false, true, true, true);
+            GTTools.getChildren(replacement, false, true, true, true);
         for (Object childObject : children) {
             NamedObj child = (NamedObj) childObject;
             _initReplacementObjectAttributes(child);
@@ -656,7 +594,7 @@ public class GraphTransformer extends ChangeRequest {
             if (host != null) {
                 _replacementToHost.put(replacement, host);
                 _setReplacementObjectAttribute(host,
-                        _getCodeFromObject(replacement, _replacement));
+                        GTTools.getCodeFromObject(replacement, _replacement));
             }
         }
     }
@@ -690,7 +628,7 @@ public class GraphTransformer extends ChangeRequest {
 
             // Record the object codes in a temporary map.
             Collection<?> preservedChildren =
-                _getChildren(entity, false, false, true, true);
+                GTTools.getChildren(entity, false, false, true, true);
 
             // Record the connections to the composite entity's ports.
             Map<Port, List<Object>> portLinks =
@@ -820,7 +758,7 @@ public class GraphTransformer extends ChangeRequest {
         CompositeEntity replacement =
             (CompositeEntity) _replacementToHost.getKey(host);
         Collection<?> children =
-            _getChildren(host, false, false, true, true);
+            GTTools.getChildren(host, false, false, true, true);
         Map<NamedObj, Boolean> childrenToRemove =
             new HashMap<NamedObj, Boolean>();
         Set<NamedObj> newChildren = new HashSet<NamedObj>();
@@ -874,7 +812,8 @@ public class GraphTransformer extends ChangeRequest {
             }
         }
 
-        Collection<?> children = _getChildren(object, false, true, true, true);
+        Collection<?> children =
+            GTTools.getChildren(object, false, true, true, true);
         for (Object childObject : children) {
             NamedObj child = (NamedObj) childObject;
             _removeReplacementObjectAttributes(child);
@@ -887,11 +826,12 @@ public class GraphTransformer extends ChangeRequest {
         if (attribute != null) {
             String replacementCode = attribute.getExpression();
             NamedObj replacement =
-                _getObjectFromCode(replacementCode, _replacement);
+                GTTools.getObjectFromCode(replacementCode, _replacement);
             _replacementToHost.remove(replacement);
         }
 
-        Collection<?> children = _getChildren(host, false, true, true, true);
+        Collection<?> children =
+            GTTools.getChildren(host, false, true, true, true);
         for (Object childObject : children) {
             NamedObj child = (NamedObj) childObject;
             _removeReplacementToHostEntries(child);
@@ -905,11 +845,12 @@ public class GraphTransformer extends ChangeRequest {
             _matchResult.put(pattern, newHost);
         }
 
-        Collection<?> children = _getChildren(newHost, false, true, true, true);
+        Collection<?> children =
+            GTTools.getChildren(newHost, false, true, true, true);
         for (Object childObject : children) {
             NamedObj child = (NamedObj) childObject;
-            String code = _getCodeFromObject(child, newHost);
-            NamedObj oldChild = _getObjectFromCode(code, oldHost);
+            String code = GTTools.getCodeFromObject(child, newHost);
+            NamedObj oldChild = GTTools.getObjectFromCode(code, oldHost);
             if (oldChild != null) {
                 _replaceMatchResultEntries(oldChild, child);
             }

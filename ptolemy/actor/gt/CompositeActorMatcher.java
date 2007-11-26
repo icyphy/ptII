@@ -62,6 +62,7 @@ implements GTEntity {
         patternObject.setExpression("");
 
         editorFactory = new GTIngredientsEditor.Factory(this, "editorFactory");
+        scopeExtender = new ActorScopeExtender(this, "scopeExtender");
     }
 
     public GTIngredientsAttribute getCriteriaAttribute() {
@@ -79,6 +80,8 @@ implements GTEntity {
     public void updateAppearance(GTIngredientsAttribute attribute) {
 
     }
+    
+    public ActorScopeExtender scopeExtender;
 
     public GTIngredientsAttribute criteria;
 
