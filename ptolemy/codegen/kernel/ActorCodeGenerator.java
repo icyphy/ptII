@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.kernel;
 
-import java.io.IOException;
 import java.util.Set;
 
 import ptolemy.kernel.util.IllegalActionException;

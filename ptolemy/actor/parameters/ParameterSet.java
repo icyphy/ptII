@@ -55,7 +55,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.util.FileUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParameterSet
