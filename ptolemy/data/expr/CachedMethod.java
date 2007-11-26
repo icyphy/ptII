@@ -314,6 +314,7 @@ public class CachedMethod {
      *   method invocation.
      *  @param type FUNCTION or METHOD.
      *  @return A cached method that is valid if a matching method was found.
+     *  @exception IllegalActionException If the method cannot be found.
      */
     public static CachedMethod findMethod(String methodName,
             Type[] argumentTypes, int type) throws IllegalActionException {
@@ -465,6 +466,8 @@ public class CachedMethod {
      *  necessary information.  It is provided for code, such as the
      *  code generator that need more than the usual amount of
      *  information about methods that have been found.
+     *  @return The type of the token that results from an invocation of
+     *  this method.   
      *  @exception IllegalActionException If a method or function with
      *  the correct argument types was not found.
      */
@@ -605,7 +608,8 @@ public class CachedMethod {
         return (_method != null);
     }
 
-    /** Return a verbose description of the cached method being invoked
+    /** Return a verbose description of the cached method being invoked.
+     *  @return A verbose description of the cached method being invoked.
      */
     public String methodDescription() {
         if (isValid()) {
@@ -759,10 +763,13 @@ public class CachedMethod {
 
     /** Return a conversion to convert the second argument into the class
      *  given by the first argument.
+     *  @param formal The class to which the type shall be converted.
+     *  @param actual The type to be converted.
      *  @return The best correct conversion, or IMPOSSIBLE_CONVERSION
      *  if no such conversion exists.
      */
-    protected static ArgumentConversion _getConversion(Class formal, Type actual) {
+    protected static ArgumentConversion _getConversion(Class formal,
+            Type actual) {
         // No conversion necessary.
         if (formal.isAssignableFrom(actual.getTokenClass())) {
             return IDENTITY_CONVERSION;
@@ -822,6 +829,9 @@ public class CachedMethod {
      *  @param conversions An array of the same length as <i>argumentTypes</i>
      *   that will be populated by this method with the conversions to
      *   use for the arguments.
+     *  @return the first method in the specified class that has the
+     *  specified name and can be invoked with the specified argument
+     *  types.
      */
     protected static Method _polymorphicGetMethod(Class library,
             String methodName, Type[] argumentTypes,
@@ -1103,13 +1113,20 @@ public class CachedMethod {
      *  conversions than higher preferences.
      */
     public static class ArgumentConversion {
+        /** Construct an argument conversino.
+         *  @param preference The preference of this conversion.
+         *  The preference is n index given an order to the preference of
+         *  conversions.  Lower preferences represent less desirable
+         *  conversions than higher preferences.
+         */
         private ArgumentConversion(int preference) {
             _preference = preference;
         }
 
         /** Return the preference of this conversion, relative to
-         * other conversions.  The higher the preference, the more
-         * preferable the conversion.
+         *  other conversions.  The higher the preference, the more
+         *  preferable the conversion.
+         *  @return The preference of this conversion.
          */
         public int getPreference() {
             return _preference;
@@ -1119,6 +1136,9 @@ public class CachedMethod {
          *  invoke a method through the reflection mechanism.  Derived
          *  classes will override this method to provide different
          *  types of argument conversions.
+         *  @param input The token to be converted
+         *  @exception IllegalActionException Always thrown in this
+         *  base class.   
          */
         public Object convert(ptolemy.data.Token input)
                 throws IllegalActionException {
@@ -1127,26 +1147,34 @@ public class CachedMethod {
         }
 
         /** Return true if this conversion is preferable to the given
-         * conversion.
+         *  conversion.
+         *  @param conversion The conversion to be tested.
+         *  @return True if this conversion is prefereable to the given
+         *  conversion.
          */
         public boolean isPreferableTo(ArgumentConversion conversion) {
             return _preference > conversion.getPreference();
         }
 
         /** Return a string representation of this conversion.
+         *  @return A string representation of this conversion.
          */
         public String toString() {
             return "Conversion " + _preference;
         }
 
+        /**  The preference is n index given an order to the
+         *  preference of conversions.  Lower preferences represent
+         *  less desirable conversions than higher preferences.
+         */    
         protected int _preference;
     }
 
     ///////////////////////////////////////////////////////////////////
     //// TypeArgumentConversion
 
-    /** Class representing an argument conversion to another ptolemy type,
-     *  Followed by the given conversion.
+    /** A class representing an argument conversion to another ptolemy type,
+     *  followed by the given conversion.
      *  This conversion always has preference two.
      */
     public static class TypeArgumentConversion extends ArgumentConversion {
@@ -1220,8 +1248,10 @@ public class CachedMethod {
             _baseConversion = baseConversion;
         }
 
-        /** Return the conversion that is applied to the object
-         *  the method is invoked on.
+        /** Return the conversion that is applied to the object 
+         *  upon which the method is invoked.
+         *  @return The conversion that is applied to the object 
+         *  upon which the method is invoked.
          */
         public ArgumentConversion getBaseConversion() {
             return _baseConversion;
@@ -1244,6 +1274,21 @@ public class CachedMethod {
      *  an array of elements.
      */
     public static class ArrayMapCachedMethod extends CachedMethod {
+        /**
+         * Constructs a CachedMethod$ArrayMapCachedMethod object.
+         *
+         * @param methodName The name of the method.
+         * @param argumentTypes The types of the arguments.
+         * @param type An integer specifying the type
+         * @param cachedMethod The method to be invoked
+         * @param reducedArgs    An array of booleans where if an
+         * element of the array is true and the corresponding argument
+         * is an ArrayToken, then invoke() handles those arguments
+         * specially.  
+         * @exception IllegalActionException Not thrown in this derived
+         * class, but the superclass throws it if the return type of
+         * the cached method cannot be determined.  
+         */
         public ArrayMapCachedMethod(String methodName, Type[] argumentTypes,
                 int type, CachedMethod cachedMethod, boolean[] reducedArgs)
                 throws IllegalActionException {
@@ -1257,7 +1302,9 @@ public class CachedMethod {
          *  into other arguments, and to convert the result back into
          *  a token.
          *  @param argValues An array of token objects that will be used
-         *   as the arguments.
+         *   as the arguments.  Note that each element must be an
+         *   ArrayToken and each ArrayToken must have the same length
+         *   as the other ArrayTokens.   
          *  @return The token result of the method invocation.
          *  @exception IllegalActionException If the invoked method
          *   throws it.
@@ -1329,6 +1376,7 @@ public class CachedMethod {
         }
 
         /** Return an appropriate description of the method being invoked.
+         *  @return A description of the method being invoked.
          */
         public String methodDescription() {
             return "ArrayMapped{" + _cachedMethod.methodDescription() + "}";
@@ -1346,6 +1394,21 @@ public class CachedMethod {
      *  a matrix of elements.
      */
     public static class MatrixMapCachedMethod extends CachedMethod {
+        /**
+         * Constructs a CachedMethod$MatrixMapCachedMethod object.
+         *
+         * @param methodName The name of the method.
+         * @param argumentTypes The types of the arguments.
+         * @param type An integer specifying the type
+         * @param cachedMethod The method to be invoked
+         * @param reducedArgs    An array of booleans where if an
+         * element of the array is true and the corresponding argument
+         * is an MatrixToken, then invoke() handles those arguments
+         * specially.  
+         * @exception IllegalActionException Not thrown in this derived
+         * class, but the superclass throws it if the return type of
+         * the cached method cannot be determined.  
+         */
         public MatrixMapCachedMethod(String methodName, Type[] argumentTypes,
                 int type, CachedMethod cachedMethod, boolean[] reducedArgs)
                 throws IllegalActionException {
@@ -1437,6 +1500,7 @@ public class CachedMethod {
         }
 
         /** Return an appropriate description of the method being invoked.
+         *  @return A description of the method being invoked.
          */
         public String methodDescription() {
             return "MatrixMapped{" + _cachedMethod.methodDescription() + "}";
