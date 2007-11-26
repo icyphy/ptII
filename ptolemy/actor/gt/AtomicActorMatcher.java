@@ -88,6 +88,11 @@ ValueListener {
         _attachText("_iconDescription", _ICON_DESCRIPTION);
     }
 
+    public NamedObj get(String name) {
+        // TODO
+        return null;
+    }
+
     public GTIngredientsAttribute getCriteriaAttribute() {
         return criteria;
     }
@@ -98,6 +103,11 @@ ValueListener {
 
     public PatternObjectAttribute getPatternObjectAttribute() {
         return patternObject;
+    }
+
+    public Set<String> labelSet() {
+        // TODO
+        return null;
     }
 
     public void updateAppearance(GTIngredientsAttribute attribute) {

@@ -26,10 +26,13 @@
  */
 package ptolemy.actor.gt;
 
+import java.util.Set;
+
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.gt.GTIngredientsEditor;
 
 //////////////////////////////////////////////////////////////////////////
@@ -65,6 +68,11 @@ implements GTEntity {
         scopeExtender = new ActorScopeExtender(this, "scopeExtender");
     }
 
+    public NamedObj get(String name) {
+        // TODO
+        return null;
+    }
+
     public GTIngredientsAttribute getCriteriaAttribute() {
         return criteria;
     }
@@ -77,11 +85,14 @@ implements GTEntity {
         return patternObject;
     }
 
+    public Set<String> labelSet() {
+        // TODO
+        return null;
+    }
+
     public void updateAppearance(GTIngredientsAttribute attribute) {
 
     }
-    
-    public ActorScopeExtender scopeExtender;
 
     public GTIngredientsAttribute criteria;
 
@@ -90,5 +101,7 @@ implements GTEntity {
     public GTIngredientsAttribute operations;
 
     public PatternObjectAttribute patternObject;
+
+    public ActorScopeExtender scopeExtender;
 
 }
