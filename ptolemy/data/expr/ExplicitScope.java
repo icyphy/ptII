@@ -51,6 +51,7 @@ import ptolemy.kernel.util.NamedList;
 public class ExplicitScope implements ParserScope {
     /** Construct a new scope that includes the objects in the given
      *  list, which must contain only variables.
+     *  @param list The list of variables for the scope.
      */
     public ExplicitScope(NamedList list) {
         _list = list;
@@ -58,6 +59,7 @@ public class ExplicitScope implements ParserScope {
 
     /** Look up and return the value with the specified name in the
      *  scope. Return null if the name is not defined in this scope.
+     *  @param name The name of the variable to be looked up.
      *  @return The token associated with the given name in the scope.
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
@@ -75,6 +77,7 @@ public class ExplicitScope implements ParserScope {
     /** Look up and return the type of the value with the specified
      *  name in the scope. Return null if the name is not defined in
      *  this scope.
+     *  @param name The name of the variable to be looked up.
      *  @return The token associated with the given name in the scope.
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
@@ -93,6 +96,7 @@ public class ExplicitScope implements ParserScope {
     /** Look up and return the type term for the specified name
      *  in the scope. Return null if the name is not defined in this
      *  scope, or is a constant type.
+     *  @param name The name of the variable to be looked up.
      *  @return The InequalityTerm associated with the given name in
      *  the scope.
      *  @exception IllegalActionException If a value in the scope
@@ -125,6 +129,7 @@ public class ExplicitScope implements ParserScope {
     }
 
     /** Return the list of variables in this scope.
+     *  @return The list of variables in this scope.
      */
     public NamedList variableList() {
         return _list;

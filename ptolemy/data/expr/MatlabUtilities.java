@@ -75,11 +75,18 @@ public class MatlabUtilities {
      *  expression is being executed (like {@link
      *  ptolemy.matlab.Expression}).
      *  @param expression The Matlab expression to be evaluated
+     *  @param variableNames The Matlab variables required for evaluating
+     *  the expression.   Each elemement of the Set names a Token that
+     *  is found in the scope.   
      *  @param scope The scope to evaluate the expression within.
      *  @return The results of the evaluation
+     *  @exception IllegalActionException If there is a problem initializing
+     *  the Matlab interface, invoking the Matlab engine or accessing a
+     *  a Token.
      */
     public static ptolemy.data.Token evaluate(String expression,
-            Set variableNames, ParserScope scope) throws IllegalActionException {
+            Set variableNames, ParserScope scope)
+            throws IllegalActionException {
         try {
             if (_engineClass == null) {
                 _initialize();

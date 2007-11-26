@@ -54,6 +54,11 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public class ExpressionFunction implements Function {
+    /** Construct a function closure that encapsulates an expression tree.
+     *  @param argumentNames The names of the arguments.
+     *  @param argumentTypes The types of the arguments.
+     *  @param exprRoot The Expression tree that describes the function.
+     */
     public ExpressionFunction(List argumentNames, Type[] argumentTypes,
             ASTPtRootNode exprRoot) {
         _argumentNames = new ArrayList(argumentNames);
@@ -109,6 +114,7 @@ public class ExpressionFunction implements Function {
      *  function need only be congruent to other functions of the
      *  same class.
      *  @param function The function to check congruency against.
+     *  @return True if this function is congruent.
      */
     public boolean isCongruent(Function function) {
         return toString().compareTo(function.toString()) == 0;
