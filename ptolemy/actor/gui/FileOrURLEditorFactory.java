@@ -141,7 +141,7 @@ public class FileOrURLEditorFactory extends EditorFactory {
                         //                                            + effigy.isModifiable() + " " + effigy);
 
                     } else {
-                        URL fileURL = fileOrURLParameter.asFile().toURL();
+                        URL fileURL = fileOrURLParameter.asFile().toURI().toURL();
                         configuration.openModel(null, fileURL, fileURL
                                 .toExternalForm());
                     }
@@ -156,7 +156,7 @@ public class FileOrURLEditorFactory extends EditorFactory {
         if (button.equals(_moreButtons[2])) {
             try {
                 if (helpFileParameter != null) {
-                    URL fileURL = helpFileParameter.asFile().toURL();
+                    URL fileURL = helpFileParameter.asFile().toURI().toURL();
                     configuration.openModel(null, fileURL, fileURL
                             .toExternalForm());
                 } else {

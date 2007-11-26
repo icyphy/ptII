@@ -254,7 +254,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                 // We don't call parseFile() here because it calls gets
                 // the user.dir property.
                 toplevel = (CompositeActor) parser.parse(null, new File(
-                        _generatorAttributeFileName).toURL());
+                        _generatorAttributeFileName).toURI().toURL());
             } finally {
                 // Restore the saved momlfilters
                 MoMLParser.setMoMLFilters(oldFilters);

@@ -146,7 +146,7 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
                     // not permit this, regrettably.  So we have a separate
                     // menu item for this.
                     File file = fileDialog.getSelectedFile().getCanonicalFile();
-                    URL url = file.toURL();
+                    URL url = file.toURI().toURL();
 
                     // NOTE: Used to use for the first argument the following,
                     // but it seems to not work for relative file references:

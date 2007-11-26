@@ -149,7 +149,7 @@ public class UtilityFunctions {
         File file = new File(fileName);
 
         try {
-            URL url = file.toURL();
+            URL url = file.toURI().toURL();
             return url.toString();
         } catch (java.net.MalformedURLException malformed) {
             throw new RuntimeException("could not convert '" + file

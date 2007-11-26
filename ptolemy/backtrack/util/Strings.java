@@ -125,7 +125,7 @@ public class Strings {
         for (int i = 0; i < strings.length; i++) {
             // Throw a MalformedURLException so that we avoid
             // having a dependency on eclipse.backtrack.ast.
-            urls[i] = new File(strings[i]).toURL();
+            urls[i] = new File(strings[i]).toURI().toURL();
         }
 
         return urls;

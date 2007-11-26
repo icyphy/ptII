@@ -683,7 +683,7 @@ public abstract class Top extends JFrame {
                 File file = fileDialog.getSelectedFile().getCanonicalFile();
                 // Report on the time it takes to open the model.
                 long startTime = System.currentTimeMillis();
-                _read(file.toURL());
+                _read(file.toURI().toURL());
                 long endTime = System.currentTimeMillis();
                 if (endTime > startTime + 10000) {
                     // Only print the time if it is more than 10 seconds

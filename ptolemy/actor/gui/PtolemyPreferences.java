@@ -312,7 +312,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
             URL fileURL;
 
             try {
-                fileURL = JNLPUtilities.canonicalizeJarURL(file.toURL());
+                fileURL = JNLPUtilities.canonicalizeJarURL(file.toURI().toURL());
             } catch (MalformedURLException ex) {
                 // This should not occur.
                 System.err.println("Malformed preferences URL: " + ex);

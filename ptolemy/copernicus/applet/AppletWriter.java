@@ -307,7 +307,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             URL modelPathURL = new URL(_modelPath);
 
-            if (!modelPathURL.sameFile(newModelFile.getCanonicalFile().toURL())) {
+            if (!modelPathURL.sameFile(newModelFile.getCanonicalFile().toURI().toURL())) {
                 // Here, _modelPath probably has the GeneratorAttribute
                 // in it, which is not what we want because when we load
                 // the applet, the copernicus class files will not be present.

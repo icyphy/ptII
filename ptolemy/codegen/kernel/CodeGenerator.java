@@ -670,7 +670,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 URL modelURL;
 
                 try {
-                    modelURL = new File(args[i]).toURL();
+                    modelURL = new File(args[i]).toURI().toURL();
                 } catch (Exception ex) {
                     throw new Exception("Could not open \"" + args[i] + "\"", ex);
                 }

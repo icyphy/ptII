@@ -577,7 +577,7 @@ public class TableauFrame extends Top {
      */
     protected boolean _confirmFile(Entity model, File file)
             throws MalformedURLException {
-        URL newURL = file.toURL();
+        URL newURL = file.toURI().toURL();
         String newKey = newURL.toExternalForm();
         Effigy previousOpen = getDirectory().getEffigy(newKey);
 
@@ -931,7 +931,7 @@ public class TableauFrame extends Top {
                     return false;
                 }
 
-                URL newURL = file.toURL();
+                URL newURL = file.toURI().toURL();
                 String newKey = newURL.toExternalForm();
 
                 _directory = fileDialog.getCurrentDirectory();

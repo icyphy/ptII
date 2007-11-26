@@ -497,7 +497,7 @@ public class MoMLApplication implements ExecutionListener {
                      throw exception;
                  }
 
-                 specURL = absoluteFile.getCanonicalFile().toURL();
+                 specURL = absoluteFile.getCanonicalFile().toURI().toURL();
 
                  //InputStream urlStream = specURL.openStream();
                  //urlStream.close();
@@ -868,7 +868,7 @@ public class MoMLApplication implements ExecutionListener {
                             inURL = new URL(new URL("file://./"), arg);
                         } catch (Exception ex2) {
                             File inFile = new File(arg);
-                            inURL = inFile.toURL();
+                            inURL = inFile.toURI().toURL();
                         }
                     }
 

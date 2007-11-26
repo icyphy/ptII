@@ -1130,7 +1130,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // security exception in applets.
                 String cwd = StringUtilities.getProperty("user.dir");
                 try {
-                    base = new File(cwd).toURL();
+                    base = new File(cwd).toURI().toURL();
                     result = new URL(base, source);
                     input = result.openStream();
                 } catch (Throwable throwable) {
@@ -1428,7 +1428,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Use the current working directory as a base.
         String cwd = StringUtilities.getProperty("user.dir");
 
-        URL base = new File(cwd).toURL();
+        URL base = new File(cwd).toURI().toURL();
 
         return parse(base, new StringReader(text));
     }
@@ -1479,12 +1479,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Use the current working directory as a base.
         String cwd = StringUtilities.getProperty("user.dir");
 
-        URL base = new File(cwd).toURL();
+        URL base = new File(cwd).toURI().toURL();
 
         // Java's I/O is so lame that it can't find files in the current
         // working directory...
         File file = new File(new File(cwd), filename);
-        return parse(base, file.toURL());
+        return parse(base, file.toURI().toURL());
     }
 
     /** Handle a processing instruction.  Processing instructions
@@ -1571,7 +1571,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Java's I/O is so lame that it can't find files in the current
         // working directory...
         File file = new File(new File(cwd), filename);
-        purgeModelRecord(file.toURL());
+        purgeModelRecord(file.toURI().toURL());
     }
 
     /** Reset the MoML parser, forgetting about any previously parsed

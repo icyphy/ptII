@@ -175,7 +175,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             File file = new File(_configDir + "/" + _DISCOVERED_ACTORS);
 
             if (file.exists()) {
-                _cachedLib = (CompositeEntity) parser.parse(null, file.toURL());
+                _cachedLib = (CompositeEntity) parser.parse(null, file.toURI().toURL());
                 _cachedLib.addChangeListener(this);
                 System.out.println("create a compositeActor entity "
                         + "from discoveredActors.xml");

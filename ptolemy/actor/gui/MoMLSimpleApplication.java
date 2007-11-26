@@ -99,7 +99,7 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
         CompositeActor toplevel = (CompositeActor) parser.parse(null, new File(
-                xmlFileName).toURL());
+                xmlFileName).toURI().toURL());
 
         _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
         toplevel.setManager(_manager);

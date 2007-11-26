@@ -657,7 +657,7 @@ public class HTMLAbout {
                             if (model.startsWith("file:/")) {
                                 model = model.substring("file:/".length());
                             }
-                            modelURL = new File(model).toURL();
+                            modelURL = new File(model).toURI().toURL();
                         }
                         boolean sawModel = modelList.contains(model);
                         if (!sawModel) {
@@ -725,7 +725,7 @@ public class HTMLAbout {
             }
         }
 
-        return temporaryFile.toURL();
+        return temporaryFile.toURI().toURL();
     }
 
     ///////////////////////////////////////////////////////////////////

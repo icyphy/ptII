@@ -167,7 +167,7 @@ public class GiottoCodeGeneratorUtilities {
             // has problems finding resources like files specified in
             // parameters if the xml file was specified as an absolute path.
             TypedCompositeActor toplevel = (TypedCompositeActor) parser.parse(
-                    null, new File(args[0]).toURL());
+                    null, new File(args[0]).toURI().toURL());
 
             System.out.println(generateGiottoCode(toplevel));
         } catch (Throwable ex) {

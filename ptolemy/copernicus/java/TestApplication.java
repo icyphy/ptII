@@ -102,7 +102,7 @@ public class TestApplication implements ChangeListener {
             toplevel = (CompositeActor) parser.parse(url, url.openStream());
         } catch (Exception ex) {
             File f = new File(xmlFilename);
-            URL url = f.toURL();
+            URL url = f.toURI().toURL();
             System.err.println("Warning: Parsing '" + xmlFilename
                     + "' failed: ");
             ex.printStackTrace();

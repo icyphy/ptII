@@ -88,7 +88,7 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
         // has problems finding resources like files specified in
         // parameters if the xml file was specified as an absolute path.
         toplevel = (CompositeActor) parser.parse(null, new File(xmlFilename)
-                .toURL());
+                .toURI().toURL());
 
         _manager = new Manager(toplevel.workspace(), "MoMLSimpleApplication");
         toplevel.setManager(_manager);

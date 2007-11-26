@@ -78,7 +78,7 @@ public class FileUtilities {
      */
     public static boolean binaryCopyURLToFile(URL sourceURL,
             File destinationFile) throws IOException {
-        URL destinationURL = destinationFile.getCanonicalFile().toURL();
+        URL destinationURL = destinationFile.getCanonicalFile().toURI().toURL();
 
         if (sourceURL.sameFile(destinationURL)) {
             return false;
@@ -93,7 +93,7 @@ public class FileUtilities {
         if ((sourceFile.getPath().indexOf("!/") == -1)
                 && (sourceFile.getPath().indexOf("!\\") == -1)) {
             try {
-                if (sourceFile.getCanonicalFile().toURL().sameFile(
+                if (sourceFile.getCanonicalFile().toURI().toURL().sameFile(
                         destinationURL)) {
                     return false;
                 }
@@ -333,7 +333,7 @@ public class FileUtilities {
                 }
             }
 
-            return file.toURL();
+            return file.toURI().toURL();
         } else {
             // Try relative to the base directory.
             if (baseDirectory != null) {

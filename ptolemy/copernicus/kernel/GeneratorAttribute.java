@@ -352,7 +352,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
         String ptIIUserDirectoryAsURL;
 
         try {
-            ptIIUserDirectoryAsURL = (new File(ptIIUserDirectory)).toURL()
+            ptIIUserDirectoryAsURL = (new File(ptIIUserDirectory)).toURI().toURL()
                     .toString();
         } catch (java.net.MalformedURLException ex) {
             ptIIUserDirectoryAsURL = ex.getMessage();

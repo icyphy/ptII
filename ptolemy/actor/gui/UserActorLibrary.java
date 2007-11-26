@@ -206,7 +206,7 @@ public class UserActorLibrary {
         }
 
         // If we have a jar URL, convert spaces to %20
-        URL fileURL = JNLPUtilities.canonicalizeJarURL(file.toURL());
+        URL fileURL = JNLPUtilities.canonicalizeJarURL(file.toURI().toURL());
 
         String identifier = fileURL.toExternalForm();
 
@@ -346,7 +346,7 @@ public class UserActorLibrary {
             final ModelDirectory directory, Configuration configuration,
             File file, final CompositeEntity libraryContainer,
             final PtolemyEffigy finalLibraryEffigy) throws Exception {
-        ChangeRequest request = new ChangeRequest(configuration, file.toURL()
+        ChangeRequest request = new ChangeRequest(configuration, file.toURI().toURL()
                 .toString()) {
             protected void _execute() throws Exception {
                 // The library is a class!

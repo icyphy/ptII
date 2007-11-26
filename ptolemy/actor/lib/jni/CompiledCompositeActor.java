@@ -308,7 +308,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     Class jniClass = null;
                     URL url = null;
                     try {
-                        url = codeDirectory.asFile().toURL();
+                        url = codeDirectory.asFile().toURI().toURL();
                         URL[] urls = new URL[] { url };
 
                         ClassLoader classLoader = new URLClassLoader(urls);

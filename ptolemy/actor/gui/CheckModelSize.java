@@ -141,7 +141,7 @@ public class CheckModelSize {
             try {
                 NamedObj top = null;
                 try {
-                    top = parser.parse(null, new File(fileName).toURL());
+                    top = parser.parse(null, new File(fileName).toURI().toURL());
                 } catch (Exception ex) {
                     try {
                         top = parser.parse(null, new URL(fileName));
@@ -178,7 +178,7 @@ public class CheckModelSize {
                 analysis.append(" can't be parsed because ");
                 analysis.append(KernelException.stackTraceToString(throwable));
             }
-            String fileURL = new File(fileName).toURL().toString();
+            String fileURL = new File(fileName).toURI().toURL().toString();
             results.append("<tr>\n  <td><a href=\"" + fileURL + "\">" + fileURL
                     + "</a></td>\n  <td>" + analysis + "</td>\n");
 
