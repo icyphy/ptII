@@ -443,7 +443,7 @@ public PtalonRecognizer(ParserSharedInputState state) {
 				
 						if (addChild) {
 							if (dynamic_name) {
-								parameter_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(2)).add(p_AST).add((PtalonAST)astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(DYNAMIC_NAME,"dynamic")).add(c_AST).add(n_AST))));
+								parameter_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(2)).add(p_AST).add(astFactory.make( (new ASTArray(3)).add((PtalonAST)astFactory.create(DYNAMIC_NAME,"dynamic")).add(c_AST).add(n_AST))));
 							} else {
 								parameter_declaration_AST = (PtalonAST)astFactory.make( (new ASTArray(2)).add(p_AST).add(c_AST));
 							}
