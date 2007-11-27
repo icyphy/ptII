@@ -1506,6 +1506,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
     }
 
+
+    /** Purge all records of models opened. This is here
+     *  for testing only.
+     */
+    public static void purgeAllModelRecords() {
+        _imports = null;
+    }
+    
     /** Purge any record of a model opened from the specified
      *  URL.  The record will not be purged if the model is
      *  a class definition that has child instances.
