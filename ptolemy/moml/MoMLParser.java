@@ -1217,6 +1217,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *   null if the file is not recognized as a MoML file.
      *  @exception Exception If the parser fails.
      *  @see #purgeModelRecord(URL)
+     *  @see #purgeAllModelRecords()
      */
     public NamedObj parse(URL base, URL input) throws Exception {
         _xmlFile = input;
@@ -1474,6 +1475,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @exception SecurityException If the user.dir system property is
      *  not available.
      *  @see #purgeModelRecord(String)
+     *  @see #purgeAllModelRecords()
      */
     public NamedObj parseFile(String filename) throws Exception {
         // Use the current working directory as a base.
@@ -1509,6 +1511,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     /** Purge all records of models opened. This is here
      *  for testing only.
+     *  @see #purgeModelRecord(URL)
      */
     public static void purgeAllModelRecords() {
         _imports = null;
@@ -1521,6 +1524,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  that the _toplevel is reset on any parser.
      *  @param url The URL.
      *  @see #parse(URL, URL)
+     *  @see #purgeAllModelRecords()
      */
     public static void purgeModelRecord(URL url) {
         if ((_imports != null) && (url != null)) {
@@ -1570,6 +1574,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @exception SecurityException If the user.dir system property is
      *   not available.
      *  @see #parse(URL, String)
+     *  @see #purgeAllModelRecords()
      */
     public static void purgeModelRecord(String filename)
             throws MalformedURLException {
@@ -1585,6 +1590,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     /** Reset the MoML parser, forgetting about any previously parsed
      *  models.
      *  @see #purgeModelRecord(String)
+     *  @see #purgeAllModelRecords()
      */
     public void reset() {
         _attributes = new HashMap();
