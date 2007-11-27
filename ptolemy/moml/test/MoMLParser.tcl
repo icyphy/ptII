@@ -774,6 +774,8 @@ set moml "$header $body"
 
 test MoMLParser-1.12.3 {test class instances with no override} {
     $parser reset
+    # FIXME: Why doesn't reset call this?
+    $parser purgeAllModelRecords
     set toplevel [java::cast ptolemy.kernel.CompositeEntity \
             [$parser parse $moml]]
     set b [$toplevel getEntity b]
