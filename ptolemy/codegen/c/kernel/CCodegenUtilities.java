@@ -40,8 +40,8 @@ A utility class used to simplify creating c templates in EmbeddedCActors.
 @Pt.AcceptedRating
 */
 public class CCodegenUtilities {
-    
-    /** Returns a code block to define a constant.
+
+    /** Return a code block to define a constant.
      *  @param constant The name of the constant.
      *  @param value The value of the constant.
      *  @return A block of codegen code to define a constant.
@@ -52,8 +52,8 @@ public class CCodegenUtilities {
                 + "#endif\n";
         return code;
     }
-    
-    /** Returns a code block to include a file.
+
+    /** Return a code block to include a file.
      *  @param file The name of the file.
      *  @param constant The name of the constant to check to see if the file
      *          has already been included.
@@ -66,29 +66,39 @@ public class CCodegenUtilities {
                 + "#endif\n";
         return code;
     }
-    
-    public static String jniGetObjectArrayElement(String arrayName,
-            String index, boolean targetCpp) {
+
+    /** Return a code block to delete a jni local reference.
+     * @param reference The reference to delete.
+     * @param targetCpp Boolean indicating whether the target language is C or C++.
+     * @return A string containing code to delete a jni local reference.
+     */
+    public static String jniDeleteLocalRef(String reference, boolean targetCpp) {
         if (targetCpp) {
-            return "env->GetObjectArrayElement("
-                    + arrayName + ", " + index + ")";
+            return "env->DeleteLocalRef(" + reference + ")";
         } else {
-            return "(*env)->GetObjectArrayElement(env, "
-                    + arrayName + ", " + index + ")";
+            return "(*env)->DeleteLocalRef(env, " + reference + ")";
         }
     }
-    
-    public static String jniSetObjectArrayElement(String arrayName,
-            String index, String value, boolean targetCpp) {
+
+    /** Return a code block to find a jni class.
+     * @param className The name of the class to find.
+     * @param targetCpp Boolean indicating whether the target language is C or C++.
+     * @return A string containing code to find a jni class.
+     */
+    public static String jniFindClass(String className, boolean targetCpp) {
         if (targetCpp) {
-            return "env->SetObjectArrayElement(" + arrayName
-            + ", " + index + ", " + value + ")";
+            return "env->FindClass(\"" + className + "\")";
         } else {
-            return "(*env)->SetObjectArrayElement(env, " + arrayName
-            + ", " + index + ", " + value + ")";
+            return "(*env)->FindClass(env, \"" + className + "\")";
         }
     }
-    
+
+    /** Return a code block to get the elements of a jni array.
+     * @param type The type, with a capital first letter, of the array elements.
+     * @param arrayName The name of the jni array.
+     * @param targetCpp Boolean indicating whether the target language is C or C++.
+     * @return A string containing code to get elements from a jni array.
+     */
     public static String jniGetArrayElements(String type, 
             String arrayName, boolean targetCpp) {
         if (targetCpp) {
@@ -100,7 +110,60 @@ public class CCodegenUtilities {
                 + arrayName + ", NULL)";
         }
     }
-    
+
+    /** Return a code block to get an element from a jni array.
+     * @param arrayName The name of the jni array.
+     * @param index The index in the jni array to find the element.
+     * @param targetCpp Boolean indicating whether the target language is C or C++.
+     * @return A string containing code to get an element from a jni array.
+     */
+    public static String jniGetObjectArrayElement(String arrayName,
+            String index, boolean targetCpp) {
+        if (targetCpp) {
+            return "env->GetObjectArrayElement("
+                    + arrayName + ", " + index + ")";
+        } else {
+            return "(*env)->GetObjectArrayElement(env, "
+                    + arrayName + ", " + index + ")";
+        }
+    }
+
+    /** Return a code block to create a new jni array.
+     * @param type The type of the array.
+     * @param size The number of elements of the array.
+     * @param targetCpp Boolean indicating whether the target language is C or C++.
+     * @return A string containing code to create a new jni element.
+     */
+    public static String jniNewArray(String type, String size, boolean targetCpp) {
+        if (targetCpp) {
+            return "env->New" + type + "Array(" + size + ")";
+        } else {
+            return "(*env)->New" + type + "Array(env, " + size + ")";
+        }
+    }
+
+    /** Return a code block to create a new jni object array.
+     * @param size The number of elements of the array.
+     * @param objectType The type of object in the array.
+     * @param targetCpp Boolean indicating whether the target language is C or C++.
+     * @return A string containing code to create a new jni object array.
+     */
+    public static String jniNewObjectArray(String size, String objectType,
+            boolean targetCpp) {
+        if (targetCpp) {
+            return "env->NewObjectArray(" + size + ", " + objectType + ", NULL)";
+        } else {
+            return "(*env)->NewObjectArray(env, " + size + ", " + objectType + ", NULL)";
+        }
+    }
+
+    /** Return a code block to release elements from a jni array.
+     * @param type The type of object in the array.
+     * @param arrayName The name of the array.
+     * @param elementsPointer The pointer to the element to remove.
+     * @param targetCpp Boolean indicating whether the target language is C or C++.
+     * @return A string containing code to release elements from a jni array.
+     */
     public static String jniReleaseArrayElements(String type, 
             String arrayName, String elementsPointer, boolean targetCpp) {
         if (targetCpp) {
@@ -112,32 +175,16 @@ public class CCodegenUtilities {
             + arrayName + ", " + elementsPointer + ", 0)";
         }
     }
-    
-    public static String jniFindClass(String className, boolean targetCpp) {
-        if (targetCpp) {
-            return "env->FindClass(\"" + className + "\")";
-        } else {
-            return "(*env)->FindClass(env, \"" + className + "\")";
-        }
-    }
-    
-    public static String jniNewObjectArray(String size, String objectType,
-            boolean targetCpp) {
-        if (targetCpp) {
-            return "env->NewObjectArray(" + size + ", " + objectType + ", NULL)";
-        } else {
-            return "(*env)->NewObjectArray(env, " + size + ", " + objectType + ", NULL)";
-        }
-    }
-    
-    public static String jniNewArray(String type, String size, boolean targetCpp) {
-        if (targetCpp) {
-            return "env->New" + type + "Array(" + size + ")";
-        } else {
-            return "(*env)->New" + type + "Array(env, " + size + ")";
-        }
-    }
-    
+
+    /** Return a code block to set elements in a jniarray.
+     * @param type The type of the array.
+     * @param arrayName The name of the array.
+     * @param index The index of the first element to set.
+     * @param length The number of elements to set.
+     * @param valuePointer The value to set the elements.
+     * @param targetCpp Boolean indicating whether the target language is C or C++.
+     * @return A string containing code to set selements in a jni array.
+     */
     public static String jniSetArrayRegion(String type, String arrayName,
             String index, String length, String valuePointer, boolean targetCpp) {
         if (targetCpp) {
@@ -148,12 +195,22 @@ public class CCodegenUtilities {
             + index + ", " + length + ", " + valuePointer + ")";
         }
     }
-    
-    public static String jniDeleteLocalRef(String reference, boolean targetCpp) {
+
+    /** Return a code block to set an element in a jni object array.
+     * @param arrayName The name of the object array.
+     * @param index The index of the element to set.
+     * @param value The value to set the element.
+     * @param targetCpp Boolean indicating whether the target language is C or C++.
+     * @return A string containing code to set an element in a jni object array.
+     */
+    public static String jniSetObjectArrayElement(String arrayName,
+            String index, String value, boolean targetCpp) {
         if (targetCpp) {
-            return "env->DeleteLocalRef(" + reference + ")";
+            return "env->SetObjectArrayElement(" + arrayName
+            + ", " + index + ", " + value + ")";
         } else {
-            return "(*env)->DeleteLocalRef(env, " + reference + ")";
+            return "(*env)->SetObjectArrayElement(env, " + arrayName
+            + ", " + index + ", " + value + ")";
         }
     }
 }
