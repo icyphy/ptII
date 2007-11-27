@@ -942,8 +942,11 @@ String tidied, x;
             {
                 x = token.image.toLowerCase();
                 len = x.length();
-                if ( x.endsWith("d") || x.endsWith("f")
-                        || x.endsWith("p") ) {   
+                if (x.endsWith("f")) {
+                    Float value = new Float(x.substring(0, len - 1));
+                    jjtThis._ptToken = new FloatToken(value
+                            .floatValue());
+                } else if (x.endsWith("d") || x.endsWith("p")) {                        
                     // all floating point numbers are double
                     Double value = new Double(x.substring(0, len-1 ));
                     if (x.endsWith("p")) {   
@@ -976,12 +979,15 @@ String tidied, x;
 
                 int radix;
                 boolean mustBeLong = x.endsWith("l");
+                boolean mustBeShort = x.endsWith("s");
                 boolean mustBeUnsignedByte = x.endsWith("ub");
 
                 int prefixLength;
                 int suffixLength;
 
                 if(mustBeLong) {
+                    suffixLength = 1;
+                } else if (mustBeShort) {
                     suffixLength = 1;
                 } else if(mustBeUnsignedByte) {
                     suffixLength = 2;
@@ -1009,6 +1015,10 @@ String tidied, x;
                 if (mustBeLong) {
                     // If the size was specified as long, then create a long.
                     jjtThis._ptToken = new LongToken(Long.parseLong(x, radix));
+                } else if (mustBeShort) {
+                    // If the size was specified as short, then create a short.
+                    jjtThis._ptToken = new ShortToken(Integer
+                            .parseInt(x, radix));
                 } else if (mustBeUnsignedByte) {
                     // If the size was specified as unsignedbyte, 
                     // then create an unsigned byte, truncating if necessary.
