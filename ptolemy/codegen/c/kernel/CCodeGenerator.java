@@ -1157,22 +1157,28 @@ public class CCodeGenerator extends CodeGenerator {
     }
 
     
-    public void markFunctionCalled(
-        String name, CCodeGeneratorHelper helper) 
+    public void markFunctionCalled(String name, CCodeGeneratorHelper helper) 
             throws IllegalActionException {
 
-        String functionCode = 
-            _overloadedFunctions.getCodeBlock(name);
+        try {
+            String functionCode =  _overloadedFunctions.getCodeBlock(name);
         
         
-        if (!_overloadedFunctionSet.contains(name)) {
+            if (!_overloadedFunctionSet.contains(name)) {
 
-            String code = helper.processCode(functionCode);
+                String code = helper.processCode(functionCode);
+
+                _overloadedFunctions.append(code);
             
-            _overloadedFunctions.append(code);
-            
-            _overloadedFunctionSet.add(name);
+                _overloadedFunctionSet.add(name);
+            }
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, 
+                    "Failed to mark function called for \""  
+                    + name + "\" in \""
+                    + helper.getFullName() + "\"");
         }
+
     }
     
     private CodeStream _overloadedFunctions;
