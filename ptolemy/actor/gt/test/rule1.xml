@@ -73,9 +73,9 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <link port="B.Criterion1" relation="relation2"/>
-        <link port="C.Criterion1" relation="relation"/>
-        <link port="C.Criterion1" relation="relation2"/>
-        <link port="A.Criterion1" relation="relation"/>
+        <link port="B.criterion1" relation="relation2"/>
+        <link port="C.criterion1" relation="relation"/>
+        <link port="C.criterion1" relation="relation2"/>
+        <link port="A.criterion1" relation="relation"/>
     </entity>
 </entity>

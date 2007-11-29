@@ -58,7 +58,7 @@
                 </property>
             </relation>
             <link port="port" relation="relation"/>
-            <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
+            <link port="AtomicActorMatcher.criterion1" relation="relation"/>
         </entity>
         <entity name="CompositeActorMatcher2" class="ptolemy.actor.gt.CompositeActorMatcher">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 50.0]">
@@ -121,7 +121,7 @@
                     </property>
                 </relation>
                 <link port="port" relation="relation"/>
-                <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
+                <link port="AtomicActorMatcher.criterion1" relation="relation"/>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -133,7 +133,7 @@
             </relation>
             <link port="port" relation="relation"/>
             <link port="port" relation="relation2"/>
-            <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
+            <link port="AtomicActorMatcher.criterion1" relation="relation"/>
             <link port="CompositeActorMatcher.port" relation="relation2"/>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">

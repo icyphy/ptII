@@ -58,7 +58,7 @@
                 </property>
             </relation>
             <link port="port" relation="relation"/>
-            <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
+            <link port="AtomicActorMatcher.criterion1" relation="relation"/>
         </entity>
         <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">
             <property name="criteria" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//true/true/false/false/false/false)(ptolemy.actor.gt.ingredients.criteria.PortCriterion/false//false//false/false/true/true/false/false)">
@@ -89,9 +89,9 @@
             </vertex>
         </relation>
         <link port="CompositeActorMatcher.port" relation="relation"/>
-        <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
-        <link port="AtomicActorMatcher.Criterion2" relation="relation3"/>
-        <link port="AtomicActorMatcher2.Criterion1" relation="relation2"/>
+        <link port="AtomicActorMatcher.criterion1" relation="relation"/>
+        <link port="AtomicActorMatcher.criterion2" relation="relation3"/>
+        <link port="AtomicActorMatcher2.criterion1" relation="relation2"/>
         <link relation1="relation2" relation2="relation3"/>
     </entity>
 </entity>

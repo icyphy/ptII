@@ -211,13 +211,13 @@
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <link port="A.Criterion1" relation="relation"/>
-        <link port="A.Criterion2" relation="relation2"/>
-        <link port="B.Criterion1" relation="relation"/>
-        <link port="B.Criterion2" relation="relation3"/>
-        <link port="C.Criterion1" relation="relation2"/>
-        <link port="C.Criterion2" relation="relation4"/>
-        <link port="D.Criterion1" relation="relation3"/>
-        <link port="D.Criterion1" relation="relation4"/>
+        <link port="A.criterion1" relation="relation"/>
+        <link port="A.criterion2" relation="relation2"/>
+        <link port="B.criterion1" relation="relation"/>
+        <link port="B.criterion2" relation="relation3"/>
+        <link port="C.criterion1" relation="relation2"/>
+        <link port="C.criterion2" relation="relation4"/>
+        <link port="D.criterion1" relation="relation3"/>
+        <link port="D.criterion1" relation="relation4"/>
     </entity>
 </entity>

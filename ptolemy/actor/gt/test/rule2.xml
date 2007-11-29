@@ -83,13 +83,13 @@
                 </property>
             </relation>
             <link port="port" relation="relation"/>
-            <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
+            <link port="AtomicActorMatcher.criterion1" relation="relation"/>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
+        <link port="AtomicActorMatcher.criterion1" relation="relation"/>
         <link port="CompositeActorMatcher.port" relation="relation"/>
     </entity>
 </entity>

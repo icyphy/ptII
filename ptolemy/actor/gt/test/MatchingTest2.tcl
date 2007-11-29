@@ -109,7 +109,7 @@ test MatchingTest-2.2 {An lhs with a CompositeActor matching a host without the 
     
     $matcher match $lhs $host
     [$matcher getMatchResult] toString
-} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A1.Criterion1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A2.Criterion1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A2}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.gt.Pattern {.top.host}}}
+} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.criterion1} = ptolemy.actor.TypedIOPort {.top.host.A1.criterion1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.criterion1} = ptolemy.actor.TypedIOPort {.top.host.A2.criterion1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A2}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.gt.Pattern {.top.host}}}
 
 test MatchingTest-2.3 {An lhs with a CompositeActor matching a host with a CompositeActor and an extra actor} {
     set hostC1 [java::new ptolemy.actor.TypedCompositeActor $host C1]
@@ -131,7 +131,7 @@ test MatchingTest-2.3 {An lhs with a CompositeActor matching a host with a Compo
     
     $matcher match $lhs $host
     [$matcher getMatchResult] toString
-} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A1.Criterion1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A2.Criterion1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A2}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.gt.Pattern {.top.host}}}
+} {{ptolemy.actor.TypedIOPort {.top.lhs.A1.criterion1} = ptolemy.actor.TypedIOPort {.top.host.A1.criterion1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.criterion1} = ptolemy.actor.TypedIOPort {.top.host.A2.criterion1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A2}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.gt.Pattern {.top.host}}}
 
 test MatchingTest-2.4 {Add an SDF director to the lhs CompositeActor} {
     $lhsC1 setDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector]
@@ -145,4 +145,4 @@ test MatchingTest-2.5 {Add an SDF director to the host CompositeActor} {
     
     $matcher match $lhs $host
     [$matcher getMatchResult] toString
-} {{ptolemy.actor.TypedCompositeActor {.top.lhs.C1} = ptolemy.actor.TypedCompositeActor {.top.host.C1}, ptolemy.actor.TypedIOPort {.top.lhs.A1.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.A1.Criterion1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.Criterion1} = ptolemy.actor.TypedIOPort {.top.host.C1.A1.Criterion1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.input} = ptolemy.actor.TypedIOPort {.top.host.C1.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.C1.A1}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.gt.Pattern {.top.host}, ptolemy.domains.sdf.kernel.SDFDirector {.top.lhs.C1.} = ptolemy.domains.sdf.kernel.SDFDirector {.top.host.C1.}}}
+} {{ptolemy.actor.TypedCompositeActor {.top.lhs.C1} = ptolemy.actor.TypedCompositeActor {.top.host.C1}, ptolemy.actor.TypedIOPort {.top.lhs.A1.criterion1} = ptolemy.actor.TypedIOPort {.top.host.A1.criterion1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.criterion1} = ptolemy.actor.TypedIOPort {.top.host.C1.A1.criterion1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.input} = ptolemy.actor.TypedIOPort {.top.host.C1.input}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.C1.A1}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.gt.Pattern {.top.host}, ptolemy.domains.sdf.kernel.SDFDirector {.top.lhs.C1.} = ptolemy.domains.sdf.kernel.SDFDirector {.top.host.C1.}}}
