@@ -31,10 +31,10 @@ package ptolemy.actor.gt;
 import java.util.List;
 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.MoMLChangeRequest;
@@ -47,7 +47,10 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public abstract class TransformationAttribute extends SingletonAttribute {
+public abstract class TransformationAttribute extends Attribute {
+
+    public TransformationAttribute() {
+    }
 
     public TransformationAttribute(NamedObj container, String name)
     throws NameDuplicationException, IllegalActionException {
