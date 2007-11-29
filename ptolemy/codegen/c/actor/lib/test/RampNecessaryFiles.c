@@ -4,6 +4,8 @@ file:./necessaryFile2
 /**/
 
 /***preinitBlock***/
+// This comment has a dollar sign in it: $channel
+// Test.c had a bug where a comment with a dollar sign in it would fail
 static $targetType(output) $actorSymbol(state);
 /**/
 
