@@ -160,8 +160,3 @@ inline Token subtract_Long_Array(Token a1, long long a2) {
     return result;
 }
 /**/
-/***subtract_Double_Double***/
-inline double subtract_Double_Double(double a1, double a2) {
-    return a1 - a2;   
-}
-/**/
