@@ -405,6 +405,9 @@ public class NonStrictTest extends Sink {
                 && ((_trainingTokens == null) || (_trainingTokens.size() == 0))) {
             System.err.println("Warning: '" + getFullName()
                     + "' The test produced 0 tokens.");
+            // If we get no data and we are training, set the expression
+            // to the empty string.
+            correctValues.setExpression("{}");
         }
     }
 

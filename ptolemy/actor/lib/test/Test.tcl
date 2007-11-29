@@ -329,6 +329,39 @@ test Test-2.2.2 {Fail the array test} {
 Value was: {1.0, 42.0, 3.0}. Should have been: {1.0, 2.0, 3.0}
   in .top.test}}
 
+######################################################################
+#### 
+#
+test Test-3.0 {Test case where training and we get no data} {
+    # Thomas Mandl pointed out this bug and supplied a fix
+    set workspace [java::new ptolemy.kernel.util.Workspace "Test3_0"]
+    set parser [java::new ptolemy.moml.MoMLParser $workspace]
+    $parser reset
+    $parser purgeAllModelRecords
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+	    ptolemy.moml.filter.RemoveGraphicalClasses]
+    #set model3_0 \
+    #	 [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile BooleanSwitch_RegressionTest.xml]]
+    set model3_0 \
+	 [java::cast ptolemy.actor.TypedCompositeActor [$parser parseFile BooleanSwitch_RegressionTest_WrongTrainingValues.xml]]
+    set manager [java::new ptolemy.actor.Manager $workspace "test3_0Manager"]
+    $model3_0 setManager $manager 
+    $manager execute
+
+    # Get the corrrectValues parameter, which should be {}
+    set test2 [$model3_0 getEntity Test2]
+    set correctValues [java::cast ptolemy.data.expr.Parameter [$test2 getAttribute correctValues]]
+
+    list [$correctValues getExpression]
+
+} {{{}}}
+
+
+
 # Reset the isRunningNightlyBuild property
 java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" \
     $oldIsRunningNightlyBuild 
