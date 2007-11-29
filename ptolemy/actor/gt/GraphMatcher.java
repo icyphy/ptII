@@ -33,8 +33,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
@@ -317,10 +319,61 @@ public class GraphMatcher extends GraphAnalyzer {
             entry = entry.getPrevious();
         }
         if (entry == null) {
-            return _callback.foundMatch(this);
+            if (_checkConstraints()) {
+                return _callback.foundMatch(this);
+            } else {
+                return false;
+            }
         } else {
             return _matchList(lists);
         }
+    }
+
+    private boolean _checkConstraint(Pattern pattern, Constraint constraint) {
+        return true;
+    }
+
+    private boolean _checkConstraints() {
+        if (_match.isEmpty()) {
+            return false;
+        }
+
+        Iterator<Map.Entry<Object, Object>> iterator =
+            _match.entrySet().iterator();
+        Map.Entry<Object, Object> anyEntry = null;
+        while (iterator.hasNext()){
+            anyEntry = iterator.next();
+            if (anyEntry.getKey() instanceof NamedObj) {
+                break;
+            }
+            anyEntry = null;
+        }
+        if (anyEntry == null) {
+            return false;
+        }
+
+        NamedObj patternObject = (NamedObj) anyEntry.getKey();
+        NamedObj patternContainer = patternObject.getContainer();
+        while (patternContainer != null
+                && _match.containsKey(patternContainer)) {
+            patternObject = patternContainer;
+            patternContainer = patternContainer.getContainer();
+        }
+        if (!(patternObject instanceof Pattern)) {
+            // The top-level container for the matching is not a pattern, so it
+            // has no constraint to check.
+            return true;
+        }
+
+        Pattern pattern = (Pattern) patternObject;
+        List<?> constraints = pattern.attributeList(Constraint.class);
+        for (Object constraintObject : constraints) {
+            Constraint constraint = (Constraint) constraintObject;
+            if (!_checkConstraint(pattern, constraint)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private Token _getAttribute(NamedObj container, String name,
