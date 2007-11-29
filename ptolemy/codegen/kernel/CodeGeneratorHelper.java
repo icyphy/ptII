@@ -1869,18 +1869,21 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             String macro = code.substring(currentPos + 1, openParenIndex);
             macro = macro.trim();
 
-            if (!_codeGenerator.getMacros().contains(macro)) {
-                result.append(subcode.substring(0, 1));
-                result.append(processCode(subcode.substring(1)));
-            } else {
+            //if (!_codeGenerator.getMacros().contains(macro)) {
+            //    result.append(subcode.substring(0, 1));
+            //    result.append(processCode(subcode.substring(1)));
+            //} else {
                 String name = code.substring(openParenIndex + 1,
                         closeParenIndex);
-                name = name.trim();
 
+                name = processCode(name.trim());
+
+                //List arguments = parseArgumentList(name);
+                
                 result.append(_replaceMacro(macro, name));
 
                 result.append(code.substring(closeParenIndex + 1, nextPos));
-            }
+            //}
             currentPos = nextPos;
         }
 
@@ -2539,26 +2542,34 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         } else if (macro.equals("val")) {
             return getParameterValue(parameter, _component);
+            
         } else if (macro.equals("size")) {
             return "" + getSize(parameter);
+            
         } else if (macro.equals("actorSymbol")) {
             if (parameter.trim().length() == 0) {
                 return generateVariableName(_component);
             } else {
                 return generateVariableName(_component) + "_" + processCode(parameter);
-            }
+            }            
         } else if (macro.equals("actorClass")) {
             return _component.getClassName().replace('.', '_') + "_"
                     + processCode(parameter);
+            
+        // Handle type function macros.            
         } else if (macro.equals("new")) {
             return getNewInvocation(parameter);
+            
         } else if (macro.equals("tokenFunc")) {
             return getFunctionInvocation(parameter, false);
+            
         } else if (macro.equals("typeFunc")) {
             return getFunctionInvocation(parameter, true);
+            
         } else {
+            return null;
             // This macro is not handled.
-            throw new IllegalActionException("Macro is not handled.");
+            //throw new IllegalActionException("Macro is not handled.");
         }
     }
 

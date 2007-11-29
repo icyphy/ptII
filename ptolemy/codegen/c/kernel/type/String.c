@@ -6,7 +6,7 @@ typedef char* StringToken;
 Token String_new(char* s);
 /**/
 
-/***newBlock***/
+/***String_new***/
 /* Make a new integer token from the given value. */
 Token String_new(char* s) {
     Token result;
@@ -16,7 +16,7 @@ Token String_new(char* s) {
 }
 /**/
 
-/***deleteBlock***/
+/***String_delete***/
 Token String_delete(Token token, ...) {   
     free(token.payload.String);    
     /* We need to return something here because all the methods are declared
@@ -26,7 +26,7 @@ Token String_delete(Token token, ...) {
 }    
 /**/
 
-/***equalsBlock***/
+/***String_equals***/
 Token String_equals(Token thisToken, ...) {
     va_list argp; 
     Token otherToken; 
@@ -38,19 +38,19 @@ Token String_equals(Token thisToken, ...) {
 }
 /**/
 
-/***isCloseToBlock***/
+/***String_isCloseTo***/
 /* No need to use String_isCloseTo(), we use String_equals() instead. */
 }
 /**/
 
-/***printBlock***/
+/***String_print***/
 Token String_print(Token thisToken, ...) {
     printf("\"%s\"", thisToken.payload.String);
     return emptyToken;
 }
 /**/
 
-/***toStringBlock***/
+/***String_toString***/
 Token String_toString(Token thisToken, ...) {
     // Guarrantee to return a new string.
     char* result = (char*) malloc(sizeof(char) * (3 + strlen(thisToken.payload.String)));
@@ -59,7 +59,7 @@ Token String_toString(Token thisToken, ...) {
 }
 /**/
 
-/***addBlock***/
+/***String_add***/
 Token String_add(Token thisToken, ...) {
     va_list argp; 
     va_start(argp, thisToken);
@@ -74,35 +74,35 @@ Token String_add(Token thisToken, ...) {
 }
 /**/
 
-/***subtractBlock***/
+/***String_subtract***/
 /** String_subtract is not supported. */
 /**/
 
-/***multiplyBlock***/
+/***String_multiply***/
 /** String_multiply is not supported. */
 /**/
 
-/***divideBlock***/
+/***String_divide***/
 /** String_divide is not supported. */
 /**/
 
-/***negateBlock***/
+/***String_negate***/
 Token String_negate(Token thisToken, ...) {
     return emptyToken;
 }	
 /**/
 
-/***zeroBlock***/
+/***String_zero***/
 Token String_zero(Token token, ...) {
     return String_new("");
 }
 /**/
 
-/***oneBlock***/
+/***String_one***/
 /** String_one is not supported. */
 /**/
 
-/***cloneBlock***/
+/***String_clone***/
 Token String_clone(Token thisToken, ...) {
     return String_new(thisToken.payload.String);
 }
@@ -112,7 +112,7 @@ Token String_clone(Token thisToken, ...) {
 
 ------------------ static functions --------------------------------------
 
-/***convertBlock***/
+/***String_convert***/
 Token String_convert(Token token, ...) {
     char* stringPointer;
 	

@@ -61,7 +61,7 @@ import ptolemy.util.StringUtilities;
 
 /** Base class for C code generator.
  *  
- *  @author Gang Zhou, Contributors: Teale Fristoe
+ *  @author Gang Zhou
  *  @version $Id$
  *  @since Ptolemy II 6.0
  *  @Pt.ProposedRating red (zgang)
@@ -69,6 +69,7 @@ import ptolemy.util.StringUtilities;
  */
 
 public class CCodeGenerator extends CodeGenerator {
+
 
     /** Create a new instance of the C code generator.
      *  @param container The container.
@@ -190,6 +191,10 @@ public class CCodeGenerator extends CodeGenerator {
         return _INDENT1 + "initialize();" + _eol;
     }
 
+    public String generateLineInfo(int lineNumber, String filename) {
+        return "#line " + lineNumber + " \"" + filename + "\"\n";
+    }
+
     /** Generate the main entry point.
      *  @return Return the definition of the main entry point for a program.
      *   In C, this would be defining main().
@@ -295,11 +300,11 @@ public class CCodeGenerator extends CodeGenerator {
     public String generateTypeConvertCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-
+        
         code.append(_eol
                 + comment("Generate type resolution code for "
                         + getContainer().getFullName()));
-
+        
         // Include the constantsBlock at the top so that sharedBlocks from
         // actors can use true and false etc.  StringMatches needs this.
         CodeStream sharedStream = new CodeStream(
@@ -307,34 +312,9 @@ public class CCodeGenerator extends CodeGenerator {
         sharedStream.appendCodeBlock("constantsBlock");
         code.append(sharedStream.toString());
 
-        // Determine the total number of referenced polymorphic functions.
-        HashSet functions = new HashSet();
-        functions.add("delete");
-        //functions.add("toString");    // for debugging.
-        functions.add("convert");
-        functions.add("isCloseTo");
-        functions.addAll(_typeFuncUsed);
-        functions.addAll(_tokenFuncUsed);
+        HashSet functions = _getReferencedFunctions();
 
-        // Determine the total number of referenced types.
-        HashSet types = new HashSet();
-        if (functions.contains("equals") || functions.contains("isCloseTo")) {
-            types.add("Boolean");
-        }
-
-        if (functions.contains("toString")) {
-            types.add("String");
-        }
-
-        if (functions.contains("isCloseTo")
-                && _newTypesUsed.contains("Int")
-                && !_newTypesUsed.contains("Double")) {
-            // FIXME: we should not need Double for Int_isCloseTo()
-            types.add("Double");
-        }
-
-
-        types.addAll(_newTypesUsed);
+        HashSet types = _getReferencedTypes(functions);
 
         Object[] typesArray = types.toArray();
         CodeStream[] typeStreams = new CodeStream[types.size()];
@@ -480,7 +460,7 @@ public class CCodeGenerator extends CodeGenerator {
 
         for (int i = 0; i < typesArray.length; i++) {
             typeStreams[i].clear();
-            typeStreams[i].appendCodeBlock("newBlock");
+            typeStreams[i].appendCodeBlock(typesArray[i] + "_new");
 
             for (int j = 0; j < functionsArray.length; j++) {
                 // The code block declaration has to follow this convention:
@@ -493,21 +473,20 @@ public class CCodeGenerator extends CodeGenerator {
                     if (functionsArray[j].equals("isCloseTo")
                         && (typesArray[i].equals("Boolean") 
                                 || typesArray[i].equals("String"))) {
-                        boolean foundEquals = false;
-                        for (int k = 0; k < functionsArray.length; k++) {
-                            if (functionsArray[k].equals("equals")) {
-                                foundEquals = true;
-                                break;
-                            }
-                        }
-                        if (!foundEquals) {
-                            typeStreams[i].appendCodeBlock("equalsBlock");
+
+                        if (!functions.contains("equals")) {
+                            typeStreams[i].appendCodeBlock(
+                                    typesArray[i] + "_equals");
                         }
                     } else {
-                        if (!_unsupportedTypeFunctions.contains(
-                                        typesArray[i] + "_"
-                                        + functionsArray[j])) {
-                            typeStreams[i].appendCodeBlock(functionsArray[j] + "Block");
+                        String functionName = 
+                            typesArray[i] + "_" + functionsArray[j];
+                        
+                        if (!_unsupportedTypeFunctions.contains(functionName)
+                            && !_overloadedFunctionSet.contains(functionName)) {
+                            
+                            typeStreams[i].appendCodeBlock(
+                                    typesArray[i]+ "_" + functionsArray[j]);
                         }
                     }
                 } catch (IllegalActionException ex) {
@@ -523,9 +502,61 @@ public class CCodeGenerator extends CodeGenerator {
                     // supported by all types. 
                 }
             }
-            code.append(typeStreams[i].toString());
+            code.append(processCode(typeStreams[i].toString()));
         }
+
+        code.append(_overloadedFunctions.toString());
+
         return code.toString();
+    }
+
+
+    public String processCode(String code) throws IllegalActionException {
+        CCodeGeneratorHelper helper = 
+            (CCodeGeneratorHelper) _getHelper(getContainer());
+        return helper.processCode(code);
+    }
+    /**
+     * @return
+     */
+    private HashSet _getReferencedFunctions() {
+        // Determine the total number of referenced polymorphic functions.
+        HashSet functions = new HashSet();
+        functions.add("delete");
+        //functions.add("toString");    // for debugging.
+        functions.add("convert");
+        functions.add("isCloseTo");
+        functions.addAll(_typeFuncUsed);
+        functions.addAll(_tokenFuncUsed);
+        return functions;
+    }
+
+
+    /**
+     * @param functions
+     * @return
+     */
+    private HashSet _getReferencedTypes(HashSet functions) {
+        // Determine the total number of referenced types.
+        HashSet types = new HashSet();
+        if (functions.contains("equals") || functions.contains("isCloseTo")) {
+            types.add("Boolean");
+        }
+
+        if (functions.contains("toString")) {
+            types.add("String");
+        }
+
+        if (functions.contains("isCloseTo")
+                && _newTypesUsed.contains("Int")
+                && !_newTypesUsed.contains("Double")) {
+            // FIXME: we should not need Double for Int_isCloseTo()
+            types.add("Double");
+        }
+
+
+        types.addAll(_newTypesUsed);
+        return types;
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
@@ -664,6 +695,34 @@ public class CCodeGenerator extends CodeGenerator {
         }
     }
 
+
+    /** Analyze the model to find out what connections need to be type
+     *  converted. This should be called before all the generate methods.
+     *  @exception IllegalActionException If the helper of the
+     *   top composite actor is unavailable.
+     */
+    protected void _analyzeTypeConversions() throws IllegalActionException {
+        super._analyzeTypeConversions();
+        
+        String typeDir = "$CLASSPATH/ptolemy/codegen/c/kernel/type/";
+        String functionDir = typeDir + "polymorphic/";
+        
+        _overloadedFunctions = new CodeStream(functionDir + "add.c", this);
+        _overloadedFunctions.parse(functionDir + "subtract.c");
+        _overloadedFunctions.parse(functionDir + "convert.c");
+        _overloadedFunctions.parse(functionDir + "negate.c");
+        _overloadedFunctions.parse(typeDir + "Array.c");
+        _overloadedFunctions.parse(typeDir + "Boolean.c");
+        _overloadedFunctions.parse(typeDir + "Double.c");
+        _overloadedFunctions.parse(typeDir + "Int.c");
+        _overloadedFunctions.parse(typeDir + "String.c");
+        
+        _overloadedFunctionSet = new HashSet<String>();
+        
+        //_overloadedFunctionSet = new HashSet(_overloadedFunctions.getAllCodeBlockNames());
+    }
+    
+    
     /** Execute the compile and run commands in the
      *  <i>codeDirectory</i> directory.
      *  @return The return value of the last subprocess that was executed
@@ -1097,6 +1156,31 @@ public class CCodeGenerator extends CodeGenerator {
         return buffer.toString();
     }
 
+    
+    public void markFunctionCalled(
+        String name, CCodeGeneratorHelper helper) 
+            throws IllegalActionException {
+
+        String functionCode = 
+            _overloadedFunctions.getCodeBlock(name);
+        
+        
+        if (!_overloadedFunctionSet.contains(name)) {
+
+            String code = helper.processCode(functionCode);
+            
+            _overloadedFunctions.append(code);
+            
+            _overloadedFunctionSet.add(name);
+        }
+    }
+    
+    private CodeStream _overloadedFunctions;
+
+    private Set<String> _overloadedFunctionSet;
+    
+    
+    
     /** Set of type/function combinations that are not supported.
      *  We use one method so as to reduce code size.
      */

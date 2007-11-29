@@ -7,7 +7,7 @@ Token Int_new(int i);
 /**/
 
 
-/***newBlock***/
+/***Int_new***/
 // make a new integer token from the given value.
 Token Int_new(int i) {
     Token result;
@@ -17,7 +17,7 @@ Token Int_new(int i) {
 }
 /**/
 
-/***equalsBlock***/
+/***Int_equals***/
 Token Int_equals(Token thisToken, ...) {
     va_list argp; 
     Token otherToken; 
@@ -29,7 +29,7 @@ Token Int_equals(Token thisToken, ...) {
 }
 /**/
 
-/***isCloseToBlock***/
+/***Int_isCloseTo***/
 Token Int_isCloseTo(Token thisToken, ...) {
     va_list argp;
     Token otherToken;
@@ -43,23 +43,23 @@ Token Int_isCloseTo(Token thisToken, ...) {
 }
 /**/
 
-/***deleteBlock***/
+/***Int_delete***/
 /* Instead of Int_delete(), we call scalarDelete(). */
 /**/
 
-/***printBlock***/
+/***Int_print***/
 Token Int_print(Token thisToken, ...) {
     printf("%d", thisToken.payload.Int);
 }
 /**/
 
-/***toStringBlock***/
+/***Int_toString***/
 Token Int_toString(Token thisToken, ...) {
     return String_new(InttoString(thisToken.payload.Int));
 }
 /**/
 
-/***addBlock***/
+/***Int_add***/
 Token Int_add(Token thisToken, ...) {
     va_list argp; 
     va_start(argp, thisToken);
@@ -70,7 +70,7 @@ Token Int_add(Token thisToken, ...) {
 }
 /**/
 
-/***subtractBlock***/
+/***Int_subtract***/
 Token Int_subtract(Token thisToken, ...) {
     va_list argp; 
     va_start(argp, thisToken);
@@ -81,7 +81,7 @@ Token Int_subtract(Token thisToken, ...) {
 }
 /**/
 
-/***multiplyBlock***/
+/***Int_multiply***/
 Token Int_multiply(Token thisToken, ...) {
     va_list argp; 
     Token result;
@@ -112,7 +112,7 @@ Token Int_multiply(Token thisToken, ...) {
 }
 /**/
 
-/***divideBlock***/
+/***Int_divide***/
 Token Int_divide(Token thisToken, ...) {
     va_list argp; 
     va_start(argp, thisToken);
@@ -123,26 +123,26 @@ Token Int_divide(Token thisToken, ...) {
 }
 /**/
 
-/***negateBlock***/
+/***Int_negate***/
 Token Int_negate(Token thisToken, ...) {
     thisToken.payload.Int = -thisToken.payload.Int;
     return thisToken;
 }
 /**/
 
-/***zeroBlock***/
+/***Int_zero***/
 Token Int_zero(Token token, ...) {
     return Int_new(0);
 }
 /**/
 
-/***oneBlock***/
+/***Int_one***/
 Token Int_one(Token token, ...) {
     return Int_new(1);
 }
 /**/
 
-/***cloneBlock***/
+/***Int_clone***/
 Token Int_clone(Token thisToken, ...) {
     return thisToken;
 }
@@ -150,7 +150,7 @@ Token Int_clone(Token thisToken, ...) {
 
 ---------------- static functions -----------------------
 
-/***convertBlock***/
+/***Int_convert***/
 Token Int_convert(Token token, ...) {
     switch (token.type) {
 

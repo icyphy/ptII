@@ -1,51 +1,3 @@
-/***preinitBlock***/
-static $targetType(output) $actorSymbol(state);
-/**/
-
-/*** ArrayConvertInitBlock($elementType) ***/
-$actorSymbol(state) = $typeFunc(TYPE_Array::convert($actorSymbol(state), $elementType));
-/**/
-
-/*** ArrayConvertStepBlock($elementType) ***/
-$ref(step) = $typeFunc(TYPE_Array::convert($ref(step), $elementType));
-/**/
-
-
-/***CommonInitBlock($type)***/
-$actorSymbol(state) = $val(($type)init);
-/**/
-
-/***StringInitBlock***/
-$actorSymbol(state) = strdup($val((String)init));
-/**/
-
-/***IntFireBlock***/
-$ref(output) = $actorSymbol(state);
-$actorSymbol(state) += $ref((Int)step);
-/**/
-
-/***DoubleFireBlock***/
-$ref(output) = $actorSymbol(state);
-$actorSymbol(state) += $ref((Double)step);
-/**/
-
-/***BooleanFireBlock***/
-$ref(output) = $actorSymbol(state);
-$actorSymbol(state) |= $ref((Boolean)step);
-/**/
-
-/***StringFireBlock***/
-$ref(output) = (char*) realloc($ref(output), sizeof(char) * (strlen($actorSymbol(state)) + 1) );
-strcpy($ref(output), $actorSymbol(state));
-$actorSymbol(state) = (char*) realloc($actorSymbol(state), sizeof(char) * (strlen($actorSymbol(state)) + strlen($ref((String)step)) + 1) );
-strcat($actorSymbol(state),  $ref((String)step));
-/**/
-
-/***TokenFireBlock***/
-$ref(output) = $actorSymbol(state);
-$actorSymbol(state) = $tokenFunc($ref(output)::add($ref((Token)step)));
-/**/
-
 /***declareBlock***/
 #include <stdarg.h>     // Needed Matrix_new va_* macros
 
@@ -72,7 +24,7 @@ void Matrix_set(Token matrix, int row, int column, Token element) {
 /**/
 
 
-/***deleteBlock***/
+/***Matrix_delete***/
 Token Matrix_delete(Token token, ...) { 
     int i, j;
 	Token element, emptyToken;
@@ -91,7 +43,7 @@ Token Matrix_delete(Token token, ...) {
 }
 /**/
 
-/***convertBlock***/
+/***Matrix_convert***/
 Token Matrix_convert(Token token, ...) {
     /* token.payload.Matrix = (MatrixToken) malloc(sizeof(struct matrix));
        token.payload.Matrix->row = 1;
@@ -106,7 +58,7 @@ Token Matrix_convert(Token token, ...) {
 /**/
 
 
-/***newBlock***/
+/***Matrix_new***/
 // make a new matrix from the given values
 // assume that number of the rest of the arguments == length,
 // and they are in the form of (element, element, ...).
@@ -154,7 +106,7 @@ Token Matrix_new(int row, int column, int given, ...) {
 }    
 /**/
     
-/***equalsBlock***/
+/***Matrix_equals***/
 Token Matrix_equals(Token thisToken, ...) {
     int i, j;
     va_list argp; 
@@ -179,7 +131,7 @@ Token Matrix_equals(Token thisToken, ...) {
 /**/
 
 
-/***isCloseToBlock***/
+/***Matrix_isCloseTo***/
 Token Matrix_isCloseTo(Token thisToken, ...) {
     int i, j;
     va_list argp; 
@@ -205,7 +157,7 @@ Token Matrix_isCloseTo(Token thisToken, ...) {
 }
 /**/
 
-/***printBlock***/
+/***Matrix_print***/
 Token Matrix_print(Token thisToken, ...) {
     // Token string = Matrix_toString(thisToken);
     // printf(string.payload.String);
@@ -229,7 +181,7 @@ Token Matrix_print(Token thisToken, ...) {
 /**/
 
 
-/***toStringBlock***/
+/***Matrix_toString***/
 Token Matrix_toString(Token thisToken, ...) {
     int i, j;
     int currentSize, allocatedSize;
@@ -267,7 +219,7 @@ Token Matrix_toString(Token thisToken, ...) {
 
 
 
-/***addBlock***/
+/***Matrix_add***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
 Token Matrix_add(Token thisToken, ...) {
@@ -293,7 +245,7 @@ Token Matrix_add(Token thisToken, ...) {
 /**/
 
 
-/***subtractBlock***/
+/***Matrix_subtract***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
 Token Matrix_subtract(Token thisToken, ...) {
@@ -321,7 +273,7 @@ Token Matrix_subtract(Token thisToken, ...) {
 
 
 
-/***multiplyBlock***/
+/***Matrix_multiply***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
 Token Matrix_multiply(Token thisToken, ...) {
@@ -378,7 +330,7 @@ Token Matrix_multiply(Token thisToken, ...) {
 }
 /**/
 
-/***divideBlock***/
+/***Matrix_divide***/
 // Assume the given otherToken is array type.
 // Return a new Array token.
 Token Matrix_divide(Token thisToken, ...) {
@@ -425,7 +377,7 @@ Token Matrix_divide(Token thisToken, ...) {
 }
 /**/
 
-/***toExpressionBlock***/
+/***Matrix_toExpression***/
 Token Matrix_toExpression(Token thisToken, ...) {
     return Matrix_toString(thisToken);
 }

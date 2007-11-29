@@ -30,7 +30,6 @@ package ptolemy.codegen.c.actor.lib;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -68,41 +67,40 @@ public class AddSubtract extends CCodeGeneratorHelper {
 
         ptolemy.actor.lib.AddSubtract actor = (ptolemy.actor.lib.AddSubtract) getComponent();
 
-        Type type = actor.output.getType();
+        String outputType = codeGenType(actor.output.getType());
+        String plusType = codeGenType(actor.plus.getType());
+        String minusType = codeGenType(actor.minus.getType());
+
         boolean minusOnly = actor.plus.getWidth() == 0;
 
         ArrayList args = new ArrayList();
-        args.add(Integer.valueOf(0));
 
-        if (type == BaseType.STRING) {
-            _codeStream.appendCodeBlock("StringPreFireBlock", false);
-            for (int i = 0; i < actor.plus.getWidth(); i++) {
-                args.set(0, Integer.valueOf(i));
-                _codeStream.appendCodeBlock("StringLengthBlock", args, false);
-            }
-            _codeStream.appendCodeBlock("StringAllocBlock", false);
+        ArrayList initArgs = new ArrayList();
+        if (minusOnly) {
+            initArgs.add(minusType);
         } else {
-            String blockType = isPrimitive(type) ? "" : "Token";
-            String blockPort = (minusOnly) ? "Minus" : "";
-
-            _codeStream.appendCodeBlock(blockType + blockPort + "PreFireBlock",
-                    false);
+            initArgs.add(plusType);
+            initArgs.add(outputType);
         }
+        _codeStream.appendCodeBlock(
+                minusOnly ? "minusOnlyInitSum" : "initSum", initArgs);
 
-        String blockType = isPrimitive(type) ? codeGenType(type) : "Token";
+        args.add("");
+        args.add(outputType);
+        args.add(plusType);
 
         for (int i = 1; i < actor.plus.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
-            _codeStream.appendCodeBlock(blockType + "AddBlock", args, false);
+            _codeStream.appendCodeBlock("plusBlock", args);
         }
 
         for (int i = minusOnly ? 1 : 0; i < actor.minus.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
-            _codeStream.appendCodeBlock(blockType + "MinusBlock", args, false);
+            args.set(2, minusType);
+            _codeStream.appendCodeBlock("minusBlock", args);
         }
-
-        _codeStream.appendCodeBlock("PostFireBlock", false);
-
+        _codeStream.appendCodeBlock("outputBlock");
+        
         return processCode(_codeStream.toString());
     }
 

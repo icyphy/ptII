@@ -1,15 +1,15 @@
 /***declareBlock***/
-typedef long LongToken;
+typedef long long LongToken;
 /**/
 
 /***funcDeclareBlock***/
-Token Long_new(long i);
+Token Long_new(long long i);
 /**/
 
 
-/***newBlock***/
+/***Long_new***/
 // make a new long token from the given value.
-Token Long_new(long i) {
+Token Long_new(long long i) {
     Token result;
     result.type = TYPE_Long;
     result.payload.Long = i;
@@ -17,7 +17,7 @@ Token Long_new(long i) {
 }
 /**/
 
-/***equalsBlock***/
+/***Long_equals***/
 Token Long_equals(Token thisToken, ...) {
     va_list argp; 
     Token otherToken; 
@@ -29,23 +29,23 @@ Token Long_equals(Token thisToken, ...) {
 }
 /**/
 
-/***deleteBlock***/
+/***Long_delete***/
 /* Instead of Long_delete(), we call scalarDelete(). */
 /**/
 
-/***printBlock***/
+/***Long_print***/
 Token Long_print(Token thisToken, ...) {
     printf("%d", thisToken.payload.Long);
 }
 /**/
 
-/***toStringBlock***/
+/***Long_toString***/
 Token Long_toString(Token thisToken, ...) {
     return String_new(LongtoString(thisToken.payload.Long));
 }
 /**/
 
-/***addBlock***/
+/***Long_add***/
 Token Long_add(Token thisToken, ...) {
     va_list argp; 
     va_start(argp, thisToken);
@@ -56,7 +56,7 @@ Token Long_add(Token thisToken, ...) {
 }
 /**/
 
-/***subtractBlock***/
+/***Long_subtract***/
 Token Long_subtract(Token thisToken, ...) {
     va_list argp; 
     va_start(argp, thisToken);
@@ -67,7 +67,7 @@ Token Long_subtract(Token thisToken, ...) {
 }
 /**/
 
-/***multiplyBlock***/
+/***Long_multiply***/
 Token Long_multiply(Token thisToken, ...) {
     va_list argp; 
     Token result;
@@ -103,7 +103,7 @@ Token Long_multiply(Token thisToken, ...) {
 }
 /**/
 
-/***divideBlock***/
+/***Long_divide***/
 Token Long_divide(Token thisToken, ...) {
     va_list argp; 
     va_start(argp, thisToken);
@@ -114,26 +114,26 @@ Token Long_divide(Token thisToken, ...) {
 }
 /**/
 
-/***negateBlock***/
+/***Long_negate***/
 Token Long_negate(Token thisToken, ...) {
     thisToken.payload.Long = -thisToken.payload.Long;
     return thisToken;
 }
 /**/
 
-/***zeroBlock***/
+/***Long_zero***/
 Token Long_zero(Token token, ...) {
     return Long_new(0);
 }
 /**/
 
-/***oneBlock***/
+/***Long_one***/
 Token Long_one(Token token, ...) {
     return Long_new(1);
 }
 /**/
 
-/***cloneBlock***/
+/***Long_clone***/
 Token Long_clone(Token thisToken, ...) {
     return thisToken;
 }
@@ -141,7 +141,7 @@ Token Long_clone(Token thisToken, ...) {
 
 ---------------- static functions -----------------------
 
-/***convertBlock***/
+/***Long_convert***/
 Token Long_convert(Token token, ...) {
     switch (token.type) {
 

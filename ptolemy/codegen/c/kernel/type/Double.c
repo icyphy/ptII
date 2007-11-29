@@ -6,7 +6,7 @@ typedef double DoubleToken;
 Token Double_new(double d);
 /**/
 
-/***newBlock***/
+/***Double_new***/
 // make a new integer token from the given value.
 Token Double_new(double d) {
     Token result;
@@ -16,11 +16,11 @@ Token Double_new(double d) {
 }
 /**/
 
-/***deleteBlock***/
+/***Double_delete***/
 /* Instead of Double_delete(), we call scalarDelete(). */
 /**/
 
-/***equalsBlock***/
+/***Double_equals***/
 Token Double_equals(Token thisToken, ...) {
     va_list argp; 
     Token otherToken; 
@@ -38,7 +38,7 @@ Token Double_equals(Token thisToken, ...) {
 }
 /**/
 
-/***isCloseToBlock***/
+/***Double_isCloseTo***/
 Token Double_isCloseTo(Token thisToken, ...) {
     va_list argp;
     Token otherToken;
@@ -52,19 +52,19 @@ Token Double_isCloseTo(Token thisToken, ...) {
 }
 /**/
 
-/***printBlock***/
+/***Double_print***/
 Token Double_print(Token thisToken, ...) {
     printf("%g", thisToken.payload.Double);
 }
 /**/
 
-/***toStringBlock***/
+/***Double_toString***/
 Token Double_toString(Token thisToken, ...) {
     return String_new(DoubletoString(thisToken.payload.Double));
 }
 /**/
 
-/***addBlock***/
+/***Double_add***/
 Token Double_add(Token thisToken, ...) {
     va_list argp; 
     Token otherToken;    
@@ -76,7 +76,7 @@ Token Double_add(Token thisToken, ...) {
 }
 /**/
 
-/***subtractBlock***/
+/***Double_subtract***/
 Token Double_subtract(Token thisToken, ...) {
     va_list argp; 
     Token otherToken;
@@ -89,7 +89,7 @@ Token Double_subtract(Token thisToken, ...) {
 }
 /**/
 
-/***multiplyBlock***/
+/***Double_multiply***/
 Token Double_multiply(Token thisToken, ...) {
     va_list argp; 
     Token result;
@@ -119,7 +119,7 @@ Token Double_multiply(Token thisToken, ...) {
 }
 /**/
 
-/***divideBlock***/
+/***Double_divide***/
 Token Double_divide(Token thisToken, ...) {
     va_list argp; 
     Token otherToken;
@@ -132,27 +132,27 @@ Token Double_divide(Token thisToken, ...) {
 }
 /**/
 
-/***negateBlock***/
+/***Double_negate***/
 Token Double_negate(Token thisToken, ...) {
     thisToken.payload.Double = -thisToken.payload.Double;
     return thisToken;
 }
 /**/
 
-/***zeroBlock***/
+/***Double_zero***/
 Token Double_zero(Token token, ...) {
     return Double_new(0.0);
 }
 /**/
 
-/***oneBlock***/
+/***Double_one***/
 Token Double_one(Token token, ...) {
     return Double_new(1.0);
 }
 /**/
 
 
-/***cloneBlock***/
+/***Double_clone***/
 Token Double_clone(Token thisToken, ...) {
     return thisToken;
 }
@@ -162,7 +162,7 @@ Token Double_clone(Token thisToken, ...) {
 
 
 --------------------- static functions --------------------------
-/***convertBlock***/
+/***Double_convert***/
 Token Double_convert(Token token, ...) {
     switch (token.type) {
 #ifdef TYPE_String

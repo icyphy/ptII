@@ -34,6 +34,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.BooleanToken;
@@ -146,6 +147,15 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         }
 
         return processCode(code.toString());
+    }
+    
+
+    /** Get the code generator associated with this helper class.
+     *  @return The code generator associated with this helper class.
+     *  @see #setCodeGenerator(CodeGenerator)
+     */
+    public CCodeGenerator getCodeGenerator() {
+        return (CCodeGenerator) _codeGenerator;
     }
 
    /** Get the header files needed to compile with the jvm library.
@@ -346,7 +356,22 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return code.toString();
     }
 
+    protected String _replaceMacro(String macro, String parameter)
+        throws IllegalActionException {
+        String result = super._replaceMacro(macro, parameter);
+        
+        if (result != null) {
+            return result;
+        }
+        
+        // We will assume that it is a call to a polymorphic
+        // functions.
+        String[] call = macro.split("_");
+        getCodeGenerator().markFunctionCalled(macro, this);
+        result = macro + "(" + parameter + ")";
 
+        return result;
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 

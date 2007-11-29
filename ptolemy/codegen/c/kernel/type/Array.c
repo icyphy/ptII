@@ -40,7 +40,7 @@ void Array_insert(Token array, Token token) {
 
 /**/
 
-/***newBlock***/
+/***Array_new***/
 
 // Array_new: Create a new array with the specified elements.
 // The "size" argument specifies the size of the array, and
@@ -80,7 +80,7 @@ Token Array_new(int size, int given, ...) {
                 // convert the elements if needed.
                 for (i = 0; i < given; i++) {
                     if (Array_get(result, i).type != elementType) {
-                        result.payload.Array->elements[i] = functionTable[(int)elementType][FUNC_convert](Array_get(result, i));
+                        Array_set(result, i, functionTable[(int)elementType][FUNC_convert](Array_get(result, i)));
                     }
                 }    
             }
@@ -93,7 +93,7 @@ Token Array_new(int size, int given, ...) {
 /**/
 
 
-/***deleteBlock***/
+/***Array_delete***/
 
 // Array_delete: FIXME: What does this do?
 Token Array_delete(Token token, ...) { 
@@ -115,7 +115,7 @@ Token Array_delete(Token token, ...) {
 /**/
 
 
-/***equalsBlock***/
+/***Array_equals***/
 
 // Array_equals: Test an array for equality with a second array.
 Token Array_equals(Token thisToken, ...) {
@@ -140,7 +140,7 @@ Token Array_equals(Token thisToken, ...) {
 }
 /**/
 
-/***isCloseToBlock***/
+/***Array_isCloseTo***/
 
 // Array_isCloseTo: Test an array to see whether it is close in value to another.
 Token Array_isCloseTo(Token thisToken, ...) {
@@ -166,7 +166,7 @@ Token Array_isCloseTo(Token thisToken, ...) {
 }
 /**/
 
-/***printBlock***/
+/***Array_print***/
 
 // Array_print: Print the contents of an array to standard out.
 Token Array_print(Token thisToken, ...) {
@@ -186,7 +186,7 @@ Token Array_print(Token thisToken, ...) {
 }
 /**/
 
-/***toStringBlock***/
+/***Array_toString***/
 
 // Array_toString: Return a string token with a string representation
 // of the specified array.
@@ -221,13 +221,17 @@ Token Array_toString(Token thisToken, ...) {
 }
 /**/
 
-/***addBlock***/
+/***Array_add***/
 
 // Array_add: Add an array to another array.
 // Assume the given otherToken is array type.
 // Return a new Array token.
 Token Array_add(Token thisToken, ...) {
     int i;
+    int size1;
+    int size2;
+    int resultSize;
+    
     va_list argp; 
     Token result; 
     Token otherToken;
@@ -235,10 +239,22 @@ Token Array_add(Token thisToken, ...) {
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
-    result = Array_new(thisToken.payload.Array->size, 0);
+    size1 = thisToken.payload.Array->size;
+    size2 = otherToken.payload.Array->size;
+    resultSize = (size1 > size2) ? size1 : size2;
+
+    result = Array_new(resultSize, 0);
 	
-    for (i = 0; i < thisToken.payload.Array->size; i++) {
-        result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, i).type][FUNC_add](Array_get(thisToken, i), Array_get(otherToken, i));
+    for (i = 0; i < resultSize; i++) {
+        if (size1 == 1) {
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, 0)::add(Array_get(otherToken, i))));
+        } else if (size2 == 1) {
+            //result.payload.Array->elements[i] = functionTable[(int)Array_get(otherToken, 0).type][FUNC_add](Array_get(thisToken, i), Array_get(otherToken, 0));        
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::add(Array_get(otherToken, 0))));
+        } else {
+            //result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, i).type][FUNC_add](Array_get(thisToken, i), Array_get(otherToken, i));
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::add(Array_get(otherToken, i))));
+        }
     }
 
     va_end(argp);
@@ -247,7 +263,7 @@ Token Array_add(Token thisToken, ...) {
 /**/
 
 
-/***subtractBlock***/
+/***Array_subtract***/
 
 // Array_subtract: Subtract the second argument array
 // from the first argument array.
@@ -257,19 +273,33 @@ Token Array_add(Token thisToken, ...) {
 // Return a new Array token.
 Token Array_subtract(Token thisToken, ...) {
     int i;
+    int size1;
+    int size2;
+    int resultSize;
+    
     va_list argp; 
     Token result; 
     Token otherToken;
-	
+    
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
-    result = Array_new(thisToken.payload.Array->size, 0);
-	
-    for (i = 0; i < thisToken.payload.Array->size; i++) {
-        result.payload.Array->elements[i]
-        		= functionTable[(int)Array_get(thisToken, i).type][FUNC_subtract]
-        		(Array_get(thisToken, i), Array_get(otherToken, i));
+    size1 = thisToken.payload.Array->size;
+    size2 = otherToken.payload.Array->size;
+    resultSize = (size1 > size2) ? size1 : size2;
+
+    result = Array_new(resultSize, 0);
+    
+    for (i = 0; i < resultSize; i++) {
+        if (size1 == 1) {
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, 0)::subtract(Array_get(otherToken, i))));
+        } else if (size2 == 1) {
+            //result.payload.Array->elements[i] = functionTable[(int)Array_get(otherToken, 0).type][FUNC_add](Array_get(thisToken, i), Array_get(otherToken, 0));        
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::subtract(Array_get(otherToken, 0))));
+        } else {
+            //result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, i).type][FUNC_add](Array_get(thisToken, i), Array_get(otherToken, i));
+            Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::subtract(Array_get(otherToken, i))));
+        }
     }
 
     va_end(argp);
@@ -278,7 +308,7 @@ Token Array_subtract(Token thisToken, ...) {
 /**/
 
 
-/***multiplyBlock***/
+/***Array_multiply***/
 
 // Array_multiply: Multiply an array by another array.
 // Multiplication is element-wise.
@@ -286,24 +316,30 @@ Token Array_subtract(Token thisToken, ...) {
 // Return a new Array token.
 Token Array_multiply(Token thisToken, ...) {
     int i;
+    int size1;
+    int size2;
+    int resultSize;
+    
     va_list argp; 
     Token result; 
-    Token element, otherToken;
-	
+    Token otherToken;
+    
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
-    result = Array_new(thisToken.payload.Array->size, 0);
-	
-    if (otherToken.type == TYPE_Array) {
-        for (i = 0; i < thisToken.payload.Array->size; i++) {
-            element = Array_get(thisToken, i);
-            result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_multiply](element, Array_get(otherToken, i));
-        }
-    } else {
-        for (i = 0; i < thisToken.payload.Array->size; i++) {
-            element = Array_get(thisToken, i);
-            result.payload.Array->elements[i] = functionTable[(int)element.type][FUNC_multiply](element, otherToken);
+    size1 = thisToken.payload.Array->size;
+    size2 = otherToken.payload.Array->size;
+    resultSize = (size1 > size2) ? size1 : size2;
+
+    result = Array_new(resultSize, 0);
+    
+    for (i = 0; i < resultSize; i++) {
+        if (size1 == 1) {
+            result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, 0).type][FUNC_multiply](Array_get(thisToken, 0), Array_get(otherToken, i));
+        } else if (size2 == 1) {
+            result.payload.Array->elements[i] = functionTable[(int)Array_get(otherToken, 0).type][FUNC_multiply](Array_get(thisToken, i), Array_get(otherToken, 0));        
+        } else {
+            result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, i).type][FUNC_multiply](Array_get(thisToken, i), Array_get(otherToken, i));
         }
     }
 
@@ -312,7 +348,7 @@ Token Array_multiply(Token thisToken, ...) {
 }
 /**/
 
-/***divideBlock***/
+/***Array_divide***/
 
 // Array_divide: Divide the elements of the first array
 // by the elements of the second array.
@@ -320,37 +356,39 @@ Token Array_multiply(Token thisToken, ...) {
 // Return a new Array token.
 Token Array_divide(Token thisToken, ...) {
     int i;
+    int size1;
+    int size2;
+    int resultSize;
+    
     va_list argp; 
     Token result; 
     Token otherToken;
-    Token element;
-	
+    
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
-    result = Array_new(thisToken.payload.Array->size, 0);
-	
-    for (i = 0; i < thisToken.payload.Array->size; i++) {
-    	element = Array_get(thisToken, i);
-        switch (otherToken.type) {
-        case TYPE_Array:
-            result.payload.Array->elements[i]
-            		= functionTable[(int)element.type][FUNC_divide]
-            		(element, Array_get(otherToken, i));
-            break;
-        default:
-            result.payload.Array->elements[i]
-            		= functionTable[(int)element.type][FUNC_divide]
-            		(element, otherToken);
-            break;
+    size1 = thisToken.payload.Array->size;
+    size2 = otherToken.payload.Array->size;
+    resultSize = (size1 > size2) ? size1 : size2;
+
+    result = Array_new(resultSize, 0);
+    
+    for (i = 0; i < resultSize; i++) {
+        if (size1 == 1) {
+            result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, 0).type][FUNC_divide](Array_get(thisToken, 0), Array_get(otherToken, i));
+        } else if (size2 == 1) {
+            result.payload.Array->elements[i] = functionTable[(int)Array_get(otherToken, 0).type][FUNC_divide](Array_get(thisToken, i), Array_get(otherToken, 0));        
+        } else {
+            result.payload.Array->elements[i] = functionTable[(int)Array_get(thisToken, i).type][FUNC_divide](Array_get(thisToken, i), Array_get(otherToken, i));
         }
     }
+
     va_end(argp);
     return result;
 }
 /**/
 
-/***negateBlock***/
+/***Array_negate***/
 
 // Array_negate: Negate each element of an array.
 // Return a new Array token.
@@ -361,15 +399,13 @@ Token Array_negate(Token thisToken, ...) {
     result = Array_new(thisToken.payload.Array->size, 0);
 
     for (i = 0; i < thisToken.payload.Array->size; i++) {
-        result.payload.Array->elements[i]
-        		= functionTable[(int)Array_get(thisToken, i).type][FUNC_negate]
-        		(Array_get(thisToken, i));
+        Array_set(result, i, $tokenFunc(Array_get(thisToken, i)::negate()));
     }
     return result;
 }
 /**/
 
-/***zeroBlock***/
+/***Array_zero***/
 
 // Array_zero: Return an array like the specified
 // array but with zeros of the same type.
@@ -388,7 +424,7 @@ Token Array_zero(Token token, ...) {
 }
 /**/
 
-/***oneBlock***/
+/***Array_one***/
 
 // Array_one: Return an array like the specified
 // array but with ones of the same type.
@@ -407,7 +443,7 @@ Token Array_one(Token token, ...) {
 }
 /**/
 
-/***cloneBlock***/
+/***Array_clone***/
 
 // Array_clone: Return a new array just like the
 // specified array.
@@ -430,7 +466,7 @@ Token Array_clone(Token token, ...) {
 
 ------------ static function -----------------------------------------------
 
-/***convertBlock***/
+/***Array_convert***/
 
 // Array_convert: Convert the first argument array
 // into the type specified by the second argument.

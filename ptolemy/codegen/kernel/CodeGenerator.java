@@ -461,6 +461,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Analyze type conversions that may be needed.
         // This must be called before any code is generated.
         _analyzeTypeConversions();
+        
         // Report time consumed if appropriate.
         startTime = _printTimeAndMemory(startTime,
                 "CodeGenerator.analyzeTypeConvert() consumed: ");
@@ -529,6 +530,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // The appending phase.
         code.append(generateCopyright());
+        
+        // FIXME: Some user libraries may depend on our generated
+        // code (i.e. definition of "boolean"). So, we need to append
+        // these user libraries after the sharedCode. An easy to do 
+        // this is to separate the standard libraries from user librar,
+        // hinted by the angle bracket <> syntax in a #include statement.
         code.append(includeFiles);
         code.append(typeResolutionCode);
         code.append(sharedCode);
@@ -605,6 +612,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 "CodeGenerator: final pass consumed: ");
 
         _codeFileName = _writeCode(code);
+        
         /*startTime =*/ _printTimeAndMemory(startTime,
                 "CodeGenerator: writing code consumed: ");
 
@@ -832,6 +840,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateInitializeProcedureName()
             throws IllegalActionException {
 
+        return "";
+    }
+
+    public String generateLineInfo(int lineNumber, String filename) {
         return "";
     }
 
@@ -1718,4 +1730,5 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** List of parameter values seen on the command line. */
     private static List<String> _parameterValues;
+
 }

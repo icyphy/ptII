@@ -293,7 +293,7 @@ public class CodeStream {
         // First, it checks if the code file is parsed already.
         // If so, it gets the code block from the well-constructed code
         // block table.  If not, it has to construct the table.
-        if (_declarations == null) {
+        if (_doParsing) {
             _constructCodeTable(mayNotExist);
         }
 
@@ -334,7 +334,7 @@ public class CodeStream {
         // First, it checks if the code file is parsed already.
         // If so, it gets the code block from the well-constructed code
         // block table.  If not, it has to construct the table.
-        if (_declarations == null) {
+        if (_doParsing) {
             _constructCodeTable(true);
         }
 
@@ -365,7 +365,7 @@ public class CodeStream {
     public String description() throws IllegalActionException {
         StringBuffer buffer = new StringBuffer();
 
-        if (_declarations == null) {
+        if (_doParsing) {
             _constructCodeTable(true);
         }
 
@@ -396,6 +396,20 @@ public class CodeStream {
         return buffer.toString();
     }
 
+    /**
+     * Return a list of code block names contained by this CodeStream.
+     * @return The list of code block names contained by this CodeStream.
+     */
+    public List<String> getAllCodeBlockNames() {
+        List<String> result = new LinkedList<String>();
+        Iterator signatures = _declarations.keys();
+        while (signatures.hasNext()) {
+            Signature signature = (Signature) signatures.next();
+            result.add(signature.functionName);
+        }
+        return result;
+    }
+    
     /** Indent the string to the default indent level.
      * @param inputString The string to be indented.
      * @return The indented string.
@@ -473,11 +487,37 @@ public class CodeStream {
             ex.printStackTrace();
         }
     }
+        
+    /**
+     * Parse additional code blocks from the file specified by the given
+     * file path. The new code blocks will be put alongside and have higher
+     * precedence than the code blocks already contained by this CodeStream.
+     * Also, the specified file path is required to point to an existing
+     * file; otherwise, an exception is thrown.
+     * @param filePath The given file path.
+     * @throws IllegalActionException Thrown if an error occurs when
+     *  parsing the code blocks in the file.
+     */
+    public void parse(String filePath) throws IllegalActionException {
+        // Since CodeStream does lazy evaluation, we have to force it
+        // to parse the previous specified code blocks.
+        if (_doParsing) {
+            _constructCodeTable(true);
+        }
+        
+        // Set the new filePath.
+        _filePath = filePath;
+        
+        // We do not follow the lazy-eval semantics here because the
+        // user explicitly specified parsing here. 
+        _constructCodeTable(false);
+    }
     
     /** Reset this CodeStream object so that its code table will be 
      *  re-constructed when needed.
      */
     public void reset() {
+        _doParsing = true;
         _declarations = null;
     }
 
@@ -571,14 +611,14 @@ public class CodeStream {
     private void _constructCodeTable(boolean mayNotExist)
             throws IllegalActionException {
 
-        _declarations = new CodeBlockTable();
+        if (_declarations == null) {
+            _declarations = new CodeBlockTable();
+        }
         
         if (_codeBlocks != null) {
             _constructCodeTableHelper(mayNotExist);
-            return;
-        }
 
-        if (_filePath != null) {
+        } else  if (_filePath != null) {
             // Use the pre-specified file path.
             _constructCodeTableHelper(mayNotExist);
         } else {
@@ -592,6 +632,8 @@ public class CodeStream {
                 mayNotExist = true; // Superclass
             }
         }
+        
+        _doParsing = false;
     }
 
     /**
@@ -616,33 +658,27 @@ public class CodeStream {
                     return;
                 }
 
-                // FIXME: is there a better way to read the entire file?
-                // create a string of all code in the file
-                
                 int lineNumber = 1;
-                //String filename = _filePath.replaceAll("\\$", "");
+
                 String filename = FileUtilities.nameToURL(_filePath,
                         null, null).getPath();
+                
                 if (_codeGenerator == null && _helper != null) {
                     _codeGenerator = _helper._codeGenerator;
                 }
-                Token sourceLineBinding = null;
-                if (_codeGenerator != null) {
-                    sourceLineBinding = _codeGenerator.sourceLineBinding.getToken();
-                }                        
-
+                
+                // Read the entire content of the code block file.
                 for (String line = reader.readLine(); 
                      line != null;
                      line = reader.readLine(), lineNumber++) {
-                    if (sourceLineBinding != null
-                            && ((BooleanToken) sourceLineBinding).booleanValue()) {
-                        codeToBeParsed.append("#line " + 
-                                lineNumber + " \"" + filename + "\"\n");                            
+                    
+                    if (_needLineInfo()) {
+                        codeToBeParsed.append(_codeGenerator
+                                .generateLineInfo(lineNumber, filename));                            
                     }
                     codeToBeParsed.append(line + _eol);
                 }
             }    
-
             
             if (_templateArguments != null) {
                 // Template parameter substitution.
@@ -661,20 +697,21 @@ public class CodeStream {
             }
             
         } catch (IllegalActionException ex) {
-            _declarations = null;
+            reset();
             throw ex;
+            
         } catch (IOException ex) {
             if (reader == null) {
                 if (mayNotExist) {
                     /* System.out.println("Warning: Helper .[target] file " +
                      _filePath + " not found"); */
                 } else {
-                    _declarations = null;
+                    reset();
                     throw new IllegalActionException(null, ex,
                             "Cannot open file: " + _filePath);
                 }
             } else {
-                _declarations = null;
+                reset();
                 throw new IllegalActionException(null, ex,
                         "Error reading file: " + _filePath);
             }
@@ -688,6 +725,27 @@ public class CodeStream {
                         "Error closing file: " + _filePath);
             }
         }
+    }
+
+    /**
+     * @return
+     * @throws IllegalActionException
+     */
+    private boolean _needLineInfo() throws IllegalActionException {
+        Token sourceLineBinding = null;
+        
+        if (_codeGenerator != null) {
+            sourceLineBinding = _codeGenerator.sourceLineBinding.getToken();
+        }
+        return ((BooleanToken) sourceLineBinding).booleanValue();
+    }
+
+    private List _parseTemplateParameters(StringBuffer code) {
+        String codeString = code.toString().trim();
+        if (codeString.startsWith("template")) {
+            
+        }
+        return null;
     }
 
     /**
@@ -873,6 +931,16 @@ public class CodeStream {
         _parseIndex = _HEADEREND.length() + endIndex;
         return signature;
     }
+
+    
+    private static List _parseParameterList(
+            StringBuffer codeInFile, String startSymbol, String endSymbol) {
+        
+        return _parseParameterList(codeInFile, 0, 
+                codeInFile.length(), startSymbol, endSymbol);
+    }
+
+    private boolean _doParsing = true;
     
     private static List _parseParameterList(
             StringBuffer codeInFile, int start, int end) {
@@ -1089,7 +1157,10 @@ public class CodeStream {
                 
             Hashtable table = (Hashtable) scopeList.get(0);
 
-            if (table.containsKey(signature)) {
+            if (!table.containsKey(signature)) {
+                return _getCode(signature, arguments, 
+                        scopeList.subList(1, size));
+            } else {
                 Object[] codeObject = (Object[]) table.get(signature);
                 StringBuffer codeBlock = (StringBuffer) codeObject[1]; 
                 List parameters = (List) codeObject[2];
@@ -1162,10 +1233,7 @@ public class CodeStream {
                 
                 return returnCode;
 
-            } else {
-                return _getCode(signature, arguments, 
-                        scopeList.subList(1, size));
-            }
+            } 
         }
 
         /**
@@ -1199,10 +1267,7 @@ public class CodeStream {
         private Iterator keys() {
             HashSet signatures = new HashSet();
 
-            Iterator files = _codeTableList.iterator();
-
-            while (files.hasNext()) {
-                Hashtable table = (Hashtable) files.next();
+            for (Hashtable table : _codeTableList) {
                 signatures.addAll(table.keySet());
             }
             return signatures.iterator();
@@ -1212,7 +1277,8 @@ public class CodeStream {
          * LinkedList of Hashtable of code blocks. Each index of the
          * LinkedList represents a separate helper .c code block file. 
          */
-        private LinkedList _codeTableList = new LinkedList();
+        private LinkedList<Hashtable> _codeTableList = 
+            new LinkedList<Hashtable>();
     }
 
     /** 
@@ -1359,4 +1425,15 @@ public class CodeStream {
     private List _templateArguments;
 
     private List _templateParameters;
+
+    public String getCodeBlock(String name) throws IllegalActionException {
+        StringBuffer result = _declarations.getCode(
+                new Signature(name, 0), new LinkedList());
+
+        if (result == null) {
+            throw new IllegalActionException(
+                    "Cannot find code block: \"" + name + "\".");
+        }
+        return result.toString();
+    }
 }

@@ -6,7 +6,7 @@ typedef boolean BooleanToken;
 Token Boolean_new(boolean b);
 /**/
 
-/***newBlock***/
+/***Boolean_new***/
 // make a new integer token from the given value.
 Token Boolean_new(boolean b) {
     Token result;
@@ -16,11 +16,11 @@ Token Boolean_new(boolean b) {
 }
 /**/
 
-/***deleteBlock***/
+/***Boolean_delete***/
 /* Instead of Boolean_delete(), we call scalarDelete(). */
 /**/
 
-/***equalsBlock***/
+/***Boolean_equals***/
 Token Boolean_equals(Token thisToken, ...) {
     va_list argp; 
     Token otherToken; 
@@ -35,23 +35,23 @@ Token Boolean_equals(Token thisToken, ...) {
 /**/
 
 
-/***isCloseToBlock***/
+/***Boolean_isCloseTo***/
 // No need to use Boolean_isCloseTo(), we use Boolean_equals() instead.
 /**/
 
-/***printBlock***/
+/***Boolean_print***/
 Token Boolean_print(Token thisToken, ...) {
     printf((thisToken.payload.Boolean) ? "true" : "false");
 }
 /**/
 
-/***toStringBlock***/
+/***Boolean_toString***/
 Token Boolean_toString(Token thisToken, ...) {
     return String_new(BooleantoString(thisToken.payload.Boolean));
 }
 /**/
 
-/***addBlock***/
+/***Boolean_add***/
 Token Boolean_add(Token thisToken, ...) {
     va_list argp; 
     va_start(argp, thisToken);
@@ -61,39 +61,39 @@ Token Boolean_add(Token thisToken, ...) {
 }
 /**/
 
-/***subtractBlock***/
+/***Boolean_subtract***/
 /** Boolean_subtract is not supported. */
 /**/
 
-/***multiplyBlock***/
+/***Boolean_multiply***/
 /** Boolean_multiply is not supported. */
 /**/
 
-/***divideBlock***/
+/***Boolean_divide***/
 /** Boolean_divide is not supported. */
 /**/
 
-/***negateBlock***/
+/***Boolean_negate***/
 Token Boolean_negate(Token thisToken, ...) {
     thisToken.payload.Boolean = !thisToken.payload.Boolean;
     return thisToken;
 }
 /**/
 
-/***zeroBlock***/
+/***Boolean_zero***/
 Token Boolean_zero(Token token, ...) {
     return Boolean_new(false);
 }
 /**/
 
-/***oneBlock***/
+/***Boolean_one***/
 Token Boolean_one(Token token, ...) {
     return Boolean_new(true);
 }
 /**/
 
 
-/***cloneBlock***/
+/***Boolean_clone***/
 Token Boolean_clone(Token thisToken, ...) {
     return thisToken;
 }
@@ -101,7 +101,7 @@ Token Boolean_clone(Token thisToken, ...) {
 
 
 --------------------- static functions ------------------------------
-/***convertBlock***/
+/***Boolean_convert***/
 Token Boolean_convert(Token token, ...) {
     switch (token.type) {
         // FIXME: not finished
