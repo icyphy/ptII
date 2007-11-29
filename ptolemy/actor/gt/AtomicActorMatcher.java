@@ -91,7 +91,7 @@ ValueListener {
     }
 
     public Criterion get(String name) {
-        if (name.startsWith("Criterion")) {
+        if (name.startsWith("criterion")) {
             String indexString = name.substring(9);
             try {
                 int index = Integer.parseInt(indexString);
@@ -130,7 +130,7 @@ ValueListener {
                     i++;
                     Criterion criterion = (Criterion) ingredient;
                     if (criterion instanceof AttributeCriterion) {
-                        _labelSet.add("Criterion" + i);
+                        _labelSet.add("criterion" + i);
                     }
                 }
             } catch (MalformedStringException e) {

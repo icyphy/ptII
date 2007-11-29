@@ -97,7 +97,8 @@ public class FakedRecordToken extends RecordToken {
 
     protected BooleanToken _isEqualTo(Token token)
     throws IllegalActionException {
-        return BooleanToken.getInstance(equals(token));
+    	throw new IllegalActionException(
+    			"IsEqualTo operation is not supported.");
     }
 
     protected Token _modulo(Token rightArgument) throws IllegalActionException {

@@ -60,6 +60,7 @@ JSRCS = \
 	ActorScopeExtender.java \
 	AtomicActorMatcher.java \
 	CompositeActorMatcher.java \
+	Constraint.java \
 	CriterionToken.java \
 	DefaultDirectoryAttribute.java \
 	DefaultModelAttribute.java \
@@ -107,6 +108,7 @@ OPTIONAL_FILES = \
 	'AtomicActorMatcher$$1.class' \
 	'AtomicActorMatcher$$LoadActorIconChangeRequest.class' \
 	'AtomicActorMatcher$$RestoreAppearanceChangeRequest.class' \
+	'Constraint$$ConstraintParameter.class' \
 	'GTIngredient$$FieldIterator.class' \
 	'GTIngredient$$NamedObjMatchResult.class' \
 	'GraphAnalyzer$$IndexedList.class' \

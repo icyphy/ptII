@@ -73,7 +73,7 @@ public class PortCriterion extends Criterion {
 
     public String getPortID(GTIngredientList list) {
         int position = list.indexOf(this);
-        return "Criterion" + (position + 1);
+        return "criterion" + (position + 1);
     }
 
     public String getPortName() {

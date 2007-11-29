@@ -6,6 +6,18 @@
   <entity name="CompositeActorMatcher" class="ptolemy.actor.gt.CompositeActorMatcher"/>
   <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher"/>
   <entity name="PatternAttributes" class="ptolemy.moml.EntityLibrary">
+    <property name="Constraint" class="ptolemy.actor.gt.Constraint">
+      <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>
+      </property>
+      <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+        <configure>
+          <svg>
+            <text style="font-size:14; font-family:SansSerif; fill:blue">-C-</text>
+          </svg>
+        </configure>
+      </property>
+    </property>
     <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute">
       <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
         <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}"/>

@@ -67,7 +67,7 @@
             <vertex name="vertex1" value="[120.0, 35.0]">
             </vertex>
         </relation>
-        <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
+        <link port="AtomicActorMatcher.criterion1" relation="relation"/>
     </entity>
     <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
         <property name="replacementObject" class="ptolemy.actor.gt.ReplacementObjectAttribute" value="E:.PublisherTest.Replacement">
@@ -118,7 +118,7 @@
                 </property>
             </relation>
             <link port="port" relation="relation"/>
-            <link port="AtomicActorMatcher.Criterion1" relation="relation"/>
+            <link port="AtomicActorMatcher.criterion1" relation="relation"/>
             <link port="Test.input" relation="relation"/>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
