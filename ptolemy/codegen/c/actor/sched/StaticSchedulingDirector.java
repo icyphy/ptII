@@ -249,11 +249,13 @@ public class StaticSchedulingDirector extends Director {
         code.append(super.generatePreinitializeCode());
 
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
-        // FIXME: Why is this here?  Previously we should have
-        // called preinitialize() on the director, which will have constructed
-        // the schedule.
-        // director.invalidateSchedule();
-        // director.getScheduler().getSchedule();
+
+        // Force schedule (re)calculation before generating code
+        // because we need to know buffer capacity. (otherwise
+        // sometimes new receivers are created but the schedule
+        // is not re-calculated.)
+        director.invalidateSchedule();
+        director.getScheduler().getSchedule();
 
         return code.toString();
     }
