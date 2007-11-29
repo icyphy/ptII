@@ -1824,7 +1824,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public String processCode(String code) throws IllegalActionException {
         StringBuffer result = new StringBuffer();
-        int currentPos = code.indexOf("$");
+        int currentPos = _getMacroStartIndex(code, 0);
 
         if (currentPos < 0) {
             // No "$" in the string
@@ -1847,7 +1847,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 return result.toString();
             }
 
-            int nextPos = code.indexOf("$", closeParenIndex + 1);
+            int nextPos = _getMacroStartIndex(code, closeParenIndex + 1);
 
             if (nextPos < 0) {
                 //currentPos is the last "$"
@@ -1888,6 +1888,25 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
 
         return result.toString();
+    }
+
+    /**
+     * Return the position of the first occurence of the "&" sign in
+     * the given code string, starting from the given from position.
+     * If the "&" sign found is escaped by "\\", it will be ignored. 
+     * @param code The given code string.
+     * @param from The given position to start searching from.
+     * @return The next position of the "&" sign.
+     */
+    private int _getMacroStartIndex(String code, int from) {
+        int position = from - 1;
+        
+        do {
+            position = code.indexOf("$", position + 1);
+            
+        } while (position > 0 && code.charAt(position - 1) == '\\');
+        
+        return position;
     }
 
     /** Reset the offsets of all channels of all input ports of the
