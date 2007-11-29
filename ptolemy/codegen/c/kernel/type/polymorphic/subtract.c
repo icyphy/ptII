@@ -22,6 +22,12 @@ inline double subtract_Double_Double(double a1, double a2) {
 }
 /**/
 
+/***subtract_Double_Int***/
+inline double subtract_Double_Int(double a1, int a2) {
+    return a1 - a2;   
+}
+/**/
+
 /***subtract_Long_Long***/
 inline long long subtract_Long_Long(long long a1, long long a2) {
     return a1 - a2;   
@@ -152,5 +158,10 @@ inline Token subtract_Long_Array(Token a1, long long a2) {
         Array_set(result, i, $subtract_Token_Long(Array_get(a1, i), a2));
     }
     return result;
+}
+/**/
+/***subtract_Double_Double***/
+inline double subtract_Double_Double(double a1, double a2) {
+    return a1 - a2;   
 }
 /**/
