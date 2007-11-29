@@ -93,15 +93,6 @@ implements Settable {
         parameter.removeValueListener(listener);
     }
 
-    public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
-        super.setContainer(container);
-        if (container != null) {
-            _checkContainerClass(container, Pattern.class, false);
-            _checkUniqueness(container);
-        }
-    }
-
     public void setExpression(String expression) throws IllegalActionException {
         parameter.setExpression(expression);
     }
