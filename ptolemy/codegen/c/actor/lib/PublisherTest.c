@@ -1,6 +1,6 @@
 /*** preinitBlock ***/
 // Initialize to -1 because we ALWAYS increment first.
-// This is more convenient for multiport, where we check if $channel
+// This is more convenient for multiport, where we check if channel
 // number is equal zero (the first channel). If so, then we increment.
 int $actorSymbol(numberOfTokensSeen) = -1;
 /**/
@@ -18,6 +18,7 @@ $actorSymbol(toleranceToken) = $new(Double($ref(tolerance)));
 /**/
 
 /***IntBlock($channel)***/
+// IntBlock($channel)
 $ref(output#$channel) = $ref(($cgType(output)) input#$channel);
 
 $actorSymbol(numberOfTokensSeen)++;
@@ -65,6 +66,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 
 
 /***DoubleBlock($channel)***/
+//DoubleBlock($channel)
 $ref(output#$channel) = $ref(($cgType(output)) input#$channel);
 
 $actorSymbol(numberOfTokensSeen)++;
