@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="CSPDomain" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
+<entity name="CSPDomain" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton">
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="0">
     </property>
     <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -162,7 +162,7 @@
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="f=true">
@@ -182,7 +182,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="f!">
         </property>
     </relation>
-    <relation name="relation2" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation2" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="hT_isPresent">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
@@ -202,7 +202,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hT?">
         </property>
     </relation>
-    <relation name="relation3" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation3" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="hTF=true">
@@ -222,7 +222,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hTF!">
         </property>
     </relation>
-    <relation name="relation5" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation5" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="p_isPresent">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
@@ -242,7 +242,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="p?">
         </property>
     </relation>
-    <relation name="relation6" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation6" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pR=true">
@@ -262,7 +262,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="pR!">
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation7" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="t=true">
@@ -282,7 +282,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="t!">
         </property>
     </relation>
-    <relation name="relation8" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation8" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="g_isPresent">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
@@ -302,7 +302,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="g?">
         </property>
     </relation>
-    <relation name="relation9" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation9" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="p_isPresent">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
@@ -322,7 +322,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="p?">
         </property>
     </relation>
-    <relation name="relation10" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation10" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="hT_isPresent">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
@@ -342,7 +342,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hT?">
         </property>
     </relation>
-    <relation name="relation11" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation11" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="hTT=true">
@@ -362,7 +362,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="hTT!">
         </property>
     </relation>
-    <relation name="relation12" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation12" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="g_isPresent">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
@@ -382,7 +382,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="g?">
         </property>
     </relation>
-    <relation name="relation13" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation13" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pR=true">
@@ -402,7 +402,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="pR!">
         </property>
     </relation>
-    <relation name="relation14" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation14" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="t=true">
@@ -422,7 +422,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="t!">
         </property>
     </relation>
-    <relation name="relation18" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="relation18" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="fR_isPresent">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">

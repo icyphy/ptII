@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SDFDomain_SDFActor" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
+<entity name="SDFDomain_SDFActor" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomaton">
     <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="0_0">
     </property>
     <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -120,7 +120,7 @@
         <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
         </port>
     </entity>
-    <relation name="SDFDomain_SDFActor" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="f=true">
@@ -140,7 +140,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="f;">
         </property>
     </relation>
-    <relation name="SDFDomain_SDFActor2" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor2" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="g=true">
@@ -160,7 +160,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="g;">
         </property>
     </relation>
-    <relation name="SDFDomain" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="p_isPresent">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
@@ -180,7 +180,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="p?">
         </property>
     </relation>
-    <relation name="SDFDomain_SDFActor3" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor3" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="g=true">
@@ -200,7 +200,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="g;">
         </property>
     </relation>
-    <relation name="SDFDomain4" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain4" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="p_isPresent">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
@@ -220,7 +220,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="p?">
         </property>
     </relation>
-    <relation name="SDFDomain5" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain5" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pR=true">
@@ -240,7 +240,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="pR!">
         </property>
     </relation>
-    <relation name="SDFDomain6" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain6" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="pR=true">
@@ -260,7 +260,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="pR!">
         </property>
     </relation>
-    <relation name="SDFDomain_SDFActor7" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor7" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="t=true">
@@ -280,7 +280,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="t;">
         </property>
     </relation>
-    <relation name="SDFDomain_SDFActor9" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor9" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="fR=true">
@@ -300,7 +300,7 @@
         <property name="label" class="ptolemy.kernel.util.StringAttribute" value="fR;">
         </property>
     </relation>
-    <relation name="SDFDomain_SDFActor10" class="ptolemy.domains.fsm.kernel.InterfaceAutomatonTransition">
+    <relation name="SDFDomain_SDFActor10" class="ptolemy.domains.fsm.kernel.ia.InterfaceAutomatonTransition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
         </property>
         <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="t=true">
