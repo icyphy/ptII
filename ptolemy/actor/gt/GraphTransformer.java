@@ -263,14 +263,21 @@ public class GraphTransformer extends ChangeRequest {
             try {
                 GTEntity patternEntity = (GTEntity) pattern;
                 GTEntity replacementEntity = (GTEntity) replacement;
-                ComponentEntity hostEntity = (ComponentEntity) host;
                 GTIngredientList ingredientList = replacementEntity
                         .getOperationsAttribute().getIngredientList();
                 for (GTIngredient ingredient : ingredientList) {
-                    ChangeRequest request =
-                        ((Operation) ingredient).getChangeRequest(patternEntity,
-                                replacementEntity, hostEntity);
-                    request.execute();
+                    ChangeRequest request;
+                    try {
+                        request = ((Operation) ingredient).getChangeRequest(
+                                _pattern, _replacement, _matchResult,
+                                patternEntity, replacementEntity);
+                        if (request != null) {
+                            request.execute();
+                        }
+                    } catch (IllegalActionException e) {
+                        throw new TransformationException(
+                                "Unable to obtain change request.", e);
+                    }
                 }
             } catch (MalformedStringException e) {
                 throw new TransformationException(

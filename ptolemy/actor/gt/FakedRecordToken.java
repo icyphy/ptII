@@ -30,11 +30,15 @@ package ptolemy.actor.gt;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -59,6 +63,20 @@ public class FakedRecordToken extends RecordToken {
         return null;
     }
 
+    public Type getType() {
+        Set<String> labelSet = labelSet();
+        Iterator<String> labelIterator = labelSet.iterator();
+        String[] labels = new String[labelSet.size()];
+        Type[] types = new Type[labelSet.size()];
+
+        for (int i = 0; i < labels.length; i++) {
+            labels[i] = labelIterator.next();
+            types[i] = BaseType.UNKNOWN;
+        }
+
+        return new FakedRecordType(labels, types);
+    }
+
     public int hashCode() {
         return Arrays.hashCode(_thisArray);
     }
@@ -81,6 +99,14 @@ public class FakedRecordToken extends RecordToken {
                 "Additive identity (zero) does not exist.");
     }
 
+    public static class FakedRecordType extends RecordType {
+
+        public FakedRecordType(String[] labels, Type[] types) {
+            super(labels, types);
+        }
+
+    }
+
     protected Token _add(Token rightArgument) throws IllegalActionException {
         throw new IllegalActionException("Add operation is not supported.");
     }
@@ -97,8 +123,8 @@ public class FakedRecordToken extends RecordToken {
 
     protected BooleanToken _isEqualTo(Token token)
     throws IllegalActionException {
-    	throw new IllegalActionException(
-    			"IsEqualTo operation is not supported.");
+        throw new IllegalActionException(
+                "IsEqualTo operation is not supported.");
     }
 
     protected Token _modulo(Token rightArgument) throws IllegalActionException {

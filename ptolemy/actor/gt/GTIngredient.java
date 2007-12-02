@@ -30,7 +30,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import ptolemy.kernel.util.KernelRuntimeException;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// Rule
@@ -66,8 +65,6 @@ public abstract class GTIngredient {
     public boolean isEnabled(int index) {
         return _enablements[index];
     }
-
-    public abstract NamedObjMatchResult match(NamedObj object);
 
     public void setEnabled(int index, boolean isEnabled) {
         _enablements[index] = isEnabled;

@@ -29,8 +29,10 @@ package ptolemy.actor.gt.ingredients.operations;
 import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.GTIngredientList;
+import ptolemy.actor.gt.Pattern;
+import ptolemy.actor.gt.Replacement;
 import ptolemy.actor.gt.ValidationException;
-import ptolemy.kernel.ComponentEntity;
+import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
@@ -57,12 +59,18 @@ public class RenameOperation extends Operation {
         setValues(values);
     }
 
-    public ChangeRequest getChangeRequest(GTEntity patternEntity,
-            GTEntity replacementEntity, ComponentEntity hostEntity) {
-        NamedObj parent = hostEntity.getContainer();
-        String moml = "<entity name=\"" + hostEntity.getName()
-                + "\"><rename name=\"" + _name + "\"/></entity>";
-        return new MoMLChangeRequest(this, parent, moml, null);
+    public ChangeRequest getChangeRequest(Pattern pattern,
+            Replacement replacement, MatchResult matchResult,
+            GTEntity patternEntity, GTEntity replacementEntity) {
+        if (isNameEnabled()) {
+            NamedObj hostEntity = (NamedObj) matchResult.get(patternEntity);
+            NamedObj parent = hostEntity.getContainer();
+            String moml = "<entity name=\"" + hostEntity.getName()
+                    + "\"><rename name=\"" + _name + "\"/></entity>";
+            return new MoMLChangeRequest(this, parent, moml, null);
+        } else {
+            return null;
+        }
     }
 
     public GTIngredientElement[] getElements() {
@@ -90,31 +98,6 @@ public class RenameOperation extends Operation {
 
     public boolean isNameEnabled() {
         return isEnabled(0);
-    }
-
-    public NamedObjMatchResult match(NamedObj object) {
-        if (object instanceof ComponentEntity) {
-            if (isNameEnabled()) {
-                try {
-                    Class<?> superclass = Class.forName(getName());
-                    if (superclass.isInstance(object)) {
-                        return NamedObjMatchResult.MATCH;
-                    } else {
-                        return NamedObjMatchResult.NOT_MATCH;
-                    }
-                } catch (ClassNotFoundException e) {
-                    return NamedObjMatchResult.NOT_MATCH;
-                }
-            } else {
-                return NamedObjMatchResult.MATCH;
-            }
-        } else {
-            return NamedObjMatchResult.UNAPPLICABLE;
-        }
-    }
-
-    public void setSuperclassEnabled(boolean enabled) {
-        setEnabled(0, enabled);
     }
 
     public void setValue(int index, Object value) {

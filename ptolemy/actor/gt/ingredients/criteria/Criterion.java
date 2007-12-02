@@ -28,8 +28,9 @@
 
 package ptolemy.actor.gt.ingredients.criteria;
 
-import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.GTIngredient;
+import ptolemy.actor.gt.GTIngredientList;
+import ptolemy.kernel.util.NamedObj;
 
 /**
 
@@ -55,5 +56,7 @@ public abstract class Criterion extends GTIngredient {
     public Criterion(GTIngredientList owner, int elementCount) {
         super(owner, elementCount);
     }
+
+    public abstract NamedObjMatchResult match(NamedObj object);
 
 }

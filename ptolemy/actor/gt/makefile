@@ -70,6 +70,7 @@ JSRCS = \
 	GTIngredientElement.java \
 	GTIngredientList.java \
 	GTIngredientsAttribute.java \
+	GTParameter.java \
 	GTTools.java \
 	GraphAnalyzer.java \
 	GraphMatcher.java \
@@ -83,6 +84,7 @@ JSRCS = \
 	NamedObjToken.java \
 	NamedObjVariable.java \
 	ParameterAttribute.java \
+	PartialEvaluator.java \
 	Pattern.java \
 	PatternObjectAttribute.java \
 	RelationCollapsingAttribute.java \
@@ -108,9 +110,11 @@ OPTIONAL_FILES = \
 	'AtomicActorMatcher$$1.class' \
 	'AtomicActorMatcher$$LoadActorIconChangeRequest.class' \
 	'AtomicActorMatcher$$RestoreAppearanceChangeRequest.class' \
-	'Constraint$$ConstraintParameter.class' \
+	'FakedRecordToken$$FakedRecordType.class' \
 	'GTIngredient$$FieldIterator.class' \
 	'GTIngredient$$NamedObjMatchResult.class' \
+	'GTParameter$$Evaluator.class' \
+	'GTParameter$$Scope.class' \
 	'GraphAnalyzer$$IndexedList.class' \
 	'GraphAnalyzer$$IndexedLists.class' \
 	'GraphAnalyzer$$Path.class' \

@@ -29,10 +29,13 @@
 package ptolemy.actor.gt.ingredients.operations;
 
 import ptolemy.actor.gt.GTEntity;
-import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.GTIngredient;
-import ptolemy.kernel.ComponentEntity;
+import ptolemy.actor.gt.GTIngredientList;
+import ptolemy.actor.gt.Pattern;
+import ptolemy.actor.gt.Replacement;
+import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
 
@@ -59,9 +62,9 @@ public abstract class Operation extends GTIngredient {
         super(owner, elementCount);
     }
 
-    public ChangeRequest getChangeRequest(GTEntity patternEntity,
-            GTEntity replacementEntity, ComponentEntity hostEntity) {
-        return null;
-    }
+    public abstract ChangeRequest getChangeRequest(Pattern pattern,
+            Replacement replacement, MatchResult matchResult,
+            GTEntity patternEntity, GTEntity replacementEntity)
+    throws IllegalActionException;
 
 }

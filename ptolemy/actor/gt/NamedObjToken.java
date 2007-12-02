@@ -33,7 +33,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.actor.gt.ingredients.criteria.Criterion;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
@@ -75,7 +77,12 @@ public class NamedObjToken extends FakedRecordToken {
             child = GTTools.getChild(_object, label, false, true, true, true);
         }
         try {
-            return NamedObjVariable.getNamedObjVariable(child, true).getToken();
+            if (child instanceof Variable) {
+                return ((Variable) child).getToken();
+            } else {
+                return NamedObjVariable.getNamedObjVariable(child, true)
+                        .getToken();
+            }
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
@@ -87,6 +94,11 @@ public class NamedObjToken extends FakedRecordToken {
 
     public int hashCode() {
         return _object.hashCode();
+    }
+
+    public BooleanToken isEqualTo(Token rightArgument)
+    throws IllegalActionException {
+        return _isEqualTo(rightArgument);
     }
 
     public Set<String> labelSet() {
@@ -117,6 +129,11 @@ public class NamedObjToken extends FakedRecordToken {
 
     public int length() {
         return labelSet().size();
+    }
+
+    protected BooleanToken _isEqualTo(Token object)
+    throws IllegalActionException {
+        return BooleanToken.getInstance(equals(object));
     }
 
     private Set<String> _labelSet;

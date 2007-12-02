@@ -48,6 +48,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	AttributeOperation.java \
 	Operation.java \
 	OperationElement.java \
 	RenameOperation.java \

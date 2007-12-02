@@ -48,6 +48,7 @@ import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.data.Pair;
 import ptolemy.actor.gt.ingredients.criteria.AttributeCriterion;
+import ptolemy.actor.gt.ingredients.criteria.Criterion;
 import ptolemy.actor.gt.ingredients.criteria.PortCriterion;
 import ptolemy.actor.gt.ingredients.criteria.SubclassCriterion;
 import ptolemy.data.BooleanToken;
@@ -330,7 +331,7 @@ public class GraphMatcher extends GraphAnalyzer {
     }
 
     private boolean _checkConstraint(Pattern pattern, Constraint constraint) {
-        return true;
+        return constraint.check(pattern, _match);
     }
 
     private boolean _checkConstraints() {
@@ -458,7 +459,7 @@ public class GraphMatcher extends GraphAnalyzer {
                 for (GTIngredient rule : ruleList) {
                     if (rule instanceof AttributeCriterion
                             || rule instanceof SubclassCriterion) {
-                        success = rule.match(hostActor) ==
+                        success = ((Criterion) rule).match(hostActor) ==
                             NamedObjMatchResult.MATCH;
                         if (!success) {
                             break;
