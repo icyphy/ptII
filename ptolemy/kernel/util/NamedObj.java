@@ -1762,14 +1762,23 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
         // Setting override to null indicates that no override has
         // occurred.
-        // NOTE: This is no longer the right thing to do.
+        // NOTE: This setting of _override to null was commented
+        // out, justified by the following NOTE.  However,
+        // the following NOTE is questionable, since this public
+        // method is invoked by the MoMLParser and MoMLChangeRequest
+        // in circumstances where they really want the objects to be
+        // marked as not overridden. Thus, I have changed this so that
+        // local uses of this method are replaced with direct actions
+        // and public accesses of this method revert to the original
+        // behavior.  11/07 EAL
+        // OBSOLETE NOTE: This is no longer the right thing to do.
         // Upon instantiating, the clone method creates a copy
         // of the _override field.  Then the _adjustOverrides()
         // method adjusts the value of that field to reflect
         // that the new object gets its value from the object
         // from which it was cloned, or from whatever that
         // gets it from.
-        // _override = null;
+        _override = null;
     }
 
     /** Set a name to present to the user.
@@ -2439,6 +2448,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             }
 
             // Export MoML if the value has been set directly.
+            // FIXME: This is where WindowPropertiesAttribute is returning false.
             if ((_override.size() == 1)
                     && (((Integer) _override.get(0)).intValue() == 0)) {
                 return false;
@@ -2483,7 +2493,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
 
         while (objects.hasNext()) {
             NamedObj containedObject = (NamedObj) objects.next();
-            containedObject.setDerivedLevel(depth);
+            // NOTE: Do not invoke setDerivedLevel() because that
+            // method nulls the _override field.
+            // containedObject.setDerivedLevel(depth);
+            if (depth < containedObject._derivedLevel) {
+                containedObject._derivedLevel = depth;
+            }
             containedObject._markContentsDerived(depth);
 
             // If this object has previously had
@@ -2856,8 +2871,13 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                                 // Indicate that the existence of the
                                 // candidate is implied by a
                                 // parent-child relationship at the
-                                // current depth.
-                                candidate.setDerivedLevel(depth);
+                                // current depth. NOTE: Do not use setDerivedLevel()
+                                // because that method resets the _override field.
+                                // candidate.setDerivedLevel(depth);
+                                if (depth < candidate._derivedLevel) {
+                                    candidate._derivedLevel = depth;
+                                }
+
                                 candidate._markContentsDerived(depth);
                                 candidate._adjustOverride(depth);
                             } else {
