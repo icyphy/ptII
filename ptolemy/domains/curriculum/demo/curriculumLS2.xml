@@ -28,14 +28,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[700.0, -20.0]">
         </property>
     </property>
-    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Proposed L&amp;S ECE BA requirements&#10; - Science (Physics 7A/B? Bio?)&#10; - Math 1A, 1B, 53 (?), 54&#10; - CS 61A&#10; - Three of 20, 40, 61B, 61C, 70&#10; - 20 (24?) units of upper division EECS&#10; - other university requirements&#10;&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 405.0]">
-        </property>
-    </property>
     <property name="HighlightEntities" class="ptolemy.domains.curriculum.HighlightEntities">
         <property name="_highlightColor" class="ptolemy.actor.gui.ColorAttribute" value="">
         </property>
@@ -82,14 +74,6 @@
         <property name="label" class="ptolemy.data.expr.StringParameter" value="Upper Division">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 175.0]">
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sample program (systems):">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 540.0]">
         </property>
     </property>
     <property name="HighlightEntities2" class="ptolemy.domains.curriculum.HighlightEntities">
@@ -142,18 +126,36 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 620.0]">
         </property>
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Current EECS/COE requirements:&#10;- 120 units total&#10;- 30 units math &amp; science, including:&#10;  + 11 units science w/ Phys 7A/B&#10;  + Math 1A/B, 53, 54.&#10;  + Physics 7C or Chem 1A, 1B,&#10;   3AB, 4AB, 5, Bio 1A, 1B,&#10;   Astro 7A, MCB 32 or ...&#10;- EECS 20, 40, 61A, 61B, 61C&#10;- 45 units of Engineering w/ 20 EECS">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 200.0]">
-        </property>
-    </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="L&amp;S BA, major in ECE,&#10;concentration on systems.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 560.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sample program:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 530.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Proposed ECE major BA requirements&#10; - Math 1A, 1B, 54&#10; - CS 61A&#10; - Three of 20, 40, 61B, 61C, 70&#10; - 20 units of upper division EECS&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 455.0}">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="General L&amp;S requirements:&#10; - 120 units, 36 upper div., 6 outside EECS&#10; - Reading and composition&#10; - Quantitative reasoning&#10; - Foreign language&#10; - One course from each of:&#10;    + Arts &amp; Literature&#10;    + Biological Science&#10;    + Historical Studies&#10;    + International Studies&#10;    + Philosophy &amp; Values&#10;    + Physical Science&#10;    + Social &amp; Behavioral&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 215.0}">
         </property>
     </property>
     <entity name="20" class="ptolemy.domains.curriculum.Course">
