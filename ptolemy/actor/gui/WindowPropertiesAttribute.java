@@ -83,9 +83,15 @@ public class WindowPropertiesAttribute extends Parameter implements
         super(container, name);
         setVisibility(Settable.NONE);
 
-        // The class mechanism tends to suppress export of this attribute.
-        // Why?  We override that here.
-        setPersistent(true);
+        // The following line, if uncommented, results in
+        // icons that are defined in an external file always being
+        // exported along with the model that defines them.  This bloats
+        // the MoML files with information that is not needed. I suspect
+        // the line was put there because it wasn't clear that you need
+        // to invoke File->Save in a submodel if you want the location
+        // and position of the submodel window to be saved. It is not
+        // sufficient to invoke save just at the top level.
+        // setPersistent(true);
     }
 
     ///////////////////////////////////////////////////////////////////
