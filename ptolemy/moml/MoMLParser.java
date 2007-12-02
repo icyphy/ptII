@@ -5323,7 +5323,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Create a list to keep track of objects created.
         newParser._topObjectsCreated = new LinkedList();
 
-        // FIXME: Why do we parse  this and never use the results?
+        // We don't need the results of the parse because
+        // the context for the parser has been set so the
+        // objects are already in the hierarchy.
         /*NamedObj result = */newParser.parse(_base, input);
 
         // Have to mark the contents derived objects, so that
