@@ -131,9 +131,11 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
     public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
             ParserScope scope) throws IllegalActionException {
 
-        // Make a first pass to evaluate constants and type convert.
-        //CParseTreeEvaluator evaluator = new CParseTreeEvaluator();
-        //evaluator.evaluateParseTree(node, scope);
+        
+        
+        // Make a first pass to infer types.
+        ParseTreeTypeInference typeInference = new ParseTreeTypeInference();
+        typeInference.inferTypes(node, scope);
 
         _scope = scope;
 
@@ -1440,25 +1442,30 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                         + "not equal to number of operators plus one");
 
         //ptolemy.data.Token result = tokens[0];
-        //_fireCode.append("(");
         String result = "";
 
         ptolemy.data.Token childToken = _evaluateChild(node, 0);
-        result += _childCode;
+
+        String childType = CodeGeneratorHelper.codeGenType(
+                ((ASTPtRootNode) node.jjtGetChild(0)).getType());
+        
+        String nodeType = CodeGeneratorHelper.codeGenType(node.getType());
+        
+        result += "$convert_" + childType + "_" + nodeType + "(" + _childCode + ")";
         
         for (int i = 1; i < numChildren; i++) {
-            Token operator = (Token) lexicalTokenList.get(i - 1);
+            childType = CodeGeneratorHelper.codeGenType(
+                    ((ASTPtRootNode) node.jjtGetChild(i)).getType());
 
+            Token operator = (Token) lexicalTokenList.get(i - 1);
+            
             //ptolemy.data.Token nextToken = tokens[i];
             if (operator.kind == PtParserConstants.PLUS) {
-                //_fireCode.append("+");
-                result += "+";
+                result = "$add_" + nodeType + "_" + childType + "(" + result + ", ";
 
                 //childToken = childToken.add(_evaluateChild(node, i));
             } else if (operator.kind == PtParserConstants.MINUS) {
-                //_fireCode.append("-");
-
-                result += "-";
+                result = "$subtract_" + nodeType + "_" + childType + "(" + result + ", ";
 
                 //childToken = childToken.subtract(_evaluateChild(node, i));
             } else {
@@ -1466,10 +1473,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             }
 
             _evaluateChild(node, i);
-            result += _childCode;
+            result += _childCode + ")";
         }
 
-        //_fireCode.append(")");
         _childCode = "(" + result + ")";
 
 
