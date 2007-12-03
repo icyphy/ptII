@@ -4081,24 +4081,29 @@ test MoMLParser-28.1 {setIconLoader()} {
 	[[$parser28 getIconLoader] loadIconForClass testClassFoo $toplevel28]
 } {1 0}
 
-test MoMLParser-28.1 {The contents of the icon should not be in the exported Moml} {
-   # Uses 28.1 above
+# Reset the iconLoader in case we run this twice
+$parser28 setIconLoader [java::null]
 
-   # There was a bug introduced between 5.0 and 6.1 where if we create
+set moml29 "$header $body28"
+test MoMLParser-29.1 {The contents of the icon should not be in the exported Moml} {
+
+    set w29 [java::new ptolemy.kernel.util.Workspace w29]
+    set parser29 [java::new ptolemy.moml.MoMLParser $w29]
+    $parser29 reset
+    set toplevel29 [java::cast ptolemy.kernel.CompositeEntity \
+            [$parser29 parse $moml29]]
+
    # a blank model and drag a MobileModel into it, the contents of
    # MobileModelIcon.xml is visible when we export the MoML.
-   # Thomas Mandl reported this bug.
 
    # This test is an effort to replicate that bug.
    # It exports the MoML from above and looks for the "height"
    # parameter, which is in testClassIcon.xml  	
 
-   set moml [$toplevel28 exportMoML]
+   set moml [$toplevel29 exportMoML]
    regexp {<.*height.*>} "$moml" results
 
    # Should be empty, should not contain the contents of testClassIcon.xml
    list $results 
-} {}
+} {{}}
 
-# Reset the iconLoader in case we run this twice
-$parser28 setIconLoader [java::null]
