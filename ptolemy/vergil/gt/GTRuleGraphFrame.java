@@ -984,8 +984,12 @@ TableModelListener, ValueListener {
                 return null;
             }
 
-            File[] files = _listFiles(directoryFile, subdirs, fileFilter);
-            return files;
+            if (directoryFile == null) {
+            	return null;
+            } else {
+            	File[] files = _listFiles(directoryFile, subdirs, fileFilter);
+	            return files;
+            }
         }
 
         private File[] _listFiles(File directory, boolean includeSubdir,
