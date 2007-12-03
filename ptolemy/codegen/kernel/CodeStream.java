@@ -727,15 +727,23 @@ public class CodeStream {
         }
     }
 
-    /**
-     * @return
-     * @throws IllegalActionException
+    /** Return true if the generated source code is bound to the line
+     *  number and file of the helper templates.    
+     * @return True if the generated source code is bound to the line
+     *  number and file of the helper templates.    Return false
+     *  if the source is bound only to the output file, or if there is
+     *  no CodeGenerator associated with this stream.
+     * @throws IllegalActionException If there is a problem reading
+     *  the {@link ptolemy.codegen.kernel.CodeGenerator#sourceLineBinding}    
+     *  parameter. 
      */
     private boolean _needLineInfo() throws IllegalActionException {
         Token sourceLineBinding = null;
         
         if (_codeGenerator != null) {
             sourceLineBinding = _codeGenerator.sourceLineBinding.getToken();
+        } else {
+            return false;
         }
         return ((BooleanToken) sourceLineBinding).booleanValue();
     }
