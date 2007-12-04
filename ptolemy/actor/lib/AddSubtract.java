@@ -33,6 +33,7 @@ import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// AddSubtract
@@ -97,6 +98,9 @@ public class AddSubtract extends TypedAtomicActor {
         minus = new TypedIOPort(this, "minus", true, false);
         minus.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
+        
+        output.setTypeAtLeast(plus);
+        output.setTypeAtLeast(minus);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"40\" "
@@ -125,6 +129,17 @@ public class AddSubtract extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Override the base class to set type constraints on the ports.
+     *  @param workspace The workspace into which to clone.
+     *  @exception CloneNotSupportedException If the superclass throws it.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        AddSubtract newObject = (AddSubtract)super.clone(workspace);
+        newObject.output.setTypeAtLeast(newObject.plus);
+        newObject.output.setTypeAtLeast(newObject.minus);
+        return newObject;
+    }
 
     /** If there is at least one token on the input ports, add
      *  tokens from the <i>plus</i> port, subtract tokens from the
