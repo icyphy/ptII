@@ -125,6 +125,7 @@ OPTIONAL_FILES = \
 	'GraphMatcher$$NameComparator.class' \
 	'GraphMatcher$$ObjectList.class' \
 	'TransformationRule$$1.class' \
+	'TransformationRule$$LastResultsOperation.class' \
 	'TransformationRule$$Mode$$1.class' \
 	'TransformationRule$$Mode$$2.class' \
 	'TransformationRule$$Mode$$3.class' \

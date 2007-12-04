@@ -100,26 +100,29 @@ implements MatchCallback, ValueListener {
                 matcher.match(getPattern(), _lastModel);
 
                 if (modeString.equals(Mode.REPLACE_FIRST.toString())) {
+                    _lastResultsOperation = LastResultsOperation.CLEAR;
                     if (_lastResults.isEmpty()) {
                         modelOutput.send(0, token);
                     } else {
-                        GraphTransformer.transform(this, _lastResults.remove());
+                        MatchResult result = _lastResults.peek();
+                        GraphTransformer.transform(this, result);
                         modelOutput.send(0, new ActorToken(_lastModel));
                     }
                     return;
                 } else if (modeString.equals(Mode.REPLACE_ANY.toString())) {
+                    _lastResultsOperation = LastResultsOperation.CLEAR;
                     if (_lastResults.isEmpty()) {
                         modelOutput.send(0, token);
                     } else {
-                        MatchResult result = _lastResults.remove(
-                                _random.nextInt(_lastResults.size()));
+                        MatchResult result = _lastResults.get(_random.nextInt(
+                                _lastResults.size()));
                         GraphTransformer.transform(this, result);
                         modelOutput.send(0, new ActorToken(_lastModel));
                     }
                     return;
                 } else if (modeString.equals(Mode.REPLACE_ALL.toString())) {
+                    _lastResultsOperation = LastResultsOperation.CLEAR;
                     GraphTransformer.transform(this, _lastResults);
-                    _lastResults.clear();
                     modelOutput.send(0, new ActorToken(_lastModel));
                     return;
                 }
@@ -145,7 +148,9 @@ implements MatchCallback, ValueListener {
             if (trigger.getWidth() > 0 && trigger.hasToken(0)
                     && !_lastResults.isEmpty()) {
                 trigger.get(0);
-                matchOutput.send(0, new ObjectToken(_lastResults.remove()));
+                _lastResultsOperation = LastResultsOperation.REMOVE_FIRST;
+                MatchResult result = _lastResults.peek();
+                matchOutput.send(0, new ObjectToken(result));
             }
         } catch (TransformationException e) {
             throw new IllegalActionException(this, e,
@@ -175,7 +180,22 @@ implements MatchCallback, ValueListener {
         _lastResults.clear();
     }
 
+    public boolean postfire() throws IllegalActionException {
+        switch (_lastResultsOperation) {
+        case CLEAR:
+            _lastResults.clear();
+            break;
+        case NONE:
+            break;
+        case REMOVE_FIRST:
+            _lastResults.poll();
+            break;
+        }
+        return true;
+    }
+
     public boolean prefire() throws IllegalActionException {
+        _lastResultsOperation = LastResultsOperation.NONE;
         String modeString = mode.getExpression();
         if (modeString.equals(Mode.REPLACE_FIRST.toString())
                 || modeString.equals(Mode.REPLACE_ANY.toString())
@@ -336,6 +356,12 @@ implements MatchCallback, ValueListener {
     private LinkedList<MatchResult> _lastResults =
         new LinkedList<MatchResult>();
 
+    private LastResultsOperation _lastResultsOperation;
+
     private Random _random = new Random();
+
+    private enum LastResultsOperation {
+        CLEAR, NONE, REMOVE_FIRST
+    }
 
 }
