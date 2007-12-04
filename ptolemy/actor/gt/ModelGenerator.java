@@ -84,6 +84,7 @@ public class ModelGenerator extends TypedAtomicActor {
             Entity entity;
             if (moml.getWidth() > 0 && moml.hasToken(0)) {
                 String momlString = ((StringToken) moml.get(0)).stringValue();
+                _parser.reset();
                 entity = (Entity) _parser.parse(momlString);
             } else {
                 if (_emptyModel == null) {
