@@ -3,7 +3,7 @@
 <plugin
    id="ptolemy.backtrack"
    name="Ptolemy Backtracking Plug-in"
-   version="0.1.1"
+   version="0.1.2"
    provider-name="ptolemy.eecs.berkeley.edu"
    class="ptolemy.backtrack.eclipse.plugin.EclipsePlugin">
 
