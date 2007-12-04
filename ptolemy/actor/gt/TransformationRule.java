@@ -259,9 +259,6 @@ implements MatchCallback, ValueListener {
         }
     }
 
-    public void wrapup() throws IllegalActionException {
-    }
-
     public TypedIOPort matchInput;
 
     public TypedIOPort matchOutput;
@@ -289,6 +286,12 @@ implements MatchCallback, ValueListener {
             super(container, name);
 
             setClassName("ptolemy.actor.gt.TransformationRule$GTDirector");
+        }
+
+        public void initialize() throws IllegalActionException {
+        }
+
+        public void wrapup() throws IllegalActionException {
         }
     }
 
