@@ -146,10 +146,12 @@ public class ModelView extends Sink implements WindowListener  {
         Window window = (Window) e.getSource();
         if (_tableaus != null) {
             for (int i = 0; i < _tableaus.length; i++) {
-                JFrame frame = _tableaus[i].getFrame();
-                if (frame == window) {
-                    frame.removeWindowListener(this);
-                    _tableaus[i] = null;
+                if (_tableaus[i] != null) {
+                    JFrame frame = _tableaus[i].getFrame();
+                    if (frame == window) {
+                        frame.removeWindowListener(this);
+                        _tableaus[i] = null;
+                    }
                 }
             }
         }
