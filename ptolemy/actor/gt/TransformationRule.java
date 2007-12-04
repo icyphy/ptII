@@ -259,6 +259,9 @@ implements MatchCallback, ValueListener {
         }
     }
 
+    public void wrapup() throws IllegalActionException {
+    }
+
     public TypedIOPort matchInput;
 
     public TypedIOPort matchOutput;
