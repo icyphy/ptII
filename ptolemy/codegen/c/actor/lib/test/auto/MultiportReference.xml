@@ -11,6 +11,8 @@
         </property>
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 255.0]">
@@ -24,55 +26,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <entity name="EmbeddedCActor" class="ptolemy.actor.lib.jni.EmbeddedCActor">
-        <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies***/&#10;/**/&#10;&#10;/***preinitBlock***/&#10;int $actorSymbol(i);&#10;int $actorSymbol(sum);&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;// Assuming you have added an input port named &quot;input&quot;&#10;// and an output port named &quot;output&quot;, then the following&#10;// line results in the input being copied to the output.&#10;$actorSymbol(sum) = 0;&#10;for ($actorSymbol(i) = 0; $actorSymbol(i) &lt; $size(input); $actorSymbol(i)++) {&#10;	$actorSymbol(sum) += $ref(input#$actorSymbol(i));&#10;}&#10;$ref(output) = $actorSymbol(sum);&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 135.0]">
-        </property>
-        <property name="CodeGenerator_AutoAdded" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-            <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen/">
-                <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
-                </property>
-            </property>
-            <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
-            </property>
-            <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="ptolemy.codegen.c">
-            </property>
-            <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="run" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-            </property>
-        </port>
-    </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{80, 95}">
@@ -93,6 +46,61 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 135}">
         </property>
     </entity>
+    <entity name="EmbeddedCActor" class="ptolemy.actor.lib.jni.EmbeddedCActor">
+        <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/***fileDependencies***/&#10;/**/&#10;&#10;/***preinitBlock***/&#10;int $actorSymbol(i);&#10;int $actorSymbol(sum);&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;// Assuming you have added an input port named &quot;input&quot;&#10;// and an output port named &quot;output&quot;, then the following&#10;// line results in the input being copied to the output.&#10;$actorSymbol(sum) = 0;&#10;for ($actorSymbol(i) = 0; $actorSymbol(i) &lt; $size(input); $actorSymbol(i)++) {&#10;	$actorSymbol(sum) += $ref(input#$actorSymbol(i));&#10;}&#10;$ref(output) = $actorSymbol(sum);&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 135.0]">
+        </property>
+        <property name="CodeGenerator_AutoAdded" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+            <property name="allowDynamicMultiportReference" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen/">
+                <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
+            </property>
+            <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="compileTarget" class="ptolemy.data.expr.StringParameter" value="">
+            </property>
+            <property name="generatorPackage" class="ptolemy.data.expr.StringParameter" value="ptolemy.codegen.c">
+            </property>
+            <property name="generateComment" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="generateCpp" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="generateJNI" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="measureTime" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="overwriteFiles" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="padBuffers" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="sourceLineBinding" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -105,10 +113,10 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="EmbeddedCActor.input" relation="relation"/>
-    <link port="EmbeddedCActor.input" relation="relation2"/>
-    <link port="EmbeddedCActor.output" relation="relation3"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="Ramp2.output" relation="relation2"/>
     <link port="Test.input" relation="relation3"/>
+    <link port="EmbeddedCActor.input" relation="relation"/>
+    <link port="EmbeddedCActor.input" relation="relation2"/>
+    <link port="EmbeddedCActor.output" relation="relation3"/>
 </entity>
