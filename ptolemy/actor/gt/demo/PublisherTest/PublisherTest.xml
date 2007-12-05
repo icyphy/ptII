@@ -4,9 +4,9 @@
 <entity name="PublisherTest" class="ptolemy.actor.gt.TransformationRule">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={246, 181, 908, 688}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={243, 166, 913, 717}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[685, 574]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[690, 602]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -50,9 +50,31 @@
             </property>
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This transformation rule demonstrates transforming Publishers (instances of&#10;ptolemy.actor.lib.Publisher or its subclasses) into CompositeActors with the&#10;Publishers inside, as well as extra Test actors.&#10;&#10;This version does not support multiple connections to a Publisher's input port.&#10;&#10;Created by Thomas Huining Feng">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This transformation rule demonstrates transforming Publishers (instances of&#10;ptolemy.actor.lib.Publisher or its subclasses) into CompositeActors with the&#10;Publishers inside, as well as extra Test actors.&#10;&#10;This version does not support multiple connections to a Publisher's input port.">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 105.0]">
+            </property>
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Thomas Huining Feng</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 210.0]">
+            </property>
+            <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation">
             </property>
         </property>
         <entity name="AtomicActorMatcher" class="ptolemy.actor.gt.AtomicActorMatcher">

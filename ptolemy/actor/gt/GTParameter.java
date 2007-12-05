@@ -36,8 +36,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.gt.data.MatchResult;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtFunctionalIfNode;
 import ptolemy.data.expr.ASTPtMethodCallNode;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ConversionUtilities;
@@ -47,6 +49,7 @@ import ptolemy.data.expr.ParserScope;
 import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -82,6 +85,52 @@ public class GTParameter extends Parameter {
         throws IllegalActionException {
             return super.evaluateParseTree(node, new Scope(_pattern,
                     _matchResult, scope));
+        }
+
+        public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
+        throws IllegalActionException {
+            if (node.isConstant() && node.isEvaluated()) {
+                _evaluatedChildToken = node.getToken();
+                return;
+            }
+
+            int numChildren = node.jjtGetNumChildren();
+
+            if (numChildren != 3) {
+                // A functional-if node MUST have three children in the parse
+                // tree.
+                throw new InternalErrorException(
+                        "PtParser error: a functional-if node does not have "
+                                + "three children in the parse tree.");
+            }
+
+            // evaluate the first sub-expression
+            _evaluateChild(node, 0);
+
+            ptolemy.data.Token test = _evaluatedChildToken;
+
+            if (!(test instanceof BooleanToken)) {
+                throw new IllegalActionException(
+                        "Functional-if must branch on a boolean, but instead was "
+                                + test.toString() + " an instance of "
+                                + test.getClass().getName());
+            }
+
+            boolean value = ((BooleanToken) test).booleanValue();
+
+            ASTPtRootNode tokenChild;
+
+            if (value) {
+                tokenChild = (ASTPtRootNode) node.jjtGetChild(1);
+            } else {
+                tokenChild = (ASTPtRootNode) node.jjtGetChild(2);
+            }
+
+            tokenChild.visit(this);
+
+            if (node.isConstant()) {
+                node.setToken(_evaluatedChildToken);
+            }
         }
 
         public void visitMethodCallNode(ASTPtMethodCallNode node)

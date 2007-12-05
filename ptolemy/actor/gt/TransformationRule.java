@@ -35,6 +35,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.lib.hoc.MultiCompositeActor;
 import ptolemy.data.ActorToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.StringParameter;
@@ -103,27 +104,37 @@ implements MatchCallback, ValueListener {
                     _lastResultsOperation = LastResultsOperation.CLEAR;
                     if (_lastResults.isEmpty()) {
                         modelOutput.send(0, token);
+                        modified.send(0, BooleanToken.FALSE);
                     } else {
                         MatchResult result = _lastResults.peek();
                         GraphTransformer.transform(this, result);
                         modelOutput.send(0, new ActorToken(_lastModel));
+                        modified.send(0, BooleanToken.TRUE);
                     }
                     return;
                 } else if (modeString.equals(Mode.REPLACE_ANY.toString())) {
                     _lastResultsOperation = LastResultsOperation.CLEAR;
                     if (_lastResults.isEmpty()) {
                         modelOutput.send(0, token);
+                        modified.send(0, BooleanToken.FALSE);
                     } else {
                         MatchResult result = _lastResults.get(_random.nextInt(
                                 _lastResults.size()));
                         GraphTransformer.transform(this, result);
                         modelOutput.send(0, new ActorToken(_lastModel));
+                        modified.send(0, BooleanToken.TRUE);
                     }
                     return;
                 } else if (modeString.equals(Mode.REPLACE_ALL.toString())) {
                     _lastResultsOperation = LastResultsOperation.CLEAR;
-                    GraphTransformer.transform(this, _lastResults);
-                    modelOutput.send(0, new ActorToken(_lastModel));
+                    if (_lastResults.isEmpty()) {
+                        modelOutput.send(0, token);
+                        modified.send(0, BooleanToken.FALSE);
+                    } else {
+                        GraphTransformer.transform(this, _lastResults);
+                        modelOutput.send(0, new ActorToken(_lastModel));
+                        modified.send(0, BooleanToken.TRUE);
+                    }
                     return;
                 }
             }
@@ -237,12 +248,23 @@ implements MatchCallback, ValueListener {
                     remaining.setContainer(null);
                     remaining = null;
                 }
+                if (modified == null) {
+                    modified = new TypedIOPort(this, "modified", false, true);
+                    modified.setTypeEquals(BaseType.BOOLEAN);
+                    modified.setPersistent(false);
+                    new StringAttribute(modified, "_cardinal").setExpression(
+                            "SOUTH");
+                }
             } catch (KernelException e) {
                 throw new InternalErrorException(this, e,
                         "Cannot remove port.");
             }
         } else if (modeString.equals(Mode.EXPERT.toString())) {
             try {
+                if (modified != null) {
+                    modified.setContainer(null);
+                    modified = null;
+                }
                 if (matchInput == null) {
                     matchInput =
                         new TypedIOPort(this, "matchInput", true, false);
@@ -288,6 +310,8 @@ implements MatchCallback, ValueListener {
     public TypedIOPort modelInput;
 
     public TypedIOPort modelOutput;
+
+    public TypedIOPort modified;
 
     public TypedIOPort remaining;
 
@@ -336,7 +360,6 @@ implements MatchCallback, ValueListener {
         modelOutput = new TypedIOPort(this, "modelOutput", false, true);
         modelOutput.setTypeEquals(ActorToken.TYPE);
 
-
         mode = new StringParameter(this, "mode");
         for (int i = Mode.values().length - 1; i >= 0; i--) {
             mode.addChoice(Mode.values()[i].toString());
@@ -347,9 +370,9 @@ implements MatchCallback, ValueListener {
         new TransformationDirector(this, "GTDirector");
     }
 
-    private boolean _collectAllMatches;
-
     private static final List<?> _EMPTY_LIST = new LinkedList<Object>();
+
+    private boolean _collectAllMatches;
 
     private CompositeEntity _lastModel;
 

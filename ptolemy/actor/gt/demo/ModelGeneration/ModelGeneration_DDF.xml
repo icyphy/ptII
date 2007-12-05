@@ -39,33 +39,31 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 35.0]">
         </property>
     </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Thomas Huining Feng</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 335.0]">
+        </property>
+        <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="annotation">
+        </property>
+    </property>
     <entity name="ModelGenerator" class="ptolemy.actor.gt.ModelGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 90.0]">
         </property>
-    </entity>
-    <entity name="CreateDisplay" class="ptolemy.actor.gt.TransformationRule">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 95.0]">
-        </property>
-        <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
-            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
-                </property>
-            </property>
-            <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 140.0]">
-                </property>
-            </entity>
-            <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 140.0]">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
-            <link port="Merge.output" relation="relation"/>
-            <link port="Display.input" relation="relation"/>
-        </entity>
     </entity>
     <entity name="ModelView" class="ptolemy.actor.gt.ModelView">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 180.0]">
@@ -83,7 +81,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 100.0]">
         </property>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -97,34 +95,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 245.0]">
         </property>
-    </entity>
-    <entity name="CreateNode" class="ptolemy.actor.gt.TransformationRule">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 190.0]">
-        </property>
-        <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
-            <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 105.0]">
-                </property>
-            </entity>
-        </entity>
-        <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
-            <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{160.0, 115.0}">
-                </property>
-                <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Merge">
-                </property>
-            </entity>
-            <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 115.0]">
-                </property>
-            </entity>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </relation>
-            <link port="Merge.input" relation="relation"/>
-            <link port="SingleEvent.output" relation="relation"/>
-        </entity>
     </entity>
     <entity name="Const3" class="ptolemy.actor.lib.Const">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">
@@ -205,10 +175,138 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 270.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+    <entity name="CreateDisplay" class="ptolemy.actor.gt.TransformationRule">
+        <property name="mode" class="ptolemy.data.expr.StringParameter" value="replace first">
         </property>
-    </relation>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 90.0]">
+        </property>
+        <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
+            <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 60.0]">
+                </property>
+            </property>
+            <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 170.0]">
+                </property>
+            </entity>
+            <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 170.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <link port="Display.input" relation="relation"/>
+            <link port="Merge.output" relation="relation"/>
+        </entity>
+    </entity>
+    <entity name="CreateNode" class="ptolemy.actor.gt.TransformationRule">
+        <property name="mode" class="ptolemy.data.expr.StringParameter" value="replace first">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 190.0]">
+        </property>
+        <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
+            <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 180.0}">
+                </property>
+            </entity>
+            <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 180.0}">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <link port="Display.input" relation="relation"/>
+            <link port="Merge.output" relation="relation"/>
+        </entity>
+        <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
+            <entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+                <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 0.0]">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="40">
+                        </property>
+                        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{1.0, -9.0}">
+                        </property>
+                        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.6,1.0}">
+                        </property>
+                        <property name="width" class="ptolemy.data.expr.Parameter" value="6.0">
+                        </property>
+                        <property name="height" class="ptolemy.data.expr.Parameter" value="6.0">
+                        </property>
+                        <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
+                        </property>
+                        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.6,1.0}">
+                        </property>
+                    </property>
+                    <property name="line2" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="{1.0, -5.0}">
+                        </property>
+                        <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                        <property name="y" class="ptolemy.data.expr.Parameter" value="15.0">
+                        </property>
+                    </property>
+                    <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[-19.0, 11.0]">
+                        </property>
+                        <property name="x" class="ptolemy.data.expr.Parameter" value="40.0">
+                        </property>
+                        <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+                        </property>
+                    </property>
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+                    </property>
+                    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 190.0]">
+                </property>
+            </entity>
+            <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 190.0}">
+                </property>
+                <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Display">
+                </property>
+            </entity>
+            <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 190.0}">
+                </property>
+                <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="Merge">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+                <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="relation">
+                </property>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <link port="SingleEvent.output" relation="relation2"/>
+            <link port="Display.input" relation="relation"/>
+            <link port="Merge.input" relation="relation2"/>
+            <link port="Merge.output" relation="relation"/>
+        </entity>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -222,10 +320,6 @@
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
@@ -249,14 +343,10 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[455.0, 95.0]">
+        <vertex name="vertex1" value="[455.0, 90.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -277,16 +367,24 @@
         <vertex name="vertex1" value="[140.0, 315.0]">
         </vertex>
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="ModelGenerator.modelName" relation="relation"/>
     <link port="ModelGenerator.model" relation="relation2"/>
-    <link port="CreateDisplay.modelInput" relation="relation2"/>
-    <link port="CreateDisplay.modelOutput" relation="relation13"/>
     <link port="ModelView.input" relation="relation5"/>
     <link port="Const.output" relation="relation"/>
     <link port="SampleDelay.input" relation="relation6"/>
     <link port="SampleDelay.output" relation="relation3"/>
-    <link port="CreateNode.modelInput" relation="relation12"/>
-    <link port="CreateNode.modelOutput" relation="relation10"/>
     <link port="Const3.output" relation="relation6"/>
     <link port="Ramp.output" relation="relation7"/>
     <link port="Expression.output" relation="relation8"/>
@@ -302,6 +400,10 @@
     <link port="Stop.input" relation="relation9"/>
     <link port="Const2.output" relation="relation9"/>
     <link port="Const2.trigger" relation="relation5"/>
+    <link port="CreateDisplay.modelInput" relation="relation2"/>
+    <link port="CreateDisplay.modelOutput" relation="relation13"/>
+    <link port="CreateNode.modelInput" relation="relation12"/>
+    <link port="CreateNode.modelOutput" relation="relation10"/>
     <link relation1="relation11" relation2="relation15"/>
     <link relation1="relation13" relation2="relation4"/>
     <link relation1="relation4" relation2="relation14"/>
