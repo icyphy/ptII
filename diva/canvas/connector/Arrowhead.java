@@ -26,7 +26,11 @@
  */
 package diva.canvas.connector;
 
+import java.awt.BasicStroke;
 import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -40,6 +44,11 @@ import diva.util.java2d.Polygon2D;
  * @author  John Reekie
  */
 public class Arrowhead implements ConnectorEnd {
+    
+    /** Flag that says whether the arrowhead is filled or not.
+     */
+    private boolean _filled = true;
+
     /** The arrowhead length, and its x and y components
      */
     private double _length = 12.0;
@@ -66,6 +75,14 @@ public class Arrowhead implements ConnectorEnd {
      * arrowhead is drawn.
      */
     private boolean _flipped = false;
+    
+    /** The stroke. This is needed to get the bounding box.  As the
+     * default, we use a stroke width of 3.0 pixels, in order that
+     * redraw is clean even in the presence of
+     * anti-aliasing. Connectors that have non-unit stroke widths
+     * should set this variable to a stroke with appropriate width.
+     */
+    private Stroke _stroke = new BasicStroke(3.0f);
 
     /**
      * Create a new arrowhead at (0,0).
@@ -89,7 +106,14 @@ public class Arrowhead implements ConnectorEnd {
      * this connector end.
      */
     public Rectangle2D getBounds() {
-        return _polygon.getBounds2D();
+        if (_filled) {
+            // No outline, just use the shape
+            return _polygon.getBounds2D();
+        } else {
+            // Get the bonding box of the stroke
+            Shape s = _stroke.createStrokedShape(_polygon);
+            return s.getBounds2D();
+        }
     }
 
     /** Get the connection point into the given point
@@ -125,6 +149,12 @@ public class Arrowhead implements ConnectorEnd {
         return _length;
     }
 
+    /** Test if the blob is filled or not.
+     */
+    public boolean isFilled() {
+        return _filled;
+    }
+
     /** Paint the arrow-head.  This method assumes that
      * the graphics context is already set up with the correct
      * paint and stroke.
@@ -133,8 +163,13 @@ public class Arrowhead implements ConnectorEnd {
         if (!_polygonValid) {
             reshape();
         }
-
-        g.fill(_polygon);
+        if (_filled) {
+            Paint oldPaint = g.getPaint();
+            g.fill(_polygon);
+            g.setPaint(oldPaint);
+        } else {
+            g.draw(_polygon);
+        }
     }
 
     /** Recalculate the shape of the decoration.
@@ -172,6 +207,12 @@ public class Arrowhead implements ConnectorEnd {
     public void setNormal(double angle) {
         _normal = angle;
         _polygonValid = false;
+    }
+
+    /** Set the flag that determines whether to fill the arrowhead.
+     */
+    public void setFilled(boolean flag) {
+        _filled = flag;
     }
 
     /** Set the flag that says the arrowhead is "flipped." This means
