@@ -30,6 +30,7 @@ package ptolemy.actor.gt;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.URI;
 
 import javax.swing.JFrame;
 
@@ -37,8 +38,14 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ActorToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -74,6 +81,12 @@ public class ModelView extends Sink implements WindowListener  {
         super(container, name);
 
         input.setTypeEquals(ActorToken.TYPE);
+
+        title = new StringParameter(this, "title");
+        title.setExpression("");
+        annotateTitle = new Parameter(this, "annotateTitle");
+        annotateTitle.setTypeEquals(BaseType.BOOLEAN);
+        annotateTitle.setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,6 +106,9 @@ public class ModelView extends Sink implements WindowListener  {
     public void fire() throws IllegalActionException {
         super.fire();
 
+        String titleValue = ((StringToken) title.getToken()).stringValue();
+        boolean annotateTitleValue =
+            ((BooleanToken) annotateTitle.getToken()).booleanValue();
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 synchronized (this) {
@@ -109,8 +125,30 @@ public class ModelView extends Sink implements WindowListener  {
                         // Export the model into moml string and then import it
                         // again. Needed b some models with unnoticeable state.
                         NamedObj newModel = _parser.parse(model.exportMoML());
-                        _tableaus[i] = configuration.openModel(newModel);
-                        _tableaus[i].getFrame().addWindowListener(this);
+                        Tableau tableau = configuration.openModel(newModel);
+                        _tableaus[i] = tableau;
+                        tableau.getFrame().addWindowListener(this);
+
+                        String titleString = null;
+                        if (titleValue.equals("")) {
+                            URI uri = URIAttribute.getModelURI(newModel);
+                            if (uri != null) {
+                                URI modelURI = new URI(uri.getScheme(),
+                                        uri.getUserInfo(), uri.getHost(),
+                                        uri.getPort(), uri.getPath()
+                                        + newModel.getName() + ".xml", null,
+                                        null);
+                                titleString = modelURI.toString();
+                            }
+                        } else {
+                            titleString = titleValue;
+                        }
+                        if (titleString != null) {
+                            if (annotateTitleValue) {
+                                titleString += " (" + getName() + ")";
+                            }
+                            tableau.setTitle(titleString);
+                        }
                     } catch (NameDuplicationException e) {
                         throw new IllegalActionException(this, e,
                                 "Cannot open model.");
@@ -171,6 +209,10 @@ public class ModelView extends Sink implements WindowListener  {
 
     public void windowOpened(WindowEvent e) {
     }
+
+    public Parameter annotateTitle;
+
+    public StringParameter title;
 
     private MoMLParser _parser = new MoMLParser();
 
