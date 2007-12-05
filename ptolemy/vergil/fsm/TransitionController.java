@@ -262,6 +262,9 @@ public class TransitionController extends BasicEdgeController {
                     Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE, 4.0, Color.red);
                     c.setTailEnd(blob);
                 }
+                if (transition.isNondeterministic()) {
+                    c.setStrokePaint(Color.RED);
+                }
 
                 c.setToolTipText(transition.getName());
 
