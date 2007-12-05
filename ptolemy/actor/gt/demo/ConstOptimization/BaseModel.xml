@@ -7,16 +7,57 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 267, 862, 560}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 267, 916, 560}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[639, 445]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[693, 445]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{319.5, 222.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.9638573232323, 215.427398989899}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This is the model for transformation. It has a number of Const actors connected to
+arithmetic operators, which can be statically evaluated. See ConstOptimization.xml.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 10.0]">
+        </property>
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Thomas Huining Feng</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 55.0]">
+        </property>
     </property>
     <entity name="C5" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
@@ -107,7 +148,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 185.0]">
         </property>
     </entity>
-    <entity name="Const4" class="ptolemy.actor.lib.Const">
+    <entity name="C4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="4">
         </property>
         <doc>Create a constant sequence.</doc>
@@ -121,35 +162,35 @@
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 130.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[189.381591796875, 129.56787109375]">
         </property>
     </entity>
     <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[189.381591796875, 219.56787109375]">
         </property>
     </entity>
     <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.11094665527344, 310.3570556640625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[189.49253845214844, 309.9249267578125]">
         </property>
     </entity>
     <entity name="MultiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[184.84375, 399.6875]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[189.225341796875, 399.25537109375]">
         </property>
     </entity>
     <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 270.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 260.0]">
         </property>
     </entity>
     <entity name="MultiplyDivide3" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 185.0}">
         </property>
     </entity>
     <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 365.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 365.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -219,7 +260,7 @@
     <link port="C1.output" relation="relation"/>
     <link port="C2.output" relation="relation2"/>
     <link port="C3.output" relation="relation3"/>
-    <link port="Const4.output" relation="relation4"/>
+    <link port="C4.output" relation="relation4"/>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.plus" relation="relation2"/>
     <link port="AddSubtract.output" relation="relation5"/>
