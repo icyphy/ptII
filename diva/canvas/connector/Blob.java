@@ -91,12 +91,12 @@ public class Blob implements ConnectorEnd {
     private boolean _shapeValid = false;
 
     /** The stroke. This is needed to get the bounding box.  As the
-     * default, we use a stroke width of 1.5 pixels, in order that
+     * default, we use a stroke width of 3.0 pixels, in order that
      * redraw is clean even in the presence of
      * anti-aliasing. Connectors that have non-unit stroke widths
      * should set this variable to a stroke with appropriate width.
      */
-    public Stroke stroke = new BasicStroke(1.5f);
+    public Stroke stroke = new BasicStroke(3.0f);
 
     /**
      * Create a new circle blob at (0,0).
@@ -239,7 +239,7 @@ public class Blob implements ConnectorEnd {
         _shape = at.createTransformedShape(_shape);
     }
 
-    /** Test the flag that sets whether to fill the blob.
+    /** Set the flag that determines whether to fill the blob.
      */
     public void setFilled(boolean flag) {
         _filled = flag;
