@@ -201,7 +201,7 @@ public class ParameterNameChanges implements MoMLFilter {
             Iterator propertiesMapEntries = propertyMap.entrySet().iterator();
 
             while (propertiesMapEntries.hasNext()) {
-                Map.Entry properties = (Map.Entry)propertiesMapEntries.next();
+                Map.Entry properties = (Map.Entry) propertiesMapEntries.next();
                 String oldProperty = (String) properties.getKey();
                 String newProperty = (String) properties.getValue();
                 results.append("\t\t" + oldProperty + "\t -> " + newProperty

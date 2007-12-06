@@ -176,7 +176,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  thus the execution can continue forever.
      */
     public Parameter iterations;
-    
+
     /** Specify whether the execution should synchronize to the
      *  real time. This parameter has type boolean and defaults
      *  to false. If set to true, then this director stalls in the
@@ -267,7 +267,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         _functionalPropertyVersion = -1;
 
         super.initialize();
-        
+
         _realStartTime = System.currentTimeMillis();
     }
 
@@ -394,7 +394,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
         // Set current time based on the enclosing model.
         boolean result = super.prefire();
-        
+
         return result;
     }
 
@@ -605,17 +605,17 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             throw new IllegalActionException(
                     actor,
                     "prefire() method returns false, but it"
-                    + " has previously returned true in this iteration.");
+                            + " has previously returned true in this iteration.");
         }
         if (prefireReturns) {
             _actorsAllowedToFire.add(actor);
-            
+
             // Whether all inputs are known must be checked before
             // firing to handle cases with self-loops, because the
             // current firing may change the status of some input
             // receivers from unknown to known.
             boolean allInputsKnownBeforeFiring = _areAllInputsKnown(actor);
-            
+
             if (_debugging) {
                 if (allInputsKnownBeforeFiring) {
                     _debug("Firing: " + ((Nameable) actor).getName()
@@ -625,7 +625,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                             + ", which has some inputs unknown.");
                 }
             }
-            
+
             actor.fire();
             // If all of the inputs of this actor were known before firing, firing
             // the actor again in the current iteration is not necessary.
@@ -661,10 +661,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // to conclude the convergence of the iteration because if some 
         // receivers just become known, their containers (actors) need to be 
         // fired to react these new inputs. 
-        boolean converged = 
-            _lastNumberOfKnownReceivers == _currentNumberOfKnownReceivers;
+        boolean converged = _lastNumberOfKnownReceivers == _currentNumberOfKnownReceivers;
         _lastNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
-        
+
         // One might try to optimize this method by also considering the 
         // _actorsFinishedFiring set.
         // CompositeActor container = (CompositeActor) getContainer();
@@ -680,11 +679,11 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             NameDuplicationException {
         iterations = new Parameter(this, "iterations", new IntToken(0));
         iterations.setTypeEquals(BaseType.INT);
-        
+
         synchronizeToRealTime = new Parameter(this, "synchronizeToRealTime");
         synchronizeToRealTime.setExpression("false");
         synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
-        
+
         timeResolution.setVisibility(Settable.FULL);
         timeResolution.moveToLast();
 

@@ -263,7 +263,8 @@ public class LinkController extends BasicEdgeController {
                     if (colorAttribute != null) {
                         String color = colorAttribute.getExpression();
                         if (color != null && !color.trim().equals("")) {
-                            connector.setStrokePaint(SVGUtilities.getColor(color));
+                            connector.setStrokePaint(SVGUtilities
+                                    .getColor(color));
                         }
                     }
                 } catch (IllegalActionException e) {

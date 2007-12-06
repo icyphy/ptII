@@ -234,8 +234,8 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
                 try {
                     writer.close();
                 } catch (IOException ex) {
-                    System.out.println("Failed to close \""
-                            + libraryName + "\": " + ex);
+                    System.out.println("Failed to close \"" + libraryName
+                            + "\": " + ex);
 
                 }
             }
@@ -312,7 +312,8 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
             URL fileURL;
 
             try {
-                fileURL = JNLPUtilities.canonicalizeJarURL(file.toURI().toURL());
+                fileURL = JNLPUtilities
+                        .canonicalizeJarURL(file.toURI().toURL());
             } catch (MalformedURLException ex) {
                 // This should not occur.
                 System.err.println("Malformed preferences URL: " + ex);

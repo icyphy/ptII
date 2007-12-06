@@ -67,12 +67,11 @@ public class Course extends TypedAtomicActor {
         postrequisites = new TypedIOPort(this, "postrequisites", false, true);
         prerequisites = new TypedIOPort(this, "prerequisites", true, false);
         prerequisites.setMultiport(true);
-        
+
         Parameter hide = new Parameter(this, "_hideName");
         hide.setVisibility(Settable.EXPERT);
-        
-        /*DependencyHighlighter controller =*/ //new DependencyHighlighter(this, "_controller");
-        
+
+        /*DependencyHighlighter controller =*///new DependencyHighlighter(this, "_controller");
         units = new Parameter(this, "units");
         units.setTypeEquals(BaseType.INT);
         units.setExpression("4");
@@ -86,7 +85,7 @@ public class Course extends TypedAtomicActor {
 
     /** The prerequisites port. */
     public TypedIOPort prerequisites = null;
-    
+
     /** The number of units. This is an integer with default value 4. */
     public Parameter units;
 

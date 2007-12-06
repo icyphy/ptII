@@ -47,25 +47,24 @@ import java.util.List;
  */
 
 final class BoundedSize implements Size, Serializable {
-    
+
     /**
      * Holds the base size.
-     */ 
-    private final Size basis; 
-    
+     */
+    private final Size basis;
+
     /**
      * Holds an optional lower bound.
      */
-    private Size lowerBound;     
+    private Size lowerBound;
 
     /**
      * Holds an optional upper bound.
      */
-    private Size upperBound;     
-    
-    
+    private Size upperBound;
+
     // Instance Creation ****************************************************
-    
+
     /**
      * Constructs a BoundedSize for the given basis using the
      * specified lower and upper bounds.
@@ -76,16 +75,16 @@ final class BoundedSize implements Size, Serializable {
      * @exception NullPointerException if the basis is null
      */
     BoundedSize(Size basis, Size lowerBound, Size upperBound) {
-        if (basis == null) 
-            throw new NullPointerException("The basis of a bounded size must not be null.");
+        if (basis == null)
+            throw new NullPointerException(
+                    "The basis of a bounded size must not be null.");
         this.basis = basis;
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
     }
-    
-    
+
     // Implementation of the Size Interface *********************************
-    
+
     /**
      * Returns this size as pixel size. Neither requires the component
      * list nor the specified measures. Honors the lower and upper bound.<p>
@@ -101,38 +100,24 @@ final class BoundedSize implements Size, Serializable {
      * @return the maximum size in pixels
      * @see FormSpec#maximumSize(Container, List, FormLayout.Measure, FormLayout.Measure, FormLayout.Measure)
      */
-    public int maximumSize(Container container,
-                    List components, 
-                    FormLayout.Measure minMeasure,
-                    FormLayout.Measure prefMeasure,
-                    FormLayout.Measure defaultMeasure) {
-        int size = basis.maximumSize(container,
-                                     components,
-                                     minMeasure,
-                                     prefMeasure,
-                                     defaultMeasure);
+    public int maximumSize(Container container, List components,
+            FormLayout.Measure minMeasure, FormLayout.Measure prefMeasure,
+            FormLayout.Measure defaultMeasure) {
+        int size = basis.maximumSize(container, components, minMeasure,
+                prefMeasure, defaultMeasure);
         if (lowerBound != null) {
-            size = Math.max(size, lowerBound.maximumSize(
-                                     container,
-                                     components,
-                                     minMeasure,
-                                     prefMeasure,
-                                     defaultMeasure));
+            size = Math.max(size, lowerBound.maximumSize(container, components,
+                    minMeasure, prefMeasure, defaultMeasure));
         }
         if (upperBound != null) {
-            size = Math.min(size, upperBound.maximumSize(
-                                     container,
-                                     components,
-                                     minMeasure,
-                                     prefMeasure,
-                                     defaultMeasure));
+            size = Math.min(size, upperBound.maximumSize(container, components,
+                    minMeasure, prefMeasure, defaultMeasure));
         }
         return size;
     }
 
-
     // Overriding Object Behavior *******************************************
-    
+
     /**
      * Indicates whether some other BoundedSize is "equal to" this one.
      *
@@ -149,12 +134,12 @@ final class BoundedSize implements Size, Serializable {
             return false;
         BoundedSize size = (BoundedSize) object;
         return basis.equals(size.basis)
-             && (   (lowerBound == null && size.lowerBound == null)
-                 || (lowerBound != null && lowerBound.equals(size.lowerBound)))
-             && (   (upperBound == null && size.upperBound == null)
-                 || (upperBound != null && upperBound.equals(size.upperBound)));
+                && ((lowerBound == null && size.lowerBound == null) || (lowerBound != null && lowerBound
+                        .equals(size.lowerBound)))
+                && ((upperBound == null && size.upperBound == null) || (upperBound != null && upperBound
+                        .equals(size.upperBound)));
     }
-    
+
     /**
      * Returns a hash code value for the object. This method is 
      * supported for the benefit of hashtables such as those provided by 
@@ -174,7 +159,7 @@ final class BoundedSize implements Size, Serializable {
         }
         return hashValue;
     }
-    
+
     /**
      * Returns a string representation of this size object.
      *
@@ -186,15 +171,14 @@ final class BoundedSize implements Size, Serializable {
      */
     public String toString() {
         if (lowerBound != null) {
-            return upperBound == null
-                ? "max(" + basis + ';' + lowerBound + ')'
-                : "max(" + lowerBound + ';' + "min(" + basis + ';' + upperBound + "))";
+            return upperBound == null ? "max(" + basis + ';' + lowerBound + ')'
+                    : "max(" + lowerBound + ';' + "min(" + basis + ';'
+                            + upperBound + "))";
         } else if (upperBound != null) {
             return "min(" + basis + ';' + upperBound + ')';
         } else {
-            return "bounded(" +  basis + ')';
+            return "bounded(" + basis + ')';
         }
     }
 
-    
 }

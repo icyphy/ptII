@@ -54,7 +54,7 @@ import javax.swing.JLabel;
  */
 
 public interface ComponentFactory {
-    
+
     /**
      * Creates and returns a label with an optional mnemonic.<p>
      * 
@@ -70,8 +70,7 @@ public interface ComponentFactory {
      * @return an label with optional mnemonic
      */
     public JLabel createLabel(String textWithMnemonic);
-  
-    
+
     /**
      * Creates and returns a title label that uses the foreground color
      * and font of a <code>TitledBorder</code>.<p>
@@ -88,7 +87,6 @@ public interface ComponentFactory {
      * @return an emphasized title label
      */
     public JLabel createTitle(String textWithMnemonic);
-    
 
     /**
      * Creates and returns a labeled separator. Useful to separate 
@@ -110,6 +108,5 @@ public interface ComponentFactory {
      * @return a title label with separator on the side
      */
     public JComponent createSeparator(String textWithMnemonic, int alignment);
-    
-    
+
 }

@@ -46,14 +46,15 @@ public class GTIngredientList extends LinkedList<GTIngredient> {
         _owner = owner;
     }
 
-    public GTIngredientList(GTIngredientsAttribute owner, GTIngredient ... rules) {
+    public GTIngredientList(GTIngredientsAttribute owner, GTIngredient... rules) {
         for (GTIngredient rule : rules) {
             add(rule);
         }
         _owner = owner;
     }
 
-    public GTIngredientList(GTIngredientsAttribute owner, GTIngredientList initRules) {
+    public GTIngredientList(GTIngredientsAttribute owner,
+            GTIngredientList initRules) {
         super(initRules);
         _owner = owner;
     }
@@ -62,8 +63,8 @@ public class GTIngredientList extends LinkedList<GTIngredient> {
         return _owner;
     }
 
-    public static GTIngredientList parse(GTIngredientsAttribute owner, String expression)
-    throws MalformedStringException {
+    public static GTIngredientList parse(GTIngredientsAttribute owner,
+            String expression) throws MalformedStringException {
         GTIngredientList list = new GTIngredientList(owner);
         int startPos = 0;
         while (startPos < expression.length()) {
@@ -112,11 +113,12 @@ public class GTIngredientList extends LinkedList<GTIngredient> {
             String ruleClassName = ruleString.substring(0, separator);
             try {
                 Class<?> namedClass = Class.forName(ruleClassName);
-                Class<? extends GTIngredient> ruleClass =
-                    namedClass.asSubclass(GTIngredient.class);
+                Class<? extends GTIngredient> ruleClass = namedClass
+                        .asSubclass(GTIngredient.class);
                 String values = ruleString.substring(separator + 1);
-                return (GTIngredient) ruleClass.getConstructor(GTIngredientList.class,
-                        String.class).newInstance(this, values);
+                return (GTIngredient) ruleClass.getConstructor(
+                        GTIngredientList.class, String.class).newInstance(this,
+                        values);
             } catch (ClassNotFoundException e) {
             } catch (IllegalAccessException e) {
             } catch (InstantiationException e) {

@@ -39,24 +39,25 @@ import java.util.Map;
  * 
  * @author Michael Connor
  */
-public interface ComponentBuilder
-{
-  /**
-   * Returns a list of properties that are appropriate for construction
-   */
-  public List<BeanProperty> getProperties();
+public interface ComponentBuilder {
+    /**
+     * Returns a list of properties that are appropriate for construction
+     */
+    public List<BeanProperty> getProperties();
 
-  /**
-   * Returns the appropriate declaration suitable for this component
-   */
-  public String getDeclaration(String name, Map<String, Object> properties);
+    /**
+     * Returns the appropriate declaration suitable for this component
+     */
+    public String getDeclaration(String name, Map<String, Object> properties);
 
-  /**
-   * Returns an instance of this object given the specified properties
-   */
-  public Component getInstance(Map<String, Object> properties) throws Exception;
+    /**
+     * Returns an instance of this object given the specified properties
+     */
+    public Component getInstance(Map<String, Object> properties)
+            throws Exception;
 
-  public boolean isComponentALayoutContainer();
+    public boolean isComponentALayoutContainer();
 
-  public ComponentDef getComponentDef(String name, Map<String, Object> properties);
+    public ComponentDef getComponentDef(String name,
+            Map<String, Object> properties);
 }

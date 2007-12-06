@@ -164,7 +164,7 @@ public class FixedPointScheduler extends Scheduler {
     /** Based on the depths of IO ports, calculate the depths of actors.
      *  The results are cached in a hashtable _actorToDepth.
      *  Update the depths of existing events in the event queue.
-     */  
+     */
     private void _computeActorDepth() {
         CompositeActor container = (CompositeActor) getContainer();
         LinkedList actors = (LinkedList) container.deepEntityList();
@@ -172,15 +172,15 @@ public class FixedPointScheduler extends Scheduler {
         actors.add(container);
         int numberOfActors = actors.size();
         _actorToDepth = new Hashtable(numberOfActors);
-    
+
         Iterator actorsIterator = actors.iterator();
-    
+
         // The depth of an actor starts with a negative number.
         int defaultActorDepth = -numberOfActors;
-    
+
         while (actorsIterator.hasNext()) {
             Actor actor = (Actor) actorsIterator.next();
-    
+
             // Calculate the depth of the given actor, which is the
             // smallest depth of all the input and output ports.
             // Why?
@@ -196,7 +196,8 @@ public class FixedPointScheduler extends Scheduler {
             Iterator inputs = actor.inputPortList().iterator();
             while (inputs.hasNext()) {
                 IOPort inputPort = (IOPort) inputs.next();
-                int inputDepth = ((Integer) _portToDepth.get(inputPort)).intValue();
+                int inputDepth = ((Integer) _portToDepth.get(inputPort))
+                        .intValue();
                 if ((inputDepth < depth) || (depth == -1)) {
                     depth = inputDepth;
                 }
@@ -204,19 +205,20 @@ public class FixedPointScheduler extends Scheduler {
             Iterator outputs = actor.outputPortList().iterator();
             while (outputs.hasNext()) {
                 IOPort outputPort = (IOPort) outputs.next();
-                int outputDepth = ((Integer) _portToDepth.get(outputPort)).intValue();
+                int outputDepth = ((Integer) _portToDepth.get(outputPort))
+                        .intValue();
                 if ((outputDepth < depth) || (depth == -1)) {
                     depth = outputDepth;
                 }
             }
-    
+
             // Note that if an actor has no ports, the defaultActorDepth,
             // which is a negative number, will be used such that each
             // actor has a unique depth.
             if (depth == -1) {
                 depth = defaultActorDepth;
             }
-            
+
             _actorToDepth.put(actor, Integer.valueOf(depth));
             // Increment the default depth value for the next actor.
             defaultActorDepth++;
@@ -232,23 +234,23 @@ public class FixedPointScheduler extends Scheduler {
     private void _computePortDepth(DirectedAcyclicGraph dependencyGraph) {
         // local variable to turn on/off debugging messages
         boolean verbose = false;
-        
+
         // The following topologicalSort can be smarter.
         // In particular, the dependency between ports belonging
         // to the same actor may be considered.
         Object[] sort = dependencyGraph.topologicalSort();
         int numberOfPorts = sort.length;
-    
+
         if (_debugging && verbose) {
             _debug("## Result of topological sort (highest depth to lowest):");
         }
-    
+
         // Allocate a new hash table with the size equal to the
         // number of IO ports sorted.
         _portToDepth = new Hashtable(numberOfPorts);
-    
+
         LinkedList ports = new LinkedList();
-    
+
         // Assign depths to ports based on the topological sorting result.
         // Each port is assigned a depth.
         for (int i = 0; i < numberOfPorts; i++) {
@@ -267,21 +269,21 @@ public class FixedPointScheduler extends Scheduler {
                     depth -= numberOfPorts;
                 }
             }
-    
+
             // Insert the hashtable entry.
             _portToDepth.put(ioPort, Integer.valueOf(depth));
             if (_debugging && verbose) {
                 _debug(((Nameable) ioPort).getFullName(), "depth: " + depth);
             }
         }
-    
+
         if (_debugging && verbose) {
             _debug("## adjusting port depths based "
                     + "on the strictness constraints.");
         }
-    
+
         LinkedList actorsWithPortDepthsAdjusted = new LinkedList();
-    
+
         // Adjust the port depths based on the strictness constraints.
         // The ruls is that if an output depends on several inputs directly,
         // all inputs must have the same depth, the biggest one.
@@ -355,8 +357,10 @@ public class FixedPointScheduler extends Scheduler {
             } else {
                 // The ioPort is an output port.
                 // Get the function dependency of the container actor
-                FunctionDependency functionDependency = portContainer.getFunctionDependency();
-                inputPorts = functionDependency.getInputPortsDependentOn(ioPort);
+                FunctionDependency functionDependency = portContainer
+                        .getFunctionDependency();
+                inputPorts = functionDependency
+                        .getInputPortsDependentOn(ioPort);
             }
             // Iterate all input ports the current output depends on,
             // find their maximum depth.
@@ -393,7 +397,8 @@ public class FixedPointScheduler extends Scheduler {
      *   information.
      *  @return A naive schedule generated based on the dependency graph.
      */
-    private Schedule _constructNaiveSchedule(DirectedAcyclicGraph dependencyGraph) {
+    private Schedule _constructNaiveSchedule(
+            DirectedAcyclicGraph dependencyGraph) {
         Schedule schedule = new Schedule();
         Object[] sort = dependencyGraph.topologicalSort();
         if (_debugging) {
@@ -438,7 +443,7 @@ public class FixedPointScheduler extends Scheduler {
         setValid(true);
         return schedule;
     }
-    
+
     /** Construct a schedule based on the given dependency graph that
      *  contains the function dependency information.
      *  @param dependencyGraph A graph contains the function dependency 
@@ -448,9 +453,9 @@ public class FixedPointScheduler extends Scheduler {
     private Schedule _constructSchedule(DirectedAcyclicGraph dependencyGraph) {
         _computePortDepth(dependencyGraph);
         _computeActorDepth();
-        
+
         // FIXME: not much done here... optimization is needed.
-        
+
         Schedule schedule = new Schedule();
         Object[] sort = dependencyGraph.topologicalSort();
         if (_debugging) {
@@ -467,7 +472,7 @@ public class FixedPointScheduler extends Scheduler {
             if (!ioPort.isOutput() && (ioPort.sourcePortList().size() == 0)) {
                 continue;
             }
-            
+
             actor = (Actor) ioPort.getContainer();
 
             // If the actor is the container of this director, 
@@ -500,5 +505,5 @@ public class FixedPointScheduler extends Scheduler {
     private Hashtable _actorToDepth = null;
 
     /** A hashtable that caches the depths of ports. */
-    private Hashtable _portToDepth = null;    
+    private Hashtable _portToDepth = null;
 }

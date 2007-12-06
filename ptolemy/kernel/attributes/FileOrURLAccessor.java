@@ -215,7 +215,6 @@ public interface FileOrURLAccessor extends Settable {
      */
     public Writer openForWriting() throws IllegalActionException;
 
-
     /** Open the file for writing or appending.
      *  If the file does not exist, then
      *  create it.  If the file name is not absolute, the it is assumed

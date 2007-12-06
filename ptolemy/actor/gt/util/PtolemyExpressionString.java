@@ -54,8 +54,8 @@ public class PtolemyExpressionString {
     }
 
     public PtolemyExpressionString(NamedObj container, String value) {
-        _variableScope =
-            container == null ? null : new VariableScope(container);
+        _variableScope = container == null ? null
+                : new VariableScope(container);
         set(value);
     }
 
@@ -85,8 +85,7 @@ public class PtolemyExpressionString {
 
     private Token _token;
 
-    private static final ParseTreeEvaluator _TYPE_EVALUATOR =
-        new ParseTreeEvaluator();
+    private static final ParseTreeEvaluator _TYPE_EVALUATOR = new ParseTreeEvaluator();
 
     private static final PtParser _TYPE_PARSER = new PtParser();
 

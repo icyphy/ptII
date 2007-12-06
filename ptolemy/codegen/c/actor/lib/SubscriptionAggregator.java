@@ -81,14 +81,16 @@ public class SubscriptionAggregator extends CCodeGeneratorHelper {
                 } else if (actor.operation.stringValue().equals("multiply")) {
                     _codeStream.appendCodeBlock("fireBlockMultiply", args);
                 } else {
-                    throw new IllegalActionException("SubscriptionAggregator operation '"
-                    + actor.operation + "' not supported");
+                    throw new IllegalActionException(
+                            "SubscriptionAggregator operation '"
+                                    + actor.operation + "' not supported");
                 }
             }
             _codeStream.appendCodeBlock("fireBlock2", false);
         }
         return processCode(_codeStream.toString());
     }
+
     /**
      * Generate preinitialize code.
      * Read the <code>preinitBlock</code> from SubscriptionAggregator.c

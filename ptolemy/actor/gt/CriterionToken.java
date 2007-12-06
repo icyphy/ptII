@@ -49,8 +49,9 @@ public class CriterionToken extends FakedRecordToken {
     }
 
     public boolean equals(Object object) {
-        return this == object || (object instanceof CriterionToken
-                && ((CriterionToken) object)._criterion.equals(_criterion));
+        return this == object
+                || (object instanceof CriterionToken && ((CriterionToken) object)._criterion
+                        .equals(_criterion));
     }
 
     public Token get(String label) {

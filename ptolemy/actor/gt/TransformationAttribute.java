@@ -53,7 +53,7 @@ public abstract class TransformationAttribute extends Attribute {
     }
 
     public TransformationAttribute(NamedObj container, String name)
-    throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -63,7 +63,7 @@ public abstract class TransformationAttribute extends Attribute {
 
     protected void _checkContainerClass(NamedObj container,
             Class<? extends CompositeEntity> containerClass, boolean deep)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (container instanceof EntityLibrary) {
             return;
         }
@@ -82,7 +82,7 @@ public abstract class TransformationAttribute extends Attribute {
     }
 
     protected void _checkUniqueness(NamedObj container)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (container instanceof EntityLibrary) {
             return;
         }
@@ -99,9 +99,9 @@ public abstract class TransformationAttribute extends Attribute {
 
     protected void _setIconDescription(String iconDescription) {
         String moml = "<property name=\"_iconDescription\" class="
-            + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
-            + "  <configure>" + iconDescription + "</configure>"
-            + "</property>";
+                + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
+                + "  <configure>" + iconDescription + "</configure>"
+                + "</property>";
         MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
         request.execute();
     }

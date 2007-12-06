@@ -63,101 +63,72 @@ public final class Borders {
     private Borders() {
         // Overrides default constructor; prevents instantiation.
     }
-    
-    
+
     // Constant Borders *****************************************************
 
     /**
      * A prepared and reusable EmptyBorder without gaps.
-     */ 
-    public static final Border EMPTY_BORDER = 
-        new javax.swing.border.EmptyBorder(0, 0, 0, 0);
-    
-    
+     */
+    public static final Border EMPTY_BORDER = new javax.swing.border.EmptyBorder(
+            0, 0, 0, 0);
+
     /**
      * A prepared and reusable Border with 2dlu on all sides.
-     */ 
-    public static final Border DLU2_BORDER = 
-        createEmptyBorder(Sizes.DLUY2, 
-                          Sizes.DLUX2, 
-                          Sizes.DLUY2, 
-                          Sizes.DLUX2);
-    
-    
+     */
+    public static final Border DLU2_BORDER = createEmptyBorder(Sizes.DLUY2,
+            Sizes.DLUX2, Sizes.DLUY2, Sizes.DLUX2);
+
     /**
      * A prepared and reusable Border with 4dlu on all sides.
-     */ 
-    public static final Border DLU4_BORDER = 
-        createEmptyBorder(Sizes.DLUY4, 
-                          Sizes.DLUX4, 
-                          Sizes.DLUY4, 
-                          Sizes.DLUX4);
+     */
+    public static final Border DLU4_BORDER = createEmptyBorder(Sizes.DLUY4,
+            Sizes.DLUX4, Sizes.DLUY4, Sizes.DLUX4);
 
-    
     /**
      * A prepared and reusable Border with 7dlu on all sides.
-     */ 
-    public static final Border DLU7_BORDER = 
-        createEmptyBorder(Sizes.DLUY7, 
-                          Sizes.DLUX7, 
-                          Sizes.DLUY7, 
-                          Sizes.DLUX7);
+     */
+    public static final Border DLU7_BORDER = createEmptyBorder(Sizes.DLUY7,
+            Sizes.DLUX7, Sizes.DLUY7, Sizes.DLUX7);
 
-    
     /**
      * A prepared Border with 14dlu on all sides.
-     */ 
-    public static final Border DLU14_BORDER = 
-        createEmptyBorder(Sizes.DLUY14, 
-                          Sizes.DLUX14, 
-                          Sizes.DLUY14, 
-                          Sizes.DLUX14);
+     */
+    public static final Border DLU14_BORDER = createEmptyBorder(Sizes.DLUY14,
+            Sizes.DLUX14, Sizes.DLUY14, Sizes.DLUX14);
 
-    
     /**
      * A standardized Border that describes the gap between a component
      * and a button bar in its bottom.
-     */ 
-    public static final Border BUTTON_BAR_GAP_BORDER = 
-        createEmptyBorder(
-            LayoutStyle.getCurrent().getButtonBarPad(), 
-            Sizes.dluX(0), 
-            Sizes.dluY(0), 
-            Sizes.dluX(0));
+     */
+    public static final Border BUTTON_BAR_GAP_BORDER = createEmptyBorder(
+            LayoutStyle.getCurrent().getButtonBarPad(), Sizes.dluX(0), Sizes
+                    .dluY(0), Sizes.dluX(0));
 
-    
     /**
      * A standardized Border that describes the border around 
      * a dialog content that has no tabs.
      * 
      * @see #TABBED_DIALOG_BORDER
-     */ 
-    public static final Border DIALOG_BORDER = 
-        createEmptyBorder(
-            LayoutStyle.getCurrent().getDialogMarginY(),
-            LayoutStyle.getCurrent().getDialogMarginX(),
-            LayoutStyle.getCurrent().getDialogMarginY(),
-            LayoutStyle.getCurrent().getDialogMarginX()
-        );
+     */
+    public static final Border DIALOG_BORDER = createEmptyBorder(LayoutStyle
+            .getCurrent().getDialogMarginY(), LayoutStyle.getCurrent()
+            .getDialogMarginX(), LayoutStyle.getCurrent().getDialogMarginY(),
+            LayoutStyle.getCurrent().getDialogMarginX());
 
-    
     /**
      * A standardized Border that describes the border around 
      * a dialog content that uses tabs.
      * 
      * @see #DIALOG_BORDER
-     */ 
-    public static final Border TABBED_DIALOG_BORDER = 
-        createEmptyBorder(
-                LayoutStyle.getCurrent().getTabbedDialogMarginY(),
-                LayoutStyle.getCurrent().getTabbedDialogMarginX(),
-                LayoutStyle.getCurrent().getTabbedDialogMarginY(),
-                LayoutStyle.getCurrent().getTabbedDialogMarginX()
-        );
-    
-    
+     */
+    public static final Border TABBED_DIALOG_BORDER = createEmptyBorder(
+            LayoutStyle.getCurrent().getTabbedDialogMarginY(), LayoutStyle
+                    .getCurrent().getTabbedDialogMarginX(), LayoutStyle
+                    .getCurrent().getTabbedDialogMarginY(), LayoutStyle
+                    .getCurrent().getTabbedDialogMarginX());
+
     // Factory Methods ******************************************************
-    
+
     /**
      * Creates and returns an <code>EmptyBorder</code> with the specified
      * gaps.
@@ -170,11 +141,11 @@ public final class Borders {
      * 
      * @see #createEmptyBorder(String)
      */
-    public static Border createEmptyBorder(ConstantSize top,   ConstantSize left, 
-                                            ConstantSize bottom, ConstantSize right) {
+    public static Border createEmptyBorder(ConstantSize top, ConstantSize left,
+            ConstantSize bottom, ConstantSize right) {
         return new EmptyBorder(top, left, bottom, right);
     }
-    
+
     /**
      * Creates and returns a <code>Border</code> using sizes as specified by
      * the given string. This string is a comma-separated encoding of
@@ -190,72 +161,69 @@ public final class Borders {
         int tokenCount = tokenizer.countTokens();
         if (tokenCount != 4) {
             throw new IllegalArgumentException(
-                "The border requires 4 sizes, but '" + encodedSizes + 
-                "' has " + tokenCount + ".");
+                    "The border requires 4 sizes, but '" + encodedSizes
+                            + "' has " + tokenCount + ".");
         }
-        ConstantSize top    = Sizes.constant(tokenizer.nextToken(), false);
-        ConstantSize left   = Sizes.constant(tokenizer.nextToken(), true);
+        ConstantSize top = Sizes.constant(tokenizer.nextToken(), false);
+        ConstantSize left = Sizes.constant(tokenizer.nextToken(), true);
         ConstantSize bottom = Sizes.constant(tokenizer.nextToken(), false);
-        ConstantSize right  = Sizes.constant(tokenizer.nextToken(), true);
+        ConstantSize right = Sizes.constant(tokenizer.nextToken(), true);
         return createEmptyBorder(top, left, bottom, right);
     }
-    
 
     /**
      * An empty border that uses 4 instances of {@link ConstantSize} 
      * to define the gaps on all sides.
-     */    
+     */
     public static final class EmptyBorder implements Border {
-        
+
         private final ConstantSize top;
         private final ConstantSize left;
         private final ConstantSize bottom;
         private final ConstantSize right;
-        
-        private EmptyBorder(ConstantSize top, 
-                    ConstantSize left,
-                    ConstantSize bottom,
-                    ConstantSize right) {
-            this.top    = top;
-            this.left   = left;
+
+        private EmptyBorder(ConstantSize top, ConstantSize left,
+                ConstantSize bottom, ConstantSize right) {
+            this.top = top;
+            this.left = left;
             this.bottom = bottom;
-            this.right  = right;
+            this.right = right;
         }
-        
+
         /**
          * Returns this border's top size.
          * 
          * @return this border's top size
          */
-        public ConstantSize top() { 
-            return top; 
+        public ConstantSize top() {
+            return top;
         }
-        
+
         /**
          * Returns this border's left size.
          * 
          * @return this border's left size
          */
-        public ConstantSize left() { 
-            return left; 
+        public ConstantSize left() {
+            return left;
         }
-        
+
         /**
          * Returns this border's bottom size.
          * 
          * @return this border's bottom size
          */
-        public ConstantSize bottom() { 
-            return bottom; 
+        public ConstantSize bottom() {
+            return bottom;
         }
-        
+
         /**
          * Returns this border's right size.
          * 
          * @return this border's right size
          */
-        public ConstantSize right() { 
-            return right; 
+        public ConstantSize right() {
+            return right;
         }
 
         /**
@@ -269,11 +237,11 @@ public final class Borders {
          * @param width the width of the painted border
          * @param height the height of the painted border
          */
-        public void paintBorder(Component c, Graphics g, 
-                                int x, int y, int width, int height) {
+        public void paintBorder(Component c, Graphics g, int x, int y,
+                int width, int height) {
             // An empty border doesn't paint.
         }
-    
+
         /**
          * Returns the insets of the border. 
          *  
@@ -281,12 +249,10 @@ public final class Borders {
          * @return the border's Insets
          */
         public Insets getBorderInsets(Component c) {
-            return new Insets(top.getPixelSize(c),
-                               left.getPixelSize(c),
-                               bottom.getPixelSize(c),
-                               right.getPixelSize(c));
+            return new Insets(top.getPixelSize(c), left.getPixelSize(c), bottom
+                    .getPixelSize(c), right.getPixelSize(c));
         }
-    
+
         /**
          * Returns whether or not the border is opaque.  If the border
          * is opaque, it is responsible for filling in it's own
@@ -299,6 +265,5 @@ public final class Borders {
         }
 
     }
-
 
 }

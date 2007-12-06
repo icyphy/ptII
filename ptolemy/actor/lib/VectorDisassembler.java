@@ -81,7 +81,7 @@ public class VectorDisassembler extends Transformer {
                 + "<rect x=\"0\" y=\"0\" width=\"6\" "
                 + "height=\"40\" style=\"fill:blue\"/>\n" + "</svg>\n");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -116,10 +116,10 @@ public class VectorDisassembler extends Transformer {
                 }
             } else {
                 throw new IllegalActionException(this, "The input must "
-                    + "be a DoubleMatrixToken with one column or row. "
-                    + "But the input is " + vector);
+                        + "be a DoubleMatrixToken with one column or row. "
+                        + "But the input is " + vector);
             }
-            
+
         }
     }
 }

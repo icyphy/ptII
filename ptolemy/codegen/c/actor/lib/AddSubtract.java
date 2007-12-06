@@ -82,8 +82,8 @@ public class AddSubtract extends CCodeGeneratorHelper {
             initArgs.add(plusType);
             initArgs.add(outputType);
         }
-        _codeStream.appendCodeBlock(
-                minusOnly ? "minusOnlyInitSum" : "initSum", initArgs);
+        _codeStream.appendCodeBlock(minusOnly ? "minusOnlyInitSum" : "initSum",
+                initArgs);
 
         args.add("");
         args.add(outputType);
@@ -100,7 +100,7 @@ public class AddSubtract extends CCodeGeneratorHelper {
             _codeStream.appendCodeBlock("minusBlock", args);
         }
         _codeStream.appendCodeBlock("outputBlock");
-        
+
         return processCode(_codeStream.toString());
     }
 

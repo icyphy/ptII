@@ -266,7 +266,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 } catch (InvalidStateException ex) {
                     throw new InvalidStateException(topLevel, ex,
                             "The basic type lattic was: "
-                            + TypeLattice.basicLattice());
+                                    + TypeLattice.basicLattice());
                 }
 
                 // If some inequalities are not satisfied, or type variables

@@ -49,7 +49,7 @@ import ptolemy.moml.EntityLibrary;
 public class RelationCollapsingAttribute extends TransformationAttribute {
 
     public RelationCollapsingAttribute(NamedObj container, String name)
-    throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         parameter = new Parameter(this, "relationCollapsing");
@@ -64,8 +64,8 @@ public class RelationCollapsingAttribute extends TransformationAttribute {
 
         if (attribute == parameter) {
             try {
-                if (((BooleanToken) parameter.getToken()).equals(
-                        BooleanToken.TRUE)) {
+                if (((BooleanToken) parameter.getToken())
+                        .equals(BooleanToken.TRUE)) {
                     _setIconDescription(_COLLAPSING_ICON);
                 } else {
                     _setIconDescription(_NON_COLLAPSING_ICON);
@@ -78,7 +78,7 @@ public class RelationCollapsingAttribute extends TransformationAttribute {
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             _checkContainerClass(container, Pattern.class, true);
@@ -88,52 +88,49 @@ public class RelationCollapsingAttribute extends TransformationAttribute {
 
     public Parameter parameter;
 
-    private static final String _COLLAPSING_ICON =
-        "<svg>"
-        + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
-        + "  style=\"fill:#00FFFF\"/>"
-        + "<polygon points=\"14,5 8,11 14,17 20,11\" style=\"fill:#000000\"/>"
-        + "<line x1=\"21\" y1=\"11\" x2=\"24\" y2=\"11\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<line x1=\"24\" y1=\"11\" x2=\"24\" y2=\"21\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<line x1=\"24\" y1=\"21\" x2=\"27\" y2=\"21\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<polygon points=\"34,15 28,21 34,27 40,21\" style=\"fill:#000000\"/>"
-        + "<line x1=\"47\" y1=\"14\" x2=\"60\" y2=\"14\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"47\" y1=\"18\" x2=\"60\" y2=\"18\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"58\" y1=\"11\" x2=\"63\" y2=\"16\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"58\" y1=\"21\" x2=\"63\" y2=\"16\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<polygon points=\"77,10 71,16 77,22 83,16\" style=\"fill:#000000\"/>"
-        + "</svg>";
+    private static final String _COLLAPSING_ICON = "<svg>"
+            + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
+            + "  style=\"fill:#00FFFF\"/>"
+            + "<polygon points=\"14,5 8,11 14,17 20,11\" style=\"fill:#000000\"/>"
+            + "<line x1=\"21\" y1=\"11\" x2=\"24\" y2=\"11\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<line x1=\"24\" y1=\"11\" x2=\"24\" y2=\"21\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<line x1=\"24\" y1=\"21\" x2=\"27\" y2=\"21\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<polygon points=\"34,15 28,21 34,27 40,21\" style=\"fill:#000000\"/>"
+            + "<line x1=\"47\" y1=\"14\" x2=\"60\" y2=\"14\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"47\" y1=\"18\" x2=\"60\" y2=\"18\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"58\" y1=\"11\" x2=\"63\" y2=\"16\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"58\" y1=\"21\" x2=\"63\" y2=\"16\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<polygon points=\"77,10 71,16 77,22 83,16\" style=\"fill:#000000\"/>"
+            + "</svg>";
 
-    private static final String _NON_COLLAPSING_ICON =
-        "<svg>"
-        + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
-        + "  style=\"fill:#00FFFF\"/>"
-        + "<polygon points=\"14,5 8,11 14,17 20,11\" style=\"fill:#000000\"/>"
-        + "<line x1=\"21\" y1=\"11\" x2=\"24\" y2=\"11\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<line x1=\"24\" y1=\"11\" x2=\"24\" y2=\"21\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<line x1=\"24\" y1=\"21\" x2=\"27\" y2=\"21\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<polygon points=\"34,15 28,21 34,27 40,21\" style=\"fill:#000000\"/>"
-        + "<line x1=\"47\" y1=\"14\" x2=\"60\" y2=\"14\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"47\" y1=\"18\" x2=\"60\" y2=\"18\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"58\" y1=\"11\" x2=\"63\" y2=\"16\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"58\" y1=\"21\" x2=\"63\" y2=\"16\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<polygon points=\"77,10 71,16 77,22 83,16\" style=\"fill:#000000\"/>"
-        + "<line x1=\"49\" y1=\"9\" x2=\"57\" y2=\"23\""
-        + "  style=\"stroke:#C00000; stroke-width:3\"/>"
-        + "</svg>";
+    private static final String _NON_COLLAPSING_ICON = "<svg>"
+            + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
+            + "  style=\"fill:#00FFFF\"/>"
+            + "<polygon points=\"14,5 8,11 14,17 20,11\" style=\"fill:#000000\"/>"
+            + "<line x1=\"21\" y1=\"11\" x2=\"24\" y2=\"11\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<line x1=\"24\" y1=\"11\" x2=\"24\" y2=\"21\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<line x1=\"24\" y1=\"21\" x2=\"27\" y2=\"21\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<polygon points=\"34,15 28,21 34,27 40,21\" style=\"fill:#000000\"/>"
+            + "<line x1=\"47\" y1=\"14\" x2=\"60\" y2=\"14\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"47\" y1=\"18\" x2=\"60\" y2=\"18\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"58\" y1=\"11\" x2=\"63\" y2=\"16\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"58\" y1=\"21\" x2=\"63\" y2=\"16\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<polygon points=\"77,10 71,16 77,22 83,16\" style=\"fill:#000000\"/>"
+            + "<line x1=\"49\" y1=\"9\" x2=\"57\" y2=\"23\""
+            + "  style=\"stroke:#C00000; stroke-width:3\"/>" + "</svg>";
 
 }

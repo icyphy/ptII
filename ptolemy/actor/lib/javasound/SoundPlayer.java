@@ -136,17 +136,19 @@ public class SoundPlayer extends SoundActor {
                 _sourceDataLine.close();
             }
         }
-        boolean signed = true;     // For readability.
-        boolean bigEndian = true;  // For readability.
+        boolean signed = true; // For readability.
+        boolean bigEndian = true; // For readability.
         AudioFormat format = new AudioFormat(_sampleRate, _bytesPerSample * 8,
                 _channels, signed, bigEndian);
         // Get a source data line from the default mixer.
         // NOTE: THis is really a target for audio data, not a source.
         try {
-            _sourceDataLine = (SourceDataLine) AudioSystem.getSourceDataLine(format);
+            _sourceDataLine = (SourceDataLine) AudioSystem
+                    .getSourceDataLine(format);
             // Open line and suggest a buffer size (in bytes) to use or
             // the internal audio buffer.
-            _sourceDataLine.open(format, _bufferSize * _bytesPerSample * _channels);
+            _sourceDataLine.open(format, _bufferSize * _bytesPerSample
+                    * _channels);
             _sourceDataLine.start();
         } catch (LineUnavailableException e) {
             throw new IllegalActionException(this, e,
@@ -172,7 +174,7 @@ public class SoundPlayer extends SoundActor {
      */
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            DoubleMatrixToken token = (DoubleMatrixToken)input.get(0);
+            DoubleMatrixToken token = (DoubleMatrixToken) input.get(0);
             double[][] data = token.doubleMatrix();
 
             // This method is most efficient if repeated calls pass the same size
@@ -210,7 +212,7 @@ public class SoundPlayer extends SoundActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** Byte buffer used for playback data. */
     private byte[] _playbackData;
 

@@ -26,7 +26,6 @@
  */
 package ptolemy.codegen.c.domains.sdf.lib;
 
-
 /**
  A code generation helper class for ptolemy.domains.sdf.lib.VariableFIR. 
 

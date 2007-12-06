@@ -216,9 +216,11 @@ public class State extends ComponentEntity {
                     ((FSMActor) container)._initialState = this;
                     // If the initial state name of the container is set,
                     // unset it.
-                    String name = ((FSMActor) container).initialStateName.getExpression();
+                    String name = ((FSMActor) container).initialStateName
+                            .getExpression();
                     if (!name.equals("")) {
-                        ((FSMActor) container).initialStateName.setExpression("");
+                        ((FSMActor) container).initialStateName
+                                .setExpression("");
                     }
                 }
             }

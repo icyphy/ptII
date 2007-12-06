@@ -178,8 +178,8 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
         }
 
         if (_isDebugging()) {
-	    _debug("integrator: " + integrator.getName()
-                + " suggests next step size = " + newh);
+            _debug("integrator: " + integrator.getName()
+                    + " suggests next step size = " + newh);
         }
         return newh;
     }

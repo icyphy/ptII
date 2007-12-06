@@ -74,9 +74,9 @@ import diva.graph.JGraph;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
 */
-public class ModelDisplay extends AbstractPlaceableActor 
-        implements ChangeListener {
-    
+public class ModelDisplay extends AbstractPlaceableActor implements
+        ChangeListener {
+
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -92,15 +92,15 @@ public class ModelDisplay extends AbstractPlaceableActor
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.STRING);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                   ports and parameters                    ////
-    
+
     /** The file or URL from which to read the starting point model.
      *  The model is read when this parameter is set or changed.
      */
     public FileParameter modelURL;
-    
+
     /** The input port through which to provide MoML to modify the model.
      *  This has type string.
      */
@@ -124,8 +124,8 @@ public class ModelDisplay extends AbstractPlaceableActor
                 MoMLParser parser = new MoMLParser();
                 try {
                     _entity = parser.parse(null, url);
-                    ParserAttribute parserAttribute
-                            = new ParserAttribute(_entity, "_parser");
+                    ParserAttribute parserAttribute = new ParserAttribute(
+                            _entity, "_parser");
                     parserAttribute.setParser(parser);
                 } catch (Exception ex) {
                     throw new IllegalActionException(this, ex,
@@ -164,13 +164,14 @@ public class ModelDisplay extends AbstractPlaceableActor
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.getWidth() > 0 && input.hasToken(0)) {
-            String moml = ((StringToken)input.get(0)).stringValue();
-            MoMLChangeRequest request = new MoMLChangeRequest(this, _entity, moml);
+            String moml = ((StringToken) input.get(0)).stringValue();
+            MoMLChangeRequest request = new MoMLChangeRequest(this, _entity,
+                    moml);
             request.addChangeListener(this);
             _entity.requestChange(request);
         }
     }
-    
+
     /** If the model is not yet displayed, then display it in its
      *  own window.
      *  @exception IllegalActionException If there is an constructing
@@ -178,7 +179,7 @@ public class ModelDisplay extends AbstractPlaceableActor
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         // If we have no entity at this point, then create a simple
         // top-level entity into which we can put attributes.
         if (_entity == null) {
@@ -190,11 +191,13 @@ public class ModelDisplay extends AbstractPlaceableActor
         if (_graph == null) {
             Effigy containerEffigy = Configuration.findEffigy(toplevel());
             try {
-                _effigy = new PtolemyEffigy(containerEffigy, "ModelDisplay Effigy");
+                _effigy = new PtolemyEffigy(containerEffigy,
+                        "ModelDisplay Effigy");
                 _effigy.setModel(_entity);
                 _tableau = new Tableau(_effigy, "tableau");
             } catch (NameDuplicationException e) {
-                throw new IllegalActionException(this, e, "Failed to create tableau.");
+                throw new IllegalActionException(this, e,
+                        "Failed to create tableau.");
             }
             _frame = new TableauFrame(_tableau);
             setFrame(_frame);
@@ -203,7 +206,7 @@ public class ModelDisplay extends AbstractPlaceableActor
             _frame.pack();
         }
         if (_frame != null) {
-            ((TableauFrame)_frame).show();
+            ((TableauFrame) _frame).show();
             _frame.toFront();
         }
     }
@@ -238,11 +241,11 @@ public class ModelDisplay extends AbstractPlaceableActor
             ActorGraphModel graphModel = new ActorGraphModel(_entity);
             GraphPane graphPane = new GraphPane(controller, graphModel);
             _graph = new JGraph(graphPane);
-            
+
             // If the model has a recorded size, use it.
             List size = _entity.attributeList(SizeAttribute.class);
             if (size.size() > 0) {
-                ((SizeAttribute)size.get(0)).setSize(_graph);
+                ((SizeAttribute) size.get(0)).setSize(_graph);
             } else {
                 _graph.setMinimumSize(new Dimension(200, 200));
                 _graph.setMaximumSize(new Dimension(200, 200));
@@ -250,11 +253,11 @@ public class ModelDisplay extends AbstractPlaceableActor
                 _graph.setSize(200, 200);
             }
             // _graph.setBackground(Color.white);
-            
+
             container.add(_graph);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
 
@@ -265,8 +268,8 @@ public class ModelDisplay extends AbstractPlaceableActor
         MoMLParser parser = new MoMLParser();
         try {
             _entity = parser.parse(null, moml);
-            ParserAttribute parserAttribute
-            = new ParserAttribute(_entity, "_parser");
+            ParserAttribute parserAttribute = new ParserAttribute(_entity,
+                    "_parser");
             parserAttribute.setParser(parser);
         } catch (Exception ex) {
             throw new InternalErrorException(ex);
@@ -278,13 +281,13 @@ public class ModelDisplay extends AbstractPlaceableActor
 
     /** The effigy representing the model. */
     private PtolemyEffigy _effigy;
-    
+
     /** The top-level entity read from the file or URL. */
     private NamedObj _entity;
-    
+
     /** The graph display pane. */
     private JGraph _graph;
-    
+
     /** The tableau, if the model is displayed in its own window. */
     private Tableau _tableau;
 }

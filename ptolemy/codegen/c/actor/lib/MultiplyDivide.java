@@ -73,16 +73,18 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
 
         String blockType = isPrimitive(type) ? "" : "Token";
-        
-        boolean upgradeMultiply = isPrimitive(actor.multiply.getType()) && !isPrimitive(type); 
-        boolean upgradeDivide = isPrimitive(actor.divide.getType()) && !isPrimitive(type); 
+
+        boolean upgradeMultiply = isPrimitive(actor.multiply.getType())
+                && !isPrimitive(type);
+        boolean upgradeDivide = isPrimitive(actor.divide.getType())
+                && !isPrimitive(type);
 
         if (!divideOnly) {
             if (upgradeMultiply) {
                 args.add(codeGenType(actor.multiply.getType()));
-            }                
+            }
             _codeStream.appendCodeBlock("SetNumeratorBlock", args);
-            
+
         } else {
             _codeStream.appendCodeBlock(blockType + "SetNumeratorOneBlock");
         }
@@ -91,7 +93,7 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
         if (actor.divide.getWidth() > 0) {
             if (upgradeDivide) {
                 args.add(codeGenType(actor.divide.getType()));
-            }                
+            }
             _codeStream.appendCodeBlock("SetDenominatorBlock", args);
         }
 
@@ -101,7 +103,7 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
             args.set(0, Integer.valueOf(i));
             if (upgradeMultiply) {
                 args.add(codeGenType(actor.multiply.getType()));
-            }                
+            }
             _codeStream.appendCodeBlock(blockType + "MultiplyBlock", args);
         }
 
@@ -109,7 +111,7 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
             args.set(0, Integer.valueOf(i));
             if (upgradeDivide) {
                 args.add(codeGenType(actor.divide.getType()));
-            }                
+            }
             _codeStream.appendCodeBlock(blockType + "DivideBlock", args);
         }
 

@@ -25,14 +25,13 @@ import ptolemy.util.StringUtilities;
 
 public abstract class PropertySolver extends Attribute {
 
-    public PropertySolver(NamedObj container, String name) throws IllegalActionException, NameDuplicationException {
+    public PropertySolver(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _solvers.add(this);
     }
-    
 
     public Parameter trainingMode;
-
 
     /**
      * Resolve the property values for the given top-level entity.
@@ -40,7 +39,7 @@ public abstract class PropertySolver extends Attribute {
      */
     public abstract void resolveProperties(CompositeEntity topLevel)
             throws KernelException;
-    
+
     /**
      * Return the property helper for the given object. 
      * @param object The given object.
@@ -48,18 +47,17 @@ public abstract class PropertySolver extends Attribute {
      * @throws IllegalActionException Thrown if the helper cannot
      *  be found or instantiated.
      */
-    public abstract PropertyHelper getHelper(Object object) 
+    public abstract PropertyHelper getHelper(Object object)
             throws IllegalActionException;
-    
+
     public void addPropertyChangedListener(PropertyChangedListener listener) {
         _listeners.add(listener);
     }
-    
 
     public abstract String getExtendedUseCaseName();
 
     public abstract String getUseCaseName();
-    
+
     /** Parse a command-line argument. This method recognized -help
      *  and -version command-line arguments, and prints usage or
      *  version information. No other command-line arguments are
@@ -78,7 +76,8 @@ public abstract class PropertySolver extends Attribute {
             // then StringUtilities.exit(0) might not actually exit.
             return true;
         } else if (arg.equals("-version")) {
-            System.out.println("Version "
+            System.out
+                    .println("Version "
                             + VersionAttribute.CURRENT_VERSION.getExpression()
                             + ", Build $Id$");
 
@@ -91,94 +90,95 @@ public abstract class PropertySolver extends Attribute {
         return false;
     }
 
-    public void removePropertyChangedListener(
-            PropertyChangedListener listener) {
+    public void removePropertyChangedListener(PropertyChangedListener listener) {
         _listeners.remove(listener);
     }
-    
-    public void setTrainingMode (boolean isTraining) {
+
+    public void setTrainingMode(boolean isTraining) {
         trainingMode.setExpression((isTraining) ? "true" : "false");
     }
 
-    
     /**
      * 
      * @param object
      * @return
      * @throws IllegalActionException
      */
-    protected PropertyHelper _getHelper(Object object) throws IllegalActionException {
+    protected PropertyHelper _getHelper(Object object)
+            throws IllegalActionException {
         if (_helperStore.containsKey(object)) {
             return (PropertyHelper) _helperStore.get(object);
         }
-        
+
         if ((object instanceof IOPort) || (object instanceof Attribute)) {
             return _getHelper(((NamedObj) object).getContainer());
         }
-        
-        String packageName = getClass().getPackage().getName() + "." + getUseCaseName();
-    
+
+        String packageName = getClass().getPackage().getName() + "."
+                + getUseCaseName();
+
         Class componentClass = object.getClass();
-    
+
         Class helperClass = null;
         while (helperClass == null) {
             try {
-                
+
                 // FIXME: Is this the right error message?
                 if (!componentClass.getName().contains("ptolemy")) {
-                    throw new IllegalActionException("There is no property helper "
-                            + " for " + object.getClass());
+                    throw new IllegalActionException(
+                            "There is no property helper " + " for "
+                                    + object.getClass());
                 }
-                
+
                 helperClass = Class.forName(componentClass.getName()
                         .replaceFirst("ptolemy", packageName));
-                
+
             } catch (ClassNotFoundException e) {
                 // If helper class cannot be found, search the helper class
                 // for parent class instead.
                 componentClass = componentClass.getSuperclass();
             }
         }
-        
+
         Constructor constructor = null;
         Class solverClass = getClass();
         while (constructor == null && solverClass != null) {
             try {
-                constructor = helperClass.getConstructor(
-                        new Class[] { solverClass, componentClass });                
-    
-            } catch (NoSuchMethodException ex) {            
+                constructor = helperClass.getConstructor(new Class[] {
+                        solverClass, componentClass });
+
+            } catch (NoSuchMethodException ex) {
                 solverClass = solverClass.getSuperclass();
             }
         }
-        
+
         if (constructor == null) {
             throw new IllegalActionException(
-                    "Cannot find constructor method in " 
-                    + helperClass.getName());
+                    "Cannot find constructor method in "
+                            + helperClass.getName());
         }
-        
+
         Object helperObject = null;
-    
+
         try {
-            helperObject = constructor.newInstance(new Object[] { this, object });
-            
+            helperObject = constructor
+                    .newInstance(new Object[] { this, object });
+
         } catch (Exception ex) {
             throw new IllegalActionException(null, ex,
                     "Failed to create the helper class for property constraints.");
         }
-    
+
         if (!(helperObject instanceof PropertyHelper)) {
             throw new IllegalActionException(
-                    "Cannot resolve property for this component: "
-                    + object + ". Its helper class does not"
-                    + " implement PropertyHelper.");
-        }        
+                    "Cannot resolve property for this component: " + object
+                            + ". Its helper class does not"
+                            + " implement PropertyHelper.");
+        }
         _helperStore.put(object, helperObject);
-                
+
         return (PropertyHelper) helperObject;
     }
-
 
     private List _listeners = new ArrayList();
 
@@ -187,8 +187,8 @@ public abstract class PropertySolver extends Attribute {
      */
     protected HashMap _helperStore = new HashMap();
 
-    protected static List _solvers = new ArrayList(); 
-    
+    protected static List _solvers = new ArrayList();
+
     /**
      * Find a constraint solver that is associated with the given 
      * property lattice name. There can be more than one solvers with
@@ -199,19 +199,18 @@ public abstract class PropertySolver extends Attribute {
      * @throws IllegalActionException Thrown if no matched solver
      *  is found.
      */
-    public static PropertySolver findSolver(String identifier) 
+    public static PropertySolver findSolver(String identifier)
             throws IllegalActionException {
         Iterator iterator = _solvers.iterator();
         while (iterator.hasNext()) {
-            PropertySolver solver = 
-                (PropertySolver) iterator.next();
-            
+            PropertySolver solver = (PropertySolver) iterator.next();
+
             if (solver.getUseCaseName().equals(identifier)) {
                 return solver;
             }
         }
-        throw new IllegalActionException(
-                "Cannot find \"" + identifier + "\" solver.");
+        throw new IllegalActionException("Cannot find \"" + identifier
+                + "\" solver.");
     }
 
     /** Resolve properties for a model.
@@ -279,12 +278,13 @@ public abstract class PropertySolver extends Attribute {
                 }
 
                 // Get all instances of PropertySolver contained in the model.
-                List solvers = _solvers; 
+                List solvers = _solvers;
                 //toplevel.attributeList(PropertySolver.class);
 
                 if (solvers.size() == 0) {
                     // Add a codeGenerator
-                    throw new IllegalActionException("The model does not contain a solver.");
+                    throw new IllegalActionException(
+                            "The model does not contain a solver.");
                 } else {
                     // Get the last CodeGenerator in the list, maybe
                     // it was added last?
@@ -296,9 +296,10 @@ public abstract class PropertySolver extends Attribute {
                             solver.setTrainingMode(false);
                             solver.resolveProperties(toplevel);
                         } catch (KernelException ex) {
-                            throw new Exception("Failed to resolve properties for \""
-                                    + args[i] + "\"", ex);
-                        }                            
+                            throw new Exception(
+                                    "Failed to resolve properties for \""
+                                            + args[i] + "\"", ex);
+                        }
                     }
                 }
 
@@ -316,5 +317,5 @@ public abstract class PropertySolver extends Attribute {
         //return -2;
         return 0;
     }
-    
+
 }

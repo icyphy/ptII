@@ -56,7 +56,7 @@ public class ColtPoisson extends ColtRandomSource {
     public ColtPoisson(ptolemy.actor.lib.colt.ColtPoisson actor) {
         super(actor);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

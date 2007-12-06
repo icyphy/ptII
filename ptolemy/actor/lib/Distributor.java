@@ -88,7 +88,7 @@ public class Distributor extends Transformer implements SequenceActor {
     public Distributor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         blockSize = new Parameter(this, "blockSize");
         blockSize.setTypeEquals(BaseType.INT);
         blockSize.setExpression("1");
@@ -100,7 +100,8 @@ public class Distributor extends Transformer implements SequenceActor {
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setPersistent(false);
 
-        output_tokenProductionRate = new Parameter(output, "tokenProductionRate");
+        output_tokenProductionRate = new Parameter(output,
+                "tokenProductionRate");
         output_tokenProductionRate.setVisibility(Settable.NOT_EDITABLE);
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate.setExpression("blockSize");
@@ -116,7 +117,7 @@ public class Distributor extends Transformer implements SequenceActor {
      *  This is an integer with default value 0.
      */
     public Parameter blockSize;
-    
+
     /** The parameter controlling the input port consumption rate.
      *  This is an integer, initially with value 0. Whenever a connection
      *  is made to the output, the value of this parameter is changed to
@@ -157,8 +158,8 @@ public class Distributor extends Transformer implements SequenceActor {
         super.connectionsChanged(port);
 
         if (port == output) {
-            input_tokenConsumptionRate.setExpression(
-                    output.getWidth() + " * blockSize");
+            input_tokenConsumptionRate.setExpression(output.getWidth()
+                    + " * blockSize");
             _currentOutputPosition = 0;
 
             // NOTE: schedule is invalidated automatically already
@@ -179,7 +180,7 @@ public class Distributor extends Transformer implements SequenceActor {
         _tentativeOutputPosition = _currentOutputPosition;
 
         int width = output.getWidth();
-        int blockSizeValue = ((IntToken)blockSize.getToken()).intValue();
+        int blockSizeValue = ((IntToken) blockSize.getToken()).intValue();
 
         for (int i = 0; i < width; i++) {
             if (!input.hasToken(0, blockSizeValue)) {
@@ -215,7 +216,7 @@ public class Distributor extends Transformer implements SequenceActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // The channel number for the next output.
     private int _currentOutputPosition;
 

@@ -118,8 +118,8 @@ public class MatchResultTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        MatchResultViewer frame = new MatchResultViewer((CompositeEntity) model,
-                this, defaultLibrary);
+        MatchResultViewer frame = new MatchResultViewer(
+                (CompositeEntity) model, this, defaultLibrary);
 
         try {
             setFrame(frame);
@@ -151,8 +151,8 @@ public class MatchResultTableau extends Tableau {
 
             treeViewFactory = new TreeTableau.Factory(this, "Tree View");
             xmlViewFactory = new TextEditorTableau.Factory(this, "XML View");
-            javaPropertiesFactory =
-                new JVMTableau.Factory(this, "JVM Properties");
+            javaPropertiesFactory = new JVMTableau.Factory(this,
+                    "JVM Properties");
         }
 
         /** Create an instance of GRRuleGraphTableau for the specified effigy,

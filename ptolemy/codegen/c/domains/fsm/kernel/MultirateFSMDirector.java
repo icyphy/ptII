@@ -325,8 +325,8 @@ public class MultirateFSMDirector extends FSMDirector {
             if (currentState == null) {
                 // Findbugs wants us to check for null
                 throw new IllegalActionException(getComponent(),
-                        "Internal Error, inputPort '" + inputPort 
-                        + "': currentState == null");
+                        "Internal Error, inputPort '" + inputPort
+                                + "': currentState == null");
             }
             Entity refinement = (Entity) currentState.getRefinement()[0];
             IOPort refinementPort = (IOPort) refinement.getPort(inputPort
@@ -409,8 +409,8 @@ public class MultirateFSMDirector extends FSMDirector {
                             int offset = ((Integer) offsetObject).intValue();
                             offset = (offset + rate)
                                     % helper.getBufferSize(sinkPort, i);
-                            helper.setWriteOffset(sinkPort, i, Integer.valueOf(
-                                    offset));
+                            helper.setWriteOffset(sinkPort, i, Integer
+                                    .valueOf(offset));
                         } else {
                             int modulo = helper.getBufferSize(sinkPort, i) - 1;
                             String offsetVariable = (String) helper

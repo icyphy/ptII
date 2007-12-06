@@ -70,7 +70,6 @@ import ptolemy.util.StringUtilities;
 
 public class CCodeGenerator extends CodeGenerator {
 
-
     /** Create a new instance of the C code generator.
      *  @param container The container.
      *  @param name The name of the C code generator.
@@ -86,10 +85,8 @@ public class CCodeGenerator extends CodeGenerator {
         generatorPackage.setExpression("ptolemy.codegen.c");
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -114,21 +111,21 @@ public class CCodeGenerator extends CodeGenerator {
                 code.append("\t{");
                 for (int j = 0; j < functions.length; j++) {
                     if (functions[j].equals("isCloseTo")
-                            && (types[i].equals("Boolean") 
-                                    || types[i].equals("String"))) {
+                            && (types[i].equals("Boolean") || types[i]
+                                    .equals("String"))) {
                         // Boolean_isCloseTo and String_isCloseTo
                         // are the same as their corresponding *_equals
                         code.append(types[i] + "_equals");
                     } else {
                         // Check to see if the type/function combo is supported.
-                        String typeFunctionName = types[i]
-                            + "_" + functions[j];
-                        if (_unsupportedTypeFunctions.contains(typeFunctionName)) {
+                        String typeFunctionName = types[i] + "_" + functions[j];
+                        if (_unsupportedTypeFunctions
+                                .contains(typeFunctionName)) {
                             code.append("unsupportedTypeFunction");
                         } else {
                             if (_scalarDeleteTypes.contains(types[i])
                                     && functions[j].equals("delete")) {
-                                code.append("scalarDelete"); 
+                                code.append("scalarDelete");
                             } else {
                                 code.append(typeFunctionName);
                             }
@@ -207,15 +204,15 @@ public class CCodeGenerator extends CodeGenerator {
         // If the container is in the top level, we are generating code 
         // for the whole model.
         if (isTopLevel()) {
-            mainEntryCode.append(_eol + _eol + "int main(int argc, char *argv[]) {"
-                    + _eol);
+            mainEntryCode.append(_eol + _eol
+                    + "int main(int argc, char *argv[]) {" + _eol);
 
             // If the container is not in the top level, we are generating code 
             // for the Java and C co-simulation.
         } else {
             mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL"
-                    + _eol + "Java_" + _sanitizedModelName + "_fire ("
-                    + _eol + "JNIEnv *env, jobject obj");
+                    + _eol + "Java_" + _sanitizedModelName + "_fire (" + _eol
+                    + "JNIEnv *env, jobject obj");
 
             Iterator inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
@@ -268,8 +265,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePostfireExitCode() throws IllegalActionException {
-        return _INDENT1 + "return true;" + _eol
-            + "}" + _eol;
+        return _INDENT1 + "return true;" + _eol + "}" + _eol;
     }
 
     /** Generate the postfire procedure name.
@@ -300,11 +296,11 @@ public class CCodeGenerator extends CodeGenerator {
     public String generateTypeConvertCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-        
+
         code.append(_eol
                 + comment("Generate type resolution code for "
                         + getContainer().getFullName()));
-        
+
         // Include the constantsBlock at the top so that sharedBlocks from
         // actors can use true and false etc.  StringMatches needs this.
         CodeStream sharedStream = new CodeStream(
@@ -342,7 +338,6 @@ public class CCodeGenerator extends CodeGenerator {
 
         Object[] functionsArray = functions.toArray();
 
-        
         // True if we have a delete function that needs to return a Token
         boolean defineEmptyToken = false;
 
@@ -375,8 +370,7 @@ public class CCodeGenerator extends CodeGenerator {
 
             if (defineEmptyToken) {
                 sharedStream.append("Token emptyToken; "
-                        + comment("Used by *_delete() and others.")
-                        + _eol);
+                        + comment("Used by *_delete() and others.") + _eol);
             }
         }
 
@@ -391,7 +385,8 @@ public class CCodeGenerator extends CodeGenerator {
             // The "funcDeclareBlock" contains all function declarations for
             // the type.
             for (int j = 0; j < functionsArray.length; j++) {
-                String typeFunctionName = typesArray[i] + "_" + functionsArray[j];
+                String typeFunctionName = typesArray[i] + "_"
+                        + functionsArray[j];
                 if (_unsupportedTypeFunctions.contains(typeFunctionName)) {
                     defineUnsupportedTypeFunctionMethod = true;
                 }
@@ -400,8 +395,8 @@ public class CCodeGenerator extends CodeGenerator {
                     defineScalarDeleteMethod = true;
                 }
                 if (functionsArray[j].equals("isCloseTo")
-                        && (typesArray[i].equals("Boolean") 
-                                || typesArray[i].equals("String"))) {
+                        && (typesArray[i].equals("Boolean") || typesArray[i]
+                                .equals("String"))) {
                     boolean foundEquals = false;
                     for (int k = 0; k < functionsArray.length; k++) {
                         if (functionsArray[k].equals("equals")) {
@@ -471,22 +466,23 @@ public class CCodeGenerator extends CodeGenerator {
                     // Boolean_isCloseTo and String_isCloseTo map to
                     // Boolean_equals and String_equals.
                     if (functionsArray[j].equals("isCloseTo")
-                        && (typesArray[i].equals("Boolean") 
-                                || typesArray[i].equals("String"))) {
+                            && (typesArray[i].equals("Boolean") || typesArray[i]
+                                    .equals("String"))) {
 
                         if (!functions.contains("equals")) {
-                            typeStreams[i].appendCodeBlock(
-                                    typesArray[i] + "_equals");
+                            typeStreams[i].appendCodeBlock(typesArray[i]
+                                    + "_equals");
                         }
                     } else {
-                        String functionName = 
-                            typesArray[i] + "_" + functionsArray[j];
-                        
+                        String functionName = typesArray[i] + "_"
+                                + functionsArray[j];
+
                         if (!_unsupportedTypeFunctions.contains(functionName)
-                            && !_overloadedFunctionSet.contains(functionName)) {
-                            
-                            typeStreams[i].appendCodeBlock(
-                                    typesArray[i]+ "_" + functionsArray[j]);
+                                && !_overloadedFunctionSet
+                                        .contains(functionName)) {
+
+                            typeStreams[i].appendCodeBlock(typesArray[i] + "_"
+                                    + functionsArray[j]);
                         }
                     }
                 } catch (IllegalActionException ex) {
@@ -510,12 +506,11 @@ public class CCodeGenerator extends CodeGenerator {
         return code.toString();
     }
 
-
     public String processCode(String code) throws IllegalActionException {
-        CCodeGeneratorHelper helper = 
-            (CCodeGeneratorHelper) _getHelper(getContainer());
+        CCodeGeneratorHelper helper = (CCodeGeneratorHelper) _getHelper(getContainer());
         return helper.processCode(code);
     }
+
     /**
      * @return
      */
@@ -530,7 +525,6 @@ public class CCodeGenerator extends CodeGenerator {
         functions.addAll(_tokenFuncUsed);
         return functions;
     }
-
 
     /**
      * @param functions
@@ -547,13 +541,11 @@ public class CCodeGenerator extends CodeGenerator {
             types.add("String");
         }
 
-        if (functions.contains("isCloseTo")
-                && _newTypesUsed.contains("Int")
+        if (functions.contains("isCloseTo") && _newTypesUsed.contains("Int")
                 && !_newTypesUsed.contains("Double")) {
             // FIXME: we should not need Double for Int_isCloseTo()
             types.add("Double");
         }
-
 
         types.addAll(_newTypesUsed);
         return types;
@@ -579,8 +571,8 @@ public class CCodeGenerator extends CodeGenerator {
                 Variable variable = (Variable) modifiedVariables.next();
 
                 code.append("static "
-                        + CodeGeneratorHelper.targetType(variable.getType()) + " "
-                        + generateVariableName(variable) + ";" + _eol);
+                        + CodeGeneratorHelper.targetType(variable.getType())
+                        + " " + generateVariableName(variable) + ";" + _eol);
             }
         }
 
@@ -611,9 +603,8 @@ public class CCodeGenerator extends CodeGenerator {
                 code.append(_INDENT1
                         + generateVariableName(variable)
                         + " = "
-                        + containerHelper.getParameterValue(
-                                variable.getName(), variable.getContainer())
-                        + ";" + _eol);
+                        + containerHelper.getParameterValue(variable.getName(),
+                                variable.getContainer()) + ";" + _eol);
             }
         }
 
@@ -667,34 +658,34 @@ public class CCodeGenerator extends CodeGenerator {
      */
     protected void _addActorIncludeDirectories() throws IllegalActionException {
         ActorCodeGenerator helper = _getHelper(getContainer());
-        
+
         Set actorIncludeDirectories = helper.getIncludeDirectories();
         Iterator includeIterator = actorIncludeDirectories.iterator();
         while (includeIterator.hasNext()) {
             addInclude("-I\"" + ((String) includeIterator.next()) + "\"");
         }
     }
-    
+
     /** Add libraries specified by the actors in this model.
      *  @exception IllegalActionException If thrown when getting an actor's
      *   libraries.
      */
     protected void _addActorLibraries() throws IllegalActionException {
         ActorCodeGenerator helper = _getHelper(getContainer());
-        
+
         Set actorLibraryDirectories = helper.getLibraryDirectories();
         Iterator libraryDirectoryIterator = actorLibraryDirectories.iterator();
         while (libraryDirectoryIterator.hasNext()) {
-            addLibrary("-L\"" + ((String) libraryDirectoryIterator.next()) + "\"");
+            addLibrary("-L\"" + ((String) libraryDirectoryIterator.next())
+                    + "\"");
         }
-        
+
         Set actorLibraries = helper.getLibraries();
         Iterator librariesIterator = actorLibraries.iterator();
         while (librariesIterator.hasNext()) {
             addLibrary("-l\"" + ((String) librariesIterator.next()) + "\"");
         }
     }
-
 
     /** Analyze the model to find out what connections need to be type
      *  converted. This should be called before all the generate methods.
@@ -703,10 +694,10 @@ public class CCodeGenerator extends CodeGenerator {
      */
     protected void _analyzeTypeConversions() throws IllegalActionException {
         super._analyzeTypeConversions();
-        
+
         String typeDir = "$CLASSPATH/ptolemy/codegen/c/kernel/type/";
         String functionDir = typeDir + "polymorphic/";
-        
+
         _overloadedFunctions = new CodeStream(functionDir + "add.c", this);
         _overloadedFunctions.parse(functionDir + "subtract.c");
         _overloadedFunctions.parse(functionDir + "convert.c");
@@ -716,13 +707,12 @@ public class CCodeGenerator extends CodeGenerator {
         _overloadedFunctions.parse(typeDir + "Double.c");
         _overloadedFunctions.parse(typeDir + "Int.c");
         _overloadedFunctions.parse(typeDir + "String.c");
-        
+
         _overloadedFunctionSet = new HashSet<String>();
-        
+
         //_overloadedFunctionSet = new HashSet(_overloadedFunctions.getAllCodeBlockNames());
     }
-    
-    
+
     /** Execute the compile and run commands in the
      *  <i>codeDirectory</i> directory.
      *  @return The return value of the last subprocess that was executed
@@ -770,8 +760,7 @@ public class CCodeGenerator extends CodeGenerator {
         }
         return _executeCommands.getLastSubprocessReturnCode();
     }
-    
-    
+
     /** Make a final pass over the generated code. Subclass may extend
      * this method to do extra processing to format the output code. If
      * sourceLineBinding is set to true, it will check and insert the
@@ -781,27 +770,27 @@ public class CCodeGenerator extends CodeGenerator {
      * @return The processed code.
      * @exception IllegalActionException If #getOutputFilename() throws it.
      */
-    protected StringBuffer _finalPassOverCode(StringBuffer code) 
+    protected StringBuffer _finalPassOverCode(StringBuffer code)
             throws IllegalActionException {
 
         code = super._finalPassOverCode(code);
-        
+
         if (((BooleanToken) sourceLineBinding.getToken()).booleanValue()) {
-            
+
             String filename = getOutputFilename();
             //filename = new java.io.File(filename).getAbsolutePath().replace('\\', '/');
 
-            StringTokenizer tokenizer = 
-                new StringTokenizer(code.toString(), _eol);
-            
+            StringTokenizer tokenizer = new StringTokenizer(code.toString(),
+                    _eol);
+
             code = new StringBuffer();
-            
+
             String lastLine = null;
             if (tokenizer.hasMoreTokens()) {
                 lastLine = tokenizer.nextToken();
             }
-    
-            for (int i = 2; tokenizer.hasMoreTokens(); ) {
+
+            for (int i = 2; tokenizer.hasMoreTokens();) {
                 String line = tokenizer.nextToken();
                 if (lastLine.trim().length() == 0) {
                     lastLine = line;
@@ -813,23 +802,24 @@ public class CCodeGenerator extends CodeGenerator {
                             code.append(lastLine + _eol);
                             i++;
                         }
-                    } else {                    
+                    } else {
                         code.append(lastLine + _eol);
                         i++;
-                        
+
                         if (!line.trim().startsWith("#line")) {
-                            code.append("#line " + i++ + " \"" + filename + "\"" + _eol);                        
-                        }                    
+                            code.append("#line " + i++ + " \"" + filename
+                                    + "\"" + _eol);
+                        }
                     }
                     lastLine = line;
                 }
             }
-            
+
             if (lastLine != null && lastLine.trim().length() != 0) {
-                code.append(lastLine + _eol);            
+                code.append(lastLine + _eol);
             }
         }
-        
+
         return code;
     }
 
@@ -846,14 +836,15 @@ public class CCodeGenerator extends CodeGenerator {
         Set includingFiles = compositeActorHelper.getHeaderFiles();
 
         includingFiles.add("<stdlib.h>"); // Sun requires stdlib.h for malloc
-        
-        if (isTopLevel() && ((BooleanToken) measureTime.getToken()).booleanValue()) {
+
+        if (isTopLevel()
+                && ((BooleanToken) measureTime.getToken()).booleanValue()) {
             includingFiles.add("<sys/time.h>");
         }
 
         if (!isTopLevel()) {
             includingFiles.add("\"" + _sanitizedModelName + ".h\"");
-            
+
             // FIXME: This only works under windows.
             // FIXME: Shouldn't this be included only if used?
             String javaHome = StringUtilities.getProperty("java.home");
@@ -884,14 +875,15 @@ public class CCodeGenerator extends CodeGenerator {
 
         while (files.hasNext()) {
             String file = (String) files.next();
-            
+
             // Not all embedded platforms have all .h files.
             // For example, the AVR does not have time.h
             // FIXME: Surely we can control whether the files are
             // included more than once rather than relying on #ifndef!
-            code.append("#ifndef PT_NO_" + file.substring(1, file.length() - 3).replace('/', '_').toUpperCase() + "_H" + _eol
-                    + "#include " + file + _eol
-                    + "#endif" + _eol);
+            code.append("#ifndef PT_NO_"
+                    + file.substring(1, file.length() - 3).replace('/', '_')
+                            .toUpperCase() + "_H" + _eol + "#include " + file
+                    + _eol + "#endif" + _eol);
         }
 
         return code.toString();
@@ -904,12 +896,13 @@ public class CCodeGenerator extends CodeGenerator {
     protected String _printExecutionTime() {
         StringBuffer endCode = new StringBuffer();
         endCode.append(super._printExecutionTime());
-        endCode.append("clock_gettime(CLOCK_REALTIME, &end);\n" +
-                       "dT = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) * 1.0e-9;\n" +
-                       "printf(\"execution time: %g seconds\\n\", dT);\n\n");
+        endCode
+                .append("clock_gettime(CLOCK_REALTIME, &end);\n"
+                        + "dT = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) * 1.0e-9;\n"
+                        + "printf(\"execution time: %g seconds\\n\", dT);\n\n");
         return endCode.toString();
-    }  
-    
+    }
+
     /** Generate the code for recording the current time.
      *  This writes current time into a timespec struct called "start".
      *  @return Return the code for recording the current time.
@@ -917,12 +910,11 @@ public class CCodeGenerator extends CodeGenerator {
     protected String _recordStartTime() {
         StringBuffer startCode = new StringBuffer();
         startCode.append(super._recordStartTime());
-        startCode.append("struct timespec start, end;\n" +
-                         "double dT = 0.0;\n" +
-                         "clock_gettime(CLOCK_REALTIME, &start);\n\n");
+        startCode.append("struct timespec start, end;\n" + "double dT = 0.0;\n"
+                + "clock_gettime(CLOCK_REALTIME, &start);\n\n");
         return startCode.toString();
     }
-    
+
     /** Read in a template makefile, substitute variables and write
      *  the resulting makefile.
      *
@@ -1021,14 +1013,10 @@ public class CCodeGenerator extends CodeGenerator {
 
             // Define substitutions to be used in the makefile
             substituteMap.put("@PTJNI_NO_CYGWIN@", "");
-            substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@",
-                    "");
-            substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
-                    "");
-            substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@",
-                    "");
-            substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@",
-                    "");
+            substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "");
+            substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "");
+            substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "");
+            substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "");
             if (((BooleanToken) generateCpp.getToken()).booleanValue()) {
                 substituteMap.put("@PTCGCompiler@", "g++");
             } else {
@@ -1042,22 +1030,15 @@ public class CCodeGenerator extends CodeGenerator {
                     substituteMap.put("@PTJNI_NO_CYGWIN@", "-mno-cygwin");
                     substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
                             "-Wl,--add-stdcall-alias");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@",
-                            "dll");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "dll");
                 } else if (osName.startsWith("SunOS")) {
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@",
-                            "-fPIC");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@",
-                            "-fPIC");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@",
-                            "lib");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@",
-                            "so");
-                } else if (osName.startsWith("Linux")) { 
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@",
-                            "lib");
-                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@",
-                            "so");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_CFLAG@", "-fPIC");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_LDFLAG@", "-fPIC");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
+                } else if (osName.startsWith("Linux")) {
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_PREFIX@", "lib");
+                    substituteMap.put("@PTJNI_SHAREDLIBRARY_SUFFIX@", "so");
                 }
             }
         } catch (IllegalActionException ex) {
@@ -1156,37 +1137,32 @@ public class CCodeGenerator extends CodeGenerator {
         return buffer.toString();
     }
 
-    
-    public void markFunctionCalled(String name, CCodeGeneratorHelper helper) 
+    public void markFunctionCalled(String name, CCodeGeneratorHelper helper)
             throws IllegalActionException {
 
         try {
-            String functionCode =  _overloadedFunctions.getCodeBlock(name);
-        
-        
+            String functionCode = _overloadedFunctions.getCodeBlock(name);
+
             if (!_overloadedFunctionSet.contains(name)) {
 
                 String code = helper.processCode(functionCode);
 
                 _overloadedFunctions.append(code);
-            
+
                 _overloadedFunctionSet.add(name);
             }
         } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, 
-                    "Failed to mark function called for \""  
-                    + name + "\" in \""
-                    + helper.getFullName() + "\"");
+            throw new IllegalActionException(this, ex,
+                    "Failed to mark function called for \"" + name + "\" in \""
+                            + helper.getFullName() + "\"");
         }
 
     }
-    
+
     private CodeStream _overloadedFunctions;
 
     private Set<String> _overloadedFunctionSet;
-    
-    
-    
+
     /** Set of type/function combinations that are not supported.
      *  We use one method so as to reduce code size.
      */
@@ -1196,7 +1172,6 @@ public class CCodeGenerator extends CodeGenerator {
      *  We use one method so as to reduce code size.
      */
     private static Set _scalarDeleteTypes;
-
 
     static {
         _unsupportedTypeFunctions = new HashSet();

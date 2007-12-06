@@ -176,8 +176,9 @@ public class Configuration extends CompositeEntity implements
                         Iterator constraintIterator = constraints.iterator();
                         while (constraintIterator.hasNext()) {
                             Inequality constraint = (Inequality) constraintIterator
-                                .next();
-                            constraintsDescription.append(constraint.toString());
+                                    .next();
+                            constraintsDescription
+                                    .append(constraint.toString());
                         }
                     } catch (Throwable throwable) {
                         throw new IllegalActionException(actor, throwable,

@@ -8,7 +8,8 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 import ptolemy.backtrack.eclipse.plugin.editor.MultiPageCompilationUnitEditor;
 
-public class StandardizeTabsSpacesEditorAction implements IWorkbenchWindowActionDelegate {
+public class StandardizeTabsSpacesEditorAction implements
+        IWorkbenchWindowActionDelegate {
 
     public void dispose() {
     }
@@ -23,8 +24,7 @@ public class StandardizeTabsSpacesEditorAction implements IWorkbenchWindowAction
      */
     public void run(IAction action) {
         IEditorPart editorPart = _window.getActivePage().getActiveEditor();
-        MultiPageCompilationUnitEditor editor =
-            (MultiPageCompilationUnitEditor) editorPart;
+        MultiPageCompilationUnitEditor editor = (MultiPageCompilationUnitEditor) editorPart;
 
         StandardizeTabsSpacesUtility.standardize(editor);
     }

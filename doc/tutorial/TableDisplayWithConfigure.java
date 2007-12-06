@@ -18,16 +18,27 @@ public class TableDisplayWithConfigure extends TableDisplay {
         super(container, name);
         new Factory(this, "_factory");
     }
+
     public class Factory extends EditorPaneFactory {
-        public Factory(NamedObj container, String name) throws IllegalActionException, NameDuplicationException {
+        public Factory(NamedObj container, String name)
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
+
         public Component createEditorPane() {
             if (_table == null) {
                 TableModel dataModel = new AbstractTableModel() {
-                    public int getColumnCount() { return 10; }
-                    public int getRowCount() { return 10;}
-                    public Object getValueAt(int row, int col) { return Integer.valueOf(row*col); }
+                    public int getColumnCount() {
+                        return 10;
+                    }
+
+                    public int getRowCount() {
+                        return 10;
+                    }
+
+                    public Object getValueAt(int row, int col) {
+                        return Integer.valueOf(row * col);
+                    }
                 };
                 _table = new JTable(dataModel);
             }

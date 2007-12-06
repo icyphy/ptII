@@ -247,7 +247,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
             System.out.println("Not Found: " + throwable);
         } finally {
             try {
-                din.close();            
+                din.close();
             } catch (IOException ex) {
                 System.out.println("Failed to close " + serviceIdFile);
             }

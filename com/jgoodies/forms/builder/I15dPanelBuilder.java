@@ -62,13 +62,12 @@ import com.jgoodies.forms.layout.FormLayout;
  * @see	ResourceBundle
  */
 public class I15dPanelBuilder extends PanelBuilder {
-    
+
     /** 
      * Holds the <code>ResourceBundle</code> used to lookup internationalized
      * (i15d) String resources.
      */
     private final ResourceBundle bundle;
-    
 
     // Instance Creation ****************************************************
 
@@ -79,7 +78,7 @@ public class I15dPanelBuilder extends PanelBuilder {
      * @param layout    the form layout used to layout the container
      * @param bundle    the resource bundle used to lookup i15d strings
      */
-    public I15dPanelBuilder(FormLayout layout, ResourceBundle bundle){        
+    public I15dPanelBuilder(FormLayout layout, ResourceBundle bundle) {
         this(new JPanel(null), layout, bundle);
     }
 
@@ -91,7 +90,8 @@ public class I15dPanelBuilder extends PanelBuilder {
      * @param bundle  the <code>ResourceBundle</code> used to lookup i15d strings
      * @param panel   the layout container
      */
-    public I15dPanelBuilder(FormLayout layout, ResourceBundle bundle, JPanel panel){        
+    public I15dPanelBuilder(FormLayout layout, ResourceBundle bundle,
+            JPanel panel) {
         super(layout, panel);
         this.bundle = bundle;
     }
@@ -106,13 +106,13 @@ public class I15dPanelBuilder extends PanelBuilder {
      * 
      * @deprecated Replaced by {@link #I15dPanelBuilder(FormLayout, ResourceBundle, JPanel)}.
      */
-    public I15dPanelBuilder(JPanel panel, FormLayout layout, ResourceBundle bundle){        
+    public I15dPanelBuilder(JPanel panel, FormLayout layout,
+            ResourceBundle bundle) {
         this(layout, bundle, panel);
     }
 
-
     // Adding Labels and Separators *****************************************
-    
+
     /**
      * Adds an internationalized (i15d) textual label to the form using the
      * specified constraints.
@@ -121,7 +121,8 @@ public class I15dPanelBuilder extends PanelBuilder {
      * @param constraints	the label's cell constraints
      * @return the added label
      */
-    public final JLabel addI15dLabel(String resourceKey, CellConstraints constraints) {
+    public final JLabel addI15dLabel(String resourceKey,
+            CellConstraints constraints) {
         return addLabel(getI15dString(resourceKey), constraints);
     }
 
@@ -133,10 +134,12 @@ public class I15dPanelBuilder extends PanelBuilder {
      * @param encodedConstraints  a string representation for the constraints
      * @return the added label
      */
-    public final JLabel addI15dLabel(String resourceKey, String encodedConstraints) {
-        return addI15dLabel(resourceKey, new CellConstraints(encodedConstraints));
+    public final JLabel addI15dLabel(String resourceKey,
+            String encodedConstraints) {
+        return addI15dLabel(resourceKey,
+                new CellConstraints(encodedConstraints));
     }
-    
+
     /**
      * Adds an internationalized (i15d) label and component to the panel using 
      * the given cell constraints. Sets the label as <i>the</i> component label 
@@ -179,14 +182,13 @@ public class I15dPanelBuilder extends PanelBuilder {
      *     is used for the label and the component
      * @see JLabel#setLabelFor(java.awt.Component)
      */
-    public final JLabel addI15dLabel(
-            String resourceKey,   CellConstraints labelConstraints,
-			Component component,  CellConstraints componentConstraints) {
-        
+    public final JLabel addI15dLabel(String resourceKey,
+            CellConstraints labelConstraints, Component component,
+            CellConstraints componentConstraints) {
+
         return addLabel(getI15dString(resourceKey), labelConstraints,
-                        component, componentConstraints);
+                component, componentConstraints);
     }
-    
 
     /**
      * Adds an internationalized (i15d) titled separator to the form using the
@@ -196,10 +198,11 @@ public class I15dPanelBuilder extends PanelBuilder {
      * @param constraints  the separator's cell constraints
      * @return the added titled separator
      */
-    public final JComponent addI15dSeparator(String resourceKey, CellConstraints constraints) {
+    public final JComponent addI15dSeparator(String resourceKey,
+            CellConstraints constraints) {
         return addSeparator(getI15dString(resourceKey), constraints);
     }
-    
+
     /**
      * Adds an internationalized (i15d)  titled separator to the form using
      * the specified constraints.
@@ -208,10 +211,12 @@ public class I15dPanelBuilder extends PanelBuilder {
      * @param encodedConstraints  a string representation for the constraints
      * @return the added titled separator
      */
-    public final JComponent addI15dSeparator(String resourceKey, String encodedConstraints) {
-        return addI15dSeparator(resourceKey, new CellConstraints(encodedConstraints));
+    public final JComponent addI15dSeparator(String resourceKey,
+            String encodedConstraints) {
+        return addI15dSeparator(resourceKey, new CellConstraints(
+                encodedConstraints));
     }
-     
+
     /**
      * Adds a title to the form using the specified constraints.
      * 
@@ -219,10 +224,11 @@ public class I15dPanelBuilder extends PanelBuilder {
      * @param constraints  the separator's cell constraints
      * @return the added title label
      */
-    public final JLabel addI15dTitle(String resourceKey, CellConstraints constraints) {
+    public final JLabel addI15dTitle(String resourceKey,
+            CellConstraints constraints) {
         return addTitle(getI15dString(resourceKey), constraints);
     }
-    
+
     /**
      * Adds a title to the form using the specified constraints.
      * 
@@ -230,13 +236,14 @@ public class I15dPanelBuilder extends PanelBuilder {
      * @param encodedConstraints  a string representation for the constraints
      * @return the added title label
      */
-    public final JLabel add15dTitle(String resourceKey, String encodedConstraints) {
-        return addI15dTitle(resourceKey, new CellConstraints(encodedConstraints));
+    public final JLabel add15dTitle(String resourceKey,
+            String encodedConstraints) {
+        return addI15dTitle(resourceKey,
+                new CellConstraints(encodedConstraints));
     }
-    
-    
+
     // Helper Code **********************************************************
-    
+
     /**
      * Looks up and returns the internationalized (i15d) string for the given
      * resource key from the <code>ResourceBundle</code>.
@@ -249,14 +256,13 @@ public class I15dPanelBuilder extends PanelBuilder {
      */
     protected String getI15dString(String resourceKey) {
         if (bundle == null)
-            throw new IllegalStateException("You must specify a ResourceBundle" +                " before using the internationalization support.");
+            throw new IllegalStateException("You must specify a ResourceBundle"
+                    + " before using the internationalization support.");
         try {
             return bundle.getString(resourceKey);
         } catch (MissingResourceException mre) {
             return resourceKey;
         }
     }
-    
-     
 
 }

@@ -52,9 +52,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public abstract class AbstractPlaceableActor extends TypedAtomicActor
-        implements Placeable {
-    
+public abstract class AbstractPlaceableActor extends TypedAtomicActor implements
+        Placeable {
+
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,11 +66,12 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor
     public AbstractPlaceableActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        _windowProperties = new WindowPropertiesAttribute(this, "_windowProperties");
+
+        _windowProperties = new WindowPropertiesAttribute(this,
+                "_windowProperties");
         _paneSize = new SizeAttribute(this, "_paneSize");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -83,7 +84,7 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor
      *   null to specify that there is no current container.
      */
     public abstract void place(Container container);
-    
+
     /** Specify the associated frame and set its properties (size, etc.)
      *  to match those stored in the _windowProperties attribute.
      *  @param frame The associated frame.
@@ -91,12 +92,11 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor
     public void setFrame(JFrame frame) {
         _frame = frame;
         _windowProperties.setProperties(_frame);
-        
+
         // Regrettably, since setSize() in swing doesn't actually
         // set the size of the frame, we have to also set the
         // size of the internal component.
-        Component[] components = _frame.getContentPane()
-                .getComponents();
+        Component[] components = _frame.getContentPane().getComponents();
 
         if (components.length > 0) {
             _paneSize.setSize(components[0]);
@@ -138,7 +138,7 @@ public abstract class AbstractPlaceableActor extends TypedAtomicActor
 
     /** The associated frame. */
     protected JFrame _frame;
-    
+
     /** A specification of the size of the pane if it's in its own window. */
     protected SizeAttribute _paneSize;
 

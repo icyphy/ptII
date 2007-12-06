@@ -108,7 +108,8 @@ public class Expression extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
-        code.append(processCode(_cParseTreeCodeGenerator.generateInitializeCode()));
+        code.append(processCode(_cParseTreeCodeGenerator
+                .generateInitializeCode()));
         return code.toString();
     }
 
@@ -146,7 +147,8 @@ public class Expression extends CCodeGeneratorHelper {
                     + actor.expression.getExpression() + "\" invalid.");
         }
 
-        code.append(processCode(_cParseTreeCodeGenerator.generatePreinitializeCode()));
+        code.append(processCode(_cParseTreeCodeGenerator
+                .generatePreinitializeCode()));
         return code.toString();
     }
 
@@ -240,7 +242,7 @@ public class Expression extends CCodeGeneratorHelper {
                         if (periodValue != 0.0) {
                             return new ObjectToken("_currentTime");
                         }
-                    }                            
+                    }
                     return new DoubleToken("0.0");
                 } else if (name.equals("iteration")) {
                     return new ObjectToken("$actorSymbol(iterationCount)");

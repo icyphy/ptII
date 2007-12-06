@@ -60,26 +60,25 @@ public class Lattice extends PropertyLattice {
 
     public Property IMPACT = new Impact(this);
     public Property NOIMPACT = new NoImpact(this);
-    
+
     public Property getInitialProperty() {
         return IMPACT;
     }
-    
 
     // The infinite property lattice
     public Lattice() {
         super();
         _lattice.setBasicLattice(new DirectedAcyclicGraph());
 
-        DirectedAcyclicGraph basicLattice = 
-            (DirectedAcyclicGraph) _lattice.basicLattice();
-        
+        DirectedAcyclicGraph basicLattice = (DirectedAcyclicGraph) _lattice
+                .basicLattice();
+
         basicLattice.addNodeWeight(IMPACT);
 
         basicLattice.addNodeWeight(NOIMPACT);
-        
+
         basicLattice.addEdge(IMPACT, NOIMPACT);
-        
+
         // FIXME: Replace this with an assert when we move to 1.5
         if (!basicLattice.isLattice()) {
             throw new InternalErrorException("ThePropertyLattice: The "

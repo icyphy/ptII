@@ -1,4 +1,3 @@
-
 package doc.tutorial;
 
 import java.util.Comparator;
@@ -28,16 +27,17 @@ public class LeftRightDirector extends StaticSchedulingDirector {
     }
 
     public class LeftRightScheduler extends Scheduler {
-        
+
         public LeftRightScheduler(LeftRightDirector director, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(director, name);
         }
 
-        protected Schedule _getSchedule()
-                throws IllegalActionException, NotSchedulableException {
+        protected Schedule _getSchedule() throws IllegalActionException,
+                NotSchedulableException {
             StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
-            CompositeActor compositeActor = (CompositeActor) (director.getContainer());
+            CompositeActor compositeActor = (CompositeActor) (director
+                    .getContainer());
             List actors = compositeActor.deepEntityList();
             Iterator actorIterator = actors.iterator();
             TreeSet sortedActors = new TreeSet(new LeftRightComparator());
@@ -56,20 +56,22 @@ public class LeftRightDirector extends StaticSchedulingDirector {
 
             return schedule;
         }
-        
+
         public class LeftRightComparator implements Comparator {
 
             public int compare(Object o1, Object o2) {
-                double[] location1 = {Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
-                double[] location2 = {Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
-                
-                List locations = ((Entity)o1).attributeList(Locatable.class);
+                double[] location1 = { Double.NEGATIVE_INFINITY,
+                        Double.NEGATIVE_INFINITY };
+                double[] location2 = { Double.NEGATIVE_INFINITY,
+                        Double.NEGATIVE_INFINITY };
+
+                List locations = ((Entity) o1).attributeList(Locatable.class);
                 if (locations.size() > 0) {
-                    location1 = ((Locatable)locations.get(0)).getLocation();
+                    location1 = ((Locatable) locations.get(0)).getLocation();
                 }
-                locations = ((Entity)o2).attributeList(Locatable.class);
+                locations = ((Entity) o2).attributeList(Locatable.class);
                 if (locations.size() > 0) {
-                    location2 = ((Locatable)locations.get(0)).getLocation();
+                    location2 = ((Locatable) locations.get(0)).getLocation();
                 }
                 if (location1[0] < location2[0]) {
                     return -1;
@@ -79,6 +81,7 @@ public class LeftRightDirector extends StaticSchedulingDirector {
                     return 0;
                 }
             }
+
             public boolean equals(Object o) {
                 if (compare(this, o) == 0) {
                     return true;

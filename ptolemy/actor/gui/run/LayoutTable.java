@@ -64,175 +64,169 @@ import com.jgoodies.forms.layout.CellConstraints;
  * dropping
  * http://www.hut.fi/~landerso/cccp/src/java/cccp/mappingtool/util/MTTable.java
  */
-@SuppressWarnings("serial") 
+@SuppressWarnings("serial")
 class LayoutTable extends JTable implements DragSourceListener,
-    DragGestureListener, DropTargetListener, Autoscroll
-{
-  protected DragSource fDragSource = null;
-  protected DropTarget fDropTarget = null;
-  protected Component dragComponent = null;
+        DragGestureListener, DropTargetListener, Autoscroll {
+    protected DragSource fDragSource = null;
+    protected DropTarget fDropTarget = null;
+    protected Component dragComponent = null;
 
-  final static int AUTOSCROLL_INSET_SIZE = 20;
-  final static int SCROLL_AMOUNT = 10;
+    final static int AUTOSCROLL_INSET_SIZE = 20;
+    final static int SCROLL_AMOUNT = 10;
 
-  
-  public LayoutTable(RunLayoutFrame granddaddy, PtolemyFormEditor daddy)
-  {
-    super();
+    public LayoutTable(RunLayoutFrame granddaddy, PtolemyFormEditor daddy) {
+        super();
 
-    _formEditor = daddy;
-    _frame = granddaddy;
-    
-    fDragSource = new DragSource();
-    fDropTarget = new DropTarget(this, this);
-    fDragSource.createDefaultDragGestureRecognizer(this,
-        DnDConstants.ACTION_MOVE, this);
-  }
+        _formEditor = daddy;
+        _frame = granddaddy;
 
-  /**
-   * Drag and drop is kind of weird in that when you drag something, you often
-   * start in a cell that has a component in it but by the time the drag
-   * handling code gets the event the selection has moved into a cell that
-   * does have a component in it and the drag fails.
-   */
-  public void changeSelection(int rowIndex, int columnIndex, boolean toggle,
-      boolean extend)
-  {
-    super.changeSelection(rowIndex, columnIndex, toggle, extend);
-
-    Component component = getSelectedControl();
-    _formEditor.setFormComponent(component);
-  }
-
-  /**
-   * Implements autoscrolling.
-   */
-  public Insets getAutoscrollInsets()
-  {
-    Rectangle visible = getVisibleRect();
-    Dimension size = getSize();
-    int top = 0, left = 0, bottom = 0, right = 0;
-    if (visible.y > 0)
-      top = visible.y + AUTOSCROLL_INSET_SIZE;
-    if (visible.x > 0)
-      left = visible.x + AUTOSCROLL_INSET_SIZE;
-    if (visible.y + visible.height < size.height)
-      bottom = size.height - visible.y - visible.height + AUTOSCROLL_INSET_SIZE;
-    if (visible.x + visible.width < size.width)
-      right = size.width - visible.x - visible.width + AUTOSCROLL_INSET_SIZE;
-    return new Insets(top, left, bottom, right);
-  }
-
-  /**
-   * Implements autoscrolling.
-   */
-  public void autoscroll(Point cursorLocn)
-  {
-    Rectangle visible = getVisibleRect();
-    int x = 0, y = 0, width = 0, height = 0;
-    // Scroll left.
-    if (cursorLocn.x < visible.x + AUTOSCROLL_INSET_SIZE)
-    {
-      x = -SCROLL_AMOUNT;
-      width = SCROLL_AMOUNT;
+        fDragSource = new DragSource();
+        fDropTarget = new DropTarget(this, this);
+        fDragSource.createDefaultDragGestureRecognizer(this,
+                DnDConstants.ACTION_MOVE, this);
     }
-    // Scroll right.
-    else if (cursorLocn.x > visible.x + visible.width - AUTOSCROLL_INSET_SIZE)
-    {
-      x = visible.width + SCROLL_AMOUNT;
-      width = SCROLL_AMOUNT;
-    }
-    // Scroll up.
-    if (cursorLocn.y < visible.y + AUTOSCROLL_INSET_SIZE)
-    {
-      y = -SCROLL_AMOUNT;
-      height = SCROLL_AMOUNT;
-    }
-    // Scroll down.
-    else if (cursorLocn.y > visible.y + visible.height - AUTOSCROLL_INSET_SIZE)
-    {
-      y = visible.height + SCROLL_AMOUNT;
-      height = SCROLL_AMOUNT;
-    }
-    ((JComponent) getParent()).scrollRectToVisible(new Rectangle(x, y, width, height));
-  }
 
-  public void dragEnter(DragSourceDragEvent event) {}
-  public void dragOver(DragSourceDragEvent event) 
-  {
-    DragSourceContext context = event.getDragSourceContext();
-    java.awt.Point location = event.getLocation();
-    Point org = this.getLocationOnScreen();
-    Point relLoc = new Point( location.x - org.x,
-                              location.y - org.y );
-    
-    int col = columnAtPoint(relLoc);
-    int row = rowAtPoint(relLoc);
-    Component component = getControlAt(col,row);
-    
-    if ( col < 1 || row < 1 || component != null )
-      context.setCursor(DragSource.DefaultMoveNoDrop);
-    else
-      context.setCursor(DragSource.DefaultMoveDrop);
-  }
-  public void dropActionChanged(DragSourceDragEvent event) {}
-  public void dragExit(DragSourceEvent event) {}
-  public void dragDropEnd(DragSourceDropEvent event) {}
-  public void dropActionChanged(DropTargetDragEvent event) {}
-  public void dragExit(DropTargetEvent event) {}
+    /**
+     * Drag and drop is kind of weird in that when you drag something, you often
+     * start in a cell that has a component in it but by the time the drag
+     * handling code gets the event the selection has moved into a cell that
+     * does have a component in it and the drag fails.
+     */
+    public void changeSelection(int rowIndex, int columnIndex, boolean toggle,
+            boolean extend) {
+        super.changeSelection(rowIndex, columnIndex, toggle, extend);
 
-  public void dragGestureRecognized(DragGestureEvent event)
-  {
-    Point p = event.getDragOrigin();
-    int row = rowAtPoint(p);
-    int col = columnAtPoint(p);
-    Component component = getControlAt(col,row);
-    if (component != null)
-    {
-      event.startDrag(java.awt.dnd.DragSource.DefaultMoveDrop,
-          new TransferableWrapper(component), this);
+        Component component = getSelectedControl();
+        _formEditor.setFormComponent(component);
     }
-  }
 
-  public void dragEnter(DropTargetDragEvent dropTargetDragEvent)
-  {
-    try
-    {
-      if (dropTargetDragEvent.isDataFlavorSupported(new DataFlavor(
-          DataFlavor.javaJVMLocalObjectMimeType)))
-        dropTargetDragEvent.acceptDrag(DnDConstants.ACTION_MOVE);
-      else
-        dropTargetDragEvent.rejectDrag();
+    /**
+     * Implements autoscrolling.
+     */
+    public Insets getAutoscrollInsets() {
+        Rectangle visible = getVisibleRect();
+        Dimension size = getSize();
+        int top = 0, left = 0, bottom = 0, right = 0;
+        if (visible.y > 0)
+            top = visible.y + AUTOSCROLL_INSET_SIZE;
+        if (visible.x > 0)
+            left = visible.x + AUTOSCROLL_INSET_SIZE;
+        if (visible.y + visible.height < size.height)
+            bottom = size.height - visible.y - visible.height
+                    + AUTOSCROLL_INSET_SIZE;
+        if (visible.x + visible.width < size.width)
+            right = size.width - visible.x - visible.width
+                    + AUTOSCROLL_INSET_SIZE;
+        return new Insets(top, left, bottom, right);
     }
-    catch (ClassNotFoundException cnfe)
-    {
-      cnfe.printStackTrace();
-    }
-  }
 
-  public void dragOver(java.awt.dnd.DropTargetDragEvent dropTargetDragEvent)
-  {
-    //DropTargetContext context = dropTargetDragEvent.getDropTargetContext();
-    
-    try
-    {
-      //java.awt.Point location = dropTargetDragEvent.getLocation();
-      //int col = columnAtPoint(location);
-      //int row = rowAtPoint(location);
-      
-      if (dropTargetDragEvent.isDataFlavorSupported(new DataFlavor(
-            DataFlavor.javaJVMLocalObjectMimeType)))
-        dropTargetDragEvent.acceptDrag(DnDConstants.ACTION_MOVE);
-      else
-      {
-        dropTargetDragEvent.rejectDrag();
-      }
+    /**
+     * Implements autoscrolling.
+     */
+    public void autoscroll(Point cursorLocn) {
+        Rectangle visible = getVisibleRect();
+        int x = 0, y = 0, width = 0, height = 0;
+        // Scroll left.
+        if (cursorLocn.x < visible.x + AUTOSCROLL_INSET_SIZE) {
+            x = -SCROLL_AMOUNT;
+            width = SCROLL_AMOUNT;
+        }
+        // Scroll right.
+        else if (cursorLocn.x > visible.x + visible.width
+                - AUTOSCROLL_INSET_SIZE) {
+            x = visible.width + SCROLL_AMOUNT;
+            width = SCROLL_AMOUNT;
+        }
+        // Scroll up.
+        if (cursorLocn.y < visible.y + AUTOSCROLL_INSET_SIZE) {
+            y = -SCROLL_AMOUNT;
+            height = SCROLL_AMOUNT;
+        }
+        // Scroll down.
+        else if (cursorLocn.y > visible.y + visible.height
+                - AUTOSCROLL_INSET_SIZE) {
+            y = visible.height + SCROLL_AMOUNT;
+            height = SCROLL_AMOUNT;
+        }
+        ((JComponent) getParent()).scrollRectToVisible(new Rectangle(x, y,
+                width, height));
     }
-    catch (ClassNotFoundException cnfe)
-    {
-      cnfe.printStackTrace();
+
+    public void dragEnter(DragSourceDragEvent event) {
     }
-  }
+
+    public void dragOver(DragSourceDragEvent event) {
+        DragSourceContext context = event.getDragSourceContext();
+        java.awt.Point location = event.getLocation();
+        Point org = this.getLocationOnScreen();
+        Point relLoc = new Point(location.x - org.x, location.y - org.y);
+
+        int col = columnAtPoint(relLoc);
+        int row = rowAtPoint(relLoc);
+        Component component = getControlAt(col, row);
+
+        if (col < 1 || row < 1 || component != null)
+            context.setCursor(DragSource.DefaultMoveNoDrop);
+        else
+            context.setCursor(DragSource.DefaultMoveDrop);
+    }
+
+    public void dropActionChanged(DragSourceDragEvent event) {
+    }
+
+    public void dragExit(DragSourceEvent event) {
+    }
+
+    public void dragDropEnd(DragSourceDropEvent event) {
+    }
+
+    public void dropActionChanged(DropTargetDragEvent event) {
+    }
+
+    public void dragExit(DropTargetEvent event) {
+    }
+
+    public void dragGestureRecognized(DragGestureEvent event) {
+        Point p = event.getDragOrigin();
+        int row = rowAtPoint(p);
+        int col = columnAtPoint(p);
+        Component component = getControlAt(col, row);
+        if (component != null) {
+            event.startDrag(java.awt.dnd.DragSource.DefaultMoveDrop,
+                    new TransferableWrapper(component), this);
+        }
+    }
+
+    public void dragEnter(DropTargetDragEvent dropTargetDragEvent) {
+        try {
+            if (dropTargetDragEvent.isDataFlavorSupported(new DataFlavor(
+                    DataFlavor.javaJVMLocalObjectMimeType)))
+                dropTargetDragEvent.acceptDrag(DnDConstants.ACTION_MOVE);
+            else
+                dropTargetDragEvent.rejectDrag();
+        } catch (ClassNotFoundException cnfe) {
+            cnfe.printStackTrace();
+        }
+    }
+
+    public void dragOver(java.awt.dnd.DropTargetDragEvent dropTargetDragEvent) {
+        //DropTargetContext context = dropTargetDragEvent.getDropTargetContext();
+
+        try {
+            //java.awt.Point location = dropTargetDragEvent.getLocation();
+            //int col = columnAtPoint(location);
+            //int row = rowAtPoint(location);
+
+            if (dropTargetDragEvent.isDataFlavorSupported(new DataFlavor(
+                    DataFlavor.javaJVMLocalObjectMimeType)))
+                dropTargetDragEvent.acceptDrag(DnDConstants.ACTION_MOVE);
+            else {
+                dropTargetDragEvent.rejectDrag();
+            }
+        } catch (ClassNotFoundException cnfe) {
+            cnfe.printStackTrace();
+        }
+    }
 
     public void drop(java.awt.dnd.DropTargetDropEvent e) {
         try {
@@ -240,8 +234,8 @@ class LayoutTable extends JTable implements DragSourceListener,
             int col = columnAtPoint(location);
             int row = rowAtPoint(location);
 
-            Component existingComponent = getControlAt(col,row);
-            if ( col < 1 || row < 1 || existingComponent != null ) {
+            Component existingComponent = getControlAt(col, row);
+            if (col < 1 || row < 1 || existingComponent != null) {
                 // Don't allow drop onto constraints for row or column,
                 // nor onto a pre-existing component.
                 e.rejectDrop();
@@ -249,8 +243,9 @@ class LayoutTable extends JTable implements DragSourceListener,
                 return;
             }
 
-            DataFlavor javaObject = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType);
-            if ( !e.isDataFlavorSupported(javaObject) ) {
+            DataFlavor javaObject = new DataFlavor(
+                    DataFlavor.javaJVMLocalObjectMimeType);
+            if (!e.isDataFlavorSupported(javaObject)) {
                 // flavor unsupported
                 e.rejectDrop();
                 return;
@@ -260,38 +255,44 @@ class LayoutTable extends JTable implements DragSourceListener,
             Object dropObject = transferable.getTransferData(javaObject);
 
             if (dropObject instanceof String) {
-                String componentName = (String)dropObject;
+                String componentName = (String) dropObject;
                 // Ensure the component name doesn't collide.
                 int suffix = 1;
-                while (_formEditor._containerLayout.getComponentByName(componentName) != null)
-                {
-                    componentName = (String)dropObject + "_" + suffix;
+                while (_formEditor._containerLayout
+                        .getComponentByName(componentName) != null) {
+                    componentName = (String) dropObject + "_" + suffix;
                     suffix++;
                 }
                 try {
                     // Parse the name to get a component.
-                    Component component = _frame._pane._getComponent((String)dropObject);
-                    CellConstraints componentConstraints = new CellConstraints(col, row);
+                    Component component = _frame._pane
+                            ._getComponent((String) dropObject);
+                    CellConstraints componentConstraints = new CellConstraints(
+                            col, row);
                     // If the name starts with "Subpanel:" then it's a subpanel.
-                    boolean isContainer = ((String)dropObject).startsWith("Subpanel:");
+                    boolean isContainer = ((String) dropObject)
+                            .startsWith("Subpanel:");
 
                     // the best way to add this control is to setup the constraints
                     // in the map of name->constraints and then add it to the
                     // container.
                     // this layout manager will intercept it, find the constraints
                     // and then set it up properly in the table and assign the maps.
-                    _formEditor._containerLayout.addCellConstraints(componentName, componentConstraints);
+                    _formEditor._containerLayout.addCellConstraints(
+                            componentName, componentConstraints);
                     _formEditor._container.add(component, componentName);
                     _formEditor.newComponents.add(component);
 
                     if (isContainer) {
-                        _frame.addContainer(componentName, (Container) component);
+                        _frame.addContainer(componentName,
+                                (Container) component);
                     }
                     e.dropComplete(true);
 
                     _formEditor.updateLayout(component); // force preview relayout
                     _formEditor._updateLayouts(); // the key for updating with new panel
-                    changeSelection(componentConstraints.gridY,componentConstraints.gridX, false, false);
+                    changeSelection(componentConstraints.gridY,
+                            componentConstraints.gridX, false, false);
                     repaint();
                     return;
                 } catch (Throwable t) {
@@ -313,25 +314,24 @@ class LayoutTable extends JTable implements DragSourceListener,
         }
     }
 
-  public Component getControlAt(int col, int row)
-  {
-    Component component = (row == 0 || col == 0) ? null
-        : (Component) getModel().getValueAt(row, col);
-    return component;
-  }
-  public Component getSelectedControl()
-  {
-    int col = getSelectedColumn();
-    int row = getSelectedRow();
-    return getControlAt(col,row);
-  }
-  
-  ///////////////////////////////////////////////////////////////////
-  ////                         private variables                 ////
-  
-  /** The parent form editor. */
-  private PtolemyFormEditor _formEditor;
-  
-  /** The enclosing layout frame. */
-  private RunLayoutFrame _frame;
+    public Component getControlAt(int col, int row) {
+        Component component = (row == 0 || col == 0) ? null
+                : (Component) getModel().getValueAt(row, col);
+        return component;
+    }
+
+    public Component getSelectedControl() {
+        int col = getSelectedColumn();
+        int row = getSelectedRow();
+        return getControlAt(col, row);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The parent form editor. */
+    private PtolemyFormEditor _formEditor;
+
+    /** The enclosing layout frame. */
+    private RunLayoutFrame _frame;
 }

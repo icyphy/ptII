@@ -46,7 +46,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class UndefinedConstantOrIdentifierException extends IllegalActionException {
+public class UndefinedConstantOrIdentifierException extends
+        IllegalActionException {
     /** Constructs an Exception with a detail message that includes the
      *  name of the first argument.
      *  @param nodeName The name of the missing constant or identifier
@@ -71,6 +72,6 @@ public class UndefinedConstantOrIdentifierException extends IllegalActionExcepti
     ////                         private variables                 ////
 
     /** The name of the missing constant or identifier.
-     */ 
+     */
     private String _nodeName;
 }

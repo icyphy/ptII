@@ -519,8 +519,8 @@ public class PtolemyUtilities {
             //        arrayTypeClass, "<init>");
             // The array changes resulted in ArrayType having two
             // constructors: ArrayType(Type) and ArrayType(Type, int)
-            SootMethod typeConstructor = arrayTypeClass.getMethod(
-                    "void <init>(ptolemy.data.type.Type)");
+            SootMethod typeConstructor = arrayTypeClass
+                    .getMethod("void <init>(ptolemy.data.type.Type)");
 
             Local elementTypeLocal = buildConstantTypeLocal(body, insertPoint,
                     ((ptolemy.data.type.ArrayType) type).getElementType());
@@ -1408,7 +1408,7 @@ public class PtolemyUtilities {
 
     public static SootClass complexMatrixTokenClass;
 
-    public /*final*/ static SootMethod complexMatrixTokenConstructor;
+    public/*final*/static SootMethod complexMatrixTokenConstructor;
 
     public static SootMethod complexMatrixTokenArrayConstructor;
 

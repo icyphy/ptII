@@ -68,7 +68,7 @@ public class SimpleALU extends TypedAtomicActor {
         A.setTypeEquals(BaseType.INT);
         B = new TypedIOPort(this, "B", true, false);
         B.setTypeEquals(BaseType.INT);
-        
+
         operation = new TypedIOPort(this, "operation", true, false);
         operation.setTypeEquals(BaseType.INT);
 
@@ -98,10 +98,9 @@ public class SimpleALU extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Override the base class to set type constraints.
      *  @param workspace The workspace for the new object.
      *  @return A new instance of SimpleALU.
@@ -115,7 +114,7 @@ public class SimpleALU extends TypedAtomicActor {
         newObject.operation.setTypeEquals(BaseType.INT);
         return newObject;
     }
-    
+
     /** If there is at least one token on each of the input ports, the
      *  first token from each port is consumed. The value of the token 
      *  from the operation input port determines which operation will be
@@ -132,9 +131,9 @@ public class SimpleALU extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         Token result = null;
-        
+
         if (A.hasToken(0) && B.hasToken(0) && operation.hasToken(0)) {
-            int opcode = ((IntToken)operation.get(0)).intValue();
+            int opcode = ((IntToken) operation.get(0)).intValue();
             IntToken tokenA = (IntToken) A.get(0);
             IntToken tokenB = (IntToken) B.get(0);
 
@@ -155,7 +154,7 @@ public class SimpleALU extends TypedAtomicActor {
                 result = tokenA.divide(tokenB);
                 break;
             default:
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Unsupported operation code: " + opcode + ".\n");
             }
         }

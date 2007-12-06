@@ -198,7 +198,8 @@ public class TerrainProperty extends TypedAtomicActor implements
                         "xPoints is required to be an integer array");
             }
         } else if (attribute == attenuationDepth) {
-            _attenuation = ((DoubleToken)attenuationDepth.getToken()).doubleValue();
+            _attenuation = ((DoubleToken) attenuationDepth.getToken())
+                    .doubleValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -262,7 +263,7 @@ public class TerrainProperty extends TypedAtomicActor implements
 
         if (depth > 0.0) {
             Token transmitPower = properties.get("power");
-            double currentPower = ((DoubleToken)transmitPower).doubleValue();
+            double currentPower = ((DoubleToken) transmitPower).doubleValue();
             double multiplier = 0.0;
             // Avoid divide by zero, though in theory it's OK.
             if (_attenuation > 0.0) {
@@ -351,7 +352,6 @@ public class TerrainProperty extends TypedAtomicActor implements
         return center;
     }
 
-
     /** Return the depth of the terrain that resides directly between the two
      *  points. The order of the points is not important.
      *  @param p1 The first reference point.
@@ -371,9 +371,9 @@ public class TerrainProperty extends TypedAtomicActor implements
 
         for (int j = 0; j < _numberOfPoints; j++) {
 
-            int k = (j+1) % _numberOfPoints;
-            double[] a = {_xPoints[j] + _offset[0], _yPoints[j] + _offset[1]};
-            double[] b = {_xPoints[k] + _offset[0], _yPoints[k] + _offset[1]};
+            int k = (j + 1) % _numberOfPoints;
+            double[] a = { _xPoints[j] + _offset[0], _yPoints[j] + _offset[1] };
+            double[] b = { _xPoints[k] + _offset[0], _yPoints[k] + _offset[1] };
 
             // Check to see if the side of the polygon is between the
             // two ports.
@@ -384,10 +384,10 @@ public class TerrainProperty extends TypedAtomicActor implements
                     point = p;
                 } else {
                     // Now that we found two points, return the depth.
-                    return Math.sqrt(Math.pow(p[0] - point[0], 2) +
-                                     Math.pow(p[1] - point[1], 2));
+                    return Math.sqrt(Math.pow(p[0] - point[0], 2)
+                            + Math.pow(p[1] - point[1], 2));
                 }
-            } catch(IllegalActionException e) {
+            } catch (IllegalActionException e) {
                 // No intersection. Try the next side.
             }
         }
@@ -408,9 +408,8 @@ public class TerrainProperty extends TypedAtomicActor implements
      *  @exception IllegalActionException If the line segments do not intersect
      *  or if the math results in a determinate of 0.
      */
-    private double[] _lineSegmentIntersectionPoint(
-            double[] a1, double[] a2, double[] b1, double[] b2)
-            throws IllegalActionException {
+    private double[] _lineSegmentIntersectionPoint(double[] a1, double[] a2,
+            double[] b1, double[] b2) throws IllegalActionException {
         try {
             // Calculate the intersection point of the two lines.  This
             // algorithm was found on the Mathematica web site.
@@ -422,27 +421,27 @@ public class TerrainProperty extends TypedAtomicActor implements
             double B2 = b1[0] - b2[0];
             double C2 = A2 * b1[0] + B2 * b1[1];
 
-            double det = A1*B2 - A2*B1;
+            double det = A1 * B2 - A2 * B1;
 
             double[] p = new double[2];
-            p[0] = (B2*C1 - B1*C2)/det;
-            p[1] = (A1*C2 - A2*C1)/det;
+            p[0] = (B2 * C1 - B1 * C2) / det;
+            p[1] = (A1 * C2 - A2 * C1) / det;
 
             // We have the intersection point of the two lines.  Now we make
             // sure that this point is present on both line segments.
 
-                        // The value 0.00001 was chosen because of rounding errors in
-                        // the double values.  It is close enough to zero to not make a
-                        // difference while still accounding for rounding errors.
+            // The value 0.00001 was chosen because of rounding errors in
+            // the double values.  It is close enough to zero to not make a
+            // difference while still accounding for rounding errors.
 
-            if (((p[0] - a1[0]) * (p[0] - a2[0]) <= 0.00001) &&
-                ((p[1] - a1[1]) * (p[1] - a2[1]) <= 0.00001) &&
-                ((p[0] - b1[0]) * (p[0] - b2[0]) <= 0.00001) &&
-                ((p[1] - b1[1]) * (p[1] - b2[1]) <= 0.00001)) {
+            if (((p[0] - a1[0]) * (p[0] - a2[0]) <= 0.00001)
+                    && ((p[1] - a1[1]) * (p[1] - a2[1]) <= 0.00001)
+                    && ((p[0] - b1[0]) * (p[0] - b2[0]) <= 0.00001)
+                    && ((p[1] - b1[1]) * (p[1] - b2[1]) <= 0.00001)) {
 
                 return p;
             }
-        } catch(ArithmeticException e) {
+        } catch (ArithmeticException e) {
             throw new IllegalActionException("Determinate equal to 0.");
         }
 

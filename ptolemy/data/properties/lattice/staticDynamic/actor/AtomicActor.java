@@ -54,8 +54,7 @@ public class AtomicActor extends PropertyConstraintHelper {
      * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
-    public AtomicActor(PropertySolver solver, 
-            ptolemy.actor.AtomicActor actor)
+    public AtomicActor(PropertySolver solver, ptolemy.actor.AtomicActor actor)
             throws IllegalActionException {
         super(solver, actor);
     }

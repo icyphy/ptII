@@ -73,7 +73,7 @@ public class SequenceToArray extends SDFTransformer {
         super(container, name);
 
         input_tokenConsumptionRate.setExpression("arrayLength");
-        
+
         output.setMultiport(true);
 
         // Set parameters.
@@ -129,7 +129,8 @@ public class SequenceToArray extends SDFTransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         SequenceToArray newObject = (SequenceToArray) (super.clone(workspace));
         try {
-            newObject.output.setTypeAtLeast(ActorTypeUtil.arrayOf(newObject.input, newObject.arrayLength));
+            newObject.output.setTypeAtLeast(ActorTypeUtil.arrayOf(
+                    newObject.input, newObject.arrayLength));
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }

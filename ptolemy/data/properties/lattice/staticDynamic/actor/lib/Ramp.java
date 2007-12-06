@@ -59,8 +59,7 @@ public class Ramp extends PropertyConstraintHelper {
      * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
-    public Ramp(PropertySolver solver, 
-            ptolemy.actor.lib.Ramp actor)
+    public Ramp(PropertySolver solver, ptolemy.actor.lib.Ramp actor)
             throws IllegalActionException {
 
         super(solver, actor, false);
@@ -68,8 +67,6 @@ public class Ramp extends PropertyConstraintHelper {
         setAtLeast(actor.output, new FunctionTerm());
     }
 
-    
-    
     /**
      * 
      * @author mankit
@@ -77,23 +74,22 @@ public class Ramp extends PropertyConstraintHelper {
      */
     private class FunctionTerm extends MonotonicFunction {
 
-
         /**
          * 
          */
         public Object getValue() throws IllegalActionException {
             ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) _component;
-            Lattice lattice = (Lattice) getSolver().getLattice();        
+            Lattice lattice = (Lattice) getSolver().getLattice();
 
-            PropertyToken property = 
-                (PropertyToken) PortValueSolver.findSolver("staticValueToken")
-                .getHelper(_component).getProperty(actor.step);
-            
-            if (property != null && 
-                    ((ScalarToken) property.getToken()).doubleValue() == 0) {
+            PropertyToken property = (PropertyToken) PortValueSolver
+                    .findSolver("staticValueToken").getHelper(_component)
+                    .getProperty(actor.step);
+
+            if (property != null
+                    && ((ScalarToken) property.getToken()).doubleValue() == 0) {
                 return lattice.STATIC;
             }
-            
+
             return lattice.DYNAMIC;
         }
 
@@ -102,7 +98,7 @@ public class Ramp extends PropertyConstraintHelper {
          */
         public InequalityTerm[] getVariables() {
             ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) _component;
-            
+
             try {
                 InequalityTerm term = getPropertyTerm(actor.step);
 
@@ -113,9 +109,9 @@ public class Ramp extends PropertyConstraintHelper {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            
+
             return new InequalityTerm[0];
         }
-        
+
     }
 }

@@ -116,13 +116,13 @@ public class FakedRecordToken extends RecordToken {
     }
 
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(
                 "IsCloseTo operation is not supported.");
     }
 
     protected BooleanToken _isEqualTo(Token token)
-    throws IllegalActionException {
+            throws IllegalActionException {
         throw new IllegalActionException(
                 "IsEqualTo operation is not supported.");
     }
@@ -132,19 +132,17 @@ public class FakedRecordToken extends RecordToken {
     }
 
     protected Token _multiply(Token rightArgument)
-    throws IllegalActionException {
-        throw new IllegalActionException(
-                "Multiply operation is not supported.");
+            throws IllegalActionException {
+        throw new IllegalActionException("Multiply operation is not supported.");
     }
 
     protected Token _subtract(Token rightArgument)
-    throws IllegalActionException {
-        throw new IllegalActionException(
-                "Subtract operation is not supported.");
+            throws IllegalActionException {
+        throw new IllegalActionException("Subtract operation is not supported.");
     }
 
     private final Set<String> _emptySet = new HashSet<String>();
 
-    private final FakedRecordToken[] _thisArray = new FakedRecordToken[] {this};
+    private final FakedRecordToken[] _thisArray = new FakedRecordToken[] { this };
 
 }

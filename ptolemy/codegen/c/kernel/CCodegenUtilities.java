@@ -29,7 +29,6 @@
 
 package ptolemy.codegen.c.kernel;
 
-
 /**
 A utility class used to simplify creating c templates in EmbeddedCActors.
 
@@ -47,9 +46,8 @@ public class CCodegenUtilities {
      *  @return A block of codegen code to define a constant.
      */
     public static String getDefineBlock(String constant, String value) {
-        String code = "#ifndefine " + constant + "\n"
-                + "#define " + constant + " " + value + "\n"
-                + "#endif\n";
+        String code = "#ifndefine " + constant + "\n" + "#define " + constant
+                + " " + value + "\n" + "#endif\n";
         return code;
     }
 
@@ -60,10 +58,8 @@ public class CCodegenUtilities {
      *  @return A block of codegen code to include a file.
      */
     public static String getIncludeBlock(String file, String constant) {
-        String code = "#ifndefine " + constant + "\n"
-                + "#define " + constant + "\n"
-                + "#include \"" + file + "\"\n"
-                + "#endif\n";
+        String code = "#ifndefine " + constant + "\n" + "#define " + constant
+                + "\n" + "#include \"" + file + "\"\n" + "#endif\n";
         return code;
     }
 
@@ -99,15 +95,14 @@ public class CCodegenUtilities {
      * @param targetCpp Boolean indicating whether the target language is C or C++.
      * @return A string containing code to get elements from a jni array.
      */
-    public static String jniGetArrayElements(String type, 
-            String arrayName, boolean targetCpp) {
+    public static String jniGetArrayElements(String type, String arrayName,
+            boolean targetCpp) {
         if (targetCpp) {
-            return "env->Get" + type
-                + "ArrayElements((j" + type.toLowerCase() + "Array)"
-                + arrayName + ", NULL)";
+            return "env->Get" + type + "ArrayElements((j" + type.toLowerCase()
+                    + "Array)" + arrayName + ", NULL)";
         } else {
-            return "(*env)->Get" + type + "ArrayElements(env, "
-                + arrayName + ", NULL)";
+            return "(*env)->Get" + type + "ArrayElements(env, " + arrayName
+                    + ", NULL)";
         }
     }
 
@@ -120,11 +115,11 @@ public class CCodegenUtilities {
     public static String jniGetObjectArrayElement(String arrayName,
             String index, boolean targetCpp) {
         if (targetCpp) {
-            return "env->GetObjectArrayElement("
-                    + arrayName + ", " + index + ")";
+            return "env->GetObjectArrayElement(" + arrayName + ", " + index
+                    + ")";
         } else {
-            return "(*env)->GetObjectArrayElement(env, "
-                    + arrayName + ", " + index + ")";
+            return "(*env)->GetObjectArrayElement(env, " + arrayName + ", "
+                    + index + ")";
         }
     }
 
@@ -151,9 +146,11 @@ public class CCodegenUtilities {
     public static String jniNewObjectArray(String size, String objectType,
             boolean targetCpp) {
         if (targetCpp) {
-            return "env->NewObjectArray(" + size + ", " + objectType + ", NULL)";
+            return "env->NewObjectArray(" + size + ", " + objectType
+                    + ", NULL)";
         } else {
-            return "(*env)->NewObjectArray(env, " + size + ", " + objectType + ", NULL)";
+            return "(*env)->NewObjectArray(env, " + size + ", " + objectType
+                    + ", NULL)";
         }
     }
 
@@ -164,15 +161,15 @@ public class CCodegenUtilities {
      * @param targetCpp Boolean indicating whether the target language is C or C++.
      * @return A string containing code to release elements from a jni array.
      */
-    public static String jniReleaseArrayElements(String type, 
-            String arrayName, String elementsPointer, boolean targetCpp) {
+    public static String jniReleaseArrayElements(String type, String arrayName,
+            String elementsPointer, boolean targetCpp) {
         if (targetCpp) {
-            return "env->Release" + type
-                + "ArrayElements((j" + type.toLowerCase() + "Array)"
-                + arrayName + ", " + elementsPointer + ", 0)";
+            return "env->Release" + type + "ArrayElements((j"
+                    + type.toLowerCase() + "Array)" + arrayName + ", "
+                    + elementsPointer + ", 0)";
         } else {
-            return "(*env)->Release" + type + "ArrayElements(env, "
-            + arrayName + ", " + elementsPointer + ", 0)";
+            return "(*env)->Release" + type + "ArrayElements(env, " + arrayName
+                    + ", " + elementsPointer + ", 0)";
         }
     }
 
@@ -189,10 +186,10 @@ public class CCodegenUtilities {
             String index, String length, String valuePointer, boolean targetCpp) {
         if (targetCpp) {
             return "env->Set" + type + "ArrayRegion(" + arrayName + ", "
-                + index + ", " + length + ", " + valuePointer + ")";
+                    + index + ", " + length + ", " + valuePointer + ")";
         } else {
-            return "(*env)->Set" + type + "ArrayRegion(env, " + arrayName + ", "
-            + index + ", " + length + ", " + valuePointer + ")";
+            return "(*env)->Set" + type + "ArrayRegion(env, " + arrayName
+                    + ", " + index + ", " + length + ", " + valuePointer + ")";
         }
     }
 
@@ -206,11 +203,11 @@ public class CCodegenUtilities {
     public static String jniSetObjectArrayElement(String arrayName,
             String index, String value, boolean targetCpp) {
         if (targetCpp) {
-            return "env->SetObjectArrayElement(" + arrayName
-            + ", " + index + ", " + value + ")";
+            return "env->SetObjectArrayElement(" + arrayName + ", " + index
+                    + ", " + value + ")";
         } else {
-            return "(*env)->SetObjectArrayElement(env, " + arrayName
-            + ", " + index + ", " + value + ")";
+            return "(*env)->SetObjectArrayElement(env, " + arrayName + ", "
+                    + index + ", " + value + ")";
         }
     }
 }

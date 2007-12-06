@@ -47,7 +47,7 @@ public class FIR extends CCodeGeneratorHelper {
     public FIR(ptolemy.domains.sdf.lib.FIR actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * Read the <code>fireBlock</code> and <code>fireBlock0</code> from
@@ -59,14 +59,14 @@ public class FIR extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         code.append(_generateBlockCode("fireBlock0"));
 
         code.append(super.generateFireCode());
 
         return processCode(code.toString());
     }
-    
+
     /**
      * Generate initialize code.
      * Read the <code>initBlock</code> and <code>initBlock0</code> from
@@ -78,7 +78,7 @@ public class FIR extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         code.append(_generateBlockCode("initBlock0"));
 
         code.append(super.generateInitializeCode());

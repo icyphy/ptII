@@ -65,8 +65,8 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
      *  @param context The context in which to execute the MoML.
      *  @param request The mutation request in MoML.
      */
-    public OffsetMoMLChangeRequest(Object originator,
-            NamedObj context, String request) {
+    public OffsetMoMLChangeRequest(Object originator, NamedObj context,
+            String request) {
         super(originator, context, request);
     }
 
@@ -83,11 +83,10 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
         while (topObjects.hasNext()) {
             NamedObj topObject = (NamedObj) topObjects.next();
             try {
-                Iterator locations = topObject.attributeList(
-                        Locatable.class).iterator();
+                Iterator locations = topObject.attributeList(Locatable.class)
+                        .iterator();
                 while (locations.hasNext()) {
-                    Locatable location = (Locatable) locations
-                        .next();
+                    Locatable location = (Locatable) locations.next();
                     double[] locationValue = location.getLocation();
                     for (int i = 0; i < locationValue.length; i++) {
                         locationValue[i] += _PASTE_OFFSET;
@@ -114,6 +113,4 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
     /** Offset used when pasting objects. */
     private static int _PASTE_OFFSET = 10;
 
-
 }
-

@@ -74,7 +74,7 @@ public class ShortToken extends ScalarToken {
     public ShortToken(int value) {
         _value = (short) value;
     }
-    
+
     /** Construct an ShortToken from the specified string.
      *  @param init The specified string.
      *  @exception IllegalActionException If the token could not
@@ -129,7 +129,6 @@ public class ShortToken extends ScalarToken {
             return ShortToken.NIL;
         }
 
-        
         int compare = TypeLattice.compare(BaseType.SHORT, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
@@ -267,7 +266,7 @@ public class ShortToken extends ScalarToken {
         if (isNil()) {
             return ShortToken.NIL;
         }
-        short returnValue = (short)(_value >>> bits);
+        short returnValue = (short) (_value >>> bits);
         returnValue = (short) (returnValue & 0x7FFF);
         return new ShortToken(returnValue);
     }
@@ -307,7 +306,7 @@ public class ShortToken extends ScalarToken {
     public short shortValue() {
         return _value;
     }
-    
+
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
      *  If this token has a unit, the return string also includes a unit
@@ -436,7 +435,8 @@ public class ShortToken extends ScalarToken {
      *  @return A new ShortToken containing the result.
      */
     protected ScalarToken _divide(ScalarToken rightArgument) {
-        short quotient = (short) (_value / ((ShortToken) rightArgument).shortValue());
+        short quotient = (short) (_value / ((ShortToken) rightArgument)
+                .shortValue());
         return new ShortToken(quotient);
     }
 
@@ -474,7 +474,8 @@ public class ShortToken extends ScalarToken {
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         ShortToken convertedArgument = (ShortToken) rightArgument;
-        return BooleanToken.getInstance(_value < convertedArgument.shortValue());
+        return BooleanToken
+                .getInstance(_value < convertedArgument.shortValue());
     }
 
     /** Return a new token whose value is the value of this token
@@ -484,7 +485,8 @@ public class ShortToken extends ScalarToken {
      *  @return A new ShortToken containing the result.
      */
     protected ScalarToken _modulo(ScalarToken rightArgument) {
-        short remainder = (short) (_value % ((ShortToken) rightArgument).shortValue());
+        short remainder = (short) (_value % ((ShortToken) rightArgument)
+                .shortValue());
         return new ShortToken(remainder);
     }
 
@@ -495,7 +497,8 @@ public class ShortToken extends ScalarToken {
      *  @return A new ShortToken containing the result.
      */
     protected ScalarToken _multiply(ScalarToken rightArgument) {
-        short product = (short) (_value * ((ShortToken) rightArgument).shortValue());
+        short product = (short) (_value * ((ShortToken) rightArgument)
+                .shortValue());
         return new ShortToken(product);
     }
 
@@ -506,7 +509,8 @@ public class ShortToken extends ScalarToken {
      *  @return A new ShortToken containing the result.
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
-        short difference = (short) (_value - ((ShortToken) rightArgument).shortValue());
+        short difference = (short) (_value - ((ShortToken) rightArgument)
+                .shortValue());
         return new ShortToken(difference);
     }
 

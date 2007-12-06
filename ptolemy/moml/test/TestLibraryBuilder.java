@@ -45,7 +45,7 @@ import ptolemy.moml.LibraryBuilder;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class TestLibraryBuilder extends LibraryBuilder { 
+public class TestLibraryBuilder extends LibraryBuilder {
     /**
      * Build the library. 
      * This test class merely creates a CompositeEntity in the workspace.
@@ -53,8 +53,7 @@ public class TestLibraryBuilder extends LibraryBuilder {
      * @return ComponentEntity
      * @exception Exception
      */
-    public CompositeEntity buildLibrary(Workspace workspace)
-            throws Exception {
+    public CompositeEntity buildLibrary(Workspace workspace) throws Exception {
         return new CompositeEntity(workspace);
     }
 }

@@ -66,7 +66,7 @@ public class Concat extends VHDLCodeGeneratorHelper {
         super.generateFireCode();
 
         ArrayList args = new ArrayList();
-     
+
         args.add("");
 
         args.add("");

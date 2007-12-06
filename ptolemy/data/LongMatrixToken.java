@@ -307,7 +307,7 @@ public class LongMatrixToken extends MatrixToken {
         throw new IllegalActionException(notSupportedConversionMessage(token,
                 "[long]"));
     }
-    
+
     /** Return a new matrix that is a sub-matrix of this matrix.
      *  @param rowStart The row to start on.
      *  @param colStart The column to start on.
@@ -317,23 +317,18 @@ public class LongMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the returned matrix is empty or if the specified
      *   parameters result in out of bounds accesses.
      */
-    public MatrixToken crop(
-            int rowStart, int colStart, int rowSpan, int colSpan)
+    public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
             throws IllegalActionException {
         long[][] value = this.longMatrix();
         try {
-            long[][] result = LongMatrixMath.crop(value, rowStart, colStart, rowSpan, colSpan);
+            long[][] result = LongMatrixMath.crop(value, rowStart, colStart,
+                    rowSpan, colSpan);
             return new LongMatrixToken(result);
         } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new IllegalActionException("Matrix crop indices out of bounds (rowStart = "
-                    + rowStart
-                    + ", colStart = "
-                    + colStart
-                    + ", rowSpan = "
-                    + rowSpan
-                    + ", colSpan = "
-                    + colSpan
-                    + ").");
+            throw new IllegalActionException(
+                    "Matrix crop indices out of bounds (rowStart = " + rowStart
+                            + ", colStart = " + colStart + ", rowSpan = "
+                            + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -499,10 +494,8 @@ public class LongMatrixToken extends MatrixToken {
                 if (column + columnCount > columns) {
                     columnCount = columns - column;
                 }
-                LongMatrixMath.matrixCopy(
-                        matrices[i][j].longMatrix(), 0, 0,
-                        tiled, row, column,
-                        rowCount, columnCount);
+                LongMatrixMath.matrixCopy(matrices[i][j].longMatrix(), 0, 0,
+                        tiled, row, column, rowCount, columnCount);
                 // Starting position for the next column.
                 column += matrices[0][j].getColumnCount();
             }
@@ -557,7 +550,7 @@ public class LongMatrixToken extends MatrixToken {
                     + "Cannot create identity matrix.");
         }
     }
-    
+
     /** Split this matrix into multiple matrices. See the base
      *  class for documentation.
      *  @param rows The number of rows per submatrix.
@@ -581,8 +574,8 @@ public class LongMatrixToken extends MatrixToken {
                     columnspan = source[0].length - column;
                 }
                 if (columnspan > 0 && rowspan > 0) {
-                    LongMatrixMath.matrixCopy(
-                            source, row, column, contents, 0, 0, rowspan, columnspan);
+                    LongMatrixMath.matrixCopy(source, row, column, contents, 0,
+                            0, rowspan, columnspan);
                 }
                 column += columns[j];
                 try {

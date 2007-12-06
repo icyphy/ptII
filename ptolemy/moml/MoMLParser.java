@@ -377,7 +377,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 String oldValue = value;
                 // If we have seen a createIfNecessary="true",
                 // then skip if there alread is an element with that name.
-                String createIfNecessary = (String) _attributes.get("createIfNecessary");
+                String createIfNecessary = (String) _attributes
+                        .get("createIfNecessary");
                 value = _current.uniqueName(oldValue);
                 if (createIfNecessary != null
                         && createIfNecessary.equals("true")
@@ -1134,10 +1135,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     result = new URL(base, source);
                     input = result.openStream();
                 } catch (Throwable throwable) {
-                    errorMessage
-                        .append("-- " + cwd + File.separator
-                                + source + "\n"
-                                + throwable.getMessage() + "\n");
+                    errorMessage.append("-- " + cwd + File.separator + source
+                            + "\n" + throwable.getMessage() + "\n");
                 }
             }
         }
@@ -1508,7 +1507,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
     }
 
-
     /** Purge all records of models opened. This is here
      *  for testing only.
      *  @see #purgeModelRecord(URL)
@@ -1516,7 +1514,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     public static void purgeAllModelRecords() {
         _imports = null;
     }
-    
+
     /** Purge any record of a model opened from the specified
      *  URL.  The record will not be purged if the model is
      *  a class definition that has child instances.
@@ -1537,11 +1535,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // purge is a class with instances.
                 if (modelToPurge instanceof Instantiable) {
                     boolean keepTheModel = false;
-                    List children = ((Instantiable)modelToPurge).getChildren();
+                    List children = ((Instantiable) modelToPurge).getChildren();
                     if (children != null) {
                         Iterator childrenIterator = children.iterator();
                         while (childrenIterator.hasNext()) {
-                            WeakReference child = (WeakReference)childrenIterator.next();
+                            WeakReference child = (WeakReference) childrenIterator
+                                    .next();
                             if (child != null && child.get() != null) {
                                 keepTheModel = true;
                                 break;
@@ -2123,12 +2122,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // Find the corresponding ParameterPort and delete it
                 if (toDelete != null) {
                     NamedObj container = toDelete.getContainer();
-                    if (container != null
-                            && container instanceof Entity) {
-                        Attribute attribute = ((Entity) container).getAttribute(portName);
-                        if (attribute != null && attribute instanceof PortParameter) {
-                            DeleteRequest request = new DeleteRequest(_DELETE_PROPERTY,
-                                    attribute.getName(), null);
+                    if (container != null && container instanceof Entity) {
+                        Attribute attribute = ((Entity) container)
+                                .getAttribute(portName);
+                        if (attribute != null
+                                && attribute instanceof PortParameter) {
+                            DeleteRequest request = new DeleteRequest(
+                                    _DELETE_PROPERTY, attribute.getName(), null);
                             // Only defer if we are in a class, entity, or
                             // model context, which is equivalent to the
                             // _current being an instance of
@@ -2198,15 +2198,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     request.execute();
                 }
 
-
                 // Find the corresponding PortParameter and delete it
                 NamedObj container = toDelete.getContainer();
-                if (container != null
-                        && container instanceof Entity) {
+                if (container != null && container instanceof Entity) {
                     Port port = ((Entity) container).getPort(propName);
                     if (port != null && port instanceof ParameterPort) {
-                        request = new DeleteRequest(_DELETE_PORT,
-                                port.getName(), container.getFullName());
+                        request = new DeleteRequest(_DELETE_PORT, port
+                                .getName(), container.getFullName());
                         // Only defer if we are in a class, entity, or
                         // model context, which is equivalent to the
                         // _current being an instance of
@@ -2255,7 +2253,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 // NOTE: deleteRelation is not supposed to have anything
                 // inside it, so we do not push the context.
-                
+
                 //////////////////////////////////////////////////////////////
                 //// director
             } else if (elementName.equals("director")) {
@@ -2286,7 +2284,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // elements are not used with class structures.
                 _current = _createInstance(newClass, arguments);
                 _namespace = _DEFAULT_NAMESPACE;
-                
+
                 //////////////////////////////////////////////////////////////
                 //// display
             } else if (elementName.equals("display")) {
@@ -2319,7 +2317,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Now change the display name.
                     String oldDisplayName = _current.getDisplayName();
                     if (displayName != null) {
-                        if (displayName.equals(currentName) || displayName.equals("")) {
+                        if (displayName.equals(currentName)
+                                || displayName.equals("")) {
                             // The displayName is the same as the
                             // name, so it should be reset to null.
                             _current.setDisplayName(null);
@@ -2330,8 +2329,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Handle the undo aspect if needed
                         if (_undoEnabled) {
                             // Simply create in the undo MoML another display element.
-                            _undoContext.appendUndoMoML("<display name=\"" 
-                                    + StringUtilities.escapeForXML(oldDisplayName)
+                            _undoContext.appendUndoMoML("<display name=\""
+                                    + StringUtilities
+                                            .escapeForXML(oldDisplayName)
                                     + "\"/>\n");
 
                             // Do not need to continue generating undo MoML
@@ -2765,14 +2765,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 //////////////////////////////////////////////////////////////
                 //// property
             } else if (elementName.equals("property")) {
-                String createIfNecessary = (String) _attributes.get("createIfNecessary");
+                String createIfNecessary = (String) _attributes
+                        .get("createIfNecessary");
                 String className = (String) _attributes.get("class");
                 String propertyName = (String) _attributes.get("name");
                 _checkForNull(propertyName, "No name for element \"property\"");
                 if (createIfNecessary != null
-                            && createIfNecessary.equals("true")
-                            && _current != null && propertyName != null
-                            && _current.getAttribute(propertyName) != null) {
+                        && createIfNecessary.equals("true") && _current != null
+                        && propertyName != null
+                        && _current.getAttribute(propertyName) != null) {
                     // The createIfNecessary="true" and the property
                     // already exists
                 } else {
@@ -3464,7 +3465,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         try {
             url = fileNameToURL(classAsFile, _base);
             if (_imports != null) {
-                WeakReference possiblePrevious = (WeakReference) _imports.get(url);
+                WeakReference possiblePrevious = (WeakReference) _imports
+                        .get(url);
                 NamedObj previous = null;
                 if (possiblePrevious != null) {
                     previous = (NamedObj) possiblePrevious.get();
@@ -3477,7 +3479,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // check whether the file has been updated, because
                     // if changes were made to model since it was loaded,
                     // they should have been propagated.
-                    return (ComponentEntity)previous;
+                    return (ComponentEntity) previous;
                 }
             }
         } catch (Exception ex) {
@@ -3485,7 +3487,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // found under the specified file name. Below we
             // will try again under the alternate file name.
         }
-        
+
         // Read external model definition in a new parser,
         // rather than in the current context.
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
@@ -3502,7 +3504,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 url = fileNameToURL(altClassAsFile, _base);
                 // First check to see whether the object has been previously loaded.
                 if (_imports != null) {
-                    WeakReference possiblePrevious = (WeakReference) _imports.get(url);
+                    WeakReference possiblePrevious = (WeakReference) _imports
+                            .get(url);
                     NamedObj previous = null;
                     if (possiblePrevious != null) {
                         previous = (NamedObj) possiblePrevious.get();
@@ -3515,7 +3518,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // check whether the file has been updated, because
                         // if changes were made to model since it was loaded,
                         // they should have been propagated.
-                        return (ComponentEntity)previous;
+                        return (ComponentEntity) previous;
                     }
                 }
                 try {
@@ -3576,7 +3579,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Load an associated icon, if there is one.
         _loadIconForClass(className, reference);
-        
+
         // Record the import to avoid repeated reading
         if (reference != null) {
             if (_imports == null) {
@@ -3846,11 +3849,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Extending a previously defined entity.  Check to see that
             // it was defined to be a class definition.
             if (!reference.isClassDefinition()) {
-                throw new MissingClassException("Attempt to extend an entity that "
-                        + "is not a class: " + reference.getFullName(),
-                        reference.getFullName(),
-                        _currentExternalEntity(), _getLineNumber(),
-                        _getColumnNumber());
+                throw new MissingClassException(
+                        "Attempt to extend an entity that "
+                                + "is not a class: " + reference.getFullName(),
+                        reference.getFullName(), _currentExternalEntity(),
+                        _getLineNumber(), _getColumnNumber());
             }
 
             // First check that there will be no name collision
@@ -5733,9 +5736,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Enclose in a group to prevent deferral on undo.
                         // Handle deleting links in reverse order so that if
                         // we copy and paste the undo/redo works out
-                        _undoContext.appendClosingUndoMoML("<group><unlink port=\""
-                                + portName + "\" insideIndex=\""
-                                + insertInsideAt + "\" /></group>" + "\n");
+                        _undoContext
+                                .appendClosingUndoMoML("<group><unlink port=\""
+                                        + portName + "\" insideIndex=\""
+                                        + insertInsideAt + "\" /></group>"
+                                        + "\n");
                     } else if (port.numLinks() != origNumOutsideLinks) {
                         if (insertAt == -1) {
                             insertAt = port.numLinks() - 1;
@@ -5743,9 +5748,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Enclose in a group to prevent deferral on undo.
                         // Handle deleting links in reverse order so that if
                         // we copy and paste the undo/redo works out
-                        _undoContext.appendClosingUndoMoML("<group><unlink port=\""
-                                + portName + "\" index=\"" + insertAt
-                                + "\" /></group>" + "\n");
+                        _undoContext
+                                .appendClosingUndoMoML("<group><unlink port=\""
+                                        + portName + "\" index=\"" + insertAt
+                                        + "\" /></group>" + "\n");
                     } else {
                         // No change so do not need to generate any undo MoML
                     }

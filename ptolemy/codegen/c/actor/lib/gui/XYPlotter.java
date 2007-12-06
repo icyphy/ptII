@@ -59,8 +59,7 @@ public class XYPlotter extends PlotterBase {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
-        ptolemy.actor.lib.gui.XYPlotter actor 
-                = (ptolemy.actor.lib.gui.XYPlotter) getComponent();
+        ptolemy.actor.lib.gui.XYPlotter actor = (ptolemy.actor.lib.gui.XYPlotter) getComponent();
         code.append(generatePlotFireCode(actor.inputX.getWidth()));
         return code.toString();
     }

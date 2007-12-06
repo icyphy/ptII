@@ -28,7 +28,6 @@
  */
 package ptolemy.actor.lib;
 
-
 import ptolemy.actor.lib.jni.EmbeddedCActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -68,7 +67,7 @@ public class CodegenActor extends EmbeddedCActor {
      *   an actor already in the container.
      */
     public CodegenActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         _attachText("_iconDescription", "<svg>\n"
@@ -87,8 +86,7 @@ public class CodegenActor extends EmbeddedCActor {
      *  of ptolemy.actor.lib.jni.EmbeddedCActor.
      */
     public void initialize() throws IllegalActionException {
-        throw new IllegalActionException(this, getName() +
-					 " can not run in "
-					 + "simulation mode.");
+        throw new IllegalActionException(this, getName() + " can not run in "
+                + "simulation mode.");
     }
 }

@@ -79,19 +79,17 @@ import com.jgoodies.forms.layout.RowSpec;
  * @see com.jgoodies.forms.util.LayoutStyle
  */
 public final class ButtonStackBuilder extends PanelBuilder {
-    
+
     /**
      * Specifies the FormLayout's the single button stack column.
      */
-    private static final ColumnSpec[] COL_SPECS =
-        new ColumnSpec[] { FormFactory.BUTTON_COLSPEC };
-        
+    private static final ColumnSpec[] COL_SPECS = new ColumnSpec[] { FormFactory.BUTTON_COLSPEC };
+
     /**
      * Specifies the rows of the initial FormLayout used in constructors.
      */
-    private static final RowSpec[] ROW_SPECS = 
-        new RowSpec[]{};
-    
+    private static final RowSpec[] ROW_SPECS = new RowSpec[] {};
+
     /**
      * The client property key used to indicate that a button shall
      * get narrow margins on the left and right hand side.<p>
@@ -102,8 +100,7 @@ public final class ButtonStackBuilder extends PanelBuilder {
      * and so may render a wider button margin.
      */
     private static final String NARROW_KEY = "jgoodies.isNarrow";
-    
-    
+
     // Instance Creation ****************************************************
 
     /**
@@ -113,7 +110,6 @@ public final class ButtonStackBuilder extends PanelBuilder {
     public ButtonStackBuilder() {
         this(new JPanel(null));
     }
-
 
     /**
      * Constructs an instance of <code>ButtonStackBuilder</code> on the given
@@ -125,9 +121,8 @@ public final class ButtonStackBuilder extends PanelBuilder {
         super(new FormLayout(COL_SPECS, ROW_SPECS), panel);
     }
 
-    
     // Adding Components ****************************************************
-    
+
     /**
      * Adds a sequence of related buttons separated by a default gap.
      * 
@@ -196,11 +191,8 @@ public final class ButtonStackBuilder extends PanelBuilder {
      * @param size  a constant that describes the gap
      */
     public void addStrut(ConstantSize size) {
-        getLayout().appendRow(new RowSpec(RowSpec.TOP, 
-                                          size, 
-                                          RowSpec.NO_GROW));
+        getLayout().appendRow(new RowSpec(RowSpec.TOP, size, RowSpec.NO_GROW));
         nextRow();
     }
-    
 
 }

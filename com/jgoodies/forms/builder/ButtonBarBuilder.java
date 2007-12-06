@@ -135,20 +135,18 @@ import com.jgoodies.forms.util.LayoutStyle;
  * @see com.jgoodies.forms.util.LayoutStyle
  */
 public final class ButtonBarBuilder extends PanelBuilder {
-    
+
     /**
      * Specifies the columns of the initial FormLayout used in constructors.
      */
-    private static final ColumnSpec[] COL_SPECS  = 
-        new ColumnSpec[]{};
+    private static final ColumnSpec[] COL_SPECS = new ColumnSpec[] {};
 
     /**
      * Specifies the FormLayout's the single button bar row.
      */
-    private static final RowSpec[] ROW_SPECS  = 
-        new RowSpec[]{ new RowSpec("center:pref") };
-    
-    
+    private static final RowSpec[] ROW_SPECS = new RowSpec[] { new RowSpec(
+            "center:pref") };
+
     /**
      * The client property key used to indicate that a button shall
      * get narrow margins on the left and right hand side.<p>
@@ -159,8 +157,7 @@ public final class ButtonBarBuilder extends PanelBuilder {
      * and so may render a wider button margin.
      */
     private static final String NARROW_KEY = "jgoodies.isNarrow";
-    
-    
+
     /**
      * Describes how sequences of buttons are added to the button bar:
      * left-to-right or right-to-left. This setting is initialized using
@@ -175,8 +172,7 @@ public final class ButtonBarBuilder extends PanelBuilder {
      * @see #addGriddedGrowingButtons(JButton[])
      */
     private boolean leftToRight;
-    
-    
+
     // Instance Creation ****************************************************
 
     /**
@@ -186,7 +182,6 @@ public final class ButtonBarBuilder extends PanelBuilder {
     public ButtonBarBuilder() {
         this(new JPanel(null));
     }
-
 
     /**
      * Constructs an instance of <code>ButtonBarBuilder</code> on the given
@@ -198,8 +193,7 @@ public final class ButtonBarBuilder extends PanelBuilder {
         super(new FormLayout(COL_SPECS, ROW_SPECS), panel);
         leftToRight = LayoutStyle.getCurrent().isLeftToRightButtonOrder();
     }
-    
-    
+
     /**
      * Creates and returns a <code>ButtonBarBuilder</code> with
      * initialized with a left to right button order.
@@ -211,10 +205,9 @@ public final class ButtonBarBuilder extends PanelBuilder {
         builder.setLeftToRightButtonOrder(true);
         return builder;
     }
-    
 
     // Accessing Properties *************************************************
-    
+
     /**
      * Returns whether button sequences will be ordered from 
      * left to right or from right to left. 
@@ -227,7 +220,6 @@ public final class ButtonBarBuilder extends PanelBuilder {
     public boolean isLeftToRightButtonOrder() {
         return leftToRight;
     }
-    
 
     /**
      * Sets the order for button sequences to either left to right,
@@ -242,20 +234,18 @@ public final class ButtonBarBuilder extends PanelBuilder {
     public void setLeftToRightButtonOrder(boolean newButtonOrder) {
         leftToRight = newButtonOrder;
     }
-    
-    
+
     // Default Borders ******************************************************
-    
+
     /**
      * Sets a default border that has a gap in the bar's north.
      */
     public void setDefaultButtonBarGapBorder() {
         getPanel().setBorder(Borders.BUTTON_BAR_GAP_BORDER);
     }
-    
-    
+
     // Adding Components ****************************************************
-    
+
     /**
      * Adds a sequence of related gridded buttons each separated by 
      * a default gap. Honors this builder's button order. If you
@@ -268,13 +258,12 @@ public final class ButtonBarBuilder extends PanelBuilder {
     public void addGriddedButtons(JButton[] buttons) {
         int length = buttons.length;
         for (int i = 0; i < length; i++) {
-            int index = leftToRight ? i : length -1 - i;
+            int index = leftToRight ? i : length - 1 - i;
             addGridded(buttons[index]);
             if (i < buttons.length - 1)
                 addRelatedGap();
         }
     }
-    
 
     /**
      * Adds a sequence of gridded buttons that grow
@@ -290,14 +279,13 @@ public final class ButtonBarBuilder extends PanelBuilder {
     public void addGriddedGrowingButtons(JButton[] buttons) {
         int length = buttons.length;
         for (int i = 0; i < length; i++) {
-            int index = leftToRight ? i : length -1 - i;
+            int index = leftToRight ? i : length - 1 - i;
             addGriddedGrowing(buttons[index]);
             if (i < buttons.length - 1)
                 addRelatedGap();
         }
     }
-    
-    
+
     /**
      * Adds a fixed size component. Unlike the gridded components,
      * this component keeps its individual preferred dimension.
@@ -309,7 +297,6 @@ public final class ButtonBarBuilder extends PanelBuilder {
         add(component);
         nextColumn();
     }
-    
 
     /**
      * Adds a fixed size component with narrow margins. Unlike the gridded 
@@ -321,7 +308,6 @@ public final class ButtonBarBuilder extends PanelBuilder {
         component.putClientProperty(NARROW_KEY, Boolean.TRUE);
         addFixed(component);
     }
-    
 
     /**
      * Adds a gridded component, i.e. a component that will get 
@@ -336,7 +322,6 @@ public final class ButtonBarBuilder extends PanelBuilder {
         add(component);
         nextColumn();
     }
-    
 
     /**
      * Adds a gridded component that grows. The component's initial size
@@ -351,7 +336,6 @@ public final class ButtonBarBuilder extends PanelBuilder {
         add(component);
         nextColumn();
     }
-    
 
     /**
      * Adds a glue that will be given the extra space, 
@@ -361,7 +345,6 @@ public final class ButtonBarBuilder extends PanelBuilder {
         appendGlueColumn();
         nextColumn();
     }
-    
 
     /**
      * Adds the standard gap for related components.
@@ -371,7 +354,6 @@ public final class ButtonBarBuilder extends PanelBuilder {
         nextColumn();
     }
 
-    
     /**
      * Adds the standard gap for unrelated components.
      */
@@ -380,18 +362,15 @@ public final class ButtonBarBuilder extends PanelBuilder {
         nextColumn();
     }
 
-    
     /** 
      * Adds a strut of a specified size.
      * 
      * @param size  a <code>ConstantSize</code> that describes the gap's size
      */
     public void addStrut(ConstantSize size) {
-        getLayout().appendColumn(new ColumnSpec(ColumnSpec.LEFT, 
-                                                size, 
-                                                ColumnSpec.NO_GROW));
+        getLayout().appendColumn(
+                new ColumnSpec(ColumnSpec.LEFT, size, ColumnSpec.NO_GROW));
         nextColumn();
     }
-    
 
 }

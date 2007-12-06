@@ -143,8 +143,6 @@ public class PublisherTest extends PublisherNonStrictTest {
             return;
         }
 
-
-
         Token referenceToken = ((ArrayToken) (correctValues.getToken()))
                 .getElement(_numberOfInputTokensSeen);
         Token[] reference;
@@ -193,8 +191,8 @@ public class PublisherTest extends PublisherNonStrictTest {
                 // Copernicus.
                 if (token instanceof ArrayToken
                         && reference[i] instanceof ArrayToken) {
-                    isClose |= NonStrictTest._isCloseToIfNilArrayElement(
-                            token, reference[i], _tolerance);
+                    isClose |= NonStrictTest._isCloseToIfNilArrayElement(token,
+                            reference[i], _tolerance);
                 }
                 if (token instanceof RecordToken
                         && reference[i] instanceof RecordToken) {

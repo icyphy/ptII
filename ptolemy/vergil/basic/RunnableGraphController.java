@@ -110,39 +110,40 @@ public abstract class RunnableGraphController extends WithIconGraphController
      */
     public void executionError(Manager manager, Throwable throwable) {
         getFrame().report(throwable);
-        
+
         if (throwable instanceof KernelException) {
-            _highlightError(((KernelException)throwable).getNameable1());
-            _highlightError(((KernelException)throwable).getNameable2());
-            
+            _highlightError(((KernelException) throwable).getNameable1());
+            _highlightError(((KernelException) throwable).getNameable2());
+
             // Type conflict errors need to be handled specially.
             if (throwable instanceof TypeConflictException) {
-                Iterator inequalities 
-                        = ((TypeConflictException)throwable).inequalityList().iterator();
+                Iterator inequalities = ((TypeConflictException) throwable)
+                        .inequalityList().iterator();
                 while (inequalities.hasNext()) {
-                    Inequality inequality = (Inequality)inequalities.next();
+                    Inequality inequality = (Inequality) inequalities.next();
                     if (inequality != null) {
                         InequalityTerm term = inequality.getGreaterTerm();
                         if (term != null) {
                             Object object = term.getAssociatedObject();
                             if (object instanceof Nameable) {
-                                _highlightError((Nameable)object);
+                                _highlightError((Nameable) object);
                             }
                         }
                         term = inequality.getLesserTerm();
                         if (term != null) {
                             Object object = term.getAssociatedObject();
                             if (object instanceof Nameable) {
-                                _highlightError((Nameable)object);
+                                _highlightError((Nameable) object);
                             }
                         }
                     }
                 }
             }
         } else if (throwable instanceof KernelRuntimeException) {
-            Iterator causes = ((KernelRuntimeException)throwable).getNameables().iterator();
+            Iterator causes = ((KernelRuntimeException) throwable)
+                    .getNameables().iterator();
             while (causes.hasNext()) {
-                _highlightError((Nameable)causes.next());
+                _highlightError((Nameable) causes.next());
             }
         }
     }
@@ -163,7 +164,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
         if (newState != _previousState) {
             // Clear any error reporting highlights that may be present.
-            ChangeRequest request = new ChangeRequest(this, "Error Highlight Clearer") {
+            ChangeRequest request = new ChangeRequest(this,
+                    "Error Highlight Clearer") {
                 protected void _execute() throws Exception {
                     for (Attribute highlight : _errorHighlights) {
                         highlight.setContainer(null);
@@ -256,16 +258,19 @@ public abstract class RunnableGraphController extends WithIconGraphController
      */
     private void _addErrorHighlightIfNeeded(Nameable culprit)
             throws IllegalActionException, NameDuplicationException {
-        Attribute highlightColor = ((NamedObj)culprit).getAttribute("_highlightColor");
+        Attribute highlightColor = ((NamedObj) culprit)
+                .getAttribute("_highlightColor");
         if (highlightColor == null) {
-            highlightColor = new ColorAttribute((NamedObj)culprit, "_highlightColor");
-            ((ColorAttribute)highlightColor).setExpression("{1.0, 0.0, 0.0, 1.0}");
+            highlightColor = new ColorAttribute((NamedObj) culprit,
+                    "_highlightColor");
+            ((ColorAttribute) highlightColor)
+                    .setExpression("{1.0, 0.0, 0.0, 1.0}");
             highlightColor.setPersistent(false);
-            ((ColorAttribute)highlightColor).setVisibility(Settable.EXPERT);
+            ((ColorAttribute) highlightColor).setVisibility(Settable.EXPERT);
             _errorHighlights.add(highlightColor);
         }
     }
-    
+
     /** Highlight the specified object and all its containers to
      *  indicate that it is the source of an error.
      *  @param culprit The culprit.
@@ -282,7 +287,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
                     }
                 }
             };
-            ((NamedObj)culprit).requestChange(request);
+            ((NamedObj) culprit).requestChange(request);
         }
     }
 
@@ -291,7 +296,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
     /** List of error highlight attributes we have created. */
     private List<Attribute> _errorHighlights = new LinkedList<Attribute>();
-    
+
     /** The manager we are currently listening to. */
     private Manager _manager = null;
 

@@ -61,8 +61,8 @@ import ptolemy.kernel.util.Workspace;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class TransformationRule extends MultiCompositeActor
-implements MatchCallback, ValueListener {
+public class TransformationRule extends MultiCompositeActor implements
+        MatchCallback, ValueListener {
 
     public TransformationRule(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -71,7 +71,7 @@ implements MatchCallback, ValueListener {
     }
 
     public TransformationRule(Workspace workspace)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -96,8 +96,8 @@ implements MatchCallback, ValueListener {
 
                 GraphMatcher matcher = new GraphMatcher();
                 matcher.setMatchCallback(this);
-                _collectAllMatches =
-                    !modeString.equals(Mode.REPLACE_FIRST.toString());
+                _collectAllMatches = !modeString.equals(Mode.REPLACE_FIRST
+                        .toString());
                 matcher.match(getPattern(), _lastModel);
 
                 if (modeString.equals(Mode.REPLACE_FIRST.toString())) {
@@ -118,8 +118,8 @@ implements MatchCallback, ValueListener {
                         modelOutput.send(0, token);
                         modified.send(0, BooleanToken.FALSE);
                     } else {
-                        MatchResult result = _lastResults.get(_random.nextInt(
-                                _lastResults.size()));
+                        MatchResult result = _lastResults.get(_random
+                                .nextInt(_lastResults.size()));
                         GraphTransformer.transform(this, result);
                         modelOutput.send(0, new ActorToken(_lastModel));
                         modified.send(0, BooleanToken.TRUE);
@@ -144,12 +144,12 @@ implements MatchCallback, ValueListener {
                 ObjectToken token = (ObjectToken) matchInput.get(0);
                 MatchResult match = (MatchResult) token.getValue();
                 if (match != null) {
-                    CompositeEntity host =
-                        (CompositeEntity) match.get(getPattern());
+                    CompositeEntity host = (CompositeEntity) match
+                            .get(getPattern());
                     if (_lastModel != host && !_lastModel.deepContains(host)) {
                         throw new IllegalActionException(this,
                                 "The match result cannot be used with the "
-                                + "current model.");
+                                        + "current model.");
                     }
                     GraphTransformer.transform(this, match);
                     modelOutput.send(0, new ActorToken(_lastModel));
@@ -213,11 +213,10 @@ implements MatchCallback, ValueListener {
                 || modeString.equals(Mode.REPLACE_ALL.toString())) {
             return modelInput.hasToken(0);
         } else {
-            return modelInput.hasToken(0)
-                    || matchInput.getWidth() > 0 && matchInput.hasToken(0)
-                            && _lastModel != null
+            return modelInput.hasToken(0) || matchInput.getWidth() > 0
+                    && matchInput.hasToken(0) && _lastModel != null
                     || trigger.getWidth() > 0 && trigger.hasToken(0)
-                            && !_lastResults.isEmpty();
+                    && !_lastResults.isEmpty();
         }
     }
 
@@ -252,12 +251,11 @@ implements MatchCallback, ValueListener {
                     modified = new TypedIOPort(this, "modified", false, true);
                     modified.setTypeEquals(BaseType.BOOLEAN);
                     modified.setPersistent(false);
-                    new StringAttribute(modified, "_cardinal").setExpression(
-                            "SOUTH");
+                    new StringAttribute(modified, "_cardinal")
+                            .setExpression("SOUTH");
                 }
             } catch (KernelException e) {
-                throw new InternalErrorException(this, e,
-                        "Cannot remove port.");
+                throw new InternalErrorException(this, e, "Cannot remove port.");
             }
         } else if (modeString.equals(Mode.EXPERT.toString())) {
             try {
@@ -266,14 +264,14 @@ implements MatchCallback, ValueListener {
                     modified = null;
                 }
                 if (matchInput == null) {
-                    matchInput =
-                        new TypedIOPort(this, "matchInput", true, false);
+                    matchInput = new TypedIOPort(this, "matchInput", true,
+                            false);
                     matchInput.setTypeEquals(BaseType.OBJECT);
                     matchInput.setPersistent(false);
                 }
                 if (matchOutput == null) {
-                    matchOutput =
-                        new TypedIOPort(this, "matchOutput", false, true);
+                    matchOutput = new TypedIOPort(this, "matchOutput", false,
+                            true);
                     matchOutput.setTypeEquals(BaseType.OBJECT);
                     matchOutput.setPersistent(false);
                 }
@@ -281,8 +279,8 @@ implements MatchCallback, ValueListener {
                     trigger = new TypedIOPort(this, "trigger", true, false);
                     trigger.setTypeEquals(BaseType.BOOLEAN);
                     trigger.setPersistent(false);
-                    new StringAttribute(trigger, "_cardinal").setExpression(
-                            "SOUTH");
+                    new StringAttribute(trigger, "_cardinal")
+                            .setExpression("SOUTH");
                 }
                 if (remaining == null) {
                     remaining = new TypedIOPort(this, "remaining", false, true);
@@ -292,8 +290,7 @@ implements MatchCallback, ValueListener {
                             .setExpression("SOUTH");
                 }
             } catch (KernelException e) {
-                throw new InternalErrorException(this, e,
-                        "Cannot create port.");
+                throw new InternalErrorException(this, e, "Cannot create port.");
             }
         } else {
             throw new InternalErrorException("Cannot set mode to " + modeString
@@ -340,14 +337,30 @@ implements MatchCallback, ValueListener {
     }
 
     public enum Mode {
-        EXPERT { public String toString() {return "full control";} },
-        REPLACE_ALL { public String toString() {return "replace all";} },
-        REPLACE_ANY { public String toString() {return "replace any";} },
-        REPLACE_FIRST { public String toString() {return "replace first";} }
+        EXPERT {
+            public String toString() {
+                return "full control";
+            }
+        },
+        REPLACE_ALL {
+            public String toString() {
+                return "replace all";
+            }
+        },
+        REPLACE_ANY {
+            public String toString() {
+                return "replace any";
+            }
+        },
+        REPLACE_FIRST {
+            public String toString() {
+                return "replace first";
+            }
+        }
     }
 
-    protected void _init()
-    throws IllegalActionException, NameDuplicationException {
+    protected void _init() throws IllegalActionException,
+            NameDuplicationException {
         setClassName("ptolemy.actor.gt.TransformationRule");
 
         // Create the default refinement.
@@ -363,7 +376,8 @@ implements MatchCallback, ValueListener {
         mode = new StringParameter(this, "mode");
         for (int i = Mode.values().length - 1; i >= 0; i--) {
             mode.addChoice(Mode.values()[i].toString());
-        };
+        }
+        ;
         mode.addValueListener(this);
         mode.setExpression(Mode.REPLACE_FIRST.toString());
 
@@ -376,8 +390,7 @@ implements MatchCallback, ValueListener {
 
     private CompositeEntity _lastModel;
 
-    private LinkedList<MatchResult> _lastResults =
-        new LinkedList<MatchResult>();
+    private LinkedList<MatchResult> _lastResults = new LinkedList<MatchResult>();
 
     private LastResultsOperation _lastResultsOperation;
 

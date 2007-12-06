@@ -656,7 +656,7 @@ public class CTScheduler extends Scheduler {
             LinkedList nodesAsList = new LinkedList();
             StringBuffer inCycle = new StringBuffer("Cycle includes: ");
             for (int i = 0; i < cycleNodes.length; i++) {
-                inCycle.append(((NamedObj)cycleNodes[i]).getFullName());
+                inCycle.append(((NamedObj) cycleNodes[i]).getFullName());
                 if (i < cycleNodes.length - 1) {
                     inCycle.append(", ");
                 }
@@ -1349,13 +1349,15 @@ public class CTScheduler extends Scheduler {
                     LinkedList offendingPorts = new LinkedList();
                     offendingPorts.add(port);
                     offendingPorts.add(nextPort);
-                    throw new NotSchedulableException(offendingPorts, null, "Signal type conflict: "
-                            + port.getFullName() + " (of type "
-                            + signalTypeToString(getType(port)) + ") and "
-                            + nextPort.getFullName() + " (of type "
-                            + signalTypeToString(getType(nextPort)) + ")"
-                            + "). Perhaps the connection has "
-                            + "sequence semantics?");
+                    throw new NotSchedulableException(offendingPorts, null,
+                            "Signal type conflict: " + port.getFullName()
+                                    + " (of type "
+                                    + signalTypeToString(getType(port))
+                                    + ") and " + nextPort.getFullName()
+                                    + " (of type "
+                                    + signalTypeToString(getType(nextPort))
+                                    + ")" + "). Perhaps the connection has "
+                                    + "sequence semantics?");
                 }
             }
         }

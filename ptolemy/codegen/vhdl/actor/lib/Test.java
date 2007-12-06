@@ -77,7 +77,7 @@ public class Test extends VHDLCodeGeneratorHelper {
         }
 
         ArrayList args = new ArrayList();
-       
+
         Precision precision = _getSourcePortPrecision(actor.input);
 
         int high = precision.getIntegerBitLength() - 1;

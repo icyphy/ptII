@@ -101,13 +101,15 @@ public class GenerateCopyrights {
 
         // Add the classnames and copyrights.
         // Alphabetical by className.
-        _addIfPresent(copyrightsMap, "com.jgoodies.forms.factories.DefaultComponentFactory",
+        _addIfPresent(copyrightsMap,
+                "com.jgoodies.forms.factories.DefaultComponentFactory",
                 "com/jgoodies/jgoodies-copyright.htm");
 
         _addIfPresent(copyrightsMap, "jni.GenericJNIActor",
                 "jni/launcher/launcher-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "org.mlc.swing.layout.LayoutConstraintsManager",
+        _addIfPresent(copyrightsMap,
+                "org.mlc.swing.layout.LayoutConstraintsManager",
                 "org/mlc/mlc-copyright.htm");
 
         _addIfPresent(copyrightsMap, "ptolemy.backtrack.ast.TypeAnalyzer",
@@ -143,7 +145,8 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap, "ptolemy.actor.lib.x10.X10Interface",
                 "ptolemy/actor/lib/x10/x10-copyright.htm");
 
-        _addIfPresent(copyrightsMap, "ptolemy.ptolemy.actor.ptalon.PtalonActor",
+        _addIfPresent(copyrightsMap,
+                "ptolemy.ptolemy.actor.ptalon.PtalonActor",
                 "ptolemy/actor/ptalon/ptalon-copyright.html");
 
         _addIfPresent(copyrightsMap, "ptolemy.copernicus.kernel.KernelMain",
@@ -196,7 +199,8 @@ public class GenerateCopyrights {
             // This application has no _applicationCopyrights
         }
 
-        StringBuffer htmlBuffer = new StringBuffer(generatePrimaryCopyrightHTML(configuration));
+        StringBuffer htmlBuffer = new StringBuffer(
+                generatePrimaryCopyrightHTML(configuration));
         Iterator copyrights = copyrightsMap.entrySet().iterator();
 
         if (copyrights.hasNext()) {
@@ -403,7 +407,6 @@ public class GenerateCopyrights {
         }
     }
 
-    
     /** Get the application name from the _applicationName parameter.
      *  If the _applicationName parameter is not set, then return
      *  "Ptolemy II"

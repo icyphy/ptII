@@ -231,8 +231,7 @@ public class FixMatrixToken extends MatrixToken {
      *  empty or if the specified parameters result in out of bounds
      *  accesses.
      */
-    public MatrixToken crop(
-            int rowStart, int colStart, int rowSpan, int colSpan)
+    public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
             throws IllegalActionException {
         FixPoint[][] value = this.fixMatrix();
         try {
@@ -243,15 +242,10 @@ public class FixMatrixToken extends MatrixToken {
             }
             return new FixMatrixToken(result);
         } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new IllegalActionException("Matrix crop indices out of bounds (rowStart = "
-                    + rowStart
-                    + ", colStart = "
-                    + colStart
-                    + ", rowSpan = "
-                    + rowSpan
-                    + ", colSpan = "
-                    + colSpan
-                    + ").");
+            throw new IllegalActionException(
+                    "Matrix crop indices out of bounds (rowStart = " + rowStart
+                            + ", colStart = " + colStart + ", rowSpan = "
+                            + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -439,8 +433,7 @@ public class FixMatrixToken extends MatrixToken {
                 // to implement the matrix copy here.
                 for (int ii = 0; ii < rowCount; ii++) {
                     System.arraycopy(matrices[i][j].fixMatrix()[ii], 0,
-                            tiled[row + ii],
-                            column, columnCount);
+                            tiled[row + ii], column, columnCount);
                 }
                 // Starting position for the next column.
                 column += matrices[0][j].getColumnCount();
@@ -478,15 +471,15 @@ public class FixMatrixToken extends MatrixToken {
                     // to implement the matrix copy here.
                     for (int ii = 0; ii < rowspan; ii++) {
                         System.arraycopy(source[row + ii], column,
-                                contents[ii],
-                                0, columnspan);
+                                contents[ii], 0, columnspan);
                     }
                 }
                 column += columns[j];
                 try {
                     // Use the precision of the (0,0) element because the entire submatrix
                     // may be zero, in which case the precision cannot be inferred.
-                    result[i][j] = new FixMatrixToken(contents, getElementAt(0, 0).getPrecision());
+                    result[i][j] = new FixMatrixToken(contents, getElementAt(0,
+                            0).getPrecision());
                 } catch (IllegalActionException e) {
                     throw new InternalErrorException(e);
                 }

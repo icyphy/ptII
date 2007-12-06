@@ -42,7 +42,8 @@ import ptolemy.kernel.util.KernelException;
 public class MalformedStringException extends KernelException {
 
     public MalformedStringException(String expression) {
-        super(null, null, null, "Rule list string \"" + expression + "\" is malformed.");
+        super(null, null, null, "Rule list string \"" + expression
+                + "\" is malformed.");
     }
 
 }

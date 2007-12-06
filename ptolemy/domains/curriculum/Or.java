@@ -64,16 +64,14 @@ public class Or extends TypedAtomicActor {
         postrequisites = new TypedIOPort(this, "postrequisites", false, true);
         prerequisites = new TypedIOPort(this, "prerequisites", true, false);
         prerequisites.setMultiport(true);
-        
+
         Parameter hide = new Parameter(this, "_hideName");
         hide.setVisibility(Settable.EXPERT);
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<circle cx=\"0\" cy=\"0\" r=\"10\""
-                + "style=\"fill:white\"/>\n"
-                + "<text x=\"-7\" y=\"3\" " + "style=\"font-size:12\">\n"
-                + "Or" + "</text>\n"
-                + "</svg>\n");
+                + "style=\"fill:white\"/>\n" + "<text x=\"-7\" y=\"3\" "
+                + "style=\"font-size:12\">\n" + "Or" + "</text>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

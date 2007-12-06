@@ -391,9 +391,8 @@ public class Precision implements Cloneable, Serializable {
      *  @return A hash code value for this Precision.
      */
     public int hashCode() {
-        return Integer.valueOf(_length).hashCode()
-            >>> Integer.valueOf(_exponent).hashCode()
-            >>> Integer.valueOf(_sign).hashCode();
+        return Integer.valueOf(_length).hashCode() >>> Integer.valueOf(
+                _exponent).hashCode() >>> Integer.valueOf(_sign).hashCode();
     }
 
     /**

@@ -186,15 +186,10 @@ public class MatrixToSequence extends SDFTransformer {
 
             if ((actualRowCount != rowsValue)
                     || (actualColumnCount != columnsValue)) {
-                throw new IllegalActionException(this,
-                        "The input matrix size "
-                        + actualRowCount
-                        + "x"
-                        + actualColumnCount
+                throw new IllegalActionException(this, "The input matrix size "
+                        + actualRowCount + "x" + actualColumnCount
                         + " does not match what the actor requires, "
-                        + rowsValue
-                        + "x"
-                        + columnsValue);
+                        + rowsValue + "x" + columnsValue);
             }
         }
 

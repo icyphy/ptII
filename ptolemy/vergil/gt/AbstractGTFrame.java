@@ -62,8 +62,8 @@ import diva.graph.GraphPane;
 import diva.graph.GraphUtilities;
 import diva.graph.JGraph;
 
-public abstract class AbstractGTFrame extends ExtendedGraphFrame
-implements ChangeListener, KeyListener {
+public abstract class AbstractGTFrame extends ExtendedGraphFrame implements
+        ChangeListener, KeyListener {
 
     /** Construct a frame associated with the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -100,8 +100,8 @@ implements ChangeListener, KeyListener {
     }
 
     public CompositeEntity getActiveModel() {
-        ActorGraphModel graphModel =
-            (ActorGraphModel) _getGraphController().getGraphModel();
+        ActorGraphModel graphModel = (ActorGraphModel) _getGraphController()
+                .getGraphModel();
         return (CompositeEntity) graphModel.getPtolemyModel();
     }
 
@@ -141,8 +141,8 @@ implements ChangeListener, KeyListener {
     }
 
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE || e.getKeyCode()
-                == (KeyEvent.VK_ALT | KeyEvent.VK_S)) {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE
+                || e.getKeyCode() == (KeyEvent.VK_ALT | KeyEvent.VK_S)) {
             e.consume();
             cancelFullScreen();
         }
@@ -175,9 +175,8 @@ implements ChangeListener, KeyListener {
         if (result && hasTabs()) {
             for (Component tab : _tabbedPane.getComponents()) {
                 if (tab instanceof JGraph) {
-                    AbstractBasicGraphModel graphModel =
-                        (AbstractBasicGraphModel) ((JGraph) tab).getGraphPane()
-                                .getGraphModel();
+                    AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) ((JGraph) tab)
+                            .getGraphPane().getGraphModel();
                     graphModel.removeListeners();
                 }
             }
@@ -242,8 +241,8 @@ implements ChangeListener, KeyListener {
                 CompositeActorMatcher.class).iterator();
         boolean first = true;
         while (cases.hasNext()) {
-            CompositeActorMatcher matcher =
-                (CompositeActorMatcher) cases.next();
+            CompositeActorMatcher matcher = (CompositeActorMatcher) cases
+                    .next();
             JGraph jgraph = _addTabbedPane(matcher, false);
             // The first JGraph is the one with the focus.
             if (first) {
@@ -323,8 +322,7 @@ implements ChangeListener, KeyListener {
      *  @param newPane True to add the pane prior to the last pane.
      *  @return The pane.
      */
-    private JGraph _addTabbedPane(CompositeActorMatcher matcher,
-            boolean newPane) {
+    private JGraph _addTabbedPane(CompositeActorMatcher matcher, boolean newPane) {
         GraphPane pane = _createGraphPane(matcher);
         pane.getForegroundLayer().setPickHalo(2);
         pane.getForegroundEventLayer().setConsuming(false);

@@ -264,8 +264,8 @@ public class FastLinkedList<E> implements Collection<E> {
     @SuppressWarnings("unchecked")
     public <S> S[] toArray(S[] array) {
         if (array.length < size()) {
-            array = (S[]) java.lang.reflect.Array.newInstance(
-                    array.getClass().getComponentType(), size());
+            array = (S[]) java.lang.reflect.Array.newInstance(array.getClass()
+                    .getComponentType(), size());
         }
         int i = 0;
         Entry entry = _head;

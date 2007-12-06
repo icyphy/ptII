@@ -40,7 +40,6 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-
 /**
  * Provides static methods that help you understand and fix layout problems 
  * when using the {@link FormLayout}. Dumps information about the layout grid, 
@@ -63,14 +62,13 @@ import com.jgoodies.forms.layout.RowSpec;
  * @see FormDebugPanel
  */
 public final class FormDebugUtils {
-    
+
     private FormDebugUtils() {
         // Overrides default constructor; prevents instantiation.
     }
-    
-    
+
     // Console Dump *********************************************************
-    
+
     /**
      * Dumps all layout state to the console: column and row specifications,
      * column and row groups, grid bounds and cell constraints.
@@ -90,9 +88,9 @@ public final class FormDebugUtils {
         dumpRowGroups(layout);
         System.out.println();
         dumpConstraints(container);
-        dumpGridBounds(container);        
+        dumpGridBounds(container);
     }
-    
+
     /**
      * Dumps the layout's column specifications to the console.
      * 
@@ -108,7 +106,6 @@ public final class FormDebugUtils {
         }
         System.out.println();
     }
-
 
     /**
      * Dumps the layout's row specifications to the console.
@@ -126,7 +123,6 @@ public final class FormDebugUtils {
         System.out.println();
     }
 
-
     /**
      * Dumps the layout's column groups to the console.
      * 
@@ -136,7 +132,6 @@ public final class FormDebugUtils {
         dumpGroups("COLUMN GROUPS: ", layout.getColumnGroups());
     }
 
-
     /**
      * Dumps the layout's row groups to the console.
      * 
@@ -145,7 +140,6 @@ public final class FormDebugUtils {
     public static void dumpRowGroups(FormLayout layout) {
         dumpGroups("ROW GROUPS:    ", layout.getRowGroups());
     }
-
 
     /**
      * Dumps the container's grid info to the console if and only
@@ -158,7 +152,6 @@ public final class FormDebugUtils {
         System.out.println("GRID BOUNDS");
         dumpGridBounds(getLayoutInfo(container));
     }
-
 
     /**
      * Dumps the grid layout info to the console.
@@ -179,7 +172,6 @@ public final class FormDebugUtils {
         System.out.println();
     }
 
-
     /**
      * Dumps the component constraints to the console.
      * 
@@ -196,11 +188,10 @@ public final class FormDebugUtils {
         for (int i = 0; i < childCount; i++) {
             Component child = container.getComponent(i);
             CellConstraints cc = layout.getConstraints(child);
-            String ccString = cc == null
-                ? "no constraints"
-                : cc.toShortString(layout);
-            System.out.print(ccString);        
-            System.out.print("; ");        
+            String ccString = cc == null ? "no constraints" : cc
+                    .toShortString(layout);
+            System.out.print(ccString);
+            System.out.print("; ");
             String childType = child.getClass().getName();
             System.out.print(childType);
             if (child instanceof JLabel) {
@@ -215,7 +206,6 @@ public final class FormDebugUtils {
         }
         System.out.println();
     }
-
 
     // Helper Code **********************************************************
 
@@ -243,7 +233,7 @@ public final class FormDebugUtils {
         }
         System.out.println("}");
     }
-    
+
     /**
      * Computes and returns the layout's grid origins.
      * 
@@ -253,7 +243,8 @@ public final class FormDebugUtils {
      */
     public static FormLayout.LayoutInfo getLayoutInfo(Container container) {
         if (!(container.getLayout() instanceof FormLayout)) {
-            throw new IllegalArgumentException("The container must use an instance of FormLayout.");
+            throw new IllegalArgumentException(
+                    "The container must use an instance of FormLayout.");
         }
         FormLayout layout = (FormLayout) container.getLayout();
         return layout.getLayoutInfo(container);

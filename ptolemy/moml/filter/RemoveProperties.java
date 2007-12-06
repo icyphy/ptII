@@ -174,7 +174,7 @@ public class RemoveProperties implements MoMLFilter {
             Iterator attributeMapEntries = propertyMap.entrySet().iterator();
 
             while (attributeMapEntries.hasNext()) {
-                Map.Entry attributes = (Map.Entry)attributeMapEntries.next();
+                Map.Entry attributes = (Map.Entry) attributeMapEntries.next();
                 String oldAttribute = (String) attributes.getKey();
                 String newAttribute = (String) attributes.getValue();
                 results.append("\t\t" + oldAttribute + "\t -> " + newAttribute

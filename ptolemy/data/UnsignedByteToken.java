@@ -324,7 +324,7 @@ public class UnsignedByteToken extends ScalarToken {
     public short shortValue() {
         return _value;
     }
-    
+
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
      *  If this token has a unit, the return string also includes a unit

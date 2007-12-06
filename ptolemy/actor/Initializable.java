@@ -78,7 +78,7 @@ public interface Initializable {
      *  @exception IllegalActionException If initializing is not permitted.
      */
     public void preinitialize() throws IllegalActionException;
-    
+
     /** Remove the specified object from the list of objects whose
      *  preinitialize(), intialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding

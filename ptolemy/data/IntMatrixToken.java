@@ -328,23 +328,18 @@ public class IntMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the returned matrix is empty or if the specified
      *   parameters result in out of bounds accesses.
      */
-    public MatrixToken crop(
-            int rowStart, int colStart, int rowSpan, int colSpan)
+    public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
             throws IllegalActionException {
         int[][] value = this.intMatrix();
         try {
-            int[][] result = IntegerMatrixMath.crop(value, rowStart, colStart, rowSpan, colSpan);
+            int[][] result = IntegerMatrixMath.crop(value, rowStart, colStart,
+                    rowSpan, colSpan);
             return new IntMatrixToken(result);
         } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new IllegalActionException("Matrix crop indices out of bounds (rowStart = "
-                    + rowStart
-                    + ", colStart = "
-                    + colStart
-                    + ", rowSpan = "
-                    + rowSpan
-                    + ", colSpan = "
-                    + colSpan
-                    + ").");
+            throw new IllegalActionException(
+                    "Matrix crop indices out of bounds (rowStart = " + rowStart
+                            + ", colStart = " + colStart + ", rowSpan = "
+                            + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -528,10 +523,8 @@ public class IntMatrixToken extends MatrixToken {
                 if (column + columnCount > columns) {
                     columnCount = columns - column;
                 }
-                IntegerMatrixMath.matrixCopy(
-                        matrices[i][j].intMatrix(), 0, 0,
-                        tiled, row, column,
-                        rowCount, columnCount);
+                IntegerMatrixMath.matrixCopy(matrices[i][j].intMatrix(), 0, 0,
+                        tiled, row, column, rowCount, columnCount);
                 // Starting position for the next column.
                 column += matrices[0][j].getColumnCount();
             }
@@ -608,8 +601,8 @@ public class IntMatrixToken extends MatrixToken {
                     columnspan = source[0].length - column;
                 }
                 if (columnspan > 0 && rowspan > 0) {
-                    IntegerMatrixMath.matrixCopy(
-                            source, row, column, contents, 0, 0, rowspan, columnspan);
+                    IntegerMatrixMath.matrixCopy(source, row, column, contents,
+                            0, 0, rowspan, columnspan);
                 }
                 column += columns[j];
                 try {

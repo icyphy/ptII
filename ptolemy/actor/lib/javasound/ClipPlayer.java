@@ -81,11 +81,11 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
 
         fileOrURL = new FileParameter(this, "fileOrURL");
         fileOrURL.setExpression("$PTII/ptolemy/actor/lib/javasound/voice.wav");
-        
+
         overlay = new Parameter(this, "overlay");
         overlay.setTypeEquals(BaseType.BOOLEAN);
         overlay.setExpression("false");
-        
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.BOOLEAN);
     }
@@ -97,14 +97,14 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      *  This is set by default to a file containing a voice signal.
      */
     public FileParameter fileOrURL;
-    
+
     /** Output port used to indicate starts and stops.
      *  This is a boolean port. A true output indicates that
      *  a clip has been started, and a false output indicates that
      *  one has stopped.
      */
     public TypedIOPort output;
-    
+
     /** If true, then if the actor fires before the previous clip
      *  has finished playing, then a new instance of the clip will
      *  be played on top of the tail of the previous instance, as
@@ -113,7 +113,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      *  the clip is stopped and restarted each time the actor fires.
      */
     public Parameter overlay;
-    
+
     /** The trigger.  When this port receives a token of any type,
      *  the actor begins playing the audio clip.
      */
@@ -121,7 +121,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Produce outputs indicating that the clip has started or stopped.
      *  @exception IllegalActionException Not thrown in this class.
      */
@@ -132,7 +132,7 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         // to operate on a copy of the list created in the
         // first firing of the iteration.
         if (_outputEventsCopy == null) {
-            synchronized(_outputEvents) {
+            synchronized (_outputEvents) {
                 _outputEventsCopy = new LinkedList<BooleanToken>(_outputEvents);
                 _outputEvents.clear();
             }
@@ -153,11 +153,12 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
         _outputEventsCopy = null;
         if (trigger.hasToken(0)) {
             trigger.get(0);
-            boolean overlayValue = ((BooleanToken)overlay.getToken()).booleanValue();
+            boolean overlayValue = ((BooleanToken) overlay.getToken())
+                    .booleanValue();
             if (overlayValue || _clips.size() == 0) {
                 // If there is an inactive clip in the list, then use that.
                 // Otherwise, create a new one.
-                for (Clip clip: _clips) {
+                for (Clip clip : _clips) {
                     if (!clip.isActive()) {
                         clip.setFramePosition(0);
                         clip.start();
@@ -167,14 +168,15 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
                 try {
                     Clip clip = AudioSystem.getClip();
                     clip.addLineListener(this);
-                    AudioInputStream stream = AudioSystem.getAudioInputStream(fileOrURL.asURL());
+                    AudioInputStream stream = AudioSystem
+                            .getAudioInputStream(fileOrURL.asURL());
                     clip.open(stream);
                     clip.start();
                     _clips.add(clip);
                 } catch (Exception e) {
                     throw new IllegalActionException(this, e,
                             "Error opening audio file or URL: "
-                            + fileOrURL.getExpression());
+                                    + fileOrURL.getExpression());
                 }
             } else {
                 // Restart the last clip.
@@ -200,11 +202,11 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
      */
     public void update(LineEvent event) {
         if (event.getType().equals(LineEvent.Type.STOP)) {
-            synchronized(_outputEvents) {
+            synchronized (_outputEvents) {
                 _outputEvents.add(BooleanToken.FALSE);
             }
         } else if (event.getType().equals(LineEvent.Type.START)) {
-            synchronized(_outputEvents) {
+            synchronized (_outputEvents) {
                 _outputEvents.add(BooleanToken.TRUE);
             }
         }
@@ -225,10 +227,10 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
 
         // Stop playback. Close any open sound files. Free
         // up audio system resources.
-        for (Clip clip: _clips) {
+        for (Clip clip : _clips) {
             clip.flush();
             clip.stop();
-            clip.close();  
+            clip.close();
         }
         _clips.clear();
     }
@@ -238,10 +240,10 @@ public class ClipPlayer extends TypedAtomicActor implements LineListener {
 
     /** The clip to playback. */
     protected List<Clip> _clips = new LinkedList<Clip>();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The output values to be produced on the next firing. */
     private List<BooleanToken> _outputEvents = new LinkedList<BooleanToken>();
 

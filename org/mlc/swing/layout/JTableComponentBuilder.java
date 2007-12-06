@@ -44,71 +44,63 @@ import javax.swing.table.AbstractTableModel;
  * 
  * @author Michael Connor
  */
-public class JTableComponentBuilder implements ComponentBuilder
-{
-  List<BeanProperty> properties = new ArrayList<BeanProperty>();
+public class JTableComponentBuilder implements ComponentBuilder {
+    List<BeanProperty> properties = new ArrayList<BeanProperty>();
 
-  public JTableComponentBuilder()
-  {
-  }
+    public JTableComponentBuilder() {
+    }
 
-  public String getDeclaration(String name,
-      java.util.Map<String, Object> beanProperties)
-  {
-    return "javax.swing.JTable " + name
-        + "Control = new javax.swing.JTable();\njavax.swing.JScrollPane "
-        + name + " = new javax.swing.JScrollPane(" + name + "Control);\n";
-  }
+    public String getDeclaration(String name,
+            java.util.Map<String, Object> beanProperties) {
+        return "javax.swing.JTable "
+                + name
+                + "Control = new javax.swing.JTable();\njavax.swing.JScrollPane "
+                + name + " = new javax.swing.JScrollPane(" + name
+                + "Control);\n";
+    }
 
-  public java.awt.Component getInstance(
-      java.util.Map<String, Object> beanProperties) throws Exception
-  {
-    JTable table = new JTable();
-    table.setModel(new AbstractTableModel()
-    {
-      public int getRowCount()
-      {
-        return 10;
-      }
+    public java.awt.Component getInstance(
+            java.util.Map<String, Object> beanProperties) throws Exception {
+        JTable table = new JTable();
+        table.setModel(new AbstractTableModel() {
+            public int getRowCount() {
+                return 10;
+            }
 
-      public int getColumnCount()
-      {
-        return 10;
-      }
+            public int getColumnCount() {
+                return 10;
+            }
 
-      public Object getValueAt(int row, int col)
-      {
-        return "" + row + ":" + col;
-      }
-    });
+            public Object getValueAt(int row, int col) {
+                return "" + row + ":" + col;
+            }
+        });
 
-    JScrollPane scrollPane = new JScrollPane(table);
-    return scrollPane;
-  }
+        JScrollPane scrollPane = new JScrollPane(table);
+        return scrollPane;
+    }
 
-  public java.util.List<BeanProperty> getProperties()
-  {
-    return properties;
-  }
+    public java.util.List<BeanProperty> getProperties() {
+        return properties;
+    }
 
-  public boolean isComponentALayoutContainer()
-  {
-    return false;
-  }
+    public boolean isComponentALayoutContainer() {
+        return false;
+    }
 
-  public String toString()
-  {
-    return "javax.swing.JTable";
-  }
-  public ComponentDef getComponentDef(String name, Map<String, Object> beanProperties)
-  {
-	String imp  = "import javax.swing.JTable;\n" +
-	              "import javax.swing.JScrollPane;";
-	String decl = "JTable ${name}Control = new JTable();\n" +
-	              "JScrollPane ${name} = new JScrollPane(${name}Control);";
-	String add  = "${container}.add(${name}, \"${name}\");";
-	ComponentDef cd = new ComponentDef(name,imp,decl,add);
-	return cd;
-  }
+    public String toString() {
+        return "javax.swing.JTable";
+    }
+
+    public ComponentDef getComponentDef(String name,
+            Map<String, Object> beanProperties) {
+        String imp = "import javax.swing.JTable;\n"
+                + "import javax.swing.JScrollPane;";
+        String decl = "JTable ${name}Control = new JTable();\n"
+                + "JScrollPane ${name} = new JScrollPane(${name}Control);";
+        String add = "${container}.add(${name}, \"${name}\");";
+        ComponentDef cd = new ComponentDef(name, imp, decl, add);
+        return cd;
+    }
 
 }

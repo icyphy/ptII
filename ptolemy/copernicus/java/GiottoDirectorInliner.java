@@ -112,8 +112,8 @@ public class GiottoDirectorInliner implements DirectorInliner {
                     .generateGiottoCode((TypedCompositeActor) model);
             FileWriter writer = null;
             try {
-                writer = new FileWriter(directory + "/"
-                        + model.getName() + ".giotto");
+                writer = new FileWriter(directory + "/" + model.getName()
+                        + ".giotto");
                 writer.write(giottoCode);
             } finally {
                 writer.close();

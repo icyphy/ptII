@@ -51,13 +51,11 @@ import com.jgoodies.forms.builder.ButtonBarBuilder;
  */
 
 public final class ButtonBarFactory {
-    
-    
+
     private ButtonBarFactory() {
         // Suppresses default constructor, ensuring non-instantiability.
     }
 
-	
     // General Purpose Factory Methods: Left Aligned ************************
 
     /**
@@ -67,12 +65,9 @@ public final class ButtonBarFactory {
      * @return a button bar with the given button
      */
     public static JPanel buildLeftAlignedBar(JButton button1) {
-        return buildLeftAlignedBar(new JButton[]{
-                button1
-        	});
+        return buildLeftAlignedBar(new JButton[] { button1 });
     }
-    
-    
+
     /**
      * Builds and returns a left aligned bar with two buttons.
      * 
@@ -80,15 +75,10 @@ public final class ButtonBarFactory {
      * @param button2  the second button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildLeftAlignedBar(
-            JButton button1, JButton button2) {
-        return buildLeftAlignedBar(new JButton[]{
-                button1, button2
-        	},
-        	true);
+    public static JPanel buildLeftAlignedBar(JButton button1, JButton button2) {
+        return buildLeftAlignedBar(new JButton[] { button1, button2 }, true);
     }
-    
-    
+
     /**
      * Builds and returns a left aligned bar with three buttons.
      * 
@@ -97,15 +87,12 @@ public final class ButtonBarFactory {
      * @param button3  the third button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildLeftAlignedBar(
-            JButton button1, JButton button2, JButton button3) {
-        return buildLeftAlignedBar(new JButton[]{
-                button1, button2, button3
-        	},
-        	true);
+    public static JPanel buildLeftAlignedBar(JButton button1, JButton button2,
+            JButton button3) {
+        return buildLeftAlignedBar(new JButton[] { button1, button2, button3 },
+                true);
     }
-    
-    
+
     /**
      * Builds and returns a left aligned bar with four buttons.
      * 
@@ -115,15 +102,12 @@ public final class ButtonBarFactory {
      * @param button4  the fourth button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildLeftAlignedBar(
-            JButton button1, JButton button2, JButton button3, JButton button4) {
-        return buildLeftAlignedBar(new JButton[]{
-                button1, button2, button3, button4
-        	},
-        	true);
+    public static JPanel buildLeftAlignedBar(JButton button1, JButton button2,
+            JButton button3, JButton button4) {
+        return buildLeftAlignedBar(new JButton[] { button1, button2, button3,
+                button4 }, true);
     }
-    
-    
+
     /**
      * Builds and returns a left aligned bar with five buttons.
      * 
@@ -134,16 +118,12 @@ public final class ButtonBarFactory {
      * @param button5  the fifth button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildLeftAlignedBar(
-            JButton button1, JButton button2, JButton button3, 
-            JButton button4, JButton button5) {
-        return buildLeftAlignedBar(new JButton[]{
-                button1, button2, button3, button4, button5
-        	},
-        	true);
-    }	
-    
-    
+    public static JPanel buildLeftAlignedBar(JButton button1, JButton button2,
+            JButton button3, JButton button4, JButton button5) {
+        return buildLeftAlignedBar(new JButton[] { button1, button2, button3,
+                button4, button5 }, true);
+    }
+
     /**
      * Builds and returns a left aligned button bar with the given buttons.
      * 
@@ -156,7 +136,6 @@ public final class ButtonBarFactory {
         builder.addGlue();
         return builder.getPanel();
     }
-    
 
     /**
      * Builds and returns a left aligned button bar with the given buttons.
@@ -165,16 +144,14 @@ public final class ButtonBarFactory {
      * @param leftToRightButtonOrder   the order in which the buttons to add
      * @return a left aligned button bar with the given buttons
      */
-    public static JPanel buildLeftAlignedBar(
-            JButton[] buttons,
-            boolean  leftToRightButtonOrder) {
+    public static JPanel buildLeftAlignedBar(JButton[] buttons,
+            boolean leftToRightButtonOrder) {
         ButtonBarBuilder builder = new ButtonBarBuilder();
         builder.setLeftToRightButtonOrder(leftToRightButtonOrder);
         builder.addGriddedButtons(buttons);
         builder.addGlue();
         return builder.getPanel();
     }
-    
 
     // General Purpose Factory Methods: Centered ****************************
 
@@ -185,12 +162,9 @@ public final class ButtonBarFactory {
      * @return a button bar with the given button
      */
     public static JPanel buildCenteredBar(JButton button1) {
-        return buildCenteredBar(new JButton[]{
-            button1
-        });
+        return buildCenteredBar(new JButton[] { button1 });
     }
-    
-    
+
     /**
      * Builds and returns a centered bar with two buttons.
      * 
@@ -198,14 +172,10 @@ public final class ButtonBarFactory {
      * @param button2  the second button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildCenteredBar(
-            JButton button1, JButton button2) {
-        return buildCenteredBar(new JButton[]{
-            button1, button2
-        });
+    public static JPanel buildCenteredBar(JButton button1, JButton button2) {
+        return buildCenteredBar(new JButton[] { button1, button2 });
     }
-    
-    
+
     /**
      * Builds and returns a centered bar with three buttons.
      * 
@@ -214,14 +184,11 @@ public final class ButtonBarFactory {
      * @param button3  the third button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildCenteredBar(
-            JButton button1, JButton button2, JButton button3) {
-        return buildCenteredBar(new JButton[]{
-            button1, button2, button3
-        });
+    public static JPanel buildCenteredBar(JButton button1, JButton button2,
+            JButton button3) {
+        return buildCenteredBar(new JButton[] { button1, button2, button3 });
     }
-    
-    
+
     /**
      * Builds and returns a centered bar with four buttons.
      * 
@@ -231,14 +198,12 @@ public final class ButtonBarFactory {
      * @param button4  the fourth button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildCenteredBar(
-            JButton button1, JButton button2, JButton button3, JButton button4) {
-        return buildCenteredBar(new JButton[]{
-            button1, button2, button3, button4
-        });
+    public static JPanel buildCenteredBar(JButton button1, JButton button2,
+            JButton button3, JButton button4) {
+        return buildCenteredBar(new JButton[] { button1, button2, button3,
+                button4 });
     }
-    
-    
+
     /**
      * Builds and returns a centered bar with five buttons.
      * 
@@ -249,15 +214,12 @@ public final class ButtonBarFactory {
      * @param button5  the fifth button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildCenteredBar(
-            JButton button1, JButton button2, JButton button3, 
-            JButton button4, JButton button5) {
-        return buildCenteredBar(new JButton[]{
-            button1, button2, button3, button4, button5
-        });
+    public static JPanel buildCenteredBar(JButton button1, JButton button2,
+            JButton button3, JButton button4, JButton button5) {
+        return buildCenteredBar(new JButton[] { button1, button2, button3,
+                button4, button5 });
     }
-    
-    
+
     /**
      * Builds and returns a centered button bar with the given buttons.
      * 
@@ -271,7 +233,6 @@ public final class ButtonBarFactory {
         builder.addGlue();
         return builder.getPanel();
     }
-    
 
     /**
      * Builds and returns a filled bar with one button.
@@ -280,12 +241,9 @@ public final class ButtonBarFactory {
      * @return a button bar with the given button
      */
     public static JPanel buildGrowingBar(JButton button1) {
-        return buildGrowingBar(new JButton[]{
-            button1
-        });
+        return buildGrowingBar(new JButton[] { button1 });
     }
-    
-    
+
     /**
      * Builds and returns a filled button bar with two buttons.
      * 
@@ -293,14 +251,10 @@ public final class ButtonBarFactory {
      * @param button2  the second button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildGrowingBar(
-            JButton button1, JButton button2) {
-        return buildGrowingBar(new JButton[]{
-            button1, button2
-        });
+    public static JPanel buildGrowingBar(JButton button1, JButton button2) {
+        return buildGrowingBar(new JButton[] { button1, button2 });
     }
-    
-    
+
     /**
      * Builds and returns a filled bar with three buttons.
      * 
@@ -309,14 +263,11 @@ public final class ButtonBarFactory {
      * @param button3  the third button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildGrowingBar(
-            JButton button1, JButton button2, JButton button3) {
-        return buildGrowingBar(new JButton[]{
-            button1, button2, button3
-        });
+    public static JPanel buildGrowingBar(JButton button1, JButton button2,
+            JButton button3) {
+        return buildGrowingBar(new JButton[] { button1, button2, button3 });
     }
-    
-    
+
     /**
      * Builds and returns a filled bar with four buttons.
      * 
@@ -326,14 +277,12 @@ public final class ButtonBarFactory {
      * @param button4  the fourth button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildGrowingBar(
-            JButton button1, JButton button2, JButton button3, JButton button4) {
-        return buildGrowingBar(new JButton[]{
-            button1, button2, button3, button4
-        });
+    public static JPanel buildGrowingBar(JButton button1, JButton button2,
+            JButton button3, JButton button4) {
+        return buildGrowingBar(new JButton[] { button1, button2, button3,
+                button4 });
     }
-    
-    
+
     /**
      * Builds and returns a filled bar with five buttons.
      * 
@@ -344,15 +293,12 @@ public final class ButtonBarFactory {
      * @param button5  the fifth button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildGrowingBar(
-            JButton button1, JButton button2, JButton button3, 
-            JButton button4, JButton button5) {
-        return buildGrowingBar(new JButton[]{
-            button1, button2, button3, button4, button5
-        });
+    public static JPanel buildGrowingBar(JButton button1, JButton button2,
+            JButton button3, JButton button4, JButton button5) {
+        return buildGrowingBar(new JButton[] { button1, button2, button3,
+                button4, button5 });
     }
-    
-    
+
     /**
      * Builds and returns a button bar with the given buttons. All button
      * columns will grow with the bar.
@@ -366,7 +312,6 @@ public final class ButtonBarFactory {
         return builder.getPanel();
     }
 
-
     // General Purpose Factory Methods: Right Aligned ***********************
 
     /**
@@ -376,12 +321,9 @@ public final class ButtonBarFactory {
      * @return a button bar with the given button
      */
     public static JPanel buildRightAlignedBar(JButton button1) {
-        return buildRightAlignedBar(new JButton[]{
-                button1
-        	});
+        return buildRightAlignedBar(new JButton[] { button1 });
     }
-    
-    
+
     /**
      * Builds and returns a right aligned bar with two buttons.
      * 
@@ -389,15 +331,10 @@ public final class ButtonBarFactory {
      * @param button2  the second button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildRightAlignedBar(
-            JButton button1, JButton button2) {
-        return buildRightAlignedBar(new JButton[]{
-                button1, button2
-        	}, 
-        	true);
+    public static JPanel buildRightAlignedBar(JButton button1, JButton button2) {
+        return buildRightAlignedBar(new JButton[] { button1, button2 }, true);
     }
-    
-    
+
     /**
      * Builds and returns a right aligned bar with three buttons.
      * 
@@ -406,15 +343,12 @@ public final class ButtonBarFactory {
      * @param button3  the third button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildRightAlignedBar(
-            JButton button1, JButton button2, JButton button3) {
-        return buildRightAlignedBar(new JButton[]{
-                button1, button2, button3
-        	}, 
-        	true);
+    public static JPanel buildRightAlignedBar(JButton button1, JButton button2,
+            JButton button3) {
+        return buildRightAlignedBar(
+                new JButton[] { button1, button2, button3 }, true);
     }
-    
-    
+
     /**
      * Builds and returns a right aligned bar with four buttons.
      * 
@@ -424,15 +358,12 @@ public final class ButtonBarFactory {
      * @param button4  the fourth button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildRightAlignedBar(
-            JButton button1, JButton button2, JButton button3, JButton button4) {
-        return buildRightAlignedBar(new JButton[]{
-                button1, button2, button3, button4
-        	}, 
-        	true);
+    public static JPanel buildRightAlignedBar(JButton button1, JButton button2,
+            JButton button3, JButton button4) {
+        return buildRightAlignedBar(new JButton[] { button1, button2, button3,
+                button4 }, true);
     }
-    
-    
+
     /**
      * Builds and returns a right aligned bar with five buttons.
      * 
@@ -443,16 +374,12 @@ public final class ButtonBarFactory {
      * @param button5  the fifth button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildRightAlignedBar(
-            JButton button1, JButton button2, JButton button3, 
-            JButton button4, JButton button5) {
-        return buildRightAlignedBar(new JButton[]{
-                button1, button2, button3, button4, button5
-        	}, 
-        	true);
+    public static JPanel buildRightAlignedBar(JButton button1, JButton button2,
+            JButton button3, JButton button4, JButton button5) {
+        return buildRightAlignedBar(new JButton[] { button1, button2, button3,
+                button4, button5 }, true);
     }
-    
-    
+
     /**
      * Builds and returns a right aligned button bar with the given buttons.
      * 
@@ -465,7 +392,6 @@ public final class ButtonBarFactory {
         builder.addGriddedButtons(buttons);
         return builder.getPanel();
     }
-    
 
     /**
      * Builds and returns a right aligned button bar with the given buttons.
@@ -474,19 +400,17 @@ public final class ButtonBarFactory {
      * @param leftToRightButtonOrder   the order in which the buttons to add
      * @return a right aligned button bar with the given buttons
      */
-    public static JPanel buildRightAlignedBar(
-             JButton[] buttons,
-             boolean leftToRightButtonOrder) {
+    public static JPanel buildRightAlignedBar(JButton[] buttons,
+            boolean leftToRightButtonOrder) {
         ButtonBarBuilder builder = new ButtonBarBuilder();
         builder.setLeftToRightButtonOrder(leftToRightButtonOrder);
         builder.addGlue();
         builder.addGriddedButtons(buttons);
         return builder.getPanel();
     }
-    
 
     // Right Aligned Button Bars with Help in the Left **********************    
-    
+
     /**
      * Builds and returns a right aligned bar with help and one button.
      * 
@@ -494,14 +418,10 @@ public final class ButtonBarFactory {
      * @param button1  the first button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildHelpBar(JButton help, 
-            JButton button1) {
-        return buildHelpBar(help, new JButton[]{
-            button1
-        });
+    public static JPanel buildHelpBar(JButton help, JButton button1) {
+        return buildHelpBar(help, new JButton[] { button1 });
     }
-    
-    
+
     /**
      * Builds and returns a right aligned bar with help and two buttons.
      * 
@@ -510,14 +430,11 @@ public final class ButtonBarFactory {
      * @param button2  the second button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildHelpBar(JButton help,
-            JButton button1, JButton button2) {
-        return buildHelpBar(help, new JButton[]{
-            button1, button2
-        });
+    public static JPanel buildHelpBar(JButton help, JButton button1,
+            JButton button2) {
+        return buildHelpBar(help, new JButton[] { button1, button2 });
     }
-    
-    
+
     /**
      * Builds and returns a right aligned bar with help and three buttons.
      * 
@@ -527,14 +444,11 @@ public final class ButtonBarFactory {
      * @param button3  the third button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildHelpBar(JButton help,
-            JButton button1, JButton button2, JButton button3) {
-        return buildHelpBar(help, new JButton[]{
-            button1, button2, button3
-        });
+    public static JPanel buildHelpBar(JButton help, JButton button1,
+            JButton button2, JButton button3) {
+        return buildHelpBar(help, new JButton[] { button1, button2, button3 });
     }
-    
-    
+
     /**
      * Builds and returns a right aligned bar with help and four buttons.
      * 
@@ -545,14 +459,12 @@ public final class ButtonBarFactory {
      * @param button4  the fourth button to add
      * @return a button bar with the given buttons
      */
-    public static JPanel buildHelpBar(JButton help,
-            JButton button1, JButton button2, JButton button3, JButton button4) {
-        return buildHelpBar(help, new JButton[]{
-            button1, button2, button3, button4
-        });
+    public static JPanel buildHelpBar(JButton help, JButton button1,
+            JButton button2, JButton button3, JButton button4) {
+        return buildHelpBar(help, new JButton[] { button1, button2, button3,
+                button4 });
     }
-    
-    
+
     /**
      * Builds and returns a right aligned bar with help and other buttons.
      * 
@@ -569,9 +481,8 @@ public final class ButtonBarFactory {
         return builder.getPanel();
     }
 
-
     // Popular Dialog Button Bars: No Help **********************************    
-	
+
     /**
      * Builds and returns a button bar with Close.
      * 
@@ -581,19 +492,17 @@ public final class ButtonBarFactory {
     public static JPanel buildCloseBar(JButton close) {
         return buildRightAlignedBar(close);
     }
-    
-    
-	/**
-	 * Builds and returns a button bar with OK.
+
+    /**
+     * Builds and returns a button bar with OK.
      * 
      * @param ok   	the OK button
      * @return a panel that contains the button(s)
-	 */
-	public static JPanel buildOKBar(JButton ok) {
+     */
+    public static JPanel buildOKBar(JButton ok) {
         return buildRightAlignedBar(ok);
     }
-	
-	
+
     /**
      * Builds and returns a button bar with OK and Cancel.
      * 
@@ -601,12 +510,10 @@ public final class ButtonBarFactory {
      * @param cancel	the Cancel button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildOKCancelBar(
-            JButton ok, JButton cancel) {
-        return buildRightAlignedBar(new JButton[] {ok, cancel});
+    public static JPanel buildOKCancelBar(JButton ok, JButton cancel) {
+        return buildRightAlignedBar(new JButton[] { ok, cancel });
     }
-    
-    
+
     /**
      * Builds and returns a button bar with OK, Cancel and Apply.
      * 
@@ -615,14 +522,13 @@ public final class ButtonBarFactory {
      * @param apply	the Apply button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildOKCancelApplyBar(
-            JButton ok, JButton cancel, JButton apply) {
-        return buildRightAlignedBar(new JButton[] {ok, cancel, apply});
+    public static JPanel buildOKCancelApplyBar(JButton ok, JButton cancel,
+            JButton apply) {
+        return buildRightAlignedBar(new JButton[] { ok, cancel, apply });
     }
-    
-    
+
     // Popular Dialog Button Bars: Help in the Left *************************    
-    
+
     /**
      * Builds and returns a button bar with 
      * Help and Close.
@@ -631,12 +537,10 @@ public final class ButtonBarFactory {
      * @param close    the Close button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildHelpCloseBar(
-            JButton help, JButton close) {
+    public static JPanel buildHelpCloseBar(JButton help, JButton close) {
         return buildHelpBar(help, close);
     }
-    
-    
+
     /**
      * Builds and returns a button bar with 
      * Help and OK.
@@ -645,12 +549,10 @@ public final class ButtonBarFactory {
      * @param ok	    the OK button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildHelpOKBar(
-            JButton help, JButton ok) {
+    public static JPanel buildHelpOKBar(JButton help, JButton ok) {
         return buildHelpBar(help, ok);
     }
-    
-    
+
     /**
      * Builds and returns a button bar with 
      * Help, OK and Cancel.
@@ -660,12 +562,11 @@ public final class ButtonBarFactory {
      * @param cancel	the Cancel button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildHelpOKCancelBar(
-            JButton help, JButton ok, JButton cancel) {
+    public static JPanel buildHelpOKCancelBar(JButton help, JButton ok,
+            JButton cancel) {
         return buildHelpBar(help, ok, cancel);
     }
-    
-    
+
     /**
      * Builds and returns a button bar with 
      * Help, OK, Cancel and Apply.
@@ -676,14 +577,13 @@ public final class ButtonBarFactory {
      * @param apply	the Apply button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildHelpOKCancelApplyBar(
-            JButton help, JButton ok, JButton cancel, JButton apply) {
+    public static JPanel buildHelpOKCancelApplyBar(JButton help, JButton ok,
+            JButton cancel, JButton apply) {
         return buildHelpBar(help, ok, cancel, apply);
     }
-    
-    
+
     // Popular Dialog Button Bars: Help in the Right Hand Side **************    
-    
+
     /**
      * Builds and returns a button bar with 
      * Close and Help.
@@ -692,12 +592,10 @@ public final class ButtonBarFactory {
      * @param help     the Help button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildCloseHelpBar(
-            JButton close, JButton help) {
-        return buildRightAlignedBar(new JButton[] {close, help});
+    public static JPanel buildCloseHelpBar(JButton close, JButton help) {
+        return buildRightAlignedBar(new JButton[] { close, help });
     }
-    
-    
+
     /**
      * Builds and returns a button bar with 
      * OK and Help.
@@ -706,12 +604,10 @@ public final class ButtonBarFactory {
      * @param help     the Help button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildOKHelpBar(
-            JButton ok, JButton help) {
-        return buildRightAlignedBar(new JButton[] {ok, help});
+    public static JPanel buildOKHelpBar(JButton ok, JButton help) {
+        return buildRightAlignedBar(new JButton[] { ok, help });
     }
-    
-    
+
     /**
      * Builds and returns a button bar with 
      * OK, Cancel, and Help.
@@ -721,12 +617,11 @@ public final class ButtonBarFactory {
      * @param help     the Help button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildOKCancelHelpBar(
-            JButton ok, JButton cancel, JButton help) {
-        return buildRightAlignedBar(new JButton[] {ok, cancel, help});
+    public static JPanel buildOKCancelHelpBar(JButton ok, JButton cancel,
+            JButton help) {
+        return buildRightAlignedBar(new JButton[] { ok, cancel, help });
     }
-    
-    
+
     /**
      * Builds and returns a button bar with 
      * OK, Cancel, Apply and Help.
@@ -737,14 +632,13 @@ public final class ButtonBarFactory {
      * @param help     the Help button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildOKCancelApplyHelpBar(
-            JButton ok, JButton cancel, JButton apply, JButton help) {
-        return buildRightAlignedBar(new JButton[] {ok, cancel, apply, help});
+    public static JPanel buildOKCancelApplyHelpBar(JButton ok, JButton cancel,
+            JButton apply, JButton help) {
+        return buildRightAlignedBar(new JButton[] { ok, cancel, apply, help });
     }
-    
-    
+
     // Add..., Remove *******************************************************
-        
+
     /**
      * Builds and returns a left aligned button bar with 
      * Add and Remove.
@@ -753,12 +647,10 @@ public final class ButtonBarFactory {
      * @param remove	the Remove button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildAddRemoveLeftBar(
-            JButton add, JButton remove) {
+    public static JPanel buildAddRemoveLeftBar(JButton add, JButton remove) {
         return buildLeftAlignedBar(add, remove);
     }
-    
-    
+
     /**
      * Builds and returns a filled button bar with Add and Remove.
      * 
@@ -766,12 +658,10 @@ public final class ButtonBarFactory {
      * @param remove    the Remove button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildAddRemoveBar(
-            JButton add, JButton remove) {
+    public static JPanel buildAddRemoveBar(JButton add, JButton remove) {
         return buildGrowingBar(add, remove);
     }
-    
-    
+
     /**
      * Builds and returns a right aligned button bar with 
      * Add and Remove.
@@ -780,14 +670,12 @@ public final class ButtonBarFactory {
      * @param remove    the Remove button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildAddRemoveRightBar(
-            JButton add, JButton remove) {
+    public static JPanel buildAddRemoveRightBar(JButton add, JButton remove) {
         return buildRightAlignedBar(add, remove);
     }
-    
 
     // Add..., Remove, Properties... ****************************************
-        
+
     /**
      * Builds and returns a left aligned button bar with 
      * Add, Remove, and Properties.
@@ -797,12 +685,11 @@ public final class ButtonBarFactory {
      * @param properties	the Properties button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildAddRemovePropertiesLeftBar(
-            JButton add, JButton remove, JButton properties) {
+    public static JPanel buildAddRemovePropertiesLeftBar(JButton add,
+            JButton remove, JButton properties) {
         return buildLeftAlignedBar(add, remove, properties);
     }
-    
-    
+
     /**
      * Builds and returns a filled button bar with Add, Remove, and
      * Properties.
@@ -812,8 +699,8 @@ public final class ButtonBarFactory {
      * @param properties    the Properties button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildAddRemovePropertiesBar(
-            JButton add, JButton remove, JButton properties) {
+    public static JPanel buildAddRemovePropertiesBar(JButton add,
+            JButton remove, JButton properties) {
         ButtonBarBuilder builder = new ButtonBarBuilder();
         builder.addGriddedGrowing(add);
         builder.addRelatedGap();
@@ -822,8 +709,7 @@ public final class ButtonBarFactory {
         builder.addGriddedGrowing(properties);
         return builder.getPanel();
     }
-    
-    
+
     /**
      * Builds and returns a right aligned button bar with 
      * Add, Remove, and Properties.
@@ -833,14 +719,13 @@ public final class ButtonBarFactory {
      * @param properties    the Properties button
      * @return a panel that contains the button(s)
      */
-    public static JPanel buildAddRemovePropertiesRightBar(
-            JButton add, JButton remove, JButton properties) {
+    public static JPanel buildAddRemovePropertiesRightBar(JButton add,
+            JButton remove, JButton properties) {
         return buildRightAlignedBar(add, remove, properties);
     }
-    
-    
+
     // Wizard Bars **********************************************************
-    
+
     /**
      * Builds and returns a wizard button bar with:
      * Back, Next, Finish, Cancel.
@@ -851,12 +736,11 @@ public final class ButtonBarFactory {
      * @param cancel	the Cancel button
      * @return a wizard button bar for back, next, finish, cancel
      */
-    public static JPanel buildWizardBar(
-            JButton back, JButton next, JButton finish, JButton cancel) {
-        return buildWizardBar(back, next, new JButton[]{finish, cancel});
+    public static JPanel buildWizardBar(JButton back, JButton next,
+            JButton finish, JButton cancel) {
+        return buildWizardBar(back, next, new JButton[] { finish, cancel });
     }
-    
-    
+
     /**
      * Builds and returns a wizard button bar with: 
      * Help and Back, Next, Finish, Cancel.
@@ -868,14 +752,12 @@ public final class ButtonBarFactory {
      * @param cancel    the Cancel button
      * @return a wizard button bar for help, back, next, finish, cancel
      */
-    public static JPanel buildWizardBar(
-            JButton help, JButton back, JButton next, JButton finish, JButton cancel) {
-        return buildWizardBar(new JButton[]{help},
-                               back, next, 
-                               new JButton[]{finish, cancel});
+    public static JPanel buildWizardBar(JButton help, JButton back,
+            JButton next, JButton finish, JButton cancel) {
+        return buildWizardBar(new JButton[] { help }, back, next,
+                new JButton[] { finish, cancel });
     }
-    
-    
+
     /**
      * Builds and returns a wizard button bar that consists of the back and
      * next buttons, and some right aligned buttons.
@@ -887,11 +769,10 @@ public final class ButtonBarFactory {
      * @return a wizard button bar with back, next and a bunch of buttons
      */
     public static JPanel buildWizardBar(JButton back, JButton next,
-                                         JButton[] rightAlignedButtons) {
+            JButton[] rightAlignedButtons) {
         return buildWizardBar(null, back, next, rightAlignedButtons);
     }
-    
-    
+
     /**
      * Builds and returns a wizard button bar. It consists of some left
      * aligned buttons, the back and next buttons, and some right aligned
@@ -906,14 +787,11 @@ public final class ButtonBarFactory {
      * @return a wizard button bar with back, next and a bunch of buttons
      */
     public static JPanel buildWizardBar(JButton[] leftAlignedButtons,
-                                         JButton back, JButton next,
-                                         JButton[] rightAlignedButtons) {
-        return buildWizardBar(leftAlignedButtons, 
-                               back, next, null, 
-                               rightAlignedButtons);
+            JButton back, JButton next, JButton[] rightAlignedButtons) {
+        return buildWizardBar(leftAlignedButtons, back, next, null,
+                rightAlignedButtons);
     }
-    
-    
+
     /**
      * Builds and returns a wizard button bar. It consists of some left
      * aligned buttons, the back, next group, and some right aligned buttons.
@@ -930,33 +808,30 @@ public final class ButtonBarFactory {
      * @return a wizard button bar with back, next and a bunch of buttons
      */
     public static JPanel buildWizardBar(JButton[] leftAlignedButtons,
-                                         JButton back, 
-                                         JButton next, 
-                                         JButton overlayedFinish,
-                                         JButton[] rightAlignedButtons) {
-                                            
+            JButton back, JButton next, JButton overlayedFinish,
+            JButton[] rightAlignedButtons) {
+
         ButtonBarBuilder builder = new ButtonBarBuilder();
         if (leftAlignedButtons != null) {
             builder.addGriddedButtons(leftAlignedButtons);
             builder.addRelatedGap();
-        } 
+        }
         builder.addGlue();
         builder.addGridded(back);
         builder.addGridded(next);
-        
+
         // Optionally overlay the finish and next button.
         if (overlayedFinish != null) {
             builder.nextColumn(-1);
             builder.add(overlayedFinish);
             builder.nextColumn();
         }
-        
+
         if (rightAlignedButtons != null) {
             builder.addRelatedGap();
             builder.addGriddedButtons(rightAlignedButtons);
-        } 
+        }
         return builder.getPanel();
     }
-    
-	
+
 }

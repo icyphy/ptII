@@ -52,7 +52,7 @@ import java.util.List;
  */
 
 public interface Size {
-    
+
     /**
      * Computes and returns my maximum size applied to the given list of
      * components using the specified measures.<p>
@@ -68,10 +68,8 @@ public interface Size {
      * @param defaultMeasure  the measure that determines the default sizes
      * @return the maximum size in pixels for the given list of components
      */
-    int maximumSize(Container container,
-                    List components, 
-                    FormLayout.Measure minMeasure,
-                    FormLayout.Measure prefMeasure,
-                    FormLayout.Measure defaultMeasure);
-    
+    int maximumSize(Container container, List components,
+            FormLayout.Measure minMeasure, FormLayout.Measure prefMeasure,
+            FormLayout.Measure defaultMeasure);
+
 }

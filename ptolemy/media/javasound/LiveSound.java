@@ -402,7 +402,8 @@ public class LiveSound {
         }
 
         // Real-time capture.
-        int numBytesRead = _targetLine.read(_captureData, 0, _captureData.length);
+        int numBytesRead = _targetLine.read(_captureData, 0,
+                _captureData.length);
 
         // Check if we need to reallocate.
         if ((_channels != _audioInDoubleArray.length)
@@ -916,7 +917,8 @@ public class LiveSound {
             // For each channel,
             for (int currChannel = 0; currChannel < _channels; currChannel++) {
                 // Starting index of relevant bytes.
-                int j = (currSamp * _bytesPerSample * _channels) + (_bytesPerSample * currChannel);
+                int j = (currSamp * _bytesPerSample * _channels)
+                        + (_bytesPerSample * currChannel);
                 // Note: preserve sign of high order bits.
                 int result = byteArray[j++];
 
@@ -1115,8 +1117,9 @@ public class LiveSound {
         try {
             // Source DataLine is really a target for
             // audio data, not a source.
-            _sourceLine = (SourceDataLine) AudioSystem.getSourceDataLine(format);
-            
+            _sourceLine = (SourceDataLine) AudioSystem
+                    .getSourceDataLine(format);
+
             // Open line and suggest a buffer size (in bytes) to use or
             // the internal audio buffer.
             _sourceLine.open(format, _bufferSize * _bytesPerSample * _channels);
@@ -1160,7 +1163,7 @@ public class LiveSound {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Array of audio samples in double format. */
     private static double[][] _audioInDoubleArray;
 
@@ -1186,10 +1189,10 @@ public class LiveSound {
     private static byte[] _playbackData;
 
     private static List _liveSoundListeners = new LinkedList();
-    
+
     // Cashed value of the maximum value scaling factor, default for 16 bits.
     private static double _maxSampleReciprocal = 1.0 / 32768;
-    
+
     // Cashed value of the maximum integer value, default for 16 bits.
     private static double _maxSample = 32767;
 

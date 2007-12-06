@@ -423,7 +423,7 @@ public class IterateOverArray extends MirrorComposite {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     ///////////////////////////////////////////////////////////////////
     //// IterateComposite
 
@@ -433,7 +433,8 @@ public class IterateOverArray extends MirrorComposite {
      *  in the container.  That addition will result in appropriate
      *  connections being made.
      */
-    public static class IterateComposite extends MirrorComposite.MirrorCompositeContents {
+    public static class IterateComposite extends
+            MirrorComposite.MirrorCompositeContents {
         // NOTE: This has to be a static class so that MoML can
         // instantiate it.
 

@@ -58,20 +58,19 @@ public class ASTPtLeafNode extends PropertyConstraintASTNodeHelper {
      * @throws IllegalActionException Thrown if the parent construct
      *  throws it.
      */
-    public ASTPtLeafNode(PropertyConstraintSolver solver, 
-        ptolemy.data.expr.ASTPtLeafNode node) 
-            throws IllegalActionException {
+    public ASTPtLeafNode(PropertyConstraintSolver solver,
+            ptolemy.data.expr.ASTPtLeafNode node) throws IllegalActionException {
 
         super(solver, node, false);
 
         Lattice lattice = (Lattice) solver.getLattice();
 
         String name = node.getName();
-        
+
         if (name != null) {
             if (_variables.contains(name)) {
                 setEquals(node, lattice.DYNAMIC);
-                
+
             } else if (Constants.get(name) != null) {
                 setEquals(node, lattice.STATIC);
             }
@@ -80,12 +79,10 @@ public class ASTPtLeafNode extends PropertyConstraintASTNodeHelper {
             setEquals(node, lattice.STATIC);
         }
     }
-    
-    
+
     /** The of names of the expression variables that are non-static.
      */
-    private static List _variables = Arrays.asList( 
-            new String[]{ "time", "iteration"
-    });        
-    
+    private static List _variables = Arrays.asList(new String[] { "time",
+            "iteration" });
+
 }

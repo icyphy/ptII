@@ -110,10 +110,11 @@ public class NameParameter extends StringParameter {
                     container.setName(this.stringValue());
                 }
             } catch (NameDuplicationException ex) {
-                throw new IllegalActionException(this, ex, "Could not set name of container.");
+                throw new IllegalActionException(this, ex,
+                        "Could not set name of container.");
             }
         }
         return result;
     }
-        
+
 }

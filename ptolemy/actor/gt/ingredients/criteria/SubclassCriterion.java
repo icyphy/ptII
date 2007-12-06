@@ -129,8 +129,8 @@ public class SubclassCriterion extends Criterion {
         try {
             superclass = Class.forName(_superclass);
         } catch (Throwable t) {
-            throw new ValidationException("Cannot load class \""
-                    + _superclass + "\".", t);
+            throw new ValidationException("Cannot load class \"" + _superclass
+                    + "\".", t);
         }
 
         try {
@@ -141,9 +141,8 @@ public class SubclassCriterion extends Criterion {
         }
     }
 
-    private static final CriterionElement[] _ELEMENTS = {
-        new StringCriterionElement("superclass")
-    };
+    private static final CriterionElement[] _ELEMENTS = { new StringCriterionElement(
+            "superclass") };
 
     private String _superclass;
 }

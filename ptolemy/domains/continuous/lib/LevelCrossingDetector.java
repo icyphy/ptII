@@ -262,11 +262,10 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
                 hasEvent = true;
             }
         }
-        
+
         if (hasEvent) {
             // Emit an event.
-            if (((BooleanToken) useDefaultEventValue.getToken())
-                    .booleanValue()) {
+            if (((BooleanToken) useDefaultEventValue.getToken()).booleanValue()) {
                 output.send(0, defaultEventValue.getToken());
                 if (_debugging) {
                     _debug("Emitting an event with a default value: "
@@ -275,11 +274,10 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
             } else {
                 output.send(0, new DoubleToken(_level));
                 if (_debugging) {
-                    _debug("Emitting an event with the level value: "
-                            + _level);
+                    _debug("Emitting an event with the level value: " + _level);
                 }
             }
-            
+
             // Event has been emitted. Clear the internal states.
             _eventNow = false;
             _eventMissed = false;
@@ -389,8 +387,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
      */
     public void preinitialize() throws IllegalActionException {
         if (!(getDirector() instanceof ContinuousDirector)) {
-            throw new IllegalActionException(
-                    "LevelCrossingDetector can only"
+            throw new IllegalActionException("LevelCrossingDetector can only"
                     + " be used inside Continuous domain.");
         }
 
@@ -410,8 +407,8 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
             // NOTE: we always to get a little overshoot to make sure the
             // level crossing happens. The little overshoot chosen here
             // is half of the error toelrance.
-            refinedStep = ((Math.abs(_lastTrigger - _level) 
-                    + (_errorTolerance / 2)) * dir.getCurrentStepSize())
+            refinedStep = ((Math.abs(_lastTrigger - _level) + (_errorTolerance / 2)) * dir
+                    .getCurrentStepSize())
                     / Math.abs(_thisTrigger - _lastTrigger);
 
             if (_debugging) {

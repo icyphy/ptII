@@ -64,7 +64,7 @@ public class TokenGotEvent {
         _tokenArray = tokens;
         _token = null;
         _vectorLength = vectorLength;
-	_outside = outside;
+        _outside = outside;
     }
 
     /** Create a new token got event with the given parameters.  This
@@ -76,14 +76,13 @@ public class TokenGotEvent {
      *  false otherwise.
      */
 
-    public TokenGotEvent(IOPort sink, int channel, Token token,
-			 boolean outside) {
+    public TokenGotEvent(IOPort sink, int channel, Token token, boolean outside) {
         _port = sink;
         _channel = channel;
         _tokenArray = null;
         _token = token;
         _vectorLength = -1;
-	_outside = outside;
+        _outside = outside;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -152,7 +151,7 @@ public class TokenGotEvent {
         } else {
             buffer.append(_token.toString());
         }
-	buffer.append(" on channel " + _channel + ".");
+        buffer.append(" on channel " + _channel + ".");
 
         return buffer.toString();
     }

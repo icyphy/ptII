@@ -119,8 +119,8 @@ public class GraphMatcher extends GraphAnalyzer {
      *  @exception Exception If the rule file or the model file cannot be read.
      */
     public static void main(String[] args) throws Exception {
-        if (!(args.length == 2 ||
-                (args.length == 3 && args[0].equalsIgnoreCase("-A")))) {
+        if (!(args.length == 2 || (args.length == 3 && args[0]
+                .equalsIgnoreCase("-A")))) {
             System.err.println("USAGE: java [-A] "
                     + GraphMatcher.class.getName() + " <rule.xml> <host.xml>");
             System.exit(1);
@@ -198,7 +198,7 @@ public class GraphMatcher extends GraphAnalyzer {
      *  @see #match(String, String, MatchCallback)
      */
     public static GraphMatcher match(String ruleXMLFile, String hostXMLFile)
-    throws Exception {
+            throws Exception {
         return match(ruleXMLFile, hostXMLFile, null);
     }
 
@@ -227,11 +227,11 @@ public class GraphMatcher extends GraphAnalyzer {
     public static GraphMatcher match(String ruleXMLFile, String hostXMLFile,
             MatchCallback callback) throws Exception {
         MoMLParser parser = new MoMLParser();
-        TransformationRule rule = (TransformationRule)
-                parser.parse(null, new File(ruleXMLFile).toURI().toURL());
+        TransformationRule rule = (TransformationRule) parser.parse(null,
+                new File(ruleXMLFile).toURI().toURL());
         parser.reset();
-        CompositeEntity host = (CompositeEntity)
-            parser.parse(null, new File(hostXMLFile).toURI().toURL());
+        CompositeEntity host = (CompositeEntity) parser.parse(null, new File(
+                hostXMLFile).toURI().toURL());
 
         GraphMatcher matcher = new GraphMatcher();
         if (callback != null) {
@@ -289,9 +289,9 @@ public class GraphMatcher extends GraphAnalyzer {
         } else {
             NamedObj container = entity.getContainer();
             Token value = _getAttribute(container, "HierarchyFlattening",
-                        HierarchyFlatteningAttribute.class);
-            boolean isOpaque = value == null ?
-                    true : !((BooleanToken) value).booleanValue();
+                    HierarchyFlatteningAttribute.class);
+            boolean isOpaque = value == null ? true : !((BooleanToken) value)
+                    .booleanValue();
             return isOpaque;
         }
     }
@@ -339,8 +339,8 @@ public class GraphMatcher extends GraphAnalyzer {
             return false;
         }
 
-        Iterator<Map.Entry<Object, Object>> iterator =
-            _match.entrySet().iterator();
+        Iterator<Map.Entry<Object, Object>> iterator = _match.entrySet()
+                .iterator();
         Map.Entry<Object, Object> anyEntry = null;
         while (iterator.hasNext()) {
             anyEntry = iterator.next();
@@ -355,8 +355,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
         NamedObj patternObject = (NamedObj) anyEntry.getKey();
         NamedObj patternContainer = patternObject.getContainer();
-        while (patternContainer != null
-                && _match.containsKey(patternContainer)) {
+        while (patternContainer != null && _match.containsKey(patternContainer)) {
             patternObject = patternContainer;
             patternContainer = patternContainer.getContainer();
         }
@@ -388,8 +387,8 @@ public class GraphMatcher extends GraphAnalyzer {
             }
             Attribute attribute = container.getAttribute(name);
             if (attribute != null && attributeClass.isInstance(attribute)) {
-                Parameter parameter =
-                    (Parameter) attribute.attributeList().get(0);
+                Parameter parameter = (Parameter) attribute.attributeList()
+                        .get(0);
                 try {
                     return parameter == null ? null : parameter.getToken();
                 } catch (IllegalActionException e) {
@@ -419,8 +418,8 @@ public class GraphMatcher extends GraphAnalyzer {
         NamedObj container = port.getContainer();
         if (container instanceof AtomicActorMatcher) {
             try {
-                GTIngredientList ruleList = ((AtomicActorMatcher) container)
-                        .criteria.getIngredientList();
+                GTIngredientList ruleList = ((AtomicActorMatcher) container).criteria
+                        .getIngredientList();
                 String portID = port.getName();
                 for (GTIngredient rule : ruleList) {
                     if (rule instanceof PortCriterion) {
@@ -459,8 +458,7 @@ public class GraphMatcher extends GraphAnalyzer {
                 for (GTIngredient rule : ruleList) {
                     if (rule instanceof AttributeCriterion
                             || rule instanceof SubclassCriterion) {
-                        success = ((Criterion) rule).match(hostActor) ==
-                            NamedObjMatchResult.MATCH;
+                        success = ((Criterion) rule).match(hostActor) == NamedObjMatchResult.MATCH;
                         if (!success) {
                             break;
                         }
@@ -485,8 +483,8 @@ public class GraphMatcher extends GraphAnalyzer {
         return success;
     }
 
-    private boolean _matchChildrenCompositeEntity(CompositeEntity patternEntity,
-            CompositeEntity hostEntity) {
+    private boolean _matchChildrenCompositeEntity(
+            CompositeEntity patternEntity, CompositeEntity hostEntity) {
         ObjectList patternList = new ObjectList();
         patternList.add(patternEntity);
         ObjectList hostList = new ObjectList();
@@ -510,8 +508,8 @@ public class GraphMatcher extends GraphAnalyzer {
                         hostList.add(nextActor);
                         added = true;
                     }
-                    nextActor = findNextChild(hostEntity, markedList,
-                            _match.keySet());
+                    nextActor = findNextChild(hostEntity, markedList, _match
+                            .keySet());
                 }
                 entry = entry.getNext();
             }
@@ -555,8 +553,8 @@ public class GraphMatcher extends GraphAnalyzer {
             }
 
             IndexedLists hostMarkedList = new IndexedLists();
-            NamedObj hostNextActor = findFirstChild(hostEntity,
-                    hostMarkedList, _match.values());
+            NamedObj hostNextActor = findFirstChild(hostEntity, hostMarkedList,
+                    _match.values());
             ObjectList hostList = new ObjectList();
             while (hostNextActor != null) {
                 hostList.add(hostNextActor);
@@ -648,9 +646,9 @@ public class GraphMatcher extends GraphAnalyzer {
                     (CompositeEntity) hostObject);
 
         } else if (patternObject instanceof ComponentEntity
-                    && hostObject instanceof ComponentEntity) {
-                return _matchAtomicEntity((ComponentEntity) patternObject,
-                        (ComponentEntity) hostObject);
+                && hostObject instanceof ComponentEntity) {
+            return _matchAtomicEntity((ComponentEntity) patternObject,
+                    (ComponentEntity) hostObject);
 
         } else if (patternObject instanceof ObjectList
                 && hostObject instanceof ObjectList) {
@@ -658,8 +656,7 @@ public class GraphMatcher extends GraphAnalyzer {
                     (ObjectList) patternObject, (ObjectList) hostObject);
             return _matchList(matchedObjectLists);
 
-        } else if (patternObject instanceof Path
-                && hostObject instanceof Path) {
+        } else if (patternObject instanceof Path && hostObject instanceof Path) {
             return _matchPath((Path) patternObject, (Path) hostObject);
 
         } else if (patternObject instanceof Port && hostObject instanceof Port) {
@@ -719,7 +716,7 @@ public class GraphMatcher extends GraphAnalyzer {
                 success = false;
             } else {
                 Object hostMatch = _match.getKey(hostContainer);
-                if (hostMatch != null  && hostMatch != patternContainer) {
+                if (hostMatch != null && hostMatch != patternContainer) {
                     success = false;
                 }
             }
@@ -731,12 +728,11 @@ public class GraphMatcher extends GraphAnalyzer {
             ObjectList hostList = new ObjectList();
             hostList.add(hostContainer);
 
-            Token collapsingToken =
-                _getAttribute(patternContainer.getContainer(),
-                        "RelationCollapsing",
-                        RelationCollapsingAttribute.class);
-            boolean collapsing = collapsingToken == null ?
-                    false : ((BooleanToken) collapsingToken).booleanValue();
+            Token collapsingToken = _getAttribute(patternContainer
+                    .getContainer(), "RelationCollapsing",
+                    RelationCollapsingAttribute.class);
+            boolean collapsing = collapsingToken == null ? false
+                    : ((BooleanToken) collapsingToken).booleanValue();
 
             if (collapsing) {
                 _temporaryMatch.put(patternContainer, hostContainer);
@@ -759,19 +755,19 @@ public class GraphMatcher extends GraphAnalyzer {
                         visitedPorts);
                 while (foundPath) {
                     hostList.add(hostPath.clone());
-                    foundPath =
-                        findNextPath(hostPath, visitedRelations, visitedPorts);
+                    foundPath = findNextPath(hostPath, visitedRelations,
+                            visitedPorts);
                 }
 
                 _temporaryMatch.remove(patternContainer);
             } else {
-                for (Object relationObject: patternPort.linkedRelationList()) {
+                for (Object relationObject : patternPort.linkedRelationList()) {
                     Relation relation = (Relation) relationObject;
                     if (!_ignoreRelation(relation)) {
                         patternList.add(relation);
                     }
                 }
-                for (Object relationObject: hostPort.linkedRelationList()) {
+                for (Object relationObject : hostPort.linkedRelationList()) {
                     Relation relation = (Relation) relationObject;
                     if (!_ignoreRelation(relation)) {
                         hostList.add(relation);
@@ -803,8 +799,8 @@ public class GraphMatcher extends GraphAnalyzer {
 
         if (success) {
             ObjectList patternList = new ObjectList();
-            patternList.addAll(
-                    (Collection<?>) patternRelation.linkedObjectsList());
+            patternList.addAll((Collection<?>) patternRelation
+                    .linkedObjectsList());
 
             ObjectList hostList = new ObjectList();
             hostList.addAll((Collection<?>) hostRelation.linkedObjectsList());
@@ -824,8 +820,8 @@ public class GraphMatcher extends GraphAnalyzer {
         Collections.sort(keyList, _comparator);
         for (Object patternObject : keyList) {
             if (patternObject instanceof NamedObj) {
-                System.out.println(_getNameString(patternObject) + " : " +
-                        _getNameString(match.get(patternObject)));
+                System.out.println(_getNameString(patternObject) + " : "
+                        + _getNameString(match.get(patternObject)));
             }
         }
     }
@@ -843,8 +839,8 @@ public class GraphMatcher extends GraphAnalyzer {
 
         _match.put(patternDirector, hostDirector);
 
-        boolean success =
-            patternDirector.getClass().equals(hostDirector.getClass());
+        boolean success = patternDirector.getClass().equals(
+                hostDirector.getClass());
 
         if (!success) {
             _match.retain(matchSize);
@@ -872,27 +868,26 @@ public class GraphMatcher extends GraphAnalyzer {
                 IOPort hostIOPort = (IOPort) hostPort;
                 PortCriterion portRule = _getPortRule(patternIOPort);
                 if (portRule == null) {
-                    boolean isInputEqual =
-                        patternIOPort.isInput() == hostIOPort.isInput();
+                    boolean isInputEqual = patternIOPort.isInput() == hostIOPort
+                            .isInput();
 
-                    boolean isOutputEqual =
-                        patternIOPort.isOutput() == hostIOPort.isOutput();
+                    boolean isOutputEqual = patternIOPort.isOutput() == hostIOPort
+                            .isOutput();
 
-                    boolean isMultiportEqual = patternIOPort.isMultiport()
-                            == hostIOPort.isMultiport();
+                    boolean isMultiportEqual = patternIOPort.isMultiport() == hostIOPort
+                            .isMultiport();
 
-                    boolean isNameEqual =
-                        patternIOPort.getName().equals(hostIOPort.getName());
+                    boolean isNameEqual = patternIOPort.getName().equals(
+                            hostIOPort.getName());
 
                     boolean isTypeCompatible = true;
                     if (patternIOPort instanceof TypedIOPort) {
                         if (hostIOPort instanceof TypedIOPort) {
-                            Type patternType =
-                                ((TypedIOPort) patternIOPort).getType();
-                            Type hostType =
-                                ((TypedIOPort) hostIOPort).getType();
-                            if (patternIOPort.isInput()
-                                    && hostIOPort.isInput()) {
+                            Type patternType = ((TypedIOPort) patternIOPort)
+                                    .getType();
+                            Type hostType = ((TypedIOPort) hostIOPort)
+                                    .getType();
+                            if (patternIOPort.isInput() && hostIOPort.isInput()) {
                                 isTypeCompatible = isTypeCompatible
                                         && hostType.isCompatible(patternType);
                             }
@@ -909,8 +904,7 @@ public class GraphMatcher extends GraphAnalyzer {
                     return isInputEqual && isOutputEqual && isMultiportEqual
                             && isNameEqual && isTypeCompatible;
                 } else {
-                    return portRule.match(hostIOPort) ==
-                        NamedObjMatchResult.MATCH;
+                    return portRule.match(hostIOPort) == NamedObjMatchResult.MATCH;
                 }
             } else {
                 return false;
@@ -950,8 +944,8 @@ public class GraphMatcher extends GraphAnalyzer {
     ///////////////////////////////////////////////////////////////////
     ////                      private inner classes                ////
 
-    private static class LookbackEntry
-    extends Pair<Pair<ObjectList, ObjectList>, Boolean> {
+    private static class LookbackEntry extends
+            Pair<Pair<ObjectList, ObjectList>, Boolean> {
 
         public ObjectList getHostList() {
             return getFirst().getSecond();

@@ -459,9 +459,10 @@ public class FixPoint implements Cloneable, Serializable {
     public boolean equals(Object arg) {
         if (arg instanceof FixPoint) {
             int exponentBits = Math.min(_precision.getExponent(),
-                    ((FixPoint)arg)._precision.getExponent());
+                    ((FixPoint) arg)._precision.getExponent());
             BigInteger thisValue = _alignToExponent(exponentBits);
-            BigInteger thatValue = ((FixPoint)arg)._alignToExponent(exponentBits);
+            BigInteger thatValue = ((FixPoint) arg)
+                    ._alignToExponent(exponentBits);
             return thisValue.equals(thatValue);
         }
         return false;

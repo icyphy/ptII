@@ -71,7 +71,7 @@ public class Constraint extends ParameterAttribute {
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             _checkContainerClass(container, Pattern.class, false);
@@ -79,7 +79,7 @@ public class Constraint extends ParameterAttribute {
     }
 
     protected void _initParameter() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         parameter = new GTParameter(this, "constraint");
         parameter.setTypeEquals(BaseType.BOOLEAN);
     }

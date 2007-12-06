@@ -156,8 +156,7 @@ public class HybridModalDirector extends ModalDirector implements
                     break;
                 }
                 if (_debugging) {
-                    _debug(
-                            "Fire the refinement of the current state: ",
+                    _debug("Fire the refinement of the current state: ",
                             actors[i].getFullName());
                 }
                 actors[i].fire();
@@ -190,7 +189,7 @@ public class HybridModalDirector extends ModalDirector implements
                 return;
             }
         }
-        
+
         // See whether there is an enabled transition.
         tr = controller.chooseTransition(st.nonpreemptiveTransitionList());
         _enabledTransition = tr;
@@ -562,7 +561,7 @@ public class HybridModalDirector extends ModalDirector implements
                 }
             }
         }
-        
+
         boolean result = true;
         // if any actor is not ready to fire, stop prefiring the 
         // remaining actors, call super.prefire(), and return false;
@@ -574,8 +573,7 @@ public class HybridModalDirector extends ModalDirector implements
                     break;
                 }
                 if (_debugging) {
-                    _debug(
-                            "Prefire the refinement of the current state: ",
+                    _debug("Prefire the refinement of the current state: ",
                             actors[i].getFullName());
                 }
                 if (!actors[i].prefire()) {

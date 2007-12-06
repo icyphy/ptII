@@ -50,7 +50,7 @@ public class StaticALU extends CCodeGeneratorHelper {
     public StaticALU(ptolemy.actor.lib.tutorial.StaticALU actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Accumulator.c,
@@ -63,39 +63,38 @@ public class StaticALU extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
 
         StringBuffer code = new StringBuffer();
-        
+
         code.append(super.generateFireCode());
 
         /* Add code here */
-        ptolemy.actor.lib.tutorial.StaticALU actor =
-            (ptolemy.actor.lib.tutorial.StaticALU) getComponent();
-                 
-         int opcode = Integer.parseInt(
-                actor.operation.getExpression().substring(0, 1));
-                 
-         if (opcode == 0) {        
-             code.append(_generateBlockCode("nopBlock"));
+        ptolemy.actor.lib.tutorial.StaticALU actor = (ptolemy.actor.lib.tutorial.StaticALU) getComponent();
 
-         } else {
-             ArrayList args = new ArrayList();
-                 
-             switch (opcode) {
-                 case 1:
-                     args.add("+");
-                     break;
-                 case 2:
-                     args.add("-");
-                     break;
-                 case 3:
-                     args.add("*");
-                     break;
-                 case 4:
-                     args.add("/");
-                     break;
-             }
-             code.append(_generateBlockCode("operationBlock", args));            
-         }
-        
+        int opcode = Integer.parseInt(actor.operation.getExpression()
+                .substring(0, 1));
+
+        if (opcode == 0) {
+            code.append(_generateBlockCode("nopBlock"));
+
+        } else {
+            ArrayList args = new ArrayList();
+
+            switch (opcode) {
+            case 1:
+                args.add("+");
+                break;
+            case 2:
+                args.add("-");
+                break;
+            case 3:
+                args.add("*");
+                break;
+            case 4:
+                args.add("/");
+                break;
+            }
+            code.append(_generateBlockCode("operationBlock", args));
+        }
+
         return processCode(code.toString());
     }
 }

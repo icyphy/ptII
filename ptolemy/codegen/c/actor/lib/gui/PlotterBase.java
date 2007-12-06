@@ -101,8 +101,7 @@ public class PlotterBase extends CCodeGeneratorHelper {
         code.append(_generateBlockCode("createJVMBlock", args));
 
         code.append(super.generateInitializeCode());
-        ptolemy.actor.lib.gui.PlotterBase actor 
-                = (ptolemy.actor.lib.gui.PlotterBase) getComponent();
+        ptolemy.actor.lib.gui.PlotterBase actor = (ptolemy.actor.lib.gui.PlotterBase) getComponent();
 
         // If the plot has not been created, we need to creat the plot
         // to get the configuration.
@@ -128,8 +127,8 @@ public class PlotterBase extends CCodeGeneratorHelper {
         StringBuffer result = new StringBuffer();
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new StringReader(
-                                                stringWriter.toString()));
+            reader = new BufferedReader(new StringReader(stringWriter
+                    .toString()));
             String line = null;
 
             try {
@@ -171,7 +170,8 @@ public class PlotterBase extends CCodeGeneratorHelper {
         // when the program runs to the end. I need to figure out a
         // better way.
         code.append("char $actorSymbol(temp)[80];" + _eol);
-        code.append("printf(\"type any key and then return to exit...\");" + _eol);
+        code.append("printf(\"type any key and then return to exit...\");"
+                + _eol);
         code.append("scanf(\"%s\",$actorSymbol(temp));" + _eol);
         return processCode(CodeStream.indent(code.toString()));
     }

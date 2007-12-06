@@ -124,7 +124,8 @@ public class StandardOutEffigy extends Effigy {
                                 + "NullPointerException");
                     }
 
-                    reader = new BufferedReader(new InputStreamReader(inputStream));
+                    reader = new BufferedReader(new InputStreamReader(
+                            inputStream));
 
                     // openStream throws an IOException, not a
                     // FileNotFoundException
@@ -136,8 +137,8 @@ public class StandardOutEffigy extends Effigy {
                         // so we look for the file as a resource.
                         URL jarURL = ClassUtilities.jarURLEntryResource(in
                                 .toString());
-                        reader = new BufferedReader(new InputStreamReader(jarURL
-                                                            .openStream()));
+                        reader = new BufferedReader(new InputStreamReader(
+                                jarURL.openStream()));
 
                         // We were able to open the URL, so update the
                         // original URL so that the title bar accurately

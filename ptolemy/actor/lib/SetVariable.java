@@ -304,13 +304,13 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         if (attribute instanceof Variable) {
             ((Variable) attribute).setTypeAtLeast(input);
         }
-        
+
         _setFailed = false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Set the value of the associated container's variable.
      *  @param value The new value.
      */
@@ -341,10 +341,10 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
 
     /** Cached reference to the associated variable. */
     private Attribute _attribute;
-    
+
     /** Workspace version for the cached attribute reference. */
     private long _attributeVersion = -1;
-    
+
     /** Indicator that setting the variable failed. */
     private boolean _setFailed = false;
 }

@@ -62,9 +62,8 @@ public class ArrayPeakSearch extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
-        ptolemy.actor.lib.ArrayPeakSearch actor = 
-            (ptolemy.actor.lib.ArrayPeakSearch) getComponent();
-        
+        ptolemy.actor.lib.ArrayPeakSearch actor = (ptolemy.actor.lib.ArrayPeakSearch) getComponent();
+
         String scale = actor.scale.stringValue();
 
         if (scale.equals("absolute")) {
@@ -74,9 +73,9 @@ public class ArrayPeakSearch extends CCodeGeneratorHelper {
         } else if (scale.equals("relative power decibels")) {
             scale = "RELATIVE_DB_POWER";
         } else if (scale.equals("relative linear")) {
-            scale = "RELATIVE_LINEAR";        
+            scale = "RELATIVE_LINEAR";
         }
-        
+
         ArrayList args = new ArrayList();
         args.add(scale);
         _codeStream.appendCodeBlock("fireBlock", args);

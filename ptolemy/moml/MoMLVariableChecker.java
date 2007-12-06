@@ -27,7 +27,6 @@ COPYRIGHTENDKEY
 */
 package ptolemy.moml;
 
-
 import java.io.StringWriter;
 import java.util.Iterator;
 
@@ -69,9 +68,9 @@ public class MoMLVariableChecker {
      *  @exception IllegalActionException If there is a problem parsing
      *  the string, or validating a variable.
      */
-    public String checkCopy(String momlToBeChecked,
-            NamedObj container) throws IllegalActionException {
-        
+    public String checkCopy(String momlToBeChecked, NamedObj container)
+            throws IllegalActionException {
+
         _variableBuffer = new StringWriter();
         Workspace workspace = new Workspace("copyWorkspace");
         MoMLParser parser = new MoMLParser(workspace);
@@ -85,18 +84,17 @@ public class MoMLVariableChecker {
             ErrorHandler handler = MoMLParser.getErrorHandler();
             MoMLParser.setErrorHandler(null);
             try {
-                
+
                 // Parse the momlToBeChecked.
-                parsedContainer = (TypedCompositeActor) parser.parse(
-                        "<entity name=\"auto\" class=\"ptolemy.actor.TypedCompositeActor\">"
-                        + _variableBuffer.toString() 
-                        + momlToBeChecked
-                        + "</entity>");
+                parsedContainer = (TypedCompositeActor) parser
+                        .parse("<entity name=\"auto\" class=\"ptolemy.actor.TypedCompositeActor\">"
+                                + _variableBuffer.toString()
+                                + momlToBeChecked
+                                + "</entity>");
                 doParse = false;
             } catch (MissingClassException ex1) {
                 try {
-                    doParse = _findMissingClass(ex1,
-                            container, parsedContainer);
+                    doParse = _findMissingClass(ex1, container, parsedContainer);
                 } catch (Exception ex1a) {
                     return _variableBuffer.toString();
                 }
@@ -112,7 +110,7 @@ public class MoMLVariableChecker {
                 throw new IllegalActionException(container, ex3,
                         "Failed to parse contents of copy buffer.");
             } finally {
-                MoMLParser.setErrorHandler(handler);                
+                MoMLParser.setErrorHandler(handler);
             }
         }
 
@@ -124,7 +122,8 @@ public class MoMLVariableChecker {
         if (parsedContainer != null) {
             // parsedContainer might be null if we failed to parse because
             // of a missing class
-            Iterator entities = parsedContainer.allAtomicEntityList().iterator();
+            Iterator entities = parsedContainer.allAtomicEntityList()
+                    .iterator();
             while (entities.hasNext()) {
                 Entity entity = (Entity) entities.next();
                 Iterator attributes = entity.attributeList().iterator();
@@ -139,10 +138,11 @@ public class MoMLVariableChecker {
                             try {
                                 variable.getToken();
                             } catch (IllegalActionException ex) {
-                                doGetToken = _findUndefinedConstantsOrIdentifiers(ex,
-                                        container, parsedContainer);
+                                doGetToken = _findUndefinedConstantsOrIdentifiers(
+                                        ex, container, parsedContainer);
                             }
-                        };
+                        }
+                        ;
                     }
                 }
             }
@@ -152,31 +152,30 @@ public class MoMLVariableChecker {
 
     /** Given a MissingClassException, find missing classes.
      */
-    private boolean _findMissingClass(
-            MissingClassException exception,
-            NamedObj container, TypedCompositeActor parsedContainer) 
+    private boolean _findMissingClass(MissingClassException exception,
+            NamedObj container, TypedCompositeActor parsedContainer)
             throws IllegalActionException {
 
         // True if we should rerun the outer parse
         boolean doRerun = false;
 
         if (container instanceof CompositeEntity) {
-            Iterator containedClasses = ((CompositeEntity) container).classDefinitionList().iterator();
+            Iterator containedClasses = ((CompositeEntity) container)
+                    .classDefinitionList().iterator();
 
             while (containedClasses.hasNext()) {
                 NamedObj containedObject = (NamedObj) containedClasses.next();
                 String missingClassName = exception.missingClassName();
                 if (missingClassName == containedObject.getName()
-                    || (missingClassName.startsWith(".")
-                            && missingClassName.substring(1).equals(containedObject.getName()))) {
+                        || (missingClassName.startsWith(".") && missingClassName
+                                .substring(1).equals(containedObject.getName()))) {
                     try {
                         String moml = containedObject.exportMoML()
-                            .replaceFirst("<class",
-                                    "<class createIfNecessary=\"true\"");
+                                .replaceFirst("<class",
+                                        "<class createIfNecessary=\"true\"");
 
-                        MoMLChangeRequest change = new MoMLChangeRequest(parsedContainer,
-                                parsedContainer,
-                                moml);
+                        MoMLChangeRequest change = new MoMLChangeRequest(
+                                parsedContainer, parsedContainer, moml);
 
                         if (parsedContainer != null) {
                             // If we are parsing the moml for the first
@@ -200,9 +199,8 @@ public class MoMLVariableChecker {
      *  missing variables.
      */
     private boolean _findUndefinedConstantsOrIdentifiers(
-            IllegalActionException exception,
-            NamedObj container, TypedCompositeActor parsedContainer) 
-            throws IllegalActionException {
+            IllegalActionException exception, NamedObj container,
+            TypedCompositeActor parsedContainer) throws IllegalActionException {
 
         // True if we should rerun the outer parse or getToken
         boolean doRerun = false;
@@ -216,13 +214,12 @@ public class MoMLVariableChecker {
         // can't do anything.
 
         UndefinedConstantOrIdentifierException idException = null;
-        if (exception instanceof 
-                UndefinedConstantOrIdentifierException) {
+        if (exception instanceof UndefinedConstantOrIdentifierException) {
             idException = (UndefinedConstantOrIdentifierException) exception;
         } else {
-            if (exception.getCause() instanceof
-                    UndefinedConstantOrIdentifierException) {
-                idException = (UndefinedConstantOrIdentifierException)exception.getCause();
+            if (exception.getCause() instanceof UndefinedConstantOrIdentifierException) {
+                idException = (UndefinedConstantOrIdentifierException) exception
+                        .getCause();
             }
         }
 
@@ -235,20 +232,23 @@ public class MoMLVariableChecker {
 
         // We have an exception that has the name of the missing
         // variable.
-                                
+
         // Find the variable in the object we are copying.
 
         // Get the name of the variable without the .auto.
-        String variableName = exception.getNameable1().getFullName().substring(((NamedObj)exception.getNameable1()).toplevel().getName().length()+2);
+        String variableName = exception.getNameable1().getFullName().substring(
+                ((NamedObj) exception.getNameable1()).toplevel().getName()
+                        .length() + 2);
 
         Attribute masterAttribute = container.getAttribute(variableName);
 
         if (masterAttribute instanceof Variable) {
-            Variable masterVariable = (Variable)masterAttribute;
+            Variable masterVariable = (Variable) masterAttribute;
             ParserScope parserScope = masterVariable.getParserScope();
             if (parserScope instanceof ModelScope) {
                 if (masterVariable != null) {
-                    Variable node = masterVariable.getVariable(idException.nodeName());
+                    Variable node = masterVariable.getVariable(idException
+                            .nodeName());
 
                     if (node == _previousNode) {
                         // We've already seen this node, so stop
@@ -259,16 +259,15 @@ public class MoMLVariableChecker {
 
                     try {
 
-                        String moml = node.exportMoML()
-                            .replaceFirst("<property",
-                                    "<property createIfNecessary=\"true\"");
+                        String moml = node.exportMoML().replaceFirst(
+                                "<property",
+                                "<property createIfNecessary=\"true\"");
 
                         // Insert the new variable so that other
                         // variables may use it.
 
-                        MoMLChangeRequest change = new MoMLChangeRequest(parsedContainer,
-                                parsedContainer,
-                                moml);
+                        MoMLChangeRequest change = new MoMLChangeRequest(
+                                parsedContainer, parsedContainer, moml);
 
                         if (parsedContainer != null) {
                             // If we are parsing the moml for the first
@@ -296,7 +295,7 @@ public class MoMLVariableChecker {
     private Variable _previousNode;
 
     /** The moml of any missing variables we have found thus far.
-     */   
+     */
     private StringWriter _variableBuffer;
 
 }

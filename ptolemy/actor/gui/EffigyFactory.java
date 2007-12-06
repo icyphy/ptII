@@ -139,8 +139,7 @@ public class EffigyFactory extends CompositeEntity {
         boolean foundDTD = false;
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(
-                    new InputStreamReader(stream));
+            reader = new BufferedReader(new InputStreamReader(stream));
             int lineCount = 0;
             while (lineCount < 5) {
                 String contents = reader.readLine();
@@ -150,14 +149,14 @@ public class EffigyFactory extends CompositeEntity {
                 }
                 if (dtdEndRegExp != null) {
                     if (contents.startsWith(dtdStart)
-                        && contents.matches(dtdEndRegExp)) {
+                            && contents.matches(dtdEndRegExp)) {
                         // This file has the DTD for which we are looking.
-                        foundDTD = true;                    
+                        foundDTD = true;
                         break;
                     }
                 } else if (contents.startsWith(dtdStart)) {
                     // dtdEndRegExp is null so we don't check it
-                    foundDTD = true;                    
+                    foundDTD = true;
                     break;
                 }
             }

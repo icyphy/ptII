@@ -216,7 +216,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         if (_initializables == null) {
             _initializables = new LinkedList<Initializable>();
         }
-        _initializables.add(initializable);        
+        _initializables.add(initializable);
     }
 
     /** React to a change in an attribute.
@@ -324,7 +324,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         newObject._inputTokenMap = new HashMap();
         newObject._identifierToPort = new HashMap();
         if (_initialState != null) {
-            newObject._initialState = (State) newObject.getEntity(_initialState.getName());
+            newObject._initialState = (State) newObject.getEntity(_initialState
+                    .getName());
         }
         return newObject;
     }
@@ -575,11 +576,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
-        
+
         // First invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.initialize();                    
+                initializable.initialize();
             }
         }
 
@@ -822,7 +823,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // First invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.preinitialize();                    
+                initializable.preinitialize();
             }
         }
 
@@ -1044,7 +1045,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // First invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.initialize();                    
+                initializable.initialize();
             }
         }
     }
@@ -1127,7 +1128,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // refinement before executing actions because there may
         // be attributeChanged() methods that are invoked that depend
         // on current time.
-        Actor[] actors = _lastChosenTransition.destinationState().getRefinement();
+        Actor[] actors = _lastChosenTransition.destinationState()
+                .getRefinement();
         if (actors != null) {
             for (int i = 0; i < actors.length; ++i) {
                 actors[i].getDirector().setModelTime(
@@ -1144,7 +1146,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         _currentState = _lastChosenTransition.destinationState();
 
-        if (((BooleanToken)_currentState.isFinalState.getToken()).booleanValue()) {
+        if (((BooleanToken) _currentState.isFinalState.getToken())
+                .booleanValue()) {
             _reachedFinalState = true;
         } else if (_finalStateNames != null) {
             // Backward compatibility for the old way of specifying it.
@@ -1693,7 +1696,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     private transient long _outputPortsVersion = -1;
 
     private transient LinkedList _cachedOutputPorts;
-    
+
     // Stores for each state a map from input ports to boolean flags
     // indicating whether a channel is connected to an output port
     // of the refinement of the state.
@@ -1706,7 +1709,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // channel is connected to an output port of the refinement of the
     // current state.
     private Map _currentConnectionMap = null;
-    
+
     // Map of final state names recording in the obsolete finalStateNames
     // parameter.
     private HashSet<String> _finalStateNames = null;

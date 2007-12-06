@@ -70,11 +70,13 @@ public class LiveSoundActor extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        sampleRate = new SharedParameter(this, "sampleRate", LiveSoundActor.class);
+        sampleRate = new SharedParameter(this, "sampleRate",
+                LiveSoundActor.class);
         sampleRate.setExpression("8000");
         sampleRate.setTypeEquals(BaseType.INT);
 
-        bitsPerSample = new SharedParameter(this, "bitsPerSample", LiveSoundActor.class);
+        bitsPerSample = new SharedParameter(this, "bitsPerSample",
+                LiveSoundActor.class);
         bitsPerSample.setExpression("16");
         bitsPerSample.setTypeEquals(BaseType.INT);
 
@@ -82,11 +84,13 @@ public class LiveSoundActor extends TypedAtomicActor {
         channels.setExpression("1");
         channels.setTypeEquals(BaseType.INT);
 
-        transferSize = new SharedParameter(this, "transferSize", LiveSoundActor.class);
+        transferSize = new SharedParameter(this, "transferSize",
+                LiveSoundActor.class);
         transferSize.setExpression("128");
         transferSize.setTypeEquals(BaseType.INT);
-        
-        bufferSize = new SharedParameter(this, "bufferSize", LiveSoundActor.class);
+
+        bufferSize = new SharedParameter(this, "bufferSize",
+                LiveSoundActor.class);
         bufferSize.setExpression("1024");
         bufferSize.setTypeEquals(BaseType.INT);
     }
@@ -103,7 +107,7 @@ public class LiveSoundActor extends TypedAtomicActor {
      *  are supported).
      */
     public SharedParameter bitsPerSample;
-    
+
     /** The requested buffer size in the audio hardware. This
      *  affects how far ahead of real time the model can get.
      *  A larger buffer size may limit the responsivity of the
@@ -164,8 +168,7 @@ public class LiveSoundActor extends TypedAtomicActor {
                 }
             } else if (attribute == bufferSize) {
                 _bufferSize = ((IntToken) bufferSize.getToken()).intValue();
-                if (!_isExecuting
-                        && (LiveSound.getBufferSize() != _bufferSize)) {
+                if (!_isExecuting && (LiveSound.getBufferSize() != _bufferSize)) {
                     LiveSound.setBufferSize(_bufferSize);
                 }
             } else if (attribute == channels) {
@@ -189,12 +192,12 @@ public class LiveSoundActor extends TypedAtomicActor {
 
                 // Only set the sample rate if it is different than
                 // the currently active sample rate.
-                if (!_isExecuting
-                        && (LiveSound.getSampleRate() != _sampleRate)) {
+                if (!_isExecuting && (LiveSound.getSampleRate() != _sampleRate)) {
                     LiveSound.setSampleRate(_sampleRate);
                 }
             } else if (attribute == bitsPerSample) {
-                _bitsPerSample = ((IntToken) bitsPerSample.getToken()).intValue();
+                _bitsPerSample = ((IntToken) bitsPerSample.getToken())
+                        .intValue();
 
                 // Only set the bitsPerSample if it is different than
                 // the currently active bitsPerSample.
@@ -268,13 +271,13 @@ public class LiveSoundActor extends TypedAtomicActor {
 
     /** Value of the bitsPerSample parameter. */
     protected int _bitsPerSample;
-    
+
     /** The requested buffer size. */
     protected int _bufferSize;
-    
+
     /** The number of channels.  Initialized from the channels parameter. */
     protected int _channels;
-    
+
     /** The value of the sampleRate parameter. */
     protected int _sampleRate;
 

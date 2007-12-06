@@ -167,7 +167,7 @@ public class Fraction extends Object {
      */
     public int hashCode() {
         return Integer.valueOf(_denominator).hashCode()
-            & Integer.valueOf(_numerator).hashCode();
+                & Integer.valueOf(_numerator).hashCode();
     }
 
     /** Find the multiplicative inverse of this fraction.

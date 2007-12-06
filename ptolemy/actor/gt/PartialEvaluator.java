@@ -74,7 +74,7 @@ public class PartialEvaluator extends AbstractParseTreeVisitor {
     }
 
     public ASTPtRootNode evaluate(ASTPtRootNode root)
-    throws IllegalActionException {
+            throws IllegalActionException {
         try {
             _result = (ASTPtRootNode) root.clone();
             _result.visit(this);
@@ -86,32 +86,31 @@ public class PartialEvaluator extends AbstractParseTreeVisitor {
     }
 
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitBitwiseNode(ASTPtBitwiseNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         String gtEvalString = null;
         if (node.getFunctionName().equals("gt_eval")
                 && node.jjtGetNumChildren() == 2) {
             Node child = node.jjtGetChild(1);
             if (child instanceof ASTPtLeafNode) {
                 ASTPtLeafNode leaf = (ASTPtLeafNode) child;
-                if (leaf.isConstant()
-                        && leaf.getToken() instanceof StringToken) {
-                    gtEvalString =
-                        ((StringToken) leaf.getToken()).stringValue();
+                if (leaf.isConstant() && leaf.getToken() instanceof StringToken) {
+                    gtEvalString = ((StringToken) leaf.getToken())
+                            .stringValue();
                 }
             }
         }
@@ -144,52 +143,51 @@ public class PartialEvaluator extends AbstractParseTreeVisitor {
     }
 
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
-    public void visitLeafNode(ASTPtLeafNode node)
-    throws IllegalActionException {
+    public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitLogicalNode(ASTPtLogicalNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitMethodCallNode(ASTPtMethodCallNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitPowerNode(ASTPtPowerNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitProductNode(ASTPtProductNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitRelationalNode(ASTPtRelationalNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     public void visitShiftNode(ASTPtShiftNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
@@ -198,12 +196,12 @@ public class PartialEvaluator extends AbstractParseTreeVisitor {
     }
 
     public void visitUnaryNode(ASTPtUnaryNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _defaultVisit(node);
     }
 
     protected void _defaultVisit(ASTPtRootNode node)
-    throws IllegalActionException {
+            throws IllegalActionException {
         _visitAllChildren(node);
     }
 

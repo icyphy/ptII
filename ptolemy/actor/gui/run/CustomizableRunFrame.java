@@ -67,8 +67,7 @@ public class CustomizableRunFrame extends TableauFrame {
      *  @param tableau The tableau responsible for this frame.
      *  @exception IllegalActionException If the XML to be parsed has errors.
      */
-    public CustomizableRunFrame(
-            CompositeActor model, InterfaceTableau tableau)
+    public CustomizableRunFrame(CompositeActor model, InterfaceTableau tableau)
             throws IllegalActionException {
         super(tableau);
         _model = model;
@@ -88,7 +87,7 @@ public class CustomizableRunFrame extends TableauFrame {
         JMenuItem[] customizeMenuItems = {
                 new JMenuItem("Customize Layout", KeyEvent.VK_C),
                 new JMenuItem("Revert to Default", KeyEvent.VK_R),
-                new JMenuItem("New Layout", KeyEvent.VK_N)};
+                new JMenuItem("New Layout", KeyEvent.VK_N) };
 
         // NOTE: This has to be initialized here rather than
         // statically because this method is called by the constructor
@@ -101,7 +100,8 @@ public class CustomizableRunFrame extends TableauFrame {
 
         // Set the action command and listener for each menu item.
         for (int i = 0; i < customizeMenuItems.length; i++) {
-            customizeMenuItems[i].setActionCommand(customizeMenuItems[i].getText());
+            customizeMenuItems[i].setActionCommand(customizeMenuItems[i]
+                    .getText());
             customizeMenuItems[i].addActionListener(customizeMenuListener);
             _customizeMenu.add(customizeMenuItems[i]);
         }
@@ -114,10 +114,10 @@ public class CustomizableRunFrame extends TableauFrame {
 
     /** Customize menu for this frame. */
     protected JMenu _customizeMenu;
-    
+
     /** The pane inside this frame. */
     protected CustomizableRunPane _pane;
-    
+
     /** The associated model. */
     protected CompositeActor _model;
 
@@ -134,21 +134,25 @@ public class CustomizableRunFrame extends TableauFrame {
                 try {
                     Effigy effigy = getEffigy();
                     LayoutTableau tableau = new LayoutTableau(
-                            (PtolemyEffigy)effigy, "Layout Run Panel", _pane);
+                            (PtolemyEffigy) effigy, "Layout Run Panel", _pane);
                     tableau.show();
                 } catch (KernelException ex) {
                     try {
-                        MessageHandler.warning("Failed to create layout customization frame: " + ex);
+                        MessageHandler
+                                .warning("Failed to create layout customization frame: "
+                                        + ex);
                     } catch (CancelException exception) {
                     }
                 }
             } else if (actionCommand.equals("Revert to Default")) {
                 // Delete the attribute, if it has been created.
-                Attribute attribute = _model.getAttribute("_runLayoutAttribute");
+                Attribute attribute = _model
+                        .getAttribute("_runLayoutAttribute");
                 if (attribute != null) {
                     // Do this in a change request so it can be undone.
-                    MoMLChangeRequest request = new MoMLChangeRequest(
-                            this, _model, "<deleteProperty name=\"_runLayoutAttribute\"/>") {
+                    MoMLChangeRequest request = new MoMLChangeRequest(this,
+                            _model,
+                            "<deleteProperty name=\"_runLayoutAttribute\"/>") {
                         protected void _execute() throws Exception {
                             super._execute();
                             // Close this window and open a new one.
@@ -157,14 +161,19 @@ public class CustomizableRunFrame extends TableauFrame {
                                 public void run() {
                                     // Create a new tableau.  Closing the old frame
                                     // also results in removing the tableau.
-                                    PtolemyEffigy effigy = (PtolemyEffigy)getTableau().getContainer();
+                                    PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
+                                            .getContainer();
                                     close();
                                     try {
-                                        InterfaceTableau tableau = new InterfaceTableau(effigy,
-                                                effigy.uniqueName("interfaceTableau"));
+                                        InterfaceTableau tableau = new InterfaceTableau(
+                                                effigy,
+                                                effigy
+                                                        .uniqueName("interfaceTableau"));
                                         tableau.show();
                                     } catch (KernelException e) {
-                                        MessageHandler.error("Failed to reopen run window.", e);
+                                        MessageHandler.error(
+                                                "Failed to reopen run window.",
+                                                e);
                                     }
                                 }
                             };
@@ -180,11 +189,10 @@ public class CustomizableRunFrame extends TableauFrame {
                     // Remove the existing layout.
                     getContentPane().remove(_pane);
                     // Define a default layout in XML.
-                    String xml = "<containers>" +
-                            "<container name=\"top\" " +
-                            "columnSpecs=\"default\" " +
-                            "rowSpecs=\"default\"> " +
-                            "</container></containers>";
+                    String xml = "<containers>" + "<container name=\"top\" "
+                            + "columnSpecs=\"default\" "
+                            + "rowSpecs=\"default\"> "
+                            + "</container></containers>";
                     _pane = new CustomizableRunPane(_model, xml);
                     getContentPane().add(_pane, BorderLayout.CENTER);
                     pack();
@@ -192,18 +200,21 @@ public class CustomizableRunFrame extends TableauFrame {
 
                     // Open the customization panel.
                     Effigy effigy = getEffigy();
-                    LayoutTableau tableau = (LayoutTableau)effigy.getEntity("Layout Run Panel");
+                    LayoutTableau tableau = (LayoutTableau) effigy
+                            .getEntity("Layout Run Panel");
                     if (tableau == null) {
-                        tableau = new LayoutTableau(
-                                (PtolemyEffigy)effigy, "Layout Run Panel", _pane);
+                        tableau = new LayoutTableau((PtolemyEffigy) effigy,
+                                "Layout Run Panel", _pane);
                     }
                     tableau.show();
-                    
+
                     // Get this on top, since it is smaller, and will be obscured.
                     setVisible(true);
                 } catch (KernelException ex) {
                     try {
-                        MessageHandler.warning("Failed to create layout customization frame: " + ex);
+                        MessageHandler
+                                .warning("Failed to create layout customization frame: "
+                                        + ex);
                     } catch (CancelException exception) {
                     }
                 }

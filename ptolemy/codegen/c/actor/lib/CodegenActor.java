@@ -46,9 +46,8 @@ public class CodegenActor extends EmbeddedCActor {
      *  with the given TypedCompositeActor.
      *  @param component The associated component.
      */
-    public CodegenActor(
-            ptolemy.actor.lib.CodegenActor component) {
+    public CodegenActor(ptolemy.actor.lib.CodegenActor component) {
         super(component);
     }
-    
+
 }

@@ -389,16 +389,16 @@ public class CompositeEntity extends ComponentEntity {
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
                         if (rel != null) {
-//                             if (rel.getContainer() != this) {
-//                                 throw new CloneNotSupportedException(
-//                                         "Cannot clone a CompositeEntity with "
-//                                                 + "level crossing transitions."
-//                                                 + "  The relation was: " + rel
-//                                                 + ", its container was: " 
-//                                                 + rel.getContainer()
-//                                                 + ", which is not equal to "
-//                                                 + this);
-//                             }
+                            //                             if (rel.getContainer() != this) {
+                            //                                 throw new CloneNotSupportedException(
+                            //                                         "Cannot clone a CompositeEntity with "
+                            //                                                 + "level crossing transitions."
+                            //                                                 + "  The relation was: " + rel
+                            //                                                 + ", its container was: " 
+                            //                                                 + rel.getContainer()
+                            //                                                 + ", which is not equal to "
+                            //                                                 + this);
+                            //                             }
 
                             ComponentRelation newRelation = newEntity
                                     .getRelation(rel.getName());
@@ -1862,23 +1862,24 @@ public class CompositeEntity extends ComponentEntity {
         // Look for relations with level crossing links first.
         Iterator relations = entity.relationList().iterator();
         while (relations.hasNext()) {
-            ComponentRelation relation = (ComponentRelation)relations.next();
+            ComponentRelation relation = (ComponentRelation) relations.next();
             Iterator linkedObjects = relation.linkedObjectsList().iterator();
             while (linkedObjects.hasNext()) {
                 Object linkedObject = linkedObjects.next();
-                
+
                 Nameable relationContainer = relation.getContainer();
                 if (linkedObject instanceof Relation) {
 
-                    Relation linkedRelation = (Relation)linkedObject;
-                    Nameable linkedObjectContainer = linkedRelation.getContainer();
+                    Relation linkedRelation = (Relation) linkedObject;
+                    Nameable linkedObjectContainer = linkedRelation
+                            .getContainer();
                     if (relationContainer != linkedObjectContainer
                             && linkedObjectContainer.getContainer() != relationContainer) {
                         relation.unlink(linkedRelation);
                     }
                 } else {
                     // Must be a port.
-                    Port linkedPort = (Port)linkedObject;
+                    Port linkedPort = (Port) linkedObject;
                     Nameable linkedObjectContainer = linkedPort.getContainer();
                     if (relationContainer != linkedObjectContainer
                             && linkedObjectContainer.getContainer() != relationContainer) {
@@ -1894,7 +1895,7 @@ public class CompositeEntity extends ComponentEntity {
             // If the contained entity is a composite entity, then unlink
             // anything inside it as well.
             if (containedEntity instanceof CompositeEntity) {
-                _unlinkLevelCrossingLinksToOutside((CompositeEntity)containedEntity);
+                _unlinkLevelCrossingLinksToOutside((CompositeEntity) containedEntity);
             }
             // Now unlink its ports.
             Iterator ports = containedEntity.portList().iterator();
@@ -1902,7 +1903,8 @@ public class CompositeEntity extends ComponentEntity {
                 ComponentPort port = (ComponentPort) ports.next();
                 Iterator linkedRelations = port.linkedRelationList().iterator();
                 while (linkedRelations.hasNext()) {
-                    ComponentRelation relation = (ComponentRelation) linkedRelations.next();
+                    ComponentRelation relation = (ComponentRelation) linkedRelations
+                            .next();
                     if (relation != null && !deepContains(relation)) {
                         port.unlink(relation);
                     }

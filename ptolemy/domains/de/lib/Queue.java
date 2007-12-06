@@ -212,8 +212,7 @@ public class Queue extends Transformer {
         if (input.hasToken(0)) {
             _token = input.get(0);
             if (_queue.getCapacity() == FIFOQueue.INFINITE_CAPACITY
-                    || _queue.getCapacity() > _queue.size()
-                    || gotTrigger) {
+                    || _queue.getCapacity() > _queue.size() || gotTrigger) {
                 sizeOutput++;
             }
         } else {

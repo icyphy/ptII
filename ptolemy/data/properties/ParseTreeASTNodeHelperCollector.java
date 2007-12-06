@@ -76,8 +76,8 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public Set collectHelpers(ASTPtRootNode node, PropertyConstraintSolver solver)
-            throws IllegalActionException {
+    public Set collectHelpers(ASTPtRootNode node,
+            PropertyConstraintSolver solver) throws IllegalActionException {
 
         _helpers = new HashSet();
         _solver = solver;
@@ -286,7 +286,7 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
     protected void _visitChild(ASTPtRootNode node, int i)
             throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
-        
+
         _helpers.add(_solver.getHelper(node));
 
         child.visit(this);
@@ -295,5 +295,5 @@ public class ParseTreeASTNodeHelperCollector extends AbstractParseTreeVisitor {
     protected Set _helpers;
 
     protected PropertyConstraintSolver _solver;
-    
+
 }

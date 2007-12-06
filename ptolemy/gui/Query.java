@@ -816,7 +816,8 @@ public class Query extends JPanel {
                     + "calling getDoubleValue() on a password field is "
                     + "not permitted.  Instead, call getCharArrayValue()");
         } else if (result instanceof JTextField) {
-            return (Double.valueOf(((JTextField) result).getText())).doubleValue();
+            return (Double.valueOf(((JTextField) result).getText()))
+                    .doubleValue();
         } else {
             throw new IllegalArgumentException("Item named \"" + name
                     + "\" is not a text line, and hence cannot be converted "
@@ -857,7 +858,8 @@ public class Query extends JPanel {
                     + "calling getIntValue() on a password field is "
                     + "not permitted.  Instead, call getCharArrayValue()");
         } else if (result instanceof JTextField) {
-            return (Integer.valueOf(((JTextField) result).getText())).intValue();
+            return (Integer.valueOf(((JTextField) result).getText()))
+                    .intValue();
         } else if (result instanceof JSlider) {
             return ((JSlider) result).getValue();
         } else if (result instanceof JComboBox) {
@@ -1388,7 +1390,7 @@ public class Query extends JPanel {
             label.setToolTipText(tip);
         }
     }
-    
+
     /** Convert the specified string to a color. The string
      *  has the form "{r, g, b, a}", where each of the letters
      *  is a number between 0.0 and 1.0, representing red, green,

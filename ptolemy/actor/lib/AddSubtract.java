@@ -98,7 +98,7 @@ public class AddSubtract extends TypedAtomicActor {
         minus = new TypedIOPort(this, "minus", true, false);
         minus.setMultiport(true);
         output = new TypedIOPort(this, "output", false, true);
-        
+
         output.setTypeAtLeast(plus);
         output.setTypeAtLeast(minus);
 
@@ -129,13 +129,13 @@ public class AddSubtract extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Override the base class to set type constraints on the ports.
      *  @param workspace The workspace into which to clone.
      *  @exception CloneNotSupportedException If the superclass throws it.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        AddSubtract newObject = (AddSubtract)super.clone(workspace);
+        AddSubtract newObject = (AddSubtract) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.plus);
         newObject.output.setTypeAtLeast(newObject.minus);
         return newObject;

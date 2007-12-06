@@ -36,7 +36,7 @@ public class Tuple<E> extends LinkedList<E> {
         super(collection);
     }
 
-    public Tuple(E ... elements) {
+    public Tuple(E... elements) {
         for (E element : elements) {
             add(element);
         }

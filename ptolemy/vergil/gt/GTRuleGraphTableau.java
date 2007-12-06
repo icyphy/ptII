@@ -88,11 +88,10 @@ public class GTRuleGraphTableau extends Tableau {
 
         NamedObj model = container.getModel();
 
-        if (!(model instanceof TransformationRule
-                || model instanceof CompositeActorMatcher)) {
+        if (!(model instanceof TransformationRule || model instanceof CompositeActorMatcher)) {
             throw new IllegalActionException(this,
-                    "Cannot edit a model that is not a SingleRuleTransformer " +
-                    "or a CompositeActorMatcher.");
+                    "Cannot edit a model that is not a SingleRuleTransformer "
+                            + "or a CompositeActorMatcher.");
         }
 
         createGraphFrame((CompositeEntity) model, defaultLibrary);
@@ -120,14 +119,13 @@ public class GTRuleGraphTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        if (!(model instanceof TransformationRule
-                || model instanceof CompositeActorMatcher)) {
+        if (!(model instanceof TransformationRule || model instanceof CompositeActorMatcher)) {
             throw new InternalErrorException(this, null, "Composite Entity \""
-                    + model.getFullName() + "\" is not an instance of " +
-                    "SingleRuleTransformer or CompositeActorMatcher.");
+                    + model.getFullName() + "\" is not an instance of "
+                    + "SingleRuleTransformer or CompositeActorMatcher.");
         }
-        GTRuleGraphFrame frame = new GTRuleGraphFrame(
-                (CompositeEntity) model, this, defaultLibrary);
+        GTRuleGraphFrame frame = new GTRuleGraphFrame((CompositeEntity) model,
+                this, defaultLibrary);
 
         try {
             setFrame(frame);
@@ -185,9 +183,9 @@ public class GTRuleGraphTableau extends Tableau {
                 LibraryAttribute library = (LibraryAttribute) getAttribute(
                         "_library", LibraryAttribute.class);
 
-                GTRuleGraphTableau tableau =
-                    new GTRuleGraphTableau((PtolemyEffigy) effigy,
-                            effigy.uniqueName("gtRuleGraphTableau"), library);
+                GTRuleGraphTableau tableau = new GTRuleGraphTableau(
+                        (PtolemyEffigy) effigy, effigy
+                                .uniqueName("gtRuleGraphTableau"), library);
                 return tableau;
             } else {
                 return null;

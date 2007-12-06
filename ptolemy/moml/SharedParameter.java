@@ -154,7 +154,7 @@ public class SharedParameter extends Parameter implements Initializable {
             containerClass = container.getClass();
         }
         if (_delayValidation) {
-            _suppressingPropagation = true; 
+            _suppressingPropagation = true;
             setLazy(true);
         }
         _containerClass = containerClass;
@@ -177,7 +177,7 @@ public class SharedParameter extends Parameter implements Initializable {
         if (_initializables == null) {
             _initializables = new LinkedList<Initializable>();
         }
-        _initializables.add(initializable);        
+        _initializables.add(initializable);
     }
 
     /** Override the base class to register the object, since setName()
@@ -195,7 +195,7 @@ public class SharedParameter extends Parameter implements Initializable {
         registry.register(newObject);
         return newObject;
     }
-    
+
     /** Get the token contained by this variable.  The type of the returned
      *  token is always that returned by getType().  Calling this method
      *  will trigger evaluation of the expression, if the value has been
@@ -266,7 +266,7 @@ public class SharedParameter extends Parameter implements Initializable {
 
         if (toplevel != null && toplevel != this) {
             candidate = _getOneSharedParameter(toplevel);
-        }        
+        }
         if (candidate != null) {
             defaultValue = candidate.getExpression();
         }
@@ -280,10 +280,10 @@ public class SharedParameter extends Parameter implements Initializable {
             if (candidate != null && candidate.isKnown()) {
                 setToken(candidate.getToken());
             }
-            
+
         } catch (IllegalActionException e) {
             // The token is not set when this happens.
-            
+
         } finally {
             _suppressingPropagation = previousSuppressing;
         }
@@ -298,7 +298,7 @@ public class SharedParameter extends Parameter implements Initializable {
         // Invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.initialize();                    
+                initializable.initialize();
             }
         }
     }
@@ -334,15 +334,15 @@ public class SharedParameter extends Parameter implements Initializable {
         // Invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.preinitialize();                    
+                initializable.preinitialize();
             }
         }
-        if (_delayValidation) { 
+        if (_delayValidation) {
             _suppressingPropagation = false;
             validate();
         }
     }
-    
+
     /** Remove the specified object from the list of objects whose
      *  preinitialize(), intialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
@@ -372,15 +372,15 @@ public class SharedParameter extends Parameter implements Initializable {
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         NamedObj previousContainer = getContainer();
         if (previousContainer != container) {
             if (previousContainer instanceof Initializable) {
-                ((Initializable)previousContainer).removeInitializable(this);
+                ((Initializable) previousContainer).removeInitializable(this);
             }
             if (container instanceof Initializable) {
-                ((Initializable)container).addInitializable(this);
+                ((Initializable) container).addInitializable(this);
             }
         }
         super.setContainer(container);
@@ -393,8 +393,8 @@ public class SharedParameter extends Parameter implements Initializable {
      *  @exception NameDuplicationException If there is already an
      *       attribute with the same name in the container.
      */
-    public void setName(String name)
-            throws IllegalActionException, NameDuplicationException {
+    public void setName(String name) throws IllegalActionException,
+            NameDuplicationException {
         if (name != null && !name.equals(getName())) {
             SharedParameterRegistry registry = _getSharedParameterRegistry(workspace());
             // Unregister under previous name.
@@ -440,7 +440,7 @@ public class SharedParameter extends Parameter implements Initializable {
             }
         }
     }
- 
+
     /** Specify whether this instance should be suppressing
      *  propagation. If this is called with value true, then
      *  changes to this parameter will not propagate to other
@@ -459,15 +459,15 @@ public class SharedParameter extends Parameter implements Initializable {
      *  @see #getToken()
      */
     public void setToken(Token token) throws IllegalActionException {
-        
+
         super.setToken(token);
 
         if (!_suppressingPropagation) {
             Iterator sharedParameters = sharedParameterSet().iterator();
 
             while (sharedParameters.hasNext()) {
-                SharedParameter sharedParameter = 
-                    (SharedParameter) sharedParameters.next();
+                SharedParameter sharedParameter = (SharedParameter) sharedParameters
+                        .next();
 
                 if (sharedParameter != this) {
                     try {
@@ -478,9 +478,9 @@ public class SharedParameter extends Parameter implements Initializable {
                     }
                 }
             }
-        }    
+        }
     }
-    
+
     /** Return a collection of all the shared parameters within the
      *  same model as this parameter.  If there are no such parameters
      *  or if this parameter is deeply contained within an EntityLibrary, then
@@ -501,14 +501,15 @@ public class SharedParameter extends Parameter implements Initializable {
                 NamedObj root = getRoot();
                 if (root != null) {
                     SharedParameterRegistry registry = _getSharedParameterRegistry(workspace());
-                    for (WeakReference<SharedParameter> reference : registry.getSharedParametersWithName(getName())) {
+                    for (WeakReference<SharedParameter> reference : registry
+                            .getSharedParametersWithName(getName())) {
                         if (reference != null) {
                             SharedParameter parameter = reference.get();
                             if (parameter != null) {
                                 // Have a candidate. See if the roots match and if
                                 // the container classes match.
                                 if (parameter.getRoot() == root
-                                         && parameter._containerClass == _containerClass) {
+                                        && parameter._containerClass == _containerClass) {
                                     _sharedParameterSet.add(parameter);
                                 }
                             }
@@ -529,7 +530,7 @@ public class SharedParameter extends Parameter implements Initializable {
         // Invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.wrapup();                    
+                initializable.wrapup();
             }
         }
         if (_delayValidation) {
@@ -623,7 +624,8 @@ public class SharedParameter extends Parameter implements Initializable {
                 NamedObj root = getRoot();
                 if (root != null) {
                     SharedParameterRegistry registry = _getSharedParameterRegistry(workspace());
-                    for (WeakReference<SharedParameter> reference : registry.getSharedParametersWithName(getName())) {
+                    for (WeakReference<SharedParameter> reference : registry
+                            .getSharedParametersWithName(getName())) {
                         if (reference != null) {
                             SharedParameter parameter = reference.get();
                             if (parameter != null) {
@@ -646,10 +648,11 @@ public class SharedParameter extends Parameter implements Initializable {
         }
         return _sharedParameter;
     }
-    
+
     /** Return the shared parameter registry associated with this workspace.
      */
-    private static synchronized SharedParameterRegistry _getSharedParameterRegistry(Workspace workspace) {
+    private static synchronized SharedParameterRegistry _getSharedParameterRegistry(
+            Workspace workspace) {
         SharedParameterRegistry result = _REGISTRY.get(workspace);
         if (result == null) {
             result = new SharedParameterRegistry();
@@ -663,7 +666,7 @@ public class SharedParameter extends Parameter implements Initializable {
 
     /** Indicator that the constructor has reached the end. */
     private boolean _constructionFinished = false;
-    
+
     /** The container class. */
     private Class _containerClass;
 
@@ -674,9 +677,8 @@ public class SharedParameter extends Parameter implements Initializable {
     private static final boolean _delayValidation = false;
 
     /** Empty list. */
-    private static Collection<WeakReference<SharedParameter>> _EMPTY_LIST 
-            = new LinkedList<WeakReference<SharedParameter>>();
-    
+    private static Collection<WeakReference<SharedParameter>> _EMPTY_LIST = new LinkedList<WeakReference<SharedParameter>>();
+
     /** List of objects whose (pre)initialize() and wrapup() methods
      *  should be slaved to these.
      */
@@ -693,14 +695,13 @@ public class SharedParameter extends Parameter implements Initializable {
 
     /** Version for the cache. */
     private long _sharedParameterSetVersion = -1L;
-    
+
     /** Registry by workspace. */
-    private static HashMap<Workspace, SharedParameterRegistry> _REGISTRY
-            = new HashMap<Workspace, SharedParameterRegistry>();
+    private static HashMap<Workspace, SharedParameterRegistry> _REGISTRY = new HashMap<Workspace, SharedParameterRegistry>();
 
     /** Indicator to suppress propagation. */
     private boolean _suppressingPropagation = false;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -714,30 +715,36 @@ public class SharedParameter extends Parameter implements Initializable {
         /** Return all shared parameters with the specified name.
          *  This returns a collection of weak references.
          */
-        public synchronized Collection<WeakReference<SharedParameter>> getSharedParametersWithName(String name) {
-            Collection<WeakReference<SharedParameter>> set = _sharedParametersByName.get(name);
+        public synchronized Collection<WeakReference<SharedParameter>> getSharedParametersWithName(
+                String name) {
+            Collection<WeakReference<SharedParameter>> set = _sharedParametersByName
+                    .get(name);
             if (set == null) {
                 return _EMPTY_LIST;
             } else {
                 return set;
             }
         }
+
         /** Register the specified shared parameter. */
         public synchronized void register(SharedParameter parameter) {
-            Collection<WeakReference<SharedParameter>> set = _sharedParametersByName.get(parameter.getName());
+            Collection<WeakReference<SharedParameter>> set = _sharedParametersByName
+                    .get(parameter.getName());
             if (set == null) {
                 set = new LinkedList<WeakReference<SharedParameter>>();
                 _sharedParametersByName.put(parameter.getName(), set);
             }
             set.add(new WeakReference<SharedParameter>(parameter));
         }
+
         public synchronized void unregister(SharedParameter parameter) {
-            Collection<WeakReference<SharedParameter>> set = _sharedParametersByName.get(parameter.getName());
+            Collection<WeakReference<SharedParameter>> set = _sharedParametersByName
+                    .get(parameter.getName());
             if (set != null) {
                 set.remove(new WeakReference<SharedParameter>(parameter));
             }
         }
-        private HashMap<String,Collection<WeakReference<SharedParameter>>>
-                _sharedParametersByName = new HashMap<String,Collection<WeakReference<SharedParameter>>>();
+
+        private HashMap<String, Collection<WeakReference<SharedParameter>>> _sharedParametersByName = new HashMap<String, Collection<WeakReference<SharedParameter>>>();
     }
 }

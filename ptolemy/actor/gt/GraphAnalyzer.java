@@ -83,14 +83,12 @@ public abstract class GraphAnalyzer {
 
             for (Object entityObject : entities) {
                 currentList.setSecond(i);
-                if (!(entityObject instanceof CompositeEntity
-                        && !_isOpaque((CompositeEntity) entityObject))) {
+                if (!(entityObject instanceof CompositeEntity && !_isOpaque((CompositeEntity) entityObject))) {
                     if (!excludedEntities.contains(entityObject)) {
                         return (NamedObj) entityObject;
                     }
                 } else {
-                    CompositeEntity compositeEntity =
-                        (CompositeEntity) entityObject;
+                    CompositeEntity compositeEntity = (CompositeEntity) entityObject;
                     NamedObj child = findFirstChild(compositeEntity,
                             indexedLists, excludedEntities);
                     if (child != null && !excludedEntities.contains(child)) {
@@ -131,8 +129,8 @@ public abstract class GraphAnalyzer {
             Set<? super Port> visitedPorts) {
         List<?> relationList = startPort.linkedRelationList();
         if (startPort instanceof ComponentPort) {
-            ((Collection<?>) relationList).addAll(
-                    ((TypedIOPort) startPort).insideRelationList());
+            ((Collection<?>) relationList).addAll(((TypedIOPort) startPort)
+                    .insideRelationList());
         }
 
         int i = 0;
@@ -220,19 +218,17 @@ public abstract class GraphAnalyzer {
             while (entry != null) {
                 IndexedList indexedList = entry.getValue();
                 List<?> objectList = indexedList.getFirst();
-                for (int index = indexedList.getSecond() + 1;
-                       index < objectList.size(); index++) {
+                for (int index = indexedList.getSecond() + 1; index < objectList
+                        .size(); index++) {
                     indexedList.setSecond(index);
                     NamedObj object = (NamedObj) objectList.get(index);
                     indexedLists.removeAllAfter(entry);
-                    if (!(object instanceof CompositeEntity
-                            && !_isOpaque((CompositeEntity) object))) {
+                    if (!(object instanceof CompositeEntity && !_isOpaque((CompositeEntity) object))) {
                         if (!excludedEntities.contains(object)) {
                             return object;
                         }
                     } else {
-                        CompositeEntity compositeEntity =
-                            (CompositeEntity) object;
+                        CompositeEntity compositeEntity = (CompositeEntity) object;
                         NamedObj child = findFirstChild(compositeEntity,
                                 indexedLists, excludedEntities);
                         if (child != null) {
@@ -271,8 +267,8 @@ public abstract class GraphAnalyzer {
         while (entry != null) {
             IndexedList markedEntityList = entry.getValue();
             List<?> entityList = markedEntityList.getFirst();
-            for (int index = markedEntityList.getSecond() + 1;
-                   index < entityList.size(); index++) {
+            for (int index = markedEntityList.getSecond() + 1; index < entityList
+                    .size(); index++) {
                 markedEntityList.setSecond(index);
                 path.removeAllAfter(entry);
 
@@ -348,8 +344,8 @@ public abstract class GraphAnalyzer {
         public boolean equals(Object object) {
             if (object instanceof IndexedList) {
                 IndexedList list = (IndexedList) object;
-                return getFirst().get(getSecond()) ==
-                    list.getFirst().get(list.getSecond());
+                return getFirst().get(getSecond()) == list.getFirst().get(
+                        list.getSecond());
             } else {
                 return false;
             }
@@ -398,8 +394,8 @@ public abstract class GraphAnalyzer {
         }
 
         public int hashCode() {
-            return Arrays.hashCode(new int[] {_startPort.hashCode(),
-                    super.hashCode()});
+            return Arrays.hashCode(new int[] { _startPort.hashCode(),
+                    super.hashCode() });
         }
 
         public String toString() {
@@ -441,8 +437,8 @@ public abstract class GraphAnalyzer {
         Attribute hideAttribute = relation.getAttribute("_hide");
         if (hideAttribute != null) {
             try {
-                BooleanToken token = (BooleanToken)
-                        ((Parameter) hideAttribute).getToken();
+                BooleanToken token = (BooleanToken) ((Parameter) hideAttribute)
+                        .getToken();
                 boolean hide = token.booleanValue();
                 return hide;
             } catch (IllegalActionException e) {

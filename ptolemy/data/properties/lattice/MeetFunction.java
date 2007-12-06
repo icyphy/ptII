@@ -71,7 +71,6 @@ public class MeetFunction extends MonotonicFunction {
     // to the creator object alive longer than necessary. If
     // possible, the class should be made into a static inner class."
 
-
     // The constructor takes a port argument so that the clone()
     // method can construct an instance of this class for the
     // input port on the clone.
@@ -87,39 +86,37 @@ public class MeetFunction extends MonotonicFunction {
     public MeetFunction(PropertyConstraintSolver solver, Set functionTerms) {
         this(solver, functionTerms.toArray());
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the function result.
      *  @return A Property.
      */
     public Object getValue() throws IllegalActionException {
         Property joinValue = null;
         Property termValue = null;
-        
 
         Iterator iterator = Arrays.asList(_functionTerms).iterator();
-        
+
         while (iterator.hasNext()) {
 
             Object object = iterator.next();
-            
+
             if (object instanceof MonotonicFunction) {
-            
+
                 termValue = (Property) ((MonotonicFunction) object).getValue();
 
             } else {
-                PropertyHelper helper = 
-                    _solver.getHelper(object);
+                PropertyHelper helper = _solver.getHelper(object);
 
-                termValue = helper.getProperty(object);                
+                termValue = helper.getProperty(object);
             }
-            
-            joinValue = (joinValue == null) ? termValue : 
-                _solver.getLattice().greatestLowerBound(joinValue, termValue);
+
+            joinValue = (joinValue == null) ? termValue : _solver.getLattice()
+                    .greatestLowerBound(joinValue, termValue);
         }
-        return joinValue; 
+        return joinValue;
     }
 
     /** Return the variables in this term. If the property of the input port
@@ -130,48 +127,46 @@ public class MeetFunction extends MonotonicFunction {
      */
     public InequalityTerm[] getVariables() {
         ArrayList<InequalityTerm> result = new ArrayList<InequalityTerm>();
-        
+
         Iterator iterator = Arrays.asList(_functionTerms).iterator();
         while (iterator.hasNext()) {
 
             Object object = iterator.next();
-            
+
             InequalityTerm term = null;
-            
+
             if (object instanceof InequalityTerm) {
 
-                term = (InequalityTerm) object; 
-                
+                term = (InequalityTerm) object;
+
             } else {
                 try {
-                    PropertyConstraintHelper helper = 
-                        (PropertyConstraintHelper) _solver.getHelper(object);
+                    PropertyConstraintHelper helper = (PropertyConstraintHelper) _solver
+                            .getHelper(object);
 
                     term = helper.getPropertyTerm(object);
-                    
+
                 } catch (IllegalActionException ex) {
                     throw new InternalErrorException("Helper not found.");
                 }
-            } 
+            }
 
             if (term.isSettable()) {
                 result.add(term);
             }
         }
-        
+
         InequalityTerm[] array = new InequalityTerm[result.size()];
-        System.arraycopy(result.toArray(), 0, array, 0, result.size() );
-        
-        return  array;
+        System.arraycopy(result.toArray(), 0, array, 0, result.size());
+
+        return array;
     }
 
     ///////////////////////////////////////////////////////////////
     ////                       private inner variable          ////
-    
+
     private PropertyConstraintSolver _solver;
 
     private Object[] _functionTerms;
 
 }
-
- 

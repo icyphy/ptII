@@ -2926,7 +2926,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                             // Is it shadowed?  Create a new override
                             // list to pass to the candidate.
                             newOverride = new LinkedList(override);
-                            newOverride.set(depth, Integer.valueOf(myBreadth + 1));
+                            newOverride.set(depth, Integer
+                                    .valueOf(myBreadth + 1));
 
                             if (_isShadowed(candidate._override, newOverride)) {
                                 // Yes it is.

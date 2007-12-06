@@ -111,13 +111,12 @@ public class NodeRandomizer extends TypedAtomicActor {
     public NodeRandomizer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         maxPrecision = new Parameter(this, "maxPrecision");
         maxPrecision.setExpression("0");
         maxPrecision.setTypeEquals(BaseType.INT);
-        
-        randomizeInInitialize = new Parameter(this,
-                "randomizeInInitialize");
+
+        randomizeInInitialize = new Parameter(this, "randomizeInInitialize");
         randomizeInInitialize.setExpression("false");
         randomizeInInitialize.setTypeEquals(BaseType.BOOLEAN);
 
@@ -146,7 +145,7 @@ public class NodeRandomizer extends TypedAtomicActor {
      *  rounded.  The default value is 0.
      */
     public Parameter maxPrecision;
-    
+
     /** If set to true, randomly distribute nodes in initialize().
      *  The default value is false.
      */
@@ -172,7 +171,7 @@ public class NodeRandomizer extends TypedAtomicActor {
      *  sessions.
      */
     public Parameter resetOnEachRun;
-    
+
     /** The seed that controls the random number generation to use when
      *  randomizing.
      *  A seed of zero is interpreted to mean that no seed is specified,
@@ -217,26 +216,25 @@ public class NodeRandomizer extends TypedAtomicActor {
             } else {
                 throw new IllegalActionException(this,
                         "Precision must be an integer "
-                        + "greater than or equal to 0.");
+                                + "greater than or equal to 0.");
             }
         } else {
             super.attributeChanged(attribute);
         }
-    }    
-    
+    }
+
     /** Issue a change request to randomize the locations of the nodes.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void fire() throws IllegalActionException {
         super.fire();
 
-        ChangeRequest doRandomize =
-            new ChangeRequest(this, "randomize nodes") {
-                protected void _execute() throws IllegalActionException {
-                    _randomize();
-                }
-            };
-        
+        ChangeRequest doRandomize = new ChangeRequest(this, "randomize nodes") {
+            protected void _execute() throws IllegalActionException {
+                _randomize();
+            }
+        };
+
         requestChange(doRandomize);
     }
 
@@ -332,17 +330,18 @@ public class NodeRandomizer extends TypedAtomicActor {
                     throw new IllegalActionException(this, "Invalid range: "
                             + range.getExpression());
                 }
-                
+
                 // If the precision is 0, then use the maximum precision allowed by double.  
                 // Otherwise, round according to the maxPrecision parameter.
                 if (_mathContext == null) {
                     randomLocation[i] = low
-                        + ((_random.nextDouble()) * (high - low));
+                            + ((_random.nextDouble()) * (high - low));
                 } else {
                     double candidateRandomLocation = low
-                        + ((_random.nextDouble()) * (high - low));
+                            + ((_random.nextDouble()) * (high - low));
                     // Create a BigDecimal with the specified precision.
-                    BigDecimal decimal = new BigDecimal(candidateRandomLocation, _mathContext);
+                    BigDecimal decimal = new BigDecimal(
+                            candidateRandomLocation, _mathContext);
                     // Obtain the rounded double value.
                     randomLocation[i] = decimal.doubleValue();
                 }
@@ -357,7 +356,7 @@ public class NodeRandomizer extends TypedAtomicActor {
         MoMLChangeRequest request = new MoMLChangeRequest(this, container,
                 changeMoML.toString());
         container.requestChange(request);
-        
+
         // Increment the workspace version number, since the wireless
         // graph connectivity probably changed as a result of the node
         // location randomization.  This is used in conjunction with
@@ -387,20 +386,16 @@ public class NodeRandomizer extends TypedAtomicActor {
         String className = null;
         if (locationAttribute != null) {
             className = locationAttribute.getClass().getName();
-            return "<property name=\""
-                + node.getName(container) + "._location\" "
-                + "class=\"" + className
-                + "\" value=\"["
-                + location[0] + ", " + location[1] + "]\"/>\n";
+            return "<property name=\"" + node.getName(container)
+                    + "._location\" " + "class=\"" + className + "\" value=\"["
+                    + location[0] + ", " + location[1] + "]\"/>\n";
         } else {
             // The _location attribute does not exist.
             // FIXME: We could make a new attribute first instead of
             // throwing an exception here.
             throw new IllegalActionException(
-                    "The _location attribute does not exist for node = "
-                    + node
-                    + "with container = "
-                    + container);
+                    "The _location attribute does not exist for node = " + node
+                            + "with container = " + container);
         }
     }
 
@@ -409,7 +404,7 @@ public class NodeRandomizer extends TypedAtomicActor {
 
     // Math context used to store precision.
     private MathContext _mathContext = null;
-    
+
     // Random number generator.
     private Random _random;
 }

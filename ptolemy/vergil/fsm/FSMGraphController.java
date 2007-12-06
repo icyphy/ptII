@@ -143,7 +143,7 @@ public class FSMGraphController extends FSMViewerGraphController {
         }
 
         if (_configureUnitsAction != null) {
-             _configureUnitsAction.setConfiguration(configuration);
+            _configureUnitsAction.setConfiguration(configuration);
         }
 
     }
@@ -320,7 +320,6 @@ public class FSMGraphController extends FSMViewerGraphController {
                     { "/ptolemy/vergil/actor/img/multi_inout_on.gif",
                             GUIUtilities.SELECTED_ICON } });
 
-
     /** The port dialog factory. */
     private PortDialogAction _portDialogAction;
 
@@ -421,8 +420,8 @@ public class FSMGraphController extends FSMViewerGraphController {
             FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
             putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             putValue("tooltip", "New State");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
-                    KeyEvent.VK_W));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
+                    .valueOf(KeyEvent.VK_W));
         }
 
         /** Execute the action. */

@@ -199,8 +199,8 @@ public class GeneratorAttribute extends SingletonAttribute implements
 
         BufferedReader inputReader = null;
         try {
-            inputReader = new BufferedReader(
-                    new InputStreamReader(initialParameters.openStream()));
+            inputReader = new BufferedReader(new InputStreamReader(
+                    initialParameters.openStream()));
 
             String inputLine;
             StringBuffer buffer = new StringBuffer();
@@ -228,8 +228,7 @@ public class GeneratorAttribute extends SingletonAttribute implements
                     inputReader.close();
                 }
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex,
-                        "Failed to close '"
+                throw new IllegalActionException(this, ex, "Failed to close '"
                         + initialParameters + "'");
             }
         }
@@ -288,7 +287,8 @@ public class GeneratorAttribute extends SingletonAttribute implements
         if (!ptIIUserDirectoryFile.isDirectory()
                 || !ptIIUserDirectoryFile.canWrite()
                 || ((JNLPUtilities.isRunningUnderWebStart() || (StringUtilities
-                        .getProperty("lax.user.dir").length() > 0)) && (ptIIUserDirectory.equals(ptII)))) {
+                        .getProperty("lax.user.dir").length() > 0)) && (ptIIUserDirectory
+                        .equals(ptII)))) {
             if (!ptIIUserDirectoryFile.isDirectory()) {
                 System.out
                         .println("AppletWriter: WARNING: ptIIUserDirectory = '"
@@ -352,8 +352,8 @@ public class GeneratorAttribute extends SingletonAttribute implements
         String ptIIUserDirectoryAsURL;
 
         try {
-            ptIIUserDirectoryAsURL = (new File(ptIIUserDirectory)).toURI().toURL()
-                    .toString();
+            ptIIUserDirectoryAsURL = (new File(ptIIUserDirectory)).toURI()
+                    .toURL().toString();
         } catch (java.net.MalformedURLException ex) {
             ptIIUserDirectoryAsURL = ex.getMessage();
         }

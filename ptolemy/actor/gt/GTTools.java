@@ -97,8 +97,8 @@ public class GTTools {
     public static String getCodeFromObject(NamedObj object,
             NamedObj topContainer) {
         String replacementAbbrev = getObjectTypeAbbreviation(object);
-        String name = topContainer == null ?
-                object.getName() : object.getName(topContainer);
+        String name = topContainer == null ? object.getName() : object
+                .getName(topContainer);
         return replacementAbbrev + name;
     }
 
@@ -114,14 +114,12 @@ public class GTTools {
 
     public static NamedObj getCorrespondingPatternObject(
             NamedObj replacementObject) {
-        PatternObjectAttribute attribute =
-            getPatternObjectAttribute(replacementObject);
+        PatternObjectAttribute attribute = getPatternObjectAttribute(replacementObject);
         if (attribute == null) {
             return null;
         }
 
-        CompositeActorMatcher container =
-            getContainingPatternOrReplacement(replacementObject);
+        CompositeActorMatcher container = getContainingPatternOrReplacement(replacementObject);
         if (container == null) {
             return null;
         }
@@ -131,8 +129,8 @@ public class GTTools {
             return null;
         }
 
-        TransformationRule transformer =
-            (TransformationRule) container.getContainer();
+        TransformationRule transformer = (TransformationRule) container
+                .getContainer();
         Pattern pattern = transformer.getPattern();
         if (replacementObject instanceof Entity) {
             return pattern.getEntity(patternObjectName);
@@ -147,21 +145,20 @@ public class GTTools {
             NamedObj object) {
         String moml;
         if (object instanceof Attribute) {
-            moml =  "<deleteProperty name=\"" + object.getName() + "\"/>";
+            moml = "<deleteProperty name=\"" + object.getName() + "\"/>";
         } else if (object instanceof Entity) {
-            moml =  "<deleteEntity name=\"" + object.getName() + "\"/>";
+            moml = "<deleteEntity name=\"" + object.getName() + "\"/>";
         } else if (object instanceof Port) {
-            moml =  "<deletePort name=\"" + object.getName() + "\"/>";
+            moml = "<deletePort name=\"" + object.getName() + "\"/>";
         } else if (object instanceof Relation) {
-            moml =  "<deleteRelation name=\"" + object.getName() + "\"/>";
+            moml = "<deleteRelation name=\"" + object.getName() + "\"/>";
         } else {
             return null;
         }
         return new MoMLChangeRequest(originator, object.getContainer(), moml);
     }
 
-    public static NamedObj getObjectFromCode(String code,
-            NamedObj topContainer) {
+    public static NamedObj getObjectFromCode(String code, NamedObj topContainer) {
         String abbreviation = code.substring(0, 2);
         String name = code.substring(2);
         if (abbreviation.equals("A:")) {
@@ -202,14 +199,12 @@ public class GTTools {
     }
 
     public static boolean isInPattern(NamedObj entity) {
-        CompositeActorMatcher container =
-            getContainingPatternOrReplacement(entity);
+        CompositeActorMatcher container = getContainingPatternOrReplacement(entity);
         return container != null && container instanceof Pattern;
     }
 
     public static boolean isInReplacement(NamedObj entity) {
-        CompositeActorMatcher container =
-            getContainingPatternOrReplacement(entity);
+        CompositeActorMatcher container = getContainingPatternOrReplacement(entity);
         return container != null && container instanceof Replacement;
     }
 }

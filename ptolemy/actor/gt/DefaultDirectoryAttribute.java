@@ -48,11 +48,11 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class DefaultDirectoryAttribute extends ParameterAttribute
-implements ValueListener {
+public class DefaultDirectoryAttribute extends ParameterAttribute implements
+        ValueListener {
 
     public DefaultDirectoryAttribute(NamedObj container, String name)
-    throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -61,7 +61,7 @@ implements ValueListener {
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             _checkContainerClass(container, Pattern.class, false);
@@ -93,7 +93,7 @@ implements ValueListener {
     public Parameter subdirs;
 
     protected void _initParameter() throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         parameter = new StringParameter(this, "display");
         parameter.setDisplayName("Display (./)");
         parameter.setPersistent(false);
@@ -106,8 +106,8 @@ implements ValueListener {
         Parameter allowFiles = new Parameter(directory, "allowFiles");
         allowFiles.setTypeEquals(BaseType.BOOLEAN);
         allowFiles.setToken(BooleanToken.FALSE);
-        Parameter allowDirectories =
-            new Parameter(directory, "allowDirectories");
+        Parameter allowDirectories = new Parameter(directory,
+                "allowDirectories");
         allowDirectories.setTypeEquals(BaseType.BOOLEAN);
         allowDirectories.setToken(BooleanToken.TRUE);
 

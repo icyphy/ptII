@@ -96,8 +96,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public CodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-        allowDynamicMultiportReference = new Parameter(this, "allowDynamicMultiportReference");
+
+        allowDynamicMultiportReference = new Parameter(this,
+                "allowDynamicMultiportReference");
         allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
         allowDynamicMultiportReference.setExpression("false");
 
@@ -135,7 +136,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         inline = new Parameter(this, "inline");
         inline.setTypeEquals(BaseType.BOOLEAN);
         inline.setExpression("false");
-        
+
         measureTime = new Parameter(this, "measureTime");
         measureTime.setTypeEquals(BaseType.BOOLEAN);
         measureTime.setExpression("false");
@@ -143,7 +144,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         overwriteFiles = new Parameter(this, "overwriteFiles");
         overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
         overwriteFiles.setExpression("true");
-        
+
         padBuffers = new Parameter(this, "padBuffers");
         padBuffers.setTypeEquals(BaseType.BOOLEAN);
         padBuffers.setExpression("true");
@@ -172,7 +173,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
-    
+
     /** If true, then channels in multiports can be dynamically
      *  referenced using the $ref macro.
      *  TODO: This parameter is SDF specific.
@@ -201,7 +202,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  with the value true.
      */
     public Parameter generateComment;
-    
+
     /** If true, the generated code will be C++ instead of C.
      * FIXME: This is a temporary fix.  In the long run, C++ should
      * be its own target language for code generation.  In the short
@@ -233,7 +234,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  value false.
      */
     public Parameter inline;
-    
+
     /** If true, generate code to meausre the execution time. 
      *  The default value is a parameter with the value false.
      */
@@ -248,7 +249,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  TODO: This parameter is SDF specific.
      */
     public Parameter padBuffers;
-    
+
     /** If true, then run the generated code. The default   
      *  value is a parameter with the value true.
      */
@@ -260,7 +261,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  parameter with default value false.
      */
     public Parameter sourceLineBinding;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -296,6 +297,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             super.attributeChanged(attribute);
         }
     }
+
     /** Return a formatted comment containing the
      *  specified string. In this base class, the
      *  comments is a C-style comment, which begins with
@@ -316,7 +318,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String comment(int indentLevel, String comment) {
         if (generateComment.getExpression().equals("true")) {
             return StringUtilities.getIndentPrefix(indentLevel)
-                + formatComment(comment);
+                    + formatComment(comment);
         } else {
             return "";
         }
@@ -330,9 +332,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  white space or comments
      */
     public static boolean containsCode(String code) {
-        return (code.replaceAll("/\\*[^*]*\\*/","").replaceAll("[ \t\n\r]", "").length() > 0);
+        return (code.replaceAll("/\\*[^*]*\\*/", "")
+                .replaceAll("[ \t\n\r]", "").length() > 0);
     }
-
 
     /** Return a formatted comment containing the specified string. In
      *  this base class, the comments is a C-style comment, which
@@ -346,7 +348,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String formatComment(String comment) {
         return "/* " + comment + " */" + _eol;
     }
-    
+
     /** Generate code and write it to the file specified by the
      *  <i>codeDirectory</i> parameter.
      *  @return The return value of the last subprocess that was executed.
@@ -371,7 +373,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public int generateCode(StringBuffer code) throws KernelException {
 
         int returnValue = -1;
-        
+
         // If the container is in the top level, we are generating code 
         // for the whole model. We have to make sure there is a manager,
         // and then preinitialize and resolve types.
@@ -397,8 +399,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 try {
                     long startTime = (new Date()).getTime();
                     manager.wrapup();
-                    _printTimeAndMemory(startTime, "StaticSchedulingCodeGenerator: "
-                            + "wrapup consumed: ");
+                    _printTimeAndMemory(startTime,
+                            "StaticSchedulingCodeGenerator: "
+                                    + "wrapup consumed: ");
                 } catch (RuntimeException ex) {
                     // The Exit actor causes Manager.wrapup() to throw this.
                     if (!manager.isExitingAfterWrapup()) {
@@ -413,8 +416,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
         return returnValue;
     }
-    
-    
+
     /** Generate code and append it to the given string buffer.
 
      *  Write the code to the directory specified by the codeDirectory
@@ -438,38 +440,38 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // generation process takes more than 10 seconds.
         long startTime = (new Date()).getTime();
         long overallStartTime = startTime;
-        
+
         // Reset the indent to zero.
         _indent = 0;
 
         // Reset the code file name so that getCodeFileName()
         // accurately reports whether code was generated.
         _codeFileName = null;
-        
+
         _sanitizedModelName = CodeGeneratorHelper.generateName(_model);
 
         // Each time a .dll file is generated, we must use a different name
         // for it so that it can be loaded without restarting vergil.
         NamedObj container = getContainer();
         if (container instanceof ptolemy.actor.lib.jni.CompiledCompositeActor) {
-            _sanitizedModelName = ((ptolemy.actor.lib.jni.CompiledCompositeActor) 
-                    container).getSanitizedName();
+            _sanitizedModelName = ((ptolemy.actor.lib.jni.CompiledCompositeActor) container)
+                    .getSanitizedName();
         }
-            
-        boolean inlineValue = ((BooleanToken)inline.getToken()).booleanValue();
+
+        boolean inlineValue = ((BooleanToken) inline.getToken()).booleanValue();
 
         // Analyze type conversions that may be needed.
         // This must be called before any code is generated.
         _analyzeTypeConversions();
-        
+
         // Report time consumed if appropriate.
         startTime = _printTimeAndMemory(startTime,
                 "CodeGenerator.analyzeTypeConvert() consumed: ");
-        
+
         // Add include directories and libraries specified by actors.
         _addActorIncludeDirectories();
         _addActorLibraries();
-        
+
         // Generate code.
         // We use the strategy pattern here, calling methods that
         // can be overridden in derived classes. We mostly invoke
@@ -478,20 +480,20 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String sharedCode = _generateSharedCode();
         String includeFiles = _generateIncludeFiles();
         String preinitializeCode = _generatePreinitializeCode();
-        
+
         CodeStream.setIndentLevel(1);
-        
+
         // FIXME: The rest of these methods should be made protected
         // like the ones called above. The derived classes also need
         // to be fixed.
         String initializeCode = generateInitializeCode();
-        
+
         // The StaticSchedulingCodeGenerator._generateBodyCode() reads
         // _postfireCode to see if we should include a call to postfire or 
         // not, so we need to call generatePostfireCode() before
         // call _generateBodyCode().
         _postfireCode = generatePostfireCode();
-        
+
         CodeStream.setIndentLevel(2);
         String bodyCode = _generateBodyCode();
         CodeStream.setIndentLevel(0);
@@ -502,7 +504,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String initializeProcedureName = generateInitializeProcedureName();
         String postfireEntryCode = generatePostfireEntryCode();
         String postfireExitCode = generatePostfireExitCode();
-        /*String postfireProcedureName =*/ generatePostfireProcedureName();
+        /*String postfireProcedureName =*/generatePostfireProcedureName();
         String wrapupEntryCode = generateWrapupEntryCode();
         String wrapupExitCode = generateWrapupExitCode();
         String wrapupProcedureName = generateWrapupProcedureName();
@@ -530,7 +532,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // The appending phase.
         code.append(generateCopyright());
-        
+
         // FIXME: Some user libraries may depend on our generated
         // code (i.e. definition of "boolean"). So, we need to append
         // these user libraries after the sharedCode. An easy to do 
@@ -548,26 +550,26 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         //if (containsCode(variableInitCode)
         //        || containsCode(initializeCode)) {
-            code.append(initializeEntryCode);
-            code.append(variableInitCode);
-            code.append(initializeCode);
-            code.append(initializeExitCode);
+        code.append(initializeEntryCode);
+        code.append(variableInitCode);
+        code.append(initializeCode);
+        code.append(initializeExitCode);
         //}
 
         if (containsCode(_postfireCode)) {
             // if (isTopLevel()) {
             //                          code.append(postfireProcedureName);
-                          //            } else {
-                code.append(postfireEntryCode);
-                code.append(_postfireCode);
-                code.append(postfireExitCode);
-                //            }
+            //            } else {
+            code.append(postfireEntryCode);
+            code.append(_postfireCode);
+            code.append(postfireExitCode);
+            //            }
         }
 
         //if (containsCode(wrapupCode)) {
-            code.append(wrapupEntryCode);
-            code.append(wrapupCode);
-            code.append(wrapupExitCode);
+        code.append(wrapupEntryCode);
+        code.append(wrapupCode);
+        code.append(wrapupExitCode);
         //}
 
         code.append(mainEntryCode);
@@ -578,9 +580,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             if (((BooleanToken) measureTime.getToken()).booleanValue()) {
                 code.append(_recordStartTime());
             }
-            
-            if (containsCode(variableInitCode)
-                    || containsCode(initializeCode)) {
+
+            if (containsCode(variableInitCode) || containsCode(initializeCode)) {
                 code.append(initializeProcedureName);
             }
         }
@@ -612,8 +613,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 "CodeGenerator: final pass consumed: ");
 
         _codeFileName = _writeCode(code);
-        
-        /*startTime =*/ _printTimeAndMemory(startTime,
+
+        /*startTime =*/_printTimeAndMemory(startTime,
                 "CodeGenerator: writing code consumed: ");
 
         _writeMakefile();
@@ -633,7 +634,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception Exception If any error occurs.
      */
     public static int generateCode(String[] args) throws Exception {
-        try { 
+        try {
             if (args.length == 0) {
                 System.err.println("Usage: java -classpath $PTII "
                         + "ptolemy.codegen.kernel.CodeGenerator model.xml "
@@ -680,7 +681,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 try {
                     modelURL = new File(args[i]).toURI().toURL();
                 } catch (Exception ex) {
-                    throw new Exception("Could not open \"" + args[i] + "\"", ex);
+                    throw new Exception("Could not open \"" + args[i] + "\"",
+                            ex);
                 }
 
                 CompositeActor toplevel = null;
@@ -694,25 +696,26 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                         // fail because the results don't match.
                         parser.reset();
                         MoMLParser.purgeModelRecord(modelURL);
-                        toplevel = (CompositeActor) parser.parse(null, modelURL);
+                        toplevel = (CompositeActor) parser
+                                .parse(null, modelURL);
                     } catch (Exception ex) {
-                        throw new Exception("Failed to parse \"" + args[i] + "\"",
-                                ex);
+                        throw new Exception("Failed to parse \"" + args[i]
+                                + "\"", ex);
                     }
 
                     // Get all instances of this class contained in the model
                     List codeGenerators = toplevel
-                        .attributeList(CodeGenerator.class);
+                            .attributeList(CodeGenerator.class);
 
                     if (codeGenerators.size() == 0) {
                         // Add a codeGenerator
-                        codeGenerator = new StaticSchedulingCodeGenerator(toplevel,
-                                "CodeGenerator_AutoAdded");
+                        codeGenerator = new StaticSchedulingCodeGenerator(
+                                toplevel, "CodeGenerator_AutoAdded");
                     } else {
                         // Get the last CodeGenerator in the list, maybe
                         // it was added last?
                         codeGenerator = (CodeGenerator) codeGenerators
-                            .get(codeGenerators.size() - 1);
+                                .get(codeGenerators.size() - 1);
                     }
 
                     codeGenerator._updateParameters(toplevel);
@@ -734,7 +737,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             }
             if (codeGenerator != null) {
                 return codeGenerator.getExecuteCommands()
-                    .getLastSubprocessReturnCode();
+                        .getLastSubprocessReturnCode();
             }
             return -2;
         } catch (Throwable ex) {
@@ -749,27 +752,47 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateCopyright() {
         // FIXME: Why isn't this method static?
         // Why isn't it in CodegenUtilities?
-        return comment("Generated by Ptolemy II (http://ptolemy.eecs.berkeley.edu)" + _eol + _eol
-                + "Copyright (c) 2005-2007 The Regents of the University of California." + _eol
-                + "All rights reserved." + _eol
-                + "Permission is hereby granted, without written agreement and without" + _eol
-                + "license or royalty fees, to use, copy, modify, and distribute this" + _eol
-                + "software and its documentation for any purpose, provided that the above" + _eol
-                + "copyright notice and the following two paragraphs appear in all copies" + _eol
-                + "of this software." + _eol
-                + "" + _eol
-                + "IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY" + _eol
-                + "FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES" + _eol
-                + "ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF" + _eol
-                + "THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF" + _eol
-                + "SUCH DAMAGE." + _eol
-                + "" + _eol
-                + "THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES," + _eol
-                + "INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF" + _eol
-                + "MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE" + _eol
-                + "PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF" + _eol
-                + "CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES," + _eol
-                + "ENHANCEMENTS, OR MODIFICATIONS." + _eol);
+        return comment("Generated by Ptolemy II (http://ptolemy.eecs.berkeley.edu)"
+                + _eol
+                + _eol
+                + "Copyright (c) 2005-2007 The Regents of the University of California."
+                + _eol
+                + "All rights reserved."
+                + _eol
+                + "Permission is hereby granted, without written agreement and without"
+                + _eol
+                + "license or royalty fees, to use, copy, modify, and distribute this"
+                + _eol
+                + "software and its documentation for any purpose, provided that the above"
+                + _eol
+                + "copyright notice and the following two paragraphs appear in all copies"
+                + _eol
+                + "of this software."
+                + _eol
+                + ""
+                + _eol
+                + "IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY"
+                + _eol
+                + "FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES"
+                + _eol
+                + "ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF"
+                + _eol
+                + "THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF"
+                + _eol
+                + "SUCH DAMAGE."
+                + _eol
+                + ""
+                + _eol
+                + "THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,"
+                + _eol
+                + "INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF"
+                + _eol
+                + "MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE"
+                + _eol
+                + "PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF"
+                + _eol
+                + "CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,"
+                + _eol + "ENHANCEMENTS, OR MODIFICATIONS." + _eol);
     }
 
     /** Generate The fire function code. This method is called when the firing
@@ -1053,8 +1076,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String getOutputFilename() throws IllegalActionException {
         String packageValue = generatorPackage.stringValue();
 
-        String extension = 
-            packageValue.substring(packageValue.lastIndexOf("."));
+        String extension = packageValue
+                .substring(packageValue.lastIndexOf("."));
 
         return _sanitizedModelName + extension;
     }
@@ -1100,7 +1123,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // then StringUtilities.exit(0) might not actually exit.
             return true;
         } else if (arg.equals("-version")) {
-            System.out.println("Version "
+            System.out
+                    .println("Version "
                             + VersionAttribute.CURRENT_VERSION.getExpression()
                             + ", Build $Id$");
 
@@ -1112,7 +1136,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Argument not recognized.
         return false;
     }
-    
+
     /** This method is used to set the code generator for a helper class.
      *  Since this is not a helper class for a component, this method does
      *  nothing.
@@ -1144,7 +1168,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if ((container != null) && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
                     "CodeGenerator can only be contained"
-                    + " by CompositeEntity");
+                            + " by CompositeEntity");
         }
 
         super.setContainer(container);
@@ -1165,13 +1189,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Add include directories specified by the actors in this model.
      *  @exception IllegalActionException Never in this base class.
      */
-    protected void _addActorIncludeDirectories() throws IllegalActionException { }
-    
+    protected void _addActorIncludeDirectories() throws IllegalActionException {
+    }
+
     /** Add libraries specified by the actors in this model.
      *  @exception IllegalActionException Never in this base class.
      */
-    protected void _addActorLibraries() throws IllegalActionException { }
-    
+    protected void _addActorLibraries() throws IllegalActionException {
+    }
+
     /** Return the value of the codeDirectory parameter.
      *  @return The value of the {@link #codeDirectory} parameter.
      *  @exception IOException If the <i>codeDirectory</i> parameter
@@ -1179,7 +1205,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception IllegalActionException If thrown while reading the 
      *  codeDirectory parameter.
      */
-    protected File _codeDirectoryAsFile() throws IOException, IllegalActionException  {
+    protected File _codeDirectoryAsFile() throws IOException,
+            IllegalActionException {
         // This method is here to avoid code duplication.
         // It is package protected so we can read it in CodeGeneratorHelper
         File codeDirectoryFile = codeDirectory.asFile();
@@ -1207,30 +1234,30 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     protected int _executeCommands() throws IllegalActionException {
         return 0;
     }
-    
+
     /** Make a final pass over the generated code. Subclass may extend
      * this method to do extra processing to format the output code.
      * @param code The given code to be processed. 
      * @return The processed code.
      * @exception IllegalActionException If #getOutputFilename() throws it.
      */
-    protected StringBuffer _finalPassOverCode(StringBuffer code) 
+    protected StringBuffer _finalPassOverCode(StringBuffer code)
             throws IllegalActionException {
 
-        StringTokenizer tokenizer = 
-            new StringTokenizer(code.toString(), _eol + "\n");
-        
+        StringTokenizer tokenizer = new StringTokenizer(code.toString(), _eol
+                + "\n");
+
         code = new StringBuffer();
-        
+
         while (tokenizer.hasMoreTokens()) {
             String line = tokenizer.nextToken();
             line = _prettyPrint(line, "{", "}");
             code.append(line + _eol);
         }
-        
+
         return code;
     }
-    
+
     /** Generate the body code that lies between variable declaration
      *  and wrapup. This method delegates to the director helper
      *  to generate a main loop.
@@ -1247,23 +1274,24 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (director == null) {
             throw new IllegalActionException(model, "Does not have a director.");
         }
-        Director directorHelper = (Director)_getHelper(director);
-        
+        Director directorHelper = (Director) _getHelper(director);
+
         if (isTopLevel()) {
             if (_postfireCode == null) {
-                throw new InternalErrorException(getContainer(), null,
+                throw new InternalErrorException(
+                        getContainer(),
+                        null,
                         "generatePostfireCode() should be called before "
-                        + "_generateBodyCode() because we need to know "
-                        + "if there is a C postfire() method "
-                        + "to be called.");
+                                + "_generateBodyCode() because we need to know "
+                                + "if there is a C postfire() method "
+                                + "to be called.");
             }
-            return directorHelper.generateMainLoop(
-                    CodeGenerator.containsCode(_postfireCode));
+            return directorHelper.generateMainLoop(CodeGenerator
+                    .containsCode(_postfireCode));
 
         } else {
             // Generate JNI code.
-            CodeGeneratorHelper compositeHelper = 
-                (CodeGeneratorHelper) _getHelper(model);
+            CodeGeneratorHelper compositeHelper = (CodeGeneratorHelper) _getHelper(model);
             return compositeHelper.generateFireCode();
         }
     }
@@ -1276,7 +1304,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     protected String _generateIncludeFiles() throws IllegalActionException {
         return "";
     }
-    
+
     /** Generate preinitialize code (if there is any).
      *  This method calls the generatePreinitializeCode() method
      *  of the code generator helper associated with the enclosing
@@ -1295,16 +1323,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // Determine which variables in the model can change
             // value during execution.
             _modifiedVariables = helper.getModifiedVariables();
-            
+
             // Delegate to the container to generate preintialize code.
             code.append(helper.generatePreinitializeCode());
-            
+
             // Create variables for buffer offset indexing.
             // FIXME: This does not belong here. It is SDF-specific.
             code.append(helper.createOffsetVariablesIfNeeded());
         } catch (Throwable throwable) {
-            throw new IllegalActionException(helper
-                    .getComponent(), throwable,
+            throw new IllegalActionException(helper.getComponent(), throwable,
                     "Failed to generate preinitialize code");
         }
         return code.toString();
@@ -1334,7 +1361,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     + comment("Generate shared code for "
                             + getContainer().getName()));
             code.append(comment("Finished generating shared code for "
-                                + getContainer().getName()));
+                    + getContainer().getName()));
         }
 
         return code.toString();
@@ -1357,12 +1384,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String helperClassName = componentClassName.replaceFirst("ptolemy",
                 packageName);
         if (helperClassName.equals(componentClassName)) {
-            throw new IllegalActionException(component,
+            throw new IllegalActionException(
+                    component,
                     "The component class name \""
-                    + componentClassName + "\" and the helper class name \""
-                    + helperClassName + "\" are the same?  Perhaps the "
-                    + "substitution of the value of the generatorPackage "
-                    + "parameter \"" + packageName + "\" failed?");
+                            + componentClassName
+                            + "\" and the helper class name \""
+                            + helperClassName
+                            + "\" are the same?  Perhaps the "
+                            + "substitution of the value of the generatorPackage "
+                            + "parameter \"" + packageName + "\" failed?");
         }
 
         Class helperClass = null;
@@ -1378,12 +1408,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         try {
             constructor = helperClass.getConstructor(new Class[] { component
-                                                                   .getClass() });
+                    .getClass() });
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this, e,
                     "There is no constructor in " + helperClassName
-                    + " which accepts an instance of "
-                    + componentClassName + " as the argument.");
+                            + " which accepts an instance of "
+                            + componentClassName + " as the argument.");
         }
 
         Object helperObject = null;
@@ -1398,8 +1428,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (!(helperObject instanceof ActorCodeGenerator)) {
             throw new IllegalActionException(this,
                     "Cannot generate code for this component: " + component
-                    + ". Its helper class does not"
-                    + " implement ActorCodeGenerator.");
+                            + ". Its helper class does not"
+                            + " implement ActorCodeGenerator.");
         }
 
         ActorCodeGenerator castHelperObject = (ActorCodeGenerator) helperObject;
@@ -1418,8 +1448,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected String _printExecutionTime() {
         return comment("Print execution time.");
-    }  
-    
+    }
+
     /** Print the elapsed time since the specified startTime if
      *  the elpsed time is greater than 10 seconds. Otherwise,
      *  do nothing.
@@ -1427,7 +1457,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *   of <code>(new Date()).getTime()</code>.
      *  @param message A prefix to the printed message.
      *  @return The current time.
-     */ 
+     */
     protected long _printTimeAndMemory(long startTime, String message) {
         long currentTime = (new Date()).getTime();
         if (currentTime - startTime > 10000) {
@@ -1442,8 +1472,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected String _recordStartTime() {
         return comment("Record current time.");
-    }    
-    
+    }
+
     /** Return a string summarizing the command-line arguments.
      *  @return A usage string.
      */
@@ -1465,17 +1495,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected String _writeCode(StringBuffer code)
             throws IllegalActionException {
-                
+
         // This method is private so that the body of the caller shorter.
 
         String codeFileName = getOutputFilename();
-        
+
         // Write the code to a file with the same name as the model into
         // the directory named by the codeDirectory parameter.
         try {
-            _executeCommands.stdout("Writing " + codeFileName + " in " +
-                    codeDirectory.getBaseDirectory() + " (" +
-                    code.length() + " characters)");
+            _executeCommands.stdout("Writing " + codeFileName + " in "
+                    + codeDirectory.getBaseDirectory() + " (" + code.length()
+                    + " characters)");
 
             // Check if needs to overwrite.
             if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
@@ -1485,13 +1515,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 // this method from a script.  If the question is
                 // asked, the build will hang.
                 if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
-                            + " exists. OK to overwrite?")) {
+                        + " exists. OK to overwrite?")) {
                     /*
                     throw new IllegalActionException(this,
                             "Please select another file name.");
                             */
                     return FileUtilities.nameToFile(codeFileName,
-                            codeDirectory.getBaseDirectory()).getCanonicalPath();
+                            codeDirectory.getBaseDirectory())
+                            .getCanonicalPath();
                 }
             }
 
@@ -1534,8 +1565,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {
-            { "-codeDirectory",
-              "<directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
+            {
+                    "-codeDirectory",
+                    "<directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
             { "-compile", "        true|false (default: true)" },
             { "-generateComment", "true|false (default: true)" },
             { "-inline", "         true|false (default: false)" },
@@ -1602,16 +1634,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** 
      * A static list of all macros supported by the code generator. 
      */
-    protected List<String> _macros = new ArrayList<String>(Arrays.asList(new String[] { 
-            "ref", "val", "size", "type", "targetType", "cgType", "tokenFunc",
-            "typeFunc", "actorSymbol", "actorClass", "new" }));
+    protected List<String> _macros = new ArrayList<String>(Arrays
+            .asList(new String[] { "ref", "val", "size", "type", "targetType",
+                    "cgType", "tokenFunc", "typeFunc", "actorSymbol",
+                    "actorClass", "new" }));
 
     /** The postfire code. */
     protected String _postfireCode = null;
 
     /** A static list of the primitive types supported by the code generator. */
     protected static final List _primitiveTypes = Arrays.asList(new String[] {
-        "Int", "Double", "String", "Long", "Boolean", "UnsignedByte" });
+            "Int", "Double", "String", "Long", "Boolean", "UnsignedByte" });
 
     /** The sanitized model name. */
     protected String _sanitizedModelName;
@@ -1641,8 +1674,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @param blockEnd The given block end symbol to match.
      *  @return The pretty-printed version of the given code line.
      */
-    private String _prettyPrint(
-            String line, String blockBegin, String blockEnd) {
+    private String _prettyPrint(String line, String blockBegin, String blockEnd) {
 
         line = line.trim();
         int begin = line.contains(blockBegin) ? 1 : 0;
@@ -1672,10 +1704,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             if (attribute instanceof Settable) {
                 // Use a MoMLChangeRequest so that visual rendition (if
                 // any) is updated and listeners are notified.
-                String moml = "<property name=\"" + name
-                    + "\" value=\"" + value + "\"/>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this,
-                        model, moml);
+                String moml = "<property name=\"" + name + "\" value=\""
+                        + value + "\"/>";
+                MoMLChangeRequest request = new MoMLChangeRequest(this, model,
+                        moml);
                 model.requestChange(request);
             } else {
                 attribute = getAttribute(name);
@@ -1683,8 +1715,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 if (attribute instanceof Settable) {
                     // Use a MoMLChangeRequest so that visual rendition (if
                     // any) is updated and listeners are notified.
-                    String moml = "<property name=\"" + name
-                        + "\" value=\"" + value + "\"/>";
+                    String moml = "<property name=\"" + name + "\" value=\""
+                            + value + "\"/>";
                     MoMLChangeRequest request = new MoMLChangeRequest(this,
                             this, moml);
                     model.requestChange(request);
@@ -1694,7 +1726,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
             if (model instanceof CompositeActor) {
                 ptolemy.actor.Director director = ((CompositeActor) model)
-                    .getDirector();
+                        .getDirector();
 
                 if (director != null) {
                     attribute = director.getAttribute(name);
@@ -1705,9 +1737,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                         // visual rendition (if any) is
                         // updated and listeners are notified.
                         String moml = "<property name=\"" + name
-                            + "\" value=\"" + value + "\"/>";
-                        MoMLChangeRequest request = new MoMLChangeRequest(
-                                this, director, moml);
+                                + "\" value=\"" + value + "\"/>";
+                        MoMLChangeRequest request = new MoMLChangeRequest(this,
+                                director, moml);
                         director.requestChange(request);
                     }
                 }
@@ -1719,8 +1751,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ////                         private variables                 ////
 
     /** A map giving the code generator helpers for each actor. */
-    private Map<NamedObj,ActorCodeGenerator> _helperStore
-            = new HashMap<NamedObj,ActorCodeGenerator>();
+    private Map<NamedObj, ActorCodeGenerator> _helperStore = new HashMap<NamedObj, ActorCodeGenerator>();
 
     /** The current indent level when pretty printing code. */
     private int _indent;

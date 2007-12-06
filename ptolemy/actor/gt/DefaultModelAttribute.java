@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Workspace;
 public class DefaultModelAttribute extends ParameterAttribute {
 
     public DefaultModelAttribute(NamedObj container, String name)
-    throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -54,7 +54,7 @@ public class DefaultModelAttribute extends ParameterAttribute {
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             _checkContainerClass(container, Pattern.class, false);

@@ -108,8 +108,8 @@ public class MatrixSplit extends SDFTransformer {
         columnSplit.setTypeEquals(new ArrayType(BaseType.INT));
         columnSplit.setExpression("{1}");
 
-        output_tokenProductionRate.setExpression(
-                "rowSplit.length() * columnSplit.length()");
+        output_tokenProductionRate
+                .setExpression("rowSplit.length() * columnSplit.length()");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -141,13 +141,13 @@ public class MatrixSplit extends SDFTransformer {
         ArrayToken rows = (ArrayToken) rowSplit.getToken();
         int[] columnsValue = new int[columns.length()];
         for (int i = 0; i < columnsValue.length; i++) {
-            columnsValue[i] = ((IntToken)columns.getElement(i)).intValue();
+            columnsValue[i] = ((IntToken) columns.getElement(i)).intValue();
         }
         int[] rowsValue = new int[rows.length()];
         for (int i = 0; i < rowsValue.length; i++) {
-            rowsValue[i] = ((IntToken)rows.getElement(i)).intValue();
+            rowsValue[i] = ((IntToken) rows.getElement(i)).intValue();
         }
-        MatrixToken inputValue = (MatrixToken)input.get(0);
+        MatrixToken inputValue = (MatrixToken) input.get(0);
         MatrixToken[][] result = inputValue.split(rowsValue, columnsValue);
         for (int i = 0; i < result.length; i++) {
             for (int j = 0; j < result[i].length; j++) {

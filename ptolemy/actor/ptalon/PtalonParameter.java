@@ -76,7 +76,7 @@ public class PtalonParameter extends Parameter {
     public boolean hasValue() {
         return _hasValue;
     }
-    
+
     /** Set the expression and flag that the value has been set for
      *  this parameter.
      *  @param expr The expression to set.
@@ -86,7 +86,7 @@ public class PtalonParameter extends Parameter {
             return;
         }
         _hasValue = true;
-        
+
         super.setExpression(expr);
     }
 
@@ -97,7 +97,7 @@ public class PtalonParameter extends Parameter {
      */
     public void setToken(Token token) throws IllegalActionException {
         _hasValue = true;
-        
+
         super.setToken(token);
     }
 
@@ -111,10 +111,10 @@ public class PtalonParameter extends Parameter {
             return;
         }
         _hasValue = true;
-        
+
         super.setToken(expression);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private members                     ////
 

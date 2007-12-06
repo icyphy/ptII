@@ -180,8 +180,8 @@ public class ConfigParser {
             // throw an exception.
             parser.parse(fileName, null, br);
         } catch (Throwable throwable) {
-            throw new Exception(
-                    "Failed to parse \"" + fileName + "\"", throwable);
+            throw new Exception("Failed to parse \"" + fileName + "\"",
+                    throwable);
         }
         // Manually add a <group> element to the root of the tree.
         if (backtrackingElement) {

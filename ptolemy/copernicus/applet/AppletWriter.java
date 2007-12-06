@@ -307,7 +307,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
             URL modelPathURL = new URL(_modelPath);
 
-            if (!modelPathURL.sameFile(newModelFile.getCanonicalFile().toURI().toURL())) {
+            if (!modelPathURL.sameFile(newModelFile.getCanonicalFile().toURI()
+                    .toURL())) {
                 // Here, _modelPath probably has the GeneratorAttribute
                 // in it, which is not what we want because when we load
                 // the applet, the copernicus class files will not be present.
@@ -515,44 +516,35 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         // files.
         Map classMap = _allAtomicEntityJars();
 
-        classMap.put("ptolemy.actor.lib.colt.ColtBeta",
-                "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtBinomial",
-                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtBeta", "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtBinomial", "lib/ptcolt.jar");
         classMap.put("ptolemy.actor.lib.colt.ColtBinomialSelector",
                 "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtBreitWigner",
-                "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtChiSquare",
-                "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtExponential",
-                "lib/ptcolt.jar");
+        classMap
+                .put("ptolemy.actor.lib.colt.ColtBreitWigner", "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtChiSquare", "lib/ptcolt.jar");
+        classMap
+                .put("ptolemy.actor.lib.colt.ColtExponential", "lib/ptcolt.jar");
         classMap.put("ptolemy.actor.lib.colt.ColtExponentialPower",
                 "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtGamma",
-                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtGamma", "lib/ptcolt.jar");
         classMap.put("ptolemy.actor.lib.colt.ColtHyperGeometric",
                 "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtLogarithmic",
-                "lib/ptcolt.jar");
+        classMap
+                .put("ptolemy.actor.lib.colt.ColtLogarithmic", "lib/ptcolt.jar");
         classMap.put("ptolemy.actor.lib.colt.ColtNegativeBinomial",
                 "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtNormal",
-                "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtPoisson",
-                "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtPoissonSlow",
-                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtNormal", "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtPoisson", "lib/ptcolt.jar");
+        classMap
+                .put("ptolemy.actor.lib.colt.ColtPoissonSlow", "lib/ptcolt.jar");
         classMap.put("ptolemy.actor.lib.colt.ColtRandomSource",
                 "lib/ptcolt.jar");
         classMap.put("ptolemy.actor.lib.colt.ColtSeedParameter",
                 "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtStudentT",
-                "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtVonMises",
-                "lib/ptcolt.jar");
-        classMap.put("ptolemy.actor.lib.colt.ColtZeta",
-                "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtStudentT", "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtVonMises", "lib/ptcolt.jar");
+        classMap.put("ptolemy.actor.lib.colt.ColtZeta", "lib/ptcolt.jar");
 
         classMap.put("ptolemy.actor.gui.MoMLApplet", "ptolemy/ptsupport.jar");
 
@@ -601,8 +593,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 continue;
             }
 
-            if (!_copyPotentialJarFile((String) entry.getValue(),
-                    className, jarFilesThatHaveBeenRequired)) {
+            if (!_copyPotentialJarFile((String) entry.getValue(), className,
+                    jarFilesThatHaveBeenRequired)) {
                 // The className could not be found in the classMap
                 // Under Web Start, the resource that contains a class
                 // will have a mangled name, so we copy the jar file.

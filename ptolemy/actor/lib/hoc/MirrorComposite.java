@@ -243,10 +243,10 @@ public class MirrorComposite extends TypedCompositeActor implements
 
                             // The outside port may already exist (e.g.
                             // as a consequence of cloning).
-                            IOPort newPort = (IOPort)getPort(name);
+                            IOPort newPort = (IOPort) getPort(name);
 
                             if (newPort == null) {
-                                newPort = (IOPort)newPort(name);
+                                newPort = (IOPort) newPort(name);
                             }
 
                             if (insidePort instanceof IOPort) {

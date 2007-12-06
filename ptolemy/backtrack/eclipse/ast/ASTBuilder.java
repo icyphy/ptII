@@ -81,7 +81,7 @@ public class ASTBuilder {
             ASTMalformedException {
         File file = new File(fileName);
         long fileLength = file.length();
-        char[] source = new char[(int)fileLength];
+        char[] source = new char[(int) fileLength];
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(file);

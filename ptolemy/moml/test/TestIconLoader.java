@@ -48,7 +48,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class TestIconLoader implements IconLoader { 
+public class TestIconLoader implements IconLoader {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

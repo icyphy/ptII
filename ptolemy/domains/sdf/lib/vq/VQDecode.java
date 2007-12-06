@@ -183,8 +183,7 @@ public class VQDecode extends Transformer {
         try {
             if (filename != null) {
                 try {
-                    URL dataurl = FileUtilities.nameToURL(filename,
-                            null, null);
+                    URL dataurl = FileUtilities.nameToURL(filename, null, null);
                     _debug("VQDecode: codebook = " + dataurl);
                     source = dataurl.openStream();
                 } catch (MalformedURLException e) {

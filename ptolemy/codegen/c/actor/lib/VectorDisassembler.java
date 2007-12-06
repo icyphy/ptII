@@ -55,7 +55,7 @@ public class VectorDisassembler extends CCodeGeneratorHelper {
     public VectorDisassembler(ptolemy.actor.lib.VectorDisassembler actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from VectorDisassembler.c,
@@ -75,28 +75,26 @@ public class VectorDisassembler extends CCodeGeneratorHelper {
         args.add(Integer.valueOf(actor.output.getWidth()));
         fireCode.append(_generateBlockCode("fireBlock", args));
 
-//         Type type = actor.output.getType();
-//         if (isPrimitive(type)) {
-//             args.add(codeGenType(type));
-//         }
-        
-//         FIXME: we need a way to get the matrix dimensions here
-//         DoubleMatrixToken vector = (DoubleMatrixToken) actor.input.get(0);
+        //         Type type = actor.output.getType();
+        //         if (isPrimitive(type)) {
+        //             args.add(codeGenType(type));
+        //         }
 
-//         if (vector.getColumnCount() != 1) {
-//             throw new IllegalActionException(this, "The input must "
-//                     + "be a DoubleMatrixToken with one column.");
-//         }
+        //         FIXME: we need a way to get the matrix dimensions here
+        //         DoubleMatrixToken vector = (DoubleMatrixToken) actor.input.get(0);
 
-//         int min = Math.min(vector.getRowCount(), actor.output.getWidth());
-//        int min = actor.output.getWidth();
-//         int min = Math.min(actor.input.getWidth(), actor.output.getWidth());
-//         for (int i = 0; i < min; i++) {
-//             args.set(0, Integer.valueOf(i));
-//             fireCode.append(_generateBlockCode("fireBlock", args));
-//         }
+        //         if (vector.getColumnCount() != 1) {
+        //             throw new IllegalActionException(this, "The input must "
+        //                     + "be a DoubleMatrixToken with one column.");
+        //         }
 
-
+        //         int min = Math.min(vector.getRowCount(), actor.output.getWidth());
+        //        int min = actor.output.getWidth();
+        //         int min = Math.min(actor.input.getWidth(), actor.output.getWidth());
+        //         for (int i = 0; i < min; i++) {
+        //             args.set(0, Integer.valueOf(i));
+        //             fireCode.append(_generateBlockCode("fireBlock", args));
+        //         }
 
         ArrayList args2 = new ArrayList();
         Type type = actor.output.getType();
@@ -106,7 +104,7 @@ public class VectorDisassembler extends CCodeGeneratorHelper {
         } else {
             fireCode.append(_generateBlockCode("fireBlock2"));
         }
-            
+
         ArrayList args3 = new ArrayList();
         args3.add(Integer.valueOf(0));
 

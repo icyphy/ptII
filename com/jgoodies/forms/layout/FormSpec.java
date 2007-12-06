@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-
 /**
  * An abstract class that specifies columns and rows in FormLayout 
  * by their default alignment, start size and resizing behavior.
@@ -51,10 +50,9 @@ import java.util.StringTokenizer;
  * @see     CellConstraints
  */
 public abstract class FormSpec implements Serializable {
-    
-    
+
     // Horizontal and Vertical Default Alignments ***************************
-    
+
     /**
      * By default put components in the left.
      */
@@ -89,10 +87,9 @@ public abstract class FormSpec implements Serializable {
      * An array of all enumeration values used to canonicalize 
      * deserialized default alignments.
      */
-    private static final DefaultAlignment[] VALUES = 
-        { LEFT_ALIGN, RIGHT_ALIGN, TOP_ALIGN, BOTTOM_ALIGN, CENTER_ALIGN, FILL_ALIGN};
-    
-    
+    private static final DefaultAlignment[] VALUES = { LEFT_ALIGN, RIGHT_ALIGN,
+            TOP_ALIGN, BOTTOM_ALIGN, CENTER_ALIGN, FILL_ALIGN };
+
     // Resizing Weights *****************************************************
 
     /**
@@ -104,27 +101,25 @@ public abstract class FormSpec implements Serializable {
      * The default resize weight.
      */
     public static final double DEFAULT_GROW = 1.0d;
-    
 
     // Fields ***************************************************************
 
     /**
      * Holds the default alignment that will be used if a cell does not
      * override this default.
-     */ 
+     */
     private DefaultAlignment defaultAlignment;
-    
+
     /**
      * Holds the size that describes how to size this column or row.
-     */ 
-    private Size size; 
-    
+     */
+    private Size size;
+
     /**
      * Holds the resize weight; is 0 if not used.
      */
     private double resizeWeight;
-    
-    
+
     // Instance Creation ****************************************************
 
     /**
@@ -138,16 +133,16 @@ public abstract class FormSpec implements Serializable {
      * @param resizeWeight     the spec resize weight      
      * @exception IllegalArgumentException if the resize weight is negative
      */
-    protected FormSpec(DefaultAlignment defaultAlignment, 
-                        Size size, 
-                        double resizeWeight) {
-    	this.defaultAlignment = defaultAlignment;
-        this.size             = size;
-        this.resizeWeight     = resizeWeight;
-        if (resizeWeight < 0) 
-            throw new IllegalArgumentException("The resize weight must be non-negative.");
+    protected FormSpec(DefaultAlignment defaultAlignment, Size size,
+            double resizeWeight) {
+        this.defaultAlignment = defaultAlignment;
+        this.size = size;
+        this.resizeWeight = resizeWeight;
+        if (resizeWeight < 0)
+            throw new IllegalArgumentException(
+                    "The resize weight must be non-negative.");
     }
-	
+
     /**
      * Constructs a <code>FormSpec</code> from the specified encoded
      * description. The description will be parsed to set initial values.
@@ -155,14 +150,14 @@ public abstract class FormSpec implements Serializable {
      * @param defaultAlignment 	the default alignment
      * @param encodedDescription	the encoded description
      */
-    protected FormSpec(DefaultAlignment defaultAlignment, String encodedDescription) {
+    protected FormSpec(DefaultAlignment defaultAlignment,
+            String encodedDescription) {
         this(defaultAlignment, Sizes.DEFAULT, NO_GROW);
         parseAndInitValues(encodedDescription.toLowerCase(Locale.ENGLISH));
     }
-    
 
     // Public API ***********************************************************
-    
+
     /**
      * Returns the default alignment.
      * 
@@ -171,7 +166,7 @@ public abstract class FormSpec implements Serializable {
     public final DefaultAlignment getDefaultAlignment() {
         return defaultAlignment;
     }
-    
+
     /**
      * Returns the size.
      *  
@@ -180,7 +175,7 @@ public abstract class FormSpec implements Serializable {
     public final Size getSize() {
         return size;
     }
-    
+
     /**
      * Returns the current resize weight.
      * 
@@ -189,7 +184,7 @@ public abstract class FormSpec implements Serializable {
     public final double getResizeWeight() {
         return resizeWeight;
     }
-    
+
     /**
      * Checks and answers whether this spec can grow or not.
      * That is the case if and only if the resize weight is 
@@ -200,7 +195,6 @@ public abstract class FormSpec implements Serializable {
     final boolean canGrow() {
         return getResizeWeight() != NO_GROW;
     }
-
 
     // Parsing **************************************************************
 
@@ -216,28 +210,28 @@ public abstract class FormSpec implements Serializable {
         StringTokenizer tokenizer = new StringTokenizer(encodedDescription, ":");
         if (!tokenizer.hasMoreTokens()) {
             throw new IllegalArgumentException(
-                                    "The form spec must not be empty.");
+                    "The form spec must not be empty.");
         }
         String token = tokenizer.nextToken();
-        
+
         // Check if the first token is an orientation.
-        DefaultAlignment alignment = DefaultAlignment.valueOf(token, isHorizontal());
+        DefaultAlignment alignment = DefaultAlignment.valueOf(token,
+                isHorizontal());
         if (alignment != null) {
             defaultAlignment = alignment;
             if (!tokenizer.hasMoreTokens()) {
                 throw new IllegalArgumentException(
-                                    "The form spec must provide a size.");
+                        "The form spec must provide a size.");
             }
             token = tokenizer.nextToken();
         }
-        
+
         parseAndInitSize(token);
-        
+
         if (tokenizer.hasMoreTokens()) {
-           resizeWeight = decodeResize(tokenizer.nextToken());
-        }  
+            resizeWeight = decodeResize(tokenizer.nextToken());
+        }
     }
-    
 
     /**
      * Parses an encoded size spec and initializes the size fields.
@@ -248,14 +242,13 @@ public abstract class FormSpec implements Serializable {
         if (token.startsWith("max(") && token.endsWith(")")) {
             size = parseAndInitBoundedSize(token, false);
             return;
-        } 
+        }
         if (token.startsWith("min(") && token.endsWith(")")) {
             size = parseAndInitBoundedSize(token, true);
             return;
         }
         size = decodeAtomicSize(token);
     }
-
 
     /**
      * Parses an encoded compound size and sets the size fields.
@@ -271,29 +264,29 @@ public abstract class FormSpec implements Serializable {
     private Size parseAndInitBoundedSize(String token, boolean setMax) {
         int semicolonIndex = token.indexOf(';');
         String sizeToken1 = token.substring(4, semicolonIndex);
-        String sizeToken2 = token.substring(semicolonIndex+1, token.length()-1);
-        
+        String sizeToken2 = token.substring(semicolonIndex + 1,
+                token.length() - 1);
+
         Size size1 = decodeAtomicSize(sizeToken1);
         Size size2 = decodeAtomicSize(sizeToken2);
-        
+
         // Check valid combinations and set min or max.
         if (size1 instanceof ConstantSize) {
             if (size2 instanceof Sizes.ComponentSize) {
                 return new BoundedSize(size2, setMax ? null : size1,
-                                               setMax ? size1 : null);
+                        setMax ? size1 : null);
             }
             throw new IllegalArgumentException(
-                                "Bounded sizes must not be both constants.");
+                    "Bounded sizes must not be both constants.");
         }
         if (size2 instanceof ConstantSize) {
-            return new BoundedSize(size1, setMax ? null : size2,
-                                           setMax ? size2 : null);
+            return new BoundedSize(size1, setMax ? null : size2, setMax ? size2
+                    : null);
         }
         throw new IllegalArgumentException(
-                            "Bounded sizes must not be both logical.");
+                "Bounded sizes must not be both logical.");
     }
-    
-    
+
     /**
      * Decodes and returns an atomic size that is either a constant size or a
      * component size.
@@ -307,8 +300,7 @@ public abstract class FormSpec implements Serializable {
             return componentSize;
         return ConstantSize.valueOf(token, isHorizontal());
     }
-    
-    
+
     /**
      * Decodes an encoded resize mode and resize weight and answers
      * the resize weight.
@@ -321,26 +313,27 @@ public abstract class FormSpec implements Serializable {
     private double decodeResize(String token) {
         if (token.equals("g") || token.equals("grow")) {
             return DEFAULT_GROW;
-        } 
+        }
         if (token.equals("n") || token.equals("nogrow") || token.equals("none")) {
             return NO_GROW;
         }
         // Must have format: grow(<double>)
         if ((token.startsWith("grow(") || token.startsWith("g("))
-             && token.endsWith(")")) {
-            int leftParen  = token.indexOf('(');  
+                && token.endsWith(")")) {
+            int leftParen = token.indexOf('(');
             int rightParen = token.indexOf(')');
             String substring = token.substring(leftParen + 1, rightParen);
             return Double.parseDouble(substring);
-        }        
+        }
         throw new IllegalArgumentException(
-                    "The resize argument '" + token + "' is invalid. " +
-                    " Must be one of: grow, g, none, n, grow(<double>), g(<double>)");
+                "The resize argument '"
+                        + token
+                        + "' is invalid. "
+                        + " Must be one of: grow, g, none, n, grow(<double>), g(<double>)");
     }
-    
-    
+
     // Misc *****************************************************************
-    
+
     /**
      * Returns a string representation of this form specification.
      * The string representation consists of three elements separated by
@@ -360,7 +353,7 @@ public abstract class FormSpec implements Serializable {
     public final String toString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(defaultAlignment);
-        
+
         buffer.append(":");
         buffer.append(size.toString());
         buffer.append(':');
@@ -375,7 +368,7 @@ public abstract class FormSpec implements Serializable {
         }
         return buffer.toString();
     }
-    
+
     /**
      * Returns a string representation of this form specification.
      * The string representation consists of three elements separated by
@@ -395,7 +388,7 @@ public abstract class FormSpec implements Serializable {
     public final String toShortString() {
         StringBuffer buffer = new StringBuffer();
         buffer.append(defaultAlignment.abbreviation());
-        
+
         buffer.append(":");
         buffer.append(size.toString());
         buffer.append(':');
@@ -410,8 +403,7 @@ public abstract class FormSpec implements Serializable {
         }
         return buffer.toString();
     }
-    
-    
+
     // Abstract Behavior ****************************************************
 
     /**
@@ -422,9 +414,8 @@ public abstract class FormSpec implements Serializable {
      */
     abstract boolean isHorizontal();
 
-
     // Helper Code **********************************************************
-    
+
     /**
      * Computes the maximum size for the given list of components, using
      * this form spec and the specified measure.<p>
@@ -438,29 +429,23 @@ public abstract class FormSpec implements Serializable {
      * @param defaultMeasure  the measure used to determine the default size
      * @return the maximum size in pixels
      */
-    final int maximumSize(Container container,
-                    List components, 
-                    FormLayout.Measure minMeasure,
-                    FormLayout.Measure prefMeasure,
-                    FormLayout.Measure defaultMeasure) {
-        return size.maximumSize(container,
-                                 components, 
-                                 minMeasure,
-                                 prefMeasure,
-                                 defaultMeasure);
+    final int maximumSize(Container container, List components,
+            FormLayout.Measure minMeasure, FormLayout.Measure prefMeasure,
+            FormLayout.Measure defaultMeasure) {
+        return size.maximumSize(container, components, minMeasure, prefMeasure,
+                defaultMeasure);
     }
-    
-    
+
     /**
      * An ordinal-based serializable typesafe enumeration for the 
      * column and row default alignment types.
      */
     public static final class DefaultAlignment implements Serializable {
-        
+
         private final transient String name;
 
-        private DefaultAlignment(String name) { 
-            this.name = name; 
+        private DefaultAlignment(String name) {
+            this.name = name;
         }
 
         /**
@@ -481,7 +466,7 @@ public abstract class FormSpec implements Serializable {
                     return RIGHT_ALIGN;
                 else if (str.equals("l") || str.equals("left"))
                     return LEFT_ALIGN;
-                else 
+                else
                     return null;
             } else {
                 if (str.equals("t") || str.equals("top"))
@@ -498,8 +483,8 @@ public abstract class FormSpec implements Serializable {
          * 
          * @return this alignment's name.
          */
-        public String toString()  { 
-            return name; 
+        public String toString() {
+            return name;
         }
 
         /**
@@ -512,19 +497,16 @@ public abstract class FormSpec implements Serializable {
             return name.charAt(0);
         }
 
-        
         // Serialization *****************************************************
-        
+
         private static int nextOrdinal = 0;
-        
+
         private final int ordinal = nextOrdinal++;
-        
+
         private Object readResolve() {
-            return VALUES[ordinal];  // Canonicalize
+            return VALUES[ordinal]; // Canonicalize
         }
 
     }
-    
-    
-}
 
+}

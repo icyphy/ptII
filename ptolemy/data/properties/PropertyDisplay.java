@@ -39,19 +39,19 @@ public class PropertyDisplay extends Attribute {
         fullSolverPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Full Solution"),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-//        _runFullSolverButton.addActionListener(this);
-        
-//        Parameter cont = new Parameter();
-        
-//        displayProperties = new CheckBoxStyle(cont, "Check Box");
-//        PtolemyQuery query = new PtolemyQuery(displayProperties);
-//        query.addCheckBox("Test", "testlabel", true);
-//        displayProperties.addEntry(query);
-        
+        //        _runFullSolverButton.addActionListener(this);
+
+        //        Parameter cont = new Parameter();
+
+        //        displayProperties = new CheckBoxStyle(cont, "Check Box");
+        //        PtolemyQuery query = new PtolemyQuery(displayProperties);
+        //        query.addCheckBox("Test", "testlabel", true);
+        //        displayProperties.addEntry(query);
+
         trainingMode = new Parameter(this, "trainingMode");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
         trainingMode.setExpression("true");
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"115\" height=\"40\" "
                 + "style=\"fill:grey\"/>" + "<text x=\"-40\" y=\"-5\" "
@@ -64,11 +64,9 @@ public class PropertyDisplay extends Attribute {
 
     /** The file parameter for the lattice description file.
      */
-    
+
     public CheckBoxStyle displayProperties;
-    
+
     public Parameter trainingMode;
 
-    
 }
-

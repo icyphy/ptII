@@ -321,21 +321,20 @@ public class PxgraphApplication extends PlotApplication {
                 { "-v", "Version", "" }, { "-version", "Version", "" }, };
         StringBuffer result = new StringBuffer(
                 "Usage: ptplot [ options ] [=WxH+X+Y] [file ...]\n\n"
-                + " options that take values as second args:\n");
+                        + " options that take values as second args:\n");
 
         int i;
 
         for (i = 0; i < commandOptions.length; i++) {
             result.append(" " + commandOptions[i][0] + " "
-                    + commandOptions[i][1]
-                    + " " + commandOptions[i][4] + "\n");
+                    + commandOptions[i][1] + " " + commandOptions[i][4] + "\n");
         }
 
         result.append("\nBoolean flags:\n");
 
         for (i = 0; i < commandFlags.length; i++) {
-            result.append(" " + commandFlags[i][0] + " "
-                    + commandFlags[i][2] + "\n");
+            result.append(" " + commandFlags[i][0] + " " + commandFlags[i][2]
+                    + "\n");
         }
 
         result.append("\nThe following pxgraph features are not supported:\n"

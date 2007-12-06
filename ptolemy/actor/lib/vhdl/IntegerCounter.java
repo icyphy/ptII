@@ -221,7 +221,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     /**
      * The internal state of the previous count.
      */

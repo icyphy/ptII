@@ -67,20 +67,20 @@ public class ActorScopeExtender extends ScopeExtendingAttribute {
     public List<?> attributeList() {
         long version = workspace().getVersion();
         if (_attributeList == null || version > _version) {
-            _attributeList =
-                new LinkedList<Object>((List<?>) super.attributeList());
+            _attributeList = new LinkedList<Object>((List<?>) super
+                    .attributeList());
             NamedObj scope = getContainer();
-            Collection<?> children =
-                GTTools.getChildren(scope, true, true, true, true);
+            Collection<?> children = GTTools.getChildren(scope, true, true,
+                    true, true);
             for (Object childObject : children) {
                 NamedObj child = (NamedObj) childObject;
                 if (child instanceof ActorScopeExtender) {
-                     continue;
+                    continue;
                 }
 
                 try {
-                    Variable variable =
-                        NamedObjVariable.getNamedObjVariable(child, true);
+                    Variable variable = NamedObjVariable.getNamedObjVariable(
+                            child, true);
                     if (variable != null) {
                         _attributeList.add(variable);
                     }
@@ -103,8 +103,8 @@ public class ActorScopeExtender extends ScopeExtendingAttribute {
         }
 
         try {
-            Variable actorVariable =
-                NamedObjVariable.getNamedObjVariable(child, true);
+            Variable actorVariable = NamedObjVariable.getNamedObjVariable(
+                    child, true);
             return actorVariable;
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);

@@ -91,8 +91,7 @@ public class PtalonAST extends CommonAST {
                 ((PtalonAST) node).xmlSerializeRootOpen(out);
 
                 // print children
-                ((PtalonAST) node.getFirstChild()).xmlSerialize(
-                        out, depth + 1);
+                ((PtalonAST) node.getFirstChild()).xmlSerialize(out, depth + 1);
 
                 // print end tag
                 out.write(_getIndentPrefix(depth));

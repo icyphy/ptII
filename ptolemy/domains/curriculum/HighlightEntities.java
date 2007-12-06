@@ -65,7 +65,7 @@ import ptolemy.vergil.icon.BoxedValueIcon;
  @Pt.AcceptedRating Red (cxh)
  */
 public class HighlightEntities extends Attribute {
-    
+
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -77,28 +77,28 @@ public class HighlightEntities extends Attribute {
     public HighlightEntities(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Define an icon that displays the label.
         BoxedValueIcon _icon = new BoxedValueIcon(this, "_icon");
         _icon.attributeName.setExpression("label");
         _icon.displayWidth.setExpression("40");
-        
+
         // Attribute that specifies what to do on double click.
         new HighlightIcons(this, "_highlightIcons");
-        
+
         entityNames = new Parameter(this, "entityNames");
         entityNames.setTypeEquals(new ArrayType(BaseType.STRING));
-        
+
         // NOTE: The name of the this parameter violates the
         // naming conventions so that it is recorgnized as a highlight
         // color for this icon.
         _highlightColor = new ColorAttribute(this, "_highlightColor");
         // Yellow default.
         _highlightColor.setExpression("{1.0, 1.0, 0.0, 1.0}");
-        
+
         label = new StringParameter(this, "label");
         label.setExpression("HighlightEntities");
-        
+
         SingletonParameter hideName = new SingletonParameter(this, "_hideName");
         hideName.setToken(BooleanToken.TRUE);
         hideName.setVisibility(Settable.EXPERT);
@@ -113,16 +113,16 @@ public class HighlightEntities extends Attribute {
      *  all highlights.
      */
     public Parameter entityNames;
-    
+
     /** Highlight color. This defaults to yellow.
      */
     public ColorAttribute _highlightColor;
-    
+
     /** Label to put in the icon for this object.
      *  This is a string that defaults to "HighlightEntities".
      */
     public StringParameter label;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -148,12 +148,14 @@ public class HighlightEntities extends Attribute {
             try {
                 NamedObj container = HighlightEntities.this.getContainer();
                 if (container instanceof CompositeEntity) {
-                    ArrayToken names = (ArrayToken)entityNames.getToken();
+                    ArrayToken names = (ArrayToken) entityNames.getToken();
                     if (names != null && names.length() > 0) {
                         StringBuffer moml = new StringBuffer("<group>");
                         for (int i = 0; i < names.length(); i++) {
-                            String name = ((StringToken)names.getElement(i)).stringValue();
-                            ComponentEntity entity = ((CompositeEntity)container).getEntity(name);
+                            String name = ((StringToken) names.getElement(i))
+                                    .stringValue();
+                            ComponentEntity entity = ((CompositeEntity) container)
+                                    .getEntity(name);
                             if (entity != null) {
                                 moml.append("<entity name=\"");
                                 moml.append(name);
@@ -163,21 +165,27 @@ public class HighlightEntities extends Attribute {
                             }
                         }
                         moml.append("</group>");
-                        container.requestChange(new MoMLChangeRequest(this, container, moml.toString()));
+                        container.requestChange(new MoMLChangeRequest(this,
+                                container, moml.toString()));
                     } else {
                         // Clear all highlights.
                         StringBuffer moml = new StringBuffer("<group>");
-                        for (Object entity : ((CompositeEntity)container).entityList()) {
-                            if (((ComponentEntity)entity).getAttribute("_highlightColor") != null) {
+                        for (Object entity : ((CompositeEntity) container)
+                                .entityList()) {
+                            if (((ComponentEntity) entity)
+                                    .getAttribute("_highlightColor") != null) {
                                 moml.append("<entity name=\"");
-                                moml.append(((ComponentEntity)entity).getName());
+                                moml.append(((ComponentEntity) entity)
+                                        .getName());
                                 moml.append("\">");
-                                moml.append("<deleteProperty name=\"_highlightColor\"/>");
+                                moml
+                                        .append("<deleteProperty name=\"_highlightColor\"/>");
                                 moml.append("</entity>");
                             }
                         }
                         moml.append("</group>");
-                        container.requestChange(new MoMLChangeRequest(this, container, moml.toString()));
+                        container.requestChange(new MoMLChangeRequest(this,
+                                container, moml.toString()));
                     }
                 }
             } catch (IllegalActionException e1) {

@@ -34,7 +34,6 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 /**
  * Generate C code for an actor that computes the moving average.
  *
@@ -76,8 +75,8 @@ public class MovingAverage extends CCodeGeneratorHelper {
             args.add(targetType(type));
             _codeStream.appendCodeBlock("CommonPreinitBlock", args);
         } else {
-            throw new IllegalActionException("Non-primitive types "
-                    + type + " not yet supported by MovingAverage");
+            throw new IllegalActionException("Non-primitive types " + type
+                    + " not yet supported by MovingAverage");
         }
 
         return processCode(_codeStream.toString());

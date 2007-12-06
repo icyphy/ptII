@@ -160,7 +160,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         }
 
         if (_configureUnitsAction != null) {
-             _configureUnitsAction.setConfiguration(configuration);
+            _configureUnitsAction.setConfiguration(configuration);
         }
 
         if (_listenToActorFactory != null) {
@@ -525,8 +525,8 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                 putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             }
             putValue("tooltip", "Control-click to create a new relation");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
-                    KeyEvent.VK_R));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
+                    .valueOf(KeyEvent.VK_R));
         }
 
         public void actionPerformed(ActionEvent e) {

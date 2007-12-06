@@ -71,7 +71,8 @@ public class SoundActor extends TypedAtomicActor {
         sampleRate.setExpression("8000");
         sampleRate.setTypeEquals(BaseType.INT);
 
-        bytesPerSample = new SharedParameter(this, "bytesPerSample", SoundActor.class);
+        bytesPerSample = new SharedParameter(this, "bytesPerSample",
+                SoundActor.class);
         bytesPerSample.setExpression("2");
         bytesPerSample.setTypeEquals(BaseType.INT);
 
@@ -97,7 +98,7 @@ public class SoundActor extends TypedAtomicActor {
      *  only when the model is next initialized.
      */
     public SharedParameter bytesPerSample;
-    
+
     /** The requested buffer size for transferring samples. This
      *  affects how far ahead of real time the model can get.
      *  A larger buffer size may limit the responsivity of the
@@ -161,7 +162,7 @@ public class SoundActor extends TypedAtomicActor {
         } else if (attribute == bytesPerSample) {
             _bytesPerSample = ((IntToken) bytesPerSample.getToken()).intValue();
             // Cache the maximum value as a double.
-            _maxSample = Math.pow(2.0,(_bytesPerSample * 8)) - 1.0;
+            _maxSample = Math.pow(2.0, (_bytesPerSample * 8)) - 1.0;
         }
 
         super.attributeChanged(attribute);
@@ -206,9 +207,8 @@ public class SoundActor extends TypedAtomicActor {
      *  audio data.
      * @exception IllegalArgumentException Not thrown in this base class.
      */
-    protected void _doubleArrayToByteArray(
-            double[][] doubleArray, byte[] playbackData)
-            throws IllegalArgumentException {
+    protected void _doubleArrayToByteArray(double[][] doubleArray,
+            byte[] playbackData) throws IllegalArgumentException {
         // Iterate over the samples.
         for (int currSamp = 0; currSamp < doubleArray[0].length; currSamp++) {
             // For each channel,
@@ -254,16 +254,16 @@ public class SoundActor extends TypedAtomicActor {
 
     /** Value of the bytesPerSample parameter. */
     protected int _bytesPerSample;
-    
+
     /** The requested buffer size. */
     protected int _bufferSize;
-    
+
     /** The number of channels.  Initialized from the channels parameter. */
     protected int _channels;
-    
+
     /** Cashed value of the maximum integer value, default for 16 bits. */
     private static double _maxSample = 32767;
-    
+
     /** The value of the sampleRate parameter. */
     protected int _sampleRate;
 

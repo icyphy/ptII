@@ -193,9 +193,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         ptolemy.actor.Director director = compositeActor.getDirector();
         Director directorHelper = (Director) _getHelper(director);
         code.append(directorHelper.generateFireFunctionCode());
-        if (! (compositeActor instanceof
-                    ptolemy.actor.lib.jni.CompiledCompositeActor
-                    && ((BooleanToken)_codeGenerator.generateJNI.getToken()).booleanValue())) {
+        if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor && ((BooleanToken) _codeGenerator.generateJNI
+                .getToken()).booleanValue())) {
             code.append(super.generateFireFunctionCode());
         }
         return code.toString();
@@ -316,10 +315,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         // First do the director, if there is one.
-        ptolemy.actor.Director director
-                = ((ptolemy.actor.CompositeActor) getComponent()).getDirector();
+        ptolemy.actor.Director director = ((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector();
         if (director != null) {
             Director directorHelper = (Director) _getHelper(director);
             code.append(directorHelper.generateVariableDeclaration());
@@ -425,17 +424,16 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     public Set getIncludeDirectories() throws IllegalActionException {
         Set includeDirectories = new LinkedHashSet();
         includeDirectories.addAll(super.getIncludeDirectories());
-        
+
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
-        
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = 
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             includeDirectories.addAll(helperObject.getIncludeDirectories());
         }
-        
+
         return includeDirectories;
     }
 
@@ -447,17 +445,16 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     public Set getLibraries() throws IllegalActionException {
         Set libraries = new LinkedHashSet();
         libraries.addAll(super.getLibraries());
-        
+
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
-        
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = 
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             libraries.addAll(helperObject.getLibraries());
         }
-        
+
         return libraries;
     }
 

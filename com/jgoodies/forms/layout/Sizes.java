@@ -39,7 +39,6 @@ import java.util.List;
 import com.jgoodies.forms.util.DefaultUnitConverter;
 import com.jgoodies.forms.util.UnitConverter;
 
-
 /**
  * Consists only of static methods that create and convert sizes 
  * as required by the FormLayout. The conversion of sizes
@@ -55,43 +54,41 @@ import com.jgoodies.forms.util.UnitConverter;
  * @see     DefaultUnitConverter
  */
 public final class Sizes {
-    
-    
+
     // Common Constant Sizes ************************************************
 
-    public static final ConstantSize ZERO   = pixel(0);
-    
-    public static final ConstantSize DLUX1  = dluX( 1);
-    public static final ConstantSize DLUX2  = dluX( 2);
-    public static final ConstantSize DLUX3  = dluX( 3);
-    public static final ConstantSize DLUX4  = dluX( 4);
-    public static final ConstantSize DLUX5  = dluX( 5);
-    public static final ConstantSize DLUX6  = dluX( 6);
-    public static final ConstantSize DLUX7  = dluX( 7);
-    public static final ConstantSize DLUX8  = dluX( 8);
-    public static final ConstantSize DLUX9  = dluX( 9);
+    public static final ConstantSize ZERO = pixel(0);
+
+    public static final ConstantSize DLUX1 = dluX(1);
+    public static final ConstantSize DLUX2 = dluX(2);
+    public static final ConstantSize DLUX3 = dluX(3);
+    public static final ConstantSize DLUX4 = dluX(4);
+    public static final ConstantSize DLUX5 = dluX(5);
+    public static final ConstantSize DLUX6 = dluX(6);
+    public static final ConstantSize DLUX7 = dluX(7);
+    public static final ConstantSize DLUX8 = dluX(8);
+    public static final ConstantSize DLUX9 = dluX(9);
     public static final ConstantSize DLUX11 = dluX(11);
     public static final ConstantSize DLUX14 = dluX(14);
 
-    public static final ConstantSize DLUY1  = dluY( 1);
-    public static final ConstantSize DLUY2  = dluY( 2);
-    public static final ConstantSize DLUY3  = dluY( 3);
-    public static final ConstantSize DLUY4  = dluY( 4);
-    public static final ConstantSize DLUY5  = dluY( 5);
-    public static final ConstantSize DLUY6  = dluY( 6);
-    public static final ConstantSize DLUY7  = dluY( 7);
-    public static final ConstantSize DLUY8  = dluY( 8);
-    public static final ConstantSize DLUY9  = dluY( 9);
+    public static final ConstantSize DLUY1 = dluY(1);
+    public static final ConstantSize DLUY2 = dluY(2);
+    public static final ConstantSize DLUY3 = dluY(3);
+    public static final ConstantSize DLUY4 = dluY(4);
+    public static final ConstantSize DLUY5 = dluY(5);
+    public static final ConstantSize DLUY6 = dluY(6);
+    public static final ConstantSize DLUY7 = dluY(7);
+    public static final ConstantSize DLUY8 = dluY(8);
+    public static final ConstantSize DLUY9 = dluY(9);
     public static final ConstantSize DLUY11 = dluY(11);
     public static final ConstantSize DLUY14 = dluY(14);
-    
 
     // Static Component Sizes ***********************************************
-     
+
     /**
      * Use the maximum of all component minimum sizes as column or row size.
      */
-    public static final ComponentSize MINIMUM  = new ComponentSize("minimum"); 
+    public static final ComponentSize MINIMUM = new ComponentSize("minimum");
 
     /**
      * Use the maximum of all component preferred sizes as column or row size.
@@ -109,27 +106,23 @@ public final class Sizes {
      * An array of all enumeration values used to canonicalize 
      * deserialized component sizes.
      */
-    private static final ComponentSize[] VALUES = 
-        { MINIMUM, PREFERRED, DEFAULT};
-    
-    
+    private static final ComponentSize[] VALUES = { MINIMUM, PREFERRED, DEFAULT };
+
     // Singleton State *******************************************************
-     
+
     /**
      * Holds the current converter that maps non-pixel sizes to pixels.
      */
     private static UnitConverter unitConverter;
-    
-    
+
     // Instance Creation ******************************************************
-     
+
     private Sizes() {
         // Suppresses default constructor, ensuring non-instantiability.
     }
 
-
     // Creation of Size Instances *********************************************
-    
+
     /**
      * Creates and returns an instance of <code>ConstantSize</code> from the
      * given encoded size and unit description.
@@ -138,11 +131,11 @@ public final class Sizes {
      * @param horizontal			true for horizontal, false for vertical
      * @return a <code>ConstantSize</code> for the given value and unit
      */
-    public static ConstantSize constant(String encodedValueAndUnit, 
-                                         boolean horizontal) {
+    public static ConstantSize constant(String encodedValueAndUnit,
+            boolean horizontal) {
         return ConstantSize.valueOf(encodedValueAndUnit, horizontal);
     }
-        
+
     /**
      * Creates and returns a ConstantSize for the specified value
      * in horizontal dialog units.
@@ -153,7 +146,7 @@ public final class Sizes {
     public static ConstantSize dluX(int value) {
         return ConstantSize.dluX(value);
     }
-    
+
     /**
      * Creates and returns a ConstantSize for the specified value
      * in vertical dialog units.
@@ -164,7 +157,7 @@ public final class Sizes {
     public static ConstantSize dluY(int value) {
         return ConstantSize.dluY(value);
     }
-    
+
     /**
      * Creates and returns a ConstantSize 
      * for the specified pixel value.
@@ -175,7 +168,7 @@ public final class Sizes {
     public static ConstantSize pixel(int value) {
         return new ConstantSize(value, ConstantSize.PIXEL);
     }
-    
+
     /**
      * Creates and returns a BoundedSize for the given basis
      * using the specified lower and upper bounds.
@@ -189,10 +182,9 @@ public final class Sizes {
     public static Size bounded(Size basis, Size lowerBound, Size upperBound) {
         return new BoundedSize(basis, lowerBound, upperBound);
     }
-    
 
     // Unit Conversion ******************************************************
-    
+
     /**
      * Converts Inches and returns pixels using the specified resolution.
      * 
@@ -201,9 +193,7 @@ public final class Sizes {
      * @return the given Inches as pixels
      */
     public static int inchAsPixel(double in, Component component) {
-        return in == 0d
-            ? 0
-            : getUnitConverter().inchAsPixel(in, component);
+        return in == 0d ? 0 : getUnitConverter().inchAsPixel(in, component);
     }
 
     /**
@@ -215,9 +205,8 @@ public final class Sizes {
      * @return the given Millimeters as pixels
      */
     public static int millimeterAsPixel(double mm, Component component) {
-        return mm == 0d
-            ? 0
-            : getUnitConverter().millimeterAsPixel(mm, component);
+        return mm == 0d ? 0 : getUnitConverter().millimeterAsPixel(mm,
+                component);
     }
 
     /**
@@ -229,9 +218,8 @@ public final class Sizes {
      * @return the given Centimeters as pixels
      */
     public static int centimeterAsPixel(double cm, Component component) {
-        return cm == 0d
-            ? 0
-            : getUnitConverter().centimeterAsPixel(cm, component);
+        return cm == 0d ? 0 : getUnitConverter().centimeterAsPixel(cm,
+                component);
     }
 
     /**
@@ -243,11 +231,9 @@ public final class Sizes {
      * @return the given Points as pixels
      */
     public static int pointAsPixel(int pt, Component component) {
-        return pt == 0
-            ? 0
-            : getUnitConverter().pointAsPixel(pt, component);
+        return pt == 0 ? 0 : getUnitConverter().pointAsPixel(pt, component);
     }
-    
+
     /**
      * Converts horizontal dialog units and returns pixels. 
      * Honors the resolution, dialog font size, platform, and l&amp;f.
@@ -257,9 +243,8 @@ public final class Sizes {
      * @return the given horizontal dialog units as pixels
      */
     public static int dialogUnitXAsPixel(int dluX, Component component) {
-        return dluX == 0
-            ? 0
-            : getUnitConverter().dialogUnitXAsPixel(dluX, component);
+        return dluX == 0 ? 0 : getUnitConverter().dialogUnitXAsPixel(dluX,
+                component);
     }
 
     /**
@@ -271,14 +256,12 @@ public final class Sizes {
      * @return the given vertical dialog units as pixels
      */
     public static int dialogUnitYAsPixel(int dluY, Component component) {
-        return dluY == 0 
-            ? 0 
-            : getUnitConverter().dialogUnitYAsPixel(dluY, component);
+        return dluY == 0 ? 0 : getUnitConverter().dialogUnitYAsPixel(dluY,
+                component);
     }
-    
-    
+
     // Accessing the Unit Converter *******************************************
-    
+
     /**
      * Returns the current {@link UnitConverter}. If it has not been initialized 
      * before it will get an instance of {@link DefaultUnitConverter}.
@@ -291,7 +274,7 @@ public final class Sizes {
         }
         return unitConverter;
     }
-    
+
     /**
      * Sets a new UnitConverter that will be used to convert
      * font-dependent sizes to pixel sizes.
@@ -302,19 +285,18 @@ public final class Sizes {
         unitConverter = newUnitConverter;
     }
 
-
     // Helper Class *********************************************************
-    
+
     /**
      * An ordinal-based serializable typesafe enumeration that implements
      * the {@link Size} interface for the component sizes: 
      * <em>min, pref, default</em>.
      */
     static final class ComponentSize implements Size, Serializable {
-        
+
         private final transient String name;
 
-        private ComponentSize(String name) { 
+        private ComponentSize(String name) {
             this.name = name;
         }
 
@@ -333,7 +315,7 @@ public final class Sizes {
                 return DEFAULT;
             return null;
         }
-        
+
         /**
          * Computes the maximum size for the given list of components, using
          * this form spec and the specified measure. 
@@ -347,15 +329,11 @@ public final class Sizes {
          * @param defaultMeasure  the measure used to determine the default size
          * @return the maximum size in pixels for the given list of components
          */
-        public int maximumSize(
-            Container container,
-            List components,
-            FormLayout.Measure minMeasure,
-            FormLayout.Measure prefMeasure,
-            FormLayout.Measure defaultMeasure) {
-                
-            FormLayout.Measure measure = this == MINIMUM
-                    ? minMeasure
+        public int maximumSize(Container container, List components,
+                FormLayout.Measure minMeasure, FormLayout.Measure prefMeasure,
+                FormLayout.Measure defaultMeasure) {
+
+            FormLayout.Measure measure = this == MINIMUM ? minMeasure
                     : (this == PREFERRED ? prefMeasure : defaultMeasure);
             int maximum = 0;
             for (Iterator i = components.iterator(); i.hasNext();) {
@@ -365,20 +343,20 @@ public final class Sizes {
             return maximum;
         }
 
-        public String toString()  { return name.substring(0, 1); }
+        public String toString() {
+            return name.substring(0, 1);
+        }
 
-        
         // Serialization *****************************************************
-        
+
         private static int nextOrdinal = 0;
-        
+
         private final int ordinal = nextOrdinal++;
-        
+
         private Object readResolve() {
-            return VALUES[ordinal];  // Canonicalize
+            return VALUES[ordinal]; // Canonicalize
         }
 
     }
-    
-    
+
 }

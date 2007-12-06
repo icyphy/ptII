@@ -259,7 +259,8 @@ public class Clock extends TimedSource {
                 }
             }
         } else if (attribute == period) {
-            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+            double periodValue = ((DoubleToken) period.getToken())
+                    .doubleValue();
             if (_debugging) {
                 _debug("Setting period to " + periodValue);
             }
@@ -284,11 +285,10 @@ public class Clock extends TimedSource {
                     // been updated to the start of the new cycle, which
                     // is too far in the future.
                     if (_phase == 0 && _firstOutputProduced) {
-                        Time potentialNextOutputTime 
-                                = _tentativeCycleStartTime
-                                .subtract(_previousPeriod)
-                                .add(periodValue);
-                        if (potentialNextOutputTime.compareTo(getDirector().getModelTime()) >= 0) {
+                        Time potentialNextOutputTime = _tentativeCycleStartTime
+                                .subtract(_previousPeriod).add(periodValue);
+                        if (potentialNextOutputTime.compareTo(getDirector()
+                                .getModelTime()) >= 0) {
                             _tentativeNextOutputTime = potentialNextOutputTime;
                             _tentativeCycleStartTime = potentialNextOutputTime;
                             // If this occurs outside fire(), e.g. in a modal
@@ -296,7 +296,7 @@ public class Clock extends TimedSource {
                             // and _nextOutputTime.
                             if (!_tentative) {
                                 _nextOutputTime = _tentativeNextOutputTime;
-                                _cycleStartTime = _tentativeCycleStartTime;                                
+                                _cycleStartTime = _tentativeCycleStartTime;
                             }
                         }
                     }
@@ -348,7 +348,7 @@ public class Clock extends TimedSource {
         // Use the strategy pattern here so that derived classes can
         // override how this is done.
         _updateTentativeValues();
-        
+
         // This must be after the above update because it may trigger
         // a call to attributeChanged(), which uses the tentative values.
         // Moreover, we should set a flag so that if attributeChanged()
@@ -399,7 +399,7 @@ public class Clock extends TimedSource {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         // Start cycles at the current time.
         // This is important in modal models that reinitialize the actor.
         _cycleStartTime = getDirector().getModelTime();
@@ -409,7 +409,7 @@ public class Clock extends TimedSource {
         _tentativePhase = _phase;
         _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
         _tentativeNextOutputTime = _nextOutputTime;
-        
+
         // Make sure the first output is enabled.
         _firstOutputProduced = false;
         _outputProduced = false;
@@ -439,7 +439,7 @@ public class Clock extends TimedSource {
             _debug("Postfiring at " + getDirector().getModelTime());
         }
         _updateStates();
-        
+
         if (_outputProduced) {
             _firstOutputProduced = true;
         }
@@ -496,18 +496,21 @@ public class Clock extends TimedSource {
         // have been disabled in a modal model, or we could have
         // skipped cycles due to not being triggered.
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-        Time phaseStartTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+        Time phaseStartTime = _tentativeCycleStartTime
+                .add(_offsets[_tentativePhase]);
         while (phaseStartTime.compareTo(currentTime) < 0) {
             _tentativePhase++;
             if (_tentativePhase >= _offsets.length) {
                 _tentativePhase = 0;
-                _tentativeCycleStartTime = _tentativeCycleStartTime.add(periodValue);
+                _tentativeCycleStartTime = _tentativeCycleStartTime
+                        .add(periodValue);
             }
-            phaseStartTime = _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+            phaseStartTime = _tentativeCycleStartTime
+                    .add(_offsets[_tentativePhase]);
         }
         _tentativeNextOutputTime = phaseStartTime;
     }
-    
+
     /** Get the specified output value, checking the form of the values
      *  parameter.
      *  @param index The index of the output values.
@@ -525,7 +528,7 @@ public class Clock extends TimedSource {
 
         return val.getElement(index);
     }
-    
+
     /** Return true if the current time is the right time for an output.
      *  @return True if the current time matches the _nextOutputTime.
      */
@@ -561,14 +564,15 @@ public class Clock extends TimedSource {
         // or a trigger input was received.
         boolean triggerConnected = trigger.numberOfSources() > 0;
         boolean fireAtNeeded = _tentativeEnabled
-                && ((!triggerConnected && _outputProduced)
-                    || (triggerConnected && _tentativeTriggered && !_outputProduced));
+                && ((!triggerConnected && _outputProduced) || (triggerConnected
+                        && _tentativeTriggered && !_outputProduced));
         _cycleStartTime = _tentativeCycleStartTime;
         _phase = _tentativePhase;
         if (_outputProduced) {
             _phase++;
             if (_phase == _offsets.length) {
-                double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+                double periodValue = ((DoubleToken) period.getToken())
+                        .doubleValue();
                 _cycleStartTime = _cycleStartTime.add(periodValue);
                 // Make the tentative value match, in case attributeChanged()
                 // is called before the next firing.
@@ -584,8 +588,7 @@ public class Clock extends TimedSource {
 
         if (fireAtNeeded) {
             if (_debugging) {
-                _debug("Requesting firing at: " + _nextOutputTime
-                        + ".");
+                _debug("Requesting firing at: " + _nextOutputTime + ".");
             }
             getDirector().fireAt(this, _nextOutputTime);
         }
@@ -611,16 +614,16 @@ public class Clock extends TimedSource {
      *  and off the clock.
      */
     protected transient boolean _enabled;
-    
+
     /** Indicator of whether the first output has been produced. */
     protected transient boolean _firstOutputProduced = false;
-    
+
     /** The time for the next output. */
     protected transient Time _nextOutputTime;
 
     /** Cache of offsets array value. */
     protected transient double[] _offsets;
-    
+
     /** Indicator of whether an output was produced in this iteration. */
     protected transient boolean _outputProduced = false;
 
@@ -645,17 +648,17 @@ public class Clock extends TimedSource {
      *  in the fire() method.
      */
     private transient boolean _tentative = false;
-    
+
     /** The indicator of whether the specified number of cycles
      *  have been completed. */
     private transient boolean _tentativeEnabled;
-   
+
     /** The tentative phase of the next output. */
     private transient int _tentativePhase;
-    
+
     /** Tentative indicator of triggered state. */
     private transient boolean _tentativeTriggered;
-    
+
     /** Indicator of whether trigger inputs have arrived
      *  since the last output.
      */

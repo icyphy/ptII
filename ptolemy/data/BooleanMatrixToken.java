@@ -211,8 +211,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the returned matrix is empty or if the specified
      *   parameters result in out of bounds accesses.
      */
-    public MatrixToken crop(
-            int rowStart, int colStart, int rowSpan, int colSpan)
+    public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
             throws IllegalActionException {
         boolean[][] value = this.booleanMatrix();
         try {
@@ -223,15 +222,10 @@ public class BooleanMatrixToken extends MatrixToken {
             }
             return new BooleanMatrixToken(result);
         } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new IllegalActionException("Matrix crop indices out of bounds (rowStart = "
-                    + rowStart
-                    + ", colStart = "
-                    + colStart
-                    + ", rowSpan = "
-                    + rowSpan
-                    + ", colSpan = "
-                    + colSpan
-                    + ").");
+            throw new IllegalActionException(
+                    "Matrix crop indices out of bounds (rowStart = " + rowStart
+                            + ", colStart = " + colStart + ", rowSpan = "
+                            + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -404,8 +398,7 @@ public class BooleanMatrixToken extends MatrixToken {
                 // to implement the matrix copy here.
                 for (int ii = 0; ii < rowCount; ii++) {
                     System.arraycopy(matrices[i][j].booleanMatrix()[ii], 0,
-                            tiled[row + ii],
-                            column, columnCount);
+                            tiled[row + ii], column, columnCount);
                 }
                 // Starting position for the next column.
                 column += matrices[0][j].getColumnCount();
@@ -443,8 +436,7 @@ public class BooleanMatrixToken extends MatrixToken {
                     // to implement the matrix copy here.
                     for (int ii = 0; ii < rowspan; ii++) {
                         System.arraycopy(source[row + ii], column,
-                                contents[ii],
-                                0, columnspan);
+                                contents[ii], 0, columnspan);
                     }
                 }
                 column += columns[j];

@@ -71,38 +71,34 @@ import javax.swing.UIManager;
  * @see     com.jgoodies.forms.layout.Sizes
  */
 public final class DefaultUnitConverter extends AbstractUnitConverter {
-    
-//    public static final String UPPERCASE_ALPHABET =
-//        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-//
-//    public static final String LOWERCASE_ALPHABET =
-//        "abcdefghijklmnopqrstuvwxyz";
-    
-    private final static Logger LOGGER = 
-        Logger.getLogger(DefaultUnitConverter.class.getName());
-    
+
+    //    public static final String UPPERCASE_ALPHABET =
+    //        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    //
+    //    public static final String LOWERCASE_ALPHABET =
+    //        "abcdefghijklmnopqrstuvwxyz";
+
+    private final static Logger LOGGER = Logger
+            .getLogger(DefaultUnitConverter.class.getName());
 
     /**
      * Holds the sole instance that will be lazily instantiated.
      */
     private static DefaultUnitConverter instance;
 
-
     /**
      * Holds the string that is used to compute the average character width.
      * By default this is just &quot;X&quot;.
      */
-    private String averageCharWidthTestString = "X";    
-    
-    
+    private String averageCharWidthTestString = "X";
+
     /**
      * Holds the font that is used to compute the global dialog base units.
      * By default it is lazily created in method #getDefaultDialogFont,
      * which in turn looks up a font in method #lookupDefaultDialogFont.
      */
     private Font defaultDialogFont;
-    
-    
+
     /**
      * If any <code>PropertyChangeListeners</code> have been registered,
      * the <code>changeSupport</code> field describes them.
@@ -114,27 +110,24 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * @see #removePropertyChangeListener(String, PropertyChangeListener)
      */
     private PropertyChangeSupport changeSupport;
-    
 
     // Cached *****************************************************************
-    
+
     /**
      * Holds the cached global dialog base units that are used if 
      * a component is not (yet) available - for example in a Border.
-     */    
-    private DialogBaseUnits cachedGlobalDialogBaseUnits = 
-        computeGlobalDialogBaseUnits();
-        
+     */
+    private DialogBaseUnits cachedGlobalDialogBaseUnits = computeGlobalDialogBaseUnits();
+
     /**
      * Maps <code>FontMetrics</code> to horizontal dialog base units.
      * This is a second-level cache, that stores dialog base units
      * for a <code>FontMetrics</code> object.
-     */ 
+     */
     private Map cachedDialogBaseUnits = new HashMap();
 
-
     // Instance Creation and Access *******************************************
-    
+
     /**
      * Constructs a DefaultUnitConverter and registers
      * a listener that handles changes in the look&amp;feel.
@@ -143,8 +136,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
         UIManager.addPropertyChangeListener(new LookAndFeelChangeHandler());
         changeSupport = new PropertyChangeSupport(this);
     }
-    
-    
+
     /**
      * Lazily instantiates and returns the sole instance.
      * 
@@ -156,8 +148,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
         }
         return instance;
     }
-    
-    
+
     // Access to Bound Properties *********************************************
 
     /**
@@ -169,7 +160,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     public String getAverageCharacterWidthTestString() {
         return averageCharWidthTestString;
     }
-    
+
     /**
      * Sets a string that will be used to compute the average character width.
      * By default it is initialized to &quot;X&quot;. You can provide
@@ -187,15 +178,15 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     public void setAverageCharacterWidthTestString(String newTestString) {
         if (newTestString == null)
             throw new NullPointerException("The test string must not be null.");
-        if (newTestString.length() == 0)    
-            throw new IllegalArgumentException("The test string must not be empty.");
-            
+        if (newTestString.length() == 0)
+            throw new IllegalArgumentException(
+                    "The test string must not be empty.");
+
         String oldTestString = averageCharWidthTestString;
         averageCharWidthTestString = newTestString;
         changeSupport.firePropertyChange("averageCharacterWidthTestString",
-            oldTestString, newTestString);
+                oldTestString, newTestString);
     }
-    
 
     /**
      * Lazily creates and returns the dialog font used to compute 
@@ -209,7 +200,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
         }
         return defaultDialogFont;
     }
-    
+
     /**
      * Sets a dialog font that will be used to compute the dialog base units.
      * 
@@ -220,10 +211,9 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
         defaultDialogFont = newFont;
         changeSupport.firePropertyChange("defaultDialogFont", oldFont, newFont);
     }
-    
 
     // Implementing Abstract Superclass Behavior ******************************
-    
+
     /**
      * Returns the cached or computed horizontal dialog base units. 
      * 
@@ -233,7 +223,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     protected double getDialogBaseUnitsX(Component component) {
         return getDialogBaseUnits(component).x;
     }
-    
+
     /**
      * Returns the cached or computed vertical dialog base units
      * for the given component.  
@@ -245,9 +235,8 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
         return getDialogBaseUnits(component).y;
     }
 
-
     // Compute and Cache Global and Components Dialog Base Units **************
-    
+
     /**
      * Lazily computes and answer the global dialog base units.
      * Should be re-computed if the l&amp;f, platform, or screen changes. 
@@ -260,7 +249,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
         }
         return cachedGlobalDialogBaseUnits;
     }
-    
+
     /**
      * Looks up and returns the dialog base units for the given component.
      * In case the component is <code>null</code> the global dialog base units
@@ -279,14 +268,15 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
             return getGlobalDialogBaseUnits();
         }
         FontMetrics fm = c.getFontMetrics(getDefaultDialogFont());
-        DialogBaseUnits dialogBaseUnits = (DialogBaseUnits) cachedDialogBaseUnits.get(fm);
+        DialogBaseUnits dialogBaseUnits = (DialogBaseUnits) cachedDialogBaseUnits
+                .get(fm);
         if (dialogBaseUnits == null) {
             dialogBaseUnits = computeDialogBaseUnits(fm);
             cachedDialogBaseUnits.put(fm, dialogBaseUnits);
         }
         return dialogBaseUnits;
     }
-    
+
     /**
      * Computes and returns the horizontal dialog base units. 
      * Honors the font, font size and resolution.<p>
@@ -304,17 +294,14 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * @return the horizontal and vertical dialog base units
      */
     private DialogBaseUnits computeDialogBaseUnits(FontMetrics metrics) {
-        double averageCharWidth =
-            computeAverageCharWidth(metrics, averageCharWidthTestString);
-        int    ascent = metrics.getAscent();
+        double averageCharWidth = computeAverageCharWidth(metrics,
+                averageCharWidthTestString);
+        int ascent = metrics.getAscent();
         double height = ascent > 14 ? ascent : ascent + (15 - ascent) / 3;
-        DialogBaseUnits dialogBaseUnits =
-            new DialogBaseUnits(averageCharWidth, height);
-        LOGGER.config(
-            "Computed dialog base units "
-                + dialogBaseUnits
-                + " for: "
-                + metrics.getFont());
+        DialogBaseUnits dialogBaseUnits = new DialogBaseUnits(averageCharWidth,
+                height);
+        LOGGER.config("Computed dialog base units " + dialogBaseUnits
+                + " for: " + metrics.getFont());
         return dialogBaseUnits;
     }
 
@@ -331,11 +318,12 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     private DialogBaseUnits computeGlobalDialogBaseUnits() {
         LOGGER.config("Computing global dialog base units...");
         Font dialogFont = getDefaultDialogFont();
-        FontMetrics metrics = createDefaultGlobalComponent().getFontMetrics(dialogFont);
+        FontMetrics metrics = createDefaultGlobalComponent().getFontMetrics(
+                dialogFont);
         DialogBaseUnits globalDialogBaseUnits = computeDialogBaseUnits(metrics);
         return globalDialogBaseUnits;
     }
-    
+
     /**
      * Looks up and returns the font used by buttons. 
      * First, tries to request the button font from the UIManager; 
@@ -345,11 +333,9 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      */
     private Font lookupDefaultDialogFont() {
         Font buttonFont = UIManager.getFont("Button.font");
-        return buttonFont != null
-            ? buttonFont
-            : new JButton().getFont();
+        return buttonFont != null ? buttonFont : new JButton().getFont();
     }
-    
+
     /**
      * Creates and returns a component that is used to lookup the default 
      * font metrics. The current implementation creates a <code>JPanel</code>.
@@ -365,7 +351,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     private Component createDefaultGlobalComponent() {
         return new JPanel(null);
     }
-    
+
     /**
      * Invalidates the caches. Resets the global dialog base units
      * and clears the Map from <code>FontMetrics</code> to dialog base units.
@@ -375,9 +361,8 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
         cachedGlobalDialogBaseUnits = null;
         cachedDialogBaseUnits.clear();
     }
-    
-    
-     // Managing Property Change Listeners **********************************
+
+    // Managing Property Change Listeners **********************************
 
     /**
      * Adds a PropertyChangeListener to the listener list. The listener is
@@ -392,11 +377,10 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * @see #addPropertyChangeListener(String, PropertyChangeListener)
      */
     public synchronized void addPropertyChangeListener(
-                                            PropertyChangeListener listener) {
+            PropertyChangeListener listener) {
         changeSupport.addPropertyChangeListener(listener);
     }
-    
-    
+
     /**
      * Removes a PropertyChangeListener from the listener list. This method
      * should be used to remove PropertyChangeListeners that were registered
@@ -411,11 +395,10 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * @see #removePropertyChangeListener(String, PropertyChangeListener)
      */
     public synchronized void removePropertyChangeListener(
-                                        PropertyChangeListener listener) {
+            PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(listener);
     }
-    
-    
+
     /**
      * Adds a PropertyChangeListener to the listener list for a specific
      * property. The specified property may be user-defined.<p>
@@ -431,13 +414,11 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * @see #removePropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)
      * @see #addPropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)
      */
-    public synchronized void addPropertyChangeListener(
-                                        String propertyName,
-                                        PropertyChangeListener listener) {
+    public synchronized void addPropertyChangeListener(String propertyName,
+            PropertyChangeListener listener) {
         changeSupport.addPropertyChangeListener(propertyName, listener);
     }
-    
-    
+
     /**
      * Removes a PropertyChangeListener from the listener list for a specific
      * property. This method should be used to remove PropertyChangeListeners
@@ -451,41 +432,39 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * @see #addPropertyChangeListener(java.lang.String, java.beans.PropertyChangeListener)
      * @see #removePropertyChangeListener(java.beans.PropertyChangeListener)
      */
-    public synchronized void removePropertyChangeListener(
-                                        String propertyName,
-                                        PropertyChangeListener listener) {
+    public synchronized void removePropertyChangeListener(String propertyName,
+            PropertyChangeListener listener) {
         changeSupport.removePropertyChangeListener(propertyName, listener);
     }
-    
-    
+
     // Helper Code ************************************************************
-    
+
     /**
      * Describes horizontal and vertical dialog base units.
      */
     private static final class DialogBaseUnits {
-        
+
         final double x;
         final double y;
-        
+
         DialogBaseUnits(double dialogBaseUnitsX, double dialogBaseUnitsY) {
             this.x = dialogBaseUnitsX;
             this.y = dialogBaseUnitsY;
         }
-        
+
         public String toString() {
-            return "DBU(x=" + x + "; y=" + y + ")"; 
+            return "DBU(x=" + x + "; y=" + y + ")";
         }
     }
-    
-    
+
     /**
      * Listens to changes of the Look and Feel and invalidates the cache.
      */
-    private final class LookAndFeelChangeHandler implements PropertyChangeListener {
+    private final class LookAndFeelChangeHandler implements
+            PropertyChangeListener {
         public void propertyChange(PropertyChangeEvent evt) {
             invalidateCaches();
         }
     }
-    
+
 }

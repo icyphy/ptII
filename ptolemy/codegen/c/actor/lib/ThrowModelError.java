@@ -62,8 +62,7 @@ public class ThrowModelError extends Sink {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.ThrowModelError actor = 
-            (ptolemy.actor.lib.ThrowModelError) getComponent();
+        ptolemy.actor.lib.ThrowModelError actor = (ptolemy.actor.lib.ThrowModelError) getComponent();
 
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0));

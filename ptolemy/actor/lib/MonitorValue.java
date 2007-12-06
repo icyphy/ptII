@@ -74,7 +74,7 @@ public class MonitorValue extends Sink {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Initialize the actor by clearing the display. */
     public void initialize() throws IllegalActionException {
         super.initialize();

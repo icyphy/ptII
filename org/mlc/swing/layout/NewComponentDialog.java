@@ -65,330 +65,300 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
  * @author Michael Connor
  */
 @SuppressWarnings("serial")
-public class NewComponentDialog extends JPanel
-{
-  JLabel componentNameLabel = new JLabel("Name");
-  JTextField componentNameTextField = new JTextField();
+public class NewComponentDialog extends JPanel {
+    JLabel componentNameLabel = new JLabel("Name");
+    JTextField componentNameTextField = new JTextField();
 
-  JLabel importsLabel = new JLabel("Imports");
-  JTextArea importsComponent = createTextArea(3, 40);
+    JLabel importsLabel = new JLabel("Imports");
+    JTextArea importsComponent = createTextArea(3, 40);
 
-  JLabel declarationsLabel = new JLabel("Declarations");
-  JTextArea declarationsComponent = createTextArea(3, 40);
+    JLabel declarationsLabel = new JLabel("Declarations");
+    JTextArea declarationsComponent = createTextArea(3, 40);
 
-  JLabel configureLabel = new JLabel("Configure");
-  JTextArea configureComponent = createTextArea(4, 40);
+    JLabel configureLabel = new JLabel("Configure");
+    JTextArea configureComponent = createTextArea(4, 40);
 
-  JLabel addToContainerLabel = new JLabel("Add");
-  JTextArea addToContainerComponent = createTextArea(3, 40);
+    JLabel addToContainerLabel = new JLabel("Add");
+    JTextArea addToContainerComponent = createTextArea(3, 40);
 
-  JLabel removeFromContainerLabel = new JLabel("Remove");
-  JTextArea removeFromContainerComponent = createTextArea(2, 40);
+    JLabel removeFromContainerLabel = new JLabel("Remove");
+    JTextArea removeFromContainerComponent = createTextArea(2, 40);
 
-  JLabel previewLabel = new JLabel("Preview");
-  JScrollPane previewComponent = new JScrollPane();
+    JLabel previewLabel = new JLabel("Preview");
+    JScrollPane previewComponent = new JScrollPane();
 
-  JButton prevButton = new JButton("Preview");
-  JButton okButton = new JButton("OK");
-  JButton cancelButton = new JButton("Cancel");
-  Component buttonBar = ButtonBarFactory.buildRightAlignedBar(new JButton[] {
-      prevButton, okButton, cancelButton });
+    JButton prevButton = new JButton("Preview");
+    JButton okButton = new JButton("OK");
+    JButton cancelButton = new JButton("Cancel");
+    Component buttonBar = ButtonBarFactory.buildRightAlignedBar(new JButton[] {
+            prevButton, okButton, cancelButton });
 
-  ComponentDef componentDef;
-  private String preview;
-  Window myOwner;
-  private boolean success = false;
+    ComponentDef componentDef;
+    private String preview;
+    Window myOwner;
+    private boolean success = false;
 
-  public boolean succeeded()
-  {
-    return success;
-  }
-
-  /** Creates a new instance of NewComponentDialog */
-  public NewComponentDialog(Window owner)
-  {
-    myOwner = owner;
-    LayoutConstraintsManager layoutConstraintsManager = LayoutConstraintsManager
-        .getLayoutConstraintsManager(this.getClass().getResourceAsStream(
-            "editableLayoutConstraints.xml"));
-
-    this.setBorder(Borders.DIALOG_BORDER);
-
-    layoutConstraintsManager.setLayout("newComponentPanel", this);
-
-    // here we add the controls to the container. you may
-    // need to change the name of panel
-    add(new JScrollPane(removeFromContainerComponent),
-        "removeFromContainerComponent");
-
-    add(configureLabel, "configureLabel");
-    add(new JScrollPane(importsComponent), "importsComponent");
-    add(new JScrollPane(declarationsComponent), "declarationsComponent");
-    add(new JScrollPane(configureComponent), "configureComponent");
-    add(new JScrollPane(addToContainerComponent), "addToContainerComponent");
-    add(buttonBar, "buttonBar");
-    add(declarationsLabel, "declarationsLabel");
-    add(componentNameLabel, "componentNameLabel");
-    add(importsLabel, "importsLabel");
-    add(addToContainerLabel, "addToContainerLabel");
-    add(componentNameTextField, "componentNameTextField");
-    add(removeFromContainerLabel, "removeFromContainerLabel");
-
-    add(previewLabel, "previewLabel");
-    add(previewComponent, "previewComponent");
-
-    prevButton.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        doPreview();
-      }
-    });
-    okButton.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        success = true;
-        componentDef.add = getAdd();
-        componentDef.configure = getConfiguration();
-        componentDef.declarations = getDeclarations();
-        componentDef.name = componentNameTextField.getText().trim();
-        componentDef.imports = getImports();
-        UserPrefs.getPrefs().saveWinLoc("newcomp", myOwner);
-        myOwner.setVisible(false);
-      }
-    });
-    cancelButton.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        success = false;
-        UserPrefs.getPrefs().saveWinLoc("newcomp", myOwner);
-        myOwner.setVisible(false);
-      }
-    });
-  }
-
-  // class PreviewThread implements Runnable {
-  //        
-  // boolean running = true;
-  //        
-  // public void run() {
-  // while (running) {
-  // }
-  // }
-  // }
-
-  /**
-  Get an instance of the specified component. In FormLayoutMaker,
-  this instance is placed in the preview panel.
-  <p>
-  For example, if the component is a JButton, this method is the
-  equivalent of <code>new JButton(<i>text</i>)</code>.
-
-  @return Component An instance of the component, null if there
-  is a problem in the specification. [It is recommended that the
-  'Preview' button should be clicked before exiting the dialog.]
-  */
-  public Component getInstance()
-  {
-    Component component = null;
-    String script;
-    if (preview == null || preview.length() == 0)
-      script = getImports() + "\n" + getDeclarations() + "\n"
-          + getConfiguration();
-    else
-      script = preview.trim();
-    String componentName = componentNameTextField.getText();
-    script = script.replaceAll("\\$\\{name\\}", componentName);
-
-    Interpreter interpreter = new Interpreter();
-    interpreter.setStrictJava(true);
-
-    JPanel temporaryContainer = null;
-    try
-    {
-
-      interpreter.set("container", temporaryContainer);
-      interpreter.eval(script);
-      component = (Component) interpreter.get(componentName);
-
+    public boolean succeeded() {
+        return success;
     }
-    catch (bsh.EvalError error)
-    {
-      System.out.println(error);
+
+    /** Creates a new instance of NewComponentDialog */
+    public NewComponentDialog(Window owner) {
+        myOwner = owner;
+        LayoutConstraintsManager layoutConstraintsManager = LayoutConstraintsManager
+                .getLayoutConstraintsManager(this.getClass()
+                        .getResourceAsStream("editableLayoutConstraints.xml"));
+
+        this.setBorder(Borders.DIALOG_BORDER);
+
+        layoutConstraintsManager.setLayout("newComponentPanel", this);
+
+        // here we add the controls to the container. you may
+        // need to change the name of panel
+        add(new JScrollPane(removeFromContainerComponent),
+                "removeFromContainerComponent");
+
+        add(configureLabel, "configureLabel");
+        add(new JScrollPane(importsComponent), "importsComponent");
+        add(new JScrollPane(declarationsComponent), "declarationsComponent");
+        add(new JScrollPane(configureComponent), "configureComponent");
+        add(new JScrollPane(addToContainerComponent), "addToContainerComponent");
+        add(buttonBar, "buttonBar");
+        add(declarationsLabel, "declarationsLabel");
+        add(componentNameLabel, "componentNameLabel");
+        add(importsLabel, "importsLabel");
+        add(addToContainerLabel, "addToContainerLabel");
+        add(componentNameTextField, "componentNameTextField");
+        add(removeFromContainerLabel, "removeFromContainerLabel");
+
+        add(previewLabel, "previewLabel");
+        add(previewComponent, "previewComponent");
+
+        prevButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                doPreview();
+            }
+        });
+        okButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                success = true;
+                componentDef.add = getAdd();
+                componentDef.configure = getConfiguration();
+                componentDef.declarations = getDeclarations();
+                componentDef.name = componentNameTextField.getText().trim();
+                componentDef.imports = getImports();
+                UserPrefs.getPrefs().saveWinLoc("newcomp", myOwner);
+                myOwner.setVisible(false);
+            }
+        });
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                success = false;
+                UserPrefs.getPrefs().saveWinLoc("newcomp", myOwner);
+                myOwner.setVisible(false);
+            }
+        });
     }
-    return component;
-  }
 
-  private void doPreview()
-  {
-    Component component = getInstance();
-    if (component == null)
-      return;
-    JPanel temporaryContainer = new JPanel();
-    temporaryContainer.add(component);
-    if (temporaryContainer != null)
-    {
-      previewComponent.setViewportView(temporaryContainer);
+    // class PreviewThread implements Runnable {
+    //        
+    // boolean running = true;
+    //        
+    // public void run() {
+    // while (running) {
+    // }
+    // }
+    // }
+
+    /**
+    Get an instance of the specified component. In FormLayoutMaker,
+    this instance is placed in the preview panel.
+    <p>
+    For example, if the component is a JButton, this method is the
+    equivalent of <code>new JButton(<i>text</i>)</code>.
+
+    @return Component An instance of the component, null if there
+    is a problem in the specification. [It is recommended that the
+    'Preview' button should be clicked before exiting the dialog.]
+    */
+    public Component getInstance() {
+        Component component = null;
+        String script;
+        if (preview == null || preview.length() == 0)
+            script = getImports() + "\n" + getDeclarations() + "\n"
+                    + getConfiguration();
+        else
+            script = preview.trim();
+        String componentName = componentNameTextField.getText();
+        script = script.replaceAll("\\$\\{name\\}", componentName);
+
+        Interpreter interpreter = new Interpreter();
+        interpreter.setStrictJava(true);
+
+        JPanel temporaryContainer = null;
+        try {
+
+            interpreter.set("container", temporaryContainer);
+            interpreter.eval(script);
+            component = (Component) interpreter.get(componentName);
+
+        } catch (bsh.EvalError error) {
+            System.out.println(error);
+        }
+        return component;
     }
-  }
 
-  /** Get the component's name */
-  public String getComponentName()
-  {
-    return componentNameTextField.getText();
-  }
-
-  public void setComponentName(String componentName)
-  {
-    componentNameTextField.setText(componentName);
-  }
-
-  /** Get the component's <imports> section. */
-  public String getImports()
-  {
-    return importsComponent.getText().trim();
-  }
-
-  /** Get the component's <declarations> section. */
-  public String getDeclarations()
-  {
-    return declarationsComponent.getText().trim();
-  }
-
-  /** Get the component's <configuration> section. */
-  public String getConfiguration()
-  {
-    return configureComponent.getText().trim();
-  }
-
-  public String getAdd()
-  {
-    String res = addToContainerComponent.getText();
-    return cleanString(res);
-  }
-
-  public void setRemove(String remove)
-  {
-    removeFromContainerComponent.setText(remove);
-  }
-
-  public void setComponentDef(ComponentDef componentDef)
-  {
-    editComponentDef(componentDef.clone());
-  }
-
-  public void editComponentDef(ComponentDef componentDef)
-  {
-    this.componentDef = componentDef;
-
-    importsComponent.setText(cleanString(componentDef.imports));
-    declarationsComponent.setText(cleanString(componentDef.declarations));
-    configureComponent.setText(cleanString(componentDef.configure));
-    addToContainerComponent.setText(cleanString(componentDef.add));
-    removeFromContainerComponent.setText(cleanString(componentDef.remove));
-    preview = cleanString(componentDef.preview);
-  }
-
-  /** Cleans a string. Removes extra newlines.
-   * 
-   * @param instr
-   * @return
-   */
-  private String cleanString(String instr)
-  {
-    if ( instr == null )
-      return instr;
-
-// Java 1.5 library method
-//    while ( res.contains("\n\n") )
-    // KBR 09/05/05 Reworked to deal with leading space for multiline
-    // sections.
-    String [] outstrs = instr.split("\n");
-    String outstr = "";
-    for ( int i = 0 ; i < outstrs.length; i++ )
-    {
-      String tmp = outstrs[i].trim();
-      outstr += tmp + (tmp.length() > 0 ? "\n" : "");
+    private void doPreview() {
+        Component component = getInstance();
+        if (component == null)
+            return;
+        JPanel temporaryContainer = new JPanel();
+        temporaryContainer.add(component);
+        if (temporaryContainer != null) {
+            previewComponent.setViewportView(temporaryContainer);
+        }
     }
-    return outstr;    
-  }
-  
-  private static JTextArea createTextArea(int rows, int cols)
-  {
-    JTextArea textArea = new JTextArea(rows, cols);
-//KBR linewrap makes longer sections hard to work with    
-//    textArea.setWrapStyleWord(true);
-//    textArea.setLineWrap(true);
-    return textArea;
-  }
 
-  /**
-  * Creates and displays a dialog for editing a component's settings. See
-  * {@link #doDialog(JFrame,ComponentDef)} for an example.
-  */
-  public static NewComponentDialog editDialog(JFrame owner,
-      ComponentDef componentDef)
-  {
-    JDialog dlg = new JDialog(owner, "Edit Component", true);
-    UserPrefs.getPrefs().useSavedBounds("newcomp",dlg);
-    dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-    NewComponentDialog panel = new NewComponentDialog(dlg);
-    panel.editComponentDef(componentDef);
-    panel.setComponentName(componentDef.name);
-    dlg.getContentPane().add(panel);
-    dlg.pack();
-    dlg.setVisible(true);
-    return panel;
-  }
-  
-  /**
-  * Creates and displays a dialog for defining a new component's settings. The
-    dialog should be used as follows:
+    /** Get the component's name */
+    public String getComponentName() {
+        return componentNameTextField.getText();
+    }
+
+    public void setComponentName(String componentName) {
+        componentNameTextField.setText(componentName);
+    }
+
+    /** Get the component's <imports> section. */
+    public String getImports() {
+        return importsComponent.getText().trim();
+    }
+
+    /** Get the component's <declarations> section. */
+    public String getDeclarations() {
+        return declarationsComponent.getText().trim();
+    }
+
+    /** Get the component's <configuration> section. */
+    public String getConfiguration() {
+        return configureComponent.getText().trim();
+    }
+
+    public String getAdd() {
+        String res = addToContainerComponent.getText();
+        return cleanString(res);
+    }
+
+    public void setRemove(String remove) {
+        removeFromContainerComponent.setText(remove);
+    }
+
+    public void setComponentDef(ComponentDef componentDef) {
+        editComponentDef(componentDef.clone());
+    }
+
+    public void editComponentDef(ComponentDef componentDef) {
+        this.componentDef = componentDef;
+
+        importsComponent.setText(cleanString(componentDef.imports));
+        declarationsComponent.setText(cleanString(componentDef.declarations));
+        configureComponent.setText(cleanString(componentDef.configure));
+        addToContainerComponent.setText(cleanString(componentDef.add));
+        removeFromContainerComponent.setText(cleanString(componentDef.remove));
+        preview = cleanString(componentDef.preview);
+    }
+
+    /** Cleans a string. Removes extra newlines.
+     * 
+     * @param instr
+     * @return
+     */
+    private String cleanString(String instr) {
+        if (instr == null)
+            return instr;
+
+        // Java 1.5 library method
+        //    while ( res.contains("\n\n") )
+        // KBR 09/05/05 Reworked to deal with leading space for multiline
+        // sections.
+        String[] outstrs = instr.split("\n");
+        String outstr = "";
+        for (int i = 0; i < outstrs.length; i++) {
+            String tmp = outstrs[i].trim();
+            outstr += tmp + (tmp.length() > 0 ? "\n" : "");
+        }
+        return outstr;
+    }
+
+    private static JTextArea createTextArea(int rows, int cols) {
+        JTextArea textArea = new JTextArea(rows, cols);
+        //KBR linewrap makes longer sections hard to work with    
+        //    textArea.setWrapStyleWord(true);
+        //    textArea.setLineWrap(true);
+        return textArea;
+    }
+
+    /**
+    * Creates and displays a dialog for editing a component's settings. See
+    * {@link #doDialog(JFrame,ComponentDef)} for an example.
+    */
+    public static NewComponentDialog editDialog(JFrame owner,
+            ComponentDef componentDef) {
+        JDialog dlg = new JDialog(owner, "Edit Component", true);
+        UserPrefs.getPrefs().useSavedBounds("newcomp", dlg);
+        dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        NewComponentDialog panel = new NewComponentDialog(dlg);
+        panel.editComponentDef(componentDef);
+        panel.setComponentName(componentDef.name);
+        dlg.getContentPane().add(panel);
+        dlg.pack();
+        dlg.setVisible(true);
+        return panel;
+    }
+
+    /**
+    * Creates and displays a dialog for defining a new component's settings. The
+      dialog should be used as follows:
+      <code>
+    NewComponentDialog dlg = NewComponentDialog.doDialog(frame, componentDef);
+    if (dlg.succeeded())
+    {
+    [do something with dlg.componentDef]
+    }
     <code>
-NewComponentDialog dlg = NewComponentDialog.doDialog(frame, componentDef);
-if (dlg.succeeded())
-{
-  [do something with dlg.componentDef]
-}
-<code>
-  */
-  public static NewComponentDialog doDialog(JFrame owner,
-      ComponentDef componentDef)
-  {
-    JDialog dlg = new JDialog(owner, "New Component", true);
-    UserPrefs.getPrefs().useSavedBounds("newcomp",dlg);
-    dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-    NewComponentDialog panel = new NewComponentDialog(dlg);
-    panel.setComponentDef(componentDef);
-    panel.setComponentName("untitled");
-    dlg.getContentPane().add(panel);
-    dlg.pack();
-    dlg.setVisible(true);
-    return panel;
-  }
+    */
+    public static NewComponentDialog doDialog(JFrame owner,
+            ComponentDef componentDef) {
+        JDialog dlg = new JDialog(owner, "New Component", true);
+        UserPrefs.getPrefs().useSavedBounds("newcomp", dlg);
+        dlg.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        NewComponentDialog panel = new NewComponentDialog(dlg);
+        panel.setComponentDef(componentDef);
+        panel.setComponentName("untitled");
+        dlg.getContentPane().add(panel);
+        dlg.pack();
+        dlg.setVisible(true);
+        return panel;
+    }
 
-  /** Unit testing.
-  */
-  public static void main(String[] args)
-  {
-    JFrame frame = new JFrame();
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    NewComponentDialog dialog = new NewComponentDialog(frame);
+    /** Unit testing.
+    */
+    public static void main(String[] args) {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        NewComponentDialog dialog = new NewComponentDialog(frame);
 
-    ComponentDef componentDef = new ComponentDef();
-    componentDef.imports = "import javax.swing.JLabel;";
-    componentDef.declarations = "JLabel ${name} = new JLabel(\"Hello World\");";
-    componentDef.configure = "";
-    componentDef.add = "${container}.add(${name}, \"${name}\");";
-    componentDef.remove = "${container}.remove($name);";
-    dialog.setComponentName("untitled");
-    dialog.setComponentDef(componentDef);
+        ComponentDef componentDef = new ComponentDef();
+        componentDef.imports = "import javax.swing.JLabel;";
+        componentDef.declarations = "JLabel ${name} = new JLabel(\"Hello World\");";
+        componentDef.configure = "";
+        componentDef.add = "${container}.add(${name}, \"${name}\");";
+        componentDef.remove = "${container}.remove($name);";
+        dialog.setComponentName("untitled");
+        dialog.setComponentDef(componentDef);
 
-    frame.getContentPane().add(dialog);
-    frame.pack();
-    frame.setVisible(true);
-  }
+        frame.getContentPane().add(dialog);
+        frame.pack();
+        frame.setVisible(true);
+    }
 
 }

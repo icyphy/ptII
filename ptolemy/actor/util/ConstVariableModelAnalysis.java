@@ -170,15 +170,15 @@ public class ConstVariableModelAnalysis {
         if (object.toplevel() instanceof CompositeActor) {
             CompositeActor toplevel = (CompositeActor) object.toplevel();
             Manager manager = toplevel.getManager();
-  
+
             ConstVariableModelAnalysis analysis = (ConstVariableModelAnalysis) manager
                     .getAnalysis("ConstVariableModelAnalysis");
-  
+
             if (analysis == null) {
                 analysis = new ConstVariableModelAnalysis(toplevel);
                 manager.addAnalysis("ConstVariableModelAnalysis", analysis);
             }
-  
+
             return analysis;
         } else {
             return new ConstVariableModelAnalysis();
@@ -445,19 +445,19 @@ public class ConstVariableModelAnalysis {
     private final boolean _updateChangeContext(Variable variable,
             Entity changeContext) {
         if (_variableToChangeContext.keySet().contains(variable)) {
-            Entity oldChangeContext = 
-                (Entity) _variableToChangeContext.get(variable);
-            
+            Entity oldChangeContext = (Entity) _variableToChangeContext
+                    .get(variable);
+
             // System.out.println("variable = " + variable);
             // System.out.println("oldChangeContext = " + oldChangeContext);
             // System.out.println("updatedChangeContext = " + changeContext);
-            Entity newChangeContext =
-                _computeBound(changeContext, oldChangeContext);
+            Entity newChangeContext = _computeBound(changeContext,
+                    oldChangeContext);
 
             // System.out.println("newChangeContext = " + newChangeContext);
             if (newChangeContext != oldChangeContext) {
                 _variableToChangeContext.put(variable, newChangeContext);
-                      
+
                 return true;
             }
             return false;

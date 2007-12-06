@@ -91,7 +91,6 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
      */
     public Parameter initialValue;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 

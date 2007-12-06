@@ -190,7 +190,7 @@ public class Director extends Attribute implements Executable {
         if (_initializables == null) {
             _initializables = new LinkedList<Initializable>();
         }
-        _initializables.add(initializable);        
+        _initializables.add(initializable);
     }
 
     /** Override the base class to update local variables.
@@ -575,7 +575,7 @@ public class Director extends Attribute implements Executable {
         // First invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.initialize();                    
+                initializable.initialize();
             }
         }
 
@@ -834,11 +834,11 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug(getFullName(), "Preinitializing ...");
         }
-        
+
         // First invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.preinitialize();                    
+                initializable.preinitialize();
             }
         }
 
@@ -1196,7 +1196,7 @@ public class Director extends Attribute implements Executable {
         // First invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.wrapup();                    
+                initializable.wrapup();
             }
         }
 
@@ -1406,7 +1406,7 @@ public class Director extends Attribute implements Executable {
 
     /** The current time of the model. */
     protected Time _currentTime;
-    
+
     /** List of objects whose (pre)initialize() and wrapup() methods
      *  should be slaved to these.
      */

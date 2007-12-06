@@ -318,7 +318,7 @@ public class StreamExec implements ExecuteCommands {
         /** Stream from which to read. */
         private InputStream _inputStream;
 
-        /** StreamExec which is written. */ 
+        /** StreamExec which is written. */
         private StreamExec _streamExec;
     }
 

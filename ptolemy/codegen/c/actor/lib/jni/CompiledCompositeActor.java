@@ -62,7 +62,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             ptolemy.actor.lib.jni.CompiledCompositeActor component) {
         super(component);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -81,8 +81,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             throws IOException, IllegalActionException {
         // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
         // will not depend on ptolemy.codegen.
-        CodeGenerator codeGenerator = _getCodeGenerator(compositeActor);        
-        return CodeGeneratorHelper.copyFilesToCodeDirectory(compositeActor, codeGenerator);
+        CodeGenerator codeGenerator = _getCodeGenerator(compositeActor);
+        return CodeGeneratorHelper.copyFilesToCodeDirectory(compositeActor,
+                codeGenerator);
     }
 
     /** Generate code for a given actor.
@@ -96,16 +97,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
         // will not depend on ptolemy.codegen.
-        
+
         // FindBugs wants this.
         if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor)) {
             throw new InternalErrorException(compositeActor, null,
                     " is not an instance of "
-                    + "ptolemy.actor.lib.jni.CompiledCompositeActor.");
+                            + "ptolemy.actor.lib.jni.CompiledCompositeActor.");
         }
 
-        ptolemy.actor.lib.jni.CompiledCompositeActor actor 
-                = (ptolemy.actor.lib.jni.CompiledCompositeActor) compositeActor; 
+        ptolemy.actor.lib.jni.CompiledCompositeActor actor = (ptolemy.actor.lib.jni.CompiledCompositeActor) compositeActor;
         CodeGenerator codeGenerator = _getCodeGenerator(compositeActor);
 
         // Append the output to stderr, stdout and the StringBuffer; 
@@ -123,9 +123,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             // Throw outside the above try so that we don't get as many nested
             // exceptions;
             String message = "Execution of subcommands to generate code for "
-                + "CompiledCompositeActor failed, last process returned '"
-                + returnCode + "', which is not 0:\n" 
-                + executeCommands.buffer.toString();
+                    + "CompiledCompositeActor failed, last process returned '"
+                    + returnCode + "', which is not 0:\n"
+                    + executeCommands.buffer.toString();
             System.err.println(message);
             throw new IllegalActionException(message);
         }
@@ -141,7 +141,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  accessing the actor.
      */
     private static CodeGenerator _getCodeGenerator(
-            ptolemy.actor.TypedCompositeActor compositeActor) 
+            ptolemy.actor.TypedCompositeActor compositeActor)
             throws IllegalActionException {
         // This is static so that ptolemy.actor.lib.jni.CompiledCompositeActor
         // will not depend on ptolemy.codegen
@@ -149,13 +149,14 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         try {
             // FindBugs wants this.
             if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor)) {
-                throw new InternalErrorException(compositeActor, null,
+                throw new InternalErrorException(
+                        compositeActor,
+                        null,
                         " is not an instance of "
-                        + "ptolemy.actor.lib.jni.CompiledCompositeActor.");
+                                + "ptolemy.actor.lib.jni.CompiledCompositeActor.");
             }
 
-            ptolemy.actor.lib.jni.CompiledCompositeActor actor 
-                = (ptolemy.actor.lib.jni.CompiledCompositeActor) compositeActor; 
+            ptolemy.actor.lib.jni.CompiledCompositeActor actor = (ptolemy.actor.lib.jni.CompiledCompositeActor) compositeActor;
             List codeGenerators = actor.attributeList(CodeGenerator.class);
 
             if (codeGenerators.size() == 0) {
@@ -187,7 +188,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     .getExpression());
 
         } catch (NameDuplicationException ex) {
-            throw new IllegalActionException(compositeActor, ex, "Name duplication.");
+            throw new IllegalActionException(compositeActor, ex,
+                    "Name duplication.");
         }
         return codeGenerator;
     }

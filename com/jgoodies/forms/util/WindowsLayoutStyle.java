@@ -43,39 +43,36 @@ import com.jgoodies.forms.layout.Sizes;
  */
 
 final class WindowsLayoutStyle extends LayoutStyle {
-    
+
     static final WindowsLayoutStyle INSTANCE = new WindowsLayoutStyle();
-    
+
     private WindowsLayoutStyle() {
         // Suppresses default constructor, ensuring non-instantiability.
     }
-    
 
     // Component Sizes ******************************************************
 
-    private static final Size         BUTTON_WIDTH              = Sizes.dluX(50);
-    private static final Size         BUTTON_HEIGHT             = Sizes.dluY(14);
-    
+    private static final Size BUTTON_WIDTH = Sizes.dluX(50);
+    private static final Size BUTTON_HEIGHT = Sizes.dluY(14);
 
     // Gaps ******************************************************************
 
-    private static final ConstantSize DIALOG_MARGIN_X           = Sizes.DLUX7;
-    private static final ConstantSize DIALOG_MARGIN_Y           = Sizes.DLUY7;
-    
-    private static final ConstantSize TABBED_DIALOG_MARGIN_X    = Sizes.DLUX4;
-    private static final ConstantSize TABBED_DIALOG_MARGIN_Y    = Sizes.DLUY4;
-    
-    private static final ConstantSize LABEL_COMPONENT_PADX      = Sizes.DLUX3;
-    private static final ConstantSize RELATED_COMPONENTS_PADX   = Sizes.DLUX4;
+    private static final ConstantSize DIALOG_MARGIN_X = Sizes.DLUX7;
+    private static final ConstantSize DIALOG_MARGIN_Y = Sizes.DLUY7;
+
+    private static final ConstantSize TABBED_DIALOG_MARGIN_X = Sizes.DLUX4;
+    private static final ConstantSize TABBED_DIALOG_MARGIN_Y = Sizes.DLUY4;
+
+    private static final ConstantSize LABEL_COMPONENT_PADX = Sizes.DLUX3;
+    private static final ConstantSize RELATED_COMPONENTS_PADX = Sizes.DLUX4;
     private static final ConstantSize UNRELATED_COMPONENTS_PADX = Sizes.DLUX7;
-    
-    private static final ConstantSize RELATED_COMPONENTS_PADY   = Sizes.DLUY4;
+
+    private static final ConstantSize RELATED_COMPONENTS_PADY = Sizes.DLUY4;
     private static final ConstantSize UNRELATED_COMPONENTS_PADY = Sizes.DLUY7;
-    private static final ConstantSize NARROW_LINE_PAD           = Sizes.DLUY2;
-    private static final ConstantSize LINE_PAD                  = Sizes.DLUY3;
-    private static final ConstantSize PARAGRAPH_PAD             = Sizes.DLUY9;
-    private static final ConstantSize BUTTON_BAR_PAD            = Sizes.DLUY5;
-    
+    private static final ConstantSize NARROW_LINE_PAD = Sizes.DLUY2;
+    private static final ConstantSize LINE_PAD = Sizes.DLUY3;
+    private static final ConstantSize PARAGRAPH_PAD = Sizes.DLUY9;
+    private static final ConstantSize BUTTON_BAR_PAD = Sizes.DLUY5;
 
     // Layout Sizes *********************************************************
 
@@ -90,7 +87,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
         return BUTTON_WIDTH;
     }
 
-    
     /**
      * Returns this style's default button height.
      * 
@@ -102,7 +98,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
         return BUTTON_HEIGHT;
     }
 
-    
     /**
      * Returns this style's horizontal margin for general dialogs.
      * 
@@ -114,7 +109,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
     public ConstantSize getDialogMarginX() {
         return DIALOG_MARGIN_X;
     }
-    
 
     /**
      * Returns this style's vertical margin for general dialogs.
@@ -128,7 +122,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
         return DIALOG_MARGIN_Y;
     }
 
-    
     /**
      * Returns this style's horizontal margin for dialogs that consist of 
      * a tabbed pane.
@@ -143,7 +136,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
         return TABBED_DIALOG_MARGIN_X;
     }
 
-    
     /**
      * Returns this style's vertical margin for dialogs that consist of
      * a tabbed pane.
@@ -158,7 +150,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
         return TABBED_DIALOG_MARGIN_Y;
     }
 
-    
     /**
      * Returns a gap used to separate a label and associated control.
      * 
@@ -171,7 +162,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
         return LABEL_COMPONENT_PADX;
     }
 
-    
     /**
      * Returns a horizontal gap used to separate related controls.
      * 
@@ -185,7 +175,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
         return RELATED_COMPONENTS_PADX;
     }
 
-    
     /**
      * Returns a vertical gap used to separate related controls.
      * 
@@ -198,7 +187,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
         return RELATED_COMPONENTS_PADY;
     }
 
-    
     /**
      * Returns a horizontal gap used to separate unrelated controls.
      * 
@@ -212,7 +200,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
         return UNRELATED_COMPONENTS_PADX;
     }
 
-    
     /**
      * Returns a vertical gap used to separate unrelated controls.
      * 
@@ -225,7 +212,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
         return UNRELATED_COMPONENTS_PADY;
     }
 
-    
     /**
      * Returns a narrow vertical pad used to separate lines.
      * 
@@ -238,7 +224,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
         return NARROW_LINE_PAD;
     }
 
-    
     /**
      * Returns a narrow vertical pad used to separate lines.
      * 
@@ -251,7 +236,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
         return LINE_PAD;
     }
 
-    
     /**
      * Returns a pad used to separate paragraphs.
      * 
@@ -263,8 +247,7 @@ final class WindowsLayoutStyle extends LayoutStyle {
     public ConstantSize getParagraphPad() {
         return PARAGRAPH_PAD;
     }
-    
-    
+
     /**
      * Returns a pad used to separate a button bar from a component.
      * 
@@ -277,7 +260,6 @@ final class WindowsLayoutStyle extends LayoutStyle {
     public ConstantSize getButtonBarPad() {
         return BUTTON_BAR_PAD;
     }
-
 
     /**
      * Checks and answers whether buttons are typically ordered from 
@@ -302,6 +284,5 @@ final class WindowsLayoutStyle extends LayoutStyle {
     public boolean isLeftToRightButtonOrder() {
         return true;
     }
-    
 
 }

@@ -239,7 +239,7 @@ public class ClassChanges implements MoMLFilter {
         // Moved HSFSMDirector
         _classChanges.put("ptolemy.domains.fsm.kernel.HSFSMDirector",
                 "ptolemy.domains.ct.kernel.HSFSMDirector");
-        
+
         // Moved ParameterSet
         _classChanges.put("ptolemy.data.expr.ParameterSet",
                 "ptolemy.actor.parameters.ParameterSet");

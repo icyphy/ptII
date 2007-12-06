@@ -343,7 +343,7 @@ public class SerialComm extends TypedAtomicActor {
         super.fire();
 
         // This needs to be synchronized on a single global static object.
-        synchronized(PortListener.class) {
+        synchronized (PortListener.class) {
             try {
                 // Produce output to the serial port first.
                 if ((dataToSend.getWidth() > 0) && dataToSend.hasToken(0)) {
@@ -358,7 +358,7 @@ public class SerialComm extends TypedAtomicActor {
 
                     for (int j = 0; j < inputLength; j++) {
                         UnsignedByteToken dataToken = (UnsignedByteToken) dataArrayToken
-                        .getElement(j);
+                                .getElement(j);
                         out.write(dataToken.byteValue());
                     }
 
@@ -401,7 +401,7 @@ public class SerialComm extends TypedAtomicActor {
                         }
                     } catch (InterruptedException ex) {
                         throw new IllegalActionException(this,
-                        "Thread interrupted waiting for serial port data.");
+                                "Thread interrupted waiting for serial port data.");
                     }
                 }
                 if (_debugging) {
@@ -410,7 +410,8 @@ public class SerialComm extends TypedAtomicActor {
                 }
                 if (bytesAvailable >= _minimumOutputSize) {
                     // Read only if at least desired amount of data is present.
-                    if (_discardOldData && (bytesAvailable > _maximumOutputSize)) {
+                    if (_discardOldData
+                            && (bytesAvailable > _maximumOutputSize)) {
                         // Skip excess bytes.
                         int excess = bytesAvailable - _maximumOutputSize;
 
@@ -430,7 +431,8 @@ public class SerialComm extends TypedAtomicActor {
                     byte[] dataBytes = new byte[outputSize];
 
                     if (_debugging) {
-                        _debug("Reading bytes from the serial port: " + outputSize);
+                        _debug("Reading bytes from the serial port: "
+                                + outputSize);
                     }
 
                     int bytesRead = in.read(dataBytes, 0, outputSize);
@@ -451,8 +453,8 @@ public class SerialComm extends TypedAtomicActor {
                         _debug("Producing byte array on the output port.");
                     }
 
-                    dataReceived.broadcast(new ArrayToken(BaseType.UNSIGNED_BYTE,
-                            dataTokens));
+                    dataReceived.broadcast(new ArrayToken(
+                            BaseType.UNSIGNED_BYTE, dataTokens));
 
                 }
                 // If there are still enough bytes available to run again,
@@ -477,11 +479,13 @@ public class SerialComm extends TypedAtomicActor {
                     Runnable runnable = new Runnable() {
                         public void run() {
                             try {
-                                synchronized(PortListener.class) {
+                                synchronized (PortListener.class) {
                                     if (_serialPort != null) {
-                                        InputStream in = _serialPort.getInputStream();
+                                        InputStream in = _serialPort
+                                                .getInputStream();
                                         int bytesAvailable = in.available();
-                                        while ((bytesAvailable < _minimumOutputSize) && !_stopRequested) {
+                                        while ((bytesAvailable < _minimumOutputSize)
+                                                && !_stopRequested) {
                                             PortListener.class.wait();
                                             bytesAvailable = in.available();
                                         }
@@ -489,7 +493,8 @@ public class SerialComm extends TypedAtomicActor {
                                         // we have enough data to run again.
                                         if (!_directorFiredAtAlready) {
                                             _directorFiredAtAlready = true;
-                                            getDirector().fireAtCurrentTime(SerialComm.this);
+                                            getDirector().fireAtCurrentTime(
+                                                    SerialComm.this);
                                         }
                                     }
                                 }
@@ -524,20 +529,24 @@ public class SerialComm extends TypedAtomicActor {
             String serialPortNameValue = serialPortName.stringValue();
             CommPortIdentifier portID = CommPortIdentifier
                     .getPortIdentifier(serialPortNameValue);
-            synchronized(PortListener.class) {
-                if (_serialPort == null || !toplevel().getName().equals(portID.getCurrentOwner())) {
+            synchronized (PortListener.class) {
+                if (_serialPort == null
+                        || !toplevel().getName().equals(
+                                portID.getCurrentOwner())) {
                     // NOTE: Do not do this in a static initializer so that
                     // we don't initialize the port if there is no actor using it.
                     // This is synchronized on the SerialComm class to prevent multiple actors
                     // from trying to do this simultaneously.
-                    _serialPort = (SerialPort) portID.open(toplevel().getName(), 2000);
+                    _serialPort = (SerialPort) portID.open(
+                            toplevel().getName(), 2000);
                     if (_serialPortListener == null) {
                         // This should only be done once.
                         _serialPortListener = new PortListener();
                     }
 
                     // The 2000 above is 2000mS to open the port, otherwise time out.
-                    int bits_per_second = ((IntToken) (baudRate.getToken())).intValue();
+                    int bits_per_second = ((IntToken) (baudRate.getToken()))
+                            .intValue();
                     _serialPort.setSerialPortParams(bits_per_second,
                             SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
                             SerialPort.PARITY_NONE);
@@ -564,7 +573,7 @@ public class SerialComm extends TypedAtomicActor {
     /** Override the base class to stop waiting for input data.
      */
     public void stop() {
-        synchronized(PortListener.class) {
+        synchronized (PortListener.class) {
             super.stop();
             PortListener.class.notifyAll();
         }
@@ -574,7 +583,7 @@ public class SerialComm extends TypedAtomicActor {
      */
     public synchronized void stopFire() {
         super.stopFire();
-        synchronized(PortListener.class) {
+        synchronized (PortListener.class) {
             PortListener.class.notifyAll();
         }
     }
@@ -665,7 +674,7 @@ public class SerialComm extends TypedAtomicActor {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -677,7 +686,7 @@ public class SerialComm extends TypedAtomicActor {
          *  are blocked on this PortListener class.
          */
         public void serialEvent(SerialPortEvent e) {
-            synchronized(PortListener.class) {
+            synchronized (PortListener.class) {
                 if (e.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
                     PortListener.class.notifyAll();
                 }

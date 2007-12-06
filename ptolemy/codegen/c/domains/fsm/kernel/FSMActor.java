@@ -287,21 +287,24 @@ public class FSMActor extends CCodeGeneratorHelper {
                             // FSMActor is used as a modal controller.
 
                             if (((IOPort) destination).isInput()) {
-                                ComponentCodeGenerator containerHelper = 
-                                    _getHelper(((IOPort) destination)
-                                            .getContainer().getContainer());
+                                ComponentCodeGenerator containerHelper = _getHelper(((IOPort) destination)
+                                        .getContainer().getContainer());
                                 StringBuffer containerReference = new StringBuffer();
-                                
-                                containerReference.append("$ref(" + destination.getName());
-                                
+
+                                containerReference.append("$ref("
+                                        + destination.getName());
+
                                 if (((IOPort) destination).isMultiport()) {
                                     containerReference.append("#" + channel);
                                 }
-                                
+
                                 containerReference.append(")");
-                                
-                                codeBuffer.append(((CodeGeneratorHelper) containerHelper)
-                                        .processCode(containerReference.toString()) + " = ");
+
+                                codeBuffer
+                                        .append(((CodeGeneratorHelper) containerHelper)
+                                                .processCode(containerReference
+                                                        .toString())
+                                                + " = ");
                             }
                         } else { // broadcast
 
@@ -320,21 +323,24 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 // a modal controller.
 
                                 if (((IOPort) destination).isInput()) {
-                                    ComponentCodeGenerator containerHelper = 
-                                        _getHelper(((IOPort) destination).getContainer()
-                                                .getContainer());
+                                    ComponentCodeGenerator containerHelper = _getHelper(((IOPort) destination)
+                                            .getContainer().getContainer());
                                     StringBuffer containerReference = new StringBuffer();
-                                    
-                                    containerReference.append("$ref(" + destination.getName());
-                                    
+
+                                    containerReference.append("$ref("
+                                            + destination.getName());
+
                                     if (((IOPort) destination).isMultiport()) {
                                         containerReference.append("#" + i);
                                     }
-                                    
+
                                     containerReference.append(")");
-                                    
-                                    codeBuffer.append(((CodeGeneratorHelper) containerHelper)
-                                            .processCode(containerReference.toString()) + " = ");
+
+                                    codeBuffer
+                                            .append(((CodeGeneratorHelper) containerHelper)
+                                                    .processCode(containerReference
+                                                            .toString())
+                                                    + " = ");
                                 }
                             }
                         }

@@ -54,9 +54,8 @@ public class CompositeActor extends PropertyConstraintCompositeHelper {
      * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
-    public CompositeActor(PropertySolver solver, 
-            ptolemy.actor.CompositeActor actor)
-        throws IllegalActionException {
+    public CompositeActor(PropertySolver solver,
+            ptolemy.actor.CompositeActor actor) throws IllegalActionException {
 
         super(solver, actor);
     }

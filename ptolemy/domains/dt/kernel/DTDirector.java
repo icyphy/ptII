@@ -1181,7 +1181,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     /** Inner class to cache important variables for contained actors
-     */  
+     */
     private static class DTActor {
 
         // FindBugs suggests making this class static so as to decrease

@@ -166,7 +166,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Add the specified object to the list of objects whose
      *  preinitialize(), intialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
@@ -179,7 +179,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         if (_initializables == null) {
             _initializables = new LinkedList<Initializable>();
         }
-        _initializables.add(initializable);        
+        _initializables.add(initializable);
     }
 
     /** Add the specified object to the list of objects whose action
@@ -319,13 +319,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
         try {
             _workspace.getReadAccess();
-            
+
             // First invoke piggybacked methods.
             if (_piggybacks != null) {
                 // Invoke the fire() method of each piggyback.
                 Iterator piggybacks = _piggybacks.iterator();
                 while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable)piggybacks.next();
+                    Executable piggyback = (Executable) piggybacks.next();
                     piggyback.fire();
                 }
             }
@@ -527,7 +527,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // First invoke initializable methods.
             if (_initializables != null) {
                 for (Initializable initializable : _initializables) {
-                    initializable.initialize();                    
+                    initializable.initialize();
                 }
             }
 
@@ -536,7 +536,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 // Invoke the initialize() method of each piggyback.
                 Iterator piggybacks = _piggybacks.iterator();
                 while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable)piggybacks.next();
+                    Executable piggyback = (Executable) piggybacks.next();
                     piggyback.initialize();
                 }
             }
@@ -657,7 +657,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 // Invoke the isFieFunctional() method of each piggyback.
                 Iterator piggybacks = _piggybacks.iterator();
                 while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable)piggybacks.next();
+                    Executable piggyback = (Executable) piggybacks.next();
                     if (!piggyback.isFireFunctional()) {
                         return false;
                     }
@@ -717,7 +717,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         if (_debugging) {
             _debug("Called iterate(" + count + ")");
         }
-        
+
         // First invoke piggybacked methods.
         // If any piggybacked object returns NOT_READY,
         // then we stop there and return NOT_READY.
@@ -729,7 +729,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // Invoke the iterate() method of each piggyback.
             Iterator piggybacks = _piggybacks.iterator();
             while (piggybacks.hasNext()) {
-                Executable piggyback = (Executable)piggybacks.next();
+                Executable piggyback = (Executable) piggybacks.next();
                 int result = piggyback.iterate(count);
                 if (result == NOT_READY) {
                     return NOT_READY;
@@ -898,14 +898,14 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 throw new IllegalActionException(this,
                         "Cannot postfire a non-opaque actor.");
             }
-            
+
             // First invoke piggybacked methods.
             boolean result = true;
             if (_piggybacks != null) {
                 // Invoke the postfire() method of each piggyback.
                 Iterator piggybacks = _piggybacks.iterator();
                 while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable)piggybacks.next();
+                    Executable piggyback = (Executable) piggybacks.next();
                     result = result && piggyback.postfire();
                 }
             }
@@ -946,7 +946,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                         "Cannot invoke prefire on a non-opaque actor, "
                                 + " please add a director.");
             }
-            
+
             // First invoke piggybacked methods.
             // If any piggyback method returns false, then we stop
             // there and return false.
@@ -954,7 +954,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 // Invoke the prefire method of each piggyback.
                 Iterator piggybacks = _piggybacks.iterator();
                 while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable)piggybacks.next();
+                    Executable piggyback = (Executable) piggybacks.next();
                     if (!piggyback.prefire()) {
                         if (_debugging) {
                             _debug("CompositeActor: prefire returns false due to piggybacked object.");
@@ -999,11 +999,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
         try {
             _workspace.getReadAccess();
-            
+
             // First invoke initializable methods.
             if (_initializables != null) {
                 for (Initializable initializable : _initializables) {
-                    initializable.preinitialize();                    
+                    initializable.preinitialize();
                 }
             }
 
@@ -1012,7 +1012,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 // Invoke the preinitialize() method of each piggyback.
                 Iterator piggybacks = _piggybacks.iterator();
                 while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable)piggybacks.next();
+                    Executable piggyback = (Executable) piggybacks.next();
                     piggyback.preinitialize();
                 }
             }
@@ -1049,7 +1049,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _workspace.doneReading();
         }
     }
-    
+
     /** Remove the specified object from the list of objects whose
      *  preinitialize(), intialize(), and wrapup()
      *  methods should be invoked upon invocation of the corresponding
@@ -1226,13 +1226,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
         try {
             _workspace.getReadAccess();
-            
+
             // First invoke piggybacked methods.
             if (_piggybacks != null) {
                 // Invoke the stop method of each piggyback.
                 Iterator piggybacks = _piggybacks.iterator();
                 while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable)piggybacks.next();
+                    Executable piggyback = (Executable) piggybacks.next();
                     piggyback.stop();
                 }
             }
@@ -1266,13 +1266,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
         try {
             _workspace.getReadAccess();
-            
+
             // First invoke piggybacked methods.
             if (_piggybacks != null) {
                 // Invoke the stopFire() method of each piggyback.
                 Iterator piggybacks = _piggybacks.iterator();
                 while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable)piggybacks.next();
+                    Executable piggyback = (Executable) piggybacks.next();
                     piggyback.stopFire();
                 }
             }
@@ -1299,13 +1299,13 @@ public class CompositeActor extends CompositeEntity implements Actor {
         if (_debugging) {
             _debug("Called terminate()");
         }
-        
+
         // First invoke piggybacked methods.
         if (_piggybacks != null) {
             // Invoke the terminate() method of each piggyback.
             Iterator piggybacks = _piggybacks.iterator();
             while (piggybacks.hasNext()) {
-                Executable piggyback = (Executable)piggybacks.next();
+                Executable piggyback = (Executable) piggybacks.next();
                 piggyback.terminate();
             }
         }
@@ -1335,7 +1335,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // First invoke initializable methods.
             if (_initializables != null) {
                 for (Initializable initializable : _initializables) {
-                    initializable.wrapup();                    
+                    initializable.wrapup();
                 }
             }
 
@@ -1344,7 +1344,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 // Invoke the wrapup() method of each piggyback.
                 Iterator piggybacks = _piggybacks.iterator();
                 while (piggybacks.hasNext()) {
-                    Executable piggyback = (Executable)piggybacks.next();
+                    Executable piggyback = (Executable) piggybacks.next();
                     piggyback.wrapup();
                 }
             }
@@ -1547,7 +1547,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     // Indicator that we are in the connectionsChanged method.
     private boolean _inConnectionsChanged = false;
-    
+
     // The manager for this composite actor.
     private Manager _manager;
 
@@ -1559,7 +1559,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     private transient long _outputPortsVersion = -1;
 
     private transient List _cachedOutputPorts;
-    
+
     /** List piggybacked objects. */
     private transient List _piggybacks;
 

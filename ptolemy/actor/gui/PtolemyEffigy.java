@@ -381,9 +381,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                     return null;
                 }
 
-                if (!checkForDTD(input,
-                            "<!DOCTYPE",
-                            ".*PUBLIC \"-//UC Berkeley//DTD MoML.*")) {
+                if (!checkForDTD(input, "<!DOCTYPE",
+                        ".*PUBLIC \"-//UC Berkeley//DTD MoML.*")) {
                     return null;
                 }
 
@@ -433,10 +432,12 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                     .getProperty("entityClassName");
                             if ((entityClassName.length() > 0 || endTime > startTime + 10000)
                                     && toplevel instanceof CompositeEntity) {
-                                System.out.println("Opened " + input + " in " 
-                                        + (System.currentTimeMillis()
-                                                - startTime)
-                                        + " ms.");
+                                System.out
+                                        .println("Opened "
+                                                + input
+                                                + " in "
+                                                + (System.currentTimeMillis() - startTime)
+                                                + " ms.");
 
                                 System.out.println(((CompositeEntity) toplevel)
                                         .statistics(entityClassName));

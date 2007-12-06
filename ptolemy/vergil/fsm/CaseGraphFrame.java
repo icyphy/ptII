@@ -363,7 +363,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
             }
         }
     }
-    
+
     /** Specialized graph controller that handles multiple graph models. */
     public class CaseGraphController extends ActorEditorGraphController {
         /** Override the base class to select the graph model associated
@@ -373,7 +373,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
             if (_tabbedPane != null) {
                 Component tab = _tabbedPane.getSelectedComponent();
                 if (tab instanceof JGraph) {
-                    GraphPane pane = ((JGraph)tab).getGraphPane();
+                    GraphPane pane = ((JGraph) tab).getGraphPane();
                     return pane.getGraphModel();
                 }
             }

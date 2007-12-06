@@ -145,7 +145,7 @@ public class DocBuilder extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return the command to compile ptII/doc/PtDoclet.
      */
     private static String _compilePtDoclet(File ptII) {
@@ -158,15 +158,15 @@ public class DocBuilder extends Attribute {
                 File toolsJarFile = new File(javaHome + toolsJarFileBase);
                 if (toolsJarFile.exists()) {
                     results = "javac -classpath \"" + ptII + File.pathSeparator
-                        + javaHome + toolsJarFileBase
-                        + "\" doc/doclets/PtDoclet.java";
+                            + javaHome + toolsJarFileBase
+                            + "\" doc/doclets/PtDoclet.java";
                 }
             }
         } catch (Throwable throwable) {
             // Ignore, return the empty string.
         }
         return results;
-    } 
+    }
 
     /** Build the documentation. 
      *  @return The return value of the last subprocess that was executed
@@ -238,12 +238,14 @@ public class DocBuilder extends Attribute {
                             .updateStatusBar("When creating docs, warnings are ok.");
 
                     commands.add(_compilePtDoclet(ptII));
-                    commands.add("javadoc -classpath \""
-                            + StringUtilities.getProperty("java.class.path")
-                            + "\" -J-Xmx512m -d doc/codeDoc "
-                            + "-doclet doc.doclets.PtDoclet "
-                            + "-subpackages com:diva:jni:org:ptolemy:thales "
-                            + "-exclude ptolemy.apps:ptolemy.copernicus:diva.util.java2d.svg");
+                    commands
+                            .add("javadoc -classpath \""
+                                    + StringUtilities
+                                            .getProperty("java.class.path")
+                                    + "\" -J-Xmx512m -d doc/codeDoc "
+                                    + "-doclet doc.doclets.PtDoclet "
+                                    + "-subpackages com:diva:jni:org:ptolemy:thales "
+                                    + "-exclude ptolemy.apps:ptolemy.copernicus:diva.util.java2d.svg");
                     commands
                             .add("java -Xmx256m -classpath \""
                                     + StringUtilities

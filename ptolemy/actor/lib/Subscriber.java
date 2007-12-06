@@ -157,7 +157,7 @@ public class Subscriber extends TypedAtomicActor {
                         // has been run, this has to be done here.
                         _updateLinks();
                     }
-                } 
+                }
             }
         } else {
             super.attributeChanged(attribute);
@@ -245,7 +245,7 @@ public class Subscriber extends TypedAtomicActor {
             if (input.getWidth() == 0) {
                 throw new IllegalActionException(this,
                         "Subscriber has no matching Publisher.");
-            }                
+            }
         }
     }
 
@@ -277,8 +277,7 @@ public class Subscriber extends TypedAtomicActor {
             _relation = null;
         }
         if (publisher != null) {
-            if (publisher._relation == null
-                    || !publisher._updatedLinks) {
+            if (publisher._relation == null || !publisher._updatedLinks) {
                 // If we call Subscriber.preinitialize()
                 // before we call Publisher.preinitialize(),
                 // then the publisher will not have created

@@ -26,7 +26,6 @@
  */
 package ptolemy.actor.gt.ingredients.criteria;
 
-
 public class StringCriterionElement extends CriterionElement {
 
     public StringCriterionElement(String name) {

@@ -235,7 +235,8 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
                 // To support the latter situation, we try again (just one
                 // more time) in a ChangeRequest.
                 if (!_deferred) {
-                    ChangeRequest request = new ChangeRequest(this, "AttributeValueAttribute") {
+                    ChangeRequest request = new ChangeRequest(this,
+                            "AttributeValueAttribute") {
                         protected void _execute() {
                             _setAttributeName(attributeName);
                             _deferred = false;

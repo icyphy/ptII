@@ -28,8 +28,6 @@
  */
 package ptolemy.data.properties;
 
-
-
 //////////////////////////////////////////////////////////////////////////
 //// Property
 
@@ -43,7 +41,7 @@ package ptolemy.data.properties;
  @Pt.AcceptedRating Red (cxh)
  */
 public class Property {
-    
+
     /** Test if the argument property is compatible with this property.
      *  Compatible is defined as follows: If this property is a constant, the
      *  argument is compatible if it is the same or less than this property in
@@ -55,6 +53,7 @@ public class Property {
     public boolean isCompatible(Property property) {
         throw new AssertionError("Not supported in Base class.");
     }
+
     /** Test if this property is a constant. A property is a constant if it
      *  does not contain the bottom of the property lattice in any level within it.
      *  @return True if this property is a constant.
@@ -71,6 +70,7 @@ public class Property {
     public boolean isInstantiable() {
         throw new AssertionError("Not supported in Base class.");
     }
+
     /** Return true if the specified property is a substitution instance of this
      *  property. For the argument to be a substitution instance, it must be
      *  either the same as this property, or it must be a property that can be

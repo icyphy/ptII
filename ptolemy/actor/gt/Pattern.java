@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class Pattern extends CompositeActorMatcher {
 
     public Pattern(CompositeEntity container, String name)
-    throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         setClassName("ptolemy.actor.gt.Pattern");
     }

@@ -77,12 +77,12 @@ public class DependencyHighlighter extends NodeControllerFactory {
     public DependencyHighlighter(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         highlightColor = new ColorAttribute(this, "highlightColor");
         // Red default.
         highlightColor.setExpression("{1.0, 0.0, 0.0, 1.0}");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -106,9 +106,8 @@ public class DependencyHighlighter extends NodeControllerFactory {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void _addHighlights(
-            NamedObj actor, StringBuffer moml, HashSet<NamedObj> visited,
-            boolean forward, boolean clear) {
+    private void _addHighlights(NamedObj actor, StringBuffer moml,
+            HashSet<NamedObj> visited, boolean forward, boolean clear) {
         if (visited.contains(actor)) {
             return;
         }
@@ -119,26 +118,26 @@ public class DependencyHighlighter extends NodeControllerFactory {
             if (!clear) {
                 moml.append(highlightColor.exportMoML("_highlightColor"));
             } else {
-                moml.append("<deleteProperty name=\"_highlightColor\"/>");                
+                moml.append("<deleteProperty name=\"_highlightColor\"/>");
             }
             moml.append("</entity>");
-            
+
             visited.add(actor);
             Iterator ports;
             if (forward) {
-                ports = ((Actor)actor).outputPortList().iterator();
+                ports = ((Actor) actor).outputPortList().iterator();
             } else {
-                ports = ((Actor)actor).inputPortList().iterator();
+                ports = ((Actor) actor).inputPortList().iterator();
             }
             while (ports.hasNext()) {
-                IOPort port = (IOPort)ports.next();
+                IOPort port = (IOPort) ports.next();
                 Iterator connectedPorts = port.connectedPortList().iterator();
                 while (connectedPorts.hasNext()) {
-                    IOPort otherPort = (IOPort)connectedPorts.next();
+                    IOPort otherPort = (IOPort) connectedPorts.next();
                     // Skip ports with the same polarity (input or output)
                     // as the current port.
-                    if (port.isInput() && !otherPort.isOutput() ||
-                            port.isOutput() && !otherPort.isInput()) {
+                    if (port.isInput() && !otherPort.isOutput()
+                            || port.isOutput() && !otherPort.isInput()) {
                         continue;
                     }
                     NamedObj higherActor = otherPort.getContainer();
@@ -150,38 +149,45 @@ public class DependencyHighlighter extends NodeControllerFactory {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** A node controller for dependency highlights.
-     */   
+     */
     public class DependencyController extends AttributeController {
 
         /** Create a node controller that provideds interaction with
          *  the dependency highlights.
          *  @param controller The associated graph controller.
-         */   
+         */
         public DependencyController(GraphController controller) {
             super(controller);
-            
-            HighlightDependents highlight = new HighlightDependents("Highlight dependents", true, false);
+
+            HighlightDependents highlight = new HighlightDependents(
+                    "Highlight dependents", true, false);
             _menuFactory.addMenuItemFactory(new MenuActionFactory(highlight));
 
-            HighlightDependents clear1 = new HighlightDependents("Clear dependents", true, true);
+            HighlightDependents clear1 = new HighlightDependents(
+                    "Clear dependents", true, true);
             _menuFactory.addMenuItemFactory(new MenuActionFactory(clear1));
 
-            HighlightDependents prerequisites = new HighlightDependents("Highlight prerequisites", false, false);
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(prerequisites));
+            HighlightDependents prerequisites = new HighlightDependents(
+                    "Highlight prerequisites", false, false);
+            _menuFactory
+                    .addMenuItemFactory(new MenuActionFactory(prerequisites));
 
-            HighlightDependents clear2 = new HighlightDependents("Clear prerequisites", false, true);
+            HighlightDependents clear2 = new HighlightDependents(
+                    "Clear prerequisites", false, true);
             _menuFactory.addMenuItemFactory(new MenuActionFactory(clear2));
         }
     }
-    
+
     private class HighlightDependents extends FigureAction {
-        public HighlightDependents(String commandName, boolean forward, boolean clear) {
+        public HighlightDependents(String commandName, boolean forward,
+                boolean clear) {
             super(commandName);
             _forward = forward;
             _clear = clear;
         }
+
         public void actionPerformed(ActionEvent e) {
             // Determine which entity was selected for the create instance action.
             super.actionPerformed(e);
@@ -191,8 +197,10 @@ public class DependencyHighlighter extends NodeControllerFactory {
             HashSet<NamedObj> visited = new HashSet<NamedObj>();
             _addHighlights(actor, moml, visited, _forward, _clear);
             moml.append("</group>");
-            actor.requestChange(new MoMLChangeRequest(this, actor.getContainer(), moml.toString()));
+            actor.requestChange(new MoMLChangeRequest(this, actor
+                    .getContainer(), moml.toString()));
         }
+
         private boolean _forward, _clear;
     }
 }

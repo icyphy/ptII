@@ -209,22 +209,21 @@ public class MatchResultViewer extends AbstractGTFrame {
         _viewMenu.addSeparator();
         _previousItem = GUIUtilities.addMenuItem(_viewMenu, previousAction);
         _nextItem = GUIUtilities.addMenuItem(_viewMenu, nextAction);
-        _previousFileItem =
-            GUIUtilities.addMenuItem(_viewMenu, previousFileAction);
-        _nextFileItem =
-            GUIUtilities.addMenuItem(_viewMenu, nextFileAction);
+        _previousFileItem = GUIUtilities.addMenuItem(_viewMenu,
+                previousFileAction);
+        _nextFileItem = GUIUtilities.addMenuItem(_viewMenu, nextFileAction);
         _transformItem = GUIUtilities.addMenuItem(_viewMenu, transformAction);
         _transformAllItem = GUIUtilities.addMenuItem(_viewMenu,
                 transformAllAction);
         GUIUtilities.addMenuItem(_viewMenu, closeAction);
 
-        _previousFileButton =
-            GUIUtilities.addToolBarButton(_toolbar, previousFileAction);
-        _previousButton =
-            GUIUtilities.addToolBarButton(_toolbar, previousAction);
+        _previousFileButton = GUIUtilities.addToolBarButton(_toolbar,
+                previousFileAction);
+        _previousButton = GUIUtilities.addToolBarButton(_toolbar,
+                previousAction);
         _nextButton = GUIUtilities.addToolBarButton(_toolbar, nextAction);
-        _nextFileButton =
-            GUIUtilities.addToolBarButton(_toolbar, nextFileAction);
+        _nextFileButton = GUIUtilities.addToolBarButton(_toolbar,
+                nextFileAction);
         _transformButton = GUIUtilities.addToolBarButton(_toolbar,
                 transformAction);
         _transformAllButton = GUIUtilities.addToolBarButton(_toolbar,
@@ -248,34 +247,31 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     protected static void _setTableauFactory(Object originator,
             final CompositeEntity entity) {
-        List<?> factoryList =
-            entity.attributeList(MatchResultTableau.Factory.class);
+        List<?> factoryList = entity
+                .attributeList(MatchResultTableau.Factory.class);
         if (factoryList.isEmpty()) {
-            String momlTxt =
-                "<group name=\"auto\">"
-                + "<property name=\"_tableauFactory\""
-                + "  class=\"ptolemy.vergil.gt.MatchResultTableau$Factory\">"
-                + "</property>"
-                + "</group>";
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(originator, entity, momlTxt);
+            String momlTxt = "<group name=\"auto\">"
+                    + "<property name=\"_tableauFactory\""
+                    + "  class=\"ptolemy.vergil.gt.MatchResultTableau$Factory\">"
+                    + "</property>" + "</group>";
+            MoMLChangeRequest request = new MoMLChangeRequest(originator,
+                    entity, momlTxt);
             entity.requestChange(request);
             entity.requestChange(new ChangeRequest(originator,
-            "Unset _tableauFactory persistence") {
+                    "Unset _tableauFactory persistence") {
                 protected void _execute() throws Exception {
                     _unsetPersistent(entity);
                 }
 
                 private void _unsetPersistent(CompositeEntity entity) {
-                    List<?> factoryList =
-                        entity.attributeList(MatchResultTableau.Factory.class);
+                    List<?> factoryList = entity
+                            .attributeList(MatchResultTableau.Factory.class);
                     for (Object attributeObject : factoryList) {
-                        MatchResultTableau.Factory factory =
-                            (MatchResultTableau.Factory) attributeObject;
+                        MatchResultTableau.Factory factory = (MatchResultTableau.Factory) attributeObject;
                         factory.setPersistent(false);
                     }
-                    for (Object subentity
-                            : entity.entityList(CompositeEntity.class)) {
+                    for (Object subentity : entity
+                            .entityList(CompositeEntity.class)) {
                         _unsetPersistent((CompositeEntity) subentity);
                     }
                 }
@@ -288,15 +284,14 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     protected static void _unsetTableauFactory(Object originator,
             CompositeEntity entity) {
-        List<?> factoryList =
-            entity.attributeList(MatchResultTableau.Factory.class);
+        List<?> factoryList = entity
+                .attributeList(MatchResultTableau.Factory.class);
         for (Object attributeObject : factoryList) {
-            MatchResultTableau.Factory factory =
-                (MatchResultTableau.Factory) attributeObject;
-            String momlTxt =
-                "<deleteProperty name=\"" + factory.getName() + "\"/>";
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(originator, entity, momlTxt);
+            MatchResultTableau.Factory factory = (MatchResultTableau.Factory) attributeObject;
+            String momlTxt = "<deleteProperty name=\"" + factory.getName()
+                    + "\"/>";
+            MoMLChangeRequest request = new MoMLChangeRequest(originator,
+                    entity, momlTxt);
             entity.requestChange(request);
         }
         for (Object subentity : entity.entityList(CompositeEntity.class)) {
@@ -519,8 +514,7 @@ public class MatchResultViewer extends AbstractGTFrame {
 
         MoMLParser parser = new MoMLParser();
         try {
-            Tableau tableau =
-                _getConfiguration().openModel(parser.parse(moml));
+            Tableau tableau = _getConfiguration().openModel(parser.parse(moml));
             Frame frame = tableau.getFrame();
             if (modified && (frame instanceof TableauFrame)) {
                 ((TableauFrame) tableau.getFrame()).setModified(true);
@@ -553,8 +547,8 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     private int _currentPosition;
 
-    private AnimationRenderer _decorator =
-        new AnimationRenderer(new Color(128, 128, 255));
+    private AnimationRenderer _decorator = new AnimationRenderer(new Color(128,
+            128, 255));
 
     private FileSelectionStatus _fileSelectionStatus = FileSelectionStatus.NONE;
 

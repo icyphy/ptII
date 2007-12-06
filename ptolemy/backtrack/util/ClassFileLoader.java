@@ -95,13 +95,13 @@ public class ClassFileLoader extends URLClassLoader {
             int bytesAvailable = inputStream.available();
             byte[] buffer = new byte[bytesAvailable];
             int bytesRead;
-            if ((bytesRead = inputStream.read(buffer))
-                    != bytesAvailable) {
-                throw new IOException("Failed to read \""
-                        + classFile + "\", read only " + bytesRead
-                        + " bytes, expected to read "
-                        + bytesAvailable + " bytes");
-            };
+            if ((bytesRead = inputStream.read(buffer)) != bytesAvailable) {
+                throw new IOException("Failed to read \"" + classFile
+                        + "\", read only " + bytesRead
+                        + " bytes, expected to read " + bytesAvailable
+                        + " bytes");
+            }
+            ;
 
             try {
                 return defineClass(null, buffer, 0, buffer.length);
@@ -137,7 +137,8 @@ public class ClassFileLoader extends URLClassLoader {
                         if (endIndex < 0) {
                             endIndex = message.length();
                         }
-                        String path = message.substring(startIndex + 1, endIndex);
+                        String path = message.substring(startIndex + 1,
+                                endIndex);
                         String classFullName = path.replace('/', '.');
                         return loadClass(classFullName);
                     }

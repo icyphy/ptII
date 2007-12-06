@@ -49,7 +49,7 @@ public class CombinedCollection<E> implements Collection<E> {
     public CombinedCollection() {
     }
 
-    public CombinedCollection(Collection<? extends E> ... collections) {
+    public CombinedCollection(Collection<? extends E>... collections) {
         for (Collection<? extends E> collection : collections) {
             _collectionList.add(collection);
         }
@@ -138,8 +138,8 @@ public class CombinedCollection<E> implements Collection<E> {
     public <T> T[] toArray(T[] array) {
         int size = size();
         if (array.length < size) {
-            array = (T[]) java.lang.reflect.Array.newInstance(
-                                array.getClass().getComponentType(), size);
+            array = (T[]) java.lang.reflect.Array.newInstance(array.getClass()
+                    .getComponentType(), size);
         }
 
         int i = 0;
@@ -160,8 +160,7 @@ public class CombinedCollection<E> implements Collection<E> {
         return _collectionList;
     }
 
-    private List<Collection<? extends E>> _collectionList =
-        new LinkedList<Collection<? extends E>>();
+    private List<Collection<? extends E>> _collectionList = new LinkedList<Collection<? extends E>>();
 
     private boolean _isLastListModifiable = false;
 
@@ -190,8 +189,8 @@ public class CombinedCollection<E> implements Collection<E> {
             if (_objectIterator == null || !_objectIterator.hasNext()) {
                 _objectIterator = null;
                 while (_collectionIterator.hasNext()) {
-                    Collection<? extends E> collection =
-                        _collectionIterator.next();
+                    Collection<? extends E> collection = _collectionIterator
+                            .next();
                     if (!collection.isEmpty()) {
                         _objectIterator = collection.iterator();
                         break;

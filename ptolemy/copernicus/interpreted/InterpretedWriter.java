@@ -150,7 +150,7 @@ public class InterpretedWriter extends SceneTransformer implements
                     throw new RuntimeException("Failed to close "
                             + modelFileName, ex);
                 }
-            } 
+            }
         }
     }
 

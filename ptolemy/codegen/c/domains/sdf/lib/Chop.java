@@ -62,19 +62,18 @@ public class Chop extends CCodeGeneratorHelper {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
-        
+
         ArrayList args = new ArrayList();
-        
-        ptolemy.domains.sdf.lib.Chop actor = 
-            (ptolemy.domains.sdf.lib.Chop) getComponent();
-        
+
+        ptolemy.domains.sdf.lib.Chop actor = (ptolemy.domains.sdf.lib.Chop) getComponent();
+
         Type type = actor.input.getType();
         if (!isPrimitive(type)) {
             args.add("\\$tokenFunc(\\$ref(input)::zero())");
         } else {
             args.add("0");
         }
-        
+
         code.append(_generateBlockCode("preinitBlock", args));
         return code.toString();
     }

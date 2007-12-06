@@ -48,22 +48,22 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class ASTPtFunctionApplicationNode extends PropertyConstraintASTNodeHelper {
+public class ASTPtFunctionApplicationNode extends
+        PropertyConstraintASTNodeHelper {
 
-    public ASTPtFunctionApplicationNode(PropertyConstraintSolver solver, 
-            ptolemy.data.expr.ASTPtFunctionApplicationNode node) throws IllegalActionException {
+    public ASTPtFunctionApplicationNode(PropertyConstraintSolver solver,
+            ptolemy.data.expr.ASTPtFunctionApplicationNode node)
+            throws IllegalActionException {
         super(solver, node);
 
         Lattice lattice = (Lattice) solver.getLattice();
 
         if (dynamicFunctions.contains(node.getFunctionName())) {
-            
+
             _useDefaultConstraints = false;
             setEquals(node, lattice.DYNAMIC);
         }
     }
-    
-    List dynamicFunctions = Arrays.asList( 
-            new String[]{ "gaussian"
-    });
+
+    List dynamicFunctions = Arrays.asList(new String[] { "gaussian" });
 }

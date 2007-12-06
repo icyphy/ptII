@@ -54,13 +54,12 @@ public class Source extends PropertyConstraintHelper {
      * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
-    public Source(PropertyConstraintSolver solver, 
-            ptolemy.actor.lib.Source actor)
-            throws IllegalActionException {
+    public Source(PropertyConstraintSolver solver,
+            ptolemy.actor.lib.Source actor) throws IllegalActionException {
 
         super(solver, actor, false);
-        Lattice lattice = (Lattice) solver.getLattice();        
-        setEquals(actor.output, lattice.DYNAMIC);        
+        Lattice lattice = (Lattice) solver.getLattice();
+        setEquals(actor.output, lattice.DYNAMIC);
     }
 
 }

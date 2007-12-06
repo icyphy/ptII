@@ -67,7 +67,7 @@ public class ArrayToSequence extends CCodeGeneratorHelper {
         ptolemy.domains.sdf.lib.ArrayToSequence actor = (ptolemy.domains.sdf.lib.ArrayToSequence) getComponent();
 
         Type type = ((ArrayType) actor.input.getType()).getElementType();
-        
+
         if (isPrimitive(type)) {
             ArrayList args = new ArrayList();
             args.add(codeGenType(type));

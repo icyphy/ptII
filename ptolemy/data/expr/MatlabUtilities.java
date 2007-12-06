@@ -85,8 +85,7 @@ public class MatlabUtilities {
      *  a Token.
      */
     public static ptolemy.data.Token evaluate(String expression,
-            Set variableNames, ParserScope scope)
-            throws IllegalActionException {
+            Set variableNames, ParserScope scope) throws IllegalActionException {
         try {
             if (_engineClass == null) {
                 _initialize();

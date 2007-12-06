@@ -51,7 +51,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Publisher
 
@@ -310,7 +309,7 @@ public class Publisher extends TypedAtomicActor {
             try {
                 _relation = new TypedIORelation(
                         (TypedCompositeActor) container, container
-                        .uniqueName("publisherRelation"));
+                                .uniqueName("publisherRelation"));
                 // Prevent the relation and its links from being exported.
                 _relation.setPersistent(false);
                 // Prevent the relation from showing up in vergil.
@@ -379,8 +378,7 @@ public class Publisher extends TypedAtomicActor {
                     if (_channel.equals(((Publisher) actor)._channel)) {
                         throw new IllegalActionException(this,
                                 "There is already a publisher using channel \""
-                                        + _channel
-                                        + "\": "
+                                        + _channel + "\": "
                                         + ((NamedObj) actor).getFullName());
                     }
                 }
@@ -429,7 +427,7 @@ public class Publisher extends TypedAtomicActor {
 
     /** An indicator that connectionsChanged() has been called. */
     private boolean _inConnectionsChanged = false;
-    
+
     /** Indicator that preinitialize has been called and not wrapup. */
     private boolean _running;
 }

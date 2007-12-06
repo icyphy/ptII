@@ -257,7 +257,7 @@ public class ModalDirector extends FSMDirector {
                 postfireResult = false;
             }
         }
-        
+
         // We cannot clear the _actorsFired list here because
         // the suggestedStepSize() method of the derived class,
         // HybridModalDirector needs this list to query the suggested step size.

@@ -675,10 +675,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  @exception IllegalActionException If a value in the scope
      *  exists with the given name, but cannot be evaluated.
      */
-    public Variable getVariable(String name)
-            throws IllegalActionException {
+    public Variable getVariable(String name) throws IllegalActionException {
         // FIXME: this is not a safe cast because we have setParserScope()
-        return ((VariableScope)getParserScope()).getVariable(name);
+        return ((VariableScope) getParserScope()).getVariable(name);
     }
 
     /** Get the visibility of this variable, as set by setVisibility().
@@ -2309,8 +2308,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
          *  @exception IllegalActionException If a value in the scope
          *  exists with the given name, but cannot be evaluated.
          */
-        public Variable getVariable(String name)
-                throws IllegalActionException {
+        public Variable getVariable(String name) throws IllegalActionException {
             if (_variablesDependentOn == null) {
                 _variablesDependentOn = new HashMap();
             } else {

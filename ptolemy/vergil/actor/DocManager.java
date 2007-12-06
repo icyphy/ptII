@@ -446,7 +446,8 @@ public class DocManager extends HandlerBase {
                         if (toRead == null) {
                             // Try looking in the documentation for vergil.
                             docNameList.add(docNames[3]);
-                            toRead = referenceClassLoader.getResource(docNames[3]);
+                            toRead = referenceClassLoader
+                                    .getResource(docNames[3]);
                         }
                     }
                 } catch (ClassNotFoundException ex) {

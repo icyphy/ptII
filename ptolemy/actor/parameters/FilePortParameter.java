@@ -193,8 +193,8 @@ import ptolemy.util.FileUtilities;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class FilePortParameter extends PortParameter
-    implements FileOrURLAccessor {
+public class FilePortParameter extends PortParameter implements
+        FileOrURLAccessor {
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This parameter will create

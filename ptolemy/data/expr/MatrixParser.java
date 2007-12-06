@@ -412,7 +412,8 @@ public class MatrixParser/*@bgen(jjtree)*/implements
 
     static final private int jj_ntk() {
         if ((jj_nt = token.next) == null) {
-            return (jj_ntk = (token.next = MatrixParserTokenManager.getNextToken()).kind);
+            return (jj_ntk = (token.next = MatrixParserTokenManager
+                    .getNextToken()).kind);
         } else {
             return (jj_ntk = jj_nt.kind);
         }

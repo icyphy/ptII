@@ -211,7 +211,7 @@ public class PortNameChanges implements MoMLFilter {
             Iterator portMapEntries = portMap.entrySet().iterator();
 
             while (portMapEntries.hasNext()) {
-                Map.Entry ports = (Map.Entry)portMapEntries.next();
+                Map.Entry ports = (Map.Entry) portMapEntries.next();
                 String oldPort = (String) ports.getKey();
                 String newPort = (String) ports.getValue();
                 results.append("\t\t" + oldPort + "\t -> " + newPort + "\n");

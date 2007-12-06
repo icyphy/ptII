@@ -220,7 +220,7 @@ public class FixTransformer extends TypedAtomicActor {
      */
     protected void _setAndHideQuantizationParameters(String precisionString,
             String overflowString, String roundingString) {
-            //throws IllegalActionException {
+        //throws IllegalActionException {
 
         _setQuantizationParameters(precisionString, overflowString,
                 roundingString);
@@ -236,7 +236,7 @@ public class FixTransformer extends TypedAtomicActor {
      */
     protected void _showQuantizationParameters(boolean showPrecision,
             boolean showOverflow, boolean showRounding) {
-            //throws IllegalActionException {
+        //throws IllegalActionException {
         Parameter precision = ((Parameter) getAttribute("outputPrecision"));
         precision
                 .setVisibility((showPrecision) ? Settable.FULL : Settable.NONE);
@@ -256,7 +256,7 @@ public class FixTransformer extends TypedAtomicActor {
      */
     protected void _setQuantizationParameters(String precisionString,
             String overflowString, String roundingString) {
-            //throws IllegalActionException {
+        //throws IllegalActionException {
         if (precisionString != null) {
             ((Parameter) getAttribute("outputPrecision"))
                     .setExpression(precisionString);

@@ -46,11 +46,11 @@ import ptolemy.vergil.gt.GTIngredientsEditor;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class CompositeActorMatcher extends TypedCompositeActor
-implements GTEntity {
+public class CompositeActorMatcher extends TypedCompositeActor implements
+        GTEntity {
 
     public CompositeActorMatcher(CompositeEntity container, String name)
-    throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         setClassName("ptolemy.actor.gt.CompositeActorMatcher");

@@ -112,9 +112,12 @@ public class CaseDirector extends Director {
                     } else {
                         code.append(_INDENT2 + "} else if (!strcmp(");
                     }
-                    code.append(_codeGenerator.generateVariableName(container.control)
+                    code.append(_codeGenerator
+                            .generateVariableName(container.control)
                             + ".payload.String, "
-                            + "\"" + refinementName + "\")) {" + _eol);
+                            + "\""
+                            + refinementName
+                            + "\")) {" + _eol);
                 }
             } else {
                 if (useSwitch) {

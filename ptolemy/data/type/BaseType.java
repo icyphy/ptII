@@ -412,7 +412,7 @@ public abstract class BaseType implements Type, Serializable {
 
     /** The float data type. */
     public static final FloatType FLOAT = new FloatType();
-    
+
     /** The double data type. */
     public static class DoubleType extends BaseType {
         private DoubleType() {
@@ -473,6 +473,7 @@ public abstract class BaseType implements Type, Serializable {
         public Token convert(Token t) throws IllegalActionException {
             return ShortToken.convert(t);
         }
+
         public int getTypeHash() {
             return 15;
         }
@@ -480,8 +481,7 @@ public abstract class BaseType implements Type, Serializable {
 
     /** The short integer data type. */
     public static final ShortType SHORT = new ShortType();
-    
-    
+
     /** The integer data type. */
     public static class IntType extends BaseType {
         private IntType() {

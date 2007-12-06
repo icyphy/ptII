@@ -346,8 +346,8 @@ public class UserActorLibrary {
             final ModelDirectory directory, Configuration configuration,
             File file, final CompositeEntity libraryContainer,
             final PtolemyEffigy finalLibraryEffigy) throws Exception {
-        ChangeRequest request = new ChangeRequest(configuration, file.toURI().toURL()
-                .toString()) {
+        ChangeRequest request = new ChangeRequest(configuration, file.toURI()
+                .toURL().toString()) {
             protected void _execute() throws Exception {
                 // The library is a class!
                 library.setClassDefinition(true);

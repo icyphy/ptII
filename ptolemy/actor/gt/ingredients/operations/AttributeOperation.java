@@ -76,14 +76,13 @@ public class AttributeOperation extends Operation {
         NamedObj container = owner.getOwner().getContainer();
         _attributeName = attributeName;
         _attributeClass = attributeClass;
-        _attributeValue =
-            new PtolemyExpressionString(container, attributeValue);
+        _attributeValue = new PtolemyExpressionString(container, attributeValue);
     }
 
     public ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
             GTEntity patternEntity, GTEntity replacementEntity)
-    throws IllegalActionException {
+            throws IllegalActionException {
         if (_valueParseTree == null) {
             _reparse();
         }
@@ -95,17 +94,18 @@ public class AttributeOperation extends Operation {
         } else {
             Attribute oldAttribute = hostEntity.getAttribute(_attributeName);
             if (oldAttribute == null) {
-                throw new IllegalActionException("Unable to determine the class"
-                        + " of attribute " + _attributeName + " for entity "
-                        + hostEntity + ".");
+                throw new IllegalActionException(
+                        "Unable to determine the class" + " of attribute "
+                                + _attributeName + " for entity " + hostEntity
+                                + ".");
             }
             attributeClass = oldAttribute.getClassName();
         }
 
         ParserScope scope = NamedObjVariable.getNamedObjVariable(hostEntity,
                 true).getParserScope();
-        PartialEvaluator evaluator =
-            new PartialEvaluator(scope, pattern, matchResult);
+        PartialEvaluator evaluator = new PartialEvaluator(scope, pattern,
+                matchResult);
         ASTPtRootNode root = evaluator.evaluate(_valueParseTree);
         String expression = _parseTreeWriter.parseTreeToExpression(root);
         String moml = "<property name=\"" + _attributeName + "\" class=\""
@@ -228,10 +228,9 @@ public class AttributeOperation extends Operation {
     private PtolemyExpressionString _attributeValue;
 
     private static final OperationElement[] _ELEMENTS = {
-        new StringOperationElement("name", false),
-        new StringOperationElement("type", false),
-        new StringOperationElement("value", true)
-    };
+            new StringOperationElement("name", false),
+            new StringOperationElement("type", false),
+            new StringOperationElement("value", true) };
 
     private PtParser _parser = new PtParser();
 

@@ -50,8 +50,9 @@ public class CompositeActor extends PropertyConstraintCompositeHelper {
      *  @param component The associated component.
      * @throws IllegalActionException 
      */
-    public CompositeActor(PropertyConstraintSolver solver, 
-            ptolemy.actor.CompositeActor component) throws IllegalActionException {
+    public CompositeActor(PropertyConstraintSolver solver,
+            ptolemy.actor.CompositeActor component)
+            throws IllegalActionException {
         super(solver, component);
-    }    
+    }
 }

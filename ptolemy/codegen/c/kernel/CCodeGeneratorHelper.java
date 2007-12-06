@@ -148,7 +148,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         return processCode(code.toString());
     }
-    
 
     /** Get the code generator associated with this helper class.
      *  @return The code generator associated with this helper class.
@@ -158,39 +157,37 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return (CCodeGenerator) _codeGenerator;
     }
 
-   /** Get the header files needed to compile with the jvm library.
-     *  @return A set of strings that are names of the header files
-     *   needed by the code generated for jvm library
-     *  @exception IllegalActionException Not Thrown in this subclass.
-     */
+    /** Get the header files needed to compile with the jvm library.
+      *  @return A set of strings that are names of the header files
+      *   needed by the code generated for jvm library
+      *  @exception IllegalActionException Not Thrown in this subclass.
+      */
     public Set getJVMHeaderFiles() throws IllegalActionException {
         if (!_printedJVMWarning) {
             // We only print this once.
             _printedJVMWarning = true;
             ExecuteCommands executeCommands = getCodeGenerator()
-                .getExecuteCommands();
+                    .getExecuteCommands();
             String javaHome = StringUtilities.getProperty("java.home");
 
             if (executeCommands == null) {
                 executeCommands = new StreamExec();
             }
-            executeCommands.stdout( _eol + _eol
+            executeCommands.stdout(_eol + _eol
                     + "WARNING: This model uses an actor that "
                     + "links with the jvm library." + _eol
                     + "  To properly run the executable, you must have jvm.dll"
                     + " in your path." + _eol
                     + "  If you do not, then when you run the executable, "
-                    + "it will immediately exit" + _eol
-                    + "  with no message!" + _eol
-                    + "  For example, place " + javaHome + "\\bin\\client"
-                    + _eol
+                    + "it will immediately exit" + _eol + "  with no message!"
+                    + _eol + "  For example, place " + javaHome
+                    + "\\bin\\client" + _eol
                     + "  in your path.  If you are running Vergil from the "
                     + "command line as " + _eol + "  $PTII/bin/ptinvoke, "
                     + "then this has been handled for you." + _eol
                     + "  If you are running via Eclipse, then you must update "
                     + "your path by hand." + _eol + _eol + _eol);
         }
-
 
         // FIXME: This only works under windows.
         String javaHome = StringUtilities.getProperty("java.home");
@@ -201,8 +198,8 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         getCodeGenerator().addInclude("-I\"" + javaHome + "include/win32\"");
 
         String ptIIDir = StringUtilities.getProperty("ptolemy.ptII.dir");
-        getCodeGenerator()
-                .addLibrary("-L\"" + ptIIDir + "/ptolemy/codegen/c/lib/win\"");
+        getCodeGenerator().addLibrary(
+                "-L\"" + ptIIDir + "/ptolemy/codegen/c/lib/win\"");
         getCodeGenerator().addLibrary("-ljvm");
 
         Set files = new HashSet();
@@ -220,10 +217,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     protected String _generateInputVariableDeclaration()
             throws IllegalActionException {
-        boolean dynamicReferencesAllowed =
-            ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
-                    .getToken()).booleanValue();
-        
+        boolean dynamicReferencesAllowed = ((BooleanToken) _codeGenerator.allowDynamicMultiportReference
+                .getToken()).booleanValue();
+
         StringBuffer code = new StringBuffer();
 
         Iterator inputPorts = ((Actor) getComponent()).inputPortList()
@@ -311,8 +307,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
                 // avoid duplicate declaration.
                 if (!_codeGenerator.getModifiedVariables().contains(parameter)) {
-                    code.append("static " + targetType(parameter.getType()) + " "
-                            + generateVariableName(parameter) + ";" + _eol);
+                    code.append("static " + targetType(parameter.getType())
+                            + " " + generateVariableName(parameter) + ";"
+                            + _eol);
                 }
             }
         }
@@ -333,37 +330,37 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         while (channels.hasNext()) {
             Channel channel = (Channel) channels.next();
             Type portType = ((TypedIOPort) channel.port).getType();
-            
+
             if (isPrimitive(portType)) {
-                
+
                 code.append("static ");
                 code.append(targetType(portType));
                 code.append(" " + _getTypeConvertReference(channel));
-    
+
                 //int bufferSize = getBufferSize(channel.port);
                 int bufferSize = Math.max(DFUtilities
                         .getTokenProductionRate(channel.port), DFUtilities
                         .getTokenConsumptionRate(channel.port));
-    
+
                 if (bufferSize > 1) {
                     code.append("[" + bufferSize + "]");
                 }
                 code.append(";" + _eol);
             }
-            
+
         }
 
         return code.toString();
     }
 
     protected String _replaceMacro(String macro, String parameter)
-        throws IllegalActionException {
+            throws IllegalActionException {
         String result = super._replaceMacro(macro, parameter);
-        
+
         if (result != null) {
             return result;
         }
-        
+
         // We will assume that it is a call to a polymorphic
         // functions.
         String[] call = macro.split("_");
@@ -372,6 +369,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         return result;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 

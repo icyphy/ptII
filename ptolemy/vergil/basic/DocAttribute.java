@@ -102,7 +102,7 @@ public class DocAttribute extends SingletonAttribute {
      * Construct an empty DocAttribute.
      */
     public DocAttribute() {
-      super();
+        super();
     }
 
     /**
@@ -110,7 +110,7 @@ public class DocAttribute extends SingletonAttribute {
      * @param workspace The workspace in which to construct the DocAttribute.
      */
     public DocAttribute(Workspace workspace) {
-      super(workspace);
+        super(workspace);
     }
 
     ///////////////////////////////////////////////////////////////////

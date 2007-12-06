@@ -78,10 +78,15 @@ public class CheckModelSize {
                 Object entity = entities.next();
                 if (entity instanceof TypedCompositeActor
                         && !sizeProblemSet.contains(entity)) {
-                    String checkSizeOutput = _checkSize((TypedCompositeActor)entity, false);
+                    String checkSizeOutput = _checkSize(
+                            (TypedCompositeActor) entity, false);
                     if (!checkSizeOutput.equals("")) {
-                        results.append("<tr>\n  <td>" + ((TypedCompositeActor)entity).getFullName()
-                                + "</td>\n  <td>" + checkSizeOutput + "</td>\n");
+                        results
+                                .append("<tr>\n  <td>"
+                                        + ((TypedCompositeActor) entity)
+                                                .getFullName()
+                                        + "</td>\n  <td>" + checkSizeOutput
+                                        + "</td>\n");
                     }
                     sizeProblemSet.add(entity);
                 }
@@ -91,14 +96,19 @@ public class CheckModelSize {
             entities = classList.iterator();
             while (entities.hasNext()) {
                 Object entity = entities.next();
-                System.out.println("CheckModelSize: " + entity
-                        + " " + (entity instanceof TypedCompositeActor));
+                System.out.println("CheckModelSize: " + entity + " "
+                        + (entity instanceof TypedCompositeActor));
                 if (entity instanceof TypedCompositeActor
                         && !sizeProblemSet.contains(entity)) {
-                    String checkSizeOutput = _checkSize((TypedCompositeActor)entity, false);
+                    String checkSizeOutput = _checkSize(
+                            (TypedCompositeActor) entity, false);
                     if (!checkSizeOutput.equals("")) {
-                        results.append("<tr>\n  <td><b>Class</b> " + ((TypedCompositeActor)entity).getFullName()
-                                + "</td>\n  <td>" + checkSizeOutput + "</td>\n");
+                        results
+                                .append("<tr>\n  <td><b>Class</b> "
+                                        + ((TypedCompositeActor) entity)
+                                                .getFullName()
+                                        + "</td>\n  <td>" + checkSizeOutput
+                                        + "</td>\n");
                     }
                     sizeProblemSet.add(entity);
                 }
@@ -128,7 +138,8 @@ public class CheckModelSize {
             // Remove StaticSchedulingCodeGenerator from Butterfly because during the
             // nightly build the codegenerator is not yet built when the tests in actor.gui
             // are run.
-            removeGraphicalClasses.put("ptolemy.codegen.kernel.StaticSchedulingCodeGenerator",
+            removeGraphicalClasses.put(
+                    "ptolemy.codegen.kernel.StaticSchedulingCodeGenerator",
                     null);
 
             // Filter out any graphical classes.
@@ -141,7 +152,8 @@ public class CheckModelSize {
             try {
                 NamedObj top = null;
                 try {
-                    top = parser.parse(null, new File(fileName).toURI().toURL());
+                    top = parser
+                            .parse(null, new File(fileName).toURI().toURL());
                 } catch (Exception ex) {
                     try {
                         top = parser.parse(null, new URL(fileName));
@@ -158,16 +170,21 @@ public class CheckModelSize {
                 }
 
                 if (top instanceof CompositeEntity) {
-                    List entityList = ((CompositeEntity)top).deepEntityList();
+                    List entityList = ((CompositeEntity) top).deepEntityList();
                     Iterator entities = entityList.iterator();
                     while (entities.hasNext()) {
                         Object entity = entities.next();
-                        if (entity instanceof TypedCompositeActor && !sizeProblemSet.contains(entity)) {
-                            checkSizeOutput = _checkSize((TypedCompositeActor)entity, false);
+                        if (entity instanceof TypedCompositeActor
+                                && !sizeProblemSet.contains(entity)) {
+                            checkSizeOutput = _checkSize(
+                                    (TypedCompositeActor) entity, false);
                             if (!checkSizeOutput.equals("")) {
                                 sizeProblemSet.add(entity);
-                                results.append("<tr>\n  <td>" + ((TypedCompositeActor)entity).getFullName()
-                                        + "</td>\n  <td>" + checkSizeOutput + "</td>\n");
+                                results.append("<tr>\n  <td>"
+                                        + ((TypedCompositeActor) entity)
+                                                .getFullName()
+                                        + "</td>\n  <td>" + checkSizeOutput
+                                        + "</td>\n");
                             }
                             sizeProblemSet.add(entity);
                         }
@@ -206,26 +223,25 @@ public class CheckModelSize {
         }
     }
 
-
     /** Check the size and centering of the model.
      *  @param top The NamedObj to check
      *  @return A string describing size problems associated with the model.
      */
-    private static String _checkSize(NamedObj top, boolean ignoreMissingVergilSize) {
+    private static String _checkSize(NamedObj top,
+            boolean ignoreMissingVergilSize) {
         StringBuffer analysis = new StringBuffer();
         if (top instanceof CompositeActor) {
             SizeAttribute vergilSize = (SizeAttribute) top
-                .getAttribute("_vergilSize");
+                    .getAttribute("_vergilSize");
             ExpertParameter vergilZoom = (ExpertParameter) top
-                .getAttribute("_vergilZoomFactor");
+                    .getAttribute("_vergilZoomFactor");
             ExpertParameter vergilCenter = (ExpertParameter) top
-                .getAttribute("_vergilCenter");
+                    .getAttribute("_vergilCenter");
 
             if (vergilSize != null) {
                 try {
                     IntMatrixToken vergilSizeToken;
-                    vergilSizeToken = (IntMatrixToken) vergilSize
-                        .getToken();
+                    vergilSizeToken = (IntMatrixToken) vergilSize.getToken();
 
                     if (vergilSizeToken == null) {
                         throw new IllegalActionException(top,
@@ -239,14 +255,13 @@ public class CheckModelSize {
                     }
 
                     if (height > 768) {
-                        analysis
-                            .append(" height(" + height + ") > 768");
+                        analysis.append(" height(" + height + ") > 768");
                     }
 
                     if (vergilCenter != null) {
                         try {
                             ArrayToken vergilCenterToken = (ArrayToken) vergilCenter
-                                .getToken();
+                                    .getToken();
                             double x = ((ScalarToken) vergilCenterToken
                                     .getElement(0)).doubleValue();
                             double y = ((ScalarToken) vergilCenterToken
@@ -255,14 +270,10 @@ public class CheckModelSize {
                             // Avoid comparing floats.
                             if (Math.abs(x - (width / 2.0)) > 0.1
                                     || Math.abs(y - (height / 2.0)) > 0.1) {
-                                analysis
-                                    .append(" Center(["
-                                            + x
-                                            + ", "
-                                            + y
-                                            + "]) is not centered, should be ["
-                                            + width / 2.0 + ", "
-                                            + height / 2.0 + "]");
+                                analysis.append(" Center([" + x + ", " + y
+                                        + "]) is not centered, should be ["
+                                        + width / 2.0 + ", " + height / 2.0
+                                        + "]");
                             }
                         } catch (IllegalActionException ex) {
                             analysis.append(" _vergilCenter malformed");
@@ -272,24 +283,21 @@ public class CheckModelSize {
                     }
                 } catch (IllegalActionException ex) {
                     analysis.append(" _vergilSize malformed");
-                    analysis.append(KernelException
-                            .stackTraceToString(ex));
+                    analysis.append(KernelException.stackTraceToString(ex));
                 }
 
                 if (vergilZoom != null) {
                     try {
                         DoubleToken vergilZoomToken = (DoubleToken) vergilZoom
-                            .getToken();
+                                .getToken();
                         double zoom = vergilZoomToken.doubleValue();
 
                         if (zoom != 1.0) {
-                            analysis.append(" Zoom(" + zoom
-                                    + ") != 1.0");
+                            analysis.append(" Zoom(" + zoom + ") != 1.0");
                         }
                     } catch (IllegalActionException ex) {
                         analysis.append(" _vergilZoom malformed");
-                        analysis.append(KernelException
-                                .stackTraceToString(ex));
+                        analysis.append(KernelException.stackTraceToString(ex));
                     }
                 }
             } else {
@@ -301,8 +309,7 @@ public class CheckModelSize {
             analysis.append(" is a " + top.getClassName()
                     + " not a CompositeActor.");
         }
-        
+
         return analysis.toString();
     }
 }
-

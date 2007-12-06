@@ -73,7 +73,7 @@ public class LimitedFiringSource extends Source {
         firingCountLimit = new Parameter(this, "firingCountLimit");
         firingCountLimit.setExpression("NONE");
         firingCountLimit.setTypeEquals(BaseType.INT);
-        
+
         Parameter NONE = new Parameter(this, "NONE");
         NONE.setExpression("0");
         NONE.setTypeEquals(BaseType.INT);

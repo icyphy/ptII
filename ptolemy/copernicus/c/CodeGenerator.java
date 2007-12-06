@@ -89,7 +89,7 @@ public abstract class CodeGenerator {
      * the arrays needed.
      */
     protected String _generateArrayInstanceDeclarations() {
-        StringBuffer code = new StringBuffer(); 
+        StringBuffer code = new StringBuffer();
 
         Iterator i = _context.getArrayInstances().iterator();
         while (i.hasNext()) {

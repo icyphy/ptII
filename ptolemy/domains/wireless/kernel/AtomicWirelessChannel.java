@@ -115,7 +115,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         super(container, name);
 
         defaultProperties = new Parameter(this, "defaultProperties");
-        
+
         this.name = new NameParameter(this, "name");
 
         // Force this to be a record type without specifying the fields.
@@ -143,7 +143,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
      *  FIXME: need a mechanism to deal with empty record tokens.
      */
     public Parameter defaultProperties;
-    
+
     /** When set to a non-empty value, this NameParameter will cause
      *  the name of this channel to be set to this value.
      */
@@ -740,9 +740,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor implements
         if (location == null) {
             throw new IllegalActionException(
                     "Cannot determine location for port " + port.getName()
-                    + " with container\n"
-                    + container
-                    + ".");
+                            + " with container\n" + container + ".");
         }
 
         // NOTE: We assume here that the implementation

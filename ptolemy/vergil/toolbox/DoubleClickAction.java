@@ -85,7 +85,8 @@ public class DoubleClickAction extends FigureAction {
             // Giotto code generator on giotto/demo/Hierarchy/Hierarchy.xml
             // was throwing an exception here that was not being displayed
             // in the UI.
-            MessageHandler.error("Failed to invoke double-clicking for the target.",
+            MessageHandler.error(
+                    "Failed to invoke double-clicking for the target.",
                     throwable);
         }
     }
@@ -108,20 +109,21 @@ public class DoubleClickAction extends FigureAction {
         if (event != null) {
             altKeyPressed = (event.getModifiers() & ActionEvent.ALT_MASK) != 0;
         }
-        
+
         List attributeList = target.attributeList(DoubleClickFactory.class);
         if (!altKeyPressed && attributeList.size() > 0) {
-            DoubleClickFactory factory = (DoubleClickFactory) attributeList.get(0);
+            DoubleClickFactory factory = (DoubleClickFactory) attributeList
+                    .get(0);
             factory.invoke(target, parent);
-        } else {                
+        } else {
             List editorList = target.attributeList(EditorFactory.class);
 
             // Open up the user-customized editor if either Alt key
             // is not pressed, or there is already a double-click
             // factory (whether Alt is pressed or not).
-            if (editorList.size() > 0 && 
-                    (!altKeyPressed || attributeList.size() > 0) ) {
-                
+            if (editorList.size() > 0
+                    && (!altKeyPressed || attributeList.size() > 0)) {
+
                 EditorFactory factory = (EditorFactory) editorList.get(0);
                 factory.createEditor(target, parent);
             } else {

@@ -375,7 +375,6 @@ public class BrowserLauncher {
                     + "\nNote: Under Windows, make sure that the file named by "
                     + "the url is executable.";
 
-
             // The return code returned by process.waitFor()
             // 0 usually indicates normal execution.
             int exitCode = 0;
@@ -391,11 +390,13 @@ public class BrowserLauncher {
             }
 
             if (exitCode != 0) {
-                throw new IOException("Process exec'd by BrowserLauncher returned "
-                        + exitCode + "." + "\n url was: " + url
-                        + "\n browser was: " + browser + "\n " + errorMessage);
+                throw new IOException(
+                        "Process exec'd by BrowserLauncher returned "
+                                + exitCode + "." + "\n url was: " + url
+                                + "\n browser was: " + browser + "\n "
+                                + errorMessage);
             }
-            
+
             break;
 
         case OTHER:

@@ -49,10 +49,10 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (tfeng)
  */
 public abstract class ParameterAttribute extends TransformationAttribute
-implements Settable {
+        implements Settable {
 
     public ParameterAttribute(NamedObj container, String name)
-    throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         _initParameter();
@@ -108,6 +108,6 @@ implements Settable {
     public Parameter parameter;
 
     protected abstract void _initParameter() throws IllegalActionException,
-    NameDuplicationException;
+            NameDuplicationException;
 
 }

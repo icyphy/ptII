@@ -140,7 +140,7 @@ public class MultiportToSinglePort implements MoMLFilter {
                     _currentActorFullName = "." + _lastNameSeen;
                 } else {
                     _currentActorFullName = container.getFullName() + "."
-                        + _lastNameSeen;
+                            + _lastNameSeen;
                 }
                 _portName = (String) _actorsWithMultiPortToSinglePortChanges
                         .get(attributeValue);

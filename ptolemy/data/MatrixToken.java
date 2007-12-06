@@ -346,7 +346,7 @@ public abstract class MatrixToken extends Token {
             return BaseType.UNKNOWN;
         }
     }
-    
+
     /** Return the content of this token as a 2-D boolean matrix.
      *  In this base class, just throw an exception.
      *  @return A 2-D boolean matrix.
@@ -465,12 +465,10 @@ public abstract class MatrixToken extends Token {
      *  @exception IllegalActionException If the operation is not
      *  supported. Always thrown in this base class.
      */
-    public MatrixToken crop(
-            int rowStart, int colStart, int rowSpan, int colSpan)
+    public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
             throws IllegalActionException {
-        throw new IllegalActionException("crop: Operation not supported on class " 
-                + getClass()
-                + ".");
+        throw new IllegalActionException(
+                "crop: Operation not supported on class " + getClass() + ".");
     }
 
     /** Count the number of tokens differing by the given increment
@@ -806,9 +804,8 @@ public abstract class MatrixToken extends Token {
      */
     public MatrixToken join(MatrixToken[][] matrices)
             throws IllegalActionException {
-        throw new IllegalActionException("join: Operation not supported on class " 
-                + getClass()
-                + ".");
+        throw new IllegalActionException(
+                "join: Operation not supported on class " + getClass() + ".");
     }
 
     /** Return the content of this matrix as a 2-D long matrix.
@@ -1187,11 +1184,10 @@ public abstract class MatrixToken extends Token {
      *  @return An array of matrix tokens.
      *  @exception IllegalActionException If the operation is not supported.
      */
-    public MatrixToken[][] split(int[] rows, int[] columns) 
+    public MatrixToken[][] split(int[] rows, int[] columns)
             throws IllegalActionException {
-        throw new IllegalActionException("split: Operation not supported on class " 
-                + getClass()
-                + ".");
+        throw new IllegalActionException(
+                "split: Operation not supported on class " + getClass() + ".");
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -1435,7 +1431,8 @@ public abstract class MatrixToken extends Token {
             for (int j = 0; j < columnCount; j++) {
                 // Handle nil token
                 if (_nils != null
-                        && _nils.contains(Integer.valueOf((i * columnCount) + j))) {
+                        && _nils.contains(Integer
+                                .valueOf((i * columnCount) + j))) {
                     sb.append("nil");
                 } else {
                     sb.append(getElementAsToken(i, j).toString());

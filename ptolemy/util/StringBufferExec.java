@@ -26,7 +26,6 @@
  */
 package ptolemy.util;
 
-
 /** Execute commands in a subprocess and accumulate the output in a
  StringBuffer. 
 
@@ -129,7 +128,7 @@ public class StringBufferExec extends StreamExec {
     /** Append to the internal StringBuffer.
      *  @param text The text to append.  If the text does not
      *  end with an end of line character(s), then _eol is appended.
-     */ 
+     */
     private void _appendToBuffer(final String text) {
         buffer.append(text);
         if (!text.endsWith(_eol)) {

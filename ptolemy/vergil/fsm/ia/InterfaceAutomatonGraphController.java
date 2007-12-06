@@ -106,8 +106,8 @@ public class InterfaceAutomatonGraphController extends FSMGraphController {
         public ComposeWithAction() {
             super("Compose With");
             putValue("tooltip", "Compose with another interface automaton");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
-                    KeyEvent.VK_C));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
+                    .valueOf(KeyEvent.VK_C));
         }
 
         /** Compose with another interface automaton by first opening a file

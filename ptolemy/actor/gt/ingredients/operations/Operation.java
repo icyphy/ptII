@@ -65,6 +65,6 @@ public abstract class Operation extends GTIngredient {
     public abstract ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
             GTEntity patternEntity, GTEntity replacementEntity)
-    throws IllegalActionException;
+            throws IllegalActionException;
 
 }

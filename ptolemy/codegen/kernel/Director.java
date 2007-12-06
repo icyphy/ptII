@@ -157,7 +157,7 @@ public class Director implements ActorCodeGenerator {
     public String generateMainLoop(boolean callPostfire)
             throws IllegalActionException {
         return generateFireCode()
-            + (callPostfire ? generatePostfireCode() : "");
+                + (callPostfire ? generatePostfireCode() : "");
     }
 
     /** Generate the initialize code for this director.
@@ -201,8 +201,7 @@ public class Director implements ActorCodeGenerator {
     public String generatePostfireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        code.append(_codeGenerator.comment(0,
-                "The postfire of the director."));
+        code.append(_codeGenerator.comment(0, "The postfire of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -237,14 +236,15 @@ public class Director implements ActorCodeGenerator {
 
             // If a helper generates preinitialization code, then
             // print a comment
-            String helperObjectPreinitializationCode =
-                helperObject.generatePreinitializeCode();
+            String helperObjectPreinitializationCode = helperObject
+                    .generatePreinitializeCode();
 
             if (!addedDirectorComment
-                    && CodeGenerator.containsCode(helperObjectPreinitializationCode)) {
+                    && CodeGenerator
+                            .containsCode(helperObjectPreinitializationCode)) {
                 addedDirectorComment = true;
                 code.append(_codeGenerator.comment(0,
-                                    "The preinitialization of the director."));
+                        "The preinitialization of the director."));
             }
             code.append(helperObjectPreinitializationCode);
         }
@@ -432,7 +432,7 @@ public class Director implements ActorCodeGenerator {
     public Set getLibraries() throws IllegalActionException {
         return new HashSet();
     }
-    
+
     /** Return an empty HashSet.
      *  @return An empty HashSet.
      *  @exception IllegalActionException Not thrown in this method.
@@ -477,7 +477,7 @@ public class Director implements ActorCodeGenerator {
     public Set getSharedCode() throws IllegalActionException {
         return new HashSet();
     }
-    
+
     /** Set the code generator associated with this helper class.
      *  @param codeGenerator The code generator associated with this
      *   helper class.
@@ -542,8 +542,8 @@ public class Director implements ActorCodeGenerator {
      */
     protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
             throws IllegalActionException {
-        boolean padBuffers =
-            ((BooleanToken) _codeGenerator.padBuffers.getToken()).booleanValue();
+        boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
+                .getToken()).booleanValue();
 
         if (rate == 0) {
             return;
@@ -573,11 +573,11 @@ public class Director implements ActorCodeGenerator {
                 helper.setReadOffset(port, j, Integer.valueOf(offset));
             } else { // If offset is a variable.
                 String offsetVariable = (String) helper.getReadOffset(port, j);
-                if (padBuffers) {                    
+                if (padBuffers) {
                     int modulo = helper.getBufferSize(port, j) - 1;
                     code.append(CodeStream.indent(offsetVariable + " = ("
-                            + offsetVariable + " + " + rate + ")&" + modulo + ";"
-                            + _eol));
+                            + offsetVariable + " + " + rate + ")&" + modulo
+                            + ";" + _eol));
                 } else {
                     code.append(CodeStream.indent(offsetVariable + " = ("
                             + offsetVariable + " + " + rate + ") % "
@@ -599,8 +599,8 @@ public class Director implements ActorCodeGenerator {
      */
     protected void _updateConnectedPortsOffset(IOPort port, StringBuffer code,
             int rate) throws IllegalActionException {
-        boolean padBuffers =
-            ((BooleanToken) _codeGenerator.padBuffers.getToken()).booleanValue();
+        boolean padBuffers = ((BooleanToken) _codeGenerator.padBuffers
+                .getToken()).booleanValue();
 
         if (rate == 0) {
             return;
@@ -636,8 +636,8 @@ public class Director implements ActorCodeGenerator {
                     if (bufferSize != 0) {
                         offset = (offset + rate) % bufferSize;
                     }
-                    helper.setWriteOffset(sinkPort, sinkChannelNumber,
-                            Integer.valueOf(offset));
+                    helper.setWriteOffset(sinkPort, sinkChannelNumber, Integer
+                            .valueOf(offset));
                 } else { // If offset is a variable.
                     String offsetVariable = (String) helper.getWriteOffset(
                             sinkPort, sinkChannelNumber);
@@ -648,10 +648,14 @@ public class Director implements ActorCodeGenerator {
                                 + offsetVariable + " + " + rate + ")&" + modulo
                                 + ";" + _eol));
                     } else {
-                        code.append(CodeStream.indent(offsetVariable + " = ("
-                                + offsetVariable + " + " + rate + ") % "
-                                + helper.getBufferSize(sinkPort, sinkChannelNumber)
-                                + ";" + _eol));
+                        code.append(CodeStream.indent(offsetVariable
+                                + " = ("
+                                + offsetVariable
+                                + " + "
+                                + rate
+                                + ") % "
+                                + helper.getBufferSize(sinkPort,
+                                        sinkChannelNumber) + ";" + _eol));
                     }
                 }
             }

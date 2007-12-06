@@ -188,8 +188,8 @@ public class MatrixViewer extends AbstractPlaceableActor {
                     // The second argument prevents a status bar.
                     _frame = new TableauFrame(null, null, this);
                     _tableau = new MatrixTokenTableau(_effigy, "tokenTableau",
-                            (TableauFrame)_frame);
-                    ((TableauFrame)_frame).setTableau(_tableau);
+                            (TableauFrame) _frame);
+                    ((TableauFrame) _frame).setTableau(_tableau);
                     setFrame(_frame);
                     _tableau.show();
                 } catch (Exception ex) {

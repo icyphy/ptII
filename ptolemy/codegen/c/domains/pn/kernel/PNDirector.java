@@ -76,7 +76,7 @@ public class PNDirector extends Director {
     public String generateFireCode() {
         return "";
     }
-    
+
     /** Generate the body code that lies between variable declaration
      *  and wrapup.
      *  @return The generated body code.
@@ -87,7 +87,7 @@ public class PNDirector extends Director {
         StringBuffer code = new StringBuffer();
         return code.toString();
     }
-    
+
     /** Generate the initialize code for the associated PN director.
      *  @return The generated initialize code.
      *  @exception IllegalActionException If the helper associated with
@@ -95,7 +95,8 @@ public class PNDirector extends Director {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator.comment("Initialization code of the PNDirector."));
+        code.append(_codeGenerator
+                .comment("Initialization code of the PNDirector."));
 
         // Generate the code to initialize all the actors.
         code.append(super.generateInitializeCode());
@@ -116,7 +117,7 @@ public class PNDirector extends Director {
 
             code.append(helper.generateFireCode());
             code.append(helper.generateTypeConvertFireCode());
-            
+
             code.append("}" + _eol);
         }
 
@@ -125,6 +126,5 @@ public class PNDirector extends Director {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
-
 
 }

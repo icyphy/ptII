@@ -47,88 +47,78 @@ import java.util.prefs.Preferences;
  * window size and positions, debug frame visibility, etc.
  * @author Kevin Routley
  */
-public class UserPrefs
-{
+public class UserPrefs {
 
-  private Preferences prefStore = null;
+    private Preferences prefStore = null;
 
-  static UserPrefs usersPrefs = new UserPrefs();
+    static UserPrefs usersPrefs = new UserPrefs();
 
-  /** 
-   * Access the singleton instance.
-   */
-  public static UserPrefs getPrefs()
-  {
-    return usersPrefs;
-  }
+    /** 
+     * Access the singleton instance.
+     */
+    public static UserPrefs getPrefs() {
+        return usersPrefs;
+    }
 
-  /**
-   * Creates a new instance of UserPrefs - private to prevent external
-   * instantiation
-   */
-  private UserPrefs()
-  {
-    prefStore = Preferences.userNodeForPackage(org.mlc.swing.layout.LayoutConstraintsManager.class);
-  }
+    /**
+     * Creates a new instance of UserPrefs - private to prevent external
+     * instantiation
+     */
+    private UserPrefs() {
+        prefStore = Preferences
+                .userNodeForPackage(org.mlc.swing.layout.LayoutConstraintsManager.class);
+    }
 
-  boolean showPreviewBorder()
-  {
-    return prefStore.get("preview_border", "1").equals("1");
-  }
+    boolean showPreviewBorder() {
+        return prefStore.get("preview_border", "1").equals("1");
+    }
 
-  /**
-   * Should we show the debug panel?
-   */
-  public boolean showDebugPanel()
-  {
-    return prefStore.get("debug_panel", "0").equals("1");
-  }
+    /**
+     * Should we show the debug panel?
+     */
+    public boolean showDebugPanel() {
+        return prefStore.get("debug_panel", "0").equals("1");
+    }
 
-  void saveWinLoc(String winname, Point screenloc, Dimension size)
-  {
-    prefStore.putInt(winname + "_WinX", screenloc.x < 0 ? 0 : screenloc.x);
-    prefStore.putInt(winname + "_WinY", screenloc.y < 0 ? 0 : screenloc.y);
-    prefStore.putInt(winname + "_WinH", size.height);
-    prefStore.putInt(winname + "_WinW", size.width);
-  }
+    void saveWinLoc(String winname, Point screenloc, Dimension size) {
+        prefStore.putInt(winname + "_WinX", screenloc.x < 0 ? 0 : screenloc.x);
+        prefStore.putInt(winname + "_WinY", screenloc.y < 0 ? 0 : screenloc.y);
+        prefStore.putInt(winname + "_WinH", size.height);
+        prefStore.putInt(winname + "_WinW", size.width);
+    }
 
-  Rectangle getWinLoc(String winname)
-  {
-    Rectangle r = new Rectangle(
-        prefStore.getInt(winname + "_WinX", 0),
-        prefStore.getInt(winname + "_WinY", 0), 
-        prefStore.getInt(winname + "_WinW", 800), 
-        prefStore.getInt(winname + "_WinH", 600));
-    return r;
-  }
+    Rectangle getWinLoc(String winname) {
+        Rectangle r = new Rectangle(prefStore.getInt(winname + "_WinX", 0),
+                prefStore.getInt(winname + "_WinY", 0), prefStore.getInt(
+                        winname + "_WinW", 800), prefStore.getInt(winname
+                        + "_WinH", 600));
+        return r;
+    }
 
-  /**
-   * Save the current state of the panel - debug on/off.
-   */
-  public void saveDebugState(boolean b)
-  {
-    prefStore.put("debug_panel", b ? "1" : "0");
-  }
+    /**
+     * Save the current state of the panel - debug on/off.
+     */
+    public void saveDebugState(boolean b) {
+        prefStore.put("debug_panel", b ? "1" : "0");
+    }
 
-  /** Fetch a window's size and position data and apply it. The window name
-  * must be the same as supplied when calling @see saveWinLoc.
-  */
-  public void useSavedBounds(String winname, Window window)
-  {
-	if ( window == null ) // KBR 03/26/06 do nothing if window not exist
-		return;
-    Rectangle r = UserPrefs.getPrefs().getWinLoc(winname);
-    window.setLocation(r.x, r.y);
-    window.setSize(r.width, r.height);
-  }
+    /** Fetch a window's size and position data and apply it. The window name
+    * must be the same as supplied when calling @see saveWinLoc.
+    */
+    public void useSavedBounds(String winname, Window window) {
+        if (window == null) // KBR 03/26/06 do nothing if window not exist
+            return;
+        Rectangle r = UserPrefs.getPrefs().getWinLoc(winname);
+        window.setLocation(r.x, r.y);
+        window.setSize(r.width, r.height);
+    }
 
-  /** Save a window's size and position data under the provided name.
-  * (The data must be fetched using the same name).
-  */
-  public void saveWinLoc(String winname, Window window)
-  {
-	if ( window == null ) // KBR 03/26/06 do nothing if window not exist
-		return;
-    saveWinLoc(winname, window.getLocationOnScreen(), window.getSize());
-  }
+    /** Save a window's size and position data under the provided name.
+    * (The data must be fetched using the same name).
+    */
+    public void saveWinLoc(String winname, Window window) {
+        if (window == null) // KBR 03/26/06 do nothing if window not exist
+            return;
+        saveWinLoc(winname, window.getLocationOnScreen(), window.getSize());
+    }
 }

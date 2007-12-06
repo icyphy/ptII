@@ -38,67 +38,60 @@ import java.util.List;
  * 
  * @author Michael Connor mlconnor&#064;yahoo.com
  */
-public class BeanProperty
-{
-  String name;
+public class BeanProperty {
+    String name;
 
-  Class type;
+    Class type;
 
-  List<Object> possibleValues;
+    List<Object> possibleValues;
 
-  /** Creates a new instance of BeanProperty */
-  public BeanProperty(String name, Class type, List<Object> possibleValues)
-  {
-    this.name = name;
-    this.type = type;
-    this.possibleValues = possibleValues;
-  }
+    /** Creates a new instance of BeanProperty */
+    public BeanProperty(String name, Class type, List<Object> possibleValues) {
+        this.name = name;
+        this.type = type;
+        this.possibleValues = possibleValues;
+    }
 
-  public BeanProperty(String name, Class type)
-  {
-    this(name, type, null);
-  }
+    public BeanProperty(String name, Class type) {
+        this(name, type, null);
+    }
 
-  /**
-   * Registers the value of the name property
-   * 
-   * @param name
-   *          The value of the property
-   */
-  public void setName(String name)
-  {
-    this.name = name;
-  }
+    /**
+     * Registers the value of the name property
+     * 
+     * @param name
+     *          The value of the property
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  /**
-   * Returns the value of the name property
-   * 
-   * @return The value
-   */
-  public String getName()
-  {
-    return this.name;
-  }
+    /**
+     * Returns the value of the name property
+     * 
+     * @return The value
+     */
+    public String getName() {
+        return this.name;
+    }
 
-  /**
-   * Registers the value of the type property
-   * 
-   * @param type
-   *          The value of the property
-   */
-  public void setType(Class type)
-  {
-    this.type = type;
-  }
+    /**
+     * Registers the value of the type property
+     * 
+     * @param type
+     *          The value of the property
+     */
+    public void setType(Class type) {
+        this.type = type;
+    }
 
-  /**
-   * Returns the value of the type property
-   * 
-   * @return The value
-   */
-  public Class getType()
-  {
-    return this.type;
-  }
+    /**
+     * Returns the value of the type property
+     * 
+     * @return The value
+     */
+    public Class getType() {
+        return this.type;
+    }
 
 }

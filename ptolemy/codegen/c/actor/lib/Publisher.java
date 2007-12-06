@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
-
 /**
  * Generate C code for an actor that publishes tokens on a named channel.
  *

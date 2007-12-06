@@ -215,7 +215,8 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                     if (codeFileNameWritten != null) {
                         Configuration configuration = getConfiguration();
 
-                        URL codeURL = new File(codeFileNameWritten).toURI().toURL();
+                        URL codeURL = new File(codeFileNameWritten).toURI()
+                                .toURL();
                         // Use Thread.currentThread() so that this code will
                         // work under WebStart.
                         configuration.openModel(null, codeURL, codeURL

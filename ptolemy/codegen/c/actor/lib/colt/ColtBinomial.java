@@ -56,7 +56,7 @@ public class ColtBinomial extends ColtRandomSource {
     public ColtBinomial(ptolemy.actor.lib.colt.ColtBinomial actor) {
         super(actor);
     }
-    
+
     /**
      * Generate shared code.
      * Read from ColtBinomial.c, replace macros with their values and
@@ -100,5 +100,5 @@ public class ColtBinomial extends ColtRandomSource {
     protected String _generateRandomNumber() throws IllegalActionException {
         return _generateBlockCode("binomialDistributionBlock");
     }
-    
+
 }

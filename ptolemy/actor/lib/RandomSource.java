@@ -89,10 +89,12 @@ public abstract class RandomSource extends Source {
         seed = new SharedParameter(this, "seed", RandomSource.class, "0L");
         seed.setTypeEquals(BaseType.LONG);
 
-        resetOnEachRun = new SharedParameter(this, "resetOnEachRun", RandomSource.class, "false");
+        resetOnEachRun = new SharedParameter(this, "resetOnEachRun",
+                RandomSource.class, "false");
         resetOnEachRun.setTypeEquals(BaseType.BOOLEAN);
 
-        new SingletonParameter(trigger, "_showName").setToken(BooleanToken.TRUE);
+        new SingletonParameter(trigger, "_showName")
+                .setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -106,7 +108,7 @@ public abstract class RandomSource extends Source {
      *  in the model.
      */
     public SharedParameter resetOnEachRun;
-    
+
     /** The seed that controls the random number generation.
      *  This is a shared parameter, meaning that all instances of
      *  RandomSource or derived classes in the same model share the
@@ -229,7 +231,7 @@ public abstract class RandomSource extends Source {
         _needNewGenerator = false;
         _needNew = true;
     }
-    
+
     /** Generate a new random number.
      *  @exception IllegalActionException Not thrown in this base class.
      *  Derived classes may throw it if there are problems getting parameter
@@ -246,7 +248,7 @@ public abstract class RandomSource extends Source {
 
     /** Indicator that a new random number is needed. */
     protected boolean _needNew = false;
-    
+
     /** Indicator that a new generator is needed. */
     protected boolean _needNewGenerator = true;
 

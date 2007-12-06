@@ -79,8 +79,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (cavaness)
 */
 
-public class XMLInclusion extends Transformer{
-   
+public class XMLInclusion extends Transformer {
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -92,19 +92,20 @@ public class XMLInclusion extends Transformer{
     public XMLInclusion(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-       
+
         // Set the type of the input port.
         // Input port is a multiport.
         input.setTypeEquals(new ArrayType(BaseType.XMLTOKEN));
         input.setMultiport(true);
-       
+
         // FIXME: what is the initial value of this parameter?
         template = new PortParameter(this, "template");
         template.setStringMode(true);
-        
+
         headerParameter = new StringParameter(this, "headerParameter");
-        headerParameter.setExpression("<?xml version=\"1.0\" standalone=\"no\"?>");
-       
+        headerParameter
+                .setExpression("<?xml version=\"1.0\" standalone=\"no\"?>");
+
         // Set the type of the output port.
         output.setTypeEquals(BaseType.XMLTOKEN);
     }
@@ -128,7 +129,7 @@ public class XMLInclusion extends Transformer{
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-   
+
     /** Read multiple arrays of XMLTokens from the input and combine
      *  them according to the specified template.  If the template
      *  contains invalid delimiters, then return the template file with
@@ -140,81 +141,80 @@ public class XMLInclusion extends Transformer{
         super.fire();
         template.update();
         String outputString = removeHeader(template.getToken());
-        String all="";
-        for (int j=0; j <input.getWidth(); j++) {
+        String all = "";
+        for (int j = 0; j < input.getWidth(); j++) {
             ArrayToken a = (ArrayToken) input.get(j);
 
             // FIXME: use StringBuffer instead of concatenating a String.
-            String allInArray="";
+            String allInArray = "";
             int i;
-            for (i=0; i < a.length(); i++) {
-                String elemInArray=removeHeader(a.getElement(i));
-                if (i==0) {
-                    allInArray=allInArray.concat(elemInArray);
+            for (i = 0; i < a.length(); i++) {
+                String elemInArray = removeHeader(a.getElement(i));
+                if (i == 0) {
+                    allInArray = allInArray.concat(elemInArray);
                 } else {
-                    allInArray=allInArray.concat('\n'+ elemInArray);
+                    allInArray = allInArray.concat('\n' + elemInArray);
                 }
-                String elemTag = "$input" + Integer.toString(j) + ',' 
-                    + Integer.toString(i);
+                String elemTag = "$input" + Integer.toString(j) + ','
+                        + Integer.toString(i);
                 outputString = outputString.replace(elemTag, elemInArray);
             }
             String arrayTag = "$input" + Integer.toString(j) + ",n";
             outputString = outputString.replace(arrayTag, allInArray);
-            if (j==0) {
-                all = all.concat(allInArray); 
+            if (j == 0) {
+                all = all.concat(allInArray);
             } else {
-                all = all.concat('\n'+ allInArray);
+                all = all.concat('\n' + allInArray);
             }
-        }   
-        outputString =outputString.replace("$inputn", all);
-        String ADDheader = headerParameter.stringValue() + "\n"; 
+        }
+        outputString = outputString.replace("$inputn", all);
+        String ADDheader = headerParameter.stringValue() + "\n";
         ADDheader = ADDheader.concat(outputString);
         try {
             XMLToken out = new XMLToken(ADDheader);
             output.broadcast(out);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // FIXME: throw an exception that uses "this" so we
             // know in which actor the error is located
             throw new InternalErrorException(e);
-        }     
+        }
     }
-   
+
     // FIXME: insert private comment header, see Ramp
 
     //Removes XML header and DTD if there is one
-    private String removeHeader (Token T) {
-        String str="";
+    private String removeHeader(Token T) {
+        String str = "";
         if (T instanceof StringToken) {
-            str = ((StringToken)T).stringValue();
+            str = ((StringToken) T).stringValue();
         } else if (T instanceof XMLToken) {
             str = T.toString();
         } else {
             // FIXME, use this when throwing exceptions
-            throw new InternalErrorException("The token should be either " +
-                    "of type StringToken, or of type XMLToken.");
+            throw new InternalErrorException("The token should be either "
+                    + "of type StringToken, or of type XMLToken.");
         }
-        String s= str.trim();
-        int i=0;
+        String s = str.trim();
+        int i = 0;
         if (s.startsWith("<?xml")) {//removes header
-            i=1;
+            i = 1;
             s = loopThroughHeaders(s);
         }
-        String s2= s.trim();
+        String s2 = s.trim();
         if (s2.startsWith("<!DOCTYPE")) {//removes DTD
-            i=2;
-            s2=loopThroughHeaders(s2);
+            i = 2;
+            s2 = loopThroughHeaders(s2);
         }
-        if (i==0) { // in order to not remove the white spaces that trim removes
+        if (i == 0) { // in order to not remove the white spaces that trim removes
             return str;
-        } else if (i==1) {
+        } else if (i == 1) {
             return s;
         } else {
             return s2;
         }
-    }   
+    }
 
-    private String loopThroughHeaders (String s) {
+    private String loopThroughHeaders(String s) {
         boolean inQuote = false;
         int pos = 0;
         while (pos < s.length() && (inQuote || s.charAt(pos) != '>')) {
@@ -226,10 +226,9 @@ public class XMLInclusion extends Transformer{
         if (pos < s.length()) {
             s = s.substring(pos + 1);
         }
-        if (s.charAt(0)=='\n')  {
-            s=s.substring(1); 
-        }   
+        if (s.charAt(0) == '\n') {
+            s = s.substring(1);
+        }
         return s;
     }
 }
-   

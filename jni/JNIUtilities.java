@@ -448,8 +448,7 @@ public class JNIUtilities {
                 .append("#include \"jni.h\" \n" // le fichier entete de la librairie existante
                         // Don't use io stream it results in compile time errors under
                         // gcc with cygwin
-                        + "/* #include <iostream> */\n"
-                        + "#include \""
+                        + "/* #include <iostream> */\n" + "#include \""
                         + System.getProperty("user.dir")
                         + "/"
                         + libraryDirectory
@@ -498,8 +497,7 @@ public class JNIUtilities {
                         + _virgule(_getArgumentsInOutWithJNIType(actor, ","))
                         + _getArgumentsInOutWithJNIType(actor, ",")
                         + _virgule(_getArgumentsOutWithJNIType(actor, ","))
-                        + _getArgumentsOutWithJNIType(actor, ",")
-                        + ")\n"
+                        + _getArgumentsOutWithJNIType(actor, ",") + ")\n"
                         + "{\n" + _indent1 + "// Declaration des sorties\n");
 
         arguments = _getArgumentsOut(actor).iterator();
@@ -1212,9 +1210,15 @@ public class JNIUtilities {
                         + "\t\t\"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)\" \\\n"
                         + "\t\t-fno-exceptions \\\n"
                         + "\t\t-shared $(PTJNI_SHAREDLIBRARY_LDFLAG) \\\n"
-                        + "\t\t-L" + libraryPath + " -l" + nativeLibrary
-                        + " \\\n" + "\t\t -o $@ \\\n" + "\t\tjni"
-                        + actor.getName() + ".cpp\n\n"
+                        + "\t\t-L"
+                        + libraryPath
+                        + " -l"
+                        + nativeLibrary
+                        + " \\\n"
+                        + "\t\t -o $@ \\\n"
+                        + "\t\tjni"
+                        + actor.getName()
+                        + ".cpp\n\n"
                         + "# Get the rest of the rules\n"
                         + "include $(ROOT)/mk/ptcommon.mk\n");
 

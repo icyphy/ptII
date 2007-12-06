@@ -425,13 +425,14 @@ public class ContinuousDirector extends FixedPointDirector implements
                 _currentTime = _iterationBeginTime.add(_currentStepSize
                         * timeIncrement);
                 if (_debugging) {
-                    _debug("----- Setting current time for the next ODE solver round: " + _currentTime);
+                    _debug("----- Setting current time for the next ODE solver round: "
+                            + _currentTime);
                 }
 
                 _ODESolver._setRound(_ODESolver._getRound() + 1);
 
                 if (_debugging) {
-                    _debug("ODE solver solves the round #" 
+                    _debug("ODE solver solves the round #"
                             + _ODESolver._getRound());
                 }
                 // Increase the iteration count.
@@ -902,11 +903,9 @@ public class ContinuousDirector extends FixedPointDirector implements
             // This is legal only if we have a commit pending.
             if (!_commitIsPending) {
                 throw new IllegalActionException(this,
-                        "Attempting to roll back time from "
-                        + _currentTime
-                        + " to "
-                        + newTime
-                        + ", but state has been committed.");
+                        "Attempting to roll back time from " + _currentTime
+                                + " to " + newTime
+                                + ", but state has been committed.");
             }
             // We have to re-do the integration
             // with a smaller step size that brings us up to the current
@@ -922,10 +921,8 @@ public class ContinuousDirector extends FixedPointDirector implements
             if (_currentStepSize < 0.0) {
                 throw new IllegalActionException(this,
                         "Attempting to roll back time from "
-                        + _iterationBeginTime
-                        + " to "
-                        + newTime
-                        + ", but state has been committed.");                
+                                + _iterationBeginTime + " to " + newTime
+                                + ", but state has been committed.");
             }
             rollBackToCommittedState();
         }
@@ -977,11 +974,13 @@ public class ContinuousDirector extends FixedPointDirector implements
                         .next();
                 double suggestedStepSize = actor.suggestedStepSize();
                 if (suggestedStepSize < 0.0) {
-                    throw new IllegalActionException((Actor)actor, 
-                            "Actor requests invalid step size: " + suggestedStepSize);
+                    throw new IllegalActionException((Actor) actor,
+                            "Actor requests invalid step size: "
+                                    + suggestedStepSize);
                 }
                 if (_debugging) {
-                    _debug("step size controller: " + ((NamedObj)actor).getFullName()
+                    _debug("step size controller: "
+                            + ((NamedObj) actor).getFullName()
                             + " suggests next step size = " + suggestedStepSize);
                 }
                 if (suggestedStep > suggestedStepSize) {
@@ -1011,10 +1010,8 @@ public class ContinuousDirector extends FixedPointDirector implements
             if (result < suggestedStep) {
                 if (result < 0.0) {
                     throw new InternalErrorException(
-                            "Missed a breakpoint at time "
-                            + breakpointTime
-                            + ". Current time is "
-                            + getModelTime());
+                            "Missed a breakpoint at time " + breakpointTime
+                                    + ". Current time is " + getModelTime());
                 }
                 suggestedStep = result;
                 if (_debugging) {
@@ -1041,12 +1038,12 @@ public class ContinuousDirector extends FixedPointDirector implements
         return suggestedStep;
     }
 
-//    @Override
-//    public boolean transferInputs(IOPort port) throws IllegalActionException {
-//        // TODO Auto-generated method stub
-//        return super.transferInputs(port);
-//    }
-//
+    //    @Override
+    //    public boolean transferInputs(IOPort port) throws IllegalActionException {
+    //        // TODO Auto-generated method stub
+    //        return super.transferInputs(port);
+    //    }
+    //
     /** Override the base class to do nothing. The fire() method of
      *  this director handles transferring outputs.
      *  @param port The port to transfer tokens from.
@@ -1257,7 +1254,8 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     private void _discardBreakpointsBefore(Time time) {
         while (!_breakpoints.isEmpty()) {
-            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints.first();
+            SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
+                    .first();
             Time breakpointTime = nextBreakpoint.timestamp();
             int comparison = breakpointTime.compareTo(time);
             if (comparison > 0
@@ -1266,13 +1264,14 @@ public class ContinuousDirector extends FixedPointDirector implements
                 break;
             } else {
                 if (_debugging) {
-                    _debug("Discarding a breakpoint from the breakpoint table: " + nextBreakpoint);
+                    _debug("Discarding a breakpoint from the breakpoint table: "
+                            + nextBreakpoint);
                 }
                 _breakpoints.removeFirst();
             }
         }
     }
-    
+
     /** Return the enclosing continuous director, or null if there
      *  is none.  The enclosing continuous director is a director
      *  above this in the hierarchy, possibly separated by composite
@@ -1430,8 +1429,8 @@ public class ContinuousDirector extends FixedPointDirector implements
             // happening at the current time with a bigger index,
             // return false to indicate no firing is necessary.
             if (_breakpoints.size() > 0) {
-                SuperdenseTime nextBreakpoint = 
-                    (SuperdenseTime) _breakpoints.first();
+                SuperdenseTime nextBreakpoint = (SuperdenseTime) _breakpoints
+                        .first();
                 Time breakpointTime = nextBreakpoint.timestamp();
                 if (breakpointTime.equals(_currentTime)) {
                     postfireResult = true;
@@ -1442,7 +1441,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // request a refiring at a future time, 
         // the current time + suggested step size
         if (_currentStepSize == 0) {
-            Actor container = (Actor)getContainer();
+            Actor container = (Actor) getContainer();
             Director enclosingDirector = container.getExecutiveDirector();
             enclosingDirector.fireAt(container, _currentTime);
         }
@@ -1531,7 +1530,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         _currentStepSize = enclosingDirector._currentStepSize;
         _currentTime = enclosingDirector._currentTime;
         if (_debugging) {
-            _debug("----- Setting current time to match enclosing ContinuousDirector: " + _currentTime);
+            _debug("----- Setting current time to match enclosing ContinuousDirector: "
+                    + _currentTime);
         }
         _index = enclosingDirector._index;
         _iterationBeginTime = enclosingDirector._iterationBeginTime;
@@ -1604,10 +1604,8 @@ public class ContinuousDirector extends FixedPointDirector implements
             if (_currentStepSize < 0.0) {
                 throw new IllegalActionException(this,
                         "Attempting to roll back time from "
-                        + _iterationBeginTime
-                        + " to "
-                        + outTime
-                        + ", but state has been committed.");                
+                                + _iterationBeginTime + " to " + outTime
+                                + ", but state has been committed.");
             }
             rollBackToCommittedState();
             fire();
@@ -1653,7 +1651,8 @@ public class ContinuousDirector extends FixedPointDirector implements
             // Shouldn't this be checked?
             _currentTime = outTime;
             if (_debugging) {
-                _debug("----- Setting current time to match enclosing non-ContinuousDirector: " + _currentTime);
+                _debug("----- Setting current time to match enclosing non-ContinuousDirector: "
+                        + _currentTime);
             }
             _currentStepSize = 0.0;
         }

@@ -171,11 +171,11 @@ public class LEDMatrix extends TypedAtomicActor {
         int rowsValue = ((IntToken) rows.getToken()).intValue();
         for (int x = 0; x < rowsValue; x++) {
             for (int y = 0; y < columnsValue; y++) {
-                _leds[x][y].fillColor
-                        .setToken("{0.0, 0.0, 0.0, 1.0}");
+                _leds[x][y].fillColor.setToken("{0.0, 0.0, 0.0, 1.0}");
             }
         }
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

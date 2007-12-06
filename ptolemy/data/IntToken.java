@@ -130,8 +130,7 @@ public class IntToken extends ScalarToken {
         compare = TypeLattice.compare(BaseType.SHORT, token);
 
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
-            ShortToken shortToken = ShortToken
-                    .convert(token);
+            ShortToken shortToken = ShortToken.convert(token);
             IntToken result = new IntToken(shortToken.intValue());
             if (shortToken._unitCategoryExponents != null
                     && !UnitUtilities

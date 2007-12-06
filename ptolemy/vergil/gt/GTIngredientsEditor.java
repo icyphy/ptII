@@ -132,8 +132,8 @@ import ptolemy.vergil.toolbox.VisibleParameterEditorFactory;
 @Pt.ProposedRating Red (tfeng)
 @Pt.AcceptedRating Red (tfeng)
 */
-public class GTIngredientsEditor extends PtolemyDialog
-implements ActionListener {
+public class GTIngredientsEditor extends PtolemyDialog implements
+        ActionListener {
 
     public GTIngredientsEditor(DialogTableau tableau, Frame owner,
             Entity target, Configuration configuration) {
@@ -179,10 +179,9 @@ implements ActionListener {
 
     public void addNewRow() {
         try {
-            Class<? extends GTIngredient> ingredientClass =
-                _ingredientClasses.get(0);
-            GTIngredient ingredient =
-                _createTemporaryIngredient(ingredientClass);
+            Class<? extends GTIngredient> ingredientClass = _ingredientClasses
+                    .get(0);
+            GTIngredient ingredient = _createTemporaryIngredient(ingredientClass);
             Row row = new Row(ingredient);
             int rowCount = _tableModel.getRowCount();
             _tableModel.addRow(new Object[] { rowCount + 1, row, row });
@@ -190,8 +189,8 @@ implements ActionListener {
                 _table.getSelectionModel().addSelectionInterval(0, 0);
             }
         } catch (Exception e) {
-            throw new KernelRuntimeException(e, "Unable to create a new " +
-                    "criterion or operation instance.");
+            throw new KernelRuntimeException(e, "Unable to create a new "
+                    + "criterion or operation instance.");
         }
     }
 
@@ -213,7 +212,7 @@ implements ActionListener {
                     + "operation, or press Revert to revert to its previous "
                     + "value.";
 
-            String[] options = new String[] {"Edit", "Revert"};
+            String[] options = new String[] { "Edit", "Revert" };
             int selected = JOptionPane.showOptionDialog(null, message,
                     "Validation Error", JOptionPane.OK_CANCEL_OPTION,
                     JOptionPane.ERROR_MESSAGE, null, options, options[1]);
@@ -223,10 +222,12 @@ implements ActionListener {
             return false;
         }
 
-        String moml = "<property name=\"" + _attribute.getName() + "\" value=\""
-            + StringUtilities.escapeForXML(ingredientList.toString()) + "\"/>";
-        MoMLChangeRequest request =
-            new MoMLChangeRequest(this, _target, moml, null);
+        String moml = "<property name=\"" + _attribute.getName()
+                + "\" value=\""
+                + StringUtilities.escapeForXML(ingredientList.toString())
+                + "\"/>";
+        MoMLChangeRequest request = new MoMLChangeRequest(this, _target, moml,
+                null);
         request.setUndoable(true);
         _attribute.requestChange(request);
         return true;
@@ -238,8 +239,8 @@ implements ActionListener {
 
     public void centerOnScreen() {
         Toolkit tk = Toolkit.getDefaultToolkit();
-        setLocation((tk.getScreenSize().width - getSize().width) / 2,
-                 (tk.getScreenSize().height - getSize().height) / 2);
+        setLocation((tk.getScreenSize().width - getSize().width) / 2, (tk
+                .getScreenSize().height - getSize().height) / 2);
     }
 
     public void commit() {
@@ -279,7 +280,7 @@ implements ActionListener {
         int i = 0;
         for (GTIngredient ingredient : ingredientList) {
             Row row = new Row(ingredient);
-            _tableModel.addRow(new Object[] {i++ + 1, row, row});
+            _tableModel.addRow(new Object[] { i++ + 1, row, row });
         }
         if (selectedRows.length == 0) {
             if (i > 0) {
@@ -287,8 +288,8 @@ implements ActionListener {
             }
         } else {
             for (i = 0; i < selectedRows.length; i++) {
-                _table.getSelectionModel().addSelectionInterval(selectedRows[i],
-                        selectedRows[i]);
+                _table.getSelectionModel().addSelectionInterval(
+                        selectedRows[i], selectedRows[i]);
             }
         }
     }
@@ -296,16 +297,15 @@ implements ActionListener {
     @SuppressWarnings("unchecked")
     public static List<Class<? extends GTIngredient>> searchIngredientClasses(
             String[] packages, ClassLoader loader) {
-        List<Class<? extends GTIngredient>> ingredientClasses =
-            new LinkedList<Class<? extends GTIngredient>>();
+        List<Class<? extends GTIngredient>> ingredientClasses = new LinkedList<Class<? extends GTIngredient>>();
         for (String pkg : packages) {
             try {
-                Enumeration<URL> urls =
-                    loader.getResources(pkg.replace('.', '/'));
+                Enumeration<URL> urls = loader.getResources(pkg.replace('.',
+                        '/'));
                 while (urls.hasMoreElements()) {
                     URL url = urls.nextElement();
-                    File directory =
-                        new File(URLDecoder.decode(url.getPath(), "UTF-8"));
+                    File directory = new File(URLDecoder.decode(url.getPath(),
+                            "UTF-8"));
                     File[] files = directory.listFiles();
                     for (File file : files) {
                         if (!file.exists() || !file.isFile()) {
@@ -317,17 +317,16 @@ implements ActionListener {
                             continue;
                         }
 
-                        String className = filePath.substring(0,
-                                filePath.length() - 6);
+                        String className = filePath.substring(0, filePath
+                                .length() - 6);
                         className = className.replace('$', '.');
                         String fullClassName = pkg + "." + className;
                         try {
                             Class<?> cls = loader.loadClass(fullClassName);
                             if (!Modifier.isAbstract(cls.getModifiers())
-                                    && GTIngredient.class.isAssignableFrom(
-                                            cls)) {
-                                ingredientClasses.add(
-                                        (Class<? extends GTIngredient>) cls);
+                                    && GTIngredient.class.isAssignableFrom(cls)) {
+                                ingredientClasses
+                                        .add((Class<? extends GTIngredient>) cls);
                             }
                         } catch (ClassNotFoundException e) {
                         } catch (NoClassDefFoundError e) {
@@ -354,8 +353,7 @@ implements ActionListener {
         super.setVisible(visible);
     }
 
-    public static String REGULAR_EXPRESSION_HELP_FILE =
-        "ptolemy/configs/doc/basicHelp.htm";
+    public static String REGULAR_EXPRESSION_HELP_FILE = "ptolemy/configs/doc/basicHelp.htm";
 
     /**
      * @author tfeng
@@ -365,15 +363,15 @@ implements ActionListener {
     public static class Factory extends EditorFactory {
 
         public Factory(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
             attributeName = new StringAttribute(this, "attributeName");
         }
 
         public void createEditor(NamedObj object, Frame parent) {
-            Configuration configuration =
-                ((TableauFrame) parent).getConfiguration();
+            Configuration configuration = ((TableauFrame) parent)
+                    .getConfiguration();
             Effigy effigy = ((TableauFrame) parent).getEffigy();
             DialogTableau dialogTableau = DialogTableau.createDialog(parent,
                     configuration, effigy, GTIngredientsEditor.class,
@@ -391,16 +389,16 @@ implements ActionListener {
         // Clear all the buttons and panels created by superclasses.
         getContentPane().removeAll();
 
-        _tableModel = new DefaultTableModel(
-                new Object[] {"", "Class", "Elements"}, 0) {
-                    public boolean isCellEditable(int row, int column) {
-                        if (column == 0) {
-                            return false;
-                        } else {
-                            return super.isCellEditable(row, column);
-                        }
-                    }
-                };
+        _tableModel = new DefaultTableModel(new Object[] { "", "Class",
+                "Elements" }, 0) {
+            public boolean isCellEditable(int row, int column) {
+                if (column == 0) {
+                    return false;
+                } else {
+                    return super.isCellEditable(row, column);
+                }
+            }
+        };
         _table = new JTable(_tableModel);
         _table.setRowHeight(_ROW_HEIGHT);
         _table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -428,8 +426,8 @@ implements ActionListener {
         header.setForeground(Color.BLUE);
         header.setReorderingAllowed(false);
 
-        DefaultTableCellRenderer renderer =
-            (DefaultTableCellRenderer) header.getDefaultRenderer();
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) header
+                .getDefaultRenderer();
         renderer.setHorizontalAlignment(SwingConstants.CENTER);
         renderer.setPreferredSize(new Dimension(0, 22));
 
@@ -450,15 +448,15 @@ implements ActionListener {
         helpPanel.setBorder(BorderFactory.createEmptyBorder(3, 5, 0, 5));
         helpPanel.setPreferredSize(new Dimension(0, 25));
 
-        TableauFrame owner = _owner instanceof TableauFrame ?
-                (TableauFrame) _owner : null;
+        TableauFrame owner = _owner instanceof TableauFrame ? (TableauFrame) _owner
+                : null;
 
         helpPanel.add(new HelpLabel("Normal text only",
                 _NON_REGULAR_EXPRESSION_BACKGROUND));
         try {
             helpPanel.add(new HelpLabel("Regular expression",
-                    _REGULAR_EXPRESSION_BACKGROUND,
-                    new URL(_REGULAR_EXPRESSION_HELP_FILE), owner));
+                    _REGULAR_EXPRESSION_BACKGROUND, new URL(
+                            _REGULAR_EXPRESSION_HELP_FILE), owner));
         } catch (MalformedURLException e1) {
             helpPanel.add(new HelpLabel("Regular expression",
                     _REGULAR_EXPRESSION_BACKGROUND));
@@ -505,14 +503,13 @@ implements ActionListener {
         column0.setMinWidth(10);
         column0.setPreferredWidth(15);
         column0.setMaxWidth(30);
-        DefaultTableCellRenderer indexRenderer =
-            new DefaultTableCellRenderer() {
-                public Component getTableCellRendererComponent(JTable table,
-                        Object value, boolean isSelected, boolean hasFocus,
-                        int row, int column) {
-                    return super.getTableCellRendererComponent(table, value,
-                            isSelected, false, row, column);
-                }
+        DefaultTableCellRenderer indexRenderer = new DefaultTableCellRenderer() {
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value, boolean isSelected, boolean hasFocus,
+                    int row, int column) {
+                return super.getTableCellRendererComponent(table, value,
+                        isSelected, false, row, column);
+            }
         };
         indexRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         column0.setCellRenderer(indexRenderer);
@@ -537,31 +534,32 @@ implements ActionListener {
     protected GTIngredient _createIngredientFromRow(Row row) {
         JComboBox classSelector = row.getClassSelector();
         ComboElement element = (ComboElement) classSelector.getSelectedItem();
-        Class<? extends GTIngredient> ingredientClass =
-            (Class<? extends GTIngredient>) element.getIngredientClass();
+        Class<? extends GTIngredient> ingredientClass = (Class<? extends GTIngredient>) element
+                .getIngredientClass();
         GTIngredient ingredient;
         try {
             ingredient = _createTemporaryIngredient(ingredientClass);
         } catch (Exception e) {
-            throw new KernelRuntimeException(e, "Unable to create criterion or "
-                    + "operation from class \"" + ingredientClass.getName()
-                    + "\".");
+            throw new KernelRuntimeException(e,
+                    "Unable to create criterion or "
+                            + "operation from class \""
+                            + ingredientClass.getName() + "\".");
         }
 
         JCheckBox[] checkBoxes = row.getCheckBoxs();
         JComponent[] components = row.getEditingComponents();
         for (int i = 0; i < checkBoxes.length; i++) {
-            ingredient.setEnabled(i,
-                    Boolean.valueOf(checkBoxes[i].isSelected()));
+            ingredient.setEnabled(i, Boolean
+                    .valueOf(checkBoxes[i].isSelected()));
             JComponent editor = components[i];
             if (editor instanceof JTextField) {
                 ingredient.setValue(i, ((JTextField) editor).getText());
             } else if (editor instanceof JComboBox) {
-                ingredient.setValue(i,
-                        ((JComboBox) editor).getSelectedItem().toString());
+                ingredient.setValue(i, ((JComboBox) editor).getSelectedItem()
+                        .toString());
             } else if (editor instanceof JCheckBox) {
-                ingredient.setValue(i, Boolean.valueOf(
-                        ((JCheckBox) editor).isSelected()));
+                ingredient.setValue(i, Boolean.valueOf(((JCheckBox) editor)
+                        .isSelected()));
             }
         }
 
@@ -576,12 +574,13 @@ implements ActionListener {
 
     private GTIngredient _createTemporaryIngredient(
             Class<? extends GTIngredient> ingredientClass)
-    throws SecurityException, NoSuchMethodException, IllegalArgumentException,
-    InstantiationException, IllegalAccessException, InvocationTargetException {
-        Constructor<? extends GTIngredient> constructor =
-            ingredientClass.getConstructor(GTIngredientList.class);
-        return constructor.newInstance(
-                new Object[] { _temporaryIngredientList });
+            throws SecurityException, NoSuchMethodException,
+            IllegalArgumentException, InstantiationException,
+            IllegalAccessException, InvocationTargetException {
+        Constructor<? extends GTIngredient> constructor = ingredientClass
+                .getConstructor(GTIngredientList.class);
+        return constructor
+                .newInstance(new Object[] { _temporaryIngredientList });
     }
 
     private GTIngredientsAttribute _attribute;
@@ -592,15 +591,15 @@ implements ActionListener {
 
     private IngredientContentEditor _editor;
 
-    private static final Border _EMPTY_BORDER =
-        BorderFactory.createEmptyBorder();
+    private static final Border _EMPTY_BORDER = BorderFactory
+            .createEmptyBorder();
 
     private List<Class<? extends GTIngredient>> _ingredientClasses;
 
     private GTIngredientList _initialIngredientList;
 
-    private static final Color _NON_REGULAR_EXPRESSION_BACKGROUND =
-        new Color(230, 230, 255);
+    private static final Color _NON_REGULAR_EXPRESSION_BACKGROUND = new Color(
+            230, 230, 255);
 
     private static List<Class<? extends GTIngredient>> _operationClasses;
 
@@ -608,17 +607,15 @@ implements ActionListener {
 
     private static final Dimension _PREFERRED_SIZE = new Dimension(700, 500);
 
-    private static final Color _PTOLEMY_EXPRESSION_BACKGROUND =
-        new Color(255, 200, 200);
+    private static final Color _PTOLEMY_EXPRESSION_BACKGROUND = new Color(255,
+            200, 200);
 
-    private static final String _PTOLEMY_EXPRESSION_HELP_FILE =
-        "doc/expressions.htm";
+    private static final String _PTOLEMY_EXPRESSION_HELP_FILE = "doc/expressions.htm";
 
-    private static final Color _REGULAR_EXPRESSION_BACKGROUND =
-        new Color(200, 255, 255);
+    private static final Color _REGULAR_EXPRESSION_BACKGROUND = new Color(200,
+            255, 255);
 
-    private static final String _REGULAR_EXPRESSION_HELP_FILE =
-        "http://java.sun.com/j2se/1.5.0/docs/api/java/util/regex/Pattern.html";
+    private static final String _REGULAR_EXPRESSION_HELP_FILE = "http://java.sun.com/j2se/1.5.0/docs/api/java/util/regex/Pattern.html";
 
     private static final int _ROW_HEIGHT = 45;
 
@@ -632,8 +629,8 @@ implements ActionListener {
 
     private GTIngredientList _temporaryIngredientList;
 
-    private static final Border _TEXT_FIELD_BORDER =
-        new JTextField().getBorder();
+    private static final Border _TEXT_FIELD_BORDER = new JTextField()
+            .getBorder();
 
     private static final Color _UNSELECTED_COLOR = Color.WHITE;
 
@@ -667,7 +664,7 @@ implements ActionListener {
         private Editor _editor = new Editor();
 
         private class Editor extends MouseAdapter implements ActionListener,
-        ComboBoxEditor, FocusListener {
+                ComboBoxEditor, FocusListener {
 
             public void actionPerformed(ActionEvent e) {
                 if (_textField.isEditable()) {
@@ -803,8 +800,8 @@ implements ActionListener {
 
                 try {
                     Configuration configuration = _owner.getConfiguration();
-                    configuration.openModel(null, _help,
-                            _help.toExternalForm());
+                    configuration
+                            .openModel(null, _help, _help.toExternalForm());
                 } catch (Exception e1) {
                     HTMLViewer viewer = new HTMLViewer();
                     try {
@@ -820,10 +817,10 @@ implements ActionListener {
         }
 
         public void mouseEntered(MouseEvent e) {
-            Color color = new Color(
-                    Math.min((int) (_background.getRed() * 1.1), 255),
-                    Math.min((int) (_background.getGreen() * 1.1), 255),
-                    Math.min((int) (_background.getBlue() * 1.1), 255));
+            Color color = new Color(Math.min(
+                    (int) (_background.getRed() * 1.1), 255), Math.min(
+                    (int) (_background.getGreen() * 1.1), 255), Math.min(
+                    (int) (_background.getBlue() * 1.1), 255));
             setBackground(color);
         }
 
@@ -843,13 +840,11 @@ implements ActionListener {
 
         HelpLabel(String label, Color background, String helpFile,
                 TableauFrame owner) {
-            this(label, background,
-                    HelpLabel.class.getClassLoader().getResource(helpFile),
-                    owner);
+            this(label, background, HelpLabel.class.getClassLoader()
+                    .getResource(helpFile), owner);
         }
 
-        HelpLabel(String label, Color background, URL help,
-                TableauFrame owner) {
+        HelpLabel(String label, Color background, URL help, TableauFrame owner) {
             super(label, SwingConstants.CENTER);
 
             setBackground(background);
@@ -874,19 +869,19 @@ implements ActionListener {
     }
 
     private static class IngredientContentEditor extends AbstractCellEditor
-    implements TableCellEditor, TableCellRenderer {
+            implements TableCellEditor, TableCellRenderer {
 
         public Object getCellEditorValue() {
             return _currentRow;
         }
 
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                boolean isSelected, int row, int column) {
+        public Component getTableCellEditorComponent(JTable table,
+                Object value, boolean isSelected, int row, int column) {
             _currentRow = (Row) value;
             _currentRow.setSelected(isSelected, false);
 
-            return column == 1 ? _currentRow.getLeftPanel()
-                    : _currentRow.getRightPanel();
+            return column == 1 ? _currentRow.getLeftPanel() : _currentRow
+                    .getRightPanel();
         }
 
         public Component getTableCellRendererComponent(JTable table,
@@ -895,8 +890,8 @@ implements ActionListener {
             Row currentRow = (Row) value;
             currentRow.setSelected(isSelected, true);
 
-            return column == 1 ? currentRow.getLeftPanel()
-                    : currentRow.getRightPanel();
+            return column == 1 ? currentRow.getLeftPanel() : currentRow
+                    .getRightPanel();
         }
 
         private Row _currentRow;
@@ -911,8 +906,7 @@ implements ActionListener {
             Class<?> ingredientClass = ingredient.getClass();
             _classSelector.addItemListener(this);
             _classSelector.setEditable(false);
-            for (Class<? extends GTIngredient> listedIngerdient
-                    : _ingredientClasses) {
+            for (Class<? extends GTIngredient> listedIngerdient : _ingredientClasses) {
                 if (listedIngerdient == null && ingredientClass == null
                         || listedIngerdient != null
                         && listedIngerdient.equals(ingredientClass)) {
@@ -921,15 +915,14 @@ implements ActionListener {
                     _classSelector.setSelectedItem(element);
                 } else {
                     try {
-                        GTIngredient newIngredient =
-                            _createTemporaryIngredient(listedIngerdient);
+                        GTIngredient newIngredient = _createTemporaryIngredient(listedIngerdient);
                         ComboElement element = new ComboElement(newIngredient);
                         _classSelector.addItem(element);
                     } catch (Exception e) {
                         throw new KernelRuntimeException(e,
                                 "Unable to create criterion or operation from "
-                                + "class \"" + listedIngerdient.getName()
-                                + "\".");
+                                        + "class \""
+                                        + listedIngerdient.getName() + "\".");
                     }
                 }
             }
@@ -972,8 +965,8 @@ implements ActionListener {
         public void itemStateChanged(ItemEvent e) {
             _initRightPanel();
             if (e.getStateChange() == ItemEvent.SELECTED) {
-                DefaultTableModel tableModel =
-                    (DefaultTableModel) _table.getModel();
+                DefaultTableModel tableModel = (DefaultTableModel) _table
+                        .getModel();
                 for (int i = 0; i < tableModel.getRowCount(); i++) {
                     if (tableModel.getValueAt(i, 1) == this) {
                         tableModel.fireTableRowsUpdated(i, i);
@@ -1006,15 +999,13 @@ implements ActionListener {
                 if (_checkBoxes[i].isSelected()) {
                     if (selected) {
                         if (component instanceof ColorizedTextField) {
-                            ColorizedTextField textField =
-                                (ColorizedTextField) component;
-                            textField.setBackground(
-                                    textField.getCustomBackground());
+                            ColorizedTextField textField = (ColorizedTextField) component;
+                            textField.setBackground(textField
+                                    .getCustomBackground());
                         } else if (component instanceof ColorizedComboBox) {
-                            ColorizedComboBox comboBox =
-                                (ColorizedComboBox) component;
-                            comboBox.setBackground(
-                                    comboBox.getCustomBackground());
+                            ColorizedComboBox comboBox = (ColorizedComboBox) component;
+                            comboBox.setBackground(comboBox
+                                    .getCustomBackground());
                         } else {
                             component.setBackground(_SELECTED_COLOR);
                         }
@@ -1045,8 +1036,7 @@ implements ActionListener {
                 checkBox.setHorizontalAlignment(SwingConstants.CENTER);
                 component = checkBox;
             } else if (element instanceof StringCriterionElement) {
-                StringCriterionElement stringElement =
-                    (StringCriterionElement) element;
+                StringCriterionElement stringElement = (StringCriterionElement) element;
                 boolean acceptRE = stringElement.acceptRegularExpression();
                 boolean acceptExp = stringElement.acceptPtolemyExpression();
                 Color background;
@@ -1059,10 +1049,9 @@ implements ActionListener {
                 }
 
                 if (element instanceof ChoiceCriterionElement) {
-                    ChoiceCriterionElement choiceElement =
-                        (ChoiceCriterionElement) element;
-                    ColorizedComboBox comboBox =
-                        new ColorizedComboBox(background);
+                    ChoiceCriterionElement choiceElement = (ChoiceCriterionElement) element;
+                    ColorizedComboBox comboBox = new ColorizedComboBox(
+                            background);
                     comboBox.setEditable(choiceElement.isEditable());
                     for (Object choice : choiceElement.getChoices()) {
                         comboBox.addItem(choice);
@@ -1072,8 +1061,7 @@ implements ActionListener {
                     component = new ColorizedTextField(background);
                 }
             } else if (element instanceof StringOperationElement) {
-                StringOperationElement stringElement =
-                    (StringOperationElement) element;
+                StringOperationElement stringElement = (StringOperationElement) element;
                 boolean acceptExp = stringElement.acceptPtolemyExpression();
                 Color background;
                 if (acceptExp) {
@@ -1089,8 +1077,8 @@ implements ActionListener {
         protected void _initRightPanel() {
             _rightPanel.removeAll();
 
-            ComboElement selectedElement =
-                (ComboElement) _classSelector.getSelectedItem();
+            ComboElement selectedElement = (ComboElement) _classSelector
+                    .getSelectedItem();
             GTIngredient ingredient = selectedElement.getIngredient();
             GTIngredientElement[] elements = ingredient.getElements();
             _components = new JComponent[elements.length];
@@ -1105,8 +1093,8 @@ implements ActionListener {
                 panel.setOpaque(false);
 
                 String columnName = element.getName();
-                JPanel checkBoxPanel =
-                    new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+                JPanel checkBoxPanel = new JPanel(new FlowLayout(
+                        FlowLayout.CENTER, 0, 0));
                 checkBoxPanel.setOpaque(false);
                 checkBoxPanel.setPreferredSize(new Dimension(0, 18));
                 JCheckBox checkBox = new JCheckBox(columnName);
@@ -1141,8 +1129,8 @@ implements ActionListener {
         protected void _setComponentValue(GTIngredientElement element,
                 JComponent component, Object value) {
             if (element instanceof BooleanCriterionElement) {
-                ((JCheckBox) component).setSelected(
-                        ((Boolean) value).booleanValue());
+                ((JCheckBox) component).setSelected(((Boolean) value)
+                        .booleanValue());
             } else if (element instanceof StringCriterionElement) {
                 if (element instanceof ChoiceCriterionElement) {
                     ((JComboBox) component).setSelectedItem(value.toString());
@@ -1158,8 +1146,7 @@ implements ActionListener {
             component.setEnabled(enabled);
             if (enabled) {
                 if (component instanceof ColorizedTextField) {
-                    ColorizedTextField textField =
-                        (ColorizedTextField) component;
+                    ColorizedTextField textField = (ColorizedTextField) component;
                     textField.setBackground(textField.getCustomBackground());
                 } else if (component instanceof ColorizedComboBox) {
                     ColorizedComboBox comboBox = (ColorizedComboBox) component;
@@ -1174,8 +1161,8 @@ implements ActionListener {
 
         private JCheckBox[] _checkBoxes;
 
-        private JComboBox _classSelector =
-            new ColorizedComboBox(_NON_REGULAR_EXPRESSION_BACKGROUND);
+        private JComboBox _classSelector = new ColorizedComboBox(
+                _NON_REGULAR_EXPRESSION_BACKGROUND);
 
         private JComponent[] _components;
 

@@ -41,36 +41,29 @@ import java.awt.datatransfer.DataFlavor;
  * 
  * @author Michael Connor
  */
-public class TransferableWrapper implements java.awt.datatransfer.Transferable
-{
-  Object dragObject;
+public class TransferableWrapper implements java.awt.datatransfer.Transferable {
+    Object dragObject;
 
-  public TransferableWrapper(Object dragObject)
-  {
-    this.dragObject = dragObject;
-  }
-
-  public synchronized Object getTransferData(DataFlavor flavor)
-  {
-    return dragObject;
-  }
-
-  public boolean isDataFlavorSupported(DataFlavor flavor)
-  {
-    return flavor.getMimeType().equals(DataFlavor.javaJVMLocalObjectMimeType);
-  }
-
-  public synchronized DataFlavor[] getTransferDataFlavors()
-  {
-    try
-    {
-      return new DataFlavor[] { new DataFlavor(
-          DataFlavor.javaJVMLocalObjectMimeType) };
+    public TransferableWrapper(Object dragObject) {
+        this.dragObject = dragObject;
     }
-    catch (ClassNotFoundException cnfe)
-    {
-      throw new RuntimeException("Unable to load DataFlavor "
-          + DataFlavor.javaJVMLocalObjectMimeType, cnfe);
+
+    public synchronized Object getTransferData(DataFlavor flavor) {
+        return dragObject;
     }
-  }
+
+    public boolean isDataFlavorSupported(DataFlavor flavor) {
+        return flavor.getMimeType().equals(
+                DataFlavor.javaJVMLocalObjectMimeType);
+    }
+
+    public synchronized DataFlavor[] getTransferDataFlavors() {
+        try {
+            return new DataFlavor[] { new DataFlavor(
+                    DataFlavor.javaJVMLocalObjectMimeType) };
+        } catch (ClassNotFoundException cnfe) {
+            throw new RuntimeException("Unable to load DataFlavor "
+                    + DataFlavor.javaJVMLocalObjectMimeType, cnfe);
+        }
+    }
 }

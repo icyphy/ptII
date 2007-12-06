@@ -60,15 +60,14 @@ public class UpSample extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String  generateFireCode() throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
-        
+
         ArrayList args = new ArrayList();
-        
-        ptolemy.domains.sdf.lib.UpSample actor = 
-            (ptolemy.domains.sdf.lib.UpSample) getComponent();
-        
+
+        ptolemy.domains.sdf.lib.UpSample actor = (ptolemy.domains.sdf.lib.UpSample) getComponent();
+
         Type type = actor.input.getType();
         if (!isPrimitive(type)) {
             if (type == BaseType.GENERAL) {
@@ -79,8 +78,8 @@ public class UpSample extends CCodeGeneratorHelper {
         } else {
             args.add("0");
         }
-        
+
         code.append(_generateBlockCode("fireBlock", args));
         return code.toString();
-   }
+    }
 }

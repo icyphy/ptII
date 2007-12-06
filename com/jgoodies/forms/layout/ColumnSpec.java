@@ -32,7 +32,6 @@ package com.jgoodies.forms.layout;
 
 import java.util.StringTokenizer;
 
-
 /**
  * Specifies columns in FormLayout by their default orientation, 
  * start size and resizing behavior.<p>
@@ -59,10 +58,9 @@ import java.util.StringTokenizer;
  */
 
 public final class ColumnSpec extends FormSpec {
-    
-    
+
     // Horizontal Orientations *********************************************
-    
+
     /**
      * By default put components in the left.
      */
@@ -87,12 +85,11 @@ public final class ColumnSpec extends FormSpec {
      * By default fill the component into the column.
      */
     public static final DefaultAlignment FILL = FormSpec.FILL_ALIGN;
-    
+
     /**
      * Unless overridden the default alignment for a column is FILL.
      */
     public static final DefaultAlignment DEFAULT = FILL;
-
 
     // Instance Creation ****************************************************
 
@@ -109,13 +106,11 @@ public final class ColumnSpec extends FormSpec {
      * @exception IllegalArgumentException if the size is invalid or 
      *      the resize weight is negative
      */
-    public ColumnSpec(DefaultAlignment defaultAlignment, 
-                        Size size, 
-                        double resizeWeight) {
-		super(defaultAlignment, size, resizeWeight);
-	}
-	
-	
+    public ColumnSpec(DefaultAlignment defaultAlignment, Size size,
+            double resizeWeight) {
+        super(defaultAlignment, size, resizeWeight);
+    }
+
     /**
      * Constructs a ColumnSpec for the given size using the
      * default alignment, and no resizing.
@@ -126,19 +121,17 @@ public final class ColumnSpec extends FormSpec {
     public ColumnSpec(Size size) {
         super(DEFAULT, size, NO_GROW);
     }
-    
-    
+
     /**
      * Constructs a ColumnSpec from the specified encoded description. 
      * The description will be parsed to set initial values.
      * 
      * @param encodedDescription	the encoded description
      */
-	public ColumnSpec(String encodedDescription) {
+    public ColumnSpec(String encodedDescription) {
         super(DEFAULT, encodedDescription);
-	}
+    }
 
-    
     // Implementing Abstract Behavior ***************************************
 
     /**
@@ -148,13 +141,12 @@ public final class ColumnSpec extends FormSpec {
      * 
      * @return  always true (for horizontal)
      */
-    protected final boolean isHorizontal() { 
-        return true; 
+    protected final boolean isHorizontal() {
+        return true;
     }
 
-
     // Parsing and Decoding of Column Descriptions **************************
-    
+
     /**
      * Parses and splits encoded column specifications and returns 
      * an array of ColumnSpec objects.
@@ -167,12 +159,14 @@ public final class ColumnSpec extends FormSpec {
      * @see ColumnSpec#ColumnSpec(String)
      */
     public static ColumnSpec[] decodeSpecs(String encodedColumnSpecs) {
-        if (encodedColumnSpecs == null) 
-            throw new NullPointerException("The column specification must not be null.");
-        
-        StringTokenizer tokenizer = new StringTokenizer(encodedColumnSpecs, ", ");
+        if (encodedColumnSpecs == null)
+            throw new NullPointerException(
+                    "The column specification must not be null.");
+
+        StringTokenizer tokenizer = new StringTokenizer(encodedColumnSpecs,
+                ", ");
         int columnCount = tokenizer.countTokens();
-        ColumnSpec[] columnSpecs = new ColumnSpec[columnCount]; 
+        ColumnSpec[] columnSpecs = new ColumnSpec[columnCount];
         for (int i = 0; i < columnCount; i++) {
             columnSpecs[i] = new ColumnSpec(tokenizer.nextToken());
         }
@@ -180,4 +174,3 @@ public final class ColumnSpec extends FormSpec {
     }
 
 }
-

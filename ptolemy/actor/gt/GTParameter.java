@@ -82,13 +82,13 @@ public class GTParameter extends Parameter {
         }
 
         public Token evaluateParseTree(ASTPtRootNode node, ParserScope scope)
-        throws IllegalActionException {
+                throws IllegalActionException {
             return super.evaluateParseTree(node, new Scope(_pattern,
                     _matchResult, scope));
         }
 
         public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-        throws IllegalActionException {
+                throws IllegalActionException {
             if (node.isConstant() && node.isEvaluated()) {
                 _evaluatedChildToken = node.getToken();
                 return;
@@ -134,26 +134,26 @@ public class GTParameter extends Parameter {
         }
 
         public void visitMethodCallNode(ASTPtMethodCallNode node)
-        throws IllegalActionException {
+                throws IllegalActionException {
             int argCount = node.jjtGetNumChildren();
             if (argCount == 1) {
                 Token firstChild = _evaluateChild(node, 0);
                 if (firstChild instanceof NamedObjToken) {
                     NamedObjToken objectToken = (NamedObjToken) firstChild;
                     NamedObj object = objectToken.getObject();
-                    NamedObj patternObject =
-                        (NamedObj) _matchResult.getKey(object);
+                    NamedObj patternObject = (NamedObj) _matchResult
+                            .getKey(object);
                     String methodName = node.getMethodName();
                     if (patternObject != null) {
                         NamedObj patternChild = GTTools.getChild(patternObject,
                                 methodName, true, true, true, true);
                         if (patternChild != null) {
-                            NamedObj child =
-                                (NamedObj) _matchResult.get(patternChild);
+                            NamedObj child = (NamedObj) _matchResult
+                                    .get(patternChild);
                             if (child != null) {
-                                _evaluatedChildToken =
-                                    NamedObjVariable.getNamedObjVariable(child,
-                                            true).getToken();
+                                _evaluatedChildToken = NamedObjVariable
+                                        .getNamedObjVariable(child, true)
+                                        .getToken();
                                 return;
                             }
                         }
@@ -213,8 +213,8 @@ public class GTParameter extends Parameter {
             } else if (value instanceof NamedObjToken) {
                 return ((NamedObjToken) value).getObject();
             } else if (value instanceof Token) {
-                return ConversionUtilities.convertTokenToJavaType(
-                        (Token) value);
+                return ConversionUtilities
+                        .convertTokenToJavaType((Token) value);
             } else {
                 return value;
             }
@@ -222,7 +222,7 @@ public class GTParameter extends Parameter {
 
         private Token _methodCall(Class<?> clazz, Object object,
                 String methodName, Type[] argTypes, Object[] argValues)
-        throws IllegalActionException {
+                throws IllegalActionException {
             Method[] methods = clazz.getMethods();
             for (Method method : methods) {
                 if (method.getName().equals(methodName)
@@ -232,10 +232,9 @@ public class GTParameter extends Parameter {
                         continue;
                     }
                     boolean compatible = true;
-                    for (int i = 0; compatible && i < parameterTypes.length;
-                            i++) {
-                        if (!parameterTypes[i].isInstance(_getObject(
-                                argValues[i + 1]))) {
+                    for (int i = 0; compatible && i < parameterTypes.length; i++) {
+                        if (!parameterTypes[i]
+                                .isInstance(_getObject(argValues[i + 1]))) {
                             compatible = false;
                         }
                     }
@@ -278,10 +277,9 @@ public class GTParameter extends Parameter {
         }
 
         public Token get(String name) throws IllegalActionException {
-            NamedObj patternChild =
-                GTTools.getChild(_pattern, name, true, true, true, true);
-            if (patternChild != null
-                    && _matchResult.containsKey(patternChild)) {
+            NamedObj patternChild = GTTools.getChild(_pattern, name, true,
+                    true, true, true);
+            if (patternChild != null && _matchResult.containsKey(patternChild)) {
                 NamedObj child = (NamedObj) _matchResult.get(patternChild);
                 return NamedObjVariable.getNamedObjVariable(child, true)
                         .getToken();
@@ -291,10 +289,9 @@ public class GTParameter extends Parameter {
         }
 
         public Type getType(String name) throws IllegalActionException {
-            NamedObj patternChild =
-                GTTools.getChild(_pattern, name, true, true, true, true);
-            if (patternChild != null
-                    && _matchResult.containsKey(patternChild)) {
+            NamedObj patternChild = GTTools.getChild(_pattern, name, true,
+                    true, true, true);
+            if (patternChild != null && _matchResult.containsKey(patternChild)) {
                 return get(name).getType();
             } else {
                 return _superscope.getType(name);
@@ -307,10 +304,10 @@ public class GTParameter extends Parameter {
         }
 
         public Set<?> identifierSet() throws IllegalActionException {
-            Set<Object> identifiers =
-                new HashSet<Object>((Set<?>) _superscope.identifierSet());
-            for (Object childObject :
-                GTTools.getChildren(_pattern, true, true, true, true)) {
+            Set<Object> identifiers = new HashSet<Object>((Set<?>) _superscope
+                    .identifierSet());
+            for (Object childObject : GTTools.getChildren(_pattern, true, true,
+                    true, true)) {
                 identifiers.add(((NamedObj) childObject).getName());
             }
             return identifiers;
@@ -328,7 +325,7 @@ public class GTParameter extends Parameter {
     }
 
     protected void _evaluate(Pattern pattern, MatchResult matchResult)
-    throws IllegalActionException {
+            throws IllegalActionException {
         setParseTreeEvaluator(new Evaluator(pattern, matchResult));
         super._evaluate();
     }

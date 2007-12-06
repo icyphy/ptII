@@ -132,7 +132,7 @@ public class VisualModelReference extends ModelReference {
         closeOnPostfire.setExpression("do nothing");
         closeOnPostfire.addChoice("do nothing");
         closeOnPostfire.addChoice("close Vergil graph");
-        
+
         // Create a tableau factory to override look inside behavior.
         new LookInside(this, "_lookInsideOverride");
     }
@@ -426,7 +426,7 @@ public class VisualModelReference extends ModelReference {
 
     // Tableau that has been created (if any).
     private Tableau _tableau;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -452,12 +452,13 @@ public class VisualModelReference extends ModelReference {
          *  @return The instance of the model.
          *  @exception Exception If there is a problem opening the
          *  model.
-         */   
+         */
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (_model == null) {
-                throw new IllegalActionException(VisualModelReference.this, "No model referenced.");
+                throw new IllegalActionException(VisualModelReference.this,
+                        "No model referenced.");
             }
-            Configuration configuration = (Configuration)effigy.toplevel();
+            Configuration configuration = (Configuration) effigy.toplevel();
             return configuration.openInstance(_model, effigy);
         }
     }

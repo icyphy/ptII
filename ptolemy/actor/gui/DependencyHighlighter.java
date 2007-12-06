@@ -81,19 +81,20 @@ public class DependencyHighlighter extends NodeControllerFactory {
     public DependencyHighlighter(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         highlightColor = new ColorAttribute(this, "highlightColor");
         // Red default.
         highlightColor.setExpression("{1.0, 0.0, 0.0, 1.0}");
-        
+
         // Hide the name.
         SingletonParameter _hideName = new SingletonParameter(this, "_hideName");
         _hideName.setToken(BooleanToken.TRUE);
         _hideName.setVisibility(Settable.EXPERT);
-        
+
         // The icon.
         EditorIcon _icon = new EditorIcon(this, "_icon");
-        RectangleAttribute rectangle = new RectangleAttribute(_icon, "rectangle");
+        RectangleAttribute rectangle = new RectangleAttribute(_icon,
+                "rectangle");
         rectangle.width.setExpression("155.0");
         rectangle.height.setExpression("20.0");
         rectangle.fillColor.setExpression("{1.0,0.7,0.7,1.0}");
@@ -104,7 +105,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
         TextAttribute text = new TextAttribute(_icon, "text");
         text.text.setExpression("DependencyHighlighter");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -135,9 +136,8 @@ public class DependencyHighlighter extends NodeControllerFactory {
      *  @param forward True for dependents, false for prerequisites.
      *  @param clear True to clear, false to highlight.
      */
-    private void _addHighlights(
-            NamedObj actor, StringBuffer moml, HashSet<NamedObj> visited,
-            boolean forward, boolean clear) {
+    private void _addHighlights(NamedObj actor, StringBuffer moml,
+            HashSet<NamedObj> visited, boolean forward, boolean clear) {
         if (visited.contains(actor)) {
             return;
         }
@@ -149,27 +149,27 @@ public class DependencyHighlighter extends NodeControllerFactory {
                 moml.append(highlightColor.exportMoML("_highlightColor"));
             } else {
                 if (actor.getAttribute("_highlightColor") != null) {
-                    moml.append("<deleteProperty name=\"_highlightColor\"/>");                
+                    moml.append("<deleteProperty name=\"_highlightColor\"/>");
                 }
             }
             moml.append("</entity>");
-            
+
             visited.add(actor);
             Iterator ports;
             if (forward) {
-                ports = ((Actor)actor).outputPortList().iterator();
+                ports = ((Actor) actor).outputPortList().iterator();
             } else {
-                ports = ((Actor)actor).inputPortList().iterator();
+                ports = ((Actor) actor).inputPortList().iterator();
             }
             while (ports.hasNext()) {
-                IOPort port = (IOPort)ports.next();
+                IOPort port = (IOPort) ports.next();
                 Iterator connectedPorts = port.connectedPortList().iterator();
                 while (connectedPorts.hasNext()) {
-                    IOPort otherPort = (IOPort)connectedPorts.next();
+                    IOPort otherPort = (IOPort) connectedPorts.next();
                     // Skip ports with the same polarity (input or output)
                     // as the current port.
-                    if (port.isInput() && !otherPort.isOutput() ||
-                            port.isOutput() && !otherPort.isInput()) {
+                    if (port.isInput() && !otherPort.isOutput()
+                            || port.isOutput() && !otherPort.isInput()) {
                         continue;
                     }
                     NamedObj higherActor = otherPort.getContainer();
@@ -181,39 +181,46 @@ public class DependencyHighlighter extends NodeControllerFactory {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** The controller that adds commands to the context menu.
      */
     public class DependencyController extends ActorInstanceController {
 
         /** Create a DependencyController that is associated with a controller.
          *  @param controller The controller.
-         */ 
+         */
         public DependencyController(GraphController controller) {
             super(controller);
-            
-            HighlightDependents highlight = new HighlightDependents("Highlight dependents", true, false);
+
+            HighlightDependents highlight = new HighlightDependents(
+                    "Highlight dependents", true, false);
             _menuFactory.addMenuItemFactory(new MenuActionFactory(highlight));
 
-            HighlightDependents clear1 = new HighlightDependents("Clear dependents", true, true);
+            HighlightDependents clear1 = new HighlightDependents(
+                    "Clear dependents", true, true);
             _menuFactory.addMenuItemFactory(new MenuActionFactory(clear1));
 
-            HighlightDependents prerequisites = new HighlightDependents("Highlight prerequisites", false, false);
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(prerequisites));
+            HighlightDependents prerequisites = new HighlightDependents(
+                    "Highlight prerequisites", false, false);
+            _menuFactory
+                    .addMenuItemFactory(new MenuActionFactory(prerequisites));
 
-            HighlightDependents clear2 = new HighlightDependents("Clear prerequisites", false, true);
+            HighlightDependents clear2 = new HighlightDependents(
+                    "Clear prerequisites", false, true);
             _menuFactory.addMenuItemFactory(new MenuActionFactory(clear2));
         }
     }
-    
+
     /** The action for the commands added to the context menu.
      */
     private class HighlightDependents extends FigureAction {
-        public HighlightDependents(String commandName, boolean forward, boolean clear) {
+        public HighlightDependents(String commandName, boolean forward,
+                boolean clear) {
             super(commandName);
             _forward = forward;
             _clear = clear;
         }
+
         public void actionPerformed(ActionEvent e) {
             // Determine which entity was selected for the create instance action.
             super.actionPerformed(e);
@@ -223,8 +230,10 @@ public class DependencyHighlighter extends NodeControllerFactory {
             HashSet<NamedObj> visited = new HashSet<NamedObj>();
             _addHighlights(actor, moml, visited, _forward, _clear);
             moml.append("</group>");
-            actor.requestChange(new MoMLChangeRequest(this, actor.getContainer(), moml.toString()));
+            actor.requestChange(new MoMLChangeRequest(this, actor
+                    .getContainer(), moml.toString()));
         }
+
         private boolean _forward, _clear;
     }
 }

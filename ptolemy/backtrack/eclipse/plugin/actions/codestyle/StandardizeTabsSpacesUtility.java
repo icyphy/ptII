@@ -71,8 +71,8 @@ public class StandardizeTabsSpacesUtility {
             }
             if (spaceStart + eolSize < eolPos) {
                 try {
-                    document.replace(spaceStart + 1,
-                            eolPos - (spaceStart + eolSize), "");
+                    document.replace(spaceStart + 1, eolPos
+                            - (spaceStart + eolSize), "");
                     buffer.replace(spaceStart + 1, eolPos - eolSize + 1, "");
                     if (eolPos < caretPosition) {
                         caretPosition -= eolPos - (spaceStart + eolSize);
@@ -91,8 +91,9 @@ public class StandardizeTabsSpacesUtility {
         // Add a new line to the end of file
         int docLength = document.getLength();
         try {
-            if (docLength == 0 || (!document.get(docLength - 1, 1).equals("\n")
-                    && !document.get(docLength - 1, 1).equals("\r"))) {
+            if (docLength == 0
+                    || (!document.get(docLength - 1, 1).equals("\n") && !document
+                            .get(docLength - 1, 1).equals("\r"))) {
                 document.replace(docLength, 0, "\n");
             }
         } catch (BadLocationException e) {

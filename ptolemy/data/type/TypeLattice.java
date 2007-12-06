@@ -233,9 +233,10 @@ public class TypeLattice {
         public int compare(Object t1, Object t2) {
             synchronized (TypeLattice.class) {
                 if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
-                    throw new IllegalArgumentException("TheTypeLattice.compare: "
-                            + "Arguments are not instances of Type: " + " type1 = "
-                            + t1 + ", type2 = " + t2);
+                    throw new IllegalArgumentException(
+                            "TheTypeLattice.compare: "
+                                    + "Arguments are not instances of Type: "
+                                    + " type1 = " + t1 + ", type2 = " + t2);
                 }
 
                 Type ct1 = (Type) t1;
@@ -261,7 +262,8 @@ public class TypeLattice {
                     }
                     int elementComparison = compare(((ArrayType) ct1)
                             .getElementType(), t2Rep);
-                    if (elementComparison == SAME || elementComparison == HIGHER) {
+                    if (elementComparison == SAME
+                            || elementComparison == HIGHER) {
                         return HIGHER;
                     } else {
                         if (t2Rep == BaseType.GENERAL) {
@@ -283,7 +285,8 @@ public class TypeLattice {
                     }
                     int elementComparison = compare(((ArrayType) ct2)
                             .getElementType(), t1Rep);
-                    if (elementComparison == SAME || elementComparison == HIGHER) {
+                    if (elementComparison == SAME
+                            || elementComparison == HIGHER) {
                         return LOWER;
                     } else {
                         if (t1Rep == BaseType.GENERAL) {
@@ -339,7 +342,7 @@ public class TypeLattice {
                 if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                     throw new IllegalArgumentException(
                             "TheTypeLattice.greatestLowerBound: "
-                            + "Arguments are not instances of Type.");
+                                    + "Arguments are not instances of Type.");
                 }
 
                 Type ct1 = (Type) t1;
@@ -350,7 +353,7 @@ public class TypeLattice {
 
                 if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                     return ((StructuredType) t1)
-                    ._greatestLowerBound((StructuredType) t2);
+                            ._greatestLowerBound((StructuredType) t2);
                 } else if (t1Rep instanceof ArrayType
                         && !(t2Rep instanceof ArrayType)
                         && !t2.equals(BaseType.UNKNOWN)
@@ -359,8 +362,10 @@ public class TypeLattice {
                     ArrayType arrayType = (ArrayType) t1;
                     int elementComparison = compare(((ArrayType) ct1)
                             .getElementType(), t2Rep);
-                    if (elementComparison == SAME || elementComparison == HIGHER) {
-                        if (arrayType.hasKnownLength() && arrayType.length() != 1) {
+                    if (elementComparison == SAME
+                            || elementComparison == HIGHER) {
+                        if (arrayType.hasKnownLength()
+                                && arrayType.length() != 1) {
                             return BaseType.UNKNOWN;
                         } else {
                             return t2;
@@ -388,8 +393,10 @@ public class TypeLattice {
                     ArrayType arrayType = (ArrayType) t2;
                     int elementComparison = compare(((ArrayType) ct2)
                             .getElementType(), t1Rep);
-                    if (elementComparison == SAME || elementComparison == HIGHER) {
-                        if (arrayType.hasKnownLength() && arrayType.length() != 1) {
+                    if (elementComparison == SAME
+                            || elementComparison == HIGHER) {
+                        if (arrayType.hasKnownLength()
+                                && arrayType.length() != 1) {
                             return BaseType.UNKNOWN;
                         } else {
                             return t1;
@@ -483,7 +490,8 @@ public class TypeLattice {
                     for (int j = 0; j < subset.length; j++) {
                         int result = compare(subset[i], subset[j]);
 
-                        if ((result == CPO.LOWER) || (result == CPO.INCOMPARABLE)) {
+                        if ((result == CPO.LOWER)
+                                || (result == CPO.INCOMPARABLE)) {
                             isGreatest = false;
                             break;
                         }
@@ -522,7 +530,8 @@ public class TypeLattice {
                     for (int j = 0; j < subset.length; j++) {
                         int result = compare(subset[i], subset[j]);
 
-                        if ((result == CPO.HIGHER) || (result == CPO.INCOMPARABLE)) {
+                        if ((result == CPO.HIGHER)
+                                || (result == CPO.INCOMPARABLE)) {
                             isLeast = false;
                             break;
                         }
@@ -547,7 +556,7 @@ public class TypeLattice {
                 if (!(t1 instanceof Type) || !(t2 instanceof Type)) {
                     throw new IllegalArgumentException(
                             "TheTypeLattice.leastUpperBound: "
-                            + "Arguments are not instances of Type.");
+                                    + "Arguments are not instances of Type.");
                 }
 
                 // System.out.println("LUB of " + t1 + " and " + t2); 
@@ -559,7 +568,7 @@ public class TypeLattice {
 
                 if (t1Rep.equals(t2Rep) && t1Rep instanceof StructuredType) {
                     return ((StructuredType) t1)
-                    ._leastUpperBound((StructuredType) t2);
+                            ._leastUpperBound((StructuredType) t2);
                 } else if (t1Rep instanceof ArrayType
                         && !(t2Rep instanceof ArrayType)
                         && !t2.equals(BaseType.UNKNOWN)
@@ -569,8 +578,10 @@ public class TypeLattice {
                     ArrayType arrayType = (ArrayType) t1;
                     Type elementType = ((ArrayType) ct1).getElementType();
                     int elementComparison = compare(elementType, t2Rep);
-                    if (elementComparison == SAME || elementComparison == HIGHER) {
-                        if (arrayType.hasKnownLength() && arrayType.length() != 1) {
+                    if (elementComparison == SAME
+                            || elementComparison == HIGHER) {
+                        if (arrayType.hasKnownLength()
+                                && arrayType.length() != 1) {
                             // Least upper bound is unsized type.
                             return new ArrayType(elementType);
                         } else {
@@ -583,7 +594,7 @@ public class TypeLattice {
                             // INCOMPARABLE
                             if (_basicLattice.containsNodeWeight(t2Rep)
                                     && _basicLattice
-                                    .containsNodeWeight(elementType)) {
+                                            .containsNodeWeight(elementType)) {
                                 // The least upper bound is an array of the LUB
                                 // of t2Rep and the element type of t1.
                                 return new ArrayType((Type) _basicLattice
@@ -604,8 +615,10 @@ public class TypeLattice {
                     ArrayType arrayType = (ArrayType) t2;
                     Type elementType = ((ArrayType) ct2).getElementType();
                     int elementComparison = compare(elementType, t1Rep);
-                    if (elementComparison == SAME || elementComparison == HIGHER) {
-                        if (arrayType.hasKnownLength() && arrayType.length() != 1) {
+                    if (elementComparison == SAME
+                            || elementComparison == HIGHER) {
+                        if (arrayType.hasKnownLength()
+                                && arrayType.length() != 1) {
                             // Least upper bound is unsized type.
                             return new ArrayType(elementType);
                         } else {
@@ -618,7 +631,7 @@ public class TypeLattice {
                             // INCOMPARABLE
                             if (_basicLattice.containsNodeWeight(t1Rep)
                                     && _basicLattice
-                                    .containsNodeWeight(elementType)) {
+                                            .containsNodeWeight(elementType)) {
                                 // The least upper bound is an array of the LUB
                                 // of t2Rep and the element type of t1.
                                 return new ArrayType((Type) _basicLattice
@@ -715,18 +728,19 @@ public class TypeLattice {
                 _basicLattice = new DirectedAcyclicGraph();
 
                 StructuredType arrayRep = (new ArrayType(BaseType.UNKNOWN))
-                ._getRepresentative();
+                        ._getRepresentative();
 
                 String[] labels = new String[0];
                 Type[] types = new Type[0];
                 StructuredType recordRep = (new RecordType(labels, types))
-                ._getRepresentative();
+                        ._getRepresentative();
                 StructuredType unionRep = (new UnionType(labels, types))
-                ._getRepresentative();
+                        ._getRepresentative();
 
                 /*StructuredType functionRep = */new ptolemy.data.type.FunctionType(
                         new ptolemy.data.type.Type[0],
-                        ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();
+                        ptolemy.data.type.BaseType.UNKNOWN)
+                        ._getRepresentative();
 
                 _basicLattice.addNodeWeight(BaseType.BOOLEAN);
                 _basicLattice.addNodeWeight(BaseType.BOOLEAN_MATRIX);
@@ -769,7 +783,8 @@ public class TypeLattice {
                 _basicLattice.addEdge(BaseType.STRING, BaseType.GENERAL);
                 _basicLattice.addEdge(BaseType.MATRIX, BaseType.STRING);
                 _basicLattice.addEdge(BaseType.BOOLEAN_MATRIX, BaseType.MATRIX);
-                _basicLattice.addEdge(BaseType.BOOLEAN, BaseType.BOOLEAN_MATRIX);
+                _basicLattice
+                        .addEdge(BaseType.BOOLEAN, BaseType.BOOLEAN_MATRIX);
                 _basicLattice.addEdge(BaseType.BOOLEAN, BaseType.SCALAR);
                 _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.BOOLEAN);
 
@@ -780,18 +795,21 @@ public class TypeLattice {
                 _basicLattice.addEdge(BaseType.LONG_MATRIX, BaseType.MATRIX);
                 _basicLattice.addEdge(BaseType.COMPLEX_MATRIX, BaseType.MATRIX);
 
-                _basicLattice.addEdge(BaseType.UNSIZED_FIX, BaseType.FIX_MATRIX);
+                _basicLattice
+                        .addEdge(BaseType.UNSIZED_FIX, BaseType.FIX_MATRIX);
                 _basicLattice.addEdge(BaseType.SIZED_FIX, BaseType.UNSIZED_FIX);
                 _basicLattice.addEdge(BaseType.UNSIZED_FIX, BaseType.SCALAR);
                 _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.SIZED_FIX);
                 _basicLattice.addEdge(BaseType.LONG, BaseType.SCALAR);
                 _basicLattice.addEdge(BaseType.LONG, BaseType.LONG_MATRIX);
-                _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.LONG_MATRIX);
+                _basicLattice
+                        .addEdge(BaseType.INT_MATRIX, BaseType.LONG_MATRIX);
                 _basicLattice.addEdge(BaseType.INT, BaseType.LONG);
                 _basicLattice.addEdge(BaseType.INT, BaseType.INT_MATRIX);
                 _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.UNSIGNED_BYTE);
                 _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.PETITE);
-                _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.DOUBLE_MATRIX);
+                _basicLattice.addEdge(BaseType.INT_MATRIX,
+                        BaseType.DOUBLE_MATRIX);
                 _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
                         BaseType.COMPLEX_MATRIX);
                 _basicLattice.addEdge(BaseType.DOUBLE, BaseType.DOUBLE_MATRIX);
@@ -800,7 +818,8 @@ public class TypeLattice {
 
                 _basicLattice.addEdge(BaseType.PETITE, BaseType.DOUBLE);
                 _basicLattice.addEdge(BaseType.COMPLEX, BaseType.SCALAR);
-                _basicLattice.addEdge(BaseType.COMPLEX, BaseType.COMPLEX_MATRIX);
+                _basicLattice
+                        .addEdge(BaseType.COMPLEX, BaseType.COMPLEX_MATRIX);
 
                 _basicLattice.addEdge(BaseType.DOUBLE, BaseType.COMPLEX);
                 //_basicLattice.addEdge(BaseType.INT, BaseType.DOUBLE);
@@ -809,8 +828,6 @@ public class TypeLattice {
                 _basicLattice.addEdge(BaseType.SHORT, BaseType.INT);
                 _basicLattice.addEdge(BaseType.SHORT, BaseType.FLOAT);
                 _basicLattice.addEdge(BaseType.FLOAT, BaseType.DOUBLE);
-                
-                
 
                 _basicLattice.addEdge(BaseType.EVENT, BaseType.GENERAL);
                 _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.EVENT);

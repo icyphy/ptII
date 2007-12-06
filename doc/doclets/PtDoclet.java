@@ -103,32 +103,32 @@ public class PtDoclet {
             allNamedObjsWriter = new FileWriter(_outputDirectory
                     + File.separator + "allNamedObjs.txt");
 
-            ClassDoc namedObjDoc =
-                root.classNamed("ptolemy.kernel.util.NamedObj");
+            ClassDoc namedObjDoc = root
+                    .classNamed("ptolemy.kernel.util.NamedObj");
 
-             Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
-             Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
-             // The expression in the Expression actor is a StringAttribute.
-             Class stringAttributeClass = Class
-                     .forName("ptolemy.kernel.util.StringAttribute");
+            Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
+            Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
+            // The expression in the Expression actor is a StringAttribute.
+            Class stringAttributeClass = Class
+                    .forName("ptolemy.kernel.util.StringAttribute");
 
-             ClassDoc[] classes = root.classes();
-             for (int i = 0; i < classes.length; i++) {
-                 String className = classes[i].toString();
-                 if (classes[i].subclassOf(namedObjDoc)) {
-                     _writeDoc(className, 
-                             _generateClassLevelDocumentation(classes[i])
-                             + _generateFieldDocumentation(classes[i],
-                                     typedIOPortClass, "port")
-                             + _generateFieldDocumentation(classes[i],
-                                     parameterClass, "property")
-                             + _generateFieldDocumentation(classes[i],
-                                     stringAttributeClass, "property")
-                             + "</doc>\n");
+            ClassDoc[] classes = root.classes();
+            for (int i = 0; i < classes.length; i++) {
+                String className = classes[i].toString();
+                if (classes[i].subclassOf(namedObjDoc)) {
+                    _writeDoc(className,
+                            _generateClassLevelDocumentation(classes[i])
+                                    + _generateFieldDocumentation(classes[i],
+                                            typedIOPortClass, "port")
+                                    + _generateFieldDocumentation(classes[i],
+                                            parameterClass, "property")
+                                    + _generateFieldDocumentation(classes[i],
+                                            stringAttributeClass, "property")
+                                    + "</doc>\n");
 
-                     allNamedObjsWriter.write(className + "\n");
-                 }
-             }
+                    allNamedObjsWriter.write(className + "\n");
+                }
+            }
         } finally {
             if (allNamedObjsWriter != null) {
                 allNamedObjsWriter.close();

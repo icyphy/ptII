@@ -62,7 +62,7 @@ public class Lattice extends PropertyLattice {
     public Property STATIC = new Static(this);
 
     public Property DYNAMIC = new Dynamic(this);
-    
+
     public Property UNKNOWN = new Unknown(this);
 
     public Property getInitialProperty() {
@@ -73,15 +73,13 @@ public class Lattice extends PropertyLattice {
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
-    
     // The infinite property lattice
     public Lattice() {
         super();
         _lattice.setBasicLattice(new DirectedAcyclicGraph());
 
-        DirectedAcyclicGraph basicLattice = 
-            (DirectedAcyclicGraph) _lattice.basicLattice();
-        
+        DirectedAcyclicGraph basicLattice = (DirectedAcyclicGraph) _lattice
+                .basicLattice();
 
         basicLattice.addNodeWeight(STATIC);
 
@@ -89,7 +87,6 @@ public class Lattice extends PropertyLattice {
 
         basicLattice.addEdge(DYNAMIC, STATIC);
         //basicLattice.addEdge(STATIC, DYNAMIC);
-        
 
         /*
         basicLattice.addNodeWeight(UNKNOWN);

@@ -58,10 +58,9 @@ import java.util.StringTokenizer;
  */
 
 public final class RowSpec extends FormSpec {
-    
-    
+
     // Vertical Orientations ************************************************
-    
+
     /**
      * By default put the components in the top.
      */
@@ -81,12 +80,11 @@ public final class RowSpec extends FormSpec {
      * By default fill the component into the row.
      */
     public static final DefaultAlignment FILL = FormSpec.FILL_ALIGN;
-    
+
     /**
      * Unless overridden the default alignment for a row is CENTER.
      */
     public static final DefaultAlignment DEFAULT = CENTER;
-
 
     // Instance Creation ****************************************************
 
@@ -103,9 +101,8 @@ public final class RowSpec extends FormSpec {
      * @exception IllegalArgumentException if the size is invalid or 
      *      the resize weight is negative
      */
-    public RowSpec(DefaultAlignment defaultAlignment,
-                    Size size, 
-                    double resizeWeight) {
+    public RowSpec(DefaultAlignment defaultAlignment, Size size,
+            double resizeWeight) {
         super(defaultAlignment, size, resizeWeight);
     }
 
@@ -119,18 +116,17 @@ public final class RowSpec extends FormSpec {
     public RowSpec(Size size) {
         super(DEFAULT, size, NO_GROW);
     }
-    
+
     /**
      * Constructs a RowSpec from the specified encoded
      * description. The description will be parsed to set initial values.
      * 
      * @param encodedDescription	the encoded description
      */
-	public RowSpec(String encodedDescription) {
+    public RowSpec(String encodedDescription) {
         super(DEFAULT, encodedDescription);
-	}
-    
-    
+    }
+
     // Implementing Abstract Behavior ***************************************
 
     /**
@@ -140,11 +136,12 @@ public final class RowSpec extends FormSpec {
      * 
      * @return true for horizontal, false for vertical
      */
-    protected boolean isHorizontal() { return false; }
-
+    protected boolean isHorizontal() {
+        return false;
+    }
 
     // Parsing and Decoding of Row Descriptions *****************************
-    
+
     /**
      * Parses and splits encoded row specifications and returns 
      * an array of RowSpec objects.
@@ -157,18 +154,17 @@ public final class RowSpec extends FormSpec {
      * @see RowSpec#RowSpec(String)
      */
     public static RowSpec[] decodeSpecs(String encodedRowSpecs) {
-        if (encodedRowSpecs == null) 
-            throw new NullPointerException("The row specification must not be null.");
-        
+        if (encodedRowSpecs == null)
+            throw new NullPointerException(
+                    "The row specification must not be null.");
+
         StringTokenizer tokenizer = new StringTokenizer(encodedRowSpecs, ", ");
         int rowCount = tokenizer.countTokens();
-        RowSpec[] rowSpecs = new RowSpec[rowCount]; 
+        RowSpec[] rowSpecs = new RowSpec[rowCount];
         for (int i = 0; i < rowCount; i++) {
             rowSpecs[i] = new RowSpec(tokenizer.nextToken());
         }
         return rowSpecs;
     }
 
-    	
 }
-

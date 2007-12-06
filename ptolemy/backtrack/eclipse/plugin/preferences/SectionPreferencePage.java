@@ -120,7 +120,8 @@ public class SectionPreferencePage extends FieldEditorPreferencePage implements
      */
     protected Composite _createSection(String title, String description) {
         Section section = _toolkit.createSection(_form.getBody(),
-                Section.DESCRIPTION | ExpandableComposite.TWISTIE | ExpandableComposite.CLIENT_INDENT);
+                Section.DESCRIPTION | ExpandableComposite.TWISTIE
+                        | ExpandableComposite.CLIENT_INDENT);
         TableWrapData data = new TableWrapData();
         data.grabHorizontal = true;
         section.setLayoutData(data);

@@ -87,8 +87,9 @@ public class Sequence extends TypedAtomicActor {
         // Set the Repeat Flag.
         repeat = new Parameter(this, "repeat", BooleanToken.FALSE);
         repeat.setTypeEquals(BaseType.BOOLEAN);
-        
-        holdLastOutput = new Parameter(this, "holdLastOutput", BooleanToken.FALSE);
+
+        holdLastOutput = new Parameter(this, "holdLastOutput",
+                BooleanToken.FALSE);
         holdLastOutput.setTypeEquals(BaseType.BOOLEAN);
 
         enable = new TypedIOPort(this, "enable", true, false);
@@ -108,7 +109,7 @@ public class Sequence extends TypedAtomicActor {
      *  given firing. The type is boolean.
      */
     public TypedIOPort enable;
-    
+
     /** A flag indicating whether to interpret the <i>values</i>
      *  as an infinite sequence where the last value is repeated
      *  forever. This is a boolean that defaults to false.
@@ -203,13 +204,14 @@ public class Sequence extends TypedAtomicActor {
                 if (repeatValue) {
                     _currentIndex = 0;
                 } else {
-                    boolean holdLastOutputValue = ((BooleanToken) holdLastOutput.getToken()).booleanValue();
+                    boolean holdLastOutputValue = ((BooleanToken) holdLastOutput
+                            .getToken()).booleanValue();
                     if (holdLastOutputValue) {
                         // To repeatedly produce the last output.
                         _currentIndex = valuesArray.length() - 1;
                     } else {
                         // To prevent overflow.
-                        _currentIndex = valuesArray.length();                        
+                        _currentIndex = valuesArray.length();
                     }
                 }
             }

@@ -353,8 +353,8 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         public static JPanel createSliderPanel(int minimum, int maximum,
                 int majorTickSpacing, int minorTickSpacing, String title) {
 
-            JSlider slider = new JSlider(SwingConstants.HORIZONTAL, minimum, maximum,
-                    (maximum + minimum) / 2);
+            JSlider slider = new JSlider(SwingConstants.HORIZONTAL, minimum,
+                    maximum, (maximum + minimum) / 2);
             slider.setBackground(null);
             slider.setMajorTickSpacing(majorTickSpacing);
             slider.setMinorTickSpacing(minorTickSpacing);

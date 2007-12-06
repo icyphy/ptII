@@ -542,24 +542,24 @@ public class EntityLibrary extends CompositeEntity implements Configurable {
         output.write(_getIndentPrefix(depth) + "</configure>\n");
     }
 
-//     /** Propagate the value of this object to the
-//      *  specified object. The specified object is required
-//      *  to be an instance of the same class as this one, or
-//      *  a ClassCastException will be thrown.
-//      *  @param destination Object to which to propagate the
-//      *   value.
-//      *  @exception IllegalActionException If the value cannot
-//      *   be propagated.
-//      */
-//     protected void _propagateValue(NamedObj destination)
-//             throws IllegalActionException {
-//         try {
-//             ((Configurable) destination).configure(_base, _configureSource,
-//                     _configureText);
-//         } catch (Exception ex) {
-//             throw new IllegalActionException(this, ex, "Propagation failed.");
-//         }
-//     }
+    //     /** Propagate the value of this object to the
+    //      *  specified object. The specified object is required
+    //      *  to be an instance of the same class as this one, or
+    //      *  a ClassCastException will be thrown.
+    //      *  @param destination Object to which to propagate the
+    //      *   value.
+    //      *  @exception IllegalActionException If the value cannot
+    //      *   be propagated.
+    //      */
+    //     protected void _propagateValue(NamedObj destination)
+    //             throws IllegalActionException {
+    //         try {
+    //             ((Configurable) destination).configure(_base, _configureSource,
+    //                     _configureText);
+    //         } catch (Exception ex) {
+    //             throw new IllegalActionException(this, ex, "Propagation failed.");
+    //         }
+    //     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

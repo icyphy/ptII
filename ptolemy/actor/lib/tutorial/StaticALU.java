@@ -69,7 +69,7 @@ public class StaticALU extends TypedAtomicActor {
         A.setTypeEquals(BaseType.INT);
         B = new TypedIOPort(this, "B", true, false);
         B.setTypeEquals(BaseType.INT);
-        
+
         operation = new StringParameter(this, "operation");
         operation.setExpression("0 : (NOP)");
         operation.addChoice("0 : (NOP)");
@@ -104,10 +104,9 @@ public class StaticALU extends TypedAtomicActor {
      */
     public TypedIOPort output;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Override the base class to set type constraints.
      *  @param workspace The workspace for the new object.
      *  @return A new instance of StaticALU.
@@ -120,7 +119,7 @@ public class StaticALU extends TypedAtomicActor {
         newObject.B.setTypeEquals(BaseType.INT);
         return newObject;
     }
-    
+
     /** If there is at least one token on each of the input ports, the
      *  first token from each port is consumed. The value of the token 
      *  from the operation input port determines which operation will be
@@ -137,10 +136,10 @@ public class StaticALU extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         Token result = null;
-        
+
         if (A.hasToken(0) && B.hasToken(0)) {
-            int opcode = 
-                Integer.parseInt(operation.getExpression().substring(0, 1));
+            int opcode = Integer.parseInt(operation.getExpression().substring(
+                    0, 1));
             IntToken tokenA = (IntToken) A.get(0);
             IntToken tokenB = (IntToken) B.get(0);
 
@@ -161,7 +160,7 @@ public class StaticALU extends TypedAtomicActor {
                 result = tokenA.divide(tokenB);
                 break;
             default:
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Unsupported operation code: " + opcode + ".\n");
             }
         }

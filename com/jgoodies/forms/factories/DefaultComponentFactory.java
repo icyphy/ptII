@@ -66,26 +66,23 @@ import com.jgoodies.forms.util.Utilities;
  */
 
 public final class DefaultComponentFactory implements ComponentFactory {
-    
+
     /**
      * Holds the single instance of this class.
      */
-    private static final DefaultComponentFactory INSTANCE =
-        new DefaultComponentFactory();
+    private static final DefaultComponentFactory INSTANCE = new DefaultComponentFactory();
 
     /** 
      * The character used to indicate the mnemonic position for labels. 
      */
     private static final char MNEMONIC_MARKER = '&';
-    
-        
-        
+
     // Instance *************************************************************
-        
+
     private DefaultComponentFactory() {
         // Suppresses default constructor, ensuring non-instantiability.
     }
-    
+
     /**
      * Returns the sole instance of this factory class. 
      * 
@@ -94,7 +91,6 @@ public final class DefaultComponentFactory implements ComponentFactory {
     public static DefaultComponentFactory getInstance() {
         return INSTANCE;
     }
-    
 
     // Component Creation ***************************************************
 
@@ -117,8 +113,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
         setTextAndMnemonic(label, textWithMnemonic);
         return label;
     }
-    
-    
+
     /**
      * Creates and returns a title label that uses the foreground color
      * and font of a <code>TitledBorder</code>.<p>
@@ -140,8 +135,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
         label.setVerticalAlignment(SwingConstants.CENTER);
         return label;
     }
-    
-    
+
     /**
      * Creates and returns a labeled separator with the label in the left-hand
      * side. Useful to separate paragraphs in a panel; often a better choice 
@@ -161,8 +155,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
     public JComponent createSeparator(String textWithMnemonic) {
         return createSeparator(textWithMnemonic, SwingConstants.LEFT);
     }
-    
-    
+
     /**
      * Creates and returns a labeled separator. Useful to separate 
      * paragraphs in a panel, which is often a better choice than a 
@@ -190,8 +183,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
         title.setHorizontalAlignment(alignment);
         return createSeparator(title);
     }
-    
-    
+
     /**
      * Creates and returns a labeled separator. Useful to separate 
      * paragraphs in a panel, which is often a better choice than a 
@@ -219,7 +211,8 @@ public final class DefaultComponentFactory implements ComponentFactory {
         if (label == null)
             throw new NullPointerException("The label must not be null.");
 
-        JPanel panel = new JPanel(new TitledSeparatorLayout(!Utilities.isLafAqua()));
+        JPanel panel = new JPanel(new TitledSeparatorLayout(!Utilities
+                .isLafAqua()));
         panel.setOpaque(false);
         panel.add(label);
         panel.add(new JSeparator());
@@ -228,10 +221,9 @@ public final class DefaultComponentFactory implements ComponentFactory {
         }
         return panel;
     }
-    
-    
+
     // Helper Code ***********************************************************
-    
+
     /**
      * Sets the text of the given label and optionally a mnemonic.
      * The given text may contain an ampersand (<tt>&amp;</tt>)
@@ -243,9 +235,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
      * @param label             the label that gets a mnemonic
      * @param textWithMnemonic  the text with optional mnemonic marker
      */
-    private static void setTextAndMnemonic(
-        JLabel label,
-        String textWithMnemonic) {
+    private static void setTextAndMnemonic(JLabel label, String textWithMnemonic) {
         int markerIndex = textWithMnemonic.indexOf(MNEMONIC_MARKER);
         // No marker at all
         if (markerIndex == -1) {
@@ -260,8 +250,8 @@ public final class DefaultComponentFactory implements ComponentFactory {
         StringBuffer buffer = new StringBuffer();
         do {
             // Check whether the next index has a mnemonic marker, too
-            if (   (markerIndex + 1 < length) 
-                && (textWithMnemonic.charAt(markerIndex + 1) == MNEMONIC_MARKER)) {
+            if ((markerIndex + 1 < length)
+                    && (textWithMnemonic.charAt(markerIndex + 1) == MNEMONIC_MARKER)) {
                 end = markerIndex + 1;
                 quotedMarkers++;
             } else {
@@ -272,31 +262,28 @@ public final class DefaultComponentFactory implements ComponentFactory {
             }
             buffer.append(textWithMnemonic.substring(begin, end));
             begin = end + 1;
-            markerIndex =  begin < length 
-                ? textWithMnemonic.indexOf(MNEMONIC_MARKER, begin)
-                : -1;
+            markerIndex = begin < length ? textWithMnemonic.indexOf(
+                    MNEMONIC_MARKER, begin) : -1;
         } while (markerIndex != -1);
         buffer.append(textWithMnemonic.substring(begin));
 
         String text = buffer.toString();
         label.setText(text);
         if ((mnemonicIndex != -1) && (mnemonicIndex < text.length())) {
-            label.setDisplayedMnemonic(
-                text.charAt(mnemonicIndex));
+            label.setDisplayedMnemonic(text.charAt(mnemonicIndex));
             label.setDisplayedMnemonicIndex(mnemonicIndex);
         }
     }
 
-    
     /**
      * A label that uses the TitleBorder font and color.
      */
     private static final class TitleLabel extends JLabel {
-        
+
         private TitleLabel() {
             // Just invoke the super constructor.
         }
-        
+
         /**
          * TODO: For the Synth-based L&amp;f we should consider asking 
          * a <code>TitledBorder</code> instance for its font and color using 
@@ -310,11 +297,11 @@ public final class DefaultComponentFactory implements ComponentFactory {
             }
             setFont(getTitleFont());
         }
-        
+
         private Color getTitleColor() {
             return UIManager.getColor("TitledBorder.titleColor");
         }
-        
+
         /**
          * Looks up and returns the font used for title labels.
          * Since Mac Aqua uses an inappropriate titled border font,
@@ -326,21 +313,20 @@ public final class DefaultComponentFactory implements ComponentFactory {
          * @return the font used for title labels
          */
         private Font getTitleFont() {
-            return Utilities.isLafAqua()
-            	? UIManager.getFont("Label.font").deriveFont(Font.BOLD) 
-                : UIManager.getFont("TitledBorder.font");
+            return Utilities.isLafAqua() ? UIManager.getFont("Label.font")
+                    .deriveFont(Font.BOLD) : UIManager
+                    .getFont("TitledBorder.font");
         }
-        
+
     }
-    
-    
+
     /**
      * A layout for the title label and separator(s) in titled separators.
      */
     private static final class TitledSeparatorLayout implements LayoutManager {
-        
+
         private final boolean centerSeparators;
-        
+
         /**
          * Constructs a TitledSeparatorLayout that either centers the separators
          * or aligns them along the font baseline of the title label.
@@ -351,7 +337,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
         private TitledSeparatorLayout(boolean centerSeparators) {
             this.centerSeparators = centerSeparators;
         }
-        
+
         /**
          * Does nothing. This layout manager looks up the components
          * from the layout container and used the component's index
@@ -374,7 +360,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
         public void removeLayoutComponent(Component comp) {
             // Does nothing.
         }
-        
+
         /** 
          * Computes and returns the minimum size dimensions 
          * for the specified container. Forwards this request 
@@ -387,7 +373,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
         public Dimension minimumLayoutSize(Container parent) {
             return preferredLayoutSize(parent);
         }
-        
+
         /** 
          * Computes and returns the preferred size dimensions 
          * for the specified container. Returns the title label's
@@ -401,8 +387,8 @@ public final class DefaultComponentFactory implements ComponentFactory {
             Component label = getLabel(parent);
             Dimension labelSize = label.getPreferredSize();
             Insets insets = parent.getInsets();
-            int width  = labelSize.width  + insets.left + insets.right;
-            int height = labelSize.height + insets.top  + insets.bottom; 
+            int width = labelSize.width + insets.left + insets.right;
+            int height = labelSize.height + insets.top + insets.bottom;
             return new Dimension(width, height);
         }
 
@@ -416,44 +402,46 @@ public final class DefaultComponentFactory implements ComponentFactory {
                 // Look up the parent size and insets
                 Dimension size = parent.getSize();
                 Insets insets = parent.getInsets();
-                int width  = size.width - insets.left - insets.right;
-                
+                int width = size.width - insets.left - insets.right;
+
                 // Look up components and their sizes
                 JLabel label = getLabel(parent);
                 Dimension labelSize = label.getPreferredSize();
-                int labelWidth  = labelSize.width;
+                int labelWidth = labelSize.width;
                 int labelHeight = labelSize.height;
                 Component separator1 = parent.getComponent(1);
-                int separatorHeight  = separator1.getPreferredSize().height;
+                int separatorHeight = separator1.getPreferredSize().height;
 
                 FontMetrics metrics = label.getFontMetrics(label.getFont());
-                int ascent  = metrics.getMaxAscent();
+                int ascent = metrics.getMaxAscent();
                 int hGapDlu = centerSeparators ? 3 : 1;
-                int hGap    = Sizes.dialogUnitXAsPixel(hGapDlu, label);
-                int vOffset = centerSeparators
-                    ? 1 + (labelHeight - separatorHeight) / 2
-                    : ascent - separatorHeight / 2;
-                
+                int hGap = Sizes.dialogUnitXAsPixel(hGapDlu, label);
+                int vOffset = centerSeparators ? 1 + (labelHeight - separatorHeight) / 2
+                        : ascent - separatorHeight / 2;
+
                 int alignment = label.getHorizontalAlignment();
-                int y = insets.top;                  
+                int y = insets.top;
                 if (alignment == JLabel.LEFT) {
                     int x = insets.left;
                     label.setBounds(x, y, labelWidth, labelHeight);
-                    x+= labelWidth;
-                    x+= hGap;
+                    x += labelWidth;
+                    x += hGap;
                     int separatorWidth = size.width - insets.right - x;
-                    separator1.setBounds(x, y + vOffset, separatorWidth, separatorHeight);
+                    separator1.setBounds(x, y + vOffset, separatorWidth,
+                            separatorHeight);
                 } else if (alignment == JLabel.RIGHT) {
                     int x = insets.left + width - labelWidth;
                     label.setBounds(x, y, labelWidth, labelHeight);
                     x -= hGap;
                     x--;
                     int separatorWidth = x - insets.left;
-                    separator1.setBounds(insets.left, y + vOffset, separatorWidth, separatorHeight);
+                    separator1.setBounds(insets.left, y + vOffset,
+                            separatorWidth, separatorHeight);
                 } else {
-                    int xOffset = (width - labelWidth - 2*hGap) / 2;
+                    int xOffset = (width - labelWidth - 2 * hGap) / 2;
                     int x = insets.left;
-                    separator1.setBounds(x, y + vOffset, xOffset-1, separatorHeight);
+                    separator1.setBounds(x, y + vOffset, xOffset - 1,
+                            separatorHeight);
                     x += xOffset;
                     x += hGap;
                     label.setBounds(x, y, labelWidth, labelHeight);
@@ -461,16 +449,16 @@ public final class DefaultComponentFactory implements ComponentFactory {
                     x += hGap;
                     Component separator2 = parent.getComponent(2);
                     int separatorWidth = size.width - insets.right - x;
-                    separator2.setBounds(x, y + vOffset,separatorWidth ,separatorHeight);
+                    separator2.setBounds(x, y + vOffset, separatorWidth,
+                            separatorHeight);
                 }
             }
         }
-        
+
         private JLabel getLabel(Container parent) {
             return (JLabel) parent.getComponent(0);
         }
-        
+
     }
-    
-       
+
 }

@@ -105,14 +105,14 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         while ((superClass != PtolemyUtilities.objectClass)
                 && (superClass != PtolemyUtilities.actorClass)
                 && (superClass != PtolemyUtilities.compositeActorClass)) {
-                superClass.setLibraryClass();
-                try {
-                    SootUtilities.foldClass(theClass);
-                } catch (RuntimeException exception) {
-                    throw new RuntimeException("Failed to fold \"" +
-                            theClass + "\"", exception);
-                }
-                superClass = theClass.getSuperclass();
+            superClass.setLibraryClass();
+            try {
+                SootUtilities.foldClass(theClass);
+            } catch (RuntimeException exception) {
+                throw new RuntimeException("Failed to fold \"" + theClass
+                        + "\"", exception);
+            }
+            superClass = theClass.getSuperclass();
         }
 
         // Go through all the initialization code and remove any old

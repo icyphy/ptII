@@ -182,18 +182,18 @@ public class NamedObjEliminator extends SceneTransformer implements
                                     "_debug")) {
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getName().equals(
-  "initialize")) {
+                                    "initialize")) {
                                 // Assume no Initializables
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getName().equals(
-  "preinitialize")) {
+                                    "preinitialize")) {
                                 // Assume no Initializables 
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getName().equals(
-  "wrapup")) {
+                                    "wrapup")) {
                                 // Assume no Initializables  
                                 body.getUnits().remove(unit);
-                            } 
+                            }
 
                             // Inline namedObj methods on the
                             // attribute.
@@ -584,7 +584,7 @@ public class NamedObjEliminator extends SceneTransformer implements
                 //                 }
             }
         } /*
-         */
+                */
         // Remove all the interfaces that it implements??
         for (Iterator i = Scene.v().getApplicationClasses().iterator(); i
                 .hasNext();) {

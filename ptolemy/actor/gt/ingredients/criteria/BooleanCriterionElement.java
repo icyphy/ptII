@@ -28,7 +28,6 @@
 
 package ptolemy.actor.gt.ingredients.criteria;
 
-
 /**
 
  @author Thomas Huining Feng

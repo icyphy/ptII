@@ -57,7 +57,7 @@ example, to create animations.
 public class ModelGenerator extends TypedAtomicActor {
 
     public ModelGenerator(CompositeEntity container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         setClassName("ptolemy.actor.gt.ModelGenerator");
@@ -105,8 +105,10 @@ public class ModelGenerator extends TypedAtomicActor {
     }
 
     public boolean prefire() throws IllegalActionException {
-        return super.prefire() && (moml.getWidth() > 0 && moml.hasToken(0)
-                || modelName.getWidth() > 0 && modelName.hasToken(0));
+        return super.prefire()
+                && (moml.getWidth() > 0 && moml.hasToken(0) || modelName
+                        .getWidth() > 0
+                        && modelName.hasToken(0));
     }
 
     public TypedIOPort model;

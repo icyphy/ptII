@@ -190,9 +190,9 @@ public class Display extends AbstractPlaceableActor {
 
                 if (textArea != null) {
                     // Unset any previously set size.
-                    _paneSize.setToken((Token)null);
+                    _paneSize.setToken((Token) null);
                     setFrame(_frame);
-                    
+
                     textArea.setRows(numRows);
 
                     if (_frame != null) {
@@ -215,7 +215,7 @@ public class Display extends AbstractPlaceableActor {
 
                 if (textArea != null) {
                     // Unset any previously set size.
-                    _paneSize.setToken((Token)null);
+                    _paneSize.setToken((Token) null);
                     setFrame(_frame);
 
                     textArea.setColumns(numColumns);
@@ -349,7 +349,7 @@ public class Display extends AbstractPlaceableActor {
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
-                
+
                 if (!_initialized) {
                     _initialized = true;
                     _openWindow();
@@ -359,7 +359,7 @@ public class Display extends AbstractPlaceableActor {
                 if (textArea == null) {
                     continue;
                 }
-                
+
                 // FIXME: There is a race condition here.
                 // textArea can be set to null during execution of this method
                 // if another thread closes the display window.
@@ -370,7 +370,7 @@ public class Display extends AbstractPlaceableActor {
                 // not what we want. So we treat StringToken separately.
                 String value = token.toString();
                 if (token instanceof StringToken) {
-                    value = ((StringToken)token).stringValue();
+                    value = ((StringToken) token).stringValue();
                 }
 
                 // If the value is not an empty string, set the
@@ -476,7 +476,7 @@ public class Display extends AbstractPlaceableActor {
                         "Error creating effigy and tableau");
             }
 
-            textArea = ((TextEditor)_frame).text;
+            textArea = ((TextEditor) _frame).text;
 
             int numRows = ((IntToken) rowsDisplayed.getToken()).intValue();
             textArea.setRows(numRows);
@@ -504,7 +504,7 @@ public class Display extends AbstractPlaceableActor {
          textArea.setTabSize(tab);
          */
     }
-    
+
     /** Remove the display from the current container, if there is one.
      */
     private void _remove() {
@@ -527,7 +527,7 @@ public class Display extends AbstractPlaceableActor {
     ////                         private members                   ////
     // The container for the text display, if there is one.
     private Container _container;
-    
+
     // Indicator that the display window has been opened.
     private boolean _initialized = false;
 

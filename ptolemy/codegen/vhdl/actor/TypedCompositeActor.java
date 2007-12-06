@@ -127,7 +127,7 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
      */
     public Set getIncludeDirectories() throws IllegalActionException {
         Set includeDirectories = new HashSet();
-        
+
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
 
@@ -150,7 +150,7 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
      */
     public Set getLibraries() throws IllegalActionException {
         Set libraries = new HashSet();
-        
+
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
 

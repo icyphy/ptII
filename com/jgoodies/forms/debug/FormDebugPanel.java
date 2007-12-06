@@ -37,7 +37,6 @@ import javax.swing.JPanel;
 
 import com.jgoodies.forms.layout.FormLayout;
 
-
 /**
  * A panel that paints grid bounds if and only if the panel's layout manager 
  * is a {@link FormLayout}. You can tweak the debug paint process by setting
@@ -58,41 +57,36 @@ import com.jgoodies.forms.layout.FormLayout;
  * @see     FormDebugUtils
  */
 public class FormDebugPanel extends JPanel {
-    
+
     /** 
      * The default color used to paint the form's debug grid. 
      */
     private static final Color DEFAULT_GRID_COLOR = Color.red;
-
 
     /** 
      * Specifies whether the grid shall be painted in the background. 
      * Is off by default and so the grid is painted in the foreground.
      */
     private boolean paintInBackground;
-    
-    
+
     /**
      * Specifies whether the container's diagonals should be painted.
      */
     private boolean paintDiagonals;
-
 
     /**
      * Holds the color used to paint the debug grid.
      */
     private Color gridColor = DEFAULT_GRID_COLOR;
 
-    
     // Instance Creation ****************************************************
-    
+
     /**
      * Constructs a FormDebugPanel with all options turned off. 
      */
     public FormDebugPanel() {
         this(null);
     }
-    
 
     /**
      * Constructs a FormDebugPanel on the given FormLayout instance 
@@ -103,7 +97,6 @@ public class FormDebugPanel extends JPanel {
     public FormDebugPanel(FormLayout layout) {
         this(layout, false, false);
     }
-
 
     /**
      * Constructs a FormDebugPanel on the given FormLayout 
@@ -116,11 +109,9 @@ public class FormDebugPanel extends JPanel {
      *     true to paint diagonals, 
      *     false to not paint them 
      */
-    public FormDebugPanel(boolean paintInBackground, 
-                           boolean paintDiagonals) {
+    public FormDebugPanel(boolean paintInBackground, boolean paintDiagonals) {
         this(null, paintInBackground, paintDiagonals);
     }
-    
 
     /**
      * Constructs a FormDebugPanel on the given FormLayout using 
@@ -135,25 +126,23 @@ public class FormDebugPanel extends JPanel {
      *     true to paint diagonals, 
      *     false to not paint them 
      */
-    public FormDebugPanel(FormLayout layout,
-                           boolean paintInBackground, 
-                           boolean paintDiagonals) {
+    public FormDebugPanel(FormLayout layout, boolean paintInBackground,
+            boolean paintDiagonals) {
         super(layout);
         setPaintInBackground(paintInBackground);
         setPaintDiagonals(paintDiagonals);
         setGridColor(DEFAULT_GRID_COLOR);
     }
-    
 
     // Accessors ************************************************************
-    
+
     /**
      * Specifies to paint in background or foreground.
      * 
      * @param b    true to paint in the background, false for the foreground
      */
-    public void setPaintInBackground(boolean b) { 
-        paintInBackground = b; 
+    public void setPaintInBackground(boolean b) {
+        paintInBackground = b;
     }
 
     /**
@@ -161,8 +150,8 @@ public class FormDebugPanel extends JPanel {
      * 
      * @param b    true to paint diagonals, false to not paint them
      */
-    public void setPaintDiagonals(boolean b) { 
-        paintDiagonals = b; 
+    public void setPaintDiagonals(boolean b) {
+        paintDiagonals = b;
     }
 
     /**
@@ -170,10 +159,9 @@ public class FormDebugPanel extends JPanel {
      * 
      * @param color  the color used to paint the debug grid
      */
-    public void setGridColor(Color color) { 
-        gridColor = color; 
+    public void setGridColor(Color color) {
+        gridColor = color;
     }
-
 
     // Painting *************************************************************
 
@@ -193,7 +181,6 @@ public class FormDebugPanel extends JPanel {
         }
     }
 
-
     /**
      * Paints the panel. If the panel's layout manager is a FormLayout 
      * and foreground painting is enabled, it paints the form's grid lines.
@@ -210,8 +197,7 @@ public class FormDebugPanel extends JPanel {
             paintGrid(g);
         }
     }
-    
-    
+
     /**
      * Paints the form's grid lines and diagonals.
      * 
@@ -222,9 +208,9 @@ public class FormDebugPanel extends JPanel {
             return;
         }
         FormLayout.LayoutInfo layoutInfo = FormDebugUtils.getLayoutInfo(this);
-        int left   = layoutInfo.getX();
-        int top    = layoutInfo.getY();
-        int width  = layoutInfo.getWidth();
+        int left = layoutInfo.getX();
+        int top = layoutInfo.getY();
+        int width = layoutInfo.getWidth();
         int height = layoutInfo.getHeight();
 
         g.setColor(gridColor);
@@ -237,12 +223,11 @@ public class FormDebugPanel extends JPanel {
         for (int row = 0; row < layoutInfo.rowOrigins.length; row++) {
             g.fillRect(left, layoutInfo.rowOrigins[row], width, 1);
         }
-        
+
         if (paintDiagonals) {
-            g.drawLine(left, top,          left + width, top + height);
+            g.drawLine(left, top, left + width, top + height);
             g.drawLine(left, top + height, left + width, top);
         }
     }
-    
-    
+
 }

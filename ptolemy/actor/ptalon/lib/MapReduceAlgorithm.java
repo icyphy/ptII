@@ -48,7 +48,7 @@ public abstract class MapReduceAlgorithm extends Thread {
     /** Return true if the reduce is finished.
      *  @return Return true if the reduce is finished.
      *  @exception IllegalActionException If there was a thread error.
-     */ 
+     */
     public synchronized boolean isReduceFinished()
             throws IllegalActionException {
         if (_threadError) {
@@ -78,8 +78,8 @@ public abstract class MapReduceAlgorithm extends Thread {
      * @return The reduced list of valeus.
      * @exception InterruptedException If thrown while reducing.
      */
-    public abstract List<String> reduce(String key,
-            BlockingQueue<String> values) throws InterruptedException;
+    public abstract List<String> reduce(String key, BlockingQueue<String> values)
+            throws InterruptedException;
 
     /**
      * This is used to call the reduce algorithm.

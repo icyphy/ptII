@@ -245,8 +245,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the returned matrix is empty or if the specified
      *   parameters result in out of bounds accesses.
      */
-    public MatrixToken crop(
-            int rowStart, int colStart, int rowSpan, int colSpan)
+    public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
             throws IllegalActionException {
         Complex[][] value = this.complexMatrix();
         try {
@@ -257,15 +256,10 @@ public class ComplexMatrixToken extends MatrixToken {
             }
             return new ComplexMatrixToken(result);
         } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new IllegalActionException("Matrix crop indices out of bounds (rowStart = "
-                    + rowStart
-                    + ", colStart = "
-                    + colStart
-                    + ", rowSpan = "
-                    + rowSpan
-                    + ", colSpan = "
-                    + colSpan
-                    + ").");
+            throw new IllegalActionException(
+                    "Matrix crop indices out of bounds (rowStart = " + rowStart
+                            + ", colStart = " + colStart + ", rowSpan = "
+                            + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -433,10 +427,8 @@ public class ComplexMatrixToken extends MatrixToken {
                 if (column + columnCount > columns) {
                     columnCount = columns - column;
                 }
-                ComplexMatrixMath.matrixCopy(
-                        matrices[i][j].complexMatrix(), 0, 0,
-                        tiled, row, column,
-                        rowCount, columnCount);
+                ComplexMatrixMath.matrixCopy(matrices[i][j].complexMatrix(), 0,
+                        0, tiled, row, column, rowCount, columnCount);
                 // Starting position for the next column.
                 column += matrices[0][j].getColumnCount();
             }
@@ -469,8 +461,8 @@ public class ComplexMatrixToken extends MatrixToken {
                     columnspan = source[0].length - column;
                 }
                 if (columnspan > 0 && rowspan > 0) {
-                    ComplexMatrixMath.matrixCopy(
-                            source, row, column, contents, 0, 0, rowspan, columnspan);
+                    ComplexMatrixMath.matrixCopy(source, row, column, contents,
+                            0, 0, rowspan, columnspan);
                 }
                 column += columns[j];
                 try {

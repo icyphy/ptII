@@ -24,7 +24,7 @@ public class TableDisplay extends AbstractPlaceableActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (_table == null) {
@@ -32,7 +32,8 @@ public class TableDisplay extends AbstractPlaceableActor {
             try {
                 _tableau = new Tableau(containerEffigy, "tableau");
             } catch (NameDuplicationException e) {
-                throw new IllegalActionException(this, e, "Failed to create tableau.");
+                throw new IllegalActionException(this, e,
+                        "Failed to create tableau.");
             }
             _frame = new TableauFrame(_tableau);
             setFrame(_frame);
@@ -41,7 +42,7 @@ public class TableDisplay extends AbstractPlaceableActor {
             _frame.pack();
         }
         if (_frame != null) {
-            ((TableauFrame)_frame).show();
+            ((TableauFrame) _frame).show();
             _frame.toFront();
         }
     }
@@ -63,9 +64,17 @@ public class TableDisplay extends AbstractPlaceableActor {
             _tableau = null;
         } else {
             TableModel dataModel = new AbstractTableModel() {
-                public int getColumnCount() { return 10; }
-                public int getRowCount() { return 10;}
-                public Object getValueAt(int row, int col) { return Integer.valueOf(row*col); }
+                public int getColumnCount() {
+                    return 10;
+                }
+
+                public int getRowCount() {
+                    return 10;
+                }
+
+                public Object getValueAt(int row, int col) {
+                    return Integer.valueOf(row * col);
+                }
             };
             _table = new JTable(dataModel);
             container.add(_table);

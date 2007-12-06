@@ -43,7 +43,8 @@ public class CartesianToComplex extends CCodeGeneratorHelper {
      * Construct a CartesianToComplex helper.
      * @param actor The associated actor.
      */
-    public CartesianToComplex(ptolemy.actor.lib.conversions.CartesianToComplex actor) {
+    public CartesianToComplex(
+            ptolemy.actor.lib.conversions.CartesianToComplex actor) {
         super(actor);
     }
 }

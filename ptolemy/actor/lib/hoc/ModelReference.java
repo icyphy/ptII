@@ -738,7 +738,7 @@ public class ModelReference extends TypedAtomicActor implements
 
         // Flag to check if a value has actually been changed.
         boolean changeMade = false;
-        
+
         Iterator ports = inputPortList().iterator();
 
         while (ports.hasNext()) {

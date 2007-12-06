@@ -420,7 +420,7 @@ public class GeneratorTableau extends Tableau {
                 writer = new FileWriter(temporaryFile);
                 model.exportMoML(writer);
             } finally {
-                if (writer != null) 
+                if (writer != null)
                     try {
                         writer.close();
                     } catch (Throwable throwable) {

@@ -55,15 +55,14 @@ import com.jgoodies.forms.layout.Size;
  */
 
 public abstract class LayoutStyle {
-    
+
     /**
      * Holds the current layout style.
      */
     private static LayoutStyle current = initialLayoutStyle();
-    
-    
+
     // Computing the initial layout style *************************************
-    
+
     /**
      * Computes and returns the initial <code>LayoutStyle</code>.
      * Checks the OS name and returns <code>MacLayoutStyle</code> 
@@ -73,11 +72,10 @@ public abstract class LayoutStyle {
      */
     private static LayoutStyle initialLayoutStyle() {
         if (isOSMac())
-        	return MacLayoutStyle.INSTANCE;
+            return MacLayoutStyle.INSTANCE;
         return WindowsLayoutStyle.INSTANCE;
     }
-    
-    
+
     /**
      * Checks and answers whether Java runs on a Mac by requesting
      * the system property <em>os.name</em>.
@@ -87,8 +85,7 @@ public abstract class LayoutStyle {
     private static boolean isOSMac() {
         return getSystemProperty("os.name").startsWith("Mac");
     }
-    
-    
+
     /**
      * Tries to look up the System property for the given key.
      * In untrusted environments this may throw a SecurityException.
@@ -108,9 +105,8 @@ public abstract class LayoutStyle {
         }
     }
 
-    
     // Accessing the current style ******************************************
-    
+
     /**
      * Returns the current <code>LayoutStyle</code>.
      * 
@@ -119,8 +115,7 @@ public abstract class LayoutStyle {
     public static LayoutStyle getCurrent() {
         return current;
     }
-    
-    
+
     /**
      * Set a new <code>LayoutStyle</code>.
      * 
@@ -129,8 +124,7 @@ public abstract class LayoutStyle {
     public static void setCurrent(LayoutStyle newLayoutStyle) {
         current = newLayoutStyle;
     }
-    
-    
+
     // Layout Sizes *********************************************************
 
     /**
@@ -142,7 +136,6 @@ public abstract class LayoutStyle {
      */
     public abstract Size getDefaultButtonWidth();
 
-    
     /**
      * Returns this style's default button height.
      * 
@@ -152,7 +145,6 @@ public abstract class LayoutStyle {
      */
     public abstract Size getDefaultButtonHeight();
 
-    
     /**
      * Returns this style's horizontal margin for general dialogs.
      * 
@@ -163,7 +155,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getDialogMarginX();
 
-    
     /**
      * Returns this style's vertical margin for general dialogs.
      * 
@@ -174,7 +165,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getDialogMarginY();
 
-    
     /**
      * Returns this style's horizontal margin for dialogs that consist of 
      * a tabbed pane.
@@ -187,7 +177,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getTabbedDialogMarginX();
 
-    
     /**
      * Returns this style's vertical margin for dialogs that consist of
      * a tabbed pane.
@@ -200,7 +189,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getTabbedDialogMarginY();
 
-    
     /**
      * Returns a gap used to separate a label and associated control.
      * 
@@ -211,7 +199,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getLabelComponentPadX();
 
-    
     /**
      * Returns a horizontal gap used to separate related controls.
      * 
@@ -223,7 +210,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getRelatedComponentsPadX();
 
-    
     /**
      * Returns a vertical gap used to separate related controls.
      * 
@@ -234,7 +220,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getRelatedComponentsPadY();
 
-    
     /**
      * Returns a horizontal gap used to separate unrelated controls.
      * 
@@ -246,7 +231,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getUnrelatedComponentsPadX();
 
-    
     /**
      * Returns a vertical gap used to separate unrelated controls.
      * 
@@ -257,7 +241,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getUnrelatedComponentsPadY();
 
-    
     /**
      * Returns a narrow vertical pad used to separate lines.
      * 
@@ -268,7 +251,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getNarrowLinePad();
 
-    
     /**
      * Returns a narrow vertical pad used to separate lines.
      * 
@@ -279,7 +261,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getLinePad();
 
-    
     /**
      * Returns a pad used to separate paragraphs.
      * 
@@ -289,7 +270,6 @@ public abstract class LayoutStyle {
      * @see #getLinePad()
      */
     public abstract ConstantSize getParagraphPad();
-
 
     /**
      * Returns a pad used to separate a button bar from a component.
@@ -302,7 +282,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getButtonBarPad();
 
-    
     /**
      * Checks and answers whether buttons are typically ordered from 
      * left to right or from right to left. Useful for building button bars 
@@ -325,5 +304,4 @@ public abstract class LayoutStyle {
      */
     public abstract boolean isLeftToRightButtonOrder();
 
-    
 }

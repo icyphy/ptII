@@ -54,8 +54,7 @@ public class AtomicActor extends PortValueHelper {
      * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
-    public AtomicActor(PortValueSolver solver, 
-            ptolemy.actor.AtomicActor actor)
+    public AtomicActor(PortValueSolver solver, ptolemy.actor.AtomicActor actor)
             throws IllegalActionException {
         super(solver, actor);
     }

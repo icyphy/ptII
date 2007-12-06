@@ -1276,8 +1276,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
             ((Value) args.next()).apply(this);
 
-            String cast = "(" + CNames.typeNameOf(expectedParamType)
-                    + ") ";
+            String cast = "(" + CNames.typeNameOf(expectedParamType) + ") ";
 
             code.append(cast + _pop());
         }
@@ -1338,7 +1337,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         expression.getOp1().apply(this);
 
         String cast = "(" + CNames.typeNameOf(expression.getOp1().getType())
-            + ")";
+                + ")";
 
         _push(_pop().append(" " + operator + " " + cast).append(_pop()));
     }

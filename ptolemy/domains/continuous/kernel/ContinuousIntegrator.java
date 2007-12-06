@@ -250,9 +250,9 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         // Since prefire() can be called any number of times, and the semantics
         // of prefire() requires the results not to be affected by the numbers
         // of callings. Therefore, the following statements do not work.
-//        if (!state.isKnown()) {
-//            state.broadcast(new DoubleToken(getTentativeState()));
-//        }
+        //        if (!state.isKnown()) {
+        //            state.broadcast(new DoubleToken(getTentativeState()));
+        //        }
         // Instead, we use the round number to guard the outputs. 
         if (!state.isKnown()) {
             int currentRound = dir._getODESolver()._getRound();
@@ -473,10 +473,10 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
     /** The last round this integrator is fired. */
     private int _lastRound;
-    
+
     /** The output of last round this integrator is fired. */
     private double _lastRoundOutput;
-    
+
     /** The state of the integrator. */
     private double _state;
 

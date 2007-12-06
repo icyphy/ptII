@@ -115,7 +115,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         if (_initializables == null) {
             _initializables = new LinkedList<Initializable>();
         }
-        _initializables.add(initializable);        
+        _initializables.add(initializable);
     }
 
     /** Clone this actor into the specified workspace. The new actor is
@@ -259,7 +259,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         // First invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.initialize();                    
+                initializable.initialize();
             }
         }
         // Update the version only after everything has been
@@ -504,11 +504,11 @@ public class AtomicActor extends ComponentEntity implements Actor {
         }
 
         _stopRequested = false;
-        
+
         // First invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.preinitialize();                    
+                initializable.preinitialize();
             }
         }
 
@@ -661,7 +661,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
         // Invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.wrapup();                    
+                initializable.wrapup();
             }
         }
     }
@@ -716,7 +716,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
-    
+
     /** List of objects whose (pre)initialize() and wrapup() methods
      *  should be slaved to these.
      */

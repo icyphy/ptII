@@ -297,8 +297,7 @@ public abstract class Quantization implements Cloneable, Serializable {
      *  @return A hash code value for this Quantization.
      */
     public int hashCode() {
-        return _overflow.hashCode()
-            & _rounding.hashCode();
+        return _overflow.hashCode() & _rounding.hashCode();
     }
 
     /** Return a string representing this quantization.

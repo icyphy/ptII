@@ -1829,9 +1829,9 @@ public class SootUtilities {
                         }
                         results.append(method.toString());
                     }
-                    throw new RuntimeException("Failed to search \""
-                            + theClass + "\" for \"" + name + "\" possible "
-                            + "methods: " + results.toString(), ex);
+                    throw new RuntimeException("Failed to search \"" + theClass
+                            + "\" for \"" + name + "\" possible " + "methods: "
+                            + results.toString(), ex);
                 }
             }
 

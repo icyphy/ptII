@@ -589,7 +589,7 @@ public class DEDirector extends Director implements TimedDirector {
                 }
             }
         } // Close the BIG while loop.
-        
+
         // Since we are now actually stopping the firing, we can set this false.
         _stopFireRequested = false;
 
@@ -633,8 +633,8 @@ public class DEDirector extends Director implements TimedDirector {
         if (_delegateFireAt) {
             CompositeActor container = (CompositeActor) getContainer();
             if (_debugging) {
-                _debug("DEDirector: Requests refiring of: " + container.getName()
-                        + " at time " + time);
+                _debug("DEDirector: Requests refiring of: "
+                        + container.getName() + " at time " + time);
             }
             // Enqueue a pure event to fire the container of this director.
             container.getExecutiveDirector().fireAt(container, time);
@@ -1484,8 +1484,8 @@ public class DEDirector extends Director implements TimedDirector {
             // that implements a strict fixed-point semantics.
             if (ioPort.isInput()) {
                 if (portContainer.outputPortList().size() == 0
-                        || (portContainer instanceof CompositeActor
-                           && ((CompositeActor)portContainer).isOpaque())) {
+                        || (portContainer instanceof CompositeActor && ((CompositeActor) portContainer)
+                                .isOpaque())) {
                     List inputPorts = portContainer.inputPortList();
 
                     if (inputPorts.size() <= 1) {
@@ -1526,7 +1526,8 @@ public class DEDirector extends Director implements TimedDirector {
                         }
 
                         // Insert the hashtable entry.
-                        _portToDepth.put(input, Integer.valueOf(maximumPortDepth));
+                        _portToDepth.put(input, Integer
+                                .valueOf(maximumPortDepth));
                     }
                 }
             }
@@ -1667,7 +1668,8 @@ public class DEDirector extends Director implements TimedDirector {
             return depth.intValue();
         } else {
             throw new IllegalActionException("Attempt to get depth of actor "
-                    + ((NamedObj) actor).getFullName() + " that was not sorted.");
+                    + ((NamedObj) actor).getFullName()
+                    + " that was not sorted.");
         }
     }
 
@@ -1791,7 +1793,7 @@ public class DEDirector extends Director implements TimedDirector {
                         break;
                     }
                 }
-            } else {    // if (!topLevel)
+            } else { // if (!topLevel)
                 // If the director is at the top level
                 // If the event queue is empty, normally
                 // a blocking read is performed on the queue.
@@ -1812,7 +1814,8 @@ public class DEDirector extends Director implements TimedDirector {
                 // Otherwise, if the event queue is empty,
                 // a blocking read is performed on the queue.
                 // stopFire() needs to also cause this to fall out!
-                while (_eventQueue.isEmpty() && !_stopRequested && !_stopFireRequested) {
+                while (_eventQueue.isEmpty() && !_stopRequested
+                        && !_stopFireRequested) {
                     if (_debugging) {
                         _debug("Queue is empty. Waiting for input events.");
                     }
@@ -1921,7 +1924,7 @@ public class DEDirector extends Director implements TimedDirector {
                         } // while
                     } // sync
                 } // if (_synchronizeToRealTime)
-                
+
                 // Consume the earliest event from the queue. The event must be
                 // obtained here, since a new event could have been enqueued
                 // into the queue while the queue was waiting. For example,
@@ -2077,7 +2080,7 @@ public class DEDirector extends Director implements TimedDirector {
 
     /** A hashtable that caches the depths of actors. */
     private Hashtable _actorToDepth = null;
-    
+
     /** Indicator that calls to fireAt() should be delegated
      *  to the executive director.
      */
@@ -2123,7 +2126,7 @@ public class DEDirector extends Director implements TimedDirector {
 
     /** Start time. */
     private Time _startTime;
-    
+
     /** Flag that stopFire() has been called. */
     private boolean _stopFireRequested = false;
 

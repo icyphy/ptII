@@ -364,7 +364,7 @@ public class PlotApplication extends PlotFrame {
         String[] commandFlags = { "-help", "-test", "-version", "-", };
         StringBuffer result = new StringBuffer(
                 "Usage: ptplot [ options ] [file ...]\n\n"
-                + "Options that take values:\n");
+                        + "Options that take values:\n");
 
         int i;
 

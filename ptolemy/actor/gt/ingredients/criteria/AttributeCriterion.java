@@ -77,8 +77,7 @@ public class AttributeCriterion extends Criterion {
         NamedObj container = owner.getOwner().getContainer();
         _attributeName = new RegularExpressionString(attributeName);
         _attributeType = new PtolemyExpressionString(container, attributeType);
-        _attributeValue =
-            new PtolemyExpressionString(container, attributeValue);
+        _attributeValue = new PtolemyExpressionString(container, attributeValue);
     }
 
     public GTIngredientElement[] getElements() {
@@ -136,10 +135,10 @@ public class AttributeCriterion extends Criterion {
                     String expression = settable.getExpression();
                     VariableScope scope = new VariableScope(object);
                     try {
-                        ASTPtRootNode tree =
-                            _TYPE_PARSER.generateParseTree(expression);
-                        Token token =
-                            _TYPE_EVALUATOR.evaluateParseTree(tree, scope);
+                        ASTPtRootNode tree = _TYPE_PARSER
+                                .generateParseTree(expression);
+                        Token token = _TYPE_EVALUATOR.evaluateParseTree(tree,
+                                scope);
 
                         if (isAttributeTypeEnabled()) {
                             Type ruleType = _attributeType.getToken().getType();
@@ -150,8 +149,8 @@ public class AttributeCriterion extends Criterion {
                         }
 
                         if (isAttributeValueEnabled()) {
-                            BooleanToken equality =
-                                token.isEqualTo(_attributeValue.getToken());
+                            BooleanToken equality = token
+                                    .isEqualTo(_attributeValue.getToken());
                             if (!equality.booleanValue()) {
                                 continue;
                             }
@@ -219,8 +218,7 @@ public class AttributeCriterion extends Criterion {
 
         if (isAttributeTypeEnabled()) {
             if (_attributeType.equals("")) {
-                throw new ValidationException(
-                        "Port type must not be empty.");
+                throw new ValidationException("Port type must not be empty.");
             }
 
             try {
@@ -248,19 +246,16 @@ public class AttributeCriterion extends Criterion {
     private PtolemyExpressionString _attributeValue;
 
     private static final CriterionElement[] _ELEMENTS = {
-        new StringCriterionElement("name", false, false),
-        new ChoiceCriterionElement("type", false, true, true),
-        new StringCriterionElement("value", false, true)
-    };
+            new StringCriterionElement("name", false, false),
+            new ChoiceCriterionElement("type", false, true, true),
+            new StringCriterionElement("value", false, true) };
 
-    private static final ParseTreeEvaluator _TYPE_EVALUATOR =
-        new ParseTreeEvaluator();
+    private static final ParseTreeEvaluator _TYPE_EVALUATOR = new ParseTreeEvaluator();
 
     private static final PtParser _TYPE_PARSER = new PtParser();
 
     static {
-        ChoiceCriterionElement attributeTypes =
-            (ChoiceCriterionElement) _ELEMENTS[1];
+        ChoiceCriterionElement attributeTypes = (ChoiceCriterionElement) _ELEMENTS[1];
         attributeTypes.addChoices(Constants.types().keySet());
         attributeTypes.addChoice("arrayType(int)");
         attributeTypes.addChoice("arrayType(int,5)");

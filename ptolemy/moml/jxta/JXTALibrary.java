@@ -175,7 +175,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             File file = new File(_configDir + "/" + _DISCOVERED_ACTORS);
 
             if (file.exists()) {
-                _cachedLib = (CompositeEntity) parser.parse(null, file.toURI().toURL());
+                _cachedLib = (CompositeEntity) parser.parse(null, file.toURI()
+                        .toURL());
                 _cachedLib.addChangeListener(this);
                 System.out.println("create a compositeActor entity "
                         + "from discoveredActors.xml");
@@ -358,9 +359,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
                         PrintStream out = null;
                         try {
-                            out = new PrintStream(new FileOutputStream(
-                                                          _Dir + "/"
-                                                          + _DISCOVERED_ACTORS));
+                            out = new PrintStream(new FileOutputStream(_Dir
+                                    + "/" + _DISCOVERED_ACTORS));
                             out.println(stringWriter);
                             out.flush();
                         } finally {
@@ -391,7 +391,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                         }
                     }
                 }
-                
+
             }
         }
     }
@@ -616,8 +616,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
 
         BufferedReader fileReader = null;
         try {
-            fileReader = new BufferedReader(new FileReader(
-                    _configDir + "/" + pipeAdvFile));
+            fileReader = new BufferedReader(new FileReader(_configDir + "/"
+                    + pipeAdvFile));
             String newline = System.getProperty("line.separator");
             queryTextBuffer = queryTextBuffer.append("<PtolemyInputPipe>\n");
 
@@ -645,8 +645,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                 try {
                     fileReader.close();
                 } catch (Exception ex) {
-                    System.out.println("Failed to close "
-                            + _configDir + "/" + pipeAdvFile);
+                    System.out.println("Failed to close " + _configDir + "/"
+                            + pipeAdvFile);
                 }
             }
         }
@@ -695,23 +695,22 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             return false;
         }
 
-        String fileName =_configDir + "/" + pipeAdvFile;
+        String fileName = _configDir + "/" + pipeAdvFile;
         FileInputStream is = null;
         try {
             is = new FileInputStream(fileName);
             _ptPipeAdv = (PipeAdvertisement) AdvertisementFactory
                     .newAdvertisement(new MimeMediaType("text/xml"), is);
         } catch (java.io.IOException ex) {
-            System.out.println("failed to read/parse " + 
-                    "pipe advertisement"
+            System.out.println("failed to read/parse " + "pipe advertisement"
                     + ex.getMessage());
         } finally {
             if (is != null) {
                 try {
                     is.close();
                 } catch (IOException ex2) {
-                    System.out.println("failed to close \""
-                            + fileName + "\": " + ex2.getMessage());
+                    System.out.println("failed to close \"" + fileName + "\": "
+                            + ex2.getMessage());
                 }
             }
         }
@@ -746,8 +745,8 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
                 try {
                     configProperties.close();
                 } catch (Exception ex) {
-                    System.out.println("Failed to close "
-                            + _configDir + "/" + _CONFIG_FILE);
+                    System.out.println("Failed to close " + _configDir + "/"
+                            + _CONFIG_FILE);
                 }
             }
         }

@@ -41,55 +41,50 @@ import javax.swing.JTree;
  * 
  * @author Michael Connor mlconnor&#064;yahoo.com
  */
-public class JTreeComponentBuilder implements ComponentBuilder
-{
-  List<BeanProperty> properties = new ArrayList<BeanProperty>();
+public class JTreeComponentBuilder implements ComponentBuilder {
+    List<BeanProperty> properties = new ArrayList<BeanProperty>();
 
-  /** Creates a new instance of SeparatorComponentBuilder */
-  public JTreeComponentBuilder()
-  {
-  }
+    /** Creates a new instance of SeparatorComponentBuilder */
+    public JTreeComponentBuilder() {
+    }
 
-  public String getDeclaration(String name,
-      java.util.Map<String, Object> beanProperties)
-  {
-    return "javax.swing.JTree " + name
-        + "Control = new javax.swing.JTree();\njavax.swing.JScrollPane " + name
-        + " = new javax.swing.JScrollPane(" + name + "Control);\n";
-  }
+    public String getDeclaration(String name,
+            java.util.Map<String, Object> beanProperties) {
+        return "javax.swing.JTree "
+                + name
+                + "Control = new javax.swing.JTree();\njavax.swing.JScrollPane "
+                + name + " = new javax.swing.JScrollPane(" + name
+                + "Control);\n";
+    }
 
-  public java.awt.Component getInstance(
-      java.util.Map<String, Object> beanProperties) throws Exception
-  {
-    JTree tree = new JTree();
+    public java.awt.Component getInstance(
+            java.util.Map<String, Object> beanProperties) throws Exception {
+        JTree tree = new JTree();
 
-    JScrollPane scrollPane = new JScrollPane(tree);
-    return scrollPane;
-  }
+        JScrollPane scrollPane = new JScrollPane(tree);
+        return scrollPane;
+    }
 
-  public java.util.List<BeanProperty> getProperties()
-  {
-    return properties;
-  }
+    public java.util.List<BeanProperty> getProperties() {
+        return properties;
+    }
 
-  public boolean isComponentALayoutContainer()
-  {
-    return false;
-  }
+    public boolean isComponentALayoutContainer() {
+        return false;
+    }
 
-  public String toString()
-  {
-    return "javax.swing.JTree";
-  }
+    public String toString() {
+        return "javax.swing.JTree";
+    }
 
-  public ComponentDef getComponentDef(String name, Map<String, Object> beanProperties)
-  {
-	  String imp  = "";
-	  String decl = "javax.swing.JTree ${name}Control = new javax.swing.JTree();\n" +
-                    "javax.swing.JScrollPane ${name} = new javax.swing.JScrollPane(${name}Control);";
-	  String add  = "${container}.add(${name}, \"${name}\");";
-	  ComponentDef cd = new ComponentDef(name,imp,decl,add);
-	  return cd;
-  }
+    public ComponentDef getComponentDef(String name,
+            Map<String, Object> beanProperties) {
+        String imp = "";
+        String decl = "javax.swing.JTree ${name}Control = new javax.swing.JTree();\n"
+                + "javax.swing.JScrollPane ${name} = new javax.swing.JScrollPane(${name}Control);";
+        String add = "${container}.add(${name}, \"${name}\");";
+        ComponentDef cd = new ComponentDef(name, imp, decl, add);
+        return cd;
+    }
 
 }

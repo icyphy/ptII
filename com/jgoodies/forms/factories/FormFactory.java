@@ -72,7 +72,6 @@ public final class FormFactory {
     private FormFactory() {
         // Suppresses default constructor, ensuring non-instantiability.
     }
-    
 
     // Frequently used Column Specifications ********************************
 
@@ -83,10 +82,8 @@ public final class FormFactory {
      * @see #PREF_COLSPEC
      * @see #DEFAULT_COLSPEC
      */
-    public static final ColumnSpec MIN_COLSPEC = 
-        new ColumnSpec(Sizes.MINIMUM);   
-              
-    
+    public static final ColumnSpec MIN_COLSPEC = new ColumnSpec(Sizes.MINIMUM);
+
     /**
      * An unmodifyable <code>ColumnSpec</code> that determines its width by
      * computing the maximum of all column component preferred widths.
@@ -94,10 +91,9 @@ public final class FormFactory {
      * @see #MIN_COLSPEC
      * @see #DEFAULT_COLSPEC
      */
-    public static final ColumnSpec PREF_COLSPEC = 
-        new ColumnSpec(Sizes.PREFERRED);   
-    
-    
+    public static final ColumnSpec PREF_COLSPEC = new ColumnSpec(
+            Sizes.PREFERRED);
+
     /**
      * An unmodifyable <code>ColumnSpec</code> that determines its preferred 
      * width by computing the maximum of all column component preferred widths
@@ -109,10 +105,9 @@ public final class FormFactory {
      * @see #MIN_COLSPEC
      * @see #PREF_COLSPEC
      */
-    public static final ColumnSpec DEFAULT_COLSPEC = 
-        new ColumnSpec(Sizes.DEFAULT);   
-                    
-    
+    public static final ColumnSpec DEFAULT_COLSPEC = new ColumnSpec(
+            Sizes.DEFAULT);
+
     /**
      * An unmodifyable <code>ColumnSpec</code> that has an initial width
      * of 0 pixels and that grows. Useful to describe <em>glue</em> columns
@@ -120,12 +115,11 @@ public final class FormFactory {
      * 
      * @see #GLUE_ROWSPEC
      */
-    public static final ColumnSpec GLUE_COLSPEC = 
-        new ColumnSpec(ColumnSpec.DEFAULT, Sizes.ZERO, ColumnSpec.DEFAULT_GROW);                               
+    public static final ColumnSpec GLUE_COLSPEC = new ColumnSpec(
+            ColumnSpec.DEFAULT, Sizes.ZERO, ColumnSpec.DEFAULT_GROW);
 
-    
     // Layout Style Dependent Column Specs ***********************************
-    
+
     /**
      * Describes a logical horizontal gap between a label and an associated 
      * component. Useful for builders that automatically fill a grid with labels
@@ -136,9 +130,8 @@ public final class FormFactory {
      * 
      * @since 1.0.3
      */
-    public static final ColumnSpec LABEL_COMPONENT_GAP_COLSPEC =
-        createGapColumnSpec(LayoutStyle.getCurrent().getLabelComponentPadX());
-    
+    public static final ColumnSpec LABEL_COMPONENT_GAP_COLSPEC = createGapColumnSpec(LayoutStyle
+            .getCurrent().getLabelComponentPadX());
 
     /**
      * Describes a logical horizontal gap between two related components. 
@@ -150,9 +143,8 @@ public final class FormFactory {
      * 
      * @see #UNRELATED_GAP_COLSPEC 
      */
-    public static final ColumnSpec RELATED_GAP_COLSPEC =
-        createGapColumnSpec(LayoutStyle.getCurrent().getRelatedComponentsPadX());
-        
+    public static final ColumnSpec RELATED_GAP_COLSPEC = createGapColumnSpec(LayoutStyle
+            .getCurrent().getRelatedComponentsPadX());
 
     /**
      * Describes a logical horizontal gap between two unrelated components.<p>
@@ -162,9 +154,8 @@ public final class FormFactory {
      * 
      * @see #RELATED_GAP_COLSPEC 
      */
-    public static final ColumnSpec UNRELATED_GAP_COLSPEC =
-        createGapColumnSpec(LayoutStyle.getCurrent().getUnrelatedComponentsPadX()); 
-        
+    public static final ColumnSpec UNRELATED_GAP_COLSPEC = createGapColumnSpec(LayoutStyle
+            .getCurrent().getUnrelatedComponentsPadX());
 
     /**
      * Describes a logical horizontal column for a fixed size button. This spec 
@@ -175,11 +166,9 @@ public final class FormFactory {
      * 
      * @see #GROWING_BUTTON_COLSPEC 
      */
-    public static final ColumnSpec BUTTON_COLSPEC = 
-        new ColumnSpec(Sizes.bounded(Sizes.PREFERRED,
-                                     LayoutStyle.getCurrent().getDefaultButtonWidth(),
-                                     null));
-        
+    public static final ColumnSpec BUTTON_COLSPEC = new ColumnSpec(Sizes
+            .bounded(Sizes.PREFERRED, LayoutStyle.getCurrent()
+                    .getDefaultButtonWidth(), null));
 
     /**
      * Describes a logical horizontal column for a growing button. This spec 
@@ -190,14 +179,12 @@ public final class FormFactory {
      * 
      * @see #BUTTON_COLSPEC 
      */
-    public static final ColumnSpec GROWING_BUTTON_COLSPEC = 
-        new ColumnSpec(ColumnSpec.DEFAULT,
-                       BUTTON_COLSPEC.getSize(),
-                       ColumnSpec.DEFAULT_GROW);
-    
-    
+    public static final ColumnSpec GROWING_BUTTON_COLSPEC = new ColumnSpec(
+            ColumnSpec.DEFAULT, BUTTON_COLSPEC.getSize(),
+            ColumnSpec.DEFAULT_GROW);
+
     // Frequently used Row Specifications ***********************************
-    
+
     /**
      * An unmodifyable <code>RowSpec</code> that determines its height by
      * computing the maximum of all column component minimum heights.
@@ -205,10 +192,8 @@ public final class FormFactory {
      * @see #PREF_ROWSPEC
      * @see #DEFAULT_ROWSPEC
      */
-    public static final RowSpec MIN_ROWSPEC = 
-        new RowSpec(Sizes.MINIMUM);  
-    
-                                    
+    public static final RowSpec MIN_ROWSPEC = new RowSpec(Sizes.MINIMUM);
+
     /**
      * An unmodifyable <code>RowSpec</code> that determines its height by
      * computing the maximum of all column component preferred heights.
@@ -216,10 +201,8 @@ public final class FormFactory {
      * @see #MIN_ROWSPEC
      * @see #DEFAULT_ROWSPEC
      */
-    public static final RowSpec PREF_ROWSPEC = 
-        new RowSpec(Sizes.PREFERRED);   
-    
-                                    
+    public static final RowSpec PREF_ROWSPEC = new RowSpec(Sizes.PREFERRED);
+
     /**
      * An unmodifyable <code>RowSpec</code> that determines its preferred 
      * height by computing the maximum of all column component preferred heights
@@ -231,10 +214,8 @@ public final class FormFactory {
      * @see #MIN_COLSPEC
      * @see #PREF_COLSPEC
      */
-    public static final RowSpec DEFAULT_ROWSPEC = 
-        new RowSpec(Sizes.DEFAULT);  
-    
-                                    
+    public static final RowSpec DEFAULT_ROWSPEC = new RowSpec(Sizes.DEFAULT);
+
     /**
      * An unmodifyable <code>RowSpec</code> that has an initial height
      * of 0 pixels and that grows. Useful to describe <em>glue</em> rows
@@ -242,10 +223,9 @@ public final class FormFactory {
      * 
      * @see #GLUE_COLSPEC
      */
-    public static final RowSpec GLUE_ROWSPEC = 
-        new RowSpec(RowSpec.DEFAULT, Sizes.ZERO, RowSpec.DEFAULT_GROW);                               
+    public static final RowSpec GLUE_ROWSPEC = new RowSpec(RowSpec.DEFAULT,
+            Sizes.ZERO, RowSpec.DEFAULT_GROW);
 
-    
     // Layout Style Dependent Row Specs *************************************
 
     /**
@@ -258,10 +238,9 @@ public final class FormFactory {
      * 
      * @see #UNRELATED_GAP_ROWSPEC 
      */
-    public static final RowSpec RELATED_GAP_ROWSPEC =
-        createGapRowSpec(LayoutStyle.getCurrent().getRelatedComponentsPadY());
-        
-    
+    public static final RowSpec RELATED_GAP_ROWSPEC = createGapRowSpec(LayoutStyle
+            .getCurrent().getRelatedComponentsPadY());
+
     /**
      * Describes a logical vertical gap between two unrelated components.<p>
      * 
@@ -270,10 +249,9 @@ public final class FormFactory {
      * 
      * @see #RELATED_GAP_ROWSPEC 
      */
-    public static final RowSpec UNRELATED_GAP_ROWSPEC =
-        createGapRowSpec(LayoutStyle.getCurrent().getUnrelatedComponentsPadY());
-        
-    
+    public static final RowSpec UNRELATED_GAP_ROWSPEC = createGapRowSpec(LayoutStyle
+            .getCurrent().getUnrelatedComponentsPadY());
+
     /**
      * Describes a logical vertical narrow gap between two rows in the grid.
      * Useful if the vertical space is scarce or if an individual vertical gap
@@ -285,10 +263,9 @@ public final class FormFactory {
      * @see #LINE_GAP_ROWSPEC 
      * @see #PARAGRAPH_GAP_ROWSPEC
      */
-    public static final RowSpec NARROW_LINE_GAP_ROWSPEC =
-        createGapRowSpec(LayoutStyle.getCurrent().getNarrowLinePad());
+    public static final RowSpec NARROW_LINE_GAP_ROWSPEC = createGapRowSpec(LayoutStyle
+            .getCurrent().getNarrowLinePad());
 
-    
     /**
      * Describes the logical vertical default gap between two rows in the grid.
      * A little bit larger than the narrow line gap.<p>
@@ -299,10 +276,9 @@ public final class FormFactory {
      * @see #NARROW_LINE_GAP_ROWSPEC 
      * @see #PARAGRAPH_GAP_ROWSPEC
      */
-    public static final RowSpec LINE_GAP_ROWSPEC =
-        createGapRowSpec(LayoutStyle.getCurrent().getLinePad());
+    public static final RowSpec LINE_GAP_ROWSPEC = createGapRowSpec(LayoutStyle
+            .getCurrent().getLinePad());
 
-    
     /**
      * Describes the logical vertical default gap between two paragraphs in 
      * the layout grid. This gap is larger than the default line gap.<p>
@@ -313,11 +289,9 @@ public final class FormFactory {
      * @see #NARROW_LINE_GAP_ROWSPEC 
      * @see #LINE_GAP_ROWSPEC 
      */
-    public static final RowSpec PARAGRAPH_GAP_ROWSPEC =
-        createGapRowSpec(LayoutStyle.getCurrent().getParagraphPad());
-        
-    
-    
+    public static final RowSpec PARAGRAPH_GAP_ROWSPEC = createGapRowSpec(LayoutStyle
+            .getCurrent().getParagraphPad());
+
     // Factory Methods ******************************************************
 
     /**
@@ -333,16 +307,10 @@ public final class FormFactory {
      * @param labelColumnSpec  specifies the label columns
      * @return a prepared <code>FormLayout</code>
      */
-    public static FormLayout createColumnLayout(
-            int majorColumns,
-            int minorColumns,
-            ColumnSpec labelColumnSpec) {
-        return createColumnLayout(
-            majorColumns,
-            minorColumns,
-            labelColumnSpec,
-            Sizes.DLUX14,
-            Sizes.DLUX2);
+    public static FormLayout createColumnLayout(int majorColumns,
+            int minorColumns, ColumnSpec labelColumnSpec) {
+        return createColumnLayout(majorColumns, minorColumns, labelColumnSpec,
+                Sizes.DLUX14, Sizes.DLUX2);
     }
 
     /**
@@ -365,22 +333,13 @@ public final class FormFactory {
      * the gap between minor columns
      * @return a prepared <code>FormLayout</code>
      */
-    public static FormLayout createColumnLayout(
-            int majorColumns,
-            int minorColumns,
-            ColumnSpec labelColumnSpec,
-            ConstantSize indent,
+    public static FormLayout createColumnLayout(int majorColumns,
+            int minorColumns, ColumnSpec labelColumnSpec, ConstantSize indent,
             ConstantSize minorColumnGap) {
-        return createColumnLayout(
-            majorColumns, 
-            minorColumns, 
-            labelColumnSpec, 
-            PREF_COLSPEC, 
-            indent, 
-            Sizes.DLUX14, 
-            minorColumnGap);
+        return createColumnLayout(majorColumns, minorColumns, labelColumnSpec,
+                PREF_COLSPEC, indent, Sizes.DLUX14, minorColumnGap);
     }
-                
+
     /**
      * Creates and returns an instance of <code>FormLayout</code>
      * to build forms with the given number of major columns. 
@@ -404,21 +363,18 @@ public final class FormFactory {
      * the gap between minor columns
      * @return a prepared <code>FormLayout</code>
      */
-    public static FormLayout createColumnLayout(
-            int majorColumns,
-            int minorColumns,
-            ColumnSpec labelColumnSpec,
-            ColumnSpec componentColumnSpec,
-            ConstantSize indent,
-            ConstantSize majorColumnGap,
-            ConstantSize minorColumnGap) {
-                
+    public static FormLayout createColumnLayout(int majorColumns,
+            int minorColumns, ColumnSpec labelColumnSpec,
+            ColumnSpec componentColumnSpec, ConstantSize indent,
+            ConstantSize majorColumnGap, ConstantSize minorColumnGap) {
+
         ColumnSpec majorGapColSpec = createGapColumnSpec(majorColumnGap);
         ColumnSpec minorGapColSpec = createGapColumnSpec(minorColumnGap);
-        FormLayout layout = new FormLayout(new ColumnSpec[]{}, new RowSpec[]{});
+        FormLayout layout = new FormLayout(new ColumnSpec[] {},
+                new RowSpec[] {});
 
         // Add the optional leading indent.
-        if (indent != null) { 
+        if (indent != null) {
             layout.appendColumn(createGapColumnSpec(indent));
         }
         for (int i = 0; i < majorColumns; i++) {
@@ -436,16 +392,15 @@ public final class FormFactory {
                 }
             }
             // Add a gap between major columns.
-            if (i < majorColumns - 1) { 
-                layout.appendColumn(majorGapColSpec); 
+            if (i < majorColumns - 1) {
+                layout.appendColumn(majorGapColSpec);
             }
         }
         return layout;
     }
 
-    
     // Helper Code **********************************************************
-    
+
     /**
      * Creates and returns a {@link ColumnSpec} that represents a gap with the
      * specified {@link ConstantSize}.
@@ -467,6 +422,5 @@ public final class FormFactory {
     public static RowSpec createGapRowSpec(ConstantSize gapSize) {
         return new RowSpec(RowSpec.TOP, gapSize, RowSpec.NO_GROW);
     }
-    
-    
+
 }

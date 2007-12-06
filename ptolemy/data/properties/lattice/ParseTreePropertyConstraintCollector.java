@@ -71,7 +71,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Yellow (neuendor)
  @see ptolemy.data.expr.ASTPtRootNode
  */
-public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisitor {
+public class ParseTreePropertyConstraintCollector extends
+        AbstractParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -85,9 +86,8 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public Set collectConstraints(ASTPtRootNode node, NamedObj container, 
-        PropertyConstraintSolver solver)
-            throws IllegalActionException {
+    public Set collectConstraints(ASTPtRootNode node, NamedObj container,
+            PropertyConstraintSolver solver) throws IllegalActionException {
 
         _constraints = new HashSet();
         _container = container;
@@ -167,12 +167,12 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
             return;
         }
 
-        NamedObj namedObj = VariableScope.getNamedObject(
-                (Entity) _container, node.getName());
-        
+        NamedObj namedObj = VariableScope.getNamedObject((Entity) _container,
+                node.getName());
+
         if (namedObj != null) {
-            _constraints.addAll(
-                    _solver.getHelper(node).setSameAs(namedObj, node));
+            _constraints.addAll(_solver.getHelper(node).setSameAs(namedObj,
+                    node));
         }
 
         /*
@@ -193,7 +193,7 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
             return;
         }
          //*/
-        
+
         //throw new IllegalActionException("The ID " + name + " is undefined.");
     }
 
@@ -299,8 +299,6 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    
-    
     /**
      * Assert that the given boolean value, which describes the given
      * parse tree node is true.  If it is false, then throw a new
@@ -320,22 +318,20 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
     protected void _visitAllChildren(ASTPtRootNode node)
             throws IllegalActionException {
         List children = new ArrayList();
-        
+
         int numChildren = node.jjtGetNumChildren();
 
         PropertyConstraintASTNodeHelper helper = _solver.getHelper(node);
 
-        boolean isNone = 
-            helper.interconnectConstraintType == ConstraintType.NONE;
-        
-        boolean constraintParent = 
-            (helper.interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET) ||  
-            (helper.interconnectConstraintType == ConstraintType.SRC_LESS);
-        
+        boolean isNone = helper.interconnectConstraintType == ConstraintType.NONE;
+
+        boolean constraintParent = (helper.interconnectConstraintType == ConstraintType.SRC_EQUALS_MEET)
+                || (helper.interconnectConstraintType == ConstraintType.SRC_LESS);
+
         for (int i = 0; i < numChildren; i++) {
             _visitChild(node, i);
 
-            if (!constraintParent && !isNone){
+            if (!constraintParent && !isNone) {
                 // Set child <= parent.
                 _constraints.add(helper.setAtLeast(node, node.jjtGetChild(i)));
             } else {
@@ -345,10 +341,9 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
 
         if (helper._useDefaultConstraints) {
             if (constraintParent) {
-                _constraints.addAll(
-                        helper._constraintObject(helper.interconnectConstraintType, 
-                                node, children));
-            } 
+                _constraints.addAll(helper._constraintObject(
+                        helper.interconnectConstraintType, node, children));
+            }
         }
     }
 
@@ -358,17 +353,16 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
     protected void _visitChild(ASTPtRootNode node, int i)
             throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
-        
+
         child.visit(this);
     }
 
     protected Set _constraints;
 
     protected PropertyConstraintSolver _solver;
-    
+
     //protected ParserScope _scope;
-    
-    
+
     private static class VariableScope {
         public static NamedObj getNamedObject(Entity container, String name) {
 
@@ -379,8 +373,8 @@ public class ParseTreePropertyConstraintCollector extends AbstractParseTreeVisit
                 return port;
             }
 
-            Variable result = 
-                ModelScope.getScopedVariable(null, container, name);
+            Variable result = ModelScope.getScopedVariable(null, container,
+                    name);
 
             if (result != null) {
                 return result;

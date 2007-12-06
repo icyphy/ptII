@@ -83,8 +83,7 @@ public class Coordinate {
      *  @return A hash code value for this Coordinate
      */
     public int hashCode() {
-        return Integer.valueOf(X).hashCode() &
-            Integer.valueOf(Y).hashCode();
+        return Integer.valueOf(X).hashCode() & Integer.valueOf(Y).hashCode();
     }
 
     /**

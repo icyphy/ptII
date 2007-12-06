@@ -137,25 +137,27 @@ Michael Connor (mlconnor&#064;yahoo.com).
 @Pt.AcceptedRating Red (cxh)
 */
 public class PtolemyFormEditor extends JPanel {
-    
+
     /** Construct a new form editor.
      *  @param layoutFrame The frame within which this editor will be added.
      *  @param layout The layout manager.
      *  @param container The container.
      */
-    public PtolemyFormEditor(
-            RunLayoutFrame layoutFrame, ContainerLayout layout, Container container) {
+    public PtolemyFormEditor(RunLayoutFrame layoutFrame,
+            ContainerLayout layout, Container container) {
         super();
         _layoutFrame = layoutFrame;
-        
+
         // Create the layout table.
         _table = new LayoutTable(_layoutFrame, this);
         JScrollPane tableScrollPane = new JScrollPane(_table);
-        
+
         // Create the component palette for this Ptolemy model.
         ComponentPaletteListModel componentPaletteListModel = new ComponentPaletteListModel();
-        PaletteList componentPalette = new PaletteList(this, componentPaletteListModel);
-        JScrollPane componentPaletteScrollPane = new JScrollPane(componentPalette);
+        PaletteList componentPalette = new PaletteList(this,
+                componentPaletteListModel);
+        JScrollPane componentPaletteScrollPane = new JScrollPane(
+                componentPalette);
 
         JPanel propertiesPanel = new JPanel();
 
@@ -166,7 +168,8 @@ public class PtolemyFormEditor extends JPanel {
         _table.setSelectionBackground(new Color(220, 220, 255));
         _table.setSelectionForeground(Color.black);
 
-        _table.setDefaultRenderer(Object.class, new ConstraintTableCellRenderer());
+        _table.setDefaultRenderer(Object.class,
+                new ConstraintTableCellRenderer());
         _table.setRowHeight(20);
         _table.setModel(_tableModel);
         _table.setCellSelectionEnabled(true);
@@ -175,21 +178,23 @@ public class PtolemyFormEditor extends JPanel {
         JLabel verticalAlignmentLabel = new JLabel("Vertical Alignment");
         verticalAlignmentLabel.setLabelFor(_verticalAlignmentCombo);
         verticalAlignmentLabel.setDisplayedMnemonic(KeyEvent.VK_V);
-        
+
         JLabel horizontalAlignmentLabel = new JLabel("Horizontal Alignment");
         horizontalAlignmentLabel.setLabelFor(_horizontalAlignmentCombo);
         horizontalAlignmentLabel.setDisplayedMnemonic(KeyEvent.VK_H);
-        
+
         JLabel columnSpanLabel = new JLabel("Column Span");
         columnSpanLabel.setLabelFor(_columnSpanSpinner);
         columnSpanLabel.setDisplayedMnemonic(KeyEvent.VK_C);
-        
+
         JLabel rowSpanLabel = new JLabel("Row Span");
         rowSpanLabel.setLabelFor(_rowSpanSpinner);
         rowSpanLabel.setDisplayedMnemonic(KeyEvent.VK_R);
 
-        _columnInsertAfterButton.setToolTipText("Insert a column after this column");
-        _columnInsertBeforeButton.setToolTipText("Insert a column before this column");
+        _columnInsertAfterButton
+                .setToolTipText("Insert a column after this column");
+        _columnInsertBeforeButton
+                .setToolTipText("Insert a column before this column");
         _columnDeleteButton.setToolTipText("Delete this column");
         _rowInsertBeforeButton.setToolTipText("Insert a row before this row");
         _rowInsertAfterButton.setToolTipText("Insert a row after this row");
@@ -211,8 +216,8 @@ public class PtolemyFormEditor extends JPanel {
         setFormComponent(null);
 
         LayoutConstraintsManager layoutConstraintsManager = LayoutConstraintsManager
-                .getLayoutConstraintsManager(this.getClass().getResourceAsStream(
-                "editableLayoutConstraints.xml"));
+                .getLayoutConstraintsManager(this.getClass()
+                        .getResourceAsStream("editableLayoutConstraints.xml"));
 
         JPanel insetsPanel = new JPanel();
         JPanel contentPanel = new JPanel();
@@ -226,7 +231,8 @@ public class PtolemyFormEditor extends JPanel {
         insetsPanel.add(_topInsetSpinner, "topInsetSpinner");
         insetsPanel.add(_bottomInsetSpinner, "bottomInsetSpinner");
 
-        propertiesPanel.add(componentPaletteScrollPane, "componentPaletteScrollPane");
+        propertiesPanel.add(componentPaletteScrollPane,
+                "componentPaletteScrollPane");
         componentPalette.setCellRenderer(new ComponentPaletteListRenderer());
         JLabel componentPaletteLabel = new JLabel("Palette");
         propertiesPanel.add(componentPaletteLabel, "componentPaletteLabel");
@@ -251,8 +257,8 @@ public class PtolemyFormEditor extends JPanel {
         contentPanel.add(toolbar, "toolbar");
 
         // Put the layout table and palette side-by-side.
-        JSplitPane constraintsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                tableScrollPane, propertiesPanel);
+        JSplitPane constraintsSplitPane = new JSplitPane(
+                JSplitPane.HORIZONTAL_SPLIT, tableScrollPane, propertiesPanel);
         contentPanel.add(constraintsSplitPane, "constraintsSplitPane");
         // The following would make the palette invisible!
         // constraintsSplitPane.setDividerLocation(605);
@@ -278,7 +284,7 @@ public class PtolemyFormEditor extends JPanel {
         try {
             BeanInfo beanInfo = Introspector.getBeanInfo(component.getClass());
             PropertyDescriptor[] props = beanInfo.getPropertyDescriptors();
-            Map<String,String> previousValues = new HashMap<String,String>();
+            Map<String, String> previousValues = new HashMap<String, String>();
             for (int index = 0; index < props.length; index++) {
                 PropertyDescriptor propertyDescriptor = props[index];
                 // Present String and Color-valued properties.
@@ -288,13 +294,15 @@ public class PtolemyFormEditor extends JPanel {
                         continue;
                     }
                     Method readMethod = propertyDescriptor.getReadMethod();
-                    String value = (String)readMethod.invoke(component, new Object[] {});
+                    String value = (String) readMethod.invoke(component,
+                            new Object[] {});
                     query.addLine(propertyName, propertyName, value);
                     previousValues.put(propertyName, value);
                 } else if (propertyDescriptor.getPropertyType() == Color.class) {
                     String propertyName = propertyDescriptor.getName();
                     Method readMethod = propertyDescriptor.getReadMethod();
-                    Color value = (Color)readMethod.invoke(component, new Object[] {});
+                    Color value = (Color) readMethod.invoke(component,
+                            new Object[] {});
                     float[] components = value.getRGBComponents(null);
                     StringBuffer string = new StringBuffer("{");
                     // Use the syntax of arrays to present the color.
@@ -306,11 +314,13 @@ public class PtolemyFormEditor extends JPanel {
                             string.append("}");
                         }
                     }
-                    query.addColorChooser(propertyName, propertyName, string.toString());
+                    query.addColorChooser(propertyName, propertyName, string
+                            .toString());
                     previousValues.put(propertyName, string.toString());
                 }
             }
-            ComponentDialog dialog = new ComponentDialog(_layoutFrame, name, query);
+            ComponentDialog dialog = new ComponentDialog(_layoutFrame, name,
+                    query);
             if (dialog.buttonPressed().equals("OK")) {
                 // Set each property that has changed.
                 for (int index = 0; index < props.length; index++) {
@@ -323,18 +333,24 @@ public class PtolemyFormEditor extends JPanel {
                         }
                         String newValue = query.getStringValue(propertyName);
                         if (!newValue.equals(previousValues.get(propertyName))) {
-                            Method writeMethod = propertyDescriptor.getWriteMethod();
-                            writeMethod.invoke(component, new Object[] { newValue });                        
-                            _containerLayout.setProperty(name, propertyName, newValue);
+                            Method writeMethod = propertyDescriptor
+                                    .getWriteMethod();
+                            writeMethod.invoke(component,
+                                    new Object[] { newValue });
+                            _containerLayout.setProperty(name, propertyName,
+                                    newValue);
                         }
                     } else if (propertyDescriptor.getPropertyType() == Color.class) {
                         String propertyName = propertyDescriptor.getName();
                         String newValue = query.getStringValue(propertyName);
                         Color newColor = Query.stringToColor(newValue);
                         if (!newValue.equals(previousValues.get(propertyName))) {
-                            Method writeMethod = propertyDescriptor.getWriteMethod();
-                            writeMethod.invoke(component, new Object[] { newColor});                        
-                            _containerLayout.setProperty(name, propertyName, newColor);
+                            Method writeMethod = propertyDescriptor
+                                    .getWriteMethod();
+                            writeMethod.invoke(component,
+                                    new Object[] { newColor });
+                            _containerLayout.setProperty(name, propertyName,
+                                    newColor);
                         }
                     }
                 }
@@ -343,7 +359,7 @@ public class PtolemyFormEditor extends JPanel {
             // FIXME Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         /* FIXME
          * 
 
@@ -398,13 +414,14 @@ public class PtolemyFormEditor extends JPanel {
                     .getAlignment(constraints.vAlign));
             _horizontalAlignmentCombo.setSelectedItem(LayoutConstraintsManager
                     .getAlignment(constraints.hAlign));
-            _topInsetSpinnerModel.setValue(Integer.valueOf(constraints.insets.top));
-            _bottomInsetSpinnerModel.setValue(Integer.valueOf(
-                    constraints.insets.bottom));
-            _rightInsetSpinnerModel.setValue(Integer.valueOf(
-                    constraints.insets.right));
-            _leftInsetSpinnerModel
-                    .setValue(Integer.valueOf(constraints.insets.left));
+            _topInsetSpinnerModel.setValue(Integer
+                    .valueOf(constraints.insets.top));
+            _bottomInsetSpinnerModel.setValue(Integer
+                    .valueOf(constraints.insets.bottom));
+            _rightInsetSpinnerModel.setValue(Integer
+                    .valueOf(constraints.insets.right));
+            _leftInsetSpinnerModel.setValue(Integer
+                    .valueOf(constraints.insets.left));
         }
 
         _verticalAlignmentCombo.setEnabled(constraints != null);
@@ -431,7 +448,7 @@ public class PtolemyFormEditor extends JPanel {
 
         _suspendConstraintControlUpdates = false;
     }
-    
+
     /** Update the layout for the specified component. */
     public void updateLayout(Component component) {
         if (_suspendConstraintControlUpdates) {
@@ -486,7 +503,7 @@ public class PtolemyFormEditor extends JPanel {
             parent = parent.getParent();
         }
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -554,8 +571,7 @@ public class PtolemyFormEditor extends JPanel {
     }
 
     /** Put an icon onto an AbstractAction.  */
-    private void _putValue(AbstractAction abstractAction,
-            String iconName) {
+    private void _putValue(AbstractAction abstractAction, String iconName) {
         String iconDirectory = "$CLASSPATH/ptolemy/actor/gui/run/";
         try {
             // We use nameToURL() here so that this code will work
@@ -563,14 +579,11 @@ public class PtolemyFormEditor extends JPanel {
             // FIXME: we should use rollover icons like what is in
             // vergil.basic.BasicGraphFrame, where we call 
             // diva.util.GUIUtilities.
-            abstractAction.putValue(Action.SMALL_ICON,
-                    new ImageIcon(
-                            FileUtilities.nameToURL(
-                                    iconDirectory
-                                    + iconName, null, null)));
+            abstractAction.putValue(Action.SMALL_ICON, new ImageIcon(
+                    FileUtilities.nameToURL(iconDirectory + iconName, null,
+                            null)));
         } catch (IOException ex) {
-            System.out.println("Failed to open " + iconDirectory
-                    + iconName);
+            System.out.println("Failed to open " + iconDirectory + iconName);
             ex.printStackTrace();
         }
     }
@@ -732,8 +745,8 @@ public class PtolemyFormEditor extends JPanel {
             if (constraints == null)
                 return null;
             Integer next = constraints.gridX + constraints.gridWidth - 1 < _containerLayout
-                    .getColumnCount() ? Integer.valueOf(constraints.gridWidth + 1)
-                    : null;
+                    .getColumnCount() ? Integer
+                    .valueOf(constraints.gridWidth + 1) : null;
             return next;
         }
 
@@ -741,8 +754,8 @@ public class PtolemyFormEditor extends JPanel {
             if (constraints == null)
                 return null;
             else {
-                Integer previous = constraints.gridWidth > 1 ? Integer.valueOf(
-                        constraints.gridWidth - 1) : null;
+                Integer previous = constraints.gridWidth > 1 ? Integer
+                        .valueOf(constraints.gridWidth - 1) : null;
                 return previous;
             }
         }
@@ -774,6 +787,7 @@ public class PtolemyFormEditor extends JPanel {
     /** Model for the palette. */
     private class ComponentPaletteListModel extends AbstractListModel {
         List<String> components = new LinkedList<String>();
+
         public ComponentPaletteListModel() {
             // FIXME: The text of the following buttons can in theory be customized.
             // How to provide the interface for that?
@@ -781,19 +795,21 @@ public class PtolemyFormEditor extends JPanel {
             components.add("PauseButton");
             components.add("ResumeButton");
             components.add("StopButton");
-            
+
             components.add("ConfigureTopLevel");
             components.add("ConfigureDirector");
-            
+
             components.add("Label");
-            
+
             // Iterate over all the components that implement Placeable.
             if (_layoutFrame._pane._model != null) {
-                Iterator atomicEntities = _layoutFrame._pane._model.allAtomicEntityList().iterator();
+                Iterator atomicEntities = _layoutFrame._pane._model
+                        .allAtomicEntityList().iterator();
                 while (atomicEntities.hasNext()) {
-                    NamedObj object = (NamedObj)atomicEntities.next();
+                    NamedObj object = (NamedObj) atomicEntities.next();
                     if (object instanceof Placeable) {
-                        components.add("Placeable:" + object.getName(_layoutFrame._pane._model));
+                        components.add("Placeable:"
+                                + object.getName(_layoutFrame._pane._model));
                     }
                 }
             }
@@ -804,21 +820,25 @@ public class PtolemyFormEditor extends JPanel {
             // FIXME: This isn't useful without being able to specify the entity.
             components.add("Configure:Entity");
         }
+
         public int getSize() {
             return components.size();
         }
+
         public Object getElementAt(int index) {
             return components.get(index);
         }
     }
 
     /** Renderer for the palette items. */
-    private class ComponentPaletteListRenderer extends JLabel implements ListCellRenderer  {
+    private class ComponentPaletteListRenderer extends JLabel implements
+            ListCellRenderer {
         public ComponentPaletteListRenderer() {
             setOpaque(true);
         }
-        public Component getListCellRendererComponent(
-                JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+
+        public Component getListCellRendererComponent(JList list, Object value,
+                int index, boolean isSelected, boolean cellHasFocus) {
             setText(value.toString());
             if (isSelected) {
                 setBackground(list.getSelectionBackground());
@@ -920,8 +940,8 @@ public class PtolemyFormEditor extends JPanel {
             }
             _containerLayout.removeRowSpec(rowIndex - 1);
             _tableModel.fireTableRowsDeleted(rowIndex, rowIndex);
-            _table.changeSelection(Math.min(rowIndex, _containerLayout.getRowCount()),
-                    0, false, false);
+            _table.changeSelection(Math.min(rowIndex, _containerLayout
+                    .getRowCount()), 0, false, false);
             _specsChanged();
             _table.requestFocus();
         }
@@ -930,17 +950,23 @@ public class PtolemyFormEditor extends JPanel {
     /** The data model for the table. */
     private class GridTableModel extends javax.swing.table.AbstractTableModel {
         public int getColumnCount() {
-            return _containerLayout != null ? _containerLayout.getColumnCount() + 1 : 1;
+            return _containerLayout != null ? _containerLayout.getColumnCount() + 1
+                    : 1;
         }
+
         public int getRowCount() {
-            return _containerLayout != null ? _containerLayout.getRowCount() + 1 : 1;
+            return _containerLayout != null ? _containerLayout.getRowCount() + 1
+                    : 1;
         }
+
         public boolean isCellEditable(int row, int col) {
             return (row == 0 || col == 0) && !(row == 0 && col == 0);
         }
+
         public String getColumnName(int col) {
             return col == 0 ? "*" : "" + col;
         }
+
         public void setValueAt(Object aValue, int row, int col) {
             String value = (String) aValue;
             if (row == 0) {
@@ -949,8 +975,9 @@ public class PtolemyFormEditor extends JPanel {
                     _containerLayout.setColumnSpec(col - 1, value);
                     _specsChanged();
                 } catch (IllegalArgumentException iae) {
-                    JOptionPane.showMessageDialog(PtolemyFormEditor.this, iae.getMessage(),
-                            "Invalid Layout", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(PtolemyFormEditor.this, iae
+                            .getMessage(), "Invalid Layout",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             } else if (col == 0) {
                 try {
@@ -958,10 +985,12 @@ public class PtolemyFormEditor extends JPanel {
                     _specsChanged();
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage(),
-                            "Invalid row specification", JOptionPane.ERROR_MESSAGE);
+                            "Invalid row specification",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
+
         public Object getValueAt(int rowIndex, int columnIndex) {
             if (rowIndex == 0 && columnIndex == 0) {
                 return null;
@@ -983,13 +1012,16 @@ public class PtolemyFormEditor extends JPanel {
                     CellConstraints constraints = _getComponentConstraints(thisComponent);
                     if (constraints == null) {
                         throw new RuntimeException(
-                                "Unable to find constraints for component " + thisComponent
-                                + " in layout " + _containerLayout.getName());
+                                "Unable to find constraints for component "
+                                        + thisComponent + " in layout "
+                                        + _containerLayout.getName());
                     }
                     if (columnIndex >= constraints.gridX
-                            && columnIndex < constraints.gridX + constraints.gridWidth
+                            && columnIndex < constraints.gridX
+                                    + constraints.gridWidth
                             && rowIndex >= constraints.gridY
-                            && rowIndex < constraints.gridY + constraints.gridHeight) {
+                            && rowIndex < constraints.gridY
+                                    + constraints.gridHeight) {
                         component = thisComponent;
                         if (component == topComponent)
                             break;
@@ -999,16 +1031,19 @@ public class PtolemyFormEditor extends JPanel {
             return component;
         }
     }
-    
+
     /** Action to insert a column after the selected column. */
     private class InsertColumnAfterAction extends AbstractAction {
         public InsertColumnAfterAction() {
             super();
-            putValue(Action.SHORT_DESCRIPTION, "Inserts a column after the selected column");
-            putValue(Action.LONG_DESCRIPTION, "Inserts a column after the selected column");
+            putValue(Action.SHORT_DESCRIPTION,
+                    "Inserts a column after the selected column");
+            putValue(Action.LONG_DESCRIPTION,
+                    "Inserts a column after the selected column");
             _putValue(this, "ColumnInsertAfter24.gif");
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_L));
         }
+
         public void actionPerformed(ActionEvent e) {
             int column = _table.getSelectedColumn();
             _insertColumn(column);
@@ -1020,8 +1055,10 @@ public class PtolemyFormEditor extends JPanel {
     private class InsertColumnBeforeAction extends AbstractAction {
         public InsertColumnBeforeAction() {
             super();
-            putValue(Action.SHORT_DESCRIPTION, "Inserts a column before the selected column");
-            putValue(Action.LONG_DESCRIPTION, "Inserts a column before the selected column");
+            putValue(Action.SHORT_DESCRIPTION,
+                    "Inserts a column before the selected column");
+            putValue(Action.LONG_DESCRIPTION,
+                    "Inserts a column before the selected column");
             _putValue(this, "ColumnInsertBefore24.gif");
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_K));
         }
@@ -1037,8 +1074,10 @@ public class PtolemyFormEditor extends JPanel {
     private class InsertRowAfterAction extends AbstractAction {
         public InsertRowAfterAction() {
             super();
-            putValue(Action.SHORT_DESCRIPTION, "Inserts a row after the selected row");
-            putValue(Action.LONG_DESCRIPTION, "Inserts a row after the selected row");
+            putValue(Action.SHORT_DESCRIPTION,
+                    "Inserts a row after the selected row");
+            putValue(Action.LONG_DESCRIPTION,
+                    "Inserts a row after the selected row");
             _putValue(this, "RowInsertAfter24.gif");
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_O));
         }
@@ -1054,8 +1093,10 @@ public class PtolemyFormEditor extends JPanel {
     private class InsertRowBeforeAction extends AbstractAction {
         public InsertRowBeforeAction() {
             super();
-            putValue(Action.SHORT_DESCRIPTION, "Inserts a row before the selected row");
-            putValue(Action.LONG_DESCRIPTION, "Inserts a row before the selected row");
+            putValue(Action.SHORT_DESCRIPTION,
+                    "Inserts a row before the selected row");
+            putValue(Action.LONG_DESCRIPTION,
+                    "Inserts a row before the selected row");
             _putValue(this, "RowInsertBefore24.gif");
             putValue(Action.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_I));
         }
@@ -1088,7 +1129,7 @@ public class PtolemyFormEditor extends JPanel {
             while (parent != null) {
                 parent.validate();
                 if (parent instanceof Window) {
-                    ((Window)parent).pack();
+                    ((Window) parent).pack();
                     parent.setVisible(true);
                 }
                 parent = parent.getParent();
@@ -1101,8 +1142,8 @@ public class PtolemyFormEditor extends JPanel {
         public RemoveComponentAction() {
             super();
             putValue(Action.SHORT_DESCRIPTION, "Delete the component");
-            putValue(Action.LONG_DESCRIPTION, "Delete the selected component. " +
-                    "A component must be selected for this to be enabled.");
+            putValue(Action.LONG_DESCRIPTION, "Delete the selected component. "
+                    + "A component must be selected for this to be enabled.");
             _putValue(this, "Remove24.gif");
             putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_DELETE, 0));
@@ -1150,8 +1191,8 @@ public class PtolemyFormEditor extends JPanel {
                 return null;
             else {
                 Integer next = constraints.gridY + constraints.gridHeight - 1 < _containerLayout
-                        .getRowCount() ? Integer.valueOf(constraints.gridHeight + 1)
-                        : null;
+                        .getRowCount() ? Integer
+                        .valueOf(constraints.gridHeight + 1) : null;
                 return next;
             }
         }
@@ -1160,8 +1201,8 @@ public class PtolemyFormEditor extends JPanel {
             if (constraints == null)
                 return null;
             else {
-                Integer previous = constraints.gridHeight > 1 ? Integer.valueOf(
-                        constraints.gridHeight - 1) : null;
+                Integer previous = constraints.gridHeight > 1 ? Integer
+                        .valueOf(constraints.gridHeight - 1) : null;
                 return previous;
             }
         }
@@ -1206,20 +1247,23 @@ public class PtolemyFormEditor extends JPanel {
     ////                         private variables                 ////
 
     /** Model for the bottom inset control. */
-    private SpinnerNumberModel _bottomInsetSpinnerModel
-            = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
+    private SpinnerNumberModel _bottomInsetSpinnerModel = new SpinnerNumberModel(
+            0, 0, Integer.MAX_VALUE, 1);
 
     /** The bottom inset control. */
-    private JSpinner _bottomInsetSpinner = new JSpinner(_bottomInsetSpinnerModel);
+    private JSpinner _bottomInsetSpinner = new JSpinner(
+            _bottomInsetSpinnerModel);
 
     /** The button to delete a column. */
     private JButton _columnDeleteButton = new JButton(new DeleteColumnAction());
 
     /** The button to insert after the selected column. */
-    private JButton _columnInsertAfterButton = new JButton(new InsertColumnAfterAction());
+    private JButton _columnInsertAfterButton = new JButton(
+            new InsertColumnAfterAction());
 
     /** The button to insert before the selected column. */
-    private JButton _columnInsertBeforeButton = new JButton(new InsertColumnBeforeAction());
+    private JButton _columnInsertBeforeButton = new JButton(
+            new InsertColumnBeforeAction());
 
     /** The model for the column span control. */
     private ColSpanSpinnerModel _columnSpanSpinnerModel = new ColSpanSpinnerModel();
@@ -1228,29 +1272,30 @@ public class PtolemyFormEditor extends JPanel {
     private JSpinner _columnSpanSpinner = new JSpinner(_columnSpanSpinnerModel);
 
     /** The list of horizontal alignment options. */
-    private String[] _horizontalAlignmentList = { LayoutConstraintsManager.DEFAULT,
-            LayoutConstraintsManager.FILL, LayoutConstraintsManager.CENTER,
-            LayoutConstraintsManager.LEFT, LayoutConstraintsManager.RIGHT };
+    private String[] _horizontalAlignmentList = {
+            LayoutConstraintsManager.DEFAULT, LayoutConstraintsManager.FILL,
+            LayoutConstraintsManager.CENTER, LayoutConstraintsManager.LEFT,
+            LayoutConstraintsManager.RIGHT };
 
     /** The horizontal alignment control. */
-    private JComboBox _horizontalAlignmentCombo = new JComboBox(_horizontalAlignmentList);
+    private JComboBox _horizontalAlignmentCombo = new JComboBox(
+            _horizontalAlignmentList);
 
     /** The layout frame. */
     private RunLayoutFrame _layoutFrame;
 
     /** Model for the left inset control. */
-    private SpinnerNumberModel _leftInsetSpinnerModel
-            = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
+    private SpinnerNumberModel _leftInsetSpinnerModel = new SpinnerNumberModel(
+            0, 0, Integer.MAX_VALUE, 1);
 
     /** The left inset control. */
     private JSpinner _leftInsetSpinner = new JSpinner(_leftInsetSpinnerModel);
-    
+
     /** Action to pack the run control window. */
     private Action _packAction = new PackAction();
 
     /** Button to pack the run control window. */
     //private JButton _packButton = new JButton(_packAction);
-
     /** Properties to ignore and not present to the user. */
     private static Set<String> _propertiesToIgnore = new HashSet<String>();
     static {
@@ -1266,8 +1311,8 @@ public class PtolemyFormEditor extends JPanel {
     private JButton _removeComponentButton = new JButton(_removeComponentAction);
 
     /** Model for the right inset control. */
-    private SpinnerNumberModel _rightInsetSpinnerModel
-            = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
+    private SpinnerNumberModel _rightInsetSpinnerModel = new SpinnerNumberModel(
+            0, 0, Integer.MAX_VALUE, 1);
 
     /** The right inset control. */
     private JSpinner _rightInsetSpinner = new JSpinner(_rightInsetSpinnerModel);
@@ -1276,10 +1321,12 @@ public class PtolemyFormEditor extends JPanel {
     private JButton _rowDeleteButton = new JButton(new DeleteRowAction());
 
     /** The button to insert a row after the selected one. */
-    private JButton _rowInsertAfterButton = new JButton(new InsertRowAfterAction());
+    private JButton _rowInsertAfterButton = new JButton(
+            new InsertRowAfterAction());
 
     /** The button to insert a row before the selected one. */
-    private JButton _rowInsertBeforeButton = new JButton(new InsertRowBeforeAction());
+    private JButton _rowInsertBeforeButton = new JButton(
+            new InsertRowBeforeAction());
 
     /** The model for the row span control. */
     private RowSpanSpinnerModel _rowSpanSpinnerModel = new RowSpanSpinnerModel();
@@ -1292,22 +1339,24 @@ public class PtolemyFormEditor extends JPanel {
 
     /** The layout table, built in the constructor. */
     private LayoutTable _table = null;
-    
+
     /** The data model for the table. */
     private GridTableModel _tableModel = new GridTableModel();
 
     /** Model for the top inset control. */
-    private SpinnerNumberModel _topInsetSpinnerModel
-            = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
+    private SpinnerNumberModel _topInsetSpinnerModel = new SpinnerNumberModel(
+            0, 0, Integer.MAX_VALUE, 1);
 
     /** The top inset control. */
     private JSpinner _topInsetSpinner = new JSpinner(_topInsetSpinnerModel);
 
     /** The list of vertical alignment options. */
-    private String[] _verticalAlignmentList = { LayoutConstraintsManager.DEFAULT,
-            LayoutConstraintsManager.FILL, LayoutConstraintsManager.CENTER,
-            LayoutConstraintsManager.TOP, LayoutConstraintsManager.BOTTOM };
+    private String[] _verticalAlignmentList = {
+            LayoutConstraintsManager.DEFAULT, LayoutConstraintsManager.FILL,
+            LayoutConstraintsManager.CENTER, LayoutConstraintsManager.TOP,
+            LayoutConstraintsManager.BOTTOM };
 
     /** The vertical alignment control. */
-    private JComboBox _verticalAlignmentCombo = new JComboBox(_verticalAlignmentList);
+    private JComboBox _verticalAlignmentCombo = new JComboBox(
+            _verticalAlignmentList);
 }

@@ -276,10 +276,10 @@ public class SubscriptionAggregator extends Subscriber {
     /** Indicator that the operation is "add" rather than "multiply". */
     private boolean _addOperation = true;
 
-    /** Set of channel names that have already not been matched. */ 
+    /** Set of channel names that have already not been matched. */
     private Set _channelDoesNotMatch = new HashSet();
 
-    /** Set of channel names that have already matched. */ 
+    /** Set of channel names that have already matched. */
     private Set _channelMatches = new HashSet();
 
     /** Regex Pattern for _channelName. */

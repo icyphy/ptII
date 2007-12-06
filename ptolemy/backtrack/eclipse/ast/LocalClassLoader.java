@@ -578,7 +578,7 @@ public class LocalClassLoader extends URLClassLoader {
         } else {
             return null; // Not array.
         }
-        
+
         String basicName = name.substring(nameStart, nameEnd + 1);
         Class c;
         if (isPrimitiveArray) {
@@ -610,7 +610,7 @@ public class LocalClassLoader extends URLClassLoader {
         for (int i = 0; i < arrayCount; i++) {
             c = java.lang.reflect.Array.newInstance(c, 0).getClass();
         }
-        
+
         String typeName = Type.toArrayType(name.toString());
         _loadedClasses.put(typeName, c);
         return c;

@@ -7,7 +7,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 public class PropertyConstraintAttribute extends PropertyAttribute {
-    
+
     /**
      * 
      * @param container
@@ -16,11 +16,10 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
      * @throws NameDuplicationException
      */
     public PropertyConstraintAttribute(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    }    
-    
-    
+    }
+
     /** Set the expression. This method takes the descriptive form and
      * determines the internal form (by parsing the descriptive form) and stores
      * it.
@@ -33,23 +32,23 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
         super.setExpression(expression);
 
         if (expression.length() > 0) {
-            String latticeName = 
-                getName().substring(getName().indexOf("::") + 2);
+            String latticeName = getName().substring(
+                    getName().indexOf("::") + 2);
 
-            PropertyLattice lattice = 
-                PropertyLattice.getPropertyLattice(latticeName);
+            PropertyLattice lattice = PropertyLattice
+                    .getPropertyLattice(latticeName);
 
             try {
                 String fieldName = expression.toUpperCase();
 
-                _property = (Property)
-                    lattice.getClass().getField(fieldName).get(lattice);
-                
+                _property = (Property) lattice.getClass().getField(fieldName)
+                        .get(lattice);
+
             } catch (Exception ex) {
-                throw new IllegalActionException(this, ex, 
+                throw new IllegalActionException(this, ex,
                         "Cannot resolve the property expression: \""
-                        + expression + "\"");
-            }                
+                                + expression + "\"");
+            }
         }
     }
 }

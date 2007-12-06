@@ -449,8 +449,8 @@ public class NonStrictTest extends Sink {
      *  @return True if the first argument is close
      *  to this token.  False if the arguments are not ArrayTokens
      */
-    protected static boolean _isCloseToIfNilArrayElement(Token token1, Token token2,
-            double epsilon) throws IllegalActionException {
+    protected static boolean _isCloseToIfNilArrayElement(Token token1,
+            Token token2, double epsilon) throws IllegalActionException {
         if (!(token1 instanceof ArrayToken) || !(token2 instanceof ArrayToken)) {
             return false;
         }
@@ -505,8 +505,7 @@ public class NonStrictTest extends Sink {
      *  to this token.  False if the arguments are not ArrayTokens
      */
     protected static boolean _isCloseToIfNilRecordElement(Token token1,
-            Token token2,
-            double epsilon) throws IllegalActionException {
+            Token token2, double epsilon) throws IllegalActionException {
         if (!(token1 instanceof RecordToken)
                 || !(token2 instanceof RecordToken)) {
             return false;

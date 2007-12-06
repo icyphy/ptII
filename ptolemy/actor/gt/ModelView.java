@@ -66,7 +66,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
 */
-public class ModelView extends Sink implements WindowListener  {
+public class ModelView extends Sink implements WindowListener {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -107,8 +107,8 @@ public class ModelView extends Sink implements WindowListener  {
         super.fire();
 
         String titleValue = ((StringToken) title.getToken()).stringValue();
-        boolean annotateTitleValue =
-            ((BooleanToken) annotateTitle.getToken()).booleanValue();
+        boolean annotateTitleValue = ((BooleanToken) annotateTitle.getToken())
+                .booleanValue();
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 synchronized (this) {
@@ -133,9 +133,9 @@ public class ModelView extends Sink implements WindowListener  {
                         if (titleValue.equals("")) {
                             URI uri = URIAttribute.getModelURI(newModel);
                             if (uri != null) {
-                                URI modelURI = new URI(uri.getScheme(),
-                                        uri.getUserInfo(), uri.getHost(),
-                                        uri.getPort(), uri.getPath()
+                                URI modelURI = new URI(uri.getScheme(), uri
+                                        .getUserInfo(), uri.getHost(), uri
+                                        .getPort(), uri.getPath()
                                         + newModel.getName() + ".xml", null,
                                         null);
                                 titleString = modelURI.toString();

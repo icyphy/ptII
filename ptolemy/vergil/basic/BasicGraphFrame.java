@@ -483,17 +483,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             String variablesToBePrepended = "";
             try {
                 MoMLVariableChecker variableChecker = new MoMLVariableChecker();
-                variablesToBePrepended =
-                    variableChecker.checkCopy(momlToBeCopied, container);
+                variablesToBePrepended = variableChecker.checkCopy(
+                        momlToBeCopied, container);
             } catch (IllegalActionException ex) {
                 // Ignore, maybe the missing symbols will work out
                 // in the pasted context.
             }
-            clipboard.setContents(new StringSelection(
-                                          variablesToBePrepended
-                                          + momlToBeCopied
-                                          ), this);
-
+            clipboard.setContents(new StringSelection(variablesToBePrepended
+                    + momlToBeCopied), this);
 
         } catch (IOException ex) {
             MessageHandler.error("Copy failed", ex);
@@ -1906,8 +1903,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             };
 
             action.putValue("tooltip", "Get Documentation.");
-            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
-                    KeyEvent.VK_D));
+            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
+                    .valueOf(KeyEvent.VK_D));
             return menu.add(action, (String) action.getValue(Action.NAME));
         }
     }
@@ -2388,8 +2385,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             };
 
             action.putValue("tooltip", "Open library for editing.");
-            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
-                    KeyEvent.VK_O));
+            action.putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
+                    .valueOf(KeyEvent.VK_O));
             return menu.add(action, (String) action.getValue(Action.NAME));
         }
     }
@@ -2411,8 +2408,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, KeyStroke
                     .getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
-                    KeyEvent.VK_R));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
+                    .valueOf(KeyEvent.VK_R));
         }
 
         /**
@@ -2442,8 +2439,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY, KeyStroke
                     .getKeyStroke(KeyEvent.VK_Z, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer.valueOf(
-                    KeyEvent.VK_U));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, Integer
+                    .valueOf(KeyEvent.VK_U));
         }
 
         /**

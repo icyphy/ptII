@@ -1,4 +1,3 @@
-
 package doc.tutorial;
 
 import ptolemy.actor.AbstractReceiver;
@@ -18,7 +17,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class AmorphousDirector extends Director {
 
     public AmorphousDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -27,33 +26,34 @@ public class AmorphousDirector extends Director {
     }
 
     public class DelegatingReceiver extends AbstractReceiver {
-        
+
         private Receiver _receiver;
-        
+
         public DelegatingReceiver() {
             super();
             _receiver = new SDFReceiver();
         }
 
         public DelegatingReceiver(IOPort container)
-            throws IllegalActionException {
+                throws IllegalActionException {
             super(container);
             _receiver = new SDFReceiver(container);
         }
-        
+
         public void clear() throws IllegalActionException {
             IOPort container = getContainer();
             if (container != null) {
-                StringParameter receiverClass = (StringParameter)
-                        container.getAttribute("receiverClass", StringParameter.class);
+                StringParameter receiverClass = (StringParameter) container
+                        .getAttribute("receiverClass", StringParameter.class);
                 if (receiverClass != null) {
-                    String className = ((StringToken)receiverClass.getToken()).stringValue();
+                    String className = ((StringToken) receiverClass.getToken())
+                            .stringValue();
                     try {
                         Class desiredClass = Class.forName(className);
-                        _receiver = (Receiver)desiredClass.newInstance();
+                        _receiver = (Receiver) desiredClass.newInstance();
                     } catch (Exception e) {
                         throw new IllegalActionException(container, e,
-                        "Invalid class for receiver: " + className);
+                                "Invalid class for receiver: " + className);
                     }
                 }
             }
@@ -80,8 +80,8 @@ public class AmorphousDirector extends Director {
             return _receiver.hasToken(numberOfTokens);
         }
 
-        public void put(Token token)
-                throws NoRoomException, IllegalActionException {
+        public void put(Token token) throws NoRoomException,
+                IllegalActionException {
             _receiver.put(token);
         }
     }

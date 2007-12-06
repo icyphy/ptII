@@ -45,88 +45,75 @@ import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
 public class DndList extends JList implements DragSourceListener,
-    DragGestureListener
-{
-  /**
-   * 
-   */
-  private final FormEditor editor;
-  private static final long serialVersionUID = 1L;
-  protected DragSource fDragSource = null;
+        DragGestureListener {
+    /**
+     * 
+     */
+    private final FormEditor editor;
+    private static final long serialVersionUID = 1L;
+    protected DragSource fDragSource = null;
 
-  public DndList(FormEditor editor, ListModel listModel)
-  {
-    super(listModel);
-    this.editor = editor;
-    fDragSource = new DragSource();
-    this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    public DndList(FormEditor editor, ListModel listModel) {
+        super(listModel);
+        this.editor = editor;
+        fDragSource = new DragSource();
+        this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-    // it is very important that autoscrolls be set to false. i
-    // spent a lot of time tracking down a bug where there was
-    // very strange behavior involving selections and dragging with
-    // this list. as far as i can tell, the autoscroller was
-    // generating phantom events which i believe is what it is
-    // designed to do. i don't have an explanation for how this
-    // should be done but i can say if this line of code is not
-    // present then bad things will happen.
-    this.editor.setAutoscrolls(false);
-    fDragSource.createDefaultDragGestureRecognizer(this,
-        DnDConstants.ACTION_MOVE, this);
-  }
-
-  public void dragDropEnd(java.awt.dnd.DragSourceDropEvent dragSourceDropEvent)
-  {
-  }
-
-  public void dragEnter(java.awt.dnd.DragSourceDragEvent dragSourceDragEvent)
-  {
-  }
-
-  public void dragExit(java.awt.dnd.DragSourceEvent dragSourceEvent)
-  {
-  }
-
-  public void dragOver(java.awt.dnd.DragSourceDragEvent dragSourceDragEvent)
-  {
-  }
-
-  public void dropActionChanged(
-      java.awt.dnd.DragSourceDragEvent dragSourceDragEvent)
-  {
-  }
-
-  public void dragGestureRecognized(DragGestureEvent event)
-  {
-    int dragIndex = locationToIndex(event.getDragOrigin());
-    if (dragIndex >= 0)
-    {
-      Object draggingComponent = this.getModel().getElementAt(
-          dragIndex);
-      event.startDrag(java.awt.dnd.DragSource.DefaultCopyDrop,
-          new TransferableWrapper(draggingComponent), this);
+        // it is very important that autoscrolls be set to false. i
+        // spent a lot of time tracking down a bug where there was
+        // very strange behavior involving selections and dragging with
+        // this list. as far as i can tell, the autoscroller was
+        // generating phantom events which i believe is what it is
+        // designed to do. i don't have an explanation for how this
+        // should be done but i can say if this line of code is not
+        // present then bad things will happen.
+        this.editor.setAutoscrolls(false);
+        fDragSource.createDefaultDragGestureRecognizer(this,
+                DnDConstants.ACTION_MOVE, this);
     }
-  }
 
-  public String getToolTipText(MouseEvent evt) 
-  {
-    // return a tooltip for the specific entry in the list
-      // Get item index
-      int index = locationToIndex(evt.getPoint());
-      if ( index == -1 )
+    public void dragDropEnd(java.awt.dnd.DragSourceDropEvent dragSourceDropEvent) {
+    }
+
+    public void dragEnter(java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
+    }
+
+    public void dragExit(java.awt.dnd.DragSourceEvent dragSourceEvent) {
+    }
+
+    public void dragOver(java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
+    }
+
+    public void dropActionChanged(
+            java.awt.dnd.DragSourceDragEvent dragSourceDragEvent) {
+    }
+
+    public void dragGestureRecognized(DragGestureEvent event) {
+        int dragIndex = locationToIndex(event.getDragOrigin());
+        if (dragIndex >= 0) {
+            Object draggingComponent = this.getModel().getElementAt(dragIndex);
+            event.startDrag(java.awt.dnd.DragSource.DefaultCopyDrop,
+                    new TransferableWrapper(draggingComponent), this);
+        }
+    }
+
+    public String getToolTipText(MouseEvent evt) {
+        // return a tooltip for the specific entry in the list
+        // Get item index
+        int index = locationToIndex(evt.getPoint());
+        if (index == -1)
+            return "";
+
+        // Get item
+        Object o = this.getModel().getElementAt(index);
+        if (o instanceof ComponentDef) {
+            ComponentDef thisItem = (ComponentDef) o;
+            if (thisItem != null)
+                return thisItem.getDescription();
+        }
         return "";
+    }
 
-      // Get item
-      Object o = this.getModel().getElementAt(index);
-      if ( o instanceof ComponentDef )
-      {
-        ComponentDef thisItem = (ComponentDef) o; 
-        if ( thisItem != null )
-          return thisItem.getDescription();
-      }
-      return "";
-  }
-
-  public void drop(java.awt.dnd.DropTargetDropEvent e)
-  {
-  }
+    public void drop(java.awt.dnd.DropTargetDropEvent e) {
+    }
 }

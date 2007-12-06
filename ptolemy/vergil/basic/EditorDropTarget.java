@@ -114,14 +114,14 @@ public class EditorDropTarget extends DropTarget {
      *  @param listener The DropTargetListener to be added.
      */
     public void registerAdditionalListener(DropTargetListener listener) {
-      _additionalListeners.addElement(listener);
+        _additionalListeners.addElement(listener);
     }
 
     /** Remove an additional listener.
      *  @param listener The DropTargetListener to be removed.
      */
     public void deRegisterAdditionalListener(DropTargetListener listener) {
-      _additionalListeners.remove(listener);
+        _additionalListeners.remove(listener);
     }
 
     /** If the argument is false, then disable the feature that a
@@ -161,9 +161,9 @@ public class EditorDropTarget extends DropTarget {
          */
         public void dragEnter(DropTargetDragEvent dtde) {
             //notify additionalListeners
-            for (int i=0; i<_additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener)
-                  _additionalListeners.elementAt(i);
+            for (int i = 0; i < _additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener) _additionalListeners
+                        .elementAt(i);
                 l.dragEnter(dtde);
             }
 
@@ -182,9 +182,9 @@ public class EditorDropTarget extends DropTarget {
          */
         public void dragExit(DropTargetEvent dtde) {
             //notify additionalListeners
-            for (int i=0; i<_additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener)
-                  _additionalListeners.elementAt(i);
+            for (int i = 0; i < _additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener) _additionalListeners
+                        .elementAt(i);
                 l.dragExit(dtde);
             }
             if (_highlighted != null) {
@@ -204,9 +204,9 @@ public class EditorDropTarget extends DropTarget {
          */
         public void dragOver(DropTargetDragEvent dtde) {
             //notify additionalListeners
-            for (int i=0; i<_additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener)
-                  _additionalListeners.elementAt(i);
+            for (int i = 0; i < _additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener) _additionalListeners
+                        .elementAt(i);
                 l.dragOver(dtde);
             }
             // See whether there is a container under the point.
@@ -250,9 +250,9 @@ public class EditorDropTarget extends DropTarget {
          */
         public void drop(DropTargetDropEvent dtde) {
             //notify additionalListeners
-            for (int i=0; i<_additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener)
-                  _additionalListeners.elementAt(i);
+            for (int i = 0; i < _additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener) _additionalListeners
+                        .elementAt(i);
                 l.drop(dtde);
             }
             // Unhighlight the target. Do this first in case
@@ -359,9 +359,9 @@ public class EditorDropTarget extends DropTarget {
          */
         public void dropActionChanged(DropTargetDragEvent dtde) {
             //notify additionalListeners
-            for (int i=0; i<_additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener)
-                  _additionalListeners.elementAt(i);
+            for (int i = 0; i < _additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener) _additionalListeners
+                        .elementAt(i);
                 l.dropActionChanged(dtde);
             }
             // Used to do this... Not needed?

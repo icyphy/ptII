@@ -44,7 +44,7 @@ import diva.util.java2d.Polygon2D;
  * @author  John Reekie
  */
 public class Arrowhead implements ConnectorEnd {
-    
+
     /** Flag that says whether the arrowhead is filled or not.
      */
     private boolean _filled = true;
@@ -75,7 +75,7 @@ public class Arrowhead implements ConnectorEnd {
      * arrowhead is drawn.
      */
     private boolean _flipped = false;
-    
+
     /** The stroke. This is needed to get the bounding box.  As the
      * default, we use a stroke width of 3.0 pixels, in order that
      * redraw is clean even in the presence of

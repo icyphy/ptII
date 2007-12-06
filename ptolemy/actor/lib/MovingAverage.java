@@ -70,7 +70,7 @@ public class MovingAverage extends Transformer {
     public MovingAverage(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         maxPastInputsToAverage = new Parameter(this, "maxPastInputsToAverage");
         maxPastInputsToAverage.setTypeEquals(BaseType.INT);
         maxPastInputsToAverage.setExpression("10");
@@ -96,7 +96,8 @@ public class MovingAverage extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == maxPastInputsToAverage) {
-            _maxPastInputsToAverage = ((IntToken)maxPastInputsToAverage.getToken()).intValue();
+            _maxPastInputsToAverage = ((IntToken) maxPastInputsToAverage
+                    .getToken()).intValue();
             if (_maxPastInputsToAverage <= 0) {
                 throw new IllegalActionException(this,
                         "Value of maxPastInputsToAverage is required to be positive.");
@@ -123,12 +124,12 @@ public class MovingAverage extends Transformer {
             --_mostRecent;
         }
         _data[_mostRecent] = input.get(0);
-        
+
         if (_count < _maxPastInputsToAverage) {
             _count++;
-            _factor = new DoubleToken(1.0/_count);
+            _factor = new DoubleToken(1.0 / _count);
         }
-        
+
         // Compute the average.
         Token sum = _data[_mostRecent];
         for (int i = 1; i < _count; i++) {

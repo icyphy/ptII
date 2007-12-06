@@ -151,8 +151,7 @@ public class PortCriterion extends Criterion {
                 return NamedObjMatchResult.NOT_MATCH;
             } else if (isOutputEnabled() && _output != port.isOutput()) {
                 return NamedObjMatchResult.NOT_MATCH;
-            } else if (isMultiportEnabled()
-                    && _multiport != port.isMultiport()) {
+            } else if (isMultiportEnabled() && _multiport != port.isMultiport()) {
                 return NamedObjMatchResult.NOT_MATCH;
             }
         } else if (object instanceof Port) {
@@ -181,12 +180,12 @@ public class PortCriterion extends Criterion {
                     Type hostType = typedIOPort.getType();
                     boolean isTypeCompatible = true;
                     if (isInputEnabled() && _input) {
-                        isTypeCompatible =
-                            isTypeCompatible && hostType.isCompatible(lhsType);
+                        isTypeCompatible = isTypeCompatible
+                                && hostType.isCompatible(lhsType);
                     }
                     if (isOutputEnabled() && _output) {
-                        isTypeCompatible =
-                            isTypeCompatible && lhsType.isCompatible(hostType);
+                        isTypeCompatible = isTypeCompatible
+                                && lhsType.isCompatible(hostType);
                     }
                     if (!isTypeCompatible) {
                         return NamedObjMatchResult.NOT_MATCH;
@@ -252,8 +251,7 @@ public class PortCriterion extends Criterion {
     public void validate() throws ValidationException {
         if (isPortNameEnabled()) {
             if (_portName.get().equals("")) {
-                throw new ValidationException(
-                        "Port name must not be empty.");
+                throw new ValidationException("Port name must not be empty.");
             }
 
             try {
@@ -266,26 +264,24 @@ public class PortCriterion extends Criterion {
 
         if (isPortTypeEnabled()) {
             if (_portType.get().equals("")) {
-                throw new ValidationException(
-                        "Port type must not be empty.");
+                throw new ValidationException("Port type must not be empty.");
             }
 
             try {
                 _portType.getToken().getType();
             } catch (IllegalActionException e) {
-                throw new ValidationException("Type expression \""
-                        + _portType + "\" cannot be parsed.", e);
+                throw new ValidationException("Type expression \"" + _portType
+                        + "\" cannot be parsed.", e);
             }
         }
     }
 
     private static final CriterionElement[] _ELEMENTS = {
-        new StringCriterionElement("name", true, false),
-        new ChoiceCriterionElement("type", false, true, true),
-        new BooleanCriterionElement("input"),
-        new BooleanCriterionElement("output"),
-        new BooleanCriterionElement("multi")
-    };
+            new StringCriterionElement("name", true, false),
+            new ChoiceCriterionElement("type", false, true, true),
+            new BooleanCriterionElement("input"),
+            new BooleanCriterionElement("output"),
+            new BooleanCriterionElement("multi") };
 
     private boolean _input;
 
@@ -298,8 +294,7 @@ public class PortCriterion extends Criterion {
     private PtolemyExpressionString _portType;
 
     static {
-        ChoiceCriterionElement portTypes =
-            (ChoiceCriterionElement) _ELEMENTS[1];
+        ChoiceCriterionElement portTypes = (ChoiceCriterionElement) _ELEMENTS[1];
         portTypes.addChoices(Constants.types().keySet());
         portTypes.addChoice("arrayType(int)");
         portTypes.addChoice("arrayType(int,5)");

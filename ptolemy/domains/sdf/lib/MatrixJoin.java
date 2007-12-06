@@ -143,9 +143,10 @@ public class MatrixJoin extends SDFTransformer {
         MatrixToken[][] result = new MatrixToken[numberOfRows][numberOfColumns];
         for (int i = 0; i < numberOfRows; i++) {
             for (int j = 0; j < numberOfColumns; j++) {
-                result[i][j] = (MatrixToken)input.get(0);
+                result[i][j] = (MatrixToken) input.get(0);
             }
-        };
+        }
+        ;
         output.send(0, result[0][0].join(result));
     }
 

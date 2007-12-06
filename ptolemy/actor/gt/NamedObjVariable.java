@@ -48,18 +48,18 @@ import ptolemy.kernel.util.NamedObj;
 public class NamedObjVariable extends Variable {
 
     public NamedObjVariable(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
-        this (container, container.uniqueName(NAME_PREFIX));
+            NameDuplicationException {
+        this(container, container.uniqueName(NAME_PREFIX));
     }
 
     public NamedObjVariable(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         setToken(new NamedObjToken(container));
         setPersistent(false);
     }
-    
+
     public void setToken(Token token) throws IllegalActionException {
         try {
             if (!((NamedObjToken) token).getObject().equals(getContainer())) {

@@ -120,7 +120,8 @@ public class CNames {
             // Hash the type signature to avoid naming conflicts associated
             // with names that are longer than the number of significant
             // characters in a C identifier.
-            Integer prefixCode = Integer.valueOf(field.getSubSignature().hashCode());
+            Integer prefixCode = Integer.valueOf(field.getSubSignature()
+                    .hashCode());
             name = _sanitize("f" + prefixCode + "_" + field.getName());
             _nameMap.put(field, name);
         }

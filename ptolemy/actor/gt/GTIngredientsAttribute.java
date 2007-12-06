@@ -52,7 +52,7 @@ public class GTIngredientsAttribute extends StringAttribute {
     }
 
     public GTIngredientsAttribute(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -60,8 +60,7 @@ public class GTIngredientsAttribute extends StringAttribute {
         super(workspace);
     }
 
-    public GTIngredientList getIngredientList()
-    throws MalformedStringException {
+    public GTIngredientList getIngredientList() throws MalformedStringException {
         if (!_parsed) {
             _parse();
         }

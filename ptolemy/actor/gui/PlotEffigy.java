@@ -179,12 +179,13 @@ public class PlotEffigy extends Effigy {
                 String extension = getExtension(input);
 
                 if (extension.equals("xml")) {
-                    if (checkForDTD(input,
-                                "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML",
-                                null)) {
+                    if (checkForDTD(
+                            input,
+                            "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML",
+                            null)) {
                         // This is a plot file.
-                        PlotEffigy effigy = new PlotEffigy(container,
-                                container.uniqueName("effigy"));
+                        PlotEffigy effigy = new PlotEffigy(container, container
+                                .uniqueName("effigy"));
                         effigy.uri.setURL(input);
                         return effigy;
                     }

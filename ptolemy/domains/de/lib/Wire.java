@@ -131,7 +131,7 @@ public class Wire extends DETransformer {
             output.send(i, _lastInputs[i]);
         }
     }
-    
+
     /** Initialize the actor.
      *  @exception IllegalActionException If the superclass throws it.
      */
@@ -139,7 +139,7 @@ public class Wire extends DETransformer {
         super.initialize();
         _lastInputs = null;
     }
-    
+
     /** Return true if there is any token on an input port.
      *  @exception IllegalActionException If the base class throws it.
      */

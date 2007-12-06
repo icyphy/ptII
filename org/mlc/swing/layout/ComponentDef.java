@@ -61,70 +61,66 @@ import org.w3c.dom.NodeList;
  * used when creating and editing component data.
  * @author Michael Connor
  */
-public class ComponentDef implements Comparable<Object>
-{
-  private static final long serialVersionUID = 1L;
+public class ComponentDef implements Comparable<Object> {
+    private static final long serialVersionUID = 1L;
 
-  public String name = "";
+    public String name = "";
 
-  public String iconClass = "";
+    public String iconClass = "";
 
-  public Icon icon = null;
+    public Icon icon = null;
 
-  public String declarations = "";
+    public String declarations = "";
 
-  public String configure = "";
+    public String configure = "";
 
-  public String add = "";
+    public String add = "";
 
-  public String remove = "";
+    public String remove = "";
 
-  public String imports = "";
+    public String imports = "";
 
-  public String preview = "";
+    public String preview = "";
 
-  public boolean isContainer = false;
-  
-  private String description = "";
-  public String getDescription() { return description; }
-  
-  public ComponentDef()
-  {
-  }
+    public boolean isContainer = false;
 
-// Stolen from Xerces 2.5.0 code - need to replace java 1.5 getTextContent method
-    final boolean hasTextContent(Node child) {
-        return child.getNodeType() != Node.COMMENT_NODE &&
-            child.getNodeType() != Node.PROCESSING_INSTRUCTION_NODE ;
-//          &&
-//            (child.getNodeType() != Node.TEXT_NODE );
-//          ||
-//             ((TextImpl) child).isIgnorableWhitespace() == false);
+    private String description = "";
+
+    public String getDescription() {
+        return description;
     }
 
-// Stolen from Xerces 2.5.0 code - need to replace java 1.5 getTextContent method
-    void getTextContent(Node anode, StringBuffer buf)
-    {
+    public ComponentDef() {
+    }
+
+    // Stolen from Xerces 2.5.0 code - need to replace java 1.5 getTextContent method
+    final boolean hasTextContent(Node child) {
+        return child.getNodeType() != Node.COMMENT_NODE
+                && child.getNodeType() != Node.PROCESSING_INSTRUCTION_NODE;
+        //          &&
+        //            (child.getNodeType() != Node.TEXT_NODE );
+        //          ||
+        //             ((TextImpl) child).isIgnorableWhitespace() == false);
+    }
+
+    // Stolen from Xerces 2.5.0 code - need to replace java 1.5 getTextContent method
+    void getTextContent(Node anode, StringBuffer buf) {
         Node child = anode.getFirstChild();
-        while (child != null) 
-        {
-            if (hasTextContent(child)) 
-            {
+        while (child != null) {
+            if (hasTextContent(child)) {
                 buf.append(child.getNodeValue());
             }
             child = child.getNextSibling();
         }
     }
 
-// Stolen from Xerces 2.5.0 code - need to replace java 1.5 getTextContent method
+    // Stolen from Xerces 2.5.0 code - need to replace java 1.5 getTextContent method
     private String getTextContent(Node anode) //throws DOMException 
     {
         Node child = anode.getFirstChild();
-        if (child != null) 
-        {
+        if (child != null) {
             Node next = child.getNextSibling();
-            if (next == null) 
-            {
+            if (next == null) {
                 return hasTextContent(child) ? child.getNodeValue() : "";
             }
             StringBuffer buf = new StringBuffer();
@@ -134,194 +130,167 @@ public class ComponentDef implements Comparable<Object>
         return "";
     }
 
-  private String doNode(Node parent, String nodeName)
-  {
-    String temp = "";
-    Node[] nodes = getNodesNamed(parent, nodeName);
-    for (int i = 0; i < nodes.length; i++)
-    {
-// Java 1.5 library function
-//      temp += nodes[i].getTextContent();
-      temp += getTextContent(nodes[i]);
-    }
-    return temp;
-  }
-
-  public ComponentDef(Node componentNode)
-  {
-    Map<String, String> attributes = getAttributeMap(componentNode);
-    name = attributes.get("name");
-    iconClass = attributes.get("iconClass");
-    description = attributes.get("desc");
-// Java 1.5 library function.
-//    isContainer = Boolean.parseBoolean(attributes.get("container"));
-    String str = attributes.get("container");
-    if ( str != null )
-    {
-      isContainer = ( str.compareToIgnoreCase("true") == 0 );
+    private String doNode(Node parent, String nodeName) {
+        String temp = "";
+        Node[] nodes = getNodesNamed(parent, nodeName);
+        for (int i = 0; i < nodes.length; i++) {
+            // Java 1.5 library function
+            //      temp += nodes[i].getTextContent();
+            temp += getTextContent(nodes[i]);
+        }
+        return temp;
     }
 
-    imports = doNode(componentNode, "imports");
-    declarations = doNode(componentNode, "declarations");
-    configure = doNode(componentNode, "configure");
-    remove = doNode(componentNode, "remove");
-    add = doNode(componentNode, "add");
-    preview = doNode(componentNode, "preview");
-  }
+    public ComponentDef(Node componentNode) {
+        Map<String, String> attributes = getAttributeMap(componentNode);
+        name = attributes.get("name");
+        iconClass = attributes.get("iconClass");
+        description = attributes.get("desc");
+        // Java 1.5 library function.
+        //    isContainer = Boolean.parseBoolean(attributes.get("container"));
+        String str = attributes.get("container");
+        if (str != null) {
+            isContainer = (str.compareToIgnoreCase("true") == 0);
+        }
 
-  // KBR 12/31/05 Add a ctor for use by the "old-style" new button
-  public ComponentDef(String name, String imp, String decl, String add) 
-  {
-	this.name = name;
-	this.imports = imp;
-	this.declarations = decl;
-	this.add = add;
-  }
-
-private static InputStream getCompFile()
-  {
-    // pull the components.xml file out of the root of the jar file
-    try
-    {
-      JarFile jf = new JarFile("formLayoutMakerx.jar");
-      JarEntry je = null;
-      Enumeration entries = jf.entries();
-      while (entries.hasMoreElements()) 
-      {
-          je = (JarEntry) entries.nextElement();    
-          if (je.getName().equals("components.xml")) 
-          {
-              return jf.getInputStream(je);
-          }
-      }
-    }
-    catch (IOException e)
-    {
-      return null;
-    }
-    return null;
-  }
-
-  /** Creates a new instance of Component Palette. All component configurations
-  are pulled out of components.xml
-  */
-  @SuppressWarnings("unchecked")
-  public static List<ComponentDef> createComponentDefs()
-  {
-    List<ComponentDef> components = new ArrayList<ComponentDef>();
-    InputStream paletteStream = ComponentDef.class.getResourceAsStream("components.xml");
-    if ( paletteStream == null )
-      paletteStream = getCompFile();
-    if ( paletteStream == null )
-      return components;
-    
-    Document dataDocument = null;
-
-    try
-    {
-      DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance()
-          .newDocumentBuilder();
-      dataDocument = documentBuilder.parse(paletteStream);
-      Node paletteNode = dataDocument.getDocumentElement();
-      Node[] componentNodes = getNodesNamed(paletteNode, "component");
-
-      for (int index = 0; index < componentNodes.length; index++)
-      {
-        Node componentNode = componentNodes[index];
-        components.add(new ComponentDef(componentNode));
-      }
-    }
-    catch (Exception e)
-    {
-      throw new RuntimeException("Unable to create DocumentBuilder", e);
+        imports = doNode(componentNode, "imports");
+        declarations = doNode(componentNode, "declarations");
+        configure = doNode(componentNode, "configure");
+        remove = doNode(componentNode, "remove");
+        add = doNode(componentNode, "add");
+        preview = doNode(componentNode, "preview");
     }
 
-    Collections.sort(components);
-    return components;    
-  }
-
-  private static Map<String, String> getAttributeMap(Node node)
-  {
-
-    Map<String, String> attributeMap = new HashMap<String, String>();
-
-    NamedNodeMap attributes = node.getAttributes();
-    if (attributes != null)
-    {
-      for (int index = 0; index < attributes.getLength(); index++)
-      {
-        Node attribute = attributes.item(index);
-        attributeMap.put(attribute.getNodeName(), attribute.getNodeValue());
-      }
+    // KBR 12/31/05 Add a ctor for use by the "old-style" new button
+    public ComponentDef(String name, String imp, String decl, String add) {
+        this.name = name;
+        this.imports = imp;
+        this.declarations = decl;
+        this.add = add;
     }
 
-    return attributeMap;
-  }
-
-  private static Node[] getNodesNamed(Node parent, String nodeName)
-  {
-    NodeList children = parent.getChildNodes();
-    List<Node> childList = new ArrayList<Node>();
-    for (int i = 0; i < children.getLength(); i++)
-    {
-      String childname = children.item(i).getNodeName();
-      if (childname != null)
-      {
-      if (nodeName.equals(childname))
-        childList.add(children.item(i));
-      }
+    private static InputStream getCompFile() {
+        // pull the components.xml file out of the root of the jar file
+        try {
+            JarFile jf = new JarFile("formLayoutMakerx.jar");
+            JarEntry je = null;
+            Enumeration entries = jf.entries();
+            while (entries.hasMoreElements()) {
+                je = (JarEntry) entries.nextElement();
+                if (je.getName().equals("components.xml")) {
+                    return jf.getInputStream(je);
+                }
+            }
+        } catch (IOException e) {
+            return null;
+        }
+        return null;
     }
-    Node[] result = new Node[childList.size()];
-    return (Node[]) childList.toArray(result);
-  }
 
-  public String getConfigure(String name)
-  {
-    return configure.replaceAll("\\$\\{name\\}", name);
-  }
+    /** Creates a new instance of Component Palette. All component configurations
+    are pulled out of components.xml
+    */
+    @SuppressWarnings("unchecked")
+    public static List<ComponentDef> createComponentDefs() {
+        List<ComponentDef> components = new ArrayList<ComponentDef>();
+        InputStream paletteStream = ComponentDef.class
+                .getResourceAsStream("components.xml");
+        if (paletteStream == null)
+            paletteStream = getCompFile();
+        if (paletteStream == null)
+            return components;
 
-  public String getImports(String name)
-  {
-    return imports.replaceAll("\\$\\{name\\}", name);
-  }
+        Document dataDocument = null;
 
-  public String getDeclarations(String name)
-  {
-    return declarations.replaceAll("\\$\\{name\\}", name);
-  }
+        try {
+            DocumentBuilder documentBuilder = DocumentBuilderFactory
+                    .newInstance().newDocumentBuilder();
+            dataDocument = documentBuilder.parse(paletteStream);
+            Node paletteNode = dataDocument.getDocumentElement();
+            Node[] componentNodes = getNodesNamed(paletteNode, "component");
 
-  public String getAdd(String name)
-  {
-    return add.replaceAll("\\$\\{name\\}", name);
-  }
+            for (int index = 0; index < componentNodes.length; index++) {
+                Node componentNode = componentNodes[index];
+                components.add(new ComponentDef(componentNode));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to create DocumentBuilder", e);
+        }
 
-  /** When dragging from the palette we need a clone rather than modify
-      the original.
-  */
-  public ComponentDef clone()
-  {
-    ComponentDef newone = new ComponentDef();
-    newone.name = name;
-    newone.iconClass = iconClass;
-    newone.declarations = declarations;
-    newone.configure = configure;
-    newone.add = add;
-    newone.imports = imports;
-    newone.preview = preview;
-    newone.isContainer = isContainer;
-    return newone;
-  }
+        Collections.sort(components);
+        return components;
+    }
 
-  /** Make it sortable on name so the palette is ordered.
-  */
-  public int compareTo(Object o)
-  {
-    return name.compareTo(((ComponentDef)o).name);
-  }
-  
-  public static void main(String[] args)
-  {
-    List<ComponentDef> components = ComponentDef.createComponentDefs();
-    System.out.println(components);
-  }
+    private static Map<String, String> getAttributeMap(Node node) {
+
+        Map<String, String> attributeMap = new HashMap<String, String>();
+
+        NamedNodeMap attributes = node.getAttributes();
+        if (attributes != null) {
+            for (int index = 0; index < attributes.getLength(); index++) {
+                Node attribute = attributes.item(index);
+                attributeMap.put(attribute.getNodeName(), attribute
+                        .getNodeValue());
+            }
+        }
+
+        return attributeMap;
+    }
+
+    private static Node[] getNodesNamed(Node parent, String nodeName) {
+        NodeList children = parent.getChildNodes();
+        List<Node> childList = new ArrayList<Node>();
+        for (int i = 0; i < children.getLength(); i++) {
+            String childname = children.item(i).getNodeName();
+            if (childname != null) {
+                if (nodeName.equals(childname))
+                    childList.add(children.item(i));
+            }
+        }
+        Node[] result = new Node[childList.size()];
+        return (Node[]) childList.toArray(result);
+    }
+
+    public String getConfigure(String name) {
+        return configure.replaceAll("\\$\\{name\\}", name);
+    }
+
+    public String getImports(String name) {
+        return imports.replaceAll("\\$\\{name\\}", name);
+    }
+
+    public String getDeclarations(String name) {
+        return declarations.replaceAll("\\$\\{name\\}", name);
+    }
+
+    public String getAdd(String name) {
+        return add.replaceAll("\\$\\{name\\}", name);
+    }
+
+    /** When dragging from the palette we need a clone rather than modify
+        the original.
+    */
+    public ComponentDef clone() {
+        ComponentDef newone = new ComponentDef();
+        newone.name = name;
+        newone.iconClass = iconClass;
+        newone.declarations = declarations;
+        newone.configure = configure;
+        newone.add = add;
+        newone.imports = imports;
+        newone.preview = preview;
+        newone.isContainer = isContainer;
+        return newone;
+    }
+
+    /** Make it sortable on name so the palette is ordered.
+    */
+    public int compareTo(Object o) {
+        return name.compareTo(((ComponentDef) o).name);
+    }
+
+    public static void main(String[] args) {
+        List<ComponentDef> components = ComponentDef.createComponentDefs();
+        System.out.println(components);
+    }
 }

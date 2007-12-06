@@ -65,7 +65,7 @@ import ptolemy.vergil.icon.EditorIcon;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
-ValueListener {
+        ValueListener {
 
     public AtomicActorMatcher(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -177,8 +177,7 @@ ValueListener {
                     port.setPersistent(false);
                 } else if (ingredient instanceof SubclassCriterion
                         && !isIconSet) {
-                    SubclassCriterion criterion =
-                        (SubclassCriterion) ingredient;
+                    SubclassCriterion criterion = (SubclassCriterion) ingredient;
                     final String superclass = criterion.getSuperclass();
                     requestChange(new ChangeRequest(this,
                             "Deferred load actor icon action.") {
@@ -230,12 +229,12 @@ ValueListener {
 
                 // Update the appearance of corresponding entities in the
                 // replacement.
-                Pattern pattern = (Pattern)
-                    GTTools.getContainingPatternOrReplacement(this);
+                Pattern pattern = (Pattern) GTTools
+                        .getContainingPatternOrReplacement(this);
                 NamedObj container = pattern.getContainer();
                 if (container instanceof TransformationRule) {
-                    Replacement replacement =
-                        ((TransformationRule) container).getReplacement();
+                    Replacement replacement = ((TransformationRule) container)
+                            .getReplacement();
                     replacement.updateEntitiesAppearance(criteria);
                 }
             }
@@ -244,8 +243,7 @@ ValueListener {
                 // Update the ports with the criteria attribute of the
                 // corresponding actor in the pattern of the transformation
                 // rule.
-                NamedObj entity =
-                    GTTools.getCorrespondingPatternObject(this);
+                NamedObj entity = GTTools.getCorrespondingPatternObject(this);
                 if (entity != null && entity instanceof AtomicActorMatcher) {
                     criteria.setPersistent(false);
                     try {
@@ -271,7 +269,7 @@ ValueListener {
     private void _loadActorIcon(String actorClassName) {
         CompositeActor container = new CompositeActor();
         String moml = "<group><entity name=\"NewActor\" class=\""
-            + actorClassName + "\"/></group>";
+                + actorClassName + "\"/></group>";
 
         container.requestChange(new MoMLChangeRequest(this, container, moml));
         container.requestChange(new LoadActorIconChangeRequest(container));
@@ -289,31 +287,28 @@ ValueListener {
 
     private void _setIconDescription(String iconDescription) {
         String moml = "<property name=\"_iconDescription\" class="
-            + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
-            + "  <configure>" + iconDescription + "</configure>"
-            + "</property>";
+                + "\"ptolemy.kernel.util.SingletonConfigurableAttribute\">"
+                + "  <configure>" + iconDescription + "</configure>"
+                + "</property>";
         MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
         request.execute();
     }
 
-    private static final String _ICON_DESCRIPTION =
-        "<svg>"
-        + "<rect x=\"0\" y=\"0\" width=\"60\" height=\"40\""
-        + "  style=\"fill:#C0C0C0\"/>"
-        + "<rect x=\"5\" y=\"17\" width=\"16\" height=\"10\""
-        + "  style=\"fill:#FFFFFF; stroke:#B00000\"/>"
-        + "<rect x=\"39\" y=\"25\" width=\"16\" height=\"10\""
-        + "  style=\"fill:#FFFFFF; stroke:#B00000\"/>"
-        + "<line x1=\"25\" y1=\"22\" x2=\"30\" y2=\"22\""
-        + "  style=\"stroke:#404040\"/>"
-        + "<line x1=\"30\" y1=\"22\" x2=\"30\" y2=\"30\""
-        + "  style=\"stroke:#404040\"/>"
-        + "<line x1=\"30\" y1=\"30\" x2=\"35\" y2=\"30\""
-        + "  style=\"stroke:#404040\"/>"
-        + "<text x=\"17\" y=\"13\""
-        + "  style=\"font-size:12; fill:#E00000; font-family:SansSerif\">"
-        + "  match</text>"
-        + "</svg>";
+    private static final String _ICON_DESCRIPTION = "<svg>"
+            + "<rect x=\"0\" y=\"0\" width=\"60\" height=\"40\""
+            + "  style=\"fill:#C0C0C0\"/>"
+            + "<rect x=\"5\" y=\"17\" width=\"16\" height=\"10\""
+            + "  style=\"fill:#FFFFFF; stroke:#B00000\"/>"
+            + "<rect x=\"39\" y=\"25\" width=\"16\" height=\"10\""
+            + "  style=\"fill:#FFFFFF; stroke:#B00000\"/>"
+            + "<line x1=\"25\" y1=\"22\" x2=\"30\" y2=\"22\""
+            + "  style=\"stroke:#404040\"/>"
+            + "<line x1=\"30\" y1=\"22\" x2=\"30\" y2=\"30\""
+            + "  style=\"stroke:#404040\"/>"
+            + "<line x1=\"30\" y1=\"30\" x2=\"35\" y2=\"30\""
+            + "  style=\"stroke:#404040\"/>" + "<text x=\"17\" y=\"13\""
+            + "  style=\"font-size:12; fill:#E00000; font-family:SansSerif\">"
+            + "  match</text>" + "</svg>";
 
     private class LoadActorIconChangeRequest extends ChangeRequest {
 
@@ -325,13 +320,13 @@ ValueListener {
 
         protected void _execute() {
             try {
-                ComponentEntity actor =
-                    (ComponentEntity) _container.entityList().get(0);
+                ComponentEntity actor = (ComponentEntity) _container
+                        .entityList().get(0);
 
                 _removeEditorIcons();
 
-                ConfigurableAttribute actorAttribute = (ConfigurableAttribute)
-                        actor.getAttribute("_iconDescription");
+                ConfigurableAttribute actorAttribute = (ConfigurableAttribute) actor
+                        .getAttribute("_iconDescription");
                 String iconDescription = actorAttribute.getConfigureText();
                 _setIconDescription(iconDescription);
 

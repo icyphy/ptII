@@ -887,7 +887,8 @@ public class IOPort extends ComponentPort {
         }
 
         if (_notifyingTokensGot) {
-            _tokenGot(new TokenGotEvent(this, channelIndex, retArray, vectorLength, true));
+            _tokenGot(new TokenGotEvent(this, channelIndex, retArray,
+                    vectorLength, true));
         }
 
         int index = 1;
@@ -1013,7 +1014,8 @@ public class IOPort extends ComponentPort {
             if (token == null) {
                 token = localToken;
                 if (_notifyingTokensGot) {
-                    _tokenGot(new TokenGotEvent(this, channelIndex, token, false));
+                    _tokenGot(new TokenGotEvent(this, channelIndex, token,
+                            false));
                 }
             }
         }
@@ -2261,7 +2263,8 @@ public class IOPort extends ComponentPort {
             _workspace.getReadAccess();
             if (_numberOfSinksVersion != _workspace.getVersion()) {
                 Nameable container = getContainer();
-                Director excDirector = ((Actor) container).getExecutiveDirector();
+                Director excDirector = ((Actor) container)
+                        .getExecutiveDirector();
                 int depthOfDirector = excDirector.depthInHierarchy();
                 LinkedList result = new LinkedList();
                 Iterator ports = deepConnectedPortList().iterator();
@@ -2270,11 +2273,9 @@ public class IOPort extends ComponentPort {
                     IOPort port = (IOPort) ports.next();
                     int depth = port.getContainer().depthInHierarchy();
 
-                    if (port.isInput() 
-                            && (depth >= depthOfDirector)) { 
+                    if (port.isInput() && (depth >= depthOfDirector)) {
                         result.addLast(port);
-                    } else if (port.isOutput() 
-                            && (depth < depthOfDirector)
+                    } else if (port.isOutput() && (depth < depthOfDirector)
                             && (port.numberOfSinks() > 0)) {
                         result.addLast(port);
                     }
@@ -2315,7 +2316,8 @@ public class IOPort extends ComponentPort {
                 int depthOfDirector = -1;
 
                 if (container != null) {
-                    Director director = ((Actor) container).getExecutiveDirector();
+                    Director director = ((Actor) container)
+                            .getExecutiveDirector();
                     depthOfDirector = director.depthInHierarchy();
                 }
 
@@ -2326,12 +2328,10 @@ public class IOPort extends ComponentPort {
                     IOPort port = (IOPort) ports.next();
                     int depth = port.depthInHierarchy();
 
-                    if (port.isInput() 
-                            && (depth <= depthOfDirector) 
+                    if (port.isInput() && (depth <= depthOfDirector)
                             && (port.numberOfSources() > 0)) {
                         result.addLast(port);
-                    } else if (port.isOutput() 
-                            && (depth > depthOfDirector)) {
+                    } else if (port.isOutput() && (depth > depthOfDirector)) {
                         result.addLast(port);
                     }
                 }
@@ -2806,7 +2806,8 @@ public class IOPort extends ComponentPort {
             _workspace.getReadAccess();
             if (_sinkPortListVersion != _workspace.getVersion()) {
                 Nameable container = getContainer();
-                Director excDirector = ((Actor) container).getExecutiveDirector();
+                Director excDirector = ((Actor) container)
+                        .getExecutiveDirector();
                 int depthOfDirector = excDirector.depthInHierarchy();
                 _sinkPortList = new LinkedList();
                 Iterator ports = deepConnectedPortList().iterator();
@@ -2849,7 +2850,8 @@ public class IOPort extends ComponentPort {
                 int depthOfDirector = -1;
 
                 if (container != null) {
-                    Director director = ((Actor) container).getExecutiveDirector();
+                    Director director = ((Actor) container)
+                            .getExecutiveDirector();
                     depthOfDirector = director.depthInHierarchy();
                 }
 
@@ -4146,7 +4148,7 @@ public class IOPort extends ComponentPort {
     // A cache of the number of sources, since it's expensive to compute.
     private transient int _numberOfSources;
     private transient long _numberOfSourcesVersion = -1;
-    
+
     // A cache of the sink port list.
     private transient LinkedList _sinkPortList;
     private transient long _sinkPortListVersion;

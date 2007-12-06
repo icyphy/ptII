@@ -646,7 +646,7 @@ public class Manager extends NamedObj implements Runnable {
                     // Do not attempt to preinitialize transparent composite actors.
                     // Note that the cast is safe, as everything in Ptolemy that
                     // is an actor is also a ComponentEntity.
-                    if (((ComponentEntity)actor).isOpaque()) {
+                    if (((ComponentEntity) actor).isOpaque()) {
                         actor.preinitialize();
                     }
 
@@ -660,8 +660,9 @@ public class Manager extends NamedObj implements Runnable {
                 }
             }
             if (System.currentTimeMillis() - startTime > 60000) {
-                System.out.println("Manager.iterate(): preinitialize() finished: "
-                        + timeAndMemory(startTime));
+                System.out
+                        .println("Manager.iterate(): preinitialize() finished: "
+                                + timeAndMemory(startTime));
             }
 
             if (!_typesResolved) {

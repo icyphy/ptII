@@ -227,7 +227,7 @@ public class Autocorrelation extends SDFTransformer {
         Autocorrelation newObject = (Autocorrelation) super.clone(workspace);
         newObject.input.setTypeAtLeast(new FunctionTerm(newObject.input));
         newObject.output.setTypeAtLeast(newObject.new OutputTypeTerm());
-        
+
         return newObject;
     }
 
@@ -378,16 +378,16 @@ public class Autocorrelation extends SDFTransformer {
          *  associated typeable cannot be determined.
          */
         public Object getValue() throws IllegalActionException {
-            ConstVariableModelAnalysis analysis = 
-                ConstVariableModelAnalysis.getAnalysis(symmetricOutput);
-            if (analysis.isConstant(symmetricOutput) && 
-               analysis.isConstant(numberOfLags)) {
-                Token symmetricOutputToken = 
-                  analysis.getConstantValue(symmetricOutput);
-                Token numberOfLagsToken =
-                  analysis.getConstantValue(numberOfLags);
+            ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
+                    .getAnalysis(symmetricOutput);
+            if (analysis.isConstant(symmetricOutput)
+                    && analysis.isConstant(numberOfLags)) {
+                Token symmetricOutputToken = analysis
+                        .getConstantValue(symmetricOutput);
+                Token numberOfLagsToken = analysis
+                        .getConstantValue(numberOfLags);
                 int lags = ((IntToken) numberOfLagsToken).intValue();
-                if (((BooleanToken)symmetricOutputToken).booleanValue()) {
+                if (((BooleanToken) symmetricOutputToken).booleanValue()) {
                     return _getArrayTypeRaw(2 * lags + 1);
                 } else {
                     return _getArrayTypeRaw(2 * lags);
@@ -429,7 +429,8 @@ public class Autocorrelation extends SDFTransformer {
          *  @exception IllegalActionException If the type of the typeable
          *   cannot be determined.
          */
-        private ArrayType _getArrayTypeRaw(int length) throws IllegalActionException {
+        private ArrayType _getArrayTypeRaw(int length)
+                throws IllegalActionException {
             Type type = input.getType();
             if (_arrayType == null || !_arrayType.getElementType().equals(type)) {
                 _arrayType = new ArrayType(type, length);

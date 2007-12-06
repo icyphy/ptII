@@ -94,7 +94,7 @@ public class ArrayPlotterXY extends Plotter implements SequenceActor {
         x.setTypeEquals(BaseType.DOUBLE);
         x.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         new Parameter(x, "_showName", BooleanToken.TRUE);
-        
+
         y = new TypedIOPort(this, "y", true, false);
         y.setMultiport(true);
         y.setTypeEquals(BaseType.DOUBLE);
@@ -173,9 +173,12 @@ public class ArrayPlotterXY extends Plotter implements SequenceActor {
                         ((Plot) plot).clear(i + _offset);
 
                         for (int j = 0; j < xArray.length; j++) {
-                            double xValue = ((DoubleToken) xArray[j]).doubleValue();
-                            double yValue = ((DoubleToken) yArray[j]).doubleValue();
-                            ((Plot) plot).addPoint(i + _offset, xValue, yValue, true);
+                            double xValue = ((DoubleToken) xArray[j])
+                                    .doubleValue();
+                            double yValue = ((DoubleToken) yArray[j])
+                                    .doubleValue();
+                            ((Plot) plot).addPoint(i + _offset, xValue, yValue,
+                                    true);
                         }
                     }
                 }
@@ -213,7 +216,8 @@ public class ArrayPlotterXY extends Plotter implements SequenceActor {
                     for (int j = 0; j < xArray.length; j++) {
                         double xValue = ((DoubleToken) xArray[j]).doubleValue();
                         double yValue = ((DoubleToken) yArray[j]).doubleValue();
-                        ((Plot) plot).addPoint(i + _offset, xValue, yValue, true);
+                        ((Plot) plot).addPoint(i + _offset, xValue, yValue,
+                                true);
                     }
                 }
             }

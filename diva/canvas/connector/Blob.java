@@ -64,7 +64,7 @@ public class Blob implements ConnectorEnd {
     /** The size unit
      */
     private double _unit = 8.0;
-    
+
     /** The fill color. */
     private Paint _fillColor = Color.black;
 
@@ -122,7 +122,8 @@ public class Blob implements ConnectorEnd {
     /**
      * Create a new blob at the given coordinates and in the given style.
      */
-    public Blob(double x, double y, double normal, int style, double size, Paint fillColor) {
+    public Blob(double x, double y, double normal, int style, double size,
+            Paint fillColor) {
         _originX = x;
         _originY = y;
         _normal = normal;
@@ -131,7 +132,7 @@ public class Blob implements ConnectorEnd {
         _fillColor = fillColor;
         reshape();
     }
-    
+
     /** Get the bounding box of the shape used to draw
      * this connector end.
      */

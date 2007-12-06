@@ -88,7 +88,6 @@ public class FloatToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    
     /** Convert the specified token into an instance of FloatToken.
      *  This method does lossless conversion.  The units of the
      *  returned token will be the same as the units of the given
@@ -106,8 +105,7 @@ public class FloatToken extends ScalarToken {
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out.
      */
-    public static FloatToken convert(Token token)
-            throws IllegalActionException {
+    public static FloatToken convert(Token token) throws IllegalActionException {
         if (token instanceof FloatToken) {
             return (FloatToken) token;
         }
@@ -178,7 +176,7 @@ public class FloatToken extends ScalarToken {
      */
     public float floatValue() {
         return _value;
-    }    
+    }
 
     /** Return the type of this token.
      *  @return BaseType.FLOAT
@@ -400,8 +398,8 @@ public class FloatToken extends ScalarToken {
     protected BooleanToken _isLessThan(ScalarToken rightArgument)
             throws IllegalActionException {
         FloatToken convertedArgument = (FloatToken) rightArgument;
-        return BooleanToken.getInstance(_value < convertedArgument
-                .floatValue());
+        return BooleanToken
+                .getInstance(_value < convertedArgument.floatValue());
     }
 
     /** Return a new token whose value is the value of this token
@@ -433,8 +431,7 @@ public class FloatToken extends ScalarToken {
      *  @return A new FloatToken containing the result.
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
-        float difference = _value
-                - ((FloatToken) rightArgument).floatValue();
+        float difference = _value - ((FloatToken) rightArgument).floatValue();
         return new FloatToken(difference);
     }
 

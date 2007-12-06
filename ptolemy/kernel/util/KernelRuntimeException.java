@@ -151,7 +151,7 @@ public class KernelRuntimeException extends RuntimeException {
     public String getMessage() {
         return _message;
     }
-    
+
     /** Get the first Nameable, if any, that was passed as an argument.
      *  @return The first Nameable that was passed in.  If no Nameable
      *  was passed in, then return null.

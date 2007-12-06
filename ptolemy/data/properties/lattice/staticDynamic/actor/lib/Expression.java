@@ -53,8 +53,7 @@ public class Expression extends PropertyConstraintHelper {
      * @param lattice The staticDynamic lattice.
      * @throws IllegalActionException 
      */
-    public Expression(PropertySolver solver, 
-            ptolemy.actor.lib.Expression actor)
+    public Expression(PropertySolver solver, ptolemy.actor.lib.Expression actor)
             throws IllegalActionException {
 
         super(solver, actor, false);

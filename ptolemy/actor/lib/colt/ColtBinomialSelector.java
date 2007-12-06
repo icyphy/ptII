@@ -164,7 +164,8 @@ public class ColtBinomialSelector extends ColtRandomSource {
                     selected = _generator.nextInt(trialsRemaining, p);
                 } else {
                     selected = trialsRemaining;
-                };
+                }
+                ;
             }
 
             _current[i] = new IntToken(selected);

@@ -95,13 +95,13 @@ public class RenameConfigurer extends Query implements ChangeListener,
     public void apply() {
         if (_changed) {
             String newName = getStringValue("New name");
-            String displayName = StringUtilities.escapeForXML(
-                    getStringValue("Display name"));
+            String displayName = StringUtilities
+                    .escapeForXML(getStringValue("Display name"));
 
             NamedObj parent = _object.getContainer();
             String oldName = _object.getName();
-            String oldDisplayName = StringUtilities.escapeForXML(
-                    _object.getDisplayName());
+            String oldDisplayName = StringUtilities.escapeForXML(_object
+                    .getDisplayName());
 
             StringBuffer moml = new StringBuffer("<");
             String elementName = _object.getElementName();
@@ -168,7 +168,7 @@ public class RenameConfigurer extends Query implements ChangeListener,
             moml.append("</");
             moml.append(elementName);
             moml.append(">");
-            
+
             MoMLChangeRequest request = new MoMLChangeRequest(this, // originator
                     parent, // context
                     moml.toString(), // MoML code

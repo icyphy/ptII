@@ -138,11 +138,11 @@ public class DocEffigy extends Effigy {
                 if (extension.equals("xml")) {
                     // Check for DTD designation.
                     if (checkForDTD(input,
-                                "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML",
-                                null)) {
+                            "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML",
+                            null)) {
                         // This is a doc file.
-                        DocEffigy effigy = new DocEffigy(container,
-                                container.uniqueName("effigy"));
+                        DocEffigy effigy = new DocEffigy(container, container
+                                .uniqueName("effigy"));
                         effigy.uri.setURL(input);
                         return effigy;
                     }

@@ -109,7 +109,8 @@ public class PlotTableauFrame extends TableauFrame {
      *   an instance of Plot.
      *  @param placeable The associated plot actor, or null if none.
      */
-    public PlotTableauFrame(Tableau tableau, PlotBox plotBox, Placeable placeable) {
+    public PlotTableauFrame(Tableau tableau, PlotBox plotBox,
+            Placeable placeable) {
         super(tableau, null, placeable);
         plot = plotBox;
 

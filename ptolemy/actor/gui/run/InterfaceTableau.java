@@ -82,12 +82,12 @@ public class InterfaceTableau extends Tableau {
                             + " It is: " + model);
         }
 
-        _manager = ((CompositeActor)model).getManager();
+        _manager = ((CompositeActor) model).getManager();
         // Create a manager if necessary.
         if (_manager == null) {
             try {
                 _manager = new Manager(model.workspace(), "manager");
-                ((CompositeActor)model).setManager(_manager);
+                ((CompositeActor) model).setManager(_manager);
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(
                         this,
@@ -100,19 +100,19 @@ public class InterfaceTableau extends Tableau {
             }
         }
 
-        JFrame frame = new CustomizableRunFrame((CompositeActor)model, this);
+        JFrame frame = new CustomizableRunFrame((CompositeActor) model, this);
         setFrame(frame);
     }
-    
+
     ///////////////////////////////////////////////////////////////////////////
     ////                             private variables                     ////
-    
+
     /** The manager. */
     private Manager _manager;
 
     ///////////////////////////////////////////////////////////////////////////
     ////                             inner classes                         ////
-    
+
     /** A factory that creates run control panel tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
@@ -149,7 +149,8 @@ public class InterfaceTableau extends Tableau {
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains an InterfaceTableau.
-                List<InterfaceTableau> list = effigy.entityList(InterfaceTableau.class);
+                List<InterfaceTableau> list = effigy
+                        .entityList(InterfaceTableau.class);
                 InterfaceTableau tableau;
                 if (list.size() > 0) {
                     // Return the last one (most recently created) in the list.

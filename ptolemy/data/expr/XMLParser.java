@@ -87,7 +87,7 @@ public class XMLParser {
     public Document parser(InputStream is) throws Exception {
         return _documentBuilder.parse(is);
     }
-    
+
     /** The entity resolver that tries to first load a DTD file locally, and if
      *  it is not found, looks for it on the Internet using the DTD file's
      *  system ID. The DTD file, as well as its version, is uniquely identified
@@ -118,14 +118,14 @@ public class XMLParser {
             } else {
                 if (_localResources.containsKey(publicId)) {
                     String localFile = (String) _localResources.get(publicId);
-                    InputStream localStream =
-                        getClass().getResourceAsStream(localFile);
+                    InputStream localStream = getClass().getResourceAsStream(
+                            localFile);
                     if (localStream != null) {
                         return new InputSource(localStream);
                     }
                 }
                 try {
-                	URL url = new URL(systemId);
+                    URL url = new URL(systemId);
                     return new InputSource(url.openStream());
                 } catch (IOException e) {
                     return null;
@@ -140,8 +140,8 @@ public class XMLParser {
         private static final Hashtable _localResources = new Hashtable();
 
         static {
-            _localResources.put(
-                    "-//UC Berkeley//DTD MoML 1//EN", "../../moml/MoML_1.dtd");
+            _localResources.put("-//UC Berkeley//DTD MoML 1//EN",
+                    "../../moml/MoML_1.dtd");
         }
     }
 

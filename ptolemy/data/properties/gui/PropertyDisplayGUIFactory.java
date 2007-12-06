@@ -83,7 +83,7 @@ public class PropertyDisplayGUIFactory extends DoubleClickFactory {
         PropertyConstraintSolver solver = (PropertyConstraintSolver) getContainer();
         CompositeEntity top = (CompositeEntity) solver.getContainer();
 
-        while (top.getContainer() != null){
+        while (top.getContainer() != null) {
             top = (CompositeEntity) top.getContainer();
         }
         try {

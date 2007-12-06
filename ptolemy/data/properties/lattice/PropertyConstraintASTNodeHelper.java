@@ -38,7 +38,6 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PropertyConstraintHelper
 
@@ -51,9 +50,7 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
-public class PropertyConstraintASTNodeHelper 
-    extends PropertyConstraintHelper {
-
+public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
 
     /** 
      * Construct the property constraint helper associated
@@ -63,12 +60,11 @@ public class PropertyConstraintASTNodeHelper
      *  PropertyConstraintHelper(NamedObj, PropertyLattice, boolean)
      *  throws it. 
      */
-    public PropertyConstraintASTNodeHelper(
-            PropertySolver solver, ASTPtRootNode node) 
-            throws IllegalActionException {
+    public PropertyConstraintASTNodeHelper(PropertySolver solver,
+            ASTPtRootNode node) throws IllegalActionException {
         this(solver, node, true);
     }
-    
+
     /**
      * Construct the property constraint helper for the given
      * component and property lattice.
@@ -79,10 +75,10 @@ public class PropertyConstraintASTNodeHelper
      * @throws IllegalActionException Thrown if the helper cannot
      *  be initialized.
      */
-    public PropertyConstraintASTNodeHelper(
-            PropertySolver solver, ASTPtRootNode node, 
-            boolean useDefaultConstraints) throws IllegalActionException {
-        
+    public PropertyConstraintASTNodeHelper(PropertySolver solver,
+            ASTPtRootNode node, boolean useDefaultConstraints)
+            throws IllegalActionException {
+
         super(solver, node, useDefaultConstraints);
     }
 
@@ -92,10 +88,10 @@ public class PropertyConstraintASTNodeHelper
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public List constraintList() throws IllegalActionException {
-        List constraints = new ArrayList();  
+        List constraints = new ArrayList();
         return constraints;
     }
-    
+
     /**
      * Return the property value associated with the given property lattice
      * and the given port.  
@@ -108,15 +104,15 @@ public class PropertyConstraintASTNodeHelper
             return (Property) _resolvedProperties.get(astNode);
         } else {
             try {
-                return getSolver().getHelper(
-                        (ASTPtRootNode) astNode).getProperty(astNode);
+                return getSolver().getHelper((ASTPtRootNode) astNode)
+                        .getProperty(astNode);
             } catch (IllegalActionException e) {
 
                 throw new InternalErrorException("This should happen!");
-            }            
+            }
         }
     }
-    
+
     /**
      * Return the property term from the given port and lattice.
      * @param port The given port.
@@ -124,20 +120,21 @@ public class PropertyConstraintASTNodeHelper
      * @return The property term of the given port.
      * @throws IllegalActionException 
      */
-    public InequalityTerm getPropertyTerm(Object object) throws IllegalActionException {
-        
+    public InequalityTerm getPropertyTerm(Object object)
+            throws IllegalActionException {
+
         if (object instanceof InequalityTerm) {
             return (InequalityTerm) object;
         }
-        
+
         if (object == _component) {
-            
+
             return super.getPropertyTerm(object);
         } else {
             return getSolver().getHelper(object).getPropertyTerm(object);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

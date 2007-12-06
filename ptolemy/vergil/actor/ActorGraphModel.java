@@ -328,7 +328,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     // End of FIXME.
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Get an unmodifiable copy of the link set.
      * 
      *  @return The link set.
@@ -336,7 +336,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     protected Set<?> _getLinkSet() {
         return Collections.unmodifiableSet(_linkSet);
     }
-    
+
     /** Remove a link from the link set. This function is not made synchronized.
      *  Concurrent modification on the link set should be avoided.
      * 

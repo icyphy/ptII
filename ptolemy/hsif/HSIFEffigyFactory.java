@@ -111,8 +111,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
             }
         }
 
-        if (input != null && 
-                checkForDTD(input, "<!DOCTYPE", ".*HSIF.dtd.*")) {
+        if (input != null && checkForDTD(input, "<!DOCTYPE", ".*HSIF.dtd.*")) {
             FileWriter outputFileWriter = null;
             try {
                 _inCreateEffigy = true;

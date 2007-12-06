@@ -105,10 +105,10 @@ public class QueuedTypedIOPort extends TypedIOPort {
 
     /** Clear the queue.
      */
-    public void clear () {
+    public void clear() {
         myQueue.clear();
     }
-    
+
     /**
      * Set the initial token value.
      * @param initialValue The initial value of the token.
@@ -141,7 +141,7 @@ public class QueuedTypedIOPort extends TypedIOPort {
      *  channel.
      *  @exception NoRoomException If thrown while sending to the channel.
      */
-    public void send(int channelIndex, Token token) 
+    public void send(int channelIndex, Token token)
             throws IllegalActionException, NoRoomException {
         if (latency == 0) {
             super.send(channelIndex, token);

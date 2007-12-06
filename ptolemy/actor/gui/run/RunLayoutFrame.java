@@ -78,11 +78,8 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
      *  @param pane The run pane whose layout is being edited.
      *  @exception IllegalActionException If the XML to be parsed has errors.
      */
-    public RunLayoutFrame(
-            CompositeActor model,
-            Tableau tableau,
-            CustomizableRunPane pane)
-            throws IllegalActionException {
+    public RunLayoutFrame(CompositeActor model, Tableau tableau,
+            CustomizableRunPane pane) throws IllegalActionException {
         super(tableau);
         _model = model;
         _constraintsManager = pane.getLayoutConstraintsManager();
@@ -91,17 +88,19 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
         List<ContainerLayout> layouts = _constraintsManager.getLayouts();
         for (int index = 0; index < layouts.size(); index++) {
             ContainerLayout containerLayout = layouts.get(index);
-            Container container = _constraintsManager.getContainer(containerLayout);
+            Container container = _constraintsManager
+                    .getContainer(containerLayout);
             if (container == null) {
                 // If data is malformed, issue a warning and proceed.
                 try {
-                    MessageHandler.warning( "A container with name "
-                            + containerLayout.getName()
-                            + " was found in the contstraints file but was not found in the container");
+                    MessageHandler
+                            .warning("A container with name "
+                                    + containerLayout.getName()
+                                    + " was found in the contstraints file but was not found in the container");
                 } catch (CancelException ex) {
                     throw new IllegalActionException(model, "Canceled");
                 }
-                       
+
             } else {
                 addContainerLayout(containerLayout, container);
             }
@@ -124,8 +123,8 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
         // check to see if another panel with this name already exists
         ContainerLayout layout = _constraintsManager.getContainerLayout(name);
         if (layout != null)
-          throw new IllegalArgumentException("A container with name " + name
-              + " already exists");
+            throw new IllegalArgumentException("A container with name " + name
+                    + " already exists");
 
         layout = new ContainerLayout(name, "pref", "pref");
         _constraintsManager.addLayout(layout);
@@ -134,7 +133,7 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
 
         addContainerLayout(layout, container);
     }
-    
+
     /** Return true if the frame has a container with the specified name.
      *  @param name The name of the container.
      */
@@ -149,10 +148,11 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
     public void removeContainer(String name) {
         ContainerLayout layout = _constraintsManager.getContainerLayout(name);
         if (layout == null) {
-            throw new InternalErrorException("Container " + name + " does not exist");
+            throw new InternalErrorException("Container " + name
+                    + " does not exist");
         }
         // Also have to remove any contained containers!
-        Container container =_constraintsManager.getContainer(layout);
+        Container container = _constraintsManager.getContainer(layout);
         Component[] components = container.getComponents();
         for (int i = 0; i < components.length; i++) {
             if (components[i] instanceof Container) {
@@ -180,21 +180,24 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
             // Save the XML.
             // FIXME: Do this only if the layout has been modified.
             String xml = _constraintsManager.getXML();
-            Attribute layoutAttribute = _model.getAttribute("_runLayoutAttribute");
+            Attribute layoutAttribute = _model
+                    .getAttribute("_runLayoutAttribute");
             if (layoutAttribute == null) {
                 try {
-                    layoutAttribute = new ConfigurableAttribute(_model, "_runLayoutAttribute");
+                    layoutAttribute = new ConfigurableAttribute(_model,
+                            "_runLayoutAttribute");
                 } catch (KernelException e) {
                     throw new InternalErrorException(e);
                 }
             }
             if (!(layoutAttribute instanceof ConfigurableAttribute)) {
-                MessageHandler.error("Model contains an attribute named " +
-                        "'_runLayoutAttribute' that is not the right class " +
-                        "to save a run layout in: " + _model.getFullName());
+                MessageHandler.error("Model contains an attribute named "
+                        + "'_runLayoutAttribute' that is not the right class "
+                        + "to save a run layout in: " + _model.getFullName());
             }
             try {
-                ((ConfigurableAttribute)layoutAttribute).configure(null, null, xml);
+                ((ConfigurableAttribute) layoutAttribute).configure(null, null,
+                        xml);
             } catch (Exception e) {
                 throw new InternalErrorException(e);
             }
@@ -205,7 +208,7 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The run pane whose layout is being edited. */
     protected CustomizableRunPane _pane;
 
@@ -220,8 +223,10 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
      *  @param containerLayout The layout to edit.
      *  @param container The container into which to put the editor.
      */
-    private void addContainerLayout(ContainerLayout containerLayout, Container container) {
-        PtolemyFormEditor formEditor = new PtolemyFormEditor(this, containerLayout, container);
+    private void addContainerLayout(ContainerLayout containerLayout,
+            Container container) {
+        PtolemyFormEditor formEditor = new PtolemyFormEditor(this,
+                containerLayout, container);
         _editors.put(containerLayout, formEditor);
         _tabs.addTab(containerLayout.getName(), formEditor);
     }
@@ -237,7 +242,7 @@ public class RunLayoutFrame extends TableauFrame implements MultiContainerFrame 
 
     /** A list of new layouts. */
     private List<ContainerLayout> _newLayouts = new ArrayList<ContainerLayout>();
-    
+
     /** Tabbed pane for showing nested layouts. */
     private JTabbedPane _tabs = new JTabbedPane();
 }

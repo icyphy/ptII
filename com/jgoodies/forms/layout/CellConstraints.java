@@ -94,72 +94,68 @@ import java.util.StringTokenizer;
  * @version $Revision$
  */
 public final class CellConstraints implements Cloneable, Serializable {
-    
+
     // Alignment Constants *************************************************
-    
+
     /*
      * Implementation Note: Do not change the order of the following constants.
      * The serialization of class Alignment is ordinal-based and relies on it.
      */
-    
+
     /**
      * Use the column's or row's default alignment.
      */
-    public static final Alignment DEFAULT =
-        new Alignment("default", Alignment.BOTH);
+    public static final Alignment DEFAULT = new Alignment("default",
+            Alignment.BOTH);
 
     /**
      * Fill the cell either horizontally or vertically.
      */
-    public static final Alignment FILL = 
-        new Alignment("fill", Alignment.BOTH);
+    public static final Alignment FILL = new Alignment("fill", Alignment.BOTH);
 
     /**
      * Put the component in the left.
      */
-    public static final Alignment LEFT =
-        new Alignment("left", Alignment.HORIZONTAL);
+    public static final Alignment LEFT = new Alignment("left",
+            Alignment.HORIZONTAL);
 
     /**
      * Put the component in the right.
      */
-    public static final Alignment RIGHT =
-        new Alignment("right", Alignment.HORIZONTAL);
-    
+    public static final Alignment RIGHT = new Alignment("right",
+            Alignment.HORIZONTAL);
+
     /**
      * Put the component in the center.
      */
-    public static final Alignment CENTER =
-        new Alignment("center", Alignment.BOTH);
+    public static final Alignment CENTER = new Alignment("center",
+            Alignment.BOTH);
 
     /**
      * Put the component in the top.
      */
-    public static final Alignment TOP =
-        new Alignment("top", Alignment.VERTICAL);
+    public static final Alignment TOP = new Alignment("top", Alignment.VERTICAL);
 
     /**
      * Put the component in the bottom.
      */
-    public static final Alignment BOTTOM =
-        new Alignment("bottom", Alignment.VERTICAL);
+    public static final Alignment BOTTOM = new Alignment("bottom",
+            Alignment.VERTICAL);
 
     /**
      * An array of all enumeration values used to canonicalize 
      * deserialized alignments.
      */
-    private static final Alignment[] VALUES = 
-        { DEFAULT, FILL, LEFT, RIGHT, CENTER, TOP, BOTTOM };
-    
+    private static final Alignment[] VALUES = { DEFAULT, FILL, LEFT, RIGHT,
+            CENTER, TOP, BOTTOM };
+
     /**
      * A reusable <code>Insets</code> object to reduce object instantiation.
      */
-    private static final Insets EMPTY_INSETS = 
-        new Insets(0, 0, 0, 0);
-    
-    
+    private static final Insets EMPTY_INSETS = new Insets(0, 0, 0, 0);
+
     // Fields ***************************************************************
-    
+
     /**
      * Describes the component's horizontal grid origin (starts at 1).
      */
@@ -179,32 +175,30 @@ public final class CellConstraints implements Cloneable, Serializable {
      * Describes the component's vertical grid extent (number of cells).
      */
     public int gridHeight;
-    
+
     /**
      * Describes the component's horizontal alignment.
      */
     public Alignment hAlign;
-    
+
     /**
      * Describes the component's vertical alignment.
      */
     public Alignment vAlign;
-    
+
     /**
      * Describes the component's <code>Insets</code> in it's display area.
      */
     public Insets insets;
-    
-    
+
     // Instance Creation ****************************************************
-    
+
     /**
      * Constructs a default instance of <code>CellConstraints</code>.
      */
     public CellConstraints() {
         this(1, 1);
     }
-    
 
     /**
      * Constructs an instance of <code>CellConstraints</code> for the given
@@ -221,7 +215,6 @@ public final class CellConstraints implements Cloneable, Serializable {
     public CellConstraints(int gridX, int gridY) {
         this(gridX, gridY, 1, 1);
     }
-    
 
     /**
      * Constructs an instance of <code>CellConstraints</code> for the given
@@ -237,12 +230,11 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param hAlign	the component's horizontal alignment
      * @param vAlign	the component's vertical alignment
      */
-    public CellConstraints(int gridX, int gridY, 
-                            Alignment hAlign, Alignment vAlign) {
+    public CellConstraints(int gridX, int gridY, Alignment hAlign,
+            Alignment vAlign) {
         this(gridX, gridY, 1, 1, hAlign, vAlign, EMPTY_INSETS);
     }
 
-    
     /**
      * Constructs an instance of <code>CellConstraints</code> for the given
      * cell position and size.<p>
@@ -260,7 +252,6 @@ public final class CellConstraints implements Cloneable, Serializable {
     public CellConstraints(int gridX, int gridY, int gridWidth, int gridHeight) {
         this(gridX, gridY, gridWidth, gridHeight, DEFAULT, DEFAULT);
     }
-    
 
     /**
      * Constructs an instance of <code>CellConstraints</code> for the given
@@ -279,10 +270,9 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param vAlign    	the component's vertical alignment
      */
     public CellConstraints(int gridX, int gridY, int gridWidth, int gridHeight,
-                            Alignment hAlign, Alignment vAlign) {
+            Alignment hAlign, Alignment vAlign) {
         this(gridX, gridY, gridWidth, gridHeight, hAlign, vAlign, EMPTY_INSETS);
     }
-    
 
     /**
      * Constructs an instance of <code>CellConstraints</code> for 
@@ -304,31 +294,36 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @exception NullPointerException if the horizontal or vertical alignment is null
      * @exception IllegalArgumentException if an alignment orientation is invalid
      */
-    public CellConstraints(int gridX, int gridY, int gridWidth, int gridHeight, 
-                            Alignment hAlign, Alignment vAlign, Insets insets) {
-		this.gridX      = gridX;
-        this.gridY      = gridY;
-        this.gridWidth  = gridWidth;
+    public CellConstraints(int gridX, int gridY, int gridWidth, int gridHeight,
+            Alignment hAlign, Alignment vAlign, Insets insets) {
+        this.gridX = gridX;
+        this.gridY = gridY;
+        this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
-        this.hAlign     = hAlign;
-        this.vAlign     = vAlign;
-        this.insets     = insets;
+        this.hAlign = hAlign;
+        this.vAlign = vAlign;
+        this.insets = insets;
         if (gridX <= 0)
-            throw new IndexOutOfBoundsException("The grid x must be a positive number.");
+            throw new IndexOutOfBoundsException(
+                    "The grid x must be a positive number.");
         if (gridY <= 0)
-            throw new IndexOutOfBoundsException("The grid y must be a positive number.");
+            throw new IndexOutOfBoundsException(
+                    "The grid y must be a positive number.");
         if (gridWidth <= 0)
-            throw new IndexOutOfBoundsException("The grid width must be a positive number.");
+            throw new IndexOutOfBoundsException(
+                    "The grid width must be a positive number.");
         if (gridHeight <= 0)
-            throw new IndexOutOfBoundsException("The grid height must be a positive number.");
+            throw new IndexOutOfBoundsException(
+                    "The grid height must be a positive number.");
         if (hAlign == null)
-            throw new NullPointerException("The horizontal alignment must not be null.");
+            throw new NullPointerException(
+                    "The horizontal alignment must not be null.");
         if (vAlign == null)
-            throw new NullPointerException("The vertical alignment must not be null.");
+            throw new NullPointerException(
+                    "The vertical alignment must not be null.");
         ensureValidOrientations(hAlign, vAlign);
     }
-    
-    
+
     /**
      * Constructs an instance of <code>CellConstraints</code> from
      * the given encoded string properties.<p>
@@ -345,8 +340,7 @@ public final class CellConstraints implements Cloneable, Serializable {
     public CellConstraints(String encodedConstraints) {
         this();
         initFromConstraints(encodedConstraints);
-    }        
-	
+    }
 
     // Setters **************************************************************
 
@@ -366,8 +360,7 @@ public final class CellConstraints implements Cloneable, Serializable {
     public CellConstraints xy(int col, int row) {
         return xywh(col, row, 1, 1);
     }
-    
-	
+
     /**
      * Sets row and column origins; sets width and height to 1; 
      * decodes horizontal and vertical alignments from the given string.<p>
@@ -404,11 +397,10 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param rowAlign  vertical component alignment     
      * @return this
      */
-    public CellConstraints xy(int col, int row, 
-                              Alignment colAlign, Alignment rowAlign) {
+    public CellConstraints xy(int col, int row, Alignment colAlign,
+            Alignment rowAlign) {
         return xywh(col, row, 1, 1, colAlign, rowAlign);
     }
-    
 
     /**
      * Sets the row, column, width, and height; uses a height (row span) of 1 
@@ -427,7 +419,6 @@ public final class CellConstraints implements Cloneable, Serializable {
     public CellConstraints xyw(int col, int row, int colSpan) {
         return xywh(col, row, colSpan, 1, DEFAULT, DEFAULT);
     }
-	
 
     /**
      * Sets the row, column, width, and height; 
@@ -448,12 +439,11 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @return this
      * @exception IllegalArgumentException if an alignment orientation is invalid
      */
-    public CellConstraints xyw(int col, int row, int colSpan,  
-                                 String encodedAlignments) {
+    public CellConstraints xyw(int col, int row, int colSpan,
+            String encodedAlignments) {
         return xywh(col, row, colSpan, 1, encodedAlignments);
     }
 
-    
     /**
      * Sets the row, column, width, and height; sets the horizontal 
      * and vertical aligment using the specified alignment objects.
@@ -472,11 +462,10 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @return this
      * @exception IllegalArgumentException if an alignment orientation is invalid
      */
-    public CellConstraints xyw(int col, int row, int colSpan, 
-                                 Alignment colAlign, Alignment rowAlign) {
+    public CellConstraints xyw(int col, int row, int colSpan,
+            Alignment colAlign, Alignment rowAlign) {
         return xywh(col, row, colSpan, 1, colAlign, rowAlign);
     }
-    
 
     /**
      * Sets the row, column, width, and height; uses default alignments.<p>
@@ -495,7 +484,6 @@ public final class CellConstraints implements Cloneable, Serializable {
     public CellConstraints xywh(int col, int row, int colSpan, int rowSpan) {
         return xywh(col, row, colSpan, rowSpan, DEFAULT, DEFAULT);
     }
-    
 
     /**
      * Sets the row, column, width, and height; 
@@ -516,14 +504,13 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @return this
      * @exception IllegalArgumentException if an alignment orientation is invalid
      */
-    public CellConstraints xywh(int col, int row, int colSpan, int rowSpan, 
-                                 String encodedAlignments) {
+    public CellConstraints xywh(int col, int row, int colSpan, int rowSpan,
+            String encodedAlignments) {
         CellConstraints result = xywh(col, row, colSpan, rowSpan);
         result.setAlignments(encodedAlignments);
         return result;
     }
 
-    
     /**
      * Sets the row, column, width, and height; sets the horizontal 
      * and vertical aligment using the specified alignment objects.<p>
@@ -542,21 +529,20 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @return this
      * @exception IllegalArgumentException if an alignment orientation is invalid
      */
-    public CellConstraints xywh(int col, int row, int colSpan, int rowSpan, 
-                                 Alignment colAlign, Alignment rowAlign) {
-        this.gridX      = col;
-        this.gridY      = row;
-        this.gridWidth  = colSpan;
+    public CellConstraints xywh(int col, int row, int colSpan, int rowSpan,
+            Alignment colAlign, Alignment rowAlign) {
+        this.gridX = col;
+        this.gridY = row;
+        this.gridWidth = colSpan;
         this.gridHeight = rowSpan;
-        this.hAlign     = colAlign;
-        this.vAlign     = rowAlign;
+        this.hAlign = colAlign;
+        this.vAlign = rowAlign;
         ensureValidOrientations(hAlign, vAlign);
         return this;
     }
-    
 
     // Parsing and Decoding String Descriptions *****************************
-    
+
     /**
      * Decodes and returns the grid bounds and alignments for this 
      * constraints as an array of six integers. The string representation
@@ -573,21 +559,23 @@ public final class CellConstraints implements Cloneable, Serializable {
      *     follow the constraint syntax
      */
     private void initFromConstraints(String encodedConstraints) {
-        StringTokenizer tokenizer = new StringTokenizer(encodedConstraints, " ,");
+        StringTokenizer tokenizer = new StringTokenizer(encodedConstraints,
+                " ,");
         int argCount = tokenizer.countTokens();
         if (!(argCount == 2 || argCount == 4 || argCount == 6))
-           throw new IllegalArgumentException(
+            throw new IllegalArgumentException(
                     "You must provide 2, 4 or 6 arguments.");
-        
+
         Integer nextInt = decodeInt(tokenizer.nextToken());
-        if (nextInt == null) { 
+        if (nextInt == null) {
             throw new IllegalArgumentException(
                     "First cell constraint element must be a number.");
         }
         gridX = nextInt.intValue();
         if (gridX <= 0)
-            throw new IndexOutOfBoundsException("The grid x must be a positive number.");
-            
+            throw new IndexOutOfBoundsException(
+                    "The grid x must be a positive number.");
+
         nextInt = decodeInt(tokenizer.nextToken());
         if (nextInt == null) {
             throw new IllegalArgumentException(
@@ -600,7 +588,7 @@ public final class CellConstraints implements Cloneable, Serializable {
 
         if (!tokenizer.hasMoreTokens())
             return;
-            
+
         String token = tokenizer.nextToken();
         nextInt = decodeInt(token);
         if (nextInt != null) {
@@ -609,27 +597,26 @@ public final class CellConstraints implements Cloneable, Serializable {
             gridWidth = nextInt.intValue();
             if (gridWidth <= 0)
                 throw new IndexOutOfBoundsException(
-                    "The grid width must be a positive number.");
+                        "The grid width must be a positive number.");
             nextInt = decodeInt(tokenizer.nextToken());
             if (nextInt == null)
                 throw new IllegalArgumentException(
-                    "Fourth cell constraint element must be like third.");
+                        "Fourth cell constraint element must be like third.");
             gridHeight = nextInt.intValue();
             if (gridHeight <= 0)
                 throw new IndexOutOfBoundsException(
-                    "The grid height must be a positive number.");
+                        "The grid height must be a positive number.");
 
             if (!tokenizer.hasMoreTokens())
                 return;
             token = tokenizer.nextToken();
         }
-            
+
         hAlign = decodeAlignment(token);
         vAlign = decodeAlignment(tokenizer.nextToken());
         ensureValidOrientations(hAlign, vAlign);
     }
-    
-    
+
     /**
      * Decodes a string description for the horizontal and vertical alignment 
      * and sets this CellConstraints' alignment values.<p>
@@ -653,7 +640,6 @@ public final class CellConstraints implements Cloneable, Serializable {
         vAlign = decodeAlignment(tokenizer.nextToken());
         ensureValidOrientations(hAlign, vAlign);
     }
-    
 
     /**
      * Decodes an integer string representation and returns the
@@ -669,8 +655,7 @@ public final class CellConstraints implements Cloneable, Serializable {
             return null;
         }
     }
-    
-    
+
     /**
      * Parses an alignment string description and 
      * returns the corresponding alignment value.
@@ -682,7 +667,6 @@ public final class CellConstraints implements Cloneable, Serializable {
         return Alignment.valueOf(encodedAlignment);
     }
 
-    
     /**
      * Checks and verifies that this constraints object has valid grid 
      * index values, i. e. the display area cells are inside the form's grid. 
@@ -694,36 +678,33 @@ public final class CellConstraints implements Cloneable, Serializable {
      */
     void ensureValidGridBounds(int colCount, int rowCount) {
         if (gridX <= 0) {
-            throw new IndexOutOfBoundsException(
-                "The column index " + gridX + " must be positive.");
+            throw new IndexOutOfBoundsException("The column index " + gridX
+                    + " must be positive.");
         }
         if (gridX > colCount) {
-            throw new IndexOutOfBoundsException(
-                "The column index " + gridX + " must be less than or equal to " 
-                    + colCount + ".");
+            throw new IndexOutOfBoundsException("The column index " + gridX
+                    + " must be less than or equal to " + colCount + ".");
         }
         if (gridX + gridWidth - 1 > colCount) {
-            throw new IndexOutOfBoundsException(
-                "The grid width " + gridWidth + " must be less than or equal to "
+            throw new IndexOutOfBoundsException("The grid width " + gridWidth
+                    + " must be less than or equal to "
                     + (colCount - gridX + 1) + ".");
         }
         if (gridY <= 0) {
-            throw new IndexOutOfBoundsException(
-                "The row index " + gridY + " must be positive.");
+            throw new IndexOutOfBoundsException("The row index " + gridY
+                    + " must be positive.");
         }
         if (gridY > rowCount) {
-            throw new IndexOutOfBoundsException(
-                "The row index " + gridY + " must be less than or equal to "
-                    + rowCount + ".");
+            throw new IndexOutOfBoundsException("The row index " + gridY
+                    + " must be less than or equal to " + rowCount + ".");
         }
         if (gridY + gridHeight - 1 > rowCount) {
-            throw new IndexOutOfBoundsException(
-                "The grid height " + gridHeight + " must be less than or equal to "
+            throw new IndexOutOfBoundsException("The grid height " + gridHeight
+                    + " must be less than or equal to "
                     + (rowCount - gridY + 1) + ".");
         }
     }
-    
-    
+
     /**
      * Checks and verifies that the horizontal alignment is a horizontal
      * and the vertical alignment is vertical. 
@@ -732,16 +713,18 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param verticalAlignment    the vertical alignment
      * @exception IllegalArgumentException if an alignment is invalid
      */
-    private void ensureValidOrientations(Alignment horizontalAlignment, Alignment verticalAlignment) {
+    private void ensureValidOrientations(Alignment horizontalAlignment,
+            Alignment verticalAlignment) {
         if (!horizontalAlignment.isHorizontal())
-            throw new IllegalArgumentException("The horizontal alignment must be one of: left, center, right, fill, default.");
+            throw new IllegalArgumentException(
+                    "The horizontal alignment must be one of: left, center, right, fill, default.");
         if (!verticalAlignment.isVertical())
-            throw new IllegalArgumentException("The vertical alignment must be one of: top, center, botto, fill, default.");
+            throw new IllegalArgumentException(
+                    "The vertical alignment must be one of: top, center, botto, fill, default.");
     }
-    
-    
+
     // Settings Component Bounds ********************************************
-    
+
     /**
      * Sets the component's bounds using the given component and cell bounds.
      * 
@@ -753,33 +736,35 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param prefWidthMeasure	  measures the preferred width
      * @param prefHeightMeasure  measures the preferred height
      */
-    void setBounds(Component c, FormLayout layout, 
-                   Rectangle cellBounds, 
-                   FormLayout.Measure minWidthMeasure,
-                   FormLayout.Measure minHeightMeasure,
-                   FormLayout.Measure prefWidthMeasure,
-                   FormLayout.Measure prefHeightMeasure) {
-        ColumnSpec colSpec = gridWidth  == 1 ? layout.getColumnSpec(gridX) : null;
-        RowSpec    rowSpec = gridHeight == 1 ? layout.getRowSpec(gridY) : null;
+    void setBounds(Component c, FormLayout layout, Rectangle cellBounds,
+            FormLayout.Measure minWidthMeasure,
+            FormLayout.Measure minHeightMeasure,
+            FormLayout.Measure prefWidthMeasure,
+            FormLayout.Measure prefHeightMeasure) {
+        ColumnSpec colSpec = gridWidth == 1 ? layout.getColumnSpec(gridX)
+                : null;
+        RowSpec rowSpec = gridHeight == 1 ? layout.getRowSpec(gridY) : null;
         Alignment concreteHAlign = concreteAlignment(this.hAlign, colSpec);
         Alignment concreteVAlign = concreteAlignment(this.vAlign, rowSpec);
-        Insets concreteInsets = this.insets != null ? this.insets : EMPTY_INSETS;
+        Insets concreteInsets = this.insets != null ? this.insets
+                : EMPTY_INSETS;
         int cellX = cellBounds.x + concreteInsets.left;
         int cellY = cellBounds.y + concreteInsets.top;
-        int cellW = cellBounds.width  - concreteInsets.left - concreteInsets.right;
-        int cellH = cellBounds.height - concreteInsets.top  - concreteInsets.bottom;
+        int cellW = cellBounds.width - concreteInsets.left
+                - concreteInsets.right;
+        int cellH = cellBounds.height - concreteInsets.top
+                - concreteInsets.bottom;
         int compW = componentSize(c, colSpec, cellW, minWidthMeasure,
-                                                     prefWidthMeasure);
+                prefWidthMeasure);
         int compH = componentSize(c, rowSpec, cellH, minHeightMeasure,
-                                                     prefHeightMeasure);
-        int x = origin(concreteHAlign, cellX, cellW, compW); 
+                prefHeightMeasure);
+        int x = origin(concreteHAlign, cellX, cellW, compW);
         int y = origin(concreteVAlign, cellY, cellH, compH);
         int w = extent(concreteHAlign, cellW, compW);
         int h = extent(concreteVAlign, cellH, compH);
         c.setBounds(x, y, w, h);
     }
-    
-    
+
     /**
      * Computes and returns the concrete alignment. Takes into account
      * the cell alignment and <i>the</i> <code>FormSpec</code> if applicable.<p>
@@ -797,13 +782,12 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param formSpec        the associated column or row specification
      * @return the concrete alignment
      */
-    private Alignment concreteAlignment(Alignment cellAlignment, FormSpec formSpec) {
-        return formSpec == null 
-            ? (cellAlignment == DEFAULT ? FILL : cellAlignment)
-            : usedAlignment(cellAlignment, formSpec);
+    private Alignment concreteAlignment(Alignment cellAlignment,
+            FormSpec formSpec) {
+        return formSpec == null ? (cellAlignment == DEFAULT ? FILL
+                : cellAlignment) : usedAlignment(cellAlignment, formSpec);
     }
 
-    
     /**
      * Returns the alignment used for a given form constraints object.
      * The cell alignment overrides the column or row default, unless
@@ -819,22 +803,22 @@ public final class CellConstraints implements Cloneable, Serializable {
             // Cell alignments other than DEFAULT override col/row alignments 
             return cellAlignment;
         }
-        FormSpec.DefaultAlignment defaultAlignment = formSpec.getDefaultAlignment();
-        if (defaultAlignment == FormSpec.FILL_ALIGN) 
+        FormSpec.DefaultAlignment defaultAlignment = formSpec
+                .getDefaultAlignment();
+        if (defaultAlignment == FormSpec.FILL_ALIGN)
             return FILL;
-        if (defaultAlignment == ColumnSpec.LEFT) 
+        if (defaultAlignment == ColumnSpec.LEFT)
             return LEFT;
         else if (defaultAlignment == FormSpec.CENTER_ALIGN)
             return CENTER;
-        else if (defaultAlignment == ColumnSpec.RIGHT) 
+        else if (defaultAlignment == ColumnSpec.RIGHT)
             return RIGHT;
-        else if (defaultAlignment == RowSpec.TOP) 
+        else if (defaultAlignment == RowSpec.TOP)
             return TOP;
-        else 
-            return BOTTOM;    
+        else
+            return BOTTOM;
     }
-    
-    
+
     /**
      * Computes and returns the pixel size of the given component using the
      * given form specification, measures, and cell size.
@@ -846,23 +830,20 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param cellSize		the cell size
      * @return the component size as measured or a constant
      */
-    private int componentSize(Component component,
-                               FormSpec formSpec,
-                               int cellSize,
-                               FormLayout.Measure minMeasure,
-                               FormLayout.Measure prefMeasure) {
+    private int componentSize(Component component, FormSpec formSpec,
+            int cellSize, FormLayout.Measure minMeasure,
+            FormLayout.Measure prefMeasure) {
         if (formSpec == null) {
             return prefMeasure.sizeOf(component);
         } else if (formSpec.getSize() == Sizes.MINIMUM) {
             return minMeasure.sizeOf(component);
         } else if (formSpec.getSize() == Sizes.PREFERRED) {
             return prefMeasure.sizeOf(component);
-        } else {  // default mode
-            return Math.min(cellSize, prefMeasure.sizeOf(component)); 
+        } else { // default mode
+            return Math.min(cellSize, prefMeasure.sizeOf(component));
         }
     }
-    
-    
+
     /**
      * Computes and returns the component's pixel origin.
      * 
@@ -872,20 +853,17 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param componentSize
      * @return the component's pixel origin
      */
-    private int origin(Alignment alignment, 
-                        int cellOrigin, 
-                        int cellSize, 
-                        int componentSize) {
+    private int origin(Alignment alignment, int cellOrigin, int cellSize,
+            int componentSize) {
         if (alignment == RIGHT || alignment == BOTTOM) {
             return cellOrigin + cellSize - componentSize;
         } else if (alignment == CENTER) {
             return cellOrigin + (cellSize - componentSize) / 2;
-        } else {  // left, top, fill
+        } else { // left, top, fill
             return cellOrigin;
         }
     }
-    
-    
+
     /**
      * Returns the component's pixel extent.
      * 
@@ -895,14 +873,11 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @return the component's pixel extent
      */
     private int extent(Alignment alignment, int cellSize, int componentSize) {
-        return alignment == FILL
-                    ? cellSize
-                    : componentSize;
+        return alignment == FILL ? cellSize : componentSize;
     }
-    
-    
+
     // Misc *****************************************************************
-    
+
     /**
      * Creates a copy of this cell constraints object.
      * 
@@ -918,8 +893,7 @@ public final class CellConstraints implements Cloneable, Serializable {
             throw new InternalError();
         }
     }
-    
-    
+
     /**
      * Constructs and returns a string representation of this constraints object.
      * 
@@ -940,15 +914,14 @@ public final class CellConstraints implements Cloneable, Serializable {
         buffer.append("; vAlign=");
         buffer.append(vAlign);
         if (!(EMPTY_INSETS.equals(insets))) {
-          buffer.append("; insets=");
-          buffer.append(insets);
+            buffer.append("; insets=");
+            buffer.append(insets);
         }
-        
+
         buffer.append(']');
         return buffer.toString();
-    }  
-    
-    
+    }
+
     /**
      * Returns a short string representation of this constraints object.
      * 
@@ -957,8 +930,7 @@ public final class CellConstraints implements Cloneable, Serializable {
     public String toShortString() {
         return toShortString(null);
     }
-    
-    
+
     /**
      * Returns a short string representation of this constraints object.
      * This method can use the given <code>FormLayout</code> 
@@ -982,51 +954,47 @@ public final class CellConstraints implements Cloneable, Serializable {
         buffer.append(hAlign.abbreviation());
         if (hAlign == DEFAULT && layout != null) {
             buffer.append('=');
-            ColumnSpec colSpec = gridWidth == 1
-                ? layout.getColumnSpec(gridX)
-                : null;
+            ColumnSpec colSpec = gridWidth == 1 ? layout.getColumnSpec(gridX)
+                    : null;
             buffer.append(concreteAlignment(hAlign, colSpec).abbreviation());
         }
         buffer.append(", ");
         buffer.append(vAlign.abbreviation());
         if (vAlign == DEFAULT && layout != null) {
             buffer.append('=');
-            RowSpec rowSpec = gridHeight == 1
-                ? layout.getRowSpec(gridY)
-                : null;
+            RowSpec rowSpec = gridHeight == 1 ? layout.getRowSpec(gridY) : null;
             buffer.append(concreteAlignment(vAlign, rowSpec).abbreviation());
         }
         buffer.append("\"");
         if (!(EMPTY_INSETS.equals(insets))) {
-          buffer.append(", ");
-          buffer.append(insets);
+            buffer.append(", ");
+            buffer.append(insets);
         }
-        
+
         buffer.append(')');
         return buffer.toString();
-    }  
-    
-    
+    }
+
     // Helper Class *********************************************************
-    
+
     /**
      * An ordinal-based serializable typesafe enumeration for component 
      * alignment types as used by the {@link FormLayout}.
      */
     public static final class Alignment implements Serializable {
-        
+
         private static final int HORIZONTAL = 0;
-        private static final int VERTICAL   = 1;
-        private static final int BOTH       = 2;
-        
+        private static final int VERTICAL = 1;
+        private static final int BOTH = 2;
+
         private final transient String name;
-        private final transient int    orientation;
-        
-        private Alignment(String name, int orientation) { 
-            this.name        = name; 
+        private final transient int orientation;
+
+        private Alignment(String name, int orientation) {
+            this.name = name;
             this.orientation = orientation;
         }
-        
+
         static Alignment valueOf(String nameOrAbbreviation) {
             String str = nameOrAbbreviation.toLowerCase(Locale.ENGLISH);
             if (str.equals("d") || str.equals("default"))
@@ -1045,9 +1013,10 @@ public final class CellConstraints implements Cloneable, Serializable {
                 return BOTTOM;
             else
                 throw new IllegalArgumentException(
-                    "Invalid alignment " + nameOrAbbreviation
-                    + ". Must be one of: left, center, right, top, bottom, "
-                    + "fill, default, l, c, r, t, b, f, d.");
+                        "Invalid alignment "
+                                + nameOrAbbreviation
+                                + ". Must be one of: left, center, right, top, bottom, "
+                                + "fill, default, l, c, r, t, b, f, d.");
         }
 
         /**
@@ -1068,7 +1037,7 @@ public final class CellConstraints implements Cloneable, Serializable {
         public char abbreviation() {
             return name.charAt(0);
         }
-        
+
         private boolean isHorizontal() {
             return orientation != VERTICAL;
         }
@@ -1077,19 +1046,17 @@ public final class CellConstraints implements Cloneable, Serializable {
             return orientation != HORIZONTAL;
         }
 
-        
         // Serialization *********************************************************
-        
+
         private static int nextOrdinal = 0;
-        
+
         private final int ordinal = nextOrdinal++;
-        
+
         private Object readResolve() {
-            return VALUES[ordinal];  // Canonicalize
+            return VALUES[ordinal]; // Canonicalize
         }
 
     }
-
 
     /**
      * Returns an integer that has a minimum of two characters.
@@ -1097,10 +1064,9 @@ public final class CellConstraints implements Cloneable, Serializable {
      * @param number   the number to format
      * @return a string representation for a number with a minum of two chars
      */
-	private String formatInt(int number) {
+    private String formatInt(int number) {
         String str = Integer.toString(number);
         return number < 10 ? " " + str : str;
     }
-    
-}
 
+}

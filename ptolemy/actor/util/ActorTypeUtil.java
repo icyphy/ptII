@@ -52,7 +52,7 @@ simplify the generation of type constraints.
  @Pt.AcceptedRating Red (neuendor)
  */
 public class ActorTypeUtil {
- 
+
     /** Return a type constraint that can be used to contrain
      *  another typeable object to have a type related to an
      *  array whose element type is the type of the specified
@@ -77,7 +77,7 @@ public class ActorTypeUtil {
             throws IllegalActionException {
         return new TypeableSizedArrayVariableTypeTerm(typeable, length);
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -87,16 +87,18 @@ public class ActorTypeUtil {
      *  the type of the typeable, since it may change dynamically.
      *  This term is not variable and cannot be set.
      */
-    private static class TypeableSizedArrayVariableTypeTerm extends MonotonicFunction {
+    private static class TypeableSizedArrayVariableTypeTerm extends
+            MonotonicFunction {
 
         /** Construct a term that will defer to the type of the
          *  specified typeable.
          *  @param typeable The object to defer requests to.
          */
-        public TypeableSizedArrayVariableTypeTerm(Typeable typeable, Variable lengthVariable) {
+        public TypeableSizedArrayVariableTypeTerm(Typeable typeable,
+                Variable lengthVariable) {
             _typeable = typeable;
             _lengthVariable = lengthVariable;
-            
+
         }
 
         ///////////////////////////////////////////////////////////////
@@ -108,8 +110,8 @@ public class ActorTypeUtil {
          *   cannot be determined.
          */
         public Object getValue() throws IllegalActionException {
-            ConstVariableModelAnalysis analysis = 
-                ConstVariableModelAnalysis.getAnalysis(_lengthVariable);
+            ConstVariableModelAnalysis analysis = ConstVariableModelAnalysis
+                    .getAnalysis(_lengthVariable);
             if (analysis.isConstant(_lengthVariable)) {
                 Token lengthToken = analysis.getConstantValue(_lengthVariable);
                 int length = ((IntToken) lengthToken).intValue();
@@ -150,7 +152,8 @@ public class ActorTypeUtil {
          *  @exception IllegalActionException If the type of the typeable
          *   cannot be determined.
          */
-        private ArrayType _getArrayTypeRaw(int length) throws IllegalActionException {
+        private ArrayType _getArrayTypeRaw(int length)
+                throws IllegalActionException {
             Type type = _typeable.getType();
             if (_arrayType == null || !_arrayType.getElementType().equals(type)) {
                 _arrayType = new ArrayType(type, length);

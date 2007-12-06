@@ -256,7 +256,8 @@ public class ClassWrapper extends TypedAtomicActor {
                 if (argTypes[i].isAssignableFrom(arg.getClass())) {
                     argValues[i] = arg;
                 } else {
-                    argValues[i] = ConversionUtilities.convertTokenToJavaType(arg);
+                    argValues[i] = ConversionUtilities
+                            .convertTokenToJavaType(arg);
                 }
             }
         }

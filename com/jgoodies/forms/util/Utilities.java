@@ -45,14 +45,12 @@ import javax.swing.UIManager;
  * @version $Revision$
  */
 public final class Utilities {
-    
-        
+
     // Instance *************************************************************
-        
+
     private Utilities() {
         // Suppresses default constructor, ensuring non-instantiability.
     }
-    
 
     /**
      * Lazily checks and answers whether the Aqua look&amp;feel is active.
@@ -66,32 +64,30 @@ public final class Utilities {
         }
         return cachedIsLafAqua.booleanValue();
     }
-    
 
     // Caching and Lazily Computing the Laf State *****************************
-    
+
     /**
      * Holds the cached result of the Aqua l&amp;f check.
      * Is invalidated by the <code>LookAndFeelChangeHandler</code>
      * if the look&amp;feel changes.
      */
     private static Boolean cachedIsLafAqua;
-    
+
     /**
      * Describes whether the <code>LookAndFeelChangeHandler</code>
      * has been registered with the <code>UIManager</code> or not.
      * It is registered lazily when the first cached l&amp;f state is computed.
      */
     private static boolean lafChangeHandlerRegistered = false;
-    
+
     private static synchronized void ensureLookAndFeelChangeHandlerRegistered() {
         if (!lafChangeHandlerRegistered) {
             UIManager.addPropertyChangeListener(new LookAndFeelChangeHandler());
             lafChangeHandlerRegistered = true;
         }
     }
-    
-    
+
     /**
      * Computes and answers whether the Aqua look&amp;feel is active.
      * 
@@ -102,12 +98,12 @@ public final class Utilities {
         return laf.getName().startsWith("Mac OS X Aqua");
     }
 
-    
     /**
      * Listens to changes of the Look and Feel and invalidates the cache.
      */
-    private static final class LookAndFeelChangeHandler implements PropertyChangeListener {
-        
+    private static final class LookAndFeelChangeHandler implements
+            PropertyChangeListener {
+
         /**
          * Invalidates the cached laf states, if the UIManager has fired 
          * any property change event. Since we need to handle look&amp;feel 
@@ -126,5 +122,5 @@ public final class Utilities {
             }
         }
     }
-    
+
 }

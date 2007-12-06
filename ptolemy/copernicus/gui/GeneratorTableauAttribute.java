@@ -88,7 +88,7 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
 
     /** The tableau factory. */
     private TableauFactory _tableauFactory;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     private class GeneratorTableauEditorFactory extends EditorFactory {
@@ -104,7 +104,7 @@ public class GeneratorTableauAttribute extends GeneratorAttribute {
          */
         public void createEditor(NamedObj object, Frame parent) {
             try {
-                Effigy effigy = ((TableauFrame)parent).getEffigy();
+                Effigy effigy = ((TableauFrame) parent).getEffigy();
                 Tableau tableau = _tableauFactory.createTableau(effigy);
                 if (tableau == null) {
                     throw new Exception("Tableau factory returns null.");

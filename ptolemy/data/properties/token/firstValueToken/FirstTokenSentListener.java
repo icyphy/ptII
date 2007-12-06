@@ -16,17 +16,18 @@ public class FirstTokenSentListener implements TokenSentListener {
     public FirstTokenSentListener(PortValueSolver solver) {
         _solver = solver;
     }
-    
+
     public void tokenSentEvent(TokenSentEvent event) {
-        
+
         IOPort port = event.getPort();
         Token token = event.getToken();
         if (token == null) {
             token = event.getTokenArray()[0];
-        } 
+        }
 
         try {
-            ((PortValueHelper)_solver.getHelper(port.getContainer())).setEquals(port, new PropertyToken(token));
+            ((PortValueHelper) _solver.getHelper(port.getContainer()))
+                    .setEquals(port, new PropertyToken(token));
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

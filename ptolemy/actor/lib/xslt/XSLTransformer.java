@@ -94,11 +94,11 @@ public class XSLTransformer extends Transformer {
         output.setTypeEquals(BaseType.STRING);
 
         styleSheetParameters = new PortParameter(this, "styleSheetParameters");
-        styleSheetParameters.setTypeAtMost(new RecordType
-                (new String[0], new Type[0]));
+        styleSheetParameters.setTypeAtMost(new RecordType(new String[0],
+                new Type[0]));
         styleSheetParameters.setExpression("emptyRecord()");
         styleSheetFile = new FileParameter(this, "styleSheetFile");
-        
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -109,7 +109,7 @@ public class XSLTransformer extends Transformer {
      *  @see FileParameter
      */
     public FileParameter styleSheetFile;
-    
+
     /** The parameters to be used in the stylesheet. This is a record
      *  that defaults to "emptyRecord()", an expression language command
      *  that returns an empty record.
@@ -155,7 +155,8 @@ public class XSLTransformer extends Transformer {
         }
 
         if (_transformer != null) {
-            RecordToken parameters = (RecordToken)(styleSheetParameters.getToken());
+            RecordToken parameters = (RecordToken) (styleSheetParameters
+                    .getToken());
             if (parameters != null) {
                 Iterator labels = parameters.labelSet().iterator();
 
@@ -163,7 +164,7 @@ public class XSLTransformer extends Transformer {
                     String name = (String) labels.next();
                     Token token = parameters.get(name);
                     if (token instanceof StringToken) {
-                        StringToken s = (StringToken) token; 
+                        StringToken s = (StringToken) token;
                         _transformer.setParameter(name, s.stringValue());
                     } else {
                         _transformer.setParameter(name, token.toString());
@@ -257,7 +258,7 @@ public class XSLTransformer extends Transformer {
 
             if (_xsltSource != null) {
                 _transformerFactory = javax.xml.transform.TransformerFactory
-                    .newInstance();
+                        .newInstance();
 
                 /* if (!_transformerFactory.getClass().getName().startsWith(
                    "net.sf.saxon")) {

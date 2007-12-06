@@ -453,7 +453,6 @@ public class Location extends SingletonAttribute implements Locatable {
         for (int i = 0; i < location.length; i++) {
             _location[i] = location[i];
         }
-    
 
         NamedObj container = getContainer();
 

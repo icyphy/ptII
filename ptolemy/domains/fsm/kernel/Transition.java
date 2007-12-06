@@ -197,7 +197,7 @@ public class Transition extends ComponentRelation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** An annotation that describes the transition. If this is non-empty,
      *  then a visual editor will be expected to put this annotation on
      *  or near the transition to document its function. This is a string
@@ -752,7 +752,7 @@ public class Transition extends ComponentRelation {
         variable = new Variable(guardExpression, "_textHeightHint");
         variable.setExpression("5");
         variable.setPersistent(false);
-        
+
         outputActions = new OutputActionsAttribute(this, "outputActions");
         // Add a hint to indicate to the PtolemyQuery class to open with a text style.
         variable = new Variable(outputActions, "_textHeightHint");

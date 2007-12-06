@@ -118,7 +118,8 @@ public class PtalonMLHandler extends HandlerBase {
                 if (param == null) {
                     throw new IllegalActionException(_actor,
                             "Failed to get parameter \"name\" from actor. "
-                            + "\"name\" attribute was: " + _attributes.get("name"));
+                                    + "\"name\" attribute was: "
+                                    + _attributes.get("name"));
                 }
                 param.setExpression(_attributes.get("value"));
                 _actor.attributeChanged(param);

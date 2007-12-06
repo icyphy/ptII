@@ -174,7 +174,7 @@ public abstract class ColtRandomSource extends RandomSource {
         } else if (generatorClassValue.equals("Ranmar")) {
             _randomNumberGenerator = new Ranmar((int) seedValue);
         }
-        
+
         // In the base class, if _random is null, then initialize()
         // will re-run this method. We don't want this, so even though
         // we don't need it, we create an instance of Random.

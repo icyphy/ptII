@@ -85,7 +85,7 @@ public class SubMatrix extends Transformer {
         column = new PortParameter(this, "column");
         column.setTypeEquals(BaseType.INT);
         column.setExpression("0");
-        
+
         rowSpan = new PortParameter(this, "rowSpan");
         rowSpan.setTypeEquals(BaseType.INT);
         rowSpan.setExpression("1");
@@ -134,14 +134,15 @@ public class SubMatrix extends Transformer {
         column.update();
         rowSpan.update();
         columnSpan.update();
-        int columnValue = ((IntToken)column.getToken()).intValue();
-        int rowValue = ((IntToken)row.getToken()).intValue();
-        int columnSpanValue = ((IntToken)columnSpan.getToken()).intValue();
-        int rowSpanValue = ((IntToken)rowSpan.getToken()).intValue();
-        
+        int columnValue = ((IntToken) column.getToken()).intValue();
+        int rowValue = ((IntToken) row.getToken()).intValue();
+        int columnSpanValue = ((IntToken) columnSpan.getToken()).intValue();
+        int rowSpanValue = ((IntToken) rowSpan.getToken()).intValue();
+
         // FIXME: We are not enforcing that the input is a matrix.
         // How to do this?
-        MatrixToken inputValue = (MatrixToken)input.get(0);
-        output.send(0, inputValue.crop(rowValue, columnValue, rowSpanValue, columnSpanValue));
+        MatrixToken inputValue = (MatrixToken) input.get(0);
+        output.send(0, inputValue.crop(rowValue, columnValue, rowSpanValue,
+                columnSpanValue));
     }
 }

@@ -286,12 +286,12 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         _graphicalClasses.put("ptolemy.domains.wireless.lib.TerrainProperty",
                 null);
 
-        _graphicalClasses.put("ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor",
-                null);
+        _graphicalClasses.put(
+                "ptolemy.domains.wireless.demo.EvaderAndPursuer.Sensor", null);
 
         // Remove various graphical classes from curriculum
-        _graphicalClasses.put("ptolemy.domains.curriculum.DependencyHighlighter",
-                null);
+        _graphicalClasses.put(
+                "ptolemy.domains.curriculum.DependencyHighlighter", null);
         _graphicalClasses.put("ptolemy.domains.curriculum.HighlightEntities",
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.icon.NameIcon", null);

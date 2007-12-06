@@ -50,9 +50,11 @@ public class ColtBinomialSelector extends ColtRandomSource {
      * Constructor method for the ColtBinomialSelector helper.
      * @param actor the associated actor
      */
-    public ColtBinomialSelector(ptolemy.actor.lib.colt.ColtBinomialSelector actor) {
+    public ColtBinomialSelector(
+            ptolemy.actor.lib.colt.ColtBinomialSelector actor) {
         super(actor);
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -85,7 +87,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
     public String generatePreinitializeCode() throws IllegalActionException {
         // Automatically append the "preinitBlock" by default.
         super.generatePreinitializeCode();
-        
+
         _codeStream.appendCodeBlock("preinitBinomialSelectorBlock");
 
         ptolemy.actor.lib.colt.ColtBinomialSelector actor = (ptolemy.actor.lib.colt.ColtBinomialSelector) getComponent();
@@ -94,7 +96,8 @@ public class ColtBinomialSelector extends ColtRandomSource {
         args.add(Integer.valueOf(0));
         for (int i = 0; i < actor.populations.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
-            _codeStream.appendCodeBlock("preinitBinomialSelectorArraysBlock", args);
+            _codeStream.appendCodeBlock("preinitBinomialSelectorArraysBlock",
+                    args);
         }
 
         return processCode(_codeStream.toString());
@@ -112,7 +115,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
         files.add("<math.h>");
         return files;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -121,25 +124,26 @@ public class ColtBinomialSelector extends ColtRandomSource {
      *  @return The code that produces a new random number.
      */
     protected String _generateRandomNumber() throws IllegalActionException {
-    	_codeStream.clear();
+        _codeStream.clear();
 
-    	ptolemy.actor.lib.colt.ColtBinomialSelector actor = (ptolemy.actor.lib.colt.ColtBinomialSelector) getComponent();
+        ptolemy.actor.lib.colt.ColtBinomialSelector actor = (ptolemy.actor.lib.colt.ColtBinomialSelector) getComponent();
 
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0));
         // StringBuffer code = new StringBuffer();
-        
+
         // code.append(_generateBlockCode("initBinomialSelectorBlock"));
         _codeStream.appendCodeBlock("initBinomialSelectorBlock");
-        
+
         for (int i = 0; i < actor.populations.getWidth(); i++) {
-        	args.set(0, Integer.valueOf(i));
+            args.set(0, Integer.valueOf(i));
             // code.append(_generateBlockCode("initArraysBinomialSelectorBlock", args));
-            _codeStream.appendCodeBlock("initArraysBinomialSelectorBlock", args);
+            _codeStream
+                    .appendCodeBlock("initArraysBinomialSelectorBlock", args);
         }
-        
+
         for (int i = 0; i < actor.populations.getWidth(); i++) {
-        	args.set(0, Integer.valueOf(i));
+            args.set(0, Integer.valueOf(i));
             // code.append(_generateBlockCode("binomialSelectorBlock", args));
             _codeStream.appendCodeBlock("binomialSelectorBlock", args);
         }

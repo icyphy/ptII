@@ -132,7 +132,8 @@ public class TableauFrame extends Top {
      *  @param statusBar The status bar, or null to not include one.
      *  @param placeable The associated Placeable.
      */
-    public TableauFrame(Tableau tableau, StatusBar statusBar, Placeable placeable) {
+    public TableauFrame(Tableau tableau, StatusBar statusBar,
+            Placeable placeable) {
         super(statusBar);
         setTableau(tableau);
         setIconImage(_getDefaultIconImage());
@@ -453,20 +454,20 @@ public class TableauFrame extends Top {
     protected boolean _close() {
         // Record window properties, if appropriate.
         if (_placeable instanceof NamedObj) {
-            Iterator properties = ((NamedObj)_placeable)
-                    .attributeList(WindowPropertiesAttribute.class).iterator();
+            Iterator properties = ((NamedObj) _placeable).attributeList(
+                    WindowPropertiesAttribute.class).iterator();
             while (properties.hasNext()) {
-                WindowPropertiesAttribute windowProperties
-                        = (WindowPropertiesAttribute)properties.next();
+                WindowPropertiesAttribute windowProperties = (WindowPropertiesAttribute) properties
+                        .next();
                 windowProperties.recordProperties(this);
             }
             // Regrettably, have to also record the size of the contents
             // because in Swing, setSize() methods do not set the size.
             // Only the first component size is recorded.
-            properties = ((NamedObj)_placeable)
-                    .attributeList(SizeAttribute.class).iterator();
+            properties = ((NamedObj) _placeable).attributeList(
+                    SizeAttribute.class).iterator();
             while (properties.hasNext()) {
-                SizeAttribute size = (SizeAttribute)properties.next();
+                SizeAttribute size = (SizeAttribute) properties.next();
                 Component[] components = getContentPane().getComponents();
                 if (components.length > 0) {
                     size.recordSize(components[0]);
@@ -1079,7 +1080,7 @@ public class TableauFrame extends Top {
 
     // The singleton icon image used for all ptolemy frames.
     private static Image _defaultIconImage = null;
-    
+
     /** Associated placeable. */
     private Placeable _placeable;
 

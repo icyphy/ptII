@@ -166,7 +166,7 @@ public class StringUtilities {
         string = substitute(string, "\r", "&#13;"); // Carriage return
         return string;
     }
-    
+
     /** Given a string, return a string that when fed to the
      *  Ptolemy expression parser, will turn into the argument
      *  string. That is, replace all the instances of backslashes
@@ -405,12 +405,12 @@ public class StringUtilities {
                             // exists in codeDoc.jar and lib/ptII.properties
                             // is not present.
                             ptsupportJarName = File.separator + "ptolemy"
-                                + File.separator + "ptsupport.jar";
+                                    + File.separator + "ptsupport.jar";
 
                             if (_ptolemyPtIIDir.lastIndexOf(ptsupportJarName) != -1) {
                                 _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
-                                    _ptolemyPtIIDir
-                                        .lastIndexOf(ptsupportJarName));
+                                        _ptolemyPtIIDir
+                                                .lastIndexOf(ptsupportJarName));
                             }
                         }
                     }
@@ -559,9 +559,8 @@ public class StringUtilities {
             // Read line by line, skipping comments. 
             while ((line = bufferedReader.readLine()) != null) {
                 line = line.trim();
-                if (!(line.length() == 0
-                        || line.startsWith("/*")
-                        || line.startsWith("//"))) {
+                if (!(line.length() == 0 || line.startsWith("/*") || line
+                        .startsWith("//"))) {
                     returnList.add(line);
                 }
             }

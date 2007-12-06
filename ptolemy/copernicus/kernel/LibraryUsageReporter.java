@@ -227,8 +227,8 @@ public class LibraryUsageReporter extends SceneTransformer implements
             try {
                 writer = new FileWriter(outFile);
 
-                for (Iterator classes = dependedClasses.list().iterator();
-                     classes.hasNext();) {
+                for (Iterator classes = dependedClasses.list().iterator(); classes
+                        .hasNext();) {
                     SootClass theClass = (SootClass) classes.next();
 
                     if (analyzeAllReachables) {

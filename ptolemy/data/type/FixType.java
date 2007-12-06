@@ -120,7 +120,7 @@ public class FixType extends StructuredType implements Serializable {
         }
 
         throw new IllegalActionException(Token.notSupportedConversionMessage(
-                                                 token, toString()));
+                token, toString()));
     }
 
     /** Return a new type which represents the type that results from
@@ -387,18 +387,17 @@ public class FixType extends StructuredType implements Serializable {
         boolean signBit1 = _precision.isSigned();
         boolean signBit2 = precision.isSigned();
         int compareBits1, compareBits2;
-        
+
         if (_precision.equals(precision)) {
             return CPO.SAME;
         } else if (signBit1 == signBit2) {
-            if (fractionBits1 < fractionBits2 &&
-                integerBits1 < integerBits2) {
+            if (fractionBits1 < fractionBits2 && integerBits1 < integerBits2) {
                 return CPO.LOWER;
-        
-            } else if (fractionBits1 > fractionBits2 &&
-                    integerBits1 > integerBits2) {
+
+            } else if (fractionBits1 > fractionBits2
+                    && integerBits1 > integerBits2) {
                 return CPO.HIGHER;
-    
+
             } else if (integerBits1 == integerBits2) {
                 compareBits1 = fractionBits1;
                 compareBits2 = fractionBits2;
@@ -406,7 +405,7 @@ public class FixType extends StructuredType implements Serializable {
                 compareBits1 = integerBits1;
                 compareBits2 = integerBits2;
             }
-        
+
             if (compareBits1 < compareBits2) {
                 return CPO.LOWER;
             } else if (compareBits1 > compareBits2) {
@@ -415,14 +414,12 @@ public class FixType extends StructuredType implements Serializable {
                 return CPO.SAME;
             }
         } else if (signBit1 && !signBit2) {
-            if (fractionBits1 >= fractionBits2 &&
-                    integerBits1 >= integerBits2) {
+            if (fractionBits1 >= fractionBits2 && integerBits1 >= integerBits2) {
                 return CPO.HIGHER;
             }
         } else {
-            if (fractionBits1 <= fractionBits2 &&
-                    integerBits1 <= integerBits2) {
-                    return CPO.LOWER;            
+            if (fractionBits1 <= fractionBits2 && integerBits1 <= integerBits2) {
+                return CPO.LOWER;
             }
         }
         return CPO.INCOMPARABLE;

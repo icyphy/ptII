@@ -159,7 +159,7 @@ public class PublisherNonStrictTest extends Publisher {
             if (width == 1) {
                 if (input.hasToken(0)) {
                     Token token = input.get(0);
-   output.send(0, token);
+                    output.send(0, token);
                     if (token instanceof ArrayToken) {
                         Token[] innerArrayToken = new Token[1];
                         innerArrayToken[0] = token;
@@ -174,7 +174,7 @@ public class PublisherNonStrictTest extends Publisher {
                 for (int i = 0; i < width; i++) {
                     Token token = input.get(i);
                     arrayList.add(token);
-   output.send(i, token);
+                    output.send(i, token);
                 }
 
                 _trainingTokens.add(arrayList);
@@ -183,13 +183,12 @@ public class PublisherNonStrictTest extends Publisher {
             return;
         }
 
-
-//         for (int i = 0; i < width; i++) {
-//             if (input.hasToken(i)) {
-//                 Token token = input.get(i);
-//                 output.send(i, token);
-//             }
-//         }
+        //         for (int i = 0; i < width; i++) {
+        //             if (input.hasToken(i)) {
+        //                 Token token = input.get(i);
+        //                 output.send(i, token);
+        //             }
+        //         }
     }
 
     /** Override the base class to set the iteration counter to zero.
@@ -266,16 +265,16 @@ public class PublisherNonStrictTest extends Publisher {
             return true;
         }
 
-//          if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
-//                  .length()) {
-//              // Consume and discard input values.  We are beyond the end
-//              // of the correctValues array.
-//              //if (input.hasToken(0)) {
-//              //    input.get(0);
+        //          if (_numberOfInputTokensSeen >= ((ArrayToken) (correctValues.getToken()))
+        //                  .length()) {
+        //              // Consume and discard input values.  We are beyond the end
+        //              // of the correctValues array.
+        //              //if (input.hasToken(0)) {
+        //              //    input.get(0);
 
-//              //}
-//              return true;
-//          }
+        //              //}
+        //              return true;
+        //          }
 
         Token referenceToken = ((ArrayToken) (correctValues.getToken()))
                 .getElement(_numberOfInputTokensSeen);
@@ -295,19 +294,17 @@ public class PublisherNonStrictTest extends Publisher {
                 // are nil, then we consider them "close".
                 if (token.isCloseTo(referenceToken, _tolerance).booleanValue() == false
                         && !referenceToken.isNil()
-                        && !NonStrictTest._isCloseToIfNilArrayElement(token, referenceToken,
-                                _tolerance)
-                        && !NonStrictTest._isCloseToIfNilRecordElement(token, referenceToken,
-                                _tolerance)) {
+                        && !NonStrictTest._isCloseToIfNilArrayElement(token,
+                                referenceToken, _tolerance)
+                        && !NonStrictTest._isCloseToIfNilRecordElement(token,
+                                referenceToken, _tolerance)) {
                     throw new IllegalActionException(this,
                             "Test fails in iteration " + _iteration + ".\n"
-                            + "Value was: " + token
-                            + ". Should have been: " + referenceToken);
+                                    + "Value was: " + token
+                                    + ". Should have been: " + referenceToken);
                 }
             }
         }
-
-
 
         _iteration++;
         return true;

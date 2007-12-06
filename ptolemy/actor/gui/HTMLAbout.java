@@ -266,7 +266,8 @@ public class HTMLAbout {
                         null);
             }
 
-        } else if (event.getDescription().startsWith("about:checkCompleteDemos")) {
+        } else if (event.getDescription()
+                .startsWith("about:checkCompleteDemos")) {
             newURL = _temporaryHTMLFile(
                     "checkCompleteDemos",
                     ".htm",
@@ -283,20 +284,23 @@ public class HTMLAbout {
             Set modelSet = new HashSet(modelList);
             newURL = _temporaryHTMLFile("checkModelSizes", ".htm",
                     CheckModelSize.checkModelSize(configuration,
-                            (String[]) modelSet
-                            .toArray(new String[modelSet.size()])));
+                            (String[]) modelSet.toArray(new String[modelSet
+                                    .size()])));
         } else if (event.getDescription().equals("about:copyright")) {
             // Note that if we have a link that is
             // <a href="about:copyright">about:copyright</a>
             // then event.getURL() will return null, so we have
             // to use getDescription()
             try {
-                newURL = _temporaryHTMLFile("copyright", ".htm",
-                        GenerateCopyrights.generatePrimaryCopyrightHTML(configuration)
-                        + "<p>Other <a href=\"about:allcopyrights\">copyrights</a>\n"
-                        + "about this configuration \n"
-                        + "(<i>may take a moment to run</i>).\n"
-                        + "</body>\n</html>");
+                newURL = _temporaryHTMLFile(
+                        "copyright",
+                        ".htm",
+                        GenerateCopyrights
+                                .generatePrimaryCopyrightHTML(configuration)
+                                + "<p>Other <a href=\"about:allcopyrights\">copyrights</a>\n"
+                                + "about this configuration \n"
+                                + "(<i>may take a moment to run</i>).\n"
+                                + "</body>\n</html>");
             } catch (SecurityException ex) {
                 // Could be that we were running with -sandbox and
                 // cannot write the temporary file.

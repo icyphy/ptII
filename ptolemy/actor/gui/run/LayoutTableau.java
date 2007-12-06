@@ -58,8 +58,9 @@ public class LayoutTableau extends Tableau {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public LayoutTableau(PtolemyEffigy container, String name, CustomizableRunPane pane)
-            throws IllegalActionException, NameDuplicationException {
+    public LayoutTableau(PtolemyEffigy container, String name,
+            CustomizableRunPane pane) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
         NamedObj model = container.getModel();
 
@@ -69,13 +70,13 @@ public class LayoutTableau extends Tableau {
                             + " It is: " + model);
         }
         try {
-            RunLayoutFrame frame = new RunLayoutFrame(
-                    (CompositeActor)model, this, pane);
+            RunLayoutFrame frame = new RunLayoutFrame((CompositeActor) model,
+                    this, pane);
             setFrame(frame);
         } catch (IllegalActionException ex) {
             // Remove this tableau from its container.
             setContainer(null);
-            throw(ex);
+            throw (ex);
         }
     }
 }

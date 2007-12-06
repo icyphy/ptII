@@ -53,7 +53,7 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     public EmbeddedCActor(ptolemy.actor.lib.jni.EmbeddedCActor component) {
         super(component);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -63,12 +63,12 @@ public class EmbeddedCActor extends CompiledCompositeActor {
 
         /** Create a EmbeddedActor.
          *  @param actor The associated actor.
-         */   
-        public EmbeddedActor(ptolemy.actor.lib.jni.EmbeddedCActor.EmbeddedActor
-                actor) {
+         */
+        public EmbeddedActor(
+                ptolemy.actor.lib.jni.EmbeddedCActor.EmbeddedActor actor) {
             super(actor);
         }
-        
+
         /** Generate the shared code. Since this is the first generate
          *  method invoked out of all, the CodeStream object is reset
          *  so that its code table will be re-constructed.
@@ -78,9 +78,9 @@ public class EmbeddedCActor extends CompiledCompositeActor {
             // FIXME: One can do optimization here so that reset
             // happens only when the embedded C code is modified.
             _codeStream.reset();
-            _codeStream.setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) 
-                    getComponent().getContainer())
-                    .embeddedCCode.getExpression());
+            _codeStream
+                    .setCodeBlocks(((ptolemy.actor.lib.jni.EmbeddedCActor) getComponent()
+                            .getContainer()).embeddedCCode.getExpression());
             return super.getSharedCode();
         }
     }

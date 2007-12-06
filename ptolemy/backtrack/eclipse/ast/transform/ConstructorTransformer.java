@@ -96,8 +96,7 @@ public class ConstructorTransformer extends AbstractTransformer implements
      *  @param state The current state of the type analyzer.
      */
     public void enter(FieldDeclaration node, TypeAnalyzerState state) {
-        _isStaticField
-                .push(Modifier.isStatic(node.getModifiers()));
+        _isStaticField.push(Modifier.isStatic(node.getModifiers()));
     }
 
     /** Enter a method declaration.

@@ -90,7 +90,7 @@ public class SRDirector extends FixedPointDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -103,7 +103,7 @@ public class SRDirector extends FixedPointDirector {
      *    permissible (e.g. the given time is in the past).
      */
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
-        Actor container = (Actor)getContainer();
+        Actor container = (Actor) getContainer();
         if (container != null) {
             Director executiveDirector = container.getExecutiveDirector();
             if (executiveDirector != null) {
@@ -120,7 +120,7 @@ public class SRDirector extends FixedPointDirector {
      *   throws it.
      */
     public void fireAtCurrentTime(Actor actor) throws IllegalActionException {
-        Actor container = (Actor)getContainer();
+        Actor container = (Actor) getContainer();
         if (container != null) {
             Director executiveDirector = container.getExecutiveDirector();
             if (executiveDirector != null) {

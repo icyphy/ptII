@@ -54,7 +54,7 @@ public class Pulse extends CCodeGeneratorHelper {
     public Pulse(ptolemy.actor.lib.Pulse actor) {
         super(actor);
     }
-    
+
     /**
      * Generate initialize code.
      * Reads the <code>preinitBlock</code> from Chop.c,
@@ -66,20 +66,19 @@ public class Pulse extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
-        
+
         ArrayList args = new ArrayList();
-        
-        ptolemy.actor.lib.Pulse actor = 
-            (ptolemy.actor.lib.Pulse) getComponent();
-        
+
+        ptolemy.actor.lib.Pulse actor = (ptolemy.actor.lib.Pulse) getComponent();
+
         Type type = ((ArrayToken) actor.values.getToken()).getElementType();
-                
+
         if (!isPrimitive(type)) {
             args.add("\\$tokenFunc(\\$ref(values, 0)::zero())");
         } else {
             args.add("0");
         }
-        
+
         code.append(_generateBlockCode("initBlock", args));
         return code.toString();
     }
@@ -95,16 +94,15 @@ public class Pulse extends CCodeGeneratorHelper {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
-        
+
         ArrayList args = new ArrayList();
-        
-        ptolemy.actor.lib.Pulse actor = 
-            (ptolemy.actor.lib.Pulse) getComponent();
-        
+
+        ptolemy.actor.lib.Pulse actor = (ptolemy.actor.lib.Pulse) getComponent();
+
         Type type = ((ArrayToken) actor.values.getToken()).getElementType();
-        
+
         args.add(targetType(type));
-        
+
         code.append(_generateBlockCode("preinitBlock", args));
         return code.toString();
     }

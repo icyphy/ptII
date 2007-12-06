@@ -300,35 +300,38 @@ public class PtolemyQuery extends Query implements QueryListener,
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if ((attribute instanceof NamedObj)
-                        && ((((NamedObj)attribute).getAttribute("_textWidthHint") != null)
-                        || ((NamedObj)attribute).getAttribute("_textHeightHint") != null)) {
+                        && ((((NamedObj) attribute)
+                                .getAttribute("_textWidthHint") != null) || ((NamedObj) attribute)
+                                .getAttribute("_textHeightHint") != null)) {
                     // Support hints for text height and/or width so that actors
                     // don't have to use a ParameterEditorStyle, which depends
                     // on packages that depend on graphics.
-                    
+
                     // Default values:
                     int widthValue = 30;
                     int heightValue = 10;
-                    
-                    Attribute widthAttribute = ((NamedObj)attribute).getAttribute("_textWidthHint");
+
+                    Attribute widthAttribute = ((NamedObj) attribute)
+                            .getAttribute("_textWidthHint");
                     if (widthAttribute instanceof Variable) {
-                        Token token = ((Variable)widthAttribute).getToken();
+                        Token token = ((Variable) widthAttribute).getToken();
                         if (token instanceof IntToken) {
-                            widthValue = ((IntToken)token).intValue();
+                            widthValue = ((IntToken) token).intValue();
                         }
                     }
-                    Attribute heightAttribute = ((NamedObj)attribute).getAttribute("_textHeightHint");
+                    Attribute heightAttribute = ((NamedObj) attribute)
+                            .getAttribute("_textHeightHint");
                     if (heightAttribute instanceof Variable) {
-                        Token token = ((Variable)heightAttribute).getToken();
+                        Token token = ((Variable) heightAttribute).getToken();
                         if (token instanceof IntToken) {
-                            heightValue = ((IntToken)token).intValue();
+                            heightValue = ((IntToken) token).intValue();
                         }
                     }
-                    
+
                     addTextArea(name, displayName, attribute.getExpression(),
                             preferredBackgroundColor(attribute),
-                            preferredForegroundColor(attribute),
-                            heightValue, widthValue);
+                            preferredForegroundColor(attribute), heightValue,
+                            widthValue);
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof Variable) {

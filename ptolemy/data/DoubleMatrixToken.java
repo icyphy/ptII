@@ -279,7 +279,7 @@ public class DoubleMatrixToken extends MatrixToken {
         throw new IllegalActionException(notSupportedConversionMessage(token,
                 "[double]"));
     }
-    
+
     /** Return a new matrix that is a sub-matrix of this matrix.
      *  @param rowStart The row to start on.
      *  @param colStart The column to start on.
@@ -289,23 +289,18 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the returned matrix is empty or if the specified
      *   parameters result in out of bounds accesses.
      */
-    public MatrixToken crop(
-            int rowStart, int colStart, int rowSpan, int colSpan)
+    public MatrixToken crop(int rowStart, int colStart, int rowSpan, int colSpan)
             throws IllegalActionException {
         double[][] value = this.doubleMatrix();
         try {
-            double[][] result = DoubleMatrixMath.crop(value, rowStart, colStart, rowSpan, colSpan);
+            double[][] result = DoubleMatrixMath.crop(value, rowStart,
+                    colStart, rowSpan, colSpan);
             return new DoubleMatrixToken(result);
         } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new IllegalActionException("Matrix crop indices out of bounds (rowStart = "
-                    + rowStart
-                    + ", colStart = "
-                    + colStart
-                    + ", rowSpan = "
-                    + rowSpan
-                    + ", colSpan = "
-                    + colSpan
-                    + ").");
+            throw new IllegalActionException(
+                    "Matrix crop indices out of bounds (rowStart = " + rowStart
+                            + ", colStart = " + colStart + ", rowSpan = "
+                            + rowSpan + ", colSpan = " + colSpan + ").");
         }
     }
 
@@ -481,10 +476,8 @@ public class DoubleMatrixToken extends MatrixToken {
                 if (column + columnCount > columns) {
                     columnCount = columns - column;
                 }
-                DoubleMatrixMath.matrixCopy(
-                        matrices[i][j].doubleMatrix(), 0, 0,
-                        tiled, row, column,
-                        rowCount, columnCount);
+                DoubleMatrixMath.matrixCopy(matrices[i][j].doubleMatrix(), 0,
+                        0, tiled, row, column, rowCount, columnCount);
                 // Starting position for the next column.
                 column += matrices[0][j].getColumnCount();
             }
@@ -553,8 +546,8 @@ public class DoubleMatrixToken extends MatrixToken {
                     columnspan = source[0].length - column;
                 }
                 if (columnspan > 0 && rowspan > 0) {
-                    DoubleMatrixMath.matrixCopy(
-                            source, row, column, contents, 0, 0, rowspan, columnspan);
+                    DoubleMatrixMath.matrixCopy(source, row, column, contents,
+                            0, 0, rowspan, columnspan);
                 }
                 column += columns[j];
                 try {

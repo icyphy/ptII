@@ -55,7 +55,7 @@ public class RelationHidingAttribute extends TransformationAttribute {
      * @exception IllegalActionException
      */
     public RelationHidingAttribute(NamedObj container, String name)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         parameter = new Parameter(this, "relationHiding");
@@ -70,8 +70,8 @@ public class RelationHidingAttribute extends TransformationAttribute {
 
         if (attribute == parameter) {
             try {
-                if (((BooleanToken) parameter.getToken()).equals(
-                        BooleanToken.TRUE)) {
+                if (((BooleanToken) parameter.getToken())
+                        .equals(BooleanToken.TRUE)) {
                     _setIconDescription(_HIDING_ICON);
                 } else {
                     _setIconDescription(_NOT_HIDING_RELATION);
@@ -84,7 +84,7 @@ public class RelationHidingAttribute extends TransformationAttribute {
     }
 
     public void setContainer(NamedObj container) throws IllegalActionException,
-    NameDuplicationException {
+            NameDuplicationException {
         super.setContainer(container);
         if (container != null) {
             _checkContainerClass(container, Replacement.class, true);
@@ -94,60 +94,56 @@ public class RelationHidingAttribute extends TransformationAttribute {
 
     public Parameter parameter;
 
-    private static final String _HIDING_ICON =
-        "<svg>"
-        + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
-        + "  style=\"fill:#00FFFF\"/>"
-        + "<line x1=\"8\" y1=\"7\" x2=\"20\" y2=\"7\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<line x1=\"20\" y1=\"7\" x2=\"20\" y2=\"25\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<line x1=\"20\" y1=\"25\" x2=\"32\" y2=\"25\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<polygon points=\"20,10 14,16 20,22 26,16\" style=\"fill:#000000\"/>"
-        + "<line x1=\"39\" y1=\"14\" x2=\"52\" y2=\"14\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"39\" y1=\"18\" x2=\"52\" y2=\"18\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"50\" y1=\"11\" x2=\"55\" y2=\"16\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"50\" y1=\"21\" x2=\"55\" y2=\"16\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"62\" y1=\"7\" x2=\"74\" y2=\"7\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<line x1=\"74\" y1=\"7\" x2=\"74\" y2=\"25\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<line x1=\"74\" y1=\"25\" x2=\"86\" y2=\"25\""
-        + "  style=\"stroke:#000000\"/>"
-        + "</svg>";
+    private static final String _HIDING_ICON = "<svg>"
+            + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
+            + "  style=\"fill:#00FFFF\"/>"
+            + "<line x1=\"8\" y1=\"7\" x2=\"20\" y2=\"7\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<line x1=\"20\" y1=\"7\" x2=\"20\" y2=\"25\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<line x1=\"20\" y1=\"25\" x2=\"32\" y2=\"25\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<polygon points=\"20,10 14,16 20,22 26,16\" style=\"fill:#000000\"/>"
+            + "<line x1=\"39\" y1=\"14\" x2=\"52\" y2=\"14\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"39\" y1=\"18\" x2=\"52\" y2=\"18\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"50\" y1=\"11\" x2=\"55\" y2=\"16\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"50\" y1=\"21\" x2=\"55\" y2=\"16\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"62\" y1=\"7\" x2=\"74\" y2=\"7\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<line x1=\"74\" y1=\"7\" x2=\"74\" y2=\"25\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<line x1=\"74\" y1=\"25\" x2=\"86\" y2=\"25\""
+            + "  style=\"stroke:#000000\"/>" + "</svg>";
 
-    private static final String _NOT_HIDING_RELATION =
-        "<svg>"
-        + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
-        + "  style=\"fill:#00FFFF\"/>"
-        + "<line x1=\"8\" y1=\"7\" x2=\"20\" y2=\"7\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<line x1=\"20\" y1=\"7\" x2=\"20\" y2=\"25\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<line x1=\"20\" y1=\"25\" x2=\"32\" y2=\"25\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<polygon points=\"20,10 14,16 20,22 26,16\" style=\"fill:#000000\"/>"
-        + "<line x1=\"39\" y1=\"14\" x2=\"52\" y2=\"14\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"39\" y1=\"18\" x2=\"52\" y2=\"18\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"50\" y1=\"11\" x2=\"55\" y2=\"16\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"50\" y1=\"21\" x2=\"55\" y2=\"16\""
-        + "  style=\"stroke:#303030; stroke-width:2\"/>"
-        + "<line x1=\"62\" y1=\"7\" x2=\"74\" y2=\"7\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<line x1=\"74\" y1=\"7\" x2=\"74\" y2=\"25\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<line x1=\"74\" y1=\"25\" x2=\"86\" y2=\"25\""
-        + "  style=\"stroke:#000000\"/>"
-        + "<line x1=\"41\" y1=\"9\" x2=\"49\" y2=\"23\""
-        + "  style=\"stroke:#C00000; stroke-width:3\"/>"
-        + "</svg>";
+    private static final String _NOT_HIDING_RELATION = "<svg>"
+            + "<rect x=\"0\" y=\"0\" width=\"94\" height=\"32\""
+            + "  style=\"fill:#00FFFF\"/>"
+            + "<line x1=\"8\" y1=\"7\" x2=\"20\" y2=\"7\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<line x1=\"20\" y1=\"7\" x2=\"20\" y2=\"25\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<line x1=\"20\" y1=\"25\" x2=\"32\" y2=\"25\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<polygon points=\"20,10 14,16 20,22 26,16\" style=\"fill:#000000\"/>"
+            + "<line x1=\"39\" y1=\"14\" x2=\"52\" y2=\"14\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"39\" y1=\"18\" x2=\"52\" y2=\"18\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"50\" y1=\"11\" x2=\"55\" y2=\"16\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"50\" y1=\"21\" x2=\"55\" y2=\"16\""
+            + "  style=\"stroke:#303030; stroke-width:2\"/>"
+            + "<line x1=\"62\" y1=\"7\" x2=\"74\" y2=\"7\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<line x1=\"74\" y1=\"7\" x2=\"74\" y2=\"25\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<line x1=\"74\" y1=\"25\" x2=\"86\" y2=\"25\""
+            + "  style=\"stroke:#000000\"/>"
+            + "<line x1=\"41\" y1=\"9\" x2=\"49\" y2=\"23\""
+            + "  style=\"stroke:#C00000; stroke-width:3\"/>" + "</svg>";
 
 }

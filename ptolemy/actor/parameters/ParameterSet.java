@@ -118,7 +118,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
         super(container, name);
         fileOrURL = new FileParameter(this, "fileOrURL");
         fileOrURL.setExpression("");
-        
+
         checkForFileUpdates = new Parameter(this, "checkForFileUpdates");
         checkForFileUpdates.setExpression("false");
         checkForFileUpdates.setTypeEquals(BaseType.BOOLEAN);
@@ -141,7 +141,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  defaults to false.
      */
     public Parameter checkForFileUpdates;
-    
+
     /** A parameter naming the file or URL to be read that contains
      *  attribute names and values.  The file should be in a format
      *  suitable for java.util.Properties.load(), see the class
@@ -167,7 +167,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
         if (_initializables == null) {
             _initializables = new LinkedList<Initializable>();
         }
-        _initializables.add(initializable);        
+        _initializables.add(initializable);
     }
 
     /** If the parameter is <i>fileOrURL</i>, and the specified file
@@ -197,7 +197,8 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
 
     /** Do nothing.
      */
-    public void fire() throws IllegalActionException {}
+    public void fire() throws IllegalActionException {
+    }
 
     /** Do nothing except invoke the initialize methods
      *  of objects that have been added using addInitializable().
@@ -208,7 +209,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
         // Invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.initialize();                    
+                initializable.initialize();
             }
         }
     }
@@ -235,7 +236,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  @return Executable.COMPLETED.
      */
     public int iterate(int count) throws IllegalActionException {
-        if (((BooleanToken)checkForFileUpdates.getToken()).booleanValue()) {
+        if (((BooleanToken) checkForFileUpdates.getToken()).booleanValue()) {
             _reReadIfNeeded();
         }
         return Executable.COMPLETED;
@@ -247,14 +248,14 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
     public boolean postfire() {
         return true;
     }
-    
+
     /** Check to see whether the specified file has changed, and if so,
      *  re-read it.
      *  @return True.
      *  @exception IllegalActionException If re-reading the file fails.
      */
     public boolean prefire() throws IllegalActionException {
-        if (((BooleanToken)checkForFileUpdates.getToken()).booleanValue()) {
+        if (((BooleanToken) checkForFileUpdates.getToken()).booleanValue()) {
             _reReadIfNeeded();
         }
         return true;
@@ -270,7 +271,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
         // Invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.preinitialize();                    
+                initializable.preinitialize();
             }
         }
         _reReadIfNeeded();
@@ -286,7 +287,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      */
     public void read() throws IllegalActionException, NameDuplicationException,
             IOException {
-        
+
         _fileName = fileOrURL.getExpression();
 
         if (_fileName == null || _fileName.trim().equals("")) {
@@ -390,19 +391,20 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this entity.
      */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         if (container != getContainer()) {
             // May need to unregister as a piggyback with the previous container.
             NamedObj previousContainer = getContainer();
             if (previousContainer instanceof CompositeActor) {
-                ((CompositeActor)previousContainer).removePiggyback(this);
+                ((CompositeActor) previousContainer).removePiggyback(this);
             }
         }
         super.setContainer(container);
         while (container != null) {
-            if (container instanceof CompositeActor && ((CompositeActor)container).isOpaque()) {
-                ((CompositeActor)container).addPiggyback(this);
+            if (container instanceof CompositeActor
+                    && ((CompositeActor) container).isOpaque()) {
+                ((CompositeActor) container).addPiggyback(this);
                 break;
             }
             container = container.getContainer();
@@ -411,15 +413,18 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
 
     /** Do nothing.
      */
-    public void stop() {}
+    public void stop() {
+    }
 
     /** Do nothing.
      */
-    public void stopFire() {}
+    public void stopFire() {
+    }
 
     /** Do nothing.
      */
-    public void terminate() {}
+    public void terminate() {
+    }
 
     /** Check to see whether the specified file has changed, and if so,
      *  re-read it, and invoke the wrapup() methods
@@ -431,7 +436,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
         // Invoke initializable methods.
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.preinitialize();                    
+                initializable.preinitialize();
             }
         }
         _reReadIfNeeded();
@@ -471,13 +476,13 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
                     "Failed to re-read parameter set.");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
     /** Date of the file when last read. */
     private long _date = 0L;
-    
+
     /** The previously read file name. */
     private String _fileName;
 

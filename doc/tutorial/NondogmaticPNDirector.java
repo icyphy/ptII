@@ -11,23 +11,24 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 public class NondogmaticPNDirector extends PNDirector {
 
-	public NondogmaticPNDirector(CompositeEntity container, String name)
-			throws IllegalActionException, NameDuplicationException {
-		super(container, name);
-	}
-    
-	public Receiver newReceiver() {
-		return new FlexibleReceiver();
-	}
+    public NondogmaticPNDirector(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
+
+    public Receiver newReceiver() {
+        return new FlexibleReceiver();
+    }
+
     public class FlexibleReceiver extends PNQueueReceiver {
-		public boolean hasToken() {
+        public boolean hasToken() {
             IOPort port = getContainer();
             Attribute attribute = port.getAttribute("tellTheTruth");
             if (attribute == null) {
-            	return super.hasToken();
+                return super.hasToken();
             }
             // Tell the truth...
             return _queue.size() > 0;
-		}
+        }
     }
 }

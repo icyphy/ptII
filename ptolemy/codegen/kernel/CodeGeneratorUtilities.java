@@ -151,10 +151,10 @@ public class CodeGeneratorUtilities {
         Iterator substituteMapEntries = substituteMap.entrySet().iterator();
 
         while (substituteMapEntries.hasNext()) {
-            Map.Entry entries = (Map.Entry)substituteMapEntries.next();
+            Map.Entry entries = (Map.Entry) substituteMapEntries.next();
             String key = (String) entries.getKey();
-            input = StringUtilities.substitute(input, key,
-                    (String) entries.getValue());
+            input = StringUtilities.substitute(input, key, (String) entries
+                    .getValue());
         }
 
         return input;
@@ -200,13 +200,14 @@ public class CodeGeneratorUtilities {
 
         BufferedReader inputReader = null;
         try {
-            inputReader = new BufferedReader(new InputStreamReader(
-                            inputFileURL.openStream()));
+            inputReader = new BufferedReader(new InputStreamReader(inputFileURL
+                    .openStream()));
             String inputLine;
             String lineSeparator = System.getProperty("line.separator");
 
             while ((inputLine = inputReader.readLine()) != null) {
-                output.append(substitute(inputLine + lineSeparator, substituteMap));
+                output.append(substitute(inputLine + lineSeparator,
+                        substituteMap));
             }
         } finally {
             if (inputReader != null) {
@@ -234,8 +235,8 @@ public class CodeGeneratorUtilities {
             String outputFileName) throws FileNotFoundException, IOException {
         PrintWriter outputFile = null;
         try {
-            outputFile = new PrintWriter(new BufferedWriter(
-                            new FileWriter(outputFileName)));
+            outputFile = new PrintWriter(new BufferedWriter(new FileWriter(
+                    outputFileName)));
             String inputLine;
 
             while ((inputLine = inputFile.readLine()) != null) {

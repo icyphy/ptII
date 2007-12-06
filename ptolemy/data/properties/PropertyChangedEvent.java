@@ -49,7 +49,8 @@ public class PropertyChangedEvent {
     /** Create a new token changed event with the given parameters.  This
      *  constructor is used for property lattices.
      */
-    public PropertyChangedEvent(NamedObj component, IOPort port, PropertySolver solver, PropertyLattice lattice, Object property) {
+    public PropertyChangedEvent(NamedObj component, IOPort port,
+            PropertySolver solver, PropertyLattice lattice, Object property) {
         _component = component;
         _port = port;
         _solver = solver;
@@ -89,7 +90,8 @@ public class PropertyChangedEvent {
      */
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("The solver " + _solver.toString() + " changed property " + _property.toString());
+        buffer.append("The solver " + _solver.toString() + " changed property "
+                + _property.toString());
 
         return buffer.toString();
     }

@@ -356,7 +356,6 @@ public class KernelException extends Exception {
         return _object2;
     }
 
-
     /** Print a stack trace message to stderr including
      *  this exception, its stack trace and if the cause
      *  exception is known, print the cause exception and the

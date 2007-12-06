@@ -1702,8 +1702,8 @@ public class Plot extends PlotBox {
                             double yLowEB = Double.parseDouble(yl);
                             double yHighEB = Double.parseDouble(yh);
                             connected = _addLegendIfNecessary(connected);
-                            addPointWithErrorBars(_currentdataset,
-                                    xpt, ypt, yLowEB, yHighEB, connected);
+                            addPointWithErrorBars(_currentdataset, xpt, ypt,
+                                    yLowEB, yHighEB, connected);
                             return true;
                         } else {
                             // It is unlikely that we have a fieldsplit2 >0
@@ -2591,7 +2591,7 @@ public class Plot extends PlotBox {
 
     /** Cached copy of graphics, needed to reset when we are exporting
      *  to EPS.
-     */   
+     */
     private Graphics _graphics = null;
 
     ///////////////////////////////////////////////////////////////////

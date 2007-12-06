@@ -65,7 +65,8 @@ public class ArrayMinimum extends CCodeGeneratorHelper {
         ptolemy.actor.lib.ArrayMinimum actor = (ptolemy.actor.lib.ArrayMinimum) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(targetType(((ArrayType) actor.input.getType()).getElementType()));
+        args.add(targetType(((ArrayType) actor.input.getType())
+                .getElementType()));
 
         _codeStream.appendCodeBlock("preinitBlock", args);
         return processCode(_codeStream.toString());

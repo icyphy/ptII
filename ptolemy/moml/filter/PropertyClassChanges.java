@@ -137,13 +137,13 @@ public class PropertyClassChanges implements MoMLFilter {
         }
 
         if (attributeName.equals("class")) {
-           if (_currentlyProcessingActorWithPropertyClassChanges
+            if (_currentlyProcessingActorWithPropertyClassChanges
                     && _foundChange) {
-		// This if clause needs to be first so that we handle
-		// the PropertyClassChanges case where we have a 
-		// _tableauFactory in a ModalModel that is not
-		// a ModalTableauFactory, but should be.  An example
-		// of this is ct/demo/Pendulum3D/Pendulum3D.xml.
+                // This if clause needs to be first so that we handle
+                // the PropertyClassChanges case where we have a 
+                // _tableauFactory in a ModalModel that is not
+                // a ModalTableauFactory, but should be.  An example
+                // of this is ct/demo/Pendulum3D/Pendulum3D.xml.
                 String temporaryNewClass = _newClass;
 
                 if (!attributeValue.equals(_newClass)) {
@@ -153,7 +153,8 @@ public class PropertyClassChanges implements MoMLFilter {
                 _newClass = null;
                 _foundChange = false;
                 return temporaryNewClass;
-	    } else if (_actorsWithPropertyClassChanges.containsKey(attributeValue)) {
+            } else if (_actorsWithPropertyClassChanges
+                    .containsKey(attributeValue)) {
                 // We found a class with a property class change.
                 _currentlyProcessingActorWithPropertyClassChanges = true;
 
@@ -238,7 +239,7 @@ public class PropertyClassChanges implements MoMLFilter {
             Iterator propertyMapEntries = propertyMap.entrySet().iterator();
 
             while (propertyMapEntries.hasNext()) {
-                Map.Entry properties = (Map.Entry)propertyMapEntries.next();
+                Map.Entry properties = (Map.Entry) propertyMapEntries.next();
                 String oldProperty = (String) properties.getKey();
                 String newProperty = (String) properties.getValue();
                 results.append("\t\t" + oldProperty + "\t -> " + newProperty
@@ -353,8 +354,7 @@ public class PropertyClassChanges implements MoMLFilter {
         lineWriterClassChanges.put("fileName",
                 "ptolemy.actor.parameters.FilePortParameter");
 
-        _actorsWithPropertyClassChanges.put(
-                "ptolemy.actor.lib.io.LineWriter",
+        _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.io.LineWriter",
                 lineWriterClassChanges);
 
         // ModelReference
@@ -428,10 +428,11 @@ public class PropertyClassChanges implements MoMLFilter {
         // NOTE: Remove a property by setting the new class to null.
         modalModelClassChanges.put("_Director", null);
 
-	modalModelClassChanges.put("_tableauFactory", "ptolemy.vergil.fsm.modal.ModalTableauFactory");
+        modalModelClassChanges.put("_tableauFactory",
+                "ptolemy.vergil.fsm.modal.ModalTableauFactory");
 
-	// Note that we add ModalModel here then sometimes remove it
-	// in RemoveGraphical classes.
+        // Note that we add ModalModel here then sometimes remove it
+        // in RemoveGraphical classes.
         _actorsWithPropertyClassChanges.put(
                 "ptolemy.domains.fsm.modal.ModalModel", modalModelClassChanges);
 

@@ -321,8 +321,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
         // Don't listen to old rate variables anymore.
         oldList.removeAll(newList);
-        for (Iterator oldRateVariables = oldList.iterator();
-             oldRateVariables.hasNext();) {
+        for (Iterator oldRateVariables = oldList.iterator(); oldRateVariables
+                .hasNext();) {
             Variable variable = (Variable) oldRateVariables.next();
             if (_debugging) {
                 _debug("No longer listening to rate variable " + variable);
@@ -754,12 +754,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             + "allowDisconnectedGraphs to true.\n"
                             + "Unreached Actors:\n");
 
-
-
             // Only display the first 100 connected or disconnected actors.
             int count = 0;
-            for (Iterator unreachedActors = remainingActors.iterator();
-                     unreachedActors.hasNext() && count < 100; count++) {
+            for (Iterator unreachedActors = remainingActors.iterator(); unreachedActors
+                    .hasNext()
+                    && count < 100; count++) {
                 NamedObj unreachedActor = (NamedObj) (unreachedActors.next());
                 messageBuffer.append(unreachedActor.getFullName() + " ");
             }
@@ -774,8 +773,9 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             reachedActorList.removeAll(remainingActors);
 
             count = 0;
-            for (Iterator actors = reachedActorList.iterator();
-                 actors.hasNext() && count < 100 ; count++) {
+            for (Iterator actors = reachedActorList.iterator(); actors
+                    .hasNext()
+                    && count < 100; count++) {
                 Entity entity = (Entity) actors.next();
                 messageBuffer.append(entity.getFullName() + " ");
             }
@@ -818,9 +818,9 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         Fraction lcmFraction = new Fraction(vectorizationFactor);
 
         // Use entrySet here for performance reasons.
-        for (Iterator actorMapEntries = entityToFiringsPerIteration.entrySet().iterator();
-             actorMapEntries.hasNext();) {
-            Map.Entry actors =(Map.Entry) actorMapEntries.next();
+        for (Iterator actorMapEntries = entityToFiringsPerIteration.entrySet()
+                .iterator(); actorMapEntries.hasNext();) {
+            Map.Entry actors = (Map.Entry) actorMapEntries.next();
             Fraction repetitions = (Fraction) actors.getValue();
             repetitions = repetitions.multiply(lcmFraction);
 
@@ -832,8 +832,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // Go through the ports and normalize the external production
         // and consumption rates by the same factor.
         // Use entrySet here for performance reasons.
-        for (Iterator portMapEntries = externalRates.entrySet().iterator();
-             portMapEntries.hasNext();) {
+        for (Iterator portMapEntries = externalRates.entrySet().iterator(); portMapEntries
+                .hasNext();) {
             Map.Entry ports = (Map.Entry) portMapEntries.next();
             Fraction rate = (Fraction) ports.getValue();
             rate = rate.multiply(lcmFraction);
@@ -1544,8 +1544,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
                 // Update the firingsRemainingVector for this actor.
                 firingsRemaining -= numberOfFirings;
-                firingsRemainingVector.put(currentActor,
-                        Integer.valueOf(firingsRemaining));
+                firingsRemainingVector.put(currentActor, Integer
+                        .valueOf(firingsRemaining));
 
                 if (_debugging && VERBOSE) {
                     _debug(currentActor.getName() + " should fire "
@@ -1648,7 +1648,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             // Only display the first 100 connected or disconnected actors.
             int count = 0;
             for (Iterator actors = unscheduledActorList.iterator(); actors
-                    .hasNext() && count < 100; count++) {
+                    .hasNext()
+                    && count < 100; count++) {
                 Entity entity = (Entity) actors.next();
                 message.append(entity.getFullName() + " ");
             }
@@ -1664,7 +1665,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             count = 0;
 
             for (Iterator actors = scheduledActorList.iterator(); actors
-                    .hasNext() && count < 100; count++) {
+                    .hasNext()
+                    && count < 100; count++) {
                 Entity entity = (Entity) actors.next();
                 message.append(entity.getFullName() + " ");
             }
@@ -1672,8 +1674,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             if (count >= 99) {
                 message.append("...");
             }
-
-
 
             throw new NotSchedulableException(message.toString());
         }

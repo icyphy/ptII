@@ -138,8 +138,8 @@ import diva.gui.toolbox.JContextMenu;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class GTRuleGraphFrame extends AbstractGTFrame implements ActionListener,
-TableModelListener, ValueListener {
+public class GTRuleGraphFrame extends AbstractGTFrame implements
+        ActionListener, TableModelListener, ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                          constructors                     ////
@@ -200,9 +200,8 @@ TableModelListener, ValueListener {
     public void addRow() {
         int index = _tableModel.getRowCount() + 1;
         _tableModel.addRow(new Object[] {
-                _createCellPanel(Integer.toString(index)), _createCellPanel(""),
-                _createCellPanel("")
-        });
+                _createCellPanel(Integer.toString(index)),
+                _createCellPanel(""), _createCellPanel("") });
     }
 
     public void cancelFullScreen() {
@@ -287,8 +286,8 @@ TableModelListener, ValueListener {
         _screen.setVisible(true);
 
         // Make the new screen the default context for modal messages.
-        Component _previousDefaultContext =
-            GraphicalMessageHandler.getContext();
+        Component _previousDefaultContext = GraphicalMessageHandler
+                .getContext();
         GraphicalMessageHandler.setContext(_screen);
 
         // NOTE: As usual with swing, what the UI does is pretty
@@ -350,8 +349,8 @@ TableModelListener, ValueListener {
         List<ComponentEntity> entities = new LinkedList<ComponentEntity>();
         boolean needRefresh = false;
         for (int i = 0; i < rows.length; i++) {
-            String replacementName = _getCellEditorValue(
-                    (JPanel) _tableModel.getValueAt(rows[i], 2));
+            String replacementName = _getCellEditorValue((JPanel) _tableModel
+                    .getValueAt(rows[i], 2));
             ComponentEntity entity = replacement.getEntity(replacementName);
             if (entity == null) {
                 needRefresh = true;
@@ -375,14 +374,13 @@ TableModelListener, ValueListener {
 
         int row = event.getFirstRow();
         int column = event.getColumn();
-        if (column != TableModelEvent.ALL_COLUMNS
-                && row == event.getLastRow()) {
+        if (column != TableModelEvent.ALL_COLUMNS && row == event.getLastRow()) {
             // Get the value in the transformer's correspondence attribute.
             TransformationRule transformer = (TransformationRule) getModel();
             Pattern pattern = transformer.getPattern();
             Replacement replacement = transformer.getReplacement();
-            String newValue = _getCellEditorValue(
-                    (JPanel) _tableModel.getValueAt(row, column));
+            String newValue = _getCellEditorValue((JPanel) _tableModel
+                    .getValueAt(row, column));
             String previousString = _cellEditor.getPreviousString();
             if (previousString.equals(newValue)) {
                 return;
@@ -391,43 +389,43 @@ TableModelListener, ValueListener {
             if (column == 1) {
                 String patternObjectName = newValue;
                 if (patternObjectName.length() > 0) {
-                    NamedObj patternObject =
-                        pattern.getEntity(patternObjectName);
+                    NamedObj patternObject = pattern
+                            .getEntity(patternObjectName);
                     if (patternObject == null) {
                         patternObject = pattern.getRelation(patternObjectName);
                     }
                     if (patternObject == null) {
                         String message = "Entity or relation with name \""
-                            + patternObjectName
-                            + "\" cannot be found in the pattern of the "
-                            + "transformation rule.";
+                                + patternObjectName
+                                + "\" cannot be found in the pattern of the "
+                                + "transformation rule.";
                         _showTableError(message, row, column, previousString);
                         return;
                     }
                 }
 
-                String replacementObjectName = _getCellEditorValue(
-                        (JPanel) _tableModel.getValueAt(row, 2));
+                String replacementObjectName = _getCellEditorValue((JPanel) _tableModel
+                        .getValueAt(row, 2));
                 if (replacementObjectName.length() > 0) {
                     // Updated the pattern object.
-                    NamedObj replacementObject =
-                        replacement.getEntity(replacementObjectName);
+                    NamedObj replacementObject = replacement
+                            .getEntity(replacementObjectName);
                     if (replacementObject == null) {
-                        replacementObject =
-                            replacement.getRelation(replacementObjectName);
+                        replacementObject = replacement
+                                .getRelation(replacementObjectName);
                     }
 
                     if (replacementObject == null) {
                         String message = "Entity or relation with name \""
-                            + replacementObjectName
-                            + "\" cannot be found in the replacement of the "
-                            + "transformation rule.";
+                                + replacementObjectName
+                                + "\" cannot be found in the replacement of the "
+                                + "transformation rule.";
                         _showTableError(message, row, column, previousString);
                         return;
                     }
 
-                    PatternObjectAttribute attribute =
-                        GTTools.getPatternObjectAttribute(replacementObject);
+                    PatternObjectAttribute attribute = GTTools
+                            .getPatternObjectAttribute(replacementObject);
                     if (attribute == null) {
                         try {
                             attribute = new PatternObjectAttribute(
@@ -446,41 +444,41 @@ TableModelListener, ValueListener {
             } else if (column == 2) {
                 String replacementObjectName = newValue;
                 if (replacementObjectName.length() > 0) {
-                    NamedObj replacementObject =
-                        replacement.getEntity(replacementObjectName);
+                    NamedObj replacementObject = replacement
+                            .getEntity(replacementObjectName);
                     if (replacementObject == null) {
-                        replacementObject =
-                            replacement.getRelation(replacementObjectName);
+                        replacementObject = replacement
+                                .getRelation(replacementObjectName);
                     }
 
                     if (replacementObject == null) {
                         String message = "Entity or relation with name \""
-                            + replacementObjectName
-                            + "\" cannot be found in the replacement of the "
-                            + "transformation rule.";
+                                + replacementObjectName
+                                + "\" cannot be found in the replacement of the "
+                                + "transformation rule.";
                         _showTableError(message, row, column, previousString);
                         return;
                     }
 
-                    PatternObjectAttribute attribute =
-                        GTTools.getPatternObjectAttribute(replacementObject);
+                    PatternObjectAttribute attribute = GTTools
+                            .getPatternObjectAttribute(replacementObject);
                     if (attribute == null) {
                         String message = "Entity or relation with name \""
-                            + replacementObject
-                            + "\" in the replacement part of the "
-                            + "transformation rule does not have a "
-                            + "\"patternObject\" attribute.";
+                                + replacementObject
+                                + "\" in the replacement part of the "
+                                + "transformation rule does not have a "
+                                + "\"patternObject\" attribute.";
                         _showTableError(message, row, column, previousString);
                         return;
                     }
 
                     _cellEditor.setPreviousString(replacementObjectName);
-                    String patternObjectName = _getCellEditorValue(
-                            (JPanel) _tableModel.getValueAt(row, 1));
+                    String patternObjectName = _getCellEditorValue((JPanel) _tableModel
+                            .getValueAt(row, 1));
 
                     if (previousString.length() > 0) {
-                        NamedObj previousObject =
-                            replacement.getEntity(previousString);
+                        NamedObj previousObject = replacement
+                                .getEntity(previousString);
                         _setPatternObject(previousObject, "", false);
                     }
                     _setPatternObject(replacementObject, patternObjectName,
@@ -543,8 +541,7 @@ TableModelListener, ValueListener {
         LayoutAction layoutAction = new LayoutAction();
         GUIUtilities.addMenuItem(_ruleMenu, layoutAction);
 
-        ActorEditorGraphController controller =
-            (ActorEditorGraphController) _getGraphController();
+        ActorEditorGraphController controller = (ActorEditorGraphController) _getGraphController();
         if (hasTabs()) {
             _ruleMenu.addSeparator();
             Action newRelationAction = controller.new NewRelationAction();
@@ -588,9 +585,8 @@ TableModelListener, ValueListener {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setName("Correspondence");
 
-        _tableModel = new DefaultTableModel(new Object[] {
-                "", "Pattern Entity", "Replacement Entity"
-        }, 0);
+        _tableModel = new DefaultTableModel(new Object[] { "",
+                "Pattern Entity", "Replacement Entity" }, 0);
 
         _table = new JTable(_tableModel);
         _table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -604,8 +600,7 @@ TableModelListener, ValueListener {
         indexColumn.setMinWidth(10);
         indexColumn.setPreferredWidth(15);
         indexColumn.setMaxWidth(30);
-        DefaultTableCellRenderer indexRenderer =
-            new DefaultTableCellRenderer();
+        DefaultTableCellRenderer indexRenderer = new DefaultTableCellRenderer();
         indexRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
         _cellEditor = new CellEditor();
@@ -623,8 +618,8 @@ TableModelListener, ValueListener {
         header.setReorderingAllowed(false);
         header.setPreferredSize(new Dimension(0, 25));
 
-        DefaultTableCellRenderer renderer =
-            (DefaultTableCellRenderer) header.getDefaultRenderer();
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) header
+                .getDefaultRenderer();
         renderer.setHorizontalAlignment(SwingConstants.CENTER);
 
         JPanel buttonsPanel = new JPanel();
@@ -690,8 +685,7 @@ TableModelListener, ValueListener {
             CompositeEntity library = gtLibrary.getLibrary();
             for (Object entityObject : actorLibrary.entityList()) {
                 try {
-                    ComponentEntity libraryEntity =
-                        (ComponentEntity) entityObject;
+                    ComponentEntity libraryEntity = (ComponentEntity) entityObject;
                     ComponentEntity entity = (ComponentEntity) libraryEntity
                             .clone(library.workspace());
                     entity.setContainer(library);
@@ -731,8 +725,7 @@ TableModelListener, ValueListener {
             frame._tableModel.removeRow(0);
         }
 
-        TransformationRule transformer =
-            (TransformationRule) getTransformationRule();
+        TransformationRule transformer = (TransformationRule) getTransformationRule();
         CompositeActorMatcher replacement = transformer.getReplacement();
         _refreshTable(frame, replacement, 1, replacement);
 
@@ -743,13 +736,12 @@ TableModelListener, ValueListener {
             CompositeActorMatcher replacement, int index,
             CompositeEntity container) {
         Collection<?> objectCollection = new CombinedCollection<Object>(
-                new Collection<?>[] {
-                        container.entityList(), container.relationList()
-                });
+                new Collection<?>[] { container.entityList(),
+                        container.relationList() });
         for (Object entityObject : objectCollection) {
             NamedObj object = (NamedObj) entityObject;
-            PatternObjectAttribute attribute =
-                GTTools.getPatternObjectAttribute(object);
+            PatternObjectAttribute attribute = GTTools
+                    .getPatternObjectAttribute(object);
             if (attribute != null) {
                 attribute.addValueListener(this);
                 String patternObject = attribute.getExpression();
@@ -758,8 +750,7 @@ TableModelListener, ValueListener {
                     topLevelFrame._tableModel.addRow(new Object[] {
                             _createCellPanel(Integer.toString(index++)),
                             _createCellPanel(patternObject),
-                            _createCellPanel(name)
-                    });
+                            _createCellPanel(name) });
                 }
             }
             if (object instanceof CompositeEntity) {
@@ -800,26 +791,25 @@ TableModelListener, ValueListener {
         _tableModel.fireTableCellUpdated(row, column);
     }
 
-    private void _setOrClearPatternObjectAttributes(
-            CompositeEntity container, boolean isSet, Collection<?> filter) {
+    private void _setOrClearPatternObjectAttributes(CompositeEntity container,
+            boolean isSet, Collection<?> filter) {
         try {
             Collection<?> objectCollection;
             if (filter == null) {
                 objectCollection = new CombinedCollection<Object>(
-                        new Collection<?>[] {
-                                container.entityList(), container.relationList()
-                        });
+                        new Collection<?>[] { container.entityList(),
+                                container.relationList() });
             } else {
                 objectCollection = filter;
             }
             for (Object objectObject : objectCollection) {
                 NamedObj object = (NamedObj) objectObject;
-                PatternObjectAttribute patternObject =
-                    GTTools.getPatternObjectAttribute(object);
+                PatternObjectAttribute patternObject = GTTools
+                        .getPatternObjectAttribute(object);
                 if (isSet) {
                     if (patternObject == null) {
-                        patternObject =
-                            new PatternObjectAttribute(object, "patternObject");
+                        patternObject = new PatternObjectAttribute(object,
+                                "patternObject");
                     }
                     String name = _getNameWithinContainer(object,
                             getTransformationRule().getPattern());
@@ -830,8 +820,8 @@ TableModelListener, ValueListener {
                     patternObject.setExpression("");
                 }
                 if (object instanceof CompositeEntity) {
-                    _setOrClearPatternObjectAttributes((CompositeEntity) object,
-                            isSet, null);
+                    _setOrClearPatternObjectAttributes(
+                            (CompositeEntity) object, isSet, null);
                 }
             }
         } catch (KernelException e) {
@@ -857,9 +847,9 @@ TableModelListener, ValueListener {
     private void _setPatternObject(NamedObj replacementObject,
             String patternObjectName, boolean mergeWithPrevious) {
         String moml = "<property name=\"patternObject\" value=\""
-            + patternObjectName + "\"/>";
-        MoMLChangeRequest request =
-            new MoMLChangeRequest(this, replacementObject, moml);
+                + patternObjectName + "\"/>";
+        MoMLChangeRequest request = new MoMLChangeRequest(this,
+                replacementObject, moml);
         request.setUndoable(true);
         request.setMergeWithPreviousUndo(mergeWithPrevious);
         replacementObject.requestChange(request);
@@ -867,16 +857,16 @@ TableModelListener, ValueListener {
 
     private void _showTableError(String message, final int row,
             final int column, final String previousString) {
-        String[] options = new String[] {"Edit", "Revert"};
+        String[] options = new String[] { "Edit", "Revert" };
         int selected = JOptionPane.showOptionDialog(null, message,
                 "Validation Error", JOptionPane.OK_CANCEL_OPTION,
                 JOptionPane.ERROR_MESSAGE, null, options, options[1]);
         if (selected == 0) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    if (_table.isEditing() &&
-                            (_table.getEditingRow() != row ||
-                             _table.getEditingColumn() != column)) {
+                    if (_table.isEditing()
+                            && (_table.getEditingRow() != row || _table
+                                    .getEditingColumn() != column)) {
                         _cellEditor.cancelCellEditing();
                     }
                     _table.editCellAt(row, column);
@@ -890,8 +880,8 @@ TableModelListener, ValueListener {
 
     private CellEditor _cellEditor;
 
-    private static final Border _EMPTY_BORDER =
-        BorderFactory.createEmptyBorder();
+    private static final Border _EMPTY_BORDER = BorderFactory
+            .createEmptyBorder();
 
     private Component _fullScreenComponent;
 
@@ -916,8 +906,8 @@ TableModelListener, ValueListener {
             super("Match Models in a Directory");
 
             _attribute = new DefaultDirectoryAttribute((Workspace) null);
-            _attribute.directory.setBaseDirectory(URIAttribute.getModelURI(
-                    getModel()));
+            _attribute.directory.setBaseDirectory(URIAttribute
+                    .getModelURI(getModel()));
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/batchmatch.gif",
@@ -944,8 +934,8 @@ TableModelListener, ValueListener {
         private File[] _getModelFiles() {
             TransformationRule rule = getTransformationRule();
             Pattern pattern = rule.getPattern();
-            DefaultDirectoryAttribute attribute = (DefaultDirectoryAttribute)
-                    pattern.getAttribute("DefaultDirectory");
+            DefaultDirectoryAttribute attribute = (DefaultDirectoryAttribute) pattern
+                    .getAttribute("DefaultDirectory");
             File directoryFile = null;
             String fileFilter = "";
             boolean subdirs = true;
@@ -956,8 +946,8 @@ TableModelListener, ValueListener {
                     subdirs = ((BooleanToken) attribute.subdirs.getToken())
                             .booleanValue();
                 } catch (IllegalActionException e) {
-                    throw new KernelRuntimeException(e, "Unable to get boolean "
-                            + "token.");
+                    throw new KernelRuntimeException(e,
+                            "Unable to get boolean " + "token.");
                 }
             }
 
@@ -985,17 +975,17 @@ TableModelListener, ValueListener {
             }
 
             if (directoryFile == null) {
-            	return null;
+                return null;
             } else {
-            	File[] files = _listFiles(directoryFile, subdirs, fileFilter);
-	            return files;
+                File[] files = _listFiles(directoryFile, subdirs, fileFilter);
+                return files;
             }
         }
 
         private File[] _listFiles(File directory, boolean includeSubdir,
                 String fileFilter) {
-            ModelFileFilter collector =
-                new ModelFileFilter(includeSubdir, fileFilter);
+            ModelFileFilter collector = new ModelFileFilter(includeSubdir,
+                    fileFilter);
             directory.list(collector);
             List<File> files = collector._files;
             Collections.sort(files, new FileComparator());
@@ -1009,9 +999,9 @@ TableModelListener, ValueListener {
             public boolean accept(File dir, String name) {
                 File file = new File(dir, name);
                 boolean isDirectory = _includeSubdir && file.isDirectory();
-                boolean isFile = file.isFile() && (_pattern == null ?
-                        name.toLowerCase().endsWith(".xml") :
-                        _pattern.matcher(name).matches());
+                boolean isFile = file.isFile()
+                        && (_pattern == null ? name.toLowerCase().endsWith(
+                                ".xml") : _pattern.matcher(name).matches());
                 if (isDirectory) {
                     file.list(this);
                 } else if (isFile) {
@@ -1023,19 +1013,19 @@ TableModelListener, ValueListener {
             ModelFileFilter(boolean includeSubdir, String fileFilter) {
                 _includeSubdir = includeSubdir;
                 if (!fileFilter.equals("")) {
-                    _pattern =
-                        java.util.regex.Pattern.compile(_escape(fileFilter));
+                    _pattern = java.util.regex.Pattern
+                            .compile(_escape(fileFilter));
                 }
             }
 
             private String _escape(String string) {
                 String escaped = _ESCAPER.matcher(string).replaceAll("\\\\$1");
-                return escaped.replaceAll("\\\\\\*", ".*")
-                        .replaceAll("\\\\\\?", ".?");
+                return escaped.replaceAll("\\\\\\*", ".*").replaceAll(
+                        "\\\\\\?", ".?");
             }
 
-            private final java.util.regex.Pattern _ESCAPER =
-                java.util.regex.Pattern.compile("([^a-zA-z0-9])");
+            private final java.util.regex.Pattern _ESCAPER = java.util.regex.Pattern
+                    .compile("([^a-zA-z0-9])");
 
             private List<File> _files = new LinkedList<File>();
 
@@ -1057,8 +1047,8 @@ TableModelListener, ValueListener {
                     return;
                 }
 
-                MatchResultViewer.FileSelectionStatus status =
-                    viewer.getFileSelectionStatus();
+                MatchResultViewer.FileSelectionStatus status = viewer
+                        .getFileSelectionStatus();
                 viewer.clearFileSelectionStatus();
                 switch (status) {
                 case PREVIOUS:
@@ -1114,7 +1104,7 @@ TableModelListener, ValueListener {
             }
 
             private int _findNextMatch(int index) throws MalformedURLException,
-            Exception {
+                    Exception {
                 for (int i = index + 1; i < _files.length; i++) {
                     List<MatchResult> currentResult = _allResults[i];
                     if (currentResult == null) {
@@ -1151,12 +1141,12 @@ TableModelListener, ValueListener {
                     if (_viewers[_index] != null) {
                         _viewers[_index].setVisible(true);
                     } else {
-                        _viewers[_index] =
-                            _showViewer(_models[_index], _allResults[_index],
-                                    _files[_index].getCanonicalPath());
+                        _viewers[_index] = _showViewer(_models[_index],
+                                _allResults[_index], _files[_index]
+                                        .getCanonicalPath());
                         _viewers[_index].setBatchMode(true);
-                        _viewers[_index].setPreviousFileEnabled(
-                                _previousIndex >= 0);
+                        _viewers[_index]
+                                .setPreviousFileEnabled(_previousIndex >= 0);
                         _viewers[_index].setNextFileEnabled(_nextIndex >= 0);
                         _viewers[_index].addWindowListener(this);
                     }
@@ -1184,8 +1174,8 @@ TableModelListener, ValueListener {
 
     private static class CellEditor extends CellPanelEditor {
 
-        public Component getTableCellEditorComponent(JTable table, Object value,
-                boolean isSelected, int row, int column) {
+        public Component getTableCellEditorComponent(JTable table,
+                Object value, boolean isSelected, int row, int column) {
             JPanel panel = (JPanel) super.getTableCellEditorComponent(table,
                     value, isSelected, row, column);
             _previousString = _getCellEditorValue(panel);
@@ -1206,16 +1196,15 @@ TableModelListener, ValueListener {
     private static class FileComparator implements Comparator<File> {
 
         public int compare(File file1, File file2) {
-            return file1.getAbsolutePath().compareTo(
-                    file2.getAbsolutePath());
+            return file1.getAbsolutePath().compareTo(file2.getAbsolutePath());
         }
 
     }
 
     private class GTActionGraphController extends ActorEditorGraphController {
 
-        public class NewRelationAction
-        extends ActorEditorGraphController.NewRelationAction {
+        public class NewRelationAction extends
+                ActorEditorGraphController.NewRelationAction {
 
             public void actionPerformed(ActionEvent e) {
                 if (_isTableActive()) {
@@ -1262,8 +1251,7 @@ TableModelListener, ValueListener {
 
                 MenuActionFactory newFactory = new GTMenuActionFactory(
                         _configureMenuFactory, _configureAction);
-                _replaceFactory(_menuFactory, _configureMenuFactory,
-                        newFactory);
+                _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
                 _configureMenuFactory = newFactory;
             }
         }
@@ -1301,8 +1289,7 @@ TableModelListener, ValueListener {
             return menuItem;
         }
 
-        GTMenuActionFactory(MenuActionFactory oldFactory,
-                Action configureAction) {
+        GTMenuActionFactory(MenuActionFactory oldFactory, Action configureAction) {
             super(configureAction);
 
             _oldFactory = oldFactory;
@@ -1354,7 +1341,7 @@ TableModelListener, ValueListener {
         }
 
         protected CompositeEntity _getModel(File file)
-        throws MalformedURLException, Exception {
+                throws MalformedURLException, Exception {
             if (!file.exists()) {
                 MessageHandler.error("Model file " + file.getPath()
                         + " does not exist.");
@@ -1363,14 +1350,14 @@ TableModelListener, ValueListener {
 
             _parser.reset();
             InputStream stream = file.toURI().toURL().openStream();
-            CompositeEntity model =
-                (CompositeEntity) _parser.parse(null, stream);
+            CompositeEntity model = (CompositeEntity) _parser.parse(null,
+                    stream);
             return model;
         }
 
         protected MatchResultViewer _showViewer(CompositeEntity model,
                 List<MatchResult> results, String sourceFileName)
-        throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
 
             MatchResultViewer._setTableauFactory(this, model);
             Configuration configuration = _getConfiguration();
@@ -1415,8 +1402,8 @@ TableModelListener, ValueListener {
             super("Match Model");
 
             _attribute = new DefaultModelAttribute((Workspace) null);
-            ((FileParameter) _attribute.parameter).setBaseDirectory(
-                    URIAttribute.getModelURI(getModel()));
+            ((FileParameter) _attribute.parameter)
+                    .setBaseDirectory(URIAttribute.getModelURI(getModel()));
 
             GUIUtilities.addIcons(this, new String[][] {
                     { "/ptolemy/vergil/gt/img/match.gif",
@@ -1446,11 +1433,10 @@ TableModelListener, ValueListener {
             try {
                 TransformationRule rule = getTransformationRule();
                 Pattern pattern = rule.getPattern();
-                DefaultModelAttribute attribute = (DefaultModelAttribute)
-                        pattern.getAttribute("DefaultModel");
+                DefaultModelAttribute attribute = (DefaultModelAttribute) pattern
+                        .getAttribute("DefaultModel");
                 if (attribute != null) {
-                    FileParameter parameter =
-                        (FileParameter) attribute.parameter;
+                    FileParameter parameter = (FileParameter) attribute.parameter;
                     if (parameter.getExpression() != null) {
                         modelFile = parameter.asFile();
                     }
@@ -1461,8 +1447,8 @@ TableModelListener, ValueListener {
                             GTRuleGraphFrame.this, "Select Model File",
                             new Configurer(_attribute));
                     if (dialog.buttonPressed().equalsIgnoreCase("OK")) {
-                        modelFile =
-                            ((FileParameter) _attribute.parameter).asFile();
+                        modelFile = ((FileParameter) _attribute.parameter)
+                                .asFile();
                     }
                 }
 
@@ -1474,8 +1460,7 @@ TableModelListener, ValueListener {
 
                 return modelFile;
             } catch (IllegalActionException e) {
-                throw new KernelRuntimeException(e,
-                        "Cannot obtain model file.");
+                throw new KernelRuntimeException(e, "Cannot obtain model file.");
             }
         }
 
@@ -1522,13 +1507,13 @@ TableModelListener, ValueListener {
                     if (results.isEmpty()) {
                         MessageHandler.message("No match found.");
                     } else {
-                        _viewer = _showViewer(model, results,
-                                file.getCanonicalPath());
+                        _viewer = _showViewer(model, results, file
+                                .getCanonicalPath());
                         _viewer.addWindowListener(this);
                     }
                 } catch (MalformedURLException ex) {
-                    MessageHandler.error("Unable to obtain URL from the " +
-                            "input file name.", ex);
+                    MessageHandler.error("Unable to obtain URL from the "
+                            + "input file name.", ex);
                 } catch (Exception ex) {
                     throw new InternalErrorException(ex);
                 }

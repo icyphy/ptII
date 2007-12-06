@@ -137,8 +137,7 @@ public class DoubleToken extends ScalarToken {
         compare = TypeLattice.compare(BaseType.FLOAT, token);
 
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {
-            FloatToken floatToken = FloatToken
-                    .convert(token);
+            FloatToken floatToken = FloatToken.convert(token);
             DoubleToken result = new DoubleToken(floatToken.doubleValue());
             if (floatToken._unitCategoryExponents != null
                     && !UnitUtilities
@@ -148,7 +147,7 @@ public class DoubleToken extends ScalarToken {
             }
             return result;
         }
-        
+
         compare = TypeLattice.compare(BaseType.INT, token);
 
         if ((compare == CPO.SAME) || (compare == CPO.HIGHER)) {

@@ -30,7 +30,6 @@
  */
 package ptolemy.math;
 
-
 /** This class provides a complex data type and a library of functions that
  operate on and return complex numbers.  An instance of the class is
  immutable, meaning that its value is set in the constructor and
@@ -497,8 +496,7 @@ public class Complex {
      */
     public final boolean equals(Object z) {
         if (z instanceof Complex) {
-            return (( ((Complex)z).real == real)
-                    && (((Complex)z).imag == imag));
+            return ((((Complex) z).real == real) && (((Complex) z).imag == imag));
         }
         return false;
     }
@@ -533,8 +531,8 @@ public class Complex {
     public int hashCode() {
         // Use bitwise xor here so that if either real or imag is 0
         // we get better values.
-        return Double.valueOf(real).hashCode()
-            >>> Double.valueOf(imag).hashCode();
+        return Double.valueOf(real).hashCode() >>> Double.valueOf(imag)
+                .hashCode();
     }
 
     /** Return the imaginary part of the specified complex number.

@@ -23,21 +23,21 @@ public abstract class PropertyHelper {
      */
     public Property getProperty(Object object) {
         Property property = (Property) _resolvedProperties.get(object);
-        
-//        if (property == null) { // get value from attribute
-//            String solverName = getSolver()._solverName;
-/*            Parameter propertyAttribute = (Parameter) ((NamedObj)object).getAttribute("typeSystem_EDC");
-            if (propertyAttribute != null) {
-                try {
-                    ObjectToken ot = (ObjectToken)propertyAttribute.getToken();
-                    System.out.println(ot);
-                } catch (IllegalActionException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-//        }
-*/        
+
+        //        if (property == null) { // get value from attribute
+        //            String solverName = getSolver()._solverName;
+        /*            Parameter propertyAttribute = (Parameter) ((NamedObj)object).getAttribute("typeSystem_EDC");
+                    if (propertyAttribute != null) {
+                        try {
+                            ObjectToken ot = (ObjectToken)propertyAttribute.getToken();
+                            System.out.println(ot);
+                        } catch (IllegalActionException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+        //        }
+        */
         return property;
     }
 
@@ -48,86 +48,91 @@ public abstract class PropertyHelper {
     public PropertySolver getSolver() {
         return _solver;
     }
-    
+
     /**
      * Update the property.
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    public void updateProperty(boolean isTraining) throws IllegalActionException, NameDuplicationException {
+    public void updateProperty(boolean isTraining)
+            throws IllegalActionException, NameDuplicationException {
         List propertyables = _getPropertyables();
-    
+
         Iterator iterator = propertyables.iterator();
-    
 
         while (iterator.hasNext()) {
             Object object = iterator.next();
-            
+
             if (object instanceof NamedObj) {
                 NamedObj namedObj = (NamedObj) object;
-                
+
                 Property property = getProperty(namedObj);
 
                 PropertyAttribute attribute = null;
-                
+
                 // write results to attribute
                 if (getSolver().getExtendedUseCaseName().startsWith("lattice")) {
-                    attribute = (PropertyConstraintAttribute) namedObj.getAttribute(getSolver().getExtendedUseCaseName());
+                    attribute = (PropertyConstraintAttribute) namedObj
+                            .getAttribute(getSolver().getExtendedUseCaseName());
                     if (attribute == null) {
-                        attribute = new PropertyConstraintAttribute(namedObj, getSolver().getExtendedUseCaseName());
-                    } 
-                } else if (getSolver().getExtendedUseCaseName().startsWith("token")) {
-                    attribute = (PropertyTokenAttribute) namedObj.getAttribute(getSolver().getExtendedUseCaseName());
+                        attribute = new PropertyConstraintAttribute(namedObj,
+                                getSolver().getExtendedUseCaseName());
+                    }
+                } else if (getSolver().getExtendedUseCaseName().startsWith(
+                        "token")) {
+                    attribute = (PropertyTokenAttribute) namedObj
+                            .getAttribute(getSolver().getExtendedUseCaseName());
                     if (attribute == null) {
-                        attribute = new PropertyTokenAttribute(namedObj, getSolver().getExtendedUseCaseName());
+                        attribute = new PropertyTokenAttribute(namedObj,
+                                getSolver().getExtendedUseCaseName());
                     }
                 } else {
                     //FIXME:
                 }
-            
-                
+
                 if (isTraining) {
-                    StringParameter showAttribute = 
-                        (StringParameter) namedObj.getAttribute("_showInfo");
-                
+                    StringParameter showAttribute = (StringParameter) namedObj
+                            .getAttribute("_showInfo");
+
                     if (showAttribute == null) {
-                        showAttribute = new StringParameter(namedObj, "_showInfo");
+                        showAttribute = new StringParameter(namedObj,
+                                "_showInfo");
                     }
 
                     if (property != null) {
-                    
+
                         showAttribute.setToken(property.toString());
 
                         // write results to attribute
                         attribute.setExpression(property.toString());
-                    
+
                     } else {
                         showAttribute.setToken("");
                     }
-                } else {    // testing.
-                    String propertyString = (property == null) ? "" : property.toString();
-                    
+                } else { // testing.
+                    String propertyString = (property == null) ? "" : property
+                            .toString();
+
                     if (!attribute.getExpression().equals(propertyString)) {
-                        throw new IllegalActionException ("Regression test" +
-                                " failed in property resolution for " +
-                                namedObj.getFullName() + 
-                                ". \nThe trained property value is: \"" +
-                                attribute.getExpression() +
-                                "\", but resolved value is: \"" +
-                                propertyString + "\".\n");
+                        throw new IllegalActionException("Regression test"
+                                + " failed in property resolution for "
+                                + namedObj.getFullName()
+                                + ". \nThe trained property value is: \""
+                                + attribute.getExpression()
+                                + "\", but resolved value is: \""
+                                + propertyString + "\".\n");
                     }
                 }
             }
         }
     }
-    
 
     /** The associated component of this helper. */
     protected Object _component;
-    
+
     /** The associated property lattice. */
     protected PropertySolver _solver;
-    
+
     /** 
      * The mapping between property-able objects and their
      * declare property. 
@@ -159,8 +164,8 @@ public abstract class PropertyHelper {
      */
     public void setEquals(Object object, Property property) {
         _declaredProperties.put(object, property);
-        _resolvedProperties.put(object, property);        
-        _nonSettables.add(object);        
+        _resolvedProperties.put(object, property);
+        _nonSettables.add(object);
     }
 
     /**

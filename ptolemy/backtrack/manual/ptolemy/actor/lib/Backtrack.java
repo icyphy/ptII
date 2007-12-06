@@ -145,8 +145,8 @@ public class Backtrack extends TypedAtomicActor {
         boolean result = super.postfire();
 
         if (_rollbackHandle > 0) {
-            HashMap<Checkpoint, Long> handles = _handleMap.get(Long.valueOf(
-                    _rollbackHandle));
+            HashMap<Checkpoint, Long> handles = _handleMap.get(Long
+                    .valueOf(_rollbackHandle));
 
             if (handles != null) {
                 for (Checkpoint checkpointObject : handles.keySet()) {

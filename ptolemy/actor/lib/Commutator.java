@@ -88,11 +88,11 @@ public class Commutator extends Transformer implements SequenceActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
-        
+
         output_tokenProductionRate = new Parameter(output,
                 "tokenProductionRate");
         output_tokenProductionRate.setExpression("0");
-        
+
         input_tokenConsumptionRate = new Parameter(input,
                 "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("blockSize");
@@ -109,7 +109,7 @@ public class Commutator extends Transformer implements SequenceActor {
      *  This is an integer that defaults to 1.
      */
     public Parameter blockSize;
-    
+
     /** The parameter controlling the input port consumption rate.
      *  This parameter contains an IntToken, initially with a value of 1.
      */
@@ -149,8 +149,8 @@ public class Commutator extends Transformer implements SequenceActor {
         super.connectionsChanged(port);
 
         if (port == input) {
-            output_tokenProductionRate.setExpression(
-                    input.getWidth() + " * blockSize");
+            output_tokenProductionRate.setExpression(input.getWidth()
+                    + " * blockSize");
             // NOTE: schedule is invalidated automatically already
             // by the changed connections.
         }
@@ -172,13 +172,14 @@ public class Commutator extends Transformer implements SequenceActor {
         _tentativeInputPosition = _currentInputPosition;
 
         int width = input.getWidth();
-        int blockSizeValue = ((IntToken)blockSize.getToken()).intValue();
+        int blockSizeValue = ((IntToken) blockSize.getToken()).intValue();
 
         for (int i = 0; i < width; i++) {
             if (!input.hasToken(_tentativeInputPosition, blockSizeValue)) {
                 break;
             }
-            Token[] inputs = input.get(_tentativeInputPosition++, blockSizeValue);
+            Token[] inputs = input.get(_tentativeInputPosition++,
+                    blockSizeValue);
             output.send(0, inputs, blockSizeValue);
 
             if (_tentativeInputPosition >= width) {

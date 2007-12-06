@@ -346,7 +346,7 @@ public class RealTimeComposite extends MirrorComposite {
          * violates this condition should clearly indicate this
          * fact. The recommended language is "Note: this class has a
          * natural ordering that is inconsistent with equals." "
-         */  
+         */
         public InputFrame(Time theTime, List<QueuedToken> theTokens) {
             tokens = theTokens;
             time = theTime;
@@ -372,7 +372,7 @@ public class RealTimeComposite extends MirrorComposite {
         public int compareTo(Delayed frame) {
             // NOTE: We assume that only comparisons against instances
             // of Frame will be done.  Is this safe?
-            return time.compareTo(((InputFrame)frame).time);
+            return time.compareTo(((InputFrame) frame).time);
         }
     }
 

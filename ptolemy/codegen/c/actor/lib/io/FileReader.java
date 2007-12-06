@@ -101,7 +101,6 @@ public class FileReader extends CCodeGeneratorHelper {
         return fileNameString;
     }
 
-
     /** Get the file name from a parameter and convert backward slashes
      *  to forward slashes.
      *  @param fileOrURL The file name or URL.

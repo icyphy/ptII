@@ -46,8 +46,7 @@ import java.awt.Component;
  * @see    DefaultUnitConverter
  */
 public interface UnitConverter {
-    
-    
+
     /**
      * Converts Inches and returns pixels using the specified resolution.
      * 
@@ -56,7 +55,6 @@ public interface UnitConverter {
      * @return the given Inches as pixels
      */
     int inchAsPixel(double in, Component component);
-    
 
     /**
      * Converts Millimeters and returns pixels using the resolution of the
@@ -68,7 +66,6 @@ public interface UnitConverter {
      */
     int millimeterAsPixel(double mm, Component component);
 
-
     /**
      * Converts Centimeters and returns pixels using the resolution of the
      * given component's graphics object.
@@ -78,7 +75,6 @@ public interface UnitConverter {
      * @return the given Centimeters as pixels
      */
     int centimeterAsPixel(double cm, Component component);
-    
 
     /**
      * Converts DTP Points and returns pixels using the resolution of the
@@ -89,8 +85,7 @@ public interface UnitConverter {
      * @return the given Points as pixels
      */
     int pointAsPixel(int pt, Component component);
-    
-    
+
     /**
      * Converts horizontal dialog units and returns pixels. 
      * Honors the resolution, dialog font size, platform and look&amp;feel.
@@ -100,8 +95,7 @@ public interface UnitConverter {
      * @return the given horizontal dialog units as pixels
      */
     int dialogUnitXAsPixel(int dluX, Component component);
-            
-                    
+
     /**
      * Converts vertical dialog units and returns pixels. 
      * Honors the resolution, dialog font size, platform and look&amp;feel.
@@ -111,6 +105,5 @@ public interface UnitConverter {
      * @return the given vertical dialog units as pixels
      */
     int dialogUnitYAsPixel(int dluY, Component component);
-    
-    
+
 }

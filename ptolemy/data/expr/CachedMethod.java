@@ -768,8 +768,7 @@ public class CachedMethod {
      *  @return The best correct conversion, or IMPOSSIBLE_CONVERSION
      *  if no such conversion exists.
      */
-    protected static ArgumentConversion _getConversion(Class formal,
-            Type actual) {
+    protected static ArgumentConversion _getConversion(Class formal, Type actual) {
         // No conversion necessary.
         if (formal.isAssignableFrom(actual.getTokenClass())) {
             return IDENTITY_CONVERSION;
@@ -1166,7 +1165,7 @@ public class CachedMethod {
         /**  The preference is n index given an order to the
          *  preference of conversions.  Lower preferences represent
          *  less desirable conversions than higher preferences.
-         */    
+         */
         protected int _preference;
     }
 

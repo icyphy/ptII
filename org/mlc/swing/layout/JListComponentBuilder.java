@@ -42,46 +42,45 @@ import javax.swing.JScrollPane;
  * 
  * @author Kevin Routley
  */
-public class JListComponentBuilder implements ComponentBuilder
-{
-  List<BeanProperty> properties = new ArrayList<BeanProperty>();
+public class JListComponentBuilder implements ComponentBuilder {
+    List<BeanProperty> properties = new ArrayList<BeanProperty>();
 
-  public List<BeanProperty> getProperties()
-  {
-    return properties;
-  }
+    public List<BeanProperty> getProperties() {
+        return properties;
+    }
 
-  public String getDeclaration(String name, Map<String, Object> properties)
-  {
-    return "javax.swing.JList " + name
-    + "Control = new javax.swing.JList();\njavax.swing.JScrollPane " + name
-    + " = new javax.swing.JScrollPane(" + name + "Control);\n";
-  }
+    public String getDeclaration(String name, Map<String, Object> properties) {
+        return "javax.swing.JList "
+                + name
+                + "Control = new javax.swing.JList();\njavax.swing.JScrollPane "
+                + name + " = new javax.swing.JScrollPane(" + name
+                + "Control);\n";
+    }
 
-  public Component getInstance(Map<String, Object> properties) throws Exception
-  {
-    JList tree = new JList();
-    JScrollPane scrollPane = new JScrollPane(tree);
-    return scrollPane;
-  }
+    public Component getInstance(Map<String, Object> properties)
+            throws Exception {
+        JList tree = new JList();
+        JScrollPane scrollPane = new JScrollPane(tree);
+        return scrollPane;
+    }
 
-  public boolean isComponentALayoutContainer()
-  {
-    return false;
-  }
-  public String toString()
-  {
-    return "javax.swing.JList";
-  }
-  public ComponentDef getComponentDef(String name, Map<String, Object> beanProperties)
-  {
-	String imp  = "import javax.swing.JList;\n" +
-	              "import javax.swing.JScrollPane;";
-	String decl = "JList ${name}Control = new JList();\n" +
-	              "JScrollPane ${name} = new JScrollPane(${name}Control);";
-	String add  = "${container}.add(${name}, \"${name}\");";
-	ComponentDef cd = new ComponentDef(name,imp,decl,add);
-	return cd;
-  }
+    public boolean isComponentALayoutContainer() {
+        return false;
+    }
+
+    public String toString() {
+        return "javax.swing.JList";
+    }
+
+    public ComponentDef getComponentDef(String name,
+            Map<String, Object> beanProperties) {
+        String imp = "import javax.swing.JList;\n"
+                + "import javax.swing.JScrollPane;";
+        String decl = "JList ${name}Control = new JList();\n"
+                + "JScrollPane ${name} = new JScrollPane(${name}Control);";
+        String add = "${container}.add(${name}, \"${name}\");";
+        ComponentDef cd = new ComponentDef(name, imp, decl, add);
+        return cd;
+    }
 
 }

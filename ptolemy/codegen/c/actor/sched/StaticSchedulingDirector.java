@@ -195,8 +195,8 @@ public class StaticSchedulingDirector extends Director {
         if (iterations == null) {
             code.append(_eol + _INDENT1 + "while (true) {" + _eol);
         } else {
-            int iterationCount = ((IntToken) ((Variable) iterations)
-                    .getToken()).intValue();
+            int iterationCount = ((IntToken) ((Variable) iterations).getToken())
+                    .intValue();
             if (iterationCount <= 0) {
                 code.append(_eol + _INDENT1 + "while (true) {" + _eol);
             } else {
@@ -207,32 +207,31 @@ public class StaticSchedulingDirector extends Director {
                         + iterationCount + "; iteration ++) {" + _eol);
             }
         }
-        
+
         code.append(generateFireCode());
 
         // The code generated in generateModeTransitionCode() is executed
         // after one global iteration, e.g., in HDF model.
-        ActorCodeGenerator modelHelper = (ActorCodeGenerator)
-                _getHelper(_director.getContainer());
+        ActorCodeGenerator modelHelper = (ActorCodeGenerator) _getHelper(_director
+                .getContainer());
         modelHelper.generateModeTransitionCode(code);
 
         if (callPostfire) {
-            code.append(_INDENT2 + "if (!postfire()) {" + _eol
-                    + _INDENT3 + "break;" + _eol
-                    + _INDENT2 + "}" + _eol);
+            code.append(_INDENT2 + "if (!postfire()) {" + _eol + _INDENT3
+                    + "break;" + _eol + _INDENT2 + "}" + _eol);
         }
 
         Attribute period = _director.getAttribute("period");
         if (period != null) {
-            Double periodValue = ((DoubleToken) ((Variable) period)
-                    .getToken()).doubleValue();
+            Double periodValue = ((DoubleToken) ((Variable) period).getToken())
+                    .doubleValue();
             if (periodValue != 0.0) {
-                code.append(_INDENT1 + "_currentTime += "
-                        + periodValue + ";" + _eol);
+                code.append(_INDENT1 + "_currentTime += " + periodValue + ";"
+                        + _eol);
             }
             code.append(_INDENT1 + "}" + _eol);
         }
-        
+
         return code.toString();
     }
 
@@ -259,7 +258,7 @@ public class StaticSchedulingDirector extends Director {
 
         return code.toString();
     }
-    
+
     /** Generate a variable declaration for the <i>period</i> parameter,
      *  if there is one.
      *  @return code The generated code.
@@ -267,19 +266,20 @@ public class StaticSchedulingDirector extends Director {
      *   director cannot be found.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
-        StringBuffer variableDeclarations = new StringBuffer(super.generateVariableDeclaration());
+        StringBuffer variableDeclarations = new StringBuffer(super
+                .generateVariableDeclaration());
         Attribute period = _director.getAttribute("period");
         if (period != null) {
-            Double periodValue = ((DoubleToken) ((Variable) period)
-                    .getToken()).doubleValue();
+            Double periodValue = ((DoubleToken) ((Variable) period).getToken())
+                    .doubleValue();
             if (periodValue != 0.0) {
-                variableDeclarations.append(_eol +
-                        _codeGenerator.comment(1,
-                        "Director has a period attribute,"
-                        + " so we track current time."));
+                variableDeclarations.append(_eol
+                        + _codeGenerator.comment(1,
+                                "Director has a period attribute,"
+                                        + " so we track current time."));
                 variableDeclarations.append("double _currentTime = 0;" + _eol);
             }
         }
         return variableDeclarations.toString();
-     }
+    }
 }

@@ -75,8 +75,7 @@ public class ParseTreeNodeCollector extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public Set collectNodes(ASTPtRootNode node)
-            throws IllegalActionException {
+    public Set collectNodes(ASTPtRootNode node) throws IllegalActionException {
 
         _nodes = new HashSet();
         node.visit(this);
@@ -280,11 +279,11 @@ public class ParseTreeNodeCollector extends AbstractParseTreeVisitor {
     protected void _visitChild(ASTPtRootNode node, int i)
             throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
-        
+
         _nodes.add(node);
 
         child.visit(this);
     }
 
-    protected Set _nodes;    
+    protected Set _nodes;
 }

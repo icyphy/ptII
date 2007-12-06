@@ -42,59 +42,53 @@ import javax.swing.JToolBar;
  * 
  * @author Michael Connor mlconnor&#064;yahoo.com
  */
-public class JToolBarComponentBuilder implements ComponentBuilder
-{
-  List<BeanProperty> properties = new ArrayList<BeanProperty>();
+public class JToolBarComponentBuilder implements ComponentBuilder {
+    List<BeanProperty> properties = new ArrayList<BeanProperty>();
 
-  /** Creates a new instance of SeparatorComponentBuilder */
-  public JToolBarComponentBuilder()
-  {
-  }
+    /** Creates a new instance of SeparatorComponentBuilder */
+    public JToolBarComponentBuilder() {
+    }
 
-  public String getDeclaration(String name,
-      java.util.Map<String, Object> beanProperties)
-  {
-    return "JToolBar " + name + " = new JToolBar();\n";
-  }
+    public String getDeclaration(String name,
+            java.util.Map<String, Object> beanProperties) {
+        return "JToolBar " + name + " = new JToolBar();\n";
+    }
 
-  public java.awt.Component getInstance(
-      java.util.Map<String, Object> beanProperties) throws Exception
-  {
-    JToolBar toolbar = new JToolBar();
-    toolbar.add(new JButton(new ImageIcon(this.getClass().getResource(
-        "New24.gif"))));
-    toolbar.add(new JButton(new ImageIcon(this.getClass().getResource(
-        "Remove24.gif"))));
-    toolbar.add(new JButton(new ImageIcon(this.getClass().getResource(
-        "RowDelete24.gif"))));
-    toolbar.add(new JButton(new ImageIcon(this.getClass().getResource(
-        "RowInsertAfter24.gif"))));
+    public java.awt.Component getInstance(
+            java.util.Map<String, Object> beanProperties) throws Exception {
+        JToolBar toolbar = new JToolBar();
+        toolbar.add(new JButton(new ImageIcon(this.getClass().getResource(
+                "New24.gif"))));
+        toolbar.add(new JButton(new ImageIcon(this.getClass().getResource(
+                "Remove24.gif"))));
+        toolbar.add(new JButton(new ImageIcon(this.getClass().getResource(
+                "RowDelete24.gif"))));
+        toolbar.add(new JButton(new ImageIcon(this.getClass().getResource(
+                "RowInsertAfter24.gif"))));
 
-    return toolbar;
-  }
+        return toolbar;
+    }
 
-  public java.util.List<BeanProperty> getProperties()
-  {
-    return properties;
-  }
+    public java.util.List<BeanProperty> getProperties() {
+        return properties;
+    }
 
-  public boolean isComponentALayoutContainer()
-  {
-    return false;
-  }
+    public boolean isComponentALayoutContainer() {
+        return false;
+    }
 
-  public String toString()
-  {
-    return "javax.swing.JToolBar";
-  }
-  public ComponentDef getComponentDef(String name, Map<String, Object> beanProperties)
-  {
-	  String imp  = "";
-	  String decl = "javax.swing.JToolbar ${name} = new javax.swing.JToolbar();";
-	  String add  = "${container}.add(${name}, \"${name}\");";
-	  
-	  ComponentDef cd = new ComponentDef(name,imp,decl,add);
-	  return cd;
-  }
+    public String toString() {
+        return "javax.swing.JToolBar";
+    }
+
+    public ComponentDef getComponentDef(String name,
+            Map<String, Object> beanProperties) {
+        String imp = "";
+        String decl = "javax.swing.JToolbar ${name} = new javax.swing.JToolbar();";
+        String add = "${container}.add(${name}, \"${name}\");";
+
+        ComponentDef cd = new ComponentDef(name, imp, decl, add);
+        return cd;
+    }
 
 }

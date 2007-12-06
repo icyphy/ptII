@@ -40,60 +40,54 @@ import com.jgoodies.forms.factories.DefaultComponentFactory;
  * 
  * @author Michael Connor
  */
-public class SeparatorComponentBuilder implements ComponentBuilder
-{
-  List<BeanProperty> properties = new ArrayList<BeanProperty>();
+public class SeparatorComponentBuilder implements ComponentBuilder {
+    List<BeanProperty> properties = new ArrayList<BeanProperty>();
 
-  private static final String TEXT = "text";
+    private static final String TEXT = "text";
 
-  /** Creates a new instance of SeparatorComponentBuilder */
-  public SeparatorComponentBuilder()
-  {
-    properties.add(new BeanProperty(TEXT, String.class));
-  }
+    /** Creates a new instance of SeparatorComponentBuilder */
+    public SeparatorComponentBuilder() {
+        properties.add(new BeanProperty(TEXT, String.class));
+    }
 
-  public String getDeclaration(String name,
-      java.util.Map<String, Object> beanProperties)
-  {
-    String text = (String) beanProperties.get(TEXT);
-    if (text == null)
-      text = "";
-    return "java.awt.Component "
-        + name
-        + " = com.jgoodies.forms.factories.DefaultComponentFactory.getInstance().createSeparator(\""
-        + text + "\");\n";
-  }
+    public String getDeclaration(String name,
+            java.util.Map<String, Object> beanProperties) {
+        String text = (String) beanProperties.get(TEXT);
+        if (text == null)
+            text = "";
+        return "java.awt.Component "
+                + name
+                + " = com.jgoodies.forms.factories.DefaultComponentFactory.getInstance().createSeparator(\""
+                + text + "\");\n";
+    }
 
-  public java.awt.Component getInstance(
-      java.util.Map<String, Object> beanProperties) throws Exception
-  {
-    String text = (String) beanProperties.get(TEXT);
-    if (text == null)
-      text = "";
-    return DefaultComponentFactory.getInstance().createSeparator(text);
-  }
+    public java.awt.Component getInstance(
+            java.util.Map<String, Object> beanProperties) throws Exception {
+        String text = (String) beanProperties.get(TEXT);
+        if (text == null)
+            text = "";
+        return DefaultComponentFactory.getInstance().createSeparator(text);
+    }
 
-  public java.util.List<BeanProperty> getProperties()
-  {
-    return properties;
-  }
+    public java.util.List<BeanProperty> getProperties() {
+        return properties;
+    }
 
-  public boolean isComponentALayoutContainer()
-  {
-    return false;
-  }
+    public boolean isComponentALayoutContainer() {
+        return false;
+    }
 
-  public String toString()
-  {
-    return "JGoodies separator";
-  }
-  public ComponentDef getComponentDef(String name, Map<String, Object> beanProperties)
-  {
-	  String imp  = "";
-	  String decl = getDeclaration(name, beanProperties);
-	  String add  = "${container}.add(${name}, \"${name}\");";
-	  ComponentDef cd = new ComponentDef(name,imp,decl,add);
-	  return cd;
-  }
+    public String toString() {
+        return "JGoodies separator";
+    }
+
+    public ComponentDef getComponentDef(String name,
+            Map<String, Object> beanProperties) {
+        String imp = "";
+        String decl = getDeclaration(name, beanProperties);
+        String add = "${container}.add(${name}, \"${name}\");";
+        ComponentDef cd = new ComponentDef(name, imp, decl, add);
+        return cd;
+    }
 
 }

@@ -121,8 +121,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (cxh)
  */
-public class FileAttribute extends StringAttribute
-    implements FileOrURLAccessor {
+public class FileAttribute extends StringAttribute implements FileOrURLAccessor {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the

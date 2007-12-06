@@ -62,8 +62,7 @@ public class ElementsToArray extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
-        ptolemy.actor.lib.ElementsToArray actor 
-                = (ptolemy.actor.lib.ElementsToArray) getComponent();
+        ptolemy.actor.lib.ElementsToArray actor = (ptolemy.actor.lib.ElementsToArray) getComponent();
 
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0));

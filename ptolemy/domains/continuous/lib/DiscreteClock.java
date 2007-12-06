@@ -107,7 +107,7 @@ public class DiscreteClock extends Clock {
         if (_outputProduced && (_offsets[previousPhase] == _offsets[_phase])) {
             // Duplicate offsets allow production of multiple events
             // at one time.
-            _nextOutputIndex++;            
+            _nextOutputIndex++;
         } else {
             _nextOutputIndex = 1;
         }

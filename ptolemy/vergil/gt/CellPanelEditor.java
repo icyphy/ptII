@@ -45,8 +45,8 @@ import javax.swing.table.TableCellRenderer;
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
  */
-public class CellPanelEditor extends AbstractCellEditor
-implements TableCellEditor, TableCellRenderer {
+public class CellPanelEditor extends AbstractCellEditor implements
+        TableCellEditor, TableCellRenderer {
 
     public Object getCellEditorValue() {
         return _currentValue;
@@ -61,18 +61,16 @@ implements TableCellEditor, TableCellRenderer {
         return panel;
     }
 
-    public Component getTableCellRendererComponent(JTable table,
-            Object value, boolean isSelected, boolean hasFocus, int row,
-            int column) {
+    public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected, boolean hasFocus, int row, int column) {
         JPanel panel = (JPanel) value;
-        panel.setBackground(isSelected ?
-                table.getSelectionBackground() : table.getBackground());
+        panel.setBackground(isSelected ? table.getSelectionBackground() : table
+                .getBackground());
         _setCaretForAllTextFields(panel, false);
         return panel;
     }
 
-    private static void _setCaretForAllTextFields(JPanel panel,
-            boolean visible) {
+    private static void _setCaretForAllTextFields(JPanel panel, boolean visible) {
         for (Component c : panel.getComponents()) {
             if (c instanceof JTextField) {
                 JTextField textField = (JTextField) c;

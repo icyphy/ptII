@@ -197,8 +197,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setDashArray(float[] dashArray) {
         // Avoid calling swing if things haven't actually changed.
-        if ((_dashArray != null) && 
-                Arrays.equals(_dashArray, dashArray)) {
+        if ((_dashArray != null) && Arrays.equals(_dashArray, dashArray)) {
             return;
         }
 

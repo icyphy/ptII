@@ -209,9 +209,11 @@ public class IconController extends ParameterizedNodeController {
                 ColorAttribute highlightAttribute = (ColorAttribute) (object
                         .getAttribute("_highlightColor", ColorAttribute.class));
                 if (highlightAttribute != null
-                        && !highlightAttribute.getExpression().trim().equals("")) {
+                        && !highlightAttribute.getExpression().trim()
+                                .equals("")) {
                     Color color = highlightAttribute.asColor();
-                    AnimationRenderer animationRenderer = new AnimationRenderer(color);
+                    AnimationRenderer animationRenderer = new AnimationRenderer(
+                            color);
                     animationRenderer.renderSelected(result);
                 }
             } catch (IllegalActionException e) {

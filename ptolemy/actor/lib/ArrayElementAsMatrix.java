@@ -132,7 +132,8 @@ public class ArrayElementAsMatrix extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ArrayElementAsMatrix newObject = (ArrayElementAsMatrix) super.clone(workspace);
+        ArrayElementAsMatrix newObject = (ArrayElementAsMatrix) super
+                .clone(workspace);
         try {
             newObject.output.setTypeAtLeast(ArrayType
                     .elementType(newObject.input));
@@ -171,20 +172,20 @@ public class ArrayElementAsMatrix extends Transformer {
                     || yOffsetValue < 0
                     || xValue < 0
                     || yValue < 0
-                    || (xValue * xOffsetValue + yValue * yOffsetValue
-                            >= token.length())) {
-                throw new IllegalActionException(this, 
-                        "xValue (" + xValue + ") * xOffsetValue *("
-                        + xOffsetValue + " ) + yValue (" + yValue
-                        + ") * yOffsetValue (" + yOffsetValue 
-                        + ") = "
-                        + xValue * xOffsetValue + yValue * yOffsetValue
+                    || (xValue * xOffsetValue + yValue * yOffsetValue >= token
+                            .length())) {
+                throw new IllegalActionException(this, "xValue (" + xValue
+                        + ") * xOffsetValue *(" + xOffsetValue
+                        + " ) + yValue (" + yValue + ") * yOffsetValue ("
+                        + yOffsetValue + ") = " + xValue * xOffsetValue
+                        + yValue * yOffsetValue
                         + " is less than zero or otherwise "
                         + "out of range for the input "
                         + "array, which has length " + token.length());
             }
 
-            output.send(0, token.getElement(xValue * xOffsetValue + yValue * yOffsetValue));
+            output.send(0, token.getElement(xValue * xOffsetValue + yValue
+                    * yOffsetValue));
         }
     }
 }

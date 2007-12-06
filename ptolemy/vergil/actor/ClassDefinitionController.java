@@ -225,8 +225,8 @@ public class ClassDefinitionController extends ActorController {
 
             moml.append("</group>");
 
-            MoMLChangeRequest request = new OffsetMoMLChangeRequest(this, container,
-                    moml.toString());
+            MoMLChangeRequest request = new OffsetMoMLChangeRequest(this,
+                    container, moml.toString());
             container.requestChange(request);
         }
     }

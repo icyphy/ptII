@@ -55,8 +55,9 @@ public class NamedObjToken extends FakedRecordToken {
     }
 
     public boolean equals(Object object) {
-        return this == object || (object instanceof NamedObjToken
-                && ((NamedObjToken) object)._object.equals(_object));
+        return this == object
+                || (object instanceof NamedObjToken && ((NamedObjToken) object)._object
+                        .equals(_object));
     }
 
     public Token get(String label) {
@@ -71,8 +72,8 @@ public class NamedObjToken extends FakedRecordToken {
             }
         }
 
-        NamedObj child =
-            GTTools.getChild(_object, label, true, true, true, true);
+        NamedObj child = GTTools.getChild(_object, label, true, true, true,
+                true);
         if (child instanceof ActorScopeExtender) {
             child = GTTools.getChild(_object, label, false, true, true, true);
         }
@@ -97,7 +98,7 @@ public class NamedObjToken extends FakedRecordToken {
     }
 
     public BooleanToken isEqualTo(Token rightArgument)
-    throws IllegalActionException {
+            throws IllegalActionException {
         return _isEqualTo(rightArgument);
     }
 
@@ -113,8 +114,8 @@ public class NamedObjToken extends FakedRecordToken {
                 }
             }
 
-            Collection<?> children =
-                GTTools.getChildren(_object, true, true, true, true);
+            Collection<?> children = GTTools.getChildren(_object, true, true,
+                    true, true);
             for (Object childObject : children) {
                 NamedObj child = (NamedObj) childObject;
                 if (child instanceof ActorScopeExtender) {
@@ -132,7 +133,7 @@ public class NamedObjToken extends FakedRecordToken {
     }
 
     protected BooleanToken _isEqualTo(Token object)
-    throws IllegalActionException {
+            throws IllegalActionException {
         return BooleanToken.getInstance(equals(object));
     }
 

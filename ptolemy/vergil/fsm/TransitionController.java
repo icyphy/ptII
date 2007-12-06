@@ -256,20 +256,22 @@ public class TransitionController extends BasicEdgeController {
 
             Arc arc = (Arc) edge;
             Transition transition = (Transition) arc.getRelation();
-            
+
             // When first dragging out a transition, the relation
             // may still be null.
             if (transition != null) {
                 // Use a larger, unfilled arrowhead for a reset transition.
                 try {
-                    if (((BooleanToken)transition.reset.getToken()).booleanValue()) {
+                    if (((BooleanToken) transition.reset.getToken())
+                            .booleanValue()) {
                         arrowhead.setFilled(false);
                     }
                 } catch (IllegalActionException e) {
                     // Ignore erroneous parameter value.
                 }
                 if (transition.isPreemptive()) {
-                    Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE, 4.0, Color.red);
+                    Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE, 4.0,
+                            Color.red);
                     blob.setFilled(true);
                     c.setTailEnd(blob);
                 }

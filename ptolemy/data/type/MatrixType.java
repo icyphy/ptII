@@ -325,8 +325,8 @@ public class MatrixType extends StructuredType implements Serializable {
                     // not have NaN, so we catch this problem here.
                     // Note that this code is called by the "cast" expression
                     // language method from data.expr.UtilityFunctions
-                    throw new IllegalActionException(Token.
-                            notSupportedConversionMessage(token, toString()));
+                    throw new IllegalActionException(Token
+                            .notSupportedConversionMessage(token, toString()));
                 }
                 // Try to create a new [double] type with just one member.
                 // The following conversion will fail if the member cannot

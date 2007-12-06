@@ -78,6 +78,6 @@ public class MissingClassException extends XmlException {
     ////                         private variables                 ////
 
     /** The name of the missing class.
-     */ 
+     */
     private String _missingClassName;
 }

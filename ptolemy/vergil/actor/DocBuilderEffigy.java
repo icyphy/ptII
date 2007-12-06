@@ -106,8 +106,8 @@ public class DocBuilderEffigy extends PtolemyEffigy {
                 if (extension.equals("xml")) {
                     // Check for DTD designation.
                     if (checkForDTD(input,
-                                "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML",
-                                null)) {
+                            "<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML",
+                            null)) {
                         // This is a doc file.
                         DocBuilderEffigy effigy = new DocBuilderEffigy(
                                 container, container.uniqueName("effigy"));

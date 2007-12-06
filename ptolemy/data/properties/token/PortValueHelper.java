@@ -12,13 +12,13 @@ import ptolemy.kernel.util.IllegalActionException;
 public class PortValueHelper extends PropertyHelper {
 
     public PortValueHelper(PortValueSolver solver, Object component) {
-        
+
         _component = component;
-        _solver = solver; 
+        _solver = solver;
     }
 
     public PortValueSolver getSolver() {
-        return (PortValueSolver)_solver;
+        return (PortValueSolver) _solver;
     }
 
     public Property getProperty(Object object) {
@@ -33,25 +33,25 @@ public class PortValueHelper extends PropertyHelper {
      */
     protected List _getPropertyables() {
         List list = new ArrayList();
-        
+
         // Add all ports.
         list.addAll(((Entity) _component).portList());
-        
+
         return list;
     }
 
     public void reinitialize() throws IllegalActionException {
         List propertyables = _getPropertyables();
-        
+
         Iterator iterator = propertyables.iterator();
-        
+
         while (iterator.hasNext()) {
             Object propertyable = iterator.next();
-                
+
             if (!_declaredProperties.containsKey(propertyable)) {
                 _resolvedProperties.remove(propertyable);
             }
-            
+
             //_resolvedProperties.put(propertyable, _lattice.getInitialProperty());
         }
     }

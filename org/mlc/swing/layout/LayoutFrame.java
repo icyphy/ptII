@@ -73,551 +73,534 @@ import com.jgoodies.forms.factories.Borders;
  * @author Michael Connor mlconnor&#064;yahoo.com
  */
 @SuppressWarnings("serial")
-public class LayoutFrame extends JFrame implements MultiContainerFrame
-{
-  LayoutConstraintsManager constraintsManager;
+public class LayoutFrame extends JFrame implements MultiContainerFrame {
+    LayoutConstraintsManager constraintsManager;
 
-  JMenuBar menuBar = new JMenuBar();
+    JMenuBar menuBar = new JMenuBar();
 
-  JMenu actionMenu = new JMenu("File");
-  JMenuItem saveXML = new JMenuItem("Save As");
-  JMenuItem viewCode = new JMenuItem("View Code");
-  JMenuItem exit = new JMenuItem("Exit");
+    JMenu actionMenu = new JMenu("File");
+    JMenuItem saveXML = new JMenuItem("Save As");
+    JMenuItem viewCode = new JMenuItem("View Code");
+    JMenuItem exit = new JMenuItem("Exit");
 
-  JMenu viewMenu = new JMenu("View");
-  JCheckBoxMenuItem viewDebugMenu = new JCheckBoxMenuItem("Debug Frame");
-   
-  final JFileChooser fileChooser = new JFileChooser();
+    JMenu viewMenu = new JMenu("View");
+    JCheckBoxMenuItem viewDebugMenu = new JCheckBoxMenuItem("Debug Frame");
 
-  Map<ContainerLayout, FormEditor> editors = new HashMap<ContainerLayout, FormEditor>();
+    final JFileChooser fileChooser = new JFileChooser();
 
-  JTabbedPane tabs = new JTabbedPane();
+    Map<ContainerLayout, FormEditor> editors = new HashMap<ContainerLayout, FormEditor>();
 
-  Map<ContainerLayout, Component> layoutToTab = new HashMap<ContainerLayout, Component>();
+    JTabbedPane tabs = new JTabbedPane();
 
-  List<ContainerLayout> newLayouts = new ArrayList<ContainerLayout>();
+    Map<ContainerLayout, Component> layoutToTab = new HashMap<ContainerLayout, Component>();
 
-  // Palette palette = new Palette();
-  public JFrame dframe = null;
+    List<ContainerLayout> newLayouts = new ArrayList<ContainerLayout>();
 
-  /** Creates a new instance of Class */
-  public LayoutFrame(LayoutConstraintsManager constraintsManager)
-  {
-    super("FormLayoutMaker - Constraints Editor");
+    // Palette palette = new Palette();
+    public JFrame dframe = null;
 
-    if (constraintsManager.getLayouts().size() == 0)
-      throw new RuntimeException(
-          "You must register at least one container by calling LayoutConstraintsManager.setLayout(String name, Container container) before instantiating a LayoutFrame");
+    /** Creates a new instance of Class */
+    public LayoutFrame(LayoutConstraintsManager constraintsManager) {
+        super("FormLayoutMaker - Constraints Editor");
 
-    setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    this.constraintsManager = constraintsManager;
+        if (constraintsManager.getLayouts().size() == 0)
+            throw new RuntimeException(
+                    "You must register at least one container by calling LayoutConstraintsManager.setLayout(String name, Container container) before instantiating a LayoutFrame");
 
-    actionMenu.setMnemonic('F');
-    saveXML.setMnemonic('A');
-    saveXML.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
-        KeyEvent.CTRL_MASK));
-    viewCode.setMnemonic('V');
-    viewCode.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
-        KeyEvent.CTRL_MASK));
-    exit.setMnemonic('X');
-    actionMenu.add(saveXML);
-    actionMenu.add(viewCode);
-    actionMenu.add(exit);
-    
-    viewDebugMenu.setMnemonic('D');
-    viewDebugMenu.setSelected(UserPrefs.getPrefs().showDebugPanel());
-    viewMenu.add(viewDebugMenu);
-    // KBR 03/26/06 Disable by default for invocation from user's
-    // program. Enabled when the debug preview window is established.
-    viewDebugMenu.setEnabled(false); 
-    
-    menuBar.add(actionMenu);
-    menuBar.add(viewMenu);
-    this.setJMenuBar(menuBar);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.constraintsManager = constraintsManager;
 
-    fileChooser.setFileFilter(new XmlFileFilter());
+        actionMenu.setMnemonic('F');
+        saveXML.setMnemonic('A');
+        saveXML.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
+                KeyEvent.CTRL_MASK));
+        viewCode.setMnemonic('V');
+        viewCode.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
+                KeyEvent.CTRL_MASK));
+        exit.setMnemonic('X');
+        actionMenu.add(saveXML);
+        actionMenu.add(viewCode);
+        actionMenu.add(exit);
 
-    this.addWindowListener(new WindowAdapter()
-    {
-      public void windowClosing(WindowEvent e)
-      {
-        exitApplication();
-      }
-    });
+        viewDebugMenu.setMnemonic('D');
+        viewDebugMenu.setSelected(UserPrefs.getPrefs().showDebugPanel());
+        viewMenu.add(viewDebugMenu);
+        // KBR 03/26/06 Disable by default for invocation from user's
+        // program. Enabled when the debug preview window is established.
+        viewDebugMenu.setEnabled(false);
 
-    exit.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        exitApplication();
-      }
-    });
+        menuBar.add(actionMenu);
+        menuBar.add(viewMenu);
+        this.setJMenuBar(menuBar);
 
-    viewDebugMenu.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        LayoutFrame.this.enableDebugPreview(viewDebugMenu.isSelected());
-      }
-    });
-    
-    List<ContainerLayout> layouts = constraintsManager.getLayouts();
+        fileChooser.setFileFilter(new XmlFileFilter());
 
-    for (int index = 0; index < layouts.size(); index++)
-    {
-      ContainerLayout containerLayout = layouts.get(index);
-      Container container = constraintsManager.getContainer(containerLayout);
-      if (container == null)
-        throw new RuntimeException(
-            "A container with name "
-                + containerLayout.getName()
-                + " was found in the contstraints file but was not found in the container");
-      addContainerLayout(containerLayout, container);
-    }
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                exitApplication();
+            }
+        });
 
-    getContentPane().setLayout(new BorderLayout(3, 3));
-    getContentPane().add(tabs, BorderLayout.CENTER);
-    // getContentPane().add (palette, BorderLayout.SOUTH);
+        exit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                exitApplication();
+            }
+        });
 
-    viewCode.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        List<ContainerLayout> layouts = LayoutFrame.this.constraintsManager
-            .getLayouts();
-        StringBuffer declarationBuffer = new StringBuffer(
-            "// here are declarations for the controls you created\n");
-        StringBuffer setLayoutBuffer = new StringBuffer(
-            "// here is where we load the layout constraints.  "
-                + "change the xml filename!!!\norg.mlc.swing.layout.LayoutConstraintsManager layoutConstraintsManager "
-                + "= \n    org.mlc.swing.layout.LayoutConstraintsManager.getLayoutConstraintsManager(\n        "
-                + "this.getClass().getResourceAsStream(\"yourConstraintFile.xml\"));\n");
-/** @todo KBR generate compilable code */        
-// LayoutFrame layoutFrame = new LayoutFrame(layoutConstraintsManager); 
-// layoutFrame.setVisible(true);         
-        StringBuffer addBuffer = new StringBuffer(
-            "// here we add the controls to the container.  you may\n// "
-                + "need to change the name of panel\n");
+        viewDebugMenu.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                LayoutFrame.this.enableDebugPreview(viewDebugMenu.isSelected());
+            }
+        });
 
-        StringBuffer importBuffer = new StringBuffer();
-        importBuffer.append("import org.mlc.swing.layout.*;\n");
-        HashSet<String> importSet = new HashSet<String> ();
-        
-        StringBuffer declBuffer = new StringBuffer();
-        declBuffer.append("// here are declarations for the controls you created\n");
+        List<ContainerLayout> layouts = constraintsManager.getLayouts();
 
-        StringBuffer addBuffer2 = new StringBuffer();
-        addBuffer2.append("// here we add the controls to the container.\n");
+        for (int index = 0; index < layouts.size(); index++) {
+            ContainerLayout containerLayout = layouts.get(index);
+            Container container = constraintsManager
+                    .getContainer(containerLayout);
+            if (container == null)
+                throw new RuntimeException(
+                        "A container with name "
+                                + containerLayout.getName()
+                                + " was found in the contstraints file but was not found in the container");
+            addContainerLayout(containerLayout, container);
+        }
 
-        StringBuffer confBuffer = new StringBuffer();
-        confBuffer.append("// control configuration\n");
+        getContentPane().setLayout(new BorderLayout(3, 3));
+        getContentPane().add(tabs, BorderLayout.CENTER);
+        // getContentPane().add (palette, BorderLayout.SOUTH);
 
-        for (int index = 0; index < layouts.size(); index++)
-        {
-          ContainerLayout containerLayout = layouts.get(index);
-          FormEditor editor = editors.get(containerLayout);
-          Map<Component, String> componentsToNames = containerLayout.getComponentsToNames();
+        viewCode.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                List<ContainerLayout> layouts = LayoutFrame.this.constraintsManager
+                        .getLayouts();
+                StringBuffer declarationBuffer = new StringBuffer(
+                        "// here are declarations for the controls you created\n");
+                StringBuffer setLayoutBuffer = new StringBuffer(
+                        "// here is where we load the layout constraints.  "
+                                + "change the xml filename!!!\norg.mlc.swing.layout.LayoutConstraintsManager layoutConstraintsManager "
+                                + "= \n    org.mlc.swing.layout.LayoutConstraintsManager.getLayoutConstraintsManager(\n        "
+                                + "this.getClass().getResourceAsStream(\"yourConstraintFile.xml\"));\n");
+                /** @todo KBR generate compilable code */
+                // LayoutFrame layoutFrame = new LayoutFrame(layoutConstraintsManager); 
+                // layoutFrame.setVisible(true);         
+                StringBuffer addBuffer = new StringBuffer(
+                        "// here we add the controls to the container.  you may\n// "
+                                + "need to change the name of panel\n");
 
-          for (Iterator i = componentsToNames.keySet().iterator(); i.hasNext();)
-          {
-            Component component = (Component) i.next();
-            String componentName = componentsToNames.get(component);
-            if (editor.isNewComponent(component))
-            {
-              String _decl = "";
-              String _import = "";
-              String _add = "";
-              String _config = "";
+                StringBuffer importBuffer = new StringBuffer();
+                importBuffer.append("import org.mlc.swing.layout.*;\n");
+                HashSet<String> importSet = new HashSet<String>();
 
-              ComponentDef cDef = containerLayout.getComponentDef(componentName);
-              if ( cDef == null )
-              {
-                // "old style"
-                String constructorArg = "";
-                if ( LayoutConstraintsManager.isTextComponent(component) ) 
-                {
-                    Map<String,Object> customProperties = containerLayout.getCustomProperties(componentName);
-                    Object textValue = customProperties.get("text");
-                    if ( textValue != null && textValue instanceof String )
-                        constructorArg = "\"" + (String) textValue + "\"";
+                StringBuffer declBuffer = new StringBuffer();
+                declBuffer
+                        .append("// here are declarations for the controls you created\n");
+
+                StringBuffer addBuffer2 = new StringBuffer();
+                addBuffer2
+                        .append("// here we add the controls to the container.\n");
+
+                StringBuffer confBuffer = new StringBuffer();
+                confBuffer.append("// control configuration\n");
+
+                for (int index = 0; index < layouts.size(); index++) {
+                    ContainerLayout containerLayout = layouts.get(index);
+                    FormEditor editor = editors.get(containerLayout);
+                    Map<Component, String> componentsToNames = containerLayout
+                            .getComponentsToNames();
+
+                    for (Iterator i = componentsToNames.keySet().iterator(); i
+                            .hasNext();) {
+                        Component component = (Component) i.next();
+                        String componentName = componentsToNames.get(component);
+                        if (editor.isNewComponent(component)) {
+                            String _decl = "";
+                            String _import = "";
+                            String _add = "";
+                            String _config = "";
+
+                            ComponentDef cDef = containerLayout
+                                    .getComponentDef(componentName);
+                            if (cDef == null) {
+                                // "old style"
+                                String constructorArg = "";
+                                if (LayoutConstraintsManager
+                                        .isTextComponent(component)) {
+                                    Map<String, Object> customProperties = containerLayout
+                                            .getCustomProperties(componentName);
+                                    Object textValue = customProperties
+                                            .get("text");
+                                    if (textValue != null
+                                            && textValue instanceof String)
+                                        constructorArg = "\""
+                                                + (String) textValue + "\"";
+                                }
+                                _decl = component.getClass().getName()
+                                        + " "
+                                        + containerLayout
+                                                .getComponentName(component)
+                                        + " = new "
+                                        + component.getClass().getName() + "("
+                                        + constructorArg + ");\n";
+                                _add = containerLayout.getName() + ".add ("
+                                        + componentName + ", \""
+                                        + componentName + "\");\n";
+                            } else {
+                                // "new style"
+                                _import = cDef.getImports(componentName);
+                                _decl = cDef.getDeclarations(componentName);
+                                _add = cDef.getAdd(componentName);
+                                _add = _add.replaceAll("\\$\\{container\\}",
+                                        containerLayout.getName());
+                                _config = cDef.getConfigure(componentName);
+                            }
+
+                            // put imports into a set to prevent multiple instances
+                            // KBR 09/05/05 Need to put each line of the import into
+                            // the set [using JButton and ButtonBar was generating
+                            // two JButton import statements]
+                            String[] outstrs = _import.split("\n");
+                            for (int ii = 0; ii < outstrs.length; ii++)
+                                importSet.add(outstrs[ii]);
+
+                            declBuffer.append(_decl + "\n");
+                            addBuffer2.append(_add + "\n");
+                            if (_config.trim().length() != 0)
+                                confBuffer.append(_config + "\n");
+
+                            String constructorArg = "";
+                            if (LayoutConstraintsManager
+                                    .isTextComponent(component)) {
+                                Map<String, Object> customProperties = containerLayout
+                                        .getCustomProperties(componentName);
+                                Object textValue = customProperties.get("text");
+                                if (textValue != null
+                                        && textValue instanceof String)
+                                    constructorArg = "\"" + (String) textValue
+                                            + "\"";
+                            }
+
+                            String newDeclaration = component.getClass()
+                                    .getName()
+                                    + " "
+                                    + containerLayout
+                                            .getComponentName(component)
+                                    + " = new "
+                                    + component.getClass().getName()
+                                    + "("
+                                    + constructorArg + ");\n";
+                            declarationBuffer.append(newDeclaration);
+                            addBuffer.append(containerLayout.getName()
+                                    + ".add (" + componentName + ", \""
+                                    + componentName + "\");\n");
+                        }
+                    }
+
+                    if (newLayouts.contains(containerLayout)) {
+                        setLayoutBuffer
+                                .append(containerLayout.getName()
+                                        + ".setBorder(com.jgoodies.forms.factories.Borders.DIALOG_BORDER);\n");
+                        setLayoutBuffer
+                                .append(containerLayout.getName()
+                                        + ".setLayout(layoutConstraintsManager.createLayout (\""
+                                        + containerLayout.getName() + "\", "
+                                        + containerLayout.getName() + ");\n");
+                    }
                 }
-                _decl = component.getClass().getName() + " " +
-                        containerLayout.getComponentName(component) + 
-                        " = new " + component.getClass().getName() + 
-                        "(" + constructorArg + ");\n";
-                _add = containerLayout.getName() + ".add (" + 
-                       componentName + ", \"" + componentName + "\");\n";
-              }
-              else
-              {
-                // "new style"
-                _import = cDef.getImports(componentName);
-                _decl = cDef.getDeclarations(componentName);
-                _add = cDef.getAdd(componentName);
-                _add = _add.replaceAll("\\$\\{container\\}", containerLayout.getName());                
-                _config = cDef.getConfigure(componentName);
-              }
-              
-              // put imports into a set to prevent multiple instances
-              // KBR 09/05/05 Need to put each line of the import into
-              // the set [using JButton and ButtonBar was generating
-              // two JButton import statements]
-              String [] outstrs = _import.split("\n");
-              for ( int ii = 0; ii < outstrs.length; ii++ )
-                importSet.add(outstrs[ii]);
-              
-              declBuffer.append( _decl + "\n");
-              addBuffer2.append( _add + "\n");
-              if ( _config.trim().length() != 0 )
-                confBuffer.append( _config + "\n");
 
-              String constructorArg = "";
-              if (LayoutConstraintsManager.isTextComponent(component))
-              {
-                Map<String, Object> customProperties = containerLayout
-                    .getCustomProperties(componentName);
-                Object textValue = customProperties.get("text");
-                if (textValue != null && textValue instanceof String)
-                  constructorArg = "\"" + (String) textValue + "\"";
-              }
+                // build up the imports string using all unique imports
+                Iterator<String> itor = importSet.iterator();
+                while (itor.hasNext())
+                    importBuffer.append(itor.next() + "\n");
 
-              String newDeclaration = component.getClass().getName() + " "
-                  + containerLayout.getComponentName(component) + " = new "
-                  + component.getClass().getName() + "(" + constructorArg
-                  + ");\n";
-              declarationBuffer.append(newDeclaration);
-              addBuffer.append(containerLayout.getName() + ".add ("
-                  + componentName + ", \"" + componentName + "\");\n");
+                // String finalText = declarationBuffer.toString() + "\n" +
+                // setLayoutBuffer.toString() + "\n" + addBuffer.toString();
+                String finalText = importBuffer.toString() + "\n"
+                        + declBuffer.toString() + "\n"
+                        + setLayoutBuffer.toString() + "\n"
+                        + addBuffer2.toString() + "\n" + confBuffer.toString()
+                        + "\n";
+                CodeDialog codeDialog = new CodeDialog(LayoutFrame.this,
+                        finalText);
+                codeDialog.setVisible(true);
             }
-          }
+        });
 
-          if (newLayouts.contains(containerLayout))
-          {
-            setLayoutBuffer
-                .append(containerLayout.getName()
-                    + ".setBorder(com.jgoodies.forms.factories.Borders.DIALOG_BORDER);\n");
-            setLayoutBuffer.append(containerLayout.getName()
-                + ".setLayout(layoutConstraintsManager.createLayout (\""
-                + containerLayout.getName() + "\", "
-                + containerLayout.getName() + ");\n");
-          }
+        saveXML.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                java.util.prefs.Preferences prefs = java.util.prefs.Preferences
+                        .userNodeForPackage(getClass());
+                String pathString = prefs.get("lastpath", null);
+                if (pathString != null) {
+                    File path = new File(pathString);
+                    if (path.exists()) {
+                        fileChooser.setCurrentDirectory(path);
+                    }
+                }
+
+                int returnVal = fileChooser.showSaveDialog(LayoutFrame.this);
+
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+
+                    // KBR fix logged bug. If the user does not specify an XML extension,
+                    // add one, UNLESS they specify the trailing period.
+                    String filename = file.getAbsolutePath();
+                    if (!filename.endsWith(".xml")
+                            && !filename.endsWith(".XML")
+                            && !filename.endsWith("."))
+                        file = new File(file.getAbsolutePath() + ".XML");
+
+                    if (file.exists()) {
+                        File path = file.getParentFile();
+                        if (path != null) {
+                            pathString = path.getAbsolutePath();
+                            prefs.put("lastpath", pathString);
+                        }
+
+                        int result = JOptionPane
+                                .showConfirmDialog(
+                                        LayoutFrame.this,
+                                        "The file you selected exists, ok to overwrite?",
+                                        "File Exists",
+                                        JOptionPane.YES_NO_OPTION);
+                        if (result != JOptionPane.YES_OPTION)
+                            return;
+                    }
+
+                    FileOutputStream outStream = null;
+                    try {
+                        outStream = new FileOutputStream(file);
+                        String xml = LayoutFrame.this.constraintsManager
+                                .getXML();
+                        outStream.write(xml.getBytes());
+                    } catch (Exception exception) {
+                        JOptionPane.showMessageDialog(LayoutFrame.this,
+                                "Error writing to file. "
+                                        + exception.getMessage());
+                        exception.printStackTrace();
+                    } finally {
+                        try {
+                            if (outStream != null)
+                                outStream.close();
+                        } catch (Exception ignore) {
+                        }
+                    }
+                }
+            }
+        });
+
+        pack();
+    }
+
+    public boolean hasContainer(String name) {
+        return constraintsManager.getContainerLayout(name) != null;
+    }
+
+    private class XmlFileFilter extends FileFilter {
+
+        public boolean accept(File f) {
+            if (f.isDirectory())
+                return true;
+
+            String ext = null;
+            String s = f.getName();
+            int i = s.lastIndexOf('.');
+            boolean isXml = false;
+
+            if (i > 0 && i < s.length() - 1) {
+                ext = s.substring(i + 1).toLowerCase();
+                isXml = ext.equals("xml");
+            }
+
+            return isXml;
+
         }
 
-        // build up the imports string using all unique imports
-        Iterator<String> itor = importSet.iterator();
-        while ( itor.hasNext() )
-          importBuffer.append(itor.next() + "\n");
-        
-        // String finalText = declarationBuffer.toString() + "\n" +
-        // setLayoutBuffer.toString() + "\n" + addBuffer.toString();
-        String finalText = importBuffer.toString() + "\n" + 
-                           declBuffer.toString() + "\n" + 
-                           setLayoutBuffer.toString() + "\n" + 
-                           addBuffer2.toString() + "\n" + 
-                           confBuffer.toString() + "\n";
-        CodeDialog codeDialog = new CodeDialog(LayoutFrame.this, finalText);
-        codeDialog.setVisible(true);
-      }
-    });
-
-    saveXML.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        java.util.prefs.Preferences prefs = java.util.prefs.Preferences
-            .userNodeForPackage(getClass());
-        String pathString = prefs.get("lastpath", null);
-        if (pathString != null)
-        {
-          File path = new File(pathString);
-          if (path.exists())
-          {
-            fileChooser.setCurrentDirectory(path);
-          }
+        public String getDescription() {
+            return "xml files";
         }
-
-        int returnVal = fileChooser.showSaveDialog(LayoutFrame.this);
-
-        if (returnVal == JFileChooser.APPROVE_OPTION)
-        {
-          File file = fileChooser.getSelectedFile();
-
-          // KBR fix logged bug. If the user does not specify an XML extension,
-          // add one, UNLESS they specify the trailing period.
-          String filename = file.getAbsolutePath();
-          if ( !filename.endsWith(".xml") &&
-               !filename.endsWith(".XML") &&
-               !filename.endsWith("."))
-            file = new File( file.getAbsolutePath() + ".XML" ); 
-
-          if (file.exists())
-          {
-            File path = file.getParentFile();
-            if (path != null)
-            {
-              pathString = path.getAbsolutePath();
-              prefs.put("lastpath", pathString);
-            }
-
-            int result = JOptionPane.showConfirmDialog(LayoutFrame.this,
-                "The file you selected exists, ok to overwrite?",
-                "File Exists", JOptionPane.YES_NO_OPTION);
-            if (result != JOptionPane.YES_OPTION)
-              return;
-          }
-
-          FileOutputStream outStream = null;
-          try
-          {
-            outStream = new FileOutputStream(file);
-            String xml = LayoutFrame.this.constraintsManager.getXML();
-            outStream.write(xml.getBytes());
-          }
-          catch (Exception exception)
-          {
-            JOptionPane.showMessageDialog(LayoutFrame.this,
-                "Error writing to file. " + exception.getMessage());
-            exception.printStackTrace();
-          }
-          finally
-          {
-            try
-            {
-              if (outStream != null)
-                outStream.close();
-            }
-            catch (Exception ignore)
-            {
-            }
-          }
-        }
-      }
-    });
-
-    pack();
-  }
-
-  public boolean hasContainer(String name)
-  {
-    return constraintsManager.getContainerLayout(name) != null;
-  }
-
-  private class XmlFileFilter extends FileFilter
-  {
-
-    public boolean accept(File f)
-    {
-      if (f.isDirectory())
-        return true;
-
-      String ext = null;
-      String s = f.getName();
-      int i = s.lastIndexOf('.');
-      boolean isXml = false;
-
-      if (i > 0 && i < s.length() - 1)
-      {
-        ext = s.substring(i + 1).toLowerCase();
-        isXml = ext.equals("xml");
-      }
-
-      return isXml;
 
     }
 
-    public String getDescription()
-    {
-      return "xml files";
+    public void exitApplication() {
+        int result = JOptionPane.showConfirmDialog(LayoutFrame.this,
+                "Are you sure you want to exit?", "Exit Confirmation",
+                JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            //      UserPrefs.getPrefs().saveWinLoc("main", getLocationOnScreen(), getSize());
+            //      UserPrefs.getPrefs().saveWinLoc("debug", dframe.getLocationOnScreen(),
+            //          dframe.getSize());
+            UserPrefs.getPrefs().saveWinLoc("main", this);
+            UserPrefs.getPrefs().saveWinLoc("debug", dframe);
+            UserPrefs.getPrefs().saveDebugState(viewDebugMenu.isSelected());
+            setVisible(false);
+            System.exit(0);
+        }
     }
 
-  }
-
-  public void exitApplication()
-  {
-    int result = JOptionPane.showConfirmDialog(LayoutFrame.this,
-        "Are you sure you want to exit?", "Exit Confirmation",
-        JOptionPane.YES_NO_OPTION);
-    if (result == JOptionPane.YES_OPTION)
-    {
-//      UserPrefs.getPrefs().saveWinLoc("main", getLocationOnScreen(), getSize());
-//      UserPrefs.getPrefs().saveWinLoc("debug", dframe.getLocationOnScreen(),
-//          dframe.getSize());
-      UserPrefs.getPrefs().saveWinLoc("main", this);
-      UserPrefs.getPrefs().saveWinLoc("debug", dframe);
-      UserPrefs.getPrefs().saveDebugState(viewDebugMenu.isSelected());
-      setVisible(false);
-      System.exit(0);
-    }
-  }
-
-  public void removeContainer(String name)
-  {
-    ContainerLayout layout = constraintsManager.getContainerLayout(name);
-    if (layout == null)
-      throw new RuntimeException("Container " + name + " does not exist");
-    // Also have to remove any contained containers!
-    // EAL, 3/3/06.
-    Container container =constraintsManager.getContainer(layout);
-    Component[] components = container.getComponents();
-    for (int i = 0; i < components.length; i++) {
-        if (components[i] instanceof Container) {
-            String componentName = layout.getComponentName(components[i]);
-            if (hasContainer(componentName)) {
-                removeContainer(componentName);
+    public void removeContainer(String name) {
+        ContainerLayout layout = constraintsManager.getContainerLayout(name);
+        if (layout == null)
+            throw new RuntimeException("Container " + name + " does not exist");
+        // Also have to remove any contained containers!
+        // EAL, 3/3/06.
+        Container container = constraintsManager.getContainer(layout);
+        Component[] components = container.getComponents();
+        for (int i = 0; i < components.length; i++) {
+            if (components[i] instanceof Container) {
+                String componentName = layout.getComponentName(components[i]);
+                if (hasContainer(componentName)) {
+                    removeContainer(componentName);
+                }
             }
         }
+        constraintsManager.removeLayout(layout);
+        FormEditor editor = editors.get(layout);
+        tabs.remove(editor);
+        newLayouts.remove(layout);
     }
-    constraintsManager.removeLayout(layout);
-    FormEditor editor = editors.get(layout);
-    tabs.remove(editor);
-    newLayouts.remove(layout);
-  }
 
-  /**
-   * This is for adding containers on the fly. The idea is that when someone
-   * creates a new panel in one of the existing FormEditors, it can be added
-   * here and then they can lay it out.
-   */
-  public void addContainer(String name, Container container)
-      throws IllegalArgumentException
-  {
-    // check to see if another panel with this name already exists
-    ContainerLayout layout = constraintsManager.getContainerLayout(name);
-    if (layout != null)
-      throw new IllegalArgumentException("A container with name " + name
-          + " already exists");
+    /**
+     * This is for adding containers on the fly. The idea is that when someone
+     * creates a new panel in one of the existing FormEditors, it can be added
+     * here and then they can lay it out.
+     */
+    public void addContainer(String name, Container container)
+            throws IllegalArgumentException {
+        // check to see if another panel with this name already exists
+        ContainerLayout layout = constraintsManager.getContainerLayout(name);
+        if (layout != null)
+            throw new IllegalArgumentException("A container with name " + name
+                    + " already exists");
 
-    layout = new ContainerLayout(name, "pref", "pref");
-    constraintsManager.addLayout(layout);
-    container.setLayout(layout);
-    newLayouts.add(layout);
+        layout = new ContainerLayout(name, "pref", "pref");
+        constraintsManager.addLayout(layout);
+        container.setLayout(layout);
+        newLayouts.add(layout);
 
-    addContainerLayout(layout, container);
-  }
+        addContainerLayout(layout, container);
+    }
 
-  private void addContainerLayout(ContainerLayout containerLayout,
-      Container container)
-  {
-    FormEditor formEditor = new FormEditor(this, containerLayout, container);
-    editors.put(containerLayout, formEditor);
-    tabs.addTab(containerLayout.getName(), formEditor);
-  }
+    private void addContainerLayout(ContainerLayout containerLayout,
+            Container container) {
+        FormEditor formEditor = new FormEditor(this, containerLayout, container);
+        editors.put(containerLayout, formEditor);
+        tabs.addTab(containerLayout.getName(), formEditor);
+    }
 
-  @SuppressWarnings("serial")
-  private class CodeDialog extends JDialog
-  {
-    public CodeDialog(Frame owner, String text)
-    {
-      super(owner, "FormLayoutMaker - Code View", true);
-      
-      UserPrefs.getPrefs().useSavedBounds("codeview",this);
-      
-      JPanel content = new JPanel();
-      getContentPane().setLayout(new BorderLayout());
-      getContentPane().add(content, BorderLayout.CENTER);
+    @SuppressWarnings("serial")
+    private class CodeDialog extends JDialog {
+        public CodeDialog(Frame owner, String text) {
+            super(owner, "FormLayoutMaker - Code View", true);
 
-      JTextArea textArea = new JTextArea();
-      textArea.setEditable(false);
-      textArea.setText(text);
-      textArea.setLineWrap(true);
-      textArea.setWrapStyleWord(true);
-      content.setLayout(new BorderLayout());
+            UserPrefs.getPrefs().useSavedBounds("codeview", this);
 
-      JScrollPane areaScrollPane = new JScrollPane(textArea);
-      areaScrollPane.setPreferredSize(new Dimension(600, 400));
+            JPanel content = new JPanel();
+            getContentPane().setLayout(new BorderLayout());
+            getContentPane().add(content, BorderLayout.CENTER);
 
-      content.add(areaScrollPane, BorderLayout.CENTER);
-      pack();
+            JTextArea textArea = new JTextArea();
+            textArea.setEditable(false);
+            textArea.setText(text);
+            textArea.setLineWrap(true);
+            textArea.setWrapStyleWord(true);
+            content.setLayout(new BorderLayout());
 
-      addWindowListener(new WindowAdapter()
-      {
-        public void windowClosing(WindowEvent e)
-        {
-          UserPrefs.getPrefs().saveWinLoc("codeview",CodeDialog.this);
+            JScrollPane areaScrollPane = new JScrollPane(textArea);
+            areaScrollPane.setPreferredSize(new Dimension(600, 400));
+
+            content.add(areaScrollPane, BorderLayout.CENTER);
+            pack();
+
+            addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent e) {
+                    UserPrefs.getPrefs()
+                            .saveWinLoc("codeview", CodeDialog.this);
+                }
+            });
         }
-      });
     }
-  }
 
-  /**
-   * Establish the current preview window. Used to switch between the "normal"
-   * and "debug" preview windows.
-   * 
-   * KBR 03/26/06 Use this as the mechanism to enable the 'debug preview'
-   * menu, which is disabled by default (to have it disabled when FLM is 
-   * invoked via the user's app).
-   * 
-   * @param dframe the Jframe for the window.
-   */
-  void setPreviewFrame(LayoutConstraintsManager lcm, JFrame dframe)
-  {
-//    if ( dframe == null )
-//      dframe = makeNormalPreview(lcm);
-    if ( this.dframe != null )
-      this.dframe.setVisible(false);
-    this.dframe = dframe;
+    /**
+     * Establish the current preview window. Used to switch between the "normal"
+     * and "debug" preview windows.
+     * 
+     * KBR 03/26/06 Use this as the mechanism to enable the 'debug preview'
+     * menu, which is disabled by default (to have it disabled when FLM is 
+     * invoked via the user's app).
+     * 
+     * @param dframe the Jframe for the window.
+     */
+    void setPreviewFrame(LayoutConstraintsManager lcm, JFrame dframe) {
+        //    if ( dframe == null )
+        //      dframe = makeNormalPreview(lcm);
+        if (this.dframe != null)
+            this.dframe.setVisible(false);
+        this.dframe = dframe;
 
-//    ContainerLayout layout = constraintsManager.getContainerLayout("panel");
-//    FormEditor fe = editors.get(layout);
-//    if ( fe != null )
-//      fe.setContainer(lcm.getContainer(layout));
-    
-    UserPrefs.getPrefs().useSavedBounds("debug", dframe);
-//    Rectangle r = UserPrefs.getPrefs().getWinLoc("debug");
-//    dframe.setLocation(r.x, r.y);
-//    dframe.setSize(r.width, r.height);
-    dframe.setVisible(true);
-    
-    viewDebugMenu.setEnabled(true); // we have a debug frame, enable the menu
-  }
+        //    ContainerLayout layout = constraintsManager.getContainerLayout("panel");
+        //    FormEditor fe = editors.get(layout);
+        //    if ( fe != null )
+        //      fe.setContainer(lcm.getContainer(layout));
 
-  /**
-   * Activate "debug" version of preview frame. The title is set accordingly.
-   * @param b true to activate debug version
-   */
-  protected void enableDebugPreview(boolean b)
-  {
-	if ( dframe == null ) // KBR 03/26/06 dframe unavailable when run in user app
-		return;
-    dframe.setTitle("FormLayoutMaker - Preview" + (b ? " (Debug)" : ""));
-    FormDebugPanel fdp = (FormDebugPanel)dframe.getContentPane().getComponent(0);
-    fdp.deactivate( !b );
-  }
+        UserPrefs.getPrefs().useSavedBounds("debug", dframe);
+        //    Rectangle r = UserPrefs.getPrefs().getWinLoc("debug");
+        //    dframe.setLocation(r.x, r.y);
+        //    dframe.setSize(r.width, r.height);
+        dframe.setVisible(true);
 
-  /**
-   * Makes a preview frame using FormDebugPanel. The panel can be switched
-   * between debug and non-debug modes via @see enableDebugPreview.
-   * @param lcm the constraints to be used by the preview panel
-   * @return JFrame the preview window
-   */
-  private static JFrame makeDebugPreview(LayoutConstraintsManager lcm)
-  {
-    FormDebugPanel fdp = new FormDebugPanel(true,false);
-    fdp.setBorder(Borders.DIALOG_BORDER);
-    JFrame debugFrame = new JFrame();
-    lcm.setLayout("panel", fdp);
-    debugFrame.getContentPane().add(fdp, BorderLayout.CENTER);
-    debugFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    return debugFrame;
-  }
-  
-  public static void main(String[] args)
-  {
-    LayoutConstraintsManager constraintsManager = new LayoutConstraintsManager();
-    
-    // Always use a FormDebugPanel as the preview panel, but switch
-    // it depending on user preference.
-    JFrame frame = LayoutFrame.makeDebugPreview(constraintsManager);
-    
-    LayoutFrame layoutFrame = new LayoutFrame(constraintsManager);
-    LayoutFrame.setDefaultLookAndFeelDecorated(true);    
-    UserPrefs.getPrefs().useSavedBounds("main", layoutFrame);
-//    Rectangle r = UserPrefs.getPrefs().getWinLoc("main");
-//    layoutFrame.setLocation(r.x, r.y);
-//    layoutFrame.setSize(r.width, r.height);
-    layoutFrame.setVisible(true);
-    layoutFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-    layoutFrame.setPreviewFrame(constraintsManager, frame);
-    layoutFrame.enableDebugPreview(UserPrefs.getPrefs().showDebugPanel());
-  }
+        viewDebugMenu.setEnabled(true); // we have a debug frame, enable the menu
+    }
+
+    /**
+     * Activate "debug" version of preview frame. The title is set accordingly.
+     * @param b true to activate debug version
+     */
+    protected void enableDebugPreview(boolean b) {
+        if (dframe == null) // KBR 03/26/06 dframe unavailable when run in user app
+            return;
+        dframe.setTitle("FormLayoutMaker - Preview" + (b ? " (Debug)" : ""));
+        FormDebugPanel fdp = (FormDebugPanel) dframe.getContentPane()
+                .getComponent(0);
+        fdp.deactivate(!b);
+    }
+
+    /**
+     * Makes a preview frame using FormDebugPanel. The panel can be switched
+     * between debug and non-debug modes via @see enableDebugPreview.
+     * @param lcm the constraints to be used by the preview panel
+     * @return JFrame the preview window
+     */
+    private static JFrame makeDebugPreview(LayoutConstraintsManager lcm) {
+        FormDebugPanel fdp = new FormDebugPanel(true, false);
+        fdp.setBorder(Borders.DIALOG_BORDER);
+        JFrame debugFrame = new JFrame();
+        lcm.setLayout("panel", fdp);
+        debugFrame.getContentPane().add(fdp, BorderLayout.CENTER);
+        debugFrame
+                .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        return debugFrame;
+    }
+
+    public static void main(String[] args) {
+        LayoutConstraintsManager constraintsManager = new LayoutConstraintsManager();
+
+        // Always use a FormDebugPanel as the preview panel, but switch
+        // it depending on user preference.
+        JFrame frame = LayoutFrame.makeDebugPreview(constraintsManager);
+
+        LayoutFrame layoutFrame = new LayoutFrame(constraintsManager);
+        LayoutFrame.setDefaultLookAndFeelDecorated(true);
+        UserPrefs.getPrefs().useSavedBounds("main", layoutFrame);
+        //    Rectangle r = UserPrefs.getPrefs().getWinLoc("main");
+        //    layoutFrame.setLocation(r.x, r.y);
+        //    layoutFrame.setSize(r.width, r.height);
+        layoutFrame.setVisible(true);
+        layoutFrame
+                .setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        layoutFrame.setPreviewFrame(constraintsManager, frame);
+        layoutFrame.enableDebugPreview(UserPrefs.getPrefs().showDebugPanel());
+    }
 }

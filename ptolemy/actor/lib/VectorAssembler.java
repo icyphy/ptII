@@ -90,7 +90,7 @@ public class VectorAssembler extends Transformer {
      *  the output is a row matrix. The default value is true.
      */
     public Parameter isColumn;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -103,26 +103,25 @@ public class VectorAssembler extends Transformer {
         super.fire();
         int size = input.getWidth();
 
-        
         double[][] data;
-        
-        boolean isColumnValue = 
-            ((BooleanToken) isColumn.getToken()).booleanValue();
-        
+
+        boolean isColumnValue = ((BooleanToken) isColumn.getToken())
+                .booleanValue();
+
         if (isColumnValue) {
             data = new double[size][1];
-    
+
             for (int i = 0; i < size; i++) {
                 data[i][0] = ((DoubleToken) input.get(i)).doubleValue();
             }
         } else {
             data = new double[1][size];
-            
+
             for (int i = 0; i < size; i++) {
                 data[0][i] = ((DoubleToken) input.get(i)).doubleValue();
-            }            
+            }
         }
-        
+
         DoubleMatrixToken result = new DoubleMatrixToken(data);
 
         output.send(0, result);

@@ -50,14 +50,14 @@ public class Replacement extends CompositeActorMatcher {
      * @exception IllegalActionException
      */
     public Replacement(CompositeEntity container, String name)
-    throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         setClassName("ptolemy.actor.gt.Replacement");
     }
 
     public void setContainer(CompositeEntity container)
-    throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         if (container instanceof TransformationRule) {

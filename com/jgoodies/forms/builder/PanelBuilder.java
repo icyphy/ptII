@@ -94,13 +94,12 @@ import com.jgoodies.forms.layout.FormLayout;
  * @see     DefaultFormBuilder
  */
 public class PanelBuilder extends AbstractFormBuilder {
-    
+
     /**
      * Refers to a factory that is used to create labels,
      * titles and paragraph separators.
      */
     private ComponentFactory componentFactory;
-    
 
     // Instance Creation ****************************************************
 
@@ -111,7 +110,7 @@ public class PanelBuilder extends AbstractFormBuilder {
      * 
      * @param layout  the FormLayout to use
      */
-    public PanelBuilder(FormLayout layout){        
+    public PanelBuilder(FormLayout layout) {
         this(layout, new JPanel(null));
     }
 
@@ -122,10 +121,9 @@ public class PanelBuilder extends AbstractFormBuilder {
      * @param layout  the FormLayout to use
      * @param panel   the layout container to build on
      */
-    public PanelBuilder(FormLayout layout, JPanel panel){        
+    public PanelBuilder(FormLayout layout, JPanel panel) {
         super(layout, panel);
     }
-    
 
     /**
      * Constructs an instance of <code>PanelBuilder</code> for the given
@@ -136,12 +134,9 @@ public class PanelBuilder extends AbstractFormBuilder {
      * 
      * @deprecated Replaced by {@link #PanelBuilder(FormLayout, JPanel)}.
      */
-    public PanelBuilder(JPanel panel, FormLayout layout){        
+    public PanelBuilder(JPanel panel, FormLayout layout) {
         super(layout, panel);
     }
-    
-
-    
 
     // Accessors ************************************************************
 
@@ -150,13 +145,12 @@ public class PanelBuilder extends AbstractFormBuilder {
      * 
      * @return the panel used by this builder to build the form
      */
-    public final JPanel getPanel() { 
-        return (JPanel) getContainer();  
+    public final JPanel getPanel() {
+        return (JPanel) getContainer();
     }
 
-
     // Borders **************************************************************
-    
+
     /**
      * Sets the panel's border.
      * 
@@ -165,8 +159,7 @@ public class PanelBuilder extends AbstractFormBuilder {
     public final void setBorder(Border border) {
         getPanel().setBorder(border);
     }
-    
-    
+
     /**
      * Sets the default dialog border.
      * 
@@ -175,10 +168,9 @@ public class PanelBuilder extends AbstractFormBuilder {
     public final void setDefaultDialogBorder() {
         setBorder(Borders.DIALOG_BORDER);
     }
-    
 
     // Adding Labels **********************************************************
-    
+
     /**
      * Adds a textual label to the form using the default constraints.<p>
      * 
@@ -198,7 +190,6 @@ public class PanelBuilder extends AbstractFormBuilder {
     public final JLabel addLabel(String textWithMnemonic) {
         return addLabel(textWithMnemonic, cellConstraints());
     }
-    
 
     /**
      * Adds a textual label to the form using the specified constraints.<p>
@@ -217,13 +208,13 @@ public class PanelBuilder extends AbstractFormBuilder {
      * 
      * @see ComponentFactory
      */
-    public final JLabel addLabel(String textWithMnemonic, CellConstraints constraints) {
+    public final JLabel addLabel(String textWithMnemonic,
+            CellConstraints constraints) {
         JLabel label = getComponentFactory().createLabel(textWithMnemonic);
         add(label, constraints);
         return label;
     }
-    
-    
+
     /**
      * Adds a textual label to the form using the specified constraints.<p>
      * 
@@ -241,13 +232,14 @@ public class PanelBuilder extends AbstractFormBuilder {
      * 
      * @see ComponentFactory
      */
-    public final JLabel addLabel(String textWithMnemonic, String encodedConstraints) {
-        return addLabel(textWithMnemonic, new CellConstraints(encodedConstraints));
+    public final JLabel addLabel(String textWithMnemonic,
+            String encodedConstraints) {
+        return addLabel(textWithMnemonic, new CellConstraints(
+                encodedConstraints));
     }
-    
-    
+
     // Adding Label with related Component ************************************
-    
+
     /**
      * Adds a label and component to the panel using the given cell constraints.
      * Sets the given label as <i>the</i> component label using 
@@ -307,21 +299,20 @@ public class PanelBuilder extends AbstractFormBuilder {
      * @see JLabel#setLabelFor(java.awt.Component)
      * @see DefaultFormBuilder
      */
-    public final JLabel add(JLabel label,        CellConstraints labelConstraints,
-                            Component component, CellConstraints componentConstraints) {
+    public final JLabel add(JLabel label, CellConstraints labelConstraints,
+            Component component, CellConstraints componentConstraints) {
         if (labelConstraints == componentConstraints)
             throw new IllegalArgumentException(
-                    "You must provide two CellConstraints instances, " +
-                    "one for the label and one for the component.\n" +
-                	"Consider using #clone(). See the JavaDocs for details.");
-        
-        add(label,     labelConstraints);
+                    "You must provide two CellConstraints instances, "
+                            + "one for the label and one for the component.\n"
+                            + "Consider using #clone(). See the JavaDocs for details.");
+
+        add(label, labelConstraints);
         add(component, componentConstraints);
-        label.setLabelFor(component);   
-        return label; 
+        label.setLabelFor(component);
+        return label;
     }
-    
-    
+
     /**
      * Adds a label and component to the panel using the given cell constraints.
      * Sets the given label as <i>the</i> component label using 
@@ -382,25 +373,24 @@ public class PanelBuilder extends AbstractFormBuilder {
      * @see ComponentFactory
      * @see DefaultFormBuilder
      */
-    public final JLabel addLabel(
-        String textWithMnemonic, CellConstraints labelConstraints,
-        Component component,     CellConstraints componentConstraints) {
+    public final JLabel addLabel(String textWithMnemonic,
+            CellConstraints labelConstraints, Component component,
+            CellConstraints componentConstraints) {
 
         if (labelConstraints == componentConstraints)
             throw new IllegalArgumentException(
-                    "You must provide two CellConstraints instances, " +
-                    "one for the label and one for the component.\n" +
-                    "Consider using #clone(). See the JavaDocs for details.");
-        
+                    "You must provide two CellConstraints instances, "
+                            + "one for the label and one for the component.\n"
+                            + "Consider using #clone(). See the JavaDocs for details.");
+
         JLabel label = addLabel(textWithMnemonic, labelConstraints);
         add(component, componentConstraints);
         label.setLabelFor(component);
         return label;
     }
-    
 
     // Adding Titles ----------------------------------------------------------
-     
+
     /**
      * Adds a title label to the form using the default constraints.<p>
      * 
@@ -420,7 +410,6 @@ public class PanelBuilder extends AbstractFormBuilder {
     public final JLabel addTitle(String textWithMnemonic) {
         return addTitle(textWithMnemonic, cellConstraints());
     }
-     
 
     /**
      * Adds a title label to the form using the specified constraints.<p>
@@ -439,13 +428,13 @@ public class PanelBuilder extends AbstractFormBuilder {
      * 
      * @see ComponentFactory
      */
-    public final JLabel addTitle(String textWithMnemonic, CellConstraints constraints) {
+    public final JLabel addTitle(String textWithMnemonic,
+            CellConstraints constraints) {
         JLabel titleLabel = getComponentFactory().createTitle(textWithMnemonic);
         add(titleLabel, constraints);
         return titleLabel;
     }
-    
-    
+
     /**
      * Adds a title label to the form using the specified constraints.<p>
      * 
@@ -463,13 +452,14 @@ public class PanelBuilder extends AbstractFormBuilder {
      * 
      * @see ComponentFactory
      */
-    public final JLabel addTitle(String textWithMnemonic, String encodedConstraints) {
-        return addTitle(textWithMnemonic, new CellConstraints(encodedConstraints));
+    public final JLabel addTitle(String textWithMnemonic,
+            String encodedConstraints) {
+        return addTitle(textWithMnemonic, new CellConstraints(
+                encodedConstraints));
     }
-     
-    
+
     // Adding Separators ------------------------------------------------------
-    
+
     /**
      * Adds a titled separator to the form that spans all columns.<p>
      * 
@@ -487,7 +477,6 @@ public class PanelBuilder extends AbstractFormBuilder {
     public final JComponent addSeparator(String textWithMnemonic) {
         return addSeparator(textWithMnemonic, getLayout().getColumnCount());
     }
-    
 
     /**
      * Adds a titled separator to the form using the specified constraints.<p>
@@ -504,17 +493,16 @@ public class PanelBuilder extends AbstractFormBuilder {
      * @param constraints  the separator's cell constraints
      * @return the added separator
      */
-    public final JComponent addSeparator(String textWithMnemonic, CellConstraints constraints) {
-        int titleAlignment = isLeftToRight()
-                ? SwingConstants.LEFT
+    public final JComponent addSeparator(String textWithMnemonic,
+            CellConstraints constraints) {
+        int titleAlignment = isLeftToRight() ? SwingConstants.LEFT
                 : SwingConstants.RIGHT;
-        JComponent titledSeparator =
-            getComponentFactory().createSeparator(textWithMnemonic, titleAlignment);
+        JComponent titledSeparator = getComponentFactory().createSeparator(
+                textWithMnemonic, titleAlignment);
         add(titledSeparator, constraints);
         return titledSeparator;
     }
-    
-    
+
     /**
      * Adds a titled separator to the form using the specified constraints.<p>
      * 
@@ -530,11 +518,12 @@ public class PanelBuilder extends AbstractFormBuilder {
      * @param encodedConstraints  a string representation for the constraints
      * @return the added separator
      */
-    public final JComponent addSeparator(String textWithMnemonic, String encodedConstraints) {
-        return addSeparator(textWithMnemonic, new CellConstraints(encodedConstraints));
+    public final JComponent addSeparator(String textWithMnemonic,
+            String encodedConstraints) {
+        return addSeparator(textWithMnemonic, new CellConstraints(
+                encodedConstraints));
     }
-     
-    
+
     /**
      * Adds a titled separator to the form that spans the specified columns.<p>
      * 
@@ -551,12 +540,12 @@ public class PanelBuilder extends AbstractFormBuilder {
      * @return the added separator
      */
     public final JComponent addSeparator(String textWithMnemonic, int columnSpan) {
-        return addSeparator(textWithMnemonic, createLeftAdjustedConstraints(columnSpan));
+        return addSeparator(textWithMnemonic,
+                createLeftAdjustedConstraints(columnSpan));
     }
-    
-     
+
     // Accessing the ComponentFactory *****************************************
-    
+
     /**
      * Returns the builder's component factory. If no factory
      * has been set before, it is lazily initialized using with an instance of
@@ -572,8 +561,7 @@ public class PanelBuilder extends AbstractFormBuilder {
         }
         return componentFactory;
     }
-    
-    
+
     /**
      * Sets a new component factory. 
      * 
@@ -584,6 +572,5 @@ public class PanelBuilder extends AbstractFormBuilder {
     public final void setComponentFactory(ComponentFactory newFactory) {
         componentFactory = newFactory;
     }
-    
-    
+
 }

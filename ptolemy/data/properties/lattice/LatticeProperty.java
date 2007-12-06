@@ -31,7 +31,6 @@ package ptolemy.data.properties.lattice;
 import ptolemy.data.properties.Property;
 import ptolemy.graph.CPO;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Property
 
@@ -45,7 +44,6 @@ import ptolemy.graph.CPO;
  @Pt.AcceptedRating Red (cxh)
  */
 public class LatticeProperty extends Property {
-        
 
     public LatticeProperty(PropertyLattice lattice) {
         _lattice = lattice;
@@ -76,7 +74,6 @@ public class LatticeProperty extends Property {
         return true;
     }
 
-
     /** Determine if this Type corresponds to an instantiable token
      *  class.
      *  @return True if this type corresponds to an instantiable
@@ -96,24 +93,23 @@ public class LatticeProperty extends Property {
      */
     public boolean isSubstitutionInstance(Property property) {
         return //(this == UNKNOWN) ||
-        (this == _lattice.basicLattice().bottom()) ||
-        (this == property);
+        (this == _lattice.basicLattice().bottom()) || (this == property);
     }
-    
+
     /** Get the property lattice associated with this property.
      *  @return The associated property lattice.
      */
     public PropertyLattice getPropertyLattice() {
         return _lattice;
     }
-    
+
     public String toString() {
         return this.getClass().getSimpleName();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private PropertyLattice _lattice;
-    
+
 }

@@ -55,7 +55,7 @@ public class VectorAssembler extends CCodeGeneratorHelper {
     public VectorAssembler(ptolemy.actor.lib.VectorAssembler actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from VectorAssembler.c,
@@ -78,7 +78,7 @@ public class VectorAssembler extends CCodeGeneratorHelper {
         if (isPrimitive(type)) {
             args.add(codeGenType(type));
         }
-        
+
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, Integer.valueOf(i));
             fireCode.append(_generateBlockCode("fireBlock", args));
