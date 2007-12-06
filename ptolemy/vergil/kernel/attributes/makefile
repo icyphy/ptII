@@ -80,6 +80,7 @@ MISC_FILES = \
 OPTIONAL_FILES = \
 	demo \
 	$(PTCLASSJAR) \
+	'AttributeValueAttribute$$1.class' \
 	'DocumentationAttribute$$DocumentationAttributeFactory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

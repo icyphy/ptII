@@ -73,6 +73,7 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'NCApp2MoML$$1.class' \
+	'NCApp2MoML$$_Link.class' \
 	'NCApp2MoML$$_ComponentFile.class' \
 	'NCApp2MoML$$_Relations.class' \
 	doc

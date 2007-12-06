@@ -121,6 +121,7 @@ OPTIONAL_FILES = \
 	index.xml \
 	'Autocorrelation$$1.class' \
 	'Autocorrelation$$FunctionTerm.class' \
+	'Autocorrelation$$OutputTypeTerm.class' \
 	'DotProduct$$1.class' \
 	'DotProduct$$PortFunction.class' \
 	'FIR$$1.class' \
