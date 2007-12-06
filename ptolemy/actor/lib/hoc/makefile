@@ -99,7 +99,16 @@ OPTIONAL_FILES = \
 	'IterateOverArray$$IterateComposite$$1.class' \
 	'IterateOverArray$$IterateDirector.class' \
 	'IterateOverArray$$IteratePort.class' \
-	'ModelReference$$1.class'
+	'MirrorComposite$$1.class' \
+	'MirrorComposite$$2.class' \
+	'MirrorComposite$$MirrorCompositeContents$$1.class' \
+	'MirrorComposite$$MirrorCompositeContents.class' \
+	'ModelReference$$1.class' \
+	'RealTimeComposite$$InputFrame.class' \
+	'RealTimeComposite$$OutputFrame.class' \
+	'RealTimeComposite$$QueuedToken.class' \
+	'RealTimeComposite$$RealTimeDirector.class' \
+	'RealTimeComposite$$RealTimeDirector$$RealTimeThread.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
