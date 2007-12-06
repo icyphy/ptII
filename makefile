@@ -216,6 +216,7 @@ cleanDerivedJavaFiles:
 	rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
 
 CLEAN_SHIPPING_FILES = \
+		autom4te.cache \
 		com/microstar/xml/SAXDriver.* \
 		diva/build.xml \
 		diva/canvas/tutorial/doc-files \
