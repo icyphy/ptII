@@ -29,7 +29,7 @@ double $actorSymbol(seed);
 // are from Colt and are found in
 // colt/src/cern/jet/random/engine/{RandomEngine,DRand}
 // Colt's copyright is:
-// Copyright (c) 1999 CERN - European Organization for Nuclear Research.
+// Copyright (c) 1999-2007 CERN - European Organization for Nuclear Research.
 // Permission to use, copy, modify, distribute and sell this software and its documentation for any purpose
 // is hereby granted without fee, provided that the above copyright notice appear in all copies and
 // that both that copyright notice and this permission notice appear in supporting documentation.
@@ -169,7 +169,7 @@ double ColtRandomSource_nextGaussian(int* seed, boolean* haveNextNextGaussian, d
 // are from Colt and are found in
 // colt/src/cern/jet/random/engine/{RandomEngine,DRand}
 // Colt's copyright is:
-// Copyright (c) 1999 CERN - European Organization for Nuclear Research.
+// Copyright (c) 1999-2007 CERN - European Organization for Nuclear Research.
 // Permission to use, copy, modify, distribute and sell this software
 // and its documentation for any purpose
 // is hereby granted without fee, provided that the above copyright notice appear in all copies and
