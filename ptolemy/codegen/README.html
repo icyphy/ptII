@@ -46,6 +46,11 @@ code generation support is to run
 $PTII/bin/vergil -codegen
 </pre>
 
+<li> The macro facility does not ignore comments in C files.  Thus
+if a comment in a C files has <CODE>$channel</CODE>, then it
+will be expanded.  This can cause problems if the 
+macro is ill-formed. To top expansion, use <CODE>\$channel</CODE>
+
 </ul>
 
 <h2><a name="FAQ">FAQ</a>
