@@ -49,7 +49,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	Gravitation.xml \
-	Gravitation.htm
+	Gravitation.htm \
+	GravitationVergil.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
