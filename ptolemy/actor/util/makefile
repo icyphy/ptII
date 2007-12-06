@@ -89,6 +89,7 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'ActorTypeUtil$$TypeableSizedArrayVariableTypeTerm.class' \
 	'CalendarQueue$$CQCell.class' \
 	'CalendarQueue$$CQEntry.class' \
 	'CalendarQueue$$CQLinkedList.class' \
