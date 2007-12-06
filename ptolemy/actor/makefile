@@ -91,6 +91,8 @@ JSRCS = \
 	StreamExecutionListener.java \
 	TimedActor.java \
 	TimedDirector.java \
+	TokenGotEvent.java \
+	TokenGotListener.java \
 	TokenSentEvent.java \
 	TokenSentListener.java \
 	TypeAttribute.java \
