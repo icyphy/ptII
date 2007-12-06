@@ -48,6 +48,14 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	curriculumAbstracted.xml \
+	curriculumLS1.xml \
+	curriculumLS2.xml \
+	curriculumLS3.xml \
+	curriculumLS4.xml \
+	curriculumOption1.xml \
+	curriculumOption4.xml \
+	curriculumProbStat.xml \
 	Curriculum.xml
 
 EXTRA_SRCS = \
