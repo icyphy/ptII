@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2003-2005 The Regents of the University of California.
+# @Copyright (c) 2003-2007 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -51,12 +51,12 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-    MatchingTest1.tcl \
-    MatchingTest2.tcl \
-    XMLTest1.tcl \
-    XMLTest2.tcl \
-    XMLTest3.tcl \
-    XMLTest4.tcl \
+    GeneratedModel1.tcl \
+    GeneratedModel2.tcl \
+    Match3Actors.tcl \
+    MatchHierarchy2Actors.tcl \
+    MatchHierarchy2Actors2Composites.tcl \
+    Match4Actors.tcl \
     XMLTest5.tcl \
     XMLTest6.tcl \
     XMLTest7.tcl
@@ -69,27 +69,27 @@ JGRAPHICAL_TESTS = \
     dummy.tcl
 
 EXTRA_SRCS = \
-    host1_1.xml \
-    host1_2.xml \
-    host1_3.xml \
-    host1_4.xml \
-    host1_5.xml \
-    host1_6.xml \
-    host1_7.xml \
-    host1_8.xml \
-    host2_1.xml \
-    host2_2.xml \
-    host2_3.xml \
-    host2_4.xml \
-    host2_5.xml \
-    host2_6.xml \
-    host3_1.xml \
-    host3_2.xml \
-    host3_3.xml \
-    host3_4.xml \
-    host4_1.xml \
-    host4_2.xml \
-    host4_3.xml \
+    Match3Actors_succ1.xml \
+    Match3Actors_fail2.xml \
+    Match3Actors_succ3.xml \
+    Match3Actors_succ4.xml \
+    Match3Actors_succ5.xml \
+    Match3Actors_fail6.xml \
+    Match3Actors_succ7.xml \
+    Match3Actors_succ8.xml \
+    MatchHierarchy2Actors_fail1.xml \
+    MatchHierarchy2Actors_succ2.xml \
+    MatchHierarchy2Actors_fail3.xml \
+    MatchHierarchy2Actors_succ4.xml \
+    MatchHierarchy2Actors_succ5.xml \
+    MatchHierarchy2Actors_succ6.xml \
+    MatchHierarchy2Actors2Composites_fail1.xml \
+    MatchHierarchy2Actors2Composites_fail2.xml \
+    MatchHierarchy2Actors2Composites_succ3.xml \
+    MatchHierarchy2Actors2Composites_succ4.xml \
+    Match4Actors_1match1.xml \
+    Match4Actors_2matches2.xml \
+    Match4Actors_3matches3.xml \
     host4_4.xml \
     host4_5.xml \
     host4_6.xml \
@@ -100,19 +100,19 @@ EXTRA_SRCS = \
     host6_2.xml \
     host7_1.xml \
     host7_2.xml \
-    MatchingTest1.tcl \
-    MatchingTest2.tcl \
-    rule1.xml \
-    rule2.xml \
-    rule3.xml \
-    rule4.xml \
+    GeneratedModel1.tcl \
+    GeneratedModel2.tcl \
+    Match3Actors_rule.xml \
+    MatchHierarchy2Actors_rule.xml \
+    MatchHierarchy2Actors2Composites_rule.xml \
+    Match4Actors_rule.xml \
     rule5.xml \
     rule6.xml \
     rule7.xml \
-    XMLTest1.tcl \
-    XMLTest2.tcl \
-    XMLTest3.tcl \
-    XMLTest4.tcl \
+    Match3Actors.tcl \
+    MatchHierarchy2Actors.tcl \
+    MatchHierarchy2Actors2Composites.tcl \
+    Match4Actors.tcl \
     XMLTest5.tcl \
     XMLTest6.tcl \
     XMLTest7.tcl \

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="host1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Match3Actors_succ5" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={78, 122, 823, 515}, maximized=false}">
@@ -17,10 +17,7 @@
         </property>
         <port name="output1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="multiport"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[176.357421875, 175.21484375]">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 175.0]">
             </property>
         </port>
         <port name="output2" class="ptolemy.actor.TypedIOPort">
@@ -52,11 +49,11 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 175.0}">
             </property>
         </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
         </relation>
@@ -65,16 +62,8 @@
         <link port="B.output" relation="relation"/>
         <link port="A.output" relation="relation2"/>
     </entity>
-    <entity name="C" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 200.0]">
-        </property>
-    </entity>
     <entity name="CompositeActor2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 195.0]">
         </property>
         <port name="compositeInput" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -99,10 +88,6 @@
         <link port="compositeInput" relation="relation"/>
         <link port="C.input" relation="relation"/>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -111,10 +96,8 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="CompositeActor.output1" relation="relation3"/>
     <link port="CompositeActor.output1" relation="relation"/>
     <link port="CompositeActor.output2" relation="relation2"/>
-    <link port="C.input" relation="relation"/>
-    <link port="C.input" relation="relation2"/>
-    <link port="CompositeActor2.compositeInput" relation="relation3"/>
+    <link port="CompositeActor2.compositeInput" relation="relation"/>
+    <link port="CompositeActor2.compositeInput" relation="relation2"/>
 </entity>

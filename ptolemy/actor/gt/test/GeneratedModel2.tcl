@@ -40,7 +40,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test MatchingTest-2.1 {An lhs with a CompositeActor matching an empty host} {
+test GeneratedModel2.1 {An lhs with a CompositeActor matching an empty host} {
     set e0 [sdfModel 3]
     set matcher [java::new ptolemy.actor.gt.GraphMatcher]
     set lhs [java::new ptolemy.actor.gt.Pattern $e0 lhs]
@@ -84,7 +84,7 @@ test MatchingTest-2.1 {An lhs with a CompositeActor matching an empty host} {
     [$matcher getMatchResult] toString
 } {{}}
 
-test MatchingTest-2.2 {An lhs with a CompositeActor matching a host without the CompositeActor} {
+test GeneratedModel2.2 {An lhs with a CompositeActor matching a host without the CompositeActor} {
     set hostA1 [java::new ptolemy.actor.gt.AtomicActorMatcher $host A1]
     set hostA1Attr [java::cast ptolemy.actor.gt.GTIngredientsAttribute [$hostA1 getAttribute criteria]]
     set hostA1PortRuleList [java::new ptolemy.actor.gt.GTIngredientList $hostA1Attr]
@@ -111,7 +111,7 @@ test MatchingTest-2.2 {An lhs with a CompositeActor matching a host without the 
     [$matcher getMatchResult] toString
 } {{ptolemy.actor.TypedIOPort {.top.lhs.A1.criterion1} = ptolemy.actor.TypedIOPort {.top.host.A1.criterion1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.criterion1} = ptolemy.actor.TypedIOPort {.top.host.A2.criterion1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A2}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.gt.Pattern {.top.host}}}
 
-test MatchingTest-2.3 {An lhs with a CompositeActor matching a host with a CompositeActor and an extra actor} {
+test GeneratedModel2.3 {An lhs with a CompositeActor matching a host with a CompositeActor and an extra actor} {
     set hostC1 [java::new ptolemy.actor.TypedCompositeActor $host C1]
     set hostC1Port1 [java::new ptolemy.actor.TypedIOPort $hostC1 input true false]
     
@@ -133,14 +133,14 @@ test MatchingTest-2.3 {An lhs with a CompositeActor matching a host with a Compo
     [$matcher getMatchResult] toString
 } {{ptolemy.actor.TypedIOPort {.top.lhs.A1.criterion1} = ptolemy.actor.TypedIOPort {.top.host.A1.criterion1}, ptolemy.actor.TypedIOPort {.top.lhs.C1.A1.criterion1} = ptolemy.actor.TypedIOPort {.top.host.A2.criterion1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A1}, ptolemy.actor.gt.AtomicActorMatcher {.top.lhs.C1.A1} = ptolemy.actor.gt.AtomicActorMatcher {.top.host.A2}, ptolemy.actor.gt.Pattern {.top.lhs} = ptolemy.actor.gt.Pattern {.top.host}}}
 
-test MatchingTest-2.4 {Add an SDF director to the lhs CompositeActor} {
+test GeneratedModel2.4 {Add an SDF director to the lhs CompositeActor} {
     $lhsC1 setDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector]
     
     $matcher match $lhs $host
     [$matcher getMatchResult] toString
 } {{}}
 
-test MatchingTest-2.5 {Add an SDF director to the host CompositeActor} {
+test GeneratedModel2.5 {Add an SDF director to the host CompositeActor} {
     $hostC1 setDirector [java::new ptolemy.domains.sdf.kernel.SDFDirector]
     
     $matcher match $lhs $host
