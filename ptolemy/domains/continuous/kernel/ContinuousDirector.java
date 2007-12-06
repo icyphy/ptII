@@ -955,7 +955,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  fired since initialize() or the previous call to suggestedStepSize(),
      *  then return the value of <i>maxStepSize</i>.
      *  @return The suggested step size for next integration.
-     *  @throws IllegalActionException If an actor suggests an illegal step size.
+     *  @exception IllegalActionException If an actor suggests an illegal step size.
      */
     public double suggestedStepSize() throws IllegalActionException {
         double suggestedStep = _initStepSize;

@@ -558,7 +558,7 @@ public class GRDirector extends StaticSchedulingDirector {
     /** Return the one view screen in the model under the control
      *  of this director.
      *  @return The one view screen.
-     *  @throws IllegalActionException If there is more than one
+     *  @exception IllegalActionException If there is more than one
      *   view screen.
      */
     private ViewScreenInterface _getViewScreen() throws IllegalActionException {

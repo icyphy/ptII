@@ -251,8 +251,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
     /** Add an error highlight color to the specified culprit if it is
      *  not already present.
      *  @param culprit The culprit to highlight.
-     *  @throws IllegalActionException If the highlight cannot be added.
-     *  @throws NameDuplicationException Should not be thrown.
+     *  @exception IllegalActionException If the highlight cannot be added.
+     *  @exception NameDuplicationException Should not be thrown.
      */
     private void _addErrorHighlightIfNeeded(Nameable culprit)
             throws IllegalActionException, NameDuplicationException {

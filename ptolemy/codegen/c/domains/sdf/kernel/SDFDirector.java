@@ -886,7 +886,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      * @param channelNumber The number of the channel which has the buffer
      * to pad.
      * @return The size of the new buffer.
-     * @throws IllegalActionException If thrown when getting the port's helper.
+     * @exception IllegalActionException If thrown when getting the port's helper.
      */
     private int _padBuffer(IOPort port, int channelNumber) 
             throws IllegalActionException {

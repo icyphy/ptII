@@ -495,7 +495,7 @@ public class CodeStream {
      * Also, the specified file path is required to point to an existing
      * file; otherwise, an exception is thrown.
      * @param filePath The given file path.
-     * @throws IllegalActionException Thrown if an error occurs when
+     * @exception IllegalActionException Thrown if an error occurs when
      *  parsing the code blocks in the file.
      */
     public void parse(String filePath) throws IllegalActionException {
@@ -733,7 +733,7 @@ public class CodeStream {
      *  number and file of the helper templates.    Return false
      *  if the source is bound only to the output file, or if there is
      *  no CodeGenerator associated with this stream.
-     * @throws IllegalActionException If there is a problem reading
+     * @exception IllegalActionException If there is a problem reading
      *  the {@link ptolemy.codegen.kernel.CodeGenerator#sourceLineBinding}    
      *  parameter. 
      */

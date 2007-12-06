@@ -139,7 +139,7 @@ public class CTCompositeActor extends TypedCompositeActor implements
     /** Restore the previously recorded state to all the actors in this
      *  composite actor.
      *
-     *  @throws IllegalActionException Not thowned.
+     *  @exception IllegalActionException Not thowned.
      */
     public void goToMarkedState() throws IllegalActionException {
         Set<Checkpoint> checkpoints = new HashSet<Checkpoint>();

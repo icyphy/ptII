@@ -46,8 +46,8 @@ public class Replacement extends CompositeActorMatcher {
     /**
      * @param container
      * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public Replacement(CompositeEntity container, String name)
     throws NameDuplicationException, IllegalActionException {

@@ -54,10 +54,10 @@ public class ActorScopeExtender extends ScopeExtendingAttribute {
     /**
      * @param container
      * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public ActorScopeExtender(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {

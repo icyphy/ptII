@@ -49,8 +49,8 @@ public class Constraint extends ParameterAttribute {
     /**
      * @param container
      * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public Constraint(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {

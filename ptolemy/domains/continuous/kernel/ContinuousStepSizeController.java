@@ -97,7 +97,7 @@ public interface ContinuousStepSizeController {
      *  does not care what the next step size is, it should
      *  return java.lang.Double.MAX_VALUE.
      *  @return The suggested next step size.
-     *  @throws IllegalActionException If an actor suggests an illegal step size.
+     *  @exception IllegalActionException If an actor suggests an illegal step size.
      */
     public double suggestedStepSize() throws IllegalActionException;
 

@@ -54,8 +54,8 @@ public class ReplacementObjectAttribute extends StringAttribute {
     /**
      * @param container
      * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public ReplacementObjectAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {

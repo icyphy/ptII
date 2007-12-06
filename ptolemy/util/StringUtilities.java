@@ -548,7 +548,7 @@ public class StringUtilities {
     /** Return a LinkedList of the lines in a string that aren't comments.
      * @param lines A String containing the lines to be separated.
      * @return A LinkedList of the lines that aren't comments.
-     * @throws IOException If thrown when reading from the input String.
+     * @exception IOException If thrown when reading from the input String.
      */
     public static LinkedList readLines(String lines) throws IOException {
         BufferedReader bufferedReader = null;

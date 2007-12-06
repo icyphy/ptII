@@ -2768,7 +2768,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     
     /** Return the actual CodeStream for this Helper.
      * @return The actual CodeStream.
-     * @throws IllegalActionException If thrown by a called method.
+     * @exception IllegalActionException If thrown by a called method.
      */
     private CodeStream _getActualCodeStream()
             throws IllegalActionException {
@@ -2781,7 +2781,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param namedObj The actor whose code to return.
      * @param codeGenerator The actor's CodeGenerator.
      * @return The actor's actual CodeStream.
-     * @throws IllegalActionException If thrown when getting the actor's helper.
+     * @exception IllegalActionException If thrown when getting the actor's helper.
      */
     private static CodeStream _getActualCodeStream(NamedObj namedObj,
             CodeGenerator codeGenerator) throws IllegalActionException {

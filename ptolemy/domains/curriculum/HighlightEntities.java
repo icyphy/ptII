@@ -135,8 +135,8 @@ public class HighlightEntities extends Attribute {
          * on a "configure" command.
          * @param container The container for this attribute.
          * @param name The name of this attribute. 
-         * @throws IllegalActionException If thrown by the parent class.
-         * @throws NameDuplicationException If thrown by the parent class.
+         * @exception IllegalActionException If thrown by the parent class.
+         * @exception NameDuplicationException If thrown by the parent class.
          */
         public HighlightIcons(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {

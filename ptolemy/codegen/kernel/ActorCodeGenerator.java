@@ -126,19 +126,19 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
 
     /** Return a set of the directories to search for the actor's include files.
      * @return A set of directories to search for the actor's include files.
-     * @throws IllegalActionException If thrown when finding the directories.
+     * @exception IllegalActionException If thrown when finding the directories.
      */
     public Set getIncludeDirectories() throws IllegalActionException;
 
     /** Return a set of the libraries to link the generated code to.
      * @return A set of libraries to link.
-     * @throws IllegalActionException If thrown when finding the libraries.
+     * @exception IllegalActionException If thrown when finding the libraries.
      */
     public Set getLibraries() throws IllegalActionException;
 
     /** Return a set of the directories to search for libraries.
      * @return A set of directories to search.
-     * @throws IllegalActionException If thrown when finding the libraries.
+     * @exception IllegalActionException If thrown when finding the libraries.
      */
     public Set getLibraryDirectories() throws IllegalActionException;
 

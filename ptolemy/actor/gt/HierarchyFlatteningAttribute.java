@@ -51,8 +51,8 @@ public class HierarchyFlatteningAttribute extends TransformationAttribute {
     /**
      * @param container
      * @param name
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     * @exception NameDuplicationException
+     * @exception IllegalActionException
      */
     public HierarchyFlatteningAttribute(NamedObj container, String name)
     throws IllegalActionException, NameDuplicationException {

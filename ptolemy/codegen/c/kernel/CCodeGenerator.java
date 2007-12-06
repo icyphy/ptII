@@ -779,7 +779,7 @@ public class CCodeGenerator extends CodeGenerator {
      * are discarded if #line macros are inserted.  
      * @param code The given code to be processed. 
      * @return The processed code.
-     * @throws IllegalActionException If #getOutputFilename() throws it.
+     * @exception IllegalActionException If #getOutputFilename() throws it.
      */
     protected StringBuffer _finalPassOverCode(StringBuffer code) 
             throws IllegalActionException {
