@@ -1,6 +1,6 @@
 /*  This actor opens a window to display the specified model and applies its inputs to the model.
 
- @Copyright (c) 1998-2007 The Regents of the University of California.
+ @Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -70,7 +70,7 @@ import diva.graph.JGraph;
  
  @author  Edward A. Lee, Elaine Cheong
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
 */

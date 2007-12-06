@@ -1,6 +1,6 @@
 /* Plot arrays of doubles in an XY plot.
 
- @Copyright (c) 1998-2007 The Regents of the University of California.
+ @Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -70,7 +70,7 @@ import ptolemy.plot.Plot;
 
  @author  Edward A. Lee
  @version $Id$
- @since Ptolemy II 3.0
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  @see XYScope

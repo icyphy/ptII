@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh) 
  @Pt.AcceptedRating Red (cxh)
  */

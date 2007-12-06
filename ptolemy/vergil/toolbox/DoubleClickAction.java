@@ -1,6 +1,6 @@
 /* An action for double clicking a component.
 
- Copyright (c) 1999-2007 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,7 +48,7 @@ import ptolemy.util.MessageHandler;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 6.2
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */

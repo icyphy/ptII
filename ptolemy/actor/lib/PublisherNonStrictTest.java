@@ -57,7 +57,7 @@ import ptolemy.util.StringUtilities;
 
  @author Christopher Brooks, based on Test, which has Edward A. Lee and Jim Armbstrong as authors
  @version $Id$
- @since Ptolemy II 6.2
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

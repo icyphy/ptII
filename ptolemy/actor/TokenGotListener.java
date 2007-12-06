@@ -1,6 +1,6 @@
 /* A listener for TokenGotEvents from an IOPort.
 
- Copyright (c) 2006-2007 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,7 +44,7 @@ package ptolemy.actor;
 
  @author Oscar Barney
  @version $Id$
- @since Ptolemy II 5.2
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Red (barney)
  @Pt.AcceptedRating
  @see IOPort

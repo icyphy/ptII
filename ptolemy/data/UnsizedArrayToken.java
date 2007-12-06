@@ -1,6 +1,6 @@
 /** A token that contains an unsized Array number.
 
- Copyright (c) 2006 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,7 +44,7 @@ import ptolemy.data.type.Type;
  @author Steve Neuendorffer
  @see ptolemy.data.ArrayToken
  @version $Id$
- @since Ptolemy II 5.2
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Yellow (neuendor)
  @Pt.AcceptedRating Yellow (neuendor)
  */

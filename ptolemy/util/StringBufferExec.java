@@ -60,7 +60,7 @@ package ptolemy.util;
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 6.2
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

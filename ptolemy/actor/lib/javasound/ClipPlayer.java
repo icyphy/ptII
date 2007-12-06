@@ -1,6 +1,6 @@
 /* An actor that plays audio data from a specified file.
 
- @Copyright (c) 2000-2007 The Regents of the University of California.
+ @Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  in the new instance with the currently playing clip.
  @author  Edward A. Lee
  @version  $Id$
- @since Ptolemy II 6.2
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  @see ptolemy.media.javasound.LiveSound

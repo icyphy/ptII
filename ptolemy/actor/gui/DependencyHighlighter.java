@@ -1,7 +1,7 @@
 /* An attribute that produces a custom node controller that highlights
  * downstream actors.
 
- Copyright (c) 1998-2007 The Regents of the University of California.
+ Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -65,7 +65,7 @@ import diva.graph.GraphController;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (johnr)
  */

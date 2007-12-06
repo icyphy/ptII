@@ -1,5 +1,5 @@
 /*
- @Copyright (c) 2005-2006 The Regents of the University of California.
+ @Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @see ptolemy.actor.lib.Subscriber
  * @author Man-Kit Leung
  * @version $Id$
- * @since Ptolemy II 6.0
+ * @since Ptolemy II 6.1
  * @Pt.ProposedRating Green (mankit)
  * @Pt.AcceptedRating Green (cxh)
  *

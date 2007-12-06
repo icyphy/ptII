@@ -1,6 +1,6 @@
 /* An actor that reads in audio samples and plays the audio data.
 
- @Copyright (c) 2000-2007 The Regents of the University of California.
+ @Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -85,7 +85,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  Note: Requires Java 2 v1.3.0 or later.
  @author  Edward A. Lee
  @version  $Id$
- @since Ptolemy II 6.2
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  @see ptolemy.media.javasound.LiveSound

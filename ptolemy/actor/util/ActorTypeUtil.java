@@ -47,6 +47,7 @@ simplify the generation of type constraints.
 
  @author Stephen neuendorffer
  @version $Id$
+@since Ptolemy II 6.1
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (neuendor)
  */

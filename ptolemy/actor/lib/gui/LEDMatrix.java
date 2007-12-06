@@ -1,6 +1,6 @@
 /* An actor to display 10x10 LEDs
 
- Copyright (c) 2006-2007 The Regents of the University of California
+ Copyright (c) 2007 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -53,7 +53,7 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 
  @author Christopher Brooks, Based on MicaLeds byElaine Cheong
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 6.1
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */

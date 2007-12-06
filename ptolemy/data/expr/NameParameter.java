@@ -43,6 +43,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Elaine Cheong
  @version $Id$
+@since Ptolemy II 6.1
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */
