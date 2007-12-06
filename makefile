@@ -239,6 +239,7 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/copernicus/kernel/fragment \
 		ptolemy/copernicus/kernel/test/substitute.out \
 		ptolemy/copernicus/*/cg \
+		ptolemy/data/properties \
 		ptolemy/domains/cont \
 		ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock \
 		ptolemy/domains/ct/lib/IPCInterface.class \
