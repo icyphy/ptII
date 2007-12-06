@@ -179,6 +179,7 @@ OTHER_FILES_TO_BE_JARED = \
 	MovingAverage.c \
 	MultiplyDivide.c \
 	Publisher.c \
+	PublisherTest.c \
 	Pulse.c \
 	Quantizer.c \
 	Ramp.c \
