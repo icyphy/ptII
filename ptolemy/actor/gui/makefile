@@ -173,25 +173,20 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'Configurer$$2$$1.class' \
-	'JVMTableau$$JVMFrame$$1.class' \
-	'PortConfigurerDialog$$ValidatingComboBoxCellEditor$$1.class' \
-	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor$$1.class' \
-	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor$$2.class' \
-	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor$3.class' \
-	'UserActorLibrary$$1.class' \
 	'BrowserEffigy$$Factory.class' \
-	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor$$3.class' \
 	'BrowserTableau$$Factory.class' \
 	'CompositeActorApplication$$1.class' \
 	'CompositeActorApplication$$StateReporter.class' \
 	'Configuration$$1.class' \
 	'Configuration$$2.class' \
 	'Configurer$$1.class' \
+	'Configurer$$2$$1.class' \
 	'Configurer$$2.class' \
 	'Configurer$$3.class' \
 	'DebugListenerTableau$$1.class' \
 	'DebugListenerTableau$$DebugListenerFrame.class' \
+	'DependencyHighlighter$$DependencyController.class' \
+	'DependencyHighlighter$$HighlightDependents.class' \
 	'EditParametersDialog$$1.class' \
 	'EditParametersDialog$$2.class' \
 	'EditParametersDialog$$3.class' \
@@ -204,6 +199,7 @@ OPTIONAL_FILES = \
 	'HTMLViewerTableau$$Factory.class' \
 	'JVMTableau$$1.class' \
 	'JVMTableau$$Factory.class' \
+	'JVMTableau$$JVMFrame$$1.class' \
 	'JVMTableau$$JVMFrame.class' \
 	'MatrixPane$$1.class' \
 	'MatrixPane$$EmptyTableModel.class' \
@@ -217,8 +213,9 @@ OPTIONAL_FILES = \
 	'ModelPane$$4.class' \
 	'ModelPane$$ClickListener.class' \
 	'ModelPane$$CommandListener.class' \
-	'MoMLApplication$$ConfigurationFilenameFilter.class' \
 	'MoMLApplication$$1.class' \
+	'MoMLApplication$$ConfigurationFilenameFilter.class' \
+	'MoMLApplication$$IgnoreErrorHandler.class' \
 	'OpenInstanceDialog$$1.class' \
 	'OpenInstanceDialog$$ColumnNames.class' \
 	'OpenInstanceDialog$$ParametersTableModel.class' \
@@ -228,28 +225,32 @@ OPTIONAL_FILES = \
 	'PlotTableauFrame$$EPSFileFilter.class' \
 	'PlotTableauFrame$$FormatAction.class' \
 	'PlotTableauFrame$$SpecialMenuListener.class' \
-	'PortConfigurerDialog$$7.class' \
-	'PortConfigurerDialog$$ColumnNames.class' \
-	'PtolemyQuery$$5.class' \
+	'PortConfigurerDialog$$10.class' \
+	'PortConfigurerDialog$$11.class' \
+	'PortConfigurerDialog$$12.class' \
+	'PortConfigurerDialog$$13.class' \
 	'PortConfigurerDialog$$1.class' \
 	'PortConfigurerDialog$$2.class' \
 	'PortConfigurerDialog$$3.class' \
 	'PortConfigurerDialog$$4.class' \
 	'PortConfigurerDialog$$5.class' \
 	'PortConfigurerDialog$$6.class' \
+	'PortConfigurerDialog$$7.class' \
 	'PortConfigurerDialog$$8.class' \
 	'PortConfigurerDialog$$9.class' \
-	'PortConfigurerDialog$$10.class' \
-	'PortConfigurerDialog$$11.class' \
-	'PortConfigurerDialog$$12.class' \
-	'PortConfigurerDialog$$13.class' \
-	'PortConfigurerDialog$$ValidatingComboBoxCellEditor.class' \
-	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor.class' \
 	'PortConfigurerDialog$$CellValidator.class' \
+	'PortConfigurerDialog$$ColumnNames.class' \
 	'PortConfigurerDialog$$PortBooleanCellRenderer.class' \
 	'PortConfigurerDialog$$PortTableModel.class' \
 	'PortConfigurerDialog$$StringCellEditor.class' \
 	'PortConfigurerDialog$$StringCellRenderer.class' \
+	'PortConfigurerDialog$$ValidatingComboBoxCellEditor$$1.class' \
+	'PortConfigurerDialog$$ValidatingComboBoxCellEditor.class' \
+	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor$$1.class' \
+	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor$$2.class' \
+	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor$$3.class' \
+	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor$3.class' \
+	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor.class' \
 	'PtolemyApplet$$1.class' \
 	'PtolemyApplet$$ExportButtonListener.class' \
 	'PtolemyApplet$$GoButtonListener.class' \
@@ -265,6 +266,7 @@ OPTIONAL_FILES = \
 	'PtolemyQuery$$2.class' \
 	'PtolemyQuery$$3.class' \
 	'PtolemyQuery$$4.class' \
+	'PtolemyQuery$$5.class' \
 	'PtolemyTop$$ViewMenuListener.class' \
 	'RunTableau$$Factory.class' \
 	'RunTableau$$RunFrame.class' \
@@ -278,6 +280,7 @@ OPTIONAL_FILES = \
 	'TextEffigy$$Factory.class' \
 	'TokenEffigy$$Factory.class' \
 	'TokenTableau$$Factory.class' \
+	'UserActorLibrary$$1.class' \
 	'WelcomeWindow$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
