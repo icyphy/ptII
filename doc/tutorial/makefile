@@ -61,6 +61,11 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 JSRCS = \
+	AmorphousDirector.java \
+	LeftRightDirector.java \
+	NondogmaticPNDirector.java \
+	TableDisplay.java \
+	TableDisplayWithConfigure.java \
 	TutorialApplet1.java \
 	TutorialApplet2.java \
 	TutorialApplet3.java
@@ -68,16 +73,29 @@ JSRCS = \
 # Note that the TutorialApplet*.java files get copied to
 # TutorialApplet.java and then made
 EXTRA_SRCS =	$(JSRCS) \
+	AmorphousExample.xml \
+	InconsistentModel.xml \
+	LeftRightModel.xml \
+	NondogmaticPNModel.xml \
 	README \
+	TableDisplayModel.xml \
 	TutorialApplet1.htm \
 	TutorialApplet2.htm \
 	TutorialApplet3.htm \
 	TutorialApplet4.htm \
+	domainOverview.htm \
 	index.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) \
+	'AmorphousDirector$$DelegatingReceiver.class' \
+	'LeftRightDirector$$LeftRightScheduler.class' \
+	'LeftRightDirector$$LeftRightScheduler$$LeftRightComparator.class' \
+	'NondogmaticPNDirector$$FlexibleReceiver.class' \
+	'TableDisplay$$1.class' \
+	'TableDisplayWithConfigure$$Factory$$1.class' \
+	'TableDisplayWithConfigure$$Factory.class'
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
