@@ -70,7 +70,7 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'VisualModelReference$$1.class' \
 	'VisualModelReference$$2.class' \
-	'VisualModelReference$$3.class'
+	'VisualModelReference$$3.class' \
 	'VisualModelReference$$LookInside.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
