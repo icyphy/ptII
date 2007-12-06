@@ -225,6 +225,7 @@ CLEAN_SHIPPING_FILES = \
 		jni/launcher/launcher \
 		lib/cachedir \
 		ptolemy/apps ptolemy/actor/lib/ptp \
+		ptolemy/actor/gui/run \
 		ptolemy/actor/lib/gui/KeystrokeSensor* \
 		ptolemy/actor/lib/python/demo/HelloWorld \
 		ptolemy/actor/lib/python/demo/NotifyFailedTest \
