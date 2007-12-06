@@ -56,6 +56,7 @@ PTCLASSALLJARS = \
 JSRCS = \
 	CCodeGenerator.java \
 	CCodeGeneratorHelper.java \
+	CCodegenUtilities.java \
 	CParseTreeCodeGenerator.java
 
 
