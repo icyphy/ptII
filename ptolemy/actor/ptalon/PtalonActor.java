@@ -57,7 +57,9 @@ import com.microstar.xml.XmlParser;
 ////PtalonActor
 
 /**
- A TypedCompositeActor is an aggregation of typed actors.  A PtalonActor
+ An aggregation of typed actors, specified by a Ptalon model.
+
+ <p>A TypedCompositeActor is an aggregation of typed actors.  A PtalonActor
  is a TypedCompositeActor whose aggregation is specified by a Ptalon
  model in an external file.  This file is specified in a FileParameter,
  and it is loaded during initialization.
