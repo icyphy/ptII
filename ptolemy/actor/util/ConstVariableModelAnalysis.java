@@ -167,7 +167,7 @@ public class ConstVariableModelAnalysis {
      */
     public static ConstVariableModelAnalysis getAnalysis(NamedObj object)
             throws IllegalActionException {
-        if(object.toplevel() instanceof CompositeActor) {
+        if (object.toplevel() instanceof CompositeActor) {
             CompositeActor toplevel = (CompositeActor) object.toplevel();
             Manager manager = toplevel.getManager();
   
@@ -444,7 +444,7 @@ public class ConstVariableModelAnalysis {
     // return true if a change occurred
     private final boolean _updateChangeContext(Variable variable,
             Entity changeContext) {
-        if(_variableToChangeContext.keySet().contains(variable)) {
+        if (_variableToChangeContext.keySet().contains(variable)) {
             Entity oldChangeContext = 
                 (Entity) _variableToChangeContext.get(variable);
             
@@ -472,7 +472,7 @@ public class ConstVariableModelAnalysis {
     // exception.  If either entity is null (corresponding to a change context
     // which doesn't exist, then return null.
     private final Entity _computeBound(Entity entity1, Entity entity2) {
-        if((entity1 == null) || (entity2 == null)) {
+        if ((entity1 == null) || (entity2 == null)) {
             return null;
         }
         if (entity2.equals(entity1)) {

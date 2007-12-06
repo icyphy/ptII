@@ -109,7 +109,7 @@ public class ActorTypeUtil {
         public Object getValue() throws IllegalActionException {
             ConstVariableModelAnalysis analysis = 
                 ConstVariableModelAnalysis.getAnalysis(_lengthVariable);
-            if(analysis.isConstant(_lengthVariable)) {
+            if (analysis.isConstant(_lengthVariable)) {
                 Token lengthToken = analysis.getConstantValue(_lengthVariable);
                 int length = ((IntToken) lengthToken).intValue();
                 return _getArrayTypeRaw(length);

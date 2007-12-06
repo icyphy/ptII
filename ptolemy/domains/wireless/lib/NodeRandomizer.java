@@ -209,7 +209,7 @@ public class NodeRandomizer extends TypedAtomicActor {
                 // If the precision is 0, use maximum precision
                 // allowed by double.
                 _mathContext = null;
-            } else if (intValue > 0){
+            } else if (intValue > 0) {
                 // If the precision is > 0, create a MathContext with
                 // the specified precision (to be used with a
                 // BigDecimal for rounding purposes).

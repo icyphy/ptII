@@ -169,7 +169,7 @@ public class XMLInclusion extends Transformer{
         outputString =outputString.replace("$inputn", all);
         String ADDheader = headerParameter.stringValue() + "\n"; 
         ADDheader = ADDheader.concat(outputString);
-        try{
+        try {
             XMLToken out = new XMLToken(ADDheader);
             output.broadcast(out);
         }
@@ -185,7 +185,7 @@ public class XMLInclusion extends Transformer{
     //Removes XML header and DTD if there is one
     private String removeHeader (Token T) {
         String str="";
-        if (T instanceof StringToken){
+        if (T instanceof StringToken) {
             str = ((StringToken)T).stringValue();
         } else if (T instanceof XMLToken) {
             str = T.toString();
@@ -217,7 +217,7 @@ public class XMLInclusion extends Transformer{
     private String loopThroughHeaders (String s) {
         boolean inQuote = false;
         int pos = 0;
-        while (pos < s.length() && (inQuote || s.charAt(pos) != '>')){
+        while (pos < s.length() && (inQuote || s.charAt(pos) != '>')) {
             if (s.charAt(pos) == '\"') {
                 inQuote = !inQuote;
             }
@@ -226,7 +226,7 @@ public class XMLInclusion extends Transformer{
         if (pos < s.length()) {
             s = s.substring(pos + 1);
         }
-        if(s.charAt(0)=='\n')  {
+        if (s.charAt(0)=='\n')  {
             s=s.substring(1); 
         }   
         return s;

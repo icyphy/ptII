@@ -380,14 +380,14 @@ public class Autocorrelation extends SDFTransformer {
         public Object getValue() throws IllegalActionException {
             ConstVariableModelAnalysis analysis = 
                 ConstVariableModelAnalysis.getAnalysis(symmetricOutput);
-            if(analysis.isConstant(symmetricOutput) && 
+            if (analysis.isConstant(symmetricOutput) && 
                analysis.isConstant(numberOfLags)) {
                 Token symmetricOutputToken = 
                   analysis.getConstantValue(symmetricOutput);
                 Token numberOfLagsToken =
                   analysis.getConstantValue(numberOfLags);
                 int lags = ((IntToken) numberOfLagsToken).intValue();
-                if(((BooleanToken)symmetricOutputToken).booleanValue()) {
+                if (((BooleanToken)symmetricOutputToken).booleanValue()) {
                     return _getArrayTypeRaw(2 * lags + 1);
                 } else {
                     return _getArrayTypeRaw(2 * lags);

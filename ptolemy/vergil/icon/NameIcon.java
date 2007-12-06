@@ -191,7 +191,7 @@ public class NameIcon extends EditorIcon {
         width = Math.floor(stringBounds.getWidth()) + 20;
         height = Math.floor(stringBounds.getHeight()) + 10;
 
-        if(_spacingValue == 0.0) {
+        if (_spacingValue == 0.0) {
             if (_roundingValue == 0.0) {
                 return new BasicRectangle(0, 0, width, height, _getFill(),
                         _getLineWidth());

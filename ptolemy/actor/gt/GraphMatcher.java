@@ -342,7 +342,7 @@ public class GraphMatcher extends GraphAnalyzer {
         Iterator<Map.Entry<Object, Object>> iterator =
             _match.entrySet().iterator();
         Map.Entry<Object, Object> anyEntry = null;
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             anyEntry = iterator.next();
             if (anyEntry.getKey() instanceof NamedObj) {
                 break;
