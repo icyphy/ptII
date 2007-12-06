@@ -1473,7 +1473,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         while (nameTokens.hasMoreElements()) {
             String name = (String) nameTokens.nextElement();
             name = name.trim();
-            State finalState = (State) getEntity(name);
+            //State finalState = (State) getEntity(name);
             // State has not been created. Record that it is
             // final state to mark it when it is created.
             if (_finalStateNames == null) {

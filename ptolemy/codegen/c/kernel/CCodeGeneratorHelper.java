@@ -363,7 +363,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
         // We will assume that it is a call to a polymorphic
         // functions.
-        String[] call = macro.split("_");
+        //String[] call = macro.split("_");
         getCodeGenerator().markFunctionCalled(macro, this);
         result = macro + "(" + parameter + ")";
 
