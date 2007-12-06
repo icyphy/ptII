@@ -99,6 +99,8 @@ OPTIONAL_FILES = \
 	'MoMLParser$$DeleteRequest.class' \
 	'MoMLParser$$LinkRequest.class' \
 	'MoMLParser$$UnlinkRequest.class'
+	'SharedParameter$$1.class' \
+	'SharedParameter$$SharedParameterRegistry.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
