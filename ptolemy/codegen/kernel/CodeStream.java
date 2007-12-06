@@ -745,14 +745,6 @@ public class CodeStream {
         return ((BooleanToken) sourceLineBinding).booleanValue();
     }
 
-    private List _parseTemplateParameters(StringBuffer code) {
-        String codeString = code.toString().trim();
-        if (codeString.startsWith("template")) {
-
-        }
-        return null;
-    }
-
     /**
      * Get the file path for the helper .[target] file associated with
      * the given helper class.  If the helper has no code generator,
@@ -935,13 +927,6 @@ public class CodeStream {
 
         _parseIndex = _HEADEREND.length() + endIndex;
         return signature;
-    }
-
-    private static List _parseParameterList(StringBuffer codeInFile,
-            String startSymbol, String endSymbol) {
-
-        return _parseParameterList(codeInFile, 0, codeInFile.length(),
-                startSymbol, endSymbol);
     }
 
     private boolean _doParsing = true;
