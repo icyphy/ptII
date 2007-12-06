@@ -77,10 +77,15 @@ OPTIONAL_FILES = \
 	doc \
 	'ArrayType$$1.class' \
 	'ArrayType$$2.class' \
+	'ArrayType$$ArrayBottomTypeTerm.class' \
+	'ArrayType$$TypeableSizedArrayTypeTerm.class' \
 	'ArrayType$$TypeableArrayTypeTerm.class' \
 	'ArrayType$$TypeableElementTypeTerm.class' \
 	'ArrayType$$ElementTypeTerm.class' \
+	'BaseType$$ArrayBottomType.class' \
+	'BaseType$$FloatType.class' \
 	'BaseType$$NilType.class' \
+	'BaseType$$ShortType.class' \
 	'BaseType$$UnsizedFixType.class' \
 	'MatrixType$$BooleanMatrixType.class' \
 	'MatrixType$$ComplexMatrixType.class' \
