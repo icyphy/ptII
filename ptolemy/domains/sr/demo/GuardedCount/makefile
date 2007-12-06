@@ -51,6 +51,7 @@ OTHER_FILES_TO_BE_JARED = \
 	GuardedCount.htm \
 	GuardedCount.xml \
 	GuardedCountTimed.xml \
+	GuardedCountTimed.htm \
 	GuardedCountVergil.htm
 
 EXTRA_SRCS = \
