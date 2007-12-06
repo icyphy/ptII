@@ -98,6 +98,7 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	BooleanSwitch_RegressionTest_WrongTrainingValues.xml \
 	Exit.xml \
 	FileWriter.xml \
 	PublisherSubscriber2class.xml \
