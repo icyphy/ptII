@@ -57,9 +57,9 @@ JSIMPLE_TESTS = \
     MatchHierarchy2Actors.tcl \
     MatchHierarchy2Actors2Composites.tcl \
     Match4Actors.tcl \
-    XMLTest5.tcl \
-    XMLTest6.tcl \
-    XMLTest7.tcl
+    Match4ActorsSubclasses.tcl \
+    Match2LevelHierarchyFlattening.tcl \
+    Match3ActorsRelationCollapsing.tcl
 
 # Graphical Java tests.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -90,32 +90,32 @@ EXTRA_SRCS = \
     Match4Actors_1match1.xml \
     Match4Actors_2matches2.xml \
     Match4Actors_3matches3.xml \
-    host4_4.xml \
-    host4_5.xml \
-    host4_6.xml \
-    host5_1.xml \
-    host5_2.xml \
-    host5_3.xml \
-    host6_1.xml \
-    host6_2.xml \
-    host7_1.xml \
-    host7_2.xml \
+    Match4Actors_4matches4.xml \
+    Match4Actors_6matches5.xml \
+    Match4Actors_8matches6.xml \
+    Match4ActorsSubclasses_succ1.xml \
+    Match4ActorsSubclasses_fail2.xml \
+    Match4ActorsSubclasses_succ3.xml \
+    Match2LevelHierarchyFlattening_succ1.xml \
+    Match2LevelHierarchyFlattening_succ2.xml \
+    Match3ActorsRelationCollapsing_succ1.xml \
+    Match3ActorsRelationCollapsing_fail2.xml \
     GeneratedModel1.tcl \
     GeneratedModel2.tcl \
     Match3Actors_rule.xml \
     MatchHierarchy2Actors_rule.xml \
     MatchHierarchy2Actors2Composites_rule.xml \
     Match4Actors_rule.xml \
-    rule5.xml \
-    rule6.xml \
-    rule7.xml \
+    Match4ActorsSubclasses_rule.xml \
+    Match2LevelHierarchyFlattening_rule.xml \
+    Match3ActorsRelationCollapsing_rule.xml \
     Match3Actors.tcl \
     MatchHierarchy2Actors.tcl \
     MatchHierarchy2Actors2Composites.tcl \
     Match4Actors.tcl \
-    XMLTest5.tcl \
-    XMLTest6.tcl \
-    XMLTest7.tcl \
+    Match4ActorsSubclasses.tcl \
+    Match2LevelHierarchyFlattening.tcl \
+    Match3ActorsRelationCollapsing.tcl \
     $(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="host4" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Match4Actors_6matches5" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={393, 375, 823, 515}, maximized=false}">
@@ -17,7 +17,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 90.0}">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -73,26 +73,23 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[325.0, 165.0]">
-        </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
     <link port="Display.input" relation="relation"/>
-    <link port="Display.input" relation="relation7"/>
     <link port="Const.output" relation="relation2"/>
     <link port="Const.output2" relation="relation3"/>
     <link port="Const.output3" relation="relation4"/>
     <link port="AbsoluteValue.input" relation="relation2"/>
     <link port="AbsoluteValue.output" relation="relation"/>
     <link port="AbsoluteValue2.input" relation="relation3"/>
-    <link port="AbsoluteValue2.output" relation="relation7"/>
-    <link port="Display3.input" relation="relation7"/>
+    <link port="AbsoluteValue2.output" relation="relation6"/>
+    <link port="Display3.input" relation="relation6"/>
     <link port="Display3.input" relation="relation5"/>
     <link port="AbsoluteValue3.input" relation="relation4"/>
     <link port="AbsoluteValue3.output" relation="relation5"/>
