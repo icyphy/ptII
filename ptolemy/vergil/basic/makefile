@@ -89,12 +89,16 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'BasicGraphFrame$$DocumentationMenuItemFactory$$1.class' \
+	'BasicGraphFrame$$DocumentationMenuItemFactory.class' \
 	'BasicGraphFrame$$MoveToBackAction$$1.class' \
 	'BasicGraphFrame$$MoveToFrontAction$$1.class' \
 	'BasicGraphFrame$$OpenLibraryMenuItemFactory$$1.class' \
-	'CustomizeDocumentationAction$$2.class IconController$$IconRenderer$1.class' \
+	'CustomizeDocumentationAction$$2.class' \
 	'WithIconGraphController$$NewPortAction$$1.class' \
 	'AbstractBasicGraphModel$$GraphChangeListener.class' \
+	'RunnableGraphController$$1.class' \
+	'RunnableGraphController$$2.class' \
 	'BasicGraphController$$1.class' \
 	'BasicGraphController$$NewPortAction.class' \
 	'BasicGraphController$$SchematicContextMenuFactory.class' \
