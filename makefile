@@ -263,7 +263,6 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/matlab/ptmatlab.obj \
 		ptolemy/moml/filter/test/testModels.txt \
 		ptolemy/moml/filter/test/testNamedObjs.txt \
-		ptolemy/ptalon \
 		ptolemy/ptp
 
 clean_shipping:
