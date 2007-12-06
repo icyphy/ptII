@@ -80,6 +80,8 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'CaseGraphFrame$$AddCaseAction$$1.class' \
 	'CaseGraphFrame$$RemoveCaseAction$$1.class' \
+	'CaseGraphFrame$$CaseGraphController.class' \
+	'FSMGraphFrame$$LayoutAction.class' \
 	'FSMGraphModel$$ArcModel$$1.class' \
 	'FSMGraphModel$$ArcModel$$2.class' \
 	'FSMGraphModel$$ArcModel$$3.class' \
