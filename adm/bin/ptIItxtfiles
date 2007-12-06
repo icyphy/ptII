@@ -3,6 +3,7 @@
 # Return all the text source files (with exceptions) in the ptII tree
 
 $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
+	| egrep -v '\.aif' \
 	| egrep -v '\.bin' |egrep -v '\.bmp' \
 	| egrep -v '\.class' |egrep -v '\.dat' |egrep -v '\.data' \
 	| egrep -v '\.dll' |egrep -v '\.doc' \
