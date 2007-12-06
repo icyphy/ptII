@@ -117,7 +117,7 @@ public class LocalClassLoader extends URLClassLoader {
      */
     public void addClassPath(String path) {
         try {
-            super.addURL(new File(path).toURL());
+            super.addURL(new File(path).toURI().toURL());
         } catch (MalformedURLException e) {
             throw new UnknownASTException();
         }
