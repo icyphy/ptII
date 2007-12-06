@@ -51,9 +51,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	CruiseControl.xml \
-	LinearStateSpace.ptln
-
-#	CruiseControl.htm
+	LinearStateSpace.ptln \
+	CruiseControl.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -76,10 +75,10 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_ptolemy demo_vergil
+demo: demo_applet demo_ptolemy demo_vergil
 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer CruiseControl.htm
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer CruiseControl.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" CruiseControl.xml
