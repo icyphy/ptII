@@ -102,7 +102,11 @@ public class NameIcon extends EditorIcon {
         rounding = new Parameter(this, "rounding");
         rounding.setTypeEquals(BaseType.DOUBLE);
         rounding.setExpression("0.0");
-    }
+
+        spacing = new Parameter(this, "spacing");
+        spacing.setTypeEquals(BaseType.DOUBLE);
+        spacing.setExpression("0.0");
+}
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
@@ -111,6 +115,13 @@ public class NameIcon extends EditorIcon {
      *  This is a double that defaults to 0.0, which indicates no rounding.
      */
     public Parameter rounding;
+
+    /** If greater than zero, then use a double box where the outside
+     *  one is the specified size larger than the inside one.
+     *  This is a double that defaults to 0.0, which indicates a single
+     *  box.
+     */
+    public Parameter spacing;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -135,6 +146,19 @@ public class NameIcon extends EditorIcon {
 
             if (roundingValue != _roundingValue) {
                 _roundingValue = roundingValue;
+            }
+        } else if (attribute == spacing) {
+            // Make sure that the new spacing value is valid.
+            double spacingValue = ((DoubleToken) spacing.getToken())
+                    .doubleValue();
+
+            if (spacingValue < 0.0) {
+                throw new IllegalActionException(this,
+                        "Invalid spacing value. Required to be non-negative.");
+            }
+
+            if (spacingValue != _spacingValue) {
+                _spacingValue = spacingValue;
             }
         } else {
             super.attributeChanged(attribute);
@@ -167,12 +191,36 @@ public class NameIcon extends EditorIcon {
         width = Math.floor(stringBounds.getWidth()) + 20;
         height = Math.floor(stringBounds.getHeight()) + 10;
 
-        if (_roundingValue == 0.0) {
-            return new BasicRectangle(0, 0, width, height, _getFill(),
-                    _getLineWidth());
+        if(_spacingValue == 0.0) {
+            if (_roundingValue == 0.0) {
+                return new BasicRectangle(0, 0, width, height, _getFill(),
+                        _getLineWidth());
+            } else {
+                return new RoundedRectangle(0, 0, width, height, _getFill(),
+                        _getLineWidth(), _roundingValue, _roundingValue);
+            }
         } else {
-            return new RoundedRectangle(0, 0, width, height, _getFill(),
-                    _getLineWidth(), _roundingValue, _roundingValue);
+            CompositeFigure result;
+            if (_roundingValue == 0.0) {
+                result = new CompositeFigure(new BasicRectangle(
+                        -_spacingValue, -_spacingValue,
+                        width + 2*_spacingValue, height + 2*_spacingValue,
+                        null,
+                        _getLineWidth()));
+                result.add(new BasicRectangle(0, 0, width, height, _getFill(),
+                        _getLineWidth()));
+            } else {
+                result = new CompositeFigure(new RoundedRectangle(
+                        -_spacingValue, -_spacingValue,
+                        width + 2*_spacingValue, height + 2*_spacingValue,
+                        null,
+                        _getLineWidth(), 
+                        _roundingValue + _spacingValue,
+                        _roundingValue + _spacingValue));
+                result.add(new RoundedRectangle(0, 0, width, height, _getFill(),
+                        _getLineWidth(), _roundingValue, _roundingValue));
+            }
+            return result;
         }
     }
 
@@ -253,4 +301,7 @@ public class NameIcon extends EditorIcon {
 
     /** Most recent value of the rounding parameter. */
     protected double _roundingValue = 0.0;
+
+    /** Most recent value of the spacing parameter. */
+    protected double _spacingValue = 0.0;
 }

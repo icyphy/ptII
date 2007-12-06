@@ -39,13 +39,14 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.icon.NameIcon;
 
 //////////////////////////////////////////////////////////////////////////
-//// NameIcon
+//// StateIcon
 
 /**
  An icon that displays the name of the container in an appropriately
  sized rounded box. This is designed to be contained by an instance
  of State, and if it is, and if the state is the initial state, then
- the rounded box will be bold.
+ the rounded box will be bold. If it is a final state, then it will
+ be double.
 
  @author Edward A. Lee
  @version $Id$
