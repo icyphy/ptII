@@ -50,10 +50,11 @@ package ptolemy.actor;
  @see IOPort
  */
 public interface TokenGotListener {
-    /** Report an that a token was received with get().  This method will be called
-     *  when a token has been taken from the port's queue at an input IOPort.
+
+    /** Report an that a token was received with get().  This method
+     *  will be called when a token has been taken from the port's
+     *  queue at an input IOPort.
      *  @param event The event to report.
      */
     public void tokenGotEvent(TokenGotEvent event);
-
 }

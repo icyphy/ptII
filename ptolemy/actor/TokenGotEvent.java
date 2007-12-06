@@ -54,7 +54,8 @@ public class TokenGotEvent {
      *  @param channel Channel the token was received on.
      *  @param tokens The token array used for the get.
      *  @param vectorLength The number of tokens taken.
-     *  @param outside True if the token was taken on outside channel, false otherwise.
+     *  @param outside True if the token was taken on outside channel,
+     *  false otherwise.
      */
     public TokenGotEvent(IOPort sink, int channel, Token[] tokens,
             int vectorLength, boolean outside) {
@@ -71,9 +72,12 @@ public class TokenGotEvent {
      *  @param sink The IOPort the token is stored at.
      *  @param channel Channel the token was received on.
      *  @param token The token that was received.
-     *  @param outside True if the token was taken on outside channel, false otherwise.
+     *  @param outside True if the token was taken on outside channel,
+     *  false otherwise.
      */
-    public TokenGotEvent(IOPort sink, int channel, Token token, boolean outside) {
+
+    public TokenGotEvent(IOPort sink, int channel, Token token,
+			 boolean outside) {
         _port = sink;
         _channel = channel;
         _tokenArray = null;
@@ -108,9 +112,9 @@ public class TokenGotEvent {
         return _token;
     }
 
-    /** Return the array of tokens that was received by the IOPort. The variable
-     *  _tokenArray will be null if an individual token was got instead
-     *  of an array.
+    /** Return the array of tokens that was received by the
+     *  IOPort. The variable _tokenArray will be null if an individual
+     *  token was got instead of an array.
      *  @return The array of tokens which were taken.
      */
     public Token[] getTokenArray() {
@@ -127,8 +131,9 @@ public class TokenGotEvent {
         return _vectorLength;
     }
 
-    /** Return the direction flag (outside or inside).
-     *  The flag is true, if the token was taken from outside, false if from inside
+    /** Return the direction flag (outside or inside).  The flag is
+     *  true, if the token was taken from outside, false if from
+     *  inside
      *  @return The direction flag.
      */
     public boolean getOutsideFlag() {
@@ -170,7 +175,7 @@ public class TokenGotEvent {
     //The number of tokens from the array that were sent by the IOPort.
     private int _vectorLength;
 
-    // Boolean flag if the token was taken on outside link (true) or inside (false)
+    // Boolean flag if the token was taken on outside link (true) or
+    // inside (false)
     private boolean _outside;
-
 }
