@@ -46,14 +46,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-# Bouncer.htm uses vergil because a non-vergil version of this demo
-# is not very interesting.
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	NonlinearStateSpace.ptln \
-	Unicycle.xml
-
-#	Unicycle.htm
+	Unicycle.xml \
+	Unicycle.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
@@ -76,10 +73,10 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_ptolemy demo_vergil
+demo: demo_applet demo_ptolemy demo_vergil
 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer Unicycle.htm
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer Unicycle.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Unicycle.xml
