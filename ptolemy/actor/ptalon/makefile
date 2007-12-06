@@ -33,7 +33,7 @@
 
 ME =		ptolemy/actor/lib/ptalon
 
-DIRS =		lib demo test
+DIRS =		doc lib demo test
 
 # Root of the Java directory
 ROOT =		../../..
@@ -43,6 +43,10 @@ CLASSPATH =	$(ROOT)${CLASSPATHSEPARATOR}${ROOT}/ptolemy/actor/ptalon/antlr/antlr
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
+
+# Used to build jar files
+PTPACKAGE = 	ptalon
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
@@ -91,7 +95,7 @@ OPTIONAL_JSRCS = \
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	lib test
+MISC_FILES =	doc lib test
 
 OPTIONAL_FILES =  \
 	doc \
