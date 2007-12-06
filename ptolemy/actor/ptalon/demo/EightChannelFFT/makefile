@@ -46,8 +46,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-# Bouncer.htm uses vergil because a non-vergil version of this demo
-# is not very interesting.
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	EightChannelFFT.xml \
