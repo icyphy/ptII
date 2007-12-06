@@ -37,6 +37,7 @@ import javax.swing.KeyStroke;
 
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
@@ -248,7 +249,8 @@ public class TransitionController extends BasicEdgeController {
         /** Render a visual representation of the given edge. */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             ArcConnector c = new ArcConnector(tailSite, headSite);
-            c.setHeadEnd(new Arrowhead());
+            Arrowhead arrowhead = new Arrowhead();
+            c.setHeadEnd(arrowhead);
             c.setLineWidth((float) 2.0);
             c.setUserObject(edge);
 
@@ -258,8 +260,17 @@ public class TransitionController extends BasicEdgeController {
             // When first dragging out a transition, the relation
             // may still be null.
             if (transition != null) {
+                // Use a larger, unfilled arrowhead for a reset transition.
+                try {
+                    if (((BooleanToken)transition.reset.getToken()).booleanValue()) {
+                        arrowhead.setFilled(false);
+                    }
+                } catch (IllegalActionException e) {
+                    // Ignore erroneous parameter value.
+                }
                 if (transition.isPreemptive()) {
                     Blob blob = new Blob(0, 0, 0, Blob.BLOB_CIRCLE, 4.0, Color.red);
+                    blob.setFilled(true);
                     c.setTailEnd(blob);
                 }
                 if (transition.isNondeterministic()) {
