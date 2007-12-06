@@ -46,8 +46,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-# Bouncer.htm uses vergil because a non-vergil version of this demo
-# is not very interesting.
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	MapReduce.xml \
@@ -58,9 +56,8 @@ OTHER_FILES_TO_BE_JARED = \
 	Reduce.ptln \
 	Split.ptln \
 	WaitingStop.ptln \
-	ReadTest.map
-
-#	MapReduce.htm
+	ReadTest.map \
+	MapReduce.htm
 
 EXTRA_SRCS = \
 	LinkGraph.map \
@@ -85,10 +82,10 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_ptolemy demo_vergil
+demo: demo_applet demo_ptolemy demo_vergil
 
-#demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer MapReduce.htm
+demo_applet:
+	CLASSPATH="$(CLASSPATH)" appletviewer MapReduce.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" MapReduce.xml
