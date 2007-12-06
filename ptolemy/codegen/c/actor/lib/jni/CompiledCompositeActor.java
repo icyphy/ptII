@@ -31,9 +31,9 @@ import java.io.IOException;
 import java.util.List;
 
 import ptolemy.codegen.c.actor.TypedCompositeActor;
+import ptolemy.codegen.c.kernel.CCodeGenerator;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.StaticSchedulingCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -161,7 +161,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
             if (codeGenerators.size() == 0) {
                 // Add a codeGenerator
-                codeGenerator = new StaticSchedulingCodeGenerator(actor,
+                codeGenerator = new CCodeGenerator(actor,
                         "CodeGenerator_AutoAdded");
             } else {
                 // Get the last CodeGenerator in the list, maybe

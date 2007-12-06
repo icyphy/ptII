@@ -48,6 +48,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.codegen.c.kernel.CCodeGenerator;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
@@ -709,7 +710,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
                     if (codeGenerators.size() == 0) {
                         // Add a codeGenerator
-                        codeGenerator = new StaticSchedulingCodeGenerator(
+                        // FIXME: This introduces a dependency to codegen.c
+                        // We should fix this by having a way to choose languages.
+                        codeGenerator = new CCodeGenerator(
                                 toplevel, "CodeGenerator_AutoAdded");
                     } else {
                         // Get the last CodeGenerator in the list, maybe
