@@ -135,6 +135,10 @@ public class State extends ComponentEntity {
                 isInitialState.setExpression("false");
             }
         }
+
+        isFinalState = new Parameter(this, "isFinalState");
+        isFinalState.setTypeEquals(BaseType.BOOLEAN);
+        isFinalState.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -143,6 +147,14 @@ public class State extends ComponentEntity {
     /** The port linking incoming transitions.
      */
     public ComponentPort incomingPort = null;
+
+    /** An indicator of whether this state is a final state.
+     *  This is a boolean that defaults to false. Setting it to true
+     *  will cause the containing FSMActor to return false from its
+     *  postfire() method, which indicates to the director that the
+     *  FSMActor should not be fired again.
+     */
+    public Parameter isFinalState;
 
     /** An indicator of whether this state is the initial state.
      *  This is a boolean that defaults to false, unless this state

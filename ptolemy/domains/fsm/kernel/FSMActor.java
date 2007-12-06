@@ -96,8 +96,8 @@ import ptolemy.kernel.util.Workspace;
 
  <p> An FSMActor enters its initial state during initialization. The
  initial state is the unique state whose <i>isInitialState</i> parameter
- is true. A comma-separated list of final state names can be given by
- the <i>finalStateNames</i> parameter. When the actor reaches a final state, then the
+ is true. A final state is a state that has its <i>isFinalState</i> parameter
+ set to true. When the actor reaches a final state, then the
  postfire method will return false, indicating that the actor does not
  wish to be fired again.
 
@@ -188,11 +188,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     ////                         public variables                  ////
 
     /** Attribute specifying the names of the final states of this
-     *  actor. The names are separated by commas. Space characters
-     *  at the beginning, the end, and around commas are ignored.
-     *  Space characters within a name are preserved.
-     *  For example, the value " final, my state 5" designates
-     *  states "final" and "my state 5" as final.
+     *  actor. This attribute is kept for backward compatibility only,
+     *  and is set to expert visibility. To set the final states,
+     *  set the <i>isFinalState</i> parameter of a States.
      */
     public StringAttribute finalStateNames = null;
 
@@ -1146,9 +1144,13 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         _currentState = _lastChosenTransition.destinationState();
 
-        if ((_finalStateNames != null)
-                && _finalStateNames.contains(_currentState.getName())) {
+        if (((BooleanToken)_currentState.isFinalState.getToken()).booleanValue()) {
             _reachedFinalState = true;
+        } else if (_finalStateNames != null) {
+            // Backward compatibility for the old way of specifying it.
+            if (_finalStateNames.contains(_currentState.getName())) {
+                _reachedFinalState = true;
+            }
         }
 
         if (_debugging) {
@@ -1454,20 +1456,28 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         }
     }
 
-    /** Parse the final state names. This method does not check that the
-     *  names are valid.
+    /** Parse the final state names. This method handles backward
+     *  compatibility, because it used to be that final states were
+     *  specified in a parameter of the FSMActor, as a comma-separated
+     *  list of names. Now, each state has an attribute that indicates
+     *  whether it is a final state. This method parses the list of names,
+     *  sets the attribute of each state, and then sets the list to null.
+     *  If the model is then saved, it will have switched to the modern
+     *  method for recording final states.
      */
     private void _parseFinalStates(String names) {
-        HashSet stateNames = new HashSet();
         StringTokenizer nameTokens = new StringTokenizer(names, ",");
-
         while (nameTokens.hasMoreElements()) {
             String name = (String) nameTokens.nextElement();
             name = name.trim();
-            stateNames.add(name);
+            State finalState = (State) getEntity(name);
+            // State has not been created. Record that it is
+            // final state to mark it when it is created.
+            if (_finalStateNames == null) {
+                _finalStateNames = new HashSet<String>();
+            }
+            _finalStateNames.add(name);
         }
-
-        _finalStateNames = stateNames;
     }
 
     /** Create receivers for each input port.
@@ -1507,9 +1517,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             initialStateName = new StringAttribute(this, "initialStateName");
             initialStateName.setExpression("");
             initialStateName.setVisibility(Settable.EXPERT);
-            // FIXME: final states should be specified the way initial state is now specified.
+
             finalStateNames = new StringAttribute(this, "finalStateNames");
             finalStateNames.setExpression("");
+            finalStateNames.setVisibility(Settable.EXPERT);
         } catch (KernelException ex) {
             // This should never happen.
             throw new InternalErrorException("Constructor error "
@@ -1682,7 +1693,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     private transient long _outputPortsVersion = -1;
 
     private transient LinkedList _cachedOutputPorts;
-
+    
     // Stores for each state a map from input ports to boolean flags
     // indicating whether a channel is connected to an output port
     // of the refinement of the state.
@@ -1695,14 +1706,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // channel is connected to an output port of the refinement of the
     // current state.
     private Map _currentConnectionMap = null;
+    
+    // Map of final state names recording in the obsolete finalStateNames
+    // parameter.
+    private HashSet<String> _finalStateNames = null;
 
     // A map that associates each identifier with the unique port that
     // that identifier describes.  This map is used to detect port
     // names that result in ambiguous identifier bindings.
     private HashMap _identifierToPort;
-
-    // The set of names of final states.
-    private HashSet _finalStateNames;
 
     /** The function dependency, if it is present. */
     private FunctionDependency _functionDependency;
