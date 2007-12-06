@@ -12,6 +12,6 @@ for file in $@
 do
 	sed "s/$oldVersion/$newVersion/g" $file > $tmpfile
 	diff $file $tmpfile
-	#mv $tmpfile $file
+	mv $tmpfile $file
 done
 rm -f $tmpfile
