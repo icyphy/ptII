@@ -149,6 +149,7 @@ ptolemy/filter/*
 ptolemy/filter
 ptolemy/chic
 ptolemy/com
+ptolemy/configs/doc/whatsnew8.0.htm
 ptolemy/configs/test/vergilConfigurationNoMatlab.xml
 ptolemy/configs/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
 ptolemy/configs/visualnc
