@@ -33,10 +33,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.actor.parameters.FilePortParameter;
 
 /**
  * A helper class for ptolemy.actor.lib.io.FileReader.

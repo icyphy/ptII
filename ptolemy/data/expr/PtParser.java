@@ -29,22 +29,29 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.math.Complex;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Collections;
 import java.util.StringTokenizer;
 
-import java.io.*;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.ComplexToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.FloatToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
+import ptolemy.data.PetiteToken;
+import ptolemy.data.ShortToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.UnsignedByteToken;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////
 //// PTParser.jjt

@@ -30,10 +30,10 @@ package ptolemy.actor.lib.string.test;
 import java.util.List;
 
 import ptolemy.actor.Director;
+import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.domains.sdf.kernel.SDFScheduler;
 
 ///////////////////////////////////////////////////////////
 //// SDFTestScheduler

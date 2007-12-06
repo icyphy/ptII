@@ -30,8 +30,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.GTIngredientElement;
+import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.util.PtolemyExpressionString;
 import ptolemy.actor.gt.util.RegularExpressionString;

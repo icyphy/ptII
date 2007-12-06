@@ -90,12 +90,12 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import ptolemy.actor.gt.GTEntity;
-import ptolemy.actor.gt.GTTools;
-import ptolemy.actor.gt.MalformedStringException;
 import ptolemy.actor.gt.GTIngredient;
 import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.GTIngredientsAttribute;
+import ptolemy.actor.gt.GTTools;
+import ptolemy.actor.gt.MalformedStringException;
 import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.ingredients.criteria.BooleanCriterionElement;
 import ptolemy.actor.gt.ingredients.criteria.ChoiceCriterionElement;

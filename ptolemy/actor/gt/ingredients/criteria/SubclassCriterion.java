@@ -27,8 +27,8 @@
 package ptolemy.actor.gt.ingredients.criteria;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.GTIngredientElement;
+import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.ValidationException;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.NamedObj;

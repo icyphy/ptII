@@ -33,8 +33,8 @@ import java.util.regex.PatternSyntaxException;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.GTIngredientElement;
+import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.util.PtolemyExpressionString;
 import ptolemy.actor.gt.util.RegularExpressionString;

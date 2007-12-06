@@ -10,3 +10,4 @@ ptKeystore
 .fbprefs
 autom4te.cache
 .antlr-eclipse
+confdefs.h
