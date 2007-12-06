@@ -31,7 +31,7 @@
 
 ME =		ptolemy/codegen/c/kernel/type
 
-DIRS =
+DIRS =		polymorphic
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -44,8 +44,14 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	type
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+# If you change this, change DIRS above
+PTCLASSALLJARS = \
+	polymorphic/polymorphic.jar
 
 JSRCS =
 
