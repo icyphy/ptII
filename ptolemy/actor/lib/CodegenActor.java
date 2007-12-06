@@ -49,15 +49,16 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 
 public class CodegenActor extends EmbeddedCActor {
-    /** Create an actor with a name and a container.
-     *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This actor will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.
-     *  This actor will have no local director initially, and its executive 
-     *  director will be simply the director of the container.
-     *  You should set a director before attempting to execute it.
+
+    /** Create an actor with a name and a container.  The container
+     *  argument must not be null, or a NullPointerException will be
+     *  thrown.  This actor will use the workspace of the container
+     *  for synchronization and version counts.  If the name argument
+     *  is null, then the name is set to the empty string.  Increment
+     *  the version of the workspace.  This actor will have no local
+     *  director initially, and its executive director will be simply
+     *  the director of the container.  You should set a director
+     *  before attempting to execute it.
      *
      *  @param container The container actor.
      *  @param name The name of this actor.
@@ -80,13 +81,14 @@ public class CodegenActor extends EmbeddedCActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Throws an IllegalActionException to indicate that this actor
+    /** Throw an IllegalActionException to indicate that this actor
      *  is used for code generation only.
      *  @exception IllegalActionException If this object is not a subclass
      *  of ptolemy.actor.lib.jni.EmbeddedCActor.
      */
     public void initialize() throws IllegalActionException {
-        throw new IllegalActionException(this, getName()+" can not run in simulation mode.");
+        throw new IllegalActionException(this, getName() +
+					 " can not run in "
+					 + "simulation mode.");
     }
-
 }
