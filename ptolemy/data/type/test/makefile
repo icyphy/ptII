@@ -76,7 +76,8 @@ MISC_FILES =	alljtests.tcl
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'TestToken$$1.class' \
-	'TestToken$$TestType.class'
+	'TestToken$$TestType.class' \
+	'TestTypeLattice$$1.class'
 
 JCLASS =	$(JSRCS:%.java=%.class)
 

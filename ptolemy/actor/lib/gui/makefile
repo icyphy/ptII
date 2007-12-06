@@ -118,6 +118,7 @@ OPTIONAL_FILES = \
 	'PlotterBase$$PlotWindowTableau.class' \
 	'PlotterBase$$PlotterPlotFrame.class' \
 	'SliderSource$$1.class' \
+	'SliderSource$SliderFrame.class' \
 	'SketchedSource$$1.class'
 
 JCLASS= $(JSRCS:%.java=%.class)

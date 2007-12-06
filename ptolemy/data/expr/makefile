@@ -174,7 +174,8 @@ OPTIONAL_FILES =  \
 	'Variable$$1.class' \
 	'Variable$$TypeTerm.class' \
 	'Variable$$VariableScope.class' \
-	'UtilityFunctions$$TokenComparator.class'
+	'UtilityFunctions$$TokenComparator.class' \
+	'XMLParser$$EntityResolver.class'
 
 JCLASS =  \
 	$(JSRCS:%.java=%.class) \

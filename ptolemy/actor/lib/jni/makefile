@@ -65,7 +65,8 @@ MISC_FILES =
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	'EmbeddedCActor$$DummyActor.class'
+	'EmbeddedCActor$$DummyActor.class' \
+	'EmbeddedCActor$$EmbeddedActor.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
