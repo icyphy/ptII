@@ -176,6 +176,7 @@ ptolemy/copernicus/java/test/runSnapShot.stats
 ptolemy/copernicus/jhdl
 ptolemy/copernicus/shallow/test/codeGenerator.tmp
 ptolemy/copernicus/shallow/ptolemy.giotto
+ptolemy/data/properties
 ptolemy/domains/cont
 ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock
 ptolemy/domains/ct/demo/Agilent
@@ -255,7 +256,6 @@ ptolemy/plot/build.xml
 ptolemy/plot/Render
 ptolemy/plot/RenderApplication.*
 ptolemy/plotml/build.xml
-ptolemy/ptalon
 ptolemy/schematic
 ptolemy/system
 ptolemy/vergil/JModelViewer.java
