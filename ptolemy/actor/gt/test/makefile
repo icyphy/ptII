@@ -108,6 +108,7 @@ EXTRA_SRCS = \
     rule4.xml \
     rule5.xml \
     rule6.xml \
+    rule7.xml \
     XMLTest1.tcl \
     XMLTest2.tcl \
     XMLTest3.tcl \
