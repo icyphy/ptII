@@ -1377,7 +1377,10 @@ if test "${PTVERBOSE:-none}" = "none"; then
 echo "${ECHO_T}For more verbose output, run ./configure --enable-verbose" >&6
 fi
 
+
 # PT_MSG_RESULT
+
+# PT_MSG_STATUS
 
 
 # We must have PTII set before running configure.
@@ -1721,8 +1724,7 @@ if test "${with_java+set}" = set; then
 fi;
 
 if test -d "$PTJAVA_DIR"; then
-	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result:
+	if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result:
     PTJAVA_DIR environment variable was set to
     '$PTJAVA_DIR', and there is a directory
     at that location, so we will try it." >&5
@@ -1732,12 +1734,10 @@ echo "${ECHO_T}
     at that location, so we will try it." >&6; fi
 else
     if test -z "$PTJAVA_DIR"; then
-	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: PTJAVA_DIR environment variable was not set,
+	if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: PTJAVA_DIR environment variable was not set,
     so we search for the java compiler." >&5
 echo "${ECHO_T}PTJAVA_DIR environment variable was not set,
     so we search for the java compiler." >&6; fi
-
     else
 	{ echo "$as_me:$LINENO: WARNING: PTJAVA_DIR environment variable is set to
     '${PTJAVA_DIR}', which is not a directory,
@@ -1910,8 +1910,7 @@ echo "${ECHO_T}no" >&6
 fi
 
     if test "$PTJAVA_DIR/bin/java" = "$JAVA"; then
-	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result:     You have the right java in your path,
+	if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result:     You have the right java in your path,
     \"$PTJAVA_DIR/bin/java\"
       = \"$JAVA\"" >&5
 echo "${ECHO_T}    You have the right java in your path,
@@ -2003,8 +2002,7 @@ echo "$as_me: WARNING: Failed to find the 'javac' command in your path.
 	then you may want to adjust your path" >&2;}
     fi
     if test "$PTJAVA_DIR/bin/javac" = "$JAVAC"; then
-        if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result:     You have the right javac in your path,
+        if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result:     You have the right javac in your path,
     \"$PTJAVA_DIR/bin/javac\"
       = \"$JAVAC\"" >&5
 echo "${ECHO_T}    You have the right javac in your path,
@@ -2320,8 +2318,7 @@ PTBOOST=no
 MESCAL_USER_DIR=$PTII/mescal/views/simulation/model/UINT.H
 
 if test ! -f "$MESCAL_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $MESCAL_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $MESCAL_USER_DIR is not present,
     so we need not find Boost." >&5
 echo "${ECHO_T}$MESCAL_USER_DIR is not present,
     so we need not find Boost." >&6; fi
@@ -3982,8 +3979,7 @@ PTBSH_JAR=
 # We only need to look for if $PTII/ptolemy/actor/gui exists
 BSH_USER_DIR="$PTII/ptolemy/actor/gui"
 if test ! -d "$BSH_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $BSH_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $BSH_USER_DIR is not present,
     so we need not find BSH, the Java Bean Shell." >&5
 echo "${ECHO_T}$BSH_USER_DIR is not present,
     so we need not find BSH, the Java Bean Shell." >&6; fi
@@ -4032,8 +4028,7 @@ PTCM_DIR=
 
 # We only need to look for cm if $PTII/ptolemy/copernicus/c exists
 if test ! -d "$PTII/ptolemy/copernicus/c"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/ptolemy/copernicus/c is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/copernicus/c is not present,
     so we need not find the CaffeineMark Kit." >&5
 echo "${ECHO_T}$PTII/ptolemy/copernicus/c is not present,
     so we need not find the CaffeineMark Kit." >&6; fi
@@ -4058,12 +4053,16 @@ echo "${ECHO_T}$CMKIT_DIR" >&6; fi
         { echo "$as_me:$LINENO: WARNING: Failed to find $CMKIT_DIR/CaffeineMarkEmbeddedApp.class
     perhaps CaffeineMark is not installed?
     You need not download CaffeineMark unless you plan on using C code
-    generation.  The CaffeineMark kit can be downloaded from
+    generation using the older Copernicus C code generator.
+    The newer codegen C code generator does  not require CaffeineMark.
+    The CaffeineMark kit can be downloaded from
     http://www-sor.inria.fr/~java/tools/cmkit/embed.zip" >&5
 echo "$as_me: WARNING: Failed to find $CMKIT_DIR/CaffeineMarkEmbeddedApp.class
     perhaps CaffeineMark is not installed?
     You need not download CaffeineMark unless you plan on using C code
-    generation.  The CaffeineMark kit can be downloaded from
+    generation using the older Copernicus C code generator.
+    The newer codegen C code generator does  not require CaffeineMark.
+    The CaffeineMark kit can be downloaded from
     http://www-sor.inria.fr/~java/tools/cmkit/embed.zip" >&2;}
 	# Note that we don't substitute in the ${PTII} here
 	CMKIT_DIR='${PTII}/vendors/cm'
@@ -4087,8 +4086,7 @@ CALTROP_DIR='${PTII}/lib'
 # We only need to look for on if $PTII/ptolemy/caltrop exists
 CAL_USER_DIR="$PTII/ptolemy/caltrop"
 if test ! -d "$CAL_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $CAL_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $CAL_USER_DIR is not present,
     so we need not find the Cal, the actor language." >&5
 echo "${ECHO_T}$CAL_USER_DIR is not present,
     so we need not find the Cal, the actor language." >&6; fi
@@ -4216,8 +4214,7 @@ CHIC_DIR='${PTII}/lib'
 # We only need to look for if $PTII/ptolemy/chic exists
 CHIC_USER_DIR="$PTII/ptolemy/chic"
 if test ! -d "$CHIC_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $CHIC_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $CHIC_USER_DIR is not present,
     so we need not find Chic, the modular verifier for
     behavioral compatibility checking of software and hardware components." >&5
 echo "${ECHO_T}$CHIC_USER_DIR is not present,
@@ -4288,8 +4285,7 @@ COLT_DIR='${PTII}/vendors/misc/colt'
 # We only need to look for if $PTII/ptolemy/actor/lib/colt exists
 COLT_USER_DIR="$PTII/ptolemy/actor/lib/colt"
 if test ! -d "$COLT_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $COLT_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $COLT_USER_DIR is not present,
     so we need not find Colt, the
     Open Source Libraries for High Performance Scientific and Technical
     Computing in Java." >&5
@@ -4396,8 +4392,7 @@ PTLEGO_DIR=
 #
 PTCOMM_DIR=
 if test ! -d "$COMMAPI_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $COMMAPI_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $COMMAPI_USER_DIR is not present,
     so we need not find commapi." >&5
 echo "${ECHO_T}$COMMAPI_USER_DIR is not present,
     so we need not find commapi." >&6; fi
@@ -4526,8 +4521,7 @@ PTDOCLETS_DIR=
 JDOCTAGLET=
 
 if test ! -d "$DOCLETS_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $DOCLETS_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $DOCLETS_USER_DIR is not present,
     so we need not find tools.jar in the JRE." >&5
 echo "${ECHO_T}$DOCLETS_USER_DIR is not present,
     so we need not find tools.jar in the JRE." >&6; fi
@@ -4670,10 +4664,14 @@ PTBACKTRACK_ECLIPSE_DIR=
 # Jar files used by ptolemy/backtrack/eclipse
 PTBACKTRACK_ECLIPSE_JARS=
 
+eclipseMessage="The backtracking facility requires Eclipse 3.2 or greater.
+    You need not download Eclipse unless you plan on using the backtracking
+    facility in ptolemy.backtrack.
+    Eclipse may be downloaded from http://www.eclipse.org/"
+
 # We only need to look for Eclipse if $PTII/ptolemy/backtrack/eclipse exists
 if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/ptolemy/backtrack/eclipse is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/backtrack/eclipse is not present,
     so we need not find Eclipse." >&5
 echo "${ECHO_T}$PTII/ptolemy/backtrack/eclipse is not present,
     so we need not find Eclipse." >&6; fi
@@ -4802,31 +4800,6 @@ echo "$as_me: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&2;}
 echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; fi
 
-	        startdir=$PTII
-	        cd "$srcdir/config"
-	        echo "$as_me:$LINENO: checking for ITreeSelection from Eclipse" >&5
-echo $ECHO_N "checking for ITreeSelection from Eclipse... $ECHO_C" >&6
-	        if "$JAVAC" -classpath "$PTBACKTRACK_ECLIPSE_DOC_JARS" EclipseITreeSelection.java ; then
-                    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; fi
-		    # Set to eclipse and used in
-		    # $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
-		    PTBACKTRACK_ECLIPSE_DIR=eclipse
-		    # PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
-		    PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
-		    PTBACKTRACK_ECLIPSE_JARS=$eclipsejarpath
-                else
- 	            { echo "$as_me:$LINENO: WARNING: Failed to compile config/EclipseITreeSelection.java with
-    (cd \"$PTII/config\"; \"$JAVAC\" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java)
-    maybe you should install Eclipse 3.2?" >&5
-echo "$as_me: WARNING: Failed to compile config/EclipseITreeSelection.java with
-    (cd \"$PTII/config\"; \"$JAVAC\" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java)
-    maybe you should install Eclipse 3.2?" >&2;}
-                    eclipsejarpath=
-                fi
-	        cd "$startdir"
-
 	        # Get the plugin jar files for use with javadoc in $PTII/doc
 	        echo "$as_me:$LINENO: checking for Eclipse jars used with javadoc" >&5
 echo $ECHO_N "checking for Eclipse jars used with javadoc... $ECHO_C" >&6
@@ -4857,26 +4830,47 @@ echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; fi
                 else
                     { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse jar file for docs.
-    As a result, building the javadoc documentation might show warnings." >&5
+    As a result, building the javadoc documentation might show warnings.
+    $eclipseMessage" >&5
 echo "$as_me: WARNING: Failed to find Eclipse jar file for docs.
-    As a result, building the javadoc documentation might show warnings." >&2;}
+    As a result, building the javadoc documentation might show warnings.
+    $eclipseMessage" >&2;}
                 fi
-             fi
 
+	        startdir=$PTII
+	        cd "$srcdir/config"
+	        echo "$as_me:$LINENO: checking for ITreeSelection from Eclipse" >&5
+echo $ECHO_N "checking for ITreeSelection from Eclipse... $ECHO_C" >&6
+	        if "$JAVAC" -classpath "$PTBACKTRACK_ECLIPSE_DOC_JARS" EclipseITreeSelection.java ; then
+                    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; fi
+		    # Set to eclipse and used in
+		    # $PTII/ptolemy/backtrack/makefile if Eclipse jar
+		    # files were found
+		    PTBACKTRACK_ECLIPSE_DIR=eclipse
+		    # PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
+		    PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
+		    PTBACKTRACK_ECLIPSE_JARS=$eclipsejarpath
+                else
+ 	            { echo "$as_me:$LINENO: WARNING: Failed to compile config/EclipseITreeSelection.java with
+    (cd \"$PTII/config\"; \"$JAVAC\" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java)
+    $eclipseMessage" >&5
+echo "$as_me: WARNING: Failed to compile config/EclipseITreeSelection.java with
+    (cd \"$PTII/config\"; \"$JAVAC\" -classpath $PTBACKTRACK_ECLIPSE_DOC_JARS EclipseITreeSelection.java)
+    $eclipseMessage" >&2;}
+                    eclipsejarpath=
+                fi
+	        cd "$startdir"
+             fi
         fi
         if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
             { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse
     perhaps the Eclipse is not installed?
-    You need not download Eclipse unless you
-    plan on using the backtracking facility in ptolemy.backtrack
-    Eclipse may be downloaded from
-    http://www.eclipse.org/" >&5
+    $eclipseMessage" >&5
 echo "$as_me: WARNING: Failed to find Eclipse
     perhaps the Eclipse is not installed?
-    You need not download Eclipse unless you
-    plan on using the backtracking facility in ptolemy.backtrack
-    Eclipse may be downloaded from
-    http://www.eclipse.org/" >&2;}
+    $eclipseMessage" >&2;}
 	    PTBACKTRACK_ECLIPSE_JARS=
         fi
     fi
@@ -4903,8 +4897,7 @@ GC_LD_DIRECTIVE=
 GC_DIR=
 
 if test ! -d "$PTII/ptolemy/copernicus/c"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/ptolemy/copernicus/c is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/copernicus/c is not present,
     so we need not find the Boehm GC." >&5
 echo "${ECHO_T}$PTII/ptolemy/copernicus/c is not present,
     so we need not find the Boehm GC." >&6; fi
@@ -5136,13 +5129,15 @@ echo "${ECHO_T}$GC_INCLUDE_DIR/gc.h" >&6; fi
     $dirs
     The Boehm Garbage Collector can be downloaded from
     http://www.hpl.hp.com/personal/Hans_Boehm/gc/
-    if you wish to use it with the C code generator" >&5
+    if you wish to use it with the the older copernicus C code generator.
+    The newer codegenerator in codegen does _not_ require the Boehm GC." >&5
 echo "$as_me: WARNING: Failed to find gc.h.
     Checked the following directories:
     $dirs
     The Boehm Garbage Collector can be downloaded from
     http://www.hpl.hp.com/personal/Hans_Boehm/gc/
-    if you wish to use it with the C code generator" >&2;}
+    if you wish to use it with the the older copernicus C code generator.
+    The newer codegenerator in codegen does _not_ require the Boehm GC." >&2;}
        fi
    fi
 fi
@@ -5157,8 +5152,7 @@ MESCAL_RELSAT_USER_DIR="$PTII/mescal/relsat"
 
 PTGMP=no
 if test ! -d "$MESCAL_RELSAT_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $MESCAL_RELSAT_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $MESCAL_RELSAT_USER_DIR is not present,
     so we need not find GMP." >&5
 echo "${ECHO_T}$MESCAL_RELSAT_USER_DIR is not present,
     so we need not find GMP." >&6; fi
@@ -5893,8 +5887,7 @@ JAI_JARS=
 JAI_USER_DIR="$PTII/ptolemy/actor/lib/jai"
 
 if test ! -d "$JAI_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $JAI_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $JAI_USER_DIR is not present,
     so we need not find JAI - The Java Advanced Imaging API." >&5
 echo "${ECHO_T}$JAI_USER_DIR is not present,
     so we need not find JAI - The Java Advanced Imaging API." >&6; fi
@@ -5994,8 +5987,7 @@ JHDL_JAR='${PTII}/vendors/jhdl/ptjhdllib/JHDL.jar'
 
 # We only need to look for jhdl if $PTII/ptolemy/copernicus/jhdl exists
 if test ! -d "$PTII/ptolemy/copernicus/jhdl"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/ptolemy/copernicus/jhdl is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/copernicus/jhdl is not present,
     so we need not find the JHDL - a Java Optimization Framework." >&5
 echo "${ECHO_T}$PTII/ptolemy/copernicus/jhdl is not present,
     so we need not find the JHDL - a Java Optimization Framework." >&6; fi
@@ -6069,8 +6061,7 @@ JMF_JARS=
 # We only need to look for jmf if $PTII/ptolemy/actor/lib exists
 JMF_USER_DIR="$PTII/ptolemy/actor/lib/jmf"
 if test ! -d "$JMF_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $JMF_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $JMF_USER_DIR is not present,
     so we need not find the JMF - The Java Media Framework." >&5
 echo "${ECHO_T}$JMF_USER_DIR is not present,
     so we need not find the JMF - The Java Media Framework." >&6; fi
@@ -6177,8 +6168,7 @@ JOYSTICK_JAR='${PTII}/vendors/misc/joystick/Joystick.jar'
 
 # We only need to look for joystick if $PTII/ptolemy/actor/lib/joystick exists
 if test ! -d "$PTII/ptolemy/actor/lib/joystick"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/ptolemy/actor/lib/joystick is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/actor/lib/joystick is not present,
     so we need not find the Joystick interface." >&5
 echo "${ECHO_T}$PTII/ptolemy/actor/lib/joystick is not present,
     so we need not find the Joystick interface." >&6; fi
@@ -6248,8 +6238,7 @@ JYTHON_DIR='${PTII}/lib'
 # FIXME: Note that the package is called jython, but the directory is python
 JYTHON_USER_DIR="$PTII/ptolemy/actor/lib/python"
 if test ! -d "$JYTHON_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $JYTHON_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $JYTHON_USER_DIR is not present,
     so we need not find the Jython, the java implementation of Python." >&5
 echo "${ECHO_T}$JYTHON_USER_DIR is not present,
     so we need not find the Jython, the java implementation of Python." >&6; fi
@@ -6333,8 +6322,7 @@ PTJXTA_DIR=
 JXTA_DIR='${PTII}/vendors/sun/jxta'
 
 if test ! -d "$JXTA_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $JXTA_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $JXTA_USER_DIR is not present,
     so we need not find JXTA." >&5
 echo "${ECHO_T}$JXTA_USER_DIR is not present,
     so we need not find JXTA." >&6; fi
@@ -6403,8 +6391,7 @@ LEJOS_PRESENT=no
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
 PTLEJOS_DIR=
 if test ! -d "$LEJOS_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $LEJOS_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $LEJOS_USER_DIR is not present,
     so we need not find lejos." >&5
 echo "${ECHO_T}$LEJOS_USER_DIR is not present,
     so we need not find lejos." >&6; fi
@@ -6463,8 +6450,7 @@ fi
 
 # We only need to look for JavaCC if $PTII/ptolemy/data/expr exists
 if test ! -d "$PTII/ptolemy/data/expr"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/ptolemy/data/expr is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/data/expr is not present,
     so we need not find JavaCC." >&5
 echo "${ECHO_T}$PTII/ptolemy/data/expr is not present,
     so we need not find JavaCC." >&6; fi
@@ -6630,8 +6616,7 @@ JTCLSH='"$(JAVA)" $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" $(JTCLSHFLAGS) tcl.l
 PTJACL_DIR=
 
 if test ! -d "$PTII/util/testsuite"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/util/testsuite is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/util/testsuite is not present,
     so we need not find Jacl." >&5
 echo "${ECHO_T}$PTII/util/testsuite is not present,
     so we need not find Jacl." >&6; fi
@@ -6716,8 +6701,7 @@ PTGRDOMAIN_JAR=
 JAVA3D_USER_DIR="$PTII/ptolemy/domains/gr"
 
 if test ! -d "$JAVA3D_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $JAVA3D_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $JAVA3D_USER_DIR is not present,
     so we need not find Java 3D." >&5
 echo "${ECHO_T}$JAVA3D_USER_DIR is not present,
     so we need not find Java 3D." >&6; fi
@@ -6769,8 +6753,7 @@ JINI_PRESENT=no
 # $PTII/ptolemy/makefile if jini was found.
 PTDISTRIBUTED_DIR=
 if test ! -d "$JINI_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $JINI_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $JINI_USER_DIR is not present,
     so we need not find Jini." >&5
 echo "${ECHO_T}$JINI_USER_DIR is not present,
     so we need not find Jini." >&6; fi
@@ -7146,8 +7129,7 @@ JODE_CLASSES='${JODE_DIR}/jode.jar'
 
 # We only need to look for jode if $PTII/ptolemy/apps/jode exists
 if test ! -d "$PTII/vendors/jode"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/vendors/jode is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/vendors/jode is not present,
     so we need not find Jode, which is a java disassembler." >&5
 echo "${ECHO_T}$PTII/vendors/jode is not present,
     so we need not find Jode, which is a java disassembler." >&6; fi
@@ -7214,8 +7196,7 @@ PTKVM_DIR=
 #
 # We only need to look for kvm if $PTII/ptolemy/apps/kvm exists
 if test ! -d "$PTII/ptolemy/apps/kvm"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/ptolemy/apps/kvm is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/apps/kvm is not present,
     so we need not find the PalmOS kvm." >&5
 echo "${ECHO_T}$PTII/ptolemy/apps/kvm is not present,
     so we need not find the PalmOS kvm." >&6; fi
@@ -7327,8 +7308,7 @@ echo "$as_me: WARNING: The Matlab interface is not supported on this platform (y
 else
     # We only need to look for matlab if $PTII/ptolemy/matlab exists
     if test ! -d "$PTII/ptolemy/matlab"; then
-	if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/ptolemy/matlab is not present,
+	if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/matlab is not present,
     so we need not find matlab and gcc." >&5
 echo "${ECHO_T}$PTII/ptolemy/matlab is not present,
     so we need not find matlab and gcc." >&6; fi
@@ -7470,8 +7450,7 @@ echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed.
 			MATLAB_LIBDIR=${MATLAB_DIR}/extern/lib
 			;;
 		esac
-		if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: using '${MATLAB_LIBDIR}' for Matlab's engine libraries" >&5
+		if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: using '${MATLAB_LIBDIR}' for Matlab's engine libraries" >&5
 echo "${ECHO_T}using '${MATLAB_LIBDIR}' for Matlab's engine libraries" >&6; fi
 		if test $MATLAB_USE_MSVC = "yes"; then
 		    echo "$as_me:$LINENO: checking for Microsoft Visual C cl" >&5
@@ -7715,8 +7694,7 @@ PSDF_DIR='${PTII}/lib'
 # We only need to look for on if $PTII/ptolemy/domains/psdf exists
 PSDF_USER_DIR="$PTII/ptolemy/domains/psdf"
 if test ! -d "$PSDF_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PSDF_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PSDF_USER_DIR is not present,
     so we need not find the mapss.jar." >&5
 echo "${ECHO_T}$PSDF_USER_DIR is not present,
     so we need not find the mapss.jar." >&6; fi
@@ -7770,8 +7748,7 @@ ANTLR_DIR='${PTII}/ptolemy/actor/ptalon/antlr'
 # We only need to look for on if $PTII/ptolemy/actor/ptalon exists
 PTALON_USER_DIR="$PTII/ptolemy/actor/ptalon"
 if test ! -d "$PTALON_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTALON_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTALON_USER_DIR is not present,
     so we need not find anltr.jar." >&5
 echo "${ECHO_T}$PTALON_USER_DIR is not present,
     so we need not find anltr.jar." >&6; fi
@@ -7836,8 +7813,7 @@ QTJAVA_ZIP=
 QUICKTIME_USER_DIR="$PTII/ptolemy/domains/gr/lib/quicktime"
 
 if test ! -d "$QUICKTIME_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $QUICKTIME_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $QUICKTIME_USER_DIR is not present,
     so we need not find Quicktime for Java." >&5
 echo "${ECHO_T}$QUICKTIME_USER_DIR is not present,
     so we need not find Quicktime for Java." >&6; fi
@@ -7981,8 +7957,7 @@ SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasmin
 
 # We only need to look for soot if $PTII/ptolemy/copernicus exists
 if test ! -d "$PTII/ptolemy/copernicus"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/ptolemy/copernicus is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/copernicus is not present,
     so we need not find the Soot - a Java Optimization Framework." >&5
 echo "${ECHO_T}$PTII/ptolemy/copernicus is not present,
     so we need not find the Soot - a Java Optimization Framework." >&6; fi
@@ -8023,8 +7998,7 @@ echo $ECHO_N "checking for \$SOOT_DIR/polyglotclasses-1.3.2.jar... $ECHO_C" >&6
 echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6; fi
             fi
-	    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $SOOT_CLASSES" >&5
+	    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $SOOT_CLASSES" >&5
 echo "${ECHO_T}$SOOT_CLASSES" >&6; fi
         else
 	    SOOT_CLASSES_FOUND=no
@@ -8118,8 +8092,7 @@ PTSVG_JAR=
 
 # We only need to look for Batik if $PTII/diva/util/java2d/svg exists
 if test ! -d "$PTII/diva/util/java2d/svg"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/diva/util/java2d/svg is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/diva/util/java2d/svg is not present,
     so we need not find Batik SVG." >&5
 echo "${ECHO_T}$PTII/diva/util/java2d/svg is not present,
     so we need not find Batik SVG." >&6; fi
@@ -8174,8 +8147,7 @@ PTTINI_DIR=
 #
 # We only need to look for tini if $PTII/ptolemy/apps/tini exists
 if test ! -d "$PTII/ptolemy/apps/tini"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/ptolemy/apps/tini is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/apps/tini is not present,
     so we need not find the Dallas Semiconductor tini." >&5
 echo "${ECHO_T}$PTII/ptolemy/apps/tini is not present,
     so we need not find the Dallas Semiconductor tini." >&6; fi
@@ -8243,18 +8215,22 @@ PTTINYOS_DIR=
 # "c:/" style syntax, it works with "/cygdrive/c/", yet Java
 # does not understand /cygdrive/c syntax, so we hack
 PTINYOS_DIR=$PTII/ptolemy/domains/ptinyos
-echo "$as_me:$LINENO: checking the for TinyOS" >&5
-echo $ECHO_N "checking the for TinyOS... $ECHO_C" >&6
-if test -z "$TOSROOT" ; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: The TOSROOT environment variable is not present,
+
+if test ! -d "$PTINYOS_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTINYOS_DIR is not present
     so we need not set up for TinyOS." >&5
-echo "${ECHO_T}The TOSROOT environment variable is not present,
+echo "${ECHO_T}$PTINYOS_DIR is not present
     so we need not set up for TinyOS." >&6; fi
 
     # Nothing to exclude
     # ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/nc/"
 else
+    echo "$as_me:$LINENO: checking the for TinyOS" >&5
+echo $ECHO_N "checking the for TinyOS... $ECHO_C" >&6
+    if test -z "$TOSROOT"; then
+        { echo "$as_me:$LINENO: WARNING: \$TOSROOT is not set.  It must be set to use PtinyOS." >&5
+echo "$as_me: WARNING: \$TOSROOT is not set.  It must be set to use PtinyOS." >&2;}
+    fi
     if test ! -d "$TOSROOT"; then
         { echo "$as_me:$LINENO: WARNING: \$TOSROOT is set to '$TOSROOT',
      but there is no directory by that name, so we will not set up for PtinyOS.
@@ -8388,8 +8364,7 @@ fi
 PTGIOTTO_DIR=
 #
 if test ! -d "$PTII/ptolemy/domains/giotto"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/ptolemy/domains/giotto is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/domains/giotto is not present,
     so we need not find the Giotto SDK." >&5
 echo "${ECHO_T}$PTII/ptolemy/domains/giotto is not present,
     so we need not find the Giotto SDK." >&6; fi
@@ -8435,8 +8410,7 @@ echo "${ECHO_T}$GIOTTO_CLASSES" >&6; fi
     downloaded from http://www-cad.eecs.berkeley.edu/~giotto/
     Copy gdk.jar to $PTII/vendors/giotto, for example:
         mkdir -p $PTII/vendors/giotto
-        cp C:/Program\ Files/Giotto*/gdk.jar $PTII/vendors/giotto/
-    " >&5
+        cp C:/Program\ Files/Giotto*/gdk.jar $PTII/vendors/giotto/" >&5
 echo "$as_me: WARNING: Failed to find giotto/gdk.jar
     perhaps Giotto is not installed?
     You need not download Giotto unless you plan on generating code for
@@ -8445,8 +8419,7 @@ echo "$as_me: WARNING: Failed to find giotto/gdk.jar
     downloaded from http://www-cad.eecs.berkeley.edu/~giotto/
     Copy gdk.jar to $PTII/vendors/giotto, for example:
         mkdir -p $PTII/vendors/giotto
-        cp C:/Program\ Files/Giotto*/gdk.jar $PTII/vendors/giotto/
-    " >&2;}
+        cp C:/Program\ Files/Giotto*/gdk.jar $PTII/vendors/giotto/" >&2;}
 	# Note that we don't substitute in the ${PTII} or $(GIOTTO_DIR) here
 	GIOTTO_DIR='${PTII}/vendors/giotto'
    	GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
@@ -8470,8 +8443,7 @@ PTWABA_DIR=
 #
 # We only need to look for waba if $PTII/ptolemy/apps/kvm exists
 if test ! -d "$PTII/ptolemy/apps/kvm"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $PTII/ptolemy/apps/kvm is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $PTII/ptolemy/apps/kvm is not present,
     so we need not find the PalmOS waba." >&5
 echo "${ECHO_T}$PTII/ptolemy/apps/kvm is not present,
     so we need not find the PalmOS waba." >&6; fi
@@ -8572,8 +8544,7 @@ X10_CLASSES=
 # We only need to look for x10 if $PTII/ptolemy/actor/lib/x10 exists
 X10_USER_DIR="$PTII/ptolemy/actor/lib/x10"
 if test ! -d "$X10_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" = "none"; then echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6; else echo "$as_me:$LINENO: result: $X10_USER_DIR is not present,
+    if test "${PTVERBOSE:-none}" != "none"; then echo "$as_me:$LINENO: result: $X10_USER_DIR is not present,
     so we need not find the X10 SDK. X10 is the power line comm interface." >&5
 echo "${ECHO_T}$X10_USER_DIR is not present,
     so we need not find the X10 SDK. X10 is the power line comm interface." >&6; fi
