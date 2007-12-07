@@ -90,6 +90,7 @@ OPTIONAL_FILES = \
 	'GTIngredientsEditor$$Row.class' \
 	'GTRuleGraphFrame$$1.class' \
 	'GTRuleGraphFrame$$2.class' \
+	'GTRuleGraphFrame$$3.class' \
 	'GTRuleGraphFrame$$BatchMatchAction$$ModelFileFilter.class' \
 	'GTRuleGraphFrame$$BatchMatchAction$$MultipleViewController.class' \
 	'GTRuleGraphFrame$$BatchMatchAction.class' \
