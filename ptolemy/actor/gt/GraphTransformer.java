@@ -38,6 +38,7 @@ import java.util.Set;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.gt.data.MatchResult;
+import ptolemy.actor.gt.data.Pair;
 import ptolemy.actor.gt.data.TwoWayHashMap;
 import ptolemy.actor.gt.ingredients.operations.Operation;
 import ptolemy.data.BooleanToken;
@@ -225,6 +226,7 @@ public class GraphTransformer extends ChangeRequest {
             _init();
             _performOperations();
             _recordMoML();
+            _removeLinks();
             _removeObjects();
             _addObjects();
             _addConnections();
@@ -234,7 +236,7 @@ public class GraphTransformer extends ChangeRequest {
         _hideRelations();
     }
 
-    protected void _hideRelations() {
+    protected void _hideRelations() throws TransformationException {
         _hideRelations(_host);
     }
 
@@ -294,11 +296,15 @@ public class GraphTransformer extends ChangeRequest {
         }
     }
 
+    protected void _removeLinks() throws TransformationException {
+        _removeLinks(_pattern);
+    }
+
     protected void _removeObjects() throws TransformationException {
         _removeObjects(_host);
     }
 
-    protected void _wrapup() {
+    protected void _wrapup() throws TransformationException {
         _removeReplacementObjectAttributes(_host);
         _removeReplacementObjectAttributes(_replacement);
     }
@@ -618,6 +624,78 @@ public class GraphTransformer extends ChangeRequest {
         }
 
         return false;
+    }
+
+    private void _removeLinks(CompositeEntity pattern) {
+        Collection<?> relations = GTTools.getChildren(pattern, false, false,
+                false, true);
+        Set<Pair<Relation, Object>> linksToRemove =
+            new HashSet<Pair<Relation, Object>>();
+        for (Object relationObject : relations) {
+            Relation relation = (Relation) relationObject;
+            Relation replacementRelation =
+                (Relation) _patternToReplacement.get(relation);
+            if (replacementRelation == null) {
+                continue;
+            }
+
+            List<?> linkedObjectList = relation.linkedObjectsList();
+            for (Object linkedObject : linkedObjectList) {
+                Object replacementLinkedObject =
+                    _patternToReplacement.get(linkedObject);
+                if (replacementLinkedObject == null) {
+                    continue;
+                }
+
+                boolean linkRemoved;
+                if (replacementLinkedObject instanceof Port) {
+                    linkRemoved = !((Port) replacementLinkedObject).isLinked(
+                            replacementRelation);
+                } else {
+                    linkRemoved = !replacementRelation.linkedObjectsList()
+                            .contains(replacementLinkedObject);
+                }
+
+                if (linkRemoved) {
+                    linksToRemove.add(new Pair<Relation, Object>(relation,
+                            linkedObject));
+                }
+            }
+        }
+
+        for (Pair<Relation, Object> link : linksToRemove) {
+            Relation hostRelation =
+                (Relation) _matchResult.get(link.getFirst());
+            if (hostRelation == null) {
+                continue;
+            }
+            Object hostObject = _matchResult.get(link.getSecond());
+            if (hostObject == null) {
+                continue;
+            }
+
+            String name;
+            if (hostObject instanceof Port) {
+                Port port = (Port) hostObject;
+                name = port.getContainer().getName() + "." + port.getName();
+            } else {
+                name = ((Relation) hostObject).getName();
+            }
+
+            String moml = "<unlink port=\"" + name + "\" relation=\""
+                    + hostRelation.getName() + "\"/>";
+            MoMLChangeRequest request =
+                new MoMLChangeRequest(this, hostRelation.getContainer(), moml);
+            request.execute();
+        }
+
+        Collection<?> entities = GTTools.getChildren(pattern, false, false,
+                true, false);
+        for (Object entityObject : entities) {
+            if (entityObject instanceof CompositeEntity) {
+                _removeLinks((CompositeEntity) entityObject);
+            }
+        }
     }
 
     private Set<NamedObj> _removeObject(NamedObj object, boolean shallowRemoval)
