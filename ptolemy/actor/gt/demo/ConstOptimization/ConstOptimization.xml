@@ -8,7 +8,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 267, 887, 599}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={56, 70, 879, 600}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[664, 484]">
     </property>
@@ -67,7 +67,9 @@ computed value.</text></svg></configure>
         </property>
     </entity>
     <entity name="OriginalModel" class="ptolemy.actor.gt.ModelView">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 115.0]">
+        <property name="title" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 125.0]">
         </property>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
@@ -78,7 +80,7 @@ computed value.</text></svg></configure>
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 285.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -91,11 +93,11 @@ computed value.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 285.0]">
         </property>
     </entity>
     <entity name="TransformationRule" class="ptolemy.actor.gt.TransformationRule">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 210.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 239, 833, 571}, maximized=false}">
         </property>
@@ -269,7 +271,7 @@ computed value.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 180.0]">
         </property>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -281,7 +283,7 @@ computed value.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 245.0]">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -296,7 +298,7 @@ computed value.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 245.0]">
         </property>
     </entity>
     <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
@@ -306,7 +308,7 @@ computed value.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 210.0]">
         </property>
         <port name="control" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -331,7 +333,7 @@ computed value.</text></svg></configure>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[490.0, 230.0]">
+        <vertex name="vertex1" value="[490.0, 220.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -353,19 +355,19 @@ computed value.</text></svg></configure>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[460.0, 295.0]">
+        <vertex name="vertex1" value="[465.0, 285.0]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[310.0, 270.0]">
+        <vertex name="vertex1" value="[310.0, 260.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[185.0, 295.0]">
+        <vertex name="vertex1" value="[185.0, 285.0]">
         </vertex>
     </relation>
     <link port="ModelGenerator.moml" relation="relation"/>

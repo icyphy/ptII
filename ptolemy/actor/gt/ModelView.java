@@ -37,12 +37,9 @@ import javax.swing.JFrame;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.lib.Sink;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ActorToken;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -82,11 +79,9 @@ public class ModelView extends Sink implements WindowListener {
 
         input.setTypeEquals(ActorToken.TYPE);
 
-        title = new StringParameter(this, "title");
+        title = new PortParameter(this, "title");
+        title.setStringMode(true);
         title.setExpression("");
-        annotateTitle = new Parameter(this, "annotateTitle");
-        annotateTitle.setTypeEquals(BaseType.BOOLEAN);
-        annotateTitle.setToken(BooleanToken.TRUE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,8 +102,6 @@ public class ModelView extends Sink implements WindowListener {
         super.fire();
 
         String titleValue = ((StringToken) title.getToken()).stringValue();
-        boolean annotateTitleValue = ((BooleanToken) annotateTitle.getToken())
-                .booleanValue();
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 synchronized (this) {
@@ -138,17 +131,13 @@ public class ModelView extends Sink implements WindowListener {
                                         .getPort(), uri.getPath()
                                         + newModel.getName() + ".xml", null,
                                         null);
-                                titleString = modelURI.toString();
+                                titleString = modelURI.toString() + " ("
+                                        + getName() + ")";
                             }
                         } else {
                             titleString = titleValue;
                         }
-                        if (titleString != null) {
-                            if (annotateTitleValue) {
-                                titleString += " (" + getName() + ")";
-                            }
-                            tableau.setTitle(titleString);
-                        }
+                        tableau.setTitle(titleString);
                     } catch (NameDuplicationException e) {
                         throw new IllegalActionException(this, e,
                                 "Cannot open model.");
@@ -210,9 +199,7 @@ public class ModelView extends Sink implements WindowListener {
     public void windowOpened(WindowEvent e) {
     }
 
-    public Parameter annotateTitle;
-
-    public StringParameter title;
+    public PortParameter title;
 
     private MoMLParser _parser = new MoMLParser();
 
