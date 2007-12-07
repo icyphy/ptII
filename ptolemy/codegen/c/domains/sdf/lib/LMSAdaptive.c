@@ -1,17 +1,17 @@
 /*** sharedBlock ***/
-	$super();
-	int $actorClass(i);
-	int $actorClass(index);
-	double $actorClass(factor);
+        $super();
+        int $actorClass(i);
+        int $actorClass(index);
+        double $actorClass(factor);
 /**/
 
 /*** sharedBlock2 ***/
-	$targetType(input) $actorClass(datum_$targetType(input));
+        $targetType(input) $actorClass(datum_$targetType(input));
 /**/
 
 /*** initBlock ***/
-	$actorSymbol(_taps) = $typeFunc(TYPE_Array::clone($ref(taps)));
-	$super();
+        $actorSymbol(_taps) = $typeFunc(TYPE_Array::clone($ref(taps)));
+        $super();
 /**/
 
 /*** fireBlock ***/
@@ -38,6 +38,6 @@
 /**/
 
 /*** wrapupBlock ***/
-	Array_delete($actorSymbol(_taps));
-	$super();
+        Array_delete($actorSymbol(_taps));
+        $super();
 /**/

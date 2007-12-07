@@ -7,9 +7,9 @@
 * Chip: ATmega16
 * Date: 3/30/2006
 * Purpose:
-*	This program was written for a wearable LED tank top.
-*	More information in game_of_life.c and at: 
-*	http://www.cs.colorado.edu/~buechley/diy/diy_tank.html
+*        This program was written for a wearable LED tank top.
+*        More information in game_of_life.c and at: 
+*        http://www.cs.colorado.edu/~buechley/diy/diy_tank.html
 * Copyright information: http://www.gnu.org/copyleft/gpl.html
 
 Copyright (C) 2006 Leah Buechley
@@ -117,27 +117,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 void all_on (void)
 {
 #ifdef __AVR__
-	//rows low
-	row0_low;
-	row1_low;
-	row2_low;
-	row3_low;
-	row4_low;
-	row5_low;
-	row6_low;
-	row7_low;
-	
-	//columns high
-	col0_high;
-	col1_high;
-	col2_high;
-	col3_high;
-	col4_high;
-	col5_high;
-	col6_high;
-	col7_high;
-	col8_high;
-	col9_high;
+        //rows low
+        row0_low;
+        row1_low;
+        row2_low;
+        row3_low;
+        row4_low;
+        row5_low;
+        row6_low;
+        row7_low;
+        
+        //columns high
+        col0_high;
+        col1_high;
+        col2_high;
+        col3_high;
+        col4_high;
+        col5_high;
+        col6_high;
+        col7_high;
+        col8_high;
+        col9_high;
 #endif /* __AVR__ */ 
 }
 
@@ -145,27 +145,27 @@ void all_on (void)
 void all_off (void)
 {
 #ifdef __AVR__
-	//rows high
-	row0_high;
-	row1_high;
-	row2_high;
-	row3_high;
-	row4_high;
-	row5_high;
-	row6_high;
-	row7_high;
-	
-	//columns low
-	col0_low;
-	col1_low;
-	col2_low;
-	col3_low;
-	col4_low;
-	col5_low;
-	col6_low;
-	col7_low;
-	col8_low;
-	col9_low;
+        //rows high
+        row0_high;
+        row1_high;
+        row2_high;
+        row3_high;
+        row4_high;
+        row5_high;
+        row6_high;
+        row7_high;
+        
+        //columns low
+        col0_low;
+        col1_low;
+        col2_low;
+        col3_low;
+        col4_low;
+        col5_low;
+        col6_low;
+        col7_low;
+        col8_low;
+        col9_low;
 #endif /* __AVR__ */ 
 }
 
@@ -282,8 +282,8 @@ if ($ref(control)) {
     }
 
 #ifdef _DELAY_MS
-	_delay_ms(1000);
-#endif	
+        _delay_ms(1000);
+#endif        
 
         all_on();
 }

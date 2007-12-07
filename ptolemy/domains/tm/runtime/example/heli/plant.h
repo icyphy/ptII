@@ -14,26 +14,26 @@
 #ifdef PLANT
 typedef struct
 {
-	float y1; /* fixme */
-	float y2;
-	float y3;
-	float y4;
-	float y5;
-	float y6;
-	float y7;
-	float y8;
-	float y9;
-	float y10;
-	float y11;
+        float y1; /* fixme */
+        float y2;
+        float y3;
+        float y4;
+        float y5;
+        float y6;
+        float y7;
+        float y8;
+        float y9;
+        float y10;
+        float y11;
 }
 plant_outputs_t;
 
 typedef struct
 {
-	float y19; /* fixme */
-	float y20;
-	float y21;
-	float y22;
+        float y19; /* fixme */
+        float y20;
+        float y21;
+        float y22;
 }
 plant_inputs_t;
 #endif

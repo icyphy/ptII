@@ -88,18 +88,18 @@ double ColtRandomSource_nextDouble(int* current) {
     return nextDouble;
 
     /*
-    	nextLong == Long.MAX_VALUE         --> 1.0
-    	nextLong == Long.MIN_VALUE         --> 0.0
-    	nextLong == Long.MAX_VALUE-1       --> 1.0
-    	nextLong == Long.MAX_VALUE-100000L --> 0.9999999999999946
-    	nextLong == Long.MIN_VALUE+1       --> 0.0
-    	nextLong == Long.MIN_VALUE-100000L --> 0.9999999999999946
-    	nextLong == 1L                     --> 0.5
-    	nextLong == -1L                    --> 0.5
-    	nextLong == 2L                     --> 0.5
-    	nextLong == -2L                    --> 0.5
-    	nextLong == 2L+100000L             --> 0.5000000000000054
-    	nextLong == -2L-100000L            --> 0.49999999999999456
+            nextLong == Long.MAX_VALUE         --> 1.0
+            nextLong == Long.MIN_VALUE         --> 0.0
+            nextLong == Long.MAX_VALUE-1       --> 1.0
+            nextLong == Long.MAX_VALUE-100000L --> 0.9999999999999946
+            nextLong == Long.MIN_VALUE+1       --> 0.0
+            nextLong == Long.MIN_VALUE-100000L --> 0.9999999999999946
+            nextLong == 1L                     --> 0.5
+            nextLong == -1L                    --> 0.5
+            nextLong == 2L                     --> 0.5
+            nextLong == -2L                    --> 0.5
+            nextLong == 2L+100000L             --> 0.5000000000000054
+            nextLong == -2L-100000L            --> 0.49999999999999456
     */
 
     //return (((long long)ColtRandomSource_next(26, seed) << 27) + ColtRandomSource_next(27, seed)) / (double)(1LL << 53);
@@ -120,14 +120,14 @@ double ColtRandomSource_raw(int *current) {
     return (double) (nextInt & 0xFFFFFFFFL) * 2.3283064365386963E-10;
 
     /*
-    	nextInt == Integer.MAX_VALUE   --> 0.49999999976716936
-    	nextInt == Integer.MIN_VALUE   --> 0.5
-    	nextInt == Integer.MAX_VALUE-1 --> 0.4999999995343387
-    	nextInt == Integer.MIN_VALUE+1 --> 0.5000000002328306
-    	nextInt == 1                   --> 2.3283064365386963E-10
-    	nextInt == -1                  --> 0.9999999997671694
-    	nextInt == 2                   --> 4.6566128730773926E-10
-    	nextInt == -2                  --> 0.9999999995343387
+            nextInt == Integer.MAX_VALUE   --> 0.49999999976716936
+            nextInt == Integer.MIN_VALUE   --> 0.5
+            nextInt == Integer.MAX_VALUE-1 --> 0.4999999995343387
+            nextInt == Integer.MIN_VALUE+1 --> 0.5000000002328306
+            nextInt == 1                   --> 2.3283064365386963E-10
+            nextInt == -1                  --> 0.9999999997671694
+            nextInt == 2                   --> 4.6566128730773926E-10
+            nextInt == -2                  --> 0.9999999995343387
     */
 }
 /**/
@@ -295,7 +295,7 @@ int ColtRandomSource_generateBinomial(int n, double p, int* current) {
         if ( np <= 0.0 ) return -1;
 
         rm = np + par;
-        m  = (int) rm;                      		  // mode, integer
+        m  = (int) rm;                                        // mode, integer
         if (np<10) {
             p0=exp(n*log(q));               // Chop-down
             bh=(int)(np+10.0*sqrt(np*q));
@@ -348,17 +348,17 @@ int ColtRandomSource_generateBinomial(int n, double p, int* current) {
             K=(int) (xm - U + p1*V);
             return (p>0.5) ? (n-K):K;  // immediate accept
         }
-        if (U <= p2) {                               	 // parallelogram
+        if (U <= p2) {                                        // parallelogram
             X = xl + (U - p1)/c;
             if ((V = V*c + 1.0 - fabs(xm - X)/p1) >= 1.0)  continue;
             K = (int) X;
         }
-        else if (U <= p3) {                           	 // left tail
+        else if (U <= p3) {                                    // left tail
             if ((X = xl + log(V)/ll) < 0.0)  continue;
             K = (int) X;
             V *= (U - p2) * ll;
         }
-        else {                                        	 // right tail
+        else {                                                 // right tail
             if ((K = (int) (xr - log(V)/lr)) > n)  continue;
             V *= (U - p3) * lr;
         }
@@ -378,7 +378,7 @@ int ColtRandomSource_generateBinomial(int n, double p, int* current) {
                     if ((V *= (rc / ++i - pq)) > f)  break;  // multiply  V
                 }
             }
-            if (V <= f)  break;                       		 // acceptance test
+            if (V <= f)  break;                                        // acceptance test
         }
         else {
 
@@ -504,13 +504,13 @@ static double ColtRandomSource_PoissonDistribution(double mean, int* current) {
 
     if (my < SWITCH_MEAN) { // CASE B: Inversion- start new table and calculate p0
         //if (my != my_old) {
-        //		my_old = my;
+        //                my_old = my;
         llll = 0;
         p = exp(-my);
         q = p;
         p0 = p;
         for (k=pp_length; --k >=0; ) pp[k] = 0;
-        //	}
+        //        }
         m = (my > 1.0) ? (int)my : 1;
         for (;;) {
             u = ColtRandomSource_raw(current);           // Step U. Uniform sample
@@ -544,7 +544,7 @@ static double ColtRandomSource_PoissonDistribution(double mean, int* current) {
         //static double        my_last = -1.0;
         //static long int      m,  k2, k4, k1, k5;
         //static double        dl, dr, r1, r2, r4, r5, ll, lr, l_my, c_pm,
-        //  					 f1, f2, f4, f5, p1, p2, p3, p4, p5, p6;
+        //                                           f1, f2, f4, f5, p1, p2, p3, p4, p5, p6;
         static long int      m,  k2, k4, k1, k5;
         static double        dl, dr, r1, r2, r4, r5, ll, lr, l_my, c_pm;
         static double        f1, f2, f4, f5, p1, p2, p3, p4, p5, p6;
@@ -552,8 +552,8 @@ static double ColtRandomSource_PoissonDistribution(double mean, int* current) {
         double Ds, U, V, W;
 
         m  = (int) my;
-        //		if (my != my_last) { //  set-up
-        //	my_last = my;
+        //                if (my != my_last) { //  set-up
+        //        my_last = my;
 
         // approximate deviation of reflection points k2, k4 from my - 1/2
         Ds = sqrt(my + 0.25);
@@ -597,7 +597,7 @@ static double ColtRandomSource_PoissonDistribution(double mean, int* current) {
         p4 = f4 * dr         + p3;               // centre right
         p5 = f1 / ll         + p4;               // expon. tail left
         p6 = f5 / lr         + p5;               // expon. tail right
-        //		} // end set-up
+        //                } // end set-up
 
         for (;;) {
             // generate uniform number U -- U(0, p6)
@@ -650,7 +650,7 @@ static double ColtRandomSource_PoissonDistribution(double mean, int* current) {
             }
             else {
                 W = ColtRandomSource_raw(current);
-                if (U < p5)	{                                  // expon. tail left
+                if (U < p5)        {                                  // expon. tail left
                     Dk = (int)(1.0 - log(W)/ll);
                     if ((X = k1 - Dk) < 0)  continue;          // 0 <= X <= k1 - 1
                     W *= (U - p4) * ll;                        // W -- U(0, h(x))

@@ -11,7 +11,7 @@ if ($actorSymbol(doDelete)) {
 } else {
     $actorSymbol(doDelete) = true;
 }
-	
+        
 $actorSymbol(length) = strlen($ref(input));
 $actorSymbol(intArray) = $new(Array($actorSymbol(length), 0));
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(length); $actorSymbol(i)++) {

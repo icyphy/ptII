@@ -27,7 +27,7 @@ void Matrix_set(Token matrix, int row, int column, Token element) {
 /***Matrix_delete***/
 Token Matrix_delete(Token token, ...) { 
     int i, j;
-	Token element, emptyToken;
+        Token element, emptyToken;
       
     // Delete each elements.
     for (i = 0; i < token.payload.Matrix->column; i++) {
@@ -207,7 +207,7 @@ Token Matrix_toString(Token thisToken, ...) {
                 allocatedSize *= 2;
                 string = (char*) realloc(string, allocatedSize);
             }
-            	
+                    
             strcat(string, elementString.payload.String);
             free(elementString.payload.String);
         }

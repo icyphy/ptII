@@ -94,7 +94,7 @@ for ($actorSymbol(i) = 0; $actorSymbol(i) < $size(divide); $actorSymbol(i)++) {
 
 /***TokenFireBlock($width)***/
 $ref(output) = $ref(multiply#0);
-	
+        
 for ($actorSymbol(i) = 1; $actorSymbol(i) < $size(multiply); $actorSymbol(i)++) {
     $tokenFunc($ref(output)::multiply($ref(multiply#$actorSymbol(i))));
 }

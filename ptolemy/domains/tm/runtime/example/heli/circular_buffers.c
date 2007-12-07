@@ -70,15 +70,15 @@
 
 #ifdef CONTROLLER
 #define NUM_GPS_ENTRIES           (8) /* number of entries in gps
-					 circular buffer */
+                                         circular buffer */
 #define NUM_INS_ENTRIES           (8) /* number of entries in ins
-					 circular buffer */
+                                         circular buffer */
 #endif
 #ifdef PLANT
 #define NUM_PLANT_OUTPUTS_ENTRIES (8) /* number of entries in plant
-					 outputs circular buffer */
+                                         outputs circular buffer */
 #define NUM_PLANT_INPUTS_ENTRIES  (8) /* number of entries in plant
-					 inputs circular buffer */
+                                         inputs circular buffer */
 #endif
 
 /* -------------------------------------------------------------------
@@ -105,10 +105,10 @@
 
 typedef struct
 {
-	unsigned has_valid_entry; /* 1 if some entry of the buffer is
-				     is valid; 0 otherwise */
-	unsigned begin; /* first entry of the buffer that's valid */
-	unsigned end; /* last entry of the buffer that's valid */
+        unsigned has_valid_entry; /* 1 if some entry of the buffer is
+                                     is valid; 0 otherwise */
+        unsigned begin; /* first entry of the buffer that's valid */
+        unsigned end; /* last entry of the buffer that's valid */
 }
 circular_buffer_state_t;
 
@@ -135,18 +135,18 @@ circular_buffer_state_t;
 static int valid_id(char id)
 {
 #ifdef CONTROLLER
-	if (GPS_MESG_ID != id && INS_MESG_ID != id)
+        if (GPS_MESG_ID != id && INS_MESG_ID != id)
 #endif
 #ifdef PLANT
-	if (PLANT_OUTPUTS_ID != id && PLANT_INPUTS_ID != id)
+        if (PLANT_OUTPUTS_ID != id && PLANT_INPUTS_ID != id)
 #endif
-	{
-		printf("In valid_id: error: ");
-		printf("id is invalid");
-		return -1;
-	}
+        {
+                printf("In valid_id: error: ");
+                printf("id is invalid");
+                return -1;
+        }
 
-	return 0;
+        return 0;
 }
 
 /* -------------------------------------------------------------------
@@ -172,33 +172,33 @@ static int valid_id(char id)
  * ---------------------------------------------------------------- */
 
 static int get_entry_size(char id,
-			  unsigned *entry_size)
+                          unsigned *entry_size)
 {
-	if (0 != valid_id(id))
-	{
-		return -1;
-	}
+        if (0 != valid_id(id))
+        {
+                return -1;
+        }
 
-	switch (id)
-	{
-#ifdef CONTROLLER	    
-	case GPS_MESG_ID:
-		*entry_size = sizeof(gps_mesg_t);
-		break;
-	case INS_MESG_ID: 
-		*entry_size = sizeof(ins_mesg_t);
-		break;
+        switch (id)
+        {
+#ifdef CONTROLLER            
+        case GPS_MESG_ID:
+                *entry_size = sizeof(gps_mesg_t);
+                break;
+        case INS_MESG_ID: 
+                *entry_size = sizeof(ins_mesg_t);
+                break;
 #endif
 #ifdef PLANT
-	case PLANT_OUTPUTS_ID:
-		*entry_size = sizeof(plant_outputs_t);
-		break;
-	case PLANT_INPUTS_ID:
-		*entry_size = sizeof(plant_inputs_t);
-		break;
+        case PLANT_OUTPUTS_ID:
+                *entry_size = sizeof(plant_outputs_t);
+                break;
+        case PLANT_INPUTS_ID:
+                *entry_size = sizeof(plant_inputs_t);
+                break;
 #endif
-	}
-	return 0;
+        }
+        return 0;
 }
 
 /* -------------------------------------------------------------------
@@ -224,33 +224,33 @@ static int get_entry_size(char id,
  * ---------------------------------------------------------------- */
 
 static int get_num_entries(char id,
-			   unsigned *num_entries)
+                           unsigned *num_entries)
 {
-	if (0 != valid_id(id))
-	{
-		return -1;
-	}
+        if (0 != valid_id(id))
+        {
+                return -1;
+        }
 
-	switch (id)
-	{
-#ifdef CONTROLLER	    
-	case GPS_MESG_ID:
-		*num_entries = NUM_GPS_ENTRIES;
-		break;
-	case INS_MESG_ID: 
-		*num_entries = NUM_INS_ENTRIES;
-		break;
+        switch (id)
+        {
+#ifdef CONTROLLER            
+        case GPS_MESG_ID:
+                *num_entries = NUM_GPS_ENTRIES;
+                break;
+        case INS_MESG_ID: 
+                *num_entries = NUM_INS_ENTRIES;
+                break;
 #endif
 #ifdef PLANT
-	case PLANT_OUTPUTS_ID:
-		*num_entries = NUM_PLANT_OUTPUTS_ENTRIES;
-		break;
-	case PLANT_INPUTS_ID:
-		*num_entries = NUM_PLANT_INPUTS_ENTRIES;
-		break;
+        case PLANT_OUTPUTS_ID:
+                *num_entries = NUM_PLANT_OUTPUTS_ENTRIES;
+                break;
+        case PLANT_INPUTS_ID:
+                *num_entries = NUM_PLANT_INPUTS_ENTRIES;
+                break;
 #endif
-	}
-	return 0;
+        }
+        return 0;
 }
 
 /* -------------------------------------------------------------------
@@ -276,30 +276,30 @@ static int get_num_entries(char id,
  * ---------------------------------------------------------------- */
 
 static int get_buffer_size(char id,
-			   unsigned *buffer_size)
+                           unsigned *buffer_size)
 {
-	unsigned entry_size;
-	unsigned num_entries;
+        unsigned entry_size;
+        unsigned num_entries;
 
-	if (0 != valid_id(id))
-	{
-		return -1;
-	}
+        if (0 != valid_id(id))
+        {
+                return -1;
+        }
 
-	if (0 != get_entry_size(id, &entry_size))
-	{
-		return -2;
-	}
+        if (0 != get_entry_size(id, &entry_size))
+        {
+                return -2;
+        }
 
-	if (0 != get_num_entries(id, &num_entries))
-	{
-		return -3;
-	}
+        if (0 != get_num_entries(id, &num_entries))
+        {
+                return -3;
+        }
 
-	*buffer_size = sizeof(circular_buffer_state_t) +
-		num_entries * entry_size;
+        *buffer_size = sizeof(circular_buffer_state_t) +
+                num_entries * entry_size;
 
-	return 0;
+        return 0;
 }
 
 /* -------------------------------------------------------------------
@@ -345,63 +345,63 @@ static int get_buffer_size(char id,
  * ---------------------------------------------------------------- */
 
 static int get_circular_buffer(void **circular_buffer,
-			       char id)
+                               char id)
 {
-	unsigned buffer_size;
-	key_t key;
-	int shmid; 
-	unsigned created_mem = 0;
+        unsigned buffer_size;
+        key_t key;
+        int shmid; 
+        unsigned created_mem = 0;
 
-	if (0 != valid_id(id))
-	{
-		return -1;
-	}
+        if (0 != valid_id(id))
+        {
+                return -1;
+        }
 
-	if (0 != get_buffer_size(id, &buffer_size))
-	{
-		printf("In get_circular_buffer: ");
-		printf("error in call to get_buffer_size\n");
-		return -2;
-	}
+        if (0 != get_buffer_size(id, &buffer_size))
+        {
+                printf("In get_circular_buffer: ");
+                printf("error in call to get_buffer_size\n");
+                return -2;
+        }
 
-	/* create unique key via call to ftok */
-	key = ftok(SHARED_MEM_DIRECTORY, id);
+        /* create unique key via call to ftok */
+        key = ftok(SHARED_MEM_DIRECTORY, id);
 
-	/* open the shared memory segment -- create if necessary */
-	shmid = shmget(key, buffer_size, IPC_CREAT|IPC_EXCL|0666);
-	if (-1 == shmid)
-	{ 
-		shmid = shmget(key, buffer_size, 0);
-		/* segment probably already exists -- try as a client */
-		if (-1 == shmid)
-		{
-			perror("In get_circular_buffer");
-			return -3;
-		}
-	}
-	else
-	{
-		created_mem = 1;
-	}
+        /* open the shared memory segment -- create if necessary */
+        shmid = shmget(key, buffer_size, IPC_CREAT|IPC_EXCL|0666);
+        if (-1 == shmid)
+        { 
+                shmid = shmget(key, buffer_size, 0);
+                /* segment probably already exists -- try as a client */
+                if (-1 == shmid)
+                {
+                        perror("In get_circular_buffer");
+                        return -3;
+                }
+        }
+        else
+        {
+                created_mem = 1;
+        }
 
-	/* attach (map) the shared memory segment into the current
+        /* attach (map) the shared memory segment into the current
            process */
-	*circular_buffer = shmat(shmid, 0, 0);
+        *circular_buffer = shmat(shmid, 0, 0);
 
-	if (-1 == (int) *circular_buffer)
-	{
-		perror("In get_circular_buffer");
-		return -4;
-	}
+        if (-1 == (int) *circular_buffer)
+        {
+                perror("In get_circular_buffer");
+                return -4;
+        }
 
-	if (1 == created_mem)
-	{
-		bzero(*circular_buffer, buffer_size);
-		((circular_buffer_state_t *)
-		 *circular_buffer)->has_valid_entry = 0;
-	}
+        if (1 == created_mem)
+        {
+                bzero(*circular_buffer, buffer_size);
+                ((circular_buffer_state_t *)
+                 *circular_buffer)->has_valid_entry = 0;
+        }
 
-	return 0;
+        return 0;
 }
 
 /* -------------------------------------------------------------------
@@ -436,29 +436,29 @@ static int get_circular_buffer(void **circular_buffer,
  * ---------------------------------------------------------------- */
 
 static int init_circular_buffer(void **circular_buffer,
-				char id)
+                                char id)
 {
-	unsigned buffer_size;
+        unsigned buffer_size;
 
-	if (0 != valid_id(id))
-	{
-		return -1;
-	}
+        if (0 != valid_id(id))
+        {
+                return -1;
+        }
 
-	if (0 != get_buffer_size(id, &buffer_size))
-	{
-		return -2;
-	}
+        if (0 != get_buffer_size(id, &buffer_size))
+        {
+                return -2;
+        }
 
-	if (0 != get_circular_buffer(circular_buffer, id))
-	{
-		return -3;
-	}
+        if (0 != get_circular_buffer(circular_buffer, id))
+        {
+                return -3;
+        }
 
-	((circular_buffer_state_t *)
-	 *circular_buffer)->has_valid_entry = 0;
+        ((circular_buffer_state_t *)
+         *circular_buffer)->has_valid_entry = 0;
 
-	return 0;
+        return 0;
 }
 
 /* -------------------------------------------------------------------
@@ -527,61 +527,61 @@ static int init_circular_buffer(void **circular_buffer,
  * ---------------------------------------------------------------- */
 
 static int write_circular_buffer(void *circular_buffer,
-				 char id,
-				 void *data)
+                                 char id,
+                                 void *data)
 {
-	/* state of circular buffer: */
-	circular_buffer_state_t *state =
-		(circular_buffer_state_t *) circular_buffer;
+        /* state of circular buffer: */
+        circular_buffer_state_t *state =
+                (circular_buffer_state_t *) circular_buffer;
 
-	/* base of slots of circular buffer: */
-	void *slots_base =
-		circular_buffer + sizeof(circular_buffer_state_t);
+        /* base of slots of circular buffer: */
+        void *slots_base =
+                circular_buffer + sizeof(circular_buffer_state_t);
 
-	unsigned entry_size = 0; /* number of bytes to write */
+        unsigned entry_size = 0; /* number of bytes to write */
 
-	unsigned num_entries;
+        unsigned num_entries;
 
-	void *write_base; /* base address to write to */
+        void *write_base; /* base address to write to */
 
-	if (0 != valid_id(id))
-	{
-		return -1;
-	}
+        if (0 != valid_id(id))
+        {
+                return -1;
+        }
 
-	if (0 != get_entry_size(id, &entry_size))
-	{
-		printf("In write_circular_buffer: ");
-		printf("error in call to get_entry_size\n");
-		return -2;
-	}
+        if (0 != get_entry_size(id, &entry_size))
+        {
+                printf("In write_circular_buffer: ");
+                printf("error in call to get_entry_size\n");
+                return -2;
+        }
 
-	if (0 != get_num_entries(id, &num_entries))
-	{
-		printf("In write_circular_buffer: ");
-		printf("error in call to get_num_entries\n");
-		return -3;
-	}
+        if (0 != get_num_entries(id, &num_entries))
+        {
+                printf("In write_circular_buffer: ");
+                printf("error in call to get_num_entries\n");
+                return -3;
+        }
 
-	if (1 != state->has_valid_entry)
-	{
-		write_base = slots_base;
-		memcpy(write_base, data, entry_size);
-		state->begin = 0;
-		state->end = 0;
-		state->has_valid_entry = 1;
-		return 0;
-	}
+        if (1 != state->has_valid_entry)
+        {
+                write_base = slots_base;
+                memcpy(write_base, data, entry_size);
+                state->begin = 0;
+                state->end = 0;
+                state->has_valid_entry = 1;
+                return 0;
+        }
 
-	if ((state->end + 1) % num_entries == state->begin)
-	{
-		state->begin = (state->begin + 1) % num_entries;
-	}
-	write_base = slots_base +
-		(entry_size * ((state->end + 1) % num_entries));
-	memcpy(write_base, data, entry_size);
-	state->end = (state->end + 1) % num_entries;
-	return 0;
+        if ((state->end + 1) % num_entries == state->begin)
+        {
+                state->begin = (state->begin + 1) % num_entries;
+        }
+        write_base = slots_base +
+                (entry_size * ((state->end + 1) % num_entries));
+        memcpy(write_base, data, entry_size);
+        state->end = (state->end + 1) % num_entries;
+        return 0;
 }
 
 /* -------------------------------------------------------------------
@@ -614,41 +614,41 @@ static int write_circular_buffer(void *circular_buffer,
  * ---------------------------------------------------------------- */
 
 static int read_circular_buffer(void *circular_buffer,
-				char id,
-				void *data)
+                                char id,
+                                void *data)
 {
-	/* state of circular buffer: */
-	circular_buffer_state_t *state =
-		(circular_buffer_state_t *) circular_buffer;
+        /* state of circular buffer: */
+        circular_buffer_state_t *state =
+                (circular_buffer_state_t *) circular_buffer;
 
-	/* base of slots of circular buffer: */
-	void *slots_base =
-		circular_buffer + sizeof(circular_buffer_state_t);
+        /* base of slots of circular buffer: */
+        void *slots_base =
+                circular_buffer + sizeof(circular_buffer_state_t);
 
-	unsigned entry_size = 0; /* number of bytes to read */
+        unsigned entry_size = 0; /* number of bytes to read */
 
-	void *read_base; /* base address to read from */
+        void *read_base; /* base address to read from */
 
-	if (0 != valid_id(id))
-	{
-		return -1;
-	}
+        if (0 != valid_id(id))
+        {
+                return -1;
+        }
 
-	if (0 != get_entry_size(id, &entry_size))
-	{
-		printf("In read_circular_buffer: ");
-		printf("error in call to get_entry_size\n");
-		return -2;
-	}
+        if (0 != get_entry_size(id, &entry_size))
+        {
+                printf("In read_circular_buffer: ");
+                printf("error in call to get_entry_size\n");
+                return -2;
+        }
 
-	if (1 != state->has_valid_entry)
-	{
-		return -3;
-	}
+        if (1 != state->has_valid_entry)
+        {
+                return -3;
+        }
 
-	read_base = slots_base + (entry_size * state->end);
-	memcpy(data, read_base, entry_size);
-	return 0;
+        read_base = slots_base + (entry_size * state->end);
+        memcpy(data, read_base, entry_size);
+        return 0;
 }
 
 /* -------------------------------------------------------------------
@@ -700,59 +700,59 @@ static void *plant_inputs_buffer;
 #ifdef CONTROLLER
 int writer_init_gps_buffer(void)
 {
-	if (0 != init_circular_buffer(&gps_buffer,
-				      GPS_MESG_ID))
-	{
-		printf("In writer_init_gps_buffer: ");
-		printf("error in call to init_circular_buffer\n");
-		return ERROR;
-	}
+        if (0 != init_circular_buffer(&gps_buffer,
+                                      GPS_MESG_ID))
+        {
+                printf("In writer_init_gps_buffer: ");
+                printf("error in call to init_circular_buffer\n");
+                return ERROR;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
 #ifdef CONTROLLER
 int writer_init_ins_buffer(void)
 {
-	if (0 != init_circular_buffer(&ins_buffer,
-				      INS_MESG_ID))
-	{
-		printf("In writer_init_ins_buffer: ");
-		printf("error in call to init_circular_buffer\n");
-		return ERROR;
-	}
+        if (0 != init_circular_buffer(&ins_buffer,
+                                      INS_MESG_ID))
+        {
+                printf("In writer_init_ins_buffer: ");
+                printf("error in call to init_circular_buffer\n");
+                return ERROR;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
 #ifdef PLANT
 int writer_init_plant_outputs_buffer(void)
 {
-	if (0 != init_circular_buffer(&plant_outputs_buffer,
-				      PLANT_OUTPUTS_ID))
-	{
-		printf("In writer_init_plant_outputs_buffer: ");
-		printf("error in call to init_circular_buffer\n");
-		return ERROR;
-	}
+        if (0 != init_circular_buffer(&plant_outputs_buffer,
+                                      PLANT_OUTPUTS_ID))
+        {
+                printf("In writer_init_plant_outputs_buffer: ");
+                printf("error in call to init_circular_buffer\n");
+                return ERROR;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
 #ifdef PLANT
 int writer_init_plant_inputs_buffer(void)
 {
-	if (0 != init_circular_buffer(&plant_inputs_buffer,
-				      PLANT_INPUTS_ID))
-	{
-		printf("In writer_init_plant_inputs_buffer: ");
-		printf("error in call to init_circular_buffer\n");
-		return ERROR;
-	}
-	return OK;
+        if (0 != init_circular_buffer(&plant_inputs_buffer,
+                                      PLANT_INPUTS_ID))
+        {
+                printf("In writer_init_plant_inputs_buffer: ");
+                printf("error in call to init_circular_buffer\n");
+                return ERROR;
+        }
+        return OK;
 }
 #endif
 
@@ -781,60 +781,60 @@ int writer_init_plant_inputs_buffer(void)
 #ifdef CONTROLLER
 int reader_init_gps_buffer(void)
 {
-	if (0 != get_circular_buffer(&gps_buffer,
-				     GPS_MESG_ID))
-	{
-		printf("In reader_init_gps_buffer: ");
-		printf("error in call to get_circular_buffer\n");
-		return ERROR;
-	}
+        if (0 != get_circular_buffer(&gps_buffer,
+                                     GPS_MESG_ID))
+        {
+                printf("In reader_init_gps_buffer: ");
+                printf("error in call to get_circular_buffer\n");
+                return ERROR;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
 #ifdef CONTROLLER
 int reader_init_ins_buffer(void)
 {
-	if (0 != get_circular_buffer(&ins_buffer,
-				     INS_MESG_ID))
-	{
-		printf("In reader_init_ins_buffer: ");
-		printf("error in call to get_circular_buffer\n");
-		return ERROR;
-	}
+        if (0 != get_circular_buffer(&ins_buffer,
+                                     INS_MESG_ID))
+        {
+                printf("In reader_init_ins_buffer: ");
+                printf("error in call to get_circular_buffer\n");
+                return ERROR;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
 #ifdef PLANT
 int reader_init_plant_outputs_buffer(void)
 {
-	if (0 != get_circular_buffer(&plant_outputs_buffer,
-				     PLANT_OUTPUTS_ID))
-	{
-		printf("In reader_init_plant_outputs_buffer: ");
-		printf("error in call to get_circular_buffer\n");
-		return ERROR;
-	}
+        if (0 != get_circular_buffer(&plant_outputs_buffer,
+                                     PLANT_OUTPUTS_ID))
+        {
+                printf("In reader_init_plant_outputs_buffer: ");
+                printf("error in call to get_circular_buffer\n");
+                return ERROR;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
 #ifdef PLANT
 int reader_init_plant_inputs_buffer(void)
 {
-	if (0 != get_circular_buffer(&plant_inputs_buffer,
-				     PLANT_INPUTS_ID))
-	{
-		printf("In reader_init_plant_inputs_buffer: ");
-		printf("error in call to get_circular_buffer\n");
-		return ERROR;
-	}
+        if (0 != get_circular_buffer(&plant_inputs_buffer,
+                                     PLANT_INPUTS_ID))
+        {
+                printf("In reader_init_plant_inputs_buffer: ");
+                printf("error in call to get_circular_buffer\n");
+                return ERROR;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
@@ -863,64 +863,64 @@ int reader_init_plant_inputs_buffer(void)
 #ifdef CONTROLLER
 int write_gps_buffer(gps_mesg_t *data)
 {
-	if (0 != write_circular_buffer(gps_buffer,
-				       GPS_MESG_ID,
-				       data))
-	{
-		printf("In write_gps_buffer: ");
-		printf("error in call to write_circular_buffer\n");
-		return ERROR;
-	}
+        if (0 != write_circular_buffer(gps_buffer,
+                                       GPS_MESG_ID,
+                                       data))
+        {
+                printf("In write_gps_buffer: ");
+                printf("error in call to write_circular_buffer\n");
+                return ERROR;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
 #ifdef CONTROLLER
 int write_ins_buffer(ins_mesg_t *data)
 {
-	if (0 != write_circular_buffer(ins_buffer,
-				       INS_MESG_ID,
-				       data))
-	{
-		printf("In write_ins_buffer: ");
-		printf("error in call to write_circular_buffer\n");
-		return ERROR;
-	}
+        if (0 != write_circular_buffer(ins_buffer,
+                                       INS_MESG_ID,
+                                       data))
+        {
+                printf("In write_ins_buffer: ");
+                printf("error in call to write_circular_buffer\n");
+                return ERROR;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
 #ifdef PLANT
 int write_plant_outputs_buffer(plant_outputs_t *data)
 {
-	if (0 != write_circular_buffer(plant_outputs_buffer,
-				       PLANT_OUTPUTS_ID,
-				       data))
-	{
-		printf("In write_plant_outputs_buffer: ");
-		printf("error in call to write_circular_buffer\n");
-		return ERROR;
-	}
+        if (0 != write_circular_buffer(plant_outputs_buffer,
+                                       PLANT_OUTPUTS_ID,
+                                       data))
+        {
+                printf("In write_plant_outputs_buffer: ");
+                printf("error in call to write_circular_buffer\n");
+                return ERROR;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
 #ifdef PLANT
 int write_plant_inputs_buffer(plant_inputs_t *data)
 {
-	if (0 != write_circular_buffer(plant_inputs_buffer,
-				       PLANT_INPUTS_ID,
-				       data))
-	{
-		printf("In write_plant_inputs_buffer: ");
-		printf("error in call to write_circular_buffer\n");
-		return ERROR;
-	}
+        if (0 != write_circular_buffer(plant_inputs_buffer,
+                                       PLANT_INPUTS_ID,
+                                       data))
+        {
+                printf("In write_plant_inputs_buffer: ");
+                printf("error in call to write_circular_buffer\n");
+                return ERROR;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
@@ -953,92 +953,92 @@ int write_plant_inputs_buffer(plant_inputs_t *data)
 #ifdef CONTROLLER
 int read_gps_buffer(gps_mesg_t *data)
 {
-	int result = read_circular_buffer(gps_buffer,
-					  GPS_MESG_ID,
-					  data);
-	if (0 != result && -3 != result)
-	{
-		printf("In read_gps_buffer: ");
-		printf("error %d in call to read_circular_buffer\n",
-		       result);
-		return ERROR;
-	}
+        int result = read_circular_buffer(gps_buffer,
+                                          GPS_MESG_ID,
+                                          data);
+        if (0 != result && -3 != result)
+        {
+                printf("In read_gps_buffer: ");
+                printf("error %d in call to read_circular_buffer\n",
+                       result);
+                return ERROR;
+        }
 
-	if (-3 == result)
-	{
-		return NO_DATA;
-	}
+        if (-3 == result)
+        {
+                return NO_DATA;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
 #ifdef CONTROLLER
 int read_ins_buffer(ins_mesg_t *data)
 {
-	int result = read_circular_buffer(ins_buffer,
-					  INS_MESG_ID,
-					  data);
-	if (0 != result && -3 != result)
-	{
-		printf("In read_ins_buffer: ");
-		printf("error %d in call to read_circular_buffer\n",
-		       result);
-		return ERROR;
-	}
+        int result = read_circular_buffer(ins_buffer,
+                                          INS_MESG_ID,
+                                          data);
+        if (0 != result && -3 != result)
+        {
+                printf("In read_ins_buffer: ");
+                printf("error %d in call to read_circular_buffer\n",
+                       result);
+                return ERROR;
+        }
 
-	if (-3 == result)
-	{
-		return NO_DATA;
-	}
+        if (-3 == result)
+        {
+                return NO_DATA;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
 #ifdef PLANT
 int read_plant_outputs_buffer(plant_outputs_t *data)
 {
-	int result = read_circular_buffer(plant_outputs_buffer,
-					  PLANT_OUTPUTS_ID,
-					  data);
-	if (0 != result && -3 != result)
-	{
-		printf("In read_plant_outputs_buffer: ");
-		printf("error %d in call to read_circular_buffer\n",
-		       result);
-		return ERROR;
-	}
+        int result = read_circular_buffer(plant_outputs_buffer,
+                                          PLANT_OUTPUTS_ID,
+                                          data);
+        if (0 != result && -3 != result)
+        {
+                printf("In read_plant_outputs_buffer: ");
+                printf("error %d in call to read_circular_buffer\n",
+                       result);
+                return ERROR;
+        }
 
-	if (-3 == result)
-	{
-		return NO_DATA;
-	}
+        if (-3 == result)
+        {
+                return NO_DATA;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
 #ifdef PLANT
 int read_plant_inputs_buffer(plant_inputs_t *data)
 {
-	int result = read_circular_buffer(plant_inputs_buffer,
-					  PLANT_INPUTS_ID,
-					  data);
-	if (0 != result && -3 != result)
-	{
-		printf("In read_plant_inputs_buffer: ");
-		printf("error %d in call to read_circular_buffer\n",
-		       result);
-		return ERROR;
-	}
+        int result = read_circular_buffer(plant_inputs_buffer,
+                                          PLANT_INPUTS_ID,
+                                          data);
+        if (0 != result && -3 != result)
+        {
+                printf("In read_plant_inputs_buffer: ");
+                printf("error %d in call to read_circular_buffer\n",
+                       result);
+                return ERROR;
+        }
 
-	if (-3 == result)
-	{
-		return NO_DATA;
-	}
+        if (-3 == result)
+        {
+                return NO_DATA;
+        }
 
-	return OK;
+        return OK;
 }
 #endif
 
@@ -1056,96 +1056,96 @@ int read_plant_inputs_buffer(plant_inputs_t *data)
 /*
 int main(void)
 {
-	int i;
+        int i;
 
 #ifdef CONTROLLER
-	gps_mesg_t gps_mesg_write;
-	gps_mesg_t gps_mesg_read;
-	ins_mesg_t ins_mesg_write;
-	ins_mesg_t ins_mesg_read;
+        gps_mesg_t gps_mesg_write;
+        gps_mesg_t gps_mesg_read;
+        ins_mesg_t ins_mesg_write;
+        ins_mesg_t ins_mesg_read;
 
-	printf("writer_init_gps_buffer %d\n",
-	       writer_init_gps_buffer());
-	printf("writer_init_ins_buffer %d\n",
-	       writer_init_ins_buffer());
+        printf("writer_init_gps_buffer %d\n",
+               writer_init_gps_buffer());
+        printf("writer_init_ins_buffer %d\n",
+               writer_init_ins_buffer());
 
-	for (i=0; i<10; i++)
-	{
-		gps_mesg_write.this = i*2 + 0.0;
-		gps_mesg_write.that = i*2 + 1.0;
-		printf("write_gps_buffer %d\n",
-		       write_gps_buffer(&gps_mesg_write));
-		printf("read_gps_buffer %d\n",
-		       read_gps_buffer(&gps_mesg_read));
-		printf("%f %f\n",
-		       gps_mesg_read.this,
-		       gps_mesg_read.that);
-	}
+        for (i=0; i<10; i++)
+        {
+                gps_mesg_write.this = i*2 + 0.0;
+                gps_mesg_write.that = i*2 + 1.0;
+                printf("write_gps_buffer %d\n",
+                       write_gps_buffer(&gps_mesg_write));
+                printf("read_gps_buffer %d\n",
+                       read_gps_buffer(&gps_mesg_read));
+                printf("%f %f\n",
+                       gps_mesg_read.this,
+                       gps_mesg_read.that);
+        }
 
-	for (i=0; i<10; i++)
-	{
-		ins_mesg_write.yes = i*3 + 0.0;
-		ins_mesg_write.no = i*3 + 1.0;
-		ins_mesg_write.maybe = i*3 + 2.0;
-		printf("write_ins_buffer %d\n",
-		       write_ins_buffer(&ins_mesg_write));
-		printf("read_ins_buffer %d\n",
-		       read_ins_buffer(&ins_mesg_read));
-		printf("%f %f %f\n",
-		       ins_mesg_read.yes,
-		       ins_mesg_read.no,
-		       ins_mesg_read.maybe);
-	}
+        for (i=0; i<10; i++)
+        {
+                ins_mesg_write.yes = i*3 + 0.0;
+                ins_mesg_write.no = i*3 + 1.0;
+                ins_mesg_write.maybe = i*3 + 2.0;
+                printf("write_ins_buffer %d\n",
+                       write_ins_buffer(&ins_mesg_write));
+                printf("read_ins_buffer %d\n",
+                       read_ins_buffer(&ins_mesg_read));
+                printf("%f %f %f\n",
+                       ins_mesg_read.yes,
+                       ins_mesg_read.no,
+                       ins_mesg_read.maybe);
+        }
 #endif
 
 #ifdef PLANT
-	plant_outputs_t plant_outputs_write;
-	plant_outputs_t plant_outputs_read;
-	plant_inputs_t plant_inputs_write;
-	plant_inputs_t plant_inputs_read;
+        plant_outputs_t plant_outputs_write;
+        plant_outputs_t plant_outputs_read;
+        plant_inputs_t plant_inputs_write;
+        plant_inputs_t plant_inputs_read;
 
-	printf("writer_init_plant_outputs_buffer %d\n",
-	       writer_init_plant_outputs_buffer());
-	printf("writer_init_plant_inputs_buffer %d\n",
-	       writer_init_plant_inputs_buffer());
+        printf("writer_init_plant_outputs_buffer %d\n",
+               writer_init_plant_outputs_buffer());
+        printf("writer_init_plant_inputs_buffer %d\n",
+               writer_init_plant_inputs_buffer());
 
-	for (i=0; i<10; i++)
-	{
-		plant_outputs_write.fern = i*4 + 0.0;
-		plant_outputs_write.bush = i*4 + 1.0;
-		plant_outputs_write.rose = i*4 + 2.0;
-		plant_outputs_write.tree = i*4 + 3.0;
-		printf("write_plant_outputs_buffer %d\n",
-		       write_plant_outputs_buffer(&plant_outputs_write));
-		printf("read_plant_outputs_buffer %d\n",
-		       read_plant_outputs_buffer(&plant_outputs_read));
-		printf("%f %f %f %f\n",
-		       plant_outputs_read.fern,
-		       plant_outputs_read.bush,
-		       plant_outputs_read.rose,
-		       plant_outputs_read.tree);
-	}
+        for (i=0; i<10; i++)
+        {
+                plant_outputs_write.fern = i*4 + 0.0;
+                plant_outputs_write.bush = i*4 + 1.0;
+                plant_outputs_write.rose = i*4 + 2.0;
+                plant_outputs_write.tree = i*4 + 3.0;
+                printf("write_plant_outputs_buffer %d\n",
+                       write_plant_outputs_buffer(&plant_outputs_write));
+                printf("read_plant_outputs_buffer %d\n",
+                       read_plant_outputs_buffer(&plant_outputs_read));
+                printf("%f %f %f %f\n",
+                       plant_outputs_read.fern,
+                       plant_outputs_read.bush,
+                       plant_outputs_read.rose,
+                       plant_outputs_read.tree);
+        }
 
-	for (i=0; i<10; i++)
-	{
-		plant_inputs_write.daisy = i*5 + 0.0;
-		plant_inputs_write.lilly = i*5 + 1.0;
-		plant_inputs_write.holly = i*5 + 2.0;
-		plant_inputs_write.grass = i*5 + 3.0;
-		plant_inputs_write.shrub = i*5 + 4.0;
-		printf("write_plant_inputs_buffer %d\n",
-		       write_plant_inputs_buffer(&plant_inputs_write));
-		printf("read_plant_inputs_buffer %d\n",
-		       read_plant_inputs_buffer(&plant_inputs_read));
-		printf("%f %f %f %f %f\n",
-		       plant_inputs_read.daisy,
-		       plant_inputs_read.lilly,
-		       plant_inputs_read.holly,
-		       plant_inputs_read.grass,
-		       plant_inputs_read.shrub);
-	}
+        for (i=0; i<10; i++)
+        {
+                plant_inputs_write.daisy = i*5 + 0.0;
+                plant_inputs_write.lilly = i*5 + 1.0;
+                plant_inputs_write.holly = i*5 + 2.0;
+                plant_inputs_write.grass = i*5 + 3.0;
+                plant_inputs_write.shrub = i*5 + 4.0;
+                printf("write_plant_inputs_buffer %d\n",
+                       write_plant_inputs_buffer(&plant_inputs_write));
+                printf("read_plant_inputs_buffer %d\n",
+                       read_plant_inputs_buffer(&plant_inputs_read));
+                printf("%f %f %f %f %f\n",
+                       plant_inputs_read.daisy,
+                       plant_inputs_read.lilly,
+                       plant_inputs_read.holly,
+                       plant_inputs_read.grass,
+                       plant_inputs_read.shrub);
+        }
 #endif
 
-	return 0;
+        return 0;
 }
 */

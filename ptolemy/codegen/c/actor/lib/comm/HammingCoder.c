@@ -47,6 +47,6 @@ for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(order); $actorSymbol(i)
 
 //write
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $val(codedRate); $actorSymbol(i)++) {
-	$ref(output, $actorSymbol(i)) = $actorSymbol(result)[$actorSymbol(i)];
+        $ref(output, $actorSymbol(i)) = $actorSymbol(result)[$actorSymbol(i)];
 }
 /**/

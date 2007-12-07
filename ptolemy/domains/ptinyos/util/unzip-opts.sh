@@ -25,8 +25,8 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                                                 PT_COPYRIGHT_VERSION_2
+#                                                 COPYRIGHTENDKEY
 
 
 # FIXME: move this file to tinyos-1.x?

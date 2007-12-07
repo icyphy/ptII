@@ -64,7 +64,7 @@ Token String_add(Token thisToken, ...) {
     va_list argp; 
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
-	
+        
     char* result = (char*) malloc(sizeof(char) * (1 + strlen(thisToken.payload.String) + strlen(otherToken.payload.String)));
     strcpy(result, thisToken.payload.String);
     strcat(result, otherToken.payload.String);
@@ -89,7 +89,7 @@ Token String_add(Token thisToken, ...) {
 /***String_negate***/
 Token String_negate(Token thisToken, ...) {
     return emptyToken;
-}	
+}        
 /**/
 
 /***String_zero***/
@@ -115,7 +115,7 @@ Token String_clone(Token thisToken, ...) {
 /***String_convert***/
 Token String_convert(Token token, ...) {
     char* stringPointer;
-	
+        
     switch (token.type) {
 #ifdef TYPE_Boolean
     case TYPE_Boolean:

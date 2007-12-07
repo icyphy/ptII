@@ -198,7 +198,7 @@ if (($type(input) != TYPE_Array
     printf("\nTest $actorSymbol($channel) fails in interation %d.\n Value was: %s. Should have been within %f of: %s.\n",
             $actorSymbol(numberOfTokensSeen),
             $tokenFunc($ref(input#$channel)::toString()).payload.String,
-						$ref(tolerance),
+                                                $ref(tolerance),
             $tokenFunc($ref(correctValues, $actorSymbol(numberOfTokensSeen))::toString()).payload.String);
     exit(-1);
 }

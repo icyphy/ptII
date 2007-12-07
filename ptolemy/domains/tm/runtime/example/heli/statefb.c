@@ -70,81 +70,81 @@ void STATEFB_exec() {
 #define PI (3.14159265358)
 #define DOWN_BIAS (1.1) /* 1.125 */
 
-	iteration++;
+        iteration++;
 
-	if (iteration < UP_ITERATIONS)
-	{ /* go up */
-		desired_u =    0;
-		desired_w = -0.5;
-		desired_phi =    0;
-	}
-  	else if (iteration < UP_ITERATIONS + GO_ITERATIONS)
-	{ /* go north */
-		desired_u = 1;
-		desired_phi = 0;
-	}
-	else if (iteration < UP_ITERATIONS + GO_ITERATIONS + TURN_ITERATIONS)
-	{ /* turn west */
-		desired_u = 0;
-		desired_w = DOWN_BIAS;
-		/* phi starts at 0, ends at -0.5 * PI */
-		desired_phi = ((iteration-(UP_ITERATIONS + GO_ITERATIONS))/TURN_ITERATIONS) * -0.5 * PI;
-	}
-	else if (iteration < UP_ITERATIONS + 2*GO_ITERATIONS + TURN_ITERATIONS)
-	{ /* go west */
-		desired_u = 1;
-		desired_phi = -0.5 * PI;
-	}
-	else if (iteration < UP_ITERATIONS + 2*GO_ITERATIONS + 2*TURN_ITERATIONS)
-	{ /* turn south */
-		desired_u = 0;
-		desired_w = DOWN_BIAS;
-		/* phi starts at -0.5, ends at -1 * PI */
-		desired_phi = ((iteration-(UP_ITERATIONS + 2*GO_ITERATIONS + TURN_ITERATIONS))/TURN_ITERATIONS) * -0.5 * PI - 0.5 * PI;
-	}
-	else if (iteration < UP_ITERATIONS + 3*GO_ITERATIONS + 2*TURN_ITERATIONS)
-	{ /* go south */
-		desired_u = 1;
-		desired_phi = -1 * PI;
-	}
-	else if (iteration < UP_ITERATIONS + 3*GO_ITERATIONS + 3*TURN_ITERATIONS)
-	{ /* turn east */
-		desired_u = 0;
-		desired_w = DOWN_BIAS;
-		/* phi starts at -1.0, ends at -1.5 * PI */
-		desired_phi = ((iteration-(UP_ITERATIONS + 3*GO_ITERATIONS + 2*TURN_ITERATIONS))/TURN_ITERATIONS) * -0.5 * PI - 1.0 * PI;
-	}
-	else if (iteration < UP_ITERATIONS + 4*GO_ITERATIONS + 3*TURN_ITERATIONS)
-	{ /* go east */
-		desired_u = 1;
-		desired_phi = -1.5 * PI;
-	}
-	else if (iteration < UP_ITERATIONS + 4*GO_ITERATIONS + 4*TURN_ITERATIONS)
-	{ /* turn north */
-		desired_u = 0;
-		desired_w = DOWN_BIAS;
-		/* phi starts at -1.5, ends at -2.0 * PI */
-		desired_phi = ((iteration-(UP_ITERATIONS + 4*GO_ITERATIONS + 3*TURN_ITERATIONS))/TURN_ITERATIONS) * -0.5 * PI - 1.5 * PI;
-	}
-	else 
-	{
-		iteration = UP_ITERATIONS;
-	}
+        if (iteration < UP_ITERATIONS)
+        { /* go up */
+                desired_u =    0;
+                desired_w = -0.5;
+                desired_phi =    0;
+        }
+          else if (iteration < UP_ITERATIONS + GO_ITERATIONS)
+        { /* go north */
+                desired_u = 1;
+                desired_phi = 0;
+        }
+        else if (iteration < UP_ITERATIONS + GO_ITERATIONS + TURN_ITERATIONS)
+        { /* turn west */
+                desired_u = 0;
+                desired_w = DOWN_BIAS;
+                /* phi starts at 0, ends at -0.5 * PI */
+                desired_phi = ((iteration-(UP_ITERATIONS + GO_ITERATIONS))/TURN_ITERATIONS) * -0.5 * PI;
+        }
+        else if (iteration < UP_ITERATIONS + 2*GO_ITERATIONS + TURN_ITERATIONS)
+        { /* go west */
+                desired_u = 1;
+                desired_phi = -0.5 * PI;
+        }
+        else if (iteration < UP_ITERATIONS + 2*GO_ITERATIONS + 2*TURN_ITERATIONS)
+        { /* turn south */
+                desired_u = 0;
+                desired_w = DOWN_BIAS;
+                /* phi starts at -0.5, ends at -1 * PI */
+                desired_phi = ((iteration-(UP_ITERATIONS + 2*GO_ITERATIONS + TURN_ITERATIONS))/TURN_ITERATIONS) * -0.5 * PI - 0.5 * PI;
+        }
+        else if (iteration < UP_ITERATIONS + 3*GO_ITERATIONS + 2*TURN_ITERATIONS)
+        { /* go south */
+                desired_u = 1;
+                desired_phi = -1 * PI;
+        }
+        else if (iteration < UP_ITERATIONS + 3*GO_ITERATIONS + 3*TURN_ITERATIONS)
+        { /* turn east */
+                desired_u = 0;
+                desired_w = DOWN_BIAS;
+                /* phi starts at -1.0, ends at -1.5 * PI */
+                desired_phi = ((iteration-(UP_ITERATIONS + 3*GO_ITERATIONS + 2*TURN_ITERATIONS))/TURN_ITERATIONS) * -0.5 * PI - 1.0 * PI;
+        }
+        else if (iteration < UP_ITERATIONS + 4*GO_ITERATIONS + 3*TURN_ITERATIONS)
+        { /* go east */
+                desired_u = 1;
+                desired_phi = -1.5 * PI;
+        }
+        else if (iteration < UP_ITERATIONS + 4*GO_ITERATIONS + 4*TURN_ITERATIONS)
+        { /* turn north */
+                desired_u = 0;
+                desired_w = DOWN_BIAS;
+                /* phi starts at -1.5, ends at -2.0 * PI */
+                desired_phi = ((iteration-(UP_ITERATIONS + 4*GO_ITERATIONS + 3*TURN_ITERATIONS))/TURN_ITERATIONS) * -0.5 * PI - 1.5 * PI;
+        }
+        else 
+        {
+                iteration = UP_ITERATIONS;
+        }
 
-	desired_v = 0;
+        desired_v = 0;
 
-	y22 = fmod(desired_phi - y6 + PI, 2 * PI) - PI;
+        y22 = fmod(desired_phi - y6 + PI, 2 * PI) - PI;
 
-	STATEFB_local_output.v1 = 
+        STATEFB_local_output.v1 = 
           (-0.02  * desired_v  ) + ( 0.02  * y8) + ( 0.55 * y10);
         STATEFB_local_output.v2 =
           (-0.02  * desired_u  ) + ( 0.02  * y7) + (-0.55 * y11);
-	STATEFB_local_output.v3 = 
+        STATEFB_local_output.v3 = 
           ( 0.035 * desired_w  ) + (-0.035 * y9);
-	STATEFB_local_output.v4 = y22;
-	/* outputs->y22 = ( 1.0   * desired_phi) + (-1.0   * y6); */
+        STATEFB_local_output.v4 = y22;
+        /* outputs->y22 = ( 1.0   * desired_phi) + (-1.0   * y6); */
 
-	fprintf(stderr, "+");
+        fprintf(stderr, "+");
 }
 
 void STATEFB_stopExec() {

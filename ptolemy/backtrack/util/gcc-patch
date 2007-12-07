@@ -1,6 +1,6 @@
 diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.java
---- gcc/java/util/AbstractList.java	2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/AbstractList.java	2006-10-08 15:22:34.703125000 -0700
+--- gcc/java/util/AbstractList.java        2006-04-05 11:41:17.416728000 -0700
++++ gcc-patched/java/util/AbstractList.java        2006-10-08 15:22:34.703125000 -0700
 @@ -85,7 +85,7 @@
     * <code>add(int, Object)</code> and <code>remove(int)</code> methods.
     * Otherwise, this field may be ignored.
@@ -264,8 +264,8 @@ diff -dur gcc/java/util/AbstractList.java gcc-patched/java/util/AbstractList.jav
  
    /**
 diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
---- gcc/java/util/AbstractMap.java	2006-02-04 12:21:48.936339000 -0800
-+++ gcc-patched/java/util/AbstractMap.java	2006-10-08 15:23:25.796875000 -0700
+--- gcc/java/util/AbstractMap.java        2006-02-04 12:21:48.936339000 -0800
++++ gcc-patched/java/util/AbstractMap.java        2006-10-08 15:23:25.796875000 -0700
 @@ -75,13 +75,13 @@
    /**
     * The cache for {@link #keySet()}.
@@ -302,8 +302,8 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 +    if (getKeys() == null)
 +      setKeys(new AbstractSet()
        {
- 	/**
- 	 * Retrieves the number of keys in the backing map.
+         /**
+          * Retrieves the number of keys in the backing map.
 @@ -353,8 +353,8 @@
              }
            };
@@ -324,8 +324,8 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
 +    if (getValues() == null)
 +      setValues(new AbstractCollection()
        {
- 	/**
- 	 * Returns the number of values stored in
+         /**
+          * Returns the number of values stored in
 @@ -585,8 +585,8 @@
              }
            };
@@ -473,8 +473,8 @@ diff -dur gcc/java/util/AbstractMap.java gcc-patched/java/util/AbstractMap.java
    } // class BasicMapEntry
  }
 diff -dur gcc/java/util/ArrayList.java gcc-patched/java/util/ArrayList.java
---- gcc/java/util/ArrayList.java	2005-11-15 15:20:01.014789000 -0800
-+++ gcc-patched/java/util/ArrayList.java	2006-10-08 15:22:34.796875000 -0700
+--- gcc/java/util/ArrayList.java        2005-11-15 15:20:01.014789000 -0800
++++ gcc-patched/java/util/ArrayList.java        2006-10-08 15:22:34.796875000 -0700
 @@ -336,7 +336,7 @@
     */
    public boolean add(Object e)
@@ -548,8 +548,8 @@ diff -dur gcc/java/util/ArrayList.java gcc-patched/java/util/ArrayList.java
        if (c.contains(data[i]))
          data[j++] = data[i];
 diff -dur gcc/java/util/Collections.java gcc-patched/java/util/Collections.java
---- gcc/java/util/Collections.java	2006-02-04 12:21:48.936339000 -0800
-+++ gcc-patched/java/util/Collections.java	2006-10-08 15:22:58.968750000 -0700
+--- gcc/java/util/Collections.java        2006-02-04 12:21:48.936339000 -0800
++++ gcc-patched/java/util/Collections.java        2006-10-08 15:22:58.968750000 -0700
 @@ -1855,9 +1855,9 @@
       */
      public Set keySet()
@@ -577,8 +577,8 @@ diff -dur gcc/java/util/Collections.java gcc-patched/java/util/Collections.java
  
      /**
 diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
---- gcc/java/util/HashMap.java	2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/HashMap.java	2006-10-08 15:26:42.046875000 -0700
+--- gcc/java/util/HashMap.java        2006-04-05 11:41:17.416728000 -0700
++++ gcc-patched/java/util/HashMap.java        2006-10-08 15:26:42.046875000 -0700
 @@ -136,20 +136,20 @@
     * Array containing the actual key-value mappings.
     * Package visible for use by nested and subclasses.
@@ -935,9 +935,9 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
        {
 -        size++;
 +        setSize(getSize() + 1);
- 	Map.Entry e = (Map.Entry) itr.next();
- 	Object key = e.getKey();
- 	int idx = hash(key);
+         Map.Entry e = (Map.Entry) itr.next();
+         Object key = e.getKey();
+         int idx = hash(key);
 @@ -730,22 +738,22 @@
     */
    private void rehash()
@@ -1093,8 +1093,8 @@ diff -dur gcc/java/util/HashMap.java gcc-patched/java/util/HashMap.java
        knownMod++;
      }
 diff -dur gcc/java/util/HashSet.java gcc-patched/java/util/HashSet.java
---- gcc/java/util/HashSet.java	2005-09-23 10:31:48.000000000 -0700
-+++ gcc-patched/java/util/HashSet.java	2006-10-08 15:26:42.109375000 -0700
+--- gcc/java/util/HashSet.java        2005-09-23 10:31:48.000000000 -0700
++++ gcc-patched/java/util/HashSet.java        2006-10-08 15:26:42.109375000 -0700
 @@ -198,7 +198,7 @@
     */
    public boolean isEmpty()
@@ -1126,8 +1126,8 @@ diff -dur gcc/java/util/HashSet.java gcc-patched/java/util/HashSet.java
        s.writeObject(it.next());
    }
 diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
---- gcc/java/util/Hashtable.java	2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/Hashtable.java	2006-10-08 15:28:37.531250000 -0700
+--- gcc/java/util/Hashtable.java        2006-04-05 11:41:17.416728000 -0700
++++ gcc-patched/java/util/Hashtable.java        2006-10-08 15:28:37.531250000 -0700
 @@ -145,20 +145,20 @@
     * Array containing the actual key-value mappings.
     */
@@ -1459,14 +1459,14 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
        {
 -        size++;
 +        setSize(getSize() + 1);
- 	Map.Entry e = (Map.Entry) itr.next();
- 	Object key = e.getKey();
- 	int idx = hash(key);
- 	HashEntry he = new HashEntry(key, e.getValue());
--	he.next = buckets[idx];
--	buckets[idx] = he;
-+	he.setNext(getBuckets()[idx]);
-+	getBuckets()[idx] = he;
+         Map.Entry e = (Map.Entry) itr.next();
+         Object key = e.getKey();
+         int idx = hash(key);
+         HashEntry he = new HashEntry(key, e.getValue());
+-        he.next = buckets[idx];
+-        buckets[idx] = he;
++        he.setNext(getBuckets()[idx]);
++        getBuckets()[idx] = he;
        }
    }
  
@@ -1781,8 +1781,8 @@ diff -dur gcc/java/util/Hashtable.java gcc-patched/java/util/Hashtable.java
    } // class Enumerator
  } // class Hashtable
 diff -dur gcc/java/util/LinkedHashMap.java gcc-patched/java/util/LinkedHashMap.java
---- gcc/java/util/LinkedHashMap.java	2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/LinkedHashMap.java	2006-10-08 15:29:51.000000000 -0700
+--- gcc/java/util/LinkedHashMap.java        2006-04-05 11:41:17.416728000 -0700
++++ gcc-patched/java/util/LinkedHashMap.java        2006-10-08 15:29:51.000000000 -0700
 @@ -116,7 +116,7 @@
    /**
     * The oldest Entry to begin iteration at.
@@ -2081,8 +2081,8 @@ diff -dur gcc/java/util/LinkedHashMap.java gcc-patched/java/util/LinkedHashMap.j
 +}
  } // class LinkedHashMap
 diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
---- gcc/java/util/LinkedList.java	2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/LinkedList.java	2006-10-08 15:50:14.812500000 -0700
+--- gcc/java/util/LinkedList.java        2006-04-05 11:41:17.416728000 -0700
++++ gcc-patched/java/util/LinkedList.java        2006-10-08 15:50:14.812500000 -0700
 @@ -82,17 +82,17 @@
    /**
     * The first element in the list.
@@ -2796,8 +2796,8 @@ diff -dur gcc/java/util/LinkedList.java gcc-patched/java/util/LinkedList.java
    } // class LinkedListItr
  }
 diff -dur gcc/java/util/Stack.java gcc-patched/java/util/Stack.java
---- gcc/java/util/Stack.java	2005-09-23 10:31:48.000000000 -0700
-+++ gcc-patched/java/util/Stack.java	2006-10-08 15:53:37.875000000 -0700
+--- gcc/java/util/Stack.java        2005-09-23 10:31:48.000000000 -0700
++++ gcc-patched/java/util/Stack.java        2006-10-08 15:53:37.875000000 -0700
 @@ -103,14 +103,14 @@
     */
    public synchronized Object pop()
@@ -2854,8 +2854,8 @@ diff -dur gcc/java/util/Stack.java gcc-patched/java/util/Stack.java
    }
  }
 diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
---- gcc/java/util/TreeMap.java	2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/TreeMap.java	2006-10-08 15:51:54.015625000 -0700
+--- gcc/java/util/TreeMap.java        2006-04-05 11:41:17.416728000 -0700
++++ gcc-patched/java/util/TreeMap.java        2006-10-08 15:51:54.015625000 -0700
 @@ -122,9 +122,9 @@
    static
      {
@@ -3307,10 +3307,10 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
 @@ -854,7 +886,7 @@
      if (count == 0)
        {
- 	root = nil;
--	size = 0;
-+	setSize(0);
- 	return;
+         root = nil;
+-        size = 0;
++        setSize(0);
+         return;
        }
  
 @@ -865,7 +897,7 @@
@@ -3946,8 +3946,8 @@ diff -dur gcc/java/util/TreeMap.java gcc-patched/java/util/TreeMap.java
    } // class SubMap  
  } // class TreeMap
 diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
---- gcc/java/util/Vector.java	2005-09-23 14:31:04.000000000 -0700
-+++ gcc-patched/java/util/Vector.java	2006-10-08 15:53:37.921875000 -0700
+--- gcc/java/util/Vector.java        2005-09-23 14:31:04.000000000 -0700
++++ gcc-patched/java/util/Vector.java        2006-10-08 15:53:37.921875000 -0700
 @@ -93,14 +93,14 @@
     * in positions 0 through elementCount - 1, and all remaining slots are null.
     * @serial the elements
@@ -4362,11 +4362,11 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
      int end = index + csize;
 -    if (elementCount > 0 && index != elementCount)
 -      System.arraycopy(elementData, index,
--		       elementData, end, elementCount - index);
+-                       elementData, end, elementCount - index);
 -    elementCount += csize;
 +    if (getElementCount() > 0 && index != getElementCount())
 +      System.arraycopy(getElementData(), index,
-+		       getElementData(), end, getElementCount() - index);
++                       getElementData(), end, getElementCount() - index);
 +    setElementCount(getElementCount() + csize);
      for ( ; index < end; index++)
 -      elementData[index] = itr.next();
@@ -4445,8 +4445,8 @@ diff -dur gcc/java/util/Vector.java gcc-patched/java/util/Vector.java
 +
  }
 diff -dur gcc/java/util/WeakHashMap.java gcc-patched/java/util/WeakHashMap.java
---- gcc/java/util/WeakHashMap.java	2006-04-05 11:41:17.416728000 -0700
-+++ gcc-patched/java/util/WeakHashMap.java	2006-10-08 15:55:04.828125000 -0700
+--- gcc/java/util/WeakHashMap.java        2006-04-05 11:41:17.416728000 -0700
++++ gcc-patched/java/util/WeakHashMap.java        2006-10-08 15:55:04.828125000 -0700
 @@ -138,7 +138,7 @@
    /**
     * The number of entries in this hash map.

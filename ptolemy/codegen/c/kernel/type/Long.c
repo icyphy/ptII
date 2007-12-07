@@ -60,7 +60,7 @@ Token Long_add(Token thisToken, ...) {
 Token Long_subtract(Token thisToken, ...) {
     va_list argp; 
     va_start(argp, thisToken);
-    Token otherToken = va_arg(argp, Token);	
+    Token otherToken = va_arg(argp, Token);        
 
     va_end(argp);
     return Long_new(thisToken.payload.Long - otherToken.payload.Long);
@@ -74,7 +74,7 @@ Token Long_multiply(Token thisToken, ...) {
     Token otherToken;
 
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);	
+    otherToken = va_arg(argp, Token);        
 
     switch (otherToken.type) {
 #ifdef TYPE_Int
@@ -85,7 +85,7 @@ Token Long_multiply(Token thisToken, ...) {
     case TYPE_Long:
         result = Long_new(thisToken.payload.Long * otherToken.payload.Long);
         break;
-    		
+                    
 #ifdef TYPE_Double
     case TYPE_Double:
         result = Double_new(thisToken.payload.Long * otherToken.payload.Double);
@@ -107,7 +107,7 @@ Token Long_multiply(Token thisToken, ...) {
 Token Long_divide(Token thisToken, ...) {
     va_list argp; 
     va_start(argp, thisToken);
-    Token otherToken = va_arg(argp, Token);	
+    Token otherToken = va_arg(argp, Token);        
 
     va_end(argp);
     return Long_new(thisToken.payload.Long / otherToken.payload.Long);
@@ -150,7 +150,7 @@ Token Long_convert(Token token, ...) {
         token.payload.Long = DoubletoLong(token.payload.Double);
         break;
 #endif
-	
+        
         // FIXME: not finished
     default: 
         fprintf(stderr, "Long_convert(): Conversion from an unsupported type. (%d)\n", token.type);

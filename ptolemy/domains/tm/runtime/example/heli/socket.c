@@ -26,27 +26,27 @@
  * ---------------------------------------------------------------- */
 
 int udp_client_init(int *sock,
-		    struct sockaddr_in *address,
-		    char *ip,
-		    unsigned port)
+                    struct sockaddr_in *address,
+                    char *ip,
+                    unsigned port)
 {
-	bzero((char *) address, sizeof(struct sockaddr_in));
-	if (-1 == (*sock=socket(PF_INET, SOCK_DGRAM, 0)))
-	{
-		printf("In udp_client_init: ");
-		printf("error in call to socket\n");
-		return ERROR;
-	}
-	address->sin_family = PF_INET;
-	address->sin_port = htons(port);
-	if (-1 == (address->sin_addr.s_addr = inet_addr(ip)))
-	{
-		printf("In udp_client_init: ");
-		printf("invalid host %s\n", ip);
-		close(*sock);
-		return ERROR;
-	}
-	return OK;
+        bzero((char *) address, sizeof(struct sockaddr_in));
+        if (-1 == (*sock=socket(PF_INET, SOCK_DGRAM, 0)))
+        {
+                printf("In udp_client_init: ");
+                printf("error in call to socket\n");
+                return ERROR;
+        }
+        address->sin_family = PF_INET;
+        address->sin_port = htons(port);
+        if (-1 == (address->sin_addr.s_addr = inet_addr(ip)))
+        {
+                printf("In udp_client_init: ");
+                printf("invalid host %s\n", ip);
+                close(*sock);
+                return ERROR;
+        }
+        return OK;
 }
 
 /* -------------------------------------------------------------------
@@ -64,32 +64,32 @@ int udp_client_init(int *sock,
  * ---------------------------------------------------------------- */
 
 int udp_server_init(int *sock,
-		    unsigned port)
+                    unsigned port)
 {
-	struct sockaddr_in address;
-	*sock = socket(AF_INET, SOCK_DGRAM, 0);
-	if (-1 == *sock)
-	{
-		printf("In udp_server_init: ");
-		printf("error in call to socket\n");
-		return ERROR;
-	}
-	else
-	{
-		bzero((char *) &address, sizeof(address));
-		address.sin_family = AF_INET;
-		address.sin_addr.s_addr = htonl(INADDR_ANY);
-		address.sin_port = htons(port);
-		if (-1 == bind(*sock, (struct sockaddr *) &address,
-			       sizeof(address)))
-		{
-			printf("In udp_server_init: ");
-			printf("error in call to bind, ");
-			printf("errno = %d\n", errno);
-			return ERROR;
-		}
-	}
-	return OK;
+        struct sockaddr_in address;
+        *sock = socket(AF_INET, SOCK_DGRAM, 0);
+        if (-1 == *sock)
+        {
+                printf("In udp_server_init: ");
+                printf("error in call to socket\n");
+                return ERROR;
+        }
+        else
+        {
+                bzero((char *) &address, sizeof(address));
+                address.sin_family = AF_INET;
+                address.sin_addr.s_addr = htonl(INADDR_ANY);
+                address.sin_port = htons(port);
+                if (-1 == bind(*sock, (struct sockaddr *) &address,
+                               sizeof(address)))
+                {
+                        printf("In udp_server_init: ");
+                        printf("error in call to bind, ");
+                        printf("errno = %d\n", errno);
+                        return ERROR;
+                }
+        }
+        return OK;
 }
 
 /* -------------------------------------------------------------------
@@ -103,21 +103,21 @@ int udp_server_init(int *sock,
  * ---------------------------------------------------------------- */
 
 int udp_send(int sock,
-	     struct sockaddr_in *address,
-	     void *data,
-	     unsigned size)
+             struct sockaddr_in *address,
+             void *data,
+             unsigned size)
 {
-	if (-1 == sendto(sock,
-			 (caddr_t) data,
-			 size,
-			 0,
-			 (struct sockaddr *) address,
-			 sizeof(struct sockaddr_in)))
-	{
-		printf("In udp_send: error in call to sendto\n");
-		return ERROR;
-	}
-	return OK;
+        if (-1 == sendto(sock,
+                         (caddr_t) data,
+                         size,
+                         0,
+                         (struct sockaddr *) address,
+                         sizeof(struct sockaddr_in)))
+        {
+                printf("In udp_send: error in call to sendto\n");
+                return ERROR;
+        }
+        return OK;
 }
 
 /* -------------------------------------------------------------------
@@ -133,20 +133,20 @@ int udp_send(int sock,
  * ---------------------------------------------------------------- */
 
 int udp_receive(int sock,
-		void *data,
-		unsigned size)
+                void *data,
+                unsigned size)
 {
-	struct sockaddr_in address;
-	int len = sizeof(address);
-	if (-1 == recvfrom(sock,
-			   data,
-			   size,
-			   0,
-			   (struct sockaddr *) &address,
-			   &len))
-	{
-		printf("In udp_receive: error in call to recvfrom\n");
-		return ERROR;
-	}
-	return OK;
+        struct sockaddr_in address;
+        int len = sizeof(address);
+        if (-1 == recvfrom(sock,
+                           data,
+                           size,
+                           0,
+                           (struct sockaddr *) &address,
+                           &len))
+        {
+                printf("In udp_receive: error in call to recvfrom\n");
+                return ERROR;
+        }
+        return OK;
 }

@@ -15,7 +15,7 @@ tmpfile=/tmp/testpxgraph.$$
 # that we use tabs, spaces and commas to separate the values
 cat > $tmpfile <<EOF
 0  0
-1	1
+1        1
 2,2
 3 -0.2
 EOF

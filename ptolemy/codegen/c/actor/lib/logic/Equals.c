@@ -3,7 +3,7 @@ int $actorSymbol(i);
 /**/
 
 /*** fireBlockOpen ***/
-$ref(output) = true;	
+$ref(output) = true;        
 /**/
 
 /*** DoubleEqualsBlock ($channel0, $channel1) ***/

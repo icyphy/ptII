@@ -8,7 +8,7 @@ if ($ref(scaleOnLeft)) {
     $ref(output) = Scale_scaleOnLeft($ref(input), (double) $val(factor));
 } else {
     $ref(output) = Scale_scaleOnRight($ref(input), (double) $val(factor));
-}	
+}        
 /**/
 
 /***sharedScaleOnLeftBlock***/
@@ -17,7 +17,7 @@ Token Scale_scaleOnLeft(Token input, double factor) {
     Token result;
 
     if (input.type == TYPE_Array) {
-    	result = $new(Array(input.payload.Array->size, 0));
+            result = $new(Array(input.payload.Array->size, 0));
 
         for (i = 0; i < input.payload.Array->size; i++) {
             result.payload.Array->elements[i] = Scale_scaleOnLeft(Array_get(input, i), factor);
@@ -36,7 +36,7 @@ Token Scale_scaleOnRight(Token input, double factor) {
     Token result;
 
     if (input.type == TYPE_Array) {
-    	result = $new(Array(input.payload.Array->size, 0));
+            result = $new(Array(input.payload.Array->size, 0));
 
         for (i = 0; i < input.payload.Array->size; i++) {
             result.payload.Array->elements[i] = Scale_scaleOnRight(Array_get(input, i), factor);

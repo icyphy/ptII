@@ -24,8 +24,8 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 #
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                                                 PT_COPYRIGHT_VERSION_2
+#                                                 COPYRIGHTENDKEY
 
 
 # FIXME: move this file to tinyos-1.x?
@@ -56,17 +56,17 @@ OUTPUT_FILENAME=opts
 while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" -a $# -gt 0 ]; do
     case $1 in
         -h|-help|--help)
-	    shift    
-	    echo "$0: Usage: $0 -zip"
-	    echo "    Zip up the opts and opts-nolocalincludes files from the "
+            shift    
+            echo "$0: Usage: $0 -zip"
+            echo "    Zip up the opts and opts-nolocalincludes files from the "
             echo "    tinyos-1.x directory.  These files contain the necessary"
             echo "    compiler options for running nc2moml and ncapp2moml."
-	    echo "    Flags:"
-	    echo "        -zip Zip up the files."
+            echo "    Flags:"
+            echo "        -zip Zip up the files."
             echo ""
             echo "    Warning: this will delete and overwrite "
             echo "    $OUTPUT_DIR/$OUTPUT_FILENAME.tar.gz"
-	    exit 0
+            exit 0
             ;;
 
         -zip)
@@ -74,10 +74,10 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" -a $# -gt 0 ]; do
             ZIP=1
             continue
             ;;
-	*)
-	    echo "$0: Error: Don't understand '$1' argument, run with -h for help"
-	    exit 3
-	    ;;
+        *)
+            echo "$0: Error: Don't understand '$1' argument, run with -h for help"
+            exit 3
+            ;;
     esac
 done
 

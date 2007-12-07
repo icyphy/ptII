@@ -5,7 +5,7 @@ double DiscreteRandomSource_rand(double* seed, Token pmf, Token values) {
     int i;
     double randomValue;
     double cdf = 0.0;
-	    
+            
     // Generate a double between 0 and 1, uniformly distributed.
     randomValue = RandomSource_nextDouble(seed);
 

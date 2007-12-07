@@ -126,7 +126,7 @@ void $actorSymbol(mixaudio)(void *unused, Uint8 *stream, int len)
 #ifdef AudioPlayer_DEBUG
     fprintf(stdout, "*******************************mixaudio running (data_length= %d), (len= %d)\n", sounds[0].dataLength, len);
 #endif
-		    
+                    
     // mixing sound data into output stream
     for ( i=0; i<$val(channels); i++ ) {
         while ($actorSymbol(sounds)[i].dataLength > $actorSymbol(sounds)[i].dataPosition) {

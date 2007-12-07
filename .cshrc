@@ -11,64 +11,64 @@ if (! $?PTII ) setenv PTII $HOME
 
 # Try to set up for Java.
 if ( ! $?PTJAVA_HOME ) then
-	# Search the likely places
-	if ( ! $?PTJAVA_HOME && -d /usr/local/java) then
-		setenv PTJAVA_HOME /usr/local/java
-	endif
-	if ( ! $?PTJAVA_HOME && -d /vol/doppler/doppler2/tools/java/j2sdk1.4.1) then
-		setenv PTJAVA_HOME /vol/doppler/doppler2/tools/java/j2sdk1.4.1
-	endif
-	if ( ! $?PTJAVA_HOME && -d /usr/java ) then
-		setenv PTJAVA_HOME /usr/java
-	endif
-	if ( ! $?PTJAVA_HOME && -d /opt/java) then
-		setenv PTJAVA_HOME /opt/java
-	endif
+        # Search the likely places
+        if ( ! $?PTJAVA_HOME && -d /usr/local/java) then
+                setenv PTJAVA_HOME /usr/local/java
+        endif
+        if ( ! $?PTJAVA_HOME && -d /vol/doppler/doppler2/tools/java/j2sdk1.4.1) then
+                setenv PTJAVA_HOME /vol/doppler/doppler2/tools/java/j2sdk1.4.1
+        endif
+        if ( ! $?PTJAVA_HOME && -d /usr/java ) then
+                setenv PTJAVA_HOME /usr/java
+        endif
+        if ( ! $?PTJAVA_HOME && -d /opt/java) then
+                setenv PTJAVA_HOME /opt/java
+        endif
 endif
 
 set javapath
 if ( $?PTJAVA_HOME ) then
-	# The user has PTJAVA_HOME set, so they must know what they are doing.
-	set javapath=$PTJAVA_HOME/bin
-	if ( ! $?JAVAHOME ) then
-		setenv JAVAHOME $PTJAVA_HOME
-	endif
+        # The user has PTJAVA_HOME set, so they must know what they are doing.
+        set javapath=$PTJAVA_HOME/bin
+        if ( ! $?JAVAHOME ) then
+                setenv JAVAHOME $PTJAVA_HOME
+        endif
 endif
 
 # Path may need adjusting, especially for accessing X programs.
 set path = ( \
-	$PTII/bin \
-	$javapath \
-	$PTII/vendors/sun/JavaScope/bin \
-	/usr/X11/bin \
-	/usr/openwin/bin \
-	/usr/local/bin \
-	/opt/SUNWspro/bin \
-	/usr/ucb /usr/bin /bin \
-	/usr/bsd \
-	/usr/bin/X11 \
-	/users/ptdesign/gnu/sol2.5/bin \
-	/usr/ccs/bin \
-	/usr/sww/bin /usr/sww/X11/bin . )
+        $PTII/bin \
+        $javapath \
+        $PTII/vendors/sun/JavaScope/bin \
+        /usr/X11/bin \
+        /usr/openwin/bin \
+        /usr/local/bin \
+        /opt/SUNWspro/bin \
+        /usr/ucb /usr/bin /bin \
+        /usr/bsd \
+        /usr/bin/X11 \
+        /users/ptdesign/gnu/sol2.5/bin \
+        /usr/ccs/bin \
+        /usr/sww/bin /usr/sww/X11/bin . )
 
 if ($?prompt) then
-	# Set automatic file completion
-	set filec
-	set notify noclobber
-	set history=100
+        # Set automatic file completion
+        set filec
+        set notify noclobber
+        set history=100
 
-	set shorthost=` hostname | sed -e 's/\..*$//'`
-	# hppa does not seem to set $user
-	set myusername=`whoami`
-	set prompt="$myusername@$shorthost \!% "
+        set shorthost=` hostname | sed -e 's/\..*$//'`
+        # hppa does not seem to set $user
+        set myusername=`whoami`
+        set prompt="$myusername@$shorthost \!% "
 
-	# Useful on the hppa
-	unset autologout
+        # Useful on the hppa
+        unset autologout
 
-	# some useful aliases
-	alias ls ls -CF
-	alias h history
-	alias j jobs -l
+        # some useful aliases
+        alias ls ls -CF
+        alias h history
+        alias j jobs -l
 endif
 
 # This is required because of the upgrade to X11R5 on our system
@@ -83,5 +83,5 @@ setenv CVS_RSH ssh
 
 # Source UCB local modifications
 if (-r ~/ucb-.cshrc) then
-	source ~/ucb-.cshrc
+        source ~/ucb-.cshrc
 endif

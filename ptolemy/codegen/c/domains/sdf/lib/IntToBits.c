@@ -1,10 +1,10 @@
 /*** preinitBlock ***/
-	int $actorSymbol(i);
-	int $actorSymbol(integer);
+        int $actorSymbol(i);
+        int $actorSymbol(integer);
 /**/
 
 /*** fireBlock ***/
-		$actorSymbol(integer) = $ref(input);
+                $actorSymbol(integer) = $ref(input);
         if ($actorSymbol(integer) < 0) {
             $ref(output, 0) = true;
 

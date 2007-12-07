@@ -48,22 +48,22 @@
 
         for ($actorSymbol(i) = 0; $actorSymbol(i) < $val(numberToWrite); $actorSymbol(i)++) {
             if ($actorSymbol(i) > $actorSymbol(_highLimit)) {
-            	$ref(output, $actorSymbol(i)) = $actorSymbol(zero);
+                    $ref(output, $actorSymbol(i)) = $actorSymbol(zero);
                 //_buffer[i] = zero;
 
             } else if ($actorSymbol(i) < $actorSymbol(_lowLimit)) {
 
                 if ($val(usePastInputs)) {
-	            	$ref(output, $actorSymbol(i)) = $actorSymbol(_pastBuffer)[$actorSymbol(pastBufferIndex)++];
+                            $ref(output, $actorSymbol(i)) = $actorSymbol(_pastBuffer)[$actorSymbol(pastBufferIndex)++];
                     //_buffer[i] = _pastBuffer[pastBufferIndex++];
 
                 } else {
-	            	$ref(output, $actorSymbol(i)) = $actorSymbol(zero);
+                            $ref(output, $actorSymbol(i)) = $actorSymbol(zero);
                     //_buffer[i] = zero;
                 }
             } else {
                 // FIXME: This will access past samples...
-            	$ref(output, $actorSymbol(i)) = $ref(input, $actorSymbol(inputIndex));
+                    $ref(output, $actorSymbol(i)) = $ref(input, $actorSymbol(inputIndex));
                 //_buffer[i] = inBuffer[inputIndex];
 
                 $actorSymbol(inputIndex)++;
@@ -83,14 +83,14 @@
                 // Shift older data.
                 $actorSymbol(destination) = $val(offset) - $val(numberToRead);
                 
-				$targetType(input)_arraycopy($actorSymbol(_pastBuffer), $val(numberToRead), $actorSymbol(_pastBuffer), 0, $actorSymbol(destination));
+                                $targetType(input)_arraycopy($actorSymbol(_pastBuffer), $val(numberToRead), $actorSymbol(_pastBuffer), 0, $actorSymbol(destination));
                 //System.arraycopy(_pastBuffer, _numberToRead, _pastBuffer, 0, destination);
                 
                 $actorSymbol(startCopy) = 0;
                 $actorSymbol(length) = $val(numberToRead);
             }
 
-			$targetType(input)_arraycopy(&$ref(input), $actorSymbol(startCopy), $actorSymbol(_pastBuffer), $actorSymbol(destination), $actorSymbol(length));
+                        $targetType(input)_arraycopy(&$ref(input), $actorSymbol(startCopy), $actorSymbol(_pastBuffer), $actorSymbol(destination), $actorSymbol(length));
             //System.arraycopy(inBuffer, startCopy, _pastBuffer, destination, length);
         }
 /**/

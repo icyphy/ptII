@@ -4,9 +4,9 @@
 * Chip: ATmega16
 * Date: 3/30/2006
 * Purpose:
-*	This program was written for a wearable LED tank top.
-*	More information in game_of_life.c and at: 
-*	http://www.cs.colorado.edu/~buechley/diy/diy_tank.html
+*        This program was written for a wearable LED tank top.
+*        More information in game_of_life.c and at: 
+*        http://www.cs.colorado.edu/~buechley/diy/diy_tank.html
 * Copyright information: http://www.gnu.org/copyleft/gpl.html
 
 Copyright (C) 2006 Leah Buechley

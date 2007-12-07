@@ -1,6 +1,6 @@
 /*** preinitBlock ***/
-	int $actorSymbol(i);
-	int $actorSymbol(value);
+        int $actorSymbol(i);
+        int $actorSymbol(value);
 /**/
 
 /*** fireBlock ***/

@@ -60,6 +60,6 @@ if ($actorSymbol(eIndex) < $val(uncodedRate)) {
 
 //write
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $val(uncodedRate); $actorSymbol(i)++) {
-	$ref(output, $actorSymbol(i)) = $actorSymbol(result)[$actorSymbol(i)];
-}	
+        $ref(output, $actorSymbol(i)) = $actorSymbol(result)[$actorSymbol(i)];
+}        
 /**/

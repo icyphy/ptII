@@ -9,8 +9,8 @@
 
 typedef struct
 {
-	double this; /* fixme */
-	double that;
+        double this; /* fixme */
+        double that;
 }
 gps_mesg_t;
 

@@ -12,12 +12,12 @@
 
 typedef struct
 {
-	float y1;
-	float y2;
-	float y3;
-	float y4;
-	float y5;
-	float y6;
+        float y1;
+        float y2;
+        float y3;
+        float y4;
+        float y5;
+        float y6;
 }
 display_mesg_t;
 

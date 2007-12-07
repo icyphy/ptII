@@ -30,45 +30,45 @@ $ref(peakIndices) = $new(Array(0, 0));
             Array_set($ref(peakValues), $actorClass(i), Array_get($ref(input), $actorClass(i)));
             Array_set($ref(peakIndices), $actorClass(i), Array_get($ref(input), $actorClass(i)));
         }
-    } else {	
+    } else {        
         $actorClass(start) = $val(startIndex);
         $actorClass(end) = $val(endIndex);
 
-	    // Constrain start and end.
-	    if ($actorClass(end) >= $actorClass(inputSize)) {
-	        $actorClass(end) = $actorClass(inputSize) - 1;
-	    }
-	
-	    if ($actorClass(start) >= $actorClass(inputSize)) {
-	        $actorClass(start) = $actorClass(inputSize) - 1;
-	    }
-	
-	    if ($actorClass(end) < 0) {
-	        $actorClass(end) = 0;
-	    }
-	
-	    if ($actorClass(start) < 0) {
-	        $actorClass(start) = 0;
-	    }
-	
-	    $actorClass(increment) = 1;
-	
-	    if ($actorClass(end) < $actorClass(start)) {
-	        $actorClass(increment) = -1;
-	    }
-	
-	    $actorClass(searchValley) = false;
-	    $actorClass(searchPeak) = true;
-	
-	    $actorClass(localMaxIndex) = $actorClass(start);
-	    $actorClass(localMax) = Array_get($ref(input), $actorClass(start)).payload.Double;
-	    $actorClass(localMin) = $actorClass(localMax);
+            // Constrain start and end.
+            if ($actorClass(end) >= $actorClass(inputSize)) {
+                $actorClass(end) = $actorClass(inputSize) - 1;
+            }
+        
+            if ($actorClass(start) >= $actorClass(inputSize)) {
+                $actorClass(start) = $actorClass(inputSize) - 1;
+            }
+        
+            if ($actorClass(end) < 0) {
+                $actorClass(end) = 0;
+            }
+        
+            if ($actorClass(start) < 0) {
+                $actorClass(start) = 0;
+            }
+        
+            $actorClass(increment) = 1;
+        
+            if ($actorClass(end) < $actorClass(start)) {
+                $actorClass(increment) = -1;
+            }
+        
+            $actorClass(searchValley) = false;
+            $actorClass(searchPeak) = true;
+        
+            $actorClass(localMaxIndex) = $actorClass(start);
+            $actorClass(localMax) = Array_get($ref(input), $actorClass(start)).payload.Double;
+            $actorClass(localMin) = $actorClass(localMax);
         $actorClass(squelchValue) = $val(squelch);
-		
-	    // The following values change since they are relative to
-	    // most recently peaks or values.
-	    $actorClass(dipThreshold) = $val(dip);
-	    $actorClass(riseThreshold) = $val(dip);
+                
+            // The following values change since they are relative to
+            // most recently peaks or values.
+            $actorClass(dipThreshold) = $val(dip);
+            $actorClass(riseThreshold) = $val(dip);
 
         $this.fireBlock1_$scale($scale);
         $this.fireBlock2($scale);
@@ -91,7 +91,7 @@ $ref(peakIndices) = $new(Array(0, 0));
     $this.fireBlock1_ScaleNotAbsolute($scale);
 /**/        
 
-	
+        
 /*** fireBlock1_ScaleNotAbsolute($scale) ***/
     // Scale is relative so we adjust the thresholds.
     // Search for the global maximum value so squelch
@@ -127,15 +127,15 @@ $ref(peakIndices) = $new(Array(0, 0));
     $actorClass(dipThreshold) = $actorClass(localMax) - $val(dip);
     $actorClass(riseThreshold) = $actorClass(localMin) + $val(dip);
     $actorClass(squelchValue) = $actorClass(maxValue) - $actorClass(squelchValue);
-/**/	
-	
+/**/        
+        
 /*** fireBlock2 ($scale) ***/
-	    for ($actorClass(i) = $actorClass(start); $actorClass(i) <= $actorClass(end); $actorClass(i) += $actorClass(increment)) {
-	        $actorClass(indata) = Array_get($ref(input), $actorClass(i)).payload.Double;
+            for ($actorClass(i) = $actorClass(start); $actorClass(i) <= $actorClass(end); $actorClass(i) += $actorClass(increment)) {
+                $actorClass(indata) = Array_get($ref(input), $actorClass(i)).payload.Double;
 
-	        if ($actorClass(searchValley)) {
-	            if ($actorClass(indata) < $actorClass(localMin)) {
-	                $actorClass(localMin) = $actorClass(indata);
+                if ($actorClass(searchValley)) {
+                    if ($actorClass(indata) < $actorClass(localMin)) {
+                        $actorClass(localMin) = $actorClass(indata);
 
                     $this.fireBlock21_$scale();
                 }
@@ -190,11 +190,11 @@ $ref(peakIndices) = $new(Array(0, 0));
 /*** fireBlock21_RELATIVE_DB ***/
     $actorClass(riseThreshold) = $actorClass(localMin) * pow(10.0, ($val(dip) / 20));
 /**/
-	
+        
 /*** fireBlock21_RELATIVE_DB_POWER ***/
     $actorClass(riseThreshold) = $actorClass(localMin) * pow(10.0, ($val(dip) / 10));
 /**/
-	
+        
 /*** fireBlock21_RELATIVE_LINEAR ***/
     $actorClass(riseThreshold) = $actorClass(localMin) + $val(dip);
 /**/

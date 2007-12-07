@@ -11,7 +11,7 @@ for ($actorSymbol(i) = 0;
     Array_set($actorSymbol(valueArray),
             $actorSymbol(i),
             $ref((Token)input, $actorSymbol(i)));
-}	
+}        
 $ref(output) = 
         $actorSymbol(valueArray);
 /**/

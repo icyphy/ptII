@@ -26,7 +26,7 @@ Token Double_equals(Token thisToken, ...) {
     Token otherToken; 
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
-	
+        
     if (otherToken.type != TYPE_Double) {
         otherToken = Double_convert(otherToken);
     }
@@ -69,7 +69,7 @@ Token Double_add(Token thisToken, ...) {
     va_list argp; 
     Token otherToken;    
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);	
+    otherToken = va_arg(argp, Token);        
 
     va_end(argp);
     return Double_new(thisToken.payload.Double + otherToken.payload.Double);
@@ -82,7 +82,7 @@ Token Double_subtract(Token thisToken, ...) {
     Token otherToken;
     
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);	
+    otherToken = va_arg(argp, Token);        
 
     va_end(argp);
     return Double_new(thisToken.payload.Double - otherToken.payload.Double);
@@ -96,7 +96,7 @@ Token Double_multiply(Token thisToken, ...) {
     Token otherToken;
     
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);	
+    otherToken = va_arg(argp, Token);        
 
     switch (otherToken.type) {
     case TYPE_Double:
@@ -125,7 +125,7 @@ Token Double_divide(Token thisToken, ...) {
     Token otherToken;
     
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);	
+    otherToken = va_arg(argp, Token);        
 
     va_end(argp);
     return Double_new(thisToken.payload.Double / otherToken.payload.Double);

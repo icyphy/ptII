@@ -1,15 +1,15 @@
 /*** sharedBlock ***/
-	$super();
-	int $actorClass(j);
+        $super();
+        int $actorClass(j);
 /**/
 
 /*** initBlock ***/
-	$actorSymbol(_taps) = $typeFunc(TYPE_Array::clone($ref(taps)));
-	$super();
+        $actorSymbol(_taps) = $typeFunc(TYPE_Array::clone($ref(taps)));
+        $super();
 /**/
 
 /*** fireBlock ***/
-	$actorSymbol(_taps) = $ref(newTaps);
+        $actorSymbol(_taps) = $ref(newTaps);
     $super.reinitBlock();
 
     $super.fireBlock0();
