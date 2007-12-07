@@ -50,11 +50,11 @@ proc parseTreeTest {expression} {
 
 test CParseTreeCodeGenerator-1.1 {Simple tests of ParseTreeCodeGenerator} {
     parseTreeTest {1+3}
-} {(1+3)}
+} {{($add_Int_Int($convert_Int_Int(1), 3))}}
 
 test CParseTreeCodeGenerator-1.2 {A more complex example} {
     parseTreeTest {((3+4)+(1|2)+232)}
-} {((3+4)+(1|2)+232)}
+} {{($add_Int_Int($add_Int_Int($convert_Int_Int(($add_Int_Int($convert_Int_Int(3), 4))), (1|2)), 232))}}
 
 test CParseTreeCodeGenerator-2.1 {Define a variable in a regular parse tree } {
     # This test uses the regular (non codegen) parse tree
@@ -98,7 +98,7 @@ test CParseTreeCodeGenerator-10.1 {traceParseTreeEvaluation} {
   Entering node ptolemy.data.expr.ASTPtLeafNode
   Node ptolemy.data.expr.ASTPtLeafNode evaluated to 1
 Node ptolemy.data.expr.ASTPtSumNode evaluated to 10
-} (10+1)}
+} {($add_null_null($convert_null_null(10), 1))}}
 
 test CParseTreeCodeGenerator-11.1 {visitFunctionDefinitionNode} {
     parseTreeTraceTest {function(x:double) x*5.0}
