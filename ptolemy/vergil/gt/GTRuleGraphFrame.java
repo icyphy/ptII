@@ -586,7 +586,15 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
         panel.setName("Correspondence");
 
         _tableModel = new DefaultTableModel(new Object[] { "",
-                "Pattern Entity", "Replacement Entity" }, 0);
+                "Pattern Entity", "Replacement Entity" }, 0) {
+            public boolean isCellEditable(int row, int column) {
+                if (column == 0) {
+                    return false;
+                } else {
+                    return super.isCellEditable(row, column);
+                }
+            }
+        };
 
         _table = new JTable(_tableModel);
         _table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
