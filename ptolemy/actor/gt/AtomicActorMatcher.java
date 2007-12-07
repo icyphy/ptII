@@ -140,10 +140,6 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
         return _labelSet;
     }
 
-    private long _version = -1;
-
-    Set<String> _labelSet;
-
     public void updateAppearance(GTIngredientsAttribute attribute) {
 
         try {
@@ -181,7 +177,7 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
                     final String superclass = criterion.getSuperclass();
                     requestChange(new ChangeRequest(this,
                             "Deferred load actor icon action.") {
-                        protected void _execute() {
+                        protected void _execute() throws Exception {
                             _loadActorIcon(superclass);
                         }
                     });
@@ -266,24 +262,28 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
 
     public PatternObjectAttribute patternObject;
 
-    private void _loadActorIcon(String actorClassName) {
+    Set<String> _labelSet;
+
+    private void _loadActorIcon(String actorClassName) throws Exception {
         CompositeActor container = new CompositeActor();
         String moml = "<group><entity name=\"NewActor\" class=\""
                 + actorClassName + "\"/></group>";
 
-        container.requestChange(new MoMLChangeRequest(this, container, moml));
-        container.requestChange(new LoadActorIconChangeRequest(container));
-    }
-
-    private void _removeEditorIcons() {
-        for (Object editorIconObject : attributeList(EditorIcon.class)) {
-            EditorIcon editorIcon = (EditorIcon) editorIconObject;
-            GTTools.getDeletionChangeRequest(this, editorIcon).execute();
+        try {
+            new MoMLChangeRequest(this, container, moml).execute();
+            new LoadActorIconChangeRequest(container).execute();
+        } catch (Throwable t) {
+            _removeEditorIcons();
+            _setIconDescription(_ICON_DESCRIPTION);
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
+    private void _removeEditorIcons() throws KernelException {
+        for (Object editorIconObject : attributeList(EditorIcon.class)) {
+            EditorIcon editorIcon = (EditorIcon) editorIconObject;
+            editorIcon.setContainer(null);
+        }
+    }
 
     private void _setIconDescription(String iconDescription) {
         String moml = "<property name=\"_iconDescription\" class="
@@ -293,6 +293,9 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
         MoMLChangeRequest request = new MoMLChangeRequest(this, this, moml);
         request.execute();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
 
     private static final String _ICON_DESCRIPTION = "<svg>"
             + "<rect x=\"0\" y=\"0\" width=\"60\" height=\"40\""
@@ -310,6 +313,8 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
             + "  style=\"font-size:12; fill:#E00000; font-family:SansSerif\">"
             + "  match</text>" + "</svg>";
 
+    private long _version = -1;
+
     private class LoadActorIconChangeRequest extends ChangeRequest {
 
         public LoadActorIconChangeRequest(CompositeEntity container) {
@@ -318,34 +323,29 @@ public class AtomicActorMatcher extends TypedAtomicActor implements GTEntity,
             _container = container;
         }
 
-        protected void _execute() {
-            try {
-                ComponentEntity actor = (ComponentEntity) _container
-                        .entityList().get(0);
+        protected void _execute() throws Exception {
+            ComponentEntity actor = (ComponentEntity) _container.entityList()
+                    .get(0);
 
-                _removeEditorIcons();
+            _removeEditorIcons();
 
-                ConfigurableAttribute actorAttribute = (ConfigurableAttribute) actor
-                        .getAttribute("_iconDescription");
-                String iconDescription = actorAttribute.getConfigureText();
-                _setIconDescription(iconDescription);
+            ConfigurableAttribute actorAttribute = (ConfigurableAttribute) actor
+                    .getAttribute("_iconDescription");
+            String iconDescription = actorAttribute.getConfigureText();
+            _setIconDescription(iconDescription);
 
-                List<?> editorIconList = actor.attributeList(EditorIcon.class);
+            List<?> editorIconList = actor.attributeList(EditorIcon.class);
 
-                for (Object editorIconObject : editorIconList) {
-                    EditorIcon editorIcon = (EditorIcon) editorIconObject;
-                    editorIcon.setName("_icon");
-                    String iconMoML = editorIcon.exportMoML();
-                    new MoMLChangeRequest(this, AtomicActorMatcher.this,
-                            iconMoML).execute();
-                    break;
+            for (Object editorIconObject : editorIconList) {
+                EditorIcon editorIcon = (EditorIcon) editorIconObject;
+                EditorIcon icon = (EditorIcon) editorIcon.clone(workspace());
+                icon.setName("_icon");
+                EditorIcon oldIcon = (EditorIcon) getAttribute("_icon");
+                if (oldIcon != null) {
+                    oldIcon.setContainer(null);
                 }
-            } catch (Exception e) {
-                // Catches exceptions like KernelException,
-                //     NullPointerException, IndexOutOfBoundsException, etc.
-                // Rerestore the actor's original appearance.
-                _removeEditorIcons();
-                _setIconDescription(_ICON_DESCRIPTION);
+                icon.setContainer(AtomicActorMatcher.this);
+                break;
             }
         }
 
