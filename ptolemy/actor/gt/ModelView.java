@@ -101,6 +101,7 @@ public class ModelView extends Sink implements WindowListener {
     public void fire() throws IllegalActionException {
         super.fire();
 
+        title.update();
         String titleValue = ((StringToken) title.getToken()).stringValue();
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
