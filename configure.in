@@ -334,7 +334,6 @@ changequote([, ])dnl
 AC_MSG_CHECKING([for the java runtime in $PTJAVA_DIR/bin])
 if test -f "$PTJAVA_DIR/bin/java" -o -f "$PTJAVA_DIR/bin/java.exe"; then
     PT_MSG_RESULT($PTJAVA_DIR/bin/java)
-    AC_MSG_CHECKING([that you have the right java in your path.])
     AC_PATH_PROG(JAVA, java)
     if test "$PTJAVA_DIR/bin/java" = "$JAVA"; then
 	PT_MSG_RESULT([    You have the right java in your path,
@@ -362,7 +361,6 @@ fi
 AC_MSG_CHECKING([for the java compiler in $PTJAVA_DIR/bin])
 if test -f "$PTJAVA_DIR/bin/javac"; then
     PT_MSG_RESULT($PTJAVA_DIR/bin/javac)
-    AC_MSG_CHECKING([that you have the right javac in your path.])
     AC_PATH_PROG(JAVAC, javac)
     if test ! -x "$JAVAC"; then
 	AC_MSG_WARN([Failed to find the 'javac' command in your path.
@@ -1215,7 +1213,11 @@ changequote([, ])dnl
 	    eclipsejarpath=
 	    for jar in $jars
 	    do
-	        echo $ECHO_N "$jar "
+	    	if test "${PTVERBOSE:-none}" = "none"; then
+	            echo $ECHO_N "."
+	        else
+                    echo $ECHO_N "$jar "
+                fi
 	        jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
    	        if test -f "$jarpath"; then
                     # Keep track of the jars so we can use them while building
@@ -1230,24 +1232,6 @@ changequote([, ])dnl
  	        else   
 		    AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
 	            eclipsejarpath=
-		    break
-	        fi
-	    done	
-
-	    # Get the plugin jar files for use with javadoc in $PTII/doc
-	    AC_MSG_CHECKING([for jars used by eclipse plugin])
-	docjars="eclipse.core.commands_ eclipse.equinox.registry_ eclipse.jface_ eclipse.jface.text_ eclipse.swt.win32.win32.x86_ eclipse.ui.workbench_ eclipse.ui.workbench.texteditor_ eclipse.ui.console_ eclipse.ui.editors_ eclipse.text_ eclipse.ui.forms_ eclipse.ui.ide_ eclipse.jdt.ui_"
-	    PTBACKTRACK_ECLIPSE_DOC_JARS=
-	    for jar in $docjars
-	    do
-	        echo $ECHO_N "$jar "
-	        jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
-   	        if test -f "$jarpath"; then
-	            # Keep track of the jars so we can use them while building
-		    # with make.
-	            PTBACKTRACK_ECLIPSE_DOC_JARS="$PTBACKTRACK_ECLIPSE_DOC_JARS$CLASSPATHSEPARATOR$jarpath"
- 	        else   
-		    AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
 		    break
 	        fi
 	    done	
@@ -1273,7 +1257,37 @@ changequote([, ])dnl
                     eclipsejarpath=
                 fi
 	        cd "$startdir"
-            fi
+
+	        # Get the plugin jar files for use with javadoc in $PTII/doc
+	        AC_MSG_CHECKING([for Eclipse jars used with javadoc])
+	        docjars="eclipse.core.commands_ eclipse.equinox.registry_ eclipse.jface_ eclipse.jface.text_ eclipse.swt.win32.win32.x86_ eclipse.ui.workbench_ eclipse.ui.workbench.texteditor_ eclipse.ui.console_ eclipse.ui.editors_ eclipse.text_ eclipse.ui.forms_ eclipse.ui.ide_ eclipse.jdt.ui_"
+	        PTBACKTRACK_ECLIPSE_DOC_JARS=
+	        for jar in $docjars
+	        do
+	    	    if test "${PTVERBOSE:-none}" = "none"; then
+	                echo $ECHO_N "."
+	            else
+                        echo $ECHO_N "$jar "
+                    fi
+	            jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
+   	            if test -f "$jarpath"; then
+	                # Keep track of the jars so we can use them while
+		        # building with make.
+	                PTBACKTRACK_ECLIPSE_DOC_JARS="$PTBACKTRACK_ECLIPSE_DOC_JARS$CLASSPATHSEPARATOR$jarpath"
+ 	            else   
+		        AC_MSG_WARN([Failed to find $jar in $ECLIPSE_DIR: $jarpath])
+			failedToFindEclipseDocJars=1
+		        break
+	            fi
+	        done	
+                if test ! -z "$PTBACKTRACK_ECLIPSE_DOC_JARS" -a -z "$failedToFindEclipseDocJars"; then 
+                    PT_MSG_RESULT([ok])
+                else 
+                    AC_MSG_WARN([Failed to find Eclipse jar file for docs.
+    As a result, building the javadoc documentation might show warnings.])
+                fi
+             fi
+
         fi	
         if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
             AC_MSG_WARN([Failed to find Eclipse
@@ -2146,7 +2160,11 @@ else
 	jinijarpath=
 	for jar in $JINI_JARS
 	do 
-	    echo $ECHO_N "$jar "
+	    if test "${PTVERBOSE:-none}" = "none"; then
+	        echo $ECHO_N "."
+	    else
+                echo $ECHO_N "$jar "
+            fi
 	    jarpath=`$FIND "$JINI_DIR" -name $jar | head -1`
    	    if test -f "$jarpath"; then
   	        jinijarpath="$jinijarpath$CLASSPATHSEPARATOR$jarpath"
