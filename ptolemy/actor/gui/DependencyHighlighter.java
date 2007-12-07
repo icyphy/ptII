@@ -97,7 +97,7 @@ public class DependencyHighlighter extends NodeControllerFactory {
                 "rectangle");
         rectangle.width.setExpression("155.0");
         rectangle.height.setExpression("20.0");
-        rectangle.fillColor.setExpression("{1.0,0.7,0.7,1.0}");
+        rectangle.fillColor.setExpression("{1.0, 0.7, 0.7, 1.0}");
 
         Location _location = new Location(rectangle, "_location");
         _location.setExpression("-5.0, -15.0");
