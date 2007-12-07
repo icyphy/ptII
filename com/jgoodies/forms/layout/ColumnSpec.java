@@ -51,7 +51,7 @@ import java.util.StringTokenizer;
  * The {@link com.jgoodies.forms.factories.FormFactory} provides
  * predefined frequently used ColumnSpec instances.
  *
- * @author	Karsten Lentzsch
+ * @author        Karsten Lentzsch
  * @version $Revision$
  * 
  * @see     com.jgoodies.forms.factories.FormFactory
@@ -126,7 +126,7 @@ public final class ColumnSpec extends FormSpec {
      * Constructs a ColumnSpec from the specified encoded description. 
      * The description will be parsed to set initial values.
      * 
-     * @param encodedDescription	the encoded description
+     * @param encodedDescription        the encoded description
      */
     public ColumnSpec(String encodedDescription) {
         super(DEFAULT, encodedDescription);

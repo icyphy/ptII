@@ -55,11 +55,11 @@ import com.jgoodies.forms.layout.FormLayout;
  * <tt>&quot;Save&nbsp;&amp;as&quot</tt>. To use the ampersand itself, 
  * duplicate it, for example <tt>&quot;Look&amp;&amp;Feel&quot</tt>.<p>
  * 
- * @author	Karsten Lentzsch
+ * @author        Karsten Lentzsch
  * @version $Revision$
  * @since 1.0.3
  * 
- * @see	ResourceBundle
+ * @see        ResourceBundle
  */
 public class I15dPanelBuilder extends PanelBuilder {
 
@@ -117,8 +117,8 @@ public class I15dPanelBuilder extends PanelBuilder {
      * Adds an internationalized (i15d) textual label to the form using the
      * specified constraints.
      * 
-     * @param resourceKey	the resource key for the label's text 
-     * @param constraints	the label's cell constraints
+     * @param resourceKey        the resource key for the label's text 
+     * @param constraints        the label's cell constraints
      * @return the added label
      */
     public final JLabel addI15dLabel(String resourceKey,

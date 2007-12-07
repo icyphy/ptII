@@ -51,7 +51,7 @@ import java.util.StringTokenizer;
  * The {@link com.jgoodies.forms.factories.FormFactory} provides
  * predefined frequently used RowSpec instances.
  *
- * @author	Karsten Lentzsch
+ * @author        Karsten Lentzsch
  * @version $Revision$
  * 
  * @see     com.jgoodies.forms.factories.FormFactory
@@ -121,7 +121,7 @@ public final class RowSpec extends FormSpec {
      * Constructs a RowSpec from the specified encoded
      * description. The description will be parsed to set initial values.
      * 
-     * @param encodedDescription	the encoded description
+     * @param encodedDescription        the encoded description
      */
     public RowSpec(String encodedDescription) {
         super(DEFAULT, encodedDescription);

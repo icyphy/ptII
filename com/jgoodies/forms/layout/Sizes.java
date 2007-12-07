@@ -128,7 +128,7 @@ public final class Sizes {
      * given encoded size and unit description.
      * 
      * @param encodedValueAndUnit  value and unit in string representation
-     * @param horizontal			true for horizontal, false for vertical
+     * @param horizontal                        true for horizontal, false for vertical
      * @return a <code>ConstantSize</code> for the given value and unit
      */
     public static ConstantSize constant(String encodedValueAndUnit,
@@ -140,7 +140,7 @@ public final class Sizes {
      * Creates and returns a ConstantSize for the specified value
      * in horizontal dialog units.
      * 
-     * @param value	size value in horizontal dialog units	
+     * @param value        size value in horizontal dialog units        
      * @return the associated <code>ConstantSize</code>
      */
     public static ConstantSize dluX(int value) {
@@ -151,7 +151,7 @@ public final class Sizes {
      * Creates and returns a ConstantSize for the specified value
      * in vertical dialog units.
      * 
-     * @param value 	size value in vertical dialog units   
+     * @param value         size value in vertical dialog units   
      * @return the associated <code>ConstantSize</code>
      */
     public static ConstantSize dluY(int value) {
@@ -173,9 +173,9 @@ public final class Sizes {
      * Creates and returns a BoundedSize for the given basis
      * using the specified lower and upper bounds.
      * 
-     * @param basis  		the base size
-     * @param lowerBound  	the lower bound size
-     * @param upperBound  	the upper bound size
+     * @param basis                  the base size
+     * @param lowerBound          the lower bound size
+     * @param upperBound          the upper bound size
      * @return a <code>BoundedSize</code> for the given basis and bounds
      * @exception NullPointerException if basis is null
      */
@@ -200,7 +200,7 @@ public final class Sizes {
      * Converts Millimeters and returns pixels using the resolution of the
      * given component's graphics object.
      * 
-     * @param mm	        Millimeters
+     * @param mm                Millimeters
      * @param component    the component that provides the graphics object
      * @return the given Millimeters as pixels
      */
@@ -213,7 +213,7 @@ public final class Sizes {
      * Converts Centimeters and returns pixels using the resolution of the
      * given component's graphics object.
      * 
-     * @param cm	        Centimeters
+     * @param cm                Centimeters
      * @param component    the component that provides the graphics object
      * @return the given Centimeters as pixels
      */
@@ -226,7 +226,7 @@ public final class Sizes {
      * Converts DTP Points and returns pixels using the resolution of the
      * given component's graphics object.
      * 
-     * @param pt	        DTP Points
+     * @param pt                DTP Points
      * @param component    the component that provides the graphics object
      * @return the given Points as pixels
      */
@@ -303,7 +303,7 @@ public final class Sizes {
         /**
          * Returns an instance of <code>ComponentSize</code> that corresponds
          * to the specified string.
-         * @param str   		the encoded component size
+         * @param str                   the encoded component size
          * @return the corresponding ComponentSize or null if none matches
          */
         static ComponentSize valueOf(String str) {

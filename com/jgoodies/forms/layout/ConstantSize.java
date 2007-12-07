@@ -69,8 +69,8 @@ import java.util.Locale;
  * @author Karsten Lentzsch
  * @version $Revision$
  * 
- * @see	Size
- * @see	Sizes
+ * @see        Size
+ * @see        Sizes
  */
 
 public final class ConstantSize implements Size, Serializable {
@@ -110,8 +110,8 @@ public final class ConstantSize implements Size, Serializable {
      * Constructs an instance of <code>ConstantSize</code> from the given
      * encoded size and unit description.
      * 
-     * @param value	the size value interpreted in the given units
-     * @param unit		the size's unit
+     * @param value        the size value interpreted in the given units
+     * @param unit                the size's unit
      */
     ConstantSize(int value, Unit unit) {
         this.value = value;
@@ -135,7 +135,7 @@ public final class ConstantSize implements Size, Serializable {
      * encoded size and unit description.
      * 
      * @param encodedValueAndUnit  the size's value and unit as string
-     * @param horizontal			true for horizontal, false for vertical
+     * @param horizontal                        true for horizontal, false for vertical
      * @return a constant size for the given encoding and unit description
      * @exception IllegalArgumentException   if the unit requires integer
      *    but the value is not an integer
@@ -158,7 +158,7 @@ public final class ConstantSize implements Size, Serializable {
      * Returns an instance of <code>Size</code> for the specified value
      * in horizontal dialog units.
      * 
-     * @param value	size value in horizontal dialog units	
+     * @param value        size value in horizontal dialog units        
      * @return the associated Size instance
      */
     static ConstantSize dluX(int value) {

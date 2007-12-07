@@ -103,7 +103,7 @@ public abstract class AbstractUnitConverter implements UnitConverter {
      * Honors the resolution, dialog font size, platform, and l&amp;f.
      * 
      * @param dluX  the horizontal dialog units
-     * @param c 	a Component that provides the font and graphics
+     * @param c         a Component that provides the font and graphics
      * @return the given horizontal dialog units as pixels
      */
     public int dialogUnitXAsPixel(int dluX, Component c) {

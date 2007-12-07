@@ -120,8 +120,8 @@ public class DefaultComponentBuilder implements ComponentBuilder {
         // add
 
         String imp = "import " + clazz.getName() + ";";
-        // does not work with JDK 1.4	  
-        //	  String decl = clazz.getSimpleName() + " ${name}= new " + clazz.getSimpleName() + "(";
+        // does not work with JDK 1.4          
+        //          String decl = clazz.getSimpleName() + " ${name}= new " + clazz.getSimpleName() + "(";
         String decl = clazz.getName() + " ${name}= new " + clazz.getName()
                 + "(";
 
@@ -129,7 +129,7 @@ public class DefaultComponentBuilder implements ComponentBuilder {
             decl += "\"" + (String) beanProperties.get("text") + "\"";
         decl += ");";
 
-        //	  String decl = getDeclaration(name, beanProperties);
+        //          String decl = getDeclaration(name, beanProperties);
         String add = "${container}.add(${name}, \"${name}\");";
 
         ComponentDef cd = new ComponentDef(name, imp, decl, add);

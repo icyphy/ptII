@@ -41,9 +41,9 @@ import java.util.List;
  * @author Karsten Lentzsch
  * @version $Revision$
  * 
- * @see	Sizes
- * @see	ConstantSize
- * @see	Sizes.ComponentSize
+ * @see        Sizes
+ * @see        ConstantSize
+ * @see        Sizes.ComponentSize
  */
 
 final class BoundedSize implements Size, Serializable {

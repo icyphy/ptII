@@ -109,12 +109,12 @@ public class NamedObjClassesSeen implements MoMLFilter {
                                     + container.getFullName().substring(
                                             container.getFullName().indexOf(
                                                     ".", 1) + 1);
-                            // 			    System.out.println("NamedObjClasssesSeen: ("
-                            // 					       + compositePath
-                            // 					       + ") container: " + container
-                            // 					       + " element: " + element
-                            // 					       + " attributeName: " + attributeName
-                            // 					       + " attributeValue: " + attributeValue);
+                            //                             System.out.println("NamedObjClasssesSeen: ("
+                            //                                                + compositePath
+                            //                                                + ") container: " + container
+                            //                                                + " element: " + element
+                            //                                                + " attributeName: " + attributeName
+                            //                                                + " attributeValue: " + attributeValue);
                             models.add(compositePath);
                         } else {
                             models.add(_modelPath);

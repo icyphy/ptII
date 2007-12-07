@@ -133,10 +133,10 @@ public final class Borders {
      * Creates and returns an <code>EmptyBorder</code> with the specified
      * gaps.
      * 
-     * @param top		the top gap
-     * @param left		the left-hand side gap
-     * @param bottom	the bottom gap
-     * @param right	the right-hand side gap
+     * @param top                the top gap
+     * @param left                the left-hand side gap
+     * @param bottom        the bottom gap
+     * @param right        the right-hand side gap
      * @return an <code>EmptyBorder</code> with the specified gaps
      * 
      * @see #createEmptyBorder(String)
@@ -151,7 +151,7 @@ public final class Borders {
      * the given string. This string is a comma-separated encoding of
      * 4 <code>ConstantSize</code>s.
      * 
-     * @param encodedSizes	 top, left, bottom, right gap encoded as String
+     * @param encodedSizes         top, left, bottom, right gap encoded as String
      * @return an <code>EmptyBorder</code> with the specified gaps
      * 
      * @see #createEmptyBorder(ConstantSize, ConstantSize, ConstantSize, ConstantSize)

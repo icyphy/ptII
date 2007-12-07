@@ -90,7 +90,7 @@ import java.util.StringTokenizer;
  * <a href="https://forms.dev.java.net/issues/show_bug.cgi?id=28">issue #28</a> 
  * of the Forms' issue tracker where you can track the progress.
  * 
- * @author	Karsten Lentzsch
+ * @author        Karsten Lentzsch
  * @version $Revision$
  */
 public final class CellConstraints implements Cloneable, Serializable {
@@ -209,8 +209,8 @@ public final class CellConstraints implements Cloneable, Serializable {
      * new CellConstraints(1, 3);
      * </pre>
      * 
-     * @param gridX	the component's horizontal grid origin
-     * @param gridY	the component's vertical grid origin
+     * @param gridX        the component's horizontal grid origin
+     * @param gridY        the component's vertical grid origin
      */
     public CellConstraints(int gridX, int gridY) {
         this(gridX, gridY, 1, 1);
@@ -225,10 +225,10 @@ public final class CellConstraints implements Cloneable, Serializable {
      * new CellConstraints(1, 3, CellConstraints.CENTER, CellConstraints.FILL);
      * </pre>
      * 
-     * @param gridX	the component's horizontal grid origin
-     * @param gridY	the component's vertical grid origin
-     * @param hAlign	the component's horizontal alignment
-     * @param vAlign	the component's vertical alignment
+     * @param gridX        the component's horizontal grid origin
+     * @param gridY        the component's vertical grid origin
+     * @param hAlign        the component's horizontal alignment
+     * @param vAlign        the component's vertical alignment
      */
     public CellConstraints(int gridX, int gridY, Alignment hAlign,
             Alignment vAlign) {
@@ -244,10 +244,10 @@ public final class CellConstraints implements Cloneable, Serializable {
      * new CellConstraints(1, 3, 7, 3);
      * </pre>
      * 
-     * @param gridX		the component's horizontal grid origin
-     * @param gridY		the component's vertical grid origin
-     * @param gridWidth	the component's horizontal extent
-     * @param gridHeight	the component's vertical extent
+     * @param gridX                the component's horizontal grid origin
+     * @param gridY                the component's vertical grid origin
+     * @param gridWidth        the component's horizontal extent
+     * @param gridHeight        the component's vertical extent
      */
     public CellConstraints(int gridX, int gridY, int gridWidth, int gridHeight) {
         this(gridX, gridY, gridWidth, gridHeight, DEFAULT, DEFAULT);
@@ -262,12 +262,12 @@ public final class CellConstraints implements Cloneable, Serializable {
      * new CellConstraints(1, 3, 7, 3, CellConstraints.CENTER, CellConstraints.FILL);
      * </pre>
      * 
-     * @param gridX		the component's horizontal grid origin
-     * @param gridY		the component's vertical grid origin
-     * @param gridWidth	the component's horizontal extent
-     * @param gridHeight	the component's vertical extent
-     * @param hAlign    	the component's horizontal alignment
-     * @param vAlign    	the component's vertical alignment
+     * @param gridX                the component's horizontal grid origin
+     * @param gridY                the component's vertical grid origin
+     * @param gridWidth        the component's horizontal extent
+     * @param gridHeight        the component's vertical extent
+     * @param hAlign            the component's horizontal alignment
+     * @param vAlign            the component's vertical alignment
      */
     public CellConstraints(int gridX, int gridY, int gridWidth, int gridHeight,
             Alignment hAlign, Alignment vAlign) {
@@ -283,13 +283,13 @@ public final class CellConstraints implements Cloneable, Serializable {
      * new CellConstraints(1, 3, 7, 3, CellConstraints.CENTER, CellConstraints.FILL,   new Insets(0, 1, 0, 0));
      * </pre>
      * 
-     * @param gridX     	the component's horizontal grid origin
-     * @param gridY     	the component's vertical grid origin
-     * @param gridWidth 	the component's horizontal extent
-     * @param gridHeight	the component's vertical extent
-     * @param hAlign		the component's horizontal alignment
-     * @param vAlign		the component's vertical alignment
-     * @param insets		the component's display area <code>Insets</code>
+     * @param gridX             the component's horizontal grid origin
+     * @param gridY             the component's vertical grid origin
+     * @param gridWidth         the component's horizontal extent
+     * @param gridHeight        the component's vertical extent
+     * @param hAlign                the component's horizontal alignment
+     * @param vAlign                the component's vertical alignment
+     * @param insets                the component's display area <code>Insets</code>
      * @exception IndexOutOfBoundsException if the grid origin or extent is negative
      * @exception NullPointerException if the horizontal or vertical alignment is null
      * @exception IllegalArgumentException if an alignment orientation is invalid
@@ -335,7 +335,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * new CellConstraints("1, 3, 2, 1, l, b");
      * </pre>
      * 
-     * @param encodedConstraints	the constraints encoded as string
+     * @param encodedConstraints        the constraints encoded as string
      */
     public CellConstraints(String encodedConstraints) {
         this();
@@ -645,7 +645,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * Decodes an integer string representation and returns the
      * associated Integer or null in case of an invalid number format.
      * 
-     * @param token		the encoded integer
+     * @param token                the encoded integer
      * @return the decoded Integer or null
      */
     private Integer decodeInt(String token) {
@@ -660,7 +660,7 @@ public final class CellConstraints implements Cloneable, Serializable {
      * Parses an alignment string description and 
      * returns the corresponding alignment value.
      * 
-     * @param encodedAlignment	the encoded alignment
+     * @param encodedAlignment        the encoded alignment
      * @return the associated <code>Alignment</code> instance
      */
     private Alignment decodeAlignment(String encodedAlignment) {
@@ -728,12 +728,12 @@ public final class CellConstraints implements Cloneable, Serializable {
     /**
      * Sets the component's bounds using the given component and cell bounds.
      * 
-     * @param c		  		  the component to set bounds
+     * @param c                                    the component to set bounds
      * @param layout             the FormLayout instance that computes the bounds
-     * @param cellBounds 		  the cell's bounds
-     * @param minWidthMeasure	  measures the minimum width
-     * @param minHeightMeasure	  measures the minimum height
-     * @param prefWidthMeasure	  measures the preferred width
+     * @param cellBounds                   the cell's bounds
+     * @param minWidthMeasure          measures the minimum width
+     * @param minHeightMeasure          measures the minimum height
+     * @param prefWidthMeasure          measures the preferred width
      * @param prefHeightMeasure  measures the preferred height
      */
     void setBounds(Component c, FormLayout layout, Rectangle cellBounds,
@@ -823,11 +823,11 @@ public final class CellConstraints implements Cloneable, Serializable {
      * Computes and returns the pixel size of the given component using the
      * given form specification, measures, and cell size.
      * 
-     * @param component	the component to measure 
-     * @param formSpec		the specification of the component's column/row
-     * @param minMeasure	the measure for the minimum size
-     * @param prefMeasure	the measure for the preferred size
-     * @param cellSize		the cell size
+     * @param component        the component to measure 
+     * @param formSpec                the specification of the component's column/row
+     * @param minMeasure        the measure for the minimum size
+     * @param prefMeasure        the measure for the preferred size
+     * @param cellSize                the cell size
      * @return the component size as measured or a constant
      */
     private int componentSize(Component component, FormSpec formSpec,
@@ -847,9 +847,9 @@ public final class CellConstraints implements Cloneable, Serializable {
     /**
      * Computes and returns the component's pixel origin.
      * 
-     * @param alignment		the component's alignment
-     * @param cellOrigin		the origin of the display area
-     * @param cellSize			the extent of the display area
+     * @param alignment                the component's alignment
+     * @param cellOrigin                the origin of the display area
+     * @param cellSize                        the extent of the display area
      * @param componentSize
      * @return the component's pixel origin
      */
@@ -867,9 +867,9 @@ public final class CellConstraints implements Cloneable, Serializable {
     /**
      * Returns the component's pixel extent.
      * 
-     * @param alignment		the component's alignment
-     * @param cellSize			the size of the display area
-     * @param componentSize	the component's size
+     * @param alignment                the component's alignment
+     * @param cellSize                        the size of the display area
+     * @param componentSize        the component's size
      * @return the component's pixel extent
      */
     private int extent(Alignment alignment, int cellSize, int componentSize) {
@@ -881,7 +881,7 @@ public final class CellConstraints implements Cloneable, Serializable {
     /**
      * Creates a copy of this cell constraints object.
      * 
-     * @return		a copy of this cell constraints object
+     * @return                a copy of this cell constraints object
      */
     public Object clone() {
         try {
@@ -897,7 +897,7 @@ public final class CellConstraints implements Cloneable, Serializable {
     /**
      * Constructs and returns a string representation of this constraints object.
      * 
-     * @return	string representation of this constraints object
+     * @return        string representation of this constraints object
      */
     public String toString() {
         StringBuffer buffer = new StringBuffer("CellConstraints");

@@ -207,13 +207,13 @@ import com.jgoodies.forms.layout.RowSpec;
  * remaining columns in the current row. Method name candidates are 
  * <code>#appendFullSpan</code> and <code>#appendRemaining</code>.
  * 
- * @author	Karsten Lentzsch
+ * @author        Karsten Lentzsch
  * @version $Revision$
  * @since 1.0.3
  * 
- * @see	com.jgoodies.forms.builder.AbstractFormBuilder
- * @see	com.jgoodies.forms.factories.FormFactory
- * @see	com.jgoodies.forms.layout.FormLayout
+ * @see        com.jgoodies.forms.builder.AbstractFormBuilder
+ * @see        com.jgoodies.forms.factories.FormFactory
+ * @see        com.jgoodies.forms.layout.FormLayout
  */
 public final class DefaultFormBuilder extends I15dPanelBuilder {
 
@@ -252,7 +252,7 @@ public final class DefaultFormBuilder extends I15dPanelBuilder {
      * Constructs an instance of <code>DefaultFormBuilder</code> for the given
      * layout.
      * 
-     * @param layout	the <code>FormLayout</code> to be used
+     * @param layout        the <code>FormLayout</code> to be used
      */
     public DefaultFormBuilder(FormLayout layout) {
         this(new JPanel(null), layout);
@@ -413,7 +413,7 @@ public final class DefaultFormBuilder extends I15dPanelBuilder {
      * Adds a component to the panel using the default constraints
      * with a column span of 1. Then proceeds to the next data column.
      * 
-     * @param component	the component to add
+     * @param component        the component to add
      */
     public void append(Component component) {
         append(component, 1);

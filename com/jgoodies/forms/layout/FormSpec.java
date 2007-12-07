@@ -41,7 +41,7 @@ import java.util.StringTokenizer;
  * by their default alignment, start size and resizing behavior.
  * API users will use the subclasses {@link ColumnSpec} and  {@link RowSpec}.
  * 
- * @author	Karsten Lentzsch
+ * @author        Karsten Lentzsch
  * @version $Revision$
  * 
  * @see     ColumnSpec
@@ -147,8 +147,8 @@ public abstract class FormSpec implements Serializable {
      * Constructs a <code>FormSpec</code> from the specified encoded
      * description. The description will be parsed to set initial values.
      * 
-     * @param defaultAlignment 	the default alignment
-     * @param encodedDescription	the encoded description
+     * @param defaultAlignment         the default alignment
+     * @param encodedDescription        the encoded description
      */
     protected FormSpec(DefaultAlignment defaultAlignment,
             String encodedDescription) {
@@ -291,7 +291,7 @@ public abstract class FormSpec implements Serializable {
      * Decodes and returns an atomic size that is either a constant size or a
      * component size.
      * 
-     * @param token	the encoded size 
+     * @param token        the encoded size 
      * @return the decoded size either a constant or component size
      */
     private Size decodeAtomicSize(String token) {
@@ -305,7 +305,7 @@ public abstract class FormSpec implements Serializable {
      * Decodes an encoded resize mode and resize weight and answers
      * the resize weight.
      * 
-     * @param token	the encoded resize weight
+     * @param token        the encoded resize weight
      * @return the decoded resize weight
      * @exception IllegalArgumentException if the string description is an
      *     invalid string representation
@@ -348,7 +348,7 @@ public abstract class FormSpec implements Serializable {
      * at any time. It is strongly recommended to not use this string
      * for parsing purposes.
      * 
-     * @return	a string representation of the form specification.
+     * @return        a string representation of the form specification.
      */
     public final String toString() {
         StringBuffer buffer = new StringBuffer();
@@ -452,7 +452,7 @@ public abstract class FormSpec implements Serializable {
          * Returns a DefaultAlignment that corresponds to the specified
          * string, null if no such aignment exists.
          * 
-         * @param str	the encoded alignment
+         * @param str        the encoded alignment
          * @param isHorizontal   indicates the values orientation
          * @return the corresponding DefaultAlignment or null
          */

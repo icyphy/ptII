@@ -260,8 +260,8 @@ public abstract class AbstractFormBuilder {
     /**
      * Sets the cursor's origin to the given column and row.
      * 
-     * @param column 	the new column index
-     * @param row		the new row index
+     * @param column         the new column index
+     * @param row                the new row index
      */
     public final void setOrigin(int column, int row) {
         setColumn(column);
@@ -284,7 +284,7 @@ public abstract class AbstractFormBuilder {
      * column span and row span.
      * 
      * @param column       the new column index (grid x)
-     * @param row          the new row index	 (grid y)
+     * @param row          the new row index         (grid y)
      * @param columnSpan   the new column span  (grid width)
      * @param rowSpan      the new row span     (grid height)
      */
@@ -305,7 +305,7 @@ public abstract class AbstractFormBuilder {
     /**
      * Moves to the next column.
      * 
-     * @param columns	 number of columns to move
+     * @param columns         number of columns to move
      */
     public final void nextColumn(int columns) {
         currentCellConstraints.gridX += columns * getColumnIncrementSign();
@@ -321,7 +321,7 @@ public abstract class AbstractFormBuilder {
     /**
      * Increases the row by the specified rows.
      * 
-     * @param rows	 number of rows to move
+     * @param rows         number of rows to move
      */
     public final void nextRow(int rows) {
         currentCellConstraints.gridY += rows;
@@ -556,7 +556,7 @@ public abstract class AbstractFormBuilder {
      * you should use {@link #add(Component, CellConstraints)} with a cell 
      * constraints object created by {@link #createLeftAdjustedConstraints(int)}. 
      * 
-     * @param component	the component to add
+     * @param component        the component to add
      * @return the added component
      * 
      * @see #add(Component, CellConstraints)

@@ -91,7 +91,7 @@ public class ArrayContains extends TypedAtomicActor {
     public TypedIOPort array;
 
     /** Boolean output specifying whether the element is contained in 
-     * 	the array.
+     *         the array.
      */
     public TypedIOPort output;
 

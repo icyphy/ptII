@@ -127,7 +127,7 @@ import com.jgoodies.forms.util.LayoutStyle;
  * }
  * </pre> 
  *
- * @author	Karsten Lentzsch
+ * @author        Karsten Lentzsch
  * @version $Revision$
  * 
  * @see ButtonStackBuilder

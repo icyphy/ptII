@@ -61,11 +61,11 @@ import com.jgoodies.forms.util.LayoutStyle;
  * Many forms use 1, 2, 3 or 4 major columns, which in turn are often split
  * into 1, 2, 3 or 4 minor columns.
  * 
- * @author	Karsten Lentzsch
+ * @author        Karsten Lentzsch
  * @version $Revision$
  * 
- * @see	com.jgoodies.forms.layout.FormLayout
- * @see	ColumnSpec
+ * @see        com.jgoodies.forms.layout.FormLayout
+ * @see        ColumnSpec
  */
 public final class FormFactory {
 
@@ -405,7 +405,7 @@ public final class FormFactory {
      * Creates and returns a {@link ColumnSpec} that represents a gap with the
      * specified {@link ConstantSize}.
      * 
-     * @param gapSize	a <code>ConstantSize</code> that specifies the gap
+     * @param gapSize        a <code>ConstantSize</code> that specifies the gap
      * @return a <code>ColumnSpec</code> that describes a horizontal gap
      */
     public static ColumnSpec createGapColumnSpec(ConstantSize gapSize) {

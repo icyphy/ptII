@@ -89,7 +89,7 @@ import com.jgoodies.forms.layout.FormLayout;
  * @author  Karsten Lentzsch
  * @version $Revision$
  * 
- * @see	com.jgoodies.forms.factories.ComponentFactory
+ * @see        com.jgoodies.forms.factories.ComponentFactory
  * @see     I15dPanelBuilder
  * @see     DefaultFormBuilder
  */
@@ -154,7 +154,7 @@ public class PanelBuilder extends AbstractFormBuilder {
     /**
      * Sets the panel's border.
      * 
-     * @param border	the border to set
+     * @param border        the border to set
      */
     public final void setBorder(Border border) {
         getPanel().setBorder(border);
@@ -536,7 +536,7 @@ public class PanelBuilder extends AbstractFormBuilder {
      * 
      * @param textWithMnemonic   the separator label's text - 
      *     may contain an ampersand (<tt>&amp;</tt>) to mark a mnemonic
-     * @param columnSpan	the number of columns the separator spans
+     * @param columnSpan        the number of columns the separator spans
      * @return the added separator
      */
     public final JComponent addSeparator(String textWithMnemonic, int columnSpan) {

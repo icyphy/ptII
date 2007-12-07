@@ -486,7 +486,7 @@ public final class ButtonBarFactory {
     /**
      * Builds and returns a button bar with Close.
      * 
-     * @param close   	the Close button
+     * @param close           the Close button
      * @return a panel that contains the button(s)
      */
     public static JPanel buildCloseBar(JButton close) {
@@ -496,7 +496,7 @@ public final class ButtonBarFactory {
     /**
      * Builds and returns a button bar with OK.
      * 
-     * @param ok   	the OK button
+     * @param ok           the OK button
      * @return a panel that contains the button(s)
      */
     public static JPanel buildOKBar(JButton ok) {
@@ -506,8 +506,8 @@ public final class ButtonBarFactory {
     /**
      * Builds and returns a button bar with OK and Cancel.
      * 
-     * @param ok		the OK button
-     * @param cancel	the Cancel button
+     * @param ok                the OK button
+     * @param cancel        the Cancel button
      * @return a panel that contains the button(s)
      */
     public static JPanel buildOKCancelBar(JButton ok, JButton cancel) {
@@ -519,7 +519,7 @@ public final class ButtonBarFactory {
      * 
      * @param ok        the OK button
      * @param cancel    the Cancel button
-     * @param apply	the Apply button
+     * @param apply        the Apply button
      * @return a panel that contains the button(s)
      */
     public static JPanel buildOKCancelApplyBar(JButton ok, JButton cancel,
@@ -546,7 +546,7 @@ public final class ButtonBarFactory {
      * Help and OK.
      * 
      * @param help     the Help button
-     * @param ok	    the OK button
+     * @param ok            the OK button
      * @return a panel that contains the button(s)
      */
     public static JPanel buildHelpOKBar(JButton help, JButton ok) {
@@ -559,7 +559,7 @@ public final class ButtonBarFactory {
      * 
      * @param help     the Help button
      * @param ok       the OK button
-     * @param cancel	the Cancel button
+     * @param cancel        the Cancel button
      * @return a panel that contains the button(s)
      */
     public static JPanel buildHelpOKCancelBar(JButton help, JButton ok,
@@ -574,7 +574,7 @@ public final class ButtonBarFactory {
      * @param help     the Help button
      * @param ok       the OK button
      * @param cancel   the Cancel button
-     * @param apply	the Apply button
+     * @param apply        the Apply button
      * @return a panel that contains the button(s)
      */
     public static JPanel buildHelpOKCancelApplyBar(JButton help, JButton ok,
@@ -588,7 +588,7 @@ public final class ButtonBarFactory {
      * Builds and returns a button bar with 
      * Close and Help.
      * 
-     * @param close	the Close button
+     * @param close        the Close button
      * @param help     the Help button
      * @return a panel that contains the button(s)
      */
@@ -600,7 +600,7 @@ public final class ButtonBarFactory {
      * Builds and returns a button bar with 
      * OK and Help.
      * 
-     * @param ok		the OK button
+     * @param ok                the OK button
      * @param help     the Help button
      * @return a panel that contains the button(s)
      */
@@ -613,7 +613,7 @@ public final class ButtonBarFactory {
      * OK, Cancel, and Help.
      * 
      * @param ok       the OK button
-     * @param cancel	the Cancel button
+     * @param cancel        the Cancel button
      * @param help     the Help button
      * @return a panel that contains the button(s)
      */
@@ -627,8 +627,8 @@ public final class ButtonBarFactory {
      * OK, Cancel, Apply and Help.
      * 
      * @param ok       the OK button
-     * @param cancel	the Cancel button
-     * @param apply	the Apply button
+     * @param cancel        the Cancel button
+     * @param apply        the Apply button
      * @param help     the Help button
      * @return a panel that contains the button(s)
      */
@@ -643,8 +643,8 @@ public final class ButtonBarFactory {
      * Builds and returns a left aligned button bar with 
      * Add and Remove.
      * 
-     * @param add		the Add button
-     * @param remove	the Remove button
+     * @param add                the Add button
+     * @param remove        the Remove button
      * @return a panel that contains the button(s)
      */
     public static JPanel buildAddRemoveLeftBar(JButton add, JButton remove) {
@@ -680,9 +680,9 @@ public final class ButtonBarFactory {
      * Builds and returns a left aligned button bar with 
      * Add, Remove, and Properties.
      * 
-     * @param add       	the Add button
-     * @param remove    	the Remove button
-     * @param properties	the Properties button
+     * @param add               the Add button
+     * @param remove            the Remove button
+     * @param properties        the Properties button
      * @return a panel that contains the button(s)
      */
     public static JPanel buildAddRemovePropertiesLeftBar(JButton add,
@@ -730,10 +730,10 @@ public final class ButtonBarFactory {
      * Builds and returns a wizard button bar with:
      * Back, Next, Finish, Cancel.
      *
-     * @param back		the Back button
-     * @param next		the Next button
-     * @param finish	the Finish button
-     * @param cancel	the Cancel button
+     * @param back                the Back button
+     * @param next                the Next button
+     * @param finish        the Finish button
+     * @param cancel        the Cancel button
      * @return a wizard button bar for back, next, finish, cancel
      */
     public static JPanel buildWizardBar(JButton back, JButton next,
@@ -745,7 +745,7 @@ public final class ButtonBarFactory {
      * Builds and returns a wizard button bar with: 
      * Help and Back, Next, Finish, Cancel.
      * 
-     * @param help		the Help button
+     * @param help                the Help button
      * @param back      the Back button
      * @param next      the Next button
      * @param finish    the Finish button

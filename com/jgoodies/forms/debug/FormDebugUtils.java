@@ -56,7 +56,7 @@ import com.jgoodies.forms.layout.RowSpec;
  * RowSpec("p:1")    -> RowSpec("center:pref:1");
  * </pre>
  *
- * @author	Karsten Lentzsch
+ * @author        Karsten Lentzsch
  * @version $Revision$
  * 
  * @see FormDebugPanel

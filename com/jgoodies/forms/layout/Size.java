@@ -47,8 +47,8 @@ import java.util.List;
  * @author Karsten Lentzsch
  * @version $Revision$
  * 
- * @see	Sizes
- * @see	ConstantSize
+ * @see        Sizes
+ * @see        ConstantSize
  */
 
 public interface Size {
