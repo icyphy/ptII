@@ -31,7 +31,7 @@ struct token {         // Base type for tokens.
     char type;         // TYPE field has to be the first field.
     union typeMembers {
         // type member declarations [i.e. Type1Token Type1;]
-        $types                 
+        $types
     } payload;
 };
 /**/
@@ -48,13 +48,13 @@ struct token {         // Base type for tokens.
 char* InttoString (int i) {
     char* string = (char*) malloc(sizeof(char) * 12);
     sprintf((char*) string, "%d", i);
-    return string;       
+    return string;
 }
 
 char* LongtoString (long long l) {
     char* string = (char*) malloc(sizeof(char) * 22);
     sprintf(string, "%lld", l);
-    return string;       
+    return string;
 }
 
 char* DoubletoString (double d) {
@@ -72,7 +72,7 @@ char* DoubletoString (double d) {
         string[index + 1] = '0';
         string[index + 2] = '\0';
     }
-    return string;       
+    return string;
 }
 
 char* BooleantoString (boolean b) {
@@ -95,7 +95,7 @@ char* BooleantoString (boolean b) {
 Token unsupportedTypeFunction(Token token, ...) {
     fprintf(stderr, "Attempted to call unsupported method on a type.\n");
     exit(1);
-    return emptyToken; 
+    return emptyToken;
 }
 /**/
 
@@ -105,6 +105,6 @@ Token scalarDelete(Token token, ...) {
     /* We need to return something here because all the methods are declared
      * as returning a Token so we can use them in a table of functions.
      */
-    return emptyToken; 
-}    
+    return emptyToken;
+}
 /**/

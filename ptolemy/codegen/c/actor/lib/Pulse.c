@@ -10,18 +10,18 @@ $actorSymbol(_zero) = $zero;
 /**/
 
 /*** fireBlock ***/
-if ($actorSymbol(indexColCount) < $size(indexes) 
+if ($actorSymbol(indexColCount) < $size(indexes)
         && $actorSymbol(iterationCount)
                 == $ref(indexes, $actorSymbol(indexColCount))) {
-    
+
     $ref(output) = $ref(values, $actorSymbol(indexColCount));
-    
+
     $actorSymbol(match) = 1;
 } else {
-    
-    $ref(output) = $actorSymbol(_zero);             
+
+    $ref(output) = $actorSymbol(_zero);
 }
-    
+
 if ($actorSymbol(iterationCount) <= $ref(indexes, $size(indexes) - 1)) {
     $actorSymbol(iterationCount) ++;
 }

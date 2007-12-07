@@ -27,12 +27,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 Run-time C code generation functionality for converting character arrays to
 Strings
 
-@author Ankush Varma 
+@author Ankush Varma
 @version $Id$
 */
 
 #include "name_defs.h"
 #include "java/lang/String.h"
 
-extern _STRING_INSTANCE_STRUCT charArrayToString(char *charArray); 
+extern _STRING_INSTANCE_STRUCT charArrayToString(char *charArray);
 

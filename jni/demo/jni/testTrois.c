@@ -1,4 +1,4 @@
-// This is an example of an exported function.                                  
+// This is an example of an exported function.
 double fnTest(long* in, long* inout) {
   if (in[0] == 1) {
     inout[0] = 6;

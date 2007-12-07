@@ -8,7 +8,7 @@
 * Date: 3/30/2006
 * Purpose:
 *        This program was written for a wearable LED tank top.
-*        More information in game_of_life.c and at: 
+*        More information in game_of_life.c and at:
 *        http://www.cs.colorado.edu/~buechley/diy/diy_tank.html
 * Copyright information: http://www.gnu.org/copyleft/gpl.html
 
@@ -109,7 +109,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define col7_low PORTB &= ~_BV(PB2)
 #define col8_low PORTB &= ~_BV(PB1)
 #define col9_low PORTB &= ~_BV(PB0)
-#endif /* __AVR__ */ 
+#endif /* __AVR__ */
 
 /* End of LEDMatrix defines */
 
@@ -126,7 +126,7 @@ void all_on (void)
         row5_low;
         row6_low;
         row7_low;
-        
+
         //columns high
         col0_high;
         col1_high;
@@ -138,7 +138,7 @@ void all_on (void)
         col7_high;
         col8_high;
         col9_high;
-#endif /* __AVR__ */ 
+#endif /* __AVR__ */
 }
 
 /* turns on all the LEDs in the array */
@@ -154,7 +154,7 @@ void all_off (void)
         row5_high;
         row6_high;
         row7_high;
-        
+
         //columns low
         col0_low;
         col1_low;
@@ -166,7 +166,7 @@ void all_off (void)
         col7_low;
         col8_low;
         col9_low;
-#endif /* __AVR__ */ 
+#endif /* __AVR__ */
 }
 
 //initializes the pins to be used for the display as outputs
@@ -180,7 +180,7 @@ void initialize_tank_pins_as_output (void) {
     row5_output;
     row6_output;
     row7_output;
-    
+
     col0_output;
     col1_output;
     col2_output;
@@ -210,18 +210,18 @@ if ($ref(row) == 0) {
 if ($ref(row) == 0 && $ref(column) == 0) {
     printf("\n");
 }
-if ($ref(control)) { 
+if ($ref(control)) {
     printf("1");
 } else {
     printf("0");
 }
 
-#else /* !  __AVR__ */ 
+#else /* !  __AVR__ */
 /* LED Tank Top Code from
  *   http://craftzine.com/01/led
  *   http://www.cs.colorado.edu/~buechley/diy/diy_tank.html
- */ 
-if ($ref(control)) { 
+ */
+if ($ref(control)) {
     switch ($ref(row)) {
     case 0:
         row0_high;
@@ -231,7 +231,7 @@ if ($ref(control)) {
         break;
     case 2:
         row2_high;
-        break;        
+        break;
     case 3:
         row3_high;
         break;
@@ -240,7 +240,7 @@ if ($ref(control)) {
         break;
     case 5:
         row5_high;
-        break;        
+        break;
     case 6:
         row6_high;
         break;
@@ -257,7 +257,7 @@ if ($ref(control)) {
         break;
     case 2:
         col2_low;
-        break;        
+        break;
     case 3:
         col3_low;
         break;
@@ -266,7 +266,7 @@ if ($ref(control)) {
         break;
     case 5:
         col5_low;
-        break;        
+        break;
     case 6:
         col6_low;
         break;
@@ -283,10 +283,10 @@ if ($ref(control)) {
 
 #ifdef _DELAY_MS
         _delay_ms(1000);
-#endif        
+#endif
 
         all_on();
 }
-#endif /* ! __AVR__ */ 
+#endif /* ! __AVR__ */
 
 /**/

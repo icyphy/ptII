@@ -11,17 +11,17 @@ int $actorSymbol(length) = 128;
 /***initBufferBlock***/
 $ref(output) = (char*) malloc($actorSymbol(length) * sizeof(char));
 /**/
-    
+
 
 /***openForStdin***/
 $actorSymbol(filePtr) = stdin;
 /**/
-         
+
 /***skipLine***/
 // use fgetc() to readLine
 //$actorSymbol(charReturned) = fscanf($actorSymbol(filePtr), "%s", $actorSymbol(line));
 while ( ($actorClass(charRead) = fgetc($actorSymbol(filePtr))) != '\n' && $actorClass(charRead) != EOF );
-$ref(endOfFile) = feof($actorSymbol(filePtr) );    
+$ref(endOfFile) = feof($actorSymbol(filePtr) );
 /**/
 
 /***openForRead($fileName)***/
@@ -40,7 +40,7 @@ do {
         $actorSymbol(length) *= 2;
         $ref(output) = (char*) realloc ($ref(output), ($actorSymbol(length) + 1) * sizeof(char));
         /* Solaris: strncpy does not add a null if only */
-        /* n chars are copied. */ 
+        /* n chars are copied. */
         $ref(output)[$actorSymbol(length)] = '\0';
     }
     $ref(output)[$actorSymbol(index)++] = $actorClass(charRead);

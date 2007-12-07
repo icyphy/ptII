@@ -9,7 +9,7 @@ $ref(output) = log($ref(input));
 
 
 /***signBlock***/
-$ref(output) = ( $ref(input) > 0.0 ) ? 1.0 : 
+$ref(output) = ( $ref(input) > 0.0 ) ? 1.0 :
 ( $ref(input) < 0.0 ) ? -1.0 : 0;
 /**/
 

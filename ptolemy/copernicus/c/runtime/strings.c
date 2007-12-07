@@ -27,7 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 Run-time C code generation functionality for converting character arrays to
 Strings
 
-@author Ankush Varma 
+@author Ankush Varma
 @version $Id$
 */
 #include <string.h>
@@ -48,26 +48,26 @@ _STRING_INSTANCE_STRUCT charArrayToString(char *charArray)
 {
     _STRING_INSTANCE_STRUCT s; /* dummy string structure */
     iA1_char charArrayStruct;
-  
+
     s = (_STRING_INSTANCE_STRUCT)malloc(sizeof(struct _STRING_INSTANCE_STRUCT));
     /* Initialize charArrayStruct.
        FIXME: "class" not initialized in charArrayStruct.
      */
     charArrayStruct = malloc(sizeof(PCCG_ARRAY_INSTANCE));
-    charArrayStruct->array_data = charArray ; 
+    charArrayStruct->array_data = charArray ;
     /*FIXME: array_length should be a COPY of charArray. memcpy may be
       needed.
      */
     charArrayStruct->array_length = strlen(charArray);
     charArrayStruct->element_size = sizeof(char);
-   
+
     /* Set the fields of the string structure. */
     s->class = &_STRING_CLASS_STRUCT;
     s->f1860107401_value = charArrayStruct;
     s->f01486352994_count = charArrayStruct->array_length;
 
     /* FIXME: Other fields of String are unitialized. */
-    
+
     return s;
-    
+
 }

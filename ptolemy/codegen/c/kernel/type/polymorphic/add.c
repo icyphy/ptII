@@ -9,7 +9,7 @@ char* add_Int_String(int a1, char* a2) {
 /***add_String_Int***/
 inline char* add_String_Int(char* a1, int a2) {
     return $add_Int_String(a2, a1);
-}    
+}
 /**/
 
 /***add_Token_Token***/
@@ -20,25 +20,25 @@ inline Token add_Token_Token(Token a1, Token a2) {
 
 /***add_Boolean_Boolean***/
 inline boolean add_Boolean_Boolean(boolean a1, boolean a2) {
-    return a1 | a2;   
+    return a1 | a2;
 }
 /**/
 
 /***add_Int_Int***/
 inline int add_Int_Int(int a1, int a2) {
-    return a1 + a2;   
+    return a1 + a2;
 }
 /**/
 
 /***add_Double_Double***/
 inline double add_Double_Double(double a1, double a2) {
-    return a1 + a2;   
+    return a1 + a2;
 }
 /**/
 
 /***add_Long_Long***/
 inline long long add_Long_Long(long long a1, long long a2) {
-    return a1 + a2;   
+    return a1 + a2;
 }
 /**/
 
@@ -53,7 +53,7 @@ char* add_String_String(char* a1, char* a2) {
 
 /***add_Array_Array***/
 inline Token add_Array_Array(Token a1, Token a2) {
-    return $Array_add(a1, a2);   
+    return $Array_add(a1, a2);
 }
 /**/
 
@@ -65,7 +65,7 @@ int add_Int_Boolean(int a1, boolean a2) {
 
 /***add_Boolean_Int***/
 inline int add_Boolean_Int(boolean a1, int a2) {
-    return $add_Int_Boolean(a2, a1);   
+    return $add_Int_Boolean(a2, a1);
 }
 /**/
 
@@ -93,7 +93,7 @@ char* add_String_Double(char* a1, double a2) {
 /***add_Double_String***/
 inline char* add_Double_String(double a1, char* a2) {
     return $add_String_Double(a2, a1);
-}    
+}
 /**/
 
 /***add_String_Boolean***/
@@ -115,7 +115,7 @@ inline char* add_Boolean_String(boolean a1, char* a2) {
 Token add_Double_Array(double a1, Token a2) {
     int i;
     Token result = $new(Array(a2.payload.Array->size, 0));
-    
+
     for (i = 0; i < a2.payload.Array->size; i++) {
         Array_set(result, i, $add_Double_Token(a1, Array_get(a2, i)));
     }
@@ -153,7 +153,7 @@ inline Token add_Array_Double(Token a1, double a2) {
 Token add_Int_Array(int a1, Token a2) {
     int i;
     Token result = $new(Array(a2.payload.Array->size, 0));
-    
+
     for (i = 0; i < a2.payload.Array->size; i++) {
         Array_set(result, i, $add_Int_Token(a1, Array_get(a2, i)));
     }
@@ -171,7 +171,7 @@ inline Token add_Int_Array(Token a1, int a2) {
 Token add_Long_Array(long long a1, Token a2) {
     int i;
     Token result = $new(Array(a2.payload.Array->size, 0));
-    
+
     for (i = 0; i < a2.payload.Array->size; i++) {
         Array_set(result, i, $add_Long_Token(a1, Array_get(a2, i)));
     }

@@ -5,10 +5,10 @@ static int $actorSymbol(j);
 
 /***fireBlock***/
 
-for ($actorSymbol(i) = 0; 
+for ($actorSymbol(i) = 0;
      $actorSymbol(i) < $val(blockSize);
      $actorSymbol(i)++) {
-    for ($actorSymbol(j) = 0; 
+    for ($actorSymbol(j) = 0;
          $actorSymbol(j) < $val(numberOfTimes);
          $actorSymbol(j)++) {
         $ref(output, $actorSymbol(j) * $val(blockSize) + $actorSymbol(i)) =

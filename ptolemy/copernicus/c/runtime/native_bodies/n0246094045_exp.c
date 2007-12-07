@@ -1,5 +1,5 @@
 /*******************************************************************
-Native code for 
+Native code for
 java.lang.StrictMath: double exp(double)
 
 Copyright (c) 2001-2005 The University of Maryland.
@@ -27,7 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 /*
 Native code for java.lang.StrictMath: double exp(double)
 
-@author Ankush Varma 
+@author Ankush Varma
 @version $Id$
 */
 

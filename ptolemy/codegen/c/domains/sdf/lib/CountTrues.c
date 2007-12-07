@@ -10,6 +10,6 @@ for ($actorSymbol(i) = 0; $actorSymbol(i) < $val(blockSize); $actorSymbol(i)++) 
     if ($ref(input, $actorSymbol(i))) {
         $actorSymbol(trueCount)++;
     }
-}        
+}
 $ref(output) = $actorSymbol(trueCount);
 /**/

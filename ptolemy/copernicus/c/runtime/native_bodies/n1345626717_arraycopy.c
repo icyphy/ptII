@@ -1,5 +1,5 @@
 /*******************************************************************
-Native code for 
+Native code for
 java.lang.System: void arraycopy(java.lang.Object,int,java.lang.Object,int,int)
 
 Copyright (c) 2001-2005 The University of Maryland.
@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 *********************************************************************/
 
 /*
-@author Ankush Varma 
+@author Ankush Varma
 @version $Id$
 */
 PCCG_ARRAY_INSTANCE_PTR src, dest;
@@ -44,13 +44,13 @@ if (src == NULL) {
 }
 
 /* check for out of bounds arrays.*/
-if (destpos*(dest->element_size) + length*(src->element_size) 
+if (destpos*(dest->element_size) + length*(src->element_size)
         > (dest->array_length)*(dest->element_size)) {
     printf("Error in System.arraycopy(): out of bounds access");
 }
 
 /* Because a char is 1 byte. */
-memcpy(((char*)dest->array_data) + destpos*dest->element_size, 
-       ((char*)src ->array_data) + srcpos*src->element_size, 
+memcpy(((char*)dest->array_data) + destpos*dest->element_size,
+       ((char*)src ->array_data) + srcpos*src->element_size,
         (src->element_size)*length);
 

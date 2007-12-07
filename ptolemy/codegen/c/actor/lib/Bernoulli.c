@@ -6,7 +6,7 @@
 if (RandomSource_nextDouble(&$actorSymbol(seed)) < $val(trueProbability)) {
     $ref(output) = true;
 } else {
-    $ref(output) = false;        
-}         
+    $ref(output) = false;
+}
 /**/
 

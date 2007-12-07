@@ -97,7 +97,7 @@ extern "C"
     const char *cmd = NULL;
     jlong retval = 0;
     if (cmdString != NULL) cmd = jni->GetStringUTFChars(cmdString, 0);
-    Engine *ep = engOpen(cmd); 
+    Engine *ep = engOpen(cmd);
     if (ep != NULL) {
       retval = (ptrint)ep;
     }
@@ -135,7 +135,7 @@ extern "C"
 
   JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngGetArray
   (JNIEnv *jni,
-   jobject obj, 
+   jobject obj,
    jlong e,
    jstring name)
   {
@@ -171,8 +171,8 @@ extern "C"
   }
 
   JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngOutputBuffer
-  (JNIEnv *jni, 
-   jobject obj, 
+  (JNIEnv *jni,
+   jobject obj,
    jlong e,
    jint n)
   {
@@ -377,7 +377,7 @@ extern "C"
         jni->ReleaseStringUTFChars(name, nstr);
     }
     jsize nfields = jni->GetArrayLength(fieldNames);
-    // MSVC can't deal with variable length arrays 
+    // MSVC can't deal with variable length arrays
     //char *names[nfields];
     char **names = (char **)malloc(nfields * sizeof(char));
     for (i = 0; i < nfields; i++) {
@@ -452,7 +452,7 @@ extern "C"
     mxArray *ma = (mxArray*)(ptrint) pma;
     jint ndims = mxGetNumberOfDimensions(ma);
     const int *dims = mxGetDimensions(ma);
-    // MSVC can't deal with variable length arrays 
+    // MSVC can't deal with variable length arrays
     //jint jdims[ndims];
     jint *jdims= (jint *)malloc(ndims * sizeof(jint));
     if (debug > 1) printf("ptmatlabGetDimensions(%s) = %d x %d\n", mxGetName(ma), dims[0], dims[1]);
@@ -602,7 +602,7 @@ extern "C"
     mxArray *ma = (mxArray*)(ptrint) pma;
     jdouble *pr = (jdouble*) mxGetPr(ma); // Cast assumes jdouble is double
     jdouble *pi = (jdouble*) mxGetPi(ma);
-    
+
     jclass complexClass= jni->FindClass("Lptolemy/math/Complex;");
     if (complexClass == NULL) { printf("Cant find complex class\n"); return 0; }
     jfieldID complexRealFieldID = jni->GetFieldID(complexClass, "real", "D");

@@ -3,7 +3,7 @@ char* myStrtrim(char* result, char *str) {
         int length;
         if (!str) return 0;
         char *end = str + strlen(str);
-        
+
         while(end-- > str)        {
                 if(!strchr(" \t\n\r", *end))
                         break;
@@ -18,7 +18,7 @@ char* myStrtrim(char* result, char *str) {
         }
 
         length = end - str + 1;
-        result = (char*) realloc(result, sizeof(char) * (length + 1));        
+        result = (char*) realloc(result, sizeof(char) * (length + 1));
         strncpy(result, str, length);
         result[length] = '\0';
         return result;

@@ -2,7 +2,7 @@
 boolean $actorSymbol(overwriteOK) = true;
 FILE * $actorSymbol(filePtr);
 /**/
-    
+
 /***confirmOverwrite($fileName)***/
 do {
     printf("OK to overwrite $fileName [1 = Yes, 0 = No]? ");
@@ -13,7 +13,7 @@ do {
 /***openForStdout***/
 $actorSymbol(filePtr) = stdout;
 /**/
-    
+
 /***openForAppend($fileName)***/
 if (!($actorSymbol(filePtr) = fopen ($fileName,"a"))) {
     fprintf(stderr,"ERROR: cannot open output file for LineWriter actor.\n");

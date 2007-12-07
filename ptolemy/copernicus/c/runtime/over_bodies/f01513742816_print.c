@@ -1,5 +1,5 @@
 /*******************************************************************
-Dummy C code for overridden method 
+Dummy C code for overridden method
 <java.io.PrintStream: void print(java.lang.Object)>
 
 Copyright (c) 2001-2005 The University of Maryland.
@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 ********************************************************************/
 
 /*
-@author Ankush Varma 
+@author Ankush Varma
 @version $Id$
 */
 i1195259493_String value = p0->class->methods.m0295957240_toString(p0);

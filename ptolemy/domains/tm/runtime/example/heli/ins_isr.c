@@ -17,7 +17,7 @@ void INS_ISR_start() {
   // start a thread that admits INS UDP packates.
   pthread_t insThread;
   int rc;
-  
+
   rc = pthread_create(&insThread, NULL, runINS, NULL);
   if (rc) {
     printf("ERROR; return code from pthread_create() is %d\n", rc);
@@ -46,16 +46,16 @@ void* runINS() {
 
   printf("In GPS_GPS: GPS_GPS started.\n");
 
-  
+
   await.fd = ins_socket;
   await.events = POLLIN | POLLPRI;
-  
+
   while(1) {
     if (poll(&await, 1, -1) == -1) {
       printf("In INS_ISR: error in call to ");
       printf("poll\n");
     }
-    
+
     if (await.revents & (POLLIN | POLLPRI)) {
       printf("ins receives");
 
@@ -74,7 +74,7 @@ void* runINS() {
       INS_val.v6 = ins_msg.y11;
       setINS(&INS_val);
     }
-    
+
   }
 }
 

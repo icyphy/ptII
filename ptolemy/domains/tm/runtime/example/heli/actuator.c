@@ -24,7 +24,7 @@ void ACTUATOR_init() {
     printf("in call to udp_client_init.\n");
   } else {
     printf("In ACTUATOR_init.");
-  } 
+  }
 }
 
 void ACTUATOR_start() {
@@ -36,7 +36,7 @@ char ACTUATOR_isReady() {
 }
 
 void ACTUATOR_exec() {
-  
+
 }
 
 void ACTUATOR_stopExec() {

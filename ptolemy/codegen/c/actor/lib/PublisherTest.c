@@ -31,9 +31,9 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been between: %f and %f\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
-            $ref(correctValues, $actorSymbol(numberOfTokensSeen)) - 
+            $ref(correctValues, $actorSymbol(numberOfTokensSeen)) -
                     $ref(tolerance),
-            $ref(correctValues, $actorSymbol(numberOfTokensSeen)) + 
+            $ref(correctValues, $actorSymbol(numberOfTokensSeen)) +
                     $ref(tolerance));
     exit(-1);
 }
@@ -45,12 +45,12 @@ $ref(output#$channel) = $ref(($cgType(output)) input#$channel);
 
 if ($channel == 0) {
     $actorSymbol(numberOfTokensSeen)++;
-}    
+}
 
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) =
 $ref(correctValues, $actorSymbol(numberOfTokensSeen));
-               
+
 if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && fabs($ref(input#$channel)
                 - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))
@@ -60,8 +60,8 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $ref(input#$channel),
             $ref(tolerance),
             Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Int);
-    exit(-1);    
-}        
+    exit(-1);
+}
 /**/
 
 
@@ -79,11 +79,11 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
     printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been between: %f and %f\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
-            $ref(correctValues, $actorSymbol(numberOfTokensSeen)) - 
+            $ref(correctValues, $actorSymbol(numberOfTokensSeen)) -
                     $ref(tolerance),
-            $ref(correctValues, $actorSymbol(numberOfTokensSeen)) + 
+            $ref(correctValues, $actorSymbol(numberOfTokensSeen)) +
                     $ref(tolerance));
-    exit(-1);    
+    exit(-1);
 }
 /**/
 
@@ -92,7 +92,7 @@ $ref(output#$channel) = $ref(($cgType(output)) input#$channel);
 
 if ($channel == 0) {
     $actorSymbol(numberOfTokensSeen)++;
-}    
+}
 
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) =
@@ -106,7 +106,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $ref(input#$channel),
             $ref(tolerance),
             Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input));
-    exit(-1);    
+    exit(-1);
 }
 /**/
 
@@ -132,7 +132,7 @@ $ref(output#$channel) = $ref(($cgType(output)) input#$channel);
 
 if ($channel == 0) {
     $actorSymbol(numberOfTokensSeen)++;
-}    
+}
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) =
 $ref(correctValues, $actorSymbol(numberOfTokensSeen));
@@ -145,7 +145,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
             $actorSymbol(numberOfTokensSeen),
             BooleantoString($ref(input#$channel)),
             BooleantoString(Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.Boolean));
-    exit(-1);    
+    exit(-1);
 }
 /**/
 
@@ -168,7 +168,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 $ref(output#$channel) = $ref(($cgType(output)) input#$channel);
 if ($channel == 0) {
     $actorSymbol(numberOfTokensSeen)++;
-}    
+}
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) =
 $ref(correctValues, $actorSymbol(numberOfTokensSeen));
@@ -188,10 +188,10 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
 $ref(output#$channel) = $ref(($cgType(output)) input#$channel);
 
 $actorSymbol(numberOfTokensSeen)++;
-/* If the type of the input is an array, then cast the input to 
+/* If the type of the input is an array, then cast the input to
  * the type of the elements of the elements of correctValues. */
 if (($type(input) != TYPE_Array
-            && !$tokenFunc($ref(input#$channel)::equals($ref(correctValues, $actorSymbol(numberOfTokensSeen)))).payload.Boolean) 
+            && !$tokenFunc($ref(input#$channel)::equals($ref(correctValues, $actorSymbol(numberOfTokensSeen)))).payload.Boolean)
         || ($type(input) == TYPE_Array
                 && !$tokenFunc($typeFunc(TYPE_Array::convert($ref(input#$channel), Array_get(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), 0).type))::isCloseTo(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), $actorSymbol(toleranceToken))).payload.Boolean)) {
 
@@ -209,7 +209,7 @@ $ref(output#$channel) = $ref(($cgType(output)) input#$channel);
 
 if ($channel == 0) {
     $actorSymbol(numberOfTokensSeen)++;
-}    
+}
 /* $channel of $actorSymbol() */
 $actorSymbol(correctValuesThisFiring_$channel) =
 Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen));

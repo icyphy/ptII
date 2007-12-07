@@ -116,14 +116,14 @@ circular_buffer_state_t;
  *
  * Function: valid_id
  *
- * 
+ *
  * Arguments:
  *
  * char id: an identifier for shared memory.
  *
  *
  * Returns:
- * 
+ *
  * If CONTROLLER is defined: 0 if id is either GPS_MESG_ID or
  * INS_MESG_ID; -1 otherwise.
  *
@@ -181,11 +181,11 @@ static int get_entry_size(char id,
 
         switch (id)
         {
-#ifdef CONTROLLER            
+#ifdef CONTROLLER
         case GPS_MESG_ID:
                 *entry_size = sizeof(gps_mesg_t);
                 break;
-        case INS_MESG_ID: 
+        case INS_MESG_ID:
                 *entry_size = sizeof(ins_mesg_t);
                 break;
 #endif
@@ -233,11 +233,11 @@ static int get_num_entries(char id,
 
         switch (id)
         {
-#ifdef CONTROLLER            
+#ifdef CONTROLLER
         case GPS_MESG_ID:
                 *num_entries = NUM_GPS_ENTRIES;
                 break;
-        case INS_MESG_ID: 
+        case INS_MESG_ID:
                 *num_entries = NUM_INS_ENTRIES;
                 break;
 #endif
@@ -349,7 +349,7 @@ static int get_circular_buffer(void **circular_buffer,
 {
         unsigned buffer_size;
         key_t key;
-        int shmid; 
+        int shmid;
         unsigned created_mem = 0;
 
         if (0 != valid_id(id))
@@ -370,7 +370,7 @@ static int get_circular_buffer(void **circular_buffer,
         /* open the shared memory segment -- create if necessary */
         shmid = shmget(key, buffer_size, IPC_CREAT|IPC_EXCL|0666);
         if (-1 == shmid)
-        { 
+        {
                 shmid = shmget(key, buffer_size, 0);
                 /* segment probably already exists -- try as a client */
                 if (-1 == shmid)
@@ -691,7 +691,7 @@ static void *plant_inputs_buffer;
  *
  * ERROR (-1) if the call to init_circular_buffer fails; this should
  * never occur if Ben has programmed correctly.
- * 
+ *
  *
  * Notes: should be called by only the writer of the circular buffer
  *
@@ -770,7 +770,7 @@ int writer_init_plant_inputs_buffer(void)
  *
  * ERROR (-1) if the call to get_circular_buffer fails; this should
  * never occur if Ben has programmed correctly.
- * 
+ *
  *
  * Notes: this function may be called by both the writer and the
  * readers of the circular buffer, but is intended to be called by
@@ -857,7 +857,7 @@ int reader_init_plant_inputs_buffer(void)
  *
  * ERROR (-1) if the call to write_circular_buffer fails; this should
  * never occur if Ben has programmed correctly.
- * 
+ *
  * ---------------------------------------------------------------- */
 
 #ifdef CONTROLLER
@@ -944,7 +944,7 @@ int write_plant_inputs_buffer(plant_inputs_t *data)
  *
  * ERROR (-1) if the call to read_circular_buffer fails; this should
  * never occur if Ben has programmed correctly.
- * 
+ *
  * NO_DATA (-2) if the circular buffer does not contain a valid entry;
  * this may occur if the writer hasn't written to the buffer.
  *
@@ -1050,7 +1050,7 @@ int read_plant_inputs_buffer(plant_inputs_t *data)
  *
  *
  * Returns: 0
- * 
+ *
  * ---------------------------------------------------------------- */
 
 /*

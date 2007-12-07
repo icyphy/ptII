@@ -13,7 +13,7 @@ char* convert_Int_String(int a) {
 /***convert_Double_Int***/
 inline int convert_Double_Int(double a) {
     return (int) a;
-} 
+}
 /**/
 
 /***convert_Int_Double***/
@@ -90,8 +90,8 @@ char* convert_Double_String(double a) {
         string[index + 1] = '0';
         string[index + 2] = '\0';
     }
-    return string;       
-}    
+    return string;
+}
 /**/
 
 /***convert_String_Boolean***/

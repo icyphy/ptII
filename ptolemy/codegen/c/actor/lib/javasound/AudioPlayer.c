@@ -1,5 +1,5 @@
-// AudioPlayer.c uses SDL to gain access to the target's audio hardware. 
-// SDL is a cross-platform multimedia library designed to provide low level 
+// AudioPlayer.c uses SDL to gain access to the target's audio hardware.
+// SDL is a cross-platform multimedia library designed to provide low level
 // hardware access. AudioPlayer.c uses a semaphore to prevent overfilling
 // the user sound data buffer. The callback method post/signal the semaphore,
 // while invoking putsample() in the fire code wait the semaphore.
@@ -10,23 +10,23 @@ struct AudioPlayer_sample {
     Uint32 dataPosition;    /* Position of the next data to be mixed */
     Uint32 dataLength;      /* Length of wave data */
 };
-    
+
 // FIXME: how should we determine the buffer size??
 #define AudioPlayer_BUFFER_SIZE 8192   // ~50 KB buffer size
-    
+
 double AudioPlayer_clip (double num) {
     return num > 1.0 ? 1.0 : num < -1.0 ? -1.0 : num;
 }
-    
+
 //#define AudioPlayer_DEBUG 1
 /**/
 
 /*** preinitBlock_8 ***/
 int $actorSymbol(i), $actorSymbol(j);
-Uint8 $actorSymbol(convertedSample);    
-    
+Uint8 $actorSymbol(convertedSample);
+
 struct AudioPlayer_sample $actorSymbol(sounds)[$val(channels)];
-        
+
 SDL_sem *$actorSymbol(sem);
 SDL_AudioSpec $actorSymbol(fmt);
 
@@ -37,11 +37,11 @@ void $actorSymbol(mixaudio)(void *unused, Uint8 *stream, int len)
     int i;
     int _resetSize = 0;
     Uint32 amount;
-    
+
 #ifdef AudioPlayer_DEBUG
     fprintf(stdout, "*******************************mixaudio running (data_length= %d), (len= %d)\n", $actorSymbol(sounds)[0].dataLength, len);
 #endif
-    
+
     // mixing sound data into output stream
     for ( i=0; i<$val(channels); i++ ) {
         while ($actorSymbol(sounds)[i].dataLength > $actorSymbol(sounds)[i].dataPosition) {
@@ -53,17 +53,17 @@ void $actorSymbol(mixaudio)(void *unused, Uint8 *stream, int len)
             $actorSymbol(sounds)[i].dataPosition += amount;
         }
     }
-        
-    // reset dataPosition, so mixing would start from the beginning of the buffer next time 
+
+    // reset dataPosition, so mixing would start from the beginning of the buffer next time
     // reset dataLength, so we would put sample from the beginning
     for ( i=0; i<$val(channels); i++ ) {
         _resetSize += $actorSymbol(sounds)[i].dataLength;
         $actorSymbol(sounds)[i].dataLength = 0;
         $actorSymbol(sounds)[i].dataPosition = 0;
     }
-    
+
     ///////////// UNLOCK //////////////////////////////
-        
+
     for (i=0; i<_resetSize; i++) {
         if (SDL_SemPost($actorSymbol(sem)) == -1) {
             fprintf(stderr, "Error posting semaphor: %s\n",SDL_GetError());
@@ -76,10 +76,10 @@ void $actorSymbol(mixaudio)(void *unused, Uint8 *stream, int len)
 // Wait for the semaphore, lock out the callback and put sample into
 // the sound data buffer.
 void $actorSymbol(putSample) (Uint8 data, int channel) {
-#ifdef AudioPlayer_DEBUG 
+#ifdef AudioPlayer_DEBUG
     fprintf(stdout, "putSample running (data= %d), (sem= %d)\n", data, SDL_SemValue($actorSymbol(sem)));
 #endif
-            
+
     /////////////// LOCK //////////////////////////////
     if (SDL_SemWait($actorSymbol(sem)) != 0) {
         fprintf(stderr, "Error waiting for semaphore: %s\n",SDL_GetError());
@@ -87,7 +87,7 @@ void $actorSymbol(putSample) (Uint8 data, int channel) {
     }
     /////////////// LOCK //////////////////////////////
     SDL_LockAudio();
-    
+
     $actorSymbol(sounds)[channel].data[$actorSymbol(sounds)[channel].dataLength] = data;
 
 #ifdef AudioPlayer_DEBUG
@@ -95,7 +95,7 @@ void $actorSymbol(putSample) (Uint8 data, int channel) {
 #endif
 
     $actorSymbol(sounds)[channel].dataLength++;
-    
+
     SDL_UnlockAudio();
 }
 /**/
@@ -104,14 +104,14 @@ void $actorSymbol(putSample) (Uint8 data, int channel) {
 // (instead of Uint8 in preinitBlock_8). The putSample() method chops the
 // 16-bit sound sample into two and puts into the buffer two samples at a
 // time, instead of one.
-/*** preinitBlock_16 ***/    
+/*** preinitBlock_16 ***/
 int $actorSymbol(i), $actorSymbol(j);
-Uint16 $actorSymbol(convertedSample);    
-    
+Uint16 $actorSymbol(convertedSample);
+
 //const int _debug = 0;
-        
+
 struct AudioPlayer_sample $actorSymbol(sounds)[$val(channels)];
-        
+
 SDL_sem *$actorSymbol(sem);
 SDL_AudioSpec $actorSymbol(fmt);
 
@@ -122,11 +122,11 @@ void $actorSymbol(mixaudio)(void *unused, Uint8 *stream, int len)
     int i;
     int _resetSize = 0;
     Uint32 amount;
-    
+
 #ifdef AudioPlayer_DEBUG
     fprintf(stdout, "*******************************mixaudio running (data_length= %d), (len= %d)\n", sounds[0].dataLength, len);
 #endif
-                    
+
     // mixing sound data into output stream
     for ( i=0; i<$val(channels); i++ ) {
         while ($actorSymbol(sounds)[i].dataLength > $actorSymbol(sounds)[i].dataPosition) {
@@ -138,14 +138,14 @@ void $actorSymbol(mixaudio)(void *unused, Uint8 *stream, int len)
             $actorSymbol(sounds)[i].dataPosition += amount;
         }
     }
-    // reset dataPosition, so mixing would start from the beginning of the buffer next time 
+    // reset dataPosition, so mixing would start from the beginning of the buffer next time
     // reset dataLength, so we would put sample from the beginning
     for ( i=0; i<$val(channels); i++ ) {
         _resetSize += $actorSymbol(sounds)[i].dataLength;
         $actorSymbol(sounds)[i].dataLength = 0;
         $actorSymbol(sounds)[i].dataPosition = 0;
     }
-    
+
     ///////////// UNLOCK //////////////////////////////
     _resetSize /= 2;
     for (i=0; i<_resetSize; i++) {
@@ -160,11 +160,11 @@ void $actorSymbol(mixaudio)(void *unused, Uint8 *stream, int len)
 // Wait for the semaphore, lock out the callback and put sample into
 // the sound data buffer.
 void $actorSymbol(putSample) (Uint16 data, int channel) {
-        
-#ifdef AudioPlayer_DEBUG 
+
+#ifdef AudioPlayer_DEBUG
     fprintf(stdout, "putSample running (data= %d), (sem= %d)\n", data, SDL_SemValue(sem));
 #endif
-        
+
     /////////////// LOCK //////////////////////////////
     if (SDL_SemWait($actorSymbol(sem)) != 0) {
         fprintf(stderr, "Error waiting for semaphore: %s\n",SDL_GetError());
@@ -173,7 +173,7 @@ void $actorSymbol(putSample) (Uint16 data, int channel) {
     /////////////// LOCK //////////////////////////////
     SDL_LockAudio();
 
-    $actorSymbol(sounds)[channel].data[$actorSymbol(sounds)[channel].dataLength] = (Uint8) data;    
+    $actorSymbol(sounds)[channel].data[$actorSymbol(sounds)[channel].dataLength] = (Uint8) data;
 
 #ifdef AudioPlayer_DEBUG
     fprintf(stdout, "putSample locked audio, (data= %d), (sound.data= %d)\n", data >> 8, $actorSymbol(sounds)[channel].data[$actorSymbol(sounds)[channel].dataLength]);
@@ -187,7 +187,7 @@ void $actorSymbol(putSample) (Uint16 data, int channel) {
 #endif
 
     $actorSymbol(sounds)[channel].dataLength++;
-    
+
     SDL_UnlockAudio();
 }
 /**/
@@ -209,7 +209,7 @@ if (($actorSymbol(sem) = SDL_CreateSemaphore(AudioPlayer_BUFFER_SIZE)) == NULL) 
 $actorSymbol(fmt).freq = $val(sampleRate);
 $actorSymbol(fmt).format = AUDIO_U$val(bitsPerSample);
 $actorSymbol(fmt).channels = $val(channels);
-$actorSymbol(fmt).samples = AudioPlayer_BUFFER_SIZE;    
+$actorSymbol(fmt).samples = AudioPlayer_BUFFER_SIZE;
 $actorSymbol(fmt).callback = $actorSymbol(mixaudio);
 $actorSymbol(fmt).userdata = NULL;
 
@@ -228,12 +228,12 @@ for ( $actorSymbol(i)=0; $actorSymbol(i)<$val(channels); ++$actorSymbol(i) ) {
 
 /*** fireBlock_8($channel) ***/
 SDL_PauseAudio(0);      /* Start the callback */
-    
+
 // FIXME: we should not put the same sample into different channels
 for ( $actorSymbol(j)=0; $actorSymbol(j)<$val(channels); ++$actorSymbol(j) ) {
     // Convert sample (Analog to Digital)
     // Input range [-1.0, 1.0] --> output range [0, 255]
-        
+
     //Use the following line if RINT() is not defined
     //$actorSymbol(convertedSample) = floor((AudioPlayer_clip($ref(input#$channel)) * 127) + 128); //128 = 2^7
     $actorSymbol(convertedSample) = rint((AudioPlayer_clip($ref(input#$channel)) * 127) + 128); //128 = 2^7

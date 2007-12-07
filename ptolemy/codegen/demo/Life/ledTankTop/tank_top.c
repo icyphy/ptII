@@ -5,7 +5,7 @@
 * Date: 3/30/2006
 * Purpose:
 *        This program was written for a wearable LED tank top.
-*        More information in game_of_life.c and at: 
+*        More information in game_of_life.c and at:
 *        http://www.cs.colorado.edu/~buechley/diy/diy_tank.html
 * Copyright information: http://www.gnu.org/copyleft/gpl.html
 
@@ -31,10 +31,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "tank_top.h"
 
 int main(void)
-{        
+{
         //initialize chip
         initialize_tank_pins_as_output ();
-        
+
         //initialize LED array with a glider
         //glider(2,2);
         r_pentomino(1,1);
@@ -44,7 +44,7 @@ int main(void)
         for(;;) {
 #else
         int i;
-        for(i = 0; i < 32; i++) { 
+        for(i = 0; i < 32; i++) {
 #endif
             loop_lights();
             //gol();

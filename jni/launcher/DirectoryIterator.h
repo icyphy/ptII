@@ -17,12 +17,12 @@
 struct DirectoryEntry {
 private:
   std::string name;
-  
+
 public:
   std::string getName() const {
     return name;
   }
-  
+
   DirectoryEntry() {
   }
   DirectoryEntry(const dirent* cStyleEntry)
@@ -36,7 +36,7 @@ private:
   DIR* m_handle;
   bool m_eof;
   DirectoryEntry m_entry;
-  
+
 private:
   void readOneEntry() {
     errno = 0;
@@ -50,7 +50,7 @@ private:
       throw unix_exception(std::string("readdir(\"") + m_directoryName + "\" " + toString(m_handle) + ")");
     }
   }
-  
+
 public:
   DirectoryIterator(const std::string& directoryName)
   : m_directoryName(directoryName)
@@ -62,19 +62,19 @@ public:
     }
     readOneEntry();
   }
-  
+
   ~DirectoryIterator() {
     closedir(m_handle);
   }
-  
+
   bool isValid() const {
     return m_eof == false;
   }
-  
+
   const DirectoryEntry* operator->() const {
     return &m_entry;
   }
-  
+
   DirectoryIterator& operator++() {
     readOneEntry();
     return *this;

@@ -56,7 +56,7 @@ int main(void)
                         ins_mesg.y9 = plant_outputs.y9;
                         ins_mesg.y10 = plant_outputs.y10;
                         ins_mesg.y11 = plant_outputs.y11;
-                        
+
                         if (OK != udp_send(socket,
                                            &address,
                                            &ins_mesg,
@@ -66,7 +66,7 @@ int main(void)
                                 printf("udp_send\n");
                         }
                 }
-                        
+
                 if (0 != nanosleep(&pause, NULL))
                 {
                         printf("In ins: error in call to ");

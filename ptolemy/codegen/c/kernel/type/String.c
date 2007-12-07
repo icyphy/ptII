@@ -17,19 +17,19 @@ Token String_new(char* s) {
 /**/
 
 /***String_delete***/
-Token String_delete(Token token, ...) {   
-    free(token.payload.String);    
+Token String_delete(Token token, ...) {
+    free(token.payload.String);
     /* We need to return something here because all the methods are declared
      * as returning a Token so we can use them in a table of functions.
      */
-    return emptyToken; 
-}    
+    return emptyToken;
+}
 /**/
 
 /***String_equals***/
 Token String_equals(Token thisToken, ...) {
-    va_list argp; 
-    Token otherToken; 
+    va_list argp;
+    Token otherToken;
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
@@ -61,10 +61,10 @@ Token String_toString(Token thisToken, ...) {
 
 /***String_add***/
 Token String_add(Token thisToken, ...) {
-    va_list argp; 
+    va_list argp;
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
-        
+
     char* result = (char*) malloc(sizeof(char) * (1 + strlen(thisToken.payload.String) + strlen(otherToken.payload.String)));
     strcpy(result, thisToken.payload.String);
     strcat(result, otherToken.payload.String);
@@ -89,7 +89,7 @@ Token String_add(Token thisToken, ...) {
 /***String_negate***/
 Token String_negate(Token thisToken, ...) {
     return emptyToken;
-}        
+}
 /**/
 
 /***String_zero***/
@@ -115,7 +115,7 @@ Token String_clone(Token thisToken, ...) {
 /***String_convert***/
 Token String_convert(Token token, ...) {
     char* stringPointer;
-        
+
     switch (token.type) {
 #ifdef TYPE_Boolean
     case TYPE_Boolean:
@@ -143,6 +143,6 @@ Token String_convert(Token token, ...) {
     token.payload.String = stringPointer;
     token.type = TYPE_String;
     return token;
-}    
+}
 /**/
 

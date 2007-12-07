@@ -10,7 +10,7 @@ if ($ref(enforceArrayLength) && $ref(input).payload.Array->size != $ref(arrayLen
 }
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $ref(input).payload.Array->size; $actorSymbol(i)++) {
     $ref(output, $actorSymbol(i)) = Array_get($ref(input), $actorSymbol(i));
-}   
+}
 /**/
 
 /*** fireBlock ($type)***/
@@ -20,5 +20,5 @@ if ($ref(enforceArrayLength) && $ref(input).payload.Array->size != $ref(arrayLen
 }
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $ref(input).payload.Array->size; $actorSymbol(i)++) {
     $ref(output, $actorSymbol(i)) = Array_get($ref(input), $actorSymbol(i)).payload.$type;
-}        
+}
 /**/

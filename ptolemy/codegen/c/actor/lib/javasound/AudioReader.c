@@ -10,12 +10,12 @@ struct $actorClass(soundBuffer) {
 
 /***preinitBlock***/
 struct $actorClass(soundBuffer) $actorSymbol(wave);
-unsigned int $actorSymbol(bitsPerSample);     
+unsigned int $actorSymbol(bitsPerSample);
 /**/
 
 /*** initBlock($fileName) ***/
 $actorSymbol(wave).soundPosition = 0;
-    
+
 /* Load the SDL library */
 if ( SDL_Init(SDL_INIT_AUDIO) < 0 ) {
     fprintf(stderr, "Couldn't initialize SDL: %s\n",SDL_GetError());
@@ -30,7 +30,7 @@ if ($actorSymbol(wave).spec.format == AUDIO_U8 || $actorSymbol(wave).spec.format
     $actorSymbol(bitsPerSample) = 8;
 }
 else {
-    $actorSymbol(bitsPerSample) = 16;        
+    $actorSymbol(bitsPerSample) = 16;
 }
 /**/
 
@@ -44,15 +44,15 @@ if ($actorSymbol(wave).soundPosition >= $actorSymbol(wave).soundLength) {
 
     $ref(output) = $actorSymbol(wave).sound[$actorSymbol(wave).soundPosition];
     $ref(output) -= 128;  // 2^7
-    $ref(output) /= (double) 128;  // 2^7 
-    $actorSymbol(wave).soundPosition++;    
+    $ref(output) /= (double) 128;  // 2^7
+    $actorSymbol(wave).soundPosition++;
 } else {
     // Convert sample (Digital to Analog)
     // Input range [0, 65535] --> output range [-1.0, 1.0)
 
     $ref(output) = $actorSymbol(wave).sound[$actorSymbol(wave).soundPosition] & ($actorSymbol(wave).sound[$actorSymbol(wave).soundPosition+1] << 8);
     $ref(output) -= 32768;  // 2^15
-    $ref(output) /= (double) 32768; // 2^15 
+    $ref(output) /= (double) 32768; // 2^15
     $actorSymbol(wave).soundPosition += 2;
 }
 /**/

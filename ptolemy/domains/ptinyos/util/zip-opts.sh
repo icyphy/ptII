@@ -56,7 +56,7 @@ OUTPUT_FILENAME=opts
 while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" -a $# -gt 0 ]; do
     case $1 in
         -h|-help|--help)
-            shift    
+            shift
             echo "$0: Usage: $0 -zip"
             echo "    Zip up the opts and opts-nolocalincludes files from the "
             echo "    tinyos-1.x directory.  These files contain the necessary"

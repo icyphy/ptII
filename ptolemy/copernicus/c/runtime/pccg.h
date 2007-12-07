@@ -79,12 +79,12 @@ typedef struct _pccg_class {
  *  must match the sequence in the generated class instances.
  */
 typedef struct {
-    
+
     PCCG_CLASS *class;
-    
+
     /* other instance-specific information follows */
 
-} PCCG_CLASS_INSTANCE; 
+} PCCG_CLASS_INSTANCE;
 
 typedef PCCG_CLASS *PCCG_CLASS_PTR;
 typedef PCCG_CLASS_INSTANCE *PCCG_CLASS_INSTANCE_PTR;

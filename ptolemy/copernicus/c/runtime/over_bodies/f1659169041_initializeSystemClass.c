@@ -1,5 +1,5 @@
 /*******************************************************************
-Dummy C code for overridden method 
+Dummy C code for overridden method
 <java.lang.System: void initializeSystemClass()>
 
 Contains initializations needed to get System.out.println() and other
@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 ********************************************************************/
 
 /*
-@author Ankush Varma 
+@author Ankush Varma
 @version $Id$
 */
 

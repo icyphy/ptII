@@ -11,8 +11,8 @@
 /* -------------------------------------------------------------------
  *
  * Function udp_client_init: initialize a client UDP socket. the
- * client will send data. 
- * 
+ * client will send data.
+ *
  * this function zeros the address, sets sock equal to a socket
  * of type SOCK_DGRAM, and initializes the address to the input
  * ip and port numbers. now the ip and port will not be necessary
@@ -51,8 +51,8 @@ int udp_client_init(int *sock,
 
 /* -------------------------------------------------------------------
  *
- * Function udp_server_init: initialize a server UDP socket. the 
- * server will receive data. 
+ * Function udp_server_init: initialize a server UDP socket. the
+ * server will receive data.
  *
  * sets sock equal to SOCK_DGRAM, zeros address, sets address to
  * receive from any address (client) and its own port number.
@@ -95,7 +95,7 @@ int udp_server_init(int *sock,
 /* -------------------------------------------------------------------
  *
  * Function udp_send: send data over a UDP socket. called by client
- * 
+ *
  * Arguments: sock, a pointer to an initialized UDP socket; address,
  * the address to send to given by udp_client_init; data, the
  * data to send; size, the number of bytes of the data to send.
@@ -123,7 +123,7 @@ int udp_send(int sock,
 /* -------------------------------------------------------------------
  *
  * Function udp_receive: receive data over a UDP socket. called by
- * server. the local sockaddr_in address is set to the address of the 
+ * server. the local sockaddr_in address is set to the address of the
  * sending client by recvfrom.  this address is not returned.
  *
  * Arguments: sock, a pointer to an initialized UDP socket; data, a

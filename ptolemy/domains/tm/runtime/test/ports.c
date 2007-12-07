@@ -37,7 +37,7 @@ void setGPS(PORT_GPS_t* GPS_val) {
 
   insertTriggeredTask(newTask);
   printf("new task ACTOR1 inserted to the scheduler.\n");
-} 
+}
 
 void setINS(PORT_INS_t* INS_val) {
   TM_TASK_t* newTask;
@@ -59,7 +59,7 @@ void setINS(PORT_INS_t* INS_val) {
   newTask->hasDeadline = 1;
 
   insertTriggeredTask(newTask);
-} 
+}
 
 void setCTRL(PORT_CTRL_t* CTRL_val){
   TM_TASK_t* newTask;
@@ -78,4 +78,4 @@ void setCTRL(PORT_CTRL_t* CTRL_val){
   newTask->getDeadline = ACTOR2_getDeadline;
   newTask->hasDeadline = 1;
   insertTriggeredTask(newTask);
-} 
+}

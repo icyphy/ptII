@@ -63,7 +63,7 @@ void ACTOR1_produceOutput() {
 void ACTOR1_getDeadline(struct timeval* tm) {
   printf("In ACTOR1_getDeadline.");
   printf("The deadline is 0.002sec.\n");
-  
+
   ACTOR1_lastDeadlineuSec += ACTOR1_PERIOD;
   if (ACTOR1_lastDeadlineuSec > 1e6) {
     ACTOR1_lastDeadlineuSec -= 1e6;

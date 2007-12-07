@@ -1,6 +1,6 @@
 /** Copyright(c) 2002, Jie Liu
  *  ALl right reserved.
- *  
+ *
  *  Timed-Multitasking Runtime
  *
  *  $Id$
@@ -36,7 +36,7 @@ typedef struct sched_entry {
 #define MAX_SCHEDULE_ENTRY 10
 
 typedef struct task_table {
-  SCHED_ENTRY_t* table[MAX_SCHEDULE_ENTRY]; 
+  SCHED_ENTRY_t* table[MAX_SCHEDULE_ENTRY];
   int insertPoint;
   int removePoint;
   pthread_cond_t newTaskCond;

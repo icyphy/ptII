@@ -14,7 +14,7 @@ void ISR_start() {
   // start a thread that create a GPS call every ***period.
   pthread_t gpsThread;
   int rc;
-  
+
   rc = pthread_create(&gpsThread, NULL, runGPS, NULL);
   if (rc) {
     printf("ERROR; return code from pthread_create() is %d\n", rc);

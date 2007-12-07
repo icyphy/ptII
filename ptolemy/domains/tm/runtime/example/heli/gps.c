@@ -52,7 +52,7 @@ int main(void)
 
                         gps_mesg.this = plant_outputs.y6;
                         gps_mesg.that = plant_outputs.y7;
-                        
+
                         if (OK != udp_send(socket,
                                            &address,
                                            &gps_mesg,
@@ -62,7 +62,7 @@ int main(void)
                                 printf("udp_send\n");
                         }
                 }
-                        
+
                 if (0 != nanosleep(&pause, NULL))
                 {
                         printf("In gps: error in call to ");

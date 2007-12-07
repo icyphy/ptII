@@ -42,7 +42,7 @@ char FILTER_isReady() {
     global_var_GPS.isNew = 0;
     return 0;
   } else if (global_var_INS.isNew) {
-    // We don't keep a local copy of INS, since we know that the next 
+    // We don't keep a local copy of INS, since we know that the next
     // INS trigger will come after we finish the current reaction.
     global_var_INS.isNew = 0;
     return 1;
@@ -85,7 +85,7 @@ void FILTER_produceOutput() {
 void FILTER_getDeadline(struct timeval* tm) {
   printf("In FILTER_getDeadline.");
   printf("The deadline is 0.002sec.\n");
-  
+
   FILTER_lastDeadlineuSec += FILTER_PERIOD;
   if (FILTER_lastDeadlineuSec > 1e6) {
     FILTER_lastDeadlineuSec -= 1e6;

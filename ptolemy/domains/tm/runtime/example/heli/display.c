@@ -54,7 +54,7 @@ int main(void)
                         display_mesg.y4 = plant_outputs.y4;
                         display_mesg.y5 = plant_outputs.y5;
                         display_mesg.y6 = plant_outputs.y6;
-                        
+
                         if (OK != udp_send(socket,
                                            &address,
                                            &display_mesg,
@@ -72,7 +72,7 @@ int main(void)
                                display_mesg.y5,
                                display_mesg.y6);
                 }
-                        
+
                 if (0 != nanosleep(&pause, NULL))
                 {
                         printf("In display: error in call to ");

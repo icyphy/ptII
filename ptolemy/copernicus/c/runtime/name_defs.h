@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 /*
 Definitions of Names of Objects, and limits of variables
-@author Ankush Varma 
+@author Ankush Varma
 @version $Id$
 */
 

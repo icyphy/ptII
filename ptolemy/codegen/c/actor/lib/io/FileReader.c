@@ -27,7 +27,7 @@ do {
         $actorSymbol(length) *= 2;
         $ref(output) = (char*) realloc ($ref(output), ($actorSymbol(length) + 1) * sizeof(char));
         /* Solaris: strncpy does not add a null if only */
-        /* n chars are copied. */ 
+        /* n chars are copied. */
         $ref(output)[$actorSymbol(length)] = '\0';
     }
     if ($actorSymbol(charRead) != EOF ) {

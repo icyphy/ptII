@@ -34,8 +34,8 @@ Header file for SingleClass Mode.
 
 #include "pccg.h"
 
-/* Simple versions of array instance and array access macros to get 
-   early versions (before support for arrays is completed) of the translator 
+/* Simple versions of array instance and array access macros to get
+   early versions (before support for arrays is completed) of the translator
    to work.
 */
 
@@ -49,9 +49,9 @@ Header file for SingleClass Mode.
         (((PCCG_ARRAY_INSTANCE_PTR)(array))->array_length)
 
 
-/* Structure that implements instances of array objects. 
+/* Structure that implements instances of array objects.
  *
- * Caution: the ordering of field declarations in this structure is important. 
+ * Caution: the ordering of field declarations in this structure is important.
  * It must be consistent with the format of class instances in the
  * generated code. Specifically, the sequence of fields that precede
  * specific to array instances must be identical to the sequence of
@@ -96,5 +96,5 @@ extern PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate(
         int empty_dimensions,
         ...);
 
-       
-#endif 
+
+#endif

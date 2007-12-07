@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 /*
 Native code for java.lang.Object.hashCode().
 
-@author Ankush Varma 
+@author Ankush Varma
 @version $Id$
 */
 

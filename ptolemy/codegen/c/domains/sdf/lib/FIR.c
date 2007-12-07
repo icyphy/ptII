@@ -24,24 +24,24 @@ Token $actorSymbol(_taps);
     $actorSymbol(_taps) = $ref(taps);
 /**/
 
-/*** initBlock ***/    
+/*** initBlock ***/
         $actorSymbol(_zero) = $tokenFunc(Array_get($actorSymbol(_taps), 0)::zero());
-        
+
         $actorSymbol(_phaseLength) = $actorSymbol(_taps).payload.Array->size / $val(interpolation);
-        
+
         if (($actorSymbol(_taps).payload.Array->size % $val(interpolation)) != 0) {
             $actorSymbol(_phaseLength)++;
         }
-        
+
         // Create new data array and initialize index into it.
         // Avoid losing the data if possible.
         // NOTE: If the filter length increases, then it is impossible
         // to correctly initialize the delay line to contain previously
         // seen data, because that data has not been saved.
         $actorClass(length) = $actorSymbol(_phaseLength) + $val(decimation);
-        
+
         $actorSymbol(_data) = $new(Array($actorClass(length), 0));
-        
+
         for ($actorClass(i) = 0; $actorClass(i) < $actorClass(length); $actorClass(i)++) {
             Array_set($actorSymbol(_data), $actorClass(i), $actorSymbol(_zero));
         }

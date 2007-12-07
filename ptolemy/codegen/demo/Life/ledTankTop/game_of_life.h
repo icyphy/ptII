@@ -5,7 +5,7 @@
 * Date: 3/30/2006
 * Purpose:
 *        This program was written for a wearable LED tank top.
-*        More information in game_of_life.c and at: 
+*        More information in game_of_life.c and at:
 *        http://www.cs.colorado.edu/~buechley/diy/diy_tank.html
 * Copyright information: http://www.gnu.org/copyleft/gpl.html
 
@@ -91,7 +91,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define col7_low PORTB &= ~_BV(PB2)
 #define col8_low PORTB &= ~_BV(PB1)
 #define col9_low PORTB &= ~_BV(PB0)
-#else /* __AVR__ */ 
+#else /* __AVR__ */
 
 #define row0_output
 #define row1_output
@@ -159,7 +159,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define col12_low
 #define col13_low
 
-#endif /* __AVR__ */ 
+#endif /* __AVR__ */
 
 //initialization functions
 void initialize_tank_pins_as_output (void);

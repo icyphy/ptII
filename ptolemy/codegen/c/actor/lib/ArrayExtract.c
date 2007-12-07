@@ -14,7 +14,7 @@ if ($actorSymbol(doDelete)) {
 }
 
 $ref(output) = Array_new($val(outputArrayLength), 0);
-        
+
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $val(destinationPosition); $actorSymbol(i)++) {
     $ref(output).payload.Array->elements[$actorSymbol(i)] = $tokenFunc(Array_get($ref(input), 0)::zero());
 }

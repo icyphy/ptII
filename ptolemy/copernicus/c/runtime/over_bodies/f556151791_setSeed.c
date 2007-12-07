@@ -1,5 +1,5 @@
 /*******************************************************************
-Dummy C code for overridden method 
+Dummy C code for overridden method
 <java.util.Random: void setSeed(long)>
 
 Copyright (c) 2001-2005 The University of Maryland.
@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 ********************************************************************/
 
 /*
-@author Ankush Varma 
+@author Ankush Varma
 @version $Id$
 */
 

@@ -45,23 +45,23 @@ char STATEFB_isReady() {
 
 void STATEFB_exec() {
   // Enter the execution code here.
- 
+
   float y6 = global_var_STATEFB.v1;
   float y7 = global_var_STATEFB.v2;
   float y8 = global_var_STATEFB.v3;
   float y9 = global_var_STATEFB.v4;
   float y10 = global_var_STATEFB.v5;
   float y11 = global_var_STATEFB.v6;
-  
+
   float desired_u = 0.0;
   float desired_v = 0.0;
   float desired_w = 0.0;
   float desired_phi = 0.0;
   static float iteration = 0;
-  
+
 
   float y22;
-  
+
   printf("In STATEFB_exec iteration: #%f.0. \n", iteration);
 
 #define UP_ITERATIONS (300.0)
@@ -126,7 +126,7 @@ void STATEFB_exec() {
                 /* phi starts at -1.5, ends at -2.0 * PI */
                 desired_phi = ((iteration-(UP_ITERATIONS + 4*GO_ITERATIONS + 3*TURN_ITERATIONS))/TURN_ITERATIONS) * -0.5 * PI - 1.5 * PI;
         }
-        else 
+        else
         {
                 iteration = UP_ITERATIONS;
         }
@@ -135,11 +135,11 @@ void STATEFB_exec() {
 
         y22 = fmod(desired_phi - y6 + PI, 2 * PI) - PI;
 
-        STATEFB_local_output.v1 = 
+        STATEFB_local_output.v1 =
           (-0.02  * desired_v  ) + ( 0.02  * y8) + ( 0.55 * y10);
         STATEFB_local_output.v2 =
           (-0.02  * desired_u  ) + ( 0.02  * y7) + (-0.55 * y11);
-        STATEFB_local_output.v3 = 
+        STATEFB_local_output.v3 =
           ( 0.035 * desired_w  ) + (-0.035 * y9);
         STATEFB_local_output.v4 = y22;
         /* outputs->y22 = ( 1.0   * desired_phi) + (-1.0   * y6); */
@@ -166,7 +166,7 @@ void STATEFB_produceOutput() {
 void STATEFB_getDeadline(struct timeval* tm) {
   printf("In STATEFB_getDeadline.");
   printf("The deadline is 0.002sec.\n");
-  
+
   STATEFB_lastDeadlineuSec += STATEFB_PERIOD;
   if (STATEFB_lastDeadlineuSec > 1e6) {
     STATEFB_lastDeadlineuSec -= 1e6;

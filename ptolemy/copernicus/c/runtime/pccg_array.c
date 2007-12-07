@@ -49,15 +49,15 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
 
 /* Allocate storage for a Java array using a variable number of arguments.
  * The size1, size2 etc. indicate sizes of the filled dimensions.
- */   
+ */
 PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate(
         PCCG_CLASS_PTR element_class, int element_size,
         int dimensions, int dimensions_to_fill,/* int size1,*/ ...) {
     va_list next_argument;
-    
+
     va_start(next_argument, dimensions_to_fill);
 
-    return pccg_array_allocate_list(element_class, element_size, 
+    return pccg_array_allocate_list(element_class, element_size,
             dimensions, dimensions_to_fill, next_argument);
 }
 
@@ -77,9 +77,9 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
     /* Synonym with correct type. */
     PCCG_ARRAY_INSTANCE_PTR* new_array_clone;
     PCCG_ARRAY_INSTANCE *result;
-   
+
     first_dimension_size = va_arg(next_argument, int);
-    
+
     /* If the elements of this array are normal Objects/items and not
        arrays, then they are allocated directly, else pointers to them are
        allocated.
@@ -114,7 +114,7 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
         }
     }
 
-    /* FIXME: this is not quite right */ 
+    /* FIXME: this is not quite right */
 #ifdef sun
     result = (PCCG_ARRAY_INSTANCE *) memalign(8, sizeof(PCCG_ARRAY_INSTANCE));
     /* FIXME: Remove this.
@@ -123,7 +123,7 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate_list(
 #else
     result = (PCCG_ARRAY_INSTANCE *) malloc(sizeof(PCCG_ARRAY_INSTANCE));
 #endif
-    
+
     result->class = &GENERIC_ARRAY_CLASS;
     result->array_data = new_array;
     result->array_length = first_dimension_size;

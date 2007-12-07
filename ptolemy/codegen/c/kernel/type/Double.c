@@ -22,17 +22,17 @@ Token Double_new(double d) {
 
 /***Double_equals***/
 Token Double_equals(Token thisToken, ...) {
-    va_list argp; 
-    Token otherToken; 
+    va_list argp;
+    Token otherToken;
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
-        
+
     if (otherToken.type != TYPE_Double) {
         otherToken = Double_convert(otherToken);
     }
 
     va_end(argp);
-    
+
     // Give tolerance for testing.
     return Boolean_new(1.0E-6 > thisToken.payload.Double - otherToken.payload.Double);
 }
@@ -66,10 +66,10 @@ Token Double_toString(Token thisToken, ...) {
 
 /***Double_add***/
 Token Double_add(Token thisToken, ...) {
-    va_list argp; 
-    Token otherToken;    
+    va_list argp;
+    Token otherToken;
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);        
+    otherToken = va_arg(argp, Token);
 
     va_end(argp);
     return Double_new(thisToken.payload.Double + otherToken.payload.Double);
@@ -78,11 +78,11 @@ Token Double_add(Token thisToken, ...) {
 
 /***Double_subtract***/
 Token Double_subtract(Token thisToken, ...) {
-    va_list argp; 
+    va_list argp;
     Token otherToken;
-    
+
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);        
+    otherToken = va_arg(argp, Token);
 
     va_end(argp);
     return Double_new(thisToken.payload.Double - otherToken.payload.Double);
@@ -91,12 +91,12 @@ Token Double_subtract(Token thisToken, ...) {
 
 /***Double_multiply***/
 Token Double_multiply(Token thisToken, ...) {
-    va_list argp; 
+    va_list argp;
     Token result;
     Token otherToken;
-    
+
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);        
+    otherToken = va_arg(argp, Token);
 
     switch (otherToken.type) {
     case TYPE_Double:
@@ -121,11 +121,11 @@ Token Double_multiply(Token thisToken, ...) {
 
 /***Double_divide***/
 Token Double_divide(Token thisToken, ...) {
-    va_list argp; 
+    va_list argp;
     Token otherToken;
-    
+
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);        
+    otherToken = va_arg(argp, Token);
 
     va_end(argp);
     return Double_new(thisToken.payload.Double / otherToken.payload.Double);

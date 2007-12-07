@@ -18,7 +18,7 @@ double RandomSource_nextDouble(double* seed) {
 /**/
 
 
-     
+
 /*** gaussianBlock ***/
 
 double RandomSource_nextGaussian(double* seed, boolean* haveNextNextGaussian, double* nextNextGaussian) {
@@ -26,12 +26,12 @@ double RandomSource_nextGaussian(double* seed, boolean* haveNextNextGaussian, do
     double v1;
     double v2;
     double s;
-    
+
     if (*haveNextNextGaussian) {
         *haveNextNextGaussian = false;
         return *nextNextGaussian;
     } else {
-        do { 
+        do {
             v1 = 2 * RandomSource_nextDouble(seed) - 1;   // between -1.0 and 1.0
             v2 = 2 * RandomSource_nextDouble(seed) - 1;   // between -1.0 and 1.0
             s = v1 * v1 + v2 * v2;

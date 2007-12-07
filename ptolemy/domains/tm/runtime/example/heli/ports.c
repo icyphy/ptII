@@ -41,7 +41,7 @@ void setGPS(PORT_GPS_t* GPS_val) {
 
   insertTriggeredTask(newTask);
   printf("new task FILTER inserted to the scheduler.\n");
-} 
+}
 
 void setINS(PORT_INS_t* INS_val) {
   TM_TASK_t* newTask;
@@ -64,7 +64,7 @@ void setINS(PORT_INS_t* INS_val) {
   newTask->hasDeadline = 1;
 
   insertTriggeredTask(newTask);
-} 
+}
 
 void setSTATEFB(PORT_STATEFB_t* STATEFB_val){
   TM_TASK_t* newTask;
@@ -86,7 +86,7 @@ void setSTATEFB(PORT_STATEFB_t* STATEFB_val){
   newTask->getDeadline = STATEFB_getDeadline;
   newTask->hasDeadline = 1;
   insertTriggeredTask(newTask);
-} 
+}
 
 void setACTUATOR(PORT_ACTUATOR_t* ACTUATOR_val) {
   TM_TASK_t* newTask;

@@ -47,7 +47,7 @@ int main(void)
                 plant_inputs.y20 = actuators_mesg.y20;
                 plant_inputs.y21 = actuators_mesg.y21;
                 plant_inputs.y22 = actuators_mesg.y22;
-                
+
                 if (OK != write_plant_inputs_buffer(&plant_inputs))
                 {
                         printf("In plant_server: ");

@@ -1,6 +1,6 @@
 /** Copyright(c) 2002, Jie Liu
  *  ALl right reserved.
- *  
+ *
  *  Timed-Multitasking Runtime
  *
  *  $Id$
@@ -27,12 +27,12 @@ inline char hasTriggeredTask() {
 
 /** This function returns the next task to be executed. If there
  *  is no tasks to be executed, then it blocking reads on the
- *  conditional variable newTaskCond. 
+ *  conditional variable newTaskCond.
  */
 void getNextTriggeredTask(SCHED_ENTRY_t** task) {
   pthread_mutex_lock(&(triggeredTasks.taskEntryMutex));
   while (!hasTriggeredTask()) {
-    pthread_cond_wait( &(triggeredTasks.newTaskCond), 
+    pthread_cond_wait( &(triggeredTasks.newTaskCond),
         &(triggeredTasks.taskEntryMutex));
   }
   *task = triggeredTasks.table[triggeredTasks.removePoint];
@@ -42,7 +42,7 @@ void getNextTriggeredTask(SCHED_ENTRY_t** task) {
 /** Remove the task pointed by the removePoint from the triggeredTasks
  *  table. If there is no entry in the table, then do nothing.
  */
-void removeNextTriggeredTask() {  
+void removeNextTriggeredTask() {
   pthread_mutex_lock(&(triggeredTasks.taskEntryMutex));
   if (triggeredTasks.removePoint < 0) {
      pthread_mutex_unlock(&(triggeredTasks.taskEntryMutex));
@@ -59,7 +59,7 @@ void removeNextTriggeredTask() {
   pthread_mutex_unlock(&(triggeredTasks.taskEntryMutex));
   return;
 }
-  
+
 /** Free the memory of the task.
  */
 void freeSchedEntry(SCHED_ENTRY_t* schedEnt_p) {
@@ -68,7 +68,7 @@ void freeSchedEntry(SCHED_ENTRY_t* schedEnt_p) {
 }
 
 
-/** Insert the task to the triggeredTasks queue. 
+/** Insert the task to the triggeredTasks queue.
  */
 void insertTriggeredTask(TM_TASK_t* task) {
   SCHED_ENTRY_t* schedEntry_p;
@@ -79,8 +79,8 @@ void insertTriggeredTask(TM_TASK_t* task) {
     free(task);
     pthread_mutex_unlock(&(triggeredTasks.taskEntryMutex));
     return;
-  } 
-  
+  }
+
   schedEntry_p = malloc(sizeof(SCHED_ENTRY_t));
   schedEntry_p->sch_task = task;
   schedEntry_p->sch_status = TASK_TRIGGERED;
@@ -100,7 +100,7 @@ void insertTriggeredTask(TM_TASK_t* task) {
 
 
 /** Move the tasks from the triggeredTasks table to the exeuctingTask
- *  table, set a timer at the deadline of the task, and call its fire 
+ *  table, set a timer at the deadline of the task, and call its fire
  *  method.
  */
 void runTask(SCHED_ENTRY_t* schedEntry_p) {
@@ -186,7 +186,7 @@ void *monitorTask(void *entry_p) {
     schedEntry_p->sch_task->stopExec();
     pthread_mutex_unlock(&schStatusMutex);
     sched_yield();
-    
+
     while(1) {
       pthread_mutex_lock(&schStatusMutex);
       if (schedEntry_p->sch_status == TASK_EXEC_DONE) {
@@ -206,7 +206,7 @@ void *monitorTask(void *entry_p) {
   (schedEntry_p->sch_task)->produceOutput();
   // free the memory corresponding to the task.
   freeSchedEntry(schedEntry_p);
-  
+
   /*
   pthread_mutex_lock(&(executingTasks.taskListMutex));
   task->next->previous = task->previous;
@@ -222,7 +222,7 @@ void *monitorTask(void *entry_p) {
 void schedule() {
   SCHED_ENTRY_t* nextTask_p;
   while(1) {
-    
+
     getNextTriggeredTask(&nextTask_p);
     if((nextTask_p->sch_task)->isReady()) {
       // move the task from triggeredTasks to executingTasks.
@@ -235,7 +235,7 @@ void schedule() {
     }
   }
 }
-   
+
 
 void sched_init() {
   triggeredTasks.insertPoint = 0;

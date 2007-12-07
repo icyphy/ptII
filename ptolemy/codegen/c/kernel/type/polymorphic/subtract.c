@@ -6,38 +6,38 @@ inline Token subtract_Token_Token(Token a1, Token a2) {
 
 /***subtract_Boolean_Boolean***/
 inline boolean subtract_Boolean_Boolean(boolean a1, boolean a2) {
-    return a1 | a2;   
+    return a1 | a2;
 }
 /**/
 
 /***subtract_Int_Int***/
 inline int subtract_Int_Int(int a1, int a2) {
-    return a1 - a2;   
+    return a1 - a2;
 }
 /**/
 
 /***subtract_Double_Double***/
 inline double subtract_Double_Double(double a1, double a2) {
-    return a1 - a2;   
+    return a1 - a2;
 }
 /**/
 
 /***subtract_Double_Int***/
 inline double subtract_Double_Int(double a1, int a2) {
-    return a1 - a2;   
+    return a1 - a2;
 }
 /**/
 
 /***subtract_Long_Long***/
 inline long long subtract_Long_Long(long long a1, long long a2) {
-    return a1 - a2;   
+    return a1 - a2;
 }
 /**/
 
 
 /***subtract_Array_Array***/
 inline Token subtract_Array_Array(Token a1, Token a2) {
-    return $Array_subtract(a1, a2);   
+    return $Array_subtract(a1, a2);
 }
 /**/
 
@@ -49,7 +49,7 @@ int subtract_Int_Boolean(int a1, boolean a2) {
 
 /***subtract_Boolean_Int***/
 inline int subtract_Boolean_Int(boolean a1, int a2) {
-    //return $subtract_Int_Boolean(a2, a1);   
+    //return $subtract_Int_Boolean(a2, a1);
 }
 /**/
 
@@ -72,7 +72,7 @@ inline int subtract_Token_Int(Token a1, int a2) {
 Token subtract_Double_Array(double a1, Token a2) {
     int i;
     Token result = $new(Array(a2.payload.Array->size, 0));
-    
+
     for (i = 0; i < a2.payload.Array->size; i++) {
         Array_set(result, i, $subtract_Double_Token(a1, Array_get(a2, i)));
     }
@@ -105,7 +105,7 @@ Token subtract_Long_Token(long long a1, Token a2) {
 inline Token subtract_Array_Double(Token a1, double a2) {
     int i;
     Token result = $new(Array(a1.payload.Array->size, 0));
-    
+
     for (i = 0; i < a1.payload.Array->size; i++) {
         Array_set(result, i, $subtract_Token_Double(Array_get(a1, i), a2));
     }
@@ -117,7 +117,7 @@ inline Token subtract_Array_Double(Token a1, double a2) {
 Token subtract_Int_Array(int a1, Token a2) {
     int i;
     Token result = $new(Array(a2.payload.Array->size, 0));
-    
+
     for (i = 0; i < a2.payload.Array->size; i++) {
         Array_set(result, i, $subtract_Int_Token(a1, Array_get(a2, i)));
     }
@@ -129,7 +129,7 @@ Token subtract_Int_Array(int a1, Token a2) {
 inline Token subtract_Int_Array(Token a1, int a2) {
     int i;
     Token result = $new(Array(a1.payload.Array->size, 0));
-    
+
     for (i = 0; i < a1.payload.Array->size; i++) {
         Array_set(result, i, $subtract_Token_Int(Array_get(a1, i), a2));
     }
@@ -141,7 +141,7 @@ inline Token subtract_Int_Array(Token a1, int a2) {
 Token subtract_Long_Array(long long a1, Token a2) {
     int i;
     Token result = $new(Array(a2.payload.Array->size, 0));
-    
+
     for (i = 0; i < a2.payload.Array->size; i++) {
         Array_set(result, i, $subtract_Long_Token(a1, Array_get(a2, i)));
     }
@@ -153,7 +153,7 @@ Token subtract_Long_Array(long long a1, Token a2) {
 inline Token subtract_Long_Array(Token a1, long long a2) {
     int i;
     Token result = $new(Array(a1.payload.Array->size, 0));
-    
+
     for (i = 0; i < a1.payload.Array->size; i++) {
         Array_set(result, i, $subtract_Token_Long(Array_get(a1, i), a2));
     }

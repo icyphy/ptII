@@ -35,8 +35,8 @@ Run-time C code generation functionality for translation of arrays.
 #include "pccg.h"
 #include "java/lang/Object.h"
 
-/* Simple versions of array instance and array access macros to get 
-   early versions (before support for arrays is completed) of the translator 
+/* Simple versions of array instance and array access macros to get
+   early versions (before support for arrays is completed) of the translator
    to work.
 */
 
@@ -50,7 +50,7 @@ Run-time C code generation functionality for translation of arrays.
 #define PCCG_ARRAY_ACCESS(base, element_type, index) \
         (((element_type*)((base)->array_data))[(index)])
 
-/* With runtime bounds check 
+/* With runtime bounds check
 #define PCCG_ARRAY_ACCESS(base, element_type, index) \
         (((element_type*)((base)->array_data))\
         [(((index)<(PCCG_ARRAY_LENGTH(base)))? \
@@ -63,9 +63,9 @@ Run-time C code generation functionality for translation of arrays.
 
 
 
-/* Structure that implements instances of array objects. 
+/* Structure that implements instances of array objects.
  *
- * Caution: the ordering of field declarations in this structure is important. 
+ * Caution: the ordering of field declarations in this structure is important.
  * It must be consistent with the format of class instances in the
  * generated code. Specifically, the sequence of fields that precede
  * specific to array instances must be identical to the sequence of
@@ -74,7 +74,7 @@ Run-time C code generation functionality for translation of arrays.
  */
 typedef struct
 {
-    
+
     /* The name of this class. */
     char* name;
 
@@ -93,7 +93,7 @@ typedef struct
     /* Function for handling the "instanceof" operator. */
     short (*instanceOf)(void*, long int);
 
-    struct 
+    struct
     {
         /* Inherited/Overridden methods from java.lang.Object */
         i0530663260_Class (*m02100232897_getClass)(i1063877011_Object);
@@ -147,9 +147,9 @@ extern PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS;
 
 /* Allocate storage for a Java array using a variable number of arguments.
  * The size1, size2 etc. indicate sizes of the filled dimensions.
- */   
+ */
 PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate(
         PCCG_CLASS_PTR element_class, int element_size,
-        int dimensions, int dimensions_to_fill, /*int size1,*/ ...); 
-       
-#endif 
+        int dimensions, int dimensions_to_fill, /*int size1,*/ ...);
+
+#endif

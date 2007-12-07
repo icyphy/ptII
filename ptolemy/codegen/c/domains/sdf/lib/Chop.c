@@ -4,7 +4,7 @@
     int $actorSymbol(destination);
     int $actorSymbol(pastBufferIndex);
     int $actorSymbol(i);
-    
+
     int $actorSymbol(_highLimit);
     int $actorSymbol(_lowLimit);
     int $actorSymbol(_inputIndex);
@@ -17,7 +17,7 @@
 /**/
 
 /*** initBlock ***/
-        if ($val(usePastInputs) && $val(offset) > 0) {            
+        if ($val(usePastInputs) && $val(offset) > 0) {
             // Fill past buffer with zeros.
             for ($actorSymbol(i) = 0; $actorSymbol(i) < $val(offset); $actorSymbol(i)++) {
                 $actorSymbol(_pastBuffer)[$actorSymbol(i)] = $actorSymbol(zero);
@@ -82,10 +82,10 @@
             if ($actorSymbol(startCopy) < 0) {
                 // Shift older data.
                 $actorSymbol(destination) = $val(offset) - $val(numberToRead);
-                
+
                                 $targetType(input)_arraycopy($actorSymbol(_pastBuffer), $val(numberToRead), $actorSymbol(_pastBuffer), 0, $actorSymbol(destination));
                 //System.arraycopy(_pastBuffer, _numberToRead, _pastBuffer, 0, destination);
-                
+
                 $actorSymbol(startCopy) = 0;
                 $actorSymbol(length) = $val(numberToRead);
             }

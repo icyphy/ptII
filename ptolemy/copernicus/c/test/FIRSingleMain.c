@@ -1,7 +1,7 @@
 
-/* Main program that accompanies the FIR.java test 
+/* Main program that accompanies the FIR.java test
 
-   @author Shuvra S. Bhattacharyya 
+   @author Shuvra S. Bhattacharyya
    @version $Id$
 */
 
@@ -31,6 +31,6 @@ int main(void) {
     for (i=0; i<10; i++) {
         printf("%f ", output[i]);
     }
-    
+
     return 0;
 }

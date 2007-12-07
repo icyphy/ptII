@@ -19,16 +19,16 @@ public:
     , m_errno(errno)
     {
     }
-    
+
     int getErrno() const {
         return m_errno;
     }
-    
+
 private:
     int gnuCompatibleStrerror(int (*strerror_r_fn)(int, char*, size_t), int errorNumber, char* messageBuffer, size_t bufferSize) {
         return strerror_r_fn(errorNumber, messageBuffer, bufferSize);
     }
-    
+
     int gnuCompatibleStrerror(char* (*strerror_r_fn)(int, char*, size_t), int errorNumber, char* messageBuffer, size_t bufferSize) {
         const char* intermediateBuffer = strerror_r_fn(errorNumber, messageBuffer, bufferSize);
         // strncpy doesn't support copying over oneself.
@@ -38,7 +38,7 @@ private:
         }
         return 0;
     }
-    
+
     /** Converts the current value of 'errno' to a string. */
     std::string errnoToString() {
         // I'm concerned that errno may have changed by the time this function is called.
@@ -64,7 +64,7 @@ private:
             return messageBuffer;
         }
     }
-    
+
     int m_errno;
 };
 

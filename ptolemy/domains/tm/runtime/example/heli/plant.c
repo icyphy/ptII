@@ -32,7 +32,7 @@ int plant(plant_inputs_t *inputs, plant_outputs_t *outputs)
         plant_state[20] = inputs->y20;
         plant_state[21] = inputs->y21;
         plant_state[22] = inputs->y22;
-        
+
         derivatives(time,
                     plant_state,
                     derivative_plant_state);

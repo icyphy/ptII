@@ -22,14 +22,14 @@ Token Boolean_new(boolean b) {
 
 /***Boolean_equals***/
 Token Boolean_equals(Token thisToken, ...) {
-    va_list argp; 
-    Token otherToken; 
+    va_list argp;
+    Token otherToken;
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
     va_end(argp);
     return Boolean_new(
-            ( thisToken.payload.Boolean && otherToken.payload.Boolean ) || 
+            ( thisToken.payload.Boolean && otherToken.payload.Boolean ) ||
             ( !thisToken.payload.Boolean && !otherToken.payload.Boolean ));
 }
 /**/
@@ -53,7 +53,7 @@ Token Boolean_toString(Token thisToken, ...) {
 
 /***Boolean_add***/
 Token Boolean_add(Token thisToken, ...) {
-    va_list argp; 
+    va_list argp;
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
     va_end(argp);
@@ -111,6 +111,6 @@ Token Boolean_convert(Token token, ...) {
     }
     token.type = TYPE_Boolean;
     return token;
-}    
+}
 /**/
 

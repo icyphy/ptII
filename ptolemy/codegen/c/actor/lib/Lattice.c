@@ -13,7 +13,7 @@
     int $actorClass(i);
 /**/
 
-/*** sharedArrayCopyBlock ***/    
+/*** sharedArrayCopyBlock ***/
     //super.arraycopyBlock(double);
 void $actorClass(arraycopy)(double *src, int srcPos, double *dest, int destPos, int length) {
     int i;

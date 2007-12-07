@@ -14,11 +14,11 @@ $ref(output) = $Array($size);
 for ($actorSymbol(i) = 0; $actorSymbol(i) < $width; $actorSymbol(i)++) {
     $ref(output) = $ref(input#$actorSymbol(i));
 }
-    
+
 // This should translate to:
 //for (i = 0; i < width; i++) {
 //    output = input[i];
-//}    
+//}
 /**/
 
 

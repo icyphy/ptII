@@ -1,7 +1,7 @@
 
 /* FIR filter parameter settings for associated with the FIR.java test.
    These are just some arbitrary values to test out the code.
-   @author Shuvra S. Bhattacharyya 
+   @author Shuvra S. Bhattacharyya
    @version $Id$
 */
 

@@ -8,7 +8,7 @@ if ($ref(scaleOnLeft)) {
     $ref(output) = Scale_scaleOnLeft($ref(input), (double) $val(factor));
 } else {
     $ref(output) = Scale_scaleOnRight($ref(input), (double) $val(factor));
-}        
+}
 /**/
 
 /***sharedScaleOnLeftBlock***/

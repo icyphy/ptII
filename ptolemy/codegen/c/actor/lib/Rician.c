@@ -2,7 +2,7 @@
 $super();
 boolean $actorSymbol(haveNextNextGaussian) = false;
 double $actorSymbol(nextNextGaussian);
-    
+
 double $actorSymbol(xRawNum);
 double $actorSymbol(yRawNum);
 /**/

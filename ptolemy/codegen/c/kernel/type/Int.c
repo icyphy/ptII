@@ -19,8 +19,8 @@ Token Int_new(int i) {
 
 /***Int_equals***/
 Token Int_equals(Token thisToken, ...) {
-    va_list argp; 
-    Token otherToken; 
+    va_list argp;
+    Token otherToken;
     va_start(argp, thisToken);
     otherToken = va_arg(argp, Token);
 
@@ -61,7 +61,7 @@ Token Int_toString(Token thisToken, ...) {
 
 /***Int_add***/
 Token Int_add(Token thisToken, ...) {
-    va_list argp; 
+    va_list argp;
     va_start(argp, thisToken);
     Token otherToken = va_arg(argp, Token);
 
@@ -72,9 +72,9 @@ Token Int_add(Token thisToken, ...) {
 
 /***Int_subtract***/
 Token Int_subtract(Token thisToken, ...) {
-    va_list argp; 
+    va_list argp;
     va_start(argp, thisToken);
-    Token otherToken = va_arg(argp, Token);        
+    Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
     return Int_new(thisToken.payload.Int - otherToken.payload.Int);
@@ -83,18 +83,18 @@ Token Int_subtract(Token thisToken, ...) {
 
 /***Int_multiply***/
 Token Int_multiply(Token thisToken, ...) {
-    va_list argp; 
+    va_list argp;
     Token result;
     Token otherToken;
 
     va_start(argp, thisToken);
-    otherToken = va_arg(argp, Token);        
+    otherToken = va_arg(argp, Token);
 
     switch (otherToken.type) {
     case TYPE_Int:
         result = Int_new(thisToken.payload.Int * otherToken.payload.Int);
         break;
-                    
+
 #ifdef TYPE_Double
     case TYPE_Double:
         result = Double_new(thisToken.payload.Int * otherToken.payload.Double);
@@ -114,9 +114,9 @@ Token Int_multiply(Token thisToken, ...) {
 
 /***Int_divide***/
 Token Int_divide(Token thisToken, ...) {
-    va_list argp; 
+    va_list argp;
     va_start(argp, thisToken);
-    Token otherToken = va_arg(argp, Token);        
+    Token otherToken = va_arg(argp, Token);
 
     va_end(argp);
     return Int_new(thisToken.payload.Int / otherToken.payload.Int);
@@ -159,14 +159,14 @@ Token Int_convert(Token token, ...) {
         token.payload.Int = DoubletoInt(token.payload.Double);
         break;
 #endif
-        
+
         // FIXME: not finished
-    default: 
+    default:
         fprintf(stderr, "Int_convert(): Conversion from an unsupported type. (%d)\n", token.type);
         break;
-    }    
+    }
     token.type = TYPE_Int;
     return token;
-}    
+}
 /**/
 

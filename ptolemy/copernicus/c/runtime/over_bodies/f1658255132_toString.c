@@ -1,5 +1,5 @@
 /*******************************************************************
-Dummy C code for overridden method 
+Dummy C code for overridden method
 <java.lang.Throwable: java.lang.String toString()>
 
 Copyright (c) 2001-2005 The University of Maryland.
@@ -24,7 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 ********************************************************************/
 
 /*
-@author Ankush Varma 
+@author Ankush Varma
 @version $Id$
 */
 
@@ -38,7 +38,7 @@ i1195259493_String string = malloc(sizeof(struct i1195259493_String));
 string->class = &Vi1195259493_String;
 string->f01486352994_count = length;
 string->f1860107401_value = pccg_array_allocate(
-        (PCCG_CLASS_PTR)malloc(sizeof(PCCG_ARRAY_char_elem)), 
+        (PCCG_CLASS_PTR)malloc(sizeof(PCCG_ARRAY_char_elem)),
         sizeof(char), 1, 1, length);
 
 strcpy(string->f1860107401_value->array_data, name);

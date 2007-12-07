@@ -6,7 +6,7 @@
 * Purpose:
 *        This program implements the Game of Life on a 6 x 14 LED
 *        array. It was written for a wearable LED tank top.
-*        More information at: 
+*        More information at:
 *        http://www.cs.colorado.edu/~buechley/diy/diy_tank.html
 * Copyright information: http://www.gnu.org/copyleft/gpl.html
 
@@ -47,20 +47,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #endif /*__AVR__*/
 #include "game_of_life.h"
 
-/* constants and variables defining the size and properties 
+/* constants and variables defining the size and properties
    of the LED array and corresponding Game of Life (GOL) array.
    the GOL array will hold information about the current and
    next state for each cell in the GOL array/grid.
 */
 //const unsigned char number_rows = 6;
-//const unsigned char number_columns = 14; 
+//const unsigned char number_columns = 14;
 //const unsigned char size_of_array = 84;
-//volatile unsigned char array [6][14]; 
+//volatile unsigned char array [6][14];
 
 const unsigned char number_rows = 8;
-const unsigned char number_columns = 10; 
+const unsigned char number_columns = 10;
 const unsigned char size_of_array = 80;
-volatile unsigned char array [8][10]; 
+volatile unsigned char array [8][10];
 
 /* constants for resetting the values of the GOL array */
 const unsigned char on_next_on = 3;                        //current state is on and next state is on
@@ -84,7 +84,7 @@ void initialize_tank_pins_as_output (void)
         row5_output;
         row6_output;
         row7_output;
-        
+
         col0_output;
         col1_output;
         col2_output;
@@ -105,7 +105,7 @@ void initialize_tank_pins_as_output (void)
 /* given a row value (i), and a column value (j), turns on the LED
    at position i,j in the LED array for 1ms */
 void row_column_display (unsigned char i, unsigned char j)
-{        
+{
 #ifndef __AVR__
     printf("%d %d\n", i, j);
 #else
@@ -132,7 +132,7 @@ void row_column_display (unsigned char i, unsigned char j)
         else
                 if (i==7)
                         row7_high;
-        
+
         if (j==0)
                 col0_low;
         else
@@ -163,10 +163,10 @@ void row_column_display (unsigned char i, unsigned char j)
                 if (j==9)
                         col9_low;
 #endif
-        
+
 #ifdef _DELAY_MS
         _delay_ms(1000);
-#endif        
+#endif
         all_on ();
 }
 
@@ -174,7 +174,7 @@ void row_column_display (unsigned char i, unsigned char j)
    j in the LED array for 5ms */
 void column_display (unsigned char j)
 {
-        
+
         row0_low;
         row1_low;
         row2_low;
@@ -183,7 +183,7 @@ void column_display (unsigned char j)
         row5_low;
         row6_low;
         row7_low;
-        
+
         if (j==0)
                 col0_high;
         else
@@ -213,11 +213,11 @@ void column_display (unsigned char j)
         else
                 if (j==9)
                         col9_high;
-                        
+
 #ifdef _DELAY_MS
         _delay_ms(5);
 #endif
-        
+
         all_off ();
 }
 
@@ -237,7 +237,7 @@ void all_on (void)
         row5_low;
         row6_low;
         row7_low;
-        
+
         //columns high
         col0_high;
         col1_high;
@@ -263,7 +263,7 @@ void all_off (void)
         row5_high;
         row6_high;
         row7_high;
-        
+
         //columns low
         col0_low;
         col1_low;
@@ -283,7 +283,7 @@ void loop_lights (void)
 {
         unsigned char x,y;
         int z;
-        
+
         for(x=0;x<number_rows;x++)
         {
                 y=0;
@@ -308,7 +308,7 @@ void zero_array (void)
 {
         volatile int i=0;
         volatile int j=0;
-        while (i<number_rows) 
+        while (i<number_rows)
         {
                 j=0;
                 while (j<number_columns)
@@ -336,7 +336,7 @@ void display_array (void)
         {
 
                 i=0;
-                while (i<number_rows) 
+                while (i<number_rows)
                 {
                         j=0;
                         while (j<number_columns) {
@@ -344,7 +344,7 @@ void display_array (void)
                             if (array[i][j] == 1) {
                                 row_column_display(i,j);
                             }
-#else 
+#else
 #ifdef GOL_DISPLAY
                             printf("%d", array[i][j]);
 #endif
@@ -367,13 +367,13 @@ void display_array (void)
         }
 }
 
-/* sets array to reflect next state of GOL iteration.  
+/* sets array to reflect next state of GOL iteration.
    see GOL function for context. */
 void reset_array (void)
 {
         volatile unsigned char i=0;
         volatile unsigned char j=0;
-        while (i<number_rows) 
+        while (i<number_rows)
         {
                 j=0;
                 while (j<number_columns)
@@ -394,26 +394,26 @@ void gol (void)
         volatile unsigned char i=0;
         volatile unsigned char j=0;
         volatile unsigned char number_neighbors=0;
-        
+
         //variables to hold boundary condition information
         volatile unsigned char i_minus1=0;
         volatile unsigned char i_plus1=0;
         volatile unsigned char j_minus1=0;
         volatile unsigned char j_plus1=0;
-        /* note: the boundaries of the shirt are the top and bottom 
-                         rows and the seam where the first and last 
+        /* note: the boundaries of the shirt are the top and bottom
+                         rows and the seam where the first and last
                          columns meet.  we will treat the shirt
                          as a torus, meaning that the cells on the top row
                          will be neighbors to the cells on the bottom and vice versa.
-                         likewise, the cells in the first and last columns will 
+                         likewise, the cells in the first and last columns will
                          be neighbors.
         */
-        
+
         //display current state
         display_array ();
-        
+
         //compute next state
-        while (i<number_rows) 
+        while (i<number_rows)
         {
                 //compute boundary condition information
                 i_plus1 = i+1;
@@ -443,7 +443,7 @@ void gol (void)
                                 //  x o n
                                 //  o o o
                                 j_minus1 = number_columns-1;
-                                
+
                         //compute number of neighbors for each cell
                         number_neighbors = 0;
                         if ((array[i_minus1][j_minus1]==1) | (array[i_minus1][j_minus1]==on_next_on))
@@ -462,7 +462,7 @@ void gol (void)
                                 number_neighbors++;
                         if ((array[i_plus1][j_plus1] == 1) | (array[i_plus1][j_plus1] == on_next_on))
                                 number_neighbors++;
-                
+
                         //compute rule
                         if (array[i][j] == 1)
                         {
@@ -476,9 +476,9 @@ void gol (void)
                 }
                 i++;
         }
-        
+
         //reset array to reflect next state
-        reset_array(); 
+        reset_array();
 }
 
 void glider (unsigned char i, unsigned char j)

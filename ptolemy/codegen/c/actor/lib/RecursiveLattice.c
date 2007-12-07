@@ -16,7 +16,7 @@
     int $actorClass(i);
 /**/
 
-/*** sharedArrayCopyBlock ***/    
+/*** sharedArrayCopyBlock ***/
     $super.arraycopyBlock(double);
 /**/
 

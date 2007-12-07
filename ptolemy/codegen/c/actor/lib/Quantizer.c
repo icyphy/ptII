@@ -12,7 +12,7 @@ $actorSymbol(levels) = $val(levels);
 // We use CALLOC to optimizate array performance
 $actorSymbol(transitionPoints) =
 (double*) calloc($numPoints, sizeof(double));
-    
+
 for ($actorSymbol(i) = 0;
      $actorSymbol(i) < ($numPoints - 1);
      $actorSymbol(i)++) {
@@ -27,7 +27,7 @@ for ($actorSymbol(i) = 0;
 /*** fireBlock ($numPoints)***/
 for ($actorSymbol(i) = 0;
      $actorSymbol(i) < $numPoints;
-     $actorSymbol(i)++) {        
+     $actorSymbol(i)++) {
     if ($ref(input)
             <= $actorSymbol(transitionPoints)[$actorSymbol(i)]) {
         $ref(output) = $actorSymbol(levels).payload.Array->elements[$actorSymbol(i)].payload.Double;
