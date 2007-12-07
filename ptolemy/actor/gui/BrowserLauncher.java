@@ -155,7 +155,7 @@ public class BrowserLauncher {
      * <p>If the ptolemy.ptII.browser property is set, then its value
      * is used as the value of the browser.
      * <br>To always use Internet Explorer, one might invoke Ptolemy
-     * with: 
+     * with:
      * <pre>
      * java -classpath $PTII -Dptolemy.ptII.browser=c:\\Program\ Files\\Internet\ Explorer\\iexplore.exe ptolemy.vergil.VergilApplication
      * </pre>
@@ -167,9 +167,9 @@ public class BrowserLauncher {
      * <p>To preserve your browser choice set the ptolemy.ptII.browser
      * property in <code>$PTII/lib/ptII.properties</code>.  Note that
      * each time <code>$PTII/bin/configure</code> is run,
-     * <code>$PTII/lib/ptII.properties.in</code> is read and 
+     * <code>$PTII/lib/ptII.properties.in</code> is read and
      * <code>$PTII/lib/ptII.properties</code> is overwritten, so you
-     * may want to add your changes to 
+     * may want to add your changes to
      * <code>$PTII/lib/ptII.properties.in</code>.
      *
      * @param url The URL to open.

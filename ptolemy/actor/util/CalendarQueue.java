@@ -596,7 +596,7 @@ public class CalendarQueue implements Debuggable {
 
     /** Get the index of the minimum bucket. The index is cached. When
      *  this method is invoked, this method first checks whether the queue
-     *  has changed, if so, find a new index, otherwise, return the cached 
+     *  has changed, if so, find a new index, otherwise, return the cached
      *  index.
      *  @return The index of the minimum bucket.
      */
@@ -608,7 +608,7 @@ public class CalendarQueue implements Debuggable {
 
         // If the queue has not been changed, do nothing.
         // Note that this has a strong dependency on the implementation
-        // of methods that modify the queue, such as the put(), remove(), 
+        // of methods that modify the queue, such as the put(), remove(),
         // and take() methods.
         if (_indexOfMinimumBucketValid) {
             return _indexOfMinimumBucket;
@@ -723,7 +723,7 @@ public class CalendarQueue implements Debuggable {
     // The argument indicates whether the queue just increased or decreased
     // in size.
     private void _resize(boolean increasing) {
-        // This method is called whenever the queue is modified. So, we 
+        // This method is called whenever the queue is modified. So, we
         // set the flat _queueChanged to true.
         _indexOfMinimumBucketValid = false;
 

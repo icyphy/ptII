@@ -144,7 +144,7 @@ public class PoissonClock extends TimedSource {
 
     /** If the argument is the meanTime parameter, check that it is
      *  positive.
-     *  @param attribute The attribute that changed.  
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the meanTime value is
      *   not positive.
      */

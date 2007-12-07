@@ -1,4 +1,4 @@
-/* A class that initializes Vergil. 
+/* A class that initializes Vergil.
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.

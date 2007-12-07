@@ -67,7 +67,7 @@ import diva.graph.JGraph;
  If inputs are provided, they are expected to be MoML strings
  that are to be applied to the model. This can be used, for
  example, to create animations.
- 
+
  @author  Edward A. Lee, Elaine Cheong
  @version $Id$
  @since Ptolemy II 6.1
@@ -213,7 +213,7 @@ public class ModelDisplay extends AbstractPlaceableActor implements
 
     /** Place the display in the specified container.
      *  @param container The container, or null to remove it from any
-     *   existing container. 
+     *   existing container.
      */
     public void place(Container container) {
         if (container == null) {

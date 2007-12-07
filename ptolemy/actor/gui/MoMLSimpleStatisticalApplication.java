@@ -73,7 +73,7 @@ import ptolemy.util.StringUtilities;
  */
 public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
     /** Parse the xml file and run it.
-     *  @param args The command line arguments 
+     *  @param args The command line arguments
      *  @exception Exception If there was a problem parsing
      *  or running the model.
      */
@@ -211,7 +211,7 @@ public class MoMLSimpleStatisticalApplication extends MoMLSimpleApplication {
                     // Assume this is a MoML file, and open it.
                     _parser.reset();
 
-                    // If the open time is more than 10 seconds, print it. 
+                    // If the open time is more than 10 seconds, print it.
                     long startTime = System.currentTimeMillis();
                     _toplevel = (CompositeActor) _parser.parse(base, inURL);
                     long endTime = System.currentTimeMillis();

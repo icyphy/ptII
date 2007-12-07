@@ -231,7 +231,7 @@ public class FixPoint implements Cloneable, Serializable {
      *
      *  The resulting Precision of a multiply between two FixPoint
      *  arguments is as follows: the integer location is the sum
-     *  of the integer locations of the two arguments and the 
+     *  of the integer locations of the two arguments and the
      *  fractional location is the sum of the fractional locations
      *  of the two arguments.
      */
@@ -451,7 +451,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  precisely the same. The two FixPoints need not therefore have
      *  the same number of fraction bits, but any additional fractional
      *  bits in one value must be zero in the other.
-     *  
+     *
      *  @param arg The FixPoint object to use for equality
      *  checking.
      *  @return True if the FixPoints are equal; false otherwise.
@@ -821,7 +821,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  @param precision The precision to represent the new unscalled value.
      *  @exception ArithmeticException when precision is not sufficient
      *  to represent integerValue.
-     *  
+     *
      *  Note that this is package scope
      */
     FixPoint(BigInteger unscaledIntegerValue, Precision precision) {

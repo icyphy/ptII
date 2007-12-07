@@ -97,7 +97,7 @@ public class Accumulator extends CCodeGeneratorHelper {
         return processCode(_codeStream.toString());
     }
 
-    /** Generate the initialize code. 
+    /** Generate the initialize code.
      *  The method reads in <code>initBlock</code> from Accumulator.c,
      *  replaces macros with their values and returns the processed code
      *  block.
@@ -117,7 +117,7 @@ public class Accumulator extends CCodeGeneratorHelper {
         return processCode(_codeStream.toString());
     }
 
-    /** Generate the preinitialize code. 
+    /** Generate the preinitialize code.
      *  The method reads in <code>preinitBlock</code> from Accumulator.c,
      *  replaces macros with their values and returns the processed code
      *  block.

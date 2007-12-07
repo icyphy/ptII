@@ -334,7 +334,7 @@ public class GetDocumentationAction extends FigureAction {
         _configuration = configuration;
     }
 
-    /** Set the effigy to be used if the effigy is not evident from the 
+    /** Set the effigy to be used if the effigy is not evident from the
      *  model being edited.  This is used if you are showing the documentation
      *  from code that is not in a model.
      *  @param effigy the effigy to set.

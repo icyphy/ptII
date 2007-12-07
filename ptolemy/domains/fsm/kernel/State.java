@@ -112,7 +112,7 @@ public class State extends ComponentEntity {
         // If this is the only state in the container, then make
         // it the initial state.  For backward compatibility,
         // we do not do this if the container has a non-empty
-        // value for initialStateName. In that case, we 
+        // value for initialStateName. In that case, we
         // make this the initial state if its name matches that
         // name.
         String initialStateName = "";
@@ -301,11 +301,11 @@ public class State extends ComponentEntity {
                 }
 
                 if (containerContainer == null) {
-                    // If we are doing saveAs of ModalBSC and select 
+                    // If we are doing saveAs of ModalBSC and select
                     // submodel only, then some of the refinements might
                     // not yet have a container (containercontainer == null).
                     // ptolemy.vergil.fsm.StateIcon._getFill() will call
-                    // this and properly handles an IllegalActionException 
+                    // this and properly handles an IllegalActionException
                     throw new IllegalActionException(this, "Container of \""
                             + getFullName()
                             + "\" is null?  This is not always a problem.");

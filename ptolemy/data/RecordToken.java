@@ -112,8 +112,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
     /** Construct a RecordToken with the labels and values specified
      *  by a given Map object. The object cannot contain any null keys
      *  or values.
-     *  @param fieldMap A Map that has keys of type String and 
-     *  values of type Token.   
+     *  @param fieldMap A Map that has keys of type String and
+     *  values of type Token.
      *  @exception IllegalActionException If the map contains null
      *  keys or values, or if it contains non-String keys or non-Token
      *  values.

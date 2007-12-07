@@ -266,7 +266,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @param rateVariables A list of rate variables.  Each element
      *  is a Variable.
      *  @exception IllegalActionException If throw while looking for dynamic
-     *  rate parameters. 
+     *  rate parameters.
      */
     protected void _checkDynamicRateVariables(CompositeActor model,
             List rateVariables) throws IllegalActionException {
@@ -872,13 +872,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         }
     }
 
-    /** Update the The external rates of those directly connected input 
+    /** Update the The external rates of those directly connected input
      *  and output ports to be 1. So a direct connection will transfer
-     *  one token in each execution of the schedule. 
-     * 
+     *  one token in each execution of the schedule.
+     *
      *  @param container The container that is being scheduled.
      *  @param externalRates A map from external ports of container to
-     *  the fractional rates of that port.  The external rates of 
+     *  the fractional rates of that port.  The external rates of
      *  those directly connected input and output ports will be updated
      *  to be 1 during this method.
      */
@@ -932,9 +932,9 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (insideSinkPorts.isEmpty()) {
                     isDirectionConnection = false;
                 } else {
-                    // If the zero external port rate is due to the rate 
-                    // propagation from a contained actor (i.e., connected to the 
-                    // zero rate port of the actor), then the zero external rate 
+                    // If the zero external port rate is due to the rate
+                    // propagation from a contained actor (i.e., connected to the
+                    // zero rate port of the actor), then the zero external rate
                     // must be preserved.
                     Iterator sinkPorts = insideSinkPorts.iterator();
                     while (sinkPorts.hasNext()) {
@@ -1392,14 +1392,14 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             // SDFReceiver.clear() does it.
 
             // The above statement seems incorrect to me. The only place where
-            // SDFReceiver.clear() is called is during initialization. 
-            // For models that need to recompute the schedule during the 
-            // execution, _waitingTokens is not cleared to zero, because 
+            // SDFReceiver.clear() is called is during initialization.
+            // For models that need to recompute the schedule during the
+            // execution, _waitingTokens is not cleared to zero, because
             // initialize() is called only once at the beginning of the
-            // execution. Plus, in code generation, initialize() is never 
-            // called. so I'm adding code to clear the _waitingTokes to zero 
+            // execution. Plus, in code generation, initialize() is never
+            // called. so I'm adding code to clear the _waitingTokes to zero
             // here:
-            // --Gang Zhou           
+            // --Gang Zhou
             Iterator actorsIterator = actorList.iterator();
             while (actorsIterator.hasNext()) {
                 Actor actor = (Actor) actorsIterator.next();

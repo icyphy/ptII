@@ -215,7 +215,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
     }
 
     /** Given a string, escape special characters as necessary.
-     *  For C, we do:   
+     *  For C, we do:
      *  <pre>
      *  \\ becomes \\\\
      *  which means:
@@ -267,7 +267,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         //String[] elements = new String[numChildren];
         String result = "$new(Array(" + numChildren + ", " + numChildren;
 
-        // Convert up to LUB. 
+        // Convert up to LUB.
         // Assume UNKNOWN is the lower type.
         ptolemy.data.type.Type elementType = BaseType.UNKNOWN;
 
@@ -502,7 +502,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             } else if (type instanceof MatrixType) {
                 //FIXME :todo
                 if (argCount == 2) {
-                    // _evaluateMatrixIndex(node, value, argValues[0], 
+                    // _evaluateMatrixIndex(node, value, argValues[0],
                     //         argValues[1]);
                 } else {
                     //FIXME need better error message when the first child
@@ -642,11 +642,11 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         functionCode += " $actorSymbol(function) (";
         List argumentNames = node.getArgumentNameList();
         Type[] argumentTypes = node.getArgumentTypes();
-        
+
         if (argumentNames.size() > 0) {
             functionCode += argumentTypes[0] + " ";
             functionCode += argumentNames.get(0);
-            
+
             for (int i = 1; i < argumentNames.size(); i++) {
                 functionCode += ", " + argumentTypes[i] + " ";
                 functionCode += argumentNames.get(i);
@@ -757,7 +757,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
             if (_evaluatedChildToken instanceof StringToken) {
-                // In C, Strings should have \n tags substituted. 
+                // In C, Strings should have \n tags substituted.
                 // See Test 17.2
 
                 //_fireCode.append(escapeForTargetLanguage(_evaluatedChildToken.toString()));

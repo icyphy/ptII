@@ -228,7 +228,7 @@ public class Expression extends TypedAtomicActor {
         } catch (Throwable throwable) {
             // Chain exceptions to get the actor that threw the exception.
             // Note that if evaluateParseTree does a divide by zero, we
-            // need to catch an ArithmeticException here. 
+            // need to catch an ArithmeticException here.
             throw new IllegalActionException(this, throwable,
                     "Expression invalid.");
         }

@@ -35,12 +35,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /** Execute commands in a subprocess and send the results to stderr and stdout.
- <p>As an alternative to this class, see 
+ <p>As an alternative to this class, see
  {@link ptolemy.gui.JTextAreaExec}, which uses Swing; and
  {@link ptolemy.util.StringBufferExec}, which writes to a StringBuffer.
 
  <p>Sample usage:
- <pre> 
+ <pre>
  List execCommands = new LinkedList();
  execCommands.add("date");
  execCommands.add("sleep 3");
@@ -338,7 +338,7 @@ public class StreamExec implements ExecuteCommands {
     /** The return code of the last Runtime.exec() command. */
     private int _subprocessReturnCode;
 
-    /** The working directory of the subprocess.  If null, then 
+    /** The working directory of the subprocess.  If null, then
      *  the subprocess is executed in the working directory of the current
      *  process.
      */

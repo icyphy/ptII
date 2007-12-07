@@ -58,7 +58,7 @@ import ptolemy.kernel.util.StringAttribute;
  <li> <b>truncate</b>: Round towards zero.
  </ul>
 
- If the input is NaN, then an exception is thrown. 
+ If the input is NaN, then an exception is thrown.
  The reason for this is that there is no way to represent a NaN
  as an integer.  Thus, even though java.lang.Math.round(Double.NaN)
  returns 0, ceil(Double.NaN), floor(Double.NaN) and truncate(DoubleNaN) all

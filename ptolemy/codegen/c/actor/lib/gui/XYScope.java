@@ -1,5 +1,5 @@
 /* A helper class for ptolemy.actor.lib.gui.XYScope
- 
+
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
 
@@ -33,11 +33,11 @@ package ptolemy.codegen.c.actor.lib.gui;
 
 /**
  A helper class for ptolemy.actor.lib.gui.XYScope.
- 
+
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Yellow (zgang) 
+ @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Red (zgang)
  */
 public class XYScope extends XYPlotter {

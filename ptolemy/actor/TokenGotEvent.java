@@ -36,7 +36,7 @@ import ptolemy.data.Token;
 /**
  An event that is published by IOPorts whenever get or
  getInside is called.  The appropriate event should be published
- whenever a token is taken out from the port's queue by the actor code.  
+ whenever a token is taken out from the port's queue by the actor code.
  In Kepler the provenance recorder uses these events to save
  intermediate results of the workflow.  In the future these events
  could be used for "smart" reruns or a fault tolerance mechanism.

@@ -32,7 +32,7 @@ import ptolemy.codegen.kernel.Director;
 //////////////////////////////////////////////////////////////////
 //// SDFDirector
 
-/** 
+/**
  A stub for the CodeGenerator unit test.
 
  @see CodeGenerator

@@ -1,31 +1,31 @@
 /*
  * Copyright (c) 2002-2007 JGoodies Karsten Lentzsch. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- *  o Redistributions of source code must retain the above copyright notice, 
- *    this list of conditions and the following disclaimer. 
- *     
- *  o Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
- *    and/or other materials provided with the distribution. 
- *     
- *  o Neither the name of JGoodies Karsten Lentzsch nor the names of 
- *    its contributors may be used to endorse or promote products derived 
- *    from this software without specific prior written permission. 
- *     
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+ *  o Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ *  o Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ *  o Neither the name of JGoodies Karsten Lentzsch nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.jgoodies.forms.layout;
@@ -40,15 +40,15 @@ import com.jgoodies.forms.util.DefaultUnitConverter;
 import com.jgoodies.forms.util.UnitConverter;
 
 /**
- * Consists only of static methods that create and convert sizes 
+ * Consists only of static methods that create and convert sizes
  * as required by the FormLayout. The conversion of sizes
- * that are not based on pixel is delegated to an implementation 
- * of {@link UnitConverter}. The conversion methods require the 
+ * that are not based on pixel is delegated to an implementation
+ * of {@link UnitConverter}. The conversion methods require the
  * layout container as parameter to read its current font and resolution.
  *
  * @author  Karsten Lentzsch
  * @version $Revision$
- * 
+ *
  * @see     Size
  * @see     UnitConverter
  * @see     DefaultUnitConverter
@@ -103,7 +103,7 @@ public final class Sizes {
     public static final ComponentSize DEFAULT = new ComponentSize("default");
 
     /**
-     * An array of all enumeration values used to canonicalize 
+     * An array of all enumeration values used to canonicalize
      * deserialized component sizes.
      */
     private static final ComponentSize[] VALUES = { MINIMUM, PREFERRED, DEFAULT };
@@ -126,7 +126,7 @@ public final class Sizes {
     /**
      * Creates and returns an instance of <code>ConstantSize</code> from the
      * given encoded size and unit description.
-     * 
+     *
      * @param encodedValueAndUnit  value and unit in string representation
      * @param horizontal                        true for horizontal, false for vertical
      * @return a <code>ConstantSize</code> for the given value and unit
@@ -139,8 +139,8 @@ public final class Sizes {
     /**
      * Creates and returns a ConstantSize for the specified value
      * in horizontal dialog units.
-     * 
-     * @param value        size value in horizontal dialog units        
+     *
+     * @param value        size value in horizontal dialog units
      * @return the associated <code>ConstantSize</code>
      */
     public static ConstantSize dluX(int value) {
@@ -150,8 +150,8 @@ public final class Sizes {
     /**
      * Creates and returns a ConstantSize for the specified value
      * in vertical dialog units.
-     * 
-     * @param value         size value in vertical dialog units   
+     *
+     * @param value         size value in vertical dialog units
      * @return the associated <code>ConstantSize</code>
      */
     public static ConstantSize dluY(int value) {
@@ -159,9 +159,9 @@ public final class Sizes {
     }
 
     /**
-     * Creates and returns a ConstantSize 
+     * Creates and returns a ConstantSize
      * for the specified pixel value.
-     * 
+     *
      * @param value  value in pixel
      * @return the associated <code>ConstantSize</code>
      */
@@ -172,7 +172,7 @@ public final class Sizes {
     /**
      * Creates and returns a BoundedSize for the given basis
      * using the specified lower and upper bounds.
-     * 
+     *
      * @param basis                  the base size
      * @param lowerBound          the lower bound size
      * @param upperBound          the upper bound size
@@ -187,7 +187,7 @@ public final class Sizes {
 
     /**
      * Converts Inches and returns pixels using the specified resolution.
-     * 
+     *
      * @param in           the Inches
      * @param component    the component that provides the graphics object
      * @return the given Inches as pixels
@@ -199,7 +199,7 @@ public final class Sizes {
     /**
      * Converts Millimeters and returns pixels using the resolution of the
      * given component's graphics object.
-     * 
+     *
      * @param mm                Millimeters
      * @param component    the component that provides the graphics object
      * @return the given Millimeters as pixels
@@ -212,7 +212,7 @@ public final class Sizes {
     /**
      * Converts Centimeters and returns pixels using the resolution of the
      * given component's graphics object.
-     * 
+     *
      * @param cm                Centimeters
      * @param component    the component that provides the graphics object
      * @return the given Centimeters as pixels
@@ -225,7 +225,7 @@ public final class Sizes {
     /**
      * Converts DTP Points and returns pixels using the resolution of the
      * given component's graphics object.
-     * 
+     *
      * @param pt                DTP Points
      * @param component    the component that provides the graphics object
      * @return the given Points as pixels
@@ -235,9 +235,9 @@ public final class Sizes {
     }
 
     /**
-     * Converts horizontal dialog units and returns pixels. 
+     * Converts horizontal dialog units and returns pixels.
      * Honors the resolution, dialog font size, platform, and l&amp;f.
-     * 
+     *
      * @param dluX         the horizontal dialog units
      * @param component    the component that provides the graphics object
      * @return the given horizontal dialog units as pixels
@@ -248,9 +248,9 @@ public final class Sizes {
     }
 
     /**
-     * Converts vertical dialog units and returns pixels. 
+     * Converts vertical dialog units and returns pixels.
      * Honors the resolution, dialog font size, platform, and l&amp;f.
-     * 
+     *
      * @param dluY         the vertical dialog units
      * @param component    the component that provides the graphics object
      * @return the given vertical dialog units as pixels
@@ -263,9 +263,9 @@ public final class Sizes {
     // Accessing the Unit Converter *******************************************
 
     /**
-     * Returns the current {@link UnitConverter}. If it has not been initialized 
+     * Returns the current {@link UnitConverter}. If it has not been initialized
      * before it will get an instance of {@link DefaultUnitConverter}.
-     * 
+     *
      * @return the current <code>UnitConverter</code>
      */
     public static UnitConverter getUnitConverter() {
@@ -278,7 +278,7 @@ public final class Sizes {
     /**
      * Sets a new UnitConverter that will be used to convert
      * font-dependent sizes to pixel sizes.
-     * 
+     *
      * @param newUnitConverter  the unit converter to be set
      */
     public static void setUnitConverter(UnitConverter newUnitConverter) {
@@ -289,7 +289,7 @@ public final class Sizes {
 
     /**
      * An ordinal-based serializable typesafe enumeration that implements
-     * the {@link Size} interface for the component sizes: 
+     * the {@link Size} interface for the component sizes:
      * <em>min, pref, default</em>.
      */
     static final class ComponentSize implements Size, Serializable {
@@ -318,10 +318,10 @@ public final class Sizes {
 
         /**
          * Computes the maximum size for the given list of components, using
-         * this form spec and the specified measure. 
+         * this form spec and the specified measure.
          * <p>
          * Invoked by FormLayout to determine the size of one of my elements
-         * 
+         *
          * @param container       the layout container
          * @param components      the list of components to measure
          * @param minMeasure      the measure used to determine the minimum size

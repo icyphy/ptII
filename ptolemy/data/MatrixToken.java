@@ -53,8 +53,8 @@ import ptolemy.math.FixPoint;
  Derived classes should override those methods where the corresponding
  conversion can be achieved without loss of information.
  Derived classes should call _elementIsNil() when they encounter a nil
- token during construction. 
- 
+ token during construction.
+
  @author Yuhong Xiong, Steve Neuendorffer, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
@@ -246,7 +246,7 @@ public abstract class MatrixToken extends Token {
      *  types of all of the tokens in the given array.  The size
      *  of the array must be (rows*columns).
      *  @param tokens an array of Token objects
-     *  @param rows The number of rows. 
+     *  @param rows The number of rows.
      *  @param columns The number of columns.
      *  @return An instance of a subclass of MatrixToken.
      *  @exception IllegalActionException If no type exists for the
@@ -287,7 +287,7 @@ public abstract class MatrixToken extends Token {
      *  the array must be (rows*columns).
      *  @param type The type of the MatrixToken.
      *  @param tokens an array of Token objects
-     *  @param rows The number of rows. 
+     *  @param rows The number of rows.
      *  @param columns The number of columns.
      *  @return An instance of a subclass of MatrixToken.
      *  @exception IllegalActionException If the type is not possible,
@@ -334,7 +334,7 @@ public abstract class MatrixToken extends Token {
      *  @return The type of the value returned from the corresponding
      *  function.
      *  @exception IllegalActionException If thrown while getting the matrix
-     *  type for type1. 
+     *  type for type1.
      */
     public static Type arrayToMatrixReturnType(Type type1, Type type2,
             Type type3) throws IllegalActionException {
@@ -376,7 +376,7 @@ public abstract class MatrixToken extends Token {
      *  tokens in the given array.  The size of the array must be
      *  (rows*columns).
      *  @param tokens an array of Token objects.
-     *  @param rows The number of rows. 
+     *  @param rows The number of rows.
      *  @param columns The number of columns.
      *  @return An instance of a subclass of MatrixToken.
      *  @exception IllegalActionException If no type exists for the
@@ -1146,7 +1146,7 @@ public abstract class MatrixToken extends Token {
      *  class, this method simply throws an exception. Derived
      *  classes provide the implementation.
      *  <p>
-     *  The matrices are produced from submatrices extracted 
+     *  The matrices are produced from submatrices extracted
      *  left-to-right, top-to-bottom, in a raster scan pattern.
      *  For example, if <i>rowSplit</i> = {1, 2},
      *  <i>columnSplit</i> = {2, 1}, and the input matrix is

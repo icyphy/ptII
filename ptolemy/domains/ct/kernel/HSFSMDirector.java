@@ -429,10 +429,10 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
         }
     }
 
-    /** Return the parse tree evaluator used to evaluate guard expressions. 
-     *  In this class, an instance 
-     *  of {@link ParseTreeEvaluatorForGuardExpression} is returned. 
-     *  The parse tree evaluator is set to construction mode. 
+    /** Return the parse tree evaluator used to evaluate guard expressions.
+     *  In this class, an instance
+     *  of {@link ParseTreeEvaluatorForGuardExpression} is returned.
+     *  The parse tree evaluator is set to construction mode.
      *  @return ParseTreeEvaluator used to evaluate guard expressions.
      */
     public ParseTreeEvaluator getParseTreeEvaluator() {

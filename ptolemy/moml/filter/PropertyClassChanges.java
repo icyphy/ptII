@@ -140,7 +140,7 @@ public class PropertyClassChanges implements MoMLFilter {
             if (_currentlyProcessingActorWithPropertyClassChanges
                     && _foundChange) {
                 // This if clause needs to be first so that we handle
-                // the PropertyClassChanges case where we have a 
+                // the PropertyClassChanges case where we have a
                 // _tableauFactory in a ModalModel that is not
                 // a ModalTableauFactory, but should be.  An example
                 // of this is ct/demo/Pendulum3D/Pendulum3D.xml.

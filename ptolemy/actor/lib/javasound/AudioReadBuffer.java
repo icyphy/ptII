@@ -151,7 +151,7 @@ public class AudioReadBuffer extends Transformer {
 
     /** Handle change requests for all parameters. An exception is
      *  thrown if the requested change is not allowed.
-     *  @param attribute The attribute that changed.  
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not
      *   allowed.
      */

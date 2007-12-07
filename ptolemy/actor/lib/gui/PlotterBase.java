@@ -145,7 +145,7 @@ public class PlotterBase extends TypedAtomicActor implements Configurable,
 
     /** If the attribute is <i>legend</i>, then parse the string
      *  and set the legend.
-     *  @param attribute The attribute that changed.  
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void attributeChanged(Attribute attribute)

@@ -290,7 +290,7 @@ public class Expression extends CCodeGeneratorHelper {
          *  name is "iterations", then the type is BaseType.INT.
          *  @return The attribute with the specified name in the scope.
          *  @exception IllegalActionException If thrown whil getting
-         *  the port or scoped value.  
+         *  the port or scoped value.
          */
         public Type getType(String name) throws IllegalActionException {
             if (name.equals("time")) {
@@ -318,7 +318,7 @@ public class Expression extends CCodeGeneratorHelper {
         /** Look up and return the type term for the specified name
          *  in the scope. Return null if the name is not defined in this
          *  scope, or is a constant type.
-         *  @param name The name to look up.   
+         *  @param name The name to look up.
          *  @return The InequalityTerm associated with the given name in
          *  the scope.
          *  @exception IllegalActionException If a value in the scope

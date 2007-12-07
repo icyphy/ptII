@@ -45,15 +45,15 @@ import ptolemy.util.StringUtilities;
 /**
  This actor handles exceptions thrown in a test. When an exception is
  thrown in a test, this actor is invoked and it has two
- working modes, trainging mode and not-training mode. If in training mode, 
+ working modes, trainging mode and not-training mode. If in training mode,
  this actor handles an exception by recording the exception message. If
- not in training mode, this actor first compares the previously stored 
- (assuming correct) message to the exception message and then throws the 
- exception if the two messages are not the same. This actor only handles 
- IllegalActionException. 
+ not in training mode, this actor first compares the previously stored
+ (assuming correct) message to the exception message and then throws the
+ exception if the two messages are not the same. This actor only handles
+ IllegalActionException.
  <p>
  If a test runs to completion without throwing an exception, this actor
- throws an exception in its wrapup() method.  
+ throws an exception in its wrapup() method.
 
  @author Haiyang Zheng
  @version $Id$
@@ -91,8 +91,8 @@ public class TestExceptionHandler extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                          parameters                       ////
 
-    /** If true, then collect the exception message and set the 
-     *  correctExceptionMessage parameter with the content of the 
+    /** If true, then collect the exception message and set the
+     *  correctExceptionMessage parameter with the content of the
      *  exception. This parameter is a boolean, and it defaults to false.
      *  It is a shared parameter, meaning
      *  that changing it for any one instance in a model will change
@@ -106,9 +106,9 @@ public class TestExceptionHandler extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Handle an illegal action exception thrown in a test. If in training 
-     *  mode, simply record the exception message. If not in training mode, 
-     *  first compare the stored good message against the exception message. 
+    /** Handle an illegal action exception thrown in a test. If in training
+     *  mode, simply record the exception message. If not in training mode,
+     *  first compare the stored good message against the exception message.
      *  If they are the same, do nothing. Otherwise, throw the exception again.
      *  @param context The object in which the error occurred.
      *  @param exception The exception to be handled.

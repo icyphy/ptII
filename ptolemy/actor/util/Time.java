@@ -78,8 +78,8 @@ import ptolemy.math.ExtendedMath;
  * 754 for Floating Point Numbers. In particular, adding two positive/negative
  * infinities yield a positive/negative infinity; adding a positive infinity and
  * a negative infinity, however, triggers an ArithmeticException; the negation
- * of a positive/negative infinity is a negative/positive infinity. The 
- * following link gives a list of operations, 
+ * of a positive/negative infinity is a negative/positive infinity. The
+ * following link gives a list of operations,
  * http://en.wikipedia.org/wiki/Infinity.
  *
  * <p>

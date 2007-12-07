@@ -597,7 +597,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  @exception IllegalActionException If the entity cannot be contained
          *   by the proposed container.
          *  @exception NameDuplicationException If the name coincides with
-         *   an entity already in the container.       
+         *   an entity already in the container.
          */
         protected PtolemyEffigy _newEffigy(CompositeEntity container,
                 String name) throws IllegalActionException,

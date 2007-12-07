@@ -44,8 +44,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Teale Fristoe
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red 
- * @Pt.AcceptedRating 
+ * @Pt.ProposedRating Red
+ * @Pt.AcceptedRating
  *
  */
 public class ColtPoisson extends ColtRandomSource {

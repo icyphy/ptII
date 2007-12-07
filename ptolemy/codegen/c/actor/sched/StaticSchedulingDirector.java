@@ -50,13 +50,13 @@ import ptolemy.kernel.util.NamedObj;
 ////StaticSchedulingDirector
 
 /**
- Code generator helper associated with the StaticSchedulingDirector class. 
+ Code generator helper associated with the StaticSchedulingDirector class.
  This classis also associated with a code generator.
 
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Yellow (zgang)  
+ @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Red (eal)
  */
 public class StaticSchedulingDirector extends Director {
@@ -183,7 +183,7 @@ public class StaticSchedulingDirector extends Director {
      *  then increment the variable _currentTime after each
      *  pass through the loop.
      *  @param callPostfire True if the C postfire() method should
-     *  be called.   
+     *  be called.
      *  @return Code for the main loop of an execution.
      *  @exception IllegalActionException If something goes wrong.
      */

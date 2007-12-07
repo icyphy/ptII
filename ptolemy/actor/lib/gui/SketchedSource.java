@@ -186,7 +186,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
 
     /** If the specified attribute is <i>length</i>,
      *  then set the trace to its initial value.
-     *  @param attribute The attribute that changed.  
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the specified attribute
      *   is <i>length</i> and its value is not positive.
      */

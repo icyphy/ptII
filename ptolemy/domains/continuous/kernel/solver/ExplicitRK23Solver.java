@@ -194,7 +194,7 @@ public class ExplicitRK23Solver extends ContinuousODESolver {
         return _roundCount;
     }
 
-    /** Get the current round factor. 
+    /** Get the current round factor.
      */
     protected final double _getRoundTimeIncrement() {
         return _TIME_INCREMENTS[_roundCount];

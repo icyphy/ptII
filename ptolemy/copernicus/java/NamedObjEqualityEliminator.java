@@ -255,7 +255,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements
      *  @param localDefs The local definitions.
      *  @param localUses The local uses.
      *  @return If the constant value can be returned, then return it,
-     *  otherwise throw an exception.   
+     *  otherwise throw an exception.
      */
     public static NamedObj getNamedObjValue(SootMethod method, Local local,
             Unit location, LocalDefs localDefs, LocalUses localUses) {

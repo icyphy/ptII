@@ -39,7 +39,7 @@ import ptolemy.util.StringUtilities;
 //// AudioSDLActor
 
 /**
- * Base class for C codegen audio actors that use SDL. 
+ * Base class for C codegen audio actors that use SDL.
  * SDL can be found at <a href="http://www.libsdl.org">http://www.libsdl.org</a>.
  * @author Christopher Brooks
  * @version $Id$
@@ -50,7 +50,7 @@ import ptolemy.util.StringUtilities;
 
 public class AudioSDLActor extends CCodeGeneratorHelper {
     /**
-     * Construct an AudioSDLActor. 
+     * Construct an AudioSDLActor.
      * @param actor the associated actor.
      */
     public AudioSDLActor(TypedAtomicActor actor) {
@@ -59,7 +59,7 @@ public class AudioSDLActor extends CCodeGeneratorHelper {
 
     /**
      * Get the files needed by the code generated for the
-     * AudioSDLActor. 
+     * AudioSDLActor.
      * @return A set of Strings that are names of the files
      *  needed by the code generated for the actor that uses SDL.
      * @exception IllegalActionException Not Thrown in this subclass.

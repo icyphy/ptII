@@ -340,7 +340,7 @@ public abstract class ActorController extends AttributeController {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Create an Appearance submenu. 
+    /** Create an Appearance submenu.
      */
     private void _createAppearanceSubmenu() {
         _editIconAction.setConfiguration(_configuration);
@@ -721,7 +721,7 @@ public abstract class ActorController extends AttributeController {
     //// LookInsideAction
     /** An action to open a composite.
      *  This private class must remain named LookInsideAction
-     *  for backward compatibility. 
+     *  for backward compatibility.
      */
     private class LookInsideAction extends FigureAction {
         public LookInsideAction() {

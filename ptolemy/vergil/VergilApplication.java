@@ -178,7 +178,7 @@ public class VergilApplication extends MoMLApplication {
      *  @param file The MoML file to open.
      *  @exception Exception If there is a problem opening the configuration,
      *  opening the MoML file, or opening the MoML file as a new library.
-     *  @deprecated Use {@link ptolemy.actor.gui.UserActorLibrary#openLibrary(Configuration, File)} 
+     *  @deprecated Use {@link ptolemy.actor.gui.UserActorLibrary#openLibrary(Configuration, File)}
      */
     public static void openLibrary(Configuration configuration, File file)
             throws Exception {
@@ -259,7 +259,7 @@ public class VergilApplication extends MoMLApplication {
     }
 
     /** Return a default Configuration to use when there are no command-line
-     *  arguments. If the configuration contains a parameter 
+     *  arguments. If the configuration contains a parameter
      *  _applicationBlankPtolemyEffigyAtStartup
      *  then we create an empty up an empty PtolemyEffigy.
      *  @return A configuration for when there no command-line arguments.

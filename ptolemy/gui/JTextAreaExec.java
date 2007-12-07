@@ -59,10 +59,10 @@ import ptolemy.util.ExecuteCommands;
 import ptolemy.util.StringUtilities;
 
 /** Execute commands in a subprocess and display them in a JTextArea.
- 
- <p>As an alternative to this class, see 
+
+ <p>As an alternative to this class, see
  {@link ptolemy.util.StringBufferExec}, which writes to a StringBuffer,
- and 
+ and
  {@link ptolemy.util.StreamExec}, which writes to stderr and stdout.
 
  <p>Loosely based on Example1.java from
@@ -263,7 +263,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
         appendJTextArea(text);
     }
 
-    /** Append the text message to the output. 
+    /** Append the text message to the output.
      *  The output automatically gets a trailing newline appended.
      *  @param text The text to append to standard out.
      */
@@ -548,7 +548,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     /** SwingWorker that actually does the work. */
     private SwingWorker _worker;
 
-    /** The working directory of the subprocess.  If null, then 
+    /** The working directory of the subprocess.  If null, then
      *  the subprocess is executed in the working directory of the current
      *  process.
      */

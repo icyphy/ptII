@@ -590,7 +590,7 @@ public class FSMActor extends CCodeGeneratorHelper {
          *  corresponding to the specified name in the scope.
          *  @param name The given name string.
          *  @return The macro or expression with the specified name in the scope.
-         *  @exception IllegalActionException If thrown while getting buffer 
+         *  @exception IllegalActionException If thrown while getting buffer
          *   sizes or creating ObjectToken.
          */
         public Token get(String name) throws IllegalActionException {
@@ -613,7 +613,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                     }
                 } else {
                     for (int i = 0; i < inputPort.getWidth(); i++) {
-                        // try the format: inputPortName_channelNumber 
+                        // try the format: inputPortName_channelNumber
                         if (name.equals(inputPort.getName() + "_" + i)) {
                             found = true;
                             channelNumber = i;
@@ -630,10 +630,10 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 channelNumber);
                         String writeOffset = (String) getWriteOffset(inputPort,
                                 channelNumber);
-                        // Note here inputPortNameArray in the original expression 
-                        // is converted to 
-                        // inputPortVariable[(writeOffset - 1 
-                        // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)] 
+                        // Note here inputPortNameArray in the original expression
+                        // is converted to
+                        // inputPortVariable[(writeOffset - 1
+                        // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)]
                         // in the generated C code.
                         code.append("[(" + writeOffset + " + "
                                 + (bufferSizeOfChannel - 1) + ")&"
@@ -672,13 +672,13 @@ public class FSMActor extends CCodeGeneratorHelper {
                         String writeOffset = (String) getWriteOffset(inputPort,
                                 channelNumber);
                         // '@' represents the array index in the parsed expression.
-                        // It will be replaced by actual array index in 
+                        // It will be replaced by actual array index in
                         // the method visitFunctionApplicationNode() in
                         // ParseTreeCodeGenerator.
-                        // Note here inputPortNameArray(i) in the original expression 
-                        // is converted to 
-                        // inputPortVariable[(writeOffset - i - 1 
-                        // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)] 
+                        // Note here inputPortNameArray(i) in the original expression
+                        // is converted to
+                        // inputPortVariable[(writeOffset - i - 1
+                        // + bufferSizeOfChannel)&(bufferSizeOfChannel-1)]
                         // in the generated C code.
                         code.append("[(" + writeOffset + " - (@)" + " + "
                                 + (bufferSizeOfChannel - 1) + ")&"

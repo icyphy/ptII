@@ -44,17 +44,17 @@ package ptolemy.domains.fsm.kernel;
  <p>
  For a leaf node evaluated as a boolean token, its relationType is
  decided by the boolean value of the result boolean token: TRUE for
- true and FALSE for false. 
+ true and FALSE for false.
  <p>
  For a relation node, (scalarLeft
  relationOperator scalarRight), the relationType depends on the
  relationOperator. If the relationOperator is '==' or '!=', the
- relationType can be EQUAL_INEQUAL indicating the two scalars equal or 
- not equal; the relation type is LESS_THAN to indicate that the left scalar 
+ relationType can be EQUAL_INEQUAL indicating the two scalars equal or
+ not equal; the relation type is LESS_THAN to indicate that the left scalar
  is less than the right one, and GREATER_THAN to
  indicate left scalar is bigger than the right one. For the other kinds of
- relation operators, the relationType is decided by the boolean value of 
- the evaluation result, i.e., TRUE for true and FALSE for false. 
+ relation operators, the relationType is decided by the boolean value of
+ the evaluation result, i.e., TRUE for true and FALSE for false.
  <p>
  The INVALID type is for a relation not evaluated yet.
 
@@ -88,13 +88,13 @@ public final class RelationType {
      */
     public final static int EQUAL_INEQUAL = 3;
 
-    /** Relation type a relation node that is evaluated to be false and 
+    /** Relation type a relation node that is evaluated to be false and
      *  the left token is less than the right token, while the
      *  relation operation is not equal or inequal.
      */
     public final static int LESS_THAN = 4;
 
-    /** Relation type a relation node that is evaluated to be false and 
+    /** Relation type a relation node that is evaluated to be false and
      *  the left token is greater than the right token, while the
      *  relation operation is not equal or inequal.
      */

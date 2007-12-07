@@ -210,7 +210,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  empty string. Increment the version number of the workspace.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this object.
-     *  @param incrementWorkspaceVersion False to not add this to the workspace 
+     *  @param incrementWorkspaceVersion False to not add this to the workspace
      *   or do anything else that might change the workspace version number.
      *  @exception IllegalActionException If the name has a period.
      */
@@ -941,7 +941,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                 }
 
                 // This method gets called often,
-                // so avoid the call to _splitName().  
+                // so avoid the call to _splitName().
                 // This change is good for a 2-3% speed up
                 // in ptesdf mini-model-aggregator.
                 // Below is the old code:
@@ -3086,7 +3086,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         public ContainedObjectsIterator() {
             super();
             // This iterator gets called quite a bit, so at Kevin Ruland's
-            // suggestion, we move instantiation of the iterator 
+            // suggestion, we move instantiation of the iterator
             // into the constructor so that hasNext() and next() don't
             // have to check if _attributeListIterator is null each time.
             _attributeListIterator = attributeList().iterator();

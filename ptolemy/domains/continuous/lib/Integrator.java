@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  The integrator in the continuous domain.
  The <i>derivative</i> port receives the derivative of the state of the integrator
  with respect to time. The <i>state</i> output port shows the state of the
- integrator. So an ordinary differential equation (ODE), 
+ integrator. So an ordinary differential equation (ODE),
  dx/dt = f(x, t), can be built as follows:
  <P>
  <pre>
@@ -54,8 +54,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  |---------|
  </pre>
  <P>
- An integrator also has a port-parameter called <i>initialState</i>. The 
- parameter provides the initial state for integration during the initialization 
+ An integrator also has a port-parameter called <i>initialState</i>. The
+ parameter provides the initial state for integration during the initialization
  stage of execution. If during execution an input token is provided on
  the port, then the state of the integrator will be reset at that time
  to the value of the token. The default value of the parameter is 0.0.
@@ -64,8 +64,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  When present, a token at the <i>impulse</i> input
  port is interpreted as the weight of a Dirac delta function.
  It cause an instantaneous increment or decrement to the state.
- If both <i>impulse</i> and <i>initialState</i> have data, then 
- <i>initialState</i> dominates.  
+ If both <i>impulse</i> and <i>initialState</i> have data, then
+ <i>initialState</i> dominates.
  <P>
  An integrator can generate an output (its current state) before
  the derivative input is known, and hence can be used in feedback

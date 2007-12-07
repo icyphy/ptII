@@ -123,7 +123,7 @@ public abstract class Quantization implements Cloneable, Serializable {
 
     /** Return true if the indicated object describes the same
      *  mapping to quantized values.
-     *  
+     *
      *  @param object The Quantization object to use for equality
      *  checking.
      *  @return True if the quantizations are equal.
@@ -199,7 +199,7 @@ public abstract class Quantization implements Cloneable, Serializable {
 
     /** Return the precision fore the mantissa of a compliant
      *  2's complement representation.
-     *  
+     *
      *  @return The precision.
      */
     public abstract Precision getMantissaPrecision();

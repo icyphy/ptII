@@ -87,9 +87,9 @@ public class NameParameter extends StringParameter {
      *  that the expression giving its value is valid.  Call getToken()
      *  or getType() to accomplish that.
      *  <p>
-     *  This method differs from its base class implementation in that 
-     *  if its string value is not empty, then it also attempts to set 
-     *  the name of its container to the string value. 
+     *  This method differs from its base class implementation in that
+     *  if its string value is not empty, then it also attempts to set
+     *  the name of its container to the string value.
      *  @return The current list of value listeners, which are evaluated
      *   as a consequence of this call to validate().
      *  @exception IllegalActionException If this variable or a

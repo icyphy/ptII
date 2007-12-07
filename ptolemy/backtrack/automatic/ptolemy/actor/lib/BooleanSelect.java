@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-/** 
+/**
  * A type polymorphic select with boolean valued control.  In an
  * iteration, if an input token is available at the <i>control</i> input,
  * that token is read, and its value is noted.  Its value specifies the
@@ -77,23 +77,23 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
     // Put the control input on the bottom of the actor.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * Input for tokens on the true path.  The type can be anything.
      */
     public TypedIOPort trueInput;
 
-    /**     
+    /**
      * Input for tokens on the false path.  The type can be anything.
      */
     public TypedIOPort falseInput;
 
-    /**     
+    /**
      * Input that selects one of the other input ports.  The type is
      * BooleanToken.
      */
     public TypedIOPort control;
 
-    /**     
+    /**
      * The output port.  The type is at least the type of
      * <i>trueInput</i> and <i>falseInput</i>
      */
@@ -107,7 +107,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
     // The most recently read control token.
     private boolean _control = false;
 
-    /**     
+    /**
      * Construct an actor in the specified container with the specified
      * name.
      * @param container The container.
@@ -140,7 +140,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
                 + "</svg>\n");
     }
 
-    /**     
+    /**
      * Read a token from each input port.  If the token from the
      * <i>control</i> input is true, then output the token consumed from the
      * <i>trueInput</i> port, otherwise output the token from the
@@ -160,7 +160,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Initialize this actor so that the <i>falseInput</i> is read
      * from until a token arrives on the <i>control</i> input.
      * @exception IllegalActionException If the parent class throws it.
@@ -170,7 +170,7 @@ public class BooleanSelect extends TypedAtomicActor implements Rollbackable {
         $ASSIGN$_control(false);
     }
 
-    /**     
+    /**
      * Return false if the control input channel does not have a token,
      * or if the control input is true, the true input does not have a
      * token, or if the control input is false, the false input does not

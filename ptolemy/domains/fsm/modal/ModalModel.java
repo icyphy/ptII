@@ -156,9 +156,9 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
     public StringParameter directorClass;
 
     /** A boolean parameter indicating how the function dependency analysis of
-     *  the model is performed. If the parameter value is true, conservative 
-     *  analysis is chosen; if false, optimistic analysis is chosen. 
-     *  The default value is true for conservative analysis. 
+     *  the model is performed. If the parameter value is true, conservative
+     *  analysis is chosen; if false, optimistic analysis is chosen.
+     *  The default value is true for conservative analysis.
      */
     public Parameter conservativeAnalysis;
 
@@ -212,7 +212,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                             director.setContainer(null);
                         }
 
-                        // Check whether the modal controller needs to 
+                        // Check whether the modal controller needs to
                         // support multirate firing.
                         Director executiveDirector = getExecutiveDirector();
 
@@ -484,8 +484,8 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                     .setExpression("ptolemy.domains.fsm.kernel.FSMDirector");
         }
 
-        // Create the parameter indicating whether the dependency analysis 
-        // is optimistic or conservative. 
+        // Create the parameter indicating whether the dependency analysis
+        // is optimistic or conservative.
         conservativeAnalysis = new Parameter(this, "conservativeAnalysis");
         conservativeAnalysis.setTypeEquals(BaseType.BOOLEAN);
         conservativeAnalysis.setToken(BooleanToken.TRUE);

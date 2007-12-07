@@ -69,7 +69,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
      * @param title The title of the PtolemyDialog.
      * @param dialogTableau  The dialogTableau, used to set the title.
      * @param owner  The frame.
-     * @param target The model 
+     * @param target The model
      * @param configuration  a Configuration object
      */
     public PtolemyDialog(String title, DialogTableau dialogTableau,
@@ -209,7 +209,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     protected abstract URL _getHelpURL();
 
     /** Return true if any of the values have been changed, but the state
-     *  has not yet been saved.   
+     *  has not yet been saved.
      *  @return True if values have been changed but not saved.
      */
     protected boolean _isDirty() {

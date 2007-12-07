@@ -1,4 +1,4 @@
-/* A token that contains a petite number. 
+/* A token that contains a petite number.
  Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// PetiteToken
 
 /**
- A token that contains a number which is essentially a 
+ A token that contains a number which is essentially a
  simulation equivalent for fixed point numbers in embedded processors.
  By definition it is between -1 (inclusive) and 1 (exclusive). It is
  a extension of the Double Token and maintains the same precision as
@@ -61,11 +61,11 @@ public class PetiteToken extends ScalarToken {
         _value = _adjust(value);
     }
 
-    /** Construct a PetiteToken from the specified string.Ensure 
+    /** Construct a PetiteToken from the specified string.Ensure
      *  the value is adjusted within the range of a PetiteToken.
      *  @param init The specified string, for example <code>1.0p</code>
      *  @exception IllegalActionException If the Token could not
-     *   be created with the given String. 
+     *   be created with the given String.
      */
     public PetiteToken(String init) throws IllegalActionException {
         try {
@@ -82,11 +82,11 @@ public class PetiteToken extends ScalarToken {
      *  This method does lossless conversion.  The units of the returned
      *  token will be the same as the units of the given token.
      *  If the argument is already an instance of PetiteToken,
-     *  it is returned without any change. Since the PetiteToken is cannot be 
-     *  losslessly converted to any other token an exception is thrown, in all 
+     *  it is returned without any change. Since the PetiteToken is cannot be
+     *  losslessly converted to any other token an exception is thrown, in all
      *  other cases.
      *  @param token The token to be converted to a PetiteToken.
-     *  @return A PetiteToken. 
+     *  @return A PetiteToken.
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out.
      */
@@ -211,7 +211,7 @@ public class PetiteToken extends ScalarToken {
      *  number, it is returned directly; otherwise, a new token is is
      *  return.  Note that it is explicitly allowable to return this
      *  token, since the units are the same. The call to the contructor
-     *  ensures the value is within the range defined by a PetiteToken. 
+     *  ensures the value is within the range defined by a PetiteToken.
      *  It thus automatically converts -1 to (1 - Double.MIN_VALUE).
      *  @return An PetiteToken.
      */
@@ -333,7 +333,7 @@ public class PetiteToken extends ScalarToken {
     }
 
     /** Test for ordering of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is PetiteToken. 
+     *  Token.  It is assumed that the type of the argument is PetiteToken.
      *  The argument token is then adjusted to the range of a PetiteToken.
      *  @param rightArgument The token to compare this token with.
      *  @exception IllegalActionException If this method is not
@@ -349,9 +349,9 @@ public class PetiteToken extends ScalarToken {
 
     /** Return a new token whose value is the value of this token
      *  modulo the value of the argument token.  It is assumed that
-     *  the type of the argument is an PetiteToken.The token to take 
-     *  modulo by is first adjusted to the range defined by a petite 
-     *  token. After the modulo operation, the result is adjusted again to 
+     *  the type of the argument is an PetiteToken.The token to take
+     *  modulo by is first adjusted to the range defined by a petite
+     *  token. After the modulo operation, the result is adjusted again to
      *  maintain the range of a PetiteToken. The final adjustment happens
      *  automatically given the call to _adjust in the PetiteToken constructor
      *  @param rightArgument The token to modulo this token by.
@@ -364,9 +364,9 @@ public class PetiteToken extends ScalarToken {
 
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.  It is assumed that
-     *  the type of the argument is an PetiteToken.The token to multiply 
-     *  is first adjusted to the range defined by a petite token. After 
-     *  multiplication, the result is adjusted again to 
+     *  the type of the argument is an PetiteToken.The token to multiply
+     *  is first adjusted to the range defined by a petite token. After
+     *  multiplication, the result is adjusted again to
      *  maintain the range of a PetiteToken. The final adjustment happens
      *  automatically given the call to _adjust in the PetiteToken constructor
      *  @param rightArgument The token to multiply this token by.
@@ -379,9 +379,9 @@ public class PetiteToken extends ScalarToken {
 
     /** Return a new token whose value is the value of the argument token
      *  subtracted from the value of this token.  It is assumed that
-     *  the type of the argument is an PetiteToken. The token to subtract 
-     *  is first adjusted to the range defined by a petite token. After 
-     *  subtraction from this token, the result is adjusted again to 
+     *  the type of the argument is an PetiteToken. The token to subtract
+     *  is first adjusted to the range defined by a petite token. After
+     *  subtraction from this token, the result is adjusted again to
      *  maintain the range of a PetiteToken. The final adjustment happens
      *  automatically given the call to _adjust in the PetiteToken constructor
      *  @param rightArgument The token to subtract from this token.

@@ -54,7 +54,7 @@ public class Counter extends CCodeGeneratorHelper {
      * Generate fire code.
      * If both the increment and decrement ports are connected, the counter
      * is offset. Otherwise, if either the increment port or decrement port
-     * is connected, read in the <code>incrementBlock</code> or 
+     * is connected, read in the <code>incrementBlock</code> or
      * <code>decrementBlock</code> from Counter.c respectively. Replace macros
      * with their values and return the processed code block.
      *

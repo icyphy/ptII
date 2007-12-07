@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  the inputs against the value specified by the <i>correctValues</i> parameter.
 
  <p>This actor combines the {@link ptolemy.actor.lib.Publisher} actor
- and the {@link ptolemy.actor.lib.Test} actor.  Thus, it has quite 
+ and the {@link ptolemy.actor.lib.Test} actor.  Thus, it has quite
  a bit of duplicated code from the Test actor.
 
  @author Christopher Brooks, based on Test, which has Edward A. Lee and Jim Armbstrong as authors

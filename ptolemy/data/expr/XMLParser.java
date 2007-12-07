@@ -92,7 +92,7 @@ public class XMLParser {
      *  it is not found, looks for it on the Internet using the DTD file's
      *  system ID. The DTD file, as well as its version, is uniquely identified
      *  by its public ID.
-     * 
+     *
      *  @author Thomas Feng
      *  @version $Id$
      *  @since Ptolemy II 4.0
@@ -104,7 +104,7 @@ public class XMLParser {
         /** Resolve an entity (a DTD file) by first looking for it locally. If
          *  it is not found locally, this resolver tries to grab it from the
          *  Internet using its systemId.
-         *  
+         *
          *  @param publicId The public ID of the entity, for example,
          *   "-//UC Berkeley//DTD MoML 1//EN" for Ptolemy MoML 1.0.
          *  @param systemId The system ID of the entity, for example,

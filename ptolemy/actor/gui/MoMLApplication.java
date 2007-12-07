@@ -282,7 +282,7 @@ public class MoMLApplication implements ExecutionListener {
             new MoMLApplication(args);
         } catch (Throwable throwable) {
             MessageHandler.error("Command failed", throwable);
-            // Be sure to print the stack trace so that 
+            // Be sure to print the stack trace so that
             // "$PTII/bin/moml -foo" prints something.
             System.err.print(KernelException.stackTraceToString(throwable));
             System.exit(1);
@@ -736,7 +736,7 @@ public class MoMLApplication implements ExecutionListener {
      *  the default configuration is given by _createEmptyConfiguration()
      *  instead.  This method merges the compile-time configuration file
      *  values from {@link ptolemy.util.StringUtilities#mergePropertiesFile()}.
-     *  Subclasses should call 
+     *  Subclasses should call
      * {@link ptolemy.actor.gui.PtolemyPreferences#setDefaultPreferences(Configuration)}.
      *  @return null
      *  @exception Exception Thrown in derived classes if the default

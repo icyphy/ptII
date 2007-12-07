@@ -135,7 +135,7 @@ public class Default extends TypedAtomicActor {
         }
     }
 
-    /** Return false. This actor is non-strict in that it can produce 
+    /** Return false. This actor is non-strict in that it can produce
      *  an output even if alternate input is unknown.
      *  @return False.
      */

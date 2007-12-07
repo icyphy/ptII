@@ -1,5 +1,5 @@
 /* A helper class for ptolemy.actor.lib.comm.HammingDecoder
- 
+
  Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without

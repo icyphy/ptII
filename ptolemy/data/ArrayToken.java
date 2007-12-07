@@ -300,7 +300,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Add the given token to each element of this array.
-     *  @param token The token to be added to this token.   
+     *  @param token The token to be added to this token.
      *  @return A new array token.
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be added to an element of this token.
@@ -348,7 +348,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Modulo each element of this array by the given token.
-     *  @param token The token with which to modulo this token. 
+     *  @param token The token with which to modulo this token.
      *  @return An array token.
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be used with modulo.
@@ -372,7 +372,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Multiply each element of this array by the given token.
-     *  @param token The token with which to multiply this token. 
+     *  @param token The token with which to multiply this token.
      *  @return An array token.
      *  @exception IllegalActionException If the argument token is
      *  not of a type that can be multiplied to an element of this token.

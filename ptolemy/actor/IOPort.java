@@ -3780,7 +3780,7 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Send a token got event to all token got listeners that 
+    /** Send a token got event to all token got listeners that
      *  have registered with this IOPort.
      *  @param event The event.
      */
@@ -3794,7 +3794,7 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Send a token sent event to all token sent listeners that 
+    /** Send a token sent event to all token sent listeners that
      *  have registered with this IOPort.
      *  @param event The event.
      */

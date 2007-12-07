@@ -76,7 +76,7 @@ public class GraphicElement {
 
     /**
      * Write the GraphicElement in XML format to the given writer.
-     * @param out The writer. 
+     * @param out The writer.
      * @param prefix The prefix, usually a string of spaces.
      * @exception IOException If there is a problem writing the MoML.
      */

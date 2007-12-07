@@ -235,7 +235,7 @@ public class CachedSDFScheduler extends SDFScheduler {
             Map externalRates = getExternalRates();
             _externalRatesCache.put(rateKey, externalRates);
 
-            // Note: we do not need to set the external rates of 
+            // Note: we do not need to set the external rates of
             // the container here. When the SDFSchedule is recomputed,
             // it will set the external rates.
         }

@@ -39,7 +39,7 @@ import ptolemy.kernel.util.InvalidStateException;
 
 /**
  The receiver for use with FixedPointDirector or any of its subclasses.
- This receiver has capacity 1. 
+ This receiver has capacity 1.
  The status of this receiver can be either <i>known</i> or <i>unknown</i>.
  If it is known, then it can be either <i>present</i> or <i>absent</i>.
  If it is present, then it has a token, which provides a value.
@@ -53,14 +53,14 @@ import ptolemy.kernel.util.InvalidStateException;
  or vice versa. To change the value or the status, call reset() first.
  Normally, the reset() method is called only by the director and constructors.
  <p>
- The isKnown() method returns true if the receiver has status known. 
- The hasRoom() method returns true if the receiver has status unknown. 
- If the receiver has a known status, the hasToken() method returns true 
- if the receiver contains a token. If the receiver has an unknown status, 
+ The isKnown() method returns true if the receiver has status known.
+ The hasRoom() method returns true if the receiver has status unknown.
+ If the receiver has a known status, the hasToken() method returns true
+ if the receiver contains a token. If the receiver has an unknown status,
  the hasToken() method will throw an InvalidStateException.
  <p>
  This class is based on the original SRReceiver, written by Paul Whitaker.
- 
+
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.2
@@ -70,7 +70,7 @@ import ptolemy.kernel.util.InvalidStateException;
 public class FixedPointReceiver extends AbstractReceiver {
 
     /** Construct an FixedPointReceiver with unknown status.
-     *  This constructor does not need a director. 
+     *  This constructor does not need a director.
      */
     public FixedPointReceiver() {
         this(null);
@@ -89,8 +89,8 @@ public class FixedPointReceiver extends AbstractReceiver {
     ////                         public methods                    ////
 
     /** Set the status of this receiver to be known and absent.
-     *  @exception IllegalActionException If this receiver is known and 
-     *   present. 
+     *  @exception IllegalActionException If this receiver is known and
+     *   present.
      */
     public void clear() throws IllegalActionException {
         if (isKnown()) {
@@ -107,7 +107,7 @@ public class FixedPointReceiver extends AbstractReceiver {
         }
     }
 
-    /** Return the contained token.  If there is no token or the status 
+    /** Return the contained token.  If there is no token or the status
      *  of this receiver is unknown, throw an exception.
      *  @return The token contained in the receiver.
      *  @exception NoTokenException If there is no token.
@@ -127,8 +127,8 @@ public class FixedPointReceiver extends AbstractReceiver {
         return _token;
     }
 
-    /** Return true if the status of the receiver is unknown. 
-     *  @return True if the status of the receiver is unknown. 
+    /** Return true if the status of the receiver is unknown.
+     *  @return True if the status of the receiver is unknown.
      *  @see #isKnown()
      */
     public boolean hasRoom() {
@@ -198,8 +198,8 @@ public class FixedPointReceiver extends AbstractReceiver {
         return false;
     }
 
-    /** Return true if this receiver has status known, that is, this 
-     *  receiver either is either known to have a token or known to 
+    /** Return true if this receiver has status known, that is, this
+     *  receiver either is either known to have a token or known to
      *  not to have a token.
      *  @return True if this receiver has status known.
      */
@@ -209,7 +209,7 @@ public class FixedPointReceiver extends AbstractReceiver {
 
     /** Set the status of this receiver to known and present, and to contain the
      *  specified token.  If the receiver is already known and the value of
-     *  the contained token is different from that of the new token, throw 
+     *  the contained token is different from that of the new token, throw
      *  an exception.
      *  @param token The token to be put into this receiver.
      *  @exception IllegalArgumentException If the argument is null.

@@ -58,7 +58,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
     }
 
     /** Filter for graphical classes and return new values if
-     *  a graphical class is found. 
+     *  a graphical class is found.
      *  An internal HashMap maps names of graphical entities to
      *  new names.  The HashMap can also map a graphical entity
      *  to null, which means the entity is removed from the model.

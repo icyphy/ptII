@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// SleepFireTwice
 
 /**
- Call Sleep.fire() twice so as to illustrate a bug. 
+ Call Sleep.fire() twice so as to illustrate a bug.
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 5.2

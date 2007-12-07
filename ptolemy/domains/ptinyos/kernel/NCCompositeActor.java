@@ -59,7 +59,7 @@ import ptolemy.kernel.util.Workspace;
 
  <p>FIXME: Test creation of NCCompositeActor that is not at the
  toplevel.
- 
+
  @author  Elaine Cheong
  @version $Id$
  @since Ptolemy II 5.1

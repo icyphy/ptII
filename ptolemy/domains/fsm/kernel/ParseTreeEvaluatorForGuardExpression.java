@@ -142,8 +142,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         return _relationList;
     }
 
-    /** Set parse tree evaluator to be in construction mode. 
-     *  Clear the relation list and the relation list 
+    /** Set parse tree evaluator to be in construction mode.
+     *  Clear the relation list and the relation list
      *  will be populated, based on the nodes in the parse tree.
      */
     public void setConstructionMode() {
@@ -363,8 +363,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             // The following code basically works as a level crossing detector
             // that detects level crossing in both rising and falling
             // directions.
-            // Note we cannot tell whether two double values exactly equal, 
-            // therefore, we need an error tolerance. This is the only place 
+            // Note we cannot tell whether two double values exactly equal,
+            // therefore, we need an error tolerance. This is the only place
             // where error tolerance is used.
             // Note that subtraction is not supported for BooleanToken,
             // unlike other scalars.

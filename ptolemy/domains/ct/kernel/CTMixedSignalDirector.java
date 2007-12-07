@@ -61,7 +61,7 @@ import ptolemy.kernel.util.Workspace;
  (<code>runAheadLength</code>).  Its default value is 1.0.</p>
 
  <p>The running ahead of time is achieved by the following mechanism.</p>
- 
+
  <ul>
  <li> At the initialize stage of an execution, the director requests
  a firing at the global current time.</li>
@@ -75,7 +75,7 @@ import ptolemy.kernel.util.Workspace;
  event.
  </li>
  </ul>
- 
+
 <p>At the prefire stage, the local current time is compared with the
  current time of the executive director. If the local time is later than
  the executive director time, then the directed system will rollback to a
@@ -245,7 +245,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  then the iteration ends at t5.
      *  </p><p>
      *  This method updates the suggested step size.</p>
-     *  
+     *
      *  @return true Always.
      *  @exception IllegalActionException If the local time is
      *       less than the current time of the executive director,
@@ -307,9 +307,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 // In that case, it has to restart the integration
                 // from time 0.0 and ensure that it doesn't progress
                 // its local time past 0.05.
-                // An example is to have two interacting CT subsystems 
-                // embedded inside a DE model, where one system (called A) 
-                // produces an event at time 0.1 and the other one (called B) 
+                // An example is to have two interacting CT subsystems
+                // embedded inside a DE model, where one system (called A)
+                // produces an event at time 0.1 and the other one (called B)
                 // produces an event at time 0.05. A may integrate with a step
                 // size of 0.1 but it has to roll back and use a step size 0.05
                 // such that the event produced by B can be handled.

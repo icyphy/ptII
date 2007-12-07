@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  Base class for actors that implement the Placeable interface.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.1

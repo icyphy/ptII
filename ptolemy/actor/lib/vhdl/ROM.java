@@ -46,10 +46,10 @@ import ptolemy.math.FixPoint;
 
 /**
  Produce an output token on each firing with a FixPoint value that is
- equal to the concatenation of the input bits from each input channel. 
+ equal to the concatenation of the input bits from each input channel.
  The ordering of channels determines the order of the concatenation; inputs
  from later channels are appended to the end. The input can have any scalar
- type. 
+ type.
 
  @author Man-Kit Leung
  @version $Id$
@@ -97,7 +97,7 @@ public class ROM extends SynchronousFixTransformer {
     /** Override the base class to determine which function is being
      *  specified.
      *  @param attribute The attribute that changed.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
@@ -113,7 +113,7 @@ public class ROM extends SynchronousFixTransformer {
         }
     }
 
-    /** Output the fixpoint value of the concatenation of the input bits. 
+    /** Output the fixpoint value of the concatenation of the input bits.
      *  If there is no inputs, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */

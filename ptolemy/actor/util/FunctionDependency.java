@@ -59,8 +59,8 @@ import ptolemy.kernel.util.Workspace;
  of the container produces outputs on the output port or asserts that no outputs
  will be produced on the output port in this iteration
  without knowing anything about the input port (what data are there,
- or even whether there are data). 
- The container is specified by the constructor argument and cannot be changed 
+ or even whether there are data).
+ The container is specified by the constructor argument and cannot be changed
  once this object is constructed.
  <p>
  This class uses a graph to describe the function dependency,

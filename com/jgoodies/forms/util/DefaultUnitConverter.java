@@ -1,31 +1,31 @@
 /*
  * Copyright (c) 2002-2007 JGoodies Karsten Lentzsch. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- *  o Redistributions of source code must retain the above copyright notice, 
- *    this list of conditions and the following disclaimer. 
- *     
- *  o Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
- *    and/or other materials provided with the distribution. 
- *     
- *  o Neither the name of JGoodies Karsten Lentzsch nor the names of 
- *    its contributors may be used to endorse or promote products derived 
- *    from this software without specific prior written permission. 
- *     
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+ *  o Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ *  o Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ *  o Neither the name of JGoodies Karsten Lentzsch nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.jgoodies.forms.util;
@@ -47,23 +47,23 @@ import javax.swing.UIManager;
 /**
  * This is the default implementation of the {@link UnitConverter} interface.
  * It converts horizontal and vertical dialog base units to pixels.<p>
- *  
+ *
  * The horizontal base unit is equal to the average width, in pixels,
  * of the characters in the system font; the vertical base unit is equal
  * to the height, in pixels, of the font.
  * Each horizontal base unit is equal to 4 horizontal dialog units;
  * each vertical base unit is equal to 8 vertical dialog units.<p>
- * 
- * The DefaultUnitConverter computes dialog base units using a default font 
+ *
+ * The DefaultUnitConverter computes dialog base units using a default font
  * and a test string for the average character width. You can configure
  * the font and the test string via the bound Bean properties
  * <em>defaultDialogFont</em> and <em>averageCharacterWidthTestString</em>.
- * See also Microsoft's suggestion for a custom computation 
+ * See also Microsoft's suggestion for a custom computation
  * <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnwue/html/ch14e.asp">here</a>.<p>
- * 
+ *
  * Since the Forms 1.1 this converter logs font information at
  * the <code>CONFIG</code> level.
- * 
+ *
  * @version $Revision$
  * @author  Karsten Lentzsch
  * @see     UnitConverter
@@ -114,7 +114,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     // Cached *****************************************************************
 
     /**
-     * Holds the cached global dialog base units that are used if 
+     * Holds the cached global dialog base units that are used if
      * a component is not (yet) available - for example in a Border.
      */
     private DialogBaseUnits cachedGlobalDialogBaseUnits = computeGlobalDialogBaseUnits();
@@ -139,8 +139,8 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
 
     /**
      * Lazily instantiates and returns the sole instance.
-     * 
-     * @return the lazily instantiated sole instance 
+     *
+     * @return the lazily instantiated sole instance
      */
     public static DefaultUnitConverter getInstance() {
         if (instance == null) {
@@ -154,7 +154,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     /**
      * Returns the string used to compute the average character width.
      * By default it is initialized to &quot;X&quot;.
-     * 
+     *
      * @return the test string used to compute the average character width
      */
     public String getAverageCharacterWidthTestString() {
@@ -164,13 +164,13 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     /**
      * Sets a string that will be used to compute the average character width.
      * By default it is initialized to &quot;X&quot;. You can provide
-     * other test strings, for example: 
+     * other test strings, for example:
      * <ul>
      *  <li>&quot;Xximeee&quot;</li>
-     *  <li>&quot;ABCEDEFHIJKLMNOPQRSTUVWXYZ&quot;</li> 
+     *  <li>&quot;ABCEDEFHIJKLMNOPQRSTUVWXYZ&quot;</li>
      *  <li>&quot;abcdefghijklmnopqrstuvwxyz&quot;</li>
      * </ul>
-     * 
+     *
      * @param newTestString   the test string to be used
      * @exception IllegalArgumentException if the test string is empty
      * @exception NullPointerException     if the test string is <code>null</code>
@@ -189,9 +189,9 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     }
 
     /**
-     * Lazily creates and returns the dialog font used to compute 
+     * Lazily creates and returns the dialog font used to compute
      * the dialog base units.
-     * 
+     *
      * @return the font used to compute the dialog base units
      */
     public Font getDefaultDialogFont() {
@@ -203,7 +203,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
 
     /**
      * Sets a dialog font that will be used to compute the dialog base units.
-     * 
+     *
      * @param newFont   the default dialog font to be set
      */
     public void setDefaultDialogFont(Font newFont) {
@@ -215,8 +215,8 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     // Implementing Abstract Superclass Behavior ******************************
 
     /**
-     * Returns the cached or computed horizontal dialog base units. 
-     * 
+     * Returns the cached or computed horizontal dialog base units.
+     *
      * @param component     a Component that provides the font and graphics
      * @return the horizontal dialog base units
      */
@@ -226,8 +226,8 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
 
     /**
      * Returns the cached or computed vertical dialog base units
-     * for the given component.  
-     * 
+     * for the given component.
+     *
      * @param component     a Component that provides the font and graphics
      * @return the vertical dialog base units
      */
@@ -239,9 +239,9 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
 
     /**
      * Lazily computes and answer the global dialog base units.
-     * Should be re-computed if the l&amp;f, platform, or screen changes. 
-     * 
-     * @return a cached DialogBaseUnits object used globally if no container is available 
+     * Should be re-computed if the l&amp;f, platform, or screen changes.
+     *
+     * @return a cached DialogBaseUnits object used globally if no container is available
      */
     private DialogBaseUnits getGlobalDialogBaseUnits() {
         if (cachedGlobalDialogBaseUnits == null) {
@@ -254,11 +254,11 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * Looks up and returns the dialog base units for the given component.
      * In case the component is <code>null</code> the global dialog base units
      * are answered.<p>
-     * 
+     *
      * Before we compute the dialog base units we check whether they
      * have been computed and cached before - for the same component
      * <code>FontMetrics</code>.
-     * 
+     *
      * @param c  the component that provides the graphics object
      * @return the DialogBaseUnits object for the given component
      */
@@ -278,18 +278,18 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     }
 
     /**
-     * Computes and returns the horizontal dialog base units. 
+     * Computes and returns the horizontal dialog base units.
      * Honors the font, font size and resolution.<p>
-     * 
+     *
      * Implementation Note: 14dluY map to 22 pixel for 8pt Tahoma on 96 dpi.
      * I could not yet manage to compute the Microsoft compliant font height.
      * Therefore this method adds a correction value that seems to work
      * well with the vast majority of desktops.<p>
-     * 
-     * TODO: Revise the computation of vertical base units as soon as 
-     * there are more information about the original computation 
+     *
+     * TODO: Revise the computation of vertical base units as soon as
+     * there are more information about the original computation
      * in Microsoft environments.
-     * 
+     *
      * @param metrics  the FontMetrics used to measure the dialog font
      * @return the horizontal and vertical dialog base units
      */
@@ -310,10 +310,10 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * assumes a fixed 8pt font and on 96 or 120 dpi. A better implementation
      * should ask for the main dialog font and should honor the current
      * screen resolution.<p>
-     * 
+     *
      * Should be re-computed if the l&amp;f, platform, or screen changes.
-     * 
-     * @return a DialogBaseUnits object used globally if no container is available 
+     *
+     * @return a DialogBaseUnits object used globally if no container is available
      */
     private DialogBaseUnits computeGlobalDialogBaseUnits() {
         LOGGER.config("Computing global dialog base units...");
@@ -325,10 +325,10 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     }
 
     /**
-     * Looks up and returns the font used by buttons. 
-     * First, tries to request the button font from the UIManager; 
+     * Looks up and returns the font used by buttons.
+     * First, tries to request the button font from the UIManager;
      * if this fails a JButton is created and asked for its font.
-     * 
+     *
      * @return the font used for a standard button
      */
     private Font lookupDefaultDialogFont() {
@@ -337,15 +337,15 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     }
 
     /**
-     * Creates and returns a component that is used to lookup the default 
+     * Creates and returns a component that is used to lookup the default
      * font metrics. The current implementation creates a <code>JPanel</code>.
      * Since this panel has no parent, it has no toolkit assigned. And so,
      * requesting the font metrics will end up using the default toolkit
      * and its deprecated method <code>ToolKit#getFontMetrics()</code>.<p>
-     * 
+     *
      * TODO: Consider publishing this method and providing a setter, so that
      * an API user can set a realized component that has a toolkit assigned.
-     *  
+     *
      * @return a component used to compute the default font metrics
      */
     private Component createDefaultGlobalComponent() {
@@ -367,7 +367,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     /**
      * Adds a PropertyChangeListener to the listener list. The listener is
      * registered for all bound properties of this class.<p>
-     *  
+     *
      * If listener is null, no exception is thrown and no action is performed.
      *
      * @param listener      the PropertyChangeListener to be added
@@ -385,7 +385,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * Removes a PropertyChangeListener from the listener list. This method
      * should be used to remove PropertyChangeListeners that were registered
      * for all bound properties of this class.<p>
-     * 
+     *
      * If listener is null, no exception is thrown and no action is performed.
      *
      * @param listener      the PropertyChangeListener to be removed
@@ -402,10 +402,10 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
     /**
      * Adds a PropertyChangeListener to the listener list for a specific
      * property. The specified property may be user-defined.<p>
-     * 
+     *
      * Note that if this Model is inheriting a bound property, then no event
      * will be fired in response to a change in the inherited property.<p>
-     * 
+     *
      * If listener is null, no exception is thrown and no action is performed.
      *
      * @param propertyName      one of the property names listed above
@@ -423,7 +423,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
      * Removes a PropertyChangeListener from the listener list for a specific
      * property. This method should be used to remove PropertyChangeListeners
      * that were registered for a specific bound property.<p>
-     * 
+     *
      * If listener is null, no exception is thrown and no action is performed.
      *
      * @param propertyName      a valid property name

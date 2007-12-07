@@ -187,11 +187,11 @@ public class NamedObjEliminator extends SceneTransformer implements
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getName().equals(
                                     "preinitialize")) {
-                                // Assume no Initializables 
+                                // Assume no Initializables
                                 body.getUnits().remove(unit);
                             } else if (expr.getMethod().getName().equals(
                                     "wrapup")) {
-                                // Assume no Initializables  
+                                // Assume no Initializables
                                 body.getUnits().remove(unit);
                             }
 

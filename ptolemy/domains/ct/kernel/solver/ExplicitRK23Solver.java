@@ -255,7 +255,7 @@ public class ExplicitRK23Solver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Override the method in the base abstract class to advance the 
+    /** Override the method in the base abstract class to advance the
      *  model time. The amount of the
      *  increment is decided by the number of the round counter and
      *  the current step size.  In particular, at the first round,

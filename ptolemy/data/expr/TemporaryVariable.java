@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NamedObj;
  variable can significantly improve performance since it makes
  caching of information that is expensive to compute much more
  effective.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.2

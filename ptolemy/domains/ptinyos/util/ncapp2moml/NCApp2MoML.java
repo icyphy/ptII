@@ -157,9 +157,9 @@ public class NCApp2MoML {
      *  PtinyOSDirector.
      *  @param micaboardFile Path to the MoML file that contains the
      *  Wireless wrapper.  Null if wrapper should not be generated.
-     *  @exception IllegalActionException If there is a problem creating 
+     *  @exception IllegalActionException If there is a problem creating
      *  an interface IOport or connection.
-     *  @exception NameDuplicationException If there is a problem creating 
+     *  @exception NameDuplicationException If there is a problem creating
      *  an interface IOport or connection.
      */
     public void generatePtinyOSModel(String componentName, String outputFile,
@@ -289,7 +289,7 @@ public class NCApp2MoML {
         //-----------------------------------------------------------------
         // Add a text annotation to tell the user to layout the graph.
         //     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        //        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To automatically rearrange the component layout,&#xA;select Graph | Automatic Layout from the menu, or&#xA;type Ctrl-T." />        
+        //        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To automatically rearrange the component layout,&#xA;select Graph | Automatic Layout from the menu, or&#xA;type Ctrl-T." />
         //        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 345.0]" />
         //    </property>
         Element annotation = new Element("property");
@@ -769,9 +769,9 @@ public class NCApp2MoML {
     /** Create an IOPort that represents this interface.
      *
      *  @param intf interface that represents IOPort to be created.
-     *  @exception IllegalActionException If there is a problem creating 
+     *  @exception IllegalActionException If there is a problem creating
      *  the port.
-     *  @exception NameDuplicationException If there is a problem creating 
+     *  @exception NameDuplicationException If there is a problem creating
      *  the port.
      */
     protected void createInterfaceIOPort(Xinterface intf)
@@ -803,9 +803,9 @@ public class NCApp2MoML {
 
     /** Traverse the configuration wiring graph and set up the
      * component and relation data structures.
-     *  @exception IllegalActionException If there is a problem creating 
+     *  @exception IllegalActionException If there is a problem creating
      *  an interface IOport or connection.
-     *  @exception NameDuplicationException If there is a problem creating 
+     *  @exception NameDuplicationException If there is a problem creating
      *  an interface IOport or connection.
      */
     protected void readLinks() throws IllegalActionException,

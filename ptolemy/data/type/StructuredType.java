@@ -82,10 +82,10 @@ public abstract class StructuredType implements Type {
         return TypeLattice.leastUpperBound(this, rightArgumentType);
     }
 
-    /** Return the depth of a structured type. The depth of a 
-     *  structured type is the number of times a structured type 
-     *  contains other structured types. For example, an array 
-     *  of arrays has depth 2, and an array of arrays of records 
+    /** Return the depth of a structured type. The depth of a
+     *  structured type is the number of times a structured type
+     *  contains other structured types. For example, an array
+     *  of arrays has depth 2, and an array of arrays of records
      *  has depth 3.
      *  @return the depth of a structured type.
      */

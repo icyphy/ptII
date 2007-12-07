@@ -76,7 +76,7 @@ public class PlotEffigy extends Effigy {
 
     /** Return the plot that this is an effigy of.
      *  @return The plot or null if none has been set.
-     *  @see #setPlot(PlotBox)   
+     *  @see #setPlot(PlotBox)
      */
     public PlotBox getPlot() {
         return _plot;

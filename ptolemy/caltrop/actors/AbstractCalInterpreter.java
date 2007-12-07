@@ -248,7 +248,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     /** Get the Ptolemy type that corresponds to the given type expression.
      *  @param typeExpr The type expression, one of "UINT8", "UINT9",
      *  "INT19" or "positive".
-     *  @return the corresponding type, which currently is always 
+     *  @return the corresponding type, which currently is always
      *  ptolemy.data.type.BaseType.int.
      */
     protected static ptolemy.data.type.Type _getPtolemyType(TypeExpr typeExpr) {

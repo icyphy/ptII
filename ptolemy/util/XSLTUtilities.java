@@ -177,7 +177,7 @@ public class XSLTUtilities {
     }
 
     /** Set the flag indicating whether to export DTD specification when
-     *  transforming XML files. By default, the transformer does not export 
+     *  transforming XML files. By default, the transformer does not export
      *  DTD.
      *  @param exportDTD True for export DTD, false for not.
      */
@@ -383,8 +383,8 @@ public class XSLTUtilities {
             int positionToInsertDTD = outputString.indexOf("<!--");
             fileWriter.write(outputString, 0, positionToInsertDTD);
             // FIXME: So far, only MoML DTD can be exported. If the support
-            // of more DTDs is necessray, modify the main() method and 
-            // setExportDTD() method to allow configuration of DTD. 
+            // of more DTDs is necessray, modify the main() method and
+            // setExportDTD() method to allow configuration of DTD.
             fileWriter
                     .write("\r\n<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\" "
                             + "\r\n\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">");

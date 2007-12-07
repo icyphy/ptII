@@ -96,7 +96,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
     }
 
     /** Fire the given integrator. This method performs the ODE solving
-     *  algorithm described in the class comment. 
+     *  algorithm described in the class comment.
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or can not send output.
@@ -232,7 +232,7 @@ public class ExplicitRK45Solver extends ContinuousODESolver {
         return _TIME_INCREMENTS[_roundCount];
     }
 
-    /** Return true if the current integration step is finished. 
+    /** Return true if the current integration step is finished.
      *  This method will return true if _incrementRound() has been
      *  called 6 or more times since _reset().
      *  @see #_reset()

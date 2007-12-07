@@ -35,7 +35,7 @@ import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 import ptolemy.math.DoubleMatrixMath;
 
-/** 
+/**
  * This class provides algorithms to do interpolation. Currently, zero,
  * first, and third order interpolations are supported. These are the
  * interpolation orders most often used in practice. zero order interpolation
@@ -111,13 +111,13 @@ public class Interpolation implements Rollbackable {
 
     private int _order = 0;
 
-    /**     
+    /**
      * Construct an instance of Interpolation using the default parameters.
      */
     public Interpolation() {
     }
 
-    /**     
+    /**
      * Return the reference indexes.
      * @return An int array.
      * @see #setIndexes(int[])
@@ -126,7 +126,7 @@ public class Interpolation implements Rollbackable {
         return $BACKUP$_indexes();
     }
 
-    /**     
+    /**
      * Return the interpolation order.
      * @return An int.
      * @see #setOrder(int)
@@ -135,7 +135,7 @@ public class Interpolation implements Rollbackable {
         return _order;
     }
 
-    /**     
+    /**
      * Return the value repetition period.
      * @return An int.
      * @see #setPeriod(int)
@@ -144,7 +144,7 @@ public class Interpolation implements Rollbackable {
         return _period;
     }
 
-    /**     
+    /**
      * Return the reference values.
      * @return An double array.
      * @see #setValues(double[])
@@ -153,7 +153,7 @@ public class Interpolation implements Rollbackable {
         return $BACKUP$_values();
     }
 
-    /**     
+    /**
      * Return the interpolation result for the specified index.
      * @param index The point of interpolation. Can be negative
      * @return A double.
@@ -269,7 +269,7 @@ public class Interpolation implements Rollbackable {
         return _hermite(index, iStart, vStart, tanStart, iEnd, vEnd, tanEnd);
     }
 
-    /**     
+    /**
      * Set the reference indexes.
      * @param indexes An int array.
      * @exception IllegalArgumentException If the argument array is
@@ -288,7 +288,7 @@ public class Interpolation implements Rollbackable {
         $ASSIGN$_indexes(indexes);
     }
 
-    /**     
+    /**
      * Set the interpolation order.
      * @param order An int.
      * @exception IllegalArgumentException If the order is not 0, 1, or 3.
@@ -302,7 +302,7 @@ public class Interpolation implements Rollbackable {
         $ASSIGN$_order(order);
     }
 
-    /**     
+    /**
      * Set the value repetition period.
      * @param period An int.
      * @exception IllegalArgumentException If the period is negative.
@@ -316,7 +316,7 @@ public class Interpolation implements Rollbackable {
         $ASSIGN$_period(period);
     }
 
-    /**     
+    /**
      * Set the reference values.
      * @param values A double array.
      * @see #getValues()

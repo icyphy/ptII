@@ -71,13 +71,13 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer,
     /** Add a channel listener to listen for transmissions on this channel.
      *  A ChannelListener can read the transmission property and token that
      *  was transmitted on this channel.
-     *  
+     *
      *  If the channel listener has already been added, then no changes
      *  are made.
-     *  
+     *
      *  If multiple channel listeners are registered that can operate on a
      *  given transmission, then the order in which they are applied is arbitrary.
-     *  
+     *
      *  @param listener The channel listener to add.
      *  @see #removeChannelListener(ChannelListener)
      */
@@ -139,8 +139,8 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer,
     public void registerPropertyTransformer(PropertyTransformer transformer,
             WirelessIOPort port);
 
-    /** Remove a channel listener for transmissions on this channel.  
-     *  If the listener has not been added, then do nothing. 
+    /** Remove a channel listener for transmissions on this channel.
+     *  If the listener has not been added, then do nothing.
      *  @param listener The channel listener to remove.
      *  @see #addChannelListener(ChannelListener)
      */

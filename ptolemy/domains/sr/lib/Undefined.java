@@ -43,7 +43,7 @@ import ptolemy.kernel.util.StringAttribute;
  This actor outputs no values.  It produces no tokens.  In domains such as
  SR, the output will never converge to a defined value. This actor is
  different from the {@link ptolemy.domains.sr.lib.Absent} actor, which
- produces an <i>absent</i> value. 
+ produces an <i>absent</i> value.
 
  @author Paul Whitaker, Haiyang Zheng
  @deprecated This actor does not work. It returns false in prefire(), but that is interpreted by the director to mean that all outputs are absent.
@@ -107,16 +107,16 @@ public class Undefined extends Source {
      */
     public void fire() throws IllegalActionException {
         // Do nothing.
-        // We could have just used the fire() method of the super class, 
+        // We could have just used the fire() method of the super class,
         // because it is never called anyway. However, we explicitly
         // override the method with an empty body to illstrate the difference.
     }
 
-    /** Return false. This actor never fires. Note that in the fire() 
+    /** Return false. This actor never fires. Note that in the fire()
      *  method of the FixedPointDirector, if an actor returns false in
      *  its prefire() method, the fire() and postfire() methods are never
      *  invoked. Consequently, the output of this actor is undefined.
-     * 
+     *
      *  @return False.
      *  @exception IllegalActionException Not thrown in this base class.
      */

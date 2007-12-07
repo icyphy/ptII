@@ -174,7 +174,7 @@ public class GenericJNIActor extends TypedAtomicActor {
      *  @exception IllegalActionException If the argument with the
      *  name "return" is not of an acceptable class for the container.
      *  @exception NameDuplicationException If there is already an
-     *  argument with the name "return"   
+     *  argument with the name "return"
      */
     public void addArgumentReturn() throws IllegalActionException,
             NameDuplicationException {
@@ -813,7 +813,7 @@ public class GenericJNIActor extends TypedAtomicActor {
     /** Remove an argument from this entity.
      *  @param arg The argument to be removed.
      *  @exception IllegalActionException If there is a problem removing
-     *  the argument.   
+     *  the argument.
      */
     public void removeArgument(Argument arg) throws IllegalActionException {
         _removeAttribute(arg);
@@ -822,7 +822,7 @@ public class GenericJNIActor extends TypedAtomicActor {
 
     /** Update the ports to match the arguments.
      *  If an Argument has no corresponding port, a Port is added.
-     *  If a Port does not have a corresponding Argument, then the Port 
+     *  If a Port does not have a corresponding Argument, then the Port
      *  is removed.
      *  If a input and/or output nature of a Port does not match the
      *  Argument with the same name, then the Port is adjusted.
@@ -918,7 +918,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                         request.setUndoable(true);
                         requestChange(request);
                     }
-                } else /*if (port.isInput() != argument.isInput() 
+                } else /*if (port.isInput() != argument.isInput()
                                 || port.isOutput() != argument.isOutput())*/{
                     MoMLChangeRequest request = new MoMLChangeRequest(
                             this,
@@ -963,9 +963,9 @@ public class GenericJNIActor extends TypedAtomicActor {
      *  @param arg The argument to be added.
      *  @exception IllegalActionException If the argument
      *  is not of an acceptable class for the container or the name contains
-     *  a period.   
+     *  a period.
      *  @exception NameDuplicationException If there is already an
-     *  argument with the same name. 
+     *  argument with the same name.
      */
     protected void _addArgument(Argument arg) throws IllegalActionException,
             NameDuplicationException {

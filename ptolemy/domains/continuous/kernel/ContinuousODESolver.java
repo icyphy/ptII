@@ -34,8 +34,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  Abstract base class for ODE solvers. A complete integration
- consists of one or more rounds of executions. One round of execution requires 
- the model time to be advanced and this advancement is handled by the 
+ consists of one or more rounds of executions. One round of execution requires
+ the model time to be advanced and this advancement is handled by the
  Continuous director. Derived classes need to tell how many rounds
  of execution are necessary and how much time to advance for each round.
  <P>
@@ -51,8 +51,8 @@ import ptolemy.kernel.util.IllegalActionException;
  protected because they are only used by Continuous directors.
  <p>
  Conceptually, ODE solvers do not maintain simulation parameters,
- like step sizes and error tolerance. They get these parameters from the 
- director. So the same set of parameters are shared by all the solvers 
+ like step sizes and error tolerance. They get these parameters from the
+ director. So the same set of parameters are shared by all the solvers
  in a simulation.
 
  @author Haiyang Zheng, Edward A. Lee
@@ -159,7 +159,7 @@ public abstract class ContinuousODESolver {
     /** Set the round for the next integration step.
      *  This must be between zero and the value returned by
      *  getIntegratorAuxVariableCount().
-     *  @param round The round for the next integration step. 
+     *  @param round The round for the next integration step.
      *  @see #getIntegratorAuxVariableCount()
      */
     protected abstract void _setRound(int round);

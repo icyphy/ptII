@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NamedObj;
  Interface for loading icons.
 
  @see MoMLParser
- @author Edward A. Lee, Christopher Brooks 
+ @author Edward A. Lee, Christopher Brooks
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Red (eal)

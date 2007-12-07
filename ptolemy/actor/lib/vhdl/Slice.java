@@ -1,5 +1,5 @@
 /** An actor that slices the input bits and output a consecutive subset
- of the input bits. 
+ of the input bits.
 
  Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
@@ -55,9 +55,9 @@ import ptolemy.math.Rounding;
  Produce an output token on each firing with a FixPoint value that is
  equal to the slicing of the bits of the input token value. The bit width of
  the output token value is determined by taking the difference of parameters
- start and end. The width parameter specifies the bit width of the input 
+ start and end. The width parameter specifies the bit width of the input
  value. The output FixPoint value is unsigned, and all its bits are integer
- bits. The input can have any scalar type. 
+ bits. The input can have any scalar type.
 
  @author Man-Kit Leung
  @version $Id$
@@ -116,7 +116,7 @@ public class Slice extends FixTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Output a consecutive subset of the input bits. 
+    /** Output a consecutive subset of the input bits.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */

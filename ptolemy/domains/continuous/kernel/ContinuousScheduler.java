@@ -35,7 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ContinuousScheduler
 
 /**
- The Static scheduler for the Continuous domain.  Currently, this scheduler is 
+ The Static scheduler for the Continuous domain.  Currently, this scheduler is
  the same as the FixedPointScheduler.
 
  @author Haiyang Zheng and Edward A. Lee

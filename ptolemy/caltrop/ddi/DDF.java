@@ -226,7 +226,7 @@ public class DDF extends DataflowWithRates {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Return true if any action has a guard which depends on input values. 
+    // Return true if any action has a guard which depends on input values.
     protected boolean _hasInputDependentGuard() {
         for (int i = 0; i < _actions.length; i++) {
             Action action = _actions[i];

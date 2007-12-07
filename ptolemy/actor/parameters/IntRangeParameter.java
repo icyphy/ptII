@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NamedObj;
  The default values for <i>min</i> and <i>max</i> are 0 and 100,
  respectively, and the default value for this parameter is 50.
  </p>
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 3.0

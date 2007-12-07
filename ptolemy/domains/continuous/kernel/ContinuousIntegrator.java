@@ -47,7 +47,7 @@ import ptolemy.kernel.util.StringAttribute;
  The integrator in the continuous domain.
  The <i>derivative</i> port receives the derivative of the state of the integrator
  with respect to time. The <i>state</i> output port shows the state of the
- integrator. So an ordinary differential equation (ODE), 
+ integrator. So an ordinary differential equation (ODE),
  dx/dt = f(x, t), can be built as follows:
  <P>
  <pre>
@@ -62,8 +62,8 @@ import ptolemy.kernel.util.StringAttribute;
  |---------|
  </pre>
  <P>
- An integrator also has a port-parameter called <i>initialState</i>. The 
- parameter provides the initial state for integration during the initialization 
+ An integrator also has a port-parameter called <i>initialState</i>. The
+ parameter provides the initial state for integration during the initialization
  stage of execution. If during execution an input token is provided on
  the port, then the state of the integrator will be reset at that time
  to the value of the token. The default value of the parameter is 0.0.
@@ -72,8 +72,8 @@ import ptolemy.kernel.util.StringAttribute;
  When present, a token at the <i>impulse</i> input
  port is interpreted as the weight of a Dirac delta function.
  It cause an instantaneous increment or decrement to the state.
- If both <i>impulse</i> and <i>initialState</i> have data, then 
- <i>initialState</i> dominates.  
+ If both <i>impulse</i> and <i>initialState</i> have data, then
+ <i>initialState</i> dominates.
  <P>
  An integrator can generate an output (its current state) before
  the derivative input is known, and hence can be used in feedback
@@ -96,7 +96,7 @@ import ptolemy.kernel.util.StringAttribute;
  <p>
  This class is based on the CTBaseIntegrator by Jie Liu and Haiyang Zheng,
  but it has more ports and provides more functionality.
- 
+
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.0
@@ -175,7 +175,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         }
     }
 
-    /** If the value at the <i>derivative</i> port is known, and the current 
+    /** If the value at the <i>derivative</i> port is known, and the current
      *  step size is bigger than 0, perform an integration.
      *  If the <i>impulse</i> port is known and has data, then add the
      *  value provided to the state; if the <i>initialState</i> port
@@ -198,14 +198,14 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         }
         // Question: should the above go to the prefire() method?
         // Answer: No, because of the design of the fixed point director.
-        // In particular, since this actor is a nonstrict actor, it is "ready 
+        // In particular, since this actor is a nonstrict actor, it is "ready
         // to fire". If this actor returns false from the prefire() method,
-        // then all outputs will be cleared (set to absent). This is not 
+        // then all outputs will be cleared (set to absent). This is not
         // what we want to do. In this case, we allow the actor to be fired,
         // and the fire() method should do the right thing.
-        // Similar cases arise from any composite actor (including modal 
-        // models), which may contain some source actor inside while the 
-        // interface ports indicate the actor is a strict actor. Therefore, 
+        // Similar cases arise from any composite actor (including modal
+        // models), which may contain some source actor inside while the
+        // interface ports indicate the actor is a strict actor. Therefore,
         // the prefire() actor of any composite actor should return true
         // at any time, and they should be ready to be fired at any time.
 
@@ -226,7 +226,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                 setTentativeState(currentState);
             }
         }
-        // The input from the initialState port overwrites the input from 
+        // The input from the initialState port overwrites the input from
         // the impulse port.
         TypedIOPort statePort = initialState.getPort();
         for (int i = 0; i < statePort.getWidth(); i++) {
@@ -243,9 +243,9 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
 
         // Prefire() resets receivers, also each firing of this actor changes
         // the _tentativeState variable, therefore the following statements
-        // may broadcast the newly calculated _tentativeState at a wrong time. 
-        // For example, an opaque composite actor containing an integrator is 
-        // scheduled to run multiple times during the same round. 
+        // may broadcast the newly calculated _tentativeState at a wrong time.
+        // For example, an opaque composite actor containing an integrator is
+        // scheduled to run multiple times during the same round.
 
         // Since prefire() can be called any number of times, and the semantics
         // of prefire() requires the results not to be affected by the numbers
@@ -253,7 +253,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
         //        if (!state.isKnown()) {
         //            state.broadcast(new DoubleToken(getTentativeState()));
         //        }
-        // Instead, we use the round number to guard the outputs. 
+        // Instead, we use the round number to guard the outputs.
         if (!state.isKnown()) {
             int currentRound = dir._getODESolver()._getRound();
             if (_lastRound < currentRound) {
@@ -272,7 +272,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
                                 + currentDerivative);
             }
             if (stepSize > 0.0) {
-                // The following method changes the tentative state but 
+                // The following method changes the tentative state but
                 // should not expose the tentative state.
                 dir._getODESolver().integratorIntegrate(this);
             }
@@ -370,7 +370,7 @@ public class ContinuousIntegrator extends TypedAtomicActor implements
     /** Return false. This actor can produce some outputs even the inputs
      *  are unknown. This actor is crucial at breaking feedback loops during
      *  simulation.
-     *  
+     *
      *  @return False.
      */
     public boolean isStrict() {

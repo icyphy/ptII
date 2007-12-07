@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (cxh)
- @Pt.AcceptedRating Green (cxh) 
+ @Pt.AcceptedRating Green (cxh)
  */
 public class LogicFunction extends CCodeGeneratorHelper {
     /** Constructor method for the LogicFunction helper.

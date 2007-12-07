@@ -116,7 +116,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
 
     /** Return false. This actor can produce some output at the indexOutput
      *  output port even if the input dataInput has status unknown.
-     *  
+     *
      *  @return False.
      */
     public boolean isStrict() {

@@ -46,7 +46,7 @@ import ptolemy.math.Complex;
  <p>
  The implementation uses java.lang.Math.atan2(double, double).
  </p>
- 
+
  @see java.lang.Math#atan2(double, double)
 
  @author Michael Leung, Edward A. Lee, and Paul Whitaker

@@ -35,7 +35,7 @@ import java.awt.Container;
  *  I added this interface so that FormEditor could be contained
  *  in frames that were not instances of LayoutFrame.  LayoutFrame
  *  implements this interface.
- * 
+ *
  *  @author Edward A. Lee eal&#064;eecs.berkeley.edu
  */
 public interface MultiContainerFrame {

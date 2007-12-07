@@ -105,7 +105,7 @@ public class Link {
     }
 
     /** Return a string representation of this link.
-     *  @return A string representation of this link.   
+     *  @return A string representation of this link.
      */
     public String toString() {
         return "Link(" + _head + ", " + _tail + ", " + _relation + ")";

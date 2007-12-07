@@ -124,7 +124,7 @@ public class GUIUtilities {
      *  consists of two Strings, the absolute URL of the icon
      *  and the key that represents the role of the icon.  The keys
      *  are usually static fields from this class, such as
-     *  {@link #LARGE_ICON}, {@link #ROLLOVER_ICON}, 
+     *  {@link #LARGE_ICON}, {@link #ROLLOVER_ICON},
      *  {@link #ROLLOVER_SELECTED_ICON} or {@link #SELECTED_ICON}.
      */
     public static void addIcons(Action action, String[][] iconRoles) {

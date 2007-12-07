@@ -61,7 +61,7 @@ public class LongToken extends ScalarToken {
     }
 
     /** Construct a token with the specified value.
-     *  @param value The specified value.   
+     *  @param value The specified value.
      */
     public LongToken(long value) {
         _value = value;
@@ -279,7 +279,7 @@ public class LongToken extends ScalarToken {
     }
 
     /** Return the value in the token truncated to an unsignedByte.
-     *  @return The truncated value   
+     *  @return The truncated value
      *  @exception IllegalActionException If the value is not in the
      *  range of an unsigned byte.
      */

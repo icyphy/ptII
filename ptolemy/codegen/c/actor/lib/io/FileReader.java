@@ -111,7 +111,7 @@ public class FileReader extends CCodeGeneratorHelper {
     public static String getFileName(FilePortParameter fileOrURL)
             throws IllegalActionException {
         // FIXME: we should not need two getFileName() methods.
-        // instead, FileParameter and FilePortParameter should 
+        // instead, FileParameter and FilePortParameter should
         // implement a common interface.
 
         String fileNameString;

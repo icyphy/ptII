@@ -1,4 +1,4 @@
-/* Test out OrderedMerge 
+/* Test out OrderedMerge
 
  Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// TestOrderedMerge
 
 /**
- Test OrderedMerged by covering _getNextPort(). 
+ Test OrderedMerged by covering _getNextPort().
 
  @author Christopher Brooks
  @version $Id$

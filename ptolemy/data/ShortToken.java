@@ -60,7 +60,7 @@ public class ShortToken extends ScalarToken {
     }
 
     /** Construct a token with the specified value.
-     *  @param value The specified value.   
+     *  @param value The specified value.
      */
     public ShortToken(final short value) {
         _value = value;
@@ -68,7 +68,7 @@ public class ShortToken extends ScalarToken {
 
     /** Construct a ShortToken with the specified integer value.
      *  This method's cast to (byte) keeps only the low
-     *  order 16 bits of the integer. 
+     *  order 16 bits of the integer.
      *  @param value The specified value.
      */
     public ShortToken(int value) {
@@ -195,7 +195,7 @@ public class ShortToken extends ScalarToken {
      *  @return The value contained in this token as a fixpoint.
      */
     public FixPoint fixValue() {
-        // FIXME: Does FixPoint need to specially handle Short? 
+        // FIXME: Does FixPoint need to specially handle Short?
         return new FixPoint(_value);
     }
 

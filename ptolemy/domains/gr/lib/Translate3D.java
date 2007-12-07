@@ -139,7 +139,7 @@ public class Translate3D extends GRTransform {
         double yOffset = 0.0;
         double zOffset = 0.0;
 
-        // read new inputs for offsets if there are any. 
+        // read new inputs for offsets if there are any.
         if (xTranslate.getWidth() != 0) {
             if (xTranslate.hasToken(0)) {
                 double in = ((DoubleToken) xTranslate.get(0)).doubleValue();
@@ -170,7 +170,7 @@ public class Translate3D extends GRTransform {
             }
         }
 
-        // if accumulating, add the new inputs to the accumulated values, 
+        // if accumulating, add the new inputs to the accumulated values,
         // which are saved old states.
         if (_isAccumulating()) {
             xOffset = (xOffset + _accumulatedX);

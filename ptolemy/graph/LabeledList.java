@@ -85,7 +85,7 @@ public class LabeledList implements List {
      *  the specified number of elements.  Memory management is more
      *  efficient with this constructor (assuming the number of elements is
      *  known).
-     *  @param size The number of elements. 
+     *  @param size The number of elements.
      */
     public LabeledList(int size) {
         _elements = new ArrayList(size);

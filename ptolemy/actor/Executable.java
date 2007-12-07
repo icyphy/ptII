@@ -76,7 +76,7 @@ public interface Executable extends Initializable {
      *  such an actor can be used in domains that have a fixed point
      *  semantics and may repeatedly fire the actor before committing
      *  to state changes.
-     *  
+     *
      *  @return True if this executable only updates its states during
      *   an iteration in the postfire() method.
      */
@@ -88,7 +88,7 @@ public interface Executable extends Initializable {
      *  However, some classes can perform an iteration even if some
      *  inputs are not known (i.e., these classes tolerate a return value
      *  of false from the isKnown() method of Receiver).
-     *  
+     *
      *  @return True if this executable is strict, meaning all inputs must
      *   be known before iteration.
      */

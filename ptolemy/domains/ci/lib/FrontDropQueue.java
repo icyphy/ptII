@@ -89,7 +89,7 @@ public class FrontDropQueue extends CIActor {
      */
     public TypedIOPort dropped;
 
-    /** The capacity of the queue.  The initial default value is an integer 
+    /** The capacity of the queue.  The initial default value is an integer
      *  with the value of 1.
      */
     public Parameter capacity;

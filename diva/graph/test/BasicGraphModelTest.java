@@ -45,7 +45,7 @@ public class BasicGraphModelTest extends TestSuite {
      */
     public interface GraphFactory {
         /** Create a BasicGraphModel.
-         *  @return a BasicGraphModel.   
+         *  @return a BasicGraphModel.
          */
         public BasicGraphModel createGraph();
     }
@@ -54,7 +54,7 @@ public class BasicGraphModelTest extends TestSuite {
      */
     public static class BasicGraphModelFactory implements GraphFactory {
         /** Create a BasicGraphModel.
-         *  @return a BasicGraphModel.   
+         *  @return a BasicGraphModel.
          */
         public BasicGraphModel createGraph() {
             return new BasicGraphModel();
@@ -75,7 +75,7 @@ public class BasicGraphModelTest extends TestSuite {
     }
 
     /** Run the test.
-     * 
+     *
      */
     public void runSuite() {
         testEmpty();

@@ -163,7 +163,7 @@ public class CompositeActorSimpleApplication {
      *
      *  @param model The model to execute.
      *  @exception IllegalActionException If the model contains Placeables.
-     *  or does not have a manager.   
+     *  or does not have a manager.
      *  @see ptolemy.actor.Manager#startRun()
      */
     public synchronized void startRun(CompositeActor model)

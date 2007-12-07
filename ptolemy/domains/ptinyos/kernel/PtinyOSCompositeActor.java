@@ -63,7 +63,7 @@ public abstract class PtinyOSCompositeActor extends NCCompositeActor {
      *  Increment the version number of the workspace.
      */
     public PtinyOSCompositeActor() {
-        super();   
+        super();
         _setClassName();
     }
 
@@ -97,7 +97,7 @@ public abstract class PtinyOSCompositeActor extends NCCompositeActor {
         // Set the port orientation so the input ports are on the left
         // edge of the icon.
         rotatePorts.setToken(new IntToken(0));
-          
+
         // Create an output port for packets.
         packetOut = new TypedIOPort(this, "packetOut", false, true);
         packetOut.setTypeEquals(BaseType.STRING);
@@ -139,7 +139,7 @@ public abstract class PtinyOSCompositeActor extends NCCompositeActor {
                     if (director instanceof PtinyOSDirector) {
                         ((PtinyOSDirector)director).receivePacket(
                                 token.stringValue());
-                        
+
                     } else {
                         throw new IllegalActionException(
                                 "Local director was not of type "
@@ -169,5 +169,5 @@ public abstract class PtinyOSCompositeActor extends NCCompositeActor {
      */
     private void _setClassName() {
         setClassName("ptolemy.domains.ptinyos.kernel.PtinyOSCompositeActor");
-    }    
+    }
 }

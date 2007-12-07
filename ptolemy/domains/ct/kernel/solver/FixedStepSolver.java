@@ -125,9 +125,9 @@ public abstract class FixedStepSolver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Override the method in the base abstract class to advance the 
+    /** Override the method in the base abstract class to advance the
      *  model time. Advance the model time to the current model time
-     *  plus the current step size on the first round. 
+     *  plus the current step size on the first round.
      *  @exception IllegalActionException If thrown in the super class or the
      *  model time can not be set.
      */

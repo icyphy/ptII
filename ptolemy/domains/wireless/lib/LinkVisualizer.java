@@ -50,15 +50,15 @@ import ptolemy.vergil.kernel.attributes.LineAttribute;
 
 /**
  This actor implements the ChannelListener interface.
- It creates a line between two communicating nodes that 
- are within range of one another. It registers itself 
- with the wireless channel specified by the 
+ It creates a line between two communicating nodes that
+ are within range of one another. It registers itself
+ with the wireless channel specified by the
  <i>channelName</i> parameter. This is notified whenever a transmission
  occurs on the channel on which it is listening.
- 
+
  This is an actor because it registers itself with the channel in the
  initialize() method.
- 
+
  @author Heather Taylor, Elaine Cheong
  @version $Id$
  @since Ptolemy II 5.2
@@ -99,9 +99,9 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Register ChannelListeners with the WirelessChannel 
+    /** Register ChannelListeners with the WirelessChannel
      *  specified in the channelName parameter.
-     *  
+     *
      *  @exception IllegalActionException If the super class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -123,7 +123,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
     }
 
     /** Visualize a line between the sender and destination containers
-     *  by starting a thread that will create and remove the line after some 
+     *  by starting a thread that will create and remove the line after some
      *  amount of time.
      *  @param properties The properties of this transmission.
      *  @param token The token of this transmission, which can be processed here.
@@ -202,7 +202,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
     }
 
     /** Remove the line previously created with name lineName.
-     * 
+     *
      * @param lineName Name of line previously created.
      */
     protected void _removeLine(String lineName) {
@@ -241,7 +241,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
             _lineName = lineName;
         }
 
-        /** Draw a line, sleep for specified amount of time, 
+        /** Draw a line, sleep for specified amount of time,
          *  and then remove the line.
          */
         public void run() {
@@ -251,7 +251,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
                 try {
                     time = ((IntToken) sleepTime.getToken()).intValue();
                 } catch (IllegalActionException e) {
-                    // If getting the parameter value was unsuccessful, 
+                    // If getting the parameter value was unsuccessful,
                     // use the default value instead.
                     time = _millisToSleep;
                 }
@@ -275,7 +275,7 @@ public class LinkVisualizer extends TypedAtomicActor implements ChannelListener 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
-    /** Status of line that visualizes the radio link.  
+    /** Status of line that visualizes the radio link.
      *  Initialized to true. */
     protected Boolean _isOff;
 

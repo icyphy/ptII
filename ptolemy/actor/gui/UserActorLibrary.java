@@ -63,7 +63,7 @@ public class UserActorLibrary {
      *  Open the user actor library as a new library in the actor
      *  library for this application.
      *
-     *  <p>The name of the user actor library consists of the 
+     *  <p>The name of the user actor library consists of the
      *  values of {@link ptolemy.util.StringUtilities#preferencesDirectory()}
      *  and {@link #USER_LIBRARY_NAME} and ".xml" concatenated.
      *
@@ -138,10 +138,10 @@ public class UserActorLibrary {
         }
     }
 
-    /**                                                                         
+    /**
      *  Open the MoML file at the given location as a new library in
      *  the actor library for this application.
-     *  
+     *
      *  An alternate class can be used to build the library if reading
      *  the MoML is not desired.  The class must extend
      *  ptolemy.moml.LibraryBuilder and the _alternateLibraryBuilder

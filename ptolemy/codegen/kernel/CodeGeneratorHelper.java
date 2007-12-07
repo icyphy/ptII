@@ -94,7 +94,7 @@ import ptolemy.util.StringUtilities;
  *     code.append("// Local wrapup code");
  *     return processCode(CodeStream.indent(code.toString()));
  * </pre>
- * 
+ *
  * @author Ye Zhou, Gang Zhou, Edward A. Lee, Contributors: Christopher Brooks, Teale Fristoe
  * @version $Id$
  * @since Ptolemy II 6.0
@@ -114,12 +114,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public CodeGeneratorHelper(NamedObj component) {
         // FIXME: Why is this a namedObj when the analyzeActor()
-        // method requires an Actor? 
+        // method requires an Actor?
         _component = component;
 
         _parseTreeCodeGenerator = new ParseTreeCodeGenerator() {
             /** Given a string, escape special characters as necessary for the
-             *  target language.   
+             *  target language.
              *  @param string The string to escape.
              *  @return A new string with special characters replaced.
              */
@@ -153,7 +153,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /** Construct the code generator helper associated
      *  with the given component.
      *  @param component The associated component.
-     *  @param name The name of helper.  All periods are 
+     *  @param name The name of helper.  All periods are
      *  replaced with underscores.
      */
     public CodeGeneratorHelper(NamedObj component, String name) {
@@ -182,7 +182,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /**
      * Find out each output port that needs to be converted for the
      * actor associated with this helper. Then, mark these ports along
-     * with the sink ports (connection). 
+     * with the sink ports (connection).
      * @exception IllegalActionException Not thrown in this base class.
      */
     public void analyzeTypeConvert() throws IllegalActionException {
@@ -222,7 +222,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /**
      * Get the corresponding type in code generation from the given Ptolemy
-     * type. 
+     * type.
      * @param ptType The given Ptolemy type.
      * @return The code generation type.
      * @exception IllegalActionException Thrown if the given ptolemy cannot
@@ -266,16 +266,16 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  file.
      *  <p>Using the <code>fileDependencies</code> code block allows
      *  actor writers to refer to code defined in other files.
-     *  
+     *
      *  @param namedObj If this argument is an instance of
      *  ptolemy.actor.lib.jni.EmbeddedCActor, then the code blocks
      *  from EmbeddedCActor's <i>embeddedCCode</i> parameter are used.
      *  @param codeGenerator The code generator from which the
      *  <i>codeDirectory</i> parameter is read.
-     *  @return The modification time of the most recent file. 
-     *  @exception IOException If there is a problem reading the 
+     *  @return The modification time of the most recent file.
+     *  @exception IOException If there is a problem reading the
      *  <i>codeDirectory</i> parameter.
-     *  @exception IllegalActionException If there is a problem reading the 
+     *  @exception IllegalActionException If there is a problem reading the
      *  <i>codeDirectory</i> parameter.
      */
     public static long copyFilesToCodeDirectory(NamedObj namedObj,
@@ -340,7 +340,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                         || (necessaryFileSource.exists() && necessaryFileSource
                                 .lastModified() > necessaryFileDestination
                                 .lastModified())) {
-                    // If the dest file does not exist or is older than the 
+                    // If the dest file does not exist or is older than the
                     // source file, we do the copy
                     System.out.println("Copying " + necessaryFileSource
                             + " to " + necessaryFileDestination);
@@ -375,8 +375,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /** Generate code for declaring read and write offset variables if needed.
-     *  Return empty string in this base class. 
-     * 
+     *  Return empty string in this base class.
+     *
      *  @return The empty string.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -417,7 +417,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Get the corresponding type in C from the given Ptolemy type. 
+     * Get the corresponding type in C from the given Ptolemy type.
      * @param ptType The given Ptolemy type.
      * @return The C data type.
      */
@@ -484,16 +484,16 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /** Generate The fire function code. This method is called when the firing
-     *  code of each actor is not inlined. Each actor's firing code is in a 
+     *  code of each actor is not inlined. Each actor's firing code is in a
      *  function with the same name as that of the actor.
-     * 
+     *
      *  @return The fire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         // FIXME: This is C specific, it should be abstracted.
-        // We use (void) so as to avoid the avr-gcc 3.4.6 warning: 
+        // We use (void) so as to avoid the avr-gcc 3.4.6 warning:
         // "function declaration isn't a prototype"
         code.append(_eol + "void " + generateName(getComponent()) + "(void) {"
                 + _eol);
@@ -505,8 +505,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /**
      * Generate the initialize code. In this base class, return empty
-     * string. Subclasses may extend this method to generate initialize 
-     * code of the associated component and append the code to the 
+     * string. Subclasses may extend this method to generate initialize
+     * code of the associated component and append the code to the
      * given string buffer.
      * @return The initialize code of the containing composite actor.
      * @exception IllegalActionException If thrown while appending to the
@@ -529,7 +529,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /** Generate the main entry point.
      *  @return In this base class, return a comment.  Subclasses
      *  should return the a string that closes optionally calls exit
-     *  and closes the main() method 
+     *  and closes the main() method
      *  @exception IllegalActionException Not thrown in this base class.
      */
     //public String generateMainExitCode() throws IllegalActionException {
@@ -538,7 +538,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /** Generate mode transition code. The mode transition code
      *  generated in this method is executed after each global
      *  iteration, e.g., in HDF model.  Do nothing in this base class.
-     * 
+     *
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -690,7 +690,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Generate the type conversion fire code. This method is called by the 
+     * Generate the type conversion fire code. This method is called by the
      * Director to append necessary fire code to handle type conversion.
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
@@ -700,7 +700,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /**
-     * Generate the type conversion fire code. This method is called by the 
+     * Generate the type conversion fire code. This method is called by the
      * Director to append necessary fire code to handle type conversion.
      * @param forComposite True if we are generating code for a composite.
      * @return The generated code.
@@ -710,7 +710,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        // Type conversion code for inter-actor port conversion. 
+        // Type conversion code for inter-actor port conversion.
         Iterator channels = _getTypeConvertChannels().iterator();
         while (channels.hasNext()) {
             Channel source = (Channel) channels.next();
@@ -749,7 +749,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        //  Generate variable initialization for referenced parameters.    
+        //  Generate variable initialization for referenced parameters.
         if (!_referencedParameters.isEmpty()) {
             code.append(_eol
                     + _codeGenerator.comment(1, _component.getName()
@@ -799,7 +799,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @return The buffer size of the given port.
      * @exception IllegalActionException If the
      * {@link #getBufferSize(IOPort, int)} method throws it.
-     * @see #setBufferSize(IOPort, int, int) 
+     * @see #setBufferSize(IOPort, int, int)
      */
     public int getBufferSize(IOPort port) throws IllegalActionException {
         int bufferSize = 1;
@@ -835,7 +835,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @return The buffer size of the given port and channel.
      *  @exception IllegalActionException If the getBufferSize()
      *   method of the actor helper class throws it.
-     * @see #setBufferSize(IOPort, int, int) 
+     * @see #setBufferSize(IOPort, int, int)
      */
     public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
@@ -889,7 +889,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * content of the array are regex, users should use matches() instead
      * of equals() to compare their strings.
      * @return Array of string regular expressions of names of code blocks
-     * that are appended by default. 
+     * that are appended by default.
      */
     public static String[] getDefaultBlocks() {
         return _defaultBlocks;
@@ -897,7 +897,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /** Return the translated token instance function invocation string.
      *  @param functionString The string within the $tokenFunc() macro.
-     *  @param isStatic True if the method is static.   
+     *  @param isStatic True if the method is static.
      *  @return The translated type function invocation string.
      *  @exception IllegalActionException The given function string is
      *   not well-formed.
@@ -907,7 +907,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         functionString = processCode(functionString);
 
         // i.e. "$tokenFunc(token::add(arg1, arg2, ...))"
-        // this transforms to ==> 
+        // this transforms to ==>
         // "functionTable[token.type][FUNC_add] (token, arg1, arg2, ...)"
         // FIXME: we need to do some more smart parsing to find the following
         // indexes.
@@ -1066,12 +1066,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     }
 
     /** Return a set of parameters that will be modified during the execution
-     *  of the model. The actor gets those variables if it implements 
-     *  ExplicitChangeContext interface or it contains PortParameters. 
-     * 
+     *  of the model. The actor gets those variables if it implements
+     *  ExplicitChangeContext interface or it contains PortParameters.
+     *
      *  @return a set of parameters that will be modified.
-     *  @exception IllegalActionException If an actor throws it while getting 
-     *   modified variables. 
+     *  @exception IllegalActionException If an actor throws it while getting
+     *   modified variables.
      */
     public Set getModifiedVariables() throws IllegalActionException {
         Set set = new HashSet();
@@ -1104,7 +1104,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         constructorString = processCode(constructorString);
 
         // i.e. "$new(Array(8, 8, arg1, arg2, ...))"
-        // this transforms to ==> 
+        // this transforms to ==>
         // "Array_new(8, arg1, arg2, ...)"
         int openFuncParenIndex = constructorString.indexOf('(');
         int closeFuncParenIndex = constructorString.lastIndexOf(')');
@@ -1136,7 +1136,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  a constant or a parameter can be directly modified during
      *  execution in which case a reference to the parameter is
      *  generated.
-     *   
+     *
      *  @param name The name of the parameter.
      *  @param container The container to search upwards from.
      *  @return The value or expression as a string.
@@ -1244,7 +1244,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             //throw new IllegalActionException(_component,
             //        "Attribute does not have a value: " + name);
         } else {
-            // FIXME: if offset != null, for now we assume the value of 
+            // FIXME: if offset != null, for now we assume the value of
             // the parameter is fixed during execution.
             if (attribute instanceof Parameter) {
                 Token token = ((Parameter) attribute).getToken();
@@ -1356,7 +1356,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         // Get the referenced name.
         String refName = tokenizer.nextToken().trim();
 
-        // Get the cast type (if any), so we can add the proper convert method.        
+        // Get the cast type (if any), so we can add the proper convert method.
         StringTokenizer tokenizer2 = new StringTokenizer(refName, "()", false);
         if (tokenizer2.countTokens() != 1 && tokenizer2.countTokens() != 2) {
             throw new IllegalActionException(_component, "Invalid cast type: "
@@ -1370,15 +1370,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
         boolean forComposite = false;
 
-        // Usually given the name of an input port, getReference(String name) 
-        // returns variable name representing the input port. Given the name 
+        // Usually given the name of an input port, getReference(String name)
+        // returns variable name representing the input port. Given the name
         // of an output port, getReference(String name) returns variable names
-        // representing the input ports connected to the output port. 
-        // However, if the name of an input port starts with '@', 
-        // getReference(String name) returns variable names representing the 
-        // input ports connected to the given input port on the inside. 
-        // If the name of an output port starts with '@', 
-        // getReference(String name) returns variable name representing the 
+        // representing the input ports connected to the output port.
+        // However, if the name of an input port starts with '@',
+        // getReference(String name) returns variable names representing the
+        // input ports connected to the given input port on the inside.
+        // If the name of an output port starts with '@',
+        // getReference(String name) returns variable name representing the
         // the given output port which has inside receivers.
         // The special use of '@' is for composite actor when
         // tokens are transferred into or out of the composite actor.
@@ -1479,7 +1479,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     IOPort sinkPort = channel.port;
                     int sinkChannelNumber = channel.channelNumber;
 
-                    // Type convert.                
+                    // Type convert.
                     if (typeConvertSinks.contains(channel)
                             && isPrimitive(((TypedIOPort) sourceChannel.port)
                                     .getType())) {
@@ -1669,7 +1669,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         List sinkChannels = new LinkedList();
         Receiver[][] remoteReceivers;
 
-        // due to reason stated in getReference(String), 
+        // due to reason stated in getReference(String),
         // we cannot do: if (port.isInput())...
         if (port.isOutput()) {
             remoteReceivers = port.getRemoteReceivers();
@@ -1876,7 +1876,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             if ((currentPos > 0) && (code.charAt(currentPos - 1) == '\\')) {
                 // found "\$", do not make replacement.
                 // FIXME: This is wrong. subcode may contain other macros
-                // to be processed. 
+                // to be processed.
                 // Should be result.append(processCode(subcode.substring(1)));
                 result.append(subcode);
                 currentPos = nextPos;
@@ -1909,7 +1909,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /**
      * Return the position of the first occurence of the "&" sign in
      * the given code string, starting from the given from position.
-     * If the "&" sign found is escaped by "\\", it will be ignored. 
+     * If the "&" sign found is escaped by "\\", it will be ignored.
      * @param code The given code string.
      * @param from The given position to start searching from.
      * @return The next position of the "&" sign.
@@ -1927,7 +1927,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /** Reset the offsets of all channels of all input ports of the
      *  associated actor to the default value of 0.
-     * 
+     *
      *  @return The reset code of the associated actor.
      *  @exception IllegalActionException If thrown while getting or
      *   setting the offset.
@@ -2008,7 +2008,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @param inputPort The given port.
      *  @param channelNumber The given channel.
      *  @param writeOffset The offset to be set to the buffer of that channel.
-     *  @exception IllegalActionException If 
+     *  @exception IllegalActionException If
      *   {@link #setWriteOffset(IOPort, int, Object)} method throws it.
      *  @see #getWriteOffset(IOPort, int)
      */
@@ -2043,7 +2043,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             channelNumber = channel;
         }
 
-        /** 
+        /**
          * Whether this channel is the same as the given object.
          * @param object The given object.
          * @return True if this channel is the same reference as the given
@@ -2098,7 +2098,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         /** Construct a scope consisting of the variables of the container
          *  of the given instance of Variable and its containers and their
          *  scope-extending attributes.
-         *  @param variable The variable whose expression is under code 
+         *  @param variable The variable whose expression is under code
          *   generation using this scope.
          */
         public VariableScope(Variable variable) {
@@ -2112,7 +2112,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
          *  corresponding to the specified name in the scope.
          *  @param name The given name string.
          *  @return The macro or expression with the specified name in the scope.
-         *  @exception IllegalActionException If thrown while getting buffer 
+         *  @exception IllegalActionException If thrown while getting buffer
          *   sizes or creating ObjectToken.
          */
         public Token get(String name) throws IllegalActionException {
@@ -2126,7 +2126,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
             if (result != null) {
                 // If the variable found is a modified variable, which means
-                // its vaule can be directly changed during execution 
+                // its vaule can be directly changed during execution
                 // (e.g., in commit action of a modal controller), then this
                 // variable is declared in the target language and should be
                 // referenced by the name anywhere it is used.
@@ -2134,9 +2134,9 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     return new ObjectToken(_codeGenerator
                             .generateVariableName(result));
                 } else {
-                    // This will lead to recursive call until a variable found 
-                    // is either directly specified by a constant or it is a  
-                    // modified variable.  
+                    // This will lead to recursive call until a variable found
+                    // is either directly specified by a constant or it is a
+                    // modified variable.
                     return new ObjectToken("("
                             + getParameterValue(name, result.getContainer())
                             + ")");
@@ -2209,10 +2209,10 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  actor. The channel objects in the map are used to keep track of the
      *  buffer sizes or offsets in their buffer.
      *  @exception IllegalActionException If the director helper or executive
-     *   director is not found, or if 
+     *   director is not found, or if
      *   {@link #setReadOffset(IOPort, int, Object)} method throws it, or if
      *   {@link #setWriteOffset(IOPort, int, Object)} method throws it.
-     *  
+     *
      */
     protected void _createBufferSizeAndOffsetMap()
             throws IllegalActionException {
@@ -2223,7 +2223,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /** Create the input buffer and offset map.
      *  @exception IllegalActionException If thrown while
-     *  getting port information.  
+     *  getting port information.
      */
     protected void _createInputBufferSizeAndOffsetMap()
             throws IllegalActionException {
@@ -2231,7 +2231,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         //We only care about input ports where data are actually stored
         //except when an output port is not connected to any input port.
         //In that case the variable corresponding to the unconnected output
-        //port always has size 1 and the assignment to this variable is 
+        //port always has size 1 and the assignment to this variable is
         //performed just for the side effect.
         Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
 
@@ -2312,7 +2312,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param refType The given type of the variable.
      * @return The variable expression that evaluates to a result of
      *  equivalent value with the cast type.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      */
     protected String _generateTypeConvertMethod(String ref, String castType,
             String refType) throws IllegalActionException {
@@ -2339,7 +2339,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param source The given source channel.
      * @param sink The given sink channel.
      * @return The type convert statement for assigning the converted source
-     *  variable to the sink variable. 
+     *  variable to the sink variable.
      * @exception IllegalActionException If there is a problem getting the
      * helpers for the ports or if the conversion cannot be handled.
      */
@@ -2367,7 +2367,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @param sink The given sink channel.
      * @param offset The given offset.
      * @return The type convert statement for assigning the converted source
-     *  variable to the sink variable with the given offset. 
+     *  variable to the sink variable with the given offset.
      * @exception IllegalActionException If there is a problem getting the
      * helpers for the ports or if the conversion cannot be handled.
      */
@@ -2378,7 +2378,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         Type sinkType = ((TypedIOPort) sink.port).getType();
 
         // In a modal model, a refinement may have an output port which is
-        // not connected inside, in this case the type of the port is 
+        // not connected inside, in this case the type of the port is
         // unknown and there is no need to generate type conversion code
         // because there is no token transferred from the port.
         if (sourceType == BaseType.UNKNOWN) {
@@ -2386,7 +2386,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
 
         // The references are associated with their own helper, so we need
-        // to find the associated helper.       
+        // to find the associated helper.
         String sourcePortChannel = source.port.getName() + "#"
                 + source.channelNumber + ", " + offset;
         String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
@@ -2395,7 +2395,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber
                 + ", " + offset;
 
-        // For composite actor, generate a variable corresponding to 
+        // For composite actor, generate a variable corresponding to
         // the inside receiver of an output port.
         // FIXME: I think checking sink.port.isOutput() is enough here.
         if (sink.port.getContainer() instanceof CompositeActor
@@ -2405,7 +2405,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         String sinkRef = ((CodeGeneratorHelper) _getHelper(sink.port
                 .getContainer())).getReference(sinkPortChannel, true);
 
-        // When the sink port is contained by a modal controller, it is 
+        // When the sink port is contained by a modal controller, it is
         // possible that the port is both input and output port. we need
         // to pay special attention. Directly calling getReference() will
         // treat it as output port and this is not correct.
@@ -2477,7 +2477,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     protected String[] _getChannelAndOffset(String name)
             throws IllegalActionException {
 
-        // FIXME: the comment says that this method return -1 for 
+        // FIXME: the comment says that this method return -1 for
         // unspecified channel or offset. However, result is initialized to
         // empty strings.
         String[] result = { "", "" };
@@ -2594,7 +2594,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return _component.getClassName().replace('.', '_') + "_"
                     + processCode(parameter);
 
-            // Handle type function macros.            
+            // Handle type function macros.
         } else if (macro.equals("new")) {
             return getNewInvocation(parameter);
 
@@ -2753,7 +2753,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /** Generate code for a given block.  The comment includes
      *  the portion of the blockName parameter up until the string
-     *  "Block".  
+     *  "Block".
      *  @param blockName The name of the block, which usually ends
      *  with the string "Block".
      *  @return The generated wrapup code.
@@ -2837,7 +2837,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
     /**
      * Return true if the given string can be parse as an integer; otherwise,
-     * return false. 
+     * return false.
      * @param numberString The given number string.
      * @return True if the given string can be parse as an integer; otherwise,
      *  return false.

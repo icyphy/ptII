@@ -69,7 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  the <i>divide</i> input.  If no input tokens are available at all,
  then no output is produced.
  </p>
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.3

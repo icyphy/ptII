@@ -823,7 +823,7 @@ public class DocViewer extends HTMLViewer {
             // then we need to include the class as well.
             _includeClassDefinitions(target, buffer);
 
-            // Need to use a 
+            // Need to use a
             buffer.append(target.exportMoMLPlain());
             // Have to override the hide attribute in the derived class.
             buffer.append("<");

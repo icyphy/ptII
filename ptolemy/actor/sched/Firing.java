@@ -45,9 +45,9 @@ import ptolemy.kernel.util.InvalidStateException;
  with the Schedule class to construct a static schedule.
  This class is used to represent a single actor repeated some
  number of times, whereas Schedule is used for multi-actor schedules.
- The setActor() method is used to 
+ The setActor() method is used to
  create the reference to an actor, and the setIterationCount() method
- to set the iteration count. The getActor() method will return 
+ to set the iteration count. The getActor() method will return
  a reference to this actor, and getIterationCount() will return
  the iteration count. <p>
 

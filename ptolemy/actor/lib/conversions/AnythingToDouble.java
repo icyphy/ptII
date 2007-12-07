@@ -42,7 +42,7 @@ import ptolemy.kernel.util.Workspace;
  a double, it acts as an identity.  Otherwise, it outputs a double
  token equal to NaN.  This is useful if you wish to force an output
  from a generic actor to always output doubles.
- 
+
  <p>
  @author Adam Cataldo
  @Pt.ProposedRating Green (eal)

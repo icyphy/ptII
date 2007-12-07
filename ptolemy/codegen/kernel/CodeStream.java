@@ -163,7 +163,7 @@ public class CodeStream {
      * code block is required to exist.
      * @see #appendCodeBlock(String, ArrayList, boolean)
      * @param blockName The given code block name.
-     * @exception IllegalActionException If 
+     * @exception IllegalActionException If
      *  appendCodeBlock(String, ArrayList, boolean) throws the exception.
      */
     public void appendCodeBlock(String blockName) throws IllegalActionException {
@@ -179,7 +179,7 @@ public class CodeStream {
      * @param blockName The given code block name.
      * @param mayNotExist Indicate if it is okay not to find the code block.
      *  if the code block has parameters.
-     * @exception IllegalActionException If 
+     * @exception IllegalActionException If
      *  appendCodeBlock(String, ArrayList, boolean) throws the exception.
      */
     public void appendCodeBlock(String blockName, boolean mayNotExist)
@@ -197,7 +197,7 @@ public class CodeStream {
      * @param mayNotExist Indicate if it is okay not to find the code block.
      *  if the code block has parameters.
      * @param indentLevel The level of indention.
-     * @exception IllegalActionException If 
+     * @exception IllegalActionException If
      *  appendCodeBlock(String, ArrayList, boolean) throws the exception.
      */
     public void appendCodeBlock(String blockName, boolean mayNotExist,
@@ -214,7 +214,7 @@ public class CodeStream {
      * @param blockName The name of the code block.
      * @param arguments The user-specified arguments for the code block,
      *  if the code block has parameters.
-     * @exception IllegalActionException If 
+     * @exception IllegalActionException If
      *  appendCodeBlock(String, ArrayList, boolean) throws the exception.
      */
     public void appendCodeBlock(String blockName, ArrayList arguments)
@@ -232,7 +232,7 @@ public class CodeStream {
      * @param arguments The user-specified arguments for the code block,
      *  if the code block has parameters.
      * @param indentLevel The level of indention.
-     * @exception IllegalActionException If 
+     * @exception IllegalActionException If
      *  appendCodeBlock(String, ArrayList, boolean) throws the exception.
      */
     public void appendCodeBlock(String blockName, ArrayList arguments,
@@ -251,7 +251,7 @@ public class CodeStream {
      * @param mayNotExist Indicate if it is okay not to find the code block.
      *  if the code block has parameters.
      * @exception IllegalActionException If _constructCodeTable() throws
-     *  the exception, or if the requested code block is required but cannot 
+     *  the exception, or if the requested code block is required but cannot
      *  be found, or if the numbers of arguments and parameters do not match.
      */
     public void appendCodeBlock(String blockName, ArrayList arguments,
@@ -269,7 +269,7 @@ public class CodeStream {
      *  if the code block has parameters.
      * @param indentLevel The level of indention.
      * @exception IllegalActionException If _constructCodeTable() throws
-     *  the exception, or if the requested code block is required but cannot 
+     *  the exception, or if the requested code block is required but cannot
      *  be found, or if the numbers of arguments and parameters do not match.
      */
     public void appendCodeBlock(String blockName, ArrayList arguments,
@@ -323,7 +323,7 @@ public class CodeStream {
      * expression.
      * @param nameExpression The given regular expression for the block names.
      * @exception IllegalActionException If _constructCodeTable() throws
-     *  the exception, or if the requested code block is required but cannot 
+     *  the exception, or if the requested code block is required but cannot
      *  be found, or if the numbers of arguments and parameters do not match.
      */
     public void appendCodeBlocks(String nameExpression)
@@ -460,7 +460,7 @@ public class CodeStream {
     /**
      * Simple stand alone test method. Parse a helper .[target] file,
      * and print all the code blocks.
-     * @param args Command-line arguments, the first of which names a 
+     * @param args Command-line arguments, the first of which names a
      * .[target] file as a URL , for example file:./test/testCodeBlock.c.
      * @exception IOException If an error occurs when reading user inputs.
      * @exception IllegalActionException If an error occurs during parsing
@@ -507,11 +507,11 @@ public class CodeStream {
         _filePath = filePath;
 
         // We do not follow the lazy-eval semantics here because the
-        // user explicitly specified parsing here. 
+        // user explicitly specified parsing here.
         _constructCodeTable(false);
     }
 
-    /** Reset this CodeStream object so that its code table will be 
+    /** Reset this CodeStream object so that its code table will be
      *  re-constructed when needed.
      */
     public void reset() {
@@ -552,7 +552,7 @@ public class CodeStream {
      * code block name, otherwise, it throws an exception.
      * @param name The given code block name.
      * @return The well-formed code block name after lexical checking.
-     * @exception Thrown if the given name is not well-formed. 
+     * @exception Thrown if the given name is not well-formed.
      */
     private static String _checkCodeBlockName(String name)
             throws IllegalActionException {
@@ -574,7 +574,7 @@ public class CodeStream {
 
     /**
      * Type check the parameter name.
-     * Check if the given string starts with '$'. Insert '\' before '$'. 
+     * Check if the given string starts with '$'. Insert '\' before '$'.
      * '$' is a special charater in regular expression, and we are using this
      * name string as regular expression to do text substitution. Requires the
      * rest of the characters to be within the set [a-zA-Z_0-9].
@@ -582,7 +582,7 @@ public class CodeStream {
      * IllegalActionException.
      * @param name The given parameter name.
      * @return The well-formed parameter name after lexical checking.
-     * @exception Thrown if the given name is not well-formed. 
+     * @exception Thrown if the given name is not well-formed.
      */
     private static String _checkParameterName(String name)
             throws IllegalActionException {
@@ -635,7 +635,7 @@ public class CodeStream {
     }
 
     /**
-     * 
+     *
      * @param mayNotExist Indicate if the file is required to exist.
      * @exception IllegalActionException
      */
@@ -725,14 +725,14 @@ public class CodeStream {
     }
 
     /** Return true if the generated source code is bound to the line
-     *  number and file of the helper templates.    
+     *  number and file of the helper templates.
      * @return True if the generated source code is bound to the line
      *  number and file of the helper templates.    Return false
      *  if the source is bound only to the output file, or if there is
      *  no CodeGenerator associated with this stream.
      * @exception IllegalActionException If there is a problem reading
-     *  the {@link ptolemy.codegen.kernel.CodeGenerator#sourceLineBinding}    
-     *  parameter. 
+     *  the {@link ptolemy.codegen.kernel.CodeGenerator#sourceLineBinding}
+     *  parameter.
      */
     private boolean _needLineInfo() throws IllegalActionException {
         Token sourceLineBinding = null;
@@ -748,7 +748,7 @@ public class CodeStream {
     /**
      * Get the file path for the helper .[target] file associated with
      * the given helper class.  If the helper has no code generator,
-     * then the empty string is returned.  
+     * then the empty string is returned.
      * @param helperClass The given helper class
      * @return Path for the helper .[target] file.
      */
@@ -823,7 +823,7 @@ public class CodeStream {
 
         // Recursively parsing for nested code blocks
         //for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null;) {
-        // FIXME: do we include the nested code block into 
+        // FIXME: do we include the nested code block into
         // the current block??
         //body.append((StringBuffer) _codeBlockTable.get(subBlockKey));
         // FIXME: take away the nested code block from
@@ -942,8 +942,8 @@ public class CodeStream {
      * buffer. It parses comma-separated expressions and also understand
      * nested parenthesis by matching open and close parenthesis pairs.
      * @param codeInFile The given string buffer.
-     * @param start The given start index to start parsing. 
-     * @param end The given end index to stop parsing. 
+     * @param start The given start index to start parsing.
+     * @param end The given end index to stop parsing.
      * @return The list of parameter expressions.
      */
     private static ArrayList _parseParameterList(StringBuffer codeInFile,
@@ -986,7 +986,7 @@ public class CodeStream {
     }
 
     /**
-     * Substitute parameters. 
+     * Substitute parameters.
      * This method searches all occurences of each parameter expressions
      * in the given code block content and replace each with the given
      * arguments using straight-forward text substitution.
@@ -994,7 +994,7 @@ public class CodeStream {
      * @param parameters The given list of parameters.
      * @param arguments The given list of arguments.
      * @return The code block content after parameter substitutions.
-     * @exception IllegalActionException Thrown if 
+     * @exception IllegalActionException Thrown if
      *  _checkParameterName(String) throws it.
      */
     private static StringBuffer _substituteParameters(StringBuffer codeBlock,
@@ -1023,17 +1023,17 @@ public class CodeStream {
     ////                         private members                   ////
 
     /**
-     * The code block table class. A code block table contains 
+     * The code block table class. A code block table contains
      * code objects, which consists of the file path of the code
      * block, the code block content, and the parameter list. The
      * table is represented using a LinkedList of scopes, where the
      * first element is scope for the left child class and each latter
-     * element is parent scope of the prior. 
+     * element is parent scope of the prior.
      */
     private class CodeBlockTable {
 
         /**
-         * Constructor for a code block table. 
+         * Constructor for a code block table.
          */
         public CodeBlockTable() {
         }
@@ -1052,12 +1052,12 @@ public class CodeStream {
         /**
          * Return the code block content of the given signature and
          * substitute parameters with the given list of arguments.
-         * This searches from the all scopes from the code block table. 
+         * This searches from the all scopes from the code block table.
          * @param signature The given code block signature.
          * @param arguments The given list of arguments.
          * @return The code block content.
-         * @exception IllegalActionException Thrown if 
-         *  getCode(Signature, List, List) throws it. 
+         * @exception IllegalActionException Thrown if
+         *  getCode(Signature, List, List) throws it.
          */
         public StringBuffer getCode(Signature signature, List arguments)
                 throws IllegalActionException {
@@ -1067,7 +1067,7 @@ public class CodeStream {
         /**
          * Get the list of parameters for the code block with the given
          * signature. This searches the code block from the entire list
-         * of scopes.  
+         * of scopes.
          * @param signature The given code block signature.
          * @return The list of parameters strings.
          */
@@ -1099,7 +1099,7 @@ public class CodeStream {
          * @param signature The given signature.
          * @param parameters The given list of parameters.
          * @exception IllegalActionException Thrown if the given signature
-         *  already exists in the current scope. 
+         *  already exists in the current scope.
          */
         public void putParameters(Signature signature, List parameters)
                 throws IllegalActionException {
@@ -1258,13 +1258,13 @@ public class CodeStream {
 
         /**
          * LinkedList of Hashtable of code blocks. Each index of the
-         * LinkedList represents a separate helper .c code block file. 
+         * LinkedList represents a separate helper .c code block file.
          */
         private LinkedList<Hashtable> _codeTableList = new LinkedList<Hashtable>();
     }
 
-    /** 
-     * A private class for representing a code block signature. 
+    /**
+     * A private class for representing a code block signature.
      */
     private static class Signature {
 
@@ -1359,7 +1359,7 @@ public class CodeStream {
     /** The indent level. */
     private static int _indentLevel = 0;
 
-    /** The code generator associated with this code stream. 
+    /** The code generator associated with this code stream.
      */
     protected CodeGenerator _codeGenerator;
 

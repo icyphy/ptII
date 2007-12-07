@@ -60,12 +60,12 @@ public interface DocApplicationSpecializer {
     /** Given a dot separated class name, return the URL of the
      *  documentation.
      *  @param remoteDocumentationURLBase If non-null, the URL of the
-     *  documentation.  Usually, this is set by reading the 
+     *  documentation.  Usually, this is set by reading the
      *  _remoteDocumentationBase parameter from the configuration in the
      *  caller.
      *  @param className The dot separated class name.
      *  @param lookForPtDoc True if we should look for ptdoc .xml files.
-     *  @param lookForJavadoc True if we should look for javadoc files. 
+     *  @param lookForJavadoc True if we should look for javadoc files.
      *  @param lookForSource True if we should look for source files.
      *  @param lookForActorIndex True if we should look for the actor index.
      *  @return The URL of the documentation, if any.  If no documentation

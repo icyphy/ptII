@@ -295,7 +295,7 @@ public class GiottoScheduler extends Scheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // This is a list of frequencies that can be used to calculate 
+    // This is a list of frequencies that can be used to calculate
     // _unitTimeIncrement accurately.
     private static int[] _candidateFrequencies = new int[] { 1, 2, 4, 5, 8, 10,
             16, 20, 25, 32, 40, 50, 64, 80, 100, 125, 128, 160, 200, 250, 256,

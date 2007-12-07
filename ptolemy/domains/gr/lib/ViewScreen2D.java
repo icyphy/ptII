@@ -469,7 +469,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
     }
 
     /** Return the horizontal pixels by reading the horizontalPixels parameter.
-     *  @return the horizontal pixels.   
+     *  @return the horizontal pixels.
      *  @exception IllegalActionException If thrown while reading the
      *  parameter.
      */
@@ -477,7 +477,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
         return ((IntToken) horizontalPixels.getToken()).intValue();
     }
 
-    /** Return the vertical pixels by reading the verticalPixels parameter. 
+    /** Return the vertical pixels by reading the verticalPixels parameter.
      *  @return the vertical pixels.
      *  @exception IllegalActionException If thrown while reading the
      *  parameter.

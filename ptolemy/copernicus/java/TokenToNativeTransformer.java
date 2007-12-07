@@ -1847,7 +1847,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                             // There are some fields that represent
                             // singleton tokens.  Deal with them
-                            // specially. 
+                            // specially.
 
                             // This is awkward, but it is simpler than
                             // doing a dataflow analysis of the static
@@ -1904,7 +1904,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                     //                                                                         IntConstant
                                     //                                                                                 .v(1)),
                                     //                                                         unit);
-                                    //                                     } else 
+                                    //                                     } else
                                     if (localField.getName().equals(
                                             "_unitCategoryExponents")) {
 

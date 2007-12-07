@@ -78,7 +78,7 @@ import ptolemy.util.StringUtilities;
 //// CodeGenerator
 
 /** Base class for code generator.
- *  
+ *
  *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributors: Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 6.0
@@ -187,7 +187,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public FileParameter codeDirectory;
 
-    /** If true, then compile the generated code. The default   
+    /** If true, then compile the generated code. The default
      *  value is a parameter with the value true.
      */
     public Parameter compile;
@@ -231,12 +231,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public Parameter generateJNI;
 
     /** If true, generate file with no functions.  If false, generate
-     *  file with functions. The default value is a parameter with the 
+     *  file with functions. The default value is a parameter with the
      *  value false.
      */
     public Parameter inline;
 
-    /** If true, generate code to meausre the execution time. 
+    /** If true, generate code to meausre the execution time.
      *  The default value is a parameter with the value false.
      */
     public Parameter measureTime;
@@ -251,14 +251,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public Parameter padBuffers;
 
-    /** If true, then run the generated code. The default   
+    /** If true, then run the generated code. The default
      *  value is a parameter with the value true.
      */
     public Parameter run;
 
-    /** If true, then the generated source is bound to the line 
-     *  number and file of the (helper) templates. Otherwise, the 
-     *  source is bound only to the output file. This is a boolean   
+    /** If true, then the generated source is bound to the line
+     *  number and file of the (helper) templates. Otherwise, the
+     *  source is bound only to the output file. This is a boolean
      *  parameter with default value false.
      */
     public Parameter sourceLineBinding;
@@ -302,7 +302,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Return a formatted comment containing the
      *  specified string. In this base class, the
      *  comments is a C-style comment, which begins with
-     *  "\/*" and ends with "*\/". 
+     *  "\/*" and ends with "*\/".
      *  @param comment The string to put in the comment.
      *  @return A formatted comment.
      */
@@ -375,7 +375,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         int returnValue = -1;
 
-        // If the container is in the top level, we are generating code 
+        // If the container is in the top level, we are generating code
         // for the whole model. We have to make sure there is a manager,
         // and then preinitialize and resolve types.
         if (isTopLevel()) {
@@ -410,8 +410,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     }
                 }
             }
-            // If the container is not in the top level, we are generating code 
-            // for the Java and C co-simulation.   
+            // If the container is not in the top level, we are generating code
+            // for the Java and C co-simulation.
         } else {
             returnValue = _generateCode(code);
         }
@@ -490,7 +490,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String initializeCode = generateInitializeCode();
 
         // The StaticSchedulingCodeGenerator._generateBodyCode() reads
-        // _postfireCode to see if we should include a call to postfire or 
+        // _postfireCode to see if we should include a call to postfire or
         // not, so we need to call generatePostfireCode() before
         // call _generateBodyCode().
         _postfireCode = generatePostfireCode();
@@ -524,7 +524,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // sizes are set(?).
         String variableDeclareCode = generateVariableDeclaration();
         String variableInitCode = generateVariableInitialization();
-        // generate type resolution code has to be after 
+        // generate type resolution code has to be after
         // fire(), wrapup(), preinit(), init()...
         String typeResolutionCode = generateTypeConvertCode();
 
@@ -536,7 +536,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // FIXME: Some user libraries may depend on our generated
         // code (i.e. definition of "boolean"). So, we need to append
-        // these user libraries after the sharedCode. An easy to do 
+        // these user libraries after the sharedCode. An easy to do
         // this is to separate the standard libraries from user librar,
         // hinted by the angle bracket <> syntax in a #include statement.
         code.append(includeFiles);
@@ -575,7 +575,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         code.append(mainEntryCode);
 
-        // If the container is in the top level, we are generating code 
+        // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
             if (((BooleanToken) measureTime.getToken()).booleanValue()) {
@@ -589,7 +589,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         code.append(bodyCode);
 
-        // If the container is in the top level, we are generating code 
+        // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
             if (((BooleanToken) measureTime.getToken()).booleanValue()) {
@@ -799,9 +799,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     /** Generate The fire function code. This method is called when the firing
-     *  code of each actor is not inlined. Each actor's firing code is in a 
+     *  code of each actor is not inlined. Each actor's firing code is in a
      *  function with the same name as that of the actor.
-     * 
+     *
      *  @return The fire function code of the containing composite actor.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
@@ -934,7 +934,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     /** Generate type conversion code.
-     * 
+     *
      *  @return The type conversion code.
      *  @exception IllegalActionException If an error occurrs when generating
      *   the type conversion code, or if the helper class for the model
@@ -975,9 +975,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return code.toString();
     }
 
-    /** Generate variable name for the given attribute. The reason to append 
+    /** Generate variable name for the given attribute. The reason to append
      *  underscore is to avoid conflict with the names of other objects. For
-     *  example, the paired PortParameter and ParameterPort have the same name. 
+     *  example, the paired PortParameter and ParameterPort have the same name.
      *  @param attribute The attribute to generate variable name for.
      *  @return The generated variable name.
      */
@@ -1055,7 +1055,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return _codeFileName;
     }
 
-    /** Return a list of macros this code generator supports. 
+    /** Return a list of macros this code generator supports.
      *  @return Returns the _macros.
      */
     public List getMacros() {
@@ -1071,10 +1071,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     /**
-     * Return the name of the output file. 
+     * Return the name of the output file.
      * @return The output file name.
      * @exception IllegalActionException If there is problem resolving
-     *  the string value of the generatorPackage parameter. 
+     *  the string value of the generatorPackage parameter.
      */
     public String getOutputFilename() throws IllegalActionException {
         String packageValue = generatorPackage.stringValue();
@@ -1143,7 +1143,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** This method is used to set the code generator for a helper class.
      *  Since this is not a helper class for a component, this method does
      *  nothing.
-     *  @param codeGenerator The given code generator. 
+     *  @param codeGenerator The given code generator.
      */
     public void setCodeGenerator(CodeGenerator codeGenerator) {
     }
@@ -1205,7 +1205,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return The value of the {@link #codeDirectory} parameter.
      *  @exception IOException If the <i>codeDirectory</i> parameter
      *  names a file or a directory cannot be created.
-     *  @exception IllegalActionException If thrown while reading the 
+     *  @exception IllegalActionException If thrown while reading the
      *  codeDirectory parameter.
      */
     protected File _codeDirectoryAsFile() throws IOException,
@@ -1240,7 +1240,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Make a final pass over the generated code. Subclass may extend
      * this method to do extra processing to format the output code.
-     * @param code The given code to be processed. 
+     * @param code The given code to be processed.
      * @return The processed code.
      * @exception IllegalActionException If #getOutputFilename() throws it.
      */
@@ -1301,7 +1301,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Generate include files. This base class just returns an empty string.
      *  @return The include files.
-     *  @exception IllegalActionException If the helper class for some actor 
+     *  @exception IllegalActionException If the helper class for some actor
      *   cannot be found.
      */
     protected String _generateIncludeFiles() throws IllegalActionException {
@@ -1594,7 +1594,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected ExecuteCommands _executeCommands;
 
-    /** Set of library command line arguments where each element is 
+    /** Set of library command line arguments where each element is
      *  a string, for example "-L/usr/local/lib".
      */
     protected Set<String> _libraries = new HashSet<String>();
@@ -1614,7 +1614,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected static final String _INDENT3 = StringUtilities.getIndentPrefix(3);
 
-    /** Set of include command line arguments where each element is 
+    /** Set of include command line arguments where each element is
      *  a string, for example "-I/usr/local/include".
      */
     protected Set<String> _includes = new HashSet<String>();
@@ -1622,7 +1622,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** The model we for which we are generating code. */
     protected CompositeEntity _model;
 
-    /** A set that contains all variables in the model whose values can be 
+    /** A set that contains all variables in the model whose values can be
      *  changed during execution.
      */
     protected Set _modifiedVariables = new HashSet();
@@ -1634,8 +1634,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected HashSet _newTypesUsed = new HashSet();
 
-    /** 
-     * A static list of all macros supported by the code generator. 
+    /**
+     * A static list of all macros supported by the code generator.
      */
     protected List<String> _macros = new ArrayList<String>(Arrays
             .asList(new String[] { "ref", "val", "size", "type", "targetType",
@@ -1654,7 +1654,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** A set that contains all token functions referenced in the model.
      *  When the codegen kernel processes a $tokenFunc() macro, it must add
-     *  the token function to this set. 
+     *  the token function to this set.
      */
     protected Set<String> _tokenFuncUsed = new HashSet<String>();
 

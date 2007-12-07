@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 
 /**
  This actor manages a pool of resources, where each resource is
@@ -76,7 +76,7 @@ import ptolemy.kernel.util.Workspace;
  output port. When such a rendezvous occurs, it sends
  the first token in the resource pool to that output port
  and removes that token from the resource pool.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.2

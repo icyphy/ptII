@@ -1,4 +1,4 @@
-/* Exception thrown on an attempt to evaluate an expression that 
+/* Exception thrown on an attempt to evaluate an expression that
    contains an unknown constant or identifier
 
  Copyright (c) 2007 The Regents of the University of California.

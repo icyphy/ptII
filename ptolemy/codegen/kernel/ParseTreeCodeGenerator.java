@@ -57,7 +57,7 @@ public interface ParseTreeCodeGenerator {
             ParserScope scope) throws IllegalActionException;
 
     /** Given a string, escape special characters as necessary for the
-     *  target language.   
+     *  target language.
      *  @param string The string to escape.
      *  @return A new string with special characters replaced.
      */

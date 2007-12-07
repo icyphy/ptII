@@ -13,11 +13,11 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
@@ -29,12 +29,12 @@ package ptolemy.codegen.c.actor.lib;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
 /**
- A code generation helper class for ptolemy.actor.lib.RecursiveLattice. 
+ A code generation helper class for ptolemy.actor.lib.RecursiveLattice.
 
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.1
- @Pt.ProposedRating Red (mankit) 
+ @Pt.ProposedRating Red (mankit)
  @Pt.AcceptedRating Red (mankit)
  */
 public class RecursiveLattice extends CCodeGeneratorHelper {

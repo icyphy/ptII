@@ -117,7 +117,7 @@ public class ArrayType extends StructuredType implements java.io.Serializable {
      *  where input and output are ports (this is the type
      *  constraint of SequenceToArray, for example).
      *  @param typeable A typeable.
-     *  @param length The length of array. 
+     *  @param length The length of array.
      *  @return An InequalityTerm that can be passed to methods
      *   like setTypeAtLeast() of the Typeable interface.
      *  @exception IllegalActionException If the specified typeable
@@ -217,9 +217,9 @@ public class ArrayType extends StructuredType implements java.io.Serializable {
     }
 
     /** Return the depth of an array type. The depth of an
-     *  array type is the number of times it 
-     *  contains other structured types. For example, an array 
-     *  of arrays has depth 2, and an array of arrays of records 
+     *  array type is the number of times it
+     *  contains other structured types. For example, an array
+     *  of arrays has depth 2, and an array of arrays of records
      *  has depth 3.
      *  @return the depth of a structured type.
      */
@@ -294,7 +294,7 @@ public class ArrayType extends StructuredType implements java.io.Serializable {
     }
 
     /** Return the class for tokens that this type represents.
-     *  @return The class for tokens that this type represents.  
+     *  @return The class for tokens that this type represents.
      */
     public Class getTokenClass() {
         return ArrayToken.class;

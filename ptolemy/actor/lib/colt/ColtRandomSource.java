@@ -53,8 +53,8 @@ import edu.cornell.lassp.houle.RngPack.Ranmar;
  generator class is set for any one actor in a model,
  it gets set to match in all other actors within the
  same top-level container (unless this actor is within
- an EntityLibrary).  
- 
+ an EntityLibrary).
+
  @author David Bauer, Kostas Oikonomou, and Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.1

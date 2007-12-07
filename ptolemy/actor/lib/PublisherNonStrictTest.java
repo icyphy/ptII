@@ -52,7 +52,7 @@ import ptolemy.util.StringUtilities;
  the inputs against the value specified by the <i>correctValues</i> parameter.
 
  <p>This actor combines the {@link ptolemy.actor.lib.Publisher} actor
- and the {@link ptolemy.actor.lib.NonStrictTest} actor.  Thus, it has quite 
+ and the {@link ptolemy.actor.lib.NonStrictTest} actor.  Thus, it has quite
  a bit of duplicated code from the NonStrictTest actor.
 
  @author Christopher Brooks, based on Test, which has Edward A. Lee and Jim Armbstrong as authors
@@ -289,7 +289,7 @@ public class PublisherNonStrictTest extends Publisher {
                 _numberOfInputTokensSeen++;
 
                 // FIXME: If we get a nil token on the input, what should we do?
-                // Here, we require that the referenceToken also be nil. 
+                // Here, we require that the referenceToken also be nil.
                 // If the token is an ArrayToken and two corresponding elements
                 // are nil, then we consider them "close".
                 if (token.isCloseTo(referenceToken, _tolerance).booleanValue() == false

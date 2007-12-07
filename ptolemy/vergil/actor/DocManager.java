@@ -134,7 +134,7 @@ import com.microstar.xml.XmlParser;
  &lt/property&gt;
  </pre>
  The use of the "property" keyword matches MoML.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.2
@@ -290,16 +290,16 @@ public class DocManager extends HandlerBase {
     }
 
     /** Given a dot separated class name, return the URL of the
-     *  documentation.  
-     * 
+     *  documentation.
+     *
      *  <p>If the configuration has a parameter
      *  _docApplicationSpecializer and that parameter names a class
      *  that that implements the {@link DocApplicationSpecializer}
-     *  interface, then we pass the class name to 
+     *  interface, then we pass the class name to
      *  {@link DocApplicationSpecializer#docClassNameToURL(String, String, boolean, boolean, boolean, boolean)}
      *  and if a non-null is returned from docClassNameToURL(), we
      *  return that value.
-     *  
+     *
      *  <p>If the configuration has a parameter _applicationName, then
      *  we search in <code>doc/codeDoc<i>applicationName</i></code> for
      *  the PtDoc, Javadoc and Actor Index files.  Otherwise, we search
@@ -321,7 +321,7 @@ public class DocManager extends HandlerBase {
      *  _docApplicationSpecializer and _applicationName parameters
      *  @param className The dot separated class name.
      *  @param lookForPtDoc True if we should look for ptdoc .xml files.
-     *  @param lookForJavadoc True if we should look for javadoc files. 
+     *  @param lookForJavadoc True if we should look for javadoc files.
      *  @param lookForSource True if we should look for source files.
      *  Note that lookForPtDoc and lookForJavadoc must both be false for
      *  the source code to be found.
@@ -337,7 +337,7 @@ public class DocManager extends HandlerBase {
             // If the configuration has a parameter _docApplicationSpecializer
             // and that parameter names a class that that implements the
             // DocApplicationSpecializer interface, then we call
-            // docClassNameToURL(). 
+            // docClassNameToURL().
 
             Parameter docApplicationSpecializerParameter = (Parameter) configuration
                     .getAttribute("_docApplicationSpecializer", Parameter.class);
@@ -1211,7 +1211,7 @@ public class DocManager extends HandlerBase {
     }
 
     /** Initialize fields.  We assume _target was set by the caller
-     
+
      private void _init() {
 
      _isInstanceDoc = false;
@@ -1239,7 +1239,7 @@ public class DocManager extends HandlerBase {
         }
         // FIXME: If file is not found, then instead of an
         // exception, probably want to delegate to the base class.
-        // Read the .xml file, but not the java or source 
+        // Read the .xml file, but not the java or source
         URL toRead = docClassNameToURL(_configuration, _className, true, false,
                 false, false);
 

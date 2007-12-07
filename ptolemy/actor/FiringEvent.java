@@ -104,7 +104,7 @@ public class FiringEvent implements DebugEvent {
     }
 
     /** Return the director that activated the actor.
-     *  @return The director that activated the actor.  
+     *  @return The director that activated the actor.
      */
     public Director getDirector() {
         return _director;

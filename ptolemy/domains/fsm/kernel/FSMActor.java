@@ -637,9 +637,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     /** Return false. During the fire() method, if a transition is enabled,
-     *  it will be taken and the actions associated with this transition are 
+     *  it will be taken and the actions associated with this transition are
      *  executed. We assume the actions will change states of this actor.
-     *  
+     *
      *  @return False.
      */
     public boolean isFireFunctional() {
@@ -654,9 +654,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     }
 
     /** Return true. This actor does not tolerate unknown inputs.
-     *  This actor does not check their inputs to see whether they 
+     *  This actor does not check their inputs to see whether they
      *  are known.  They assume they are known.
-     *  
+     *
      *  @return True.
      */
     public boolean isStrict() {
@@ -1176,8 +1176,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 }
             }
 
-            // NOTE: The initialize method clears all receivers, we have to 
-            // set the visited flag to false to enforce the reconstruction of 
+            // NOTE: The initialize method clears all receivers, we have to
+            // set the visited flag to false to enforce the reconstruction of
             // continuous signals.
             _currentState.setVisited(false);
         }
@@ -1251,7 +1251,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         if (port.isKnown(channel)) {
             if (_supportMultirate) {
-                // FIXME: The following implementation to support multirate is 
+                // FIXME: The following implementation to support multirate is
                 // rather expensive. Try to optimize it.
                 int width = port.getWidth();
 
@@ -1322,7 +1322,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 }
             } else {
                 // If not supporting multirate firing,
-                // Update the value variable if there is a token in the channel. 
+                // Update the value variable if there is a token in the channel.
                 if (port.hasToken(channel)) {
                     Token token = port.get(channel);
 

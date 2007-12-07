@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 
 /**
  FIXME
@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  contains more tokens than the new capacity, then no tokens are lost,
  but no new tokens are accepted at the input until the number of
  buffered tokens drops below the capacity.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.2

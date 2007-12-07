@@ -114,12 +114,12 @@ public class FileUtilities {
     }
 
     /** Extract a jar file into a directory.  This is a trivial
-     *  implementation of the <code>jar -xf</code> command.   
+     *  implementation of the <code>jar -xf</code> command.
      *  @param jarFileName The name of the jar file to extract
      *  @param directoryName The name of the directory.  If this argument
      *  is null, then the files are extracted in the current directory.
      *  @exception IOException If the jar file cannot be opened, or
-     *  if there are problems extracting the contents of the jar file   
+     *  if there are problems extracting the contents of the jar file
      */
     public static void extractJarFile(String jarFileName, String directoryName)
             throws IOException {
@@ -389,7 +389,7 @@ public class FileUtilities {
                     return new URL(urlString);
                 } catch (Exception ex3) {
                     try {
-                        // Under Webstart, opening 
+                        // Under Webstart, opening
                         // hoc/demo/ModelReference/ModelReference.xml
                         // requires this because the URL is relative.
                         return new URL(baseDirectory.toURL(), urlString);
@@ -531,14 +531,14 @@ public class FileUtilities {
     /** Copy files safely.  If there are problems, the streams are
      *  close appropriately.
      *  @param inputStream The input stream.
-     *  @param destinationFile The destination File. 
+     *  @param destinationFile The destination File.
      *  @exception IOException If the input stream cannot be created
      *  or read, or * if there is a problem writing to the destination
      *  file.
      */
     private static void _binaryCopyStream(InputStream inputStream,
             File destinationFile) throws IOException {
-        // Copy the source file. 
+        // Copy the source file.
         BufferedInputStream input = null;
 
         try {

@@ -1,31 +1,31 @@
 /*
  * Copyright (c) 2004-2007 by Michael Connor. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- *  o Redistributions of source code must retain the above copyright notice, 
- *    this list of conditions and the following disclaimer. 
- *     
- *  o Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
- *    and/or other materials provided with the distribution. 
- *     
- *  o Neither the name of FormLayoutBuilder or Michael Connor nor the names of 
- *    its contributors may be used to endorse or promote products derived 
- *    from this software without specific prior written permission. 
- *     
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+ *  o Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ *  o Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ *  o Neither the name of FormLayoutBuilder or Michael Connor nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 package org.mlc.swing.layout;
 
@@ -69,7 +69,7 @@ import com.jgoodies.forms.factories.Borders;
 /**
  * This is the frame that enables you to build a layout. The principle component
  * is the FormEditor panel.
- * 
+ *
  * @author Michael Connor mlconnor&#064;yahoo.com
  */
 @SuppressWarnings("serial")
@@ -183,8 +183,8 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
                                 + "= \n    org.mlc.swing.layout.LayoutConstraintsManager.getLayoutConstraintsManager(\n        "
                                 + "this.getClass().getResourceAsStream(\"yourConstraintFile.xml\"));\n");
                 /** @todo KBR generate compilable code */
-                // LayoutFrame layoutFrame = new LayoutFrame(layoutConstraintsManager); 
-                // layoutFrame.setVisible(true);         
+                // LayoutFrame layoutFrame = new LayoutFrame(layoutConstraintsManager);
+                // layoutFrame.setVisible(true);
                 StringBuffer addBuffer = new StringBuffer(
                         "// here we add the controls to the container.  you may\n// "
                                 + "need to change the name of panel\n");
@@ -526,11 +526,11 @@ public class LayoutFrame extends JFrame implements MultiContainerFrame {
     /**
      * Establish the current preview window. Used to switch between the "normal"
      * and "debug" preview windows.
-     * 
+     *
      * KBR 03/26/06 Use this as the mechanism to enable the 'debug preview'
-     * menu, which is disabled by default (to have it disabled when FLM is 
+     * menu, which is disabled by default (to have it disabled when FLM is
      * invoked via the user's app).
-     * 
+     *
      * @param dframe the Jframe for the window.
      */
     void setPreviewFrame(LayoutConstraintsManager lcm, JFrame dframe) {

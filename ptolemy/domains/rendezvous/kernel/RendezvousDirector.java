@@ -182,7 +182,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
     /** Return the map of results for the given thread. This result is returned
      *  from a committed rendezvous. The thread that commits the rendezvous is
      *  responsible for setting the maps for other threads in the rendezvous.
-     *  
+     *
      *  In the map, the keys are receivers, and the values are the tokens on
      *  those receivers, if any.
      *
@@ -226,7 +226,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
     }
 
     /** Set the map of results for the given thread.
-     *  
+     *
      *  In the map, the keys are receivers, and the values are the tokens on
      *  those receivers, if any.
      *

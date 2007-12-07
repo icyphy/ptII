@@ -84,7 +84,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p>
  To get a "$" into the replacement string, use
  "\$$".  To get a "\" into the replacement string, use "\\".
- 
+
  @author Antonio Yordan-Nones, Neil E. Turner, Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0

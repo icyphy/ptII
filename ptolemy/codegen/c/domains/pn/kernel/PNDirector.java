@@ -45,15 +45,15 @@ import ptolemy.kernel.util.NamedObj;
  This director initializes all the actors, then starts a thread
  for each actor that invokes the fire code for the actor in an
  infinite loop.
- 
+
  FIXME: No communication between actors is implemented yet.
- 
+
  FIXME: How to make it possible for executions to be finite?
 
  @author Edward A. Lee (based on SDFDirector helper class)
  @version $Id$
  @since Ptolemy II 7.0
- @Pt.ProposedRating Yellow (eal)  
+ @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */
 public class PNDirector extends Director {

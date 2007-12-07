@@ -128,7 +128,7 @@ import ptolemy.util.StringUtilities;
  <p>
  This class relies on Jython, which is a Java implementation of Python.
  <p>As of 1/2/2006, $PTII/lib/jython.jar was based on Jython 1.1 .
- 
+
  <p><a href="http://www.jython.org/Project/userguide.html#the-jython-registry">The Jython Registry</a> - information about how to set the search path.
 
  <p> Follow the links below for more information about the Python language,

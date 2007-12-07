@@ -141,7 +141,7 @@ public class LiveSoundActor extends TypedAtomicActor {
     public SharedParameter sampleRate;
 
     /** The number of samples that will be transferred to the audio driver
-     *  together.  This is an integer with default 128. 
+     *  together.  This is an integer with default 128.
      *  This parameter is shared by all instances
      *  of this class and subclasses in the model, so changing it in
      *  one of those actors will cause it to change in all.

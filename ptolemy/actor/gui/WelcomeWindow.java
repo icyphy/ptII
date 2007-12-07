@@ -44,7 +44,7 @@ import ptolemy.util.MessageHandler;
 //// WelcomeWindow
 
 /**
- A toplevel frame that can view HTML documents, but has no menus. 
+ A toplevel frame that can view HTML documents, but has no menus.
 
  <p>This window uses the _showWelcomeWindowAtStartup
  SingletonParameter preference in
@@ -52,7 +52,7 @@ import ptolemy.util.MessageHandler;
  window is shown or not.  If this parameter is not present or is true,
  then the window is show, if the parameter is false, then it is not shown.
  This parameter is set in ~/.ptolemyII/PtolemyPreferences.xml, which under
- Windows might be in 
+ Windows might be in
  <code>c:/Documents and Settings/<i>yourlogin</i>/.ptolemyII/PtolemyPreferences.xml</code>
  <p>The easiest way to adjust the configuration so that this window
  is used is to edit the <code>welcomeWindow.xml</code> file that corresponds
@@ -87,7 +87,7 @@ import ptolemy.util.MessageHandler;
  &lt;property name="_applicationBlankPtolemyEffigyAtStartup"
  class="ptolemy.data.expr.Parameter"
  value="true"/&gt;
- </pre> 
+ </pre>
 
 
  @author Christopher Brooks, Nandita Mangal
@@ -166,7 +166,7 @@ public class WelcomeWindow extends HTMLViewer {
             // Call super.close() because _close() expects that the window has been
             // rendered via successful completion of show() and that we can query the
             // checkbox.  There was a bug where if user started Kepler, unchecked
-            // "Show this Window at Startup" and then restarted Kepler, Kepler would 
+            // "Show this Window at Startup" and then restarted Kepler, Kepler would
             // not exit.
             super._close();
             return;
@@ -188,11 +188,11 @@ public class WelcomeWindow extends HTMLViewer {
                         .booleanValue() != _startupCheck.isSelected())) {
             // Update the preferences if there is no preference and
             // the user unchecked the "Show this dialog on startup"
-            // or if the value of the preference and the checkbox differ. 
+            // or if the value of the preference and the checkbox differ.
             try {
                 PtolemyPreferences preferences = PtolemyPreferences
                         .getPtolemyPreferencesWithinConfiguration(configuration);
-                // FIXME: is ok to create a new parameter each time? 
+                // FIXME: is ok to create a new parameter each time?
                 SingletonParameter showWelcomeWindowAtStartupParameter = new SingletonParameter(
                         preferences, "_showWelcomeWindowAtStartup");
 
@@ -208,7 +208,7 @@ public class WelcomeWindow extends HTMLViewer {
         return super._close();
     }
 
-    /** Get the name of this object, which in this case is the 
+    /** Get the name of this object, which in this case is the
      *  string "Welcome".
      *  @return The string "Welcome";
      */

@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Red
- * @Pt.AcceptedRating 
+ * @Pt.AcceptedRating
  *
  */
 public class ColtBinomialSelector extends ColtRandomSource {
@@ -78,7 +78,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
         return sharedCode;
     }
 
-    /** 
+    /**
      * Generate the preinitialize code. Declare temporary variables.
      * @return The preinitialize code.
      * @exception IllegalActionException If the code stream encounters an

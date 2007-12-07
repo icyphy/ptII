@@ -430,7 +430,7 @@ public class Transition extends ComponentRelation {
     }
 
     /** Return the parse tree evaluator used by this transition to evaluate
-     *  the guard expression. 
+     *  the guard expression.
      *  @return ParseTreeEvaluator for evaluating the guard expression.
      */
     public ParseTreeEvaluator getParseTreeEvaluator() {
@@ -856,7 +856,7 @@ public class Transition extends ComponentRelation {
     private long _refinementVersion = -1;
 
     // The parse tree evaluator for the transition.
-    // Note that this variable should not be accessed directly even inside 
+    // Note that this variable should not be accessed directly even inside
     // this class. Instead, always use the getParseTreeEvaluator() method.
     private ParseTreeEvaluator _parseTreeEvaluator;
 

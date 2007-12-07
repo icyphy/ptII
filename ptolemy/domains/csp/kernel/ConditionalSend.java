@@ -123,7 +123,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *  @param channel The channel in the IOPort that this branch is
      *   trying to rendezvous with.
      *  @param branchID The identification number assigned to this branch
-     *   upon creation by the CSPActor.  
+     *   upon creation by the CSPActor.
      *  @param token The token this branch is trying to send.
      *  @exception IllegalActionException If the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.

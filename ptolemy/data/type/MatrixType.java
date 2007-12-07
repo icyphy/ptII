@@ -128,7 +128,7 @@ public class MatrixType extends StructuredType implements Serializable {
      *  will be returned by the getElementAsToken of matrices that
      *  have this type. If this is an instance of this base class
      *  rather than the specific matrix types, then return null.
-     *  @return The type of the elements. 
+     *  @return The type of the elements.
      */
     public Type getElementType() {
         return _elementType;

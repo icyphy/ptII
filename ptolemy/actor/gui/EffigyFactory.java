@@ -107,7 +107,7 @@ public class EffigyFactory extends CompositeEntity {
     }
 
     /** Check the URL input for a DTD.  Only the first 5 lines are read
-     *  from the URL.   
+     *  from the URL.
      *  @param input The DTD to check.
      *  @param dtdStart The start of the DTD, typically "<!DOCTYPE".
      *  @param dtdEndRegExp The optional ending regular expression.  If

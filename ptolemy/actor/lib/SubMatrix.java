@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  If the submatrix specified is not entirely
  contained by the input matrix, or if the resulting submatrix
  is empty, then this actor will throw an exception.
- 
+
  @author Edward Lee
  @version $Id$
  @since Ptolemy II 6.1

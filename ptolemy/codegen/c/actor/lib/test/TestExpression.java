@@ -30,11 +30,11 @@ import ptolemy.codegen.c.actor.lib.Expression;
 
 /**
  * Test class for codegen Expression class.
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit) 
+ * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
 public class TestExpression extends Expression {

@@ -73,7 +73,7 @@ public class AudioPlayer extends AudioSDLActor {
             String codeBlock;
             if (Integer.parseInt(actor.bitsPerSample.getExpression()) == 8) {
                 codeBlock = "fireBlock_8";
-            } else { // assume bitsPerSample == 16 
+            } else { // assume bitsPerSample == 16
                 codeBlock = "fireBlock_16";
             }
             code.append(_generateBlockCode(codeBlock, args));
@@ -97,7 +97,7 @@ public class AudioPlayer extends AudioSDLActor {
 
         if (Integer.parseInt(actor.bitsPerSample.getExpression()) == 8) {
             _codeStream.appendCodeBlock("preinitBlock_8");
-        } else { // assume bitsPerSample == 16 
+        } else { // assume bitsPerSample == 16
             _codeStream.appendCodeBlock("preinitBlock_16");
         }
 

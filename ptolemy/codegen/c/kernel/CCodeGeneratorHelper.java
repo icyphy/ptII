@@ -50,7 +50,7 @@ import ptolemy.util.StringUtilities;
 //// CCodeGeneratorHelper
 
 /**
- Base class for C code generator helper. 
+ Base class for C code generator helper.
 
  <p>Actor helpers extend this class and optionally define the
  generateFireCode(),
@@ -66,7 +66,7 @@ import ptolemy.util.StringUtilities;
  <code>initBlock</code>, processes the macros and adds the resulting
  code block to the output.
 
- <p>For a complete list of methods to define, see 
+ <p>For a complete list of methods to define, see
  {@link ptolemy.codegen.kernel.CodeGeneratorHelper}.
 
  <p>For further details, see <code>$PTII/ptolemy/codegen/README.html</code>
@@ -110,7 +110,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        // Generate variable declarations for referenced parameters.    
+        // Generate variable declarations for referenced parameters.
         String referencedParameterDeclaration = _generateReferencedParameterDeclaration();
         if (referencedParameterDeclaration.length() > 1) {
             code.append(_eol
@@ -213,7 +213,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /** Generate input variable declarations.
      *  @return a String that declares input variables.
      *  @exception IllegalActionException If thrown while
-     *  getting port information.  
+     *  getting port information.
      */
     protected String _generateInputVariableDeclaration()
             throws IllegalActionException {
@@ -256,7 +256,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /** Generate output variable declarations.
      *  @return a String that declares output variables.
      *  @exception IllegalActionException If thrown while
-     *  getting port information.  
+     *  getting port information.
      */
     protected String _generateOutputVariableDeclaration()
             throws IllegalActionException {
@@ -293,7 +293,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /** Generate referenced parameter declarations.
      *  @return a String that declares referenced parameters.
      *  @exception IllegalActionException If thrown while
-     *  getting modified variable information.  
+     *  getting modified variable information.
      */
     protected String _generateReferencedParameterDeclaration()
             throws IllegalActionException {
@@ -320,7 +320,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /** Generate type convert variable declarations.
      *  @return a String that declares type convert variables.
      *  @exception IllegalActionException If thrown while
-     *  getting port information.  
+     *  getting port information.
      */
     protected String _generateTypeConvertVariableDeclaration()
             throws IllegalActionException {

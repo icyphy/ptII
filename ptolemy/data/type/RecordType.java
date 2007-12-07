@@ -103,8 +103,8 @@ public class RecordType extends StructuredType {
     /** Construct a RecordType with the labels and values specified by
      *  a given Map object. The object cannot contain any null keys or
      *  values.
-     *  @param fieldMap A Map that has keys of type String and 
-     *  values of type Token.   
+     *  @param fieldMap A Map that has keys of type String and
+     *  values of type Token.
      *  @exception IllegalActionException If the map contains null
      *  keys or values, or if it contains non-String keys or non-Type
      *  values
@@ -207,9 +207,9 @@ public class RecordType extends StructuredType {
         return new RecordToken(labelStringArray, values);
     }
 
-    /** Return the depth of a record type. The depth of a 
-     *  record type is the number of times it  
-     *  contains other structured types. For example, a record  
+    /** Return the depth of a record type. The depth of a
+     *  record type is the number of times it
+     *  contains other structured types. For example, a record
      *  of arrays has depth 2.
      *  @return the depth of a record type.
      */

@@ -43,11 +43,11 @@ import com.sun.javadoc.SeeTag;
 import com.sun.javadoc.Tag;
 
 /** Generate PtDoc output.
- *  See ptolemy/vergil/basic/DocML_1.dtd for the dtd. 
+ *  See ptolemy/vergil/basic/DocML_1.dtd for the dtd.
  *
- *  <p>If javadoc is called with -d <i>directoryName</i>, then 
+ *  <p>If javadoc is called with -d <i>directoryName</i>, then
  *  documentation will be generated in <i>directoryName</i>.
- *  If the KEPLER property is set, then for a class named 
+ *  If the KEPLER property is set, then for a class named
  *  <code>foo.bar.Baz</code>, the generated file is named
  *  <code>Baz.doc.xml</code>.  If the KEPLER property is not
  *  set, then the generated file is named <code>foo/bar/Baz.xml</code>.
@@ -276,7 +276,7 @@ public class PtDoclet {
      *  @param classDoc The ClassDoc for the class we are documenting.
      *  @param fieldBaseClass The base class for the field we are documenting.
      *  @param element The XML element that is generated.
-     *  @return The documentation for all fields that are derived from 
+     *  @return The documentation for all fields that are derived from
      *  the fieldBaseClass parameter.
      *  @exception ClassNotFoundException If the class of a field cannot
      *  be found.
@@ -325,18 +325,18 @@ public class PtDoclet {
         }
 
         //         // Go up the hierarchy
-        //         ClassDoc superClassDoc = classDoc.superclass(); 
+        //         ClassDoc superClassDoc = classDoc.superclass();
         //         if (superClassDoc != null) {
         //             //System.out.println(element + ": SuperClass " + superClassDoc);
 
         //             try {
-        //                 Class superClass = Class.forName(superClassDoc.toString()); 
+        //                 Class superClass = Class.forName(superClassDoc.toString());
         //                 // Go no higher than TypedAtomicActor
         //                 if (_namedObjClass.isAssignableFrom(superClass)) {
         //                     documentation.append(_generateFieldDocumentation(
         //                                                  superClassDoc,
         //                                                  fieldBaseClass, element));
-        //                 } 
+        //                 }
         //             } catch (Throwable throwable) {
         //                 System.err.println("Failed to find superclass "
         //                         + superClassDoc + "\n" + throwable);
@@ -415,7 +415,7 @@ public class PtDoclet {
         return relativePath + relativeURI.getPath() + extension;
     }
 
-    /** Write the output to a file.  
+    /** Write the output to a file.
      *  @param className The dot separated fully qualified classname,
      *  which is used to specify the directory and filename to which
      *  the documentation is written.

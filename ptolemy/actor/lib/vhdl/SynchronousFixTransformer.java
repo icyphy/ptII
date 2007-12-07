@@ -53,7 +53,7 @@ import ptolemy.math.Rounding;
  This is an abstract base class for actors that transform
  an input stream into an output stream with a specified latency
  parameter. The default latency is initially set to 0.
- 
+
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.0
@@ -83,11 +83,11 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The number cycle delay of the output data. 
+    /** The number cycle delay of the output data.
      */
     public Parameter latency;
 
-    /** The number cycle delay of the output data. 
+    /** The number cycle delay of the output data.
      */
     public Parameter initialValue;
 
@@ -97,7 +97,7 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
     /** Override the base class to determine which function is being
      *  specified.
      *  @param attribute The attribute that changed.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      *  @exception IllegalActionException If the function is not recognized.
      */
     public void attributeChanged(Attribute attribute)
@@ -177,9 +177,9 @@ public abstract class SynchronousFixTransformer extends FixTransformer {
         output.setSize(latencyValue, new FixToken(result));
     }
 
-    /** Return false. This actor can produce some output event the input 
+    /** Return false. This actor can produce some output event the input
      *  receiver has status unknown.
-     *  
+     *
      *  @return False.
      */
     public boolean isStrict() {

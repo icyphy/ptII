@@ -151,7 +151,7 @@ public class TimedEvent {
          *  the bin width is chosen such that on average
          *  the number of entries in all non-empty bins is equal to one.
          *  If the argument is null, return the default bin width,
-         *  which is 1.0 for this implementation. 
+         *  which is 1.0 for this implementation.
          *  Otherwise, the statistics of the elements of the array
          *  are analyzed to determine a reasonable bin width.
          *

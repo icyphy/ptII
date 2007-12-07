@@ -53,9 +53,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  On each firing, read one UnionToken from the input port and send out
- the value to the output port that matches the label name of the 
- input token. This actor is polymorphic. The type 
- constraint is that the type of each output port is no less than the 
+ the value to the output port that matches the label name of the
+ input token. This actor is polymorphic. The type
+ constraint is that the type of each output port is no less than the
  type of the corresponding union field.
 
  @author Yang Zhao

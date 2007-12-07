@@ -60,7 +60,7 @@ import ptolemy.util.StringUtilities;
 ////CodeGenerator
 
 /** Base class for C code generator.
- *  
+ *
  *  @author Gang Zhou
  *  @version $Id$
  *  @since Ptolemy II 6.0
@@ -154,14 +154,14 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateInitializeEntryCode() throws IllegalActionException {
 
-        // If the container is in the top level, we are generating code 
+        // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
-            // We use (void) so as to avoid the avr-gcc 3.4.6 warning: 
+            // We use (void) so as to avoid the avr-gcc 3.4.6 warning:
             // "function declaration isn't a prototype
             return _eol + _eol + "void initialize(void) {" + _eol;
 
-            // If the container is not in the top level, we are generating code 
+            // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
         } else {
             return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
@@ -201,13 +201,13 @@ public class CCodeGenerator extends CodeGenerator {
 
         StringBuffer mainEntryCode = new StringBuffer();
 
-        // If the container is in the top level, we are generating code 
+        // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
 
-            // If the container is not in the top level, we are generating code 
+            // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
         } else {
             mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL"
@@ -246,12 +246,12 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generatePostfireEntryCode() throws IllegalActionException {
 
-        // If the container is in the top level, we are generating code 
+        // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
             return _eol + _eol + "boolean postfire(void) {" + _eol;
 
-            // If the container is not in the top level, we are generating code 
+            // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
         } else {
             return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
@@ -380,7 +380,7 @@ public class CCodeGenerator extends CodeGenerator {
         // Set to true if we need to scalarDelete() method.
         boolean defineScalarDeleteMethod = false;
 
-        // Append type-polymorphic functions included in the function table. 
+        // Append type-polymorphic functions included in the function table.
         for (int i = 0; i < types.size(); i++) {
             // The "funcDeclareBlock" contains all function declarations for
             // the type.
@@ -428,7 +428,7 @@ public class CCodeGenerator extends CodeGenerator {
         }
 
         if (defineScalarDeleteMethod) {
-            // Types that share the scalarDelete() method, which does nothing. 
+            // Types that share the scalarDelete() method, which does nothing.
             // We use one method so as to reduce code size.
             sharedStream.appendCodeBlock("scalarDeleteFunction");
         }
@@ -459,7 +459,7 @@ public class CCodeGenerator extends CodeGenerator {
 
             for (int j = 0; j < functionsArray.length; j++) {
                 // The code block declaration has to follow this convention:
-                // /*** [function name]Block ***/ 
+                // /*** [function name]Block ***/
                 //     .....
                 // /**/
                 try {
@@ -495,7 +495,7 @@ public class CCodeGenerator extends CodeGenerator {
                             + functionsArray[j] + " MISSING " + _eol);
 
                     // It is ok because this polymorphic function may not be
-                    // supported by all types. 
+                    // supported by all types.
                 }
             }
             code.append(processCode(typeStreams[i].toString()));
@@ -617,12 +617,12 @@ public class CCodeGenerator extends CodeGenerator {
      */
     public String generateWrapupEntryCode() throws IllegalActionException {
 
-        // If the container is in the top level, we are generating code 
+        // If the container is in the top level, we are generating code
         // for the whole model.
         if (isTopLevel()) {
             return _eol + _eol + "void wrapup(void) {" + _eol;
 
-            // If the container is not in the top level, we are generating code 
+            // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
         } else {
             return _eol + _eol + "JNIEXPORT void JNICALL" + _eol + "Java_"
@@ -747,7 +747,7 @@ public class CCodeGenerator extends CodeGenerator {
         _executeCommands.setWorkingDirectory(codeDirectory.asFile());
 
         try {
-            // FIXME: need to put this output in to the UI, if any. 
+            // FIXME: need to put this output in to the UI, if any.
             _executeCommands.start();
         } catch (Exception ex) {
             StringBuffer errorMessage = new StringBuffer();
@@ -765,8 +765,8 @@ public class CCodeGenerator extends CodeGenerator {
      * this method to do extra processing to format the output code. If
      * sourceLineBinding is set to true, it will check and insert the
      * appropriate #line macro for each line in the given code. Blank lines
-     * are discarded if #line macros are inserted.  
-     * @param code The given code to be processed. 
+     * are discarded if #line macros are inserted.
+     * @param code The given code to be processed.
      * @return The processed code.
      * @exception IllegalActionException If #getOutputFilename() throws it.
      */
@@ -826,7 +826,7 @@ public class CCodeGenerator extends CodeGenerator {
     /** Generate include files. FIXME: State what is included.
      *  @return The #include statements, surrounded by #ifndef to ensure
      *   that the files are included only once.
-     *  @exception IllegalActionException If the helper class for some actor 
+     *  @exception IllegalActionException If the helper class for some actor
      *   cannot be found.
      */
     protected String _generateIncludeFiles() throws IllegalActionException {
@@ -949,7 +949,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  <dl>
      *  <dt><code>@modelName@</code>
      *  <dd>The sanitized model name, created by invoking
-     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)} 
+     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)}
      *  on the model name.
      *  <dt><code>@PTCGIncludes@</code>
      *  <dd>The elements of the set of include command arguments that
@@ -1058,7 +1058,7 @@ public class CCodeGenerator extends CodeGenerator {
                     .lastIndexOf("/") + 1)
                     + _sanitizedModelName + ".mk.in";
         } else {
-            // The model does not have a _uri attribute, so 
+            // The model does not have a _uri attribute, so
             // Look for the generic C makefile.in
             // Note this code is repeated in the catch below.
             makefileTemplateName = generatorPackage.stringValue().replace('.',
@@ -1168,7 +1168,7 @@ public class CCodeGenerator extends CodeGenerator {
      */
     private static Set _unsupportedTypeFunctions;
 
-    /** Types that share the scalarDelete() method, which does nothing. 
+    /** Types that share the scalarDelete() method, which does nothing.
      *  We use one method so as to reduce code size.
      */
     private static Set _scalarDeleteTypes;

@@ -1,4 +1,4 @@
-/* A MoMLChangeRequest that offsets any objects that are created. 
+/* A MoMLChangeRequest that offsets any objects that are created.
 
  Copyright (c) 2007 The Regents of the University of California.
  All rights reserved.
@@ -75,7 +75,7 @@ public class OffsetMoMLChangeRequest extends MoMLChangeRequest {
 
     /** Offset the locations of top level objects that are created
      *  by the change request.
-     *   
+     *
      *  @param parser The parser
      */
     protected void _postParse(MoMLParser parser) {

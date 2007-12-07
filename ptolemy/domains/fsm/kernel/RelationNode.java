@@ -30,11 +30,11 @@ package ptolemy.domains.fsm.kernel;
 //////////////////////////////////////////////////////////////////////////
 ////RelationNode
 
-/** 
- An instance of the RelationNode class stores the type and difference 
- information of a relation. For more details of type, see {@link RelationType}. 
- For more details of difference, see 
- {@link ptolemy.domains.fsm.kernel.ParseTreeEvaluatorForGuardExpression}. 
+/**
+ An instance of the RelationNode class stores the type and difference
+ information of a relation. For more details of type, see {@link RelationType}.
+ For more details of difference, see
+ {@link ptolemy.domains.fsm.kernel.ParseTreeEvaluatorForGuardExpression}.
  The instance stores the information of two evaluations of the transition,
  the current evaluation and the previous evaluaiton.
 
@@ -63,14 +63,14 @@ public final class RelationNode {
     ////                       public methods                  ////
 
     /** Reset the relation node by setting the former type and difference
-     *  information to RelationType.INVALID and 0.0 respectively. 
+     *  information to RelationType.INVALID and 0.0 respectively.
      */
     public void reset() {
         _previousType = RelationType.INVALID;
         _previousDifference = 0.0;
     }
 
-    /** Update the previous type and difference information of this relation 
+    /** Update the previous type and difference information of this relation
      *  node with the current evaluation result.
      */
     public void commit() {
@@ -117,7 +117,7 @@ public final class RelationNode {
         _currentType = type;
     }
 
-    /** Set the difference information with the current evaluation result 
+    /** Set the difference information with the current evaluation result
      *  of the relation node.
      *  @param difference The current difference information.
      *  @see #getDifference()

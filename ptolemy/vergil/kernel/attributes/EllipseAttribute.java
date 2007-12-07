@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NamedObj;
 /**
  <p>This is an attribute that is rendered as an ellipse.
  Unlike the base class, by default, an ellipse is centered on its origin.</p>
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0

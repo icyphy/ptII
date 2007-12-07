@@ -86,7 +86,7 @@ public interface ParserScope {
      *  identifier.  Note that generally speaking, this list is
      *  extremely expensive to compute, and users should avoid calling
      *  it.  It is primarily used for debugging purposes.
-     *  @return A list of names corresponding to the identifiers 
+     *  @return A list of names corresponding to the identifiers
      *  defined by this scope.
      *  @exception IllegalActionException If constructing the list causes
      *  it.

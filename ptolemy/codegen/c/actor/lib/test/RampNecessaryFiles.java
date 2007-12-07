@@ -42,7 +42,7 @@ import ptolemy.codegen.c.actor.lib.Ramp;
  @Pt.AcceptedRating Red (cxh)
  */
 public class RampNecessaryFiles extends Ramp {
-    /** 
+    /**
      *  Construct the Ramp helper.
      *  @param actor the associated actor
      */

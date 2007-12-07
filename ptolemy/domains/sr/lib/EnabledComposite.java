@@ -103,7 +103,7 @@ public class EnabledComposite extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the <i>enable</i> input is known and true, then invoke the 
+    /** If the <i>enable</i> input is known and true, then invoke the
      *  fire() method of the superclass.
      *  @exception IllegalActionException If the superclass throws it.
      */
@@ -138,7 +138,7 @@ public class EnabledComposite extends TypedCompositeActor {
         return _functionDependency;
     }
 
-    /** If the <i>enable</i> input is known and true, then invoke the 
+    /** If the <i>enable</i> input is known and true, then invoke the
      *  postfire() method of the superclass and return its value. Otherwise,
      *  return true.
      *  @exception IllegalActionException If the superclass throws it.
@@ -155,7 +155,7 @@ public class EnabledComposite extends TypedCompositeActor {
      *  and set a flag that prevents fire() and postfire() from
      *  doing anything;  if the <i>enable</i> input is known
      *  and either absent or false, then return false;
-     *  if it is known and true, then invoke the prefire() method of the 
+     *  if it is known and true, then invoke the prefire() method of the
      *  superclass and return what it returns.
      *  @exception IllegalActionException If the superclass throws it.
      */
@@ -163,7 +163,7 @@ public class EnabledComposite extends TypedCompositeActor {
         if (_debugging) {
             _debug("EnabledComposite: Calling prefire()");
         }
-        // By default prefire() returns true indicating it is ready to be 
+        // By default prefire() returns true indicating it is ready to be
         // prefired and fired again.  Note that it must return true
         // if the inputs are not known since otherwise, if it returns
         // false, the FixedPointDirector will set all its outputs
@@ -176,7 +176,7 @@ public class EnabledComposite extends TypedCompositeActor {
                 _enabled = ((BooleanToken) enable.get(0)).booleanValue();
             }
             if (!_enabled) {
-                // Not enabled. Return false and the outputs will be 
+                // Not enabled. Return false and the outputs will be
                 // cleared by the director.
                 if (_debugging) {
                     _debug("Not enabled: prefire() returns false.");
@@ -193,8 +193,8 @@ public class EnabledComposite extends TypedCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Local variable indicating whether this actor can be fired. 
-     *  The value of this variable is set in the prefire method. 
+    /** Local variable indicating whether this actor can be fired.
+     *  The value of this variable is set in the prefire method.
      */
     private boolean _enabled = false;
 }

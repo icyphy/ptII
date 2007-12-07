@@ -1,31 +1,31 @@
 /*
  * Copyright (c) 2002-2007 JGoodies Karsten Lentzsch. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- *  o Redistributions of source code must retain the above copyright notice, 
- *    this list of conditions and the following disclaimer. 
- *     
- *  o Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
- *    and/or other materials provided with the distribution. 
- *     
- *  o Neither the name of JGoodies Karsten Lentzsch nor the names of 
- *    its contributors may be used to endorse or promote products derived 
- *    from this software without specific prior written permission. 
- *     
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+ *  o Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ *  o Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ *  o Neither the name of JGoodies Karsten Lentzsch nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.jgoodies.forms.layout;
@@ -48,44 +48,44 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * FormLayout is a powerful, flexible and precise general purpose 
+ * FormLayout is a powerful, flexible and precise general purpose
  * layout manager. It aligns components vertically and horizontally in
  * a dynamic rectangular grid of cells, with each component occupying one or
  * more cells.
  * A <a href="../../../../../whitepaper.pdf" target="secondary">whitepaper</a>
- * about the FormLayout ships with the product documentation and is available 
+ * about the FormLayout ships with the product documentation and is available
  * <a href="http://www.jgoodies.com/articles/forms.pdf">online</a>.<p>
- * 
+ *
  * To use FormLayout you first define the grid by specifying the
  * columns and rows. In a second step you add components to the grid. You can
  * specify columns and rows via human-readable String descriptions or via
  * arrays of {@link ColumnSpec} and {@link RowSpec} instances.<p>
- * 
+ *
  * Each component managed by a FormLayout is associated with an instance of
  * {@link CellConstraints}. The constraints object specifies where a component
  * should be located on the form's grid and how the component should be
  * positioned. In addition to its constraints object the
  * <code>FormLayout</code> also considers each component's minimum and
  * preferred sizes in order to determine a component's size.<p>
- * 
+ *
  * FormLayout has been designed to work with non-visual builders that help you
- * specify the layout and fill the grid. For example, the 
+ * specify the layout and fill the grid. For example, the
  * {@link com.jgoodies.forms.builder.ButtonBarBuilder} assists you in building button
  * bars; it creates a standardized FormLayout and provides a minimal API that
  * specializes in adding buttons. Other builders can create frequently used
  * panel design, for example a form that consists of rows of label-component
  * pairs.<p>
- *  
+ *
  * FormLayout has been prepared to work with different types of sizes as
  * defined by the {@link Size} interface.<p>
- * 
+ *
  * <strong>Example 1</strong> (Plain FormLayout):<br>
- * The following example creates a panel with 3 data columns and 3 data rows; 
- * the columns and rows are specified before components are added 
+ * The following example creates a panel with 3 data columns and 3 data rows;
+ * the columns and rows are specified before components are added
  * to the form.
  * <pre>
  * FormLayout layout = new FormLayout(
- *      "right:pref, 6dlu, 50dlu, 4dlu, default",  // columns 
+ *      "right:pref, 6dlu, 50dlu, 4dlu, default",  // columns
  *      "pref, 3dlu, pref, 3dlu, pref");           // rows
  *
  * CellConstraints cc = new CellConstraints();
@@ -99,13 +99,13 @@ import java.util.Map;
  * panel.add(new JButton("/u2026"),  cc.xy  (5, 5));
  * return panel;
  * </pre><p>
- * 
+ *
  * <strong>Example 2</strong> (Using PanelBuilder):<br>
- * This example creates the same panel as above using the 
- * {@link com.jgoodies.forms.builder.PanelBuilder} to add components to the form. 
+ * This example creates the same panel as above using the
+ * {@link com.jgoodies.forms.builder.PanelBuilder} to add components to the form.
  * <pre>
  * FormLayout layout = new FormLayout(
- *      "right:pref, 6dlu, 50dlu, 4dlu, default",  // columns 
+ *      "right:pref, 6dlu, 50dlu, 4dlu, default",  // columns
  *      "pref, 3dlu, pref, 3dlu, pref");           // rows
  *
  * PanelBuilder builder = new PanelBuilder(layout);
@@ -119,11 +119,11 @@ import java.util.Map;
  * builder.add(new JButton("/u2026"), cc.xy  (5, 5));
  * return builder.getPanel();
  * </pre><p>
- * 
+ *
  * <strong>Example 3</strong> (Using DefaultFormBuilder):<br>
- * This example utilizes the 
- * {@link com.jgoodies.forms.builder.DefaultFormBuilder} that 
- * ships with the source distribution. 
+ * This example utilizes the
+ * {@link com.jgoodies.forms.builder.DefaultFormBuilder} that
+ * ships with the source distribution.
  * <pre>
  * FormLayout layout = new FormLayout(
  *      "right:pref, 6dlu, 50dlu, 4dlu, default"); // 5 columns; add rows later
@@ -135,7 +135,7 @@ import java.util.Map;
  * builder.append(new JButton("/u2026"));
  * return builder.getPanel();
  * </pre><p>
- * 
+ *
  * TODO: In the Forms 1.0.x invisible components are not taken into account
  * when the FormLayout lays out the container. Add an optional setting for
  * this on both the container-level and component-level. So one can specify
@@ -143,13 +143,13 @@ import java.util.Map;
  * individual components. Or the other way round, exclude invisible components,
  * and include individual components. The API of both the FormLayout and
  * CellConstraints classes shall be extended to support this option.
- * This feature is planned for the Forms version 1.1 and is described in 
- * <a href="https://forms.dev.java.net/issues/show_bug.cgi?id=28">issue #28</a> 
+ * This feature is planned for the Forms version 1.1 and is described in
+ * <a href="https://forms.dev.java.net/issues/show_bug.cgi?id=28">issue #28</a>
  * of the Forms' issue tracker where you can track the progress.
- * 
+ *
  * @author Karsten Lentzsch
  * @version $Revision$
- * 
+ *
  * @see        ColumnSpec
  * @see        RowSpec
  * @see        CellConstraints
@@ -165,7 +165,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Holds the column specifications.
-     * 
+     *
      * @see ColumnSpec
      * @see #getColumnCount()
      * @see #getColumnSpec(int)
@@ -177,7 +177,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Holds the row specifications.
-     * 
+     *
      * @see RowSpec
      * @see #getRowCount()
      * @see #getRowSpec(int)
@@ -189,7 +189,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Holds the column groups as an array of arrays of column indices.
-     * 
+     *
      * @see #getColumnGroups()
      * @see #setColumnGroups(int[][])
      * @see #addGroupedColumn(int)
@@ -198,7 +198,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Holds the row groups as an array of arrays of row indices.
-     * 
+     *
      * @see #getRowGroups()
      * @see #setRowGroups(int[][])
      * @see #addGroupedRow(int)
@@ -207,7 +207,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Maps components to their associated <code>CellConstraints</code>.
-     * 
+     *
      * @see CellConstraints
      * @see #getConstraints(Component)
      * @see #setConstraints(Component, CellConstraints)
@@ -217,13 +217,13 @@ public final class FormLayout implements LayoutManager2, Serializable {
     // Fields used by the Layout Algorithm **********************************
 
     /**
-     * Holds the components that occupy exactly one column. 
+     * Holds the components that occupy exactly one column.
      * For each column we keep a list of these components.
      */
     private transient List[] colComponents;
 
     /**
-     * Holds the components that occupy exactly one row. 
+     * Holds the components that occupy exactly one row.
      * For each row we keep a list of these components.
      */
     private transient List[] rowComponents;
@@ -250,7 +250,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     /**
      * Constructs an empty FormLayout. Columns and rows must be added
      * before components can be added to the layout container.<p>
-     * 
+     *
      * This constructor is intended to be used in environments
      * that add columns and rows dynamically.
      */
@@ -259,27 +259,27 @@ public final class FormLayout implements LayoutManager2, Serializable {
     }
 
     /**
-     * Constructs a FormLayout using the given encoded column specifications. 
-     * The constructed layout has no rows; these must be added 
+     * Constructs a FormLayout using the given encoded column specifications.
+     * The constructed layout has no rows; these must be added
      * before components can be added to the layout container.<p>
-     * 
+     *
      * This constructor is primarily intended to be used with builder classes
      * that add rows dynamically, such as the <code>DefaultFormBuilder</code>.<p>
-     * 
+     *
      * <strong>Examples:</strong><pre>
      * // Label, gap, component
      * FormLayout layout = new FormLayout(
-     *      "pref, 4dlu, pref");  
-     *                 
-     * // Right-aligned label, gap, component, gap, component                                         
+     *      "pref, 4dlu, pref");
+     *
+     * // Right-aligned label, gap, component, gap, component
      * FormLayout layout = new FormLayout(
-     *      "right:pref, 4dlu, 50dlu, 4dlu, 50dlu");  
-     *      
-     * // Left-aligned labels, gap, components, gap, components                                         
+     *      "right:pref, 4dlu, 50dlu, 4dlu, 50dlu");
+     *
+     * // Left-aligned labels, gap, components, gap, components
      * FormLayout layout = new FormLayout(
-     *      "left:pref, 4dlu, pref, 4dlu, pref"); 
+     *      "left:pref, 4dlu, pref, 4dlu, pref");
      * </pre> See the class comment for more examples.
-     * 
+     *
      * @param encodedColumnSpecs  comma separated encoded column specifications
      * @exception NullPointerException  if encodedColumnSpecs is <code>null</code>
      */
@@ -288,32 +288,32 @@ public final class FormLayout implements LayoutManager2, Serializable {
     }
 
     /**
-     * Constructs a FormLayout using the given 
+     * Constructs a FormLayout using the given
      * encoded column and row specifications.<p>
-     * 
+     *
      * This constructor is recommended for most hand-coded layouts.<p>
-     * 
+     *
      * <strong>Examples:</strong><pre>
      * FormLayout layout = new FormLayout(
-     *      "pref, 4dlu, pref",               // columns 
+     *      "pref, 4dlu, pref",               // columns
      *      "p, 3dlu, p");                    // rows
-     *                 
+     *
      * FormLayout layout = new FormLayout(
-     *      "right:pref, 4dlu, pref",         // columns 
+     *      "right:pref, 4dlu, pref",         // columns
      *      "p, 3dlu, p, 3dlu, fill:p:grow"); // rows
-     *      
+     *
      * FormLayout layout = new FormLayout(
-     *      "left:pref, 4dlu, 50dlu",         // columns 
+     *      "left:pref, 4dlu, 50dlu",         // columns
      *      "p, 2px, p, 3dlu, p, 9dlu, p");   // rows
-     *      
+     *
      * FormLayout layout = new FormLayout(
-     *      "max(75dlu;pref), 4dlu, default", // columns 
+     *      "max(75dlu;pref), 4dlu, default", // columns
      *      "p, 3dlu, p, 3dlu, p, 3dlu, p");  // rows
      * </pre> See the class comment for more examples.
-     * 
+     *
      * @param encodedColumnSpecs  comma separated encoded column specifications
      * @param encodedRowSpecs     comma separated encoded row specifications
-     * @exception NullPointerException  if encodedColumnSpecs or encodedRowSpecs 
+     * @exception NullPointerException  if encodedColumnSpecs or encodedRowSpecs
      *     is <code>null</code>
      */
     public FormLayout(String encodedColumnSpecs, String encodedRowSpecs) {
@@ -323,7 +323,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Constructs a FormLayout using the given column and row specifications.
-     * 
+     *
      * @param colSpecs        an array of column specifications.
      * @param rowSpecs        an array of row specifications.
      * @exception NullPointerException if colSpecs or rowSpecs is null
@@ -353,7 +353,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Returns the number of columns in this layout.
-     * 
+     *
      * @return the number of columns
      */
     public int getColumnCount() {
@@ -362,7 +362,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Returns the number of rows in this layout.
-     * 
+     *
      * @return the number of rows
      */
     public int getRowCount() {
@@ -371,7 +371,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Returns the <code>ColumnSpec</code> at the specified column index.
-     * 
+     *
      * @param columnIndex   the column index of the requested <code>ColumnSpec</code>
      * @return the <code>ColumnSpec</code> at the specified column
      * @exception IndexOutOfBoundsException if the column index is out of range
@@ -382,7 +382,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Sets the <code>ColumnSpec</code> at the specified column index.
-     * 
+     *
      * @param columnIndex   the index of the column to be changed
      * @param columnSpec    the <code>ColumnSpec</code> to be set
      * @exception NullPointerException if the column specification is null
@@ -397,7 +397,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Returns the <code>RowSpec</code> at the specified row index.
-     * 
+     *
      * @param rowIndex   the row index of the requested <code>RowSpec</code>
      * @return the <code>RowSpec</code> at the specified row
      * @exception IndexOutOfBoundsException if the row index is out of range
@@ -408,7 +408,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Sets the <code>RowSpec</code> at the specified row index.
-     * 
+     *
      * @param rowIndex   the index of the row to be changed
      * @param rowSpec    the <code>RowSpec</code> to be set
      * @exception NullPointerException if the row specification is null
@@ -424,8 +424,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
     /**
      * Appends the given column specification to the right hand side of all
      * columns.
-     * 
-     * @param columnSpec the column specification to be added 
+     *
+     * @param columnSpec the column specification to be added
      * @exception NullPointerException if the column specification is null
      */
     public void appendColumn(ColumnSpec columnSpec) {
@@ -436,18 +436,18 @@ public final class FormLayout implements LayoutManager2, Serializable {
     }
 
     /**
-     * Inserts the specified column at the specified position. Shifts components 
+     * Inserts the specified column at the specified position. Shifts components
      * that intersect the new column to the right hand side and readjusts
      * column groups.<p>
-     *  
+     *
      * The component shift works as follows: components that were located on
      * the right hand side of the inserted column are shifted one column to
      * the right; component column span is increased by one if it intersects
      * the new column.<p>
-     * 
+     *
      * Column group indices that are greater or equal than the given column
      * index will be increased by one.
-     * 
+     *
      * @param columnIndex  index of the column to be inserted
      * @param columnSpec   specification of the column to be inserted
      * @exception IndexOutOfBoundsException if the column index is out of range
@@ -468,31 +468,31 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * Components will be rearranged and column groups will be readjusted.
      * Therefore, the column must not contain components and must not be part
      * of a column group.<p>
-     * 
+     *
      * The component shift works as follows: components that were located on
      * the right hand side of the removed column are moved one column to the
      * left; component column span is decreased by one if it intersects the
      * removed column.<p>
-     * 
+     *
      * Column group indices that are greater than the column index will be
      * decreased by one.<p>
-     * 
-     * <strong>Note:</strong> If one of the constraints mentioned above 
-     * is violated, this layout's state becomes illegal and it is unsafe 
+     *
+     * <strong>Note:</strong> If one of the constraints mentioned above
+     * is violated, this layout's state becomes illegal and it is unsafe
      * to work with this layout.
      * A typical layout implementation can ensure that these constraints are
      * not violated. However, in some cases you may need to check these
      * conditions before you invoke this method. The Forms extras contain
      * source code for class <code>FormLayoutUtils</code> that provides
-     * the required test methods:<br> 
+     * the required test methods:<br>
      * <code>#columnContainsComponents(Container, int)</code> and<br>
      * <code>#isGroupedColumn(FormLayout, int)</code>.
-     * 
+     *
      * @param columnIndex  index of the column to remove
      * @exception IndexOutOfBoundsException if the column index is out of range
      * @exception IllegalStateException  if the column contains components
      *     or if the column is already grouped
-     * 
+     *
      */
     public void removeColumn(int columnIndex) {
         if (columnIndex < 1 || columnIndex > getColumnCount()) {
@@ -507,7 +507,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Appends the given row specification to the bottom of all rows.
-     * 
+     *
      * @param rowSpec  the row specification to be added to the form layout
      * @exception NullPointerException if the rowSpec is null
      */
@@ -522,15 +522,15 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * Inserts the specified column at the specified position. Shifts
      * components that intersect the new column to the right and readjusts
      * column groups.<p>
-     *  
+     *
      * The component shift works as follows: components that were located on
      * the right hand side of the inserted column are shifted one column to
      * the right; component column span is increased by one if it intersects
      * the new column.<p>
-     * 
+     *
      * Column group indices that are greater or equal than the given column
      * index will be increased by one.
-     * 
+     *
      * @param rowIndex  index of the row to be inserted
      * @param rowSpec   specification of the row to be inserted
      * @exception IndexOutOfBoundsException if the row index is out of range
@@ -549,30 +549,30 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * Removes the row with the given row index from the layout. Components
      * will be rearranged and row groups will be readjusted. Therefore, the
      * row must not contain components and must not be part of a row group.<p>
-     * 
+     *
      * The component shift works as follows: components that were located
      * below the removed row are moved up one row; component row span is
      * decreased by one if it intersects the removed row.<p>
-     * 
+     *
      * Row group indices that are greater than the row index will be decreased
      * by one.<p>
-     * 
-     * <strong>Note:</strong> If one of the constraints mentioned above 
-     * is violated, this layout's state becomes illegal and it is unsafe 
+     *
+     * <strong>Note:</strong> If one of the constraints mentioned above
+     * is violated, this layout's state becomes illegal and it is unsafe
      * to work with this layout.
      * A typical layout implementation can ensure that these constraints are
      * not violated. However, in some cases you may need to check these
      * conditions before you invoke this method. The Forms extras contain
      * source code for class <code>FormLayoutUtils</code> that provides
-     * the required test methods:<br> 
+     * the required test methods:<br>
      * <code>#rowContainsComponents(Container, int)</code> and<br>
      * <code>#isGroupedRow(FormLayout, int)</code>.
-     *  
+     *
      * @param rowIndex  index of the row to remove
      * @exception IndexOutOfBoundsException if the row index is out of range
      * @exception IllegalStateException if the row contains components
      *     or if the row is already grouped
-     * 
+     *
      */
     public void removeRow(int rowIndex) {
         if (rowIndex < 1 || rowIndex > getRowCount()) {
@@ -587,7 +587,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     /**
      * Shifts components horizontally, either to the right if a column has been
      * inserted or to the left if a column has been removed.
-     * 
+     *
      * @param columnIndex  index of the column to remove
      * @param remove                  true for remove, false for insert
      * @exception IllegalStateException if a removed column contains components
@@ -616,7 +616,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     /**
      * Shifts components vertically, either to the bottom if a row has been
      * inserted or to the top if a row has been removed.
-     * 
+     *
      * @param rowIndex      index of the row to remove
      * @param remove        true for remove, false for insert
      * @exception IllegalStateException if a removed column contains components
@@ -644,7 +644,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     /**
      * Adjusts group indices. Shifts the given groups to left, right, up,
      * down according to the specified remove or add flag.
-     * 
+     *
      * @param allGroupIndices   the groups to be adjusted
      * @param modifiedIndex     the modified column or row index
      * @param remove                        true for remove, false for add
@@ -670,12 +670,12 @@ public final class FormLayout implements LayoutManager2, Serializable {
     // Accessing Constraints ************************************************
 
     /**
-     * Looks up and returns the constraints for the specified component. 
+     * Looks up and returns the constraints for the specified component.
      * A copy of the actual <code>CellConstraints</code> object is returned.
-     * 
+     *
      * @param component    the component to be queried
      * @return the <code>CellConstraints</code> for the specified component
-     * @exception NullPointerException if component is <code>null</code> or 
+     * @exception NullPointerException if component is <code>null</code> or
      *     has not been added to the container
      */
     public CellConstraints getConstraints(Component component) {
@@ -693,7 +693,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Sets the constraints for the specified component in this layout.
-     * 
+     *
      * @param component     the component to be modified
      * @param constraints   the constraints to be applied
      * @exception NullPointerException   if the component or constraints object
@@ -711,7 +711,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Removes the constraints for the specified component in this layout.
-     * 
+     *
      * @param component  the component to be modified
      */
     private void removeConstraints(Component component) {
@@ -723,7 +723,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Returns a deep copy of the column groups.
-     * 
+     *
      * @return the column groups as two-dimensional int array
      */
     public int[][] getColumnGroups() {
@@ -735,15 +735,15 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * group wide width. Each group is described by an array of integers that
      * are interpreted as column indices. The parameter is an array of such
      * group descriptions.<p>
-     * 
+     *
      * <strong>Examples:</strong><pre>
-     * // Group columns 1, 3 and 4. 
+     * // Group columns 1, 3 and 4.
      * setColumnGroups(new int[][]{ {1, 3, 4}});
-     * 
+     *
      * // Group columns 1, 3, 4, and group columns 7 and 9
      * setColumnGroups(new int[][]{ {1, 3, 4}, {7, 9}});
      * </pre>
-     * 
+     *
      * @param colGroupIndices        a two-dimensional array of column groups indices
      * @exception        IndexOutOfBoundsException if an index is outside the grid
      * @exception IllegalArgumentException if a column index is used twice
@@ -771,9 +771,9 @@ public final class FormLayout implements LayoutManager2, Serializable {
     }
 
     /**
-     * Adds the specified column index to the last column group. 
+     * Adds the specified column index to the last column group.
      * In case there are no groups, a new group will be created.
-     * 
+     *
      * @param columnIndex        the column index to be set grouped
      */
     public void addGroupedColumn(int columnIndex) {
@@ -795,7 +795,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Returns a deep copy of the row groups.
-     * 
+     *
      * @return the row groups as two-dimensional int array
      */
     public int[][] getRowGroups() {
@@ -807,15 +807,15 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * wide height. Each group is described by an array of integers that are
      * interpreted as row indices. The parameter is an array of such group
      * descriptions.<p>
-     * 
+     *
      * <strong>Examples:</strong><pre>
      * // Group rows 1 and 2.
      * setRowGroups(new int[][]{ {1, 2}});
-     * 
+     *
      * // Group rows 1 and 2, and group rows 5, 7, and 9.
      * setRowGroups(new int[][]{ {1, 2}, {5, 7, 9}});
      * </pre>
-     * 
+     *
      * @param rowGroupIndices a two-dimensional array of row group indices.
      * @exception IndexOutOfBoundsException if an index is outside the grid
      */
@@ -841,9 +841,9 @@ public final class FormLayout implements LayoutManager2, Serializable {
     }
 
     /**
-     * Adds the specified row index to the last row group. 
+     * Adds the specified row index to the last row group.
      * In case there are no groups, a new group will be created.
-     * 
+     *
      * @param rowIndex   the index of the row that should be grouped
      */
     public void addGroupedRow(int rowIndex) {
@@ -866,7 +866,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     // Implementing the LayoutManager and LayoutManager2 Interfaces *********
 
     /**
-     * Throws an <code>UnsupportedOperationException</code>. Does not add 
+     * Throws an <code>UnsupportedOperationException</code>. Does not add
      * the specified component with the specified name to the layout.
      *
      * @param name         indicates entry's position and anchor
@@ -905,9 +905,9 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Removes the specified component from this layout.<p>
-     * 
+     *
      * Most applications do not call this method directly.
-     * 
+     *
      * @param comp   the component to be removed.
      * @see Container#remove(java.awt.Component)
      * @see Container#removeAll()
@@ -921,12 +921,12 @@ public final class FormLayout implements LayoutManager2, Serializable {
     /**
      * Determines the minimum size of the <code>parent</code> container
      * using this form layout.<p>
-     * 
+     *
      * Most applications do not call this method directly.
-     * 
+     *
      * @param parent   the container in which to do the layout
      * @return the minimum size of the <code>parent</code> container
-     * 
+     *
      * @see Container#doLayout()
      */
     public Dimension minimumLayoutSize(Container parent) {
@@ -937,12 +937,12 @@ public final class FormLayout implements LayoutManager2, Serializable {
     /**
      * Determines the preferred size of the <code>parent</code>
      * container using this form layout.<p>
-     * 
+     *
      * Most applications do not call this method directly.
      *
      * @param parent   the container in which to do the layout
      * @return the preferred size of the <code>parent</code> container
-     * 
+     *
      * @see Container#getPreferredSize()
      */
     public Dimension preferredLayoutSize(Container parent) {
@@ -953,7 +953,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     /**
      * Returns the maximum dimensions for this layout given the components
      * in the specified target container.
-     * 
+     *
      * @param target    the container which needs to be laid out
      * @see Container
      * @see #minimumLayoutSize(Container)
@@ -970,7 +970,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * components.  The value should be a number between 0 and 1
      * where 0 represents alignment along the origin, 1 is aligned
      * the furthest away from the origin, 0.5 is centered, etc.
-     * 
+     *
      * @param parent   the parent container
      * @return the value <code>0.5f</code> to indicate center alignment
      */
@@ -984,7 +984,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * components.  The value should be a number between 0 and 1
      * where 0 represents alignment along the origin, 1 is aligned
      * the furthest away from the origin, 0.5 is centered, etc.
-     * 
+     *
      * @param parent  the parent container
      * @return the value <code>0.5f</code> to indicate center alignment
      */
@@ -995,7 +995,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     /**
      * Invalidates the layout, indicating that if the layout manager
      * has cached information it should be discarded.
-     * 
+     *
      * @param target   the container that holds the layout to be invalidated
      */
     public void invalidateLayout(Container target) {
@@ -1006,13 +1006,13 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * Lays out the specified container using this form layout.  This method
      * reshapes components in the specified container in order to satisfy the
      * contraints of this <code>FormLayout</code> object.<p>
-     * 
+     *
      * Most applications do not call this method directly.<p>
-     * 
+     *
      * The form layout performs the following steps:
      * <ol>
      * <li>find components that occupy exactly one column or row
-     * <li>compute minimum widths and heights 
+     * <li>compute minimum widths and heights
      * <li>compute preferred widths and heights
      * <li>give cols and row equal size if they share a group
      * <li>compress default columns and rows if total is less than pref size
@@ -1020,7 +1020,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * <li>distribute free space
      * <li>set components bounds
      * </ol>
-     * 
+     *
      * @param parent        the container in which to do the layout
      * @see Container
      * @see Container#doLayout()
@@ -1048,13 +1048,13 @@ public final class FormLayout implements LayoutManager2, Serializable {
     // Layout Algorithm *****************************************************
 
     /**
-     * Initializes two lists for columns and rows that hold a column's 
+     * Initializes two lists for columns and rows that hold a column's
      * or row's components that span only this column or row.<p>
-     * 
-     * Iterates over all components and their associated constraints; 
-     * every component that has a column span or row span of 1 
+     *
+     * Iterates over all components and their associated constraints;
+     * every component that has a column span or row span of 1
      * is put into the column's or row's component list.<p>
-     * 
+     *
      * As of the Forms version 1.0.x invisible components are not taken
      * into account when the container is layed out. See the TODO in the
      * JavaDoc class commment for details on this issue.
@@ -1119,7 +1119,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
             /*
              * Take components that span multiple columns or rows into account.
              * This shall be done if and only if a component spans an interval
-             * that can grow. 
+             * that can grow.
              */
             // First computes the maximum number of cols/rows a component
             // can span without spanning a growing column.
@@ -1173,7 +1173,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Computes and returns the grid's origins.
-     * 
+     *
      * @param container         the layout container
      * @param totalSize         the total size to assign
      * @param offset                     the offset from left or top margin
@@ -1187,7 +1187,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     private int[] computeGridOrigins(Container container, int totalSize,
             int offset, List formSpecs, List[] componentLists,
             int[][] groupIndices, Measure minMeasure, Measure prefMeasure) {
-        /* For each spec compute the minimum and preferred size that is 
+        /* For each spec compute the minimum and preferred size that is
          * the maximum of all component minimum and preferred sizes resp.
          */
         int[] minSizes = maximumSizes(container, formSpecs, componentLists,
@@ -1210,7 +1210,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Computes origins from sizes taking the specified offset into account.
-     * 
+     *
      * @param sizes     the array of sizes
      * @param offset    an offset for the first origin
      * @return an array of origins
@@ -1226,9 +1226,9 @@ public final class FormLayout implements LayoutManager2, Serializable {
     }
 
     /**
-     * Lays out the components using the given x and y origins, the column 
+     * Lays out the components using the given x and y origins, the column
      * and row specifications, and the component constraints.<p>
-     * 
+     *
      * The actual computation is done by each component's form constraint
      * object. We just compute the cell, the cell bounds and then hand over
      * the component, cell bounds, and measure to the form constraints.
@@ -1236,8 +1236,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * to do special micro-layout corrections. For example, such a subclass
      * could map JComponent classes to visual layout bounds that may
      * lead to a slightly different bounds.
-     * 
-     * @param x     an int array of the horizontal origins 
+     *
+     * @param x     an int array of the horizontal origins
      * @param y     an int array of the vertical origins
      */
     private void layoutComponents(int[] x, int[] y) {
@@ -1272,7 +1272,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     /**
      * Computes and returns the sizes for the given form specs, component
      * lists and measures fot minimum, preferred, and default size.
-     * 
+     *
      * @param container         the layout container
      * @param formSpecs         the column or row specs, resp.
      * @param componentLists    the components list for each col/row
@@ -1299,11 +1299,11 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * Computes and returns the compressed sizes. Compresses space for columns
      * and rows iff the available space is less than the total preferred size
      * but more than the total minimum size.<p>
-     * 
+     *
      * Only columns and row that are specified to be compressable will be
      * affected. You can specify a column and row as compressable by
      * giving it the component size <tt>default</tt>.
-     * 
+     *
      * @param formSpecs      the column or row specs to use
      * @param totalSize      the total available size
      * @param totalMinSize   the sum of all minimum sizes
@@ -1315,10 +1315,10 @@ public final class FormLayout implements LayoutManager2, Serializable {
     private int[] compressedSizes(List formSpecs, int totalSize,
             int totalMinSize, int totalPrefSize, int[] minSizes, int[] prefSizes) {
 
-        // If we have less space than the total min size answer the min sizes.                            
+        // If we have less space than the total min size answer the min sizes.
         if (totalSize < totalMinSize)
             return minSizes;
-        // If we have more space than the total pref size answer the pref sizes.                            
+        // If we have more space than the total pref size answer the pref sizes.
         if (totalSize >= totalPrefSize)
             return prefSizes;
 
@@ -1345,11 +1345,11 @@ public final class FormLayout implements LayoutManager2, Serializable {
     }
 
     /**
-     * Computes and returns the grouped sizes. 
+     * Computes and returns the grouped sizes.
      * Gives grouped columns and rows the same size.
-     * 
+     *
      * @param groups        the group specification
-     * @param rawSizes        the raw sizes before the grouping 
+     * @param rawSizes        the raw sizes before the grouping
      * @return the grouped sizes
      */
     private int[] groupedSizes(int[][] groups, int[] rawSizes) {
@@ -1383,12 +1383,12 @@ public final class FormLayout implements LayoutManager2, Serializable {
     }
 
     /**
-     * Distributes free space over columns and rows and 
+     * Distributes free space over columns and rows and
      * returns the sizes after this distribution process.
-     * 
+     *
      * @param formSpecs      the column/row specifications to work with
      * @param totalSize      the total available size
-     * @param totalPrefSize  the sum of all preferred sizes 
+     * @param totalPrefSize  the sum of all preferred sizes
      * @param inputSizes     the input sizes
      * @return the distributed sizes
      */
@@ -1435,7 +1435,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Computes and returns the sum of integers in the given array of ints.
-     * 
+     *
      * @param sizes           an array of ints to sum up
      * @return the sum of ints in the array
      */
@@ -1451,24 +1451,24 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * Computes and returns a table that maps a column/row index
      * to the maximum number of columns/rows that a component can span
      * without spanning a growing column.<p>
-     * 
+     *
      * Iterates over the specs from right to left/bottom to top,
      * sets the table value to zero if a spec can grow,
      * otherwise increases the span by one.<p>
-     * 
+     *
      * <strong>Examples:</strong><pre>
      * "pref, 4dlu, pref, 2dlu, p:grow, 2dlu,      pref" ->
      * [4,    3,    2,    1,    0,      MAX_VALUE, MAX_VALUE]
-     * 
+     *
      * "p:grow, 4dlu, p:grow, 9dlu,      pref" ->
      * [0,      1,    0,      MAX_VALUE, MAX_VALUE]
-     * 
+     *
      * "p, 4dlu, p, 2dlu, 0:grow" ->
      * [4, 3,    2, 1,    0]
      * </pre>
-     * 
+     *
      * @param formSpecs  the column specs or row specs
-     * @return a table that maps a spec index to the maximum span for 
+     * @return a table that maps a spec index to the maximum span for
      *    fixed size specs
      */
     private int[] computeMaximumFixedSpanTable(List formSpecs) {
@@ -1498,7 +1498,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
         /**
          * Computes and returns the size of the given <code>Component</code>.
-         * 
+         *
          * @param component  the component to measure
          * @return the component's size
          */
@@ -1513,8 +1513,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
             Serializable {
 
         /**
-         * Holds previously requested component sizes. 
-         * Used to minimize size requests to subcomponents. 
+         * Holds previously requested component sizes.
+         * Used to minimize size requests to subcomponents.
          */
         protected final ComponentSizeCache cache;
 
@@ -1592,7 +1592,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
         /**
          * Constructs a <code>ComponentSizeCache</code>.
-         * 
+         *
          * @param initialCapacity        the initial cache capacity
          */
         private ComponentSizeCache(int initialCapacity) {
@@ -1612,7 +1612,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
          * Returns the minimum size for the given component. Tries to look up
          * the value from the cache; lazily creates the value if it has not
          * been requested before.
-         * 
+         *
          * @param component        the component to compute the minimum size
          * @return the component's minimum size
          */
@@ -1629,7 +1629,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
          * Returns the preferred size for the given component. Tries to look
          * up the value from the cache; lazily creates the value if it has not
          * been requested before.
-         * 
+         *
          * @param component         the component to compute the preferred size
          * @return the component's preferred size
          */
@@ -1652,14 +1652,14 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
     /**
      * Computes and returns the horizontal and vertical grid origins.
-     * Performs the same layout process as <code>#layoutContainer</code> 
+     * Performs the same layout process as <code>#layoutContainer</code>
      * but does not layout the components.<p>
-     * 
+     *
      * This method has been added only to make it easier to debug
      * the form layout. <strong>You must not call this method directly;
      * It may be removed in a future release or the visibility
-     * may be reduced.</strong> 
-     * 
+     * may be reduced.</strong>
+     *
      * @param parent   the <code>Container</code> to inspect
      * @return an object that comprises the grid x and y origins
      */
@@ -1683,7 +1683,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     }
 
     /**
-     * Stores column and row origins. 
+     * Stores column and row origins.
      */
     public static final class LayoutInfo {
 
@@ -1693,7 +1693,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
         public final int[] columnOrigins;
 
         /**
-         * Holds the origins of the rows. 
+         * Holds the origins of the rows.
          */
         public final int[] rowOrigins;
 
@@ -1704,7 +1704,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
         /**
          * Returns the layout's horizontal origin, the origin of the first column.
-         * 
+         *
          * @return the layout's horizontal origin, the origin of the first column.
          */
         public int getX() {
@@ -1713,7 +1713,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
         /**
          * Returns the layout's vertical origin, the origin of the first row.
-         * 
+         *
          * @return the layout's vertical origin, the origin of the first row.
          */
         public int getY() {
@@ -1723,7 +1723,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
         /**
          * Returns the layout's width, the size between the first and the last
          * column origin.
-         * 
+         *
          * @return the layout's width.
          */
         public int getWidth() {
@@ -1732,7 +1732,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
 
         /**
          * Returns the layout's height, the size between the first and last row.
-         * 
+         *
          * @return the layout's height.
          */
         public int getHeight() {
@@ -1744,13 +1744,13 @@ public final class FormLayout implements LayoutManager2, Serializable {
     // Helper Code **********************************************************
 
     /**
-     * Creates and returns a deep copy of the given array. 
-     * Unlike <code>#clone</code> that performs a shallow copy, 
+     * Creates and returns a deep copy of the given array.
+     * Unlike <code>#clone</code> that performs a shallow copy,
      * this method copies both array levels.
-     * 
+     *
      * @param array   the array to clone
      * @return a deep copy of the given array
-     * 
+     *
      * @see Object#clone()
      */
     private int[][] deepClone(int[][] array) {
@@ -1767,8 +1767,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * In addition to the default serialization mechanism this class
      * invalidates the component size cache. The cache will be populated
      * again after the deserialization.
-     * Also, the fields <code>colComponents</code> and 
-     * <code>rowComponents</code> have been marked as transient 
+     * Also, the fields <code>colComponents</code> and
+     * <code>rowComponents</code> have been marked as transient
      * to exclude them from the serialization.
      */
     private void writeObject(ObjectOutputStream out) throws IOException {
@@ -1779,7 +1779,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     // Debug Helper Code ****************************************************
 
     /*
-    // Prints the given column widths and row heights. 
+    // Prints the given column widths and row heights.
     private void printSizes(String title, int[] colWidths, int[] rowHeights) {
         System.out.println();
         System.out.println(title);
@@ -1791,7 +1791,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
             System.out.print(width + ", ");
         }
         System.out.println(" Total=" + totalWidth);
-        
+
         int totalHeight = 0;
         System.out.print("Row heights:   ");
         for (int i=0; i < getRowCount(); i++) {

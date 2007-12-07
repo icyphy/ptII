@@ -134,7 +134,7 @@ public class HighlightEntities extends Attribute {
          * Construct an attribute that defines the action performed
          * on a "configure" command.
          * @param container The container for this attribute.
-         * @param name The name of this attribute. 
+         * @param name The name of this attribute.
          * @exception IllegalActionException If thrown by the parent class.
          * @exception NameDuplicationException If thrown by the parent class.
          */

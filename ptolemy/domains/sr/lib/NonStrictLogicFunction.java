@@ -135,9 +135,9 @@ public class NonStrictLogicFunction extends LogicFunction {
         }
     }
 
-    /** Return false. This actor can produce some output event the input 
+    /** Return false. This actor can produce some output event the input
      *  receiver has status unknown.
-     *  
+     *
      *  @return False.
      */
     public boolean isStrict() {

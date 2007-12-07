@@ -60,7 +60,7 @@ import cern.jet.random.Binomial;
  generated are independent and the expected values of the assignments
  will have expected values that are representative of the population
  proportions.
- 
+
  @see ptolemy.actor.lib.colt.ColtBinomial
  @see cern.jet.random.Binomial
  @author Raymond A. Cardillo, Matthew J. Robbins
@@ -98,7 +98,7 @@ public class ColtBinomialSelector extends ColtRandomSource {
     ////                     ports and parameters                  ////
 
     /** The total number of trials to assign.  This PortParameter is
-     *  of type Int and has an initial default value of 1.   
+     *  of type Int and has an initial default value of 1.
      */
     public PortParameter trials;
 

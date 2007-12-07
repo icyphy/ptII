@@ -419,7 +419,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             }
 
             // Collect constraints from instances of ScopeExtender,
-            // such as ScopeExtendingAttribute.  
+            // such as ScopeExtendingAttribute.
             Iterator extenders = attributeList(ScopeExtender.class).iterator();
 
             while (extenders.hasNext()) {

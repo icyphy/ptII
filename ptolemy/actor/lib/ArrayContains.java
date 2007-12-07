@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
  input port and an element from the <i>element</i>
  port parameter and outputs true if the element is contained by
  the array.
- 
+
  @author Efrat Jaeger and Edward A. Lee
  @version $Id$
  */
@@ -90,12 +90,12 @@ public class ArrayContains extends TypedAtomicActor {
      */
     public TypedIOPort array;
 
-    /** Boolean output specifying whether the element is contained in 
+    /** Boolean output specifying whether the element is contained in
      *         the array.
      */
     public TypedIOPort output;
 
-    /** The element to test for presence in the array.     
+    /** The element to test for presence in the array.
      */
     public PortParameter element;
 

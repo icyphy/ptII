@@ -1342,7 +1342,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Parse operation cancelled.
             return null;
         } catch (Exception ex) {
-            // If you change this code, try running 
+            // If you change this code, try running
             // ptolemy.moml.test.MoMLParserLeak with the heap profiler
             // and look for leaks.
             if (_toplevel != null && _toplevel instanceof ComponentEntity) {
@@ -1564,7 +1564,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  property, which is not generally available in applets.  Hence
      *  it is probably not a good idea to use this method in applet code,
      *  since it will probably fail outright.
-     *  
+     *
      *  <p> Note that you may also need to call {@link #reset()} so
      *  that the _toplevel is reset.
      *
@@ -2778,7 +2778,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // already exists
                 } else {
                     // If the createIfNecessary property is true and
-                    // there already is a property with this name, we 
+                    // there already is a property with this name, we
                     // don't handle this property
                     String value = (String) _attributes.get("value");
                     _handlePropertyElement(className, propertyName, value);
@@ -4410,7 +4410,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // Cache the modified flag so that if the file
         // we are opening is modified we don't accidentally
-        // mark container file as modified.  
+        // mark container file as modified.
         // Wireless SmartParking.xml had this problem because
         // LotSensor.xml has backward compat changes
         boolean modified = isModified();
@@ -5316,7 +5316,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         // setContext() calls reset(), which sets the modified
         // flag to false.  Thus, we cache the value of the modified
-        // flag.  
+        // flag.
         // See test 13.2 in
         // $PTII/ptolemy/moml/filter/test/BackwardCompatibility.tcl
         // which has a backward compatibility problem and loads a filter.
@@ -5346,12 +5346,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     /** Look for a MoML file associated with the specified class
      *  name, and if it exists, parse it in the context of the
-     *  specified instance. 
+     *  specified instance.
      *  If {@link #setIconLoader(IconLoader) has been called with
-     *  a non-null argument, then invoke the 
+     *  a non-null argument, then invoke the
      *  {@link ptolemy.moml.IconLoader#loadIconForClass(String, NamedObj)}
      *  method.  If {@link #setIconLoader(IconLoader) has <b>not</b>
-     *  been called, or was called with a null argument, then 
+     *  been called, or was called with a null argument, then
      *  The file name is constructed from
      *  the class name by replacing periods with file separators
      *  ("/") and appending "Icon.xml".  So, for example, for

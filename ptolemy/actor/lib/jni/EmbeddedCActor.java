@@ -76,7 +76,7 @@ public class EmbeddedCActor extends CompiledCompositeActor {
 
         // Set the visibility to expert, as casual users should
         // not see the C code.  This is particularly true if one
-        // installs an actor that is an instance of this with 
+        // installs an actor that is an instance of this with
         // particular C code in the library.
         embeddedCCode.setVisibility(Settable.EXPERT);
 
@@ -95,7 +95,7 @@ public class EmbeddedCActor extends CompiledCompositeActor {
         // // Assuming you have added an input port named "input"
         // // and an output port named "output", then the following
         // // line results in the input being copied to the output.
-        // $ref(output) = $ref(input);   
+        // $ref(output) = $ref(input);
         // /**/
         //
         // /***wrapupBlock***/
@@ -134,8 +134,8 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    //FIXME: Note that the next block is not a javadoc, I changed /** to /* 
-    /* If <i>embeddedCCode</i> is changed, compile the changed C Code. 
+    //FIXME: Note that the next block is not a javadoc, I changed /** to /*
+    /* If <i>embeddedCCode</i> is changed, compile the changed C Code.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If there is any error in evaluating
      *   the embedded C code.
@@ -258,7 +258,7 @@ public class EmbeddedCActor extends CompiledCompositeActor {
     /** An actor inside the EmbeddedCActor that is used as a dummy
      *  placeholder.  The EmbeddedActor is created in preinitialize() where
      *  ports from the outer EmbeddedCActor are connected to the EmbeddedActor.
-     *  The EmbeddedActor is destroyed in wrapup().   
+     *  The EmbeddedActor is destroyed in wrapup().
      */
     public static class EmbeddedActor extends TypedAtomicActor {
         /** Create a new instance of EmbeddedActor.

@@ -641,11 +641,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** If this actor is opaque, invoke the isFireFunctional() method 
+    /** If this actor is opaque, invoke the isFireFunctional() method
      *  of the local director and return its result. Otherwise, return true.
      *  Normally this method will not be invoked on a non-opaque
      *  composite actor.
-     *  
+     *
      *  @return True if the local director's isFireFunctional() method
      *   returns true or if this actor is not opaque.
      */
@@ -677,12 +677,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
         return _director != null;
     }
 
-    /** If this actor is opaque, invoke the isStrict() method of the local 
+    /** If this actor is opaque, invoke the isStrict() method of the local
      *  director and return its result. Otherwise, return true.
      *  Normally this method will not be invoked on a non-opaque
      *  composite actor.
-     *  
-     *  @return True if the local director's isStrict() method returns true or 
+     *
+     *  @return True if the local director's isStrict() method returns true or
      *   if this actor is not opaque.
      */
     public boolean isStrict() {

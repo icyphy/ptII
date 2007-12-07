@@ -467,7 +467,7 @@ public class CachedMethod {
      *  code generator that need more than the usual amount of
      *  information about methods that have been found.
      *  @return The type of the token that results from an invocation of
-     *  this method.   
+     *  this method.
      *  @exception IllegalActionException If a method or function with
      *  the correct argument types was not found.
      */
@@ -1137,7 +1137,7 @@ public class CachedMethod {
          *  types of argument conversions.
          *  @param input The token to be converted
          *  @exception IllegalActionException Always thrown in this
-         *  base class.   
+         *  base class.
          */
         public Object convert(ptolemy.data.Token input)
                 throws IllegalActionException {
@@ -1247,9 +1247,9 @@ public class CachedMethod {
             _baseConversion = baseConversion;
         }
 
-        /** Return the conversion that is applied to the object 
+        /** Return the conversion that is applied to the object
          *  upon which the method is invoked.
-         *  @return The conversion that is applied to the object 
+         *  @return The conversion that is applied to the object
          *  upon which the method is invoked.
          */
         public ArgumentConversion getBaseConversion() {
@@ -1283,10 +1283,10 @@ public class CachedMethod {
          * @param reducedArgs    An array of booleans where if an
          * element of the array is true and the corresponding argument
          * is an ArrayToken, then invoke() handles those arguments
-         * specially.  
+         * specially.
          * @exception IllegalActionException Not thrown in this derived
          * class, but the superclass throws it if the return type of
-         * the cached method cannot be determined.  
+         * the cached method cannot be determined.
          */
         public ArrayMapCachedMethod(String methodName, Type[] argumentTypes,
                 int type, CachedMethod cachedMethod, boolean[] reducedArgs)
@@ -1303,7 +1303,7 @@ public class CachedMethod {
          *  @param argValues An array of token objects that will be used
          *   as the arguments.  Note that each element must be an
          *   ArrayToken and each ArrayToken must have the same length
-         *   as the other ArrayTokens.   
+         *   as the other ArrayTokens.
          *  @return The token result of the method invocation.
          *  @exception IllegalActionException If the invoked method
          *   throws it.
@@ -1403,10 +1403,10 @@ public class CachedMethod {
          * @param reducedArgs    An array of booleans where if an
          * element of the array is true and the corresponding argument
          * is an MatrixToken, then invoke() handles those arguments
-         * specially.  
+         * specially.
          * @exception IllegalActionException Not thrown in this derived
          * class, but the superclass throws it if the return type of
-         * the cached method cannot be determined.  
+         * the cached method cannot be determined.
          */
         public MatrixMapCachedMethod(String methodName, Type[] argumentTypes,
                 int type, CachedMethod cachedMethod, boolean[] reducedArgs)

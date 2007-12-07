@@ -325,7 +325,7 @@ public class RealTimeComposite extends MirrorComposite {
      *  @param theTokens The tokens in the input events.
      */
     private class InputFrame implements Delayed {
-        /* FIXME: FindBugs says that InputFrame 
+        /* FIXME: FindBugs says that InputFrame
          * "defines compareTo(Object) and uses Object.equals()"
          * http://findbugs.sourceforge.net/bugDescriptions.html#EQ_COMPARETO_USE_OBJECT_EQUALS
          * says:
@@ -339,7 +339,7 @@ public class RealTimeComposite extends MirrorComposite {
          *
          *  From the JavaDoc for the compareTo method in the
          *  Comparable interface:
-         *  
+         *
          * It is strongly recommended, but not strictly required that
          * (x.compareTo(y)==0) == (x.equals(y)). Generally speaking,
          * any class that implements the Comparable interface and

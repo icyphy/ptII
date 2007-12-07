@@ -118,7 +118,7 @@ public class CheckModelSize {
 
         for (int i = 0; i < args.length; i++) {
             String fileName = args[i];
-            //             if (fileName.endsWith("ENM_11_18_04.xml") 
+            //             if (fileName.endsWith("ENM_11_18_04.xml")
             //                     || fileName.endsWith("IPCC_Base_Layers.xml")
             //                     || fileName.endsWith("dataFrame_R.xml")
             //                     || fileName.endsWith("eml_Table_as_Record_R.xml")

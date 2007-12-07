@@ -67,7 +67,7 @@ public class ActorTypeUtil {
      *  will have a length specified.  If length does not have a
      *  constant value, the the type will have an indeterminate length.
      *  @param typeable A typeable.
-     *  @param length Variable specifying the length of array. 
+     *  @param length Variable specifying the length of array.
      *  @return An InequalityTerm that can be passed to methods
      *   like setTypeAtLeast() of the Typeable interface.
      *  @exception IllegalActionException If the specified typeable

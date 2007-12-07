@@ -249,8 +249,8 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         }
 
         // There are two conditions when an event will be generated.
-        // 1. By linear interpolation, an event is identified to happen at 
-        // current time; 
+        // 1. By linear interpolation, an event is identified to happen at
+        // current time;
         boolean hasEvent = _eventNow;
 
         // 2. There is a discontinuity at the current time.
@@ -331,7 +331,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
                     _eventMissed = false;
                 }
             } else {
-                // No event will be generated at the current time. 
+                // No event will be generated at the current time.
                 _eventNow = false;
                 if ((_detectFallingCrossing && !inputIsIncreasing)
                         || (_detectRisingCrossing && inputIsIncreasing)) {

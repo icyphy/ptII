@@ -1240,10 +1240,10 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      * parse tree node is true.  If it is false, then throw a new
      * InternalErrorException that describes the node that includes
      * the given message.
-     * @param flag The value to be checked.  If false, then an 
+     * @param flag The value to be checked.  If false, then an
      * InternalErrorException is thrown.
      * @param node The node.
-     * @param message The error message to be included in the exception 
+     * @param message The error message to be included in the exception
      * if the flag parameter is false.
      */
     protected void _assert(boolean flag, ASTPtRootNode node, String message) {
@@ -1255,7 +1255,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     /** Loop through all of the children of this node,
      *  visiting each one of them, which will cause their token
      *  value to be determined.
-     *  @param node The node. 
+     *  @param node The node.
      */
     protected void _generateAllChildren(ASTPtRootNode node)
             throws IllegalActionException {
@@ -1269,7 +1269,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     /** Visit the child with the given index of the given node.
      *  This is usually called while visiting the given node.
      *  @param node The node.
-     *  @param i The index of the child to be visited. 
+     *  @param i The index of the child to be visited.
      *  @exception IllegalActionException If thrown while visiting a child
      *  node.
      */
@@ -1293,7 +1293,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     }
 
     /** Return true if the name is a valid name.  This base class
-     *  always returns false.   
+     *  always returns false.
      *  @param name The name to be looked up.
      *  @return True if the name is valid.  This base class always returns
      *  false.

@@ -56,7 +56,7 @@ public abstract class AbstractDDI implements DDI {
      *  convenience, this base class by default returns true. An actor
      *  that does change state in prefire() or fire() must override
      *  this method to return false.
-     *  
+     *
      *  @return True.
      */
     public boolean isFireFunctional() {
@@ -67,7 +67,7 @@ public abstract class AbstractDDI implements DDI {
      *  check their inputs to see whether they are known.  They assume
      *  they are known.  A derived class that can tolerate unknown
      *  inputs should override this method to return false.
-     *  
+     *
      *  @return True always in this base class.
      */
     public boolean isStrict() {

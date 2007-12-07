@@ -119,9 +119,9 @@ public class NonStrictDelay extends Transformer {
         super.initialize();
     }
 
-    /** Return false. This actor can produce some output event the input 
+    /** Return false. This actor can produce some output event the input
      *  receiver has status unknown.
-     *  
+     *
      *  @return False.
      */
     public boolean isStrict() {

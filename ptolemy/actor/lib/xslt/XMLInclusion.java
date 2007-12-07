@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
-   Combine multiple XMLTokens into one XMLToken.  
+   Combine multiple XMLTokens into one XMLToken.
 
    <p>The actor reads in multiple arrays of XML Tokens from the
    <i>input</i> port.  It also takes a port parameter,

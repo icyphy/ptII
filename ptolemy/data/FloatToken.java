@@ -60,7 +60,7 @@ public class FloatToken extends ScalarToken {
     }
 
     /** Construct a FloatToken with the specified value.
-     *  @param value The specified value.   
+     *  @param value The specified value.
      */
     public FloatToken(float value) {
         _value = value;
@@ -68,7 +68,7 @@ public class FloatToken extends ScalarToken {
 
     /** Construct a FloatToken from the specified string.
      *  @param init The initialization string, which is in a format
-     *  suitable for java.lang.Float.parseFloat(String).   
+     *  suitable for java.lang.Float.parseFloat(String).
      *  @exception IllegalActionException If the Token could not
      *   be created with the given String.
      */

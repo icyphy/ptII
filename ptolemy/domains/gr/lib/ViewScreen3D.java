@@ -529,7 +529,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     }
 
     /** Get the number of horizontal pixels in the rendered image.
-     *  @return the number of horizontal pixels in the rendered image.   
+     *  @return the number of horizontal pixels in the rendered image.
      *  @exception IllegalActionException If thrown while reading the
      *  <i>horizontalPixels</i> parameter.
      */
@@ -546,7 +546,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     }
 
     /** Get the number of vertical pixels in the rendered image.
-     *  @return the number of vertical pixels in the rendered image.   
+     *  @return the number of vertical pixels in the rendered image.
      *  @exception IllegalActionException If thrown while reading the
      *  <i>verticalPixels</i> parameter.
      */
@@ -712,7 +712,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     protected Canvas3D _canvas;
 
     /** The container set in the place() method, or the content pane of the
-     * created frame if place was not called. 
+     * created frame if place was not called.
      */
     protected Container _container;
 

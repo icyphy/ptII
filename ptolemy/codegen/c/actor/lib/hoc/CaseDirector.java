@@ -62,8 +62,8 @@ public class CaseDirector extends Director {
     ////                         public methods                         ////
 
     /** Generate the code for the firing of actors controlled by this
-     *  director.  
-     *  
+     *  director.
+     *
      *  @return The generated fire code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor.

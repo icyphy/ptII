@@ -307,10 +307,10 @@ public class ExplicitRK45Solver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Override the method in the base abstract class to advance the 
+    /** Override the method in the base abstract class to advance the
      *  model time. The amount of the
      *  increment is decided by the number of the round counter and
-     *  the current step size. 
+     *  the current step size.
      *  @exception IllegalActionException If thrown in the super class or the
      *  model time can not be set.
      */

@@ -38,7 +38,7 @@ import ptolemy.data.Token;
  then for each transmission, it is notified and given all pertinent
  information, including the transmission properties, the token transmitted,
  source port and the destination port.
- 
+
  @see WirelessChannel
  @author Heather Taylor, Elaine Cheong
  @version $Id$
@@ -52,10 +52,10 @@ public interface ChannelListener {
     ////                         public methods                    ////
 
     /** React to a transmission on the channel on which this is listening.
-     *  The channel will call this method after a transmission occurs, 
+     *  The channel will call this method after a transmission occurs,
      *  which means that the transmission properties seen by this method
      *  are they same as those seen by the destination.
-     *  
+     *
      *  @param properties The transmission properties after they have
      *  been transformed by any registered PropertyTransformers.
      *  @param token The token transmitted.

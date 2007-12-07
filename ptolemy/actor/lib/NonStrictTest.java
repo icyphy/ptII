@@ -288,7 +288,7 @@ public class NonStrictTest extends Sink {
             _numberOfInputTokensSeen++;
 
             // FIXME: If we get a nil token on the input, what should we do?
-            // Here, we require that the referenceToken also be nil. 
+            // Here, we require that the referenceToken also be nil.
             // If the token is an ArrayToken and two corresponding elements
             // are nil, then we consider them "close".
             if (token.isCloseTo(referenceToken, _tolerance).booleanValue() == false
@@ -438,7 +438,7 @@ public class NonStrictTest extends Sink {
      *  This method differs from
      *  {@link ptolemy.data.ArrayToken#_isCloseTo(Token, double)}
      *  in that if corresponding elements are both nil tokens, then
-     *  those two elements are considered "close", see 
+     *  those two elements are considered "close", see
      *  {@link ptolemy.data.Token#NIL}.
      *  @param token1 The first array token to compare.
      *  @param token2 The second array token to compare.
@@ -493,7 +493,7 @@ public class NonStrictTest extends Sink {
      *  This method differs from
      *  {@link ptolemy.data.RecordToken#_isCloseTo(Token, double)}
      *  in that if corresponding elements are both nil tokens, then
-     *  those two elements are considered "close", see 
+     *  those two elements are considered "close", see
      *  {@link ptolemy.data.Token#NIL}.
      *  @param token1 The first array token to compare.
      *  @param token2 The second array token to compare.

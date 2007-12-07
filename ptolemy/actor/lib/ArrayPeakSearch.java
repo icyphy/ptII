@@ -67,7 +67,7 @@ import ptolemy.kernel.util.Workspace;
  example, if <i>dip</i> is given as 2.0 and <i>scale</i> has value
  "relative linear", then a dip must drop to half of a local peak
  value to be considered a dip.</p>
- 
+
  <p>If <i>squelch</i> is given as 10.0 and <i>scale</i> has value
  "relative linear", then any peaks that lie below 1/10 of the global
  peak are ignored.  Note that <i>dip</i> is relative to the most

@@ -266,7 +266,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                 }
 
                 if (actor.iterate(1) == STOP_ITERATING) {
-                    // FIXME: How to handle this? 
+                    // FIXME: How to handle this?
                     // put the actor on a no-fire hashtable?
                 }
             }
@@ -475,7 +475,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
                 _readyToFire = true;
             } else {
-                // the outside time is later than the expected next iteration 
+                // the outside time is later than the expected next iteration
                 // time. This may happen when a giotto model stops firing at
                 // some time and resumes firing after a while. See the giotto
                 // composite demo.

@@ -76,7 +76,7 @@ public class FixType extends StructuredType implements Serializable {
     /** Return a new type which represents the type that results from
      *  adding a token of this type and a token of the given argument
      *  type.
-     *  
+     *
      *  @param rightArgumentType The type to add to this type.
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
@@ -266,10 +266,10 @@ public class FixType extends StructuredType implements Serializable {
      *  argument type.
      *  The resulting Precision of a multiply between two FixType
      *  arguments is as follows: the integer location is the sum
-     *  of the integer locations of the two arguments and the 
+     *  of the integer locations of the two arguments and the
      *  fractional location is the sum of the fractional locations
      *  of the two arguments.
-     *     
+     *
      *  @param rightArgumentType The type to add to this type.
      *  @return A new type, or BaseType.GENERAL, if the operation does
      *  not make sense for the given types.
@@ -292,7 +292,7 @@ public class FixType extends StructuredType implements Serializable {
      *  not make sense for the given types.
      */
     public Type one() {
-        // FIXME...  deal with precisions correctly.  
+        // FIXME...  deal with precisions correctly.
         return this;
     }
 

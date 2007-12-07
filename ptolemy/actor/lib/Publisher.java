@@ -75,7 +75,7 @@ import ptolemy.kernel.util.Workspace;
  pairs. Similarly, type constraints will propagate across
  Publisher-Subscriber pairs. That is, the type of the Subscriber
  output will match the type of the Publisher input.
- 
+
  @author Edward A. Lee, Raymond A. Cardillo
  @version $Id$
  @since Ptolemy II 5.2

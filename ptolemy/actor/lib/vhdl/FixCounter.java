@@ -167,12 +167,12 @@ public class FixCounter extends SynchronousFixTransformer {
     private int _count = 0;
 
     /**
-     * 
+     *
      */
     private int _latestCount = 0;
 
     /**
-     * 
+     *
      */
     private boolean _consumed;
 }

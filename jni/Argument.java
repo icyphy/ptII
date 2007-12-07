@@ -94,8 +94,8 @@ public class Argument extends AbstractSettableAttribute {
      *  listeners.  In other words, it should not be possible for the
      *  same listener to be notified twice of a value update.
      *  @param listener The listener to add, which is ignored, no
-     *  listener is added.   
-     *  @see #removeValueListener(ValueListener)   
+     *  listener is added.
+     *  @see #removeValueListener(ValueListener)
      */
     public void addValueListener(ValueListener listener) {
     }
@@ -343,7 +343,7 @@ public class Argument extends AbstractSettableAttribute {
 
     /** Get the visibility of this Settable.
      *  @return Always return Settable.NONE, indicating that the user
-     *  interface should not make an instance visible.   
+     *  interface should not make an instance visible.
      *  @see #setVisibility(Visibility)
      */
     public Visibility getVisibility() {
@@ -374,7 +374,7 @@ public class Argument extends AbstractSettableAttribute {
     /** Remove a listener to be notified when the value of
      *  this settable object changes.
      *  @param listener The listener to remove.
-     *  @see #addValueListener(ValueListener)   
+     *  @see #addValueListener(ValueListener)
      */
     public void removeValueListener(ValueListener listener) {
     }

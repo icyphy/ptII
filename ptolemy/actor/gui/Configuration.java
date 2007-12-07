@@ -105,7 +105,7 @@ import ptolemy.util.StringUtilities;
  <pre>
  Effigy effigy = Configuration.findEffigy(foo.toplevel());
  Configuration configuration = effigy.toplevel();
- </pre> 
+ </pre>
 
 
  @author Steve Neuendorffer and Edward A. Lee
@@ -140,7 +140,7 @@ public class Configuration extends CompositeEntity implements
     ////                         public methods                    ////
 
     /** Check the configuration for common style problems.
-     *  @return HTML describing the problems 
+     *  @return HTML describing the problems
      *  @exception Exception If there is a problem cloning the configuration.
      */
     public String check() throws Exception {
@@ -387,7 +387,7 @@ public class Configuration extends CompositeEntity implements
                             // configuration.openModel() does not do much good
                             // if a .htm file is not found because the
                             // MessageHandler pops up before we return
-                            // from the exception. 
+                            // from the exception.
 
                             MessageHandler.error("Failed to open "
                                     + effigy.identifier.getExpression(), ex);

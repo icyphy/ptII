@@ -83,7 +83,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
     ////                     ports and parameters                  ////
 
     /** The enable port. If this input port
-     *  receives a true token, then the counter is incremented.  
+     *  receives a true token, then the counter is incremented.
      */
     public TypedIOPort enable;
 
@@ -92,7 +92,7 @@ public class IntegerCounter extends SynchronousFixTransformer {
      */
     public TypedIOPort reset;
 
-    /** The bit width for this counter. 
+    /** The bit width for this counter.
      */
     public Parameter width;
 
@@ -106,9 +106,9 @@ public class IntegerCounter extends SynchronousFixTransformer {
     /** Override the base class to determine which function is being
      *  specified.
      *  @param attribute The attribute that changed.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      *  @exception IllegalActionException If the function is not recognized.
-     * @exception NameDuplicationException 
+     * @exception NameDuplicationException
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {

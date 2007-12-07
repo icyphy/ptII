@@ -51,7 +51,7 @@ import ptolemy.util.StringUtilities;
 /** Build Documentation for Java and Actors.
  *
  *  <p>This class sets the commands that build the Java classes.
- *  
+ *
  *  @author Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 5.2
@@ -97,12 +97,12 @@ public class DocBuilder extends Attribute {
      *  #setConfiguration(Configuration)} then the configuration is
      *  searched for a _docApplicationSpecializer parameter.  If that
      *  parameter exists it is assumed to name a class that implements
-     *  the {@link DocApplicationSpecializer} interface and the 
+     *  the {@link DocApplicationSpecializer} interface and the
      *  {@link DocApplicationSpecializer#buildCommands(ExecuteCommands)}
      *  method which returuns the commands to invoke.
      *
      *  @return The return value of the last subprocess that was executed.
-     *  or -1 if no commands were executed.     
+     *  or -1 if no commands were executed.
      *  @exception IllegalActionException If there is a problem building
      *  the documentation.
      */
@@ -168,7 +168,7 @@ public class DocBuilder extends Attribute {
         return results;
     }
 
-    /** Build the documentation. 
+    /** Build the documentation.
      *  @return The return value of the last subprocess that was executed
      *  or -1 if no commands were executed.
      */
@@ -276,7 +276,7 @@ public class DocBuilder extends Attribute {
         _executeCommands.setCommands(commands);
 
         try {
-            // FIXME: need to put this output in to the UI, if any. 
+            // FIXME: need to put this output in to the UI, if any.
             _executeCommands.start();
         } catch (Exception ex) {
             StringBuffer errorMessage = new StringBuffer();

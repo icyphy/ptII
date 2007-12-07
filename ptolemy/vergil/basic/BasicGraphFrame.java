@@ -1890,7 +1890,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     private class DocumentationMenuItemFactory implements MenuItemFactory {
         /**
-         * Add an item to the given context menu that bring up the 
+         * Add an item to the given context menu that bring up the
          * documentation for the given object
          */
         public JMenuItem create(final JContextMenu menu, final NamedObj object) {

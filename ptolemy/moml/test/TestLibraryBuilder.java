@@ -38,7 +38,7 @@ import ptolemy.moml.LibraryBuilder;
 /**
  Test class for ptolemy.moml.LibraryBuilder.
  The LibraryBuilder class has an abstract method, so we use this class
- to define that method. 
+ to define that method.
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 6.1
@@ -47,7 +47,7 @@ import ptolemy.moml.LibraryBuilder;
  */
 public class TestLibraryBuilder extends LibraryBuilder {
     /**
-     * Build the library. 
+     * Build the library.
      * This test class merely creates a CompositeEntity in the workspace.
      * @param workspace The workspace.
      * @return ComponentEntity

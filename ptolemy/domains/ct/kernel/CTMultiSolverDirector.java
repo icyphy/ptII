@@ -235,7 +235,7 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     public void establishInitialStates() throws IllegalActionException {
         // In this method, we only need to establish the initial states for
-        // continuous variables. 
+        // continuous variables.
         // Discrete events happening at this time should be generated during
         // the initialize method, like de.lib.SingleEvent.
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
@@ -776,7 +776,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
     /** Call the postfire() method on all continuous actors in the schedule.
      *  For a correct CT simulation, the state of a continuous actor can only
-     *  change at this stage of an iteration. 
+     *  change at this stage of an iteration.
      *  <p>
      *  If the <i>synchronizeToRealTime</i> parameter is <i>true</i>,
      *  then this method will block execution until the real time catches
@@ -982,10 +982,10 @@ public class CTMultiSolverDirector extends CTDirector {
                 break;
             }
 
-            // To check whether a discrete phase of execution reaches a 
-            // fixed point. The hasCurrentEvent() method has be called to 
-            // check the existence of events at the end of each iteration. 
-            // Only if this method returns false for two consecutive 
+            // To check whether a discrete phase of execution reaches a
+            // fixed point. The hasCurrentEvent() method has be called to
+            // check the existence of events at the end of each iteration.
+            // Only if this method returns false for two consecutive
             // iterations, will we claim that a fixed point has been reached.
 
             if (cachedEventStatus || hasCurrentEvent()) {
@@ -1680,7 +1680,7 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     /** Mark the current state as the known good state. Call the
-     *  markStates() method on all CTStatefulActors. 
+     *  markStates() method on all CTStatefulActors.
      *  @exception IllegalActionException If thrown by the scheduler.
      */
     private void _markStates() throws IllegalActionException {
@@ -1699,7 +1699,7 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
-    /** Adjust step size so that the first breakpoint is not in the middle 
+    /** Adjust step size so that the first breakpoint is not in the middle
      *  of this step. Return the refined step size.
      */
     private double _refinedStepWRTBreakpoints() {

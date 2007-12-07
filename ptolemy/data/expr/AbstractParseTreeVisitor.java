@@ -166,7 +166,7 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
     /** Visit the child with the given index of the given node.
      *  This is usually called while visiting the given node.
      *  @param node The node.
-     *  @param i The index of the child to be visited. 
+     *  @param i The index of the child to be visited.
      *  @exception IllegalActionException If thrown while visiting a child
      *  node.
      */

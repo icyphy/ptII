@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Green (cxh)
  */
 public abstract class ColtRandomSource extends CCodeGeneratorHelper {
-    /** 
+    /**
      *  Construct the RandomSource helper.
      *  @param actor the associated actor.
      */

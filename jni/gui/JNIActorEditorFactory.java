@@ -1,4 +1,4 @@
-/* An attribute that creates an editor pane to edit a JNIActor 
+/* An attribute that creates an editor pane to edit a JNIActor
 
  Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.

@@ -220,7 +220,7 @@ public class ViterbiDecoder extends Transformer {
      *  <i>delay</i> then verify it is a positive integer; if it is
      *  <i>polynomialArray</i>, then verify that each of its elements
      *  is a positive integer.
-     *  @param attribute The attribute that changed.  
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If <i>uncodedRate</i>,
      *  or <i>delay</i> is non-positive, or any element of
      *  <i>polynomialArray</i> is non-positive.

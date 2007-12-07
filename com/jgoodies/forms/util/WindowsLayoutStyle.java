@@ -1,31 +1,31 @@
 /*
  * Copyright (c) 2002-2007 JGoodies Karsten Lentzsch. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- *  o Redistributions of source code must retain the above copyright notice, 
- *    this list of conditions and the following disclaimer. 
- *     
- *  o Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
- *    and/or other materials provided with the distribution. 
- *     
- *  o Neither the name of JGoodies Karsten Lentzsch nor the names of 
- *    its contributors may be used to endorse or promote products derived 
- *    from this software without specific prior written permission. 
- *     
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+ *  o Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ *  o Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ *  o Neither the name of JGoodies Karsten Lentzsch nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.jgoodies.forms.util;
@@ -78,9 +78,9 @@ final class WindowsLayoutStyle extends LayoutStyle {
 
     /**
      * Returns this style's default button width.
-     * 
+     *
      * @return the default button width
-     * 
+     *
      * @see #getDefaultButtonHeight()
      */
     public Size getDefaultButtonWidth() {
@@ -89,9 +89,9 @@ final class WindowsLayoutStyle extends LayoutStyle {
 
     /**
      * Returns this style's default button height.
-     * 
+     *
      * @return the default button height
-     * 
+     *
      * @see #getDefaultButtonWidth()
      */
     public Size getDefaultButtonHeight() {
@@ -100,9 +100,9 @@ final class WindowsLayoutStyle extends LayoutStyle {
 
     /**
      * Returns this style's horizontal margin for general dialogs.
-     * 
+     *
      * @return the horizontal margin for general dialogs
-     * 
+     *
      * @see #getDialogMarginY()
      * @see #getTabbedDialogMarginX()
      */
@@ -112,9 +112,9 @@ final class WindowsLayoutStyle extends LayoutStyle {
 
     /**
      * Returns this style's vertical margin for general dialogs.
-     * 
+     *
      * @return the vertical margin for general dialogs
-     * 
+     *
      * @see #getDialogMarginX()
      * @see #getTabbedDialogMarginY()
      */
@@ -123,12 +123,12 @@ final class WindowsLayoutStyle extends LayoutStyle {
     }
 
     /**
-     * Returns this style's horizontal margin for dialogs that consist of 
+     * Returns this style's horizontal margin for dialogs that consist of
      * a tabbed pane.
-     * 
+     *
      * @return the horizontal margin for dialogs that consist of a tabbed pane
      * @since 1.0.3
-     * 
+     *
      * @see #getTabbedDialogMarginY()
      * @see #getDialogMarginX()
      */
@@ -139,10 +139,10 @@ final class WindowsLayoutStyle extends LayoutStyle {
     /**
      * Returns this style's vertical margin for dialogs that consist of
      * a tabbed pane.
-     * 
+     *
      * @return the vertical margin for dialogs that consist of a tabbed pane
      * @since 1.0.3
-     * 
+     *
      * @see #getTabbedDialogMarginX()
      * @see #getDialogMarginY()
      */
@@ -152,9 +152,9 @@ final class WindowsLayoutStyle extends LayoutStyle {
 
     /**
      * Returns a gap used to separate a label and associated control.
-     * 
+     *
      * @return a gap between label and associated control
-     * 
+     *
      * @see #getRelatedComponentsPadX()
      * @see #getUnrelatedComponentsPadX()
      */
@@ -164,9 +164,9 @@ final class WindowsLayoutStyle extends LayoutStyle {
 
     /**
      * Returns a horizontal gap used to separate related controls.
-     * 
+     *
      * @return a horizontal gap between related controls
-     * 
+     *
      * @see #getLabelComponentPadX()
      * @see #getRelatedComponentsPadY()
      * @see #getUnrelatedComponentsPadX()
@@ -177,9 +177,9 @@ final class WindowsLayoutStyle extends LayoutStyle {
 
     /**
      * Returns a vertical gap used to separate related controls.
-     * 
+     *
      * @return a vertical gap between related controls
-     * 
+     *
      * @see #getRelatedComponentsPadX()
      * @see #getUnrelatedComponentsPadY()
      */
@@ -189,9 +189,9 @@ final class WindowsLayoutStyle extends LayoutStyle {
 
     /**
      * Returns a horizontal gap used to separate unrelated controls.
-     * 
+     *
      * @return a horizontal gap between unrelated controls
-     * 
+     *
      * @see #getLabelComponentPadX()
      * @see #getUnrelatedComponentsPadY()
      * @see #getRelatedComponentsPadX()
@@ -202,9 +202,9 @@ final class WindowsLayoutStyle extends LayoutStyle {
 
     /**
      * Returns a vertical gap used to separate unrelated controls.
-     * 
+     *
      * @return a vertical gap between unrelated controls
-     * 
+     *
      * @see #getUnrelatedComponentsPadX()
      * @see #getRelatedComponentsPadY()
      */
@@ -214,9 +214,9 @@ final class WindowsLayoutStyle extends LayoutStyle {
 
     /**
      * Returns a narrow vertical pad used to separate lines.
-     * 
+     *
      * @return a narrow vertical pad used to separate lines
-     * 
+     *
      * @see #getLinePad()
      * @see #getParagraphPad()
      */
@@ -226,9 +226,9 @@ final class WindowsLayoutStyle extends LayoutStyle {
 
     /**
      * Returns a narrow vertical pad used to separate lines.
-     * 
+     *
      * @return a vertical pad used to separate lines
-     * 
+     *
      * @see #getNarrowLinePad()
      * @see #getParagraphPad()
      */
@@ -238,9 +238,9 @@ final class WindowsLayoutStyle extends LayoutStyle {
 
     /**
      * Returns a pad used to separate paragraphs.
-     * 
+     *
      * @return a vertical pad used to separate paragraphs
-     * 
+     *
      * @see #getNarrowLinePad()
      * @see #getLinePad()
      */
@@ -250,10 +250,10 @@ final class WindowsLayoutStyle extends LayoutStyle {
 
     /**
      * Returns a pad used to separate a button bar from a component.
-     * 
+     *
      * @return a vertical pad used to separate paragraphs
      * @since 1.0.3
-     * 
+     *
      * @see #getRelatedComponentsPadY()
      * @see #getUnrelatedComponentsPadY()
      */
@@ -262,22 +262,22 @@ final class WindowsLayoutStyle extends LayoutStyle {
     }
 
     /**
-     * Checks and answers whether buttons are typically ordered from 
-     * left to right or from right to left. Useful for building button bars 
+     * Checks and answers whether buttons are typically ordered from
+     * left to right or from right to left. Useful for building button bars
      * that shall comply with the platform's layout style guide.<p>
-     * 
+     *
      * For example the Windows style guide recommends to layout out
-     * <em>OK, Cancel, Apply</em> from left to right, where the 
+     * <em>OK, Cancel, Apply</em> from left to right, where the
      * Mac Aqua style guide recommends to layout out these buttons
      * from right to left.<p>
-     * 
+     *
      * Although most button sequences shall honor this order
      * some buttons require a left to right order. For example
      * <em>Back, Next</em> or <em>Move Left, Move Right</em>.<p>
-     * 
+     *
      * @return true if buttons are typically ordered from left to right
      * @since 1.0.3
-     * 
+     *
      * @see com.jgoodies.forms.builder.ButtonBarBuilder
      * @see com.jgoodies.forms.factories.ButtonBarFactory
      */

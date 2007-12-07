@@ -68,7 +68,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  FIXME: If this differs from the input dimensions?
  <li><i>transferSize</i> The number of samples that will
  be transferred to the audio driver
- together.  This is an integer with default 128. 
+ together.  This is an integer with default 128.
  <li><i></i>  The requested buffer size in the audio hardware. This
  affects how far ahead of real time the model can get. There is no
  harm in making this large because this actor will overwrite previously

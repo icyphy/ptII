@@ -113,10 +113,10 @@ public class XSLTransformer extends Transformer {
     /** The parameters to be used in the stylesheet. This is a record
      *  that defaults to "emptyRecord()", an expression language command
      *  that returns an empty record.
-     *  For example, if the parameter used in the style sheet is named 
+     *  For example, if the parameter used in the style sheet is named
      *  <i>a</i> with type <i>int</i>, then the styleSheetParameters has
      *  type <i>{a = int}</i>. If the style sheet has multiple parameters,
-     *  then each of them is represented as a field of the record. 
+     *  then each of them is represented as a field of the record.
      */
     public PortParameter styleSheetParameters;
 

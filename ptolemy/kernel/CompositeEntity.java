@@ -394,7 +394,7 @@ public class CompositeEntity extends ComponentEntity {
                             //                                         "Cannot clone a CompositeEntity with "
                             //                                                 + "level crossing transitions."
                             //                                                 + "  The relation was: " + rel
-                            //                                                 + ", its container was: " 
+                            //                                                 + ", its container was: "
                             //                                                 + rel.getContainer()
                             //                                                 + ", which is not equal to "
                             //                                                 + this);
@@ -1335,7 +1335,7 @@ public class CompositeEntity extends ComponentEntity {
             try {
                 _workspace.getWriteAccess();
                 _unlinkLevelCrossingLinksToOutside(this);
-                // Findbugs reports "load of known null value" so we use null  
+                // Findbugs reports "load of known null value" so we use null
                 super.setContainer(null);
             } finally {
                 _workspace.doneWriting();
@@ -1354,7 +1354,7 @@ public class CompositeEntity extends ComponentEntity {
      * actorClassName cannot be found.
      */
     public String statistics(String className) throws IllegalActionException {
-        // FIXME: The right way to do this is to have each class 
+        // FIXME: The right way to do this is to have each class
         // in the hierarchy have a statistics method.
         try {
             _workspace.getReadAccess();

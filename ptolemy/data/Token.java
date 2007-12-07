@@ -73,7 +73,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  <p>Nil, null or missing tokens are common in analytical systems like R and SAS
  where they are used to handle sparsely populated data sources.
- This class has support for such tokens, see {@link #NIL} for details.  
+ This class has support for such tokens, see {@link #NIL} for details.
 
  @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Christopher Brooks,
  Steve Neuendorffer
@@ -101,7 +101,7 @@ public class Token implements Serializable {
     /** Return a new token whose value is the sum of this token and
      *  the argument.
      *  @param rightArgument The token to add to this token.
-     *  @return A new token containing the result.  
+     *  @return A new token containing the result.
      *  If either this token or the argument token is a nil token, then
      *  {@link #NIL} is returned.
      *  @exception IllegalActionException If the argument token and
@@ -548,7 +548,7 @@ public class Token implements Serializable {
      *  The toString() method on a nil token returns the string "nil".
      */
     public static final Token NIL = new Token() {
-        /** Return the type of this token.                                  
+        /** Return the type of this token.
          *  @return BaseType.NIL.
          */
         public Type getType() {
@@ -559,7 +559,7 @@ public class Token implements Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return a string with an error message that states that 
+    /** Return a string with an error message that states that
      *  the token cannot be created with a string that is null
      *  or the value of the init parameter.
      *  @param type The type we are trying to create.

@@ -34,7 +34,7 @@ import ptolemy.codegen.c.actor.lib.jni.EmbeddedCActor;
 
 /**
  Code generator helper for an actor containing its own codegen template.
- 
+
  @author Gang Zhou, Christopher Brooks, Teale Fristoe
  @version $Id$
  @since Ptolemy II 6.1

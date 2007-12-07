@@ -62,7 +62,7 @@ public class StringToken extends AbstractConvertibleToken {
 
     /** Construct a token with the specified string.
      *  If the value argument is null then the empty string is created.
-     *  If the value argument is the string "nil", then the Token is not a  
+     *  If the value argument is the string "nil", then the Token is not a
      *  nil token it is the string "nil".
      *  @param value The specified string.
      */
@@ -114,8 +114,8 @@ public class StringToken extends AbstractConvertibleToken {
     /** Convert the specified token into an instance of StringToken.
      *  This method does lossless conversion.
      *  If the argument is already an instance of StringToken,
-     *  it is returned without any change. 
-     *  If the argument is a nil token, then 
+     *  it is returned without any change.
+     *  If the argument is a nil token, then
      *  {@link #NIL} is returned.
      *  Otherwise, if the argument is below StringToken in the type
      *  hierarchy, it is converted to an instance of StringToken or

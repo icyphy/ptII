@@ -1,5 +1,5 @@
 /* A helper class for ptolemy.actor.lib.gui.XYPlotter
- 
+
  Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
 
@@ -35,11 +35,11 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A helper class for ptolemy.actor.lib.gui.XYPlotter.
- 
+
  @author Gang Zhou, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 5.2
- @Pt.ProposedRating Yellow (zgang) 
+ @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Red (zgang)
  */
 public class XYPlotter extends PlotterBase {
@@ -53,7 +53,7 @@ public class XYPlotter extends PlotterBase {
 
     /** Generate fire code.
      *  @return The generated code.
-     *  @exception IllegalActionException If the code stream encounters 
+     *  @exception IllegalActionException If the code stream encounters
      *   errors in processing the specified code blocks.
      */
     public String generateFireCode() throws IllegalActionException {

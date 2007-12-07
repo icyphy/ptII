@@ -508,7 +508,7 @@ public class SootUtilities {
 
                         //                             //   System.out.println("fieldRef = " +
                         //                             //              box.getValue());
-                        //                         } 
+                        //                         }
 
                     } else if (value instanceof CastExpr) {
                         // Fix casts

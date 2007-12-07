@@ -32,7 +32,7 @@ import ptolemy.codegen.kernel.CodeGeneratorHelper;
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
 
-/**  
+/**
  *  Test class for codegen.kernel.ActorCodeGeneratro
  *
  *  @author Christopher Brooks

@@ -37,7 +37,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// RecorderGeneral
 
 /**
- Record all input tokens for later querying.  
+ Record all input tokens for later querying.
 
  <p>This actor differs from actor {@link ptolemy.actor.lib.Recorder}
  in that this actor has its input type set to BaseType.GENERAL.

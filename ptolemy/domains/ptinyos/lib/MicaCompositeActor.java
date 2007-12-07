@@ -62,7 +62,7 @@ import ptolemy.kernel.util.Workspace;
 
  <p> Also see tinyos-1.x/contrib/ptII/ptinyos/tos/platform/ptII/ptII.c
  and tinyos-1.x/contrib/ptII/ptinyos/tos/platform/ptII/adc_model.c
-   
+
  @author Elaine Cheong
  @version $Id$
  @Pt.ProposedRating Green (celaine)

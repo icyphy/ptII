@@ -70,8 +70,8 @@ public class DFUtilities {
         /** Compare two objects.
          *  If the objects are not NamedObjs, then an InternalErrorException
          *  is thrown.
-         *  @param object1 The first object to be compared.   
-         *  @param object2 The second object to be compared.   
+         *  @param object1 The first object to be compared.
+         *  @param object2 The second object to be compared.
          *  @return 0 if the objects are the same.
          */
         public int compare(Object object1, Object object2) {
@@ -394,7 +394,7 @@ public class DFUtilities {
 
     /** If a variable with the given name does not exist, then create
      *  a variable with the given name. Then set the value of the
-     *  variable to the specified value. 
+     *  variable to the specified value.
      *  @param port The port.
      *  @param name Name of the variable.
      *  @param value The value.

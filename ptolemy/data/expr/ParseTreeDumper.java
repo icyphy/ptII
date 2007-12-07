@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ParseTreeDumper extends AbstractParseTreeVisitor {
     /** Print the contents of a parse tree.
-     *  @param root The parse tree to be displayed. 
+     *  @param root The parse tree to be displayed.
      */
     public void displayParseTree(ASTPtRootNode root) {
         _prefix = "";

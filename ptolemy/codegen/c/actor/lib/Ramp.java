@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Green (cxh)
  */
 public class Ramp extends CCodeGeneratorHelper {
-    /** 
+    /**
      *  Construct the Ramp helper.
      *  @param actor the associated actor
      */

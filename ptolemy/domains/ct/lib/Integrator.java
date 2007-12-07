@@ -92,7 +92,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  </p><p>
  This is a wrapper for the CTBaseIntegrator class.
  </p>
- 
+
  @author Jie Liu
  @version $Id$
  @since Ptolemy II 0.3

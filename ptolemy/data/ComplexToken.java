@@ -68,7 +68,7 @@ public class ComplexToken extends ScalarToken {
     }
 
     /** Construct a ComplexToken from the specified string.
-     *  @param init The initialization string, of the format 
+     *  @param init The initialization string, of the format
      *  <code><i>real</i>+<i>imaginary</i>i</code>, for example
      *  <code>1.0+2.0i</code>.
      *  @exception IllegalActionException If the string does not represent

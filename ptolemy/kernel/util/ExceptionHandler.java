@@ -34,7 +34,7 @@ package ptolemy.kernel.util;
  Interface for exception handlers. If a model contains an entity that
  implements this interface, then if running the model results in an
  exception, the exception is delegated to this exception handler.
- 
+
  @author Haiyang Zheng
  @version $Id$
  @since Ptolemy II 5.2

@@ -27,14 +27,14 @@
 package ptolemy.util;
 
 /** Execute commands in a subprocess and accumulate the output in a
- StringBuffer. 
+ StringBuffer.
 
- <p>As an alternative to this class, see 
+ <p>As an alternative to this class, see
  {@link ptolemy.gui.JTextAreaExec}, which uses Swing; and
  {@link ptolemy.util.StreamExec}, which writes to stderr and stdout.
 
  <p>Sample usage:
- <pre> 
+ <pre>
  List execCommands = new LinkedList();
  execCommands.add("date");
  execCommands.add("sleep 3");

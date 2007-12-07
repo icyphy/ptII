@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Workspace;
  <p>
  A simple integer arithmetic logic unit.
  </p>
- 
+
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.0.2
@@ -116,7 +116,7 @@ public class SimpleALU extends TypedAtomicActor {
     }
 
     /** If there is at least one token on each of the input ports, the
-     *  first token from each port is consumed. The value of the token 
+     *  first token from each port is consumed. The value of the token
      *  from the operation input port determines which operation will be
      *  perform on the tokens from input port A and B. The opcode is
      *  defined as follow:
@@ -125,7 +125,7 @@ public class SimpleALU extends TypedAtomicActor {
      *      2 - Subtraction (A - B)
      *      3 - Multiplication (A * B)
      *      4 - Division (A / B)
-     *  @throw IllegalActionException If the input operation code 
+     *  @throw IllegalActionException If the input operation code
      *  is not supported.
      */
     public void fire() throws IllegalActionException {

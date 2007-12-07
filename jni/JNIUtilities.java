@@ -227,11 +227,11 @@ public class JNIUtilities {
 
     /** Generate JNI files for one actor in a model.
      *  @param model The model that contains the actor.
-     *  @param actor The actor for which to generate JNI files. 
+     *  @param actor The actor for which to generate JNI files.
      *  @exception Exception If an actor with the JNI name already
      *  exists, if there is a problem creating or compiling the JNI files,
      *  or if there is a problem creating the ports that correspond with
-     *  the native method parameters.   
+     *  the native method parameters.
      */
     public static void generateJNI(CompositeEntity model, GenericJNIActor actor)
             throws Exception {
@@ -368,7 +368,7 @@ public class JNIUtilities {
      *  @return The value of the nativeLibrary attribute with the leading
      *  and trailing double quotes removed.
      *  @exception IllegalActionException If there is a problem getting
-     *  the <i>nativeLibrary</i> attribute.   
+     *  the <i>nativeLibrary</i> attribute.
      */
     public static String getNativeLibrary(GenericJNIActor actor)
             throws IllegalActionException {

@@ -1,4 +1,4 @@
-/* A Continuous actor that detects zero crossings of its trigger 
+/* A Continuous actor that detects zero crossings of its trigger
    input signal.
 
  Copyright (c) 1998-2007 The Regents of the University of California.

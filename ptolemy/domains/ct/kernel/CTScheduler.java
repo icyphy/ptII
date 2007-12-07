@@ -474,10 +474,10 @@ public class CTScheduler extends Scheduler {
                     // We do not blindly add a CT sub system into the list
                     // of dynamic actors or the list of waveform generators.
                     // Instead, we check whether it contains some dynamic
-                    // actors or waveform generators inside. 
-                    // The reason is that if a CT subsystem does not contain 
+                    // actors or waveform generators inside.
+                    // The reason is that if a CT subsystem does not contain
                     // any of the above two actors, it cannot be treated as
-                    // a source actor. 
+                    // a source actor.
                     if (((CTCompositeActor) a).containsDynamicActors()) {
                         dynamicActors.add(a);
                     }

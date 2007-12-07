@@ -82,7 +82,7 @@ import ptolemy.kernel.util.Workspace;
  <p>
  NOTE: A reset input for this actor would be useful.  This would reset
  the iterations count, to cause the pulse to emerge again.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.2
@@ -148,7 +148,7 @@ public class Pulse extends SequenceSource {
 
     /** If the attribute being changed is <i>indexes</i>, then check
      *  that it is increasing and nonnegative.
-     *  @param attribute The attribute that changed. 
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the indexes vector is not
      *   increasing and nonnegative, or the indexes is not a row vector.
      */

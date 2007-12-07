@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * This actor merges two monotonically nondecreasing streams of tokens into
  * one monotonically nondecreasing stream. On each firing, it reads data from
  * one of the inputs.  On the first firing, it simply records that token.
@@ -77,23 +77,23 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
     // Add an attribute to get the port placed on the bottom.
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
-     * The first input port, which accepts any scalar token. 
+    /**
+     * The first input port, which accepts any scalar token.
      */
     public TypedIOPort inputA;
 
-    /**     
+    /**
      * The second input port, which accepts any scalar token with
      * the same type as the first input port.
      */
     public TypedIOPort inputB;
 
-    /**     
-     * The output port, which has the same type as the input ports. 
+    /**
+     * The output port, which has the same type as the input ports.
      */
     public TypedIOPort output;
 
-    /**     
+    /**
      * Output port indicating whether the output token came from
      * <i>inputA</i>.
      */
@@ -112,37 +112,37 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
     // can extend this class.
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /**     
-     * The recorded token. 
+    /**
+     * The recorded token.
      */
     private ScalarToken _recordedToken = null;
 
-    /**     
-     * The port from which to read next. 
+    /**
+     * The port from which to read next.
      */
     private TypedIOPort _nextPort = null;
 
-    /**     
-     * Indicator of whether the _recordedToken was read from A. 
+    /**
+     * Indicator of whether the _recordedToken was read from A.
      */
     private boolean _readFromA;
 
-    /**     
-     * Tentative indicator of having read from A. 
+    /**
+     * Tentative indicator of having read from A.
      */
     private boolean _tentativeReadFromA;
 
-    /**     
-     * The tentative recorded token. 
+    /**
+     * The tentative recorded token.
      */
     private ScalarToken _tentativeRecordedToken = null;
 
-    /**     
-     * The tentative port from which to read next. 
+    /**
+     * The tentative port from which to read next.
      */
     private TypedIOPort _tentativeNextPort = null;
 
-    /**     
+    /**
      * Construct an actor with the given container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -170,7 +170,7 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
                 + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets the type constraints.
      * @param workspace The workspace for the new object.
@@ -186,7 +186,7 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * Read one token from the port that did not provide the recorded
      * token (or <i>inputA</i>, on the first firing), and output the
      * smaller of the recorded token or the newly read token.
@@ -242,7 +242,7 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Initialize this actor to indicate that no token is recorded.
      * @exception IllegalActionException If a derived class throws it.
      */
@@ -252,7 +252,7 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
         $ASSIGN$_recordedToken(null);
     }
 
-    /**     
+    /**
      * Commit the recorded token.
      * @return True.
      * @exception IllegalActionException Not thrown in this base class.
@@ -267,7 +267,7 @@ public class OrderedMerge extends TypedAtomicActor implements Rollbackable {
         return super.postfire();
     }
 
-    /**     
+    /**
      * Return the port that this actor will read from on the next
      * invocation of the fire() method. This will be null before the
      * first invocation of initialize().

@@ -1,31 +1,31 @@
 /*
  * Copyright (c) 2002-2007 JGoodies Karsten Lentzsch. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- *  o Redistributions of source code must retain the above copyright notice, 
- *    this list of conditions and the following disclaimer. 
- *     
- *  o Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
- *    and/or other materials provided with the distribution. 
- *     
- *  o Neither the name of JGoodies Karsten Lentzsch nor the names of 
- *    its contributors may be used to endorse or promote products derived 
- *    from this software without specific prior written permission. 
- *     
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+ *  o Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ *  o Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ *  o Neither the name of JGoodies Karsten Lentzsch nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.jgoodies.forms.layout;
@@ -37,13 +37,13 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 
 /**
- * An abstract class that specifies columns and rows in FormLayout 
+ * An abstract class that specifies columns and rows in FormLayout
  * by their default alignment, start size and resizing behavior.
  * API users will use the subclasses {@link ColumnSpec} and  {@link RowSpec}.
- * 
+ *
  * @author        Karsten Lentzsch
  * @version $Revision$
- * 
+ *
  * @see     ColumnSpec
  * @see     RowSpec
  * @see     FormLayout
@@ -84,7 +84,7 @@ public abstract class FormSpec implements Serializable {
     static final DefaultAlignment FILL_ALIGN = new DefaultAlignment("fill");
 
     /**
-     * An array of all enumeration values used to canonicalize 
+     * An array of all enumeration values used to canonicalize
      * deserialized default alignments.
      */
     private static final DefaultAlignment[] VALUES = { LEFT_ALIGN, RIGHT_ALIGN,
@@ -127,10 +127,10 @@ public abstract class FormSpec implements Serializable {
      * size, and resize weight. The resize weight must be a non-negative
      * double; you can use <code>NONE</code> as a convenience value for no
      * resize.
-     * 
+     *
      * @param defaultAlignment the spec's default alignment
      * @param size             a constant, component or bounded size
-     * @param resizeWeight     the spec resize weight      
+     * @param resizeWeight     the spec resize weight
      * @exception IllegalArgumentException if the resize weight is negative
      */
     protected FormSpec(DefaultAlignment defaultAlignment, Size size,
@@ -146,7 +146,7 @@ public abstract class FormSpec implements Serializable {
     /**
      * Constructs a <code>FormSpec</code> from the specified encoded
      * description. The description will be parsed to set initial values.
-     * 
+     *
      * @param defaultAlignment         the default alignment
      * @param encodedDescription        the encoded description
      */
@@ -160,7 +160,7 @@ public abstract class FormSpec implements Serializable {
 
     /**
      * Returns the default alignment.
-     * 
+     *
      * @return the default alignment
      */
     public final DefaultAlignment getDefaultAlignment() {
@@ -169,7 +169,7 @@ public abstract class FormSpec implements Serializable {
 
     /**
      * Returns the size.
-     *  
+     *
      * @return the size
      */
     public final Size getSize() {
@@ -178,7 +178,7 @@ public abstract class FormSpec implements Serializable {
 
     /**
      * Returns the current resize weight.
-     * 
+     *
      * @return the resize weight.
      */
     public final double getResizeWeight() {
@@ -187,9 +187,9 @@ public abstract class FormSpec implements Serializable {
 
     /**
      * Checks and answers whether this spec can grow or not.
-     * That is the case if and only if the resize weight is 
+     * That is the case if and only if the resize weight is
      * != <code>NO_GROW</code>.
-     * 
+     *
      * @return true if it can grow, false if it can't grow
      */
     final boolean canGrow() {
@@ -201,7 +201,7 @@ public abstract class FormSpec implements Serializable {
     /**
      * Parses an encoded form spec and initializes all required fields.
      * The encoded description must be in lower case.
-     * 
+     *
      * @param encodedDescription   the FormSpec in an encoded format
      * @exception IllegalArgumentException if the string is empty, has no size,
      * or is otherwise invalid
@@ -235,7 +235,7 @@ public abstract class FormSpec implements Serializable {
 
     /**
      * Parses an encoded size spec and initializes the size fields.
-     * 
+     *
      * @param token    a token that represents a size, either bounded or plain
      */
     private void parseAndInitSize(String token) {
@@ -252,11 +252,11 @@ public abstract class FormSpec implements Serializable {
 
     /**
      * Parses an encoded compound size and sets the size fields.
-     * The compound size has format: 
+     * The compound size has format:
      * max(&lt;atomic size&gt;;&lt;atomic size2&gt;) | min(&lt;atomic size1&gt;;&lt;atomic size2&gt;)
      * One of the two atomic sizes must be a logical size, the other must
      * be a size constant.
-     * 
+     *
      * @param token  a token for a bounded size, e.g. "max(50dlu; pref)"
      * @param setMax  if true we set a maximum size, otherwise a minimum size
      * @return a Size that represents the parse result
@@ -290,8 +290,8 @@ public abstract class FormSpec implements Serializable {
     /**
      * Decodes and returns an atomic size that is either a constant size or a
      * component size.
-     * 
-     * @param token        the encoded size 
+     *
+     * @param token        the encoded size
      * @return the decoded size either a constant or component size
      */
     private Size decodeAtomicSize(String token) {
@@ -304,7 +304,7 @@ public abstract class FormSpec implements Serializable {
     /**
      * Decodes an encoded resize mode and resize weight and answers
      * the resize weight.
-     * 
+     *
      * @param token        the encoded resize weight
      * @return the decoded resize weight
      * @exception IllegalArgumentException if the string description is an
@@ -339,15 +339,15 @@ public abstract class FormSpec implements Serializable {
      * The string representation consists of three elements separated by
      * a colon (<tt>":"</tt>), first the alignment, second the size,
      * and third the resize spec.<p>
-     * 
+     *
      * This method does <em>not</em> return a decoded version
      * of this object; the contrary is the case. Many instances
-     * will return a string that cannot be parsed.<p> 
-     * 
+     * will return a string that cannot be parsed.<p>
+     *
      * <strong>Note:</strong> The string representation may change
      * at any time. It is strongly recommended to not use this string
      * for parsing purposes.
-     * 
+     *
      * @return        a string representation of the form specification.
      */
     public final String toString() {
@@ -374,15 +374,15 @@ public abstract class FormSpec implements Serializable {
      * The string representation consists of three elements separated by
      * a colon (<tt>":"</tt>), first the alignment, second the size,
      * and third the resize spec.<p>
-     * 
+     *
      * This method does <em>not</em> return a decoded version
      * of this object; the contrary is the case. Many instances
-     * will return a string that cannot be parsed.<p> 
-     * 
+     * will return a string that cannot be parsed.<p>
+     *
      * <strong>Note:</strong> The string representation may change
      * at any time. It is strongly recommended to not use this string
      * for parsing purposes.
-     * 
+     *
      * @return  a string representation of the form specification.
      */
     public final String toShortString() {
@@ -419,9 +419,9 @@ public abstract class FormSpec implements Serializable {
     /**
      * Computes the maximum size for the given list of components, using
      * this form spec and the specified measure.<p>
-     * 
+     *
      * Invoked by FormLayout to determine the size of one of my elements
-     * 
+     *
      * @param container       the layout container
      * @param components      the list of components to measure
      * @param minMeasure      the measure used to determine the minimum size
@@ -437,7 +437,7 @@ public abstract class FormSpec implements Serializable {
     }
 
     /**
-     * An ordinal-based serializable typesafe enumeration for the 
+     * An ordinal-based serializable typesafe enumeration for the
      * column and row default alignment types.
      */
     public static final class DefaultAlignment implements Serializable {
@@ -451,7 +451,7 @@ public abstract class FormSpec implements Serializable {
         /**
          * Returns a DefaultAlignment that corresponds to the specified
          * string, null if no such aignment exists.
-         * 
+         *
          * @param str        the encoded alignment
          * @param isHorizontal   indicates the values orientation
          * @return the corresponding DefaultAlignment or null
@@ -480,7 +480,7 @@ public abstract class FormSpec implements Serializable {
 
         /**
          * Returns this Alignment's name.
-         * 
+         *
          * @return this alignment's name.
          */
         public String toString() {
@@ -490,7 +490,7 @@ public abstract class FormSpec implements Serializable {
         /**
          * Returns the first character of this Alignment's name.
          * Used to identify it in short format strings.
-         * 
+         *
          * @return the name's first character.
          */
         public char abbreviation() {

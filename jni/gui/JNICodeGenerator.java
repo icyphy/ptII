@@ -40,7 +40,7 @@ import ptolemy.util.ExecuteCommands;
 
 /** Generate Java Native Interface (JNI) support code and create ports
  *  that correspond with the native method arguments.
- *  
+ *
  *  @author Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 6.0

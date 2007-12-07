@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  <p>An actor that disassembles a DoubleMatrixToken to a multiport output.
- </p><p>On each firing, read one column or row vector (i.e. a 
+ </p><p>On each firing, read one column or row vector (i.e. a
  DoubleMatrixToken with one column or row) from the <i>input</i> port and
  send out individual DoubleTokens to each channel of the <i>output</i>
  port.  If the width of the <i>output</i> port (say, <i>n</i>) is less than
@@ -86,8 +86,8 @@ public class VectorDisassembler extends Transformer {
     ////                         public methods                    ////
 
     /** If there is a token at the input, read one column or row vector
-     *  (i.e. a DoubleMatrixToken with one column or row) from the 
-     *  input port, and for each channel i of the output port, 
+     *  (i.e. a DoubleMatrixToken with one column or row) from the
+     *  input port, and for each channel i of the output port,
      *  send send the ith element of this column or row vector to this
      *  channel.  Otherwise, do nothing.
      *

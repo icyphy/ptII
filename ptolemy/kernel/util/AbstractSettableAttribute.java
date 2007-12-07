@@ -96,7 +96,7 @@ public abstract class AbstractSettableAttribute extends Attribute implements
      *  Increment the version of the workspace.
      *  @param container The container.
      *  @param name The name of this attribute.
-     *  @param incrementWorkspaceVersion False to not add this to the workspace 
+     *  @param incrementWorkspaceVersion False to not add this to the workspace
      *   or do anything else that might change the workspace version number.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container, or if the name contains a period.

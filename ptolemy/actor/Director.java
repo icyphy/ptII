@@ -370,7 +370,7 @@ public class Director extends Attribute implements Executable {
      */
     public void fireAtCurrentTime(Actor actor) throws IllegalActionException {
         fireAt(actor, getModelTime());
-        // FIXME: the following is not necessary and incorrect. 
+        // FIXME: the following is not necessary and incorrect.
         // When a controlled actor call this method, this director handles
         // that actor only. Whether the container of this director needs to
         // fire at the current time is another issue. In fact, the postfire()
@@ -477,7 +477,7 @@ public class Director extends Attribute implements Executable {
      *  times.
      *
      *  @return The current time.
-     *  @see #setModelTime(Time)   
+     *  @see #setModelTime(Time)
      */
     public Time getModelTime() {
         return _currentTime;
@@ -672,7 +672,7 @@ public class Director extends Attribute implements Executable {
     /** Return false. This director iterates actors in its fire()
      *  method, which includes an invocation of their postfire()
      *  methods, so its fire method changes the state of the model.
-     *  
+     *
      *  @return False.
      */
     public boolean isFireFunctional() {
@@ -685,7 +685,7 @@ public class Director extends Attribute implements Executable {
      *  director requires that inputs be known in order to be able to
      *  iterate.  Derived classes that can tolerate unknown inputs
      *  should override this method to return false.
-     *  
+     *
      *  @return True.
      */
     public boolean isStrict() {
@@ -1360,7 +1360,7 @@ public class Director extends Attribute implements Executable {
      *  @param port The port to transfer tokens from.
      *  @return True if the port has an inside token that was successfully
      *  transferred.  Otherwise return false (or throw an exception).
-     *  
+     *
      */
     protected boolean _transferOutputs(IOPort port)
             throws IllegalActionException {

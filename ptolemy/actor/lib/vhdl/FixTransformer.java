@@ -88,7 +88,7 @@ public class FixTransformer extends TypedAtomicActor {
      * @param port The given port.
      * @return The precision string.
      * @exception IllegalActionException Thrown if there is no precision
-     *  parameter for the given port. 
+     *  parameter for the given port.
      */
     public String getPortPrecision(IOPort port) throws IllegalActionException {
 
@@ -140,7 +140,7 @@ public class FixTransformer extends TypedAtomicActor {
 
     /** Create a new fix point type output port with given the name.
      *  The container of the created port is this actor. This also
-     *  create a new precision parameter associated with this port.   
+     *  create a new precision parameter associated with this port.
      * @param name The given name of the port.
      * @return The new output port.
      * @exception IllegalActionException If parameters cannot be created.
@@ -181,11 +181,11 @@ public class FixTransformer extends TypedAtomicActor {
 
     /**
      * Verify that the bit width of the given FixToken is equal to
-     * the given width. If not, an IllegalActionException is thrown.  
+     * the given width. If not, an IllegalActionException is thrown.
      * @param token The given fix-point token.
      * @param width The given width.
      * @exception IllegalActionException Thrown If the bit width of the
-     *  given fix token is not equal to given width. 
+     *  given fix token is not equal to given width.
      */
     protected void _checkFixTokenWidth(FixToken token, int width)
             throws IllegalActionException {
@@ -201,7 +201,7 @@ public class FixTransformer extends TypedAtomicActor {
      * value.
      * @param token The given token.
      * @param max The given value.
-     * @exception IllegalActionException Thrown if 
+     * @exception IllegalActionException Thrown if
      *  _checkFixToken(FixToken, in) throws it.
      */
     protected void _checkFixMaxValue(FixToken token, int max)
@@ -213,7 +213,7 @@ public class FixTransformer extends TypedAtomicActor {
     /**
      * Set quantization parameters of the output port with the given
      * parameter expression strings. Hide the parameters in the configure
-     * dialog. 
+     * dialog.
      * @param precisionString The given expression for the precision parameter.
      * @param overflowString The given expression for the overflow parameter.
      * @param roundingString The given expression for the rounding parameter.
@@ -274,7 +274,7 @@ public class FixTransformer extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Queued ouput to simulate pipelined add.  The output is fix 
+    /** Queued ouput to simulate pipelined add.  The output is fix
      *  point type.
      */
     public QueuedTypedIOPort output;

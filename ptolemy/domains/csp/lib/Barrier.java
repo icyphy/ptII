@@ -43,7 +43,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 
 /**
  This actor implements multiway rendezvous on all channels
@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  then the last input channel provides the token for the
  remaining ones. If there are no input channels,
  then an exception is thrown.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.2

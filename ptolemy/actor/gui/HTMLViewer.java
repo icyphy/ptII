@@ -250,7 +250,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
                         if (useBrowser && (BrowserEffigy.staticFactory != null)) {
                             // Note that openModel will call MessageHandler
                             // if there are problems, so there is no point
-                            // putting a try/catch block here.  
+                            // putting a try/catch block here.
                             configuration.openModel(newURL, newURL, newURL
                                     .toExternalForm(),
                                     BrowserEffigy.staticFactory);
@@ -431,7 +431,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
             _styleSheetURL = null;
         }
 
-        // http://mindprod.com/jgloss/antialiasing.html says that in 
+        // http://mindprod.com/jgloss/antialiasing.html says that in
         // java 1.5, this will turn on anti-aliased fonts
         try {
             // We use reflection so that this compiles everywhere.

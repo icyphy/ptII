@@ -222,7 +222,7 @@ public class DocBuilderGUI extends PtolemyFrame {
 
     /** The name of the application, usually from the _applicationName
      *  StringAttribute in configuration.xml.
-     *  If null, then use the default documentation in doc/codeDoc. 
+     *  If null, then use the default documentation in doc/codeDoc.
      */
     private String _applicationName;
 }

@@ -67,7 +67,7 @@ import ptolemy.kernel.util.Workspace;
  pairs.  Similarly, type constraints will propagate across
  Publisher-Subscriber pairs. That is, the type of the Subscriber
  output will match the type of the Publisher input.
- 
+
  @author Edward A. Lee, Raymond A. Cardillo
  @version $Id$
  @since Ptolemy II 5.2
@@ -258,7 +258,7 @@ public class Subscriber extends TypedAtomicActor {
      *  up the hierarchy for the nearest opaque container
      *  or the top level and then traverses the contained entities.
      *  Thus, avoid calling this method except when the model
-     *  is running.   
+     *  is running.
      *  @exception IllegalActionException If creating the link
      *   triggers an exception.
      */

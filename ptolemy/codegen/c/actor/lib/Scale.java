@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Green (cxh)
  */
 public class Scale extends CCodeGeneratorHelper {
-    /** 
+    /**
      *  Construct a Scale helper.
      *  @param actor The given ptolemy.actor.lib.Scale actor.
      */

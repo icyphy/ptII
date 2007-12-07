@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  A version of the Case Refinement actor designed for the CT domain.
- 
+
  @author  Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.2

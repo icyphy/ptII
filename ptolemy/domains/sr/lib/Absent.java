@@ -63,9 +63,9 @@ public class Absent extends Undefined {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return false. This actor can produce some output event the input 
+    /** Return false. This actor can produce some output event the input
      *  receiver has status unknown.
-     *  
+     *
      *  @return False.
      */
     public boolean isStrict() {
@@ -81,9 +81,9 @@ public class Absent extends Undefined {
     }
 
     /** Return true. This actor always fires.
-     * 
+     *
      *  @return True.
-     *  @exception IllegalActionException Not thrown in this base class.   
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
         return true;

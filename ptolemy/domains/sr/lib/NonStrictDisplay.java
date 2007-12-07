@@ -71,9 +71,9 @@ public class NonStrictDisplay extends Display {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return false. This actor displays "undefined" when the input 
+    /** Return false. This actor displays "undefined" when the input
      *  receiver has status unknown.
-     *  
+     *
      *  @return False.
      */
     public boolean isStrict() {

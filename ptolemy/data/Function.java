@@ -67,7 +67,7 @@ public interface Function {
     public boolean isCongruent(Function function);
 
     /** Return a string representation.
-     *  @return A string representation of this function.   
+     *  @return A string representation of this function.
      */
     public String toString();
 }

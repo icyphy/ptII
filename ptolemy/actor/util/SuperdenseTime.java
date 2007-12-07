@@ -32,16 +32,16 @@ package ptolemy.actor.util;
 
 /**
  This class defines the structure of superdense time used in domains having
- time involved in computation. A superdense time object, s, consists of a time 
+ time involved in computation. A superdense time object, s, consists of a time
  stamp and an index, denoted as s = (t, n).
  <p>
- Two superdense time objects can be compared to see which one happens first. 
- The order is defined by the relationship between their time stamps and 
- indexes. In particular, given s_1 = (t_1, n_1) and s_2 = (t_2, n_2), s_1 
+ Two superdense time objects can be compared to see which one happens first.
+ The order is defined by the relationship between their time stamps and
+ indexes. In particular, given s_1 = (t_1, n_1) and s_2 = (t_2, n_2), s_1
  happens earlier than s_2 (denoted as s_1 <= s_2), if t_1 < t_2 or (t_1 == t_2
- and n_1 <= n_2). The equality relation holds only if both t_1 == t_2 and 
+ and n_1 <= n_2). The equality relation holds only if both t_1 == t_2 and
  n_1 == n_2 hold.
- 
+
  @author Haiyang Zheng, Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.2
@@ -50,7 +50,7 @@ package ptolemy.actor.util;
  */
 public class SuperdenseTime implements Comparable {
 
-    /** Construct a superdense time object with the specified timestamp and 
+    /** Construct a superdense time object with the specified timestamp and
      *  index.
      *  @param timeStamp The time stamp.
      *  @param index The index.
@@ -63,29 +63,29 @@ public class SuperdenseTime implements Comparable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Compare this superdense time object with the argument superdense 
+    /** Compare this superdense time object with the argument superdense
      *  time object for an order.
-     *  The argument has to be a superdense time object. 
+     *  The argument has to be a superdense time object.
      *  Otherwise, a ClassCastException will be thrown.
      *
      *  @param superdenseTime The superdense time object to compare against.
      *  @return -1, 0, or 1, depending on the order of the events.
-     *  @exception ClassCastException If the argument is not a superdense 
+     *  @exception ClassCastException If the argument is not a superdense
      *   time object.
      */
     public final int compareTo(Object superdenseTime) {
         return compareTo((SuperdenseTime) superdenseTime);
     }
 
-    /** Compare this superdense time object with the argument superdense 
-     *  time object for an order. Return -1, 0, or 1 if this superdense 
-     *  time object happens earlier than, simultaneously with, or later than 
+    /** Compare this superdense time object with the argument superdense
+     *  time object for an order. Return -1, 0, or 1 if this superdense
+     *  time object happens earlier than, simultaneously with, or later than
      *  the argument superdense time object.
      *  <p>
      *  Their timestamps are compared first. If the two timestamps are not
      *  equal, their order defines the objects' order. Otherwise, the
      *  indexes are compared for the order, where the object with
-     *  a smaller index happens earlier. If the two objects have the same 
+     *  a smaller index happens earlier. If the two objects have the same
      *  timestamp and index, then they happen simultaneously.
      *
      *  @param superdenseTime The superdense time object to compare against.

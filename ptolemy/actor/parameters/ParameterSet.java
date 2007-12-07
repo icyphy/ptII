@@ -79,7 +79,7 @@ import ptolemy.kernel.util.Settable;
  That is, if the container has a parameter with the same name
  as one in the parameter set, the one in the container provides
  the value to any observer.
- 
+
  <p>If the file is modified during execution of a model, by default
  this will not be noticed until the next run. If you set the
  <i>checkForFileUpdates</i> parameter to <i>true</i>, then
@@ -281,7 +281,7 @@ public class ParameterSet extends ScopeExtendingAttribute implements Executable 
      *  attributes in the current scope.
      *  @exception IOException If there is a problem reading the file.
      *  @exception IllegalActionException If there is a problem
-     *  reading the previous attribute or  validating the settables   
+     *  reading the previous attribute or  validating the settables
      *  @exception NameDuplicationException If there is a problem removing
      *  a previous attribute or creating a new variable.
      */

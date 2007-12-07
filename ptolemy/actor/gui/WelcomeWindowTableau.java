@@ -66,10 +66,10 @@ public class WelcomeWindowTableau extends HTMLViewerTableau {
 
     /** Handle cases where the <i>url</i> attribute is changed,
      *  yet there is no frame. If the argument is the <i>url</i> parameter,
-     *  and there is no frame, then do nothing.  Otherwise, call the same 
+     *  and there is no frame, then do nothing.  Otherwise, call the same
      *  method in the super class.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Thrown by the parent class 
+     *  @exception IllegalActionException Thrown by the parent class
      *  if the URL cannot be opened, or if the base class throws it.
      */
     public void attributeChanged(Attribute attribute)

@@ -364,7 +364,7 @@ public class Tableau extends CompositeEntity {
                 // after setVisible() because the the HTML welcome
                 // window that appears when vergil starts up was the
                 // wrong size.  However, if we call pack() twice, then
-                // under Java 1.5, the View XML window is too large, 
+                // under Java 1.5, the View XML window is too large,
                 // the horizontal scrollbar ends up off the screen.
 
                 //frame.pack();

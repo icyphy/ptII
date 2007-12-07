@@ -1,31 +1,31 @@
 /*
  * Copyright (c) 2002-2007 JGoodies Karsten Lentzsch. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- *  o Redistributions of source code must retain the above copyright notice, 
- *    this list of conditions and the following disclaimer. 
- *     
- *  o Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
- *    and/or other materials provided with the distribution. 
- *     
- *  o Neither the name of JGoodies Karsten Lentzsch nor the names of 
- *    its contributors may be used to endorse or promote products derived 
- *    from this software without specific prior written permission. 
- *     
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+ *  o Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ *  o Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ *  o Neither the name of JGoodies Karsten Lentzsch nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.jgoodies.forms.factories;
@@ -44,7 +44,7 @@ import com.jgoodies.forms.util.LayoutStyle;
 /**
  * Provides constants and factory methods for <code>Border</code>s that use
  * instances of {@link ConstantSize} to define the margins.<p>
- * 
+ *
  * <strong>Examples:</strong><br>
  * <pre>
  * Borders.DLU2_BORDER
@@ -54,7 +54,7 @@ import com.jgoodies.forms.util.LayoutStyle;
  *
  * @author  Karsten Lentzsch
  * @version $Revision$
- * 
+ *
  * @see     Border
  * @see     Sizes
  */
@@ -105,9 +105,9 @@ public final class Borders {
                     .dluY(0), Sizes.dluX(0));
 
     /**
-     * A standardized Border that describes the border around 
+     * A standardized Border that describes the border around
      * a dialog content that has no tabs.
-     * 
+     *
      * @see #TABBED_DIALOG_BORDER
      */
     public static final Border DIALOG_BORDER = createEmptyBorder(LayoutStyle
@@ -116,9 +116,9 @@ public final class Borders {
             LayoutStyle.getCurrent().getDialogMarginX());
 
     /**
-     * A standardized Border that describes the border around 
+     * A standardized Border that describes the border around
      * a dialog content that uses tabs.
-     * 
+     *
      * @see #DIALOG_BORDER
      */
     public static final Border TABBED_DIALOG_BORDER = createEmptyBorder(
@@ -132,13 +132,13 @@ public final class Borders {
     /**
      * Creates and returns an <code>EmptyBorder</code> with the specified
      * gaps.
-     * 
+     *
      * @param top                the top gap
      * @param left                the left-hand side gap
      * @param bottom        the bottom gap
      * @param right        the right-hand side gap
      * @return an <code>EmptyBorder</code> with the specified gaps
-     * 
+     *
      * @see #createEmptyBorder(String)
      */
     public static Border createEmptyBorder(ConstantSize top, ConstantSize left,
@@ -150,10 +150,10 @@ public final class Borders {
      * Creates and returns a <code>Border</code> using sizes as specified by
      * the given string. This string is a comma-separated encoding of
      * 4 <code>ConstantSize</code>s.
-     * 
+     *
      * @param encodedSizes         top, left, bottom, right gap encoded as String
      * @return an <code>EmptyBorder</code> with the specified gaps
-     * 
+     *
      * @see #createEmptyBorder(ConstantSize, ConstantSize, ConstantSize, ConstantSize)
      */
     public static Border createEmptyBorder(String encodedSizes) {
@@ -172,7 +172,7 @@ public final class Borders {
     }
 
     /**
-     * An empty border that uses 4 instances of {@link ConstantSize} 
+     * An empty border that uses 4 instances of {@link ConstantSize}
      * to define the gaps on all sides.
      */
     public static final class EmptyBorder implements Border {
@@ -192,7 +192,7 @@ public final class Borders {
 
         /**
          * Returns this border's top size.
-         * 
+         *
          * @return this border's top size
          */
         public ConstantSize top() {
@@ -201,7 +201,7 @@ public final class Borders {
 
         /**
          * Returns this border's left size.
-         * 
+         *
          * @return this border's left size
          */
         public ConstantSize left() {
@@ -210,7 +210,7 @@ public final class Borders {
 
         /**
          * Returns this border's bottom size.
-         * 
+         *
          * @return this border's bottom size
          */
         public ConstantSize bottom() {
@@ -219,7 +219,7 @@ public final class Borders {
 
         /**
          * Returns this border's right size.
-         * 
+         *
          * @return this border's right size
          */
         public ConstantSize right() {
@@ -227,9 +227,9 @@ public final class Borders {
         }
 
         /**
-         * Paints the border for the specified component with the specified 
+         * Paints the border for the specified component with the specified
          * position and size.
-         * 
+         *
          * @param c the component for which this border is being painted
          * @param g the paint graphics
          * @param x the x position of the painted border
@@ -243,8 +243,8 @@ public final class Borders {
         }
 
         /**
-         * Returns the insets of the border. 
-         *  
+         * Returns the insets of the border.
+         *
          * @param c the component for which this border insets value applies
          * @return the border's Insets
          */
@@ -257,7 +257,7 @@ public final class Borders {
          * Returns whether or not the border is opaque.  If the border
          * is opaque, it is responsible for filling in it's own
          * background when painting.
-         * 
+         *
          * @return false - because the empty border is not opaque
          */
         public boolean isBorderOpaque() {

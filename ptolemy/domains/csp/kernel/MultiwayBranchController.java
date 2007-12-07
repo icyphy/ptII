@@ -257,7 +257,7 @@ public class MultiwayBranchController extends AbstractBranchController
                 _branches = null;
                 _threadList = null;
             }
-        } // synchronized                
+        } // synchronized
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NamedObj;
  @author Ye Zhou, Gang Zhou, Teale Fristoe
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Yellow (zgang)  
+ @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Red (eal)
  */
 public class SDFDirector extends StaticSchedulingDirector {
@@ -78,8 +78,8 @@ public class SDFDirector extends StaticSchedulingDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Generate code for declaring read and write offset variables if needed. 
-     * 
+    /** Generate code for declaring read and write offset variables if needed.
+     *
      *  @return The generated code.
      *  @exception IllegalActionException If thrown while creating
      *  offset variables.
@@ -130,7 +130,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                     }
                 }
 
-                // The offset of the ports connected to the output port is 
+                // The offset of the ports connected to the output port is
                 // updated by outside director.
                 _updatePortOffset(outputPort, code, rate);
             }
@@ -470,7 +470,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             }
         }
 
-        // The offset of the ports connected to the output port is 
+        // The offset of the ports connected to the output port is
         // updated by outside director.
         _updatePortOffset(outputPort, code, rate);
     }
@@ -497,7 +497,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             receivers = port.getInsideReceivers();
         } else {
-            // Findbugs: receivers could be null, so we throw an exception. 
+            // Findbugs: receivers could be null, so we throw an exception.
             throw new IllegalActionException(port,
                     "Port is neither an input nor an output.");
         }
@@ -526,7 +526,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
 
         return size;
-        //} 
+        //}
         //catch (ArrayIndexOutOfBoundsException ex) {
         //    throw new IllegalActionException(port, "Channel out of bounds: "
         //            + channelNumber);
@@ -545,7 +545,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @param port The port whose offset variables are generated.
      *  @return Code that declares the read and write offset variables.
      *  @exception IllegalActionException If getting the rate or
-     *   reading parameters throws it.   
+     *   reading parameters throws it.
      */
     protected String _createDynamicOffsetVariables(IOPort port)
             throws IllegalActionException {
@@ -596,7 +596,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  variables are needed, create them.
      *  @return Code that declares the read and write offset variables.
      *  @exception IllegalActionException If getting the rate or
-     *   reading parameters throws it.   
+     *   reading parameters throws it.
      */
     protected String _createOffsetVariablesIfNeeded()
             throws IllegalActionException {
@@ -632,17 +632,17 @@ public class SDFDirector extends StaticSchedulingDirector {
                     int readTokens = 0;
                     int writeTokens = 0;
                     // If each actor firing is inlined in the code, then read
-                    // and write positions in the buffer must return to the 
+                    // and write positions in the buffer must return to the
                     // previous values after one iteration of the container actor
                     // in order to avoid using read and write offset variables.
                     if (inline) {
                         readTokens = DFUtilities.getRate(outputPort);
                         writeTokens = readTokens;
                         // If each actor firing is wrapped in a function, then read
-                        // and write positions in the buffer must return to the 
+                        // and write positions in the buffer must return to the
                         // previous values after one firing of this actor or one
-                        // firing of the actor that produces tokens consumed by the 
-                        // inside receiver of this actor in order to avoid using 
+                        // firing of the actor that produces tokens consumed by the
+                        // inside receiver of this actor in order to avoid using
                         // read and write offset variables.
                     } else {
                         readTokens = DFUtilities.getRate(outputPort);
@@ -789,7 +789,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @param writeTokens The number of tokens written.
      *  @return Code that declares the read and write offset variables.
      *  @exception IllegalActionException If getting the rate or
-     *   reading parameters throws it.   
+     *   reading parameters throws it.
      */
     protected String _createOffsetVariablesIfNeeded(IOPort port,
             int channelNumber, int readTokens, int writeTokens)
@@ -817,8 +817,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                 width = port.getWidthInside();
             }
 
-            // We check again if the new bufferSize divides readTokens or 
-            // writeTokens. If yes, we could avoid using variable to represent 
+            // We check again if the new bufferSize divides readTokens or
+            // writeTokens. If yes, we could avoid using variable to represent
             // offset.
             if (readTokens % bufferSize != 0) {
 
@@ -861,7 +861,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
 
     /** Check to see if the buffer size for the current schedule is greater
-     *  than the previous size. If so, set the buffer size to the current 
+     *  than the previous size. If so, set the buffer size to the current
      *  buffer size needed.
      *  @exception IllegalActionException If thrown while getting helper
      *   or buffer size.
@@ -906,7 +906,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     ////                         private methods                        ////
 
     /** Pad the buffer for the channel of the given port with the given
-     *  channel number to a power of two.  Return the new buffer size. 
+     *  channel number to a power of two.  Return the new buffer size.
      * @param port The port which has the buffer to pad.
      * @param channelNumber The number of the channel which has the buffer
      * to pad.

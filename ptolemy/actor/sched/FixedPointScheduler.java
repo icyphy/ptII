@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Nameable;
 
 /**
  A scheduler for the FixedPointDirector.  This scheduler constructs
- a static schedule for a model by performing a topological sort on the port 
+ a static schedule for a model by performing a topological sort on the port
  dependency graph of that model.  The schedule may mention an actor more
  than once if the dependencies require it.
  <p>
@@ -66,7 +66,7 @@ import ptolemy.kernel.util.Nameable;
  that could provide it with new information. Note that a firing
  of an actor can provide new information to itself, if there
  is a self loop from one of its output ports to an input port.
- 
+
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.2
@@ -168,7 +168,7 @@ public class FixedPointScheduler extends Scheduler {
     private void _computeActorDepth() {
         CompositeActor container = (CompositeActor) getContainer();
         LinkedList actors = (LinkedList) container.deepEntityList();
-        // Add container. 
+        // Add container.
         actors.add(container);
         int numberOfActors = actors.size();
         _actorToDepth = new Hashtable(numberOfActors);
@@ -228,7 +228,7 @@ public class FixedPointScheduler extends Scheduler {
     /** Perform a topological sort on the directed graph and use the result
      *  to set the depth for each IO port. A new Hashtable is created each
      *  time this method is called.
-     *  @param dependencyGraph A graph contains the function dependency 
+     *  @param dependencyGraph A graph contains the function dependency
      *   information.
      */
     private void _computePortDepth(DirectedAcyclicGraph dependencyGraph) {
@@ -260,7 +260,7 @@ public class FixedPointScheduler extends Scheduler {
             Actor portContainer = (Actor) ioPort.getContainer();
             // The output ports of the composite actor that contains
             // this director are set to the highest depth
-            // (the lowest priority) and the input ports are given 
+            // (the lowest priority) and the input ports are given
             // the highest priorities because they are sources.
             if (portContainer.equals(getContainer())) {
                 if (ioPort.isOutput()) {
@@ -393,7 +393,7 @@ public class FixedPointScheduler extends Scheduler {
 
     /** Construct a naive schedule based on the given dependency graph that
      *  contains the function dependency information.
-     *  @param dependencyGraph A graph contains the function dependency 
+     *  @param dependencyGraph A graph contains the function dependency
      *   information.
      *  @return A naive schedule generated based on the dependency graph.
      */
@@ -423,7 +423,7 @@ public class FixedPointScheduler extends Scheduler {
             } else {
                 previouslySeenActor = actor;
             }
-            // If the actor is the container of this director, 
+            // If the actor is the container of this director,
             // meaning this director is not at the top level,
             // then skip this actor. The container of the director
             // should not be listed in the schedule.
@@ -446,7 +446,7 @@ public class FixedPointScheduler extends Scheduler {
 
     /** Construct a schedule based on the given dependency graph that
      *  contains the function dependency information.
-     *  @param dependencyGraph A graph contains the function dependency 
+     *  @param dependencyGraph A graph contains the function dependency
      *   information.
      *  @return A schedule generated based on the dependency graph.
      */
@@ -475,7 +475,7 @@ public class FixedPointScheduler extends Scheduler {
 
             actor = (Actor) ioPort.getContainer();
 
-            // If the actor is the container of this director, 
+            // If the actor is the container of this director,
             // meaning this director is not at the top level,
             // then skip this actor. The container of the director
             // should not be listed in the schedule.

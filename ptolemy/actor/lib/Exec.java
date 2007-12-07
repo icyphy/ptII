@@ -70,7 +70,7 @@ import ptolemy.util.StringUtilities;
  <pre>
  "vergil -run model.xml\n exit\n"
  </pre>
- 
+
  <p>This actor uses java.lang.Runtime.exec() to invoke a subprocess
  named by the <i>command</i> parameter in a <i>directory</i> with an
  <i>environment</i>.  Data from the <i>input</i> port (if any) is
@@ -97,7 +97,7 @@ import ptolemy.util.StringUtilities;
  <br>and</br>
  <br><a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a></br>
  </p>
- 
+
  @author Christopher Hylands Brooks, Contributor: Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0

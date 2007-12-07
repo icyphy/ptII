@@ -83,7 +83,7 @@ import diva.graph.JGraph;
 //////////////////////////////////////////////////////////////////////////
 //// UnitSolverDialog
 
-/** 
+/**
  Dialog for the Unit Solver.
 
  @author Rowland R Johnson

@@ -166,7 +166,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
 
     /** Return false. This actor can produce some output at the highBit
      *  output port even if not all the inputs have status known.
-     *  
+     *
      *  @return False.
      */
     public boolean isStrict() {

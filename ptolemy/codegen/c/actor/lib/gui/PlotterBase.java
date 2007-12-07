@@ -1,5 +1,5 @@
 /* Common static methods for codegen plotters
- 
+
  Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
 
@@ -47,17 +47,17 @@ import ptolemy.util.StringUtilities;
 
 /**
  Common static methods for codegen plotters.
- <p>This class contains common code for the codegen plotters.  
+ <p>This class contains common code for the codegen plotters.
 
  In regular interpreted Ptolemy II plotters, we extend
  actor.lib.gui.PlotterBase.  However, because in codegen we
  need to extend CCode
 
- 
+
  @author Christopher Brooks, Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Yellow (cxh) 
+ @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
 public class PlotterBase extends CCodeGeneratorHelper {
@@ -72,7 +72,7 @@ public class PlotterBase extends CCodeGeneratorHelper {
     /** Generate plot specfic fire code.
      *  @param width The width.
      *  @return The generated code.
-     *  @exception IllegalActionException If the code stream encounters 
+     *  @exception IllegalActionException If the code stream encounters
      *   errors in processing the specified code blocks.
      */
     public String generatePlotFireCode(int width) throws IllegalActionException {
@@ -89,7 +89,7 @@ public class PlotterBase extends CCodeGeneratorHelper {
 
     /** Generate initialize code.
      *  @return The generated code.
-     *  @exception IllegalActionException If the code stream encounters 
+     *  @exception IllegalActionException If the code stream encounters
      *   errors in processing the specified code blocks.
      */
     public String generateInitializeCode() throws IllegalActionException {
@@ -159,14 +159,14 @@ public class PlotterBase extends CCodeGeneratorHelper {
         return code.toString();
     }
 
-    /** Generate the wrapup code. 
+    /** Generate the wrapup code.
      *  @return The generated wrapup code.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException
      */
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateWrapupCode());
-        // FIXME: this is a dumb way to leave the plot window open 
+        // FIXME: this is a dumb way to leave the plot window open
         // when the program runs to the end. I need to figure out a
         // better way.
         code.append("char $actorSymbol(temp)[80];" + _eol);

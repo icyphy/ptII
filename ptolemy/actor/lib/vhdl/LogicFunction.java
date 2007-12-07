@@ -50,7 +50,7 @@ import ptolemy.math.Rounding;
 /**
  Produce an output token on each firing with a FixPoint value that is
  equal to the sum of all the inputs at the plus port minus the inputs at the
- minus port. 
+ minus port.
 
  @author Man-Kit Leung
  @version $Id$
@@ -108,7 +108,7 @@ public class LogicFunction extends SynchronousFixTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Output the fixpoint value of the sum of the input bits. 
+    /** Output the fixpoint value of the sum of the input bits.
      *  If there is no inputs, then produce null.
      *  @exception IllegalActionException If there is no director.
      */

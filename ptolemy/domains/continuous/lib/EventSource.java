@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
  <p>
  This actor only generates predictable events and that is why it does not
  implement the ContinuousStepSizeControlActor interface. This actor requests a
- refiring at its initialize method to produce events. During its postfire 
+ refiring at its initialize method to produce events. During its postfire
  method, it requests further firings to produce more events if necessary.
 
  @author Haiyang Zheng

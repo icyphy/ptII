@@ -455,7 +455,7 @@ public class SharedParameter extends Parameter implements Initializable {
     /** Override the base class to also set the token of shared
      *  parameters.
      *  @param token The token.
-     *  @exception IllegalActionException Thrown if super class throws it. 
+     *  @exception IllegalActionException Thrown if super class throws it.
      *  @see #getToken()
      */
     public void setToken(Token token) throws IllegalActionException {

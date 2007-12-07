@@ -49,10 +49,10 @@ import ptolemy.math.Rounding;
 
 /**
  Produce an output token on each firing with a FixPoint value that is
- equal to the concatenation of the input bits from each input channel. 
+ equal to the concatenation of the input bits from each input channel.
  The ordering of channels determines the order of the concatenation; inputs
  from later channels are appended to the end. The input can have any scalar
- type. 
+ type.
 
  @author Man-Kit Leung
  @version $Id$
@@ -91,7 +91,7 @@ public class Concat extends FixTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Output the fixpoint value of the concatenation of the input bits. 
+    /** Output the fixpoint value of the concatenation of the input bits.
      *  If there is no inputs, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */

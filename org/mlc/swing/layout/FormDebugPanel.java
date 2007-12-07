@@ -16,34 +16,34 @@ import javax.swing.JPanel;
 import com.jgoodies.forms.layout.FormLayout;
 
 /**
- * [Taken from the FormLayout codebase. Hacked to work with @see ContainerLayout 
+ * [Taken from the FormLayout codebase. Hacked to work with @see ContainerLayout
     and deactivate() added.]
  <p>
- * A panel that paints grid bounds if and only if the panel's layout manager 
+ * A panel that paints grid bounds if and only if the panel's layout manager
  * is a {@link FormLayout}. You can tweak the debug paint process by setting
  * a custom grid color, painting optional diagonals and painting the grid
  * in the background.<p>
- * 
+ *
  * This class is not intended to be extended. However, it is not
- * marked as <code>final</code> to allow users to subclass it for 
+ * marked as <code>final</code> to allow users to subclass it for
  * debugging purposes. In general it is recommended to <em>use</em> JPanel
  * instances, not <em>extend</em> them. You can see this implementation style
- * in the Forms tutorial classes. Rarely there's a need to extend JPanel; 
- * for example if you provide a custom behavior for 
- * <code>#paintComponent</code> or <code>#updateUI</code>.  
+ * in the Forms tutorial classes. Rarely there's a need to extend JPanel;
+ * for example if you provide a custom behavior for
+ * <code>#paintComponent</code> or <code>#updateUI</code>.
  *
  * @author  Karsten Lentzsch
  */
 @SuppressWarnings("serial")
 public class FormDebugPanel extends JPanel {
 
-    /** 
-     * The default color used to paint the form's debug grid. 
+    /**
+     * The default color used to paint the form's debug grid.
      */
     private static final Color DEFAULT_GRID_COLOR = Color.red;
 
-    /** 
-     * Specifies whether the grid shall be painted in the background. 
+    /**
+     * Specifies whether the grid shall be painted in the background.
      * Is off by default and so the grid is painted in the foreground.
      */
     private boolean paintInBackground;
@@ -61,49 +61,49 @@ public class FormDebugPanel extends JPanel {
     // Instance Creation ****************************************************
 
     /**
-     * Constructs a FormDebugPanel with all options turned off. 
+     * Constructs a FormDebugPanel with all options turned off.
      */
     public FormDebugPanel() {
         this(null);
     }
 
     /**
-     * Constructs a FormDebugPanel on the given FormLayout instance 
+     * Constructs a FormDebugPanel on the given FormLayout instance
      * that paints the grid in the foreground and paints no diagonals.
-     * 
-     * @param layout  the panel's FormLayout instance 
+     *
+     * @param layout  the panel's FormLayout instance
      */
     public FormDebugPanel(FormLayout layout) {
         this(layout, false, false);
     }
 
     /**
-     * Constructs a FormDebugPanel on the given FormLayout 
+     * Constructs a FormDebugPanel on the given FormLayout
      * using the specified settings that are otherwise turned off.
-     * 
-     * @param paintInBackground 
+     *
+     * @param paintInBackground
      *     true to paint grid lines in the background,
      *     false to paint the grid in the foreground
-     * @param paintDiagonals    
-     *     true to paint diagonals, 
-     *     false to not paint them 
+     * @param paintDiagonals
+     *     true to paint diagonals,
+     *     false to not paint them
      */
     public FormDebugPanel(boolean paintInBackground, boolean paintDiagonals) {
         this(null, paintInBackground, paintDiagonals);
     }
 
     /**
-     * Constructs a FormDebugPanel on the given FormLayout using 
+     * Constructs a FormDebugPanel on the given FormLayout using
      * the specified settings that are otherwise turned off.
-     * 
-     * @param layout  
+     *
+     * @param layout
      *     the panel's FormLayout instance
-     * @param paintInBackground 
+     * @param paintInBackground
      *     true to paint grid lines in the background,
      *     false to paint the grid in the foreground
-     * @param paintDiagonals    
-     *     true to paint diagonals, 
-     *     false to not paint them 
+     * @param paintDiagonals
+     *     true to paint diagonals,
+     *     false to not paint them
      */
     public FormDebugPanel(FormLayout layout, boolean paintInBackground,
             boolean paintDiagonals) {
@@ -117,7 +117,7 @@ public class FormDebugPanel extends JPanel {
 
     /**
      * Specifies to paint in background or foreground.
-     * 
+     *
      * @param b    true to paint in the background, false for the foreground
      */
     public void setPaintInBackground(boolean b) {
@@ -126,7 +126,7 @@ public class FormDebugPanel extends JPanel {
 
     /**
      * Enables or disables to paint the panel's diagonals.
-     * 
+     *
      * @param b    true to paint diagonals, false to not paint them
      */
     public void setPaintDiagonals(boolean b) {
@@ -135,7 +135,7 @@ public class FormDebugPanel extends JPanel {
 
     /**
      * Sets the debug grid's color.
-     * 
+     *
      * @param color  the color used to paint the debug grid
      */
     public void setGridColor(Color color) {
@@ -146,8 +146,8 @@ public class FormDebugPanel extends JPanel {
 
     /**
      * Paints the component and - if background painting is enabled - the grid
-     * 
-     * @param g   the Graphics object to paint on 
+     *
+     * @param g   the Graphics object to paint on
      */
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -157,10 +157,10 @@ public class FormDebugPanel extends JPanel {
     }
 
     /**
-     * Paints the panel. If the panel's layout manager is a 
+     * Paints the panel. If the panel's layout manager is a
      * FormLayout it paints the form's grid lines.
-     * 
-     * @param g   the Graphics object to paint on 
+     *
+     * @param g   the Graphics object to paint on
      */
     public void paint(Graphics g) {
         super.paint(g);
@@ -179,7 +179,7 @@ public class FormDebugPanel extends JPanel {
 
     /**
      * Paints the form's grid lines and diagonals.
-     * 
+     *
      * @param g    the Graphics object used to paint
      */
     private void paintGrid(Graphics g) {

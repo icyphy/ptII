@@ -45,9 +45,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  An instance of this class describes the dependency that data at an output port
  has on data at an input port in a firing of an EnabledComposite actor.
  In particular, all output ports depend on the enable input port. The
- dependencies of the ouput ports having on the other inptus are inferred from 
+ dependencies of the ouput ports having on the other inptus are inferred from
  the dependencies of the contained actors.
- 
+
  @see ptolemy.actor.util.FunctionDependencyOfCompositeActor
  @author Haiyang Zheng
  @version $Id$
@@ -76,10 +76,10 @@ public class FunctionDependencyOfEnabledCompositeActor extends
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /** Construct the detailed dependency graph for the container, an 
-     *  EnabledComposite actor. In particular, all output ports depend 
-     *  on the enable input port. The dependencies of the ouput ports 
-     *  having on the other inptus are inferred from the dependencies 
+    /** Construct the detailed dependency graph for the container, an
+     *  EnabledComposite actor. In particular, all output ports depend
+     *  on the enable input port. The dependencies of the ouput ports
+     *  having on the other inptus are inferred from the dependencies
      *  of the contained actors.
      */
     protected void _constructDetailedDependencyGraph() {
@@ -96,7 +96,7 @@ public class FunctionDependencyOfEnabledCompositeActor extends
                 _detailedDependencyGraph.addEdge(enable, output);
             }
         } else {
-            // If the container is not an EnabledComposite, do nothing. Or, 
+            // If the container is not an EnabledComposite, do nothing. Or,
             // an exception can be thrown here.
         }
     }

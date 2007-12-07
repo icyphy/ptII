@@ -64,7 +64,7 @@ import ptolemy.kernel.util.Workspace;
  */
 public class Case extends ModalModel {
 
-    /** Construct 
+    /** Construct
      * a modal model with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.

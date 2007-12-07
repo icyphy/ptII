@@ -46,8 +46,8 @@ import ptolemy.util.MessageHandler;
 
 /** An instance of FunctionDependencyOfModalModel describes the function
  dependency information between the outputs and inputs of a modal model.
- Depending on the value of conservativeAnalysis parameter of the modal 
- model that containing this attribute, either optimimistic (dynamic) 
+ Depending on the value of conservativeAnalysis parameter of the modal
+ model that containing this attribute, either optimimistic (dynamic)
  calculation or conservation approximation of the function dependencies is
  performed.
 

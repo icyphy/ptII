@@ -111,12 +111,12 @@ public class LEDMatrix extends TypedAtomicActor {
     public TypedIOPort row;
 
     /** The number of columns.  The number must be a positive integer,
-     *  the initial default value is 10.   
+     *  the initial default value is 10.
      */
     public Parameter columns;
 
     /** The number of rows.  The number must be a positive integer,
-     *  the initial default value is 10.   
+     *  the initial default value is 10.
      */
     public Parameter rows;
 
@@ -124,7 +124,7 @@ public class LEDMatrix extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** If the argument is <i>rows</i> or <i>columns</i>, then update
-     *  the size of the array.  
+     *  the size of the array.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the offsets array is not
      *   nondecreasing and nonnegative.
@@ -143,7 +143,7 @@ public class LEDMatrix extends TypedAtomicActor {
     //         }
     //     }
     /** Read a token from the row and column ports and illuminate that
-     *  led until the next fire.   
+     *  led until the next fire.
      *  @exception IllegalActionException If the row or column ports
      *  cannot be read.
      */

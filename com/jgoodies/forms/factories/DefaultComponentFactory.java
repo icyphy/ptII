@@ -1,31 +1,31 @@
 /*
  * Copyright (c) 2002-2007 JGoodies Karsten Lentzsch. All Rights Reserved.
  *
- * Redistribution and use in source and binary forms, with or without 
+ * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
- *  o Redistributions of source code must retain the above copyright notice, 
- *    this list of conditions and the following disclaimer. 
- *     
- *  o Redistributions in binary form must reproduce the above copyright notice, 
- *    this list of conditions and the following disclaimer in the documentation 
- *    and/or other materials provided with the distribution. 
- *     
- *  o Neither the name of JGoodies Karsten Lentzsch nor the names of 
- *    its contributors may be used to endorse or promote products derived 
- *    from this software without specific prior written permission. 
- *     
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
- * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
- * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ *
+ *  o Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ *  o Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ *  o Neither the name of JGoodies Karsten Lentzsch nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 package com.jgoodies.forms.factories;
@@ -51,14 +51,14 @@ import com.jgoodies.forms.util.Utilities;
 
 /**
  * A singleton implementaton of the {@link ComponentFactory} interface
- * that creates UI components as required by the 
+ * that creates UI components as required by the
  * {@link com.jgoodies.forms.builder.PanelBuilder}.<p>
- * 
- * The texts used in methods <code>#createLabel(String)</code> and 
- * <code>#createTitle(String)</code> can contain an optional mnemonic marker. 
- * The mnemonic and mnemonic index are indicated by a single ampersand 
- * (<tt>&amp;</tt>). For example <tt>&quot;&amp;Save&quot</tt>, 
- * or <tt>&quot;Save&nbsp;&amp;as&quot</tt>. To use the ampersand itself 
+ *
+ * The texts used in methods <code>#createLabel(String)</code> and
+ * <code>#createTitle(String)</code> can contain an optional mnemonic marker.
+ * The mnemonic and mnemonic index are indicated by a single ampersand
+ * (<tt>&amp;</tt>). For example <tt>&quot;&amp;Save&quot</tt>,
+ * or <tt>&quot;Save&nbsp;&amp;as&quot</tt>. To use the ampersand itself
  * duplicate it, for example <tt>&quot;Look&amp;&amp;Feel&quot</tt>.
  *
  * @author Karsten Lentzsch
@@ -72,8 +72,8 @@ public final class DefaultComponentFactory implements ComponentFactory {
      */
     private static final DefaultComponentFactory INSTANCE = new DefaultComponentFactory();
 
-    /** 
-     * The character used to indicate the mnemonic position for labels. 
+    /**
+     * The character used to indicate the mnemonic position for labels.
      */
     private static final char MNEMONIC_MARKER = '&';
 
@@ -84,8 +84,8 @@ public final class DefaultComponentFactory implements ComponentFactory {
     }
 
     /**
-     * Returns the sole instance of this factory class. 
-     * 
+     * Returns the sole instance of this factory class.
+     *
      * @return the sole instance of this factory class
      */
     public static DefaultComponentFactory getInstance() {
@@ -96,15 +96,15 @@ public final class DefaultComponentFactory implements ComponentFactory {
 
     /**
      * Creates and returns a label with an optional mnemonic.<p>
-     * 
+     *
      * <pre>
      * createLabel("Name");       // No mnemonic
      * createLabel("N&ame");      // Mnemonic is 'a'
      * createLabel("Save &as");   // Mnemonic is the second 'a'
      * createLabel("Look&&Feel"); // No mnemonic, text is Look&Feel
      * </pre>
-     * 
-     * @param textWithMnemonic  the label's text - 
+     *
+     * @param textWithMnemonic  the label's text -
      *     may contain an ampersand (<tt>&amp;</tt>) to mark a mnemonic
      * @return an label with optional mnemonic
      */
@@ -117,15 +117,15 @@ public final class DefaultComponentFactory implements ComponentFactory {
     /**
      * Creates and returns a title label that uses the foreground color
      * and font of a <code>TitledBorder</code>.<p>
-     * 
+     *
      * <pre>
      * createTitle("Name");       // No mnemonic
      * createTitle("N&ame");      // Mnemonic is 'a'
      * createTitle("Save &as");   // Mnemonic is the second 'a'
      * createTitle("Look&&Feel"); // No mnemonic, text is Look&Feel
      * </pre>
-     * 
-     * @param textWithMnemonic  the label's text - 
+     *
+     * @param textWithMnemonic  the label's text -
      *     may contain an ampersand (<tt>&amp;</tt>) to mark a mnemonic
      * @return an emphasized title label
      */
@@ -138,17 +138,17 @@ public final class DefaultComponentFactory implements ComponentFactory {
 
     /**
      * Creates and returns a labeled separator with the label in the left-hand
-     * side. Useful to separate paragraphs in a panel; often a better choice 
+     * side. Useful to separate paragraphs in a panel; often a better choice
      * than a <code>TitledBorder</code>.<p>
-     * 
+     *
      * <pre>
      * createSeparator("Name");       // No mnemonic
      * createSeparator("N&ame");      // Mnemonic is 'a'
      * createSeparator("Save &as");   // Mnemonic is the second 'a'
      * createSeparator("Look&&Feel"); // No mnemonic, text is Look&Feel
      * </pre>
-     * 
-     * @param textWithMnemonic  the label's text - 
+     *
+     * @param textWithMnemonic  the label's text -
      *     may contain an ampersand (<tt>&amp;</tt>) to mark a mnemonic
      * @return a title label with separator on the side
      */
@@ -157,10 +157,10 @@ public final class DefaultComponentFactory implements ComponentFactory {
     }
 
     /**
-     * Creates and returns a labeled separator. Useful to separate 
-     * paragraphs in a panel, which is often a better choice than a 
+     * Creates and returns a labeled separator. Useful to separate
+     * paragraphs in a panel, which is often a better choice than a
      * <code>TitledBorder</code>.<p>
-     * 
+     *
      * <pre>
      * final int LEFT = SwingConstants.LEFT;
      * createSeparator("Name",       LEFT); // No mnemonic
@@ -168,12 +168,12 @@ public final class DefaultComponentFactory implements ComponentFactory {
      * createSeparator("Save &as",   LEFT); // Mnemonic is the second 'a'
      * createSeparator("Look&&Feel", LEFT); // No mnemonic, text is Look&Feel
      * </pre>
-     * 
-     * @param textWithMnemonic  the label's text - 
+     *
+     * @param textWithMnemonic  the label's text -
      *     may contain an ampersand (<tt>&amp;</tt>) to mark a mnemonic
      * @param alignment text alignment, one of <code>SwingConstants.LEFT</code>,
-     *     <code>SwingConstants.CENTER</code>, <code>SwingConstants.RIGHT</code> 
-     * @return a separator with title label 
+     *     <code>SwingConstants.CENTER</code>, <code>SwingConstants.RIGHT</code>
+     * @return a separator with title label
      */
     public JComponent createSeparator(String textWithMnemonic, int alignment) {
         if (textWithMnemonic == null || textWithMnemonic.length() == 0) {
@@ -185,26 +185,26 @@ public final class DefaultComponentFactory implements ComponentFactory {
     }
 
     /**
-     * Creates and returns a labeled separator. Useful to separate 
-     * paragraphs in a panel, which is often a better choice than a 
+     * Creates and returns a labeled separator. Useful to separate
+     * paragraphs in a panel, which is often a better choice than a
      * <code>TitledBorder</code>.<p>
-     * 
+     *
      * The label's position is determined by the label's horizontal alignment,
-     * which must be one of: 
+     * which must be one of:
      * <code>SwingConstants.LEFT</code>,
-     * <code>SwingConstants.CENTER</code>, 
+     * <code>SwingConstants.CENTER</code>,
      * <code>SwingConstants.RIGHT</code>.<p>
-     * 
+     *
      * TODO: Since this method has been marked public in version 1.0.6,
      * we need to precisely describe the semantic of this method.<p>
-     * 
+     *
      * TODO: Check if we can relax the constraint for the label alignment
      * and also accept LEADING and TRAILING.
-     * 
+     *
      * @param label       the title label component
      * @return a separator with title label
-     * @exception NullPointerException if the label is <code>null</code> 
-     * 
+     * @exception NullPointerException if the label is <code>null</code>
+     *
      * @since 1.0.6
      */
     public JComponent createSeparator(JLabel label) {
@@ -227,11 +227,11 @@ public final class DefaultComponentFactory implements ComponentFactory {
     /**
      * Sets the text of the given label and optionally a mnemonic.
      * The given text may contain an ampersand (<tt>&amp;</tt>)
-     * to mark a mnemonic and its position. Such a marker indicates 
-     * that the character that follows the ampersand shall be the mnemonic. 
-     * If you want to use the ampersand itself duplicate it, for example 
+     * to mark a mnemonic and its position. Such a marker indicates
+     * that the character that follows the ampersand shall be the mnemonic.
+     * If you want to use the ampersand itself duplicate it, for example
      * <tt>&quot;Look&amp;&amp;Feel&quot</tt>.
-     *  
+     *
      * @param label             the label that gets a mnemonic
      * @param textWithMnemonic  the text with optional mnemonic marker
      */
@@ -285,8 +285,8 @@ public final class DefaultComponentFactory implements ComponentFactory {
         }
 
         /**
-         * TODO: For the Synth-based L&amp;f we should consider asking 
-         * a <code>TitledBorder</code> instance for its font and color using 
+         * TODO: For the Synth-based L&amp;f we should consider asking
+         * a <code>TitledBorder</code> instance for its font and color using
          * <code>#getTitleFont</code> and <code>#getTitleColor</code> resp.
          */
         public void updateUI() {
@@ -309,7 +309,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
          * is used in a titled separator, the bold weight is questionable.
          * It seems that most native Aqua tools use a plain label in
          * titled separators.
-         * 
+         *
          * @return the font used for title labels
          */
         private Font getTitleFont() {
@@ -330,7 +330,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
         /**
          * Constructs a TitledSeparatorLayout that either centers the separators
          * or aligns them along the font baseline of the title label.
-         * 
+         *
          * @param centerSeparators  true to center, false to align along
          *     the font baseline of the title label
          */
@@ -342,7 +342,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
          * Does nothing. This layout manager looks up the components
          * from the layout container and used the component's index
          * in the child array to identify the label and separators.
-         * 
+         *
          * @param name the string to be associated with the component
          * @param comp the component to be added
          */
@@ -354,18 +354,18 @@ public final class DefaultComponentFactory implements ComponentFactory {
          * Does nothing. This layout manager looks up the components
          * from the layout container and used the component's index
          * in the child array to identify the label and separators.
-         * 
+         *
          * @param comp the component to be removed
          */
         public void removeLayoutComponent(Component comp) {
             // Does nothing.
         }
 
-        /** 
-         * Computes and returns the minimum size dimensions 
-         * for the specified container. Forwards this request 
+        /**
+         * Computes and returns the minimum size dimensions
+         * for the specified container. Forwards this request
          * to <code>#preferredLayoutSize</code>.
-         * 
+         *
          * @param parent the component to be laid out
          * @return the container's minimum size.
          * @see #preferredLayoutSize(Container)
@@ -374,11 +374,11 @@ public final class DefaultComponentFactory implements ComponentFactory {
             return preferredLayoutSize(parent);
         }
 
-        /** 
-         * Computes and returns the preferred size dimensions 
+        /**
+         * Computes and returns the preferred size dimensions
          * for the specified container. Returns the title label's
          * preferred size.
-         * 
+         *
          * @param parent the component to be laid out
          * @return the container's preferred size.
          * @see #minimumLayoutSize(Container)
@@ -392,10 +392,10 @@ public final class DefaultComponentFactory implements ComponentFactory {
             return new Dimension(width, height);
         }
 
-        /** 
+        /**
          * Lays out the specified container.
-         * 
-         * @param parent the container to be laid out 
+         *
+         * @param parent the container to be laid out
          */
         public void layoutContainer(Container parent) {
             synchronized (parent.getTreeLock()) {

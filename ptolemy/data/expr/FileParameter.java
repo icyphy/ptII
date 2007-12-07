@@ -126,7 +126,7 @@ import ptolemy.util.FileUtilities;
  NOTE: If the container of this parameter also contains a variable
  named CLASSPATH, then the value of that variable is used instead
  of the Java classpath.</p>
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0

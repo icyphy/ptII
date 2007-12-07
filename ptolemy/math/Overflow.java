@@ -159,7 +159,7 @@ public abstract class Overflow implements Cloneable, Serializable {
     }
 
     /** Return an instance of this class with the specified name.
-     *  
+     *
      *  @param name The name of the Overflow strategy to find.
      *  @return An instance of Overflow or null.
      */
@@ -169,7 +169,7 @@ public abstract class Overflow implements Cloneable, Serializable {
 
     /** Return an instance of this class with the specified name,
      *  or null if none exists.
-     *  
+     *
      *  @param name The name of the Overflow strategy to find.
      *  @return An instance of Overflow.
      *  @exception IllegalArgumentException If the string does not
@@ -581,10 +581,10 @@ public abstract class Overflow implements Cloneable, Serializable {
     /** Construct an Overflow object with the given String name.
      *  This name is used for finding an Overflow object at a later
      *  time (@see #forName(String)). This constructor
-     *  is protected to make a type safe enumeration. 
-     * 
+     *  is protected to make a type safe enumeration.
+     *
      * @param name The String name to give this Overflow strategy.
-     * 
+     *
      */
     protected Overflow(String name) {
         _name = name;

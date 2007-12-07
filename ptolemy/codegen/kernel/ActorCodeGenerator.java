@@ -47,10 +47,10 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create read and write offset variables if needed for the associated 
-     *  composite actor. It delegates to the director helper of the local 
+    /** Create read and write offset variables if needed for the associated
+     *  composite actor. It delegates to the director helper of the local
      *  director.
-     *  @return A string containing declared read and write offset variables. 
+     *  @return A string containing declared read and write offset variables.
      *  @exception IllegalActionException If the helper class cannot be found
      *   or the director helper throws it.
      */
@@ -64,9 +64,9 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
     public String generateFireCode() throws IllegalActionException;
 
     /** Generate The fire function code. This method is called when the firing
-     *  code of each actor is not inlined. Each actor's firing code is in a 
+     *  code of each actor is not inlined. Each actor's firing code is in a
      *  function with the same name as that of the actor.
-     * 
+     *
      *  @return The fire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
@@ -80,17 +80,17 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
     // public String generateMainEntryCode() throws IllegalActionException;
     /** Generate the main entry point.
      *  @return Return the a string that closes optionally calls exit
-     *  and closes the main() method 
+     *  and closes the main() method
      *  @exception IllegalActionException Not thrown in this base class.
      */
     // public String generateMainExitCode() throws IllegalActionException;
-    /** Generate mode transition code. It delegates to the director helper 
-     *  of the local director. The mode transition code generated in this 
-     *  method is executed after each global iteration, e.g., in HDF model. 
-     * 
+    /** Generate mode transition code. It delegates to the director helper
+     *  of the local director. The mode transition code generated in this
+     *  method is executed after each global iteration, e.g., in HDF model.
+     *
      *  @param code The string buffer that the generated code is appended to.
-     *  @exception IllegalActionException If the director helper throws it 
-     *   while generating mode transition code. 
+     *  @exception IllegalActionException If the director helper throws it
+     *   while generating mode transition code.
      */
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException;
@@ -105,8 +105,8 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
     public String generatePostfireCode() throws IllegalActionException;
 
     /** Generate the preinitialize code of the associated composite actor.
-     *  It first creates buffer size and offset map for its input ports and 
-     *  output ports. It then gets the result of generatePreinitializeCode() 
+     *  It first creates buffer size and offset map for its input ports and
+     *  output ports. It then gets the result of generatePreinitializeCode()
      *  method of the local director helper.
      *
      *  @return The preinitialize code of the associated composite actor.
@@ -143,12 +143,12 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
     public Set getLibraryDirectories() throws IllegalActionException;
 
     /** Return a set of parameters that will be modified during the execution
-     *  of the model. The actor gets those variables if it implements 
-     *  ExplicitChangeContext interface or it contains PortParameters. 
-     * 
+     *  of the model. The actor gets those variables if it implements
+     *  ExplicitChangeContext interface or it contains PortParameters.
+     *
      *  @return a set of parameters that will be modified.
-     *  @exception IllegalActionException If an actor throws it while getting 
-     *   modified variables. 
+     *  @exception IllegalActionException If an actor throws it while getting
+     *   modified variables.
      */
     public Set getModifiedVariables() throws IllegalActionException;
 

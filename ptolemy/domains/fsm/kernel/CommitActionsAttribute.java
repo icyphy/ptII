@@ -162,10 +162,10 @@ public class CommitActionsAttribute extends AbstractActionsAttribute implements
                 ASTPtRootNode parseTree = (ASTPtRootNode) parseTrees.next();
                 Token token;
 
-                // In MultirateFSMDirector, the initial transition from 
-                // the initial state is taken during preinitialize() if 
+                // In MultirateFSMDirector, the initial transition from
+                // the initial state is taken during preinitialize() if
                 // the initial state does not have a refinement, therefore
-                // _scope need to be initialized here. -- Gang 
+                // _scope need to be initialized here. -- Gang
                 if (_scope == null) {
                     FSMActor fsmActor = (FSMActor) getContainer()
                             .getContainer();

@@ -1,5 +1,5 @@
 /* A helper class for ptolemy.actor.lib.gui.SliderSource.
- 
+
  Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
 
@@ -40,11 +40,11 @@ import ptolemy.util.StringUtilities;
 
 /**
  A helper class for ptolemy.actor.lib.gui.SliderSource.
- 
+
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (zgang) 
+ @Pt.ProposedRating Red (zgang)
  @Pt.AcceptedRating Red (zgang)
  */
 public class SliderSource extends CCodeGeneratorHelper {
@@ -58,7 +58,7 @@ public class SliderSource extends CCodeGeneratorHelper {
 
     /** Generate initialize code.
      *  @return The generated code.
-     *  @exception IllegalActionException If the code stream encounters 
+     *  @exception IllegalActionException If the code stream encounters
      *   errors in processing the specified code blocks.
      */
     public String generateInitializeCode() throws IllegalActionException {

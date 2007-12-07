@@ -559,7 +559,7 @@ public class TypeLattice {
                                     + "Arguments are not instances of Type.");
                 }
 
-                // System.out.println("LUB of " + t1 + " and " + t2); 
+                // System.out.println("LUB of " + t1 + " and " + t2);
                 Type ct1 = (Type) t1;
                 Type ct2 = (Type) t2;
 

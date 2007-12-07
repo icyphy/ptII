@@ -67,7 +67,7 @@ import ptolemy.kernel.util.NamedObj;
  FIXME: Surge doesn't correctly set the type field for Surge messages.
  The value that we see is 0x00, so we filter for this instead.
 
- This actor extends LinkVisualizer and by inheritance, implements the 
+ This actor extends LinkVisualizer and by inheritance, implements the
  ChannelListener interface.  It inspects the token transmitted,
  and based on the data, may create a line between
  two communicating nodes that are within range of one
@@ -97,14 +97,14 @@ public class SurgeVisualizer extends LinkVisualizer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Parse the token, and visualize a line between the sender and destination 
+    /** Parse the token, and visualize a line between the sender and destination
      *  container only if the type field in the packet stored in
      *  <i>token</i> corresponds to a Surge packet AND
      *  the nodeID of the <i>destination</i> node
      *  (i.e., the node that contains the <i>destination</i> WirelessIOPort)
      *  is the same as the address field in the Surge packet.
-     *  
-     *  The line is visualized by starting a thread that will create and 
+     *
+     *  The line is visualized by starting a thread that will create and
      *  remove the line after some amount of time.
      *  @param properties The properties of this transmission.
      *  @param token The token of this transmission, which can be processed here.

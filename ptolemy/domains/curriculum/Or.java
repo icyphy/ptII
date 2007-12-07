@@ -41,7 +41,7 @@ import ptolemy.kernel.util.Settable;
 /**
  This is a rather uninteresting component used to indicate
  an alternative between prerequisites.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.3

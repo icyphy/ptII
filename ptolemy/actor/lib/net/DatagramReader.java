@@ -74,7 +74,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  (DE) and Synchronous Data Flow (SDF) domains.  Use elsewhere with
  caution.
 
- <p>NOTE: This actor has problems, the tests do not reliably pass.  
+ <p>NOTE: This actor has problems, the tests do not reliably pass.
  For details, see <a href="https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=54"><code>https://chess.eecs.berkeley.edu/bugzilla/show_bug.cgi?id=54</code></a>.
 
  <p> <p>The simplest scenario has the thread constantly stalled
@@ -442,7 +442,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  at the same time maintaining consistency.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the change is not
-     *   allowed.  
+     *   allowed.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {

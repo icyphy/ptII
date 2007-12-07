@@ -61,7 +61,7 @@ public class DoubleToken extends ScalarToken {
     }
 
     /** Construct a DoubleToken with the specified value.
-     *  @param value The specified value.   
+     *  @param value The specified value.
      */
     public DoubleToken(double value) {
         _value = value;
@@ -69,7 +69,7 @@ public class DoubleToken extends ScalarToken {
 
     /** Construct a DoubleToken from the specified string.
      *  @param init The initialization string, which is in a format
-     *  suitable for java.lang.Double.parseDouble(String).   
+     *  suitable for java.lang.Double.parseDouble(String).
      *  @exception IllegalActionException If the Token could not
      *   be created with the given String.
      */

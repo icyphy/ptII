@@ -187,7 +187,7 @@ public class FunctionType extends StructuredType {
     }
 
     /** Return the number of arguments in this type.
-     *  @return The number of arguments.  
+     *  @return The number of arguments.
      */
     public int getArgCount() {
         return _argTypeTerms.length;
@@ -219,7 +219,7 @@ public class FunctionType extends StructuredType {
     }
 
     /** Return the class for tokens that this type represents.
-     *  @return The class for tokens that this type represents.  
+     *  @return The class for tokens that this type represents.
      */
     public Class getTokenClass() {
         return FunctionToken.class;

@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Settable;
  by containing a DependencyHighlighter attribute. This attribute
  specifies a custom context menu that includes four commands for
  highlighting prerequisites and dependents.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.3

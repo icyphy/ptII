@@ -137,7 +137,7 @@ public class FileOrURLEditorFactory extends EditorFactory {
                         //                                 textEffigyFactory);
                         //                         Effigy effigy = (Effigy) tableau.getContainer();
                         //                         effigy.masterEffigy().setModifiable(true);
-                        //                         System.out.println("FileOrURLEditorFactory: modifiable" 
+                        //                         System.out.println("FileOrURLEditorFactory: modifiable"
                         //                                            + effigy.isModifiable() + " " + effigy);
 
                     } else {

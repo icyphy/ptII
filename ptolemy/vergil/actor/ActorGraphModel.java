@@ -330,7 +330,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     ////                         protected methods                 ////
 
     /** Get an unmodifiable copy of the link set.
-     * 
+     *
      *  @return The link set.
      */
     protected Set<?> _getLinkSet() {
@@ -339,7 +339,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
     /** Remove a link from the link set. This function is not made synchronized.
      *  Concurrent modification on the link set should be avoided.
-     * 
+     *
      *  @param link The link to be removed.
      */
     protected void _removeLink(Link link) {
@@ -707,7 +707,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. The MoML assumes a context that is the container
          *  of the port.
-         *  @param node The node.   
+         *  @param node The node.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
@@ -890,7 +890,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          * as the nodes(Object) method.
          * @param composite The composite, which is assumed to be an icon.
          * @return An iterator of nodes that should be rendered before
-         * the edges.   
+         * the edges.
          */
         public Iterator nodesBeforeEdges(Object composite) {
             return nodes(composite);
@@ -904,7 +904,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          * nothing.
          * @param composite The composite, which is assumed to be an icon.
          * @return An iterator of nodes that should be rendered after
-         * the edges.   
+         * the edges.
          */
         public Iterator nodesAfterEdges(Object composite) {
             return (new NullIterator());
@@ -1027,7 +1027,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         /** Return the tail node of the specified edge.
          *  @param edge The edge, which is assumed to be a link.
          *  @return The node that is the tail of the specified edge.
-         *  @see #setTail(Object, Object)   
+         *  @see #setTail(Object, Object)
          */
         public Object getTail(Object edge) {
             return ((Link) edge).getTail();
@@ -1412,8 +1412,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             /** Construct a link change listener.
              *  @param link The link.
              *  @param container The container.
-             *  @param failMoML MoML that cleans up the model if the 
-             *  change request fails.   
+             *  @param failMoML MoML that cleans up the model if the
+             *  change request fails.
              */
             public LinkChangeListener(Link link, CompositeEntity container,
                     StringBuffer failMoML) {
@@ -1481,7 +1481,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. This assumes that the context is the container
          *  of the port.
-         *  @param node The node.   
+         *  @param node The node.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {

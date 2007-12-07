@@ -37,7 +37,7 @@ package ptolemy.math;
 
 /**
  A library for mathematical operations on Fraction arrays.
- 
+
  <p>Unless explicitly noted otherwise, all array arguments are assumed to be
  non-null. If a null array is passed to a method, a NullPointerException
  will be thrown in the method or called methods.

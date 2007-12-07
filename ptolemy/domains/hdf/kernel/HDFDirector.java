@@ -161,7 +161,7 @@ public class HDFDirector extends SDFDirector {
     /** If the attribute changed is the <i>scheduleCacheSize</i> parameter,
      *  construct the cache in the associated CachedSDFScheduler with the
      *  given cache size.
-     *  @param attribute The attribute that changed.  
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the super class throws it.
      */
     public void attributeChanged(Attribute attribute)

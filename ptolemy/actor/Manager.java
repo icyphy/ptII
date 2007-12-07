@@ -276,9 +276,9 @@ public class Manager extends NamedObj implements Runnable {
      *  so this method returns only after execution finishes.
      *  If you wish to perform execution in a new thread, use startRun()
      *  instead.  Even if an exception occurs during the execution, the
-     *  wrapup() method is called (in a finally clause).  
-     *  <p> 
-     *  If an exception occurs during the execution, delegate to the 
+     *  wrapup() method is called (in a finally clause).
+     *  <p>
+     *  If an exception occurs during the execution, delegate to the
      *  exception handlers (if there are any) to handle these exceptions.
      *  If there are no exception handlers, it is up to the
      *  caller to handle (e.g. report) the exception.
@@ -364,7 +364,7 @@ public class Manager extends NamedObj implements Runnable {
             try {
                 wrapup();
             } catch (Exception exception) {
-                // Caught an exception. Discard this exception 
+                // Caught an exception. Discard this exception
                 // if there is an exception thrown during the iteration.
                 // Otherwise, save the exception to be handled later.
                 if (initialThrowable == null) {
@@ -393,7 +393,7 @@ public class Manager extends NamedObj implements Runnable {
                     _notifyListenersOfCompletion();
                 }
 
-                // Wrapup may throw an exception, so put the following 
+                // Wrapup may throw an exception, so put the following
                 // statement inside the finally block.
                 System.out.println(timeAndMemory(startTime));
 
@@ -425,11 +425,11 @@ public class Manager extends NamedObj implements Runnable {
                     }
                 }
 
-                // If the throwable has not been handled by exception handlers, 
+                // If the throwable has not been handled by exception handlers,
                 // throw it.
                 if (initialThrowable != null) {
                     if (initialThrowable instanceof RuntimeException) {
-                        // We do not handle runtime exception. 
+                        // We do not handle runtime exception.
                         // Throw it.
                         throw (RuntimeException) initialThrowable;
                     } else if (initialThrowable instanceof KernelException) {
@@ -437,7 +437,7 @@ public class Manager extends NamedObj implements Runnable {
                         // KernelException, if we have one, we throw it.
                         throw (KernelException) initialThrowable;
                     } else if (initialThrowable instanceof RuntimeException) {
-                        // We do not handle runtime exception. 
+                        // We do not handle runtime exception.
                         // Throw it.
                         throw (RuntimeException) initialThrowable;
                     } else {

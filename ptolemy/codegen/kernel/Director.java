@@ -73,7 +73,7 @@ public class Director implements ActorCodeGenerator {
     /////////////////////////////////////////////////////////////////
     ////                Public Methods                           ////
 
-    /** Generate code for declaring read and write offset variables if needed. 
+    /** Generate code for declaring read and write offset variables if needed.
      *  It delegates to the helpers of contained actors.
      *  @return The generated code.
      *  @exception IllegalActionException If thrown while creating
@@ -118,9 +118,9 @@ public class Director implements ActorCodeGenerator {
     }
 
     /** Generate The fire function code. This method is called when the firing
-     *  code of each actor is not inlined. Each actor's firing code is in a 
+     *  code of each actor is not inlined. Each actor's firing code is in a
      *  function with the same name as that of the actor.
-     * 
+     *
      *  @return The fire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
@@ -150,7 +150,7 @@ public class Director implements ActorCodeGenerator {
      *  this director.  In this base class, this simply delegates
      *  to generateFireCode() and generatePostfireCOde().
      *  @param callPostfire True if the C postfire() method should
-     *  be called.   
+     *  be called.
      *  @return Whatever generateFireCode() returns.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -180,7 +180,7 @@ public class Director implements ActorCodeGenerator {
             // Initialize code for the actor.
             code.append(helperObject.generateInitializeCode());
 
-            // Update write offset due to initial tokens produced. 
+            // Update write offset due to initial tokens produced.
             Iterator outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
                 IOPort port = (IOPort) outputPorts.next();
@@ -256,10 +256,10 @@ public class Director implements ActorCodeGenerator {
      *  actors under the control of this director. The mode transition
      *  code generated in this method is executed after each global
      *  iteration, e.g., in HDF model.
-     * 
+     *
      *  @param code The string buffer that the generated code is appended to.
-     *  @exception IllegalActionException If an actor helper throws it 
-     *   while generating mode transition code. 
+     *  @exception IllegalActionException If an actor helper throws it
+     *   while generating mode transition code.
      */
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
@@ -272,7 +272,7 @@ public class Director implements ActorCodeGenerator {
         }
     }
 
-    /** Generate code for transferring enough tokens to complete an internal 
+    /** Generate code for transferring enough tokens to complete an internal
      *  iteration.
      *  @param inputPort The port to transfer tokens.
      *  @param code The string buffer that the generated code is appended to.
@@ -312,7 +312,7 @@ public class Director implements ActorCodeGenerator {
         _updateConnectedPortsOffset(inputPort, code, 1);
     }
 
-    /** Generate code for transferring enough tokens to fulfill the output 
+    /** Generate code for transferring enough tokens to fulfill the output
      *  production rate.
      *  @param outputPort The port to transfer tokens.
      *  @param code The string buffer that the generated code is appended to.
@@ -346,7 +346,7 @@ public class Director implements ActorCodeGenerator {
             }
         }
 
-        // The offset of the ports connected to the output port is 
+        // The offset of the ports connected to the output port is
         // updated by outside director.
         _updatePortOffset(outputPort, code, 1);
     }
@@ -442,12 +442,12 @@ public class Director implements ActorCodeGenerator {
     }
 
     /** Return a set of parameters that will be modified during the execution
-     *  of the model. The director gets those variables if it implements 
-     *  ExplicitChangeContext interface. 
-     * 
+     *  of the model. The director gets those variables if it implements
+     *  ExplicitChangeContext interface.
+     *
      *  @return a set of parameters that will be modified.
-     *  @exception IllegalActionException If the helper associated with an actor 
-     *   or director throws it while getting modified variables. 
+     *  @exception IllegalActionException If the helper associated with an actor
+     *   or director throws it while getting modified variables.
      */
     public Set getModifiedVariables() throws IllegalActionException {
         Set set = new HashSet();
@@ -533,7 +533,7 @@ public class Director implements ActorCodeGenerator {
     }
 
     /** Update the read offsets of the buffer associated with the given port.
-     * 
+     *
      *  @param port The port whose read offset is to be updated.
      *  @param code The string buffer that the generated code is appended to.
      *  @param rate The rate, which must be greater than or equal to 0.
@@ -587,10 +587,10 @@ public class Director implements ActorCodeGenerator {
         }
     }
 
-    /** Update the offsets of the buffers associated with the ports connected 
+    /** Update the offsets of the buffers associated with the ports connected
      *  with the given port in its downstream.
-     * 
-     *  @param port The port whose directly connected downstream actors update 
+     *
+     *  @param port The port whose directly connected downstream actors update
      *   their write offsets.
      *  @param code The string buffer that the generated code is appended to.
      *  @param rate The rate, which must be greater than or equal to 0.

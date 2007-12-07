@@ -119,18 +119,18 @@ import ptolemy.kernel.util.Settable;
  <LI> <i>startTime</i>: The start time of the
  execution. This parameter has no effect if
  this director is not within a top-level model.
- 
+
  <LI> <i>stopTime</i>: The stop time of the execution.
  When the current time reaches this value, postfire() will return false.
  This will occur whether or not this director is at the top level.
- 
+
  <LI> <i>initStepSize</i>: The suggested integration step size.
  If the ODE solver is a fixed step size solver, then this parameter
  gives the step size taken. Otherwise, at the start of execution,
  this provides the first guess for the integration step size.
  In later iterations, the integrators provide the suggested step
  size. This is a double with default value 0.1
- 
+
  <LI> <i>maxStepSize</i>: The maximum step size.
  This can be used to prevent the solver from too few
  samples of signals. That is, for certain models, it might
@@ -138,7 +138,7 @@ import ptolemy.kernel.util.Settable;
  sizes, but plots of the signals may be misleading (even
  if they are accurate) because they represent the signal
  with only a few samples. The default value is 1.0.
- 
+
  <LI> <i>maxIterations</i>:
  The maximum number of iterations that an
  ODE solver can use to resolve the states of integrators.
@@ -149,7 +149,7 @@ import ptolemy.kernel.util.Settable;
  FIXME: Currently, this package implements no implicit solvers.
 
  <LI> <i>ODESolver</i>:
- The class name of the ODE solver used for integration. 
+ The class name of the ODE solver used for integration.
  This is a string that defaults to "ExplicitRK23Solver",
  a solver that tends to deliver smooth renditions of signals,
  at the expense of computing more points than the "ExplicitRK45Solver".
@@ -158,7 +158,7 @@ import ptolemy.kernel.util.Settable;
  If there is another ContinuousDirector above this one
  in the hierarchy, then the value of this parameter is ignored and the
  solver given by the first ContinuousDirector above will be used.
- 
+
  <LI> <i>errorTolerance</i>: This is the local truncation
  error tolerance, used for controlling the integration accuracy
  in variable step size ODE solvers, and also for determining whether
@@ -169,7 +169,7 @@ import ptolemy.kernel.util.Settable;
  in some integrator is greater than this tolerance, then the
  integration step is considered to have failed, and should be restarted with
  a reduced step size. The default value is 1e-4.
- 
+
  </UL>
  <P>
  This director maintains a breakpoint table to record all predictable
@@ -255,7 +255,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     public Parameter maxStepSize;
 
-    /** The class name of the ODE solver used for integration. 
+    /** The class name of the ODE solver used for integration.
      *  This is a string that defaults to "ExplicitRK23Solver".
      *  Solvers are all required to be in package
      *  "ptolemy.domains.continuous.kernel.solver".
@@ -349,7 +349,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If an actor throws it.
      */
     public void fire() throws IllegalActionException {
-        // If there is an enclosing director, then just execute 
+        // If there is an enclosing director, then just execute
         // its current round.
         ContinuousDirector enclosingContinuousDirector = _enclosingContinuousDirector();
         if (enclosingContinuousDirector != null) {
@@ -369,7 +369,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             return;
         }
 
-        // If there is not an enclosing director, then iterate until 
+        // If there is not an enclosing director, then iterate until
         // the step size is acceptable or the number of iterations exceeds
         // the maximum allowable number.
         while (!_stopRequested) {
@@ -394,10 +394,10 @@ public class ContinuousDirector extends FixedPointDirector implements
                 // and fire() iterates to a fixed point where all signals
                 // become known.
                 // Although super.prefire() is called in the prefire() method,
-                // super.prefire() is called again here, because it may take 
-                // several iterations to complete an integration step. 
+                // super.prefire() is called again here, because it may take
+                // several iterations to complete an integration step.
                 // As a side effect, all receivers are reset to unknown status.
-                // Therefore, we need to transfer the inputs from the 
+                // Therefore, we need to transfer the inputs from the
                 // environment to inside again.
                 if (super.prefire()) {
                     _transferInputsToInside();
@@ -417,7 +417,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                 }
 
                 // Advance the local view of time such that
-                // the derivatives of the integrators 
+                // the derivatives of the integrators
                 // can be calculated by firing all the actors.
                 // Note that this doesn't change global model time.
                 // It only changes the local view of time.
@@ -448,12 +448,12 @@ public class ContinuousDirector extends FixedPointDirector implements
                 break;
             } else {
                 if (iterations > _maxIterations) {
-                    // If any step size control actor is unsatisfied with the 
+                    // If any step size control actor is unsatisfied with the
                     // current step size, refine the step size to a smaller one.
                     _setCurrentStepSize(_currentStepSize / 2);
                 } else {
-                    // There is some step size control actor that is 
-                    // unsatisfied with the current step size, refine the 
+                    // There is some step size control actor that is
+                    // unsatisfied with the current step size, refine the
                     // step size to a smaller one.
                     _setCurrentStepSize(refinedStepSize());
                 }
@@ -462,7 +462,7 @@ public class ContinuousDirector extends FixedPointDirector implements
                     _debug("Step was not accurate. Refine the step size to: "
                             + _currentStepSize);
                 }
-                // Restore the saved state of the stateful actors, 
+                // Restore the saved state of the stateful actors,
                 // including the save starting time of this integration.
                 rollBackToCommittedState();
             }
@@ -470,8 +470,8 @@ public class ContinuousDirector extends FixedPointDirector implements
     }
 
     /** Handle firing requests from the contained actors by registering
-     *  breakpoints. If the specified time is earlier than the current time, 
-     *  throw an exception. Otherwise, insert the specified time into the 
+     *  breakpoints. If the specified time is earlier than the current time,
+     *  throw an exception. Otherwise, insert the specified time into the
      *  breakpoint table.
      *  @param actor The actor that requests the firing.
      *  @param time The requested firing time.
@@ -484,7 +484,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
         // Check if the request time is earlier than the current time.
         Time currentTime = getModelTime();
-        // Breakpoints always have an index larger than 1 except the 
+        // Breakpoints always have an index larger than 1 except the
         // stop time breakpoint.
         int index = 1;
 
@@ -495,7 +495,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         } else if (comparisonResult == 0) {
             index = _index + 1;
         }
-        // Insert a superdense time object as a breakpoint into the 
+        // Insert a superdense time object as a breakpoint into the
         // breakpoint table.
         _breakpoints.insert(new SuperdenseTime(time, index));
         if (_debugging) {
@@ -603,17 +603,17 @@ public class ContinuousDirector extends FixedPointDirector implements
         super.initialize();
 
         // Make sure the first step has zero step size.
-        // This ensures that actors like plotters will be postfired at 
+        // This ensures that actors like plotters will be postfired at
         // the start time.
         _currentStepSize = 0.0;
 
-        // If this director is embedded, then request a firing at the 
-        // start and stop times. However, do not do this if there is 
+        // If this director is embedded, then request a firing at the
+        // start and stop times. However, do not do this if there is
         // an enclosing ContinuousDirector.
 
         // The reason for doing this is that if a Continuous composite actor
-        // is embedded in a DE model but has no input ports, without the 
-        // following statements, the composite actor has no chance to be fired. 
+        // is embedded in a DE model but has no input ports, without the
+        // following statements, the composite actor has no chance to be fired.
 
         if (_isEmbedded() && (_enclosingContinuousDirector() == null)) {
             Actor container = (Actor) getContainer();
@@ -621,7 +621,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             director.fireAt(container, _startTime);
         }
         // Set a breakpoint with index 0 for the stop time.
-        // Note that do not use fireAt because that will set index to 1, 
+        // Note that do not use fireAt because that will set index to 1,
         // which may produce more than one output at the stop time.
         _breakpoints.insert(new SuperdenseTime(_stopTime, 0));
 
@@ -632,7 +632,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         _commitIsPending = false;
     }
 
-    /** Return true if all step size control actors agree that the current 
+    /** Return true if all step size control actors agree that the current
      *  step is accurate and if there are no breakpoints in the past.
      *  @return True if all step size control actors agree with the current
      *   step size.
@@ -718,7 +718,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     /** Call the prefire() method of the super class and return its value.
      *  Record the current model time as the beginning time of the current
      *  iteration, and if there is a pending invocation of postfire()
-     *  from a previous integration step, invoke that now. 
+     *  from a previous integration step, invoke that now.
      *  @return True if this director is ready to fire.
      *  @exception IllegalActionException If thrown by the super class,
      *   or if the model time of the environment is less than our current
@@ -742,9 +742,9 @@ public class ContinuousDirector extends FixedPointDirector implements
     }
 
     /** Preinitialize the model for an execution. This method is
-     *  called only once for each simulation. 
+     *  called only once for each simulation.
      *
-     *  @exception IllegalActionException If the super class throws it, or 
+     *  @exception IllegalActionException If the super class throws it, or
      *  local variables cannot be initialized.
      */
     public void preinitialize() throws IllegalActionException {
@@ -785,7 +785,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         // If the requested step size is smaller than the time
         // resolution, then set the step size to the time resolution.
         // Set a flag indicating that we have done that so that if
-        // the step size as time resolution is still too large, 
+        // the step size as time resolution is still too large,
         // throw an exception.
         if (refinedStep < timeResolution) {
             if (!_triedTheMinimumStepSize) {
@@ -942,7 +942,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         return defaultSuggestions;
     }
 
-    /** Return the suggested step size for next integration. The suggested step 
+    /** Return the suggested step size for next integration. The suggested step
      *  size is the minimum of suggestions from all step size control actors
      *  and the time until the next breakpoint,
      *  and it never exceeds 10 times of the current step size.
@@ -1303,7 +1303,7 @@ public class ContinuousDirector extends FixedPointDirector implements
     }
 
     /** Initialize the local variables of this ContinuousDirector. Create or
-     *  clear the breakpoints table. Instantiate an ODE solver. 
+     *  clear the breakpoints table. Instantiate an ODE solver.
      *  This method is called in the preinitialize method.
      */
     private void _initializeLocalVariables() throws IllegalActionException {
@@ -1425,7 +1425,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         if (_currentTime.equals(_stopTime)) {
             // Reached the stop time. Assume that the execution will end.
             postfireResult = false;
-            // If there is no pending breakpoint 
+            // If there is no pending breakpoint
             // happening at the current time with a bigger index,
             // return false to indicate no firing is necessary.
             if (_breakpoints.size() > 0) {
@@ -1438,7 +1438,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
         }
         postfireResult = _commit() && postfireResult;
-        // request a refiring at a future time, 
+        // request a refiring at a future time,
         // the current time + suggested step size
         if (_currentStepSize == 0) {
             Actor container = (Actor) getContainer();
@@ -1525,7 +1525,7 @@ public class ContinuousDirector extends FixedPointDirector implements
      */
     private boolean _prefireWithEnclosingContinuousDirector()
             throws IllegalActionException {
-        // Set the time and step size to match that of the enclosing director. 
+        // Set the time and step size to match that of the enclosing director.
         ContinuousDirector enclosingDirector = _enclosingContinuousDirector();
         _currentStepSize = enclosingDirector._currentStepSize;
         _currentTime = enclosingDirector._currentTime;
@@ -1555,8 +1555,8 @@ public class ContinuousDirector extends FixedPointDirector implements
         _discardBreakpointsBefore(_iterationBeginTime);
 
         // Call the super.prefire() method to synchronized to the outside time.
-        // by setting the current time. Note that this is also done at the very 
-        // beginning of this method. 
+        // by setting the current time. Note that this is also done at the very
+        // beginning of this method.
         boolean result = super.prefire();
         if (_debugging) {
             _debug("ContinuousDirector: prefire() returns " + result);
@@ -1644,7 +1644,7 @@ public class ContinuousDirector extends FixedPointDirector implements
             }
             // Force current time to match the environment time, and treat
             // this as if were were starting again in initialize().
-            // This ensures that actors like plotters will be postfired at 
+            // This ensures that actors like plotters will be postfired at
             // the current time.
             // FIXME: How do we know that that time matches the
             // time at which the commit occurred?
@@ -1659,7 +1659,7 @@ public class ContinuousDirector extends FixedPointDirector implements
 
         // Adjust the step size to
         // make sure the time does not exceed the next iteration
-        // time of the environment during this next integration step.        
+        // time of the environment during this next integration step.
         Time environmentNextIterationTime = executiveDirector
                 .getModelNextIterationTime();
         Time localTargetTime = _iterationBeginTime.add(_currentStepSize);
@@ -1789,7 +1789,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         return _stepSizeControllers;
     }
 
-    /** Transfer inputs from the environment to inside. 
+    /** Transfer inputs from the environment to inside.
      *  @exception IllegalActionException If the transferInputs(Port)
      *   method throws it.
      */
@@ -1803,7 +1803,7 @@ public class ContinuousDirector extends FixedPointDirector implements
         }
     }
 
-    /** Transfer outputs to the environment. 
+    /** Transfer outputs to the environment.
      *  @exception IllegalActionException If the transferOutputs(Port)
      *   method throws it.
      */

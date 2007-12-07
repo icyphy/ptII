@@ -446,8 +446,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         return list;
     }
 
-    /** Return the parse tree evaluator used to evaluate guard expressions. 
-     *  In this base class, an instance 
+    /** Return the parse tree evaluator used to evaluate guard expressions.
+     *  In this base class, an instance
      *  of {@link ParseTreeEvaluator} is returned. The derived classes may need
      *  to override this method to return different parse tree evaluators.
      *  @return ParseTreeEvaluator used to evaluate guard expressions.

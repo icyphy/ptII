@@ -63,7 +63,7 @@ public class DiscreteClock extends Clock {
 
     // This actor only generates predictable events and that is why it does not
     // implement the ContinuousStepSizeControlActor interface. This actor requests a
-    // refiring at its initialize method to produce events. During its postfire 
+    // refiring at its initialize method to produce events. During its postfire
     // method, it requests further firings to produce more events if necessary.
 
     /** Construct an actor in the specified container with the specified

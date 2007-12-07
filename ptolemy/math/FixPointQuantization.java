@@ -165,7 +165,7 @@ public class FixPointQuantization extends Quantization {
 
     /**
      * Return the precision.
-     * 
+     *
      * @see #setPrecision(Precision)
      * @return Precision object.
      */

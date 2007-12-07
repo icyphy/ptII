@@ -191,7 +191,7 @@ public class DistributedSDFDirector extends SDFDirector {
 
     /** A Parameter representing whether a pipelined parallel execution
      *  will be performed. A pipelined execution only makes sense when
-     *  parallel execution is true. 
+     *  parallel execution is true.
      *  This parameter must be a boolean.
      *  The default value is false BooleanToken.
      */
@@ -386,9 +386,9 @@ public class DistributedSDFDirector extends SDFDirector {
 
     /** Fills the queues with data tokens so that a fully parallel execution
      *  can be performed. It performs firings of the different levels of the
-     *  schedule, adding one more level in every round. For example for a 
+     *  schedule, adding one more level in every round. For example for a
      *  parallel schedule consisting of three levels, first if fires the
-     *  actors in level 1, followed by actors in levels 1 and 2. 
+     *  actors in level 1, followed by actors in levels 1 and 2.
      *
      *  @exception IllegalActionException If there is no scheduler.
      */
@@ -644,7 +644,7 @@ public class DistributedSDFDirector extends SDFDirector {
 
     /** Create a LinkedList containing all the instances of Actor contained by
      *  the CompositeActor in which this director is embedded.
-     * 
+     *
      *  @return A LinkedList containing all the instances of Actor contained by
      *  the CompositeActor in which this director is embedded.
      */
@@ -817,7 +817,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  @exception IllegalActionException If port methods throw it.
      */
     private void parallelFire() throws IllegalActionException {
-        //        System.out.println("ParallelFire");        
+        //        System.out.println("ParallelFire");
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {
@@ -857,7 +857,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  manner on to the distributed platform.
      *  For each level of the Schedule, a commandMap is created and issued to
      *  the synchronizer.
-     * 
+     *
      *  @exception IllegalActionException If there is no scheduler.
      *  @see ptolemy.distributed.client.ThreadSynchronizer
      *  @exception IllegalActionException If port methods throw it.

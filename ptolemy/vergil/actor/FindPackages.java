@@ -140,7 +140,7 @@ public class FindPackages {
 
     /** Filter that returns true if the pathname is a directory. */
     private static class DirectoryFileFilter implements FileFilter {
-        /** Filter that returns true if the pathname is a directory. 
+        /** Filter that returns true if the pathname is a directory.
          *  @parameter pathname The pathname to be checked
          *  @return true if the pathname is a directory.
          */

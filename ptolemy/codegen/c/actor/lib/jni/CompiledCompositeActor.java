@@ -46,7 +46,7 @@ import ptolemy.util.StringBufferExec;
 /**
  Code generator helper for a composite actor that contains an actor
  with a body written in C.
- 
+
  @author Gang Zhou, Christopher Brooks
  @version $Id$
  @since Ptolemy II 6.1
@@ -70,9 +70,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  @param compositeActor  The compositeActor, which is usually
      *  an EmbeddedCActor.
      *  @return True if a file was copied.
-     *  @exception IOException If there is a problem reading the 
+     *  @exception IOException If there is a problem reading the
      *  <i>codeDirectory</i> parameter.
-     *  @exception IllegalActionException If there is a problem reading the 
+     *  @exception IllegalActionException If there is a problem reading the
      *  <i>codeDirectory</i> parameter.
      *  @see ptolemy.codegen.kernel.CodeGeneratorHelper#copyFilesToCodeDirectory(NamedObj, CodeGenerator)
      */
@@ -108,7 +108,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         ptolemy.actor.lib.jni.CompiledCompositeActor actor = (ptolemy.actor.lib.jni.CompiledCompositeActor) compositeActor;
         CodeGenerator codeGenerator = _getCodeGenerator(compositeActor);
 
-        // Append the output to stderr, stdout and the StringBuffer; 
+        // Append the output to stderr, stdout and the StringBuffer;
         final StringBufferExec executeCommands = new StringBufferExec(true);
         int returnCode = 0;
         try {

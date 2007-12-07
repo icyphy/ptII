@@ -52,7 +52,7 @@ import ptolemy.moml.SharedParameter;
  incrementing by a value specified by the user (default value of 1)
  while iterating through the shared parameters.  Note that if the
  current value is 0, the value is left unchanged.
- 
+
  <p> An instance elsewhere in the model (within the same top level) is
  shared if it has the same type and its container is of the class
  specified in the constructor (or of the container class, if no class

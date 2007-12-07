@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NamedObj;
 //// DoubleClickFactory
 
 /**
- This is an attribute that handles double-clicks for its container. 
+ This is an attribute that handles double-clicks for its container.
  If you place an instance of this class inside a Ptolemy II object,
  then when the user double clicks on the object, instead of the
  default behavior (which is to edit parameters), the invoke() method

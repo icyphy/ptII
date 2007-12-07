@@ -33,7 +33,7 @@ import ptolemy.moml.MoMLParser;
 //////////////////////////////////////////////////////////////////////////
 //// MoMLParserLeak
 
-/** 
+/**
  Leak memory in MoMLParser by throwing an Exception.
  <p> Under Java 1.4, run this with:
  <pre>

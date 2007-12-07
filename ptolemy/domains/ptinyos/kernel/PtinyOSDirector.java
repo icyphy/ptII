@@ -107,7 +107,7 @@ import ptolemy.util.StringUtilities;
 
    <p>This version of the PtinyOSDirector is for use with TinyOS 1.x
    only.  It is not compatible with TinyOS 2.x.
-   
+
    <p>When embedded in a model containing nesC components (component
    descriptions converted to MoML from the TinyOS 1.x library using
    $PTII/ptolemy/domains/ptinyos/util/nc2moml/nc2moml), this director
@@ -327,7 +327,7 @@ public class PtinyOSDirector extends Director {
      */
     public FileParameter tosRoot;
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -410,7 +410,7 @@ public class PtinyOSDirector extends Director {
                 _debug("Called getCharParameterValue with " + parameter
                         + " as argument.");
             }
-            
+
             CompositeActor model = (CompositeActor) getContainer();
             IOPort port = (IOPort) model.getPort(parameter);
             if (port != null) {
@@ -443,7 +443,7 @@ public class PtinyOSDirector extends Director {
             }
         } catch (Exception ex) {
             MessageHandler.error(ex.toString(), ex);
-        } 
+        }
         return parameterValue;
     }
 
@@ -453,12 +453,12 @@ public class PtinyOSDirector extends Director {
      *
      *  <p>The sequence of calls is as follows (assuming simulate is true):
      *  <ul>
-     *  <li> PtinyOSDirector.initialize() 
+     *  <li> PtinyOSDirector.initialize()
      *    <ul>
      *    <li> Loads Java PtinyOSLoader class into memory using
      *      ClassLoader.loadClass()
      *    <li> Creates instance of PtinyOSLoader class (_loader),
-     *      using Class.newInstance() 
+     *      using Class.newInstance()
      *    <li> Calls Java _loader.load()
      *    </ul>
      *  <li> Java _loader.load() loads the TOSSIM shared object into
@@ -547,11 +547,11 @@ public class PtinyOSDirector extends Director {
                         _debug("Done with load(), about to call main("
                                 + argsToMain[0] + ", " + argsToMain[1] + ")");
                     }
-                    
+
                     // Note: For statistical purposes.
                     //System.gc();
                     _startTime = (new Date()).getTime();
-                    
+
                     int result = 0;
                     try {
                         result = _loader.main(argsToMain);
@@ -619,7 +619,7 @@ public class PtinyOSDirector extends Director {
      *       or .dll), and the Java PtinyOSLoader (.java) to a Java
      *       PtinyOSLoader class (.class).
      *  </ul>
-     *        
+     *
      *  @exception IllegalActionException If the container is not
      *  an instance of CompositeActor, the destination directory
      *  does not exist and cannot be created, or the nesC file
@@ -851,12 +851,12 @@ public class PtinyOSDirector extends Director {
      *
      *  <p>The sequence of calls is as follows:
      *  <ul>
-     *  <li> PtinyOSDirector.wrapup() 
+     *  <li> PtinyOSDirector.wrapup()
      *       <ul>
      *       <li> Calls Java _loader.wrapup()
      *       </ul>
      *  <li> _loader.wrapup() calls JNI wrapup_unique_name() native method.
-     *  <li> JNI wrapup_unique_name() calls TOSSIM shutdownSockets(), which: 
+     *  <li> JNI wrapup_unique_name() calls TOSSIM shutdownSockets(), which:
      *       <ul>
      *       <li>Closes sockets.
      *       <li>Joins threads by calling TOSSIM ptII_joinThreads(),
@@ -873,13 +873,13 @@ public class PtinyOSDirector extends Director {
      *  <p>This is a wrapper for a native method, where the
      *  PtinyOSDirector calls this method (Java) to activate routines
      *  in TOSSIM (C).
-     *        
+     *
      *  @exception IllegalActionException If the wrapup() method of
      *   one of the associated actors throws it.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        
+
         // Note: For statistical purposes.
         System.err.println(Manager.timeAndMemory(_startTime)
                 + " "
@@ -908,7 +908,7 @@ public class PtinyOSDirector extends Director {
     // Java loader.
     //
     ///////////////////////////////////////////////////////////////////////
-    
+
     /** Accept a connection on a
      *  java.nio.channels.ServerSocketChannel.  If serverSocketChannel
      *  is blocking, this method blocks.
@@ -982,7 +982,7 @@ public class PtinyOSDirector extends Director {
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
      *  Java loader.
-     * 
+     *
      *  @param serverSocket The ServerSocket whose channel should be
      *  registered with the Selector created.
      *  @param opAccept True if this SelectionKey option should be
@@ -1103,10 +1103,10 @@ public class PtinyOSDirector extends Director {
      *  notNullIfClosing is a boolean array of at least size 1.
      *  notNullIfClosing[0] is set to true if this method should not
      *  be called again, otherwise it is not modified.
-     *  
+     *
      *  <p>This is a JNI method that gets called by TOSSIM through the
      *  Java loader.
-     * 
+     *
      *  @param selector The channel selector.
      *  @param notNullIfClosing notNullIfClosing[0] set to TRUE if
      *  returning NULL, otherwise left as is.
@@ -1164,7 +1164,7 @@ public class PtinyOSDirector extends Director {
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
      *  Java loader.
-     * 
+     *
      *  @param serverSocket The ServerSocket to be closed.
      */
     public void serverSocketClose(ServerSocket serverSocket) {
@@ -1177,7 +1177,7 @@ public class PtinyOSDirector extends Director {
         }
     }
 
-    /** Create a non-blocking server socket and check for connections on the 
+    /** Create a non-blocking server socket and check for connections on the
      *  port specified by <i>port</i>.
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
@@ -1193,12 +1193,12 @@ public class PtinyOSDirector extends Director {
             ServerSocketChannel serverSocketChannel = ServerSocketChannel
                     .open();
             serverSocketChannel.configureBlocking(false);
-            
+
             ServerSocket serverSocket = serverSocketChannel.socket();
                 serverSocket.setReuseAddress(true);
             serverSocket.bind(new InetSocketAddress(
                     InetAddress.getByName(null), port));
-            
+
             return serverSocket;
         } catch (Exception ex) {
             MessageHandler.error(ex.toString(), ex);
@@ -1210,7 +1210,7 @@ public class PtinyOSDirector extends Director {
      *
      *  <p>This is a JNI method that gets called by TOSSIM through the
      *  Java loader.
-     * 
+     *
      *  @param socketChannel The SocketChannel to close.
      */
     public void socketChannelClose(SelectableChannel socketChannel) {
@@ -1244,11 +1244,11 @@ public class PtinyOSDirector extends Director {
             // Direct buffers should be long-lived and be reused as much
             // as possible.
             ByteBuffer buffer = ByteBuffer.wrap(readBuffer);
-    
+
             // Clear the buffer and read bytes from socket
             buffer.clear();
             int numBytesRead = socketChannel.read(buffer);
-    
+
             if (numBytesRead == -1) {
                 // No more bytes can be read from the channel
                 socketChannel.close(); // FIXME: is this ok?
@@ -1290,7 +1290,7 @@ public class PtinyOSDirector extends Director {
         }
         return -1;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1445,7 +1445,7 @@ import java.nio.channels.SocketChannel;
 import ptolemy.domains.ptinyos.kernel.PtinyOSLoader;
 import ptolemy.domains.ptinyos.kernel.PtinyOSDirector;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.util.MessageHandler;        
+import ptolemy.util.MessageHandler;
 public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 implements PtinyOSLoader {
     public void load(String path, PtinyOSDirector director) {
         String fileSeparator = System.getProperty("file.separator");
@@ -1746,7 +1746,7 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
                         writer.close();
                     } catch (IOException ex2) {
                         throw new IllegalActionException(this, ex2,
-                                "Failed to close \"" 
+                                "Failed to close \""
                                 + writeFile + "\".");
                     }
                 }
@@ -1756,7 +1756,7 @@ public class Loader_SenseToLeds_InWireless_MicaBoard_MicaCompositeActor0 impleme
 
     /** Generate makefile.
      *
-===== Begin example makefile (from Dec 9, 20060) =====        
+===== Begin example makefile (from Dec 9, 20060) =====
 TOSROOT=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x
 TOSDIR=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos
 TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
@@ -1781,7 +1781,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         // Check to make sure that tosRoot exists
         if (tosRoot == null || tosRoot.asFile() == null
                 || !tosRoot.asFile().isDirectory()) {
-            String fileName = ((tosRoot == null || tosRoot.asFile() == null) 
+            String fileName = ((tosRoot == null || tosRoot.asFile() == null)
                     ? "null" : tosRoot.asFile().toString());
             String tosRootMessage = "The TOSROOT directory \"" + fileName
                     + "\" does not exist?  Compilation "
@@ -1906,7 +1906,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
                         writer.close();
                     } catch (IOException ex2) {
                         throw new IllegalActionException(this, ex2,
-                                "Failed to close \"" 
+                                "Failed to close \""
                                 + writeFile + "\".");
                     }
                 }
@@ -1939,7 +1939,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         }
         return currentTimeValue;
     }
-    
+
     /** Generate code for the nesC interface connections.  The order
      *  of ports in the model is the order in which the connections
      *  are generated.
@@ -1950,30 +1950,30 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
     private String _includeConnection(CompositeActor model) {
         _CodeString codeString = new _CodeString();
         Actor actor;
-    
+
         // Generate "Driver functions" for common actors.
         Iterator actors = model.entityList().iterator();
-    
+
         while (actors.hasNext()) {
             actor = (Actor) actors.next();
-    
+
             if (_needsInputDriver(actor)) {
                 codeString.add(_includeConnection(model, actor));
             }
         }
-    
+
         Iterator outPorts = model.outputPortList().iterator();
         while (outPorts.hasNext()) {
             IOPort port = (IOPort) outPorts.next();
-    
+
             // FIXME: Assuming ports are either
             // input or output and not both.
             List sourcePortList = port.insidePortList();
-    
+
             //FIXME: can the list be empty?
-    
+
             CompositeActor container = (CompositeActor) getContainer();
-    
+
             if ((sourcePortList != null)
                     && !(container instanceof PtinyOSCompositeActor)) {
                 // FIXME: test this code
@@ -2186,7 +2186,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
             // Set to the default node name.
             baseStation = new SharedParameter(this, "baseStation",
                     PtinyOSDirector.class, "\"MicaBoard\"");
-            
+
             // Set command and event ports for TOSSIM.
             commandPort = new PtinyOSNodeParameter(this, "commandPort", 2);
             commandPort.setExpression("10584");
@@ -2213,7 +2213,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
      *  are described in nesC as interfaces that this module
      *  "provides".
      *  @param model The model containing nesC components for which to
-     *  generate code.    
+     *  generate code.
      *  @return The code describing the input ports.
      */
     private static String _interfaceProvides(CompositeActor model)
@@ -2348,7 +2348,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
     // Workspace version number at preinitialize.
     private long _version = -1;
-    
+
     private long _startTime;
 
     ///////////////////////////////////////////////////////////////////
@@ -2437,7 +2437,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
                         _debug(_name + ">" + line);
                     }
                     System.out.println(_name + ">" + line);
-                    
+
                 }
 
                 if (printWriter != null) {

@@ -1,5 +1,5 @@
 /** An actor that slices the input bits and output a consecutive subset
- of the input bits. 
+ of the input bits.
 
  Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
@@ -41,8 +41,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// QueuedIOPort
 
 /**
- Delays each fixed point token sent on the port by the specified latency 
- parameter and then outputs it via the parent TypedIOPort. Intially will 
+ Delays each fixed point token sent on the port by the specified latency
+ parameter and then outputs it via the parent TypedIOPort. Intially will
  output NIL until one input can be sent.
 
  @author Man-Kit Leung

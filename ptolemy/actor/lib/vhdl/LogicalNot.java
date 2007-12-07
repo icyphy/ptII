@@ -45,7 +45,7 @@ import ptolemy.math.Precision;
 /**
  Produce an output token on each firing with a FixPoint value that is
  equal to the sum of all the inputs at the plus port minus the inputs at the
- minus port. 
+ minus port.
 
  @author Man-Kit Leung
  @version $Id$
@@ -82,7 +82,7 @@ public class LogicalNot extends SynchronousFixTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Output the fixpoint value of the sum of the input bits. 
+    /** Output the fixpoint value of the sum of the input bits.
      *  If there is no inputs, then produce null.
      *  @exception IllegalActionException If there is no director.
      */
@@ -104,9 +104,9 @@ public class LogicalNot extends SynchronousFixTransformer {
         }
     }
 
-    /** Return false. This actor can produce some output event the input 
+    /** Return false. This actor can produce some output event the input
      *  receiver has status unknown.
-     *  
+     *
      *  @return False.
      */
     public boolean isStrict() {

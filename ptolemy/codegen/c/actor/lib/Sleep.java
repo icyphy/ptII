@@ -43,7 +43,7 @@ import ptolemy.util.StringUtilities;
  @author Gang Zhou, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (zgang) 
+ @Pt.ProposedRating Red (zgang)
  @Pt.AcceptedRating Red (zgang)
  */
 public class Sleep extends CCodeGeneratorHelper {

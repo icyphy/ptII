@@ -47,7 +47,7 @@ import javax.sound.sampled.TargetDataLine;
  samples. For audio capture, audio samples are captured
  from the audio input port of the computer. The audio input
  port is typically associated with the line-in port,
- microphone-in port, or cdrom audio-in port. 
+ microphone-in port, or cdrom audio-in port.
  For audio playback, audio samples are written to
  the audio output port. The audio output port is typically
  associated with the headphones jack or the internal

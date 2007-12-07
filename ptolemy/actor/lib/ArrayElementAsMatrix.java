@@ -49,9 +49,9 @@ import ptolemy.kernel.util.Workspace;
  port.  The element that is extracted is determined by the
  <i>x</i>, <i>y</i>, <i>xOffset</i> and <i>yOffset</i>  parameters (or port).
  It is required that
- <pre> 
+ <pre>
  0 &lt;= <i>x</i> * <i>column</i> + <i>y</i> * <i>yOffset</i>  &lt; <i>N</i>
- </pre> 
+ </pre>
  where <i>N</i> is the length of the input array, or an exception will
  be thrown by the fire() method.
 

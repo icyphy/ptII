@@ -401,7 +401,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                 // the return value.
                 SwingUtilities.invokeAndWait(doYesNo);
             } catch (Exception ex) {
-                // do nothing.   
+                // do nothing.
             }
 
             return result[0].booleanValue();
@@ -477,7 +477,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                 // the return value.
                 SwingUtilities.invokeAndWait(doYesNoCancel);
             } catch (Exception ex) {
-                // do nothing.   
+                // do nothing.
             }
 
             if ((results[1] != null) && results[1].booleanValue()) {

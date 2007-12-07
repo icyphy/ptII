@@ -1,5 +1,5 @@
 /** An actor that slices the input bits and output a consecutive subset
- of the input bits. 
+ of the input bits.
 
  Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
@@ -44,9 +44,9 @@ import ptolemy.math.Precision;
  Produce an output token on each firing with a FixPoint value that is
  equal to the slicing of the bits of the input token value. The bit width of
  the output token value is determined by taking the difference of parameters
- start and end. The width parameter specifies the bit width of the input 
+ start and end. The width parameter specifies the bit width of the input
  value. The output FixPoint value is unsigned, and all its bits are integer
- bits. The input can have any scalar type. 
+ bits. The input can have any scalar type.
 
  @author Man-Kit Leung
  @version $Id$
@@ -79,12 +79,12 @@ public class Multiplexor extends SynchronousFixTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input for the first data token stream.  This is a port of 
+    /** Input for the first data token stream.  This is a port of
      *  fix point type.
      */
     public TypedIOPort A;
 
-    /** Input for the second data token stream.  This is a port of 
+    /** Input for the second data token stream.  This is a port of
      *  fix point type.
      */
     public TypedIOPort B;
@@ -96,7 +96,7 @@ public class Multiplexor extends SynchronousFixTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** output a consecutive subset of the input bits. 
+    /** output a consecutive subset of the input bits.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */

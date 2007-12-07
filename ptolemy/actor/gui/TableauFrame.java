@@ -900,8 +900,8 @@ public class TableauFrame extends Top {
      *  This overrides the base class to update the entry in the
      *  ModelDirectory and to rename the model to match the file name.
      *  @param extension If non-null, then the extension that is
-     *  appended to the file name if there is no extension.  
-     *  
+     *  appended to the file name if there is no extension.
+     *
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs(String extension) {

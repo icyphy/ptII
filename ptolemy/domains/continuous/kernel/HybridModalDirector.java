@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NamedObj;
  interfaces to the currently active state refinement.
  <p>
  This director is based on HSFSMDirector by Xiaojun Liu and Haiyang Zheng.
- 
+
  @author Edward A. Lee, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 5.2
@@ -173,13 +173,13 @@ public class HybridModalDirector extends ModalDirector implements
 
         // NOTE: we assume the controller, which is an FSM actor, is strict.
         // That is, the controller will only fire when all inputs are ready.
-        // NOTE: There seems to be a problem. In particular, if some inputs are 
+        // NOTE: There seems to be a problem. In particular, if some inputs are
         // unknown before this modal model fires, the transition is not checked.
         // This suggest that we might need another firing if some inputs later
         // become known so that to ensure that no transition is missed.
         // NOTE: this is saved by the _hasIterationConverged() method
         // defined in the FixedPointDirector, where it ensures that no receivers
-        // will change their status and until then an iteration is claimed 
+        // will change their status and until then an iteration is claimed
         // complete.
         Iterator inputPorts = controller.inputPortList().iterator();
 
@@ -231,10 +231,10 @@ public class HybridModalDirector extends ModalDirector implements
         return enclosingDirector.getErrorTolerance();
     }
 
-    /** Return the parse tree evaluator used to evaluate guard expressions. 
-     *  In this class, an instance 
-     *  of {@link ParseTreeEvaluatorForGuardExpression} is returned. 
-     *  The parse tree evaluator is set to construction mode. 
+    /** Return the parse tree evaluator used to evaluate guard expressions.
+     *  In this class, an instance
+     *  of {@link ParseTreeEvaluatorForGuardExpression} is returned.
+     *  The parse tree evaluator is set to construction mode.
      *  @return ParseTreeEvaluator used to evaluate guard expressions.
      */
     public ParseTreeEvaluator getParseTreeEvaluator() {
@@ -454,7 +454,7 @@ public class HybridModalDirector extends ModalDirector implements
     /** Return false. The transferInputs() method checks whether
      *  the inputs are known before calling hasToken().
      *  Thus this director tolerate unknown inputs.
-     *  
+     *
      *  @return False.
      */
     public boolean isStrict() {
@@ -538,7 +538,7 @@ public class HybridModalDirector extends ModalDirector implements
      *  of whether that time is in the future or past. The superclass
      *  sets current time only if the local time is less than the
      *  environment time.
-     *  Initialize the firing of the director by resetting all receivers to 
+     *  Initialize the firing of the director by resetting all receivers to
      *  unknown.
      *  @return Whatever the superclass returns.
      *  @exception IllegalActionException If thrown by the superclass.
@@ -563,7 +563,7 @@ public class HybridModalDirector extends ModalDirector implements
         }
 
         boolean result = true;
-        // if any actor is not ready to fire, stop prefiring the 
+        // if any actor is not ready to fire, stop prefiring the
         // remaining actors, call super.prefire(), and return false;
         State st = getController().currentState();
         Actor[] actors = st.getRefinement();

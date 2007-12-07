@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 6.1
- @Pt.ProposedRating Red (cxh) 
+ @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
 public class WallClockTime extends CCodeGeneratorHelper {

@@ -47,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Green (cxh)
  */
 public class PublisherTest extends CCodeGeneratorHelper {
-    /** 
+    /**
      *  Construct a PublisherTest helper.
      *  @param actor The master PublisherTest actor.
      */
@@ -116,7 +116,7 @@ public class PublisherTest extends CCodeGeneratorHelper {
         return processCode(_codeStream.toString());
     }
 
-    /** 
+    /**
      * Generate the preinitialize code. Declare temporary variables.
      * @return The preinitialize code.
      * @exception IllegalActionException If the code stream encounters an

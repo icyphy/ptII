@@ -37,7 +37,7 @@ import com.microstar.xml.XmlException;
  Thrown on an attempt to evaluate MoML that
  contains a missing class.
 
- <p>This exception is used to catch missing classes in 
+ <p>This exception is used to catch missing classes in
  during cut and paste operations by {@link ptolemy.moml.MoMLParser}.
 
  @author Christopher Brooks

@@ -46,7 +46,7 @@ import ptolemy.moml.MoMLParser;
  <p>This class will filter for actors that have had port name changes.
 
  <p>NOTE: This class and ParameterNameChange might conflict if
- a port and parameter have the same name.  
+ a port and parameter have the same name.
 
  @author Christopher Hylands, Edward A. Lee
  @version $Id$
@@ -146,8 +146,8 @@ public class PortNameChanges implements MoMLFilter {
 
             MoMLParser.setModified(true);
             return newPort;
-            // The following else if () can be deleted if it causes trouble. 
-            // The reason to add the code is that a port may not be contained in 
+            // The following else if () can be deleted if it causes trouble.
+            // The reason to add the code is that a port may not be contained in
             // _containerPortMap if it is encountered the first time here --- Gang
         } else if (_doneProcessingActorWithPortNameChanges
                 && attributeName.equals("port")) {

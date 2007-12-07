@@ -48,11 +48,11 @@ import ptolemy.util.FileUtilities;
 
 /**
  Traverse a directory tree and generate .moml files.
- Search the directory tree for files that 
+ Search the directory tree for files that
  <i>input suffix</i> (e.g., *.moml) and create files with the name
  <i>output filename</i> (e.g., index.moml) in each directory
  that contains an file with the <i>input suffix</i> and in all the parent
- directories.  
+ directories.
  Existing <i>input suffix</i> files are overwritten.
 
  <p>Usage:
@@ -216,7 +216,7 @@ public class MoMLLib {
     }
 
     /** Traverse the directory tree and generate .moml files.
-     *  @param args An array of Strings. 
+     *  @param args An array of Strings.
      *   <ol>
      *   <li> The input suffix.
      *   <li> The top-level output file name.

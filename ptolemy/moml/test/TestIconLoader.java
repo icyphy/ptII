@@ -41,7 +41,7 @@ import ptolemy.moml.MoMLParser;
 /**
  Test class for ptolemy.moml.IconLoader.
  The IconLoader class has an abstract method, so we use this class
- to define that method. 
+ to define that method.
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 6.1

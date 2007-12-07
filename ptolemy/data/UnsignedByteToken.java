@@ -78,7 +78,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  127.  Due to the difference between these definitions, this
      *  method effectively adds 256 if the argument is negative,
      *  resulting in a positive value for the UnsignedByteToken.
-     *  @param value The specified value.   
+     *  @param value The specified value.
      */
     public UnsignedByteToken(byte value) {
         _value = value;

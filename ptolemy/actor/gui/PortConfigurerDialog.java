@@ -764,7 +764,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
      *  @param button The button.
      */
     protected void _processButtonPress(String button) {
-        // If the user has typed in a port name, but not 
+        // If the user has typed in a port name, but not
         // moved the focus, we want to tell the model the
         // data has changed.
         if (_portTable.isEditing()) {

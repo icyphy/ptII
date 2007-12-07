@@ -62,7 +62,7 @@ import ptolemy.kernel.util.Workspace;
  <dd>array and index are both ports</dd>
  </dl>
  </p>
- 
+
  @see ArrayElement
  @author Paul Whitaker, Christopher Hylands
  @version $Id$

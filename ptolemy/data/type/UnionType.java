@@ -150,9 +150,9 @@ public class UnionType extends StructuredType {
         return new UnionToken(label, newValue);
     }
 
-    /** Return the depth of a union type. The depth of a 
-     *  union type is the number of times it  
-     *  contains other structured types. 
+    /** Return the depth of a union type. The depth of a
+     *  union type is the number of times it
+     *  contains other structured types.
      *  @return the depth of a union type.
      */
     public int depth() {

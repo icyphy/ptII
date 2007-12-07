@@ -191,7 +191,7 @@ public class ArgumentConfigurerDialog extends ComponentDialog implements
     }
 
     /** Display the help documentation for the JNI facility.
-     *  @param configuration The configuration in which to open the docs.    
+     *  @param configuration The configuration in which to open the docs.
      */
     public static void help(Configuration configuration) {
         // Documentation used by classes should be in a subpackage

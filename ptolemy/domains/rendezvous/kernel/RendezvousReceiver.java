@@ -163,7 +163,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Get from any receiver in the specified array. This method does
      * not return until one of the gets is complete.
-     *  
+     *
      * @param receivers The receivers, which are assumed to all be
      * instances of RendezvousReceiver.
      * @param director The director, on which this method

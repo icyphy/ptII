@@ -50,7 +50,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * This actor produces a signal that is piecewise constant, with transitions
  * between levels taken at times given by a Poisson process.
  * It has various uses.  Its simplest use in the DE domain
@@ -101,20 +101,20 @@ public class PoissonClock extends TimedSource implements Rollbackable {
     // Call this so that we don't have to copy its code here...
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    /**     
+    /**
      * If true, then this actor will request a firing at the start time.
      * Otherwise, the first firing will be requested at the first random
      * time. This is a boolean-valued parameter that defaults to <i>true</i>.
      */
     public Parameter fireAtStart;
 
-    /**     
+    /**
      * The mean time between events, where the output value transitions.
      * This parameter must contain a DoubleToken.
      */
     public Parameter meanTime;
 
-    /**     
+    /**
      * The values that will be produced at the output.
      * This parameter can contain any ArrayToken, and it defaults to {1, 0}.
      */
@@ -150,7 +150,7 @@ public class PoissonClock extends TimedSource implements Rollbackable {
 
     private transient boolean _boundaryCrossed;
 
-    /**     
+    /**
      * Construct an actor with the specified container and name.
      * @param container The container.
      * @param name The name of this actor.
@@ -174,10 +174,10 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         fireAtStart.setTypeEquals(BaseType.BOOLEAN);
     }
 
-    /**     
+    /**
      * If the argument is the meanTime parameter, check that it is
      * positive.
-     * @param attribute The attribute that changed.  
+     * @param attribute The attribute that changed.
      * @exception IllegalActionException If the meanTime value is
      * not positive.
      */
@@ -198,7 +198,7 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Clone the actor into the specified workspace. This calls the
      * base class and then sets the parameter public members to refer
      * to the parameters of the new actor.
@@ -218,7 +218,7 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         return newObject;
     }
 
-    /**     
+    /**
      * Output the current value.
      * @exception IllegalActionException If there is no director.
      */
@@ -238,7 +238,7 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Schedule the first firing at time zero and initialize local variables.
      * @exception IllegalActionException If the fireAt() method of the
      * director throws it.
@@ -261,7 +261,7 @@ public class PoissonClock extends TimedSource implements Rollbackable {
         }
     }
 
-    /**     
+    /**
      * Update the state of the actor and schedule the next firing,
      * if appropriate.
      * @exception IllegalActionException If the director throws it when

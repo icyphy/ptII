@@ -58,7 +58,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
     /** Return the result of this monotonic function.   Derived
      *  classes should implement this method to return the current value
      *  of the monotonic function.
-     *  @exception IllegalActionException Thrown in derived classes if 
+     *  @exception IllegalActionException Thrown in derived classes if
      *  there is a problem getting the value.
      *  @return A Type.
      *  @see #setValue(Object)

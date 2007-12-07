@@ -31,10 +31,10 @@ package ptolemy.actor;
 
 /**
  A marker interface indicating that a class is used to configure
- a Ptolemy IIapplication.  The ptolemy.actor.gui.Configuration class is an 
+ a Ptolemy IIapplication.  The ptolemy.actor.gui.Configuration class is an
  example of a class that implements this interface.
 
- @author Christopher Brooks      
+ @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Red (cxh)

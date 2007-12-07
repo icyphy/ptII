@@ -69,8 +69,8 @@ public class ReceiverComparator implements Comparator {
     ////                         public methods                    ////
 
     /** Compare two receivers according to ReceiverTime and priority.
-     *  @param object1 The first object to be compared.   
-     *  @param object2 The second object to be compared.   
+     *  @param object1 The first object to be compared.
+     *  @param object2 The second object to be compared.
      *  @return  +1, -1 or 0 if the first receiver argument will be
      *  ordered before, after or equivalent to the second receiver
      *  argument, respectively. Base the ordering first on the

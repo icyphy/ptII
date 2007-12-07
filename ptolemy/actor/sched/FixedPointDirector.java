@@ -54,17 +54,17 @@ import ptolemy.kernel.util.Workspace;
  A base class for directors that have fixed point semantics at each
  iteration. An iteration consists of repeated firings of the
  actors controlled by this director until a fixed point is reached.
- An iteration has converged if firing actors will not change signal 
+ An iteration has converged if firing actors will not change signal
  status any more.
  <p>
  At the beginning of each iteration, the status of
  all inputs and outputs is unknown. Upon firing an actor,
  the status of its output signals may become known.  Once the status of
- a signal becomes known, it cannot be changed back to unknown in the 
+ a signal becomes known, it cannot be changed back to unknown in the
  iteration. This monotonicity constraint ensures the existence and
  uniqueness of the fixed point.
- During an iteration, the prefire() and fire() methods of the controlled 
- actors may be repeatedly invoked, but the postfire() method will be 
+ During an iteration, the prefire() and fire() methods of the controlled
+ actors may be repeatedly invoked, but the postfire() method will be
  invoked exactly once after the fixed point has been found.
  The postfire() methods of the contained actors are invoked only
  in the postfire() method of this director, and they are invoked
@@ -74,8 +74,8 @@ import ptolemy.kernel.util.Workspace;
  assumes that all the outputs of the actor are absent. The actor has
  declined to fire.
  </p><p>
- Although this director does not require any specific ordering of actor 
- firings, a scheduler is used to choose an efficient ordering. 
+ Although this director does not require any specific ordering of actor
+ firings, a scheduler is used to choose an efficient ordering.
  <p>
  By default, actors are <i>strict</i>, which means that all their
  input signals must be known before the actor can be fired. Here,
@@ -110,7 +110,7 @@ import ptolemy.kernel.util.Workspace;
  but before they have been postfired.
  <p>
  This class is based on the original SRDirector, written by Paul Whitaker.
- 
+
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.2
@@ -273,7 +273,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
     /** Return true if all the controlled actors' isFireFunctional()
      *  methods return true. Otherwise, return false.
-     *  
+     *
      *  @return True if all controlled actors are functional.
      */
     public boolean isFireFunctional() {
@@ -300,7 +300,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     /** Return false. The transferInputs() method checks whether
      *  the inputs are known before calling hasToken().
      *  Thus this derictor tolerate unknown inputs.
-     *  
+     *
      *  @return False.
      */
     public boolean isStrict() {
@@ -363,7 +363,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                     + " is complete.");
         }
 
-        // Check whether the current execution has reached its iteration limit. 
+        // Check whether the current execution has reached its iteration limit.
         _currentIteration++;
         int numberOfIterations = ((IntToken) iterations.getToken()).intValue();
         if ((numberOfIterations > 0)
@@ -655,19 +655,19 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                     + ":\n Number of receivers known now is "
                     + _currentNumberOfKnownReceivers);
         }
-        // Determine the number of known receivers has changed since the 
-        // last iteration. If not, the current iteration has converged. 
+        // Determine the number of known receivers has changed since the
+        // last iteration. If not, the current iteration has converged.
         // Note that checking whether all receivers are known is not sufficient
-        // to conclude the convergence of the iteration because if some 
-        // receivers just become known, their containers (actors) need to be 
-        // fired to react these new inputs. 
+        // to conclude the convergence of the iteration because if some
+        // receivers just become known, their containers (actors) need to be
+        // fired to react these new inputs.
         boolean converged = _lastNumberOfKnownReceivers == _currentNumberOfKnownReceivers;
         _lastNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
 
-        // One might try to optimize this method by also considering the 
+        // One might try to optimize this method by also considering the
         // _actorsFinishedFiring set.
         // CompositeActor container = (CompositeActor) getContainer();
-        // converged = 
+        // converged =
         // _actorsFinishedFiring.size() == container.deepEntityList().size());
         return converged;
     }
@@ -704,7 +704,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     }
 
     /** Return the result of the postfire() method of the specified actor
-     *  if it is allowed to be fired in the current iteration.  If this actor 
+     *  if it is allowed to be fired in the current iteration.  If this actor
      *  is not to be fired in the current iteration, return true without
      *  calling the postfire() method of the actor.
      */
@@ -723,9 +723,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      */
     private void _sendClearToAllUnknownOutputsOf(Actor actor)
             throws IllegalActionException {
-        // An actor, if its firing has finished but some of its 
+        // An actor, if its firing has finished but some of its
         // outputs are still unknown, clear these outputs.
-        // However, there is nothing need to do if this actor has 
+        // However, there is nothing need to do if this actor has
         // resolved all of its outputs.
         Iterator outputPorts = actor.outputPortList().iterator();
         while (outputPorts.hasNext()) {

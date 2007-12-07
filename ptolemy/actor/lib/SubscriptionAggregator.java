@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  Data produced by all publishers that publish on a channel name
  that matches the regular expression are aggregated using the
  operation given by the <i>operation</i> parameter.
- 
+
  @author Edward A. Lee, Raymond A. Cardillo, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 5.2
@@ -154,7 +154,7 @@ public class SubscriptionAggregator extends Subscriber {
             }
             // FIXME: this might end up consuming lots of space in large
             // graphs.  We could store the hash of the channelName
-            // and if the hash is present, then do the comparison. 
+            // and if the hash is present, then do the comparison.
             _channelDoesNotMatch.add(channelName);
         }
         return false;

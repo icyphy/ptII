@@ -42,7 +42,7 @@ import ptolemy.kernel.undo.UndoStackAttribute;
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Red (cxh)
- @Pt.AcceptedRating Red (cxh) 
+ @Pt.AcceptedRating Red (cxh)
  */
 public class UndoActionTest implements UndoAction {
 

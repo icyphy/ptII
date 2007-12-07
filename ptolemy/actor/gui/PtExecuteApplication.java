@@ -74,14 +74,14 @@ import ptolemy.util.MessageHandler;
  that threw an exception.  The main() method calls System.exit()
  as well and returns an integer that represents the number of models
  that threw an exception.
- 
+
  <p>If there are no command-line arguments at all, then this class
  does nothing.
 
  <p> This class will bring up the GUI and usually requires access
  to a display. The {@link ptolemy.actor.gui.MoMLSimpleApplication}
  class will run models in a non-graphical context.
- 
+
  @author Edward A. Lee, Steve Neuendorffer Christopher Hylands
  @version $Id$
  @since Ptolemy II 1.0
@@ -120,7 +120,7 @@ public class PtExecuteApplication extends MoMLApplication {
 
         // If you modify this code, make sure that the following command
         // prints a meaningful message to stdout:
-        //  $PTII/bin/ptexecute $PTII/ptolemy/domains/sdf/kernel/test/auto/knownFailedTests/tunneling2.xml 
+        //  $PTII/bin/ptexecute $PTII/ptolemy/domains/sdf/kernel/test/auto/knownFailedTests/tunneling2.xml
 
         // One of the models has an error, so we set the return value of
         // the java process to something other than 1.
@@ -151,7 +151,7 @@ public class PtExecuteApplication extends MoMLApplication {
             application.waitForFinish();
         } catch (Throwable throwable) {
             MessageHandler.error("Command failed", throwable);
-            // Be sure to print the stack trace so that 
+            // Be sure to print the stack trace so that
             // "$PTII/bin/ptexecute -foo" prints something.
             System.err.print(KernelException.stackTraceToString(throwable));
 

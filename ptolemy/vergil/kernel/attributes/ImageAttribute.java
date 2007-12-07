@@ -51,7 +51,7 @@ import ptolemy.vergil.icon.ImageIcon;
  parameter specifies a file containing an image (GIF, JPEG, etc.), and
  its <i>scale</i> attribute specifies a scaling factor, as a percentage.
  </p>
- 
+
  @author Edward A. Lee and Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 4.0

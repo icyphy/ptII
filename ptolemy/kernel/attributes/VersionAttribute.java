@@ -240,7 +240,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
     }
 
     /** Return the major version, which consists of the first two
-     *  tuples.  Thus, if the version is 6.0.1-beta, then this 
+     *  tuples.  Thus, if the version is 6.0.1-beta, then this
      *  method will return "6.0".
      *  @return The major version.
      */

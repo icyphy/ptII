@@ -55,7 +55,7 @@ import ptolemy.moml.MoMLChangeRequest;
 //////////////////////////////////////////////////////////////////////////
 //// UnitConstraintsDialog
 
-/** 
+/**
  Unit Constraints Dialog.
 
  @author Rowland R Johnson

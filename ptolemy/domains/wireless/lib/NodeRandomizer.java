@@ -83,11 +83,11 @@ import ptolemy.moml.MoMLChangeRequest;
  constructing tests. If the seed is zero, then a new seed is generated
  on each run (using the current time and the hash code of this object).
  <p>
- The <i>maxPrecision</i> parameter specifies the number of digits to be used 
- when generating a random location; results are rounded to this precision.  
- If the value is 0 (the default value), then use the maximum precision allowed by 
+ The <i>maxPrecision</i> parameter specifies the number of digits to be used
+ when generating a random location; results are rounded to this precision.
+ If the value is 0 (the default value), then use the maximum precision allowed by
  the Java double type and the random number generator.
-   
+
  @author Sanjeev Kohli, N. Vinay Krishnan, Cheng Tien Ee, Edward Lee, Xiaojun Liu and Elaine Cheong.
  @version $Id$
  @since Ptolemy II 4.0
@@ -331,7 +331,7 @@ public class NodeRandomizer extends TypedAtomicActor {
                             + range.getExpression());
                 }
 
-                // If the precision is 0, then use the maximum precision allowed by double.  
+                // If the precision is 0, then use the maximum precision allowed by double.
                 // Otherwise, round according to the maxPrecision parameter.
                 if (_mathContext == null) {
                     randomLocation[i] = low

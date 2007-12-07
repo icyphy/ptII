@@ -679,17 +679,17 @@ public class DEDirector extends Director implements TimedDirector {
     public Time getModelNextIterationTime() {
         Time aFutureTime = Time.POSITIVE_INFINITY;
 
-        // Record the model next iteration time as the tag of the the earliest 
-        // event in the queue.  
+        // Record the model next iteration time as the tag of the the earliest
+        // event in the queue.
         if (_eventQueue.size() > 0) {
             aFutureTime = _eventQueue.get().timeStamp();
         }
 
         // Iterate the event queue to find the earliest event with a bigger tag
-        // ((either timestamp or microstop). If such an event exists, 
-        // use its time as the model next iteration time. If no such event 
+        // ((either timestamp or microstop). If such an event exists,
+        // use its time as the model next iteration time. If no such event
         // exists, it means that the model next iteration time still needs to
-        // be resolved. In other words, the model next iteration time is 
+        // be resolved. In other words, the model next iteration time is
         // just the current time.
         Object[] events = _eventQueue.toArray();
         for (int i = 0; i < events.length; i++) {
@@ -798,7 +798,7 @@ public class DEDirector extends Director implements TimedDirector {
 
         super.initialize();
 
-        // Register the stop time as an event such that the model is 
+        // Register the stop time as an event such that the model is
         // guaranteed to stop at that time. This event also serves as
         // a guideline for an embedded Continuous model to know how much
         // further to integrate into future. But only do this if the
@@ -969,7 +969,7 @@ public class DEDirector extends Director implements TimedDirector {
         }
 
         // If the model time is larger (later) than the first event
-        // in the queue, catch up with the current model time by discarding 
+        // in the queue, catch up with the current model time by discarding
         // the old events. This can occur, for example, if we are in a
         // modal model and this director was in an inactive mode before
         // we reached the time of the event.
@@ -1302,7 +1302,7 @@ public class DEDirector extends Director implements TimedDirector {
     private void _computeActorDepth() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
         LinkedList actors = (LinkedList) container.deepEntityList();
-        // Add container. 
+        // Add container.
         actors.add(container);
         int numberOfActors = actors.size();
         _actorToDepth = new Hashtable(numberOfActors);
@@ -1534,7 +1534,7 @@ public class DEDirector extends Director implements TimedDirector {
             // For an output port, adjust the depths of all the
             // input ports on which it depends to match the largest
             // depth of those input ports.
-            // FIXME: The following is really problematic. Check the 
+            // FIXME: The following is really problematic. Check the
             // DESchedulingTest3.xml as example (NOTE: I can't
             // find this example. EAL).
             if (ioPort.isOutput()) {
@@ -1988,7 +1988,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // of outputs, each of which will have the same microstep.
                     _eventQueue.take();
                 } else if (nextEvent.hasTheSameTagAs(lastFoundEvent)) {
-                    // The actor to be fired is the container, we remove all 
+                    // The actor to be fired is the container, we remove all
                     // the trigger events with the same tag from the event
                     // queue such that the executive director of this DE model
                     // can react to these events.

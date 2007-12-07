@@ -86,7 +86,7 @@ import ptolemy.vergil.basic.ExtendedGraphFrame;
  </ul>
 
  </ul>
- 
+
 
  @author Edward A. Lee, Elaine Cheong
  @version $Id$

@@ -755,23 +755,23 @@ public class IORelation extends ComponentRelation {
                 IOPort p = (IOPort) ports.next();
 
                 // Infer the width of this port from the linked connections.
-                // Note we assume that this method is only called upon a 
-                // multiport. 
+                // Note we assume that this method is only called upon a
+                // multiport.
                 // To guarantee this method successfully infer widths, we have
-                // to check and ensure that there is at most one input relation 
+                // to check and ensure that there is at most one input relation
                 // or one output relation whose width is not fixed (unknown).
-                // This requirement is conservative. For example, an output 
-                // port may have two buses with their widths not fixed. 
-                // Furthermore, if one of the buses is connected to an input 
-                // port and its width can be determined from the internal 
-                // connections associated with that input port, the width of 
+                // This requirement is conservative. For example, an output
+                // port may have two buses with their widths not fixed.
+                // Furthermore, if one of the buses is connected to an input
+                // port and its width can be determined from the internal
+                // connections associated with that input port, the width of
                 // the other bus can also be resolved. However, to support this,
                 // a fixed-point iteration has to be performed, but there is
-                // no guarantee of existence of a useful fixed-point whose 
+                // no guarantee of existence of a useful fixed-point whose
                 // widths are all non-zero. Therefore, we take the conservative
                 // approach.
-                // To infer the unknown width, we resolve the equation where 
-                // the sum of the widths of input relations equals the sum of 
+                // To infer the unknown width, we resolve the equation where
+                // the sum of the widths of input relations equals the sum of
                 // those of output relations.
                 int portInsideWidth = 0;
                 int portOutsideWidth = 0;

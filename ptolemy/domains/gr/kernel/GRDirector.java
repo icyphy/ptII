@@ -326,7 +326,7 @@ public class GRDirector extends StaticSchedulingDirector {
         // Iterate all actors under control of this director and fire them.
         // This is done in postfire() to ensure that all inputs are stable.
         _fire();
-        
+
         // Have to transfer outputs! Presumably outputs are only
         // instances of SceneGraphToken going to a higher-level
         // GRDirector, so producing those outputs in postfire()

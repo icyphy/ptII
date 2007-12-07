@@ -207,9 +207,9 @@ import ptolemy.kernel.util.Workspace;
  that has the value <code>""</code> and then set the string mode
  parameter to the <code>$<i>nameOfTheParameter</i></code>.  For example,
  the parameter might be named <code>myEmptyParameter</code> and have
- a value <code>""</code>; the value for the string mode parameter would 
+ a value <code>""</code>; the value for the string mode parameter would
  be <code>$myEmptyParameter</code>.
- 
+
  @author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong
  @version $Id$
  @since Ptolemy II 0.2
@@ -292,7 +292,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  @param container The container.
      *  @param name The name.
      *  @param token The token contained by this variable.
-     *  @param incrementWorkspaceVersion False to not add this to the workspace 
+     *  @param incrementWorkspaceVersion False to not add this to the workspace
      *   or do anything else that might change the workspace version number.
      *  @exception IllegalActionException If the container does not accept
      *   a variable as its attribute.
@@ -1842,7 +1842,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                 //                     // because inequalities may have been set up that refer to this
                 //                     // particular instance _varType.
                 //                     // NOTE: updateType() won't update to an incompatible type!
-                //                     ((ArrayType)_varType).setType((ArrayType)newToken.getType());                    
+                //                     ((ArrayType)_varType).setType((ArrayType)newToken.getType());
                 //                 } else {
                 //                     // It is OK now to replace _varType because either the
                 //                     // type is not a structured type or it was previously

@@ -51,7 +51,7 @@ public class Remainder extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    /** 
+    /**
      * Get the files needed by the code generated for the Remainder actor.
      * @return A set of strings that are names of the files needed by the
      * code generated for the Remainder actor.

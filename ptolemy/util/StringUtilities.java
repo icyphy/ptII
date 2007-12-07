@@ -78,7 +78,7 @@ public class StringUtilities {
         // This method is used to abbreviate window titles so that long
         // file names may appear in the window title bar.  It is not
         // parameterized so that we can force a unified look and feel.
-        // FIXME: it would be nice to split on a nearby space. 
+        // FIXME: it would be nice to split on a nearby space.
         if (longName == null) {
             return "<Unnamed>";
         }
@@ -198,7 +198,7 @@ public class StringUtilities {
         return string;
     }
 
-    /** If the ptolemy.ptII.exitAfterWrapup property is not set, then 
+    /** If the ptolemy.ptII.exitAfterWrapup property is not set, then
      *  call System.exit().
      *  Ptolemy code should call this method instead of directly calling
      *  System.exit() so that we can test code that would usually exit.
@@ -446,7 +446,7 @@ public class StringUtilities {
             }
         }
 
-        // If the property is not set then we return the empty string. 
+        // If the property is not set then we return the empty string.
         if (property == null) {
             return "";
         }
@@ -459,7 +459,7 @@ public class StringUtilities {
      *  classpath.  The value of properties listed in
      *  lib/ptII.properties do not override properties with the same
      *  name in the current properties.
-     *  @exception IOException If thrown while looking for the 
+     *  @exception IOException If thrown while looking for the
      *  $CLASSPATH/lib/ptII.properties file.
      */
     public static void mergePropertiesFile() throws IOException {
@@ -556,7 +556,7 @@ public class StringUtilities {
         String line = new String();
         bufferedReader = new BufferedReader(new StringReader(lines));
         try {
-            // Read line by line, skipping comments. 
+            // Read line by line, skipping comments.
             while ((line = bufferedReader.readLine()) != null) {
                 line = line.trim();
                 if (!(line.length() == 0 || line.startsWith("/*") || line

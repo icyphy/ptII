@@ -90,10 +90,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         }
     }
 
-    /** Create read and write offset variables if needed for the associated 
-     *  composite actor. It delegates to the director helper of the local 
+    /** Create read and write offset variables if needed for the associated
+     *  composite actor. It delegates to the director helper of the local
      *  director.
-     *  @return A string containing declared read and write offset variables. 
+     *  @return A string containing declared read and write offset variables.
      *  @exception IllegalActionException If the helper class cannot be found
      *   or the director helper throws it.
      */
@@ -122,7 +122,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         //code.append(_codeGenerator.comment(2,
-        //                "Fire Composite " 
+        //                "Fire Composite "
         //                + getComponent().getName()));
         code.append(super.generateFireCode());
 
@@ -168,7 +168,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         // Generate the fire code by the director helper.
         code.append(directorHelper.generateFireCode());
 
-        // Transfer the data to the outside. 
+        // Transfer the data to the outside.
         Iterator outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .outputPortList().iterator();
 
@@ -183,7 +183,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  the firing code of each actor is not inlined. Each actor's
      *  firing code is in a function with the same name as that of the
      *  actor.
-     * 
+     *
      *  @return The fire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
@@ -200,9 +200,9 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return code.toString();
     }
 
-    /** Generate the initialize code of the associated composite actor. It 
+    /** Generate the initialize code of the associated composite actor. It
      *  first resets the read and write offset of all input ports of all
-     *  contained actors and all output ports. It then gets the result of 
+     *  contained actors and all output ports. It then gets the result of
      *  generateInitializeCode() method of the local director helper.
      *
      *  @return The initialize code of the associated composite actor.
@@ -212,7 +212,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer initializeCode = new StringBuffer();
-        //initializeCode.append(_codeGenerator.comment(1, 
+        //initializeCode.append(_codeGenerator.comment(1,
         //        "Initialize composite "
         //        + getComponent().getName()));
 
@@ -252,13 +252,13 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return initializeCode.toString();
     }
 
-    /** Generate mode transition code. It delegates to the director helper 
-     *  of the local director. The mode transition code generated in this 
-     *  method is executed after each global iteration, e.g., in HDF model. 
-     * 
+    /** Generate mode transition code. It delegates to the director helper
+     *  of the local director. The mode transition code generated in this
+     *  method is executed after each global iteration, e.g., in HDF model.
+     *
      *  @param code The string buffer that the generated code is appended to.
-     *  @exception IllegalActionException If the director helper throws it 
-     *   while generating mode transition code. 
+     *  @exception IllegalActionException If the director helper throws it
+     *   while generating mode transition code.
      */
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
@@ -270,7 +270,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     /** Generate the postfire code of the associated composite
      *  actor. It returns the result of generatePostfireCode() method
      *  of the local director helper.
-     * 
+     *
      *  @return The postfire code of the associated composite actor.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating postfire code for the actor.
@@ -285,8 +285,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     }
 
     /** Generate the preinitialize code of the associated composite actor.
-     *  It first creates buffer size and offset map for its input ports and 
-     *  output ports. It then gets the result of generatePreinitializeCode() 
+     *  It first creates buffer size and offset map for its input ports and
+     *  output ports. It then gets the result of generatePreinitializeCode()
      *  method of the local director helper.
      *
      *  @return The preinitialize code of the associated composite actor.
@@ -305,12 +305,12 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return code.toString();
     }
 
-    /** Generate variable declarations for input ports, output ports and 
+    /** Generate variable declarations for input ports, output ports and
      *  parameters if necessary, as well as for the director and the
      *  contained actors.
      *  @return code The generated code.
      *  @exception IllegalActionException If the helper associated with
-     *   an actor throws it while generating variable declarations for 
+     *   an actor throws it while generating variable declarations for
      *   the actor.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
@@ -340,13 +340,13 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     /** Generate variable initialization for the referenced parameters.
      *  @return code The generated code.
      *  @exception IllegalActionException If the helper associated with
-     *   an actor throws it while generating variable declarations for 
+     *   an actor throws it while generating variable declarations for
      *   the actor.
      */
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        // code.append(_eol + _codeGenerator.comment(1, "Composite actor " 
+        // code.append(_eol + _codeGenerator.comment(1, "Composite actor "
         //                + getComponent().getName()
         //                + "'s variable initialization."));
 
@@ -365,7 +365,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
     /** Generate the wrapup code of the associated composite actor. It returns
      *  the result of generateWrapupCode() method of the local director helper.
-     * 
+     *
      *  @return The wrapup code of the associated composite actor.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating wrapup code for the actor.
@@ -383,7 +383,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  internal configuration of this composite actor, the array
      *  contains a corresponding element representing the number of
      *  firings of this composite actor per global iteration.
-     * 
+     *
      *  @return An int array of firings per global iteration.
      *  @see #setFiringsPerGlobalIteration(int[])
      */
@@ -391,11 +391,11 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return _firingsPerGlobalIteration;
     }
 
-    /** Get the header files needed by the code generated from this helper 
-     *  class. It returns the result of calling getHeaderFiles() method of 
+    /** Get the header files needed by the code generated from this helper
+     *  class. It returns the result of calling getHeaderFiles() method of
      *  the helpers of all contained actors.
-     * 
-     *  @return A set of strings that are header files. 
+     *
+     *  @return A set of strings that are header files.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating header files for the actor.
      */
@@ -437,7 +437,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return includeDirectories;
     }
 
-    /** Return the libraries specified in the "libraries" blocks in the 
+    /** Return the libraries specified in the "libraries" blocks in the
      *  templates of the actors included in this CompositeActor.
      *  @return A Set of libraries.
      *  @exception IllegalActionException If thrown when gathering libraries.
@@ -462,10 +462,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  execution of the model. These parameters are those returned by
      *  getModifiedVariables() method of directors or actors that
      *  implement ExplicitChangeContext interface.
-     * 
+     *
      *  @return a set of parameters that will be modified.
-     *  @exception IllegalActionException If the helper associated with an actor 
-     *   or director throws it while getting modified variables. 
+     *  @exception IllegalActionException If the helper associated with an actor
+     *   or director throws it while getting modified variables.
      */
     public Set getModifiedVariables() throws IllegalActionException {
         Set set = new HashSet();
@@ -483,7 +483,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  representing the rates of all ports of this composite
      *  actor. It returns null when there is only one internal
      *  configuration, e.g., when the internal model is an SDF model.
-     * 
+     *
      *  @return A two-dimensional int array of rates of this actor or null.
      *  @see #setRates(int[][])
      */
@@ -494,7 +494,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     /** Generate a set of shared code fragments of the associated
      *  composite actor.  It returns the result of calling
      *  getSharedCode() method of the helpers of all contained actors.
-     *  
+     *
      *  @return a set of shared code fragments.
      *  @exception IllegalActionException If the helper associated with
      *  an actor throws it while generating shared code for the actor.
@@ -519,7 +519,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
     /** Reset the offsets of all inside buffers of all output ports of the
      *  associated composite actor to the default value of 0.
-     * 
+     *
      *  @return The reset code of the associated composite actor.
      *  @exception IllegalActionException If thrown while getting or
      *   setting the offset.
@@ -560,8 +560,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  internal configuration of this composite actor, the array
      *  contains a corresponding element representing the number of
      *  firings of this composite actor per global iteration.
-     * 
-     *  @param firingsPerGlobalIteration An int array of firings per 
+     *
+     *  @param firingsPerGlobalIteration An int array of firings per
      *   global iteration
      *  @see #getFiringsPerGlobalIteration()
      */
@@ -573,7 +573,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  each internal configuration of this composite actor, the array
      *  contains a corresponding one-dimensional int array
      *  representing the rates of all ports of this composite actor.
-     * 
+     *
      *  @param rates A two-dimensional int array of rates of this actor.
      *  @see #getRates()
      */
@@ -584,10 +584,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
 
-    /** Create and initialize the buffer size and offset maps for this 
-     *  composite actor. A key of the map is an IOPort of the actor. 
-     *  The corresponding value is an array of buffer sizes or an 
-     *  array of offsets. The i-th element in the array corresponds to 
+    /** Create and initialize the buffer size and offset maps for this
+     *  composite actor. A key of the map is an IOPort of the actor.
+     *  The corresponding value is an array of buffer sizes or an
+     *  array of offsets. The i-th element in the array corresponds to
      *  the i-th channel of that IOPort.
      *
      * @exception IllegalActionException If thrown while getting helper
@@ -606,7 +606,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     /** Create the output buffer and offset map.
      *  @exception IllegalActionException If thrown while getting the
      *  director helper or while getting the buffer size or read offset
-     *  or write offset.   
+     *  or write offset.
      */
     protected void _createOutputBufferSizeAndOffsetMap()
             throws IllegalActionException {
@@ -628,7 +628,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             for (int i = 0; i < port.getWidthInside(); i++) {
                 // If the local director is an SDF director, then the buffer
                 // size got from the director helper is final. Otherwise
-                // the buffer size will be updated later on with the maximum 
+                // the buffer size will be updated later on with the maximum
                 // for all possible schedules.
                 int bufferSize = directorHelper.getBufferSize(port, i);
                 setBufferSize(port, i, bufferSize);

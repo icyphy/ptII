@@ -72,7 +72,7 @@ public class TokenToExpression extends Converter {
     ////                         public methods                    ////
 
     /** Output a string token whose value is an expression representing
-     *  the value of the input token. If the input known to be absent, 
+     *  the value of the input token. If the input known to be absent,
      *  this actor outputs a string "absent".
      *  @exception IllegalActionException If there's no director.
      */

@@ -105,7 +105,7 @@ public class SequencePlotter extends Plotter implements SequenceActor {
     ////                         public methods                    ////
 
     /** Notification that an attribute has changed.
-     *  @param attribute The attribute that changed. 
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the expression of the
      *   attribute cannot be parsed or cannot be evaluated.
      */

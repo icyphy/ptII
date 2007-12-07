@@ -573,10 +573,10 @@ public abstract class Rounding implements Cloneable, Serializable {
     /** Construct a Rounding object with the given String name.
      *  This name is used for finding a Rounding object at a later
      *  time (@see #forName(String)). This constructor
-     *  is protected to make a type safe enumeration. 
-     * 
+     *  is protected to make a type safe enumeration.
+     *
      * @param name The String name to give this Rounding strategy.
-     * 
+     *
      */
     protected Rounding(String name) {
         _name = name;
