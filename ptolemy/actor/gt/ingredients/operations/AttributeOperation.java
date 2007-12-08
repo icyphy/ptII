@@ -26,7 +26,6 @@
  */
 package ptolemy.actor.gt.ingredients.operations;
 
-import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.NamedObjVariable;
@@ -40,6 +39,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeWriter;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
@@ -81,7 +81,7 @@ public class AttributeOperation extends Operation {
 
     public ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
-            GTEntity patternEntity, GTEntity replacementEntity)
+            Entity patternEntity, Entity replacementEntity)
             throws IllegalActionException {
         if (_valueParseTree == null) {
             _reparse();

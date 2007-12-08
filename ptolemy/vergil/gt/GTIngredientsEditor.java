@@ -144,16 +144,24 @@ public class GTIngredientsEditor extends PtolemyDialog implements
 
         Attribute attribute = null;
 
-        if (target instanceof GTEntity) {
-            if (GTTools.isInPattern(target)) {
+        if (GTTools.isInPattern(target)) {
+            if (target instanceof GTEntity) {
                 attribute = target.getAttribute("criteria");
-                _ingredientClasses = _criterionClasses;
-                tableau.setTitle("Criteria editor for " + target.getName());
-            } else if (GTTools.isInReplacement(target)) {
-                attribute = target.getAttribute("operations");
-                _ingredientClasses = _operationClasses;
-                tableau.setTitle("Operations editor for " + target.getName());
+            } else {
+                attribute = (Attribute) target.attributeList(
+                        GTIngredientsAttribute.class).get(0);
             }
+            _ingredientClasses = _criterionClasses;
+            tableau.setTitle("Criteria editor for " + target.getName());
+        } else if (GTTools.isInReplacement(target)) {
+            if (target instanceof GTEntity) {
+                attribute = target.getAttribute("operations");
+            } else {
+                attribute = (Attribute) target.attributeList(
+                        GTIngredientsAttribute.class).get(0);
+            }
+            _ingredientClasses = _operationClasses;
+            tableau.setTitle("Operations editor for " + target.getName());
         }
 
         _attribute = (GTIngredientsAttribute) attribute;
@@ -583,27 +591,13 @@ public class GTIngredientsEditor extends PtolemyDialog implements
                 .newInstance(new Object[] { _temporaryIngredientList });
     }
 
-    private GTIngredientsAttribute _attribute;
-
-    private static List<Class<? extends GTIngredient>> _criterionClasses;
-
     private static final Color _DISABLED_BACKGROUND = new Color(220, 220, 220);
-
-    private IngredientContentEditor _editor;
 
     private static final Border _EMPTY_BORDER = BorderFactory
             .createEmptyBorder();
 
-    private List<Class<? extends GTIngredient>> _ingredientClasses;
-
-    private GTIngredientList _initialIngredientList;
-
     private static final Color _NON_REGULAR_EXPRESSION_BACKGROUND = new Color(
             230, 230, 255);
-
-    private static List<Class<? extends GTIngredient>> _operationClasses;
-
-    private Frame _owner;
 
     private static final Dimension _PREFERRED_SIZE = new Dimension(700, 500);
 
@@ -621,6 +615,25 @@ public class GTIngredientsEditor extends PtolemyDialog implements
 
     private static final Color _SELECTED_COLOR = new Color(230, 230, 255);
 
+    private static final Border _TEXT_FIELD_BORDER = new JTextField()
+            .getBorder();
+
+    private static final Color _UNSELECTED_COLOR = Color.WHITE;
+
+    private GTIngredientsAttribute _attribute;
+
+    private static List<Class<? extends GTIngredient>> _criterionClasses;
+
+    private IngredientContentEditor _editor;
+
+    private List<Class<? extends GTIngredient>> _ingredientClasses;
+
+    private GTIngredientList _initialIngredientList;
+
+    private static List<Class<? extends GTIngredient>> _operationClasses;
+
+    private Frame _owner;
+
     private JTable _table;
 
     private DefaultTableModel _tableModel;
@@ -628,11 +641,6 @@ public class GTIngredientsEditor extends PtolemyDialog implements
     private Entity _target;
 
     private GTIngredientList _temporaryIngredientList;
-
-    private static final Border _TEXT_FIELD_BORDER = new JTextField()
-            .getBorder();
-
-    private static final Color _UNSELECTED_COLOR = Color.WHITE;
 
     private static class ColorizedComboBox extends JComboBox {
 

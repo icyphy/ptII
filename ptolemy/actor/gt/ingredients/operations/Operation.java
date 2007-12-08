@@ -28,12 +28,12 @@
 
 package ptolemy.actor.gt.ingredients.operations;
 
-import ptolemy.actor.gt.GTEntity;
 import ptolemy.actor.gt.GTIngredient;
 import ptolemy.actor.gt.GTIngredientList;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.Replacement;
 import ptolemy.actor.gt.data.MatchResult;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -64,7 +64,7 @@ public abstract class Operation extends GTIngredient {
 
     public abstract ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
-            GTEntity patternEntity, GTEntity replacementEntity)
+            Entity patternEntity, Entity replacementEntity)
             throws IllegalActionException;
 
 }

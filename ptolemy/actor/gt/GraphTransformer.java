@@ -254,16 +254,28 @@ public class GraphTransformer extends ChangeRequest {
             NamedObj host = entry.getValue();
             NamedObj pattern = _patternToReplacement.getKey(replacement);
 
-            if (!(pattern instanceof GTEntity
-                    && replacement instanceof GTEntity && host instanceof ComponentEntity)) {
+            if (!(pattern instanceof Entity
+                    && replacement instanceof Entity && host instanceof ComponentEntity)) {
                 continue;
             }
 
             try {
-                GTEntity patternEntity = (GTEntity) pattern;
-                GTEntity replacementEntity = (GTEntity) replacement;
-                GTIngredientList ingredientList = replacementEntity
-                        .getOperationsAttribute().getIngredientList();
+            	Entity patternEntity = (Entity) pattern;
+                Entity replacementEntity = (Entity) replacement;
+                GTIngredientList ingredientList;
+                if (replacementEntity instanceof GTEntity) {
+                    ingredientList = ((GTEntity) replacementEntity)
+                    		.getOperationsAttribute().getIngredientList();
+                } else {
+                	List<?> attributes = replacementEntity.attributeList(
+                			GTIngredientsAttribute.class);
+                	if (attributes.isEmpty()) {
+                		continue;
+                	} else {
+                		ingredientList = ((GTIngredientsAttribute)
+                				attributes.get(0)).getIngredientList();
+                	}
+                }
                 for (GTIngredient ingredient : ingredientList) {
                     ChangeRequest request;
                     try {

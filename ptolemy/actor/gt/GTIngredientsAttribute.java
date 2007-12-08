@@ -69,6 +69,9 @@ public class GTIngredientsAttribute extends StringAttribute {
 
     public void setExpression(String expression) throws IllegalActionException {
         _parsed = false;
+        if (!(getContainer() instanceof GTEntity)) {
+            setPersistent(!expression.equals(""));
+        }
         super.setExpression(expression);
     }
 
