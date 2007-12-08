@@ -35,6 +35,7 @@ import java.net.URI;
 import javax.swing.JFrame;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.lib.Sink;
 import ptolemy.actor.parameters.PortParameter;
@@ -106,20 +107,20 @@ public class ModelView extends Sink implements WindowListener {
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 synchronized (this) {
-                    if (_tableaus[i] != null) {
-                        _tableaus[i].close();
-                        _tableaus[i] = null;
-                    }
-
                     Entity model = ((ActorToken) input.get(0)).getEntity();
-                    Configuration configuration = (Configuration) Configuration
-                            .findEffigy(toplevel()).toplevel();
+                    Effigy effigy = Configuration.findEffigy(toplevel());
+                    Configuration configuration =
+                        (Configuration) effigy.toplevel();
                     try {
                         _parser.reset();
                         // Export the model into moml string and then import it
                         // again. Needed b some models with unnoticeable state.
                         NamedObj newModel = _parser.parse(model.exportMoML());
-                        Tableau tableau = configuration.openModel(newModel);
+                        Tableau tableau = configuration.openModel(newModel,
+                                effigy);
+                        if (_tableaus[i] != null) {
+                            _tableaus[i].close();
+                        }
                         _tableaus[i] = tableau;
                         tableau.getFrame().addWindowListener(this);
 
