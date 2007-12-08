@@ -57,7 +57,19 @@ public class NamedObjVariable extends Variable {
         super(container, name);
 
         setToken(new NamedObjToken(container));
+        _setTokenWithContainer = true;
         setPersistent(false);
+    }
+    
+    private boolean _setTokenWithContainer = false;
+    
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
+        NamedObj oldContainer = getContainer();
+        super.setContainer(container);
+        if (_setTokenWithContainer && container != oldContainer) {
+            setToken(new NamedObjToken(container));
+        }
     }
 
     public void setToken(Token token) throws IllegalActionException {
