@@ -61,9 +61,8 @@ public class RenameOperation extends Operation {
 
     public ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
-            Entity patternEntity, Entity replacementEntity) {
+            Entity patternEntity, Entity replacementEntity, Entity hostEntity) {
         if (isNameEnabled()) {
-            NamedObj hostEntity = (NamedObj) matchResult.get(patternEntity);
             NamedObj parent = hostEntity.getContainer();
             String moml = "<entity name=\"" + hostEntity.getName()
                     + "\"><rename name=\"" + _name + "\"/></entity>";

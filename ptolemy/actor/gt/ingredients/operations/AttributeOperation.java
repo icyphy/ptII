@@ -81,13 +81,12 @@ public class AttributeOperation extends Operation {
 
     public ChangeRequest getChangeRequest(Pattern pattern,
             Replacement replacement, MatchResult matchResult,
-            Entity patternEntity, Entity replacementEntity)
+            Entity patternEntity, Entity replacementEntity, Entity hostEntity)
             throws IllegalActionException {
         if (_valueParseTree == null) {
             _reparse();
         }
-
-        NamedObj hostEntity = (NamedObj) matchResult.get(patternEntity);
+        
         String attributeClass;
         if (isAttributeClassEnabled()) {
             attributeClass = _attributeClass;

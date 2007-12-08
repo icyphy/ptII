@@ -46,7 +46,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -224,11 +223,11 @@ public class GraphTransformer extends ChangeRequest {
             }
 
             _init();
+            _addObjects();
             _performOperations();
             _recordMoML();
             _removeLinks();
             _removeObjects();
-            _addObjects();
             _addConnections();
             _wrapup();
         }
@@ -254,34 +253,36 @@ public class GraphTransformer extends ChangeRequest {
             NamedObj host = entry.getValue();
             NamedObj pattern = _patternToReplacement.getKey(replacement);
 
-            if (!(pattern instanceof Entity
-                    && replacement instanceof Entity && host instanceof ComponentEntity)) {
+            if (!(pattern == null || pattern instanceof Entity)
+                    || !(replacement instanceof Entity)
+                    || !(host instanceof Entity)) {
                 continue;
             }
 
             try {
-            	Entity patternEntity = (Entity) pattern;
+                Entity patternEntity = (Entity) pattern;
                 Entity replacementEntity = (Entity) replacement;
+                Entity hostEntity = (Entity) host;
                 GTIngredientList ingredientList;
                 if (replacementEntity instanceof GTEntity) {
                     ingredientList = ((GTEntity) replacementEntity)
-                    		.getOperationsAttribute().getIngredientList();
+                            .getOperationsAttribute().getIngredientList();
                 } else {
-                	List<?> attributes = replacementEntity.attributeList(
-                			GTIngredientsAttribute.class);
-                	if (attributes.isEmpty()) {
-                		continue;
-                	} else {
-                		ingredientList = ((GTIngredientsAttribute)
-                				attributes.get(0)).getIngredientList();
-                	}
+                    List<?> attributes = replacementEntity.attributeList(
+                            GTIngredientsAttribute.class);
+                    if (attributes.isEmpty()) {
+                        continue;
+                    } else {
+                        ingredientList = ((GTIngredientsAttribute)
+                                attributes.get(0)).getIngredientList();
+                    }
                 }
                 for (GTIngredient ingredient : ingredientList) {
                     ChangeRequest request;
                     try {
                         request = ((Operation) ingredient).getChangeRequest(
                                 _pattern, _replacement, _matchResult,
-                                patternEntity, replacementEntity);
+                                patternEntity, replacementEntity, hostEntity);
                         if (request != null) {
                             request.execute();
                         }
