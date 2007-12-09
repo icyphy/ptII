@@ -84,7 +84,6 @@ JSRCS = \
 	NamedObjToken.java \
 	NamedObjVariable.java \
 	ParameterAttribute.java \
-	PartialEvaluator.java \
 	Pattern.java \
 	PatternObjectAttribute.java \
 	RelationCollapsingAttribute.java \

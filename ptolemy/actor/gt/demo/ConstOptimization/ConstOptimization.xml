@@ -238,7 +238,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
         </entity>
         <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
             <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
-                <property name="operations" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.operations.AttributeOperation/true/&quot;value&quot;/false//true/&quot;gt_eval(\&quot;(A.getClassName()).equals(\\\&quot;ptolemy.actor.lib.AddSubtract\\\&quot;) ? (C1.value + C2.value) : ((A.getClassName()).equals(\\\&quot;ptolemy.actor.lib.MultiplyDivide\\\&quot;) ? (C1.value * C2.value) : (C1.value &gt;= C2.value ? C1.value : C2.value))\&quot;)&quot;)">
+                <property name="operations" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.operations.AttributeOperation/true/&quot;value&quot;/false//true/&quot;$((A.getClassName()).equals(\&quot;ptolemy.actor.lib.AddSubtract\&quot;) ? (C1.value + C2.value) : ((A.getClassName()).equals(\&quot;ptolemy.actor.lib.MultiplyDivide\&quot;) ? (C1.value * C2.value) : (C1.value &gt;= C2.value ? C1.value : C2.value)))&quot;)">
                 </property>
                 <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="C1">
                 </property>

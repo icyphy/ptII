@@ -223,9 +223,9 @@ public class GraphTransformer extends ChangeRequest {
             }
 
             _init();
+            _recordMoML();
             _addObjects();
             _performOperations();
-            _recordMoML();
             _removeLinks();
             _removeObjects();
             _addConnections();

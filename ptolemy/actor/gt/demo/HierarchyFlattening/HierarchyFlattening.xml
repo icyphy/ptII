@@ -4,9 +4,9 @@
 <entity name="HierarchyFlattening" class="ptolemy.actor.gt.TransformationRule">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={273, 236, 853, 578}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={271, 222, 858, 606}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[630, 463]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[635, 491]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -22,7 +22,7 @@
         <property name="DefaultDirectory" class="ptolemy.actor.gt.DefaultDirectoryAttribute">
             <property name="directory" class="ptolemy.data.expr.FileParameter" value="../../test">
             </property>
-            <property name="filter" class="ptolemy.data.expr.StringParameter" value="host*.xml">
+            <property name="filter" class="ptolemy.data.expr.StringParameter" value="*_succ?.xml">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                 <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">

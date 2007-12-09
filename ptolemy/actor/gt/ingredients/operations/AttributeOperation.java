@@ -28,17 +28,23 @@ package ptolemy.actor.gt.ingredients.operations;
 
 import ptolemy.actor.gt.GTIngredientElement;
 import ptolemy.actor.gt.GTIngredientList;
+import ptolemy.actor.gt.GTParameter;
 import ptolemy.actor.gt.NamedObjVariable;
-import ptolemy.actor.gt.PartialEvaluator;
 import ptolemy.actor.gt.Pattern;
 import ptolemy.actor.gt.Replacement;
 import ptolemy.actor.gt.ValidationException;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gt.util.PtolemyExpressionString;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtLeafNode;
 import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ASTPtSumNode;
+import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParseTreeWriter;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.PtParserTreeConstants;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
@@ -86,7 +92,7 @@ public class AttributeOperation extends Operation {
         if (_valueParseTree == null) {
             _reparse();
         }
-        
+
         String attributeClass;
         if (isAttributeClassEnabled()) {
             attributeClass = _attributeClass;
@@ -103,10 +109,33 @@ public class AttributeOperation extends Operation {
 
         ParserScope scope = NamedObjVariable.getNamedObjVariable(hostEntity,
                 true).getParserScope();
-        PartialEvaluator evaluator = new PartialEvaluator(scope, pattern,
-                matchResult);
-        ASTPtRootNode root = evaluator.evaluate(_valueParseTree);
-        String expression = _parseTreeWriter.parseTreeToExpression(root);
+        GTParameter.Evaluator evaluator =
+            new GTParameter.Evaluator(pattern, matchResult);
+        String expression;
+        if (_valueParseTree instanceof ASTPtSumNode) {
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < _valueParseTree.jjtGetNumChildren(); i++) {
+                ASTPtRootNode child =
+                    (ASTPtRootNode) _valueParseTree.jjtGetChild(i);
+                if (!(child.isConstant()
+                        && child.getToken() instanceof StringToken)) {
+                    ASTPtLeafNode newNode = _evaluate(child, evaluator, scope);
+                    buffer.append(_parseTreeWriter.parseTreeToExpression(
+                            newNode));
+                } else {
+                    buffer.append(
+                            ((StringToken) child.getToken()).stringValue());
+                }
+            }
+            expression = buffer.toString();
+        } else if (!(_valueParseTree.isConstant()
+                && _valueParseTree.getToken() instanceof StringToken)) {
+            ASTPtRootNode newRoot =
+                _evaluate(_valueParseTree, evaluator, scope);
+            expression = _parseTreeWriter.parseTreeToExpression(newRoot);
+        } else {
+            expression = _attributeValue.get();
+        }
         String moml = "<property name=\"" + _attributeName + "\" class=\""
                 + attributeClass + "\" value=\""
                 + StringUtilities.escapeForXML(expression) + "\"/>";
@@ -217,8 +246,26 @@ public class AttributeOperation extends Operation {
     }
 
     protected void _reparse() throws IllegalActionException {
-        _valueParseTree = _parser.generateParseTree(_attributeValue.get());
+        _valueParseTree = _parser.generateStringParseTree(
+                _attributeValue.get());
     }
+
+    private ASTPtLeafNode _evaluate(ASTPtRootNode node,
+            ParseTreeEvaluator evaluator, ParserScope scope)
+            throws IllegalActionException {
+        Token token = evaluator.evaluateParseTree(node, scope);
+        ASTPtLeafNode newNode = new ASTPtLeafNode(
+                PtParserTreeConstants.JJTPTLEAFNODE);
+        newNode.setToken(token);
+        newNode.setType(token.getType());
+        newNode.setConstant(true);
+        return newNode;
+    }
+
+    private static final OperationElement[] _ELEMENTS = {
+            new StringOperationElement("name", false),
+            new StringOperationElement("type", false),
+            new StringOperationElement("value", true) };
 
     private String _attributeClass;
 
@@ -226,14 +273,9 @@ public class AttributeOperation extends Operation {
 
     private PtolemyExpressionString _attributeValue;
 
-    private static final OperationElement[] _ELEMENTS = {
-            new StringOperationElement("name", false),
-            new StringOperationElement("type", false),
-            new StringOperationElement("value", true) };
+    private ParseTreeWriter _parseTreeWriter = new ParseTreeWriter();
 
     private PtParser _parser = new PtParser();
-
-    private ParseTreeWriter _parseTreeWriter = new ParseTreeWriter();
 
     private ASTPtRootNode _valueParseTree;
 }
