@@ -313,6 +313,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/x10/demo/demo.jar \
 	vendors/misc/x10/tjx10p-13/lib/x10.jar \
 	ptolemy/actor/ptalon/ptalon.jar \
+	ptolemy/actor/ptalon/demo/demo.jar \
 	lib/ptCal.jar \
 	lib/saxon8.jar \
 	lib/saxon8-dom.jar \
