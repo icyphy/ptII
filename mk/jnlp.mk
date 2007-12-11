@@ -307,12 +307,12 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/jmf/jmf.jar \
 	ptolemy/actor/lib/jmf/demo/demo.jar \
 	ptolemy/actor/lib/joystick/joystick.jar \
-	ptolemy/actor/lib/jxta/jxta.jar \
-	ptolemy/actor/lib/ptalon/ptalon.jar \
-	ptolemy/actor/lib/x10/x10.jar \
 	vendors/misc/joystick/Joystick.jar \
+	ptolemy/actor/lib/jxta/jxta.jar \
+	ptolemy/actor/lib/x10/x10.jar \
 	ptolemy/actor/lib/x10/demo/demo.jar \
 	vendors/misc/x10/tjx10p-13/lib/x10.jar \
+	ptolemy/actor/ptalon/ptalon.jar \
 	lib/ptCal.jar \
 	lib/saxon8.jar \
 	lib/saxon8-dom.jar \
