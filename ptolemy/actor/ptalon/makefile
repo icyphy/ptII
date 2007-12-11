@@ -31,7 +31,7 @@
 
 # This directory contains polymorphic actors.
 
-ME =		ptolemy/actor/lib/ptalon
+ME =		ptolemy/actor/ptalon
 
 DIRS =		doc lib demo test
 
