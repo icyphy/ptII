@@ -72,6 +72,7 @@ PTCLASSJAR =
 
 PTAUXALLJARS = \
 		ci/ci.jar \
+		continuous/continuous.jar \
 		curriculum/curriculum.jar \
 		dde/dde.jar \
 		ddf/ddf.jar \
