@@ -1544,9 +1544,13 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
          */
         _evaluatedChildToken = (childToken);
 
+        // The following code was removed because it prevented negative
+        // constants from working properly. --Fristoe 07/12/11
+        /*
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
+        */
     }
 
     ///////////////////////////////////////////////////////////////////

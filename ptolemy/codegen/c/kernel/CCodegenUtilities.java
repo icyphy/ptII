@@ -105,6 +105,26 @@ public class CCodegenUtilities {
                     + ", NULL)";
         }
     }
+    
+    /** Return a code block to get the jni id of a Java method.
+     * @param jniClass The Java class whose method to find.
+     * @param name The name of the method to find.
+     * @param signature The signature of the method to find.
+     * @param targetCpp Boolean indicating whether the target language is C or C++.
+     * @return A string containing code to get the jni id of a Java method.
+     *      cid = (*env)->GetMethodID(env, stringClass,
+                               "<init>", "([C)V");
+     */
+    public static String jniGetMethodID(String jniClass, String name,
+            String signature, boolean targetCpp) {
+        if (targetCpp) {
+            return "env->GetMethodID("
+                    + jniClass + ", \"" + name + "\", \"" + signature + "\")";
+        } else {
+            return "(*env)->GetMethodID(env, "
+                    + jniClass + ", \"" + name + "\", \"" + signature + "\")";
+        }
+    }
 
     /** Return a code block to get an element from a jni array.
      * @param arrayName The name of the jni array.
@@ -135,6 +155,29 @@ public class CCodegenUtilities {
         } else {
             return "(*env)->New" + type + "Array(env, " + size + ")";
         }
+    }
+    
+    /** Return a code block to create a new Java object using jni.
+     * @param objectType The type of the object.
+     * @param methodID The jni id of the object's constructor.
+     * @param arguments A list of arguments to the constructor.
+     * @param targetCpp Boolean indicating whether the target language is C or C++.
+     * @return A string containing code to create a new Java object.
+     */
+    public static String jniNewObject(String objectType, String methodID,
+            String[] arguments, boolean targetCpp) {
+        String returnVal = "";
+        if (targetCpp) {
+            returnVal = "env->NewObject(";
+        } else {
+            returnVal = "(*env)->NewObject(env, ";
+        }
+        returnVal = returnVal.concat(objectType + ", " + methodID);
+        for (int i = 0; i < arguments.length; i++) {
+            returnVal = returnVal.concat(", " + arguments[i]);
+        }
+        returnVal = returnVal.concat(")");
+        return returnVal;
     }
 
     /** Return a code block to create a new jni object array.
