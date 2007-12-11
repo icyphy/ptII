@@ -148,6 +148,10 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/hoc/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/javasound/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/javasound/demo"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/ptalon/ptalon.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/ptalon"/>
+            <file src="../../jar_dist/ptolemy/actor/lib/ptalon/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/ptalon/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/python/python.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/python"/>
             <file src="../../jar_dist/ptolemy/actor/lib/python/demo/demo.jar"
@@ -164,6 +168,10 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/csp/demo"/>
             <file src="../../jar_dist/ptolemy/domains/csp/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/csp/doc"/>
+            <file src="../../jar_dist/ptolemy/domains/continuous/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/continuous/demo"/>
+            <file src="../../jar_dist/ptolemy/domains/continuous/doc/doc.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/continuous/doc"/>
             <file src="../../jar_dist/ptolemy/domains/ct/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ct/demo"/>
             <file src="../../jar_dist/ptolemy/domains/ct/doc/doc.jar"
