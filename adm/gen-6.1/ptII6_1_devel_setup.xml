@@ -158,6 +158,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/python/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/security/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/security/demo"/>
+            <file src="../../jar_dist/ptolemy/backtrack/backtrack.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/backtrack"/>
             <file src="../../jar_dist/ptolemy/codegen/codegen.jar"
                   targetdir="$INSTALL_PATH/ptolemy/codegen"/>
             <file src="../../jar_dist/ptolemy/data/type/demo/demo.jar"
