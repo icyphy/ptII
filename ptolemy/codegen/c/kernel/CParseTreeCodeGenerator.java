@@ -314,9 +314,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         _evaluatedChildToken = (new ArrayToken(elementType, tokens));
 
-        if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
-        }
+        //if (node.isConstant()) {
+        //    node.setToken(_evaluatedChildToken);
+        //}
 
     }
 
@@ -397,9 +397,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         _evaluatedChildToken = ((ptolemy.data.Token) bitwiseResult);
 
-        if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
-        }
+        //if (node.isConstant()) {
+        //    node.setToken(_evaluatedChildToken);
+        //}
     }
 
     /** Apply a function to the children of the specified node.
@@ -741,9 +741,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         _evaluatedChildToken = conversionType.convert(token1);
 
-        if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
-        }
+        //if (node.isConstant()) {
+        //    node.setToken(_evaluatedChildToken);
+        //}
 
     }
 
@@ -893,9 +893,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         _evaluatedChildToken = (BooleanToken.getInstance(flag));
 
-        if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
-        }
+        //if (node.isConstant()) {
+        //    node.setToken(_evaluatedChildToken);
+        //}
     }
 
     /** Construct a matrix containing the children nodes.
@@ -1011,9 +1011,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         _evaluatedChildToken = (childToken);
 
-        if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
-        }
+        //if (node.isConstant()) {
+        //    node.setToken(_evaluatedChildToken);
+        //}
     }
 
     /** Apply a method to the children of the specified node, where the
@@ -1134,9 +1134,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         _evaluatedChildToken = (childToken);
 
-        if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
-        }
+        //if (node.isConstant()) {
+        //    node.setToken(_evaluatedChildToken);
+        //}
 
         //_fireCode.append(")");
         _childCode = "(" + result + ")";
@@ -1205,9 +1205,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         _evaluatedChildToken = (childToken);
 
-        if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
-        }
+        //if (node.isConstant()) {
+        //    node.setToken(_evaluatedChildToken);
+        //}
     }
 
     /** Construct a record by assigning the fields values given by
@@ -1241,9 +1241,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         _evaluatedChildToken = (new RecordToken(labels, tokens));
 
-        if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
-        }
+        //if (node.isConstant()) {
+        //    node.setToken(_evaluatedChildToken);
+        //}
 
         _childCode = result;
     }
@@ -1326,9 +1326,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         _evaluatedChildToken = (resultToken);
 
-        if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
-        }
+        //if (node.isConstant()) {
+        //    node.setToken(_evaluatedChildToken);
+        //}
     }
 
     /** Apply a shift operator to the children of the specified node.
@@ -1411,9 +1411,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         _evaluatedChildToken = (resultToken);
 
-        if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
-        }
+        //if (node.isConstant()) {
+        //    node.setToken(_evaluatedChildToken);
+        //}
     }
 
     /** Apply a sum operator to the children of the specified node.
@@ -1479,9 +1479,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         _evaluatedChildToken = (childToken);
 
-        if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
-        }
+        //if (node.isConstant()) {
+        //    node.setToken(_evaluatedChildToken);
+        //}
     }
 
     /** Apply a unary operator to the single child of the specified node.
@@ -1544,13 +1544,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
          */
         _evaluatedChildToken = (childToken);
 
-        // The following code was removed because it prevented negative
-        // constants from working properly. --Fristoe 07/12/11
-        /*
-        if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
-        }
-        */
+        //if (node.isConstant()) {
+        //    node.setToken(_evaluatedChildToken);
+        //}
     }
 
     ///////////////////////////////////////////////////////////////////
