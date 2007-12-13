@@ -55,7 +55,10 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.HasTypeConstraints;
+import ptolemy.data.type.Type;
 import ptolemy.data.type.Typeable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
@@ -1629,6 +1632,23 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             Port port = (Port) _identifierToPort.get(name);
 
             if ((port != null) && port instanceof Typeable) {
+                if (name.endsWith("_isPresent")) {
+                    return BaseType.BOOLEAN;
+                    
+                } else if (name.endsWith("Array")) {
+
+                    // We need to explicit return an ArrayType here 
+                    // because the port type may not be an ArrayType.
+                    String portName = name.substring(0, name.length() - 5);
+                    if (port == _identifierToPort.get(portName)) {
+                        Type portType = ((Typeable) port).getType();
+                        if (portType instanceof ArrayType) {
+                            return portType;
+                        } else {
+                            return new ArrayType(portType);
+                        }
+                    }
+                }
                 return ((Typeable) port).getType();
             }
 
