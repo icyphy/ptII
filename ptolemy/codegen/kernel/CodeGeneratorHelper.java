@@ -1856,7 +1856,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                 throw new IllegalActionException(_component,
                         "Failed to find open paren in \"" + code + "\".");
             }
-            int closeParenIndex = _findCloseParen(code, openParenIndex);
+            int closeParenIndex = _findClosedParen(code, openParenIndex);
 
             if (closeParenIndex < 0) {
                 // No matching close parenthesis is found.
@@ -1898,7 +1898,8 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
             result.append(_replaceMacro(macro, name));
 
-            result.append(code.substring(closeParenIndex + 1, nextPos));
+            String string = code.substring(closeParenIndex + 1, nextPos);
+            result.append(string);
             //}
             currentPos = nextPos;
         }
@@ -2464,42 +2465,77 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         return sinkRef + " = " + result + ";" + _eol;
     }
 
-    /** Return the channel number and offset given in a string.
-     *  The result is an integer array of length 2. The first element
-     *  indicates the channel number, the second the offset. If either
-     *  element is -1, it means that channel/offset is not specified.
+    /** Return the channel and offset given in a string.
+     *  The result is an string array of length 2. The first element
+     *  indicates the channel index, and the second the offset. If either
+     *  element is an empty string, it means that channel/offset is not
+     *  specified.
      * @param name The given string.
-     * @return An integer array of length 2, indicating the channel
-     *  number and offset.
-     * @exception IllegalActionException If the channel number or offset
+     * @return An string array of length 2, containing expressions of the
+     *  channel index and offset.
+     * @exception IllegalActionException If the channel index or offset
      *  specified in the given string is illegal.
      */
     protected String[] _getChannelAndOffset(String name)
             throws IllegalActionException {
 
-        // FIXME: the comment says that this method return -1 for
-        // unspecified channel or offset. However, result is initialized to
-        // empty strings.
         String[] result = { "", "" };
+        
+        // Given expression of forms:
+        //     "port"
+        //     "port, offset", or
+        //     "port#channel, offset".
 
-        StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
-        tokenizer.nextToken();
+        int poundIndex = _indexOf('#', name, 0);
+        int commaIndex = _indexOf(',', name, 0);
 
-        if (tokenizer.hasMoreTokens()) {
-            String token = tokenizer.nextToken();
-
-            if (token.equals("#")) {
-                result[0] = tokenizer.nextToken().trim();
-
-                if (tokenizer.hasMoreTokens()) {
-                    if (tokenizer.nextToken().equals(",")) {
-                        result[1] = tokenizer.nextToken().trim();
-                    }
-                }
-            } else if (token.equals(",")) {
-                result[1] = tokenizer.nextToken().trim();
-            }
+        if (commaIndex < 0) {
+            commaIndex = name.length();
         }
+        if (poundIndex < 0) {
+            poundIndex = commaIndex;
+        } 
+        
+        if (poundIndex < commaIndex) {
+            result[0] = name.substring(poundIndex + 1, commaIndex);
+        }
+        
+        if (commaIndex < name.length()) {
+            result[1] = name.substring(commaIndex + 1);
+        }
+        return result;
+    }
+
+    /**
+     * Return the index of a specific character in the string starting
+     * from the given index. It find the first occurence of the character
+     * that is not embedded inside parentheses "()".  
+     * @param ch The character to search for.
+     * @param string The given string to search from.
+     * @param fromIndex The index to start the search.
+     * @return The first occurence of the character in the string that
+     *  is not embedded in parentheses. 
+     * @throws IllegalActionException Thrown if the given string does not
+     *  contain the same number of open and closed parentheses.
+     */
+    private static int _indexOf(char ch, String string, int fromIndex) 
+            throws IllegalActionException {
+        
+        int parenIndex = fromIndex;
+        int result = -1;
+
+        do {
+            int closedParenIndex = parenIndex;
+            
+            result = string.indexOf(ch, closedParenIndex);
+            
+            parenIndex = string.indexOf('(', closedParenIndex);
+
+            if (parenIndex >= 0) {
+                closedParenIndex = _findClosedParen(string, parenIndex);
+            }
+        } while (parenIndex > 0 && result > parenIndex);
+        
         return result;
     }
 
@@ -2692,18 +2728,18 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *   given position of the string is not an open parenthesis or
      *   if the index is less than 0 or past the end of the string.
      */
-    private int _findCloseParen(String string, int pos)
+    private static int _findClosedParen(String string, int pos)
             throws IllegalActionException {
         if (pos < 0 || pos >= string.length()) {
-            throw new IllegalActionException(_component, "The character index "
+            throw new IllegalActionException("The character index "
                     + pos + " is past the end of string \"" + string
                     + "\", which has a length of " + string.length() + ".");
         }
 
         if (string.charAt(pos) != '(') {
-            throw new IllegalActionException(_component,
-                    "The character at index " + pos + " of string: " + string
-                            + " is not a open parenthesis.");
+            throw new IllegalActionException("The character at index "
+                    + pos + " of string: " + string 
+                    + " is not a open parenthesis.");
         }
 
         int nextOpenParen = string.indexOf("(", pos + 1);
