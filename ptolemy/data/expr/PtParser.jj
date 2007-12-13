@@ -903,7 +903,7 @@ void funcIf()       :
 /*@egen*/
    (
 
-           logicalOr() ( <QUESTION> logicalOr() <COLON> logicalOr() )?
+           logicalOr() ( <QUESTION> expression() <COLON> expression() )?
    )/*@bgen(jjtree)*/
    } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -1499,28 +1499,14 @@ void element() #void :
 }
 */
 
-void element()       :
+/*void element() #void :
 {
 	boolean hasName = false;
 	boolean hasCall = false;
 	String name = null;
 }
-{/*@bgen(jjtree) #PtFunctionApplicationNode( ! hasName && hasCall) */
-    {
-      ASTPtFunctionApplicationNode jjtn002 = new ASTPtFunctionApplicationNode(JJTPTFUNCTIONAPPLICATIONNODE);
-      boolean jjtc002 = true;
-      jjtree.openNodeScope(jjtn002);
-    }
-    try {
-/*@egen*/
-    (/*@bgen(jjtree) #PtMethodCallNode( hasName) */
-        {
-          ASTPtMethodCallNode jjtn001 = new ASTPtMethodCallNode(JJTPTMETHODCALLNODE);
-          boolean jjtc001 = true;
-          jjtree.openNodeScope(jjtn001);
-        }
-        try {
-/*@egen*/
+{
+    (
       	(
         	primaryElement()
 
@@ -1537,57 +1523,117 @@ void element()       :
 				{
 					hasCall = true;
 				}
-			]/*@bgen(jjtree)*/
-                        {
-                          jjtree.closeNodeScope(jjtn001,  hasName);
-                          jjtc001 = false;
-                        }
-/*@egen*/
+			]
 			{
-				jjtn001._methodName = name;
+				jjtThis._methodName = name;
 			}
-		)/*@bgen(jjtree)*/
-        } catch (Throwable jjte001) {
-          if (jjtc001) {
-            jjtree.clearNodeScope(jjtn001);
-            jjtc001 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte001 instanceof RuntimeException) {
-            throw (RuntimeException)jjte001;
-          }
-          if (jjte001 instanceof ParseException) {
-            throw (ParseException)jjte001;
-          }
-          throw (Error)jjte001;
-        } finally {
-          if (jjtc001) {
-            jjtree.closeNodeScope(jjtn001,  hasName);
-          }
-        }
-/*@egen*/
-    )/*@bgen(jjtree)*/
-    } catch (Throwable jjte002) {
-      if (jjtc002) {
-        jjtree.clearNodeScope(jjtn002);
-        jjtc002 = false;
-      } else {
-        jjtree.popNode();
-      }
-      if (jjte002 instanceof RuntimeException) {
-        throw (RuntimeException)jjte002;
-      }
-      if (jjte002 instanceof ParseException) {
-        throw (ParseException)jjte002;
-      }
-      throw (Error)jjte002;
-    } finally {
-      if (jjtc002) {
-        jjtree.closeNodeScope(jjtn002,  ! hasName && hasCall);
-      }
+		) #PtMethodCallNode(hasName)
+    ) #PtFunctionApplicationNode(!hasName && hasCall)
+}*/
+
+void element()       :
+{
+    boolean hasName = false;
+    boolean hasCall = false;
+    String name = null;
+    ASTPtRootNode child;
+}
+{
+    primaryElement()
+    {
+        child = (ASTPtRootNode) jjtree.popNode();
     }
+    (
+        (/*@bgen(jjtree) PtMethodCallNode */
+            {
+              ASTPtMethodCallNode jjtn001 = new ASTPtMethodCallNode(JJTPTMETHODCALLNODE);
+              boolean jjtc001 = true;
+              jjtree.openNodeScope(jjtn001);
+            }
+            try {
 /*@egen*/
+            (
+                <PERIOD> <ID>
+                {
+                    jjtree.pushNode(child);
+                    name = token.image;
+                }
+                [
+                    LOOKAHEAD(<OPENPAREN>)
+                    (
+                        <OPENPAREN> [ expression() ( <COMMA> expression() )* ] <CLOSEPAREN>
+                    )
+                ]
+            )/*@bgen(jjtree)*/
+            } catch (Throwable jjte001) {
+              if (jjtc001) {
+                jjtree.clearNodeScope(jjtn001);
+                jjtc001 = false;
+              } else {
+                jjtree.popNode();
+              }
+              if (jjte001 instanceof RuntimeException) {
+                throw (RuntimeException)jjte001;
+              }
+              if (jjte001 instanceof ParseException) {
+                throw (ParseException)jjte001;
+              }
+              throw (Error)jjte001;
+            } finally {
+              if (jjtc001) {
+                jjtree.closeNodeScope(jjtn001, true);
+              }
+            }
+/*@egen*/
+            {
+                child = (ASTPtRootNode) jjtree.popNode();
+                ((ASTPtMethodCallNode) child)._methodName = name;
+            }
+        )
+        |
+        (/*@bgen(jjtree) PtFunctionApplicationNode */
+            {
+              ASTPtFunctionApplicationNode jjtn002 = new ASTPtFunctionApplicationNode(JJTPTFUNCTIONAPPLICATIONNODE);
+              boolean jjtc002 = true;
+              jjtree.openNodeScope(jjtn002);
+            }
+            try {
+/*@egen*/
+            (
+                <OPENPAREN>
+                {
+                    jjtree.pushNode(child);
+                }
+                [ expression() ( <COMMA> expression() )* ] <CLOSEPAREN>
+            )/*@bgen(jjtree)*/
+            } catch (Throwable jjte002) {
+              if (jjtc002) {
+                jjtree.clearNodeScope(jjtn002);
+                jjtc002 = false;
+              } else {
+                jjtree.popNode();
+              }
+              if (jjte002 instanceof RuntimeException) {
+                throw (RuntimeException)jjte002;
+              }
+              if (jjte002 instanceof ParseException) {
+                throw (ParseException)jjte002;
+              }
+              throw (Error)jjte002;
+            } finally {
+              if (jjtc002) {
+                jjtree.closeNodeScope(jjtn002, true);
+              }
+            }
+/*@egen*/
+            {
+                child = (ASTPtRootNode) jjtree.popNode();
+            }
+        )
+    )*
+    {
+        jjtree.pushNode(child);
+    }
 }
 
 void primaryElement()       :

@@ -701,7 +701,7 @@ void funcIf() #void :
 {
    (
 
-           logicalOr() ( <QUESTION> logicalOr() <COLON> logicalOr() )?
+           logicalOr() ( <QUESTION> expression() <COLON> expression() )?
    ) #PtFunctionalIfNode(>1)
 }
 
@@ -884,7 +884,7 @@ void element() #void :
 }
 */
 
-void element() #void :
+/*void element() #void :
 {
 	boolean hasName = false;
 	boolean hasCall = false;
@@ -914,6 +914,57 @@ void element() #void :
 			}
 		) #PtMethodCallNode(hasName)
     ) #PtFunctionApplicationNode(!hasName && hasCall)
+}*/
+
+void element() #void :
+{
+    boolean hasName = false;
+    boolean hasCall = false;
+    String name = null;
+    ASTPtRootNode child;
+}
+{
+    primaryElement()
+    {
+        child = (ASTPtRootNode) jjtree.popNode();
+    }
+    (
+        (
+            (
+                <PERIOD> <ID>
+                {
+                    jjtree.pushNode(child);
+                    name = token.image;
+                }
+                [
+                    LOOKAHEAD(<OPENPAREN>)
+                    (
+                        <OPENPAREN> [ expression() ( <COMMA> expression() )* ] <CLOSEPAREN>
+                    )
+                ]
+            ) #PtMethodCallNode
+            {
+                child = (ASTPtRootNode) jjtree.popNode();
+                ((ASTPtMethodCallNode) child)._methodName = name;
+            }
+        )
+        |
+        (
+            (
+                <OPENPAREN>
+                {
+                    jjtree.pushNode(child);
+                }
+                [ expression() ( <COMMA> expression() )* ] <CLOSEPAREN>
+            ) #PtFunctionApplicationNode
+            {
+                child = (ASTPtRootNode) jjtree.popNode();
+            }
+        )
+    )*
+    {
+        jjtree.pushNode(child);
+    }
 }
 
 void primaryElement() #void :
