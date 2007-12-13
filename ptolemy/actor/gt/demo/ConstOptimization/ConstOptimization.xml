@@ -111,7 +111,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
         </property>
         <entity name="Pattern" class="ptolemy.actor.gt.Pattern">
             <property name="Constraint1" class="ptolemy.actor.gt.Constraint">
-                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="(A.criterion1).getWidth() == 2">
+                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="A.criterion1.getWidth() == 2">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
@@ -128,7 +128,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
                 </property>
             </property>
             <property name="Constraint3" class="ptolemy.actor.gt.Constraint">
-                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="(A.getClassName()).equals(&quot;ptolemy.actor.lib.AddSubtract&quot;) ||&#10;(A.getClassName()).equals(&quot;ptolemy.actor.lib.MultiplyDivide&quot;) ||&#10;(A.getClassName()).equals(&quot;ptolemy.actor.lib.Maximum&quot;)">
+                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="A.getClassName().equals(&quot;ptolemy.actor.lib.AddSubtract&quot;) ||&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.MultiplyDivide&quot;) ||&#10;A.getClassName().equals(&quot;ptolemy.actor.lib.Maximum&quot;)">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -147,7 +147,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
           </svg>
         </configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 300.0}">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 300.0]">
                 </property>
             </property>
             <property name="DefaultModel" class="ptolemy.actor.gt.DefaultModelAttribute">
@@ -168,7 +168,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
                 </property>
             </property>
             <property name="Constraint2" class="ptolemy.actor.gt.Constraint">
-                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="(A.criterion2).getWidth() == 1">
+                <property name="constraint" class="ptolemy.actor.gt.GTParameter" value="A.criterion2.getWidth() == 1">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
@@ -238,7 +238,7 @@ replaced by a single Const with the statically computed value.</text></svg></con
         </entity>
         <entity name="Replacement" class="ptolemy.actor.gt.Replacement">
             <entity name="C" class="ptolemy.actor.gt.AtomicActorMatcher">
-                <property name="operations" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.operations.AttributeOperation/true/&quot;value&quot;/false//true/&quot;$((A.getClassName()).equals(\&quot;ptolemy.actor.lib.AddSubtract\&quot;) ? (C1.value + C2.value) : ((A.getClassName()).equals(\&quot;ptolemy.actor.lib.MultiplyDivide\&quot;) ? (C1.value * C2.value) : (C1.value &gt;= C2.value ? C1.value : C2.value)))&quot;)">
+                <property name="operations" class="ptolemy.actor.gt.GTIngredientsAttribute" value="(ptolemy.actor.gt.ingredients.operations.AttributeOperation/true/&quot;value&quot;/false//true/&quot;$(A.getClassName().equals(\&quot;ptolemy.actor.lib.AddSubtract\&quot;) ? C1.value + C2.value : A.getClassName().equals(\&quot;ptolemy.actor.lib.MultiplyDivide\&quot;) ? C1.value * C2.value : C1.value &gt;= C2.value ? C1.value : C2.value)&quot;)">
                 </property>
                 <property name="patternObject" class="ptolemy.actor.gt.PatternObjectAttribute" value="C1">
                 </property>
