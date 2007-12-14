@@ -49,7 +49,7 @@ if {[string compare test [info procs test]] == 1} then {
 test FloatToken-1.0 {Create an empty instance} {
     set p [java::new ptolemy.data.FloatToken]
     $p toString
-} {0.0}
+} {0.0f}
 
 ######################################################################
 ####
@@ -57,7 +57,7 @@ test FloatToken-1.0 {Create an empty instance} {
 test FloatToken-1.1 {Create a non-empty instance from an float} {
     set p [java::new {ptolemy.data.FloatToken float} 5.5]
     $p toString
-} {5.5}
+} {5.5f}
 
 ######################################################################
 ####
@@ -66,7 +66,7 @@ test FloatToken-1.2 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.FloatToken String} "7.77"]
     $p toString
 # We must account for roundoff error in floats.
-} {7.7699999809265}
+} {7.7699999809265f}
 
 ######################################################################
 ####
@@ -83,7 +83,7 @@ test FloatToken-1.3 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.FloatToken String} "7.56E-10"]
     $p toString
 # We must account for roundoff error in floats.
-} {7.5599998483611E-10}
+} {7.5599998483611E-10f}
 
 ######################################################################
 ####
@@ -92,7 +92,7 @@ test FloatToken-1.4 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.FloatToken String} "7.56E10"]
     $p toString
 # We must account for roundoff error in floats.
-} {7.5600003072E10}
+} {7.5600003072E10f}
 
 ######################################################################
 ####
@@ -147,7 +147,7 @@ test FloatToken-2.2 {Create a non-empty instance and query its value as an int} 
     catch {$p intValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FloatToken '12.0' to the type int.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FloatToken '12.0f' to the type int.}}
 
 ######################################################################
 ####
@@ -157,7 +157,7 @@ test FloatToken-2.3 {Create a non-empty instance and query its value as a long} 
    catch {$p longValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FloatToken '12.0' to the type long.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FloatToken '12.0f' to the type long.}}
 
 ######################################################################
 ####
@@ -166,7 +166,7 @@ test FloatToken-2.4 {Create a non-empty instance and query its value as a string
     set p [java::new {ptolemy.data.FloatToken float} 12.2]
     $p toString
 # We must account for roundoff error in floats.
-} {12.1999998092651}
+} {12.1999998092651f}
 
 ######################################################################
 ####
@@ -176,7 +176,7 @@ test FloatToken-2.5 {Test additive identity} {
     set token [$p zero]
 
     list [$token toString]
-} {0.0}
+} {0.0f}
 ######################################################################
 ####
 # 
@@ -185,7 +185,7 @@ test FloatToken-2.6 {Test multiplicative identity} {
     set token [$p one]
 
     list [$token toString]
-} {1.0}
+} {1.0f}
 
 ######################################################################
 ####
@@ -198,7 +198,7 @@ test FloatToken-3.0 {Test adding floats.} {
 
     list [$res1 toString] [$res2 toString]
 # We must account for roundoff error in floats.
-} {24.3999996185303 24.3999996185303}
+} {24.3999996185303f 24.3999996185303f}
 
 ######################################################################
 ####
@@ -213,7 +213,7 @@ test FloatToken-3.1 {Test adding floats and shorts.} {
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
 # We must account for roundoff error in floats.
-} {14.1999998092651 14.1999998092651 14.1999998092651}
+} {14.1999998092651f 14.1999998092651f 14.1999998092651f}
 
 ######################################################################
 ####
@@ -225,7 +225,7 @@ test FloatToken-4.0 {Test dividing floats.} {
     set res2 [$p divideReverse $p]
 
     list [$res1 toString] [$res2 toString]
-} {1.0 1.0}
+} {1.0f 1.0f}
 ######################################################################
 ####
 # 
@@ -241,7 +241,7 @@ test FloatToken-4.1 {Test dividing floats and shorts.} {
  
     list [$res1 toString] [$res2 toString] [$res3 toString]
 # We must account for roundoff error in floats.
-} {6.0999999046326 true true}
+} {6.0999999046326f true true}
 
 ######################################################################
 ####
@@ -364,7 +364,7 @@ test FloatToken-5.8 {Test closeness between floats around 0} {
 
 test FloatToken-5.9 {Test closeness between a float and a String} {
     set FloatToken [java::new {ptolemy.data.FloatToken float} 12.0]
-    set stringToken [java::new ptolemy.data.StringToken "12.0"]
+    set stringToken [java::new ptolemy.data.StringToken "12.0f"]
     catch {[$FloatToken {isCloseTo ptolemy.data.Token} $stringToken] toString} errMsg1
     catch {[$stringToken {isCloseTo ptolemy.data.Token} $FloatToken] toString} errMsg2
     list [lrange $errMsg2 0 10] [lrange $errMsg2 0 10]
@@ -400,7 +400,7 @@ test FloatToken-6.0 {Test modulo between floats.} {
 
     list [$res1 toString] [$res2 toString]
 # We must account for roundoff error in floats.
-} {0.0 2.2000000476837}
+} {0.0f 2.2000000476837f}
 ######################################################################
 ####
 # 
@@ -415,7 +415,7 @@ test FloatToken-6.1 {Test modulo operator between floats and shorts.} {
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
 # We must account for roundoff error in floats.
-} {0.1999998092651 3.0 3.0}
+} {0.1999998092651f 3.0f 3.0f}
 
 ######################################################################
 ####
@@ -429,7 +429,7 @@ test FloatToken-7.0 {Test multiply operator between floats.} {
 
     list [$res1 toString] [$res2 toString]
 # We must account for roundoff error in floats.
-} {148.8399963378906 26.8400001525879}
+} {148.8399963378906f 26.8400001525879f}
 ######################################################################
 ####
 # 
@@ -444,7 +444,7 @@ test FloatToken-7.1 {Test multiply operator between floats and shorts.} {
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
 # We must account for roundoff error in floats.
-} {36.5999984741211 36.5999984741211 36.5999984741211}
+} {36.5999984741211f 36.5999984741211f 36.5999984741211f}
 
 ######################################################################
 ####
@@ -457,7 +457,7 @@ test FloatToken-8.0 {Test subtract operator between floats.} {
     set res2 [$tok1 subtractReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {0.0 -10.0}
+} {0.0f -10.0f}
 ######################################################################
 ####
 # 
@@ -472,7 +472,7 @@ test FloatToken-8.1 {Test subtract operator between floats and shorts.} {
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
 # We must account for roundoff error in floats.
-} {9.1999998092651 -9.1999998092651 -9.1999998092651}
+} {9.1999998092651f -9.1999998092651f -9.1999998092651f}
 
 ######################################################################
 ####
@@ -523,7 +523,7 @@ test FloatToken-13.1 {Test convert from UnsignedByteToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.FloatToken convert $t] toString]} msg
     list $msg
-} {1.0}
+} {1.0f}
 
 test FloatToken-13.2 {Test convert from ComplexToken} {
     set o [java::new {ptolemy.math.Complex} 1.0 1.0]
@@ -540,7 +540,7 @@ test FloatToken-13.3 {Test convert from FloatToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.FloatToken convert $t] toString]} msg
     list $msg
-} {1.0}
+} {1.0f}
 
 test FloatToken-13.4 {Test convert from FixToken} {
     set t [java::new {ptolemy.data.FixToken java.lang.String} "fix(1.0,8,4)"]
@@ -572,7 +572,7 @@ test FloatToken-13.7 {Test convert from ShortToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.FloatToken convert $t] toString]} msg
     list $msg
-} {1.0}
+} {1.0f}
 
 test FloatToken-13.8 {Test convert from StringToken} {
     set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]
@@ -602,7 +602,7 @@ test FloatToken-16.0 {call leftShift and get coverage in the parent class} {
     catch {$p leftShift 1} errMsg
     list $errMsg
 # We must account for roundoff error in floats.
-} {{ptolemy.kernel.util.IllegalActionException: leftShift operation not supported between ptolemy.data.FloatToken '16.1599998474121' and ptolemy.data.IntToken '1'}}
+} {{ptolemy.kernel.util.IllegalActionException: leftShift operation not supported between ptolemy.data.FloatToken '16.1599998474121f' and ptolemy.data.IntToken '1'}}
 
 ######################################################################
 ####
@@ -612,7 +612,7 @@ test FloatToken-17.0 {call logicalRightShift and get coverage in the parent clas
     catch {$p logicalRightShift 1} errMsg
     list $errMsg
 # We must account for roundoff error in floats.
-} {{ptolemy.kernel.util.IllegalActionException: logicalRightShift operation not supported between ptolemy.data.FloatToken '16.1599998474121' and ptolemy.data.IntToken '1'}}
+} {{ptolemy.kernel.util.IllegalActionException: logicalRightShift operation not supported between ptolemy.data.FloatToken '16.1599998474121f' and ptolemy.data.IntToken '1'}}
 
 ######################################################################
 ####
@@ -622,4 +622,4 @@ test FloatToken-18.0 {call rightShift and get coverage in the parent class} {
     catch {$p rightShift 1} errMsg
     list $errMsg
 # We must account for roundoff error in floats.
-} {{ptolemy.kernel.util.IllegalActionException: rightShift operation not supported between ptolemy.data.FloatToken '16.1599998474121' and ptolemy.data.IntToken '1'}}
+} {{ptolemy.kernel.util.IllegalActionException: rightShift operation not supported between ptolemy.data.FloatToken '16.1599998474121f' and ptolemy.data.IntToken '1'}}

@@ -238,15 +238,16 @@ public class FloatToken extends ScalarToken {
         }
 
         if (Float.isNaN(_value) || Float.isInfinite(_value)) {
-            return Float.toString(_value) + unitString;
+            return Float.toString(_value) + "f" + unitString;
         } else {
             float mag = Math.abs(_value);
 
             if ((mag == 0.0f) || ((mag < 1000000) && (mag > .001))) {
-                return TokenUtilities.regularFormat.format(_value) + unitString;
+                return TokenUtilities.regularFormat.format(_value) 
+                        + "f" + unitString;
             } else {
                 return TokenUtilities.exponentialFormat.format(_value)
-                        + unitString;
+                        + "f" + unitString;
             }
         }
     }
