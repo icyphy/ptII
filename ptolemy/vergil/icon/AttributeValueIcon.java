@@ -41,6 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.StringUtilities;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.LabelFigure;
@@ -76,9 +77,14 @@ public class AttributeValueIcon extends XMLIcon {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");
+        
         displayWidth = new Parameter(this, "displayWidth");
         displayWidth.setExpression("6");
         displayWidth.setTypeEquals(BaseType.INT);
+        
+        displayHeight = new Parameter(this, "displayHeight");
+        displayHeight.setExpression("1");
+        displayHeight.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -86,6 +92,11 @@ public class AttributeValueIcon extends XMLIcon {
 
     /** The name of the attribute of the container whose value to display. */
     public StringAttribute attributeName;
+
+    /** The maximum number of lines to display. This is an integer, with
+     *  default value 1.
+     */
+    public Parameter displayHeight;
 
     /** The number of characters to display. This is an integer, with
      *  default value 6.
@@ -138,10 +149,8 @@ public class AttributeValueIcon extends XMLIcon {
 
                 try {
                     int width = ((IntToken) displayWidth.getToken()).intValue();
-
-                    if (value.length() > width) {
-                        truncated = value.substring(0, width) + "...";
-                    }
+                    int height = ((IntToken) displayHeight.getToken()).intValue();
+                    truncated = StringUtilities.truncateString(value, width, height);
                 } catch (IllegalActionException ex) {
                     // Ignore... use whole string.
                 }

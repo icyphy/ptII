@@ -32,6 +32,7 @@
     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
         <property name="attributeName" value="expression"/>
         <property name="displayWidth" value="60"/>
+        <property name="displayHeight" value="10"/>
     </property>
   </entity>
 

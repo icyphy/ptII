@@ -19,6 +19,7 @@
    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
       <property name="attributeName" value="value"/>
       <property name="displayWidth" value="80"/>
+      <property name="displayHeight" value="10"/>
    </property>
 </entity>
 <entity name="Subscriber" class="ptolemy.actor.lib.Subscriber">
