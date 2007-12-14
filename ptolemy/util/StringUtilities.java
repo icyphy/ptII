@@ -902,6 +902,46 @@ public class StringUtilities {
         return (String[]) commandList.toArray(new String[commandList.size()]);
     }
 
+    /** Return a string with a maximum line length of <i>lineLength</i>
+     *  and a maximum number of lines <i>numberOfLines</i>.
+     *  Each line that exceeds the line length is replaced with a line that
+     *  ends with "...". If the number of lines exceeds <i>numberOfLines</i>,
+     *  then the returned string will have exactly <i>numberOfLines</i> lines
+     *  where the last line is "...".
+     *  @param string The string to truncate.
+     *  @param lineLength The number of characters to which to truncate each line.
+     *  @param numberOfLines The maximum number of lines.
+     *  @return The possibly truncated string with ellipsis possibly added.
+     */
+    public static String truncateString(
+            String string, int lineLength, int numberOfLines) {
+
+        // Third argument being true means the delimiters (LINE_SEPARATOR) are
+        // included in as tokens in the parsed results.
+        StringTokenizer tokenizer = new StringTokenizer(
+                string, LINE_SEPARATOR, true);
+        
+        StringBuffer results = new StringBuffer();
+        // Count the lines + newlines.
+        int lineCount = 0;
+        while (tokenizer.hasMoreTokens()) {
+            if (lineCount >= numberOfLines * 2) {
+                // Presumably, the last line is a line separator.
+                // We append an additional line to indicate that there
+                // are more lines.
+                results.append("...");
+                break;
+            }
+            lineCount++;
+            String line = tokenizer.nextToken();
+            if (line.length() > lineLength) {
+                line = line.substring(0, lineLength - 3) + "...";
+            }
+            results.append(line);
+        }
+        return results.toString();
+    }
+
     /** Given a string, replace all the instances of XML entities
      *  with their corresponding XML special characters.  This is necessary to
      *  allow arbitrary strings to be encoded within XML.
