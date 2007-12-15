@@ -268,8 +268,33 @@ public class GraphMatcher extends GraphAnalyzer {
         }
     };
 
+    protected Token _getAttribute(NamedObj container, String name,
+            Class<? extends TransformationAttribute> attributeClass) {
+
+        while (container != null) {
+            if (_match.containsValue(container)) {
+                container = (NamedObj) _match.getKey(container);
+            } else if (_temporaryMatch.containsValue(container)) {
+                container = (NamedObj) _temporaryMatch.getKey(container);
+            }
+            Attribute attribute = container.getAttribute(name);
+            if (attribute != null && attributeClass.isInstance(attribute)) {
+                Parameter parameter = (Parameter) attribute.attributeList()
+                        .get(0);
+                try {
+                    return parameter == null ? null : parameter.getToken();
+                } catch (IllegalActionException e) {
+                    return null;
+                }
+            }
+            container = container.getContainer();
+        }
+
+        return null;
+    }
+
     ///////////////////////////////////////////////////////////////////
-    ////                          public fields                    ////
+    ////                         private methods                   ////
 
     /** Test whether the composite entity is opaque or not. Return <tt>true</tt>
      *  if the composite entity is an instance of {@link CompositeActor} and it
@@ -295,9 +320,6 @@ public class GraphMatcher extends GraphAnalyzer {
             return isOpaque;
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     /** Check the items in the lookback list for more matching requirements. If
      *  no more requirements are found (i.e., all the lists in the lookback list
@@ -374,31 +396,6 @@ public class GraphMatcher extends GraphAnalyzer {
             }
         }
         return true;
-    }
-
-    private Token _getAttribute(NamedObj container, String name,
-            Class<? extends TransformationAttribute> attributeClass) {
-
-        while (container != null) {
-            if (_match.containsValue(container)) {
-                container = (NamedObj) _match.getKey(container);
-            } else if (_temporaryMatch.containsValue(container)) {
-                container = (NamedObj) _temporaryMatch.getKey(container);
-            }
-            Attribute attribute = container.getAttribute(name);
-            if (attribute != null && attributeClass.isInstance(attribute)) {
-                Parameter parameter = (Parameter) attribute.attributeList()
-                        .get(0);
-                try {
-                    return parameter == null ? null : parameter.getToken();
-                } catch (IllegalActionException e) {
-                    return null;
-                }
-            }
-            container = container.getContainer();
-        }
-
-        return null;
     }
 
     /** Get a string that represents the object. If the object is an instance of
@@ -501,14 +498,14 @@ public class GraphMatcher extends GraphAnalyzer {
                 markedList.clear();
                 hostEntity = (CompositeEntity) entry.getValue();
 
-                NamedObj nextActor = findFirstChild(hostEntity, markedList,
+                NamedObj nextChild = findFirstChild(hostEntity, markedList,
                         _match.keySet());
-                while (nextActor != null) {
-                    if (nextActor instanceof CompositeEntity) {
-                        hostList.add(nextActor);
+                while (nextChild != null) {
+                    if (nextChild instanceof CompositeEntity) {
+                        hostList.add(nextChild);
                         added = true;
                     }
-                    nextActor = findNextChild(hostEntity, markedList, _match
+                    nextChild = findNextChild(hostEntity, markedList, _match
                             .keySet());
                 }
                 entry = entry.getNext();
@@ -543,22 +540,22 @@ public class GraphMatcher extends GraphAnalyzer {
 
         if (success) {
             IndexedLists patternMarkedList = new IndexedLists();
-            NamedObj patternNextActor = findFirstChild(patternEntity,
+            NamedObj patternNextChild = findFirstChild(patternEntity,
                     patternMarkedList, _match.keySet());
             ObjectList patternList = new ObjectList();
-            while (patternNextActor != null) {
-                patternList.add(patternNextActor);
-                patternNextActor = findNextChild(patternEntity,
+            while (patternNextChild != null) {
+                patternList.add(patternNextChild);
+                patternNextChild = findNextChild(patternEntity,
                         patternMarkedList, _match.keySet());
             }
 
             IndexedLists hostMarkedList = new IndexedLists();
-            NamedObj hostNextActor = findFirstChild(hostEntity, hostMarkedList,
+            NamedObj hostNextObject = findFirstChild(hostEntity, hostMarkedList,
                     _match.values());
             ObjectList hostList = new ObjectList();
-            while (hostNextActor != null) {
-                hostList.add(hostNextActor);
-                hostNextActor = findNextChild(hostEntity, hostMarkedList,
+            while (hostNextObject != null) {
+                hostList.add(hostNextObject);
+                hostNextObject = findNextChild(hostEntity, hostMarkedList,
                         _match.values());
             }
 

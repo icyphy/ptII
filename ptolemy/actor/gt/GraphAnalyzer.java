@@ -30,6 +30,7 @@ package ptolemy.actor.gt;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -38,6 +39,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gt.data.FastLinkedList;
 import ptolemy.actor.gt.data.Pair;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
@@ -66,33 +68,47 @@ public abstract class GraphAnalyzer {
      *  @param top The top composite entity in which the search is performed.
      *  @param indexedLists A list that is used to encode the composite entities
      *   visited.
-     *  @param excludedEntities The atomic actor or opaque composite entities
+     *  @param excludedObjects The atomic actor or opaque composite entities
      *   that should not be returned.
      *  @return The child found, or <tt>null</tt> if none.
      *  @see #findNextChild(CompositeEntity, IndexedLists, Collection)
      */
     public NamedObj findFirstChild(CompositeEntity top,
-            IndexedLists indexedLists, Collection<Object> excludedEntities) {
+            IndexedLists indexedLists, Collection<Object> excludedObjects) {
 
-        List<?> entities = top.entityList(ComponentEntity.class);
-        if (!entities.isEmpty()) {
+        List<Object> children = new LinkedList<Object>(
+                (Collection<?>) top.entityList(ComponentEntity.class));
+
+        Token collapsingToken = _getAttribute(top, "RelationCollapsing",
+                RelationCollapsingAttribute.class);
+        boolean collapsing = collapsingToken == null ? false
+                : ((BooleanToken) collapsingToken).booleanValue();
+        if (!collapsing) {
+            for (Object relationObject : top.relationList()) {
+                children.add(relationObject);
+            }
+        }
+
+        if (!children.isEmpty()) {
             int i = 0;
-            IndexedList currentList = new IndexedList(entities, 0);
+            IndexedList currentList = new IndexedList(children, 0);
             indexedLists.add(currentList);
             IndexedLists.Entry currentListEntry = indexedLists.getTail();
 
-            for (Object entityObject : entities) {
+            for (Object child : children) {
                 currentList.setSecond(i);
-                if (!(entityObject instanceof CompositeEntity && !_isOpaque((CompositeEntity) entityObject))) {
-                    if (!excludedEntities.contains(entityObject)) {
-                        return (NamedObj) entityObject;
+                if (!(child instanceof CompositeEntity)
+                        || _isOpaque((CompositeEntity) child)) {
+                    if (!excludedObjects.contains(child)) {
+                        return (NamedObj) child;
                     }
                 } else {
-                    CompositeEntity compositeEntity = (CompositeEntity) entityObject;
-                    NamedObj child = findFirstChild(compositeEntity,
-                            indexedLists, excludedEntities);
-                    if (child != null && !excludedEntities.contains(child)) {
-                        return child;
+                    CompositeEntity compositeEntity = (CompositeEntity) child;
+                    NamedObj childObject = findFirstChild(compositeEntity,
+                            indexedLists, excludedObjects);
+                    if (childObject != null
+                            && !excludedObjects.contains(childObject)) {
+                        return childObject;
                     }
                 }
                 i++;
@@ -204,15 +220,15 @@ public abstract class GraphAnalyzer {
      *  @param top The top composite entity in which the search is performed.
      *  @param indexedLists A list that is used to encode the composite entities
      *   visited.
-     *  @param excludedEntities The atomic actor or opaque composite entities
+     *  @param excludedObjects The atomic actor or opaque composite entities
      *   that should not be returned.
      *  @return The child found, or <tt>null</tt> if none.
      *  @see #findFirstChild(CompositeEntity, IndexedLists, Collection)
      */
     public NamedObj findNextChild(CompositeEntity top,
-            IndexedLists indexedLists, Collection<Object> excludedEntities) {
+            IndexedLists indexedLists, Collection<Object> excludedObjects) {
         if (indexedLists.isEmpty()) {
-            return findFirstChild(top, indexedLists, excludedEntities);
+            return findFirstChild(top, indexedLists, excludedObjects);
         } else {
             IndexedLists.Entry entry = indexedLists.getTail();
             while (entry != null) {
@@ -221,18 +237,20 @@ public abstract class GraphAnalyzer {
                 for (int index = indexedList.getSecond() + 1; index < objectList
                         .size(); index++) {
                     indexedList.setSecond(index);
-                    NamedObj object = (NamedObj) objectList.get(index);
+                    NamedObj child = (NamedObj) objectList.get(index);
                     indexedLists.removeAllAfter(entry);
-                    if (!(object instanceof CompositeEntity && !_isOpaque((CompositeEntity) object))) {
-                        if (!excludedEntities.contains(object)) {
-                            return object;
+                    if (!(child instanceof CompositeEntity)
+                            || _isOpaque((CompositeEntity) child)) {
+                        if (!excludedObjects.contains(child)) {
+                            return child;
                         }
                     } else {
-                        CompositeEntity compositeEntity = (CompositeEntity) object;
-                        NamedObj child = findFirstChild(compositeEntity,
-                                indexedLists, excludedEntities);
-                        if (child != null) {
-                            return child;
+                        CompositeEntity compositeEntity =
+                            (CompositeEntity) child;
+                        NamedObj childObject = findFirstChild(compositeEntity,
+                                indexedLists, excludedObjects);
+                        if (childObject != null) {
+                            return childObject;
                         }
                     }
                 }
@@ -424,6 +442,9 @@ public abstract class GraphAnalyzer {
 
         private Port _startPort;
     }
+
+    protected abstract Token _getAttribute(NamedObj container, String name,
+            Class<? extends TransformationAttribute> attributeClass);
 
     /** Test whether a relation should be ignored in the matching; return true
      *  if the given relation is hidden (i.e., has a parameter "_hide" whose
