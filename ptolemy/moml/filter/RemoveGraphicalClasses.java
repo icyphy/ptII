@@ -110,6 +110,41 @@ public class RemoveGraphicalClasses implements MoMLFilter {
             throws Exception {
     }
 
+    /** Read in a MoML file, remove graphical classes and
+     *  write the results to standard out.
+     *  <p> For example, to remove the graphica classes from
+     *  a file called <code>RemoveGraphicalClasses.xml</code>
+     *  <pre>
+     *  java -classpath "$PTII" ptolemy.moml.filter.RemoveGraphicalClasses test/RemoveGraphicalClasses.xml &gt; output.xml
+     *  </pre>
+     *  @param args An array of one string
+     *  <br> The name of the MoML file to be cleaned.
+     *  @exception Exception If there is a problem reading or writing
+     *  a file.
+     */
+    public static void main(String[] args) throws Exception {
+        try {
+            MoMLParser parser= new MoMLParser();
+
+            // The list of filters is static, so we reset it in case there
+            // filters were already added.        
+            parser.setMoMLFilters(null);
+
+            // Add the backward compatibility filters.
+            parser.setMoMLFilters(BackwardCompatibility.allFilters());
+
+            parser.addMoMLFilter(new RemoveGraphicalClasses());
+            parser.addMoMLFilter(new HideAnnotationNames());
+            NamedObj topLevel = parser.parseFile(args[0]);
+            System.out.println(topLevel.exportMoML());
+        } catch (Throwable throwable) {
+            System.err.println("Failed to filter \"" + args[0] + "\"");
+            throwable.printStackTrace();
+            System.exit(1);
+        }
+        System.exit(0);
+    }
+
     /** Remove a class to be filtered.
      *  @param className The name of the class to be filtered
      *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
