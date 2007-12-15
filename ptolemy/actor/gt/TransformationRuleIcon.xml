@@ -25,7 +25,7 @@
         </property>
         <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 0.0, 1.0}">
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.9, 0.6, 1.0}">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -43,7 +43,7 @@
         </property>
         <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.9, 0.9, 0.5, 1.0}">
+        <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.8, 0.0, 1.0}">
         </property>
         <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -166,12 +166,12 @@
         <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={196, 143, 823, 515}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={172, 152, 823, 515}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="6.25">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.048576">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{3.5527136788005E-14, 7.105427357601E-15}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
     </property>
 </property>
