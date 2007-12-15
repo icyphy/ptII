@@ -142,7 +142,6 @@ public class RemoveGraphicalClasses implements MoMLFilter {
             throwable.printStackTrace();
             System.exit(1);
         }
-        System.exit(0);
     }
 
     /** Remove a class to be filtered.
