@@ -152,7 +152,7 @@ public class UndoStackAttribute extends SingletonAttribute {
                 if (_undoEntries.size() > 1) {
                     UndoAction lastUndo = (UndoAction) _undoEntries.pop();
                     UndoAction firstUndo = (UndoAction) _undoEntries.pop();
-                    UndoAction mergedAction = _mergeActions(lastUndo, firstUndo);
+                    UndoAction mergedAction = new MergeUndoActions(lastUndo, firstUndo);
                     _undoEntries.push(mergedAction);
 
                     if (_debugging) {
@@ -176,7 +176,7 @@ public class UndoStackAttribute extends SingletonAttribute {
 
             if (_inUndo > 1) {
                 UndoAction previousRedo = (UndoAction) _redoEntries.pop();
-                UndoAction mergedAction = _mergeActions(action, previousRedo);
+                UndoAction mergedAction = new MergeUndoActions(action, previousRedo);
                 _redoEntries.push(mergedAction);
 
                 if (_debugging) {
@@ -195,7 +195,7 @@ public class UndoStackAttribute extends SingletonAttribute {
                 _inUndo++;
             } else if (_inRedo > 1) {
                 UndoAction previousUndo = (UndoAction) _undoEntries.pop();
-                UndoAction mergedAction = _mergeActions(action, previousUndo);
+                UndoAction mergedAction = new MergeUndoActions(action, previousUndo);
 
                 if (_debugging) {
                     _debug("=======> Merging redo action onto undo stack to get:\n"
@@ -295,24 +295,35 @@ public class UndoStackAttribute extends SingletonAttribute {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         private named static classes      ////
 
-    /** Return an action that is a merger of the two specified actions.
-     *  @return An action that is a merger of the two specified actions.
-     */
-    private UndoAction _mergeActions(final UndoAction firstAction,
-            final UndoAction secondAction) {
-        return new UndoAction() {
-            public void execute() throws Exception {
-                firstAction.execute();
-                secondAction.execute();
-            }
+    /** An undo or redo action on the stack. */
+    private static class MergeUndoActions implements UndoAction {
 
-            public String toString() {
-                return "Merged action.\nFirst part:\n" + firstAction
-                        + "\n\nSecond part:\n" + secondAction;
-            }
-        };
+        // FindBugs suggested refactoring an inner class into this
+        // named static class, which we did.  This makes the class
+        // smaller and avoids leaks.
+
+        /** Create an undo action from two actions. */
+        public MergeUndoActions(UndoAction firstAction,
+                UndoAction secondAction) {
+            _firstAction = firstAction;
+            _secondAction = secondAction;
+        }
+
+        /** Execute the action. */
+        public void execute() throws Exception {
+            _firstAction.execute();
+            _secondAction.execute();
+        }
+
+        public String toString() {
+            return "Merged action.\nFirst part:\n" + _firstAction
+                + "\n\nSecond part:\n" + _secondAction;
+        }
+
+        private UndoAction _firstAction;
+        private UndoAction _secondAction;
     }
 
     ///////////////////////////////////////////////////////////////////
