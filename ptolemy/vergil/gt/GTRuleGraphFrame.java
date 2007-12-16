@@ -999,10 +999,10 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
 
         private DefaultDirectoryAttribute _attribute;
 
-        private static class ModelFileFilter implements FilenameFilter {
+        private /*static*/ class ModelFileFilter implements FilenameFilter {
             // FindBugs suggests making this class static so as to decrease
             // the size of instances and avoid dangling references.
-
+            // However, jdk1.5.0_11 says: modifier static not allowed here
             public boolean accept(File dir, String name) {
                 File file = new File(dir, name);
                 boolean isDirectory = _includeSubdir && file.isDirectory();
