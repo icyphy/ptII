@@ -46,8 +46,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 
 import diva.canvas.CanvasUtilities;
 import diva.canvas.JCanvas;
@@ -186,7 +188,13 @@ public class JPanner extends JPanel {
 
     public void paintComponent(Graphics g) {
         if (_target != null) {
-            JCanvas canvas = (JCanvas) _target.getView();
+            JCanvas canvas = null;
+            try {
+                canvas = (JCanvas) _target.getView();
+            } catch (ClassCastException ex) {
+                throw new RuntimeException("Failed to cast "
+                        + _target.getView() + " to JCanvas.", ex);
+            }
             Dimension viewSize = canvas.getSize();
             Rectangle viewRect = new Rectangle(0, 0, viewSize.width,
                     viewSize.height);
@@ -361,20 +369,36 @@ public class JPanner extends JPanel {
     }
 
     public static void main(String[] argv) {
-        JFrame f = new JFrame();
-        String[] data = { "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-                "twoooooooooooooooooooooooooooooooooooooooo",
-                "threeeeeeeeeeeeeeeee", "fourrrrrrrrrrrrrrrrrrrrrrrrr" };
-        JList dataList = new JList(data);
-        JScrollPane p = new JScrollPane(dataList);
-        p.setSize(200, 200);
+        try {
+            // Run this in the Swing Event Thread.
+            Runnable doActions = new Runnable() {
+                    public void run() {
+                        try {
+                            JFrame f = new JFrame();
+                            String[] data = { "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                                              "twoooooooooooooooooooooooooooooooooooooooo",
+                                              "threeeeeeeeeeeeeeeee", "fourrrrrrrrrrrrrrrrrrrrrrrrr" };
+                            JList dataList = new JList(data);
+                            JScrollPane p = new JScrollPane(dataList);
+                            p.setSize(200, 200);
 
-        JPanner pan = new JPanner(p.getViewport());
-        pan.setSize(200, 200);
-        f.getContentPane().setLayout(new GridLayout(2, 1));
-        f.getContentPane().add(p);
-        f.getContentPane().add(pan);
-        f.setSize(200, 400);
-        f.setVisible(true);
+                            JPanner pan = new JPanner(p.getViewport());
+                            pan.setSize(200, 200);
+                            f.getContentPane().setLayout(new GridLayout(2, 1));
+                            f.getContentPane().add(p);
+                            f.getContentPane().add(pan);
+                            f.setSize(200, 400);
+                            f.setVisible(true);
+                        } catch (Exception ex) {
+                            System.err.println(ex.toString());
+                            ex.printStackTrace();
+                        }
+                    }
+                };
+            SwingUtilities.invokeAndWait(doActions);
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+            ex.printStackTrace();
+        }
     }
 }
