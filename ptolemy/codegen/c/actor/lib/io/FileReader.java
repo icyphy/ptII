@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.kernel.attributes.FileOrURLAccessor;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -85,7 +86,7 @@ public class FileReader extends CCodeGeneratorHelper {
      *  "C:/foo/bar", not "/C:/foo/bar"
      *  @exception IllegalActionException If the file cannot be found.
      */
-    public static String getFileName(FileParameter fileOrURL)
+    public static String getFileName(FileOrURLAccessor fileOrURL)
             throws IllegalActionException {
         String fileNameString;
         try {
