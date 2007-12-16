@@ -707,8 +707,11 @@ public class PHY extends NetworkActorBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    // extend the default timer to link the additional info (e.g. power) to a timer
-    protected class ExtendedTimer {
+
+    /** Extend the default timer to link the additional info
+     * (e.g. power) to a timer.
+     */
+    protected static class ExtendedTimer {
         public int kind;
 
         public Time expirationTime;

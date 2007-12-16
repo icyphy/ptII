@@ -1090,7 +1090,10 @@ public class TableauFrame extends Top {
     /** File filter that filters out files that do not have one of a
      *  pre-specified list of extensions.
      */
-    class ExtensionFileFilter extends FileFilter {
+    static class ExtensionFileFilter extends FileFilter {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** Construct a file filter that filters out all files that do
          *  not have one of the extensions in the given list.
          *  @param extensionList A list of extensions, each of which is

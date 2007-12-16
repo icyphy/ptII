@@ -228,12 +228,13 @@ public class NetworkActorBase extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // The set for the timers to be processed when they are expried.
+
+    /** The set for the timers to be processed when they are expired. */
     protected HashSet _timersSet;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    protected class Timer {
+    protected static class Timer {
         public int kind;
 
         public Time expirationTime;
