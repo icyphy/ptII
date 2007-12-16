@@ -36,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -392,7 +393,10 @@ public class JTreePane extends JSplitPane {
     /**
      * Holds all the info about each entry.
      */
-    private class Entry extends Object {
+    private static class Entry extends Object {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         JTreePane _parent;
 
         Icon _icon;
@@ -417,16 +421,32 @@ public class JTreePane extends JSplitPane {
     }
 
     public static void main(String[] argv) {
-        final JTreePane sp = new JTreePane();
-        sp.addEntry(null, "Foo", new JLabel("foo's component"));
-        sp.addEntry(null, "Bar", new JLabel("bar's component"));
-        sp.addEntry(null, "Baz", new JLabel("baz's component"));
-        sp.addEntry(null, "Moo", new JLabel("moo's component"));
+        try {
+            // Run this in the Swing Event Thread.
+            Runnable doActions = new Runnable() {
+                    public void run() {
+                        try {
+                            final JTreePane sp = new JTreePane();
+                            sp.addEntry(null, "Foo", new JLabel("foo's component"));
+                            sp.addEntry(null, "Bar", new JLabel("bar's component"));
+                            sp.addEntry(null, "Baz", new JLabel("baz's component"));
+                            sp.addEntry(null, "Moo", new JLabel("moo's component"));
 
-        JFrame f = new BasicFrame("Entry test");
-        f.getContentPane().add("Center", sp);
+                            JFrame f = new BasicFrame("Entry test");
+                            f.getContentPane().add("Center", sp);
 
-        f.setSize(600, 400);
-        f.setVisible(true);
+                            f.setSize(600, 400);
+                            f.setVisible(true);
+                        } catch (Exception ex) {
+                            System.err.println(ex.toString());
+                            ex.printStackTrace();
+                        }
+                    }
+                };
+            SwingUtilities.invokeAndWait(doActions);
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+            ex.printStackTrace();
+        }
     }
 }

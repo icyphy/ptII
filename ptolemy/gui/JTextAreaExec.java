@@ -202,35 +202,46 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
      *  @param args The command line arguments, currently ignored.
      */
     public static void main(String[] args) {
-        JFrame jFrame = new JFrame("JTextAreaExec Example");
-        WindowListener windowListener = new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        };
+        try {
+            // Run this in the Swing Event Thread.
+            Runnable doActions = new Runnable() {
+                    public void run() {
+                        try {
+                            JFrame jFrame = new JFrame("JTextAreaExec Example");
+                            WindowListener windowListener = new WindowAdapter() {
+                                    public void windowClosing(WindowEvent e) {
+                                        System.exit(0);
+                                    }
+                                };
 
-        jFrame.addWindowListener(windowListener);
+                            jFrame.addWindowListener(windowListener);
 
-        List execCommands = new LinkedList();
-        execCommands.add("date");
-        execCommands.add("sleep 5");
-        execCommands.add("date");
-        execCommands.add("javac");
+                            List execCommands = new LinkedList();
+                            execCommands.add("date");
+                            execCommands.add("sleep 5");
+                            execCommands.add("date");
+                            execCommands.add("javac");
 
-        final JTextAreaExec exec = new JTextAreaExec("JTextAreaExec Tester",
-                true);
-        exec.setCommands(execCommands);
-        jFrame.getContentPane().add(exec);
-        jFrame.pack();
-        jFrame.setVisible(true);
+                            final JTextAreaExec exec = new JTextAreaExec("JTextAreaExec Tester",
+                                    true);
+                            exec.setCommands(execCommands);
+                            jFrame.getContentPane().add(exec);
+                            jFrame.pack();
+                            jFrame.setVisible(true);
 
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                //We can't do this until now
-                exec.getStartButton().requestFocus();
-                exec.start();
-            }
-        });
+                            exec.getStartButton().requestFocus();
+                            exec.start();
+                        } catch (Exception ex) {
+                            System.err.println(ex.toString());
+                            ex.printStackTrace();
+                        }
+                    }
+                };
+                SwingUtilities.invokeAndWait(doActions);
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+            ex.printStackTrace();
+        }
     }
 
     /** Set the list of commands.
@@ -475,7 +486,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     ////                         inner classes                     ////
     // Private class that reads a stream in a thread and updates the
     // JTextArea.
-    private class _StreamReaderThread extends Thread {
+    private static class _StreamReaderThread extends Thread {
         _StreamReaderThread(InputStream inputStream, JTextAreaExec jTextAreaExec) {
             _inputStream = inputStream;
             _jTextAreaExec = jTextAreaExec;

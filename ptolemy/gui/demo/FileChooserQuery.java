@@ -31,6 +31,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
@@ -97,19 +98,40 @@ public class FileChooserQuery extends JFrame implements QueryListener {
                 + _query.getStringValue(name));
     }
 
-    /** Create a FileChooserQuery and configure it
+    /** Create a FileChooserQuery and configure it.
+     *  To run a simple test, use:
+     *  <pre>
+     *   java -classpath $PTII ptolemy.gui.demo.FileChooserQuery
+     *  </pre>
      */
     public static void main(String[] args) {
-        JFrame frame = new FileChooserQuery();
+        try {
+            // Run this in the Swing Event Thread.
+            Runnable doActions = new Runnable() {
+                    public void run() {
+                        try {
+                            JFrame frame = new FileChooserQuery();
 
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+                            frame.addWindowListener(new WindowAdapter() {
+                                    public void windowClosing(WindowEvent e) {
+                                        System.exit(0);
+                                    }
+                                });
 
-        frame.pack();
-        frame.setVisible(true);
+                            frame.pack();
+                            frame.setVisible(true);
+                        } catch (Exception ex) {
+                            System.err.println(ex.toString());
+                            ex.printStackTrace();
+                        }
+                    }
+                };
+                SwingUtilities.invokeAndWait(doActions);
+        } catch (Exception ex) {
+            System.err.println(ex.toString());
+            ex.printStackTrace();
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////
