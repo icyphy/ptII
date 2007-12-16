@@ -251,7 +251,7 @@ public class GiottoCodeGeneratorUtilities {
             return "";
         }
 
-        String driverParas = "";
+        StringBuffer driverParas = new StringBuffer();
         String actorName = StringUtilities.sanitizeName(((NamedObj) actor)
                 .getName());
 
@@ -280,9 +280,9 @@ public class GiottoCodeGeneratorUtilities {
                         .getName(model));
 
                 if (driverParas.length() == 0) {
-                    driverParas += sanitizedPortName2;
+                    driverParas.append(sanitizedPortName2);
                 } else {
-                    driverParas += (", " + sanitizedPortName2);
+                    driverParas.append(", " + sanitizedPortName2);
                 }
 
                 driverIOMap.put(sanitizedPortName2, sanitizedPortName);
@@ -368,7 +368,7 @@ public class GiottoCodeGeneratorUtilities {
         // avoid several outputs of actors connect to the same output port?
         for (Iterator outPorts = model.outputPortList().iterator(); outPorts
                 .hasNext();) {
-            String driverParas = "";
+            StringBuffer driverParas = new StringBuffer();
             TypedIOPort port = (TypedIOPort) outPorts.next();
 
             // Ignore unconnected ports
@@ -386,9 +386,9 @@ public class GiottoCodeGeneratorUtilities {
 
                     if (outPort.isOutput()) {
                         if (driverParas.length() == 0) {
-                            driverParas += sanitizedPortName;
+                            driverParas.append(sanitizedPortName);
                         } else {
-                            driverParas += (", " + sanitizedPortName);
+                            driverParas.append(", " + sanitizedPortName);
                         }
                     }
                 }

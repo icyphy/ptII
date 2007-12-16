@@ -93,12 +93,12 @@ public class GraphLogger implements GraphListener {
      * Print the contents of the log into a string.
      */
     public String toString() {
-        String ret = "LOG: \n";
+        StringBuffer ret = new StringBuffer("LOG: \n");
 
         for (Iterator i = iterator(); i.hasNext();) {
-            ret = ret + "\t" + i.next() + "\n";
+            ret.append("\t" + i.next() + "\n");
         }
 
-        return ret;
+        return ret.toString();
     }
 }

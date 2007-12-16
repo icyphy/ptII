@@ -727,9 +727,9 @@ public class DistributedSDFScheduler extends SDFScheduler {
         // If there are any actors left when we're done, then report the
         // error.
         if (unscheduledActorList.size() > 0) {
-            String string = "Actors remain that cannot be scheduled!\n";
-
-            string += "Scheduled actors:\n";
+            StringBuffer string = new StringBuffer(
+                    "Actors remain that cannot be scheduled!\n"
+                    + "Scheduled actors:\n");
 
             List scheduledActorList = new LinkedList();
             scheduledActorList.addAll(actorList);
@@ -738,18 +738,18 @@ public class DistributedSDFScheduler extends SDFScheduler {
             for (Iterator actors = scheduledActorList.iterator(); actors
                     .hasNext();) {
                 Entity entity = (Entity) actors.next();
-                string += (entity.getFullName() + "\n");
+                string.append(entity.getFullName() + "\n");
             }
 
-            string += "Unscheduled actors:\n";
+            string.append("Unscheduled actors:\n");
 
             for (Iterator actors = unscheduledActorList.iterator(); actors
                     .hasNext();) {
                 Entity entity = (Entity) actors.next();
-                string += (entity.getFullName() + "\n");
+                string.append(entity.getFullName() + "\n");
             }
 
-            throw new NotSchedulableException(string);
+            throw new NotSchedulableException(string.toString());
         }
 
         if (_debugging) {

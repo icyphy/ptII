@@ -352,8 +352,8 @@ public class UnitUtilities {
             }
 
             //System.out.println(summarizeUnitCategories());
-            String positiveUnits = "";
-            String negativeUnits = "";
+            StringBuffer positiveUnits = new StringBuffer();
+            StringBuffer negativeUnits = new StringBuffer();
             boolean justOnePositive = true;
             boolean justOneNegative = true;
 
@@ -367,18 +367,18 @@ public class UnitUtilities {
                     if (exponent > 0) {
                         for (int j = 0; j < exponent; j++) {
                             if (positiveUnits.equals("")) {
-                                positiveUnits = baseString;
+                                positiveUnits.append(baseString);
                             } else {
-                                positiveUnits += (" * " + baseString);
+                                positiveUnits.append(" * " + baseString);
                                 justOnePositive = false;
                             }
                         }
                     } else {
                         for (int j = 0; j < -exponent; j++) {
                             if (negativeUnits.equals("")) {
-                                negativeUnits = baseString;
+                                negativeUnits.append(baseString);
                             } else {
-                                negativeUnits += (" * " + baseString);
+                                negativeUnits.append(" * " + baseString);
                                 justOneNegative = false;
                             }
                         }
@@ -391,17 +391,19 @@ public class UnitUtilities {
             }
 
             if (positiveUnits.equals("")) {
-                positiveUnits = "1";
+                positiveUnits.append("1");
             } else if (!justOnePositive) {
-                positiveUnits = "(" + positiveUnits + ")";
+                positiveUnits.append("(" + positiveUnits + ")");
             }
 
             if (negativeUnits.equals("")) {
-                return positiveUnits;
+                return positiveUnits.toString();
             } else if (justOneNegative) {
-                return positiveUnits + " / " + negativeUnits;
+                return positiveUnits.toString() + " / "
+                    + negativeUnits.toString();
             } else {
-                return positiveUnits + " / (" + negativeUnits + ")";
+                return positiveUnits.toString() + " / ("
+                    + negativeUnits.toString() + ")";
             }
         }
     }

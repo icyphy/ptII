@@ -143,20 +143,20 @@ public class CruiseLinearizer extends TypedAtomicActor {
         outputR.setMultiport(false);
         outputR.setTypeEquals(BaseType.DOUBLE);
 
-        String sP = "";
+        StringBuffer sP = new StringBuffer();
 
         for (int i = 0; i < 5; i++) {
-            sP = sP + _alphaP[i] + " ";
+            sP.append(_alphaP[i] + " ");
         }
 
-        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP));
+        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP.toString()));
 
-        String sV = "";
+        StringBuffer sV = new StringBuffer();
         for (int i = 0; i < 4; i++) {
-            sV = sV + _alphaV[i] + " ";
+            sV.append(_alphaV[i] + " ");
         }
 
-        paramAlphaV = new Parameter(this, "AlphaV", new StringToken(sV));
+        paramAlphaV = new Parameter(this, "AlphaV", new StringToken(sV.toString()));
 
         _cVx = 5.0;
         paramCVx = new Parameter(this, "CVx", new DoubleToken(_cVx));

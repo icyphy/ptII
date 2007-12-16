@@ -105,17 +105,17 @@ public class DistributedUtilities {
             return "null";
         }
 
-        String print = "";
+        StringBuffer print = new StringBuffer();
 
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
-                print += (array[i][j] + " ");
+                print.append(array[i][j] + " ");
             }
 
-            print += "\n";
+            print.append("\n");
         }
 
-        return print;
+        return print.toString();
     }
 
     /** Converts a bidimensional array of Receivers into a String for printing
@@ -129,16 +129,16 @@ public class DistributedUtilities {
             return "null";
         }
 
-        String print = "";
+        StringBuffer print = new StringBuffer();
 
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
-                print += (((DistributedSDFReceiver) array[i][j]).getID() + " ");
+                print.append(((DistributedSDFReceiver) array[i][j]).getID() + " ");
             }
 
-            print += "\n";
+            print.append("\n");
         }
 
-        return print;
+        return print.toString();
     }
 }

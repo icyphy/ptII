@@ -108,20 +108,20 @@ public class Concat extends FixTransformer {
                 .getName(((Parameter) getAttribute("outputRounding"))
                         .getExpression().toLowerCase());
 
-        String bits = "";
+        StringBuffer bits = new StringBuffer();
 
         // Concat bits from each input port.
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 FixToken in = (FixToken) input.get(i);
-                bits += in.fixValue().toBitString();
+                bits.append(in.fixValue().toBitString());
             }
         }
 
         //FIXME: what do we do if input is negative?
         //bits = bits.replace('-', '1');
 
-        FixPoint result = new FixPoint(new BigDecimal(new BigInteger(bits, 2)),
+        FixPoint result = new FixPoint(new BigDecimal(new BigInteger(bits.toString(), 2)),
                 new FixPointQuantization(precision, overflow, rounding));
 
         sendOutput(output, 0, new FixToken(result));

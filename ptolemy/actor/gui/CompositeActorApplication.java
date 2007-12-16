@@ -413,23 +413,24 @@ public class CompositeActorApplication {
      *  @return A usage string.
      */
     protected String _usage() {
-        String result = "Usage: " + _commandTemplate + "\n\n"
-                + "Options that take values:\n";
+        StringBuffer result = new StringBuffer("Usage: "
+                + _commandTemplate + "\n\n"
+                + "Options that take values:\n");
 
         int i;
 
         for (i = 0; i < _commandOptions.length; i++) {
-            result += (" " + _commandOptions[i][0] + " "
+            result.append(" " + _commandOptions[i][0] + " "
                     + _commandOptions[i][1] + "\n");
         }
 
-        result += "\nBoolean flags:\n";
+        result.append("\nBoolean flags:\n");
 
         for (i = 0; i < _commandFlags.length; i++) {
-            result += (" " + _commandFlags[i]);
+            result.append(" " + _commandFlags[i]);
         }
 
-        return result;
+        return result.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

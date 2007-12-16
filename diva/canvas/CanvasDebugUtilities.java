@@ -41,16 +41,16 @@ import java.util.Iterator;
  */
 public final class CanvasDebugUtilities {
     public static String printContextTree(FigureLayer rootLayer) {
-        String out = "LAYER:";
+        StringBuffer out = new StringBuffer("LAYER:");
         TransformContext rootContext = rootLayer.getTransformContext();
-        out = out + rootContext + "\n";
+        out.append(rootContext + "\n");
 
         for (Iterator i = rootLayer.figures(); i.hasNext();) {
             Figure root = (Figure) i.next();
-            out = out + printHelper(root, "  ", rootContext);
+            out.append(printHelper(root, "  ", rootContext));
         }
 
-        return out;
+        return out.toString();
     }
 
     private static String printHelper(Figure root, String prefix,

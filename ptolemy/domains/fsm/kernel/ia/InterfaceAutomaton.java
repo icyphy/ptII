@@ -582,41 +582,40 @@ public class InterfaceAutomaton extends FSMActor {
      *  @return A high-level description of this automaton.
      */
     public String getInfo() {
-        String info = getFullName() + "\n";
+        StringBuffer info = new StringBuffer(getFullName() + "\n");
 
         Set inputNames = inputNameSet();
         Set outputNames = outputNameSet();
         Set internalNames = internalTransitionNameSet();
 
-        info += ("  " + entityList().size() + " states\n");
-        info += ("  " + relationList().size() + " transitions\n");
-        info += ("  " + inputNames.size() + " input names\n");
-        info += ("  " + outputNames.size() + " output names\n");
-        info += ("  " + internalNames.size() + " internal transition names\n");
-
-        info += "  Input Names:\n";
+        info.append("  " + entityList().size() + " states\n"
+                + "  " + relationList().size() + " transitions\n"
+                + "  " + inputNames.size() + " input names\n"
+                + "  " + outputNames.size() + " output names\n"
+                + "  " + internalNames.size() + " internal transition names\n"
+                + "  Input Names:\n");
 
         Iterator iterator = inputNames.iterator();
 
         while (iterator.hasNext()) {
-            info += ("    " + iterator.next().toString() + "\n");
+            info.append("    " + iterator.next().toString() + "\n");
         }
 
-        info += "  Output Names:\n";
+        info.append("  Output Names:\n");
         iterator = outputNames.iterator();
 
         while (iterator.hasNext()) {
-            info += ("    " + iterator.next().toString() + "\n");
+            info.append("    " + iterator.next().toString() + "\n");
         }
 
-        info += "  Internal Transition Names:\n";
+        info.append("  Internal Transition Names:\n");
         iterator = internalNames.iterator();
 
         while (iterator.hasNext()) {
-            info += ("    " + iterator.next().toString() + "\n");
+            info.append("    " + iterator.next().toString() + "\n");
         }
 
-        return info;
+        return info.toString();
     }
 
     /** Return the names of the input ports as a Set.

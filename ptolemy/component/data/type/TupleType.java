@@ -353,17 +353,17 @@ public class TupleType extends StructuredType {
      */
     public String toString() {
         // construct the string representation of this token.
-        String s = "{";
+        StringBuffer s = new StringBuffer("{");
 
         for (int i = 0; i < getElementCount(); i++) {
             if (i != 0) {
-                s += ", ";
+                s.append(", ");
             }
 
-            s += ("a" + i + ":" + getElementType(i));
+            s.append("a" + i + ":" + getElementType(i));
         }
 
-        return s + "}";
+        return s.toString() + "}";
     }
 
     /** Update this type to the specified TupleType.

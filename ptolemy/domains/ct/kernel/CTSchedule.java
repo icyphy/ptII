@@ -135,96 +135,99 @@ public class CTSchedule extends Schedule {
      */
     public String toString() {
         //_schedule.ensureCapacitance();
-        String result = "";
+        StringBuffer result = new StringBuffer();
         Iterator iterator;
-        result += "CTSchedule {\n";
-        result += "    continuousActors {\n";
+        result.append("CTSchedule {\n"
+                + "continuousActors {\n");
 
         Schedule continuous = (Schedule) get(CONTINUOUS_ACTORS);
         iterator = continuous.actorIterator();
 
         while (iterator.hasNext()) {
-            result = result + "\t" + ((NamedObj) iterator.next()).getFullName()
-                    + "\n";
+            result.append("\t" + ((NamedObj) iterator.next()).getFullName()
+                    + "\n");
         }
 
-        result += "    }\n";
-        result += "    discreteActors {\n";
+        result.append("    }\n"
+                + "    discreteActors {\n");
 
         Schedule discrete = (Schedule) get(DISCRETE_ACTORS);
         iterator = discrete.actorIterator();
 
         while (iterator.hasNext()) {
-            result = result + "\t" + ((NamedObj) iterator.next()).getFullName()
-                    + "\n";
+            result.append("\t" + ((NamedObj) iterator.next()).getFullName()
+                    + "\n");
         }
 
-        result += "    }\n";
-        result += "    dynamicActors {\n";
+        result.append("    }\n"
+                + "    dynamicActors {\n");
         iterator = get(DYNAMIC_ACTORS).actorIterator();
 
         while (iterator.hasNext()) {
-            result += ("\t" + ((NamedObj) iterator.next()).getFullName() + "\n");
+            result.append("\t" + ((NamedObj) iterator.next()).getFullName()
+                    + "\n");
         }
 
-        result += "    }\n";
-        result += "    stateStepSizeControlActors {\n";
+        result.append("    }\n"
+                + "    stateStepSizeControlActors {\n");
         iterator = get(STATE_STEP_SIZE_CONTROL_ACTORS).actorIterator();
 
         while (iterator.hasNext()) {
-            result += ("\t" + ((NamedObj) iterator.next()).getFullName() + "\n");
+            result.append("\t" + ((NamedObj) iterator.next()).getFullName()
+                    + "\n");
         }
 
-        result += "    }\n";
-        result += "    outputStepSizeControlActors {\n";
+        result.append("    }\n"
+                + "    outputStepSizeControlActors {\n");
         iterator = get(OUTPUT_STEP_SIZE_CONTROL_ACTORS).actorIterator();
 
         while (iterator.hasNext()) {
-            result += ("\t" + ((NamedObj) iterator.next()).getFullName() + "\n");
+            result.append("\t" + ((NamedObj) iterator.next()).getFullName()
+                    + "\n");
         }
 
-        result += "    }\n";
-        result += "    eventGenerators {\n";
+        result.append("    }\n"
+                + "    eventGenerators {\n");
         iterator = get(EVENT_GENERATORS).actorIterator();
 
         while (iterator.hasNext()) {
-            result += ("\t" + ((NamedObj) iterator.next()).getFullName() + "\n");
+            result.append("\t" + ((NamedObj) iterator.next()).getFullName() + "\n");
         }
 
-        result += "    }\n";
-        result += "    waveformGenerators {\n";
+        result.append("    }\n"
+                + "    waveformGenerators {\n");
         iterator = get(WAVEFORM_GENERATORS).actorIterator();
 
         while (iterator.hasNext()) {
-            result += ("\t" + ((NamedObj) iterator.next()).getFullName() + "\n");
+            result.append("\t" + ((NamedObj) iterator.next()).getFullName() + "\n");
         }
 
-        result += "    }\n";
-        result += "    statefulActors {\n";
+        result.append("    }\n"
+                + "    statefulActors {\n");
         iterator = get(STATEFUL_ACTORS).actorIterator();
 
         while (iterator.hasNext()) {
-            result += ("\t" + ((NamedObj) iterator.next()).getFullName() + "\n");
+            result.append("\t" + ((NamedObj) iterator.next()).getFullName() + "\n");
         }
 
-        result += "    }\n";
-        result += "    stateTransitionActors {\n";
+        result.append("    }\n"
+                + "    stateTransitionActors {\n");
         iterator = get(STATE_TRANSITION_ACTORS).actorIterator();
 
         while (iterator.hasNext()) {
-            result += ("\t" + ((NamedObj) iterator.next()).getFullName() + "\n");
+            result.append("\t" + ((NamedObj) iterator.next()).getFullName() + "\n");
         }
 
-        result += "    }\n";
-        result += "    outputActors {\n";
+        result.append("    }\n"
+                + "    outputActors {\n");
         iterator = get(OUTPUT_ACTORS).actorIterator();
 
         while (iterator.hasNext()) {
-            result += ("\t" + ((NamedObj) iterator.next()).getFullName() + "\n");
+            result.append("\t" + ((NamedObj) iterator.next()).getFullName() + "\n");
         }
 
-        result += "    }\n";
-        result += "}\n";
-        return result;
+        result.append("    }\n"
+                + "}\n");
+        return result.toString();
     }
 }

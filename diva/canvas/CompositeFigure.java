@@ -457,19 +457,18 @@ public class CompositeFigure extends AbstractFigureContainer {
     /** Return a string description of this figure
      */
     public String toString() {
-        String s = getClass().getName();
-        s += (":Background=" + getBackgroundFigure());
-        s += ":others={";
+        StringBuffer s = new StringBuffer(getClass().getName());
+        s.append(":Background=" + getBackgroundFigure() + ":others={");
 
         Iterator i = figuresFromFront();
 
         while (i.hasNext()) {
             Figure f = (Figure) i.next();
-            s += ("," + f);
+            s.append("," + f);
         }
 
-        s += "}";
-        return s;
+        s.append("}");
+        return s.toString();
     }
 
     /** Transform this figure with the supplied transform.

@@ -91,13 +91,13 @@ public class UnitExpr implements UnitPresentation {
      */
     public String descriptiveForm() {
         Iterator iter = _uTerms.iterator();
-        String retv = ((UnitTerm) (iter.next())).descriptiveForm();
+        StringBuffer retv = new StringBuffer(((UnitTerm) (iter.next())).descriptiveForm());
 
         while (iter.hasNext()) {
-            retv += (" " + ((UnitTerm) (iter.next())).descriptiveForm());
+            retv.append(" " + ((UnitTerm) (iter.next())).descriptiveForm());
         }
 
-        return retv;
+        return retv.toString();
     }
 
     /** If this UnitExpr has one term and it is a Unit then return that Unit.
@@ -167,18 +167,18 @@ public class UnitExpr implements UnitPresentation {
     }
 
     public String toString() {
-        String retv = "UnitExpr:[";
+        StringBuffer retv = new StringBuffer("UnitExpr:[");
 
         if (_uTerms.size() > 0) {
-            retv += ((UnitTerm) (_uTerms.elementAt(0))).toString();
+            retv.append(((UnitTerm) (_uTerms.elementAt(0))).toString());
 
             for (int i = 1; i < _uTerms.size(); i++) {
-                retv += (" " + ((UnitTerm) (_uTerms.elementAt(i))).toString());
+                retv.append(" " + ((UnitTerm) (_uTerms.elementAt(i))).toString());
             }
         }
 
-        retv += "]";
-        return retv;
+        retv.append("]");
+        return retv.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

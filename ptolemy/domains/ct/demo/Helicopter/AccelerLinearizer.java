@@ -143,21 +143,21 @@ public class AccelerLinearizer extends TypedAtomicActor {
         outputR.setMultiport(false);
         outputR.setTypeEquals(BaseType.DOUBLE);
 
-        String sP = "";
+        StringBuffer sP = new StringBuffer();
 
         for (int i = 0; i < 5; i++) {
-            sP = sP + _alphaP[i] + " ";
+            sP.append(_alphaP[i] + " ");
         }
 
-        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP));
+        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(sP.toString()));
 
-        String sA = "";
+        StringBuffer sA = new StringBuffer();
 
         for (int i = 0; i < 3; i++) {
-            sA = sA + _alphaA[i] + " ";
+            sA.append(_alphaA[i] + " ");
         }
 
-        paramAlphaA = new Parameter(this, "AlphaA", new StringToken(sA));
+        paramAlphaA = new Parameter(this, "AlphaA", new StringToken(sA.toString()));
 
         _cAx = 9.8 / 25.0;
         paramCAx = new Parameter(this, "CAx", new DoubleToken(_cAx));

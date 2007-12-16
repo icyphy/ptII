@@ -184,13 +184,13 @@ public abstract class Polyline2D implements Shape {
     /** Return a string representing this object
      */
     public String toString() {
-        String string = super.toString();
+        StringBuffer string = new StringBuffer(super.toString());
 
         for (int i = 0; i < this.getVertexCount(); i++) {
-            string += ("(" + getX(i) + "," + getY(i) + "),");
+            string.append("(" + getX(i) + "," + getY(i) + "),");
         }
 
-        return string;
+        return string.toString();
     }
 
     /** Transform the polyline with the given transform.

@@ -89,14 +89,14 @@ public class Test extends VHDLCodeGeneratorHelper {
         ArrayToken valueArray = (ArrayToken) actor.correctValues.getToken();
 
         int i;
-        String values = "";
+        StringBuffer values = new StringBuffer();
         for (i = 0; i < valueArray.length() - 1; i++) {
-            values += ((FixToken) valueArray.getElement(i)).convertToDouble()
-                    + ", ";
+            values.append(((FixToken) valueArray.getElement(i)).convertToDouble()
+                    + ", ");
         }
-        values += ((FixToken) valueArray.getElement(i)).convertToDouble();
+        values.append(((FixToken) valueArray.getElement(i)).convertToDouble());
 
-        args.add(values);
+        args.add(values.toString());
 
         String signed = (precision.isSigned()) ? "SIGNED_TYPE"
                 : "UNSIGNED_TYPE";

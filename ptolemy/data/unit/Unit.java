@@ -106,7 +106,7 @@ public class Unit implements UnitPresentation {
      * @see ptolemy.data.unit.UnitPresentation#descriptiveForm()
      */
     public String descriptiveForm() {
-        String retv = null;
+        StringBuffer retv = null;
         Unit unit = UnitLibrary.getUnit(this);
 
         if (unit != null) {
@@ -131,28 +131,28 @@ public class Unit implements UnitPresentation {
             }
 
             if (numerator.size() == 0) {
-                retv = "1";
+                retv = new StringBuffer("1");
             } else {
-                retv = ((UnitTerm) (numerator.elementAt(0))).getUnit()
-                        .getPrimaryLabel();
+                retv = new StringBuffer(((UnitTerm) (numerator.elementAt(0))).getUnit()
+                        .getPrimaryLabel());
 
                 for (int i = 1; i < numerator.size(); i++) {
-                    retv += (" " + ((UnitTerm) (numerator.elementAt(i)))
+                    retv.append(" " + ((UnitTerm) (numerator.elementAt(i)))
                             .getUnit().getPrimaryLabel());
                 }
             }
 
             if (denominator.size() > 0) {
-                retv += ("/" + ((UnitTerm) (denominator.elementAt(0)))
+                retv.append("/" + ((UnitTerm) (denominator.elementAt(0)))
                         .getUnit().getPrimaryLabel());
 
                 for (int i = 1; i < denominator.size(); i++) {
-                    retv += (" " + ((UnitTerm) (denominator.elementAt(i)))
+                    retv.append(" " + ((UnitTerm) (denominator.elementAt(i)))
                             .getUnit().getPrimaryLabel());
                 }
             }
 
-            return retv;
+            return retv.toString();
         }
 
         if (_scale == 1.0) {
@@ -196,11 +196,22 @@ public class Unit implements UnitPresentation {
         return retv;
     }
 
-    /** Return True if this Unit equals another Unit.
-     * @param otherUnit The Unit to be compared against.
-     * @return True if this Unit equals the other Unit.
+    /** Return True if this Unit equals another object
+     * @param otherUnit The object to be compared against.
+     * @return True if this Unit equals the other Unit.  Return false
+     * if the other object is null or not an instance of Unit.
      */
-    public boolean equals(Unit otherUnit) {
+    public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+        Unit otherUnit = null;
+        if (object instanceof Unit) {
+            return false;
+        } else {
+            otherUnit = (Unit) object;
+        }
+
         int[] otherExponents = otherUnit.getType();
 
         for (int i = 0; i < UnitLibrary.getNumCategories(); i++) {

@@ -206,19 +206,19 @@ public class UnitConstraints implements UnitPresentation {
             return null;
         }
 
-        String retv = null;
+        StringBuffer retv = null;
 
         if (!_constraints.isEmpty()) {
-            retv = ((UnitEquation) (_constraints.elementAt(0)))
-                    .descriptiveForm();
-        }
-
-        for (int i = 1; i < _constraints.size(); i++) {
-            retv += (";" + ((UnitEquation) (_constraints.get(i)))
+            retv = new StringBuffer(((UnitEquation) (_constraints.elementAt(0)))
                     .descriptiveForm());
         }
 
-        return retv;
+        for (int i = 1; i < _constraints.size(); i++) {
+            retv.append((";" + ((UnitEquation) (_constraints.get(i)))
+                    .descriptiveForm()));
+        }
+
+        return retv.toString();
     }
 
     /** Get the constraints in the collection.

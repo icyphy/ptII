@@ -682,9 +682,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
          * Output a string representation of this symbolic firing.
          */
         public String toString() {
-            String result = "Fire Actor " + getActor().toString();
-            result += ("[" + expression() + "] times");
-            return result;
+            return "Fire Actor " + getActor().toString()
+                + "[" + expression() + "] times";
         }
 
         // The iteration expression. This is stored separately for
@@ -765,17 +764,18 @@ public class PSDFScheduler extends BaseSDFScheduler {
          *  @return The string representation.
          */
         public String toString() {
-            String result = "Execute Symbolic Schedule{\n";
+            StringBuffer result = new StringBuffer(
+                    "Execute Symbolic Schedule{\n");
             Iterator elements = iterator();
 
             while (elements.hasNext()) {
                 ScheduleElement element = (ScheduleElement) elements.next();
-                result += (element + "\n");
+                result.append(element + "\n");
             }
 
-            result += "}";
-            result += ("[" + expression() + "] times");
-            return result;
+            result.append("}");
+            result.append("[" + expression() + "] times");
+            return result.toString();
         }
 
         // The iteration expression. This is stored separately for
