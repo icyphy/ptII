@@ -206,7 +206,7 @@ public class Unit implements UnitPresentation {
             return false;
         }
         Unit otherUnit = null;
-        if (object instanceof Unit) {
+        if (!(object instanceof Unit)) {
             return false;
         } else {
             otherUnit = (Unit) object;
