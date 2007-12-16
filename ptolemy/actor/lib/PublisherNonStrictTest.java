@@ -55,6 +55,10 @@ import ptolemy.util.StringUtilities;
  and the {@link ptolemy.actor.lib.NonStrictTest} actor.  Thus, it has quite
  a bit of duplicated code from the NonStrictTest actor.
 
+ <p> Note that in the superclass (Publisher), the input is a multiport, 
+ whereas in this class it is a regular non-multiport.  To use a multiport
+ input, use {@link ptolemy.actor.lib.PublisherTest}
+
  @author Christopher Brooks, based on Test, which has Edward A. Lee and Jim Armbstrong as authors
  @version $Id$
  @since Ptolemy II 6.1
@@ -86,6 +90,9 @@ public class PublisherNonStrictTest extends Publisher {
         trainingMode = new SharedParameter(this, "trainingMode", getClass(),
                 "false");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
+
+        // Note that in Publisher, the input is a multiport.
+        input.setMultiport(false);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -146,42 +153,44 @@ public class PublisherNonStrictTest extends Publisher {
 
         int width = input.getWidth();
 
-        // If we are in training mode, read the inputs and add to the
-        // training data.
-        boolean training = ((BooleanToken) trainingMode.getToken())
-                .booleanValue();
+//         // If we are in training mode, read the inputs and add to the
+//         // training data.
+//         boolean training = ((BooleanToken) trainingMode.getToken())
+//                 .booleanValue();
 
-        if (training) {
-            if (_trainingTokens == null) {
-                _trainingTokens = new ArrayList();
-            }
+//         if (training) {
+//             if (_trainingTokens == null) {
+//                 _trainingTokens = new ArrayList();
+//             }
 
-            if (width == 1) {
-                if (input.hasToken(0)) {
-                    Token token = input.get(0);
-                    output.send(0, token);
-                    if (token instanceof ArrayToken) {
-                        Token[] innerArrayToken = new Token[1];
-                        innerArrayToken[0] = token;
-                        _trainingTokens.add(innerArrayToken);
-                    } else {
-                        _trainingTokens.add(token);
-                    }
-                }
-            } else {
-                ArrayList arrayList = new ArrayList();
+//             if (width == 1) {
+//                 if (input.hasToken(0)) {
+//                     Token token = input.get(0);
+//                     output.send(0, token);
+//                     if (token instanceof ArrayToken) {
+//                         Token[] innerArrayToken = new Token[1];
+//                         innerArrayToken[0] = token;
+//                         _trainingTokens.add(innerArrayToken);
+//                     } else {
+//                         _trainingTokens.add(token);
+//                     }
+//                 }
+//             } else {
+//                 ArrayList arrayList = new ArrayList();
 
-                for (int i = 0; i < width; i++) {
-                    Token token = input.get(i);
-                    arrayList.add(token);
-                    output.send(i, token);
-                }
+//                 for (int i = 0; i < width; i++) {
+//                     if (input.hasToken(i)) {
+//                         Token token = input.get(i);
+//                         arrayList.add(token);
+//                         output.send(i, token);
+//                     }
+//                 }
 
-                _trainingTokens.add(arrayList);
-            }
+//                 _trainingTokens.add(arrayList);
+//             }
 
-            return;
-        }
+//             return;
+//         }
 
         //         for (int i = 0; i < width; i++) {
         //             if (input.hasToken(i)) {
@@ -282,7 +291,7 @@ public class PublisherNonStrictTest extends Publisher {
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 Token token = input.get(i);
-                output.send(i, token);
+
                 //if (input.hasToken(0)) {
                 //Token token = input.get(0);
                 // output.send(0, token);
@@ -303,6 +312,7 @@ public class PublisherNonStrictTest extends Publisher {
                                     + "Value was: " + token
                                     + ". Should have been: " + referenceToken);
                 }
+                output.send(i, token);
             }
         }
 
@@ -358,6 +368,8 @@ public class PublisherNonStrictTest extends Publisher {
 
         // Note that wrapup() might get called by the manager before
         // we have any data...
+        System.out.println("PublisherNonStrictTest.wrapup(): training: "
+                + training + " " + _trainingTokens);
         if (training && (_trainingTokens != null)
                 && (_trainingTokens.size() > 0)) {
             Object[] newValues = _trainingTokens.toArray();
@@ -366,6 +378,8 @@ public class PublisherNonStrictTest extends Publisher {
             int width = input.getWidth();
             Token[] newTokens = new Token[newValues.length];
 
+            System.out.println("PublisherNonStrictTest.wrapup(): width: " 
+                    + width);
             if (width == 1) {
                 for (int i = 0; i < newValues.length; i++) {
                     if (newValues[i] instanceof Token[]) {
@@ -400,6 +414,8 @@ public class PublisherNonStrictTest extends Publisher {
             }
 
             correctValues.setToken(new ArrayToken(newTokens));
+        System.out.println("PublisherNonStrictTest.wrapup(): "
+                + correctValues);
             correctValues.setPersistent(true);
         }
 

@@ -100,6 +100,8 @@ public class PublisherTest extends PublisherNonStrictTest {
                 _trainingTokens = new ArrayList();
             }
 
+            System.out.println("PublisherTest: width: " + width
+                    + " " + input.hasToken(0));
             if (width == 1) {
                 if (input.hasToken(0)) {
                     Token token = input.get(0);
@@ -116,9 +118,11 @@ public class PublisherTest extends PublisherNonStrictTest {
                 ArrayList arrayList = new ArrayList();
 
                 for (int i = 0; i < width; i++) {
-                    Token token = input.get(i);
-                    arrayList.add(token);
-                    output.send(i, token);
+                    if (input.hasToken(i)) {
+                        Token token = input.get(i);
+                        arrayList.add(token);
+                        output.send(i, token);
+                    }
                 }
 
                 _trainingTokens.add(arrayList);
