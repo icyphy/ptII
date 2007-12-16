@@ -98,6 +98,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        // Note: If you add publicly settable parameters, update
+        // _commandFlags or _commandOptions.
+
+
         allowDynamicMultiportReference = new Parameter(this,
                 "allowDynamicMultiportReference");
         allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
@@ -123,6 +127,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         generateComment = new Parameter(this, "generateComment");
         generateComment.setTypeEquals(BaseType.BOOLEAN);
         generateComment.setExpression("true");
+
 
         generateCpp = new Parameter(this, "generateCpp");
         generateCpp.setTypeEquals(BaseType.BOOLEAN);
@@ -174,6 +179,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
+
+    // Note: If you add publicly settable parameters, update
+    // _commandFlags or _commandOptions.
 
     /** If true, then channels in multiports can be dynamically
      *  referenced using the $ref macro.
@@ -1568,15 +1576,19 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {
-            {
-                    "-codeDirectory",
-                    "<directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
-            { "-compile", "        true|false (default: true)" },
-            { "-generateComment", "true|false (default: true)" },
-            { "-inline", "         true|false (default: false)" },
-            { "-overwriteFiles", " true|false (default: true)" },
-            { "-run", "            true|false (default: true)" },
-            { "-<parameter name>", "<parameter value>" } };
+            { "-allowDynamicMultiportReferences",
+              "        true|false (default: false)" },
+            { "-codeDirectory",
+                "<directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
+            { "-compile", "           true|false (default: true)" },
+            { "-generateComment", "   true|false (default: true)" },
+            { "-inline", "            true|false (default: false)" },
+            { "-measureTime", "       true|false (default: false)" },
+            { "-overwriteFiles", "    true|false (default: true)" },
+            { "-padBuffers", "        true|false (default: true)" },
+            { "-run", "               true|false (default: true)" },
+            { "-sourceLineBinding", " true|false (default: false)" },
+            { "-<parameter name>", "  <parameter value>" } };
 
     /** The form of the command line. */
     protected static final String _commandTemplate = "ptcg [ options ] [file ...]";
