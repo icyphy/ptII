@@ -277,7 +277,9 @@ class TablePanel extends Panel {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     // Inner Classes implementing the coordinates
-    public class ChopstickCoords {
+    public static class ChopstickCoords {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
         Coordinate[] pos = new Coordinate[2];
 
         public void setPos(Coordinate p, Coordinate q) {
@@ -286,7 +288,10 @@ class TablePanel extends Panel {
         }
     }
 
-    public class PhilosopherCoords {
+    public static class PhilosopherCoords {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         Coordinate[] leftPos = new Coordinate[2];
 
         Coordinate[] rightPos = new Coordinate[2];

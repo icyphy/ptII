@@ -952,23 +952,23 @@ public class Query extends JPanel {
             // Regrettably, ButtonGroup gives no way to determine
             // which button is selected, so we have to search...
             JToggleButton[] buttons = (JToggleButton[]) result;
-            String toReturn = null;
+            StringBuffer toReturn = null;
 
             for (int i = 0; i < buttons.length; i++) {
                 if (buttons[i].isSelected()) {
                     if (toReturn == null) {
-                        toReturn = buttons[i].getText();
+                        toReturn = new StringBuffer(buttons[i].getText());
                     } else {
-                        toReturn = toReturn + ", " + buttons[i].getText();
+                        toReturn.append(", " + buttons[i].getText());
                     }
                 }
             }
 
             if (toReturn == null) {
-                toReturn = "";
+                toReturn = new StringBuffer();
             }
 
-            return toReturn;
+            return toReturn.toString();
         } else if (result instanceof QueryScrollPane) {
             return ((QueryScrollPane) result).getText();
         } else {
@@ -1914,8 +1914,11 @@ public class Query extends JPanel {
         private String _name;
     }
 
-    /** Inner class to tie textArea to scroll pane */
-    class QueryScrollPane extends JScrollPane {
+    /** Inner class to tie textArea to scroll pane. */
+    static class QueryScrollPane extends JScrollPane {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public JTextArea textArea;
 
         QueryScrollPane(JTextArea c) {

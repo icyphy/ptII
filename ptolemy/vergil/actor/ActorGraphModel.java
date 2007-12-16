@@ -818,8 +818,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
     /** The model for an icon that contains ports.
      */
-    public class IconModel extends NamedObjNodeModel implements
+    public static class IconModel extends NamedObjNodeModel implements
             CompositeNodeModel {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. The returned string assumes that the context is
          *  the container of the object with an icon.

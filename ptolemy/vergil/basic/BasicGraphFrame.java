@@ -2301,7 +2301,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //// PtolemyLayoutTarget
 
     /** A layout target that translates locatable nodes. */
-    private class PtolemyLayoutTarget extends BasicLayoutTarget {
+    private static class PtolemyLayoutTarget extends BasicLayoutTarget {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** Construct a new layout target that operates
          *  in the given pane.
          */

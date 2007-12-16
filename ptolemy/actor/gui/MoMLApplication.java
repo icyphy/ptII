@@ -1147,7 +1147,10 @@ public class MoMLApplication implements ExecutionListener {
     /** Look for directories that contain files named configuration.xml
      *  and intro.htm.
      */
-    class ConfigurationFilenameFilter implements FilenameFilter {
+    static class ConfigurationFilenameFilter implements FilenameFilter {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** Return true if the specified file names a directory
          *  that contains a file named configuration.xml
          *  and a file named intro.htm
@@ -1180,11 +1183,12 @@ public class MoMLApplication implements ExecutionListener {
         }
     }
 
-    /**
-     Error Handler that ignore errors.
-
+    /** Error Handler that ignore errors.
      */
-    public class IgnoreErrorHandler implements ErrorHandler {
+    public static class IgnoreErrorHandler implements ErrorHandler {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 

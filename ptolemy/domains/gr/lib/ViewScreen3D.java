@@ -651,7 +651,10 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         return ((BooleanToken) showAxes.getToken()).booleanValue();
     }
 
-    private class MouseRotateView extends MouseRotate {
+    private static class MouseRotateView extends MouseRotate {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public MouseRotateView(ViewScreen3D viewContainer) {
             super();
             _viewContainer = viewContainer;

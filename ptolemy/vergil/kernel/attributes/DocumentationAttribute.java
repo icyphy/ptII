@@ -107,7 +107,10 @@ public class DocumentationAttribute extends VisibleAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    private class DocumentationAttributeFactory extends EditorFactory {
+    private static class DocumentationAttributeFactory extends EditorFactory {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public DocumentationAttributeFactory(NamedObj _container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(_container, name);

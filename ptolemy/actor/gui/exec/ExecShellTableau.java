@@ -308,7 +308,10 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
     ////                         inner classes                     ////
     // Private class that reads a stream in a thread and updates the
     // JTextArea.
-    private class _StreamReaderThread extends Thread {
+    private static class _StreamReaderThread extends Thread {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         _StreamReaderThread(InputStream inputStream,
                 ExecShellTableau execShellTableau) {
             _inputStream = inputStream;

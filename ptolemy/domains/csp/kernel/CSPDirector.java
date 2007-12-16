@@ -515,10 +515,12 @@ public class CSPDirector extends CompositeProcessDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    // Class DelayedListLink
-    // Keeps track of the actor that is delayed and the time
-    // at which to resume it.
-    private class DelayListLink {
+    /** Keep track of the actor that is delayed and the time
+     *  at which to resume it.
+     */
+    private static class DelayListLink {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
         public Time _resumeTime;
 
         public CSPActor _actor;

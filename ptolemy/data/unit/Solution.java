@@ -961,7 +961,9 @@ public class Solution {
      * Class that represents an index in the P array.
      *
      */
-    private class Index {
+    private static class Index {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
         int k;
 
         int l;

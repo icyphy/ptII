@@ -123,7 +123,10 @@ public class JCanvasTest extends TestSuite {
      * FramedCanvas is a test case that accepts a JCanvas and places
      * it into a pane. This ensures that methods like paint() get called.
      */
-    public class FramedCanvas {
+    public static class FramedCanvas {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public FramedCanvas(JCanvas canvas) {
             JFrame frame = new JFrame();
             canvas.setSize(600, 400);

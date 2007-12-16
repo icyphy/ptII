@@ -1091,8 +1091,12 @@ public class PortConfigurerDialog extends PtolemyDialog implements
     }
 
     /** Render a boolean cell. */
-    class PortBooleanCellRenderer extends JCheckBox implements
+    static class PortBooleanCellRenderer extends JCheckBox implements
             TableCellRenderer {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public PortBooleanCellRenderer() {
             super();
         }
@@ -1123,7 +1127,11 @@ public class PortConfigurerDialog extends PtolemyDialog implements
      *
      * see _setupTableModel()
      */
-    class StringCellRenderer extends JLabel implements TableCellRenderer {
+    static class StringCellRenderer extends JLabel
+        implements TableCellRenderer {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public StringCellRenderer() {
             super();
         }

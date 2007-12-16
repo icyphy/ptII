@@ -999,7 +999,9 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
 
         private DefaultDirectoryAttribute _attribute;
 
-        private class ModelFileFilter implements FilenameFilter {
+        private static class ModelFileFilter implements FilenameFilter {
+            // FindBugs suggests making this class static so as to decrease
+            // the size of instances and avoid dangling references.
 
             public boolean accept(File dir, String name) {
                 File file = new File(dir, name);

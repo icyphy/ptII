@@ -810,7 +810,10 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
 
     /** A data structure for storing two double numbers.
      */
-    private class DoubleDouble {
+    private static class DoubleDouble {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** construct the Double pair.
          *  @param first The first double value in a DoubleDouble object.
          *  @param second The second double value in a DoubleDouble object.

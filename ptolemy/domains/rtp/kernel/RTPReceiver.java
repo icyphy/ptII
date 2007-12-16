@@ -257,6 +257,8 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** A null token indicating no token is available.
      */
-    private class Lock extends Object {
+    private static class Lock extends Object {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
     }
 }

@@ -370,8 +370,11 @@ public class PlotTableauFrame extends TableauFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** Display only .eps files */
-    class EPSFileFilter extends FileFilter {
+    /** Display only .eps files. */
+    static class EPSFileFilter extends FileFilter {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** Accept only .eps files.
          *  @param file The file to be checked.
          *  @return true if the file is a directory, a .eps file

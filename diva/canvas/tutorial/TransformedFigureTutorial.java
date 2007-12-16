@@ -217,7 +217,11 @@ public class TransformedFigureTutorial {
      * paints and strokes to create the required image, and the use
      * of TransformContext to position that image.
      */
-    public class CloudFigure extends AbstractFigure {
+    public static class CloudFigure extends AbstractFigure {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         // The cloud shape
         private Shape _shape;
 

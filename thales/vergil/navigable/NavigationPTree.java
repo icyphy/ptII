@@ -73,7 +73,10 @@ public class NavigationPTree extends PTree {
      * @author masson
      *
      */
-    private class selectionListener implements TreeSelectionListener {
+    private static class selectionListener implements TreeSelectionListener {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         private NavigationPTree _jTree = null;
 
         public selectionListener(NavigationPTree sptree) {
@@ -107,7 +110,9 @@ public class NavigationPTree extends PTree {
      * @author masson
      *
      */
-    private class expandListener implements TreeExpansionListener {
+    private static class expandListener implements TreeExpansionListener {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
         private NavigationPTree _jTree = null;
 
         public expandListener(NavigationPTree sptree) {

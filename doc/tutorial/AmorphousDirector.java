@@ -25,7 +25,7 @@ public class AmorphousDirector extends Director {
         return new DelegatingReceiver();
     }
 
-    public class DelegatingReceiver extends AbstractReceiver {
+    public static class DelegatingReceiver extends AbstractReceiver {
 
         private Receiver _receiver;
 

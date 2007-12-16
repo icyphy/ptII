@@ -377,7 +377,10 @@ public class BusContentionApplet extends PtolemyApplet {
     /**
      * LocalEdgeRenderer draws arrowheads on both ends of the connector
      */
-    public class LocalEdgeRenderer implements EdgeRenderer {
+    public static class LocalEdgeRenderer implements EdgeRenderer {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /**
          * Render the edge
          */
@@ -468,7 +471,10 @@ public class BusContentionApplet extends PtolemyApplet {
     /**
      * ThreadRenderer draws the nodes to represent running threads.
      */
-    public class ThreadRenderer implements NodeRenderer {
+    public static class ThreadRenderer implements NodeRenderer {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** The rectangle size
          */
         private double _size = 50;

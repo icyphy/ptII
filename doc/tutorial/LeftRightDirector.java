@@ -26,7 +26,7 @@ public class LeftRightDirector extends StaticSchedulingDirector {
         setScheduler(new LeftRightScheduler(this, "LeftRightScheduler"));
     }
 
-    public class LeftRightScheduler extends Scheduler {
+    public static class LeftRightScheduler extends Scheduler {
 
         public LeftRightScheduler(LeftRightDirector director, String name)
                 throws IllegalActionException, NameDuplicationException {
@@ -57,7 +57,11 @@ public class LeftRightDirector extends StaticSchedulingDirector {
             return schedule;
         }
 
-        public class LeftRightComparator implements Comparator {
+        public /*static*/ class LeftRightComparator implements Comparator {
+            // FindBugs suggests making this class static so as to decrease
+            // the size of instances and avoid dangling references.
+            // However, hashCode() calls attributeList() on this,
+            // so this class cannot be static.
 
             public int compare(Object o1, Object o2) {
                 double[] location1 = { Double.NEGATIVE_INFINITY,
@@ -89,8 +93,18 @@ public class LeftRightDirector extends StaticSchedulingDirector {
                     return false;
                 }
             }
-            // FindBugs: java.util.Comparator declares equals(Object),
-            // but not hashcode().
+
+            public int hashCode() {
+                // Findbugs says if we have an equals(), we need a hashCode().
+                double[] location1 = { Double.NEGATIVE_INFINITY,
+                        Double.NEGATIVE_INFINITY };
+                List locations = attributeList(Locatable.class);
+                if (locations.size() > 0) {
+                    location1 = ((Locatable) locations.get(0)).getLocation();
+                }
+                // Return the bitwise xor
+                return (int) location1[0]  ^ (int) location1[1];
+            }
         }
     }
 }

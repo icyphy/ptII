@@ -157,7 +157,10 @@ public class LinkController extends BasicEdgeController {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     /** A connector target that returns sites on a link. */
-    public class LinkTarget extends PerimeterTarget {
+    public static class LinkTarget extends PerimeterTarget {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** Accept the head of the connector.
          *  @param c The connector.
          *  @param f The figure.

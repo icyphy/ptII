@@ -348,7 +348,10 @@ public class ConnectorTutorial {
      * and translate, in general it is better for this kind of routing
      * to be initiated by the interaction code.
      */
-    public class SitedRectangle extends BasicRectangle {
+    public static class SitedRectangle extends BasicRectangle {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         // The geometry object
         private BoundsGeometry _geometry;
 
@@ -404,7 +407,10 @@ public class ConnectorTutorial {
 
     /** SRTarget is used to find a useful site on a SitedRectangle.
      */
-    public class SRTarget extends AbstractConnectorTarget {
+    public static class SRTarget extends AbstractConnectorTarget {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** Return the nearest site on the figure
          */
         public Site getHeadSite(Figure f, double x, double y) {

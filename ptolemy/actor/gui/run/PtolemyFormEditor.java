@@ -831,8 +831,11 @@ public class PtolemyFormEditor extends JPanel {
     }
 
     /** Renderer for the palette items. */
-    private class ComponentPaletteListRenderer extends JLabel implements
+    private static class ComponentPaletteListRenderer extends JLabel implements
             ListCellRenderer {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public ComponentPaletteListRenderer() {
             setOpaque(true);
         }

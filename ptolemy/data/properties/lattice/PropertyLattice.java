@@ -61,9 +61,13 @@ public class PropertyLattice {
     protected PropertyLattice() {
     }
 
-    protected class ThePropertyLattice implements CPO {
+    protected static class ThePropertyLattice implements CPO {
 
-        /** Return the bottom element of the property lattice, which is UNKNOWN.
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
+        /** Return the bottom element of the property lattice, which
+         *  is UNKNOWN.
          *  @return The Property object representing UNKNOWN.
          */
         public Object bottom() {

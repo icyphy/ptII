@@ -279,7 +279,10 @@ public class FigureTutorial {
      * only the absolute minimum number of methods that must be
      * overridden to create a new figure class.
      */
-    public class CustomRectangle extends AbstractFigure {
+    public static class CustomRectangle extends AbstractFigure {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         // The bounds of the figure
         private Rectangle2D _bounds;
 

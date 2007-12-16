@@ -296,7 +296,10 @@ public class VectorFigure extends AbstractFigure {
         repaint();
     }
 
-    private class CtrlObj {
+    private static class CtrlObj {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         private int code = 0;
 
         private CtrlObj(int i) {

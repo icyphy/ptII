@@ -308,7 +308,10 @@ public class HierarchicalStateController extends StateController {
     }
 
     /** Action to remove refinements. */
-    private class RemoveRefinementAction extends FigureAction {
+    private static class RemoveRefinementAction extends FigureAction {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public RemoveRefinementAction() {
             super("Remove Refinement");
         }

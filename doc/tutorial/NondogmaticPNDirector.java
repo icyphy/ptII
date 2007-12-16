@@ -20,7 +20,10 @@ public class NondogmaticPNDirector extends PNDirector {
         return new FlexibleReceiver();
     }
 
-    public class FlexibleReceiver extends PNQueueReceiver {
+    public static class FlexibleReceiver extends PNQueueReceiver {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public boolean hasToken() {
             IOPort port = getContainer();
             Attribute attribute = port.getAttribute("tellTheTruth");

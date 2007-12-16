@@ -114,7 +114,10 @@ public class MatrixPane extends JScrollPane {
      *  Each element of the matrix is represented as an instance
      *  of Token, so all matrix types are supported.
      */
-    private class MatrixAsTable extends AbstractTableModel {
+    private static class MatrixAsTable extends AbstractTableModel {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** Construct a table for the specified matrix.
          *  @param matrix The matrix.
          */

@@ -100,7 +100,10 @@ public class ConcreteFigures extends TestSuite {
     /**
      * Create a BasicRectangle with stroked outline
      */
-    public class BasicRectangleFactory1 implements FigureTest.FigureFactory {
+    public static class BasicRectangleFactory1 implements FigureTest.FigureFactory {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public Figure createFigure() {
             return new BasicRectangle(10, 10, 20, 20);
         }
@@ -113,7 +116,10 @@ public class ConcreteFigures extends TestSuite {
     /**
      * Create a filled BasicRectangle
      */
-    public class BasicRectangleFactory2 implements FigureTest.FigureFactory {
+    public static class BasicRectangleFactory2 implements FigureTest.FigureFactory {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public Figure createFigure() {
             return new BasicRectangle(10, 10, 20, 20, Color.blue);
         }
@@ -126,7 +132,10 @@ public class ConcreteFigures extends TestSuite {
     /**
      * Create an icon figure
      */
-    public class IconFigureFactory implements FigureTest.FigureFactory {
+    public static class IconFigureFactory implements FigureTest.FigureFactory {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** Create a collection of terminals an an icon
          */
         public void createTerminals(IconFigure icon) {
@@ -203,7 +212,10 @@ public class ConcreteFigures extends TestSuite {
     /**
      * Create an image figure
      */
-    public class ImageFigureFactory implements FigureTest.FigureFactory {
+    public static class ImageFigureFactory implements FigureTest.FigureFactory {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public static final String IMAGE_FILE_NAME = "demo.gif";
 
         public Component component = new Canvas();
@@ -232,7 +244,10 @@ public class ConcreteFigures extends TestSuite {
     /**
      * Create an image figure
      */
-    public class LabelFigureFactory implements FigureTest.FigureFactory {
+    public static class LabelFigureFactory implements FigureTest.FigureFactory {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public Figure createFigure() {
             LabelFigure label = new LabelFigure("Hello!");
             label.translate(200, 200);
@@ -247,7 +262,9 @@ public class ConcreteFigures extends TestSuite {
     /**
      * Create a CompositeFigure with a filled rectangle background
      */
-    public class CompositeFigureFactory1 implements FigureTest.FigureFactory {
+    public static class CompositeFigureFactory1 implements FigureTest.FigureFactory {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
         public Figure createFigure() {
             Figure bg = new BasicRectangle(10, 10, 20, 20, Color.blue);
             Figure cf = new CompositeFigure(bg);
@@ -262,7 +279,10 @@ public class ConcreteFigures extends TestSuite {
     /**
      * Create a PaneWrapper with a filled rectangle background
      */
-    public class PaneWrapperFactory implements FigureTest.FigureFactory {
+    public static class PaneWrapperFactory implements FigureTest.FigureFactory {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public Figure createFigure() {
             Figure bg = new BasicRectangle(10, 10, 20, 20, Color.blue);
             CanvasPane pane = new GraphicsPane();

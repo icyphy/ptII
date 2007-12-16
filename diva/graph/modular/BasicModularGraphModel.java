@@ -127,7 +127,10 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
         ((SemanticObjectContainer) o).setSemanticObject(sem);
     }
 
-    public class BasicEdgeModel implements MutableEdgeModel {
+    public static class BasicEdgeModel implements MutableEdgeModel {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /**
          * Return true if the head of the given edge can be attached to the
          * given node.
@@ -191,7 +194,10 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
         }
     }
 
-    public class BasicNodeModel implements MutableCompositeNodeModel {
+    public static class BasicNodeModel implements MutableCompositeNodeModel {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /**
          * Return an iterator over the edges coming into the given node.
          */

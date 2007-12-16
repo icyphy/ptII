@@ -141,7 +141,7 @@ public class ChicController extends AttributeController {
 
     /** An action to invoke CHIC: Asynchronous I/O
      */
-    private class AsynchronousIOAction extends FigureAction {
+    private static class AsynchronousIOAction extends FigureAction {
         public AsynchronousIOAction() {
             super("CHIC: Asynchronous I/O");
         }
@@ -289,7 +289,10 @@ public class ChicController extends AttributeController {
 
     /** An action to invoke CHIC: Synchronous A/G
      */
-    private class SynchronousAGAction extends FigureAction {
+    private static class SynchronousAGAction extends FigureAction {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         public SynchronousAGAction() {
             super("CHIC: Synchronous A/G");
         }

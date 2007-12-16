@@ -1599,7 +1599,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
                     result.append(".payload." + codeGenType(elementType));
                 }
             }
-
             return _generateTypeConvertMethod(result.toString(), castType,
                     refType);
         }
@@ -2031,7 +2030,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /** A class that defines a channel object. A channel object is
      *  specified by its port and its channel index in that port.
      */
-    public class Channel {
+    public static class Channel {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 

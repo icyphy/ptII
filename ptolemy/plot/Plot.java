@@ -2596,7 +2596,10 @@ public class Plot extends PlotBox {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    private class Format implements Serializable {
+    private static class Format implements Serializable {
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         // Indicate whether the current dataset is connected.
         public boolean connected;
 

@@ -337,7 +337,11 @@ public class ArcTutorial {
      * PerimeterSite, but allows connector head and tails to
      * be located on the same figure.
      */
-    public class SelfPTarget extends PerimeterTarget {
+    public static class SelfPTarget extends PerimeterTarget {
+
+        // FindBugs suggests making this class static so as to decrease
+        // the size of instances and avoid dangling references.
+
         /** Return true. This allows "self-arcs"
          */
         public boolean acceptHead(Connector c, Figure f) {
