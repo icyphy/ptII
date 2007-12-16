@@ -4279,20 +4279,20 @@ class CLexGen {
 
             /* Initialize character hash table. */
             m_tokens = new Hashtable();
-            m_tokens.put(new Character('$'), Integer.valueOf(AT_EOL));
-            m_tokens.put(new Character('('), Integer.valueOf(OPEN_PAREN));
-            m_tokens.put(new Character(')'), Integer.valueOf(CLOSE_PAREN));
-            m_tokens.put(new Character('*'), Integer.valueOf(CLOSURE));
-            m_tokens.put(new Character('+'), Integer.valueOf(PLUS_CLOSE));
-            m_tokens.put(new Character('-'), Integer.valueOf(DASH));
-            m_tokens.put(new Character('.'), Integer.valueOf(ANY));
-            m_tokens.put(new Character('?'), Integer.valueOf(OPTIONAL));
-            m_tokens.put(new Character('['), Integer.valueOf(CCL_START));
-            m_tokens.put(new Character(']'), Integer.valueOf(CCL_END));
-            m_tokens.put(new Character('^'), Integer.valueOf(AT_BOL));
-            m_tokens.put(new Character('{'), Integer.valueOf(OPEN_CURLY));
-            m_tokens.put(new Character('|'), Integer.valueOf(OR));
-            m_tokens.put(new Character('}'), Integer.valueOf(CLOSE_CURLY));
+            m_tokens.put(Character.valueOf('$'), Integer.valueOf(AT_EOL));
+            m_tokens.put(Character.valueOf('('), Integer.valueOf(OPEN_PAREN));
+            m_tokens.put(Character.valueOf(')'), Integer.valueOf(CLOSE_PAREN));
+            m_tokens.put(Character.valueOf('*'), Integer.valueOf(CLOSURE));
+            m_tokens.put(Character.valueOf('+'), Integer.valueOf(PLUS_CLOSE));
+            m_tokens.put(Character.valueOf('-'), Integer.valueOf(DASH));
+            m_tokens.put(Character.valueOf('.'), Integer.valueOf(ANY));
+            m_tokens.put(Character.valueOf('?'), Integer.valueOf(OPTIONAL));
+            m_tokens.put(Character.valueOf('['), Integer.valueOf(CCL_START));
+            m_tokens.put(Character.valueOf(']'), Integer.valueOf(CCL_END));
+            m_tokens.put(Character.valueOf('^'), Integer.valueOf(AT_BOL));
+            m_tokens.put(Character.valueOf('{'), Integer.valueOf(OPEN_CURLY));
+            m_tokens.put(Character.valueOf('|'), Integer.valueOf(OR));
+            m_tokens.put(Character.valueOf('}'), Integer.valueOf(CLOSE_CURLY));
 
             /* Initialize spec structure. */
             m_spec = new CSpec(this);
@@ -6090,7 +6090,7 @@ class CLexGen {
             }
         }
 
-        code = (Integer) m_tokens.get(new Character(m_spec.m_lexeme));
+        code = (Integer) m_tokens.get(Character.valueOf(m_spec.m_lexeme));
 
         if (m_spec.m_in_quote || (true == saw_escape)) {
             m_spec.m_current_token = L;
@@ -6588,18 +6588,18 @@ final class JavaLexBitSet implements Cloneable {
      * Converts the JavaLexBitSet to a String.
      */
     public String toString() {
-        String str = "";
+        StringBuffer str = new StringBuffer();
 
         for (int i = 0; i < (bits.length << BITS); i++) {
             if (get(i)) {
                 if (str.length() > 0) {
-                    str += ", ";
+                    str.append(", ");
                 }
 
-                str = str + i;
+                str.append(i);
             }
         }
 
-        return "{" + str + "}";
+        return "{" + str.toString() + "}";
     }
 }
