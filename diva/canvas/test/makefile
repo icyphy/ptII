@@ -114,13 +114,13 @@ test_java: jclass
 
 # Run the sample tests
 All: jclass
-	CLASSPATH=$(CLASSPATH) $(JAVA) diva.canvas.test.All
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" diva.canvas.test.All
 
 JCanvas: jclass
-	CLASSPATH=$(CLASSPATH) $(JAVA) diva.canvas.test.JCanvasTest
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" diva.canvas.test.JCanvasTest
 
 ConcreteFigures: jclass
-	CLASSPATH=$(CLASSPATH) $(JAVA) diva.canvas.test.ConcreteFigures
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" diva.canvas.test.ConcreteFigures
 
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
