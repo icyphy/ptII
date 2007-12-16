@@ -553,7 +553,7 @@ public class StringUtilities {
     public static LinkedList readLines(String lines) throws IOException {
         BufferedReader bufferedReader = null;
         LinkedList returnList = new LinkedList();
-        String line = new String();
+        String line;
         bufferedReader = new BufferedReader(new StringReader(lines));
         try {
             // Read line by line, skipping comments.
