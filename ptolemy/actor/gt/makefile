@@ -98,7 +98,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	ModelGeneratorIcon.xml \
-	MovelViewIcon.xml \
+	ModelViewIcon.xml \
 	TransformationRuleIcon.xml
 
 EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
