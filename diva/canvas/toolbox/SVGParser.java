@@ -391,7 +391,7 @@ public class SVGParser {
             String string = t.nextToken();
 
             // Ignore consecutive delimiters.
-            if (string != "") {
+            if (!string.equals("")) {
                 result[i++] = Double.parseDouble(string);
 
                 if (i == result.length) {

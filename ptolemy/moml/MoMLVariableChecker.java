@@ -166,7 +166,7 @@ public class MoMLVariableChecker {
             while (containedClasses.hasNext()) {
                 NamedObj containedObject = (NamedObj) containedClasses.next();
                 String missingClassName = exception.missingClassName();
-                if (missingClassName == containedObject.getName()
+                if (missingClassName.equals(containedObject.getName())
                         || (missingClassName.startsWith(".") && missingClassName
                                 .substring(1).equals(containedObject.getName()))) {
                     try {
