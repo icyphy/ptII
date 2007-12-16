@@ -143,13 +143,13 @@ public class HoverLinearizer extends TypedAtomicActor {
         outputR.setMultiport(false);
         outputR.setTypeEquals(BaseType.DOUBLE);
 
-        String s = "";
+        StringBuffer s = new StringBuffer();
 
         for (int i = 0; i < 5; i++) {
-            s = s + _alphaP[i] + " ";
+            s.append(_alphaP[i] + " ");
         }
 
-        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(s));
+        paramAlphaP = new Parameter(this, "AlphaP", new StringToken(s.toString()));
 
         _cPx = 0.0;
         paramCPx = new Parameter(this, "CPx", new DoubleToken(_cPx));
