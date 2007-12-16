@@ -1,4 +1,4 @@
-/* FIXME comment
+/* A code manager that manages the extra complexity of dealing with nested actors.
 
  Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
@@ -59,7 +59,7 @@ import ptolemy.moml.ParserAttribute;
 import ptolemy.util.StringUtilities;
 
 /**
- * This is a code manager that manages the extra complexity of dealing with
+ * A code manager that manages the extra complexity of dealing with
  * nested actors. It became clear that several methods would need to be added to
  * CodeManager to make properly deal with nested actors, so this class is
  * separated simply to make the code a bit more digestable.
@@ -1058,10 +1058,10 @@ public class NestedActorManager extends CodeManager {
                         parameter.setExpression(outputExpression);
                     }
                 }
-            } catch (Exception ex) {
-                throw new PtalonRuntimeException("Trouble making connections",
-                        ex);
-            }
+             } catch (Exception ex) {
+                 throw new PtalonRuntimeException("Trouble making connections",
+                         ex);
+             }
         }
 
         /**
