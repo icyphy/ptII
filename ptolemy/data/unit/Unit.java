@@ -157,21 +157,21 @@ public class Unit implements UnitPresentation {
 
         if (_scale == 1.0) {
             int numCats = _type.length;
-            String desc = "";
+            StringBuffer desc = new StringBuffer();
 
             for (int i = 0; i < numCats; i++) {
                 if (_type[i] != 0) {
                     Unit baseUnit = UnitLibrary.getBaseUnit(i);
 
                     if (_type[i] == 1) {
-                        desc += (" " + baseUnit.getPrimaryLabel());
+                        desc.append(" " + baseUnit.getPrimaryLabel());
                     } else {
-                        desc += (" " + baseUnit.getPrimaryLabel() + "^" + _type[i]);
+                        desc.append(" " + baseUnit.getPrimaryLabel() + "^" + _type[i]);
                     }
                 }
             }
 
-            return desc.substring(1);
+            return desc.toString().substring(1);
         }
 
         // End up here if nothing works, so just return the formal description
@@ -302,19 +302,19 @@ public class Unit implements UnitPresentation {
      * @return The concatenation of the labels.
      */
     public String getLabelsString() {
-        String retv = null;
+        StringBuffer retv = null;
 
         if (_labels.size() > 0) {
-            retv = (String) (_labels.elementAt(0));
+            retv = new StringBuffer((String) (_labels.elementAt(0)));
         } else {
             return "";
         }
 
         for (int i = 1; i < _labels.size(); i++) {
-            retv += ((String) (_labels.elementAt(i)) + ",");
+            retv.append((String) (_labels.elementAt(i)) + ",");
         }
 
-        return retv;
+        return retv.toString();
     }
 
     /** Get the primary label of a Unit.
@@ -451,15 +451,15 @@ public class Unit implements UnitPresentation {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        String retv = "Unit:(" + getLabelsString() + ") " + _scale + "*<";
-        retv += _type[0];
+        StringBuffer retv = new StringBuffer("Unit:(" + getLabelsString()
+                + ") " + _scale + "*<" + _type[0]);
 
         for (int i = 1; i < UnitLibrary.getNumCategories(); i++) {
-            retv += (", " + _type[i]);
+            retv.append(", " + _type[i]);
         }
 
-        retv += ">";
-        return retv;
+        retv.append(">");
+        return retv.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
