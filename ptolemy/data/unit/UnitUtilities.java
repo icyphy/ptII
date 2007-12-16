@@ -366,8 +366,8 @@ public class UnitUtilities {
 
                     if (exponent > 0) {
                         for (int j = 0; j < exponent; j++) {
-                            if (positiveUnits.equals("")) {
-                                positiveUnits.append(baseString);
+                            if (positiveUnits.length() == 0) {
+                                positiveUnits = new StringBuffer(baseString);
                             } else {
                                 positiveUnits.append(" * " + baseString);
                                 justOnePositive = false;
@@ -375,8 +375,8 @@ public class UnitUtilities {
                         }
                     } else {
                         for (int j = 0; j < -exponent; j++) {
-                            if (negativeUnits.equals("")) {
-                                negativeUnits.append(baseString);
+                            if (negativeUnits.length() == 0) {
+                                negativeUnits = new StringBuffer(baseString);
                             } else {
                                 negativeUnits.append(" * " + baseString);
                                 justOneNegative = false;
@@ -386,17 +386,17 @@ public class UnitUtilities {
                 }
             }
 
-            if (positiveUnits.equals("") && negativeUnits.equals("")) {
+            if (positiveUnits.length() == 0 && negativeUnits.length() == 0) {
                 return "";
             }
 
-            if (positiveUnits.equals("")) {
-                positiveUnits.append("1");
+            if (positiveUnits.length() == 0) {
+                positiveUnits = new StringBuffer("1");
             } else if (!justOnePositive) {
-                positiveUnits.append("(" + positiveUnits + ")");
+                positiveUnits = new StringBuffer("(" + positiveUnits + ")");
             }
 
-            if (negativeUnits.equals("")) {
+            if (negativeUnits.length() == 0) {
                 return positiveUnits.toString();
             } else if (justOneNegative) {
                 return positiveUnits.toString() + " / "
