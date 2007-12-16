@@ -197,7 +197,7 @@ public class Unit implements UnitPresentation {
     }
 
     /** Return True if this Unit equals another object
-     * @param otherUnit The object to be compared against.
+     * @param object The object to be compared against.
      * @return True if this Unit equals the other Unit.  Return false
      * if the other object is null or not an instance of Unit.
      */
