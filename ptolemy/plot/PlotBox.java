@@ -79,6 +79,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import ptolemy.util.StringUtilities;
+import ptolemy.util.FileUtilities;
 
 // TO DO:
 //   - Augment getColorByName to support a full complement of colors
@@ -1213,11 +1214,14 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_printButton == null) {
             // Load the image by using the absolute path to the gif.
-            // Using a relative location should work, but it does not.
-            // Use the resource locator of the class.
-            // For more information, see
-            // file:///C|/jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource("/ptolemy/plot/img/print.gif");
+            URL img = null;
+            try {
+                // FindBugs: Usage of GetResource may be unsafe if
+                // class is extended
+                img = FileUtilities.nameToURL("$CLASSPATH/ptolemy/plot/img/print.gif", null, null);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
 
             if (img != null) {
                 ImageIcon printIcon = new ImageIcon(img);
@@ -1241,12 +1245,14 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_resetButton == null) {
             // Load the image by using the absolute path to the gif.
-            // Using a relative location should work, but it does not.
-            // Use the resource locator of the class.
-            // For more information, see
-            // file:///C|/jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource("/ptolemy/plot/img/reset.gif");
-
+            URL img = null;
+            try {
+                // FindBugs: Usage of GetResource may be unsafe if
+                // class is extended
+                img = FileUtilities.nameToURL("$CLASSPATH/ptolemy/plot/img/reset.gif", null, null);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             if (img != null) {
                 ImageIcon resetIcon = new ImageIcon(img);
                 _resetButton = new JButton(resetIcon);
@@ -1270,12 +1276,14 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_formatButton == null) {
             // Load the image by using the absolute path to the gif.
-            // Using a relative location should work, but it does not.
-            // Use the resource locator of the class.
-            // For more information, see
-            // file:///C|/jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource("/ptolemy/plot/img/format.gif");
-
+            URL img = null;
+            try {
+                // FindBugs: Usage of GetResource may be unsafe if
+                // class is extended
+                img = FileUtilities.nameToURL("$CLASSPATH/ptolemy/plot/img/format.gif", null, null);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             if (img != null) {
                 ImageIcon formatIcon = new ImageIcon(img);
                 _formatButton = new JButton(formatIcon);
@@ -1298,12 +1306,14 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_fillButton == null) {
             // Load the image by using the absolute path to the gif.
-            // Using a relative location should work, but it does not.
-            // Use the resource locator of the class.
-            // For more information, see
-            // file:///C|/jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource("/ptolemy/plot/img/fill.gif");
-
+            URL img = null;
+            try {
+                // FindBugs: Usage of GetResource may be unsafe if
+                // class is extended
+                img = FileUtilities.nameToURL("$CLASSPATH/ptolemy/plot/img/fill.gif", null, null);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             if (img != null) {
                 ImageIcon fillIcon = new ImageIcon(img);
                 _fillButton = new JButton(fillIcon);
