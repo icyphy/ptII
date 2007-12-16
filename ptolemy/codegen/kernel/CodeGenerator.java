@@ -28,9 +28,11 @@
 package ptolemy.codegen.kernel;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +53,7 @@ import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.codegen.c.kernel.CCodeGenerator;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -163,6 +166,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         sourceLineBinding.setTypeEquals(BaseType.BOOLEAN);
         sourceLineBinding.setExpression("false");
 
+        target = new StringParameter(this, "target");
+        target.setExpression("default");
+        _updateTarget();
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
@@ -271,6 +278,20 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public Parameter sourceLineBinding;
 
+    /** The hardware target for code generation.  The list of possible choices
+     *  is generated from the list of directories in the <code>targets</code>
+     *  subdirectory of the directory named by the <i>generatorPackage</i>
+     *  parameter.  For example, if <i>generatorPackage</i> is 
+     *  <code>ptolemy.codegen.c</code>, and if
+     *  <code>$PTII/ptolemy/codegen/c/targets/</code> exists and contains
+     *  an <code>iRobot/</code> directory, and this parameter is set
+     *  to <code>iRobot</code>, then files from
+     *  <code>$PTII/ptolemy/codegen/c/targets/iRobot</code> will be used
+     *  to generate code.  The default value is the string "default"
+     *  which means that the default target for the language is used.
+     */
+    public StringParameter target;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -302,6 +323,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // FIXME: This should not be necessary, but if we don't
             // do it, then getBaseDirectory() thinks we are in the current dir.
             codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
+        } else if (attribute == generatorPackage) {
+            super.attributeChanged(attribute);
+            _updateTarget();
         } else {
             super.attributeChanged(attribute);
         }
@@ -1588,6 +1612,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             { "-padBuffers", "        true|false (default: true)" },
             { "-run", "               true|false (default: true)" },
             { "-sourceLineBinding", " true|false (default: false)" },
+            { "-target", "            <target name, defaults to false>" },
             { "-<parameter name>", "  <parameter value>" } };
 
     /** The form of the command line. */
@@ -1760,6 +1785,70 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 }
             }
         }
+    }
+
+    /** Update the target parameter choices from the directory named by
+     *  the generatorPackage parameter.  All the choices are removed
+     *  the choice "default" is added and then the names of all directories
+     *  in the directory named by <i>generatorPackage</i>/targets (except
+     *  the <code>CVS</code> directory are added as choices.
+     *  @exception IllegalActionException If the <i>generatorPackage</i>
+     *  attribute cannot be read.
+     */
+    private void _updateTarget() throws IllegalActionException {
+        String generatorPackageValue = generatorPackage.stringValue();
+        String generatorPackageDirectoryName= StringUtilities.substitute(generatorPackageValue, ".", "/");
+
+        target.removeAllChoices();
+        target.addChoice("default");
+
+        File generatorPackageFile = null;
+        try {
+            // This will likely fail if ptolemy/codegen/c/targets is
+            // in a jar file We use a URI here so that we can call
+            // File(URI).
+
+            URL generatorPackageURL = FileUtilities.nameToURL(
+                    "$CLASSPATH/" 
+                    + generatorPackageDirectoryName,
+                    null, null);
+            URI generatorPackageURI = new URI(generatorPackageURL
+                    .toExternalForm().replaceAll(" ", "%20"));
+            generatorPackageFile = new File(generatorPackageURI);
+        } catch (Exception ex) {
+            // Ignore, we can't find the directory.
+        }
+
+        if (generatorPackageFile == null) {
+            return;
+        }
+
+        File targetDirectory = new File(generatorPackageFile, "targets");
+        if (targetDirectory.exists()) {
+            String [] targets = targetDirectory.list(new TargetFilter());
+            for (int i = 0; i < targets.length; i++) {
+                target.addChoice(targets[i]);
+            }
+        }
+    }
+
+    /** A FilenameFilter that looks for directories other than CVS.
+     */
+    private static class TargetFilter implements FilenameFilter {
+        /** Tests if the specified file in a directory is a directory
+         *  other than "CVS".   
+         *  @param dir The directory in which the file is contained.
+         *  @param name The name of the file in question.
+         *  @return true if the file is a directory with a name other
+         *  than <code>CVS</code>
+         */
+        public boolean accept(File dir, String name) {
+            if (name.equals("CVS")) {
+                return false;
+            }
+            File file = new File(dir, name);
+            return file.isDirectory();
+        } 
     }
 
     ///////////////////////////////////////////////////////////////////
