@@ -304,18 +304,6 @@ test RemoveGraphicalClasses-1.4 {Try a configuration has a class that we are goi
 </entity>
 }}
 
-test RemoveGraphicalClasses-1.5 {clear} {
-    # This removes the graphical classes for all subsequent runs
-    set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
-    $filter clear
-    $filter toString
-} {ptolemy.moml.filter.RemoveGraphicalClasses: Remove or replace classes that are graphical.
-This filter is used by the nightly build, and
-can be used to run applets so that files like
-diva.jar do not need to be downloaded.
-The following actors are affected:
-}
-
 ######################################################################
 ####
 #
@@ -352,13 +340,9 @@ RemoveGraphicalClasses.</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 5.0">
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -373,12 +357,6 @@ RemoveGraphicalClasses.</text></svg></configure>
         <property name="value" class="ptolemy.data.expr.Parameter" value="PI/2">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 165.0">
         </property>
     </entity>
@@ -397,12 +375,6 @@ RemoveGraphicalClasses.</text></svg></configure>
                 </property>
                 <property name="tan" class="ptolemy.kernel.util.StringAttribute" value="tan">
                 </property>
-            </property>
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 165.0">
@@ -427,3 +399,19 @@ RemoveGraphicalClasses.</text></svg></configure>
 </entity>
 
 }}
+
+
+# This should be the last test
+
+test RemoveGraphicalClasses-1.5 {clear} {
+    # This removes the graphical classes for all subsequent runs
+    set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
+    $filter clear
+    $filter toString
+} {ptolemy.moml.filter.RemoveGraphicalClasses: Remove or replace classes that are graphical.
+This filter is used by the nightly build, and
+can be used to run applets so that files like
+diva.jar do not need to be downloaded.
+The following actors are affected:
+}
+
