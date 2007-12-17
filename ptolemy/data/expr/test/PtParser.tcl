@@ -208,7 +208,7 @@ test PtParser-2.9 {Construct a Parser, try floating point format specifiers} {
     set res5  [ $root evaluateParseTree ]
 
     list [$res2 toString] [$res3 toString] [$res4  toString] [$res5 toString]
-} {18.0 18.0 18.0 18.0}
+} {18.0 18.0 18.0f 18.0}
 
 ######################################################################
 ####

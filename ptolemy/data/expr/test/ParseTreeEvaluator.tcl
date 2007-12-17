@@ -196,7 +196,7 @@ test ParseTreeEvaluator-2.9 {Test floating point format specifiers} {
             [evaluate ".18E2"] \
             [evaluate "18.0f"] \
             [evaluate "18.0D"]
-} {18.0 18.0 18.0 18.0}
+} {18.0 18.0 18.0f 18.0}
 
 ######################################################################
 ####

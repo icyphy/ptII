@@ -107,7 +107,7 @@ test ParseTreeWriter-2.8 {Construct a Parser, try long format specifiers} {
 # 
 test ParseTreeWriter-2.9 {Construct a Parser, try floating point format specifiers} {
     list [theTest "1.8e1"] [theTest ".18E2"] [theTest "18.0f"] [theTest "18.0D"]
-} {18.0 18.0 18.0 18.0}
+} {18.0 18.0 18.0f 18.0}
 
 ######################################################################
 ####
