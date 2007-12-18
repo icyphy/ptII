@@ -138,7 +138,7 @@ public class CTSchedule extends Schedule {
         StringBuffer result = new StringBuffer();
         Iterator iterator;
         result.append("CTSchedule {\n"
-                + "continuousActors {\n");
+                + "    continuousActors {\n");
 
         Schedule continuous = (Schedule) get(CONTINUOUS_ACTORS);
         iterator = continuous.actorIterator();
