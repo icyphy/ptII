@@ -146,14 +146,19 @@ public class Publisher extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == channel) {
-            String newValue = channel.stringValue();
-            if (!newValue.equals(_channel)) {
-                _channel = newValue;
-                // If we are within a class definition, then we should
-                // not create any links.  The links should only exist
-                // within instances. Otherwise, we could end up creating
-                // a link between a class definition and an instance.
-                if (!isWithinClassDefinition()) {
+            // We only get the value if we are not in a class definition.
+            // The reason is that some of the Actor Oriented Classes
+            // that use Publishers do not have the parameter defined
+            // in the definition.  See
+            // ptolemy/actor/lib/test/auto/PublisherClassNoParameter.xml
+            if (!isWithinClassDefinition()) {
+                String newValue = channel.stringValue();
+                if (!newValue.equals(_channel)) {
+                    _channel = newValue;
+                    // If we are within a class definition, then we should
+                    // not create any links.  The links should only exist
+                    // within instances. Otherwise, we could end up creating
+                    // a link between a class definition and an instance.
                     Nameable container = getContainer();
                     if ((container instanceof TypedCompositeActor)) {
                         // NOTE: There used to be some logic here to call
