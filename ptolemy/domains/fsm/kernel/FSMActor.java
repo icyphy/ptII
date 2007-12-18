@@ -1642,11 +1642,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     String portName = name.substring(0, name.length() - 5);
                     if (port == _identifierToPort.get(portName)) {
                         Type portType = ((Typeable) port).getType();
-                        if (portType instanceof ArrayType) {
-                            return portType;
-                        } else {
-                            return new ArrayType(portType);
-                        }
+                        return new ArrayType(portType);
                     }
                 }
                 return ((Typeable) port).getType();
