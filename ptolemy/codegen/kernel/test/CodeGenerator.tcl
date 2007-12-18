@@ -240,13 +240,18 @@ test CodeGenerator-13.1 {main -help} {
 } {{java.lang.Exception: Failed to parse "-help"} {Usage: ptcg [ options ] [file ...]
 
 Options that take values:
+ -allowDynamicMultiportReferences         true|false (default: false)
  -codeDirectory <directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>
- -compile         true|false (default: true)
- -generateComment true|false (default: true)
- -inline          true|false (default: false)
- -overwriteFiles  true|false (default: true)
- -run             true|false (default: true)
- -<parameter name> <parameter value>
+ -compile            true|false (default: true)
+ -generateComment    true|false (default: true)
+ -inline             true|false (default: false)
+ -measureTime        true|false (default: false)
+ -overwriteFiles     true|false (default: true)
+ -padBuffers         true|false (default: true)
+ -run                true|false (default: true)
+ -sourceLineBinding  true|false (default: false)
+ -target             <target name, defaults to false>
+ -<parameter name>   <parameter value>
 
 Boolean flags:
  -help -version
