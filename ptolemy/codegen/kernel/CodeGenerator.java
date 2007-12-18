@@ -1384,11 +1384,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         StringBuffer code = new StringBuffer();
 
         ActorCodeGenerator targetHelper = _getTargetHelper(getContainer());
-        Set sharedCodeBlocks = targetHelper.getSharedCode();
-        Iterator blocks = sharedCodeBlocks.iterator();
-        while (blocks.hasNext()) {
-            String block = (String) blocks.next();
-            code.append(block);
+        Set sharedCodeBlocks;
+        Iterator blocks;
+        if (targetHelper != null) {
+            sharedCodeBlocks = targetHelper.getSharedCode();
+            blocks = sharedCodeBlocks.iterator();
+            while (blocks.hasNext()) {
+                String block = (String) blocks.next();
+                code.append(block);
+            }
         }
 
         ActorCodeGenerator helper = _getHelper(getContainer());
