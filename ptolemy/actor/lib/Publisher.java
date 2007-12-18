@@ -268,6 +268,30 @@ public class Publisher extends TypedAtomicActor {
         }
     }
 
+    /** If the new container is different from the current container,
+     *  delete the named channel.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace.
+     *  @exception NameDuplicationException If the container already has
+     *   an entity with the name of this entity.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        if (getContainer() != container) {
+            if (_relation != null) {
+                try {
+                    _relation.setContainer(null);
+                } catch (NameDuplicationException e) {
+                    throw new InternalErrorException(e);
+                }
+                _relation = null;
+            }
+        } 
+        super.setContainer(container);
+    }
+
     /** Override the base class to ensure to record that the actor
      *  is no longer running.
      *  @exception IllegalActionException If there is already a publisher

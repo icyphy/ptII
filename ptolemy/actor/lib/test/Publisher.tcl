@@ -236,3 +236,44 @@ test Publisher-2.1 {Instantiate twice a class that has a publisher} {
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: There is already a publisher using channel "channel1": .PublisherSubscriberInClass.Instance2OfCompositeActor.Publisher
   in .PublisherSubscriberInClass.Instance1OfCompositeActor.Publisher}}
+
+
+######################################################################
+####
+#
+test Publisher-2.0 {Test deletion of a Publisher} {
+    set workspace [java::new ptolemy.kernel.util.Workspace "subAggPubDelWS"]
+    set parser [java::new ptolemy.moml.MoMLParser $workspace]
+    $parser setMoMLFilters [java::null]
+    $parser addMoMLFilters \
+            [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+
+    $parser addMoMLFilter [java::new \
+            ptolemy.moml.filter.RemoveGraphicalClasses]
+    set url [[java::new java.io.File "SubscriptionAggregatorPublisherDelete.xml"] toURL]
+    $parser purgeModelRecord $url
+    set model [java::cast ptolemy.actor.TypedCompositeActor \
+                   [$parser {parse java.net.URL java.net.URL} \
+                        [java::null] $url]]
+    set manager [java::new ptolemy.actor.Manager $workspace "subAggPubDelManager"]
+    $model setManager $manager
+    # Success is not crashing
+    $manager execute
+
+    # Get the value of Recorder
+    set recorder [$model getEntity "Recorder"]
+    set r1 [[[java::cast ptolemy.actor.lib.Recorder $recorder] getLatest 0] toString]
+
+    # Delete the second publisher
+    set publisher2 [$model getEntity "Publisher2"]
+    $publisher2 setContainer [java::null]
+
+    # This should not crash.  We used to get: 
+    # ptolemy.actor.sched.NotSchedulableException: Actors remain that
+    # cannot be scheduled!
+    # The fix was to add Publisher.setContainer().
+    $manager execute
+
+    set r2 [[[java::cast ptolemy.actor.lib.Recorder $recorder] getLatest 0] toString]
+    list $r1 $r2
+} {2 1}
