@@ -682,7 +682,7 @@ PTBSH_MLC_DIR=
 PTBSH_JAR=
 
 # We only need to look for if $PTII/ptolemy/actor/gui exists
-BSH_USER_DIR="$PTII/ptolemy/actor/gui"
+BSH_USER_DIR="$PTII/ptolemy/actor/gui/run"
 if test ! -d "$BSH_USER_DIR"; then
     PT_MSG_STATUS([$BSH_USER_DIR is not present,
     so we need not find BSH, the Java Bean Shell.])
@@ -705,7 +705,7 @@ else
 fi
 
 if test -z "$PTBSH_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/colt/"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/gui/run"
 fi 
 
 
