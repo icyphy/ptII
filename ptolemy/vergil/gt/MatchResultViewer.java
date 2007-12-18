@@ -27,13 +27,16 @@
  */
 package ptolemy.vergil.gt;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Frame;
+import java.awt.Stroke;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Rectangle2D;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,7 +44,6 @@ import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gt.GraphTransformer;
 import ptolemy.actor.gt.TransformationException;
@@ -49,7 +51,6 @@ import ptolemy.actor.gt.TransformationRule;
 import ptolemy.actor.gt.data.MatchResult;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFrame;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
@@ -57,10 +58,14 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.ActorController;
 import ptolemy.vergil.actor.ActorEditorGraphController;
-import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.toolbox.FigureAction;
+import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
 import diva.gui.GUIUtilities;
 
 public class MatchResultViewer extends AbstractGTFrame {
@@ -106,48 +111,15 @@ public class MatchResultViewer extends AbstractGTFrame {
 
         _checkContainingViewer();
         _enableOrDisableActions();
-        highlightMatchedObjects();
+        _rerender();
     }
 
     public void clearFileSelectionStatus() {
         _fileSelectionStatus = FileSelectionStatus.NONE;
     }
 
-    public void dehighlightMatchedObject(NamedObj object) {
-        Object location = object.getAttribute("_location");
-        Figure figure = _getGraphController().getFigure(location);
-        _decorator.renderDeselected(figure);
-    }
-
-    public void dehighlightMatchedObjects() {
-        CompositeEntity matcher = getActiveModel();
-        for (Object child : matcher.entityList(ComponentEntity.class)) {
-            dehighlightMatchedObject((NamedObj) child);
-        }
-    }
-
     public FileSelectionStatus getFileSelectionStatus() {
         return _fileSelectionStatus;
-    }
-
-    public void highlightMatchedObject(NamedObj object) {
-        Object location = object.getAttribute("_location");
-        Figure figure = _getGraphController().getFigure(location);
-        _decorator.renderSelected(figure);
-    }
-
-    public void highlightMatchedObjects() {
-        if (_results != null && !_transformed) {
-            CompositeEntity matcher = getActiveModel();
-            Set<?> matchedHostObjects = _results.get(_currentPosition).values();
-            for (Object child : matcher.entityList(ComponentEntity.class)) {
-                if (matchedHostObjects.contains(child)) {
-                    highlightMatchedObject((NamedObj) child);
-                } else {
-                    dehighlightMatchedObject((NamedObj) child);
-                }
-            }
-        }
     }
 
     public void setBatchMode(boolean batchMode) {
@@ -162,7 +134,7 @@ public class MatchResultViewer extends AbstractGTFrame {
         _results = results;
         _currentPosition = 0;
         _enableOrDisableActions();
-        highlightMatchedObjects();
+        _rerender();
         _refreshStatusBars();
     }
 
@@ -235,14 +207,7 @@ public class MatchResultViewer extends AbstractGTFrame {
     }
 
     protected ActorEditorGraphController _createController() {
-        return new ActorEditorGraphController() {
-            public void rerender() {
-                super.rerender();
-
-                // Repaint the graph panner after the decorators are rendered.
-                _asynchronousHighlight();
-            }
-        };
+        return new MatchResultViewerController();
     }
 
     protected static void _setTableauFactory(Object originator,
@@ -267,7 +232,8 @@ public class MatchResultViewer extends AbstractGTFrame {
                     List<?> factoryList = entity
                             .attributeList(MatchResultTableau.Factory.class);
                     for (Object attributeObject : factoryList) {
-                        MatchResultTableau.Factory factory = (MatchResultTableau.Factory) attributeObject;
+                        MatchResultTableau.Factory factory =
+                            (MatchResultTableau.Factory) attributeObject;
                         factory.setPersistent(false);
                     }
                     for (Object subentity : entity
@@ -287,7 +253,8 @@ public class MatchResultViewer extends AbstractGTFrame {
         List<?> factoryList = entity
                 .attributeList(MatchResultTableau.Factory.class);
         for (Object attributeObject : factoryList) {
-            MatchResultTableau.Factory factory = (MatchResultTableau.Factory) attributeObject;
+            MatchResultTableau.Factory factory =
+                (MatchResultTableau.Factory) attributeObject;
             String momlTxt = "<deleteProperty name=\"" + factory.getName()
                     + "\"/>";
             MoMLChangeRequest request = new MoMLChangeRequest(originator,
@@ -305,38 +272,6 @@ public class MatchResultViewer extends AbstractGTFrame {
                 _topFrame._subviewers.remove(this);
             }
         }
-    }
-
-    private void _asynchronousDehighlight() {
-        // Repaint the graph panner after the decorators are rendered.
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                dehighlightMatchedObjects();
-                if (_graphPanner != null) {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            _graphPanner.repaint();
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    private void _asynchronousHighlight() {
-        // Repaint the graph panner after the decorators are rendered.
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                highlightMatchedObjects();
-                if (_graphPanner != null) {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            _graphPanner.repaint();
-                        }
-                    });
-                }
-            }
-        });
     }
 
     private void _beginTransform() {
@@ -414,7 +349,6 @@ public class MatchResultViewer extends AbstractGTFrame {
     private void _finishTransform() {
         _setTableauFactory(this, (CompositeEntity) getModel());
         _transformed = true;
-        _asynchronousDehighlight();
         if (_topFrame == null) {
             for (MatchResultViewer viewer : _subviewers) {
                 viewer._finishTransform();
@@ -422,13 +356,13 @@ public class MatchResultViewer extends AbstractGTFrame {
         }
         _enableOrDisableActions();
         ((GTActorGraphModel) _getGraphModel()).startUpdate();
-        _getGraphController().rerender();
+        _rerender();
     }
 
     private void _next() {
         if (_currentPosition < _results.size() - 1) {
             _currentPosition++;
-            _asynchronousHighlight();
+            _rerender();
             if (_topFrame == null) {
                 for (MatchResultViewer viewer : _subviewers) {
                     viewer._next();
@@ -451,7 +385,7 @@ public class MatchResultViewer extends AbstractGTFrame {
     private void _previous() {
         if (_currentPosition > 0) {
             _currentPosition--;
-            _asynchronousHighlight();
+            _rerender();
             if (_topFrame == null) {
                 for (MatchResultViewer viewer : _subviewers) {
                     viewer._previous();
@@ -506,6 +440,10 @@ public class MatchResultViewer extends AbstractGTFrame {
         }
     }
 
+    private void _rerender() {
+        _getGraphController().rerender();
+    }
+
     private void _showInDefaultEditor() {
         String moml = getModel().exportMoML();
         boolean modified = isModified();
@@ -545,10 +483,9 @@ public class MatchResultViewer extends AbstractGTFrame {
         _finishTransform();
     }
 
-    private int _currentPosition;
+    private static final Color _HIGHLIGHT_COLOR = new Color(96, 32, 128, 128);
 
-    private AnimationRenderer _decorator = new AnimationRenderer(new Color(128,
-            128, 255));
+    private int _currentPosition;
 
     private FileSelectionStatus _fileSelectionStatus = FileSelectionStatus.NONE;
 
@@ -593,9 +530,9 @@ public class MatchResultViewer extends AbstractGTFrame {
 
     private JButton _transformButton;
 
-    private boolean _transformed = false;
-
     private JMenuItem _transformItem;
+
+    private boolean _transformed = false;
 
     private class CloseAction extends FigureAction {
 
@@ -624,6 +561,58 @@ public class MatchResultViewer extends AbstractGTFrame {
             } else {
                 _showInDefaultEditor();
             }
+        }
+    }
+
+    private class MatchResultNodeController extends ActorController {
+
+        protected Figure _renderNode(Object node) {
+            if ((node != null) && !_hide(node)) {
+                Figure nf = super._renderNode(node);
+                GraphModel model = getController().getGraphModel();
+                Object object = model.getSemanticObject(node);
+                CompositeFigure cf = _getCompositeFigure(nf);
+
+                if (object instanceof NamedObj && cf != null && !_transformed
+                        && _results != null && _results.get(_currentPosition)
+                        .containsValue(object)) {
+                    Stroke stroke = new BasicStroke(6f, BasicStroke.CAP_SQUARE,
+                            BasicStroke.JOIN_MITER, 10.0f);
+                    Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
+                    float padding = 3.0f;
+                    bounds = new Rectangle2D.Double(
+                            bounds.getX() - padding,
+                            bounds.getY() - padding,
+                            bounds.getWidth() + padding * 2.0,
+                            bounds.getHeight() + padding * 2.0);
+                    BasicFigure bf = new BasicFigure(bounds);
+                    bf.setStroke(stroke);
+                    bf.setStrokePaint(_HIGHLIGHT_COLOR);
+
+                    int index = cf.getFigureCount();
+                    if (index < 0) {
+                        index = 0;
+                    }
+                    cf.add(index, bf);
+                }
+                return nf;
+            }
+
+            return super._renderNode(node);
+        }
+
+        MatchResultNodeController(GraphController controller) {
+            super(controller);
+        }
+    }
+
+    private class MatchResultViewerController
+            extends ActorEditorGraphController {
+
+        protected void _createControllers() {
+            super._createControllers();
+
+            _entityController = new MatchResultNodeController(this);
         }
     }
 

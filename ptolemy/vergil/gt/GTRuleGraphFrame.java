@@ -1208,9 +1208,11 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
             NamedObj target = getTarget();
             Frame frame = getFrame();
             if (target instanceof GTEntity) {
-                List attributeList = target.attributeList(EditorFactory.class);
+                List<?> attributeList =
+                    target.attributeList(EditorFactory.class);
                 if (attributeList.size() > 0) {
-                    EditorFactory factory = (EditorFactory) attributeList.get(0);
+                    EditorFactory factory =
+                        (EditorFactory) attributeList.get(0);
                     factory.createEditor(target, frame);
                 } else {
                     new EditParametersDialog(frame, target);

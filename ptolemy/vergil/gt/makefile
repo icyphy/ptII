@@ -95,6 +95,7 @@ OPTIONAL_FILES = \
 	'GTRuleGraphFrame$$BatchMatchAction$$MultipleViewController.class' \
 	'GTRuleGraphFrame$$BatchMatchAction.class' \
 	'GTRuleGraphFrame$$CellEditor.class' \
+	'GTRuleGraphFrame$$ConfigureOperationsAction.class' \
 	'GTRuleGraphFrame$$FileComparator.class' \
 	'GTRuleGraphFrame$$GTActionGraphController$$EntityController.class' \
 	'GTRuleGraphFrame$$GTActionGraphController$$NewRelationAction.class' \
@@ -110,13 +111,10 @@ OPTIONAL_FILES = \
 	'MatchResultTableau$$Factory.class' \
 	'MatchResultViewer$$1.class' \
 	'MatchResultViewer$$2.class' \
-	'MatchResultViewer$$3.class' \
-	'MatchResultViewer$$4$$1.class' \
-	'MatchResultViewer$$4.class' \
-	'MatchResultViewer$$5$$1.class' \
-	'MatchResultViewer$$5.class' \
 	'MatchResultViewer$$CloseAction.class' \
 	'MatchResultViewer$$FileSelectionStatus.class' \
+	'MatchResultViewer$$MatchResultNodeController.class' \
+	'MatchResultViewer$$MatchResultViewerController.class' \
 	'MatchResultViewer$$NextAction.class' \
 	'MatchResultViewer$$NextFileAction.class' \
 	'MatchResultViewer$$PreviousAction.class' \
