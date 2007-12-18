@@ -2050,7 +2050,8 @@ PTJACL_JAR=$PTII/lib/ptjacl.jar
 # actor.lib.test.auto.FileWriter{1,2}.xml tests
 # JTCLSHFLAGS gets set to -Dptolemy.ptII.isRunningNightlyBuild=true
 # when we are running the nightlybuild
-JTCLSH='["$(JAVA)" $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" $(JTCLSHFLAGS) tcl.lang.Shell]'
+# Codegen uses up lots of memory while running
+JTCLSH='["$(JAVA)" -Xmx500M $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" $(JTCLSHFLAGS) tcl.lang.Shell]'
 # PTJACL_DIR is set to ptjacl and used in $PTII/ptolemy/actor/gui/makefile
 # if the ptjacl.jar file was found
 PTJACL_DIR= 
