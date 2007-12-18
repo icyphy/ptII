@@ -268,8 +268,7 @@ public class Publisher extends TypedAtomicActor {
         }
     }
 
-    /** If the new container is different from the current container,
-     *  delete the named channel.
+    /** If the new container is null, delete the named channel.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the action would result in a
      *   recursive containment structure, or if
