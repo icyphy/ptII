@@ -562,6 +562,14 @@ test DoubleToken-13.7 {Test convert from StringToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type double because the type of the token is higher or incomparable with the given type.}}
     
+test DoubleToken-13.8 {Test convert from FloatToken} {
+    set t [java::new {ptolemy.data.FloatToken float} 1.0]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.DoubleToken convert $t] toString]} msg
+    list $msg
+} {1.0}
+
 ######################################################################
 ####
 # 
