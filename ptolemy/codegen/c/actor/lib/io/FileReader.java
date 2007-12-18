@@ -35,7 +35,6 @@ import java.util.ArrayList;
 
 import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.attributes.FileOrURLAccessor;
 import ptolemy.kernel.util.IllegalActionException;
 

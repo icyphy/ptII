@@ -53,7 +53,6 @@ import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.codegen.c.kernel.CCodeGenerator;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
