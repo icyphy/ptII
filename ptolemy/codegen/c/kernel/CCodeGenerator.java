@@ -206,10 +206,14 @@ public class CCodeGenerator extends CodeGenerator {
         if (isTopLevel()) {
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
-
+            String targetValue = target.getExpression();
+            if (targetValue != _DEFAULT_TARGET) {
+                mainEntryCode.append("//FIXME: CCodeGenerator hack" + _eol
+                        + "init();" + _eol);
+            }
+        } else {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
-        } else {
             mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL"
                     + _eol + "Java_" + _sanitizedModelName + "_fire (" + _eol
                     + "JNIEnv *env, jobject obj");
@@ -1046,59 +1050,61 @@ public class CCodeGenerator extends CodeGenerator {
                     "Problem generating substitution map from " + _model);
         }
 
-        BufferedReader makefileTemplateReader = null;
+        List templateList = new LinkedList();
 
-        // Look for a .mk.in file with the same name as the model.
-        String makefileTemplateName;
+        // 1. Look for a .mk.in file with the same name as the model.
         URIAttribute uriAttribute = (URIAttribute) _model.getAttribute("_uri",
                 URIAttribute.class);
         if (uriAttribute != null) {
             String uriString = uriAttribute.getURI().toString();
-            makefileTemplateName = uriString.substring(0, uriString
+            templateList.add(uriString.substring(0, uriString
                     .lastIndexOf("/") + 1)
-                    + _sanitizedModelName + ".mk.in";
-        } else {
-            // The model does not have a _uri attribute, so
-            // Look for the generic C makefile.in
-            // Note this code is repeated in the catch below.
-            makefileTemplateName = generatorPackage.stringValue().replace('.',
-                    '/')
-                    + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in");
+                    + _sanitizedModelName + ".mk.in");
         }
+        // 2. If the target parameter is set, look for a makefile.
+        String generatorDirectory = generatorPackage.stringValue()
+            .replace('.', '/');
+        String targetValue = target.getExpression();
+        templateList.add(generatorDirectory
+                + "/targets/" +  targetValue + "/makefile.in");
+
+        // 3. Look for the generic C makefile.in
+        // Note this code is repeated in the catch below.
+        templateList.add(generatorDirectory
+            + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in"));
+
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
                 + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
                         .stringValue().endsWith("\\")) ? "/" : "")
                 + _sanitizedModelName + ".mk";
 
-        try {
-            try {
-                makefileTemplateReader = CodeGeneratorUtilities
-                        .openAsFileOrURL(makefileTemplateName);
-            } catch (IOException ex) {
-                String makefileTemplateName2 = "<unknown>";
-                try {
-                    // Look for the generic C makefile.in
-                    // Note this line is a repeat from the _uri check above.
-                    makefileTemplateName2 = generatorPackage.stringValue()
-                            .replace('.', '/')
-                            + (isTopLevel() ? "/makefile.in"
-                                    : "/jnimakefile.in");
-                    makefileTemplateReader = CodeGeneratorUtilities
-                            .openAsFileOrURL(makefileTemplateName2);
-                } catch (IOException ex2) {
-                    throw new IllegalActionException(this, ex2,
-                            "Failed to open \"" + makefileTemplateName
-                                    + "\" and \"" + makefileTemplateName2
-                                    + "\" for reading.");
-                }
-                makefileTemplateName = makefileTemplateName2;
-            }
+        BufferedReader makefileTemplateReader = null;
 
-            _executeCommands.stdout("Reading \"" + makefileTemplateName + "\","
-                    + _eol + "    writing \"" + makefileOutputName + "\"");
-            CodeGeneratorUtilities.substitute(makefileTemplateReader,
-                    substituteMap, makefileOutputName);
+        StringBuffer errorMessage = new StringBuffer();
+        String makefileTemplateName = null;
+        boolean success = false;
+        try {
+            Iterator templates = templateList.iterator();
+            while (templates.hasNext()) {
+                makefileTemplateName = (String)templates.next();
+                try {
+                    makefileTemplateReader = CodeGeneratorUtilities
+                        .openAsFileOrURL(makefileTemplateName);
+                } catch (IOException ex) {
+                    errorMessage.append("Failed to open \""
+                            + makefileTemplateName + "\". "); 
+                }
+                if (makefileTemplateReader != null) {
+                    _executeCommands.stdout("Reading \"" + makefileTemplateName
+                            + "\"," + _eol
+                            + "    writing \"" + makefileOutputName + "\"");
+                    CodeGeneratorUtilities.substitute(makefileTemplateReader,
+                            substituteMap, makefileOutputName);
+                    success = true;
+                    break;
+                }
+            }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "Failed to read \""
                     + makefileTemplateName + "\" or write \""
@@ -1113,7 +1119,9 @@ public class CCodeGenerator extends CodeGenerator {
                 }
             }
         }
-        //}
+        if (! success) {
+            throw new IllegalActionException(this, errorMessage.toString());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
