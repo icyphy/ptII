@@ -4634,7 +4634,7 @@ PTBSH_MLC_DIR=
 PTBSH_JAR=
 
 # We only need to look for if $PTII/ptolemy/actor/gui exists
-BSH_USER_DIR="$PTII/ptolemy/actor/gui"
+BSH_USER_DIR="$PTII/ptolemy/actor/gui/run"
 if test ! -d "$BSH_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { echo "$as_me:$LINENO: result: $BSH_USER_DIR is not present,
     so we need not find BSH, the Java Bean Shell." >&5
@@ -4665,7 +4665,7 @@ echo "$as_me: WARNING: Failed to find $PTII/lib/bsh-2.0b4.jar,
 fi
 
 if test -z "$PTBSH_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/colt/"
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/gui/run"
 fi
 
 
