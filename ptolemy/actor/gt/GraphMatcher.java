@@ -904,7 +904,7 @@ public class GraphMatcher extends GraphAnalyzer {
                     return portRule.match(hostIOPort) == NamedObjMatchResult.MATCH;
                 }
             } else {
-                return false;
+                return true;
             }
         } else {
             return true;
