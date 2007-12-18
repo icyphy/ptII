@@ -241,7 +241,7 @@ parameter.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9530265262152">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{433.3211848958333, 314.6880436197916}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{433.3211848958335, 314.6880436197916}">
     </property>
     <property name="resetOnEachRun" class="ptolemy.data.expr.Parameter" value="true">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1232,7 +1232,7 @@ it never receives the message.</text></svg></configure>
         </property>
     </entity>
     <entity name="ExpressionWriter" class="ptolemy.actor.lib.io.ExpressionWriter">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="$(fileName)">
+        <property name="fileName" class="ptolemy.actor.parameters.FilePortParameter" value="$fileName">
         </property>
         <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
         </property>

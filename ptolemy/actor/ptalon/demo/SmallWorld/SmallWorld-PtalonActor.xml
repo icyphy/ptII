@@ -394,7 +394,7 @@ Based on $PTII/ptolemy/domains/wireless/demo/SmallWorld/SmallWorld.xml</text></s
         </property>
     </entity>
     <entity name="ExpressionWriter" class="ptolemy.actor.lib.io.ExpressionWriter">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="$(fileName)">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="$fileName">
         </property>
         <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
         </property>
