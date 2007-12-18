@@ -58,6 +58,12 @@ inline double add_Double_Double(double a1, double a2) {
 }
 /**/
 
+/*** add_Double_Int() ***/
+inline double add_Double_Int(double a1, int a2) {
+    return a1 + a2;
+}
+/**/
+
 /*** add_Double_String() ***/
 inline char* add_Double_String(double a1, char* a2) {
     return $add_String_Double(a2, a1);
