@@ -1382,9 +1382,18 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected String _generateSharedCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        ActorCodeGenerator helper = _getHelper(getContainer());
-        Set sharedCodeBlocks = helper.getSharedCode();
+
+        ActorCodeGenerator targetHelper = _getTargetHelper(getContainer());
+        Set sharedCodeBlocks = targetHelper.getSharedCode();
         Iterator blocks = sharedCodeBlocks.iterator();
+        while (blocks.hasNext()) {
+            String block = (String) blocks.next();
+            code.append(block);
+        }
+
+        ActorCodeGenerator helper = _getHelper(getContainer());
+        sharedCodeBlocks = helper.getSharedCode();
+        blocks = sharedCodeBlocks.iterator();
         while (blocks.hasNext()) {
             String block = (String) blocks.next();
             code.append(block);
@@ -1428,51 +1437,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                             + "substitution of the value of the generatorPackage "
                             + "parameter \"" + packageName + "\" failed?");
         }
-
-        Class helperClass = null;
-
-        try {
-            helperClass = Class.forName(helperClassName);
-        } catch (ClassNotFoundException e) {
-            throw new IllegalActionException(this, e,
-                    "Cannot find helper class " + helperClassName);
-        }
-
-        Constructor constructor = null;
-
-        try {
-            constructor = helperClass.getConstructor(new Class[] { component
-                    .getClass() });
-        } catch (NoSuchMethodException e) {
-            throw new IllegalActionException(this, e,
-                    "There is no constructor in " + helperClassName
-                            + " which accepts an instance of "
-                            + componentClassName + " as the argument.");
-        }
-
-        Object helperObject = null;
-
-        try {
-            helperObject = constructor.newInstance(new Object[] { component });
-        } catch (Exception ex) {
-            throw new IllegalActionException(component, ex,
-                    "Failed to create helper class code generator.");
-        }
-
-        if (!(helperObject instanceof ActorCodeGenerator)) {
-            throw new IllegalActionException(this,
-                    "Cannot generate code for this component: " + component
-                            + ". Its helper class does not"
-                            + " implement ActorCodeGenerator.");
-        }
-
-        ActorCodeGenerator castHelperObject = (ActorCodeGenerator) helperObject;
-
-        castHelperObject.setCodeGenerator(this);
-
+        ActorCodeGenerator castHelperObject =  _instantiateHelper(component,
+                helperClassName);
         _helperStore.put(component, castHelperObject);
-
         return castHelperObject;
+
     }
 
     /** Generate the code for printing the execution time since
@@ -1617,6 +1586,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** The form of the command line. */
     protected static final String _commandTemplate = "ptcg [ options ] [file ...]";
 
+    /** The default target name. */
+    protected static final String _DEFAULT_TARGET = "default";
+
+
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line charactor so that the files we generate
      *  have the proper end of line character for use by other native tools.
@@ -1703,6 +1676,90 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Get the code generator helper associated with target, if any.
+     *  @param component The given component.
+     *  @return The code generator helper.
+     *  @exception IllegalActionException If the helper class cannot be found.
+     */
+    private ActorCodeGenerator _getTargetHelper(NamedObj component)
+            throws IllegalActionException {
+        System.out.println("CodeGenerator: helperClassName");
+
+        // FIXME: Do we want to cache the targetHelper?
+        //if (_helperStore.containsKey(component)) {
+        //    return (ActorCodeGenerator) _helperStore.get(component);
+        //}
+
+
+        String targetValue = target.getExpression();
+        System.out.println("CodeGenerator: helperClassName: target: " +  targetValue);
+        if (targetValue.equals(_DEFAULT_TARGET)) {
+            return null;
+        }
+        String packageName = generatorPackage.stringValue();
+
+        String upcaseTarget = targetValue.substring(0,1).toUpperCase()
+            + targetValue.substring(1);
+        String helperClassName = packageName + ".targets." + targetValue
+            + "." + upcaseTarget + "Target";
+        System.out.println("CodeGenerator: helperClassName: " + helperClassName);
+        return  _instantiateHelper(component, helperClassName);
+    }
+
+    /** Instantiate the given code generator helper.
+     *  @param component The given component.
+     *  @param helperClassName The dot separated name of the helper.
+     *  @return The code generator helper.
+     *  @exception IllegalActionException If the helper class cannot be found.
+     */
+    private ActorCodeGenerator _instantiateHelper(NamedObj component,
+            String helperClassName)
+            throws IllegalActionException {
+        Class helperClass = null;
+
+        try {
+            helperClass = Class.forName(helperClassName);
+        } catch (ClassNotFoundException e) {
+            throw new IllegalActionException(this, e,
+                    "Cannot find helper class " + helperClassName);
+        }
+
+        Constructor constructor = null;
+
+        try {
+            constructor = helperClass.getConstructor(new Class[] { component
+                    .getClass() });
+        } catch (NoSuchMethodException e) {
+            throw new IllegalActionException(this, e,
+                    "There is no constructor in " + helperClassName
+                            + " which accepts an instance of "
+                            + component.getClass().getName()
+                            + " as the argument.");
+        }
+
+        Object helperObject = null;
+
+        try {
+            helperObject = constructor.newInstance(new Object[] { component });
+        } catch (Exception ex) {
+            throw new IllegalActionException(component, ex,
+                    "Failed to create helper class code generator.");
+        }
+
+        if (!(helperObject instanceof ActorCodeGenerator)) {
+            throw new IllegalActionException(this,
+                    "Cannot generate code for this component: " + component
+                            + ". Its helper class does not"
+                            + " implement ActorCodeGenerator.");
+        }
+
+        ActorCodeGenerator castHelperObject = (ActorCodeGenerator) helperObject;
+
+        castHelperObject.setCodeGenerator(this);
+
+        return castHelperObject;
+    }
 
     /** Pretty print the given line by indenting the line with the
      *  current indent level. If a block begin symbol is found, the
@@ -1799,7 +1856,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String generatorPackageDirectoryName= StringUtilities.substitute(generatorPackageValue, ".", "/");
 
         target.removeAllChoices();
-        target.addChoice("default");
+        target.addChoice(_DEFAULT_TARGET);
 
         File generatorPackageFile = null;
         try {
