@@ -219,84 +219,36 @@ public class LocatableNodeController extends BasicNodeController {
         }
     }
 
-    /** Render the specified node.  This overrides the base class to
-     *  return an invisible figure if the node contains a parameter
-     *  named "_hide" with value true.  This overrides the base class
-     *  to assign a location and to highlight the node if it is an
-     *  inherited object, and hence cannot be deleted.
-     *  @param node The node to render.
-     *  @return the newly created figure.
+    /** Get the CompositeFigure from the given Figure.
+     *
+     *  @param nf The figure that should be a CompositeFigure itself, or be a
+     *   TerminalFigure whose getFigure() method returns a CompositeFigure.
+     *  @return The CompositeFigure, or null of it cannot be found.
      */
-    protected Figure _renderNode(java.lang.Object node) {
-        if ((node == null) || _hide(node)) {
-            // Return an empty figure.
-            Figure newFigure = new CompositeFigure();
-            newFigure.setVisible(false);
-            newFigure.setInteractor(getNodeInteractor());
-            newFigure.setUserObject(node);
-            getController().setFigure(node, newFigure);
-            return newFigure;
-        } else {
-            Figure nf = super._renderNode(node);
-            GraphModel model = getController().getGraphModel();
-            Object object = model.getSemanticObject(node);
-            CompositeFigure cf;
+    protected static CompositeFigure _getCompositeFigure(Figure nf) {
+        CompositeFigure cf;
 
-            // Try to get a composite figure that we can add the
-            // annotation to.  This is complicated by the fact that
-            // ExternalIOPortController wraps its figure in a
-            // TerminalFigure, and that there is nothing in the API
-            // that enforces that a CompositeFigure is returned.
-            // *sigh*
-            if (nf instanceof CompositeFigure) {
-                cf = (CompositeFigure) nf;
-            } else if (nf instanceof TerminalFigure) {
-                Figure f = ((TerminalFigure) nf).getFigure();
+        // Try to get a composite figure that we can add the
+        // annotation to.  This is complicated by the fact that
+        // ExternalIOPortController wraps its figure in a
+        // TerminalFigure, and that there is nothing in the API
+        // that enforces that a CompositeFigure is returned.
+        // *sigh*
+        if (nf instanceof CompositeFigure) {
+            cf = (CompositeFigure) nf;
+        } else if (nf instanceof TerminalFigure) {
+            Figure f = ((TerminalFigure) nf).getFigure();
 
-                if (f instanceof CompositeFigure) {
-                    cf = (CompositeFigure) f;
-                } else {
-                    cf = null;
-                }
+            if (f instanceof CompositeFigure) {
+                cf = (CompositeFigure) f;
             } else {
                 cf = null;
             }
-
-            if (_decoratable
-                    && object instanceof NamedObj
-                    && (((NamedObj) object).getDerivedLevel() < Integer.MAX_VALUE)
-                    && (cf != null)) {
-                // float[] dash = { 2.0f, 5.0f };
-                Stroke stroke = new BasicStroke(2f, /* width */
-                BasicStroke.CAP_SQUARE, /* cap   */
-                BasicStroke.JOIN_MITER, /* join  */
-                10.0f); /* mitre limit */
-                // To get a dashed line, add the following two arguments above:
-                // dash, /* dash  */
-                // 0.0f); /* dash_phase  */
-                // Pad the figure so that this highlight composes properly
-                // with other highlights.
-                Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
-                double padding = 3.0;
-                bounds = new Rectangle2D.Double(bounds.getX() - padding, bounds
-                        .getY()
-                        - padding, bounds.getWidth() + padding * 2.0, bounds
-                        .getHeight()
-                        + padding * 2.0);
-                BasicFigure bf = new BasicFigure(bounds);
-                bf.setStroke(stroke);
-                bf.setStrokePaint(CLASS_ELEMENT_HIGHLIGHT_COLOR);
-                // Put the highlighting in the background,
-                // behind the actor label.
-                int index = cf.getFigureCount();
-                if (index < 0) {
-                    index = 0;
-                }
-                cf.add(index, bf);
-            }
-
-            return nf;
+        } else {
+            cf = null;
         }
+
+        return cf;
     }
 
     /** In this base class, return true if the specified node contains a
@@ -354,6 +306,66 @@ public class LocatableNodeController extends BasicNodeController {
         }
 
         return true;
+    }
+
+    /** Render the specified node.  This overrides the base class to
+     *  return an invisible figure if the node contains a parameter
+     *  named "_hide" with value true.  This overrides the base class
+     *  to assign a location and to highlight the node if it is an
+     *  inherited object, and hence cannot be deleted.
+     *  @param node The node to render.
+     *  @return the newly created figure.
+     */
+    protected Figure _renderNode(java.lang.Object node) {
+        if ((node == null) || _hide(node)) {
+            // Return an empty figure.
+            Figure newFigure = new CompositeFigure();
+            newFigure.setVisible(false);
+            newFigure.setInteractor(getNodeInteractor());
+            newFigure.setUserObject(node);
+            getController().setFigure(node, newFigure);
+            return newFigure;
+        } else {
+            Figure nf = super._renderNode(node);
+            GraphModel model = getController().getGraphModel();
+            Object object = model.getSemanticObject(node);
+            CompositeFigure cf = _getCompositeFigure(nf);
+
+            if (_decoratable
+                    && object instanceof NamedObj
+                    && (((NamedObj) object).getDerivedLevel() < Integer.MAX_VALUE)
+                    && (cf != null)) {
+                // float[] dash = { 2.0f, 5.0f };
+                Stroke stroke = new BasicStroke(2f, /* width */
+                BasicStroke.CAP_SQUARE, /* cap   */
+                BasicStroke.JOIN_MITER, /* join  */
+                10.0f); /* mitre limit */
+                // To get a dashed line, add the following two arguments above:
+                // dash, /* dash  */
+                // 0.0f); /* dash_phase  */
+                // Pad the figure so that this highlight composes properly
+                // with other highlights.
+                Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
+                double padding = 3.0;
+                bounds = new Rectangle2D.Double(bounds.getX() - padding, bounds
+                        .getY()
+                        - padding, bounds.getWidth() + padding * 2.0, bounds
+                        .getHeight()
+                        + padding * 2.0);
+                BasicFigure bf = new BasicFigure(bounds);
+                bf.setStroke(stroke);
+                bf.setStrokePaint(CLASS_ELEMENT_HIGHLIGHT_COLOR);
+                // Put the highlighting in the background,
+                // behind the actor label.
+                int index = cf.getFigureCount();
+                if (index < 0) {
+                    index = 0;
+                }
+                cf.add(index, bf);
+            }
+
+            return nf;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
