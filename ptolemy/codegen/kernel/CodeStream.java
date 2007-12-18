@@ -37,6 +37,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -128,7 +129,7 @@ public class CodeStream {
      */
     public CodeStream(String path, CodeGenerator generator) {
         _filePath = path;
-        this._codeGenerator = generator;
+        _codeGenerator = generator;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -408,6 +409,14 @@ public class CodeStream {
         return result;
     }
 
+    public Set<Signature> getAllCodeBlockSignatures() 
+            throws IllegalActionException {
+        if (_doParsing) {
+            _constructCodeTable(true);
+        }
+        return _declarations.keySet();
+    }
+    
     /** Indent the string to the default indent level.
      * @param inputString The string to be indented.
      * @return The indented string.
@@ -1065,6 +1074,27 @@ public class CodeStream {
         }
 
         /**
+         * Return the code block content of the given signature without
+         * substituting parameters. This searches from the all scopes 
+         * from the code block table.
+         * @param signature The given code block signature.
+         * @return The code block content.
+         * @exception IllegalActionException Thrown if
+         *  getCode(Signature, List, List) throws it.
+         */
+        public StringBuffer getTemplateCode(Signature signature) 
+                throws IllegalActionException {
+            
+            StringBuffer result = new StringBuffer();
+            
+            result.append("/*** " + 
+                    _getHeader(signature, _codeTableList) + " ***/\n");
+            result.append(_getCode(signature, null, _codeTableList));
+            result.append("/**/\n\n");
+            return result;
+        }
+        
+        /**
          * Get the list of parameters for the code block with the given
          * signature. This searches the code block from the entire list
          * of scopes.
@@ -1151,72 +1181,119 @@ public class CodeStream {
                 StringBuffer codeBlock = (StringBuffer) codeObject[1];
                 List parameters = (List) codeObject[2];
 
-                codeBlock = _substituteParameters(codeBlock, parameters,
-                        arguments);
+                if (arguments != null) {
+                    codeBlock = _substituteParameters(codeBlock, parameters,
+                            arguments);
+    
+                    codeBlock = _substituteSuper(signature, 
+                            scopeList, codeObject, codeBlock);
+                }                
 
-                String callExpression = "(\\$super\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)"
-                        + "|(\\$this\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)"
-                        + "|(\\$super\\s*\\(.*\\)\\s*;)";
-
-                String[] subBlocks = codeBlock.toString().split(callExpression);
-
-                StringBuffer returnCode = new StringBuffer(subBlocks[0]);
-
-                Pattern pattern = Pattern.compile(callExpression);
-                Matcher matcher = pattern.matcher(codeBlock);
-
-                for (int i = 1; i < subBlocks.length; i++) {
-
-                    String call = "";
-
-                    if (matcher.find()) {
-                        call = matcher.group();
-                    }
-
-                    int dotIndex = call.indexOf(".");
-                    int openIndex = call.indexOf("(");
-
-                    boolean isSuper = call.contains("super");
-                    boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
-
-                    String blockName = (isImplicit) ? signature.functionName
-                            : call.substring(dotIndex + 1, openIndex).trim();
-
-                    List callArguments = CodeStream._parseParameterList(
-                            new StringBuffer(call), 0, call.length() - 2);
-
-                    Signature callSignature = new Signature(blockName,
-                            callArguments.size());
-
-                    if (!isSuper && callSignature.equals(signature)) {
-                        throw new IllegalActionException(_helper, callSignature
-                                .toString()
-                                + " recursively appends itself in "
-                                + codeObject[0]);
-                    }
-
-                    StringBuffer callCodeBlock = (!isSuper) ? getCode(
-                            callSignature, callArguments) : _getCode(
-                            callSignature, callArguments, scopeList.subList(1,
-                                    size));
-
-                    if (callCodeBlock == null) {
-                        throw new IllegalActionException(_helper,
-                                "Cannot find " + (isSuper ? "super" : "this")
-                                        + " block for " + callSignature
-                                        + " in " + codeObject[0]);
-                    }
-
-                    //superBlock.insert(0, "///////// Super Block ///////////////\n");
-                    //superBlock.append("///////// End of Super Block ////////\n");
-
-                    returnCode.append(callCodeBlock);
-                    returnCode.append(subBlocks[i]);
-                }
-
-                return returnCode;
+                return codeBlock;
 
             }
+        }
+        
+        private String _getHeader(Signature signature,
+                List scopeList) throws IllegalActionException {
+            int size = scopeList.size();
+
+            if (size == 0) {
+                return null;
+            }
+
+            Hashtable table = (Hashtable) scopeList.get(0);
+
+            if (!table.containsKey(signature)) {
+                return _getHeader(signature, scopeList
+                        .subList(1, size));
+            } else {
+                Object[] codeObject = (Object[]) table.get(signature);
+                Iterator parameters = ((List) codeObject[2]).iterator();
+
+                String header = signature.functionName + "(";
+                while (parameters.hasNext()) {
+                    header += "$" + parameters.next();
+                    if (parameters.hasNext()) {
+                        header += ", ";
+                    }
+                }
+                return header + ")";
+            }
+        }
+
+        /**
+         * @param signature
+         * @param scopeList
+         * @param codeObject
+         * @param codeBlock
+         * @return
+         * @throws IllegalActionException
+         */
+        private StringBuffer _substituteSuper(Signature signature, 
+            List scopeList, Object[] codeObject, StringBuffer codeBlock) 
+                throws IllegalActionException {
+            
+            String callExpression = "(\\$super\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)"
+                    + "|(\\$this\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)"
+                    + "|(\\$super\\s*\\(.*\\)\\s*;)";
+
+            String[] subBlocks = codeBlock.toString().split(callExpression);
+
+            StringBuffer returnCode = new StringBuffer(subBlocks[0]);
+
+            Pattern pattern = Pattern.compile(callExpression);
+            Matcher matcher = pattern.matcher(codeBlock);
+
+            for (int i = 1; i < subBlocks.length; i++) {
+
+                String call = "";
+
+                if (matcher.find()) {
+                    call = matcher.group();
+                }
+
+                int dotIndex = call.indexOf(".");
+                int openIndex = call.indexOf("(");
+
+                boolean isSuper = call.contains("super");
+                boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
+
+                String blockName = (isImplicit) ? signature.functionName
+                        : call.substring(dotIndex + 1, openIndex).trim();
+
+                List callArguments = CodeStream._parseParameterList(
+                        new StringBuffer(call), 0, call.length() - 2);
+
+                Signature callSignature = new Signature(blockName,
+                        callArguments.size());
+
+                if (!isSuper && callSignature.equals(signature)) {
+                    throw new IllegalActionException(_helper, callSignature
+                            .toString()
+                            + " recursively appends itself in "
+                            + codeObject[0]);
+                }
+
+                StringBuffer callCodeBlock = (!isSuper) ? getCode(
+                        callSignature, callArguments) : _getCode(
+                        callSignature, callArguments, scopeList.subList(1,
+                                scopeList.size()));
+
+                if (callCodeBlock == null) {
+                    throw new IllegalActionException(_helper,
+                            "Cannot find " + (isSuper ? "super" : "this")
+                                    + " block for " + callSignature
+                                    + " in " + codeObject[0]);
+                }
+
+                //superBlock.insert(0, "///////// Super Block ///////////////\n");
+                //superBlock.append("///////// End of Super Block ////////\n");
+
+                returnCode.append(callCodeBlock);
+                returnCode.append(subBlocks[i]);
+            }
+            return returnCode;
         }
 
         /**
@@ -1242,18 +1319,22 @@ public class CodeStream {
             }
         }
 
+        private Set keySet() {
+            HashSet signatures = new HashSet();
+
+            for (Hashtable table : _codeTableList) {
+                signatures.addAll(table.keySet());
+            }
+            return signatures;
+        }
+        
         /**
          * Return all contained signature keys. This method is used for
          * testing purposes.
          * @return A Iterator of all contained signature keys.
          */
         private Iterator keys() {
-            HashSet signatures = new HashSet();
-
-            for (Hashtable table : _codeTableList) {
-                signatures.addAll(table.keySet());
-            }
-            return signatures.iterator();
+            return keySet().iterator();
         }
 
         /**
@@ -1266,7 +1347,7 @@ public class CodeStream {
     /**
      * A private class for representing a code block signature.
      */
-    private static class Signature {
+    private static class Signature implements Comparable {
 
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
@@ -1338,6 +1419,10 @@ public class CodeStream {
          * The number of parameters.
          */
         public int numParameters;
+
+        public int compareTo(Object o) {
+            return toString().compareTo(o.toString());
+        }
     }
 
     /**
@@ -1416,5 +1501,14 @@ public class CodeStream {
                     + name + "\".");
         }
         return result.toString();
+    }
+    
+    public String getCodeBlockTemplate(Object signature) 
+            throws IllegalActionException {
+        if (signature instanceof Signature) {
+            return _declarations.getTemplateCode(
+                    (Signature) signature).toString();
+        }
+        return "";
     }
 }
