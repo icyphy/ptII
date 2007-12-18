@@ -128,13 +128,13 @@ public class RemoveGraphicalClasses implements MoMLFilter {
 
             // The list of filters is static, so we reset it in case there
             // filters were already added.        
-            parser.setMoMLFilters(null);
+            MoMLParser.setMoMLFilters(null);
 
             // Add the backward compatibility filters.
-            parser.setMoMLFilters(BackwardCompatibility.allFilters());
+            MoMLParser.setMoMLFilters(BackwardCompatibility.allFilters());
 
-            parser.addMoMLFilter(new RemoveGraphicalClasses());
-            parser.addMoMLFilter(new HideAnnotationNames());
+            MoMLParser.addMoMLFilter(new RemoveGraphicalClasses());
+            MoMLParser.addMoMLFilter(new HideAnnotationNames());
             NamedObj topLevel = parser.parseFile(args[0]);
             System.out.println(topLevel.exportMoML());
         } catch (Throwable throwable) {
