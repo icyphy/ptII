@@ -61,6 +61,8 @@ public class PatternObjectAttribute extends StringAttribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setClassName("ptolemy.actor.gt.PatternObjectAttribute");
+        
+        setVisibility(EXPERT);
     }
 
     /**
@@ -69,6 +71,8 @@ public class PatternObjectAttribute extends StringAttribute {
     public PatternObjectAttribute(Workspace workspace) {
         super(workspace);
         setClassName("ptolemy.actor.gt.PatternObjectAttribute");
+        
+        setVisibility(EXPERT);
     }
 
 }

@@ -801,9 +801,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
         try {
             Collection<?> objectCollection;
             if (filter == null) {
-                objectCollection = new CombinedCollection<Object>(
-                        new Collection<?>[] { container.entityList(),
-                                container.relationList() });
+                objectCollection =
+                    GTTools.getChildren(container, true, true, true, true);
             } else {
                 objectCollection = filter;
             }
