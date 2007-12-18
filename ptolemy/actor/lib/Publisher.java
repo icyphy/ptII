@@ -279,16 +279,16 @@ public class Publisher extends TypedAtomicActor {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (getContainer() != container) {
-            if (_relation != null) {
-                try {
-                    _relation.setContainer(null);
-                } catch (NameDuplicationException e) {
-                    throw new InternalErrorException(e);
-                }
-                _relation = null;
+
+        if (container == null && _relation != null) {
+            try {
+                _relation.setContainer(null);
+            } catch (NameDuplicationException e) {
+                throw new InternalErrorException(e);
             }
+            _relation = null;
         } 
+
         super.setContainer(container);
     }
 
