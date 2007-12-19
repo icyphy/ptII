@@ -368,8 +368,6 @@ public class PublisherNonStrictTest extends Publisher {
 
         // Note that wrapup() might get called by the manager before
         // we have any data...
-        System.out.println("PublisherNonStrictTest.wrapup(): training: "
-                + training + " " + _trainingTokens);
         if (training && (_trainingTokens != null)
                 && (_trainingTokens.size() > 0)) {
             Object[] newValues = _trainingTokens.toArray();
@@ -378,8 +376,6 @@ public class PublisherNonStrictTest extends Publisher {
             int width = input.getWidth();
             Token[] newTokens = new Token[newValues.length];
 
-            System.out.println("PublisherNonStrictTest.wrapup(): width: " 
-                    + width);
             if (width == 1) {
                 for (int i = 0; i < newValues.length; i++) {
                     if (newValues[i] instanceof Token[]) {
@@ -414,8 +410,6 @@ public class PublisherNonStrictTest extends Publisher {
             }
 
             correctValues.setToken(new ArrayToken(newTokens));
-        System.out.println("PublisherNonStrictTest.wrapup(): "
-                + correctValues);
             correctValues.setPersistent(true);
         }
 
