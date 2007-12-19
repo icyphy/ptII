@@ -174,7 +174,7 @@ char* add_String_String(char* a1, char* a2) {
 /**/
 
 /*** add_Token_Double() ***/
-inline Token add_Token_Double(Token a1, int a2) {
+inline Token add_Token_Double(Token a1, double a2) {
     return $add_Double_Token(a2, a1);
 }
 /**/
