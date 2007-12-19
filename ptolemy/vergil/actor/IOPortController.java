@@ -37,6 +37,7 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.SwingConstants;
 
 import ptolemy.actor.IOPort;
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
@@ -55,6 +56,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -518,6 +520,22 @@ public class IOPortController extends AttributeController {
                 Site tsite = new PerimeterSite(figure, 0);
                 tsite.setNormal(normal);
                 figure = new TerminalFigure(figure, tsite);
+            }
+
+            // New way to specify a highlight color.
+            try {
+                ColorAttribute highlightAttribute = (ColorAttribute) (port
+                        .getAttribute("_highlightColor", ColorAttribute.class));
+                if (highlightAttribute != null
+                        && !highlightAttribute.getExpression().trim()
+                                .equals("")) {
+                    Color color = highlightAttribute.asColor();
+                    AnimationRenderer animationRenderer = new AnimationRenderer(
+                            color);
+                    animationRenderer.renderSelected(figure);
+                }
+            } catch (IllegalActionException e) {
+                // Ignore.
             }
 
             return figure;
