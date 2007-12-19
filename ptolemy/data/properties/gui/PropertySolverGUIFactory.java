@@ -29,7 +29,7 @@ package ptolemy.data.properties.gui;
 
 import java.awt.Frame;
 
-import ptolemy.actor.gui.DoubleClickFactory;
+import ptolemy.actor.gui.EditorFactory;
 import ptolemy.data.properties.PropertySolver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class PropertySolverGUIFactory extends DoubleClickFactory {
+public class PropertySolverGUIFactory extends EditorFactory {
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -77,21 +77,29 @@ public class PropertySolverGUIFactory extends DoubleClickFactory {
      *  @param object The object to configure.
      *  @param parent The parent window, or null if there is none.
      */
-    public void invoke(NamedObj object, Frame parent) {
+    public void createEditor(NamedObj object, Frame parent) {
         // This is always used to configure the container, so
         // we just use that.
         PropertySolver solver = (PropertySolver) getContainer();
         CompositeEntity top = (CompositeEntity) solver.getContainer();
 
-        while (top.getContainer() != null) {
+        while (top.getContainer() != null){
             top = (CompositeEntity) top.getContainer();
         }
         try {
+            solver.workspace().getWriteAccess();
+            
             solver.resolveProperties(top);
+            solver.checkRegressionTestErrors();
+            solver.displayProperties();
+
+            solver.workspace().doneWriting();
+            
         } catch (KernelException e) {
             throw new InternalErrorException(e);
+        } finally {
+            solver.getSharedUtilities().resetAll();
         }
-
     }
 
     // FIXME: Check that the container is an instance of PropertyConstraintSolver.

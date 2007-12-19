@@ -29,8 +29,8 @@ package ptolemy.data.properties.gui;
 
 import java.awt.Frame;
 
-import ptolemy.actor.gui.DoubleClickFactory;
-import ptolemy.data.properties.lattice.PropertyConstraintSolver;
+import ptolemy.actor.gui.EditorFactory;
+import ptolemy.data.properties.PropertyRemover;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class PropertyDisplayGUIFactory extends DoubleClickFactory {
+public class PropertyDisplayGUIFactory extends EditorFactory {
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
@@ -77,17 +77,17 @@ public class PropertyDisplayGUIFactory extends DoubleClickFactory {
      *  @param object The object to configure.
      *  @param parent The parent window, or null if there is none.
      */
-    public void invoke(NamedObj object, Frame parent) {
+    public void createEditor(NamedObj object, Frame parent) {
         // This is always used to configure the container, so
         // we just use that.
-        PropertyConstraintSolver solver = (PropertyConstraintSolver) getContainer();
-        CompositeEntity top = (CompositeEntity) solver.getContainer();
+        PropertyRemover remover = (PropertyRemover) getContainer();
+        CompositeEntity top = (CompositeEntity) remover.getContainer();
 
-        while (top.getContainer() != null) {
+        while (top.getContainer() != null){
             top = (CompositeEntity) top.getContainer();
         }
         try {
-            solver.resolveProperties(top);
+            remover.removeProperties(top);
         } catch (KernelException e) {
             throw new InternalErrorException(e);
         }
