@@ -74,6 +74,18 @@ public class PublisherTest extends CCodeGeneratorHelper {
 
         ArrayList args = new ArrayList();
         args.add(Integer.valueOf(0));
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            if (actor.output.numberOfSinks() > 0) {
+                // Only transfer output if someone is listening to
+                // this publisher.
+                args.set(0, Integer.valueOf(i));
+                _codeStream.appendCodeBlock("fireBlock", args);
+            } else {
+                System.out.println("Warning, no one is listening to "
+                        + actor.getFullName());
+            }
+        }
+
         String multiChannel = "";
         String inputType = "";
 
