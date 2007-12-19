@@ -14,7 +14,7 @@
 #define negate_Int(a) -a
 /**/
 
-/*** negate_Long_Long() ***/
+/*** negate_Long() ***/
 #define negate_Long(a) -a
 /**/
 
