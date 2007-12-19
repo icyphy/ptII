@@ -28,7 +28,6 @@
 package ptolemy.vergil.basic;
 
 import ptolemy.vergil.toolbox.ConfigureAction;
-import ptolemy.vergil.toolbox.DoubleClickAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import diva.canvas.event.MouseFilter;
@@ -82,7 +81,7 @@ public class ParameterizedNodeController extends NamedObjController {
 
         // Add a double click interactor.
         ActionInteractor doubleClickInteractor = new ActionInteractor(
-                _doubleClickAction);
+                _configureAction);
         doubleClickInteractor.setConsuming(false);
         doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
 
@@ -112,8 +111,4 @@ public class ParameterizedNodeController extends NamedObjController {
     /** The configure action, which handles edit parameters requests. */
     protected static ConfigureAction _configureAction = new ConfigureAction(
             "Configure");
-
-    /** The configure action, which handles edit parameters requests. */
-    protected static DoubleClickAction _doubleClickAction = new DoubleClickAction(
-            "Double-Click");
 }
