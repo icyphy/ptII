@@ -1164,7 +1164,7 @@ public class CCodeGenerator extends CodeGenerator {
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to mark function called for \"" + name + "\" in \""
-                            + helper.getFullName() + "\"");
+                          + getComponent().getFullName() + "\"");
         }
 
     }
