@@ -50,9 +50,9 @@ options {
 }
 
 {
-	private NestedActorManager info;
+	private PtalonEvaluator info;
 
-	public NestedActorManager getCodeManager() {
+	public PtalonEvaluator getCodeManager() {
 		return info;
 	}
 	
@@ -239,7 +239,7 @@ iterative_statement throws PtalonScopeException
 	}
 ;
 
-actor_definition [NestedActorManager manager] throws PtalonScopeException
+actor_definition [PtalonEvaluator manager] throws PtalonScopeException
 {
 	info = manager;
 }

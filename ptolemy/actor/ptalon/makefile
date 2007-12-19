@@ -52,9 +52,9 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	CodeManager.java \
 	NamedTree.java \
-	NestedActorManager.java \
 	PtalonActor.java \
 	PtalonAST.java \
+	PtalonEvaluator.java \
 	PtalonExpressionParameter.java \
 	PtalonLexer.java \
 	PtalonMLHandler.java \
@@ -102,7 +102,7 @@ OPTIONAL_FILES =  \
 	$(OPTIONAL_JSRCS) \
 	'CodeManager$$IfTree.class' \
 	'CodeManager$$PtalonExpressionScope.class' \
-	'NestedActorManager$$ActorTree.class'
+	'PtalonEvaluator$$ActorTree.class'
 
 JCLASS = \
 	$(JSRCS:%.java=%.class) \

@@ -1,4 +1,4 @@
-header {/* ANTLR TreeParser that populates a PtalonActor using a NestedActorManager.
+header {/* ANTLR TreeParser that populates a PtalonActor using a PtalonEvaluator.
 
  Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
@@ -46,9 +46,9 @@ options {
 }
 
 {
-	private NestedActorManager info;
+	private PtalonEvaluator info;
 
-	public NestedActorManager getCodeManager() {
+	public PtalonEvaluator getCodeManager() {
 		return info;
 	}
 	
@@ -501,7 +501,7 @@ iterative_statement_evaluator throws PtalonRuntimeException
 ;
 
 
-actor_definition[NestedActorManager info] throws PtalonRuntimeException
+actor_definition[PtalonEvaluator info] throws PtalonRuntimeException
 {
 	this.info = info;
 	this.info.startAtTop();
