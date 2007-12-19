@@ -1895,7 +1895,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
 
             //List arguments = parseArgumentList(name);
 
-            result.append(_replaceMacro(macro, name));
+            try {
+                result.append(_replaceMacro(macro, name));
+            } catch (IllegalActionException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to replace the parameter \"" + name
+                        + "\" in the macro \"" + macro + "\"");
+            }
 
             String string = code.substring(closeParenIndex + 1, nextPos);
             result.append(string);
