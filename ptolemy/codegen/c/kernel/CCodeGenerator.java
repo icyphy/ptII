@@ -703,6 +703,8 @@ public class CCodeGenerator extends CodeGenerator {
         String functionDir = typeDir + "polymorphic/";
 
         _overloadedFunctions = new CodeStream(functionDir + "add.c", this);
+        _overloadedFunctions.parse(functionDir + "multiply.c");
+        _overloadedFunctions.parse(functionDir + "divide.c");
         _overloadedFunctions.parse(functionDir + "subtract.c");
         _overloadedFunctions.parse(functionDir + "convert.c");
         _overloadedFunctions.parse(functionDir + "negate.c");
