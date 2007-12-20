@@ -88,7 +88,6 @@ JSRCS = \
 	DebugListenerTableau.java \
 	DependencyHighlighter.java \
 	DialogTableau.java \
-	DoubleClickFactory.java \
 	EditorFactory.java \
 	EditorPaneFactory.java \
 	EditParametersDialog.java \
