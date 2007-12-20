@@ -50,7 +50,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	CodeManager.java \
 	NamedTree.java \
 	PtalonActor.java \
 	PtalonAST.java \
@@ -100,8 +99,6 @@ MISC_FILES =	doc lib test
 OPTIONAL_FILES =  \
 	doc \
 	$(OPTIONAL_JSRCS) \
-	'CodeManager$$IfTree.class' \
-	'CodeManager$$PtalonExpressionScope.class' \
 	'PtalonEvaluator$$ActorTree.class'
 
 JCLASS = \
