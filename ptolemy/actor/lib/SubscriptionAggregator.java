@@ -56,6 +56,15 @@ import ptolemy.kernel.util.NameDuplicationException;
  that matches the regular expression are aggregated using the
  operation given by the <i>operation</i> parameter.
 
+ <p>Note that the {@link ptolemy.actor.lib.Subscriber#channel <i>channel</i>}
+ parameter of the superclass is now a regular expression in this class.
+ Thus, this class is usually slower than the superclass.  One thing
+ to watch out for is using <code>.</code> instead of <code>\.</code>
+ and <code>*</code> instead of <code>.+</code>.
+ For example, <code>channel.foo.*</code> might be faster as
+ <code>channel\.foo.+</code>.
+  
+
  @author Edward A. Lee, Raymond A. Cardillo, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 5.2
@@ -170,6 +179,7 @@ public class SubscriptionAggregator extends Subscriber {
         if (_debugging) {
             _debug("Called fire()");
         }
+
         int width = input.getWidth();
         if (width == 0) {
             throw new IllegalActionException(this,
@@ -192,6 +202,28 @@ public class SubscriptionAggregator extends Subscriber {
         }
         output.send(0, result);
     }
+
+//     public void preinitialize() throws IllegalActionException {
+//         super.preinitialize();
+//         String pattern = "([^\\\\])\\.";                                   
+//         String replacement=  "$1\\\\.";
+//         String backslashed = channel.stringValue().replaceAll(pattern, replacement);
+//         System.out.println("SubscriptionAgg: old: " 
+//                 + channel.stringValue()
+//                 + " " + backslashed);
+
+//         pattern = "\\*";
+//         replacement = ".+";
+//         String backslashed2 = backslashed.replaceAll(pattern, replacement);
+
+//         System.out.println("SubscriptionAgg: old: " 
+//                 + channel.stringValue()
+//                 + " tmp: " + backslashed
+//                 + " new: " + backslashed2);
+
+//         channel.setExpression(backslashed2);
+//     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
