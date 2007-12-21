@@ -52,7 +52,6 @@ JSRCS = \
 	AnnotationEditorFactory.java \
 	AttributeBoundsManipulator.java \
 	ConfigureAction.java \
-	DoubleClickAction.java \
 	EditIconAction.java \
 	FigureAction.java \
 	FileEditorTableauFactory.java \
