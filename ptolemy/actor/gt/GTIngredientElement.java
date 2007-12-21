@@ -39,13 +39,20 @@ package ptolemy.actor.gt;
 */
 public class GTIngredientElement {
 
-    public GTIngredientElement(String name) {
+    public GTIngredientElement(String name, boolean canDisable) {
         _name = name;
+        _canDisable = canDisable;
+    }
+
+    public boolean canDisable() {
+        return _canDisable;
     }
 
     public String getName() {
         return _name;
     }
+
+    private boolean _canDisable;
 
     private String _name;
 }

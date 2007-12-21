@@ -28,12 +28,13 @@ package ptolemy.actor.gt.ingredients.operations;
 
 public class StringOperationElement extends OperationElement {
 
-    public StringOperationElement(String name) {
-        this(name, false);
+    public StringOperationElement(String name, boolean canDisable) {
+        this(name, canDisable, false);
     }
 
-    public StringOperationElement(String name, boolean acceptPtolemyExpression) {
-        super(name);
+    public StringOperationElement(String name, boolean canDisable,
+            boolean acceptPtolemyExpression) {
+        super(name, canDisable);
         _acceptPtolemyExpression = acceptPtolemyExpression;
     }
 

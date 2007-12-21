@@ -246,9 +246,9 @@ public class AttributeCriterion extends Criterion {
     private PtolemyExpressionString _attributeValue;
 
     private static final CriterionElement[] _ELEMENTS = {
-            new StringCriterionElement("name", false, false),
-            new ChoiceCriterionElement("type", false, true, true),
-            new StringCriterionElement("value", false, true) };
+            new StringCriterionElement("name", false, false, false),
+            new ChoiceCriterionElement("type", true, false, true, true),
+            new StringCriterionElement("value", true, false, true) };
 
     private static final ParseTreeEvaluator _TYPE_EVALUATOR = new ParseTreeEvaluator();
 

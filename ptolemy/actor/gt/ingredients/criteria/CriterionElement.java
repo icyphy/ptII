@@ -40,7 +40,7 @@ import ptolemy.actor.gt.GTIngredientElement;
  */
 public class CriterionElement extends GTIngredientElement {
 
-    public CriterionElement(String name) {
-        super(name);
+    public CriterionElement(String name, boolean canDisable) {
+        super(name, canDisable);
     }
 }

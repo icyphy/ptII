@@ -38,7 +38,7 @@ package ptolemy.actor.gt.ingredients.criteria;
  */
 public class BooleanCriterionElement extends CriterionElement {
 
-    public BooleanCriterionElement(String name) {
-        super(name);
+    public BooleanCriterionElement(String name, boolean canDisable) {
+        super(name, canDisable);
     }
 }

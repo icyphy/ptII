@@ -122,8 +122,9 @@ public class RenameOperation extends Operation {
         }
     }
 
-    private static final OperationElement[] _ELEMENTS = { new StringOperationElement(
-            "name", true) };
+    private static final OperationElement[] _ELEMENTS = {
+        new StringOperationElement("name", false, true)
+    };
 
     private String _name;
 }

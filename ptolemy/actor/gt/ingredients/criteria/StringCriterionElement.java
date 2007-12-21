@@ -28,13 +28,13 @@ package ptolemy.actor.gt.ingredients.criteria;
 
 public class StringCriterionElement extends CriterionElement {
 
-    public StringCriterionElement(String name) {
-        this(name, false, false);
+    public StringCriterionElement(String name, boolean canDisable) {
+        this(name, canDisable, false, false);
     }
 
-    public StringCriterionElement(String name, boolean acceptRegularExpression,
-            boolean acceptPtolemyExpression) {
-        super(name);
+    public StringCriterionElement(String name, boolean canDisable,
+            boolean acceptRegularExpression, boolean acceptPtolemyExpression) {
+        super(name, canDisable);
         _acceptRegularExpression = acceptRegularExpression;
         _acceptPtolemyExpression = acceptPtolemyExpression;
     }

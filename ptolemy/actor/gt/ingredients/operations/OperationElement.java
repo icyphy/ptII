@@ -40,7 +40,7 @@ import ptolemy.actor.gt.GTIngredientElement;
  */
 public class OperationElement extends GTIngredientElement {
 
-    public OperationElement(String name) {
-        super(name);
+    public OperationElement(String name, boolean canDisable) {
+        super(name, canDisable);
     }
 }

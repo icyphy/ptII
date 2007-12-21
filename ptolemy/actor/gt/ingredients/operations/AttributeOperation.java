@@ -263,9 +263,10 @@ public class AttributeOperation extends Operation {
     }
 
     private static final OperationElement[] _ELEMENTS = {
-            new StringOperationElement("name", false),
-            new StringOperationElement("type", false),
-            new StringOperationElement("value", true) };
+            new StringOperationElement("name", false, false),
+            new StringOperationElement("type", true, false),
+            new StringOperationElement("value", false, true)
+    };
 
     private String _attributeClass;
 

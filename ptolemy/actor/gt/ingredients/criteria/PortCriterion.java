@@ -277,11 +277,11 @@ public class PortCriterion extends Criterion {
     }
 
     private static final CriterionElement[] _ELEMENTS = {
-            new StringCriterionElement("name", true, false),
-            new ChoiceCriterionElement("type", false, true, true),
-            new BooleanCriterionElement("input"),
-            new BooleanCriterionElement("output"),
-            new BooleanCriterionElement("multi") };
+            new StringCriterionElement("name", true, true, false),
+            new ChoiceCriterionElement("type", true, false, true, true),
+            new BooleanCriterionElement("input", true),
+            new BooleanCriterionElement("output", true),
+            new BooleanCriterionElement("multi", true) };
 
     private boolean _input;
 

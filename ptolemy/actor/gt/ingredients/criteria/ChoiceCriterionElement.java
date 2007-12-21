@@ -43,13 +43,15 @@ import java.util.List;
  */
 public class ChoiceCriterionElement extends StringCriterionElement {
 
-    public ChoiceCriterionElement(String name) {
-        this(name, false, false, false);
+    public ChoiceCriterionElement(String name, boolean canDisable) {
+        this(name, canDisable, false, false, false);
     }
 
-    public ChoiceCriterionElement(String name, boolean acceptRegularExpression,
-            boolean acceptPtolemyExpression, boolean editable) {
-        super(name, acceptRegularExpression, acceptPtolemyExpression);
+    public ChoiceCriterionElement(String name, boolean canDisable,
+            boolean acceptRegularExpression, boolean acceptPtolemyExpression,
+            boolean editable) {
+        super(name, canDisable, acceptRegularExpression,
+                acceptPtolemyExpression);
         _editable = editable;
     }
 

@@ -557,8 +557,10 @@ public class GTIngredientsEditor extends PtolemyDialog implements
         JCheckBox[] checkBoxes = row.getCheckBoxs();
         JComponent[] components = row.getEditingComponents();
         for (int i = 0; i < checkBoxes.length; i++) {
-            ingredient.setEnabled(i, Boolean
-                    .valueOf(checkBoxes[i].isSelected()));
+            if (checkBoxes[i] != null) {
+                ingredient.setEnabled(i, Boolean
+                        .valueOf(checkBoxes[i].isSelected()));
+            }
             JComponent editor = components[i];
             if (editor instanceof JTextField) {
                 ingredient.setValue(i, ((JTextField) editor).getText());
@@ -1004,7 +1006,7 @@ public class GTIngredientsEditor extends PtolemyDialog implements
 
             for (int i = 0; i < _checkBoxes.length; i++) {
                 JComponent component = _components[i];
-                if (_checkBoxes[i].isSelected()) {
+                if (_checkBoxes[i] == null || _checkBoxes[i].isSelected()) {
                     if (selected) {
                         if (component instanceof ColorizedTextField) {
                             ColorizedTextField textField = (ColorizedTextField) component;
@@ -1091,7 +1093,7 @@ public class GTIngredientsEditor extends PtolemyDialog implements
             GTIngredientElement[] elements = ingredient.getElements();
             _components = new JComponent[elements.length];
             _checkBoxes = new JCheckBox[elements.length];
-
+            
             GridBagConstraints c = new GridBagConstraints();
             for (int i = 0; i < elements.length; i++) {
                 GTIngredientElement element = elements[i];
@@ -1101,18 +1103,32 @@ public class GTIngredientsEditor extends PtolemyDialog implements
                 panel.setOpaque(false);
 
                 String columnName = element.getName();
-                JPanel checkBoxPanel = new JPanel(new FlowLayout(
+
+                JPanel captionPanel = new JPanel(new FlowLayout(
                         FlowLayout.CENTER, 0, 0));
-                checkBoxPanel.setOpaque(false);
-                checkBoxPanel.setPreferredSize(new Dimension(0, 18));
-                JCheckBox checkBox = new JCheckBox(columnName);
-                checkBox.setOpaque(false);
-                checkBox.setBorder(_EMPTY_BORDER);
-                checkBox.setHorizontalAlignment(SwingConstants.CENTER);
-                checkBox.setVerticalAlignment(SwingConstants.TOP);
-                checkBox.addActionListener(new CheckBoxActionListener(i));
-                checkBoxPanel.add(checkBox);
-                panel.add(checkBoxPanel, BorderLayout.NORTH);
+                captionPanel.setOpaque(false);
+                captionPanel.setPreferredSize(new Dimension(0, 18));
+
+                JCheckBox checkBox = null;
+                boolean enabled;
+                if (element.canDisable()) {
+                    checkBox = new JCheckBox(columnName);
+                    checkBox.setOpaque(false);
+                    checkBox.setBorder(_EMPTY_BORDER);
+                    checkBox.setHorizontalAlignment(SwingConstants.CENTER);
+                    checkBox.setVerticalAlignment(SwingConstants.TOP);
+                    checkBox.addActionListener(new CheckBoxActionListener(i));
+                    captionPanel.add(checkBox);
+
+                    enabled = ingredient.isEnabled(i);
+                    checkBox.setSelected(enabled);
+                } else {
+                    JLabel label = new JLabel(columnName);
+                    captionPanel.add(label);
+
+                    enabled = true;
+                }
+                panel.add(captionPanel, BorderLayout.NORTH);
 
                 JComponent component = _getComponent(element);
                 component.setPreferredSize(new Dimension(0, 20));
@@ -1121,15 +1137,13 @@ public class GTIngredientsEditor extends PtolemyDialog implements
 
                 c.fill = GridBagConstraints.HORIZONTAL;
                 c.weightx = _getColumnWidth(component);
-                c.gridx = i;
+                c.gridx = i + 1;
                 c.gridy = 0;
                 _rightPanel.add(panel, c);
 
                 _checkBoxes[i] = checkBox;
                 _components[i] = component;
 
-                boolean enabled = ingredient.isEnabled(i);
-                checkBox.setSelected(enabled);
                 _setEnablement(component, enabled);
             }
         }
