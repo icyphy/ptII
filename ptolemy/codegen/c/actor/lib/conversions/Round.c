@@ -1,7 +1,7 @@
 /*** sharedBlock ***/
-#if PT_NO_RINT
-/* Atmel AVR does not have rint() */
-#define rint(x) (floor((x)+0.5f))
+#if PT_NO_ROUND
+/* Atmel AVR might not have round() */
+#define round(x) (floor((x)+0.5f))
 #endif
 /**/
 
@@ -14,7 +14,7 @@ $ref(output) = floor($ref(input));
 /**/
 
 /*** roundBlock ***/
-$ref(output) = rint($ref(input));
+$ref(output) = round($ref(input));
 /**/
 
 /*** truncateBlock ***/
