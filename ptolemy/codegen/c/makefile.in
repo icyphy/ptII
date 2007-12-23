@@ -26,11 +26,24 @@ USER_CC_FLAGS =
 # We use -ggdb because -g fails with very large .c files
 DEBUG = -ggdb
 
+# Flags for warnings
+# Use -Wall so we have better code.
+WARNING_CC_FLAGS = -Wall
+
+# To compile very large C files, try:
+# make -f @ModelName@.mk WARNING_CC_FLAGS= USER_CC_FLAGS="-pipe -O0 --verbose -Q"
+# Each of the options above:
+#   No -Wall:  avoid any optimization
+#   -pipe: avoid temporary files
+#   -O0: avoid optimization
+#   --verbose: print out steps
+#   -Q: print out what functions are being compiled and timing stats.
+
+
 # We need -lm so we can get floor() for ftoi() 
 # We need -D__int64="long long" when invoking jni interface under cygwin
-# Use -Wall so we have better code.
 @modelName@: @modelName@.c
-	@PTCGCompiler@ -D__int64="long long" -Wall $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) @modelName@.c $(PTCGINCLUDES) -o @modelName@ -lm $(PTCGLIBRARIES)
+	@PTCGCompiler@ -D__int64="long long" $(WARNING_CC_FLAGS) $(CC_FLAGS) $(USER_CC_FLAGS) $(DEBUG) @modelName@.c $(PTCGINCLUDES) -o @modelName@ -lm $(PTCGLIBRARIES)
 
 # Rule to compile with different optimizers
 O_FLAGS=-O0 -O -Os -O2 -O3
