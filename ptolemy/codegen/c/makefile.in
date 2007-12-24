@@ -31,7 +31,7 @@ DEBUG = -ggdb
 WARNING_CC_FLAGS = -Wall
 
 # To compile very large C files, try:
-# make -f @ModelName@.mk WARNING_CC_FLAGS= USER_CC_FLAGS="-pipe -O0 --verbose -Q"
+# make -f @modelName@.mk WARNING_CC_FLAGS= USER_CC_FLAGS="-pipe -O0 --verbose -Q"
 # Each of the options above:
 #   No -Wall:  avoid any optimization
 #   -pipe: avoid temporary files
