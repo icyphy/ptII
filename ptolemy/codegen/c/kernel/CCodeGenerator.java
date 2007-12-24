@@ -30,6 +30,7 @@ package ptolemy.codegen.c.kernel;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -651,6 +652,67 @@ public class CCodeGenerator extends CodeGenerator {
     public String generateWrapupProcedureName() throws IllegalActionException {
 
         return _INDENT1 + "wrapup();" + _eol;
+    }
+
+    /** Split a long function body into multiple functions.
+     *  @param linesPerMethod The number of lines that should go into
+     *  each method.
+     *  @param prefix The prefix to use when naming functions that
+     *  are created
+     *  @param code The method body to be split.
+     *  @return An array of two Strings, where the first element
+     *  is the new definitions (if any), and the second element
+     *  is the new body.  If the number of lines in the code parameter
+     *  is less than linesPerMethod, then the first element will be
+     *  the empty string and the second element will be the value of
+     *  the code parameter.
+     *  @exception IOException If thrown will reading the code.
+     */
+    public static String[] splitLongBody(int linesPerMethod, String prefix, String code) throws IOException {
+        BufferedReader bufferedReader = null;
+        StringBuffer bodies = new StringBuffer();
+        StringBuffer masterBody = new StringBuffer();
+
+        try {
+            bufferedReader = new BufferedReader(new StringReader(code));
+            String line;
+            int methodNumber = 0;
+            int lineNumber = 0;
+            StringBuffer body = new StringBuffer();
+            while ((line = bufferedReader.readLine()) != null) {
+                String methodName = prefix + "_" + methodNumber++;
+                body = new StringBuffer(line + _eol);
+                for (int i = 0;
+                         (i+1) < linesPerMethod && line != null;
+                     i++) {
+                    lineNumber++;
+                    line = bufferedReader.readLine();
+                    if (line != null) {
+                        body.append(line + _eol);
+                    }
+                }
+
+                bodies.append("void " + methodName + "(void) {" + _eol
+                            + body.toString() + "}" + _eol);
+                masterBody.append(methodName + "();" + _eol);
+            }            
+            if (lineNumber < linesPerMethod) {
+                // We must have less than linesPerMethod lines in the body
+                bodies = new StringBuffer();
+                masterBody = new StringBuffer(body);
+            } 
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException ex) {
+                    // Ignore
+                }
+            }
+        }
+
+        String [] results = { bodies.toString(), masterBody.toString()};
+        return results;
     }
 
     ///////////////////////////////////////////////////////////////////
