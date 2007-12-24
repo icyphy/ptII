@@ -582,9 +582,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         //if (containsCode(variableInitCode)
         //        || containsCode(initializeCode)) {
+
+        String [] splitInitializeCode = _splitBody("_initialize",
+                initializeCode);
+        code.append(splitInitializeCode[0]);
         code.append(initializeEntryCode);
         code.append(variableInitCode);
-        code.append(initializeCode);
+        code.append(splitInitializeCode[1]);
         code.append(initializeExitCode);
         //}
 
@@ -592,15 +596,20 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // if (isTopLevel()) {
             //                          code.append(postfireProcedureName);
             //            } else {
+            String [] splitPostfireCode = _splitBody("_postfire",
+                    _postfireCode);
+            code.append(splitPostfireCode[0]);
             code.append(postfireEntryCode);
-            code.append(_postfireCode);
+            code.append(splitPostfireCode[1]);
             code.append(postfireExitCode);
             //            }
         }
 
         //if (containsCode(wrapupCode)) {
+        String [] splitWrapupCode = _splitBody("_wrapup", wrapupCode);
+        code.append(splitWrapupCode[0]);
         code.append(wrapupEntryCode);
-        code.append(wrapupCode);
+        code.append(splitWrapupCode[1]);
         code.append(wrapupExitCode);
         //}
 
@@ -1208,6 +1217,32 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         super.setContainer(container);
     }
 
+    /** Split a long function body into multiple functions.
+
+     *  <p>In this base class, since we don't know what the target
+     *  language will be, the first element is the empty string, the
+     *  second element is the code argument.
+
+     *  @param linesPerMethod The number of lines that should go into
+     *  each method.
+     *  @param prefix The prefix to use when naming functions that
+     *  are created
+     *  @param code The method body to be split.
+     *  @return An array of two Strings, where the first element
+     *  is the new definitions (if any), and the second element
+     *  is the new body.  If the number of lines in the code parameter
+     *  is less than linesPerMethod, then the first element will be
+     *  the empty string and the second element will be the value of
+     *  the code parameter.  In this base class, the first element
+     *  is always the empty string and the second element is the value
+     *  of the code parameter.
+     *  @exception IOException If thrown will reading the code.
+     */
+    public String[] splitLongBody(int linesPerMethod, String prefix, String code) throws IOException {
+        String [] results = { "", code};
+        return results;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -1786,6 +1821,25 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return result;
     }
 
+    /** Split the code. */
+    private String[] _splitBody(String prefix, String code) {
+        // Split the initialize body into multiple methods
+        // so that the compiler has an easier time.
+        String [] results = null;
+        try {
+            results = splitLongBody(_LINES_PER_METHOD,
+                    prefix
+                    + CodeGeneratorHelper.generateName(getContainer()),
+                    code);
+        } catch (IOException ex) {
+            // Ignore
+            System.out.println("Warning: Failed to split code: " + ex);
+            ex.printStackTrace();
+            results = new String[] { "", code}; 
+        }
+        return results;
+    }
+
     /** Set the parameters in the model stored in _parameterNames
      *  to the values given by _parameterValues. Those lists are
      *  populated by command line arguments.
@@ -1926,4 +1980,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** List of parameter values seen on the command line. */
     private static List<String> _parameterValues;
 
+    /** Maximum number of lines in initialize(), postfire() and wrapup()
+     *  methodS. This variable is used to make smaller methods so that
+     *  compilers take less time.*/
+    private static int _LINES_PER_METHOD = 100;
 }
