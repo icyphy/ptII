@@ -668,7 +668,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  the code parameter.
      *  @exception IOException If thrown will reading the code.
      */
-    public static String[] splitLongBody(int linesPerMethod, String prefix, String code) throws IOException {
+    public String[] splitLongBody(int linesPerMethod, String prefix, String code) throws IOException {
         BufferedReader bufferedReader = null;
         StringBuffer bodies = new StringBuffer();
         StringBuffer masterBody = new StringBuffer();
