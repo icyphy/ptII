@@ -1723,16 +1723,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     private ActorCodeGenerator _getTargetHelper(NamedObj component)
             throws IllegalActionException {
-        System.out.println("CodeGenerator: helperClassName");
-
         // FIXME: Do we want to cache the targetHelper?
         //if (_helperStore.containsKey(component)) {
         //    return (ActorCodeGenerator) _helperStore.get(component);
         //}
 
-
         String targetValue = target.getExpression();
-        System.out.println("CodeGenerator: helperClassName: target: " +  targetValue);
         if (targetValue.equals(_DEFAULT_TARGET)) {
             return null;
         }
@@ -1742,7 +1738,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             + targetValue.substring(1);
         String helperClassName = packageName + ".targets." + targetValue
             + "." + upcaseTarget + "Target";
-        System.out.println("CodeGenerator: helperClassName: " + helperClassName);
         return  _instantiateHelper(component, helperClassName);
     }
 
