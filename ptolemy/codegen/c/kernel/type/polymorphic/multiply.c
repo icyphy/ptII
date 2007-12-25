@@ -115,6 +115,12 @@ Token multiply_Long_Token(long long a1, Token a2) {
 }
 /**/
 
+/*** multiply_Matrix_Matrix() ***/
+inline Token multiply_Matrix_Matrix(Token a1, Token a2) {
+    return Matrix_multiply(a1, a2);
+}
+/**/
+
 /*** multiply_Token_Double() ***/
 inline Token multiply_Token_Double(Token a1, double a2) {
     return $multiply_Double_Token(a2, a1);
