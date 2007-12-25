@@ -167,3 +167,10 @@ inline Token divide_Token_Token(Token a1, Token a2) {
 }
 /**/
 
+/***divide_one_Double***/
+double divide_one_Double(double d, ...) {
+    return 1.0/d;
+}
+
+/**/
+

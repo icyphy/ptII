@@ -7,7 +7,7 @@ $actorSymbol(result) = $convert_$type1_$type2($ref(multiply#0));
 /**/
 
 /***divideOnlyInitProduct($divideType)***/
-$actorSymbol(result) = $divideType_zero($ref(divide#0));
+$actorSymbol(result) = $divide_one_$divideType($ref(divide#0));
 /**/
 
 /***multiplyBlock($channel, $type1, $type2)***/
