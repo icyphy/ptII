@@ -131,6 +131,22 @@ Token divide_Long_Token(long long a1, Token a2) {
 }
 /**/
 
+/*** divide_Matrix_Double() ***/
+inline Token divide_Matrix_Double(Token a1, double a2) {
+    int i, j;
+    Token result = $new(Matrix(a1.payload.Matrix->row, 
+                    a1.payload.Matrix->column, 0));
+
+    for (i = 0; i < a1.payload.Matrix->row; i++) {
+        for (j = 0; j < a1.payload.Matrix->column; j++) {
+            Matrix_set(result, i, j,
+                    $divide_Token_Double(Matrix_get(a1, i, j), a2));
+        }
+    }
+    return result;
+}
+/**/
+
 /*** divide_Token_Double() ***/
 inline Token divide_Token_Double(Token a1, double a2) {
     Token token = $new(Double(a2));
