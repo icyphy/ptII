@@ -1,3 +1,9 @@
+/*** convert_Matrix_Matrix() ***/
+inline Token convert_Matrix_Matrix(Token a1) {
+    return a1;
+}
+/**/
+
 /*** multiply_Array_Array() ***/
 inline Token multiply_Array_Array(Token a1, Token a2) {
     return $Array_multiply(a1, a2);
