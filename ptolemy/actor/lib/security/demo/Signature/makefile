@@ -92,7 +92,7 @@ KEYALIAS = claudius
 STOREPASSWORD = -storepass this.is.the.storePassword,change.it
 KEYPASSWORD = -keypass this.is.the.keyPassword,change.it
 
-KEYTOOL = "$(PTJAVA_DIR)/bin/keytool"
+KEYTOOL = $(PTJAVA_DIR)/bin/keytool
 
 $(KEYSTORE): 
 	"$(KEYTOOL)" -genkey \
