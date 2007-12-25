@@ -356,7 +356,7 @@ public class CodeStream {
     }
 
     /**
-     * Return a StringBuffer that contains all the code block names and
+     * Return a String that contains all the code block names and
      * bodies from the associated helper .[target] file.
      * @return The content from parsing the helper .[target] file.
      * @exception IllegalActionException If an error occurs during parsing.
