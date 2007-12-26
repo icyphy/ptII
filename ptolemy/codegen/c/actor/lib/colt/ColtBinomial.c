@@ -1,4 +1,4 @@
 
 /*** binomialDistributionBlock ***/
-$ref(output) = ColtRandomSource_BinomialDistribution($val(n), $val(p), &$actorSymbol(current));
+$ref(output) = ColtRandomSource_BinomialDistribution($ref(n), $ref(p), &$actorSymbol(current));
 /**/
