@@ -421,7 +421,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
 
     /** Exit the current actor declaration.
      *
-     *  @exception PtalonRuntimeException If already at the top-level if scope.
+     *  @exception PtalonRuntimeException If already at the top-level
+     *  if scope.
      */
     public void exitActorDeclaration() throws PtalonRuntimeException {
         if (_currentActorTree == null) {
@@ -430,9 +431,11 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
         _currentActorTree = _currentActorTree.getParent();
     }
 
-    /** Returns true if the current actor declaration is ready to be created.
+    /** Returns true if the current actor declaration is ready to be
+     *  created.
      *
-     *  @return true if the current actor declaration is ready to be created.
+     *  @return true If the current actor declaration is ready to be
+     *  created.
      *  @exception PtalonRuntimeException If thrown trying to access a
      *  parameter, or if there is no actor declaration to create.
      */
@@ -482,8 +485,10 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
 
     /** Pop an actor off of the current tree and return the name.
      *
-     *  @return The unique name of the actor declaration being popped from.
-     *  @exception PtalonScopeException If not inside an actor declaration.
+     *  @return The unique name of the actor declaration being popped
+     *  from.
+     *  @exception PtalonScopeException If not inside an actor
+     *  declaration.
      */
     public String popActorDeclaration() throws PtalonScopeException {
         if (_currentActorTree == null) {
@@ -530,8 +535,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
         _currentActorTree.setActorParameter(paramName);
     }
 
-    /** Set the symbol in the PtalonCode which represents this AbstractPtalonEvaluator's
-     *  actor.
+    /** Set the symbol in the PtalonCode which represents this
+     *  AbstractPtalonEvaluator's actor.
      *
      *  @param symbol The name of this actor in the Ptalon file.
      *  @exception PtalonScopeException If the symbol has been added
@@ -775,7 +780,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
          *  and given a flow type if possible.
          *
          *  @param portName The name of the port in the specified actor.
-         *  @param connectPoint The name of the container's port or relation.
+         *  @param connectPoint The name of the container's port or
+         *  relation.
          *  @exception PtalonScopeException If this is not a top-level
          *  actor declaration with respect to the assignment, or if
          *  connectPoint is not a port or relation.
@@ -1046,7 +1052,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
          *    a := b(c := d())(n := <2/>)
          *
          *  @return A string containing the expression.
-         *  @exception PtalonRuntimeException
+         *  @exception PtalonRuntimeException If no parameter name has
+         *  been assigned to this actor.
          */
         public String getExpression() throws PtalonRuntimeException {
             if (_actorParameter == null) {
@@ -1101,7 +1108,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
 
         /** Get the AbstractPtalonEvaluator symbol.
          *
-         *  @return The AbstractPtalonEvaluator symbol for this actor declaration.
+         *  @return The AbstractPtalonEvaluator symbol for this actor
+         *  declaration.
          */
         public String getSymbol() {
             return _symbol;
@@ -1109,7 +1117,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
 
         /** Return true if this nested actor is ready to be created.
          *
-         *  @return True if this nested actor is ready to be created.
+         *  @return true If this nested actor is ready to be created.
          *  @exception PtalonRuntimeException If there is problem
          *  accessing any parameters.
          */
@@ -1651,9 +1659,9 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             _actorParameter = paramName;
         }
 
-        /** Set the symbol in the AbstractPtalonEvaluator this actor declaration
-         *  refers to.  It should have type "actorparameter" or
-         *  "import".
+        /** Set the symbol in the AbstractPtalonEvaluator this actor
+         *  declaration refers to.  It should have type
+         *  "actorparameter" or "import".
          *
          *  @param symbol The symbol to set.
          */
@@ -1663,8 +1671,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
 
         /** Write an xml version of this actor to the given output.
          *
-         *  @param output The writer to send the output to.
-         *  @param depth The depth of indents to start with.
+         *  @param output The writer to which to send the output.
+         *  @param depth The depth of indents with which to start.
          *  @exception IOException If there is a problem writing to
          *  the output.
          */

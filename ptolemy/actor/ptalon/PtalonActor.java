@@ -549,7 +549,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  the value of the underlying expression).
      *  @see #attributeChanged(Attribute)
      *  @param p The PtalonParameter to check.
-     *  @return True if value has changed.
+     *  @return true If value has changed.
      *  @exception IllegalActionException If unable to compare the token
      *  value of p with its previously stored value.
      */

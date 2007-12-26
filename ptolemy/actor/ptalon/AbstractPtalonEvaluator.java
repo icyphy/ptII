@@ -802,7 +802,7 @@ public abstract class AbstractPtalonEvaluator {
     /** Return true if the given symbol exists in the current scope.
      *
      *  @param symbol The symbol to test.
-     *  @return true if the given symbol exists in the current scope.
+     *  @return true If the given symbol exists in the current scope.
      */
     public boolean inScope(String symbol) {
         List<IfTree> ancestors = _currentIfTree.getAncestors();
@@ -819,7 +819,7 @@ public abstract class AbstractPtalonEvaluator {
      *  scope.
      *
      *  @param symbol The symbol to test.
-     *  @return true if an entity was created for this symbol.
+     *  @return true If an entity was created for this symbol.
      *  @exception PtalonRuntimeException If the symbol is not in the
      *  current scope.
      */
@@ -870,7 +870,7 @@ public abstract class AbstractPtalonEvaluator {
      *  values, and when in a branch of an if-block or for-block that
      *  is active.
      *
-     *  @return true if the current for-block scope is ready to be entered.
+     *  @return true If the current for-block scope is ready to be entered.
      *  @exception PtalonRuntimeException If it is thrown trying to
      *  access a parameter.
      */
@@ -884,7 +884,7 @@ public abstract class AbstractPtalonEvaluator {
      *  all parameters in the containing scope have been assigned
      *  values, and when in a branch of an if-block that is active.
      *
-     *  @return true if the current if-block scope is ready to be entered.
+     *  @return true If the current if-block scope is ready to be entered.
      *  @exception PtalonRuntimeException If it is thrown trying to
      *  access a parameter.
      */
@@ -913,7 +913,7 @@ public abstract class AbstractPtalonEvaluator {
      *  parameters in the containing scope have been assigned values,
      *  and when in a branch of an if-block that is active.
      *
-     *  @return true if the current if-block scope is ready to be entered.
+     *  @return true If the current if-block scope is ready to be entered.
      *  @exception PtalonRuntimeException If it is thrown trying to
      *  access a parameter.
      */
@@ -1110,7 +1110,7 @@ public abstract class AbstractPtalonEvaluator {
 
     /** Return true if in a new iteration of a while block.
      *
-     *  @return true if in a new iteration of a while block.
+     *  @return true If in a new iteration of a while block.
      */
     protected boolean _inNewWhileIteration() {
         return _currentIfTree.inNewWhileIteration();
@@ -1378,7 +1378,7 @@ public abstract class AbstractPtalonEvaluator {
         /** Return the active branch, which may be null if it has not
          *  yet been set.
          *
-         *  @return the active branch
+         *  @return The active branch
          *  @see #setActiveBranch
          */
         public Boolean getActiveBranch() {
@@ -1398,7 +1398,7 @@ public abstract class AbstractPtalonEvaluator {
         /** Return true if we are in the main scope or the true part
          *  of a true branch.
          *
-         *  @return true if in main scope or true part of a true branch.
+         *  @return true If in main scope or true part of a true branch.
          *  @see #setCurrentBranch
          */
         public boolean getCurrentBranch() {
@@ -1409,7 +1409,7 @@ public abstract class AbstractPtalonEvaluator {
          *  looking deep into for loops for potential matches.
          *
          *  @param symbol The symbol to test.
-         * @return The unique name.
+         *  @return The unique name.
          *  @exception PtalonRuntimeException If no such symbol exists.
          */
         public String getDeepMappedName(String symbol)
@@ -1500,7 +1500,7 @@ public abstract class AbstractPtalonEvaluator {
          *  current scope.
          *
          *  @param symbol The symbol to test.
-         *  @return true if an entity was created for this symbol.
+         *  @return true If an entity was created for this symbol.
          *  @exception PtalonRuntimeException If the symbol is not in
          *  the current scope.
          */
@@ -1521,7 +1521,7 @@ public abstract class AbstractPtalonEvaluator {
          *  deeply in this scope through some for loop.
          *
          *  @param symbol The symbol to test.
-         *  @return true if symbol is in the right scope.
+         *  @return true If symbol is in the right scope.
          */
         public boolean inDeepScope(String symbol) {
             if ((_currentBranch || isForStatement)
@@ -1581,7 +1581,7 @@ public abstract class AbstractPtalonEvaluator {
          *  the PtalonActor, and in the case of parameters, that the
          *  user has provided a value for the parameter.
          *
-         *  @return True if all the symbols in this if block have been
+         *  @return true If all the symbols in this if block have been
          *  assigned a value.
          *  @exception PtalonRuntimeException If there is any problem
          *  accessing a parameter.
@@ -1634,7 +1634,7 @@ public abstract class AbstractPtalonEvaluator {
 
         /** Return true if in a new iteration of a while block.
          *
-         *  @return true if in a new iteration of a while block.
+         *  @return true If in a new iteration of a while block.
          */
         public boolean inNewWhileIteration() {
             if (isForStatement) {

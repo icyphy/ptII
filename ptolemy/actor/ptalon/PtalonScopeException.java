@@ -40,23 +40,18 @@ package ptolemy.actor.ptalon;
  */
 public class PtalonScopeException extends Exception {
 
-    /**
-     * Generate a Ptalon ScopeException.
+    /** Generate a Ptalon ScopeException.
      *
-     * @param message
-     *                An explanation of the offense
+     *  @param message An explanation of the offense
      */
     public PtalonScopeException(String message) {
         super(message);
     }
 
-    /**
-     * Generate a Ptalon ScopeException.
+    /** Generate a Ptalon ScopeException.
      *
-     * @param message
-     *                An explanation of the offense.
-     * @param cause
-     *                The cause of the offense.
+     *  @param message An explanation of the offense.
+     *  @param cause The cause of the offense.
      */
     public PtalonScopeException(String message, Throwable cause) {
         super(message, cause);

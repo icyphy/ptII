@@ -1,4 +1,4 @@
-/* An Exception that occurs while trying to populate the PtalonActor in the  Ptalon interpreter.
+/* An Exception that occurs while trying to populate the PtalonActor in the Ptalon interpreter.
 
  Copyright (c) 2006-2007 The Regents of the University of California.
  All rights reserved.
@@ -29,8 +29,8 @@
 package ptolemy.actor.ptalon;
 
 /**
- * An Exception that occurs while trying to populate the PtalonActor in the
- * Ptalon interpreter.
+ * An Exception that occurs while trying to populate the PtalonActor
+ * in the Ptalon interpreter.
  *
  * @author Adam Cataldo, Elaine Cheong
  * @version $Id$
@@ -40,23 +40,18 @@ package ptolemy.actor.ptalon;
  */
 public class PtalonRuntimeException extends Exception {
 
-    /**
-     * Create a PtalonRuntimeException.
+    /** Create a PtalonRuntimeException.
      *
-     * @param message
-     *                An explanation of the offense.
+     *  @param message An explanation of the offense.
      */
     public PtalonRuntimeException(String message) {
         super(message);
     }
 
-    /**
-     * Create a PtalonRuntimeException.
+    /** Create a PtalonRuntimeException.
      *
-     * @param message
-     *                An explanation of the offense.
-     * @param cause
-     *                The cause of the offense.
+     *  @param message An explanation of the offense.
+     *  @param cause The cause of the offense.
      */
     public PtalonRuntimeException(String message, Throwable cause) {
         super(message, cause);

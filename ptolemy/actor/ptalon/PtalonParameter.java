@@ -71,7 +71,7 @@ public class PtalonParameter extends Parameter {
     ////                         public methods                    ////
 
     /** Return true if this parameter's value has been set.
-     *  @return True if this parameter's value has been set.
+     *  @return true If this parameter's value has been set.
      */
     public boolean hasValue() {
         return _hasValue;
