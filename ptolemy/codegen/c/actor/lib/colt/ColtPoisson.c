@@ -1,4 +1,4 @@
 
 /*** poissonDistributionBlock ***/
-$ref(output) = ColtRandomSource_PoissonDistribution($val(mean), &$actorSymbol(current));
+$ref(output) = ColtRandomSource_PoissonDistribution($ref(mean), &$actorSymbol(current));
 /**/
