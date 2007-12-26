@@ -583,11 +583,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         //if (containsCode(variableInitCode)
         //        || containsCode(initializeCode)) {
 
-        String [] splitInitializeCode = _splitBody("_initialize",
+        String [] splitVariableInitCode = _splitBody("_varinit_",
+                variableInitCode);
+        code.append(splitVariableInitCode[0]);
+
+        String [] splitInitializeCode = _splitBody("_initialize_",
                 initializeCode);
         code.append(splitInitializeCode[0]);
+
         code.append(initializeEntryCode);
-        code.append(variableInitCode);
+        code.append(splitVariableInitCode[1]);
         code.append(splitInitializeCode[1]);
         code.append(initializeExitCode);
         //}
@@ -596,7 +601,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // if (isTopLevel()) {
             //                          code.append(postfireProcedureName);
             //            } else {
-            String [] splitPostfireCode = _splitBody("_postfire",
+            String [] splitPostfireCode = _splitBody("_postfire_",
                     _postfireCode);
             code.append(splitPostfireCode[0]);
             code.append(postfireEntryCode);
@@ -606,10 +611,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
 
         //if (containsCode(wrapupCode)) {
-        String [] splitWrapupCode = _splitBody("_wrapup", wrapupCode);
-        code.append(splitWrapupCode[0]);
+
+        // FIXME: The wrapup code can span multiple lines, so
+        // our first attempt will not work.
+        //String [] splitWrapupCode = _splitBody("_wrapup_", wrapupCode);
+        //code.append(splitWrapupCode[0]);
         code.append(wrapupEntryCode);
-        code.append(splitWrapupCode[1]);
+        //code.append(splitWrapupCode[1]);
+        //code.append(wrapupCode);
         code.append(wrapupExitCode);
         //}
 
