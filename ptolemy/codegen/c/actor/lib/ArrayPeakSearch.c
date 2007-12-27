@@ -179,7 +179,7 @@ $ref(peakIndices) = $new(Array(0, 0));
 
         if ($ref(peakIndices).payload.Array->size == 0) {
             Array_insert($ref(peakValues), Array_get($ref(input), $actorClass(start)));
-            Array_insert($ref(peakIndices), $new(Int($val(startIndex))));
+            Array_insert($ref(peakIndices), $new(Int($ref(startIndex))));
         }
 
 /**/
