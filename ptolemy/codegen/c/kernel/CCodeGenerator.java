@@ -1209,6 +1209,14 @@ public class CCodeGenerator extends CodeGenerator {
         return buffer.toString();
     }
 
+    /** Add called functions to the set of overloaded functions for
+     *  later use.
+     *  If the function starts with "Array_", add everything after the
+     *  "Array_" is added to the set of token functions used.
+     *  @param name The name of the function, for example "Double_equals"
+     *  @param helper The corresponding helper that contains the
+     *  codeBlock.
+     */
     public void markFunctionCalled(String name, CCodeGeneratorHelper helper)
             throws IllegalActionException {
 
@@ -1223,6 +1231,14 @@ public class CCodeGenerator extends CodeGenerator {
 
                 _overloadedFunctionSet.add(name);
             }
+            if (name.startsWith("Array_")) {
+                // Array_xxx might need to have xxx added.
+                // See c/actor/lib/test/auto/MultiplyDivide5.xml
+
+                // FIXME: this will add any function, which means that
+                // if the user has Array_foo, foo is added.  Is this right?
+                _tokenFuncUsed.add(name.substring(6).toString());
+            } 
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to mark function called for \"" + name + "\" in \""
