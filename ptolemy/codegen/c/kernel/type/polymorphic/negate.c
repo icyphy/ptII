@@ -19,6 +19,6 @@
 /**/
 
 /*** negate_Token() ***/
-#define negate_Token_Token(a) $tokenFunc(a::negate())
+#define negate_Token(a) $tokenFunc(a::negate())
 /**/
 
