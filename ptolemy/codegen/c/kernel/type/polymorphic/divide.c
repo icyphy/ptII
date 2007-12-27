@@ -167,10 +167,42 @@ inline Token divide_Token_Token(Token a1, Token a2) {
 }
 /**/
 
-/***divide_one_Double***/
-double divide_one_Double(double d, ...) {
+/***divide_one_Array***/
+inline Token divide_one_Array(Token a1, ...) {
+    Token oneToken = $tokenFunc(a1::one(a1));
+    return $Array_divide(oneToken, a1);
+}
+/**/
+
+/*** divide_one_Boolean ***/
+inline double divide_one_Boolean(boolean b, ...) {
+    // FIXME: is this right?
+    return b;
+}
+/**/
+
+/*** divide_one_Double ***/
+inline double divide_one_Double(double d, ...) {
     return 1.0/d;
 }
+/**/
 
+/*** divide_one_Int ***/
+inline int divide_one_Int(int i, ...) {
+    return 1/i;
+}
+/**/
+
+/*** divide_one_Long ***/
+inline long divide_one_Long(long l, ...) {
+    return 1L/l;
+}
+/**/
+
+/*** divide_one_Token ***/
+inline long divide_one_Token(Token a1, ...) {
+    Token oneToken = $tokenFunc(a1::one(a1));
+    return $divide_Token_Token(a1, token);
+}
 /**/
 
