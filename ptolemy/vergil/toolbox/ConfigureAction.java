@@ -124,12 +124,16 @@ public class ConfigureAction extends FigureAction {
      */
     private void _openDialog(Frame parent, NamedObj target, ActionEvent event) {
         List attributeList = target.attributeList(EditorFactory.class);
-        // Use the EditorFactory only if the alt key is not pressed.
         boolean altKeyPressed = false;
         if (event != null) {
             altKeyPressed = (event.getModifiers() & ActionEvent.ALT_MASK) != 0;
         }
-        if (attributeList.size() > 0 && !altKeyPressed) {
+
+        //Use the EditorFactory if the alt key is not pressed and the 
+        // action command is not "Configure".
+        if (attributeList.size() > 0 && !altKeyPressed 
+                && !event.getActionCommand().equals("Configure")) {
+            
             EditorFactory factory = (EditorFactory) attributeList.get(0);
             factory.createEditor(target, parent);
         } else {
