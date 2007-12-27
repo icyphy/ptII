@@ -37,8 +37,11 @@ if (($actorSymbol(trialsRemaining) > 0) && ($actorSymbol(sourceValues_$num) > 0)
         $actorSymbol(selected) = $actorSymbol(trialsRemaining);
     }
 }
-$ref(output#$num) = $actorSymbol(selected);
+
 $actorSymbol(trialsRemaining) -= $actorSymbol(selected);
 $actorSymbol(sourcePool) -= $actorSymbol(sourceValues_$num);
 /**/
 
+/***fireBlock($num)***/
+$ref(output#$num) = $actorSymbol(selected);
+/**/

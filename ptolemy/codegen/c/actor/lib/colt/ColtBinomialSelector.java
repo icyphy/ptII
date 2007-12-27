@@ -146,6 +146,14 @@ public class ColtBinomialSelector extends ColtRandomSource {
             args.set(0, Integer.valueOf(i));
             // code.append(_generateBlockCode("binomialSelectorBlock", args));
             _codeStream.appendCodeBlock("binomialSelectorBlock", args);
+            if (actor.output.numberOfSinks() > 0) {
+                // Only transfer output if somethings is connected to output
+                _codeStream.appendCodeBlock("fireBlock", args);
+            } else {
+                System.out.println("Warning, nothing connected "
+                        + "to the output of "
+                        + actor.getFullName());
+            }
         }
         // return processCode(code.toString());
         return processCode(_codeStream.toString());
