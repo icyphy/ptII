@@ -4,9 +4,9 @@ Token $actorSymbol(valueArray);
 /**/
 
 /*** fireBlock ***/
-$actorSymbol(valueArray) = $new(Array($val(arrayLength), 0));
+$actorSymbol(valueArray) = $new(Array($ref(arrayLength), 0));
 for ($actorSymbol(i) = 0;
-     $actorSymbol(i) < $val(arrayLength);
+     $actorSymbol(i) < $ref(arrayLength);
      $actorSymbol(i)++) {
     Array_set($actorSymbol(valueArray),
             $actorSymbol(i),

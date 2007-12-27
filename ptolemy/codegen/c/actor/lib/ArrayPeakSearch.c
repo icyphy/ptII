@@ -31,8 +31,8 @@ $ref(peakIndices) = $new(Array(0, 0));
             Array_set($ref(peakIndices), $actorClass(i), Array_get($ref(input), $actorClass(i)));
         }
     } else {
-        $actorClass(start) = $val(startIndex);
-        $actorClass(end) = $val(endIndex);
+        $actorClass(start) = $ref(startIndex);
+        $actorClass(end) = $ref(endIndex);
 
             // Constrain start and end.
             if ($actorClass(end) >= $actorClass(inputSize)) {
