@@ -1987,5 +1987,5 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Maximum number of lines in initialize(), postfire() and wrapup()
      *  methodS. This variable is used to make smaller methods so that
      *  compilers take less time.*/
-    private static int _LINES_PER_METHOD = 100;
+    private static int _LINES_PER_METHOD = 10000;
 }
