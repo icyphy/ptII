@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 26, 815, 516}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={176, 26, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -251,7 +251,7 @@
                 </port>
             </entity>
             <entity name="BusyWait" class="ptolemy.actor.lib.jni.EmbeddedCActor">
-                <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/** If the input is true, then&#10; *  busy wait for the number of milliseconds&#10; *  given by the milliseconds parameter.&#10; */&#10;&#10;/***preinitBlock***/&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;    if($ref(trigger)) {&#10;      delay1ms($val(milliseconds));&#10;   }&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
+                <property name="embeddedCCode" class="ptolemy.kernel.util.StringAttribute" value="/** If the input is true, then&#10; *  busy wait for the number of milliseconds&#10; *  given by the milliseconds parameter.&#10; */&#10;&#10;/***preinitBlock***/&#10;/**/&#10;&#10;/***initBlock***/&#10;/**/&#10;&#10;/***fireBlock***/&#10;    if($ref(trigger)) {&#10;      delay1ms($val(milliseconds));&#10;   }&#10;   $ref(done) = true;&#10;/**/&#10;&#10;/***wrapupBlock***/&#10;/**/&#10;&#10;">
                 </property>
                 <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCCode">
