@@ -618,7 +618,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         //code.append(splitWrapupCode[0]);
         code.append(wrapupEntryCode);
         //code.append(splitWrapupCode[1]);
-        //code.append(wrapupCode);
+        code.append(wrapupCode);
         code.append(wrapupExitCode);
         //}
 
