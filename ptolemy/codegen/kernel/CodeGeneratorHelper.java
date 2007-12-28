@@ -45,7 +45,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
@@ -1177,7 +1176,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             attributeName = tokenizer2.nextToken().trim();
         }
 
-        Attribute attribute = ModelScope.getScopedVariable(null, _component,
+        Attribute attribute = ModelScope.getScopedVariable(null, container,
                 attributeName);
 
         if (attribute == null) {
@@ -2620,23 +2619,6 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             return type + codeGenType(port.getType());
 
         } else if (macro.equals("val")) {
-            StringTokenizer tokenizer = new StringTokenizer(parameter, ",");
-
-            String attributeName = tokenizer.nextToken().trim();
-
-            Attribute attribute = ModelScope.getScopedVariable(null, _component,
-                    attributeName);
-
-            if (attribute instanceof PortParameter) {
-                throw new IllegalActionException(attribute,
-                        "Attribute \"" + attribute 
-                        + "\" is a PortParameter, "
-                        + "try using $ref() instead of $val(). "
-                        + "If you use $val(), "
-                        + "then changed values on the port will be ignored.");
-            }
-
-
             return getParameterValue(parameter, _component);
 
         } else if (macro.equals("size")) {
