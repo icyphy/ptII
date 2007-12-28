@@ -1110,6 +1110,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             // Note that we check for ScalarTokens because anything
             // that has a meaningful intValue() method, such as
             // UnsignedByteToken will also work here.
+            /*
             if (!(token instanceof ScalarToken)) {
                 throw new IllegalActionException(
                         "Exponent must be ScalarToken and have a valid "
@@ -1119,14 +1120,15 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             }
 
             try {
-                /*times =*/((ptolemy.data.ScalarToken) token).intValue();
+                times = ((ptolemy.data.ScalarToken) token).intValue();
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException("Exponent must have a valid "
                         + "lossless conversion to integer. Integer or "
                         + "unsigned byte meet this criterion.\n"
                         + "Use pow(10, 3.5) for non-integer exponents");
             }
-
+            */
+            
             //childToken = childToken.pow(times);
             //_fireCode.append(")");
             result += ")";
@@ -1374,7 +1376,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
         //_fireCode.append(")");
         _childCode = "(" + result + _childCode + ")";
-
+        
+        /*
         if (!(token instanceof ScalarToken)) {
             throw new IllegalActionException("The " + operator
                     + " operator requires "
@@ -1386,7 +1389,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                     + " operator requires "
                     + "the right operand to be a scalar.");
         }
-
+        
         // intValue() is used rather than testing for IntToken
         // because any token with an intValue() is OK.  However,
         // we need a try...catch to generate a proper error message.
@@ -1408,6 +1411,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                     + " operator requires "
                     + "the right operand to have an integer value.");
         }
+         */
 
         _evaluatedChildToken = (resultToken);
 
