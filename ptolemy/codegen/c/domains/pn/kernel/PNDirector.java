@@ -27,13 +27,18 @@
  */
 package ptolemy.codegen.c.domains.pn.kernel;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.lib.LimitedFiringSource;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.Director;
+import ptolemy.data.IntToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -70,24 +75,72 @@ public class PNDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Override to do nothing.
+    /** Do nothing in generating fire function code. The fire code is
+     *  wrapped in a for/while loop inside the thread function.
+     *  The thread function is generated in 
+     *  {@link #generatePreinitializeCode()} outside the main function. 
      *  @return An empty string.
+     *  @exception IllegalActionException Not thrown in this class.
      */
-    public String generateFireCode() {
+    public String generateFireFunctionCode() throws IllegalActionException {
         return "";
     }
-
+    
     /** Generate the body code that lies between variable declaration
      *  and wrapup.
      *  @return The generated body code.
      *  @exception IllegalActionException If the
      *  {@link #generateFireCode()} method throws the exceptions.
      */
-    public String generateBodyCode() throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        
+        code.append(_codeGenerator.comment("Create a thread for each actor."));
+        code.append(_eol + "pthread_attr_t pthread_custom_attr;" + _eol);
+        code.append("pthread_attr_init(&pthread_custom_attr);" + _eol + _eol);
+
+        List actorList = 
+            ((CompositeActor) _director.getContainer()).deepEntityList();
+        
+        Iterator actors = actorList.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            
+            code.append("pthread_create(");
+            code.append("&thread_" + CodeGeneratorHelper.generateName((NamedObj) actor));
+            code.append(", &pthread_custom_attr, ");
+            code.append(CodeGeneratorHelper.generateName((NamedObj) actor));
+            code.append(", NULL);" + _eol);
+        }
+
         return code.toString();
     }
 
+    /** Get the files needed by the code generated from this helper class.
+     *  This base class returns an empty set.
+     *  @return A set of strings that are header files needed by the code
+     *  generated from this helper class.
+     *  @exception IllegalActionException If something goes wrong.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
+        Set files = new HashSet();
+        files.add("<pthread.h>");
+        //files.add("<thread.h>");
+        return files;
+    }
+
+    /** Return the libraries specified in the "libraries" blocks in the
+     *  templates of the actors included in this CompositeActor.
+     *  @return A Set of libraries.
+     *  @exception IllegalActionException If thrown when gathering libraries.
+     */
+    public Set getLibraries() throws IllegalActionException {
+        Set libraries = new LinkedHashSet();
+        libraries.add("pthread");
+        //libraries.add("thread");
+        return libraries;
+    }
+    
     /** Generate the initialize code for the associated PN director.
      *  @return The generated initialize code.
      *  @exception IllegalActionException If the helper associated with
@@ -95,35 +148,94 @@ public class PNDirector extends Director {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+        
         code.append(_codeGenerator
                 .comment("Initialization code of the PNDirector."));
 
         // Generate the code to initialize all the actors.
         code.append(super.generateInitializeCode());
+        return code.toString();
+    }
+    
+    /** Generate the preinitialize code for the associated PN director.
+     *  @return The generated preinitialize code.
+     *  @exception IllegalActionException If the helper associated with
+     *   an actor throws it while generating preinitialize code for the actor.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer code = 
+            new StringBuffer(super.generatePreinitializeCode());
+        
+        List actorList = 
+            ((CompositeActor) _director.getContainer()).deepEntityList();
 
-        code.append(_codeGenerator.comment("Create a thread for each actor."));
-
-        Iterator actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
-
+        // Generate the global terminate flag which tells actor
+        // whether or not to continue execution.
+        code.append("boolean terminate = false;" + _eol);
+        
+        Iterator actors = actorList.iterator();
+        while (actors.hasNext()) {
+            // Generate the thread pointer.
+            Actor actor = (Actor) actors.next();
+            code.append("pthread_t *thread_");
+            code.append(CodeGeneratorHelper.generateName((NamedObj) actor));
+            code.append(";" + _eol);
+        }
+        
+        // Generate the function for each actor thread.
+        actors = actorList.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helper = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            
+            code.append(_eol + "void " + CodeGeneratorHelper.generateName(
+                    (NamedObj) actor) + "(void) {" + _eol);
 
-            code.append("void* ");
-            code.append(CodeStream.indent(CodeGeneratorHelper
-                    .generateName((NamedObj) actor)));
-            code.append("() {" + _eol);
-
+            // if firingCountLimit exists, generate for loop.
+            if (actor instanceof LimitedFiringSource) {
+                int firingCount = ((IntToken) ((LimitedFiringSource) actor)
+                        .firingCountLimit.getToken()).intValue();
+                code.append("int i = 0;" + _eol);
+                code.append("for (; i < " + firingCount 
+                        + " && !terminate; i++) {" + _eol);
+                
+            } else {
+                code.append("while (!terminate) {" + _eol);                
+            }
+            
             code.append(helper.generateFireCode());
             code.append(helper.generateTypeConvertFireCode());
-
-            code.append("}" + _eol);
+            code.append("}" + _eol + "}" + _eol);
         }
-
+        
+        
         return code.toString();
     }
 
+    /** Generate the wrapup code for the associated PN director.
+     *  @return The generated preinitialize code.
+     *  @exception IllegalActionException If the helper associated with
+     *   an actor throws it while generating preinitialize code for the actor.
+     */
+    public String generateWrapupCode() throws IllegalActionException {
+        StringBuffer code = 
+            new StringBuffer(super.generateWrapupCode());
+        
+        Iterator actors = ((CompositeActor) _director.getContainer())
+        .deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            // Generate the thread pointer.
+            Actor actor = (Actor) actors.next();
+            
+            code.append("pthread_join(");
+            code.append("thread_" + CodeGeneratorHelper.generateName((NamedObj) actor));
+            code.append(", NULL);" + _eol);
+        }
+        return code.toString();
+    }
+    
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 

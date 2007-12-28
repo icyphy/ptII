@@ -298,8 +298,9 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorHelper = (Director) _getHelper((
+            (ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        
         code.append(directorHelper.generatePreinitializeCode());
 
         return code.toString();
@@ -412,6 +413,11 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             files.addAll(helperObject.getHeaderFiles());
         }
 
+        // Get headers needed by the director helper.
+        Director directorHelper = (Director) _getHelper((
+                (ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        files.addAll(directorHelper.getHeaderFiles());
+
         return files;
     }
 
@@ -434,6 +440,11 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             includeDirectories.addAll(helperObject.getIncludeDirectories());
         }
 
+        // Get include directories needed by the director helper.
+        Director directorHelper = (Director) _getHelper((
+                (ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        includeDirectories.addAll(directorHelper.getIncludeDirectories());
+
         return includeDirectories;
     }
 
@@ -454,6 +465,11 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             libraries.addAll(helperObject.getLibraries());
         }
+
+        // Get libraries needed by the director helper.
+        Director directorHelper = (Director) _getHelper((
+                (ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        libraries.addAll(directorHelper.getLibraries());
 
         return libraries;
     }
@@ -513,6 +529,11 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             sharedCode.addAll(helperObject.getSharedCode());
         }
+
+        // Get shared code used by the director helper.
+        Director directorHelper = (Director) _getHelper((
+                (ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        sharedCode.addAll(directorHelper.getSharedCode());
 
         return sharedCode;
     }
