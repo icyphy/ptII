@@ -50,22 +50,29 @@ proc makeCode {lines} {
 }
 
 proc testSplitLongBody {codeLines bodyLines} {
+    global codeGenerator
     set code [makeCode $codeLines]
-    return [java::call ptolemy.codegen.c.kernel.CCodeGenerator \
-		     splitLongBody \
-		     $bodyLines foo $code]
+    return [$codeGenerator splitLongBody $bodyLines foo $code]
 }
+
+test CCodeGenerator-1.1 {Instantiate a CodeGenerator} {
+    set model [sdfModel]
+    set codeGenerator \
+	    [java::new ptolemy.codegen.c.kernel.CCodeGenerator \
+	    $model "myCodeGenerator"]
+    set generatorPackageParameter [java::cast  ptolemy.data.expr.StringParameter [$codeGenerator getAttribute generatorPackage]]
+
+    list [$generatorPackageParameter getExpression]
+} {ptolemy.codegen.c}
 
 #####
 test CodeGenerator-2.1 {splitLongBody no code} {
-    set results [java::call ptolemy.codegen.c.kernel.CCodeGenerator \
-		     splitLongBody \
-		    5 foo ""]
+    set results [$codeGenerator splitLongBody 5 foo ""]
     $results getrange
 } {{} {}}
 
 #####
-test CodeGenerator-2.2 {splitLongBody code smaller than max body size} {
+test CCodeGenerator-2.2 {splitLongBody code smaller than max body size} {
     set results [testSplitLongBody 4 5]
     $results getrange
 } {{} {line 1;
@@ -75,7 +82,7 @@ line 4;
 }}
 
 #####
-test CodeGenerator-2.3 {splitLongBody code same size as max body size} {
+test CCodeGenerator-2.3 {splitLongBody code same size as max body size} {
     set results [testSplitLongBody 5 5]
     $results getrange
 } {{} {line 1;
@@ -86,7 +93,7 @@ line 5;
 }}
 
 #####
-test CodeGenerator-2.4 {splitLongBody code same size one over max body size} {
+test CCodeGenerator-2.4 {splitLongBody code same size one over max body size} {
     set results [testSplitLongBody 6 5]
     $results getrange
 } {{void foo_0(void) {
@@ -104,7 +111,7 @@ foo_1();
 }}
 
 #####
-test CodeGenerator-2.5 {splitLongBody code same size one over max body size} {
+test CCodeGenerator-2.5 {splitLongBody code same size one over max body size} {
     set results [testSplitLongBody 12 5]
     $results getrange
 } {{void foo_0(void) {
