@@ -157,7 +157,7 @@ test CParseTreeCodeGenerator-15.1 {visitShiftNode} {
   Node ptolemy.data.expr.ASTPtLeafNode evaluated to 16
   Entering node ptolemy.data.expr.ASTPtLeafNode
   Node ptolemy.data.expr.ASTPtLeafNode evaluated to 1
-Node ptolemy.data.expr.ASTPtShiftNode evaluated to 32
+Node ptolemy.data.expr.ASTPtShiftNode evaluated to null
 } {(16 << 1)}}
 
 test CParseTreeCodeGenerator-16.1 {visitFunctionApplicationNode} {
