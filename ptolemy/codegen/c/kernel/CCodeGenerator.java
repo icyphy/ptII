@@ -1237,7 +1237,7 @@ public class CCodeGenerator extends CodeGenerator {
 
                 // FIXME: this will add any function, which means that
                 // if the user has Array_foo, foo is added.  Is this right?
-                _tokenFuncUsed.add(name.substring(6).toString());
+                _tokenFuncUsed.add(name.substring(6));
             } 
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
