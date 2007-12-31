@@ -915,7 +915,7 @@ doccheck/index.html:
 #
 
 # Location of the FindBugs sources
-FINDBUGS=../vendors/findbugs-1.3.0
+FINDBUGS=../vendors/findbugs-1.3.1-rc2
 
 findbugs: findbugs.htm findbugs.xml
 
@@ -943,7 +943,7 @@ FINDBUGS_ARGS = -maxHeap 900 -low -effort:max -textui -exclude findbugs-exclude.
 
 findbugs.htm:  ptII.fb findbugs-exclude.xml makefile
 	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
-	    echo "Invoking findbugs program, please wait."; \
+	    echo "Invoking findbugs program to create $@, please wait."; \
 	    "$(FINDBUGS)/bin/findbugs" \
 		$(FINDBUGS_ARGS) \
 		-html:fancy.xsl "$(PTII)" > $@; \
@@ -955,10 +955,10 @@ findbugs.htm:  ptII.fb findbugs-exclude.xml makefile
 
 findbugs.xml:  ptII.fb findbugs-exclude.xml makefile
 	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
-	    echo "Invoking findbugs program, please wait."; \
+	    echo "Invoking findbugs program to create $@, please wait."; \
 	    "$(FINDBUGS)/bin/findbugs" \
 		$(FINDBUGS_ARGS) \
-		-xml "$(PTII)" > $@; \
+		-xml -output $@ "$(PTII)" ; \
 	else \
 	    echo "BTW - FindBugs program not found, skipping."; \
 	fi
