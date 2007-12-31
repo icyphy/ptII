@@ -208,7 +208,7 @@ public class CCodeGenerator extends CodeGenerator {
             mainEntryCode.append(_eol + _eol
                     + "int main(int argc, char *argv[]) {" + _eol);
             String targetValue = target.getExpression();
-            if (targetValue != _DEFAULT_TARGET) {
+            if (!targetValue.equals(_DEFAULT_TARGET)) {
                 mainEntryCode.append("//FIXME: CCodeGenerator hack" + _eol
                         + "init();" + _eol);
             }
