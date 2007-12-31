@@ -915,7 +915,7 @@ doccheck/index.html:
 #
 
 # Location of the FindBugs sources
-FINDBUGS=../vendors/findbugs-1.3.1-rc2
+FINDBUGS=../vendors/findbugs-1.3.1
 
 findbugs: findbugs.htm findbugs.xml
 
