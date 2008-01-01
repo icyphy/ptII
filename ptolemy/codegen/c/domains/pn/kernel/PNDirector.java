@@ -38,6 +38,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.lib.LimitedFiringSource;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -83,7 +84,12 @@ public class PNDirector extends Director {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public String generateFireFunctionCode() throws IllegalActionException {
-        return "";
+        StringBuffer code = new StringBuffer();
+        List actorList = 
+            ((CompositeActor) _director.getContainer()).entityList();
+
+        _generateThreadFunctionCode(code);
+        return code.toString();
     }
     
     /** Generate the body code that lies between variable declaration
@@ -107,9 +113,9 @@ public class PNDirector extends Director {
             Actor actor = (Actor) actors.next();
             
             code.append("pthread_create(");
-            code.append("&thread_" + CodeGeneratorHelper.generateName((NamedObj) actor));
+            code.append("&thread_" + _generateThreadFunctionName(actor));
             code.append(", &pthread_custom_attr, ");
-            code.append(CodeGeneratorHelper.generateName((NamedObj) actor));
+            code.append(_generateThreadFunctionName(actor));
             code.append(", NULL);" + _eol);
         }
 
@@ -166,19 +172,33 @@ public class PNDirector extends Director {
         StringBuffer code = 
             new StringBuffer(super.generatePreinitializeCode());
         
-        List actorList = 
-            ((CompositeActor) _director.getContainer()).deepEntityList();
-
         // Generate the global terminate flag which tells actor
         // whether or not to continue execution.
         code.append("boolean terminate = false;" + _eol);
         
+        if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
+            _generateThreadFunctionCode(code);
+        }
+        
+        return code.toString();
+    }
+
+    /** 
+     * @param code The given code buffer.
+     * @throws IllegalActionException
+     */
+    private void _generateThreadFunctionCode(StringBuffer code) throws IllegalActionException {
+        List actorList = 
+            ((CompositeActor) _director.getContainer()).entityList();
+        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
+        .booleanValue();
+
         Iterator actors = actorList.iterator();
         while (actors.hasNext()) {
             // Generate the thread pointer.
             Actor actor = (Actor) actors.next();
             code.append("pthread_t *thread_");
-            code.append(CodeGeneratorHelper.generateName((NamedObj) actor));
+            code.append(_generateThreadFunctionName(actor));
             code.append(";" + _eol);
         }
         
@@ -189,8 +209,12 @@ public class PNDirector extends Director {
             CodeGeneratorHelper helper = 
                 (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             
-            code.append(_eol + "void " + CodeGeneratorHelper.generateName(
-                    (NamedObj) actor) + "(void) {" + _eol);
+            if (!inline) {
+                code.append(helper.generateFireFunctionCode());
+            } 
+
+            code.append(_eol + "void " + 
+                    _generateThreadFunctionName(actor) + "(void) {" + _eol);
 
             // if firingCountLimit exists, generate for loop.
             if (actor instanceof LimitedFiringSource) {
@@ -204,13 +228,24 @@ public class PNDirector extends Director {
                 code.append("while (!terminate) {" + _eol);                
             }
             
-            code.append(helper.generateFireCode());
-            code.append(helper.generateTypeConvertFireCode());
+            if (inline) {
+                code.append(helper.generateFireCode());
+                code.append(helper.generateTypeConvertFireCode());
+            } else {
+                code.append(CodeGeneratorHelper.generateName(
+                        (NamedObj) actor) + "();" + _eol);
+            }
+            
             code.append("}" + _eol + "}" + _eol);
         }
-        
-        
-        return code.toString();
+    }
+
+    /** Generate the thread function name for a given actor.
+     * @param actor The given actor.
+     * @return A unique label for an actor thread.
+     */
+    private String _generateThreadFunctionName(Actor actor) {
+        return CodeGeneratorHelper.generateName((NamedObj) actor) + "_ThreadFunction";
     }
 
     /** Generate the wrapup code for the associated PN director.
@@ -230,7 +265,7 @@ public class PNDirector extends Director {
             Actor actor = (Actor) actors.next();
             
             code.append("pthread_join(");
-            code.append("thread_" + CodeGeneratorHelper.generateName((NamedObj) actor));
+            code.append("thread_" + _generateThreadFunctionName(actor));
             code.append(", NULL);" + _eol);
         }
         return code.toString();
