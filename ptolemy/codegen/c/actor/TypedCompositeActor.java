@@ -76,7 +76,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     public void analyzeTypeConvert() throws IllegalActionException {
         super.analyzeTypeConvert();
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-                .entityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -190,11 +190,9 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         CompositeActor compositeActor = (CompositeActor) getComponent();
-        
         ptolemy.actor.Director director = compositeActor.getDirector();
         Director directorHelper = (Director) _getHelper(director);
         code.append(directorHelper.generateFireFunctionCode());
-        
         if (!(compositeActor instanceof ptolemy.actor.lib.jni.CompiledCompositeActor && ((BooleanToken) _codeGenerator.generateJNI
                 .getToken()).booleanValue())) {
             code.append(super.generateFireFunctionCode());
@@ -222,7 +220,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
         // Reset the offset for all of the contained actors' input ports.
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-                .entityList().iterator();
+                .deepEntityList().iterator();
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(actor);
@@ -330,7 +328,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         code.append(super.generateVariableDeclaration());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-                .entityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -356,7 +354,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         code.append(super.generateVariableInitialization());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-                .entityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -407,7 +405,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         files.addAll(super.getHeaderFiles());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-                .entityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -434,7 +432,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         includeDirectories.addAll(super.getIncludeDirectories());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-                .entityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -460,7 +458,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         libraries.addAll(super.getLibraries());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-                .entityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -524,7 +522,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         sharedCode.addAll(super.getSharedCode());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-                .entityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
