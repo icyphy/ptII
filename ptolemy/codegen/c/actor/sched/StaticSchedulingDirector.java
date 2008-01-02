@@ -187,7 +187,7 @@ public class StaticSchedulingDirector extends Director {
      *  @return Code for the main loop of an execution.
      *  @exception IllegalActionException If something goes wrong.
      */
-    public String generateMainLoop(boolean callPostfire)
+    public String generateMainLoop()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -216,10 +216,12 @@ public class StaticSchedulingDirector extends Director {
                 .getContainer());
         modelHelper.generateModeTransitionCode(code);
 
-        if (callPostfire) {
+        /*if (callPostfire) {
             code.append(_INDENT2 + "if (!postfire()) {" + _eol + _INDENT3
                     + "break;" + _eol + _INDENT2 + "}" + _eol);
         }
+         */
+        code.append(generatePostfireCode());
 
         Attribute period = _director.getAttribute("period");
         if (period != null) {
@@ -246,7 +248,7 @@ public class StaticSchedulingDirector extends Director {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
-
+        
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
 
         // Force schedule (re)calculation before generating code
@@ -280,6 +282,8 @@ public class StaticSchedulingDirector extends Director {
                 variableDeclarations.append("double _currentTime = 0;" + _eol);
             }
         }
+        variableDeclarations.append(super.generateVariableDeclaration());
+        
         return variableDeclarations.toString();
     }
 }

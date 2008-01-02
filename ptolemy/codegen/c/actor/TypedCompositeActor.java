@@ -317,24 +317,12 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        // First do the director, if there is one.
-        ptolemy.actor.Director director = ((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector();
-        if (director != null) {
-            Director directorHelper = (Director) _getHelper(director);
-            code.append(directorHelper.generateVariableDeclaration());
-        }
-
         code.append(super.generateVariableDeclaration());
 
-        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-                .deepEntityList().iterator();
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
+        code.append(directorHelper.generateVariableDeclaration());
 
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            code.append(helperObject.generateVariableDeclaration());
-        }
         return processCode(code.toString());
     }
 
@@ -352,15 +340,11 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         //                + "'s variable initialization."));
 
         code.append(super.generateVariableInitialization());
-
-        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-                .deepEntityList().iterator();
-
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            code.append(helperObject.generateVariableInitialization());
-        }
+        
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
+        code.append(directorHelper.generateVariableInitialization());
+        
         return processCode(code.toString());
     }
 
