@@ -209,6 +209,7 @@ void top(void) {
 /* wrapup exit code */
 /* main entry code */
 /* The firing of the director. */
+/* The postfire of the director. */
 /* main exit code */
 }}
 
