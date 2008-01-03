@@ -283,6 +283,12 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 _updateSanitizedActorName();
 
                 if (_buildSharedObjectFile()) {
+                    System.err.println("CompiledCompositeActor: #0"
+                           + _generatedCodeVersion + " "
+                           + _loadedCodeVersion + " "
+                           + _workspace.getVersion());
+                    System.err.flush();
+
                     if (_loadedCodeVersion != -1) {
                         // We already loaded once, so increment the
                         // version number used to generate the
@@ -302,10 +308,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
                 if (_loadedCodeVersion != _generatedCodeVersion) {
 
-                    //System.out.println("CompiledCompositeActor: "
-                    //        + _generatedCodeVersion + " "
-                    //        + _loadedCodeVersion + " "
-                    //        + _workspace.getVersion());
+                    System.err.println("CompiledCompositeActor: #1"
+                           + _generatedCodeVersion + " "
+                           + _loadedCodeVersion + " "
+                           + _workspace.getVersion());
+                    System.err.flush();
                     String jniClassName = _sanitizedActorName;
                     Class jniClass = null;
                     URL url = null;
@@ -611,6 +618,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             return true;
         }
 
+        if (effigy == null) {
+            System.out.println(message
+                    + "No effigy.  This can happen when "
+                    + "CodeGenerator.generateCode() is called from within "
+                    + "the test suite.  The code will be recompiled.");
+            _version = ++_noEffigyVersion;
+            _updateSanitizedActorName();
+            return true;            
+        }
         return false;
     }
 
@@ -928,4 +944,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  consider calling _updateSanitizedActorName.
      */
     private int _version = 0;
+
+    /** The version of the shared object to use if we have no effigy.
+     *  If we don't have an effigy, then we increment this variable
+     *  and set _version to its value.
+     */
+    private static int _noEffigyVersion = 0;
 }
