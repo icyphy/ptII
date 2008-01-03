@@ -917,7 +917,10 @@ doccheck/index.html:
 # Location of the FindBugs sources
 FINDBUGS=../vendors/findbugs-1.3.1
 
-findbugs: findbugs.htm findbugs.xml
+# findbugs.xml is special to findbugs, if we use findbugs.xml, we get:
+# Warning: could not load plugin file:/c:/cxh/ptII/vendors/findbugs-1.3.1/plugin/coreplugin.jar: java.security.PrivilegedActionException: edu.umd.cs.findbugs.PluginException: Couldn't parse "findbugs.xml"
+
+findbugs: findbugs.htm findbugsOut.xml
 
 ptII.fb:
 	echo "[Jar files]" > ptII.fb
@@ -953,9 +956,11 @@ findbugs.htm:  ptII.fb findbugs-exclude.xml makefile
 	fi
 
 
-findbugs.xml:  ptII.fb findbugs-exclude.xml makefile
+findbugsOut.xml:  ptII.fb findbugs-exclude.xml makefile
+	rm -f $@;
 	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
 	    echo "Invoking findbugs program to create $@, please wait."; \
+	    echo "$(FINDBUGS)/bin/findbugs $(FINDBUGS_ARGS) -xml -output $@ $(PTII)"; \
 	    "$(FINDBUGS)/bin/findbugs" \
 		$(FINDBUGS_ARGS) \
 		-xml -output $@ "$(PTII)" ; \
