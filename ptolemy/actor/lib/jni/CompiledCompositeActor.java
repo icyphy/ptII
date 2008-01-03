@@ -283,11 +283,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 _updateSanitizedActorName();
 
                 if (_buildSharedObjectFile()) {
-                    System.err.println("CompiledCompositeActor: #0"
-                           + _generatedCodeVersion + " "
-                           + _loadedCodeVersion + " "
-                           + _workspace.getVersion());
-                    System.err.flush();
+//                     System.err.println("CompiledCompositeActor: #0"
+//                            + _generatedCodeVersion + " "
+//                            + _loadedCodeVersion + " "
+//                            + _workspace.getVersion());
+//                     System.err.flush();
 
                     if (_loadedCodeVersion != -1) {
                         // We already loaded once, so increment the
@@ -308,11 +308,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
                 if (_loadedCodeVersion != _generatedCodeVersion) {
 
-                    System.err.println("CompiledCompositeActor: #1"
-                           + _generatedCodeVersion + " "
-                           + _loadedCodeVersion + " "
-                           + _workspace.getVersion());
-                    System.err.flush();
+//                     System.err.println("CompiledCompositeActor: #1"
+//                            + _generatedCodeVersion + " "
+//                            + _loadedCodeVersion + " "
+//                            + _workspace.getVersion());
+//                     System.err.flush();
                     String jniClassName = _sanitizedActorName;
                     Class jniClass = null;
                     URL url = null;
