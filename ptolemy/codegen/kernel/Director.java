@@ -149,8 +149,6 @@ public class Director implements ActorCodeGenerator {
     /** Generate a main loop for an execution under the control of
      *  this director.  In this base class, this simply delegates
      *  to generateFireCode() and generatePostfireCOde().
-     *  @param callPostfire True if the C postfire() method should
-     *  be called.
      *  @return Whatever generateFireCode() returns.
      *  @exception IllegalActionException Not thrown in this base class.
      */

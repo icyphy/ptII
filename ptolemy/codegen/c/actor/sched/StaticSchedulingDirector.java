@@ -182,8 +182,6 @@ public class StaticSchedulingDirector extends Director {
      *  Finally, if the director has a parameter named <i>period</i>,
      *  then increment the variable _currentTime after each
      *  pass through the loop.
-     *  @param callPostfire True if the C postfire() method should
-     *  be called.
      *  @return Code for the main loop of an execution.
      *  @exception IllegalActionException If something goes wrong.
      */
