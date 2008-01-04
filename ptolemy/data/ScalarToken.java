@@ -514,6 +514,16 @@ public abstract class ScalarToken extends Token implements
                 "fixedpoint"));
     }
 
+    /** Return the value of this token as a float
+     *  In this base class, we just throw an exception.
+     *  @return A float
+     *  @exception IllegalActionException Always thrown
+     */
+    public float floatValue() throws IllegalActionException {
+        throw new IllegalActionException(notSupportedConversionMessage(this,
+                "float"));
+    }
+
     /** Return the type of this token.  Subclasses must implement this method
      *  to return the correct type.
      *  @return BaseType.SCALAR
@@ -1041,6 +1051,16 @@ public abstract class ScalarToken extends Token implements
         // FIXME: shouldn't this be protected???  it violates the
         // immutability of tokens.
         _unitCategoryExponents = UnitUtilities.newUnitArrayInCategory(index);
+    }
+
+    /** Return the value of this token as a short.
+     *  In this base class, we just throw an exception.
+     *  @return A short
+     *  @exception IllegalActionException Always thrown
+     */
+    public short shortValue() throws IllegalActionException {
+        throw new IllegalActionException(notSupportedConversionMessage(this,
+                "short"));
     }
 
     /** Return a new token whose value is the value of the argument
