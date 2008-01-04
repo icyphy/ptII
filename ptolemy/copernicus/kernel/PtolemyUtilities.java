@@ -38,9 +38,11 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.FixToken;
+import ptolemy.data.FloatToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
+import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
@@ -63,6 +65,7 @@ import soot.ValueBox;
 import soot.jimple.CastExpr;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.DoubleConstant;
+import soot.jimple.FloatConstant;
 import soot.jimple.FieldRef;
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.IntConstant;
@@ -290,6 +293,11 @@ public class PtolemyUtilities {
             Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
                     localName, fixTokenClass, fixTokenThreeArgConstructor, args);
             return tokenLocal;
+        } else if (token instanceof FloatToken) {
+            Local tokenLocal = _buildConstantTokenLocal(body, insertPoint,
+                    localName, floatTokenClass, floatTokenConstructor,
+                    FloatConstant.v(((FloatToken) token).floatValue()));
+            return tokenLocal;
         } else if (token instanceof FunctionToken) {
             // Function tokens are partially supported, but cannot be
             // type specialized.  This can be folded into the case
@@ -464,6 +472,13 @@ public class PtolemyUtilities {
                         typeLocal,
                         Jimple.v().newStaticFieldRef(
                                 fixMatrixTypeField.makeRef())), insertPoint);
+            } else if (type.equals(ptolemy.data.type.BaseType.FLOAT)) {
+                units.insertBefore(Jimple.v()
+                        .newAssignStmt(
+                                typeLocal,
+                                Jimple.v().newStaticFieldRef(
+                                        floatTypeField.makeRef())),
+                        insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.UNSIGNED_BYTE)) {
                 units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
                         Jimple.v().newStaticFieldRef(byteTypeField.makeRef())),
@@ -492,6 +507,13 @@ public class PtolemyUtilities {
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
                                         objectTypeField.makeRef())),
+                        insertPoint);
+            } else if (type.equals(ptolemy.data.type.BaseType.SHORT)) {
+                units.insertBefore(Jimple.v()
+                        .newAssignStmt(
+                                typeLocal,
+                                Jimple.v().newStaticFieldRef(
+                                        shortTypeField.makeRef())),
                         insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.STRING)) {
                 units.insertBefore(Jimple.v()
@@ -1059,6 +1081,8 @@ public class PtolemyUtilities {
                     return ptolemy.data.type.BaseType.FIX;
                 } else if (field.equals(fixMatrixTypeField)) {
                     return ptolemy.data.type.BaseType.FIX_MATRIX;
+                } else if (field.equals(floatTypeField)) {
+                    return ptolemy.data.type.BaseType.FLOAT;
                 } else if (field.equals(intTypeField)) {
                     return ptolemy.data.type.BaseType.INT;
                 } else if (field.equals(intMatrixTypeField)) {
@@ -1069,6 +1093,8 @@ public class PtolemyUtilities {
                     return ptolemy.data.type.BaseType.LONG_MATRIX;
                 } else if (field.equals(objectTypeField)) {
                     return ptolemy.data.type.BaseType.OBJECT;
+                } else if (field.equals(shortTypeField)) {
+                    return ptolemy.data.type.BaseType.SHORT;
                 } else if (field.equals(stringTypeField)) {
                     return ptolemy.data.type.BaseType.STRING;
                 } else {
@@ -1501,6 +1527,16 @@ public class PtolemyUtilities {
 
     public static SootField fixMatrixTypeField;
 
+    // Soot class representing the ptolemy.data.FloatToken class.
+    public static SootClass floatTokenClass;
+
+    // Soot Method representing the FloatToken(int) constructor.
+    public static SootMethod floatTokenConstructor;
+
+    public static SootField floatTypeField;
+
+    public static SootMethod floatValueMethod;
+
     public static SootField generalTypeField;
 
     // SootMethod representing java.lang.Object.getClass()
@@ -1744,7 +1780,16 @@ public class PtolemyUtilities {
     // The soot class representing java.lang.system
     public static SootClass stringClass;
 
+    public static SootField shortTypeField;
+
     public static SootField stringTypeField;
+
+    // Soot class representing the ptolemy.data.ShortToken class.
+    public static SootClass shortTokenClass;
+
+    public static SootMethod shortTokenConstructor;
+
+    public static SootMethod shortValueMethod;
 
     // Soot class representing the ptolemy.data.StringToken class.
     public static SootClass stringTokenClass;
@@ -2166,6 +2211,12 @@ public class PtolemyUtilities {
         fixMatrixMethod = fixMatrixTokenClass
                 .getMethod("ptolemy.math.FixPoint[][] fixMatrix()");
 
+        floatTokenClass = Scene.v().loadClassAndSupport(
+                "ptolemy.data.FloatToken");
+        floatTokenConstructor = floatTokenClass
+                .getMethod("void <init>(float)");
+        floatValueMethod = scalarTokenClass.getMethod("float floatValue()");
+
         complexTokenClass = Scene.v().loadClassAndSupport(
                 "ptolemy.data.ComplexToken");
         complexTokenConstructor = complexTokenClass
@@ -2191,6 +2242,12 @@ public class PtolemyUtilities {
                 .getMethod("void <init>(ptolemy.data.Token[],int,int)");
         longMatrixMethod = longMatrixTokenClass
                 .getMethod("long[][] longMatrix()");
+
+        shortTokenClass = Scene.v().loadClassAndSupport(
+                "ptolemy.data.ShortToken");
+        shortTokenConstructor = shortTokenClass
+                .getMethod("void <init>(short)");
+        shortValueMethod = scalarTokenClass.getMethod("short shortValue()");
 
         stringTokenClass = Scene.v().loadClassAndSupport(
                 "ptolemy.data.StringToken");
@@ -2224,11 +2281,13 @@ public class PtolemyUtilities {
         doubleMatrixTypeField = baseTypeClass.getFieldByName("DOUBLE_MATRIX");
         fixTypeField = baseTypeClass.getFieldByName("FIX");
         fixMatrixTypeField = baseTypeClass.getFieldByName("FIX_MATRIX");
+        floatTypeField = baseTypeClass.getFieldByName("FLOAT");
         intTypeField = baseTypeClass.getFieldByName("INT");
         intMatrixTypeField = baseTypeClass.getFieldByName("INT_MATRIX");
         longTypeField = baseTypeClass.getFieldByName("LONG");
         longMatrixTypeField = baseTypeClass.getFieldByName("LONG_MATRIX");
         objectTypeField = baseTypeClass.getFieldByName("OBJECT");
+        shortTypeField = baseTypeClass.getFieldByName("SHORT");
         stringTypeField = baseTypeClass.getFieldByName("STRING");
 
         typeLatticeClass = Scene.v().loadClassAndSupport(
