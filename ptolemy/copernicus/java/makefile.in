@@ -419,7 +419,7 @@ jodeRecompileDemo:
 		$(DECOMPILERTARGETPATH)$$relativetargetpath/$(DECOMPILERTARGETCLASS).java
 
 jodeRunRecompiledDemo:
-	$(JAVA) $(MEMORYJFLAGS) -Xfuture -classpath "$(DECOMPILERTARGETPATH)$(CLASSPATHSEPARATOR)$(ROOT)" \
+	"$(JAVA)" $(MEMORYJFLAGS) -Xfuture -classpath "$(DECOMPILERTARGETPATH)$(CLASSPATHSEPARATOR)$(ROOT)" \
 		ptolemy.actor.gui.CompositeActorApplication \
 		-class $(TARGETPACKAGE).$(MODEL)
 
