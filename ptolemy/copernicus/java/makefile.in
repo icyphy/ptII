@@ -413,7 +413,7 @@ jodeDecompileDemo:
 
 jodeRecompileDemo:
 	relativetargetpath=`echo $(TARGETPACKAGE) | sed 's@\.@/@g'`; \
-	$(JAVAC) -classpath \
+	"$(JAVAC)" -classpath \
 		"$(DECOMPILERTARGETPATH)$(CLASSPATHSEPARATOR)$(ROOT)" \
 		-d $(DECOMPILERTARGETPATH)$$relativetargetpath \
 		$(DECOMPILERTARGETPATH)$$relativetargetpath/$(DECOMPILERTARGETCLASS).java
@@ -433,7 +433,7 @@ jadDecompile:
 		sh $(ROOT)/ptolemy/copernicus/shallow/test/jad2java $$file \
 				> $$javafile; \
 		echo "Compiling $$javafile"; \
-		$(JAVAC) -classpath "$(TARGETPATH)jad$(CLASSPATHSEPARATOR)$(ROOT)" \
+		"$(JAVAC)" -classpath "$(TARGETPATH)jad$(CLASSPATHSEPARATOR)$(ROOT)" \
 			$$javafile; \
 	done; \
 
@@ -450,7 +450,7 @@ recompileSnapshots:
 			sh ../shallow/test/jad2java $$file \
 				> $$javafile; \
 			echo "Compiling $$javafile"; \
-			$(JAVAC) -classpath "$(TARGETPATH)$$snapshot/jad$(CLASSPATHSEPARATOR)$(ROOT)" \
+			"$(JAVAC)" -classpath "$(TARGETPATH)$$snapshot/jad$(CLASSPATHSEPARATOR)$(ROOT)" \
 				$$javafile; \
 		done; \
 	done
