@@ -942,7 +942,7 @@ ptII.fb:
 	fi
 	echo $(TOOLS_JAR) >> ptII.fb 
 
-FINDBUGS_ARGS = -maxHeap 450 -low -effort:max -textui -exclude findbugs-exclude.xml -project ptII.fb
+FINDBUGS_ARGS = -maxHeap 900 -low -effort:max -textui -exclude findbugs-exclude.xml -project ptII.fb
 
 findbugs.htm:  ptII.fb findbugs-exclude.xml makefile
 	@if [ -f "$(FINDBUGS)/bin/findbugs" ]; then \
