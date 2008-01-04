@@ -206,9 +206,15 @@ public class InlineParameterTransformer extends SceneTransformer implements
                 while (moreToDo) {
                     TypeAssigner.v().transform(body, _phaseName + ".ta");
 
-                    moreToDo = _inlineMethodCalls(theClass, method, body,
-                            attributeToValueFieldMap, debug);
+                    try {
+                        moreToDo = _inlineMethodCalls(theClass, method, body,
+                                attributeToValueFieldMap, debug);
+                    } catch (RuntimeException ex) {
+                        throw new RuntimeException("Failed to inline method "
+                                + "calls in class: " + theClass + " method: "
+                                + method, ex);
 
+                    }
                     // After inlining the methods, simplify the
                     // control flow to avoid infinite recursion...
                     LocalNameStandardizer.v().transform(body,
@@ -427,6 +433,20 @@ public class InlineParameterTransformer extends SceneTransformer implements
                         // Get some references to the container of the
                         // attribute.
                         if (attribute == null) {
+                            if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.setVisibilityMethod
+                                        .getSubSignature())) {
+                                // Skip setVisibility,
+                                // especially in LimitedFiringSource
+                                continue;
+                            }
+                            if (r.getMethod().getSubSignature().equals(
+                                PtolemyUtilities.portSetTypeMethod
+                                        .getSubSignature())) {
+                                // Skip setTypeEquals
+                                // especially in LimitedFiringSource
+                                continue;
+                            }
                             throw new InternalErrorException(
                                     "Attribute == null?, "
                                             + "this should not be happening: "
@@ -657,9 +677,14 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                 doneSomething = true;
 
                                 // FIXME null result => ""
-                            } else if (false) { //r.getMethod().getSubSignature().equals(
+                            } else if (r.getMethod().getSubSignature().equals(PtolemyUtilities.setExpressionMethod.getSubSignature())) {
 
-                                //    PtolemyUtilities.setExpressionMethod.getSubSignature())) {
+                                // FIXME: 1/08: This section used to
+                                // never be run, but the change to
+                                // NonStrictTest.wrapup() requires it.
+                                // To test this, run copernicus on 
+                                // ../../actor/lib/test/auto/Const.xml
+                                
                                 // Set Expression is problematic
                                 // because the expression might not be
                                 // known.  We used to assume that this
@@ -781,6 +806,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                             "Found unknown "
                                                     + "variable method invocation of method "
                                                     + r.getMethod()
+                                                    + " " + referredObject
                                                     + " that cannot be removed!");
                                 }
                             }

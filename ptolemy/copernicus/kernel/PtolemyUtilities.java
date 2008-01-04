@@ -1647,6 +1647,9 @@ public class PtolemyUtilities {
     // SootClass representing ptolemy.kernel.util.NamedObj.
     public static SootClass namedObjClass;
 
+    // SootClass representing ptolemy.actor.lib.NonStrictTest
+    public static SootClass nonStrictTestClass;
+
     // SootClass representing java.lang.Object.
     public static SootClass objectClass;
 
@@ -1727,6 +1730,9 @@ public class PtolemyUtilities {
 
     // Soot Type representing the ptolemy.kernel.util.Settable class.
     public static Type settableType;
+
+    // SootMethod representing ptolemy.kernel.util.Settable.setVisibility();
+    public static SootMethod setVisibilityMethod;
 
     // Soot Field representing the ptolemy.actor.AtomicActor
     // _stopRequested field.
@@ -1849,6 +1855,10 @@ public class PtolemyUtilities {
 
         namedObjClass = Scene.v().loadClassAndSupport(
                 "ptolemy.kernel.util.NamedObj");
+
+        nonStrictTestClass = Scene.v().loadClassAndSupport(
+                "ptolemy.actor.lib.NonStrictTest");
+
         debuggingField = namedObjClass.getField("boolean _debugging");
 
         atomicActorClass = Scene.v().loadClassAndSupport(
@@ -1889,6 +1899,7 @@ public class PtolemyUtilities {
                 "ptolemy.kernel.util.Settable");
         settableType = RefType.v(settableClass);
         setExpressionMethod = settableClass.getMethodByName("setExpression");
+        setVisibilityMethod = settableClass.getMethodByName("setVisibility");
         getExpressionMethod = settableClass
                 .getMethod("java.lang.String getExpression()");
         validateMethod = settableClass
