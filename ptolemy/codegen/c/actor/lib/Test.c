@@ -25,7 +25,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && fabs($ref(input#$channel)
                 - $ref(correctValues, $actorSymbol(numberOfTokensSeen)))
                 > $ref(tolerance)) {
-    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been between: %f and %f\n",
+    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been between: %10.30g and %10.30g\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
             $ref(correctValues, $actorSymbol(numberOfTokensSeen)) -
@@ -50,7 +50,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && fabs($ref(input#$channel)
                 - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))
         > $ref(tolerance)) {
-    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %f of: %d\n",
+    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been within %10.30g of: %d\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
             $ref(tolerance),
@@ -68,7 +68,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && fabs($ref(input#$channel)
                 - $ref(correctValues, $actorSymbol(numberOfTokensSeen)))
                 > $ref(tolerance)) {
-    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been between: %f and %f\n",
+    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %10.30g. Should have been between: %10.30g and %10.30g\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
             $ref(correctValues, $actorSymbol(numberOfTokensSeen)) -
@@ -91,7 +91,7 @@ if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
         && fabs($ref(input#$channel)
                 - Array_get($actorSymbol(correctValuesThisFiring_$channel), $channel).payload.$cgType(input))
         > $ref(tolerance)) {
-    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %g. Should have been within %f of: %g\n",
+    printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %10.30g. Should have been within %10.30g of: %10.30g\n",
             $actorSymbol(numberOfTokensSeen),
             $ref(input#$channel),
             $ref(tolerance),
@@ -176,7 +176,7 @@ if (($type(input) != TYPE_Array
         || ($type(input) == TYPE_Array
                 && !$tokenFunc($typeFunc(TYPE_Array::convert($ref(input#$channel), Array_get(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), 0).type))::isCloseTo(Array_get($ref(correctValues, $actorSymbol(numberOfTokensSeen)), 0), $actorSymbol(toleranceToken))).payload.Boolean)) {
 
-    printf("\nTest $actorSymbol($channel) fails in interation %d.\n Value was: %s. Should have been within %f of: %s.\n",
+    printf("\nTest $actorSymbol($channel) fails in interation %d.\n Value was: %s. Should have been within %10.30g of: %s.\n",
             $actorSymbol(numberOfTokensSeen),
             $tokenFunc($ref(input#$channel)::toString()).payload.String,
                                                 $ref(tolerance),
