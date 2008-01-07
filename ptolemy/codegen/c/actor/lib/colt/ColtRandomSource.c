@@ -672,6 +672,12 @@ static double ColtRandomSource_PoissonDistribution(double mean, int* current) {
         }
     }
     else { // mean is too large
+        if (isinf(mean)) {
+            // If the input mean is infinity, return max int.
+            // In C, casting infinity to an int returns -2147483648, which
+            // is different than Java, which returns 2147483647.
+             return INT_MAX;
+        }
         return (int) my;
     }
 }

@@ -90,6 +90,7 @@ public class ColtPoisson extends ColtRandomSource {
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = super.getHeaderFiles();
         files.add("<math.h>");
+        files.add("<limits.h>"); // INT_MAX
         return files;
     }
 
