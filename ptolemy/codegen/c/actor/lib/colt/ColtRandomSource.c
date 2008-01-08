@@ -15,6 +15,10 @@ double $actorSymbol(seed);
 
 
 /*** sharedBlock ***/
+#ifdef sun
+#include <nan.h>  // Needed for ColtPoisson and IsINF() under Solaris.
+#endif
+
 #ifdef PT_NO_TIME
 /* Atmel AVR does not have time() */
 #define time(x)
@@ -672,7 +676,11 @@ static double ColtRandomSource_PoissonDistribution(double mean, int* current) {
         }
     }
     else { // mean is too large
+#ifdef sun
+        if (IsINF(mean)) {
+#else
         if (isinf(mean)) {
+#endif
             // If the input mean is infinity, return max int.
             // In C, casting infinity to an int returns -2147483648, which
             // is different than Java, which returns 2147483647.
