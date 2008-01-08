@@ -774,6 +774,7 @@ public class CCodeGenerator extends CodeGenerator {
         _overloadedFunctions.parse(typeDir + "Boolean.c");
         _overloadedFunctions.parse(typeDir + "Double.c");
         _overloadedFunctions.parse(typeDir + "Int.c");
+        _overloadedFunctions.parse(typeDir + "Matrix.c");
         _overloadedFunctions.parse(typeDir + "String.c");
 
         _overloadedFunctionSet = new HashSet<String>();
