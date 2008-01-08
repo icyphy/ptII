@@ -55,6 +55,12 @@ import ptolemy.kernel.util.StringAttribute;
  <p>If no token has ever been received on the <i>control</i> port, then
  <i>falseOutput</i> is assumed to be the one to receive data.</p>
 
+ <p>Note that the this actor may be used in Synchronous Dataflow (SDF)
+ models, but only under certain circumstances.  The problem is that
+ the number of tokens on the <i>trueOutput</i> or the <i>falseOutput</i>
+ can change while the model is running, which makes static scheduling
+ of the actor firings difficult.
+
  @author Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 2.0
