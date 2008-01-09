@@ -396,6 +396,7 @@ DECOMPILERTARGETCLASS =		$(MODEL)
 # Jode
 jodeDecompile: jodeDecompileDemo jodeRecompileDemo jodeRunRecompiledDemo
 jodeDecompileDemo:
+	@echo "Note that jode probably does not work with Java 1.5 and later"
 	@echo "Convert .class file back to .java file, compile it, run it"
 	classes=`cd $(DECOMPILERTARGETPATH)/$(MODEL); ls -1 *.class | sed 's/.class//g'`; \
 	for class in $$classes; \
@@ -425,11 +426,11 @@ jodeRunRecompiledDemo:
 
 # Generate .java files from the snapshots
 jadDecompile:
-	$(JAD) -r -o -d $(TARGETPATH)jad $(TARGETPATH)*.class; \
-	for file in $(TARGETPATH)jad/$(TARGETPATH)*.jad; \
+	$(JAD) -r -o -d $(TARGETPATH)jad $(TARGETPATH)$(MODEL)*.class; \
+	for file in $(TARGETPATH)jad/$(MODEL)*.jad; \
 	do \
 		echo "Fixing $$file"; \
-		javafile=`dirname $$file`/`basename $$file .jad`.java;\
+		javafile=`dirname $$file`/`basename $$file .jad`.java; \
 		sh $(ROOT)/ptolemy/copernicus/shallow/test/jad2java $$file \
 				> $$javafile; \
 		echo "Compiling $$javafile"; \
