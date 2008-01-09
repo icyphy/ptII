@@ -40,11 +40,13 @@ import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.FixMatrixToken;
 import ptolemy.data.FixToken;
+import ptolemy.data.FloatToken;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongMatrixToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.type.ArrayType;
@@ -142,6 +144,8 @@ public class ConversionUtilities {
             // we assume that methods that return byte should be
             // interpreted unsigned.
             returnValue = new UnsignedByteToken(((Byte) object).byteValue());
+        } else if (object instanceof Short) {
+            returnValue = new ShortToken(((Short) object).shortValue());
         } else if (object instanceof Integer) {
             returnValue = new IntToken(((Integer) object).intValue());
         } else if (object instanceof Long) {
@@ -149,8 +153,7 @@ public class ConversionUtilities {
         } else if (object instanceof Double) {
             returnValue = new DoubleToken(((Double) object).doubleValue());
         } else if (object instanceof Float) {
-            // Note that we lose some information here..  oh well.
-            returnValue = new DoubleToken(((Float) object).floatValue());
+            returnValue = new FloatToken(((Float) object).floatValue());
         } else if (object instanceof Complex) {
             returnValue = new ComplexToken((Complex) object);
         } else if (object instanceof FixPoint) {
@@ -268,6 +271,9 @@ public class ConversionUtilities {
             } else if (tokenClass.equals(Byte.class)
                     || tokenClass.equals(Byte.TYPE)) {
                 return BaseType.UNSIGNED_BYTE;
+            } else if (tokenClass.equals(Short.class)
+                    || tokenClass.equals(Short.TYPE)) {
+                return BaseType.SHORT;
             } else if (tokenClass.equals(Integer.class)
                     || tokenClass.equals(Integer.TYPE)) {
                 return BaseType.INT;
@@ -279,8 +285,7 @@ public class ConversionUtilities {
                 return BaseType.DOUBLE;
             } else if (tokenClass.equals(Float.class)
                     || tokenClass.equals(Float.TYPE)) {
-                // Note that we lose some information here..  oh well.
-                return BaseType.DOUBLE;
+                return BaseType.FLOAT;
             } else if (tokenClass.equals(Complex.class)) {
                 return BaseType.COMPLEX;
             } else if (tokenClass.equals(FixPoint.class)) {
