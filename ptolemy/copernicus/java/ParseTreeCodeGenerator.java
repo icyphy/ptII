@@ -72,12 +72,14 @@ import soot.ArrayType;
 import soot.BooleanType;
 import soot.ByteType;
 import soot.DoubleType;
+import soot.FloatType;
 import soot.IntType;
 import soot.Local;
 import soot.LongType;
 import soot.Modifier;
 import soot.RefType;
 import soot.Scene;
+import soot.ShortType;
 import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
@@ -690,6 +692,14 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body,
                     _insertPoint, "token", PtolemyUtilities.doubleTokenClass,
                     PtolemyUtilities.doubleTokenConstructor, returnLocal);
+        } else if (returnType.equals(FloatType.v())) {
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body,
+                    _insertPoint, "token", PtolemyUtilities.floatTokenClass,
+                    PtolemyUtilities.floatTokenConstructor, returnLocal);
+        } else if (returnType.equals(ShortType.v())) {
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body,
+                    _insertPoint, "token", PtolemyUtilities.shortTokenClass,
+                    PtolemyUtilities.shortTokenConstructor, returnLocal);
         } else if (returnType.equals(LongType.v())) {
             tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body,
                     _insertPoint, "token", PtolemyUtilities.longTokenClass,
@@ -805,6 +815,46 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                         resultLocal,
                         Jimple.v().newVirtualInvokeExpr(tempLocal,
                                 PtolemyUtilities.doubleValueMethod.makeRef())),
+                        _insertPoint);
+                return resultLocal;
+            } else if (tokenType == ptolemy.data.type.BaseType.FLOAT) {
+                Local tempLocal = Jimple.v().newLocal("arg",
+                        RefType.v(PtolemyUtilities.floatTokenClass));
+                _body.getLocals().add(tempLocal);
+
+                Local resultLocal = Jimple.v().newLocal("arg", FloatType.v());
+                _body.getLocals().add(resultLocal);
+
+                // Add the new local to the list of arguments
+                _units.insertBefore(Jimple.v().newAssignStmt(
+                        tempLocal,
+                        Jimple.v().newCastExpr(tokenLocal,
+                                RefType.v(PtolemyUtilities.floatTokenClass))),
+                        _insertPoint);
+                _units.insertBefore(Jimple.v().newAssignStmt(
+                        resultLocal,
+                        Jimple.v().newVirtualInvokeExpr(tempLocal,
+                                PtolemyUtilities.floatValueMethod.makeRef())),
+                        _insertPoint);
+                return resultLocal;
+            } else if (tokenType == ptolemy.data.type.BaseType.SHORT) {
+                Local tempLocal = Jimple.v().newLocal("arg",
+                        RefType.v(PtolemyUtilities.shortTokenClass));
+                _body.getLocals().add(tempLocal);
+
+                Local resultLocal = Jimple.v().newLocal("arg", ShortType.v());
+                _body.getLocals().add(resultLocal);
+
+                // Add the new local to the list of arguments
+                _units.insertBefore(Jimple.v().newAssignStmt(
+                        tempLocal,
+                        Jimple.v().newCastExpr(tokenLocal,
+                                RefType.v("ptolemy.data.ShortToken"))),
+                        _insertPoint);
+                _units.insertBefore(Jimple.v().newAssignStmt(
+                        resultLocal,
+                        Jimple.v().newVirtualInvokeExpr(tempLocal,
+                                PtolemyUtilities.shortValueMethod.makeRef())),
                         _insertPoint);
                 return resultLocal;
             } else if (tokenType == ptolemy.data.type.BaseType.UNSIGNED_BYTE) {
