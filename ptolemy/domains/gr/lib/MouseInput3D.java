@@ -171,6 +171,11 @@ public class MouseInput3D extends GRActor3D {
                         _xClicked = ((MouseEvent) event[i]).getX();
                         _yClicked = ((MouseEvent) event[i]).getY();
                         _hasData = true;
+                        try {
+                            getDirector().fireAtCurrentTime(MouseInput3D.this);
+                        } catch (IllegalActionException e) {
+                            // Ignore. The model is not running.
+                        }
                     }
                 }
             }
