@@ -5,15 +5,17 @@
 
 #mailto=ealtech
 #mailto=cxh
-#if [ $# -ne 1 ]; then
-#    echo "$0: Usage: $0 email-address"
-#    exit 4
-#fi
-mailto=$1
+if [ $# -ne 1 ]; then
+    echo "$0: Usage: $0 [email-address]"
+    nomail=1
+else
+    mailto=$1
+fi
+
 
 ADMDIR=/users/ptII/adm
 if [ "$USER" = "cxh" ]; then
-    ADMDIR=/home/eecs/cxh/ptII/adm
+    ADMDIR=$PTII/adm
 fi
 
 
@@ -29,6 +31,9 @@ GENVERSION=gen-6.1
 GENDIR=$ADMDIR/$GENVERSION
 cd $GENDIR
 
+DEEPLOG=$GENDIR/logs/remote4.out
+SHALLOLOG=$GENDIR/logs/remote5.out
+
 
 # Generate the mail message
 mailmsg=$ADMDIR/logs/ptIIcodegen_mail.txt
@@ -40,12 +45,12 @@ echo "" >> $mailmsg
 echo "Summary" >> $mailmsg
 echo "-------" >> $mailmsg
 echo "Deep codegen test results:" >> $mailmsg
-echo "$GENDIR/logs/remote4.out" >> $mailmsg
-egrep '^Failed:' $GENDIR/logs/remote4.out >> $mailmsg
+echo "$DEEPLOG" >> $mailmsg
+egrep '^Failed:' $DEEPLOG >> $mailmsg
 echo "" >> $mailmsg
 echo "Shallow codegen test results:" >> $mailmsg
-echo "$GENDIR/logs/remote5.out" >> $mailmsg
-egrep '^Failed:' $GENDIR/logs/remote5.out >> $mailmsg
+echo "$SHALLOWLOG" >> $mailmsg
+egrep '^Failed:' $SHALLOLOG >> $mailmsg
 echo "" >> $mailmsg
 echo "To get the copernicus/java logs, do:" >> $mailmsg
 echo "    scp `hostname`:$GENDIR/logs/remote4.out.old /tmp" >> $mailmsg
@@ -269,11 +274,16 @@ gawk '
 echo "" >> $mailmsg
 echo "Deep Codegen Details" >> $mailmsg
 echo "--------------------" >> $mailmsg
-parseLog  $GENDIR/logs/remote4.out
+parseLog  $DEEPLOG
 
+exit
 echo "" >> $mailmsg
 echo "Shallow Codegen Details" >> $mailmsg
 echo "--------------------" >> $mailmsg
-parseLog  $GENDIR/logs/remote5.out
+parseLog  $SHALLOWLOG
 
-cat $mailmsg | /usr/ucb/Mail -s "Ptolemy II Codegen Nightly Build" $mailto
+if [ $nomail = 1 ]; then
+    cat $mailmsg
+else
+    cat $mailmsg | /usr/ucb/Mail -s "Ptolemy II Codegen Nightly Build" $mailto
+fi
