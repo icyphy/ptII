@@ -389,6 +389,7 @@ public class TypeSpecializerAnalysis {
                 System.out.println(nullTypeMessage
                         + "\n\t typetokenCompare: type1 = " + type1
                         + " type2 = " + type2);
+                //System.exit(2);
             }
         } else if (expr.getMethod().equals(tokenTypeCompareMethod)) {
             Local tokenLocal = (Local) expr.getArg(0);
@@ -697,6 +698,10 @@ public class TypeSpecializerAnalysis {
             boolean debug, Value value, InequalitySolver solver,
             Map objectToInequalityTerm, Unit unit, LocalDefs localDefs,
             LocalUses localUses) {
+        if (debug) {
+            System.out.println("_getInequalityTerm(): " +
+                    method + " " + value);
+        }
         if (value instanceof StaticInvokeExpr) {
             StaticInvokeExpr r = (StaticInvokeExpr) value;
 
@@ -1181,6 +1186,8 @@ public class TypeSpecializerAnalysis {
             } else if (field.equals(PtolemyUtilities.fixMatrixTypeField)) {
                 return new ConstantTerm(ptolemy.data.type.BaseType.FIX_MATRIX,
                         r);
+            } else if (field.equals(PtolemyUtilities.floatTypeField)) {
+                return new ConstantTerm(ptolemy.data.type.BaseType.FLOAT, r);
             } else if (field.equals(PtolemyUtilities.intTypeField)) {
                 return new ConstantTerm(ptolemy.data.type.BaseType.INT, r);
             } else if (field.equals(PtolemyUtilities.intMatrixTypeField)) {
@@ -1193,6 +1200,8 @@ public class TypeSpecializerAnalysis {
                         r);
             } else if (field.equals(PtolemyUtilities.objectTypeField)) {
                 return new ConstantTerm(ptolemy.data.type.BaseType.OBJECT, r);
+            } else if (field.equals(PtolemyUtilities.shortTypeField)) {
+                return new ConstantTerm(ptolemy.data.type.BaseType.SHORT, r);
             } else if (field.equals(PtolemyUtilities.stringTypeField)) {
                 return new ConstantTerm(ptolemy.data.type.BaseType.STRING, r);
             }
