@@ -646,7 +646,16 @@ public class DEDirector extends Director implements TimedDirector {
      *  @exception IllegalActionException If event queue is not ready.
      */
     public void fireAtCurrentTime(Actor actor) throws IllegalActionException {
-        fireAt(actor, getModelTime());
+        if (_eventQueue == null) {
+            throw new IllegalActionException(this,
+                    "Calling fireAt() before preinitialize().");
+        }
+        // This has to be synchronized at this level to make sure
+        // that time does not advance between getModelTime() and
+        // the enqueueing of the event.
+        synchronized (_eventQueue) {
+            fireAt(actor, getModelTime());
+        }
     }
 
     /** Schedule an actor to be fired in the specified time relative to
