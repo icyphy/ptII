@@ -1707,5 +1707,5 @@ public class TypeSpecializerAnalysis {
 
     private Set _unsafeLocals;
 
-    private boolean _debug = true;
+    private boolean _debug = false;
 }
