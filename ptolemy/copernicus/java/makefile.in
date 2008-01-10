@@ -426,7 +426,7 @@ jodeRunRecompiledDemo:
 
 # Generate .java files from the snapshots
 jadDecompile:
-	$(JAD) -r -o -d $(TARGETPATH)jad $(TARGETPATH)$(MODEL)*.class; \
+	$(JAD) -r -o -d $(TARGETPATH)jad $(TARGETPATH)$(MODEL)/*.class; \
 	for file in $(TARGETPATH)jad/$(MODEL)/*.jad; \
 	do \
 		echo "Fixing $$file"; \
