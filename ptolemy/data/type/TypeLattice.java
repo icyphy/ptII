@@ -822,6 +822,7 @@ public class TypeLattice {
                         .addEdge(BaseType.COMPLEX, BaseType.COMPLEX_MATRIX);
 
                 _basicLattice.addEdge(BaseType.DOUBLE, BaseType.COMPLEX);
+                // Copernicus code generator needs INT-DOUBLE.  See IIR.xml
                 _basicLattice.addEdge(BaseType.INT, BaseType.DOUBLE);
                 _basicLattice.addEdge(BaseType.UNSIGNED_BYTE, BaseType.SHORT);
                 _basicLattice.addEdge(BaseType.SHORT, BaseType.INT);
