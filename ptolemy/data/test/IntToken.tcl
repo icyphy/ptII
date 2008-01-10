@@ -436,6 +436,17 @@ test IntToken-13.5 {Test convert from IntToken} {
     list $msg
 } {1}
 
+######################################################################
+####
+# 
+test IntToken-13.3.5 {Test convert from FloatToken} {
+    set t [java::new {ptolemy.data.FloatToken float} 1.0]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.IntToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FloatToken '1.0f' to the type int because the type of the token is higher or incomparable with the given type.}}
+
 
 ######################################################################
 ####
@@ -447,6 +458,17 @@ test IntToken-13.6 {Test convert from LongToken} {
     catch {set result [[java::call ptolemy.data.IntToken convert $t] toString]} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1L' to the type int because the type of the token is higher or incomparable with the given type.}}
+
+######################################################################
+####
+# 
+test IntToken-13.6.5 {Test convert from ShortToken} {
+    set t [java::new {ptolemy.data.ShortToken short} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.IntToken convert $t] toString]} msg
+    list $msg
+} {1}
 
 ######################################################################
 ####
