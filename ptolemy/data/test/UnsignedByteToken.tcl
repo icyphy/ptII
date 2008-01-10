@@ -301,6 +301,14 @@ test UnsignedByteToken-13.4 {Test convert from FixToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FixToken 'fix(1.0,8,4)' to the type byte because the type of the token is higher or incomparable with the given type.}}
 
+test UnsignedByteToken-13.4.5 {Test convert from FloatToken} {
+    set t [java::new {ptolemy.data.FloatToken float} 1.0]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.UnsignedByteToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FloatToken '1.0f' to the type byte because the type of the token is higher or incomparable with the given type.}}
+
 test UnsignedByteToken-13.5 {Test convert from IntToken} {
     set t [java::new {ptolemy.data.IntToken int} 1]
     set msg {}
@@ -316,6 +324,14 @@ test UnsignedByteToken-13.6 {Test convert from LongToken} {
     catch {set result [[java::call ptolemy.data.UnsignedByteToken convert $t] toString]} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1L' to the type byte because the type of the token is higher or incomparable with the given type.}}
+
+test UnsignedByteToken-13.6.5 {Test convert from ShortToken} {
+    set t [java::new {ptolemy.data.ShortToken short} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.UnsignedByteToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ShortToken '1' to the type byte because the type of the token is higher or incomparable with the given type.}}
 
 test UnsignedByteToken-13.7 {Test convert from StringToken} {
     set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]
