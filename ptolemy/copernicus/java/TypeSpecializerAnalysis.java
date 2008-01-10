@@ -351,7 +351,7 @@ public class TypeSpecializerAnalysis {
         String nullTypeMessage = 
             "One or both of the arguments to TypeLattice.compare is/are "
             + "null or unknown.  This means we are likely to throw an exception at "
-            + "runtime, so we throw now.  Explanation: \n"
+            + "runtime.  Explanation: \n"
             + "Getting 'null' out of the TypeAnalysis "
             + "means 'I can't figure out where this came from and hence, "
             + "I can't tell you what the type is'  The type might be "
@@ -367,7 +367,7 @@ public class TypeSpecializerAnalysis {
             type1 = getSpecializedType(tokenLocal1);
             type2 = getSpecializedType(tokenLocal2);
             if (type1 == null || type2 == null) {
-                throw new RuntimeException(nullTypeMessage
+                System.out.println(nullTypeMessage
                         + "\n\t tokentokenCompare: type1 = " + type1
                         + " type2 = " + type2);
             }
@@ -397,7 +397,7 @@ public class TypeSpecializerAnalysis {
             type2 = getSpecializedType(typeLocal);
             if ( type1 == null || type2 == null
                     || type2 == BaseType.UNKNOWN) {
-                throw new RuntimeException(nullTypeMessage
+                System.out.println(nullTypeMessage
                         + "\n\t tokentypeCompare: type1 = " + type1
                         + "type2 = " + type2);
             }
@@ -410,7 +410,7 @@ public class TypeSpecializerAnalysis {
             type2 = getSpecializedType(typeLocal2);
             if ( type1 == null || type2 == null
                     || type1 == BaseType.UNKNOWN || type2 == BaseType.UNKNOWN) {
-                throw new RuntimeException(nullTypeMessage
+                System.out.println(nullTypeMessage
                         + "\n\t typetypeCompare: type1 = "
                         + "type2 = " + type2);
             }
