@@ -97,8 +97,10 @@ test Test-2.5 {TestFailureNullString should fail because the expected values are
 ####
 #
 test Test-2.6 {TestFailureTypes should fail because the expected values are not correct} {
-    testCG TestFailureTypes.xml
-} {2}
+    set results [testCG TestFailureTypes.xml]
+    puts "testCG TestFailureTypes returned: $results"
+    expr {$results != 0}
+} {1}
 
 ######################################################################
 ####
