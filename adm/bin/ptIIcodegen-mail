@@ -6,7 +6,6 @@
 #mailto=ealtech
 #mailto=cxh
 if [ $# -ne 1 ]; then
-    echo "$0: Usage: $0 [email-address]"
     nomail=1
 else
     mailto=$1
@@ -32,7 +31,10 @@ GENDIR=$ADMDIR/$GENVERSION
 cd $GENDIR
 
 DEEPLOG=$GENDIR/logs/remote4.out
-SHALLOLOG=$GENDIR/logs/remote5.out
+if [ ! -r "$DEEPLOG" ]; then
+    DEEPLOG=/tmp/cxh/ptII/ptolemy/copernicus/java/test/make2.out
+fi
+SHALLOWLOG=$GENDIR/logs/remote5.out
 
 
 # Generate the mail message
@@ -44,14 +46,24 @@ echo "`date`" > $mailmsg
 echo "" >> $mailmsg
 echo "Summary" >> $mailmsg
 echo "-------" >> $mailmsg
-echo "Deep codegen test results:" >> $mailmsg
-echo "$DEEPLOG" >> $mailmsg
-egrep '^Failed:' $DEEPLOG >> $mailmsg
-echo "" >> $mailmsg
-echo "Shallow codegen test results:" >> $mailmsg
-echo "$SHALLOWLOG" >> $mailmsg
-egrep '^Failed:' $SHALLOLOG >> $mailmsg
-echo "" >> $mailmsg
+
+if [ -r "$DEEPLOG" ]; then
+    echo "Deep codegen test results:" >> $mailmsg
+    echo "$DEEPLOG" >> $mailmsg
+    egrep '^Failed:' "$DEEPLOG" >> $mailmsg
+    echo "" >> $mailmsg
+else
+    echo "WARNING: Deep Log '$DEEPLOG' not found" >> $mailmsg 
+fi
+
+if [ -r "$SHALLOWLOG" ]; then
+    echo "Shallow codegen test results:" >> $mailmsg
+    echo "$SHALLOWLOG" >> $mailmsg
+    egrep '^Failed:' "$SHALLOWLOG" >> $mailmsg
+    echo "" >> $mailmsg
+else
+    echo "WARNING: Shallow Log '$SHALLOWLOG' not found" >> $mailmsg 
+fi
 echo "To get the copernicus/java logs, do:" >> $mailmsg
 echo "    scp `hostname`:$GENDIR/logs/remote4.out.old /tmp" >> $mailmsg
 echo "" >> $mailmsg
@@ -271,16 +283,24 @@ gawk '
                        }' $1 >> $mailmsg
 }
 
-echo "" >> $mailmsg
-echo "Deep Codegen Details" >> $mailmsg
-echo "--------------------" >> $mailmsg
-parseLog  $DEEPLOG
 
-exit
-echo "" >> $mailmsg
-echo "Shallow Codegen Details" >> $mailmsg
-echo "--------------------" >> $mailmsg
-parseLog  $SHALLOWLOG
+if [ -r "$DEEPLOG" ]; then
+    echo "" >> $mailmsg
+    echo "Deep Codegen Details" >> $mailmsg
+    echo "--------------------" >> $mailmsg
+    parseLog  "$DEEPLOG"
+else
+    echo "WARNING: DEEP Log '$DEEPLOG' not found" >> $mailmsg 
+fi
+
+if [ -r "$SHALLOwLOG" ]; then
+    echo "" >> $mailmsg
+    echo "Shallow Codegen Details" >> $mailmsg
+    echo "--------------------" >> $mailmsg
+    parseLog  "$SHALLOWLOG"
+else
+    echo "WARNING: Shallow Log '$SHALLOWLOG' not found" >> $mailmsg 
+fi
 
 if [ $nomail = 1 ]; then
     cat $mailmsg
