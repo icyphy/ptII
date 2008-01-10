@@ -389,7 +389,6 @@ public class TypeSpecializerAnalysis {
                 System.out.println(nullTypeMessage
                         + "\n\t typetokenCompare: type1 = " + type1
                         + " type2 = " + type2);
-                System.exit(2);
             }
         } else if (expr.getMethod().equals(tokenTypeCompareMethod)) {
             Local tokenLocal = (Local) expr.getArg(0);
