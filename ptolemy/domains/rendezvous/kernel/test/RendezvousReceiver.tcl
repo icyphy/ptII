@@ -1,10 +1,10 @@
 # Tests for the RendezvousReceiver class
 #
-# @Author: John S. Davis II
+# @Author: Edward A. Lee, Christopher Brooks, based on a file by John S. Davis II
 #
 # @Version: : RendezvousReceiver.tcl,v 1.33 1998/12/05 05:37:32 cxh Exp $
 #
-# @Copyright (c) 1999-2006 The Regents of the University of California.
+# @Copyright (c) 2005-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
