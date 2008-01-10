@@ -188,6 +188,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
         // from a call to evaluateParseTree.
         Set unsafeLocalSet = new HashSet();
 
+        // To set the debug, see Main.java
         boolean debug = PhaseOptions.getBoolean(options, "debug");
         int level = PhaseOptions.getInt(options, "level");
 
@@ -511,7 +512,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                     Stmt stmt = (Stmt) units.next();
 
                     if (debug) {
-                        System.out.println("unit = " + stmt);
+                        System.out.println("ttn0 unit = " + stmt);
                     }
 
                     if (stmt.containsInvokeExpr()) {
@@ -915,7 +916,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                     Unit unit = (Unit) units.next();
 
                     if (debug) {
-                        System.out.println("unit = " + unit);
+                        System.out.println("ttn1 unit = " + unit);
                     }
 
                     Iterator boxes = unit.getUseBoxes().iterator();
@@ -1414,7 +1415,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                 Unit unit = (Unit) units.next();
 
                 if (debug) {
-                    System.out.println("unit = " + unit);
+                    System.out.println("ttn2 unit = " + unit);
                 }
 
                 if (unit instanceof InvokeStmt) {
@@ -1672,7 +1673,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                 Unit unit = (Unit) units.next();
 
                 if (debug) {
-                    System.out.println("unit = " + unit);
+                    System.out.println("ttn3 unit = " + unit);
                 }
 
                 // Hack to work around the presence of NIL fields:

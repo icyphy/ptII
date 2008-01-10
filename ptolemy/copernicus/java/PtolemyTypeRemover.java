@@ -123,7 +123,7 @@ public class PtolemyTypeRemover extends SceneTransformer implements
                 Unit unit = (Unit) units.next();
 
                 if (debug) {
-                    System.out.println("unit = " + unit);
+                    System.out.println("ptr unit = " + unit);
                 }
 
                 if (unit instanceof AssignStmt) {

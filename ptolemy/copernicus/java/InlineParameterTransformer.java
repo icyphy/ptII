@@ -155,7 +155,6 @@ public class InlineParameterTransformer extends SceneTransformer implements
         Map attributeToValueFieldMap = new HashMap();
 
         boolean debug = PhaseOptions.getBoolean(options, "debug");
-
         // Determine which parameters have a constant value.
         ConstVariableModelAnalysis constantAnalysis;
 
@@ -1019,7 +1018,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
 
                 while (pairs.hasNext()) {
                     UnitValueBoxPair pair = (UnitValueBoxPair) pairs.next();
-                    System.out.println("unit = " + pair.getUnit());
+                    System.out.println("iat unit = " + pair.getUnit());
 
                     if (pair.getUnit() instanceof DefinitionStmt) {
                         DefinitionStmt useStmt = (DefinitionStmt) pair
