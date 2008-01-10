@@ -224,7 +224,23 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // _jgraph.addMouseListener(new FocusMouseListener());
         _rightComponent.setAlignmentX(1);
         _rightComponent.setAlignmentY(1);
+        // Background color is parameterizable by preferences.
+        Configuration configuration = getConfiguration();
         _rightComponent.setBackground(BACKGROUND_COLOR);
+        if (configuration != null) {
+            try {
+                PtolemyPreferences preferences
+                        = PtolemyPreferences
+                        .getPtolemyPreferencesWithinConfiguration(
+                        configuration);
+                if (preferences != null) {
+                    _rightComponent.setBackground(
+                            preferences.backgroundColor.asColor());
+                }
+            } catch (IllegalActionException e1) {
+                // Ignore the exception and use the default color.
+            }
+        }
 
         try {
             // The SizeAttribute property is used to specify the size

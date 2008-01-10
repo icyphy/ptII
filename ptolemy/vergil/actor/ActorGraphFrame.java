@@ -33,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -49,6 +50,7 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.actor.gui.UserActorLibrary;
@@ -66,6 +68,7 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
+import diva.canvas.DamageRegion;
 import diva.graph.GraphController;
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
@@ -225,7 +228,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         // The cast is safe because the constructor only accepts
         // CompositeEntity.
         final ActorGraphModel graphModel = new ActorGraphModel(entity);
-        return new GraphPane(_controller, graphModel);
+        return new ActorGraphPane(_controller, graphModel, entity);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -397,6 +400,43 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
+
+    ///////////////////////////////////////////////////////////////////
+    //// ActorGraphPane
+
+    /** Subclass that updates the background color on each repaint if
+     *  there is a preferences attribute.
+     */
+    private class ActorGraphPane extends GraphPane {
+        public ActorGraphPane(
+                ActorEditorGraphController controller,
+                ActorGraphModel model,
+                NamedObj entity) {
+            super(controller, model);
+            _entity = entity;
+        }
+        public void repaint() {
+            _setBackground();
+            super.repaint();
+        }
+        public void repaint(DamageRegion damage) {
+            _setBackground();
+            super.repaint(damage);
+        }
+        private void _setBackground() {
+            if (_entity != null) {
+                List list = _entity.attributeList(PtolemyPreferences.class);
+                if (list.size() > 0) {
+                    // Use the last preferences.
+                    PtolemyPreferences preferences
+                            = (PtolemyPreferences)list.get(list.size() - 1);
+                    getCanvas().setBackground(preferences.backgroundColor.asColor());
+                }
+            }            
+        }
+        private NamedObj _entity;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     //// CreateHierarchy
 
