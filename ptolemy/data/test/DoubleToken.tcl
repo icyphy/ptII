@@ -530,6 +530,14 @@ test DoubleToken-13.3 {Test convert from DoubleToken} {
     list $msg
 } {1.0}
 
+test DoubleToken-13.3.5 {Test convert from FloatToken} {
+    set t [java::new {ptolemy.data.FloatToken float} 1.0]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.FloatToken convert $t] toString]} msg
+    list $msg
+} {1.0f}
+
 test DoubleToken-13.4 {Test convert from FixToken} {
     set t [java::new {ptolemy.data.FixToken java.lang.String} "fix(1.0,8,4)"]
     set msg {}
