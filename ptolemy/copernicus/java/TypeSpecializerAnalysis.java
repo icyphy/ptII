@@ -328,6 +328,10 @@ public class TypeSpecializerAnalysis {
     public void inlineTypeLatticeMethods(SootMethod method, Unit unit,
             ValueBox box, StaticInvokeExpr expr, LocalDefs localDefs,
             LocalUses localUses) throws IllegalActionException {
+        if (_debug) {
+            System.out.println("inlineTypeLatticeMethods:\n\t" + method
+                    + "\n\t" + unit + "\n\t" + expr);
+        }
         SootMethod tokenTokenCompareMethod = PtolemyUtilities.typeLatticeClass
                 .getMethod("int compare(ptolemy.data.Token,ptolemy.data.Token)");
         SootMethod tokenTypeCompareMethod = PtolemyUtilities.typeLatticeClass
@@ -344,11 +348,29 @@ public class TypeSpecializerAnalysis {
         ptolemy.data.type.Type type1;
         ptolemy.data.type.Type type2;
 
+        String nullTypeMessage = 
+            "One or both of the arguments to TypeLattice.compare is/are "
+            + "null or unknown.  This means we are likely to throw an exception at "
+            + "runtime, so we throw now.  Explanation: \n"
+            + "Getting 'null' out of the TypeAnalysis "
+            + "means 'I can't figure out where this came from and hence, "
+            + "I can't tell you what the type is'  The type might be "
+            + "incomparable, or maybe not! The type analysis is rather "
+            + "hairy to debug because it happens multiple "
+            + "times and is self dependent...  A bug in one place tends "
+            + "to propagate to a method inline, which propagates to another "
+            + "type analysis....";
+
         if (expr.getMethod().equals(tokenTokenCompareMethod)) {
             Local tokenLocal1 = (Local) expr.getArg(0);
             Local tokenLocal2 = (Local) expr.getArg(1);
             type1 = getSpecializedType(tokenLocal1);
             type2 = getSpecializedType(tokenLocal2);
+            if (type1 == null || type2 == null) {
+                throw new RuntimeException(nullTypeMessage
+                        + "\n\t tokentokenCompare: type1 = " + type1
+                        + " type2 = " + type2);
+            }
         } else if (expr.getMethod().equals(typeTokenCompareMethod)) {
             Local typeLocal = (Local) expr.getArg(0);
             Local tokenLocal = (Local) expr.getArg(1);
@@ -356,11 +378,30 @@ public class TypeSpecializerAnalysis {
             //                     localDefs, localUses);
             type1 = getSpecializedType(typeLocal);
             type2 = getSpecializedType(tokenLocal);
+            if ( type1 == null || type2 == null
+                    || type1 == BaseType.UNKNOWN) {
+                System.out.println("Contents of _objectToInequalityTerm");
+                Iterator terms = _objectToInequalityTerm.entrySet().iterator();
+                while(terms.hasNext()) {
+                    Map.Entry pairs = (Map.Entry)terms.next();
+                    System.out.println(pairs.getKey() + " = " + (InequalityTerm) (pairs.getValue()));
+                }
+                System.out.println(nullTypeMessage
+                        + "\n\t typetokenCompare: type1 = " + type1
+                        + " type2 = " + type2);
+                System.exit(2);
+            }
         } else if (expr.getMethod().equals(tokenTypeCompareMethod)) {
             Local tokenLocal = (Local) expr.getArg(0);
             Local typeLocal = (Local) expr.getArg(1);
             type1 = getSpecializedType(tokenLocal);
             type2 = getSpecializedType(typeLocal);
+            if ( type1 == null || type2 == null
+                    || type2 == BaseType.UNKNOWN) {
+                throw new RuntimeException(nullTypeMessage
+                        + "\n\t tokentypeCompare: type1 = " + type1
+                        + "type2 = " + type2);
+            }
             //             type2 = PtolemyUtilities.getTypeValue(method, typeLocal, unit,
             //                     localDefs, localUses);
         } else if (expr.getMethod().equals(typeTypeCompareMethod)) {
@@ -368,12 +409,20 @@ public class TypeSpecializerAnalysis {
             Local typeLocal2 = (Local) expr.getArg(1);
             type1 = getSpecializedType(typeLocal1);
             type2 = getSpecializedType(typeLocal2);
+            if ( type1 == null || type2 == null
+                    || type1 == BaseType.UNKNOWN || type2 == BaseType.UNKNOWN) {
+                throw new RuntimeException(nullTypeMessage
+                        + "\n\t typetypeCompare: type1 = "
+                        + "type2 = " + type2);
+            }
             //             type1 = PtolemyUtilities.getTypeValue(method, typeLocal1, unit,
             //                     localDefs, localUses);
             //             type2 = PtolemyUtilities.getTypeValue(method, typeLocal2, unit,
             //                     localDefs, localUses);
         } else if (expr.getMethod().equals(leastUpperBoundMethod)) {
-            System.out.println("Found LUB method!");
+            if (_debug) {
+                System.out.println("Found LUB method!");
+            }
 
             Local typeLocal1 = (Local) expr.getArg(0);
             Local typeLocal2 = (Local) expr.getArg(1);
@@ -388,8 +437,18 @@ public class TypeSpecializerAnalysis {
                     .getActiveBody(), unit, TypeLattice.leastUpperBound(type1,
                     type2));
             box.setValue(newTypeLocal);
+
+            if (_debug) {
+                System.out.println("inlineTypeLatticeMethods: LUB Method: "
+                        + typeLocal1 + " " + typeLocal2 + " " + type1
+                        + type2);
+            }
+
             return;
         } else if (expr.getMethod().equals(latticeMethod)) {
+            if (_debug) {
+                System.out.println("inlineTypeLatticeMethods: latticeMethod: Do nothing.");
+            }
             // Do nothing...
             return;
         } else {
@@ -397,12 +456,17 @@ public class TypeSpecializerAnalysis {
                     "attempt to inline unhandled typeLattice method: " + unit);
         }
 
-        //         System.out.println("specializer");
-        //         System.out.println("type1 = " + type1);
-        //         System.out.println("type2 = " + type2);
-        //         System.out.println("result = " + TypeLattice.compare(type1, type2));
+        if (_debug) {
+            System.out.println("specializer");
+            System.out.println("type1 = " + type1);
+            System.out.println("type2 = " + type2);
+            System.out.println("result = " + TypeLattice.compare(type1, type2));
+        }
         // Only inline if both are concrete types.
         if (type1.isInstantiable() && type2.isInstantiable()) {
+            if (_debug) {
+                System.out.println("inlineTypeLatticeMethods: is Instantiable");
+            }
             box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
         }
     }
@@ -1175,7 +1239,10 @@ public class TypeSpecializerAnalysis {
     private static void _createInequalityTerm(boolean debug, Object object,
             Type type, Map objectToInequalityTerm) {
         RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
-
+        if (debug) {
+            System.out.println("_createInequalityTerm(): " + object 
+                    + " type: " + type + " tokenType: " + tokenType);
+        }
         if (objectToInequalityTerm.get(object) != null) {
             return;
         }
@@ -1207,6 +1274,11 @@ public class TypeSpecializerAnalysis {
 
             InequalityTerm term = new VariableTerm(PtolemyUtilities
                     .getTokenTypeTypeForSootType(typeType), object);
+            if (debug) {
+                System.out.println("objectToInequality: typeType: "
+                        + typeType + " object: " + object + " term:" + term
+                        + " gttfst: " + PtolemyUtilities.getTokenTypeTypeForSootType(typeType));
+            }
             objectToInequalityTerm.put(object, term);
             return;
         }
@@ -1636,5 +1708,5 @@ public class TypeSpecializerAnalysis {
 
     private Set _unsafeLocals;
 
-    private boolean _debug = false;
+    private boolean _debug = true;
 }
