@@ -161,5 +161,32 @@ printf(" time resolution: %ld ns\n", res.tv_nsec);
 
 </dl>
 
+<h3>Compiling Large C Files</h3>
+<pre>
+make -f <I>ModelName</I>.mk WARNING_CC_FLAGS= USER_CC_FLAGS="-pipe -O0
+--verbose -Q"
+</pre>
+
+Each of the options above:
+<dl>
+<dt> No <CODE>-Wall</CODE>
+<dd> avoid any optimization
+
+<dt> <CODE>-pipe</CODE>
+<dd> avoid temporary files
+
+<dt> <CODE>-O0</CODE>
+<dd> avoid optimization
+
+<dt> <CODE>--verbose</CODE>
+<dd> print out steps
+
+<dt> <CODE>-Q</CODE>
+<dd> print out summary information.
+
+</dl>
+
+
+
 </body>
 </html>
