@@ -448,6 +448,17 @@ test ShortToken-13.4 {Test convert from FixToken} {
 ######################################################################
 ####
 # 
+test ShortToken-13.4.5 {Test convert from FloatToken} {
+    set t [java::new {ptolemy.data.FloatToken float} 1.0]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.ShortToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FloatToken '1.0f' to the type short because the type of the token is higher or incomparable with the given type.}}
+
+######################################################################
+####
+# 
 test ShortToken-13.5 {Test convert from ShortToken} {
     set t [java::new {ptolemy.data.ShortToken short} 1]
     set msg {}
