@@ -79,10 +79,10 @@ public class TypeLattice {
      */
     public synchronized static int compare(Token token1, Token token2) {
         if ((token1 == null) || (token2 == null)) {
-            throw new IllegalArgumentException(
-                    "TypeLattice.compare(Token, Token): "
-                            + "one or both of the argument tokens is null: "
-                            + " token1 = " + token1 + ", token2 = " + token2);
+             throw new IllegalArgumentException(
+                     "TypeLattice.compare(Token, Token): "
+                             + "one or both of the argument tokens is null: "
+                             + " token1 = " + token1 + ", token2 = " + token2);
         }
 
         return compare(token1.getType(), token2.getType());
@@ -124,7 +124,7 @@ public class TypeLattice {
         if (token == null) {
             throw new IllegalArgumentException(
                     "TypeLattice.compare(Type, Token): "
-                            + "token argument is null");
+                    + "token argument is null");
         }
 
         return compare(type, token.getType());
@@ -822,8 +822,7 @@ public class TypeLattice {
                         .addEdge(BaseType.COMPLEX, BaseType.COMPLEX_MATRIX);
 
                 _basicLattice.addEdge(BaseType.DOUBLE, BaseType.COMPLEX);
-                //_basicLattice.addEdge(BaseType.INT, BaseType.DOUBLE);
-                // NOTE: Added SHORT to the type lattice. ILIU 09/20/07.
+                _basicLattice.addEdge(BaseType.INT, BaseType.DOUBLE);
                 _basicLattice.addEdge(BaseType.UNSIGNED_BYTE, BaseType.SHORT);
                 _basicLattice.addEdge(BaseType.SHORT, BaseType.INT);
                 _basicLattice.addEdge(BaseType.SHORT, BaseType.FLOAT);
