@@ -126,6 +126,12 @@ fi
 # Default JDK Home, may have /cygdrive in it
 PTJAVA_DIR="@PTJAVA_DIR@"
 
+# Default JDK Home, should not have /cygdrive in it
+# Value of java.home property, location of the JDK with
+# /cygdrive/c/ converted to c:/
+# PTJAVA_HOME usually ends with /jre
+PTJAVA_HOME="@PTJAVA_HOME@"
+
 # PTJAVA_DIR without /cygdrive
 PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 
