@@ -70,13 +70,21 @@ public class LimitedFiringSource extends Source {
     public LimitedFiringSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
         firingCountLimit = new Parameter(this, "firingCountLimit");
         firingCountLimit.setExpression("NONE");
-        firingCountLimit.setTypeEquals(BaseType.INT);
+
+        // Don't setTypeEquals here, it breaks Copernicus
+        // firingCountLimit.setTypeEquals(BaseType.INT);
 
         Parameter NONE = new Parameter(this, "NONE");
-        NONE.setExpression("0");
-        NONE.setTypeEquals(BaseType.INT);
+
+        // Don't setExpression here, it breaks Copernicus, use setToken().
+        // NONE.setExpression("0");
+        NONE.setToken(IntToken.ZERO);
+
+        // Don't setTypeEquals here, it breaks Copernicus.
+        // NONE.setTypeEquals(BaseType.INT);
         NONE.setVisibility(Settable.EXPERT);
     }
 
