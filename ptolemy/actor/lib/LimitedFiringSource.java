@@ -73,9 +73,7 @@ public class LimitedFiringSource extends Source {
 
         firingCountLimit = new Parameter(this, "firingCountLimit");
         firingCountLimit.setExpression("NONE");
-
-        // Don't setTypeEquals here, it breaks Copernicus
-        // firingCountLimit.setTypeEquals(BaseType.INT);
+        firingCountLimit.setTypeEquals(BaseType.INT);
 
         Parameter NONE = new Parameter(this, "NONE");
 
@@ -84,7 +82,7 @@ public class LimitedFiringSource extends Source {
         NONE.setToken(IntToken.ZERO);
 
         // Don't setTypeEquals here, it breaks Copernicus.
-        // NONE.setTypeEquals(BaseType.INT);
+        //NONE.setTypeEquals(BaseType.INT);
         NONE.setVisibility(Settable.EXPERT);
     }
 
