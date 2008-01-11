@@ -374,7 +374,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             } else if (type == BaseType.BOOLEAN) {
                 if (!_booleanFlag) {
                     code.append(_INDENT2 + "jclass objClassB = "
-                            + CCodegenUtilities.jniFindClass("[B", targetCpp)
+                            + CCodegenUtilities.jniFindClass("[Z", targetCpp)
                             + ";" + _eol);
                     _booleanFlag = true;
                 }
