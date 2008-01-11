@@ -1910,6 +1910,27 @@ fi
 # PT_MSG_STATUS
 
 
+# Java does not find things in c:/program files/java
+{ echo "$as_me:$LINENO: checking if your path has 'program files/java' instead of 'Program Files/Java'" >&5
+echo $ECHO_N "checking if your path has 'program files/java' instead of 'Program Files/Java'... $ECHO_C" >&6; }
+echo "$PATH" | egrep 'program files/java' > /dev/null
+status=$?
+if test "$status" -eq 0 ; then
+   { echo "$as_me:$LINENO: WARNING:
+    Temporarily changing your path within configure for Java because
+    Java can't find c:/program files/java, but can find
+    c:/Program files/Java." >&5
+echo "$as_me: WARNING:
+    Temporarily changing your path within configure for Java because
+    Java can't find c:/program files/java, but can find
+    c:/Program files/Java." >&2;}
+   PATH="`echo $PATH | sed 's@program files/java@Program Files/Java@g'`"
+else
+   if test "${PTVERBOSE:-none}" = "none"; then { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; else { echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6; }; fi
+fi
+
 # We must have PTII set before running configure.
 if test -z "$PTII"; then
     if test -n "$PTOLEMY"; then
@@ -2230,6 +2251,7 @@ if test ! -f "$FIND"; then
     { echo "$as_me:$LINENO: WARNING: "Could not find the "find" command, looked in \"$FIND\""" >&5
 echo "$as_me: WARNING: "Could not find the "find" command, looked in \"$FIND\""" >&2;}
 fi
+
 
 
 # Substitute %20 for any spaces.
