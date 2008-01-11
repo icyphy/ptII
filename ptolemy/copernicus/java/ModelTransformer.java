@@ -2274,7 +2274,10 @@ public class ModelTransformer extends SceneTransformer implements
                 || attribute instanceof WindowPropertiesAttribute
                 || attribute instanceof GeneratorAttribute
                 || attribute instanceof GeneratorTableauAttribute
-                || attribute.getName().equals("_showName")) {
+                || attribute.getName().equals("_showName")
+                || attribute.getName().equals("_vergilCenter")
+                || attribute.getName().equals("_vergilZoomFactor")
+                }
             return true;
         }
 
