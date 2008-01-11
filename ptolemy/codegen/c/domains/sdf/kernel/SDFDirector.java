@@ -373,14 +373,14 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 targetCpp) + ";" + _eol);
             } else if (type == BaseType.BOOLEAN) {
                 if (!_booleanFlag) {
-                    code.append(_INDENT2 + "jclass objClassB = "
+                    code.append(_INDENT2 + "jclass objClassZ = "
                             + CCodegenUtilities.jniFindClass("[Z", targetCpp)
                             + ";" + _eol);
                     _booleanFlag = true;
                 }
                 code.append(_INDENT2 + tokensToThisPort + " = "
                         + CCodegenUtilities.jniNewObjectArray(
-                        String.valueOf(numberOfChannels), "objClassB",
+                        String.valueOf(numberOfChannels), "objClassZ",
                                 targetCpp) + ";" + _eol);
             } else {
                 // FIXME: need to deal with other types
