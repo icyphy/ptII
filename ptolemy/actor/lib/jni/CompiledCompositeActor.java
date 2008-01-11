@@ -74,7 +74,7 @@ import ptolemy.util.StringUtilities;
 
 /**
  A composite actor that can be optionally code generated and then
- be invoked via the Java Native Interface (JNI).
+ invoked via the Java Native Interface (JNI).
 
  @author Gang Zhou, contributors: Christopher Brooks, Edward A. Lee
  @version $Id$
@@ -84,8 +84,8 @@ import ptolemy.util.StringUtilities;
  */
 
 public class CompiledCompositeActor extends TypedCompositeActor {
-    /** Construct a CodeGenerationCompositeActor in the default workspace
-     *  with no container and an empty string as its name. Add the actor to
+    /** Construct a CodeGenerationCompositeActor in the default workspace 
+     *  with no container and an empty string as its name. Add the actor to 
      *  the workspace directory.
      *  You should set a director before attempting to execute it.
      *  You should set the container before sending data to it.
@@ -97,8 +97,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     }
 
     /** Construct a CodeGenerationCompositeActor in the specified workspace
-     *  with no container and an empty string as a name. You can then change
-     *  the name with setName(). If the workspace argument is null, then use
+     *  with no container and an empty string as a name. You can then change 
+     *  the name with setName(). If the workspace argument is null, then use 
      *  the default workspace.
      *  You should set a director before attempting to execute it.
      *  You should set the container before sending data to it.
@@ -116,7 +116,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
      *  Increment the version of the workspace.
-     *  This actor will have no local director initially, and its executive
+     *  This actor will have no local director initially, and its executive 
      *  director will be simply the director of the container.
      *  You should set a director before attempting to execute it.
      *
@@ -127,8 +127,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public CompiledCompositeActor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+    public CompiledCompositeActor(CompositeEntity container,
+            String name) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -141,7 +142,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  The default is $HOME/codegen.
      */
     public FileParameter codeDirectory;
-
+    
     /** The name of the package in which to look for helper class
      *  code generators. This is a string that defaults to
      *  "ptolemy.codegen.c".
@@ -149,20 +150,22 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     public StringParameter generatorPackage;
 
     /** If true, generate file with no functions.  If false, generate
-     *  file with functions. The default value is a parameter with the
+     *  file with functions. The default value is a parameter with the 
      *  value true.
      */
     public Parameter inline;
-
-    /** If true (the default), then invoke the generated code in the action methods
+    
+    /** If true, then invoke the generated code in the action methods
      *  (fire(), etc.) using the Java Native Interface (JNI).
-     *  If the value is changed to false, then this actor
-     *  executes like an ordinary composite actor.
+     *  The default value is false, which results in this actor
+     *  executing like an ordinary composite actor.  Classes like EmbeddedCActor
+     *  set invokeJNI to true when there is only C code specifying
+     *  the functionality of an actor.   
      */
     public Parameter invokeJNI;
 
-    /** If true, overwrite preexisting files.  This is a boolean
-     *  with default value true.
+    /** If true, overwrite preexisting files.  The default
+     *  value is a parameter with the value true.
      */
     public Parameter overwriteFiles;
 
@@ -173,20 +176,19 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     // delegated to the superclass, because they are not overridden here.
     // Is that right?  It seems that codegen is not following the actor
     // semantics yet.
-
+    
     /** If <i>invokeJNI</i> is true, then execute the fire() method
      *  of the generated code via JNI. Otherwise, delegate to the
      *  superclass, which executes this actor like an ordinary composite
      *  actor.
      *  @exception IllegalActionException If thrown by the super
      *  class, or if there are problems invoking the fire() method of
-     *  wrapper class.
+     *  wrapper class.   
      */
     public void fire() throws IllegalActionException {
 
-        boolean invokeJNIValue = ((BooleanToken) invokeJNI.getToken())
-                .booleanValue();
-        if (invokeJNIValue) {
+        boolean invoked = ((BooleanToken) invokeJNI.getToken()).booleanValue();
+        if (invoked) {
             if (_debugging) {
                 _debug("Calling fire()");
             }
@@ -201,9 +203,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
                 List tokensFromAllInputPorts = new LinkedList();
 
-                for (Iterator inputPorts = inputPortList().iterator(); inputPorts
-                        .hasNext()
-                        && !_stopRequested;) {
+                for (Iterator inputPorts = inputPortList().iterator();
+                     inputPorts.hasNext() && !_stopRequested;) {
                     IOPort port = (IOPort) inputPorts.next();
                     if (!(port instanceof ParameterPort)) {
                         Object tokens = _transferInputs(port);
@@ -223,7 +224,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 } catch (Throwable throwable) {
                     throw new IllegalActionException(this, throwable,
                             "Failed to invoke the fire method on "
-                                    + "the wrapper class.");
+                            + "the wrapper class.");
                 }
 
                 if (_stopRequested) {
@@ -231,11 +232,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 }
 
                 int portNumber = 0;
-                for (Iterator outputPorts = outputPortList().iterator(); outputPorts
-                        .hasNext()
-                        && !_stopRequested;) {
+                for (Iterator outputPorts = outputPortList().iterator();
+                     outputPorts.hasNext() && !_stopRequested;) {
                     IOPort port = (IOPort) outputPorts.next();
-                    _transferOutputs(port, tokensToAllOutputPorts[portNumber++]);
+                    _transferOutputs(port,
+                            tokensToAllOutputPorts[portNumber++]);
                 }
 
             } finally {
@@ -249,7 +250,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             super.fire();
         }
     }
-
+    
     /** Return the sanitized file name of this actor.  The sanitized name
      *  is created by invoking
      *  {@link ptolemy.util.StringUtilities#sanitizeName(String)},
@@ -275,11 +276,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         super.initialize();
 
-        boolean invokeJNIValue = ((BooleanToken) invokeJNI.getToken())
-                .booleanValue();
-        if (invokeJNIValue) {
-            if (_generatedCodeVersion != _workspace.getVersion()) {
-
+        boolean invoked = ((BooleanToken) invokeJNI.getToken()).booleanValue();
+        if (invoked) {
+            if ( _generatedCodeVersion != _workspace.getVersion()) {
+                
                 _updateSanitizedActorName();
 
                 if (_buildSharedObjectFile()) {
@@ -299,7 +299,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     _generateAndCompileJavaCode();
                     _generateAndCompileCCode();
                     _generatedCodeVersion = _workspace.getVersion();
-                }
+                } 
                 if (_generatedCodeVersion == -1) {
                     // We did not build the shared object, we
                     // are reusing a preexisting one.
@@ -322,7 +322,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
                         ClassLoader classLoader = new URLClassLoader(urls);
                         jniClass = classLoader.loadClass(jniClassName);
-
+                    
                     } catch (MalformedURLException ex) {
                         throw new IllegalActionException(this, ex,
                                 "The class URL \"" + url + "\" for \""
@@ -363,22 +363,22 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     if (_jniFireMethod == null) {
                         throw new IllegalActionException(this,
                                 "Cannot find fire "
-                                        + "method in the jni wrapper class.");
+                                + "method in the jni wrapper class.");
                     }
                     if (_jniInitializeMethod == null) {
                         throw new IllegalActionException(this,
                                 "Cannot find initialize "
-                                        + "method in the jni wrapper class.");
+                                + "method in the jni wrapper class.");
                     }
                     if (_jniWrapupMethod == null) {
                         throw new IllegalActionException(this,
                                 "Cannot find wrapup "
-                                        + "method in the jni wrapper class.");
+                                + "method in the jni wrapper class.");
                     }
                     _loadedCodeVersion = _workspace.getVersion();
                 }
             }
-
+                
             try {
                 // Java 1.4, used by Kepler, requires the two arg invoke()
                 // Cast to Object() to supress Java 1.5 warning
@@ -386,7 +386,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Failed to invoke the initialize method on"
-                                + "the wrapper class.");
+                        + "the wrapper class.");
             }
 
         }
@@ -402,10 +402,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        boolean invokeJNIValue = ((BooleanToken) invokeJNI.getToken())
-                .booleanValue();
+        boolean invoked = ((BooleanToken) invokeJNI.getToken()).booleanValue();
 
-        if (invokeJNIValue) {
+        if (invoked) {
             if (_jniWrapper == null) {
                 // If we are generating code for an entire model,
                 // we might end up here.
@@ -419,7 +418,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             } catch (Throwable throwable) {
                 throw new IllegalActionException(this, throwable,
                         "Failed to invoke the wrapup method on "
-                                + "the wrapper class.");
+                        + "the wrapper class.");
             }
         }
         // _generatedCodeVersion = _workspace.getVersion();
@@ -430,7 +429,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
     /** Compile the Java code.
      *  The <code>javac</code> and <code>javah</code> commands are
-     *  executed on the the java file.
+     *  executed on the the java file.  
      *  @exception IllegalActionException If there is a problem reading
      *  the <i>codeDirectory</i> parameter.
      */
@@ -451,16 +450,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         _executeCommands.setWorkingDirectory(codeDirectory.asFile());
         _executeCommands.setCommands(commands);
         _executeCommands.start();
-        int lastSubprocessReturnCode = _executeCommands
-                .getLastSubprocessReturnCode();
+        int lastSubprocessReturnCode = _executeCommands.getLastSubprocessReturnCode();
         if (lastSubprocessReturnCode != 0) {
             throw new IllegalActionException(this,
                     "Execution of subcommands failed, last process returned "
-                            + lastSubprocessReturnCode + ", which is not 0:\n"
-                            + _executeCommands.buffer.toString());
+                    + lastSubprocessReturnCode + ", which is not 0:\n" 
+                    + _executeCommands.buffer.toString());
         }
     }
-
+    
     /** Generate and compile C code.
      *  @exception IllegalActionException If the helper class cannot
      *  be found, or if the static generateCode(TypedCompositeActor)
@@ -473,24 +471,28 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     /** Generate and compile the Java code.
      *  @exception IllegalActionException If thrown while getting the path
      *  to the shared object, while writing the Java file, or while
-     *  compiling the Java file.
+     *  compiling the Java file.   
      */
-    protected void _generateAndCompileJavaCode() throws IllegalActionException {
+    protected void _generateAndCompileJavaCode()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         String sharedObjectPath = _sharedObjectPath(_sanitizedActorName);
-        code.append("public class " + _sanitizedActorName + " {\n" + "\n"
-                + "    public native Object[] fire(" + _getArguments() + ");\n"
-                + "    public native void initialize();\n"
-                + "    public native void wrapup();\n"
-                + "    static {\n"
-
-                // + "        String library = \"" + _sanitizedActorName + "\";\n"
-                // + "        System.loadLibrary(library);\n"
-
-                + "        String library = \"" + sharedObjectPath + "\";\n"
-                + "        System.load(library);\n" + "    }\n" + "}\n");
-
+        code.append("public class " + _sanitizedActorName + " {\n"
+                  + "\n"
+                  + "    public native Object[] fire(" + _getArguments() + ");\n"
+                  + "    public native void initialize();\n"
+                  + "    public native void wrapup();\n"
+                  + "    static {\n" 
+      
+               // + "        String library = \"" + _sanitizedActorName + "\";\n"
+               // + "        System.loadLibrary(library);\n"
+                  
+                  + "        String library = \"" + sharedObjectPath + "\";\n"               
+                  + "        System.load(library);\n"
+                  + "    }\n"
+                  + "}\n");
+    
         String codeFileName = _sanitizedActorName + ".java";
 
         // Write the code to a file with the same name as the model into
@@ -501,7 +503,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 throw new IOException("Error: " + codeDirectory.stringValue()
                         + " is a file, " + "it should be a directory.");
             }
-            if (!codeDirectoryFile.isDirectory() && !codeDirectoryFile.mkdirs()) {
+            if (!codeDirectoryFile.isDirectory()
+                    && !codeDirectoryFile.mkdirs()) {
                 throw new IOException("Failed to make the \""
                         + codeDirectory.stringValue() + "\" directory.");
             }
@@ -520,14 +523,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
                             */
-                    return;
+                    return;                
                 }
             }
 
             Writer writer = null;
             try {
-                System.out.println("Writing \"" + codeFileName + "\" in \""
-                        + codeDirectory.getBaseDirectory() + "\"");
+                System.out.println("Writing \"" + codeFileName
+                        + "\" in \"" + codeDirectory.getBaseDirectory()
+                        + "\"");
                 writer = FileUtilities.openForWriting(codeFileName,
                         codeDirectory.getBaseDirectory(), false);
                 writer.write(code.toString());
@@ -538,16 +542,17 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
-                    "Failed to write \"" + codeFileName + "\" in "
-                            + codeDirectory.getBaseDirectory());
+                    "Failed to write \""
+                    + codeFileName + "\" in "
+                    + codeDirectory.getBaseDirectory());
         }
 
         _compileJavaCode();
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
+   
     /** Return true if the shared object file should be built.  The
      *  shared object file must be built if shared object file does
      *  not exist or if the model has been modified and not saved or
@@ -566,25 +571,22 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // necessary.  If we copy files, then we should rebuild.
         // FIXME: this is a side effect, and we should be sure to do
         // it before returning from this method.
-        long fileDependenciesModificationTime = ((Long) _invokeHelperMethod("copyFilesToCodeDirectory"))
-                .longValue();
+        long fileDependenciesModificationTime = ((Long) _invokeHelperMethod("copyFilesToCodeDirectory")).longValue();
 
         File sharedObjectFile = new File(_sharedObjectPath(_sanitizedActorName));
         if (sharedObjectFile == null || !(sharedObjectFile.canRead())) {
             System.out.println(message + "Can't read the shared object file.");
             return true;
-        }
+        } 
         Effigy effigy = Configuration.findEffigy(this.toplevel());
-        if (effigy != null && effigy.isModified()) {
-            System.out
-                    .println(message
-                            + "The effigy "
-                            + effigy
-                            + "(model : "
-                            + ((PtolemyEffigy) effigy).getModel()
-                            + ") says the model was modified and thus it does not matter "
-                            + "if the shared object file is newer than the model file "
-                            + "because the model file is out of date.");
+        if (effigy != null
+                && effigy.isModified()) {
+            System.out.println(message
+                    + "The effigy " + effigy + "(model : "
+                    + ((PtolemyEffigy) effigy).getModel()
+                    + ") says the model was modified and thus it does not matter "
+                    + "if the shared object file is newer than the model file "
+                    + "because the model file is out of date.");
             return true;
         }
 
@@ -601,7 +603,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         } catch (Exception ex) {
             // Ignore, perhaps modelURI points to a remote model.
         }
-        if (modelFile == null
+        if (modelFile == null 
                 || sharedObjectFile.lastModified() < modelFile.lastModified()) {
             System.out.println(message
                     + "The sharedObjectFile has a modification time "
@@ -609,7 +611,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             return true;
         }
 
-        if (modelFile == null
+        if (modelFile == null 
                 || sharedObjectFile.lastModified() < fileDependenciesModificationTime) {
             System.out.println(message
                     + "The sharedObjectFile has a modification time "
@@ -637,7 +639,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  @exception IllegalActionException If there is a problem
      *  reading the <i>codeDirectory</i> parameter.
      */
-    private String _sharedObjectPath(String sanitizedActorName)
+    private String _sharedObjectPath(String sanitizedActorName )
             throws IllegalActionException {
         String sharedObjectPath = null;
         try {
@@ -650,10 +652,10 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     fileName = "lib" + sanitizedActorName + ".so";
                 }
             }
-            sharedObjectPath = codeDirectory.asFile().getCanonicalPath()
-                    + File.separator + fileName;
+            sharedObjectPath = codeDirectory.asFile().getCanonicalPath() +
+                File.separator + fileName;
             sharedObjectPath = sharedObjectPath.replace("\\", "/");
-
+            
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Cannot generate library path.");
@@ -681,7 +683,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                     // If a port is not connected, then use int as a default.
                     typeName = "int";
                 }
-                arguments.append(typeName + "[][] " + inputPort.getName());
+                arguments.append(typeName + "[][] "
+                        + inputPort.getName());
             }
         }
         return arguments.toString();
@@ -695,14 +698,13 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  @exception IllegalActionException If the helper class can't be
      *  found or if the method cannot be invoked.
      */
-    private Object _invokeHelperMethod(String methodName)
-            throws IllegalActionException {
+    private Object _invokeHelperMethod(String methodName) throws IllegalActionException {
         // We use reflection to avoid a compile time dependency
         // on the codegen package.
         String packageName = generatorPackage.stringValue();
-        String helperClassName = getClass().getName().replaceFirst("ptolemy",
-                packageName);
-
+        String helperClassName 
+                = getClass().getName().replaceFirst("ptolemy", packageName);
+        
         Class helperClass = null;
         try {
             helperClass = Class.forName(helperClassName);
@@ -716,17 +718,18 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             // Find the
             // ptolemy.codegen.c.actor.lib.jni.CompiledCompositeActor.generateCode()
             // method.
-            generateMethod = helperClass.getMethod(methodName,
-                    new Class[] { ptolemy.actor.TypedCompositeActor.class });
+            generateMethod = helperClass.getMethod(methodName, 
+                    new Class[] {ptolemy.actor.TypedCompositeActor.class});
         } catch (NoSuchMethodException ex) {
-            throw new IllegalActionException(this, ex, "Cannot find the \""
-                    + methodName + "\" method in \"" + helperClassName + "\".");
+            throw new IllegalActionException(this, ex,
+                    "Cannot find the \"" + methodName + "\" method in \"" 
+                    + helperClassName + "\".");
         }
 
         try {
             // Invoke the static method that takes a TypedCompositeActor
             // as an argument.
-            return generateMethod.invoke(null, new Object[] { this });
+            return generateMethod.invoke(null, new Object[]{this});
         } catch (java.lang.reflect.InvocationTargetException ex) {
             // If we get an InvocationTargetException, rethrow the
             // exception with the proper cause exception so that we
@@ -737,22 +740,22 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             }
             throw new IllegalActionException(this, cause,
                     "Failed to invoke the \"" + methodName + "\" method in \""
-                            + helperClassName + "\".");
+                    + helperClassName + "\".");
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Failed to invoke the \"" + methodName + "\" method in \""
-                            + helperClassName + "\".");
+                    + helperClassName + "\".");
         }
     }
 
     /** Initialize parameters.
      */
     private void _init() {
-
+        
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.codegen.c.actor.CompiledCompositeActor");
-
+            
         try {
             generatorPackage = new StringParameter(this, "generatorPackage");
             generatorPackage.setExpression("ptolemy.codegen.c");
@@ -769,7 +772,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI());
             new Parameter(codeDirectory, "allowFiles", BooleanToken.FALSE);
             new Parameter(codeDirectory, "allowDirectories", BooleanToken.TRUE);
-
+            
             invokeJNI = new Parameter(this, "invokeJNI");
             invokeJNI.setTypeEquals(BaseType.BOOLEAN);
             invokeJNI.setExpression("true");
@@ -800,6 +803,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             tokenHolder = new int[numberOfChannels][];
         } else if (type == BaseType.DOUBLE) {
             tokenHolder = new double[numberOfChannels][];
+        } else if (type == BaseType.BOOLEAN) {
+            tokenHolder = new boolean[numberOfChannels][];
         } else {
             // FIXME: need to deal with other types
         }
@@ -833,6 +838,15 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                                         .doubleValue();
                             }
                             ((double[][]) tokenHolder)[i] = doubleTokens;
+
+                        } else if (type == BaseType.BOOLEAN) {
+
+                            boolean[] booleanTokens = new boolean[rate];
+                            for (int k = 0; k < rate; k++) {
+                                booleanTokens[k] = ((BooleanToken) tokens[k])
+                                        .booleanValue();
+                            }
+                            ((boolean[][]) tokenHolder)[i] = booleanTokens;
 
                         } else {
                             // FIXME: need to deal with other types
@@ -892,6 +906,16 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 }
             }
 
+        } else if (type == BaseType.BOOLEAN) {
+
+            boolean[][] tokens = (boolean[][]) outputTokens;
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                for (int k = 0; k < rate; k++) {
+                    Token token = new BooleanToken(tokens[i][k]);
+                    port.send(i, token);
+                }
+            }
+
         } else {
             // FIXME: need to deal with other types
         }
@@ -906,7 +930,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // related functions.  Each time a .dll file is
         // generated, we must use a different name for it so
         // that it can be loaded without restarting vergil.
-        _sanitizedActorName = _sanitizedActorName.replace("_", "") + _version;
+        _sanitizedActorName = _sanitizedActorName.replace("_", "") 
+            + _version;
     }
 
     private StringBufferExec _executeCommands;
@@ -924,11 +949,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  _updateSanitizedActorName() to properly set this variable.
      */
     private String _sanitizedActorName;
-
+    
     /** The workspace version for which the code was generated.
      *  If the workspace version and this variable differ,
      *  Then there is a chance we should regenerate the code.
-     */
+     */   
     private long _generatedCodeVersion = -1;
 
     /** The workspace version for which the code was loaded.  If the
@@ -936,9 +961,9 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  reload the code.  Note that we don't want to reload the same
      *  dll multiple times or we will get "Native Library foo.dll
      *  already loaded in another classloader"
-     */
+     */   
     private long _loadedCodeVersion = -1;
-
+    
     /** The version of the shared object.  Each time we rebuild, the
      *  version number gets incremented.  If you change _version, then
      *  consider calling _updateSanitizedActorName.
@@ -950,4 +975,5 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  and set _version to its value.
      */
     private static int _noEffigyVersion = 0;
+    
 }

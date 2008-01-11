@@ -58,10 +58,10 @@ import ptolemy.kernel.util.NamedObj;
  Code generator helper associated with the SDFDirector class. This class
  is also associated with a code generator.
 
- @author Ye Zhou, Gang Zhou, Teale Fristoe
+ @author Ye Zhou, Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Yellow (zgang)
+ @Pt.ProposedRating Yellow (zgang)  
  @Pt.AcceptedRating Red (eal)
  */
 public class SDFDirector extends StaticSchedulingDirector {
@@ -78,8 +78,8 @@ public class SDFDirector extends StaticSchedulingDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Generate code for declaring read and write offset variables if needed.
-     *
+    /** Generate code for declaring read and write offset variables if needed. 
+     * 
      *  @return The generated code.
      *  @exception IllegalActionException If thrown while creating
      *  offset variables.
@@ -100,8 +100,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
 
-        ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
-                .getContainer();
+        ptolemy.actor.CompositeActor container 
+                = (ptolemy.actor.CompositeActor) getComponent().getContainer();
         CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
 
         // Generate code for creating external initial production.
@@ -154,6 +154,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         _portNumber = 0;
         _intFlag = false;
         _doubleFlag = false;
+        _booleanFlag = false;
 
         return code.toString();
     }
@@ -174,11 +175,11 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) _codeGenerator.generateJNI.getToken())
-                        .booleanValue()) {
+            && ((BooleanToken)_codeGenerator.generateJNI.getToken()).booleanValue()) {
 
             // FindBugs wants this instanceof check.
             if (!(inputPort instanceof TypedIOPort)) {
@@ -217,6 +218,13 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 + CCodegenUtilities.jniGetArrayElements(
                                         "Double", tokensFromOneChannel,
                                         targetCpp) + ";" + _eol);
+                    } else if (type == BaseType.BOOLEAN) {
+                        code.append("jboolean * "
+                                + pointerToTokensFromOneChannel
+                                + " = "
+                                + CCodegenUtilities.jniGetArrayElements(
+                                        "Boolean", tokensFromOneChannel,
+                                        targetCpp) + ";" + _eol);
                     } else {
                         // FIXME: need to deal with other types
                     }
@@ -241,6 +249,11 @@ public class SDFDirector extends StaticSchedulingDirector {
                     } else if (type == BaseType.DOUBLE) {
                         code.append(CCodegenUtilities.jniReleaseArrayElements(
                                 "Double", tokensFromOneChannel,
+                                pointerToTokensFromOneChannel, targetCpp)
+                                + ";" + _eol);
+                    } else if (type == BaseType.BOOLEAN) {
+                        code.append(CCodegenUtilities.jniReleaseArrayElements(
+                                "Boolean", tokensFromOneChannel,
                                 pointerToTokensFromOneChannel, targetCpp)
                                 + ";" + _eol);
                     } else {
@@ -295,11 +308,11 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         if (container instanceof CompiledCompositeActor
-                && ((BooleanToken) _codeGenerator.generateJNI.getToken())
-                        .booleanValue()) {
+            && ((BooleanToken)_codeGenerator.generateJNI.getToken()).booleanValue()) {
 
             if (_portNumber == 0) {
                 int numberOfOutputPorts = container.outputPortList().size();
@@ -358,6 +371,17 @@ public class SDFDirector extends StaticSchedulingDirector {
                         + CCodegenUtilities.jniNewObjectArray(String
                                 .valueOf(numberOfChannels), "objClassD",
                                 targetCpp) + ";" + _eol);
+            } else if (type == BaseType.BOOLEAN) {
+                if (!_booleanFlag) {
+                    code.append(_INDENT2 + "jclass objClassB = "
+                            + CCodegenUtilities.jniFindClass("[B", targetCpp)
+                            + ";" + _eol);
+                    _booleanFlag = true;
+                }
+                code.append(_INDENT2 + tokensToThisPort + " = "
+                        + CCodegenUtilities.jniNewObjectArray(
+                        String.valueOf(numberOfChannels), "objClassB",
+                                targetCpp) + ";" + _eol);
             } else {
                 // FIXME: need to deal with other types
             }
@@ -372,6 +396,10 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                     } else if (type == BaseType.DOUBLE) {
                         code.append(_INDENT2 + "jdouble " + tokensToOneChannel
+                                + "[" + rate + "];" + _eol);
+
+                    } else if (type == BaseType.BOOLEAN) {
+                        code.append(_INDENT2 + "jboolean " + tokensToOneChannel
                                 + "[" + rate + "];" + _eol);
 
                     } else {
@@ -422,6 +450,18 @@ public class SDFDirector extends StaticSchedulingDirector {
                                             .valueOf(rate), tokensToOneChannel,
                                     targetCpp) + ";" + _eol);
 
+                } else if (type == BaseType.BOOLEAN) {
+                    code.append(_INDENT2
+                            + "jbooleanArray "
+                            + tokensToOneChannelArray
+                            + " = "
+                            + CCodegenUtilities.jniNewArray("Boolean", String
+                                    .valueOf(rate), targetCpp) + ";" + _eol);
+                    code.append(_INDENT2
+                            + CCodegenUtilities.jniSetArrayRegion("Boolean",
+                                    tokensToOneChannelArray, "0", String
+                                            .valueOf(rate), tokensToOneChannel,
+                                    targetCpp) + ";" + _eol);
                 } else {
                     // FIXME: need to deal with other types
                 }
@@ -497,9 +537,9 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             receivers = port.getInsideReceivers();
         } else {
-            // Findbugs: receivers could be null, so we throw an exception.
+            // Findbugs: receivers could be null, so we throw an exception. 
             throw new IllegalActionException(port,
-                    "Port is neither an input nor an output.");
+                   "Port is neither an input nor an output.");
         }
 
         //try {
@@ -526,13 +566,12 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
 
         return size;
-        //}
+        //} 
         //catch (ArrayIndexOutOfBoundsException ex) {
         //    throw new IllegalActionException(port, "Channel out of bounds: "
         //            + channelNumber);
         //}
     }
-
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
@@ -868,14 +907,17 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     protected void _updatePortBufferSize() throws IllegalActionException {
 
-        ptolemy.domains.sdf.kernel.SDFDirector director = (ptolemy.domains.sdf.kernel.SDFDirector) getComponent();
+        ptolemy.domains.sdf.kernel.SDFDirector director 
+                = (ptolemy.domains.sdf.kernel.SDFDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
         Iterator actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) 
+                    _getHelper((NamedObj) actor);
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
@@ -930,4 +972,6 @@ public class SDFDirector extends StaticSchedulingDirector {
     private boolean _intFlag;
 
     private boolean _doubleFlag;
+
+    private boolean _booleanFlag;
 }
