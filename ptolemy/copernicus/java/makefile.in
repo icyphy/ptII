@@ -392,8 +392,9 @@ JODE=$(ROOT)/bin/jode
 # Class to disassemble
 DECOMPILERTARGETCLASS =		$(MODEL)
 
-# Generate a .java file from a class file and recompile it.
-# Jode
+######################################################
+# Decompile using jode
+# Jode does not work well, instead, use dava below.
 jodeDecompile: jodeDecompileDemo jodeRecompileDemo jodeRunRecompiledDemo
 jodeDecompileDemo:
 	@echo "Note that jode probably does not work with Java 1.5 and later"
@@ -424,7 +425,9 @@ jodeRunRecompiledDemo:
 		ptolemy.actor.gui.CompositeActorApplication \
 		-class $(TARGETPACKAGE).$(MODEL)
 
-# Generate .java files from the snapshots
+######################################################
+# Recompile using jad
+# Jad is not open source and does not work as well as dava below.
 jadDecompile:
 	$(JAD) -r -o -d $(TARGETPATH)jad $(TARGETPATH)$(MODEL)/*.class; \
 	for file in $(TARGETPATH)jad/$(MODEL)/*.jad; \
@@ -438,6 +441,45 @@ jadDecompile:
 			$$javafile; \
 	done; \
 
+
+######################################################
+# Dava is a Decompiler that uses Soot.
+# See http://www.sable.mcgill.ca/soot/tutorial/phase/
+# See http://www.program-transformation.org/Transform/DecompilationDava
+#
+davaDecompile: davaDecompileDava davaDecompileFix davaDecompileCompile davaDecompileRun
+
+davaDecompileDava:
+	@echo "Running the Soot Dava Decompiler"
+	for file in $(TARGETPATH)$(MODEL)/*.class; \
+	do \
+		classfile="$(MODEL).`basename $$file .class`"; \
+		echo "Decompiling $$classfile"; \
+		CLASSPATH=".$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+			$(ROOT)/bin/soot -f d -d . $$classfile; \
+	done;
+
+davaDecompileFix:
+	@echo "Running Fixing the Dava Decompiler output"
+	for file in $(TARGETPATH)dava/src/$(MODEL)/*.java; \
+	do \
+		sh $(ROOT)/ptolemy/copernicus/java/test/dava2java $$file | \
+		sed "s/$(MODEL)\.//g" > $$file.tmp; \
+		cp $$file.tmp $$file; \
+	done;
+
+davaDecompileCompile:
+	@echo "Recompiling the Dava Decompiler output"
+	"$(JAVAC)" -classpath "$(TARGETPATH)dava/src$(CLASSPATHSEPARATOR)$(ROOT)" \
+		-d dava/src \
+		dava/src/$(MODEL)/*.java
+
+davaDecompileRun:
+	@echo "Running the compiled Dava Decompiler output"
+	"$(JAVA)" -classpath "$(TARGETPATH)dava/src$(CLASSPATHSEPARATOR)$(ROOT)" \
+		$(MODEL).Main
+
+######################################################
 # Generate .java files from the snapshots
 recompileSnapshots:
 	for snapshot in $(SNAPSHOTS); \
