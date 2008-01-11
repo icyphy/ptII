@@ -278,6 +278,9 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                 // This is Christopher.
                 // This is Christopher gacking on Steve's code
                 // gack Christopher, gack.
+                // See Christopher come back to this code years later
+                // and gack again
+                // gack Christopher, gack.
                 if (r.getMethod().getName().equals("attributeChanged")
                         || r.getMethod().getName().equals("setExpression")
                         || r.getMethod().getName().equals("setToken")
@@ -286,7 +289,8 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                         || r.getMethod().getName().equals(
                                 "setTokenProductionRate")
                         || r.getMethod().getName().equals(
-                                "setTokenInitProduction")) {
+                                "setTokenInitProduction") 
+                        || r.getMethod().getName().equals("setVisibility")) { 
                     body.getUnits().remove(stmt);
                 }
 
