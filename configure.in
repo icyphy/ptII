@@ -73,6 +73,20 @@ AC_DEFUN([PT_MSG_STATUS],
 [if test "${PTVERBOSE:-none}" != "none"; then AC_MSG_RESULT([$1]); fi ])# PT_MSG_STATUS
 
 
+# Java does not find things in c:/program files/java
+AC_MSG_CHECKING([if your path has 'program files/java' instead of 'Program Files/Java'])
+echo "$PATH" | egrep 'program files/java' > /dev/null
+status=$?
+if test "$status" -eq 0 ; then
+   AC_MSG_WARN([
+    Temporarily changing your path within configure for Java because
+    Java can't find c:/program files/java, but can find
+    c:/Program files/Java].)
+   PATH="`echo $PATH | sed 's@program files/java@Program Files/Java@g'`"
+else
+   PT_MSG_RESULT([ok])
+fi
+
 # We must have PTII set before running configure.
 if test -z "$PTII"; then
     if test -n "$PTOLEMY"; then
@@ -248,6 +262,7 @@ fi
 if test ! -f "$FIND"; then
     AC_MSG_WARN(["Could not find the "find" command, looked in \"$FIND\""])
 fi    
+
 
 
 # Substitute %20 for any spaces.
