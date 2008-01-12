@@ -2277,7 +2277,7 @@ public class ModelTransformer extends SceneTransformer implements
                 || attribute.getName().equals("_showName")
                 || attribute.getName().equals("_vergilCenter")
                 || attribute.getName().equals("_vergilZoomFactor"))
-                }
+            {
             return true;
         }
 
