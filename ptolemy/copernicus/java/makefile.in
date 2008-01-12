@@ -479,6 +479,17 @@ davaDecompileRun:
 	"$(JAVA)" -classpath "$(TARGETPATH)dava/src$(CLASSPATHSEPARATOR)$(ROOT)" \
 		$(MODEL).Main
 
+# Findbugs file
+$(MODEL).fbp:
+	echo "<Project filename=\"&lt;&lt;unnamed project&gt;&gt;\" projectName=\"$(MODEL)\">" > $@
+	echo "  <Jar>$(TARGETPATH)/dava/src/$(MODEL)</Jar>" >> $@
+	echo "  <AuxClasspathEntry>$(PTII)</AuxClasspathEntry>" >> $@
+	echo "  <SrcDir>$(TARGETPATH)/dava/src/$(MODEL)</SrcDir>" >> $@
+	echo "  <SuppressionFilter>" >> $@
+	echo "    <LastVersion value=\"-1\" relOp=\"NEQ\"/>" >> $@
+	echo "  </SuppressionFilter>" >> $@
+	echo "</Project>" >> $@
+
 ######################################################
 # Generate .java files from the snapshots
 recompileSnapshots:
