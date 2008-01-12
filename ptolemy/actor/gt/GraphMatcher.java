@@ -874,8 +874,15 @@ public class GraphMatcher extends GraphAnalyzer {
                     boolean isMultiportEqual = patternIOPort.isMultiport() == hostIOPort
                             .isMultiport();
 
-                    boolean isNameEqual = patternIOPort.getName().equals(
-                            hostIOPort.getName());
+                    boolean isNameEqual = true;
+                    // FIXME: Do not check port names. This is because in a
+                    // CompositeActorMatcher, we still don't support port
+                    // criteria, so the only way of adding a port to it is to
+                    // use ordinary Ptolemy port. But this forbids users to
+                    // match two ports without considering their names.
+                    // The following test should be added back when port
+                    // criteria is supported for CompositeActors.
+                    // patternIOPort.getName().equals(hostIOPort.getName());
 
                     boolean isTypeCompatible = true;
                     if (patternIOPort instanceof TypedIOPort) {
