@@ -155,6 +155,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         _intFlag = false;
         _doubleFlag = false;
         _booleanFlag = false;
+        _objectFlag = false;
 
         return code.toString();
     }
@@ -218,6 +219,12 @@ public class SDFDirector extends StaticSchedulingDirector {
                                 + CCodegenUtilities.jniGetArrayElements(
                                         "Double", tokensFromOneChannel,
                                         targetCpp) + ";" + _eol);
+                    } else if (type == BaseType.OBJECT) {
+                        code.append("jobjectArray "
+                                + pointerToTokensFromOneChannel
+                                + " = (jobjectArray) "
+                                + tokensFromOneChannel
+                                + ";" + _eol);
                     } else if (type == BaseType.BOOLEAN) {
                         code.append("jboolean * "
                                 + pointerToTokensFromOneChannel
@@ -236,8 +243,14 @@ public class SDFDirector extends StaticSchedulingDirector {
                         code.append(_INDENT2);
                         code.append(compositeActorHelper.getReference("@"
                                 + portNameWithChannelNumber + "," + k));
-                        code.append(" = " + pointerToTokensFromOneChannel + "["
-                                + k + "];" + _eol);
+                        if (type == BaseType.OBJECT) {
+                            code.append(" = *((void **) " + CCodegenUtilities.jniGetObjectArrayElement(
+                                    pointerToTokensFromOneChannel, String.valueOf(k), targetCpp)
+                                    + ");" + _eol);
+                        } else {
+                            code.append(" = " + pointerToTokensFromOneChannel + "["
+                                    + k + "];" + _eol);
+                        }
                     }
 
                     code.append(_INDENT2);
@@ -249,6 +262,13 @@ public class SDFDirector extends StaticSchedulingDirector {
                     } else if (type == BaseType.DOUBLE) {
                         code.append(CCodegenUtilities.jniReleaseArrayElements(
                                 "Double", tokensFromOneChannel,
+                                pointerToTokensFromOneChannel, targetCpp)
+                                + ";" + _eol);
+                    } else if (type == BaseType.OBJECT) {
+                        code.append(CCodegenUtilities.jniDeleteLocalRef(
+                                tokensFromOneChannel, targetCpp)
+                                + ";" + _eol);
+                        code.append(CCodegenUtilities.jniDeleteLocalRef(
                                 pointerToTokensFromOneChannel, targetCpp)
                                 + ";" + _eol);
                     } else if (type == BaseType.BOOLEAN) {
@@ -319,8 +339,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
                 code.append(_INDENT2 + "jobjectArray tokensToAllOutputPorts;"
                         + _eol);
-                code.append(_INDENT2
-                        + "jclass objClass = "
+                code.append(_INDENT2 + "jclass " + _objClass + " = "
                         + CCodegenUtilities.jniFindClass("Ljava/lang/Object;",
                                 targetCpp) + ";" + _eol);
                 code.append(_INDENT2
@@ -345,9 +364,11 @@ public class SDFDirector extends StaticSchedulingDirector {
             code.append(_INDENT2 + "jobjectArray " + tokensToThisPort + ";"
                     + _eol);
 
+            // Find jni classes and methods and initialize the jni array
+            // for the given type.
             if (type == BaseType.INT) {
                 if (!_intFlag) {
-                    code.append(_INDENT2 + "jclass objClassI = "
+                    code.append(_INDENT2 + "jclass " + _objClassI + " = "
                             + CCodegenUtilities.jniFindClass("[I", targetCpp)
                             + ";" + _eol);
                     _intFlag = true;
@@ -355,21 +376,35 @@ public class SDFDirector extends StaticSchedulingDirector {
                 code.append(_INDENT2
                         + tokensToThisPort
                         + " = "
-                        + CCodegenUtilities.jniNewObjectArray(String
-                                .valueOf(numberOfChannels), "objClassI",
+                        + CCodegenUtilities.jniNewObjectArray(
+                                String.valueOf(numberOfChannels), _objClassI,
                                 targetCpp) + ";" + _eol);
             } else if (type == BaseType.DOUBLE) {
                 if (!_doubleFlag) {
-                    code.append(_INDENT2 + "jclass objClassD = "
+                    code.append(_INDENT2 + "jclass " + _objClassD + " = "
                             + CCodegenUtilities.jniFindClass("[D", targetCpp)
                             + ";" + _eol);
                     _doubleFlag = true;
                 }
-                code.append(_INDENT2
-                        + tokensToThisPort
+                code.append(_INDENT2 + tokensToThisPort
                         + " = "
-                        + CCodegenUtilities.jniNewObjectArray(String
-                                .valueOf(numberOfChannels), "objClassD",
+                        + CCodegenUtilities.jniNewObjectArray(
+                                String.valueOf(numberOfChannels), _objClassD,
+                                targetCpp) + ";" + _eol);
+            } else if (type == BaseType.OBJECT) {
+                if (!_objectFlag) {
+                    code.append(_INDENT2 + "jclass " + _objClassO + " = "
+                            + CCodegenUtilities.jniFindClass("java/lang/Integer", targetCpp)
+                            + ";" + _eol);
+                    code.append(_INDENT2 + "jmethodID " + _objClassOConstructor + " = "
+                            + CCodegenUtilities.jniGetMethodID(_objClassO, "<init>", "(I)V", targetCpp)
+                            + ";" + _eol);
+                    _objectFlag = true;
+                }
+                code.append(_INDENT2 + tokensToThisPort
+                        + " = "
+                        + CCodegenUtilities.jniNewObjectArray(
+                                String.valueOf(numberOfChannels), _objClass,
                                 targetCpp) + ";" + _eol);
             } else if (type == BaseType.BOOLEAN) {
                 if (!_booleanFlag) {
@@ -386,6 +421,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 // FIXME: need to deal with other types
             }
 
+            // Create an array to contain jni objects
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
 
                 String tokensToOneChannel = "tokensToOneChannelOf" + portName;
@@ -397,6 +433,13 @@ public class SDFDirector extends StaticSchedulingDirector {
                     } else if (type == BaseType.DOUBLE) {
                         code.append(_INDENT2 + "jdouble " + tokensToOneChannel
                                 + "[" + rate + "];" + _eol);
+                        
+                    } else if (type == BaseType.OBJECT) {
+                        code.append(_INDENT2 + "jobjectArray "
+                                + tokensToOneChannel + " = "
+                                + CCodegenUtilities.jniNewObjectArray(
+                                        String.valueOf(rate), _objClass, targetCpp)
+                                + ";" + _eol);
 
                     } else if (type == BaseType.BOOLEAN) {
                         code.append(_INDENT2 + "jboolean " + tokensToOneChannel
@@ -412,18 +455,33 @@ public class SDFDirector extends StaticSchedulingDirector {
                     portNameWithChannelNumber = portName + '#' + i;
                 }
 
+                // Assign each token to the array of jni objects
                 for (int k = 0; k < rate; k++) {
-                    code.append(_INDENT2
-                            + tokensToOneChannel
-                            + "["
-                            + k
-                            + "] = "
-                            + compositeActorHelper.getReference("@"
-                                    + portNameWithChannelNumber + "," + k)
-                            + ";" + _eol);
+                    String portReference = compositeActorHelper.getReference("@"
+                            + portNameWithChannelNumber + "," + k);
+                    if (type == BaseType.OBJECT) {
+                        // Wrap pointer into an Integer object
+                        String[] arguments = new String[1];
+                        arguments[0] = "(int) " + portReference;
+                        code.append(_INDENT2 + CCodegenUtilities.jniSetObjectArrayElement(
+                                tokensToOneChannel, "0",
+                                CCodegenUtilities.jniNewObject(
+                                        _objClassO, _objClassOConstructor,
+                                        arguments, targetCpp),
+                                targetCpp) + ";" + _eol);
+                    } else {
+                        code.append(_INDENT2
+                                + tokensToOneChannel
+                                + "["
+                                + k
+                                + "] = "
+                                + portReference
+                                + ";" + _eol);
+                    }
                 }
 
                 String tokensToOneChannelArray = "arr" + portName + i;
+                // Create and fill an array of Java objects.
                 if (type == BaseType.INT) {
                     code.append(_INDENT2
                             + "jintArray "
@@ -449,6 +507,11 @@ public class SDFDirector extends StaticSchedulingDirector {
                                     tokensToOneChannelArray, "0", String
                                             .valueOf(rate), tokensToOneChannel,
                                     targetCpp) + ";" + _eol);
+                    
+                } else if (type == BaseType.OBJECT) {
+                    code.append(_INDENT2 + "jobjectArray "
+                            + tokensToOneChannelArray + " = "
+                            + tokensToOneChannel + ";" + _eol);
 
                 } else if (type == BaseType.BOOLEAN) {
                     code.append(_INDENT2
@@ -473,8 +536,14 @@ public class SDFDirector extends StaticSchedulingDirector {
                         + _eol);
                 code.append(_INDENT2
                         + CCodegenUtilities.jniDeleteLocalRef(
-                                tokensToOneChannelArray, targetCpp) + ";"
-                        + _eol);
+                                tokensToOneChannelArray, targetCpp)
+                        + ";" + _eol);
+                if (type == BaseType.OBJECT) {
+                    code.append(_INDENT2
+                            + CCodegenUtilities.jniDeleteLocalRef(
+                                    tokensToOneChannel, targetCpp) + ";"
+                            + _eol);
+                }
 
             }
 
@@ -969,9 +1038,27 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     private int _portNumber = 0;
 
-    private boolean _intFlag;
-
     private boolean _doubleFlag;
 
     private boolean _booleanFlag;
+    
+    private boolean _intFlag;
+
+    private boolean _objectFlag;
+    
+    /** Name of variable containing jni class for Objects. */
+    private String _objClass = "objClass";
+    
+    /** Name of variable containing jni double class. */
+    private String _objClassD = "objClassD";
+    
+    /** Name of variable containing jni int class. */
+    private String _objClassI = "objClassI";
+    
+    /** Name of variable containing jni class for Objects. */
+    private String _objClassO = "objClassO";
+    
+    /** Name of variable containing jni id for constructor for Object. */
+    private String _objClassOConstructor = "objClassOConstructor";
+
 }

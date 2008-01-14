@@ -554,7 +554,7 @@ public abstract class BaseType implements Type, Serializable {
     /** The object data type. */
     public static class ObjectType extends BaseType {
         private ObjectType() {
-            super(ObjectToken.class, "object");
+            super(ObjectToken.class, "Object");
         }
 
         public Token convert(Token t) throws IllegalActionException {

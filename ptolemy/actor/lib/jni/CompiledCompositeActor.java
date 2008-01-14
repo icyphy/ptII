@@ -52,6 +52,7 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -679,7 +680,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 //FIXME: need to consider carefully for structured data type
                 Type type = ((TypedIOPort) inputPort).getType();
                 String typeName = type.toString();
-                if (typeName.equals("unknown")) {
+                if (typeName.equals("unknown") || typeName.equals("Object")) {
                     // If a port is not connected, then use int as a default.
                     typeName = "int";
                 }
@@ -803,6 +804,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             tokenHolder = new int[numberOfChannels][];
         } else if (type == BaseType.DOUBLE) {
             tokenHolder = new double[numberOfChannels][];
+        } else if (type == BaseType.OBJECT) {
+            tokenHolder = new int[numberOfChannels][];
         } else if (type == BaseType.BOOLEAN) {
             tokenHolder = new boolean[numberOfChannels][];
         } else {
@@ -838,6 +841,21 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                                         .doubleValue();
                             }
                             ((double[][]) tokenHolder)[i] = doubleTokens;
+                            
+                        } else if (type == BaseType.OBJECT) {
+                            
+                            int[] objectTokens = new int[rate];
+                            Object object;
+                            for (int k = 0; k < rate; k++) {
+                                object = ((ObjectToken) tokens[k]).getValue();
+                                if (!(object instanceof Integer)) {
+                                    throw new IllegalActionException(
+                                            "Can only pass Integer objects to embedded code.");
+                                } else {
+                                    objectTokens[k] = ((Integer) object).intValue();
+                                }
+                            }
+                            ((int[][]) tokenHolder)[i] = objectTokens;
 
                         } else if (type == BaseType.BOOLEAN) {
 
@@ -902,6 +920,18 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             for (int i = 0; i < port.getWidthInside(); i++) {
                 for (int k = 0; k < rate; k++) {
                     Token token = new DoubleToken(tokens[i][k]);
+                    port.send(i, token);
+                }
+            }
+            
+        } else if (type == BaseType.OBJECT) {
+            
+            Object[] tokens = (Object[]) outputTokens;
+            Object[] buffer;
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                buffer = (Object[]) tokens[i];
+                for (int k = 0; k < rate; k++) {
+                    Token token = new ObjectToken(buffer[k]);
                     port.send(i, token);
                 }
             }

@@ -280,7 +280,6 @@ public class StaticSchedulingDirector extends Director {
                 variableDeclarations.append("double _currentTime = 0;" + _eol);
             }
         }
-        variableDeclarations.append(super.generateVariableDeclaration());
         
         return variableDeclarations.toString();
     }

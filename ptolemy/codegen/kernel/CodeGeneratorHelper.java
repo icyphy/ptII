@@ -231,13 +231,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public static String codeGenType(Type ptType) {
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
-        String result = ptType == BaseType.INT ? "Int"
-                : ptType == BaseType.LONG ? "Long"
-                        : ptType == BaseType.STRING ? "String"
-                                : ptType == BaseType.DOUBLE ? "Double"
-                                        : ptType == BaseType.BOOLEAN ? "Boolean"
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
-                                                        : null;
+        String result = 
+            ptType == BaseType.INT ? "Int" : 
+            ptType == BaseType.LONG ? "Long" : 
+            ptType == BaseType.STRING ? "String" : 
+            ptType == BaseType.DOUBLE ? "Double" : 
+            ptType == BaseType.BOOLEAN ? "Boolean" :
+            ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte" :
+            ptType == BaseType.OBJECT ? "Object" :
+            null;
 
         if (result == null) {
             if (ptType instanceof ArrayType) {
@@ -390,12 +392,15 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @return null if there is not corresponding Ptolemy type.
      */
     public static Type ptolemyType(String cgType) {
-        Type result = cgType.equals("Int") ? BaseType.INT : cgType
-                .equals("Long") ? BaseType.LONG
-                : cgType.equals("String") ? BaseType.STRING : cgType
-                        .equals("Boolean") ? BaseType.BOOLEAN : cgType
-                        .equals("Double") ? BaseType.DOUBLE : cgType
-                        .equals("Complex") ? BaseType.COMPLEX : null;
+        Type result = 
+            cgType.equals("Int") ? BaseType.INT :
+            cgType.equals("Long") ? BaseType.LONG :
+            cgType.equals("String") ? BaseType.STRING :
+            cgType.equals("Boolean") ? BaseType.BOOLEAN :
+            cgType.equals("Double") ? BaseType.DOUBLE :
+            cgType.equals("Complex") ? BaseType.COMPLEX :
+            cgType.equals("Object") ? BaseType.OBJECT :
+            null;
 
         if (cgType.endsWith("Array")) {
             String elementType = cgType.replace("Array", "");
@@ -423,13 +428,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public static String targetType(Type ptType) {
         // FIXME: we may need to add more primitive types.
-        return ptType == BaseType.INT ? "int"
-                : ptType == BaseType.STRING ? "char*"
-                        : ptType == BaseType.DOUBLE ? "double"
-                                : ptType == BaseType.BOOLEAN ? "boolean"
-                                        : ptType == BaseType.LONG ? "long"
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "unsigned char"
-                                                        : "Token";
+        return ptType == BaseType.INT ? "int" :
+            ptType == BaseType.STRING ? "char*" :
+            ptType == BaseType.DOUBLE ? "double" :
+            ptType == BaseType.BOOLEAN ? "boolean" :
+            ptType == BaseType.LONG ? "long" :
+            ptType == BaseType.UNSIGNED_BYTE ? "unsigned char" :
+            ptType == BaseType.OBJECT ? "void*" :
+            "Token";
     }
 
     /**
