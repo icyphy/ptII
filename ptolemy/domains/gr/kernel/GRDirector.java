@@ -27,8 +27,10 @@
  */
 package ptolemy.domains.gr.kernel;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -251,6 +253,7 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _disabledActors = new HashSet<Actor>();
         _buildActorTable();
         _iteration = 0;
 
@@ -499,6 +502,10 @@ public class GRDirector extends StaticSchedulingDirector {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
+            
+            if (_disabledActors.contains(actor)) {
+                continue;
+            }
 
             // If an actor returns true to prefire(), fire() and postfire()
             // will be called.
@@ -539,7 +546,9 @@ public class GRDirector extends StaticSchedulingDirector {
                             FiringEvent.BEFORE_POSTFIRE, 1));
                 }
 
-                actor.postfire();
+                if (!actor.postfire()) {
+                    _disabledActors.add(actor);
+                }
 
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
@@ -549,9 +558,6 @@ public class GRDirector extends StaticSchedulingDirector {
 
             // Make sure we reset the pseudotime flag.
             _pseudoTimeEnabled = false;
-
-            // FIXME: should remove actor from schedule
-            // if it returns false on postfire()
         }
     }
 
@@ -634,6 +640,11 @@ public class GRDirector extends StaticSchedulingDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The set of actors that have returned false in their postfire()
+     *  methods. These actors will not be fired again.
+     */
+    private Set<Actor> _disabledActors;
 
     private long _lastIterationTime;
 
