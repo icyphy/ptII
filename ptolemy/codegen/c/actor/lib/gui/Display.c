@@ -1,6 +1,6 @@
 /***preinitBlock***/
-char* string;
-int length;
+char* $actorSymbol(string);
+int $actorSymbol(length);
 /**/
 
 /*** IntPrintBlock($name, $channel) ***/
@@ -20,12 +20,12 @@ printf($ref(input#$channel) ? "$name: true\n" : "$name: false\n");
 /**/
 
 /*** TokenPrintBlock($name, $channel) ***/
-string = $tokenFunc($ref(input#$channel)::toString()).payload.String;
-length = strlen(string);
-if (length > 1 && string[0] == '\"' && string[length - 1] == '\"') {
-    string[length - 1] = '\0';
-    printf("$name: %s\n", string + 1);
+$actorSymbol(string) = $tokenFunc($ref(input#$channel)::toString()).payload.String;
+$actorSymbol(length) = strlen($actorSymbol(string));
+if ($actorSymbol(length) > 1 && $actorSymbol(string)[0] == '\"' && $actorSymbol(string)[$actorSymbol(length) - 1] == '\"') {
+    $actorSymbol(string)[$actorSymbol(length) - 1] = '\0';
+    printf("$name: %s\n", $actorSymbol(string) + 1);
 } else {
-    printf("$name: %s\n", string);
+    printf("$name: %s\n", $actorSymbol(string));
 }
 /**/
