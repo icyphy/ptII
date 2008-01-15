@@ -372,6 +372,10 @@ public class ConversionUtilities {
             returnValue = ((ComplexToken) token).complexValue();
         } else if (token instanceof FixToken) {
             returnValue = ((FixToken) token).fixValue();
+        } else if (token instanceof FloatToken) {
+            returnValue = ((FloatToken) token).floatValue();
+        } else if (token instanceof ShortToken) {
+            returnValue = ((ShortToken) token).shortValue();
         } else if (token instanceof FixMatrixToken) {
             returnValue = ((FixMatrixToken) token).fixMatrix();
         } else if (token instanceof IntMatrixToken) {
@@ -481,8 +485,12 @@ public class ConversionUtilities {
                 return Byte.TYPE;
             } else if (type.equals(BaseType.INT)) {
                 return Integer.TYPE;
+            } else if (type.equals(BaseType.FLOAT)) {
+                return Short.TYPE;
             } else if (type.equals(BaseType.LONG)) {
                 return Long.TYPE;
+            } else if (type.equals(BaseType.SHORT)) {
+                return Short.TYPE;
             } else if (type.equals(BaseType.STRING)) {
                 return java.lang.String.class;
             } else if (type.equals(BaseType.BOOLEAN)) {
