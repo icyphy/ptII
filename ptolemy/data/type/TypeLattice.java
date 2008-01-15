@@ -47,6 +47,31 @@ import ptolemy.kernel.util.InternalErrorException;
  simultaneously and modifying these data structures. To ensure
  thread safety, the methods need to be synchronized.
 
+ <p><a href="http://java.sun.com/docs/books/jls/third_edition/html/typesValues.html">The Java Language Spec, 3rd ed.</a>
+ says:
+ <blockquote>
+ "The integral types are byte, short, int, and long,
+ whose values are 8-bit, 16-bit, 32-bit and 64-bit
+ signed two's-complement integers, respectively, and
+ char, whose values are 16-bit unsigned integers
+ representing UTF-16 code units (3.1).
+ 
+ The floating-point types are float, whose values
+ include the 32-bit IEEE 754 floating-point numbers,
+ and double, whose values include the 64-bit IEEE
+ 754 floating-point numbers"
+ </blockquote>
+
+ Thus,
+ <menu>
+ <li>16-bit shorts are not lossly convertable into  
+ 16-bit chars (unsigned integers).
+ <li>32-bit ints are not lossly convertable into
+ 32-bit floats. 
+ <li>64-bit longs are not lossly convertable into
+ 64-bit doubles.  
+ </menu>
+
  @author Yuhong Xiong, Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 0.4
