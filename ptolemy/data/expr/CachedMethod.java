@@ -36,6 +36,7 @@ import java.util.Iterator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MatrixType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
@@ -726,10 +727,14 @@ public class CachedMethod {
             if (conversions2[j].isPreferableTo(conversions1[j])) {
                 // Found one conversion where the second argument is
                 // preferable.  That is enough to return false.
+                // System.out.println("second arg (" + conversions2[j]
+                //        + ") is preferable to " + conversions1[j]
+                //        + ", returning false");
                 return false;
             } else if (conversions2[j].equals(conversions1[j])) {
                 // Conversions are the same.
                 // Use the types of the arguments to get more specific.
+                // System.out.println("conversions are the same");
                 Class class1 = arguments1[j];
                 Class class2 = arguments2[j];
 
@@ -745,6 +750,10 @@ public class CachedMethod {
                         // An argument that is lower is the lower in the
                         // type lattice is preferable because it is
                         // more specific.
+                        //System.out.println("Found one conversion where "
+                        //        + type2 + " is preferable to "
+                        //        + type1 + " returning false"); 
+                                
                         return false;
                     }
                 } catch (IllegalActionException ex) {
@@ -758,6 +767,8 @@ public class CachedMethod {
 
         // No argument was found where the second is preferable,
         // so we return true.
+        //System.out.println("No argument was found were the "
+        //        + "second conversion is preferable, returning true");
         return true;
     }
 
@@ -892,6 +903,8 @@ public class CachedMethod {
                     // System.out.println("actualType is " + argumentTypes[j]
                     //        + " " + argumentTypes[j].getClass().getName());
                     match = match && (conversion != IMPOSSIBLE_CONVERSION);
+                    // System.out.println("match: " + match + " conversion: " + conversion);
+
                     conversions[j] = conversion;
                 }
 
@@ -907,6 +920,7 @@ public class CachedMethod {
                 }
 
                 if (match) {
+                    // System.out.println("still a match after _areConversionsPreferable");
                     // If still a match, then remember the method for later,
                     // so it can be checked against any other match found.
                     matchedMethod = methods[i];
@@ -952,8 +966,8 @@ public class CachedMethod {
         while (allClasses.hasNext() && (cachedMethod == null)) {
             Class nextClass = (Class) allClasses.next();
 
-            //   System.out.println("Examining registered class: "
-            //                     + nextClass);
+            //System.out.println("Examining registered class: "
+            //  + nextClass);
             try {
                 Method method = _polymorphicGetMethod(nextClass, methodName,
                         argumentTypes, conversions);
@@ -1205,11 +1219,22 @@ public class CachedMethod {
                 TypeArgumentConversion argumentConversion = (TypeArgumentConversion) conversion;
 
                 // FIXME: compare types.
+                // System.out.println("types: " + _conversionType + " " + argumentConversion._conversionType);
                 if (TypeLattice.compare(_conversionType,
                         argumentConversion._conversionType) == ptolemy.graph.CPO.LOWER) {
                     return true;
                 }
 
+                if (_conversionType == BaseType.INT
+                        && argumentConversion._conversionType == BaseType.FLOAT) {
+                    // If we evaluate abs(-1ub), we should get 1, not
+                    // 1.0.  Return true a conversion to int is
+                    // compared to a conversion to float, meaning a
+                    // conversion to int is preferable to a conversion
+                    // to float.
+
+                    return true;
+                }
                 return _conversion
                         .isPreferableTo(argumentConversion._conversion);
             } else {
