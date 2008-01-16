@@ -63,7 +63,11 @@ public abstract class GTIngredient {
     public abstract String getValues();
 
     public boolean isEnabled(int index) {
-        return _enablements[index];
+        if (!getElements()[index].canDisable()) {
+            return true;
+        } else {
+            return _enablements[index];
+        }
     }
 
     public void setEnabled(int index, boolean isEnabled) {
