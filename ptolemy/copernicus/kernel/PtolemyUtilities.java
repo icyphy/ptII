@@ -1604,6 +1604,9 @@ public class PtolemyUtilities {
     // SootMethod representing ptolemy.actor.IOPort.hasToken(int).
     public static SootMethod hasTokenMethod;
 
+    // Soot class representing the ptolemy.actor.Initializable interface.
+    public static SootClass initializableInterface;
+
     // SootClass representing ptolemy.graph.InequalityTerm.
     public static SootClass inequalityTermClass;
 
@@ -1645,6 +1648,9 @@ public class PtolemyUtilities {
     public static SootClass kernelExceptionClass;
 
     public static SootClass kernelRuntimeExceptionClass;
+
+    // Soot class representing the ptolemy.actor.lib.LimitedFiringSource
+    public static SootClass limitedFiringSourceClass;
 
     // Soot class representing the ptolemy.data.LongToken class.
     public static SootClass longTokenClass;
@@ -2003,6 +2009,9 @@ public class PtolemyUtilities {
         compositeActorClass = Scene.v().loadClassAndSupport(
                 "ptolemy.actor.TypedCompositeActor");
 
+        limitedFiringSourceClass = Scene.v().loadClassAndSupport(
+                "ptolemy.actor.lib.LimitedFiringSource");
+
         portClass = Scene.v().loadClassAndSupport("ptolemy.kernel.Port");
         componentPortClass = Scene.v().loadClassAndSupport(
                 "ptolemy.kernel.ComponentPort");
@@ -2011,6 +2020,9 @@ public class PtolemyUtilities {
         relationClass = Scene.v().loadClassAndSupport(
                 "ptolemy.kernel.ComponentRelation");
         relationType = RefType.v(relationClass);
+
+        initializableInterface = Scene.v().loadClassAndSupport(
+                "ptolemy.actor.Initializable");
 
         ioportClass = Scene.v()
                 .loadClassAndSupport("ptolemy.actor.TypedIOPort");
