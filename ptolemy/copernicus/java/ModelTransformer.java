@@ -1160,8 +1160,14 @@ public class ModelTransformer extends SceneTransformer implements
                         if (isNonVoidMethod && stmt instanceof AssignStmt) {
                             box.setValue(IntConstant.v(1));
                         } else {
+                            System.out.println("mt: executable: removing "  + stmt);
                             body.getUnits().remove(stmt);
                         }
+                    }
+                    if (PtolemyUtilities.initializableInterface.declaresMethod(r
+                            .getMethod().getSubSignature())) {
+                        System.out.println("mt: initializable: removing "  + stmt);
+                        body.getUnits().remove(stmt);
                     }
                 }
             }

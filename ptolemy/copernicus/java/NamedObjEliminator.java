@@ -181,18 +181,18 @@ public class NamedObjEliminator extends SceneTransformer implements
                             } else if (expr.getMethod().getName().equals(
                                     "_debug")) {
                                 body.getUnits().remove(unit);
-                            } else if (expr.getMethod().getName().equals(
-                                    "initialize")) {
-                                // Assume no Initializables
-                                body.getUnits().remove(unit);
-                            } else if (expr.getMethod().getName().equals(
-                                    "preinitialize")) {
-                                // Assume no Initializables
-                                body.getUnits().remove(unit);
-                            } else if (expr.getMethod().getName().equals(
-                                    "wrapup")) {
-                                // Assume no Initializables
-                                body.getUnits().remove(unit);
+//                             } else if (expr.getMethod().getName().equals(
+//                                     "initialize")) {
+//                                 // Assume no Initializables
+//                                 body.getUnits().remove(unit);
+//                             } else if (expr.getMethod().getName().equals(
+//                                     "preinitialize")) {
+//                                 // Assume no Initializables
+//                                 body.getUnits().remove(unit);
+//                             } else if (expr.getMethod().getName().equals(
+//                                     "wrapup")) {
+//                                 // Assume no Initializables
+//                                 body.getUnits().remove(unit);
                             }
 
                             // Inline namedObj methods on the
