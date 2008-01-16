@@ -827,11 +827,12 @@ nightly: ptclean ptbuild \
 	glimpse \
 	findchanges \
 	ChangeLog \
-	jnlp \
-	remote4nuke \
-	remote5nuke \
-	remote4 \
-	remote5
+	jnlp
+
+#	remote4nuke \
+#	remote5nuke \
+#	remote4 \
+#	remote5
 
 #	remote2
 #	remote6
