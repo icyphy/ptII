@@ -1,6 +1,6 @@
 /* ptmatlab.cc - Java Native Interface to the matlab engine API
 
- Copyright (c) 1998-2007 The Regents of the University of California and
+ Copyright (c) 1998-2008 The Regents of the University of California and
  Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -38,7 +38,9 @@ typedef long long __int64;
 
 // Define MX_COMPAT_32 so that mwSize, mwIndex are defined.
 // See extern/include/tmwtypes.h
+#undef MX_COMPAT_32
 #define MX_COMPAT_32
+
 
 // V5_COMPAT allows matlab version 5 compatible (obsolete in 6.5 and
 // beyond) functions (like mxGetArray()...) in the source yielding one
@@ -97,12 +99,12 @@ extern "C"
     const char *cmd = NULL;
     jlong retval = 0;
     if (cmdString != NULL) cmd = jni->GetStringUTFChars(cmdString, 0);
-    Engine *ep = engOpen(cmd);
+    Engine *ep = engOpen(cmd); 
     if (ep != NULL) {
       retval = (ptrint)ep;
     }
     else {
-      printf("ptmatlabEngOpen: %s failed!\n", cmd==NULL?"":cmd);
+      printf("ptmatlabEngOpen: %s failed!\n", cmd==NULL?"":cmd); fflush(stdout);
     }
     if (cmdString != NULL) jni->ReleaseStringUTFChars(cmdString, cmd);
     return retval;
@@ -114,10 +116,21 @@ extern "C"
    jlong e,
    jlong p)
   {
-    if (p != 0) {
-        free((char*)(int)p);
+    Engine *ep = (Engine*)(ptrint)e;
+    char* output_buf = (char*)(int)p;
+    const char debug = ptmatlabGetDebug(jni,obj);
+    if (debug > 1) {
+        printf("ptmatlabEngClose: calling engClose(%d)\n", ep);  fflush(stdout);
     }
-    return (jint) engClose((Engine*)(ptrint)e);
+    jint retval = (jint)engClose(ep);
+
+    if (p != 0) {
+        if (debug > 1) {
+            printf("ptmatlabEngClose: freeing 0x%x\n", output_buf); fflush(stdout);
+        }
+        free(output_buf);
+    }
+    return retval;
   }
 
   JNIEXPORT jint JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngEvalString
@@ -126,7 +139,7 @@ extern "C"
    jlong e,
    jstring evalStr)
   {
-      Engine *ep = (Engine*)(ptrint)e;
+    Engine *ep = (Engine*)(ptrint)e;
     const char *str = jni->GetStringUTFChars(evalStr, 0);
     int retval = engEvalString(ep, str);
     jni->ReleaseStringUTFChars(evalStr, str);
@@ -135,7 +148,7 @@ extern "C"
 
   JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngGetArray
   (JNIEnv *jni,
-   jobject obj,
+   jobject obj, 
    jlong e,
    jstring name)
   {
@@ -171,19 +184,21 @@ extern "C"
   }
 
   JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngOutputBuffer
-  (JNIEnv *jni,
-   jobject obj,
+  (JNIEnv *jni, 
+   jobject obj, 
    jlong e,
    jint n)
   {
-      Engine *ep = (Engine*)(ptrint) e;
+    Engine *ep = (Engine*)(ptrint) e;
     char debug = ptmatlabGetDebug(jni,obj);
     char *p = (char*)calloc(n+1,sizeof(char));
     if (p == NULL) {
-      printf("ptmatlabEngOutputBuffer(...) could not obtain output buffer pointer - null\n");
+      printf("ptmatlabEngOutputBuffer(...) could not obtain output buffer pointer - null\n");  fflush(stdout);
       return -2;
     }
-    if (debug > 1) printf("ptmatlabEngOutputBuffer: set, n=%d\n", n);
+    if (debug > 1){
+        printf("ptmatlabEngOutputBuffer: set, engine=%d, p=0x%x, n=%d\n", ep, p, n);  fflush(stdout);
+    }
     engOutputBuffer(ep, p, n);
     return (ptrint)p;
   }
@@ -377,7 +392,7 @@ extern "C"
         jni->ReleaseStringUTFChars(name, nstr);
     }
     jsize nfields = jni->GetArrayLength(fieldNames);
-    // MSVC can't deal with variable length arrays
+    // MSVC can't deal with variable length arrays 
     //char *names[nfields];
     char **names = (char **)malloc(nfields * sizeof(char));
     for (i = 0; i < nfields; i++) {
@@ -404,7 +419,7 @@ extern "C"
     mxArray *ma = (mxArray*)(ptrint) pma;
     if (debug > 1) {
         const char *str = jni->GetStringUTFChars(name, 0);
-        printf("ptmatlabDestroy(%s)", str);
+        printf("ptmatlabDestroy(%s)\n", str); fflush(stdout);
         jni->ReleaseStringUTFChars(name, str);
     }
     mxDestroyArray(ma);
@@ -452,7 +467,7 @@ extern "C"
     mxArray *ma = (mxArray*)(ptrint) pma;
     jint ndims = mxGetNumberOfDimensions(ma);
     const int *dims = mxGetDimensions(ma);
-    // MSVC can't deal with variable length arrays
+    // MSVC can't deal with variable length arrays 
     //jint jdims[ndims];
     jint *jdims= (jint *)malloc(ndims * sizeof(jint));
     if (debug > 1) printf("ptmatlabGetDimensions(%s) = %d x %d\n", mxGetName(ma), dims[0], dims[1]);
@@ -602,7 +617,7 @@ extern "C"
     mxArray *ma = (mxArray*)(ptrint) pma;
     jdouble *pr = (jdouble*) mxGetPr(ma); // Cast assumes jdouble is double
     jdouble *pi = (jdouble*) mxGetPi(ma);
-
+    
     jclass complexClass= jni->FindClass("Lptolemy/math/Complex;");
     if (complexClass == NULL) { printf("Cant find complex class\n"); return 0; }
     jfieldID complexRealFieldID = jni->GetFieldID(complexClass, "real", "D");
