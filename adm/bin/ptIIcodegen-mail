@@ -13,10 +13,10 @@ fi
 
 
 ADMDIR=/users/ptII/adm
-if [ "$USER" = "cxh" ]; then
+if [ "$USER" = "cxh" -o "$USERNAME" = "cxh" ]; then
     ADMDIR=$PTII/adm
 fi
-
+    
 
 if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
     ADMDIR=/home/bldmastr/ptII/adm
@@ -32,7 +32,7 @@ cd $GENDIR
 
 DEEPLOG=$GENDIR/logs/remote4.out
 if [ ! -r "$DEEPLOG" ]; then
-    DEEPLOG=/tmp/cxh/ptII/ptolemy/copernicus/java/test/make2.out
+    DEEPLOG=$PTII/ptolemy/copernicus/java/test/make2.out
 fi
 SHALLOWLOG=$GENDIR/logs/remote5.out
 
