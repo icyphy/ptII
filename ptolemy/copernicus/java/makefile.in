@@ -121,8 +121,8 @@ TREESHAKE_PREFIX = $(TARGETPATH)treeshake
 TREESHAKE=$(ROOT)/util/testsuite/treeshake
 
 # The rule run by the long nightly build test: $PTII/util/testsuite/codegen.tcl
-longTest: #compareAll
-	@echo "Skipping comparisons for the time being"
+# The compareAll rule is not working, so we just run the Java
+longTest: runJava #compareAll
 
 # The rule run by the regular nightly build quick smoke test: 
 # copernicus/java/test
