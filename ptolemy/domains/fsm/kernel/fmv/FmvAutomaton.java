@@ -1,6 +1,6 @@
-/* An Interface Automaton.
+/* An FSM supporting verification using formal methods.
 
- Copyright (c) 1999-2006 The Regents of the University of California.
+ Copyright (c) 1999-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,23 +48,13 @@ import ptolemy.kernel.util.Workspace;
 // // FmvAutomaton
 
 /**
- * This class models an Fmv Automaton. Fmv automata is an automata model defined
- * by de Alfaro and Henzinger in the paper "Fmv Automata". An FmvAutomaton
- * contains a set of states and FmvAutomatonTransitions. There are three kinds
- * transitions: input transition, output transition, and internal transitions.
- * The input and output transitions correspond to input and output ports,
- * respectively. The internal transition correspond to a parameter in this
- * FmvAutomaton. The parameter is added automatically when the internal
- * transition is added.
+ * This class models an Fmv Automaton. FmvAutomaton is a shorthand of Formal
+ * Method Verification automata. Basically FmvAutomaton shows no difference with
+ * normal FSM; the usage of FMVAutomaton is to provide a specialized environment
+ * to invoke model checker NuSMV.
  * <p>
- * When an FmvAutomaton is fired, the outgoing transitions of the current state
- * are examined. An IllegalActionException is thrown if there is more than one
- * enabled transition. If there is exactly one enabled transition then it is
- * taken.
- * <p>
- * An FmvAutomaton enters its initial state during initialization. The name of
- * the initial state is specified by the <i>initialStateName</i> string
- * attribute.
+ * The FMV Automaton is equipped with the ability to convert itself into a file
+ * acceptable by NuSMV model checker.
  * <p>
  * 
  * @author Chihhong Patrick Cheng and Edward A. Lee
@@ -76,8 +66,6 @@ import ptolemy.kernel.util.Workspace;
  * @see FmvAutomatonTransition
  */
 
-// FIXME: Are Fmv automata that are fired required to be deterministic?
-// or just randomly choose a transition.
 public class FmvAutomaton extends FSMActor {
     /**
      * Construct an FmvAutomaton in the default workspace with an empty string
@@ -123,45 +111,43 @@ public class FmvAutomaton extends FSMActor {
     }
 
     /**
-     * Create an FmvAutomaton in the specified container with the specified
-     * name. The name must be unique within the container or an exception is
-     * thrown. The container argument must not be null, or a
-     * NullPointerException will be thrown.
+     * Return an StringBuffer that contains the .smv format of the FmvAutomaton.
      * 
-     * @param container
-     *        The container.
-     * @param name
-     *        The name of this automaton within the container.
-     * @exception IllegalActionException
-     *            If the entity cannot be contained by the proposed container.
-     * @exception NameDuplicationException
-     *            If the name coincides with an entity already in the container.
+     * @param formula
+     *        The temporal formula used to be attached in the .smv file.
+     * @param choice
+     *        The type of the formula. It may be either CTL or LTL formula.
+     * @param span
+     *        A constant used to expand the size of the rough domain.
      */
-    public StringBuffer convertToFmvFormat(String formula, String choice,
+    public StringBuffer convertToSmvFormat(String formula, String choice,
             String span) {
+
         _variableInfo = new HashMap<String, VariableInfo>();
 
-        StringBuffer returnFmvFormat = new StringBuffer("");
+        StringBuffer returnSmvFormat = new StringBuffer("");
 
-        returnFmvFormat.append("MODULE main \n");
-        returnFmvFormat.append("\tVAR \n");
-        returnFmvFormat.append("\t\tproc: " + this.getDisplayName() + "();\n");
+        // Attach initial information
+        returnSmvFormat.append("MODULE main \n");
+        returnSmvFormat.append("\tVAR \n");
+        returnSmvFormat.append("\t\tproc: " + this.getDisplayName() + "();\n");
 
         // Based on the user selection on formula type, add different
-        // annotations
+        // annotations: For CTL we use "SPEC"; for LTL we use "LTLSPEC".
         if (choice.equalsIgnoreCase("CTL")) {
-            returnFmvFormat.append("\tSPEC \n");
-            returnFmvFormat.append("\t\t" + formula + "\n");
+            returnSmvFormat.append("\tSPEC \n");
+            returnSmvFormat.append("\t\t" + formula + "\n");
         } else if (choice.equalsIgnoreCase("LTL")) {
-            returnFmvFormat.append("\tLTLSPEC \n");
-            returnFmvFormat.append("\t\t" + formula + "\n");
+            returnSmvFormat.append("\tLTLSPEC \n");
+            returnSmvFormat.append("\t\t" + formula + "\n");
         }
 
-        returnFmvFormat.append("MODULE " + this.getDisplayName() + "() \n");
-        returnFmvFormat.append("\tVAR \n");
-        returnFmvFormat.append("\t\tstate : {");
+        // Module definition
+        returnSmvFormat.append("MODULE " + this.getDisplayName() + "() \n");
+        returnSmvFormat.append("\tVAR \n");
+        returnSmvFormat.append("\t\tstate : {");
 
-        // Enumerate all states
+        // Enumerate all states in the FmvAutomaton
         HashSet<State> frontier = new HashSet<State>();
         try {
             frontier = _enumerateStateSet();
@@ -169,15 +155,16 @@ public class FmvAutomaton extends FSMActor {
             ex.printStackTrace();
         }
 
+        // Print out all these states
         Iterator<State> it = frontier.iterator();
         while (it.hasNext()) {
             State val = (State) it.next();
-            returnFmvFormat.append(val.getDisplayName());
+            returnSmvFormat.append(val.getDisplayName());
             if (it.hasNext()) {
-                returnFmvFormat.append(",");
+                returnSmvFormat.append(",");
             }
         }
-        returnFmvFormat.append("};\n");
+        returnSmvFormat.append("};\n");
 
         // Decide variables encoded in the Kripke Structure
         HashSet<String> variableSet = new HashSet<String>();
@@ -193,52 +180,53 @@ public class FmvAutomaton extends FSMActor {
         while (itVariableSet.hasNext()) {
 
             String valName = (String) itVariableSet.next();
-            returnFmvFormat.append("\t\t" + valName + " : {");
+            returnSmvFormat.append("\t\t" + valName + " : {");
             // Retrieve the lower bound and upper bound of the variable used in
             // the system based on inequalities or assignments
+            // Also, add up symbols "ls" and "gt" within the variable domain.
             VariableInfo individual = (VariableInfo) _variableInfo.get(valName);
             int lowerBound = Integer.parseInt(individual._minValue);
             int upperBound = Integer.parseInt(individual._maxValue);
             try {
                 int numSpan = Integer.parseInt(span);
-                returnFmvFormat.append(" ls,");
+                returnSmvFormat.append(" ls,");
                 for (int number = lowerBound; number <= upperBound; number++) {
-                    returnFmvFormat.append(number);
-                    returnFmvFormat.append(",");
+                    returnSmvFormat.append(number);
+                    returnSmvFormat.append(",");
                 }
-                returnFmvFormat.append("gt };\n");
+                returnSmvFormat.append("gt };\n");
 
             } catch (Exception ex) {
-                
+
             }
 
         }
 
-        returnFmvFormat.append("\tASSIGN \n");
+        returnSmvFormat.append("\tASSIGN \n");
 
         // setup initial state
         try {
             String name = this.getInitialState().getName();
-            returnFmvFormat.append("\t\tinit(state) := " + name + ";\n");
+            returnSmvFormat.append("\t\tinit(state) := " + name + ";\n");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
         _generateAllVariableTransitions(variableSet);
 
-        returnFmvFormat.append("\t\tnext(state) :=\n");
-        returnFmvFormat.append("\t\t\tcase\n");
+        returnSmvFormat.append("\t\tnext(state) :=\n");
+        returnSmvFormat.append("\t\t\tcase\n");
 
         // Generate all transitions; start from "state"
         LinkedList<VariableTransitionInfo> infoList = _variableTransitionInfo
                 .get("state");
         for (int i = 0; i < infoList.size(); i++) {
             VariableTransitionInfo info = infoList.get(i);
-            returnFmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
+            returnSmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
                     + info._varibleNewValue + " };\n");
         }
-        returnFmvFormat.append("\t\t\t\t1             : state;\n");
-        returnFmvFormat.append("\t\t\tesac;\n\n");
+        returnSmvFormat.append("\t\t\t\t1             : state;\n");
+        returnSmvFormat.append("\t\t\tesac;\n\n");
 
         // Find out initial values for those variables.
         HashMap<String, String> variableInitialValue = new HashMap<String, String>();
@@ -250,10 +238,10 @@ public class FmvAutomaton extends FSMActor {
         while (newItVariableSet.hasNext()) {
 
             String valName = (String) newItVariableSet.next();
-            returnFmvFormat.append("\t\tinit(" + valName + ") := "
+            returnSmvFormat.append("\t\tinit(" + valName + ") := "
                     + variableInitialValue.get(valName) + ";\n");
-            returnFmvFormat.append("\t\tnext(" + valName + ") :=\n");
-            returnFmvFormat.append("\t\t\tcase\n");
+            returnSmvFormat.append("\t\tnext(" + valName + ") :=\n");
+            returnSmvFormat.append("\t\t\tcase\n");
 
             // Generate all transitions; start from "state"
             List<VariableTransitionInfo> innerInfoList = _variableTransitionInfo
@@ -268,22 +256,26 @@ public class FmvAutomaton extends FSMActor {
                 // returnFmvFormat.append("\t\t\t\t" + info._preCondition
                 // + " :{ " + "ls" + " };\n");
                 // } else {
-                returnFmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
+                returnSmvFormat.append("\t\t\t\t" + info._preCondition + " :{ "
                         + info._varibleNewValue + " };\n");
                 // }
 
             }
-            returnFmvFormat
+            returnSmvFormat
                     .append("\t\t\t\t1             : " + valName + ";\n");
-            returnFmvFormat.append("\t\t\tesac;\n\n");
+            returnSmvFormat.append("\t\t\tesac;\n\n");
         }
 
-        return returnFmvFormat;
+        return returnSmvFormat;
     }
 
+    /**
+     * This private function first decides variables that would be used in the
+     * Kripke structure. Once when it is decided, it performs step 1 and 2 of
+     * the variable domain generation process.
+     */
     private HashSet<String> _decideVariableSet(int numSpan)
             throws IllegalActionException {
-        // BY PATRICK
 
         HashSet<String> returnVariableSet = new HashSet<String>();
         HashSet<State> stateSet = new HashSet<State>();
@@ -319,9 +311,7 @@ public class FmvAutomaton extends FSMActor {
                     }
 
                     // get transitionLabel, transitionName and relation
-                    // name
-                    // for later use
-                    // Retrieve the transition
+                    // name for later use. Retrieve the transition
 
                     boolean hasAnnotation = false;
                     String text;
@@ -336,6 +326,8 @@ public class FmvAutomaton extends FSMActor {
                         // buffer.append(text);
                     }
 
+                    // Retrieve the guardExpression for checking the existence
+                    // of inner variables used in FmcAutomaton.
                     String guard = transition.getGuardExpression();
                     if ((guard != null) && !guard.trim().equals("")) {
                         if (hasAnnotation) {
@@ -362,7 +354,8 @@ public class FmvAutomaton extends FSMActor {
                                             characterOfSubGuard[0].trim());
                                     if (b == true) {
                                         // First case, synchronize usage.
-                                        // Currently not implementing
+                                        // Currently do nothing for single
+                                        // FmvAutomaton case.
                                     } else {
                                         // Second case, place this variable into
                                         // usage set.
@@ -495,12 +488,7 @@ public class FmvAutomaton extends FSMActor {
 
             }
 
-            // Newly added function:
-
         } catch (Exception exception) {
-            // FIXME: this can actually happen, although extremely unlikely.
-            // Eg. this automaton has states "X" and "Y_Z", the argument
-            // has "X_Y" and "Z". Do we need to worry about this?
             throw new InternalErrorException(
                     "FmvAutomaton._DecideVariableSet() clashes: "
                             + exception.getMessage());
@@ -519,8 +507,10 @@ public class FmvAutomaton extends FSMActor {
             try {
                 int lbOriginal = Integer.parseInt(individual._minValue);
                 int ubOriginal = Integer.parseInt(individual._maxValue);
-                int lbNew = lbOriginal - (ubOriginal - lbOriginal) * numSpan;
-                int ubNew = ubOriginal + (ubOriginal - lbOriginal) * numSpan;
+                int lbNew = lbOriginal - (ubOriginal - lbOriginal + 1)
+                        * numSpan;
+                int ubNew = ubOriginal + (ubOriginal - lbOriginal + 1)
+                        * numSpan;
                 individual._minValue = new String(Integer.toString(lbNew));
                 individual._maxValue = new String(Integer.toString(ubNew));
                 _variableInfo.put(valName, individual);
@@ -533,6 +523,10 @@ public class FmvAutomaton extends FSMActor {
         return returnVariableSet;
     }
 
+    /**
+     * Perform an enumeration of the state in this FmvAutomaton and return a
+     * HashSet of states.
+     */
     private HashSet<State> _enumerateStateSet() throws IllegalActionException {
 
         HashSet<State> returnStateSet = new HashSet<State>();
@@ -567,19 +561,20 @@ public class FmvAutomaton extends FSMActor {
                 }
             }
         } catch (Exception exception) {
-            // FIXME: this can actually happen, although extremely unlikely.
-            // Eg. this automaton has states "X" and "Y_Z", the argument
-            // has "X_Y" and "Z". Do we need to worry about this?
             throw new InternalErrorException(
                     "FmvAutomaton._EnumerateStateSet() clashes: "
                             + exception.getMessage());
+
         }
         return returnStateSet;
     }
 
+    /**
+     * This function is used to generate all premise-action pairs regarding this
+     * FmvAutomaton. For example, it may generate (state=red)&&(count=1):{grn}.
+     * This can only be applied when the domain of variable is decided.
+     */
     private void _generateAllVariableTransitions(HashSet<String> variableSet) {
-
-        // This can only be applied when the domain of variable is decided.
 
         HashSet<State> stateSet = new HashSet<State>();
         try {
@@ -1232,16 +1227,18 @@ public class FmvAutomaton extends FSMActor {
             }
 
         } catch (Exception exception) {
-            // FIXME: this can actually happen, although extremely unlikely.
-            // Eg. this automaton has states "X" and "Y_Z", the argument
-            // has "X_Y" and "Z". Do we need to worry about this?
             throw new InternalErrorException(
-                    "FmvAutomaton._computeProduct: name in product "
-                            + "automaton clashes: " + exception.getMessage());
+                    "FmvAutomaton._generateAllVariableTransitions() clashes: "
+                            + exception.getMessage());
         }
 
     }
 
+    /**
+     * This function is used to generate detailed pre-conditions and
+     * post-conditions in .smv format. It is used by the function
+     * _generateAllVariableTransitions()
+     */
     private void _generatePremiseAndResultEachTransition(
             String statePrecondition,
             HashMap<String, ArrayList<Integer>> valueDomain, String lValue,
