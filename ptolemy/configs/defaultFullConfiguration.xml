@@ -40,6 +40,7 @@
     <input source="ptolemy/configs/graphEffigyFactory.xml"/>
     <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
     <input source="ptolemy/configs/iaEffigyFactory.xml"/>
+    <input source="ptolemy/configs/fmvEffigyFactory.xml"/>
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
   </entity>
 
@@ -51,6 +52,7 @@
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <input source="ptolemy/configs/gt/gtTableauFactory.xml"/>
     <input source="ptolemy/configs/iaTableauFactory.xml"/>
+    <input source="ptolemy/configs/fmvTableauFactory.xml"/>
     <input source="ptolemy/configs/fsmTableauFactory.xml"/>
     <input source="ptolemy/configs/caseTableauFactory.xml"/>
     <input source="ptolemy/configs/graphTableauFactory.xml"/>
