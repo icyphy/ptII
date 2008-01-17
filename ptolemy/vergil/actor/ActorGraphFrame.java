@@ -33,7 +33,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.List;
+
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -54,6 +56,7 @@ import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.actor.gui.UserActorLibrary;
+import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
@@ -73,51 +76,58 @@ import diva.graph.GraphController;
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
 
-//////////////////////////////////////////////////////////////////////////
-//// ActorGraphFrame
+// ////////////////////////////////////////////////////////////////////////
+// // ActorGraphFrame
 
 /**
- This is a graph editor frame for ptolemy models.  Given a composite
- entity and an instance of ActorGraphTableau, it creates an editor
- and populates the menus and toolbar.  This overrides the base class
- to associate with the editor an instance of ActorEditorGraphController.
-
- @see ActorEditorGraphController
- @author  Steve Neuendorffer, Contributor: Edward A. Lee
- @version $Id$
- @since Ptolemy II 2.0
- @Pt.ProposedRating Red (neuendor)
- @Pt.AcceptedRating Red (johnr)
+ * This is a graph editor frame for ptolemy models. Given a composite entity and
+ * an instance of ActorGraphTableau, it creates an editor and populates the
+ * menus and toolbar. This overrides the base class to associate with the editor
+ * an instance of ActorEditorGraphController.
+ * 
+ * @see ActorEditorGraphController
+ * @author Steve Neuendorffer, Contributor: Edward A. Lee
+ * @version $Id$
+ * @since Ptolemy II 2.0
+ * @Pt.ProposedRating Red (neuendor)
+ * @Pt.AcceptedRating Red (johnr)
  */
 public class ActorGraphFrame extends ExtendedGraphFrame {
-    /** Construct a frame associated with the specified Ptolemy II model.
-     *  After constructing this, it is necessary
-     *  to call setVisible(true) to make the frame appear.
-     *  This is typically done by calling show() on the controlling tableau.
-     *  This constructor results in a graph frame that obtains its library
-     *  either from the model (if it has one) or the default library defined
-     *  in the configuration.
-     *  @see Tableau#show()
-     *  @param entity The model to put in this frame.
-     *  @param tableau The tableau responsible for this frame.
+    /**
+     * Construct a frame associated with the specified Ptolemy II model. After
+     * constructing this, it is necessary to call setVisible(true) to make the
+     * frame appear. This is typically done by calling show() on the controlling
+     * tableau. This constructor results in a graph frame that obtains its
+     * library either from the model (if it has one) or the default library
+     * defined in the configuration.
+     * 
+     * @see Tableau#show()
+     * @param entity
+     *        The model to put in this frame.
+     * @param tableau
+     *        The tableau responsible for this frame.
      */
     public ActorGraphFrame(CompositeEntity entity, Tableau tableau) {
         this(entity, tableau, null);
     }
 
-    /** Construct a frame associated with the specified Ptolemy II model.
-     *  After constructing this, it is necessary
-     *  to call setVisible(true) to make the frame appear.
-     *  This is typically done by calling show() on the controlling tableau.
-     *  This constructor results in a graph frame that obtains its library
-     *  either from the model (if it has one), or the <i>defaultLibrary</i>
-     *  argument (if it is non-null), or the default library defined
-     *  in the configuration.
-     *  @see Tableau#show()
-     *  @param entity The model to put in this frame.
-     *  @param tableau The tableau responsible for this frame.
-     *  @param defaultLibrary An attribute specifying the default library
-     *   to use if the model does not have a library.
+    /**
+     * Construct a frame associated with the specified Ptolemy II model. After
+     * constructing this, it is necessary to call setVisible(true) to make the
+     * frame appear. This is typically done by calling show() on the controlling
+     * tableau. This constructor results in a graph frame that obtains its
+     * library either from the model (if it has one), or the <i>defaultLibrary</i>
+     * argument (if it is non-null), or the default library defined in the
+     * configuration.
+     * 
+     * @see Tableau#show()
+     * @param entity
+     *        The model to put in this frame.
+     * @param tableau
+     *        The tableau responsible for this frame.
+     * @param defaultLibrary
+     *        An attribute specifying the default library to use if the model
+     *        does not have a library.
      */
     public ActorGraphFrame(CompositeEntity entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
@@ -134,11 +144,12 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         _instantiateEntityAction = new InstantiateEntityAction();
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    // /////////////////////////////////////////////////////////////////
+    // // protected methods ////
 
-    /** Create the menus that are used by this frame.
-     *  It is essential that _createGraphPane() be called before this.
+    /**
+     * Create the menus that are used by this frame. It is essential that
+     * _createGraphPane() be called before this.
      */
     protected void _addMenus() {
         super._addMenus();
@@ -168,10 +179,12 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         _controller.addToMenuAndToolbar(_graphMenu, _toolbar);
 
         // Add debug menu.
+        // Generate .smv file newly added by Patrick
         JMenuItem[] debugMenuItems = {
                 new JMenuItem("Listen to Director", KeyEvent.VK_L),
                 new JMenuItem("Animate Execution", KeyEvent.VK_A),
-                new JMenuItem("Stop Animating", KeyEvent.VK_S), };
+                new JMenuItem("Stop Animating", KeyEvent.VK_S),
+                new JMenuItem("Generate .smv File", KeyEvent.VK_D), };
 
         // NOTE: This has to be initialized here rather than
         // statically because this method is called by the constructor
@@ -192,11 +205,13 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         _menubar.add(_debugMenu);
     }
 
-    /** If the ptolemy model associated with this frame is a top-level
-     *  composite actor, use its manager to stop it.
-     *  Remove the listeners that this frame registered with the ptolemy
-     *  model. Also remove the listeners our graph model has created.
-     *  @return True if the close completes, and false otherwise.
+    /**
+     * If the ptolemy model associated with this frame is a top-level composite
+     * actor, use its manager to stop it. Remove the listeners that this frame
+     * registered with the ptolemy model. Also remove the listeners our graph
+     * model has created.
+     * 
+     * @return True if the close completes, and false otherwise.
      */
     protected boolean _close() {
         NamedObj ptModel = getModel();
@@ -214,11 +229,14 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         return super._close();
     }
 
-    /** Create a new graph pane. Note that this method is called in
-     *  constructor of the base class, so it must be careful to not reference
-     *  local variables that may not have yet been created.
-     *  @param entity The object to be displayed in the pane.
-     *  @return The pane that is created.
+    /**
+     * Create a new graph pane. Note that this method is called in constructor
+     * of the base class, so it must be careful to not reference local variables
+     * that may not have yet been created.
+     * 
+     * @param entity
+     *        The object to be displayed in the pane.
+     * @return The pane that is created.
      */
     protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new ActorEditorGraphController();
@@ -231,10 +249,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         return new ActorGraphPane(_controller, graphModel, entity);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    // /////////////////////////////////////////////////////////////////
+    // // protected variables ////
 
-    /** The graph controller.  This is created in _createGraphPane(). */
+    /** The graph controller. This is created in _createGraphPane(). */
     protected ActorEditorGraphController _controller;
 
     /** Debug menu for this frame. */
@@ -261,8 +279,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
     /** The action for instantiating an entity. */
     protected Action _instantiateEntityAction;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    // /////////////////////////////////////////////////////////////////
+    // // private variables ////
 
     /** The most recent class name for instantiating an attribute. */
     private String _lastAttributeClassName = "ptolemy.vergil.kernel.attributes.EllipseAttribute";
@@ -276,10 +294,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
     // The delay time specified that last time animation was set.
     private long _lastDelayTime = 0;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     public inner classes                  ////
+    // /////////////////////////////////////////////////////////////////
+    // // public inner classes ////
     // NOTE: The following class is very similar to the inner class
-    // in FSMGraphFrame.  Is there some way to merge these?
+    // in FSMGraphFrame. Is there some way to merge these?
     // There seem to be enough differences that this may be hard.
 
     /** Listener for debug menu commands. */
@@ -319,7 +337,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                     // To support animation, add a listener to the
                     // first director found above in the hierarchy.
                     // NOTE: This doesn't properly support all
-                    // hierarchy.  Insides of transparent composite
+                    // hierarchy. Insides of transparent composite
                     // actors do not get animated if they are classes
                     // rather than instances.
                     NamedObj model = getModel();
@@ -385,6 +403,101 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                         _controller.clearAnimation();
                         _listeningTo = null;
                     }
+                } else if (actionCommand.equals("Generate .smv File")) {
+                    // Perform deep traversal in order to generate .smv files.
+
+                    NamedObj model = getModel();
+
+                    if (model instanceof Actor) {
+
+                        if (model instanceof CompositeActor) {
+
+                            Director director = ((CompositeActor) model)
+                                    .getDirector();
+                            if (!(director instanceof SRDirector)) {
+
+                            }
+
+                            StringBuffer smvDescritpion = new StringBuffer("");
+
+                            Query query = new Query();
+
+                            query.addLine("formula", "Input temporal formula",
+                                    "");
+                            String[] possibleChoice = new String[2];
+                            possibleChoice[0] = new String("CTL");
+                            possibleChoice[1] = new String("LTL");
+                            query.addRadioButtons("choice", "Formula Type",
+                                    possibleChoice, "CTL");
+                            query.addLine("span", "Size of span", "1");
+                            ComponentDialog dialog = new ComponentDialog(null,
+                                    "Input Formula", query);
+
+                            String pattern = "";
+                            String finalChoice = "";
+                            String span = "";
+                            if (dialog.buttonPressed().equals("OK")) {
+                                pattern = query.getStringValue("formula");
+                                finalChoice = query.getStringValue("choice");
+                                span = new String(query.getStringValue("span"));
+                                VerificationUtility vl = new VerificationUtility();
+                                smvDescritpion.append(vl.generateSmvDescription(
+                                        (CompositeActor) model, pattern,
+                                        finalChoice));
+                                JFileChooser fileSaveDialog = new JFileChooser();
+                                // SMVFileFilter filter = new SMVFileFilter();
+                                // fileSaveDialog.setFileFilter(filter);
+                                fileSaveDialog
+                                        .setDialogType(JFileChooser.SAVE_DIALOG);
+                                fileSaveDialog
+                                        .setDialogTitle("Convert Ptolemy model into .smv file");
+                                if (_directory != null) {
+                                    fileSaveDialog
+                                            .setCurrentDirectory(_directory);
+                                } else {
+                                    // The default on Windows is to open at
+                                    // user.home, which is typically an absurd
+                                    // directory inside the O/S installation.
+                                    // So we use the current directory instead.
+                                    // FIXME: Could this throw a security
+                                    // exception in an applet?
+                                    String cwd = StringUtilities
+                                            .getProperty("user.dir");
+
+                                    if (cwd != null) {
+                                        fileSaveDialog
+                                                .setCurrentDirectory(new File(
+                                                        cwd));
+                                    }
+                                }
+
+                                int returnValue = fileSaveDialog
+                                        .showOpenDialog(ActorGraphFrame.this);
+
+                                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                                    _directory = fileSaveDialog
+                                            .getCurrentDirectory();
+
+                                    try {
+                                        File smvFile = fileSaveDialog
+                                                .getSelectedFile()
+                                                .getCanonicalFile();
+                                        FileWriter smvFileWriter = new FileWriter(
+                                                smvFile);
+                                        smvFileWriter.write(smvDescritpion
+                                                .toString());
+                                        smvFileWriter.close();
+                                    } catch (Exception ex) {
+
+                                    }
+                                }
+
+                            }
+
+                        }
+
+                    }
+
                 }
             } catch (KernelException ex) {
                 try {
@@ -395,56 +508,63 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             }
         }
 
+       
         private Director _listeningTo;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     private inner classes                 ////
+    // /////////////////////////////////////////////////////////////////
+    // // private inner classes ////
 
-    ///////////////////////////////////////////////////////////////////
-    //// ActorGraphPane
+    // /////////////////////////////////////////////////////////////////
+    // // ActorGraphPane
 
-    /** Subclass that updates the background color on each repaint if
-     *  there is a preferences attribute.
+    /**
+     * Subclass that updates the background color on each repaint if there is a
+     * preferences attribute.
      */
     private class ActorGraphPane extends GraphPane {
-        public ActorGraphPane(
-                ActorEditorGraphController controller,
-                ActorGraphModel model,
-                NamedObj entity) {
+        public ActorGraphPane(ActorEditorGraphController controller,
+                ActorGraphModel model, NamedObj entity) {
             super(controller, model);
             _entity = entity;
         }
+
         public void repaint() {
             _setBackground();
             super.repaint();
         }
+
         public void repaint(DamageRegion damage) {
             _setBackground();
             super.repaint(damage);
         }
+
         private void _setBackground() {
             if (_entity != null) {
                 List list = _entity.attributeList(PtolemyPreferences.class);
                 if (list.size() > 0) {
                     // Use the last preferences.
-                    PtolemyPreferences preferences
-                            = (PtolemyPreferences)list.get(list.size() - 1);
-                    getCanvas().setBackground(preferences.backgroundColor.asColor());
+                    PtolemyPreferences preferences = (PtolemyPreferences) list
+                            .get(list.size() - 1);
+                    getCanvas().setBackground(
+                            preferences.backgroundColor.asColor());
                 }
-            }            
+            }
         }
+
         private NamedObj _entity;
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    //// CreateHierarchy
 
-    /** Action to create a typed composite actor that contains the
-     *  the selected actors.
+    // /////////////////////////////////////////////////////////////////
+    // // CreateHierarchy
+
+    /**
+     * Action to create a typed composite actor that contains the the selected
+     * actors.
      */
     private class CreateHierarchyAction extends AbstractAction {
-        /**  Create a new action to introduce a level of hierarchy.
+        /**
+         * Create a new action to introduce a level of hierarchy.
          */
         public CreateHierarchyAction() {
             super("Create Hierarchy");
@@ -452,11 +572,11 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                     "Create a TypedCompositeActor that contains the"
                             + " selected actors.");
 
-            //putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-            //        KeyStroke.getKeyStroke(KeyEvent.VK_H,
-            //       Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-            //putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-            //        Integer.valueOf(KeyEvent.VK_H));
+            // putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+            // KeyStroke.getKeyStroke(KeyEvent.VK_H,
+            // Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            // putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+            // Integer.valueOf(KeyEvent.VK_H));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -464,8 +584,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //// ImportLibraryAction
+    // /////////////////////////////////////////////////////////////////
+    // // ImportLibraryAction
 
     /** An action to import a library of components. */
     private class ImportLibraryAction extends AbstractAction {
@@ -476,8 +596,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_M));
         }
 
-        /** Import a library by first opening a file chooser dialog and
-         *  then importing the specified library.
+        /**
+         * Import a library by first opening a file chooser dialog and then
+         * importing the specified library.
          */
         public void actionPerformed(ActionEvent e) {
             // NOTE: this code is mostly copied from Top.
@@ -518,8 +639,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //// InstantiateAttributeAction
+    // /////////////////////////////////////////////////////////////////
+    // // InstantiateAttributeAction
 
     /** An action to instantiate an entity given a class name. */
     private class InstantiateAttributeAction extends AbstractAction {
@@ -530,8 +651,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_A));
         }
 
-        /** Instantiate a class by first opening a dialog to get
-         *  a class name and then issuing a change request.
+        /**
+         * Instantiate a class by first opening a dialog to get a class name and
+         * then issuing a change request.
          */
         public void actionPerformed(ActionEvent e) {
             Query query = new Query();
@@ -578,8 +700,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //// InstantiateEntityAction
+    // /////////////////////////////////////////////////////////////////
+    // // InstantiateEntityAction
 
     /** An action to instantiate an entity given a class name. */
     private class InstantiateEntityAction extends AbstractAction {
@@ -590,8 +712,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
         }
 
-        /** Instantiate a class by first opening a dialog to get
-         *  a class name and then issuing a change request.
+        /**
+         * Instantiate a class by first opening a dialog to get a class name and
+         * then issuing a change request.
          */
         public void actionPerformed(ActionEvent e) {
             Query query = new Query();
@@ -648,8 +771,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //// LayoutAction
+    // /////////////////////////////////////////////////////////////////
+    // // LayoutAction
 
     /** Action to automatically lay out the graph. */
     private class LayoutAction extends AbstractAction {
@@ -673,8 +796,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //// SaveInLibraryAction
+    // /////////////////////////////////////////////////////////////////
+    // // SaveInLibraryAction
 
     /** An action to save the current model in a library. */
     private class SaveInLibraryAction extends AbstractAction {
@@ -685,8 +808,9 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_S));
         }
 
-        /** Create a new instance of the current model in the
-         *  actor library of the configuration.
+        /**
+         * Create a new instance of the current model in the actor library of
+         * the configuration.
          */
         public void actionPerformed(ActionEvent e) {
             PtolemyEffigy effigy = (PtolemyEffigy) getTableau().getContainer();
@@ -707,10 +831,12 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 UserActorLibrary.saveComponentInLibrary(configuration, entity);
             } catch (Exception ex) {
                 // We catch exceptions here because this method used to
-                // not throw Exceptions, and we don't want to break compatibility.
+                // not throw Exceptions, and we don't want to break
+                // compatibility.
                 MessageHandler.error("Failed to save \"" + entity.getName()
                         + "\".");
             }
         }
     }
+
 }
