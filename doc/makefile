@@ -262,6 +262,8 @@ HYVISUALPACKAGES = \
 	ptolemy.domains.de.kernel \
 	ptolemy.domains.de.lib \
 	ptolemy.domains.fsm.kernel \
+	ptolemy.domains.fsm.kernel.fsm \
+	ptolemy.domains.fsm.kernel.ia \
 	ptolemy.domains.fsm.modal \
 	ptolemy.domains.sdf.kernel \
 	ptolemy.domains.sdf.lib \
@@ -402,6 +404,8 @@ ALL1_4PACKAGES = \
 	ptolemy.codegen.c.actor.lib.string \
 	ptolemy.codegen.c.actor.sched \
 	ptolemy.codegen.c.domains.fsm.kernel \
+	ptolemy.codegen.c.domains.fsm.kernel.fmv \
+	ptolemy.codegen.c.domains.fsm.kernel.ia \
 	ptolemy.codegen.c.domains.fsm.modal \
 	ptolemy.codegen.c.domains.hdf.kernel \
 	ptolemy.codegen.c.domains.sdf.kernel \
