@@ -32,7 +32,7 @@
 
 ME =		ptolemy/vergil/fsm
 
-DIRS =		ia modal
+DIRS =		fmv ia modal
 
 # Root of the Java directory
 ROOT =		../../..
@@ -45,11 +45,11 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	fsm
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+		fmv/fmv.jar
 		ia/ia.jar \
 		modal/modal.jar
 
