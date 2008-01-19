@@ -619,7 +619,7 @@ public class VerificationUtility {
         //
         // Also we need to apply Rule III: For all variable XX that is used at
         // post-firing rules (transition.outputActions) and also used with
-        // ¡§XX_isPresent¡¨, we need to perform synchronizing techniques.
+        // XX_isPresent, we need to perform synchronizing techniques.
         // 
 
         // Rule IV: outputSetUpSet stores variables used in all
