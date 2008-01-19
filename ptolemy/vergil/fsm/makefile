@@ -101,6 +101,7 @@ OPTIONAL_FILES = \
 	'FSMGraphController$$LinkCreator.class' \
 	'FSMGraphController$$NewStateAction.class' \
 	'FSMGraphFrame$$DebugMenuListener.class' \
+	'FSMGraphFrame$$FSMGraphPane.class' \
 	'FSMGraphModel$$1.class' \
 	'FSMGraphModel$$2.class' \
 	'FSMGraphModel$$3.class' \
