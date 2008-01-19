@@ -53,7 +53,8 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  This class models an Interface Automaton. Interface automata is an automata
- model defined by de Alfaro and Henzinger in the paper "Interface Automata".
+ model defined by de Alfaro and Henzinger in the paper
+"<a href="http://www.eecs.berkeley.edu/~tah/Publications/interface_automata.pdf">Interface Automata</a>".
  An InterfaceAutomaton contains a set of states and
  InterfaceAutomatonTransitions. There are three kinds transitions:
  input transition, output transition, and internal transitions.
