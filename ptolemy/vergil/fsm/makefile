@@ -49,7 +49,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		fmv/fmv.jar
+		fmv/fmv.jar \
 		ia/ia.jar \
 		modal/modal.jar
 
