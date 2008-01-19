@@ -39,7 +39,7 @@ ROOT =		../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		ia test
+DIRS = 		fmv ia test
 
 CLASSPATH =	$(ROOT)
 
@@ -50,6 +50,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+		fmv/fmv.jar \
 		ia/ia.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
