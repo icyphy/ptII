@@ -74,7 +74,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red (yuhong)
  @see InterfaceAutomaton
- @see Action
+ @see ptolemy.domains.fsm.kernel.Action
  */
 public class InterfaceAutomatonTransition extends Transition {
     /** Construct a transition with the specified container and name.
