@@ -47,6 +47,8 @@ include $(CONFIG)
 PTPACKAGE = 	fmv
 PTCLASSJAR =
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		img/img.jar
@@ -74,7 +76,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
