@@ -62,8 +62,8 @@ import ptolemy.kernel.util.Workspace;
  * @since Ptolemy II 6.1
  * @Pt.ProposedRating Red (patrickj)
  * @Pt.AcceptedRating Red ()
- * @see State
- * @see FmvAutomatonTransition
+ * @see ptolemy.domains.fsm.kernel.State
+ * @see ptolemy.domains.fsm.kernel.Transition
  */
 
 public class FmvAutomaton extends FSMActor {
