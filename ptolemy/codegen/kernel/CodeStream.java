@@ -409,6 +409,10 @@ public class CodeStream {
         return result;
     }
 
+    /**
+     * Return a set of code block signatures contained by this CodeStream.
+     * @return The set of code block signatures contained by this CodeStream.
+     */
     public Set<Signature> getAllCodeBlockSignatures() 
             throws IllegalActionException {
         if (_doParsing) {
@@ -417,6 +421,41 @@ public class CodeStream {
         return _declarations.keySet();
     }
     
+    /** Given a code block name, return the corresponding code block.
+     *  @param name The name of the code block.
+     *  @return The code block with the name.
+     *  @exception IllegalActionException If a code block by that
+     *  name cannot be found.
+     */   
+    public String getCodeBlock(String name) throws IllegalActionException {
+        StringBuffer result = _declarations.getCode(new Signature(name, 0),
+                new LinkedList());
+
+        if (result == null) {
+            throw new IllegalActionException("Cannot find code block: \""
+                    + name + "\".");
+        }
+        return result.toString();
+    }
+    
+    /** Given a code block signature, return the corresponding code block
+     *  template.
+     *  @param signature  The signature of the code block.
+     *  @return The code block template that matches the signature, or
+     *  the empty string if a code block with that signature cannot
+     *  be found.   
+     *  @exception IllegalActionException If thrown whilegetting a code block
+     *  template with the name of the signature.
+     */   
+    public String getCodeBlockTemplate(Object signature) 
+            throws IllegalActionException {
+        if (signature instanceof Signature) {
+            return _declarations.getTemplateCode(
+                    (Signature) signature).toString();
+        }
+        return "";
+    }
+
     /** Indent the string to the default indent level.
      * @param inputString The string to be indented.
      * @return The indented string.
@@ -1491,24 +1530,4 @@ public class CodeStream {
     private List _templateArguments;
 
     private List _templateParameters;
-
-    public String getCodeBlock(String name) throws IllegalActionException {
-        StringBuffer result = _declarations.getCode(new Signature(name, 0),
-                new LinkedList());
-
-        if (result == null) {
-            throw new IllegalActionException("Cannot find code block: \""
-                    + name + "\".");
-        }
-        return result.toString();
-    }
-    
-    public String getCodeBlockTemplate(Object signature) 
-            throws IllegalActionException {
-        if (signature instanceof Signature) {
-            return _declarations.getTemplateCode(
-                    (Signature) signature).toString();
-        }
-        return "";
-    }
 }
