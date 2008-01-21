@@ -189,6 +189,18 @@ public class CCodeGenerator extends CodeGenerator {
         return _INDENT1 + "initialize();" + _eol;
     }
 
+    /** Generate line number information.  In this class, lines
+     *  of the format
+     *  <pre>
+     *  #line <i>lineNumber</i> "<i>filename</i>"
+     *  <pre>
+     *  are generated for use by the C preprocessor.
+     *  @param lineNumber The line number of the source file or
+     *  file containing code blocks.
+     *  @param filename The name of the source file or file containing
+     *  code blocks.
+     *  @return text that is suitable for the C preprocessor.
+     */   
     public String generateLineInfo(int lineNumber, String filename) {
         return "#line " + lineNumber + " \"" + filename + "\"\n";
     }

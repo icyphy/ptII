@@ -921,6 +921,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return "";
     }
 
+    /** Generate line number and file name information.
+     *  @param lineNumber The line number of the source file or
+     *  file containing code blocks.
+     *  @param filename The name of the source file or file containing
+     *  code blocks.
+     *  @return In this base class, return the empty string.
+     */
     public String generateLineInfo(int lineNumber, String filename) {
         return "";
     }
