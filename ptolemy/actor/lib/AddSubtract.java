@@ -132,7 +132,9 @@ public class AddSubtract extends TypedAtomicActor {
 
     /** Override the base class to set type constraints on the ports.
      *  @param workspace The workspace into which to clone.
-     *  @exception CloneNotSupportedException If the superclass throws it.
+     *  @return A new instance of ArrayElement.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         AddSubtract newObject = (AddSubtract) super.clone(workspace);

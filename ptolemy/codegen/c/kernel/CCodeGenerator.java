@@ -511,6 +511,12 @@ public class CCodeGenerator extends CodeGenerator {
         return code.toString();
     }
 
+    /** Process the specified code for the helper associated with the
+     *  container.  Replace macros with their values.
+     *  @param code The code to process.
+     *  @return The processed code.
+     *  @exception IllegalActionException If illegal macro names are found.
+     */
     public String processCode(String code) throws IllegalActionException {
         CCodeGeneratorHelper helper = (CCodeGeneratorHelper) _getHelper(getContainer());
         return helper.processCode(code);
@@ -1217,6 +1223,8 @@ public class CCodeGenerator extends CodeGenerator {
      *  @param name The name of the function, for example "Double_equals"
      *  @param helper The corresponding helper that contains the
      *  codeBlock.
+     *  @exception IllegalActionException If there is a problem adding
+     *  a function to the set of overloaded functions.   
      */
     public void markFunctionCalled(String name, CCodeGeneratorHelper helper)
             throws IllegalActionException {
