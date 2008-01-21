@@ -1,6 +1,6 @@
 /* An FSM supporting verification using formal methods.
 
- Copyright (c) 1999-2008 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,13 +48,12 @@ import ptolemy.kernel.util.Workspace;
 // // FmvAutomaton
 
 /**
- * This class models an Fmv Automaton. FmvAutomaton is a shorthand of Formal
- * Method Verification automata. Basically FmvAutomaton shows no difference with
- * normal FSM; the usage of FMVAutomaton is to provide a specialized environment
- * to invoke model checker NuSMV.
- * <p>
- * The FMV Automaton is equipped with the ability to convert itself into a file
- * acceptable by NuSMV model checker.
+ * A Formal Method Verification (FMV) Automaton. 
+ * FmvAutomaton's are not different from regular FMSs, FmvAutomatons
+ * provide a specialized environment to invoke model checker NuSMV.
+
+ * <p> The FMV Automaton is equipped with the ability to convert itself
+ * into a file acceptable by NuSMV model checker.
  * <p>
  * 
  * @author Chihhong Patrick Cheng and Edward A. Lee
@@ -77,33 +76,30 @@ public class FmvAutomaton extends FSMActor {
     }
 
     /**
-     * Construct an FmvAutomaton in the specified workspace with an empty string
-     * as its name. The name can be changed later with setName(). If the
-     * workspace argument is null, then use the default workspace. Add the actor
-     * to the workspace directory. Increment the version number of the
-     * workspace.
+     * Construct an FmvAutomaton in the specified workspace with an
+     * empty string as its name. The name can be changed later with
+     * setName(). If the workspace argument is null, then use the
+     * default workspace. Add the actor to the workspace
+     * directory. Increment the version number of the workspace.
      * 
-     * @param workspace
-     *        The workspace that will list the actor.
+     * @param workspace The workspace that will list the actor.
      */
     public FmvAutomaton(Workspace workspace) {
         super(workspace);
     }
 
     /**
-     * Create an FmvAutomaton in the specified container with the specified
-     * name. The name must be unique within the container or an exception is
-     * thrown. The container argument must not be null, or a
-     * NullPointerException will be thrown.
+     * Create an FmvAutomaton in the specified container with the
+     * specified name. The name must be unique within the container or
+     * an exception is thrown. The container argument must not be
+     * null, or a NullPointerException will be thrown.
      * 
-     * @param container
-     *        The container.
-     * @param name
-     *        The name of this automaton within the container.
-     * @exception IllegalActionException
-     *            If the entity cannot be contained by the proposed container.
-     * @exception NameDuplicationException
-     *            If the name coincides with an entity already in the container.
+     * @param container The container.
+     * @param name The name of this automaton within the container.
+     * @exception IllegalActionException If the entity cannot be
+     * contained by the proposed container.
+     * @exception NameDuplicationException If the name coincides with
+     * an entity already in the container.
      */
     public FmvAutomaton(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -111,14 +107,15 @@ public class FmvAutomaton extends FSMActor {
     }
 
     /**
-     * Return an StringBuffer that contains the .smv format of the FmvAutomaton.
+     * Return an StringBuffer that contains the .smv format of the
+     * FmvAutomaton.
      * 
-     * @param formula
-     *        The temporal formula used to be attached in the .smv file.
-     * @param choice
-     *        The type of the formula. It may be either CTL or LTL formula.
-     * @param span
-     *        A constant used to expand the size of the rough domain.
+     * @param formula The temporal formula used to be attached in the
+     * .smv file.
+     * @param choice The type of the formula. It may be either CTL or
+     * LTL formula.
+     * @param span A constant used to expand the size of the rough domain.
+     * @return The .smv format of the FmvAutomaton.
      */
     public StringBuffer convertToSmvFormat(String formula, String choice,
             String span) {
@@ -570,9 +567,10 @@ public class FmvAutomaton extends FSMActor {
     }
 
     /**
-     * This function is used to generate all premise-action pairs regarding this
-     * FmvAutomaton. For example, it may generate (state=red)&&(count=1):{grn}.
-     * This can only be applied when the domain of variable is decided.
+     * Generate all premise-action pairs regarding this
+     * FmvAutomaton. For example, this method may generate
+     * (state=red)&&(count=1):{grn}.  This can only be applied when
+     * the domain of variable is decided.
      */
     private void _generateAllVariableTransitions(HashSet<String> variableSet) {
 
