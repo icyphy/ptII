@@ -30,6 +30,7 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /** A basic implementation of the figure z-list, provided for
  * initial implementations of figure containers. This implementation
@@ -116,7 +117,12 @@ public class BasicZList implements ZList {
                 return cursor > 0;
             }
 
-            public Object next() {
+            public Object next() throws NoSuchElementException {
+                if (cursor <= 0) {
+                    throw new NoSuchElementException("Can't get " + cursor
+                            + "'th element from BasicZList of size "
+                            + _elements.size());
+                }
                 cursor--;
                 return _elements.get(cursor);
             }
@@ -242,7 +248,12 @@ public class BasicZList implements ZList {
             return new Iterator() {
                 int cursor = _currentFigures.size();
 
-                public boolean hasNext() {
+                public boolean hasNext() throws NoSuchElementException {
+                    if (cursor <= 0) {
+                        throw new NoSuchElementException("Can't get " + cursor
+                                + "'th element from BasicZList of size "
+                                + _currentFigures.size());
+                    }
                     return cursor > 0;
                 }
 

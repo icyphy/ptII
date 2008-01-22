@@ -29,6 +29,7 @@ import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import javax.swing.SwingConstants;
 
@@ -164,6 +165,11 @@ public class CircleGeometry implements Geometry {
             }
 
             public Object next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException("Can't get " + cursor
+                            + "'th element from CircleGeometry of size "
+                            + _siteCount);
+                }
                 if (_sites[cursor] == null) {
                     _sites[cursor] = new CircleSite(cursor);
                 }
