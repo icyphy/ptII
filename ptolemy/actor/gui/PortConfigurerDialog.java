@@ -2046,6 +2046,8 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                     try {
                         if (cellValue.equals("")) {
                             return true;
+                        } else if (cellValue.equals("pointer")) {
+                            return true;
                         }
 
                         ASTPtRootNode tree = _typeParser

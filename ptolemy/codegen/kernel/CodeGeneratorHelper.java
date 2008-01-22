@@ -51,6 +51,7 @@ import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.PointerToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
@@ -238,7 +239,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             ptType == BaseType.DOUBLE ? "Double" : 
             ptType == BaseType.BOOLEAN ? "Boolean" :
             ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte" :
-            ptType == BaseType.OBJECT ? "Object" :
+            ptType == PointerToken.POINTER ? "Pointer" :
             null;
 
         if (result == null) {
@@ -399,7 +400,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             cgType.equals("Boolean") ? BaseType.BOOLEAN :
             cgType.equals("Double") ? BaseType.DOUBLE :
             cgType.equals("Complex") ? BaseType.COMPLEX :
-            cgType.equals("Object") ? BaseType.OBJECT :
+            cgType.equals("Pointer") ? PointerToken.POINTER :
             null;
 
         if (cgType.endsWith("Array")) {
@@ -434,7 +435,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             ptType == BaseType.BOOLEAN ? "boolean" :
             ptType == BaseType.LONG ? "long" :
             ptType == BaseType.UNSIGNED_BYTE ? "unsigned char" :
-            ptType == BaseType.OBJECT ? "void*" :
+            ptType == PointerToken.POINTER ? "void*" :
             "Token";
     }
 

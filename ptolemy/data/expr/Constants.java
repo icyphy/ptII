@@ -40,6 +40,7 @@ import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.PointerToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;
@@ -238,6 +239,9 @@ public class Constants {
         _types.put("long", new LongToken(0));
         _types.put("matrix", new ConcreteMatrixToken());
         _types.put("object", new ObjectToken());
+        // Pointer is a legal port type, but it is not advertised
+        // in the type list.
+        _types.put("pointer", new PointerToken());
         _types.put("xmltoken", new XMLToken());
         _types.put("scalar", new ConcreteScalarToken());
         _types.put("string", new StringToken(""));
