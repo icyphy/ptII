@@ -32,6 +32,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -213,7 +214,11 @@ public class ActorIndex {
                         .getParent());
                 if (!outputDirectoryFile.exists()) {
                     System.out.println("Creating " + outputDirectoryFile);
-                    outputDirectoryFile.mkdirs();
+                    if (!outputDirectoryFile.mkdirs()) {
+                        throw new IOException("Directory \""
+                                + outputDirectoryFile
+                                + "\" does not exist and cannot be created.");
+                    }
                 }
 
                 System.out.println("Writing " + outputFileName);
