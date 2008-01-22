@@ -32,7 +32,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.util.Iterator;
-import java.util.NoSuchElementException
+import java.util.NoSuchElementException;
 
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
