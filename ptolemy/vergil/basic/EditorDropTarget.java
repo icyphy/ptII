@@ -38,6 +38,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.List;
+import java.lang.reflect.*;
 
 import javax.swing.JComponent;
 import javax.swing.ToolTipManager;
@@ -47,6 +49,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Singleton;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
 import ptolemy.vergil.toolbox.SnapConstraint;
@@ -114,14 +118,14 @@ public class EditorDropTarget extends DropTarget {
      *  @param listener The DropTargetListener to be added.
      */
     public void registerAdditionalListener(DropTargetListener listener) {
-        _additionalListeners.addElement(listener);
+      _additionalListeners.addElement(listener);
     }
 
     /** Remove an additional listener.
      *  @param listener The DropTargetListener to be removed.
      */
     public void deRegisterAdditionalListener(DropTargetListener listener) {
-        _additionalListeners.remove(listener);
+      _additionalListeners.remove(listener);
     }
 
     /** If the argument is false, then disable the feature that a
@@ -161,9 +165,9 @@ public class EditorDropTarget extends DropTarget {
          */
         public void dragEnter(DropTargetDragEvent dtde) {
             //notify additionalListeners
-            for (int i = 0; i < _additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener) _additionalListeners
-                        .elementAt(i);
+            for (int i=0; i<_additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener)
+                  _additionalListeners.elementAt(i);
                 l.dragEnter(dtde);
             }
 
@@ -182,9 +186,9 @@ public class EditorDropTarget extends DropTarget {
          */
         public void dragExit(DropTargetEvent dtde) {
             //notify additionalListeners
-            for (int i = 0; i < _additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener) _additionalListeners
-                        .elementAt(i);
+            for (int i=0; i<_additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener)
+                  _additionalListeners.elementAt(i);
                 l.dragExit(dtde);
             }
             if (_highlighted != null) {
@@ -204,9 +208,9 @@ public class EditorDropTarget extends DropTarget {
          */
         public void dragOver(DropTargetDragEvent dtde) {
             //notify additionalListeners
-            for (int i = 0; i < _additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener) _additionalListeners
-                        .elementAt(i);
+            for (int i=0; i<_additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener)
+                  _additionalListeners.elementAt(i);
                 l.dragOver(dtde);
             }
             // See whether there is a container under the point.
@@ -250,9 +254,9 @@ public class EditorDropTarget extends DropTarget {
          */
         public void drop(DropTargetDropEvent dtde) {
             //notify additionalListeners
-            for (int i = 0; i < _additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener) _additionalListeners
-                        .elementAt(i);
+            for (int i=0; i<_additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener)
+                  _additionalListeners.elementAt(i);
                 l.drop(dtde);
             }
             // Unhighlight the target. Do this first in case
@@ -324,20 +328,76 @@ public class EditorDropTarget extends DropTarget {
                 // Constrain point to snap to grid.
                 Point2D newPoint = SnapConstraint
                         .constrainPoint(transformedPoint);
+   /* At this point we wish to provide for an alternatice way to get the MOML
+    * code for the drop object. This is to allow for a drop object that may just
+    * contain a reference (e.g. an LSID) to the complete MOML rather than including
+    * all the information in the tree node object being dragged.
+    * DFH July 2007
+    */
+    
+    // first try to get the LSID; if one cannot be found use the Ptolemy method for dropping
+         boolean lsidFlag = true;
+         try {
+           String lsidString = ((StringAttribute)(dropObj.getAttribute("entityId"))).getExpression();
+           if ((lsidString==null)||(lsidString.equals(""))) lsidFlag = false;
+         } catch (Exception eee) {
+            lsidFlag = false;
+         }
 
-                moml.append(dropObj.exportMoML(name));
-                moml.append("<" + dropObj.getElementName() + " name=\"" + name
+        String result = "";
+        String rootNodeName = dropObj.getElementName();
+        List configsList = Configuration.configurations();
+
+        Configuration config = null;
+        Object object = null;
+        for (Iterator it = configsList.iterator(); it.hasNext(); ) {
+          config = (Configuration)it.next();
+          if (config != null)
+            break;
+        }
+        StringAttribute alternateGetMomlActionAttribute = (StringAttribute) config
+                .getAttribute("_alternateGetMomlAction");
+        if ((alternateGetMomlActionAttribute!=null)&&(lsidFlag)) {
+            String alternateGetMomlClassName = alternateGetMomlActionAttribute.getExpression();
+            try{
+                Class getMomlClass = Class.forName(alternateGetMomlClassName);
+                object = getMomlClass.newInstance();
+                Class[] parameterTypes = new Class[] {NamedObj.class};
+                Method getMomlMethod;
+                getMomlMethod = getMomlClass.getMethod("getMoml",parameterTypes);
+                Object[] arguments = new Object[] {dropObj};
+                result = (String) getMomlMethod.invoke(object,arguments);
+                int int1 = 1;
+                int int2 = result.indexOf(" ");
+                rootNodeName = result.substring(int1,int2);
+                // following string substitution is needed to replace possible name changes
+                // when multiple copies of an actor are added to a workspace canvas
+                // (name then has integer appended to it)  -- DFH
+                int1 = result.indexOf("\"",1);
+                int2 = result.indexOf("\"",int1+1);
+  
+                result = result.substring(0,int1+1)+name+result.substring(int2,result.length());
+//     System.out.println("alternate getMOML result string (in EditorDropTarget) - "+result);
+            } catch (Exception w) {
+                System.out.println("Error creating alternateGetMoml!");
+            }
+        } else {  // default method for PtolemyII use
+            result = dropObj.exportMoML(name);
+        }
+
+   
+   
+                moml.append(result);
+                moml.append("<" + rootNodeName + " name=\"" + name
                         + "\">\n");
-                moml
-                        .append("<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{");
+                moml.append("<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{");
                 moml.append((int) newPoint.getX());
                 moml.append(", ");
                 moml.append((int) newPoint.getY());
-                moml.append("}\"/>\n</" + dropObj.getElementName() + ">\n");
+                moml.append("}\"/>\n</" + rootNodeName + ">\n");
             }
 
             moml.append("</group>");
-
             MoMLChangeRequest request = new MoMLChangeRequest(this, container,
                     moml.toString());
             request.setUndoable(true);
@@ -359,9 +419,9 @@ public class EditorDropTarget extends DropTarget {
          */
         public void dropActionChanged(DropTargetDragEvent dtde) {
             //notify additionalListeners
-            for (int i = 0; i < _additionalListeners.size(); i++) {
-                DropTargetListener l = (DropTargetListener) _additionalListeners
-                        .elementAt(i);
+            for (int i=0; i<_additionalListeners.size(); i++) {
+                DropTargetListener l = (DropTargetListener)
+                  _additionalListeners.elementAt(i);
                 l.dropActionChanged(dtde);
             }
             // Used to do this... Not needed?
