@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+<!DOCTYPE property PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <property name="TimeGapIcon" class="ptolemy.vergil.icon.EditorIcon">
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -48,16 +48,6 @@
         <property name="y" class="ptolemy.data.expr.Parameter" value="20.0">
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-        </property>
-    </property>
-    <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-        </property>
-        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="5">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-12.0, -9.0]">
         </property>
     </property>
     <property name="ellipse2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
