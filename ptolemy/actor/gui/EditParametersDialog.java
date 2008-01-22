@@ -335,7 +335,7 @@ public class EditParametersDialog extends ComponentDialog implements
      *  @param className The default class name.
      *  @return The dialog that is created.
      */
-    private ComponentDialog _openAddDialog(String message, String name,
+    protected ComponentDialog _openAddDialog(String message, String name,
             String defValue, String className) {
         // Create a new dialog to add a parameter, then open a new
         // EditParametersDialog.
@@ -402,11 +402,11 @@ public class EditParametersDialog extends ComponentDialog implements
             "Restore Defaults", "Preferences", "Help", "Cancel" };
 
     // The owner window.
-    private Frame _owner;
+    protected Frame _owner;
 
     // The query window for adding parameters.
-    private Query _query;
+    protected Query _query;
 
     // The target object whose parameters are being edited.
-    private NamedObj _target;
+    protected NamedObj _target;
 }
