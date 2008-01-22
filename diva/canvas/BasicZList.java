@@ -249,15 +249,15 @@ public class BasicZList implements ZList {
                 int cursor = _currentFigures.size();
 
                 public boolean hasNext() throws NoSuchElementException {
+                    return cursor > 0;
+                }
+
+                public Object next() {
                     if (cursor <= 0) {
                         throw new NoSuchElementException("Can't get " + cursor
                                 + "'th element from BasicZList of size "
                                 + _currentFigures.size());
                     }
-                    return cursor > 0;
-                }
-
-                public Object next() {
                     cursor--;
                     return _currentFigures.get(cursor);
                 }
