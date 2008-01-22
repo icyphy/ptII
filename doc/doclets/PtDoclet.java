@@ -442,7 +442,10 @@ public class PtDoclet {
         // If necessary, create the directory.
         File directoryFile = new File(fileName).getParentFile();
         if (!directoryFile.exists()) {
-            directoryFile.mkdirs();
+            if (!directoryFile.mkdirs()) {
+                throw new IOException("Directory \"" + directoryFile
+                        + "\" does not exist and cannot be created.");
+            }
         }
         System.out.println("Creating " + fileName);
 

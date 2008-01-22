@@ -1142,7 +1142,10 @@ public class JNIUtilities {
 
         //Creation du repertoire
         try {
-            dir.mkdirs();
+            if (!dir.mkdirs()) {
+                throw new IOException("Directory \"" + dir
+                        + "\" does not exist and cannot be created.");
+            }
         } catch (NullPointerException ex) {
             throw new IllegalActionException(null, ex, "No directory '" + dir
                     + "'");
