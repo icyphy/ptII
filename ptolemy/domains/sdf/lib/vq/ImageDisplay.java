@@ -174,9 +174,7 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
 
                 Container container = _picture.getParent();
 
-                if (_picture != null) {
-                    container.remove(_picture);
-                }
+                container.remove(_picture);
 
                 _picture = new Picture(xSize, ySize);
 

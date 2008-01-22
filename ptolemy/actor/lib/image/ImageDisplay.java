@@ -260,9 +260,7 @@ public class ImageDisplay extends Sink implements Placeable {
 
                 Container container = _picture.getParent();
 
-                if (_picture != null) {
-                    container.remove(_picture);
-                }
+                container.remove(_picture);
 
                 _picture = new Picture(xSize, ySize);
                 _picture.setImage(image);

@@ -55,10 +55,7 @@ public class NullArrayIterator extends IteratorAdapter {
     public NullArrayIterator(Object[] array) {
         _array = array;
         _arraylen = array.length;
-
-        if (array != null) {
-            advance();
-        }
+        advance();
     }
 
     /** Construct an iterator over the given array, where the

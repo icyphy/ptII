@@ -401,8 +401,7 @@ public class DocManager extends HandlerBase {
                     className.replace('.', '/') + ".java",
 
                     "doc/codeDoc"
-                            + (applicationName == null
-                                    || applicationName.equals("") ? "/"
+                            + (applicationName.equals("") ? "/"
                                     : applicationName + "/doc/codeDoc/")
 
                             + className.replace('.', '/') + "Idx.htm" };

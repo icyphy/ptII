@@ -220,9 +220,7 @@ public class ImageTableau extends TokenTableau {
 
                 JFrame castTop = (JFrame) top;
 
-                if (_picture != null) {
-                    castTop.getContentPane().remove(_picture);
-                }
+                castTop.getContentPane().remove(_picture);
 
                 _picture = new Picture(xsize, ysize);
                 _picture.setImage(image);

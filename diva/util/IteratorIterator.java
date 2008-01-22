@@ -26,6 +26,7 @@
 package diva.util;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * An iterator that takes an iterator over objects that themselves
@@ -70,13 +71,13 @@ public abstract class IteratorIterator extends IteratorAdapter {
 
     /* Return the next object.
      */
-    public Object next() {
-        while (!_subiterator.hasNext()) {
-            _subiterator = iterator(_iterator.next());
+    public Object next() throws NoSuchElementException{
+        if (_subiterator == null) {
+            throw new NoSuchElementException("Ack! No more elements");
         }
 
-        if (_subiterator == null) {
-            throw new RuntimeException("Ack! No more elements");
+        while (!_subiterator.hasNext()) {
+            _subiterator = iterator(_iterator.next());
         }
 
         return (_subiterator.next());

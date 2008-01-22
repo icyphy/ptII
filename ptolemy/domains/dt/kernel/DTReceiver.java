@@ -211,12 +211,6 @@ public class DTReceiver extends SDFReceiver {
                         if (remoteReceivers[i][j] == this) {
                             _from = (Actor) connectedPort.getContainer();
                             _fromPort = connectedPort;
-
-                            if (_fromPort == null) {
-                                throw new InternalErrorException(
-                                        "DT error: Receiver with null source");
-                            }
-
                             break foundReceiver;
                         }
                     }
@@ -225,11 +219,6 @@ public class DTReceiver extends SDFReceiver {
                 // FIXME: should use at isAtomic() instead of instanceof?
                 _from = (Actor) connectedPort.getContainer();
                 _fromPort = connectedPort;
-
-                if (_fromPort == null) {
-                    throw new InternalErrorException(
-                            "internal DT error: Receiver with null source");
-                }
 
                 break foundReceiver;
             } else if (connectedPort.isInput() == true) {
