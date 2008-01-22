@@ -377,8 +377,8 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                     || file.getName().toLowerCase().endsWith(".smv");
         }
 
-        /** The description of this file filter.
-         *  @param The description of this file filter.
+        /** Return the description of this file filter.
+         *  @return The description of this file filter.
          */   
         public String getDescription() {
             return "Software Model Verification (.smv) files";
