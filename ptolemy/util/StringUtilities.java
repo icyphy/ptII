@@ -877,8 +877,6 @@ public class StringUtilities {
 
                 //break;
             case StreamTokenizer.TT_EOL:
-                break;
-
             case StreamTokenizer.TT_EOF:
                 break;
 
