@@ -38,6 +38,7 @@ import java.net.URL;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -234,9 +235,6 @@ public class ExternalTextEffigy extends TextEffigy {
             //-    new BufferedInputStream(process.getInputStream());
             process.waitFor();
 
-            if (tmpFile != null) {
-                tmpFile.delete();
-            }
 
             //- byte[] buffer = new byte[result.available()];
             //- result.read(buffer, 0, buffer.length);
@@ -245,6 +243,13 @@ public class ExternalTextEffigy extends TextEffigy {
             //- for (; buffer[i] == '\r' || buffer[i] == '\n'; i--);
             //- _bufferName = new String(buffer, 0, i + 1);
             _pathName = path;
+
+            if (tmpFile != null) {
+                if (!tmpFile.delete()) {
+                        throw new InternalErrorException("Failed to delete \""
+                                + tmpFile + "\"?");
+                }
+            }
         } catch (Throwable throwable) {
             throw new RuntimeException(getFullName(), throwable);
         }
