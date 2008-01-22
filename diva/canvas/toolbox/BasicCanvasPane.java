@@ -28,6 +28,7 @@ package diva.canvas.toolbox;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import diva.canvas.CanvasLayer;
 import diva.canvas.CanvasPane;
@@ -111,7 +112,12 @@ public class BasicCanvasPane extends CanvasPane {
                 return cursor > 0;
             }
 
-            public Object next() {
+            public Object next() throws NoSuchElementException {
+                if (!hasNext()) {
+                    throw new NoSuchElementException("Can't get " + cursor
+                            + "'th element from BoundsGeometry of size "
+                            + _layers.size());
+                }
                 cursor--;
                 return _layers.get(cursor);
             }

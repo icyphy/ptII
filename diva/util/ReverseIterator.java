@@ -26,6 +26,7 @@
 package diva.util;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * A reverse-order iterator over a List.
@@ -39,21 +40,30 @@ public class ReverseIterator extends IteratorAdapter {
     private int _cursor;
 
     /** Construct a reverse iterator on the given list.
+     *  @param list The list with which to construct the iterator.
      */
     public ReverseIterator(List list) {
-        this._list = list;
+        _list = list;
         _cursor = list.size();
     }
 
-    /** Test if there are more elements
+    /** Test if there are more elements.
+     *  @return true if there more elements.
      */
     public boolean hasNext() {
         return _cursor > 0;
     }
 
     /** Return the next element.
+     *  @return the next element.
+     *  @exception NoSuchElementException If the element does not exist.
      */
-    public Object next() {
+    public Object next() throws NoSuchElementException {
+        if (!hasNext()) {
+            throw new NoSuchElementException("Can't get " + _cursor
+                    + "'th element from ReverseIterator of size "
+                    + _list.size());
+        }
         _cursor--;
         return _list.get(_cursor);
     }

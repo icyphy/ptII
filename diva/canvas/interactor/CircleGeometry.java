@@ -164,7 +164,7 @@ public class CircleGeometry implements Geometry {
                 return cursor < _siteCount;
             }
 
-            public Object next() {
+            public Object next() throws NoSuchElementException {
                 if (!hasNext()) {
                     throw new NoSuchElementException("Can't get " + cursor
                             + "'th element from CircleGeometry of size "

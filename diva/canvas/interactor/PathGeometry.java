@@ -32,6 +32,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.util.Iterator;
+import java.util.NoSuchElementException
 
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
@@ -233,8 +234,14 @@ public class PathGeometry implements Geometry {
             }
 
             // Get the next Vertex
-            public Object next() {
+            public Object next() throws NoSuchElementException {
+                if (!hasNext()) {
+                    throw new NoSuchElementException("Can't get " + cursor
+                            + "'th element from PathyGeometry of size "
+                            + _vertexCount);
+                }
                 // The first time through, getVertex() needs to be called
+
                 if (_vertices[cursor] == null) {
                     getVertex(cursor);
                 }

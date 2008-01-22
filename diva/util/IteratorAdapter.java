@@ -26,6 +26,7 @@
 package diva.util;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * An iterator that implements the Iterator, intended for
@@ -42,7 +43,7 @@ public class IteratorAdapter implements Iterator {
                 "This method must be overridden");
     }
 
-    public Object next() {
+    public Object next() throws NoSuchElementException {
         throw new UnsupportedOperationException(
                 "This method must be overridden");
     }
