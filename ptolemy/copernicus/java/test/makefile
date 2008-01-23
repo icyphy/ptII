@@ -90,6 +90,7 @@ JGRAPHICAL_TESTS = \
 
 EXTRA_SRCS = \
 	alldeep \
+	dava2java \
 	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JLONG_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
