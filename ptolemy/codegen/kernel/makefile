@@ -70,11 +70,13 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'CodeGeneratorHelper$$VariableScope.class' \
-	'CodeStream$$CodeBlock.class' \
+	'CodeGenerator$$1.class' \
+	'CodeGenerator$$TargetFilter.class' \
 	'CodeGeneratorHelper$$1.class' \
 	'CodeGeneratorHelper$$Channel.class' \
 	'CodeGeneratorHelper$$HelperScope.class' \
+	'CodeGeneratorHelper$$VariableScope.class' \
+	'CodeStream$$CodeBlock.class' \
 	'CodeStream$$CodeBlockTable.class' \
 	'CodeStream$$Signature.class'
 
