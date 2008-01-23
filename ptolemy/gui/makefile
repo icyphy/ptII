@@ -99,6 +99,10 @@ OPTIONAL_FILES = \
 	'JTextAreaExec$$5$$1.class' \
 	'JTextAreaExec$$7$$1.class' \
 	'JTextAreaExec$$_StreamReaderThread.class' \
+	'JTextAreaExec$$2$1.class' \
+	'JTextAreaExec$$4$1.class' \
+	'JTextAreaExec$$6$1.class' \
+	'ShellTextArea$$3$1.class' \
 	'Message$$1.class' \
 	'Message$$2.class' \
 	'Query$$1.class' \

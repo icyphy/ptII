@@ -93,6 +93,13 @@ OPTIONAL_FILES = \
 	'JShadePane$$6.class' \
 	'JShadePane$$7.class' \
 	'JShadePane$$Shade.class' \
+	'JShadePane$$2$1.class' \
+	'JShadePane$$2$2.class' \
+	'JShadePane$$2$3.class' \
+	'JShadePane$$2$4.class' \
+	'JShadePane$$2$5.class' \
+	'JShadePane$$2$6.class' \
+	'JTreePane$$2.class' \
 	'JTreePane$$1.class' \
 	'JTreePane$$Entry.class'
 

@@ -67,6 +67,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	'UndoStackAttribute$$1.class' \
+	'UndoStackAttribute$MergeUndoActions.class' \
 	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
