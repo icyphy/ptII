@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
@@ -40,7 +41,6 @@ import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.ObjectToken;
-import ptolemy.data.PointerToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;

@@ -26,12 +26,12 @@
 
 
  */
-package ptolemy.data;
+package ptolemy.actor.lib.jni;
 
 import java.io.Serializable;
 
-import ptolemy.actor.lib.security.KeyToken;
-import ptolemy.actor.lib.security.KeyToken.KeyType;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 

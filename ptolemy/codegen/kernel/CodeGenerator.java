@@ -1716,7 +1716,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** A static list of the primitive types supported by the code generator. */
     protected static final List _primitiveTypes = Arrays.asList(new String[] {
-            "Int", "Double", "String", "Long", "Boolean", "UnsignedByte" });
+            "Int", "Double", "String", "Long", "Boolean", "UnsignedByte", "Pointer" });
 
     /** The sanitized model name. */
     protected String _sanitizedModelName;
