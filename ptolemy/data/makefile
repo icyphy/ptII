@@ -107,7 +107,7 @@ OPTIONAL_FILES = \
 	doc \
 	'FunctionToken$$Function.class' \
 	'ActorToken$$ActorType.class' \
-	'Token$$1.class'
+	'Token$$1.class' \
 	'PointerToken$$1.class' \
 	'PointerToken$$PointerType.class'
 
