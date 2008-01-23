@@ -196,6 +196,9 @@ OPTIONAL_FILES = \
 	'HTMLEffigy$$Factory.class' \
 	'HTMLViewer$$1.class' \
 	'HTMLViewerTableau$$Factory.class' \
+	'JTextAreaExec$$2$1.class' \
+	'JTextAreaExec$$4$1.class' \
+	'JTextAreaExec$$6$1.class' \
 	'JVMTableau$$1.class' \
 	'JVMTableau$$Factory.class' \
 	'JVMTableau$$JVMFrame$$1.class' \
@@ -271,6 +274,7 @@ OPTIONAL_FILES = \
 	'RunTableau$$RunFrame.class' \
 	'RunTableau$$RunFrame$$DebugMenuListener.class' \
 	'RunTableau$$TopFactory.class' \
+	'ShellTextArea$$3$1.class' \
 	'Tableau$$1.class' \
 	'TableauFrame$$1.class' \
 	'TableauFrame$$ExtensionFileFilter.class' \
