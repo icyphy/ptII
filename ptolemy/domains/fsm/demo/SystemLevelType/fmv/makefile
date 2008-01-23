@@ -1,11 +1,11 @@
 # Makefile for interface automaton models for some Ptolemy II
 # components with respect to token passing
 #
-# @Authors: Christopher Hylands (makefile only)
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2001-2005 The Regents of the University of California.
+# @Copyright (c) 2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,12 +30,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME = 		ptolemy/domains/fsm/demo/SystemLevelType
-
-DIRS =		fmv
+ME = 		ptolemy/domains/fsm/demo/SystemLevelType/fmv
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -44,49 +42,16 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	SystemLevelType
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	fmv/fmv.jar
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	fmv
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 DEMOS = \
-	CSPDomain.xml \
-	CSPDomain_PolyActor.xml \
-	CSPDomain_SDFActor.xml \
-	DEDomain.xml \
-	DEDomain_PolyActor.xml \
-	DEDomain_SDFActor.xml \
-	DP.xml \
-	DummyDirector1.xml \
-	DummyDirector1_SDFActor.xml \
-	DummyDirector2.xml \
-	DummyDirector2_SDFActor.xml \
-	InterruptableWaitingThreadA.xml \
-	Interrupter.xml \
-	Monitor.xml \
-	PNDomain.xml \
-	PNDomain_PolyActor.xml \
-	PNDomain_SDFActor.xml \
-	PolyActor.xml \
-	SDFActor.xml \
-	SDFDomain.xml \
-	SDFDomain_PolyActor.xml \
-	SDFDomain_SDFActor.xml \
-	ThreadA.xml \
-	ThreadA_Monitor_ThreadB.xml \
-	ThreadB.xml \
-	ThreadBNotifies.xml \
-	Trigger.xml \
-	UNKNOWN.xml
+	CarLightFmv.xml
 
 OTHER_FILES_TO_BE_JARED = \
 	$(DEMOS) \
-	README.txt
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
