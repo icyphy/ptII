@@ -39,8 +39,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
+
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
@@ -119,7 +124,12 @@ public class HTMLAbout {
                 + "<li><a href=\"about:configuration\">"
                 + "<code>about:configuration</code></a> "
                 + "Expand the configuration (good way to test for "
-                + "missing classes).\n" + "<li><a href=\"about:copyright\">"
+                + "missing classes).\n"
+                + "<li><a href=\"about:expandLibrary\">"
+                + "<code>about:expandLibrary</code></a> "
+                + "Open a model and expand library tree (good way to test for "
+                + "missing classes, check standard out).\n"
+                + "<li><a href=\"about:copyright\">"
                 + "<code>about:copyright</code></a> "
                 + " Display information about the copyrights.\n");
 
@@ -337,6 +347,10 @@ public class HTMLAbout {
         } else if (event.getDescription().startsWith("about:runAllDemos")) {
             URI aboutURI = new URI(event.getDescription());
             newURL = runAllDemos(aboutURI.getFragment(), configuration);
+        } else if (event.getDescription().startsWith("about:expandLibrary")) {
+            URI aboutURI = new URI(event.getDescription());
+            newURL = _expandLibrary(aboutURI.getFragment(), ".*.xml$",
+                    configuration);
         } else {
             // Display a message about the about: facility
             newURL = _temporaryHTMLFile("about", ".htm", about(configuration));
@@ -487,6 +501,54 @@ public class HTMLAbout {
                 // + "    <td><a href=\"about:runAllDemos#" + fileName
                 // + "\">&nbsp;Run all demos&nbsp;</a></td>\n"
                 + "  </tr>\n";
+    }
+
+    /** Expand the left hand library pane.  The first model in the file
+     *  named by demosFileName is opened and then the left hand library
+     *  pane is expanded.  
+     *  @param regexp The regular expression of the links we are interested
+     *  in.
+     *  @param configuration  The configuration to open the files in.
+     *  @return the URL of the HTML file that was searched.
+     *  @exception Exception If there is a problem opening a model.
+     *  @param configuration  The configuration to open the files in.
+     */
+    public static URL _expandLibrary(String demosFileName, String regexp,
+            Configuration configuration) throws Exception {
+        URL demosURL = _getDemoURL(demosFileName);
+                    
+        // Get the first model and open it
+
+        List modelList = _getURLs(demosURL, regexp);
+        Iterator models = modelList.iterator();
+        String model = (String) models.next();
+        URL modelURL = new URL(demosURL, model);
+
+        Tableau tableau = null;
+        try {
+            tableau = configuration.openModel(demosURL, modelURL, modelURL
+                    .toExternalForm());
+        } catch (Throwable throwable) {
+            throw new Exception("Failed to open '" + modelURL + "'",
+                    throwable);
+        }
+        final JFrame jFrame = tableau.getFrame();
+        jFrame.show();
+        
+        Timer timer = new Timer(true);
+
+        TimerTask doExpandAllLibraries = new TimerTask() {
+                public void run() {
+                    try {
+                        ((ptolemy.vergil.basic.BasicGraphFrame)jFrame).expandAllLibraryRows();
+                    } catch (Exception ex) {
+                        System.err.println(ex);
+                        ex.printStackTrace();
+                    }
+                }
+            };
+        timer.schedule(doExpandAllLibraries, 20000);
+        return demosURL;
     }
 
     // Return the URL of the file that contains links to .xml files
