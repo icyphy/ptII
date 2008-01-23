@@ -122,6 +122,7 @@ OPTIONAL_FILES = \
 	'ActorEditorGraphController$$ListenToActorFactory.class' \
 	'ActorEditorGraphController$$NewRelationAction.class' \
 	'ActorEditorGraphController$$RelationCreator.class' \
+	'ActorGraphFrame$$ActorGraphPane.class' \
 	'ActorGraphFrame$$CreateHierarchyAction.class' \
 	'ActorGraphFrame$$DebugMenuListener.class' \
 	'ActorGraphFrame$$ImportLibraryAction.class' \
@@ -162,7 +163,10 @@ OPTIONAL_FILES = \
 	'LinkController$$1.class' \
 	'LinkController$$LinkDropper.class' \
 	'LinkController$$LinkRenderer.class' \
-	'LinkController$$LinkTarget.class'
+	'LinkController$$LinkTarget.class' \
+	'VerificationUtility$$1.class' \
+	'VerificationUtility$$VariableInfo.class' \
+	'VerificationUtility$$VariableTransitionInfo.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
