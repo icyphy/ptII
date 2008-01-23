@@ -359,15 +359,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _library.setBackground(BACKGROUND_COLOR);
 
         // If you want to expand the top-level libraries, uncomment this.
-        /*
-         Object[] path = new Object[2];
-         path[0] = topLibrary;
-         Iterator libraries = topLibrary.entityList().iterator();
-         while (libraries.hasNext()) {
-         path[1] = libraries.next();
-         _library.expandPath(new TreePath(path));
-         }
-         */
+        // Object[] path = new Object[2];
+        // path[0] = _topLibrary;
+        // Iterator libraries = _topLibrary.entityList().iterator();
+        // while (libraries.hasNext()) {
+        //     path[1] = libraries.next();
+        //     _library.expandPath(new javax.swing.tree.TreePath(path));
+        // }
+
         _libraryContextMenuCreator = new PTreeMenuCreator();
         _libraryContextMenuCreator
                 .addMenuItemFactory(new OpenLibraryMenuItemFactory());
@@ -909,6 +908,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _libraryModel.setRoot(null);
         _openGraphFrames.remove(this);
         super.dispose();
+    }
+
+    /** Expand all the rows of the library.
+     *  Expanding all the rows is useful for testing.
+     */
+    public void expandAllLibraryRows() {
+        for (int i = 0; i < _library.getRowCount(); i++) {
+            _library.expandRow(i);
+        }
     }
 
     /** Return the center location of the visible part of the pane.
