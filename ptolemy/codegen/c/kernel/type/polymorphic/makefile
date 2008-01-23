@@ -46,7 +46,8 @@ include $(CONFIG)
 PTPACKAGE = 	polymorphic
 PTCLASSJAR =	$(PTPACKAGE).jar
 
-JSRCS =
+JSRCS = \
+	AlphabetizeOperation.java
 
 OTHER_FILES_TO_BE_JARED = \
 	add.c \
