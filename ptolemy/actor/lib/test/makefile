@@ -103,6 +103,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	FileWriter.xml \
 	PublisherSubscriber2class.xml \
 	PublisherSubscriberInClass.xml \
+	SubscriptionAggregatorPublisherDelete.xml \
 	subaggtest.xml \
 	#$(JGRAPHICAL_TESTS)
 
