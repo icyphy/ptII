@@ -51,8 +51,12 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	add.c \
 	convert.c \
+	divide.c \
+	multiply.c \
 	negate.c \
+	print.c \
 	subtract.c
+
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
