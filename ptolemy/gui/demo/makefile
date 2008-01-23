@@ -62,6 +62,7 @@ MISC_FILES =	# doc
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	'FileChooserQuery$$1.class' \
+	'FileChooserQuery$$1$$1.class' \
 	FileChooserQuery.class 
 
 JCLASS = $(JSRCS:%.java=%.class)
