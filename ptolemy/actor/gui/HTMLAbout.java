@@ -53,6 +53,7 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.attributes.VersionAttribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.FileUtilities;
@@ -524,31 +525,29 @@ public class HTMLAbout {
         String model = (String) models.next();
         URL modelURL = new URL(demosURL, model);
 
-        Tableau tableau = null;
-        try {
-            tableau = configuration.openModel(demosURL, modelURL, modelURL
-                    .toExternalForm());
-        } catch (Throwable throwable) {
-            throw new Exception("Failed to open '" + modelURL + "'",
-                    throwable);
-        }
+        Tableau tableau = configuration.openModel(demosURL, modelURL, modelURL
+                .toExternalForm());
         final JFrame jFrame = tableau.getFrame();
-        jFrame.show();
+        //jFrame.show();
         
-        Timer timer = new Timer(true);
+        String errorMessage = 
+                "Expanding the library <b>should</b> result in expanding "
+                + "everything in the left hand tree pane. "
+                + "<p>If the left hand tree pane expands and then contracts, "
+                + "there is a problem with one of the leaves of the tree. "
+                + "<p>The quickest way to find this is to restart vergil "
+                + "and expand each branch in the tree by hand.";
+        try {
+            ((ptolemy.vergil.basic.BasicGraphFrame)jFrame).expandAllLibraryRows();
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(tableau, throwable,
+                    "Failed to expand library.\n" 
+                    + errorMessage);
+        }
+        
+        return _temporaryHTMLFile("expandLibrary", ".htm", errorMessage);
 
-        TimerTask doExpandAllLibraries = new TimerTask() {
-                public void run() {
-                    try {
-                        ((ptolemy.vergil.basic.BasicGraphFrame)jFrame).expandAllLibraryRows();
-                    } catch (Exception ex) {
-                        System.err.println(ex);
-                        ex.printStackTrace();
-                    }
-                }
-            };
-        timer.schedule(doExpandAllLibraries, 20000);
-        return demosURL;
+
     }
 
     // Return the URL of the file that contains links to .xml files
