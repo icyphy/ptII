@@ -28,14 +28,18 @@
 package ptolemy.vergil.actor.lib;
 
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
 
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ImageToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.ImageIcon;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// MonitorImage
@@ -66,6 +70,12 @@ public class MonitorImage extends Sink {
 
         _icon = new ImageIcon(this, "_icon");
         _icon.setPersistent(false);
+        FileParameter source = new FileParameter(this, "source");
+        source.setExpression("$CLASSPATH/ptolemy/vergil/kernel/attributes/ptIIplanetIcon.gif");
+        URL url = source.asURL();
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        Image image = tk.getImage(url);
+        _icon.setImage(image);
     }
 
     ///////////////////////////////////////////////////////////////////
