@@ -82,7 +82,6 @@ JSRCS = \
 	Numerical.java \
 	ObjectToken.java \
 	PetiteToken.java \
-	PointerToken.java \
 	RecordToken.java \
 	ScalarToken.java \
 	ShortToken.java \
@@ -107,9 +106,7 @@ OPTIONAL_FILES = \
 	doc \
 	'FunctionToken$$Function.class' \
 	'ActorToken$$ActorType.class' \
-	'Token$$1.class' \
-	'PointerToken$$1.class' \
-	'PointerToken$$PointerType.class'
+	'Token$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
