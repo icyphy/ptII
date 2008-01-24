@@ -1,4 +1,4 @@
-/* A factory that creates graph editing tableux for untyped models.
+/* A factory that creates graph editing tableaux for untyped models.
 
  Copyright (c) 2004-2005 The Regents of the University of California.
  All rights reserved.
