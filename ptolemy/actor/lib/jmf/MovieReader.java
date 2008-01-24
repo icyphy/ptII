@@ -229,14 +229,14 @@ public class MovieReader extends Source implements ControllerListener {
                             + "http://java.sun.com/products/java-media/jmf/reference/faqs/index.html");
         }
 
-        String framePostioningControlName = "javax.media.control.FramePositioningControl";
+        String framePositioningControlName = "javax.media.control.FramePositioningControl";
         _framePositioningControl = (FramePositioningControl) _player
-                .getControl(framePostioningControlName);
+                .getControl(framePositioningControlName);
 
         if (_framePositioningControl == null) {
             throw new IllegalActionException(this,
                     "Failed to get Frame Positioning Control '"
-                            + framePostioningControlName
+                            + framePositioningControlName
                             + "' possible controls are:\n" + _controlNames()
                             + "\nThe data source was: "
                             + _dataSource.getLocator().toExternalForm());
