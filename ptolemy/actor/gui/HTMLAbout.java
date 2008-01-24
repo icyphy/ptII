@@ -503,12 +503,12 @@ public class HTMLAbout {
     /** Expand the left hand library pane.  The first model in the file
      *  named by demosFileName is opened and then the left hand library
      *  pane is expanded.  
+     *  @param demosFileName The name of the demo file.
      *  @param regexp The regular expression of the links we are interested
      *  in.
      *  @param configuration  The configuration to open the files in.
      *  @return the URL of the HTML file that was searched.
      *  @exception Exception If there is a problem opening a model.
-     *  @param configuration  The configuration to open the files in.
      */
     public static URL _expandLibrary(String demosFileName, String regexp,
             Configuration configuration) throws Exception {
