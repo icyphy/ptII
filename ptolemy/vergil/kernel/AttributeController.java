@@ -74,7 +74,7 @@ public class AttributeController extends IconController {
         super(controller);
 
         if (access == FULL) {
-            // Add to the context menu, confiure submenu.
+            // Add to the context menu, configure submenu.
             _configureMenuFactory.addAction(new RenameDialogAction("Rename"),
                     "Customize");
 
