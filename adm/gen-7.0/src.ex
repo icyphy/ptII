@@ -151,6 +151,7 @@ ptolemy/build.xml
 ptolemy/filter/*
 ptolemy/filter
 ptolemy/chic
+ptolemy/codegen/c/domains/pn
 ptolemy/com
 ptolemy/configs/doc/whatsNew8.0.htm
 ptolemy/configs/fmvEffigyFactory.xml
