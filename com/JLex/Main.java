@@ -5187,7 +5187,7 @@ class CLexGen {
      from the beginning of a line.
      < state1, state2 ... > regular_expression { action }
      Returns null on only EOF.  Returns all_states,
-     initialied properly to correspond to all states,
+     initialized properly to correspond to all states,
      if no states are found.
      Special Notes: This function treats commas as optional
      and permits states to be spread over multiple lines.
