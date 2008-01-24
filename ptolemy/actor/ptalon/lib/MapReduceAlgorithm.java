@@ -67,7 +67,7 @@ public abstract class MapReduceAlgorithm extends Thread {
     public abstract List<KeyValuePair> map(String key, String value);
 
     /**
-     * Subcasses should implement their reduce method here,
+     * Subclasses should implement their reduce method here,
      * calling the take method of the BlockingQueue to get 
      * the next value, and checking the parameter noMoreInputs
      * to test if no more values can be put on the queue.  The
