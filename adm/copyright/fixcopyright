@@ -112,55 +112,55 @@ search $@
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\)-200[0123456]/Copyright (c) \1-2007/' \
+    sed 's/Copyright (c) \(199[0-9]\)-200[01234567/Copyright (c) \1-2008/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH='Copyright \(c\) 199[0-9]-200[0123456]'
-LOGMESSAGE="Changed copyright to 2007"
+EGREPMATCH='Copyright \(c\) 199[0-9]-200[01234567]'
+LOGMESSAGE="Changed copyright to 2008"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[01234]\)-200[0123456] /Copyright (c) \1-2007 /' \
+    sed 's/Copyright (c) \(200[01234]\)-200[01234567] /Copyright (c) \1-2008 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH='Copyright \(c\) 200[01234]-200[0123456]'
-LOGMESSAGE="Changed copyright to 2007"
+EGREPMATCH='Copyright \(c\) 200[01234]-200[01234567]'
+LOGMESSAGE="Changed copyright to 2008"
 
 search $@
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2007 /' \
+    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2008 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright \(c\) 199[0-9] "
-LOGMESSAGE="Changed copyright to 2007"
+LOGMESSAGE="Changed copyright to 2008"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[0123456]\) /Copyright (c) \1-2007 /' \
+    sed 's/Copyright (c) \(200[01234567]\) /Copyright (c) \1-2008 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH="Copyright \(c\) 200[0123456] "
-LOGMESSAGE="Changed copyright to 2007"
+EGREPMATCH="Copyright \(c\) 200[01234567] "
+LOGMESSAGE="Changed copyright to 2008"
 
 search $@
 
