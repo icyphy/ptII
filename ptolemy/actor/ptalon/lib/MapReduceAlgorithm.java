@@ -132,7 +132,7 @@ public abstract class MapReduceAlgorithm extends Thread {
     private boolean _threadDone = false;
 
     /**
-     * True if an exception was thrown acessing the blocking queue.
+     * True if an exception was thrown accessing the blocking queue.
      */
     private boolean _threadError = false;
 
