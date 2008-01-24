@@ -33,7 +33,6 @@ import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import ptolemy.actor.lib.jni.PointerToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.DoubleToken;
@@ -239,9 +238,6 @@ public class Constants {
         _types.put("long", new LongToken(0));
         _types.put("matrix", new ConcreteMatrixToken());
         _types.put("object", new ObjectToken());
-        // Pointer is a legal port type, but it is not advertised
-        // in the type list.
-        _table.put("pointer", new PointerToken());
         _types.put("xmltoken", new XMLToken());
         _types.put("scalar", new ConcreteScalarToken());
         _types.put("string", new StringToken(""));
