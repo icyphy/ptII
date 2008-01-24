@@ -382,7 +382,7 @@ public class TypeSpecializerAnalysis {
                     || type1 == BaseType.UNKNOWN) {
                 System.out.println("Contents of _objectToInequalityTerm");
                 Iterator terms = _objectToInequalityTerm.entrySet().iterator();
-                while(terms.hasNext()) {
+                while (terms.hasNext()) {
                     Map.Entry pairs = (Map.Entry)terms.next();
                     System.out.println(pairs.getKey() + " = " + (InequalityTerm) (pairs.getValue()));
                 }

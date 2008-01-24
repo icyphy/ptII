@@ -83,7 +83,7 @@ public class PropertySolverGUIFactory extends EditorFactory {
         PropertySolver solver = (PropertySolver) getContainer();
         CompositeEntity top = (CompositeEntity) solver.getContainer();
 
-        while (top.getContainer() != null){
+        while (top.getContainer() != null) {
             top = (CompositeEntity) top.getContainer();
         }
         try {

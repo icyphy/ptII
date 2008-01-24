@@ -359,7 +359,7 @@ public class EditorDropTarget extends DropTarget {
                 .getAttribute("_alternateGetMomlAction");
         if ((alternateGetMomlActionAttribute!=null)&&(lsidFlag)) {
             String alternateGetMomlClassName = alternateGetMomlActionAttribute.getExpression();
-            try{
+            try {
                 Class getMomlClass = Class.forName(alternateGetMomlClassName);
                 object = getMomlClass.newInstance();
                 Class[] parameterTypes = new Class[] {NamedObj.class};
