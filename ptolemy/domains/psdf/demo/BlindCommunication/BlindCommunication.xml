@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BlindCommunication" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 0, 880, 614}, maximized=false}">
     </property>
@@ -886,7 +886,7 @@
     <entity name="Resampler" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 140.0">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 392, 750, 373}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 395, 750, 363}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 350]">
         </property>
@@ -1427,9 +1427,9 @@
     <entity name="PhaseStatesEstimator" class="ptolemy.actor.TypedCompositeActor">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={235, 135, 784, 631}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={229, 114, 795, 650}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 667]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[580, 534]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 160.0">
         </property>
@@ -1473,7 +1473,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{495.3131578947368, 373.3052631578947}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{376.8131578947368, 306.8052631578947}">
         </property>
         <property name="inputCount" class="ptolemy.actor.parameters.PortParameter" value="127">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
