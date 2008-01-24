@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  Delays each fixed point token sent on the port by the specified latency
- parameter and then outputs it via the parent TypedIOPort. Intially will
+ parameter and then outputs it via the parent TypedIOPort. Initially will
  output NIL until one input can be sent.
 
  @author Man-Kit Leung
