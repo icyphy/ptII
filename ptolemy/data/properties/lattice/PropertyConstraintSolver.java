@@ -15,7 +15,6 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.properties.PropertySolver;
-import ptolemy.data.properties.gui.PropertySolverGUIFactory;
 import ptolemy.data.type.BaseType;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
@@ -89,8 +88,8 @@ public class PropertyConstraintSolver extends PropertySolver {
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\nResolve Property.</text></svg>");
 
-        new PropertySolverGUIFactory(this,
-                "_propertyConstraintSolverGUIFactory");
+        //new PropertySolverGUIFactory(this,
+        //        "_propertyConstraintSolverGUIFactory");
 
     }
 

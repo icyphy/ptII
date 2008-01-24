@@ -13,7 +13,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.properties.PropertyHelper;
 import ptolemy.data.properties.PropertySolver;
-import ptolemy.data.properties.gui.PropertySolverGUIFactory;
 import ptolemy.data.properties.token.firstValueToken.FirstTokenSentListener;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -43,7 +42,7 @@ public class PortValueSolver extends PropertySolver {
                 + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
                 + "Double click to\nResolve Property.</text></svg>");
 
-        new PropertySolverGUIFactory(this, "_portValueSolverGUIFactory");
+        //new PropertySolverGUIFactory(this, "_portValueSolverGUIFactory");
 
         trainingMode = new Parameter(this, "trainingMode");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
