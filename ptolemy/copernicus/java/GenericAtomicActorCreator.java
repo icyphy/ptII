@@ -289,8 +289,8 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                         || r.getMethod().getName().equals(
                                 "setTokenProductionRate")
                         || r.getMethod().getName().equals(
-                                "setTokenInitProduction") 
-                        || r.getMethod().getName().equals("setVisibility")) { 
+                                "setTokenInitProduction")
+                        || r.getMethod().getName().equals("setVisibility")) {
                     body.getUnits().remove(stmt);
                 }
 

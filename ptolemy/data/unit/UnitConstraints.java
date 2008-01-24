@@ -209,8 +209,9 @@ public class UnitConstraints implements UnitPresentation {
         StringBuffer retv = null;
 
         if (!_constraints.isEmpty()) {
-            retv = new StringBuffer(((UnitEquation) (_constraints.elementAt(0)))
-                    .descriptiveForm());
+            retv = new StringBuffer(
+                    ((UnitEquation) (_constraints.elementAt(0)))
+                            .descriptiveForm());
         }
 
         for (int i = 1; i < _constraints.size(); i++) {

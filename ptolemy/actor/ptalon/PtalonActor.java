@@ -151,8 +151,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     }
 
                     // Check if the parameter was not previously assigned.
-                    if (!_assignedPtalonParametersCopy
-                            .containsKey(p.getName())) {
+                    if (!_assignedPtalonParametersCopy.containsKey(p.getName())) {
                         // The value of the parameter was not
                         // previously assigned, so add it to
                         // _assignedPtalonParameters and save a copy
@@ -161,8 +160,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
 
                         _assignedPtalonParametersCopy.put(p.getName(),
                                 (PtalonParameter) p.clone(null));
-                        _assignedPtalonParametersCopyValues.put(p.getName(),
-                                p.getToken());
+                        _assignedPtalonParametersCopyValues.put(p.getName(), p
+                                .getToken());
                     } else {
                         // The value of the parameter was previously
                         // assigned, and therefore the parameter value
@@ -173,8 +172,8 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                         // token value.
                         _assignedPtalonParametersCopy.put(p.getName(),
                                 (PtalonParameter) p.clone(null));
-                        _assignedPtalonParametersCopyValues.put(p.getName(),
-                                p.getToken());
+                        _assignedPtalonParametersCopyValues.put(p.getName(), p
+                                .getToken());
 
                         // Delete the inside of this PtalonActor by
                         // removing all entities and relations.  We do
@@ -205,15 +204,14 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                     }
                     if (ready) {
                         PtalonPopulator populator = new PtalonPopulator();
-                        populator.setASTNodeClass(
-                                "ptolemy.actor.ptalon.PtalonAST");
+                        populator
+                                .setASTNodeClass("ptolemy.actor.ptalon.PtalonAST");
                         populator.actor_definition(_ast, _codeManager);
                         _ast = (PtalonAST) populator.getAST();
                         _codeManager.assignInternalParameters();
                     }
                 } catch (Exception ex) {
-                    throw new IllegalActionException(this, ex,
-                            ex.getMessage());
+                    throw new IllegalActionException(this, ex, ex.getMessage());
                 }
             }
         }
@@ -451,12 +449,12 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
                 String unPtlnName = ptIIFilename.substring(0, ptIIFilename
                         .length() - 5);
                 String displayName = unPtlnName.replace('/', '.');
-                
+
                 // Write the name of the Ptalon file.
                 output.write(_getIndentPrefix(depth) + "<configure>\n");
                 output.write(_getIndentPrefix(depth + 1) + "<ptalon file=\""
                         + displayName + "\">\n");
-                
+
                 // Write the name and value of all Ptalon parameters.
                 for (PtalonParameter param : _assignedPtalonParameters) {
                     if (!_unsettablePtalonParameters.contains(param)) {
@@ -506,8 +504,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  ptalonCodeLocation attribute has been updated.
      * @exception IllegalActionException If any exception is thrown.
      */
-    private void _initializePtalonCodeLocation()
-            throws IllegalActionException {
+    private void _initializePtalonCodeLocation() throws IllegalActionException {
         try {
             if (_astCreated) {
                 ptalonCodeLocation.setVisibility(Settable.NONE);
@@ -561,16 +558,16 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
         } else if (_assignedPtalonParametersCopy.containsKey(p.getName())) {
             // The value of the parameter was previously assigned.
             // Check to see if value has actually changed.
-            PtalonParameter oldParameter = _assignedPtalonParametersCopy.get(
-                    p.getName());
+            PtalonParameter oldParameter = _assignedPtalonParametersCopy.get(p
+                    .getName());
             if (!oldParameter.getExpression().equals(p.getExpression())) {
                 // The parameter expressions are different.
                 return true;
             } else {
                 // The parameter expressions are the same.  Check to
                 // see if the token values are the same.
-                Token oldToken = _assignedPtalonParametersCopyValues.get(
-                        p.getName());
+                Token oldToken = _assignedPtalonParametersCopyValues.get(p
+                        .getName());
                 if (oldToken == null) {
                     // The old token value of the parameter is null
                     // because the token value has not yet been
@@ -601,8 +598,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
     /** A list of all ptalon parameters that have been assigned a
      *  value.  This is a subset of _ptalonParameters.
      */
-    private List<PtalonParameter> _assignedPtalonParameters =
-        new LinkedList<PtalonParameter>();
+    private List<PtalonParameter> _assignedPtalonParameters = new LinkedList<PtalonParameter>();
 
     /** A table of copies of all the elements in
      *  _assignedPtalonParameters.  In each entry of this table, the
@@ -612,8 +608,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  expression values against previously assigned expression
      *  values.
      */
-    private Hashtable<String, PtalonParameter> _assignedPtalonParametersCopy =
-        new Hashtable<String, PtalonParameter>();
+    private Hashtable<String, PtalonParameter> _assignedPtalonParametersCopy = new Hashtable<String, PtalonParameter>();
 
     /** A table of copies of token values of all of the elements in
      *  _assignedPtalonParameters.  In each entry of this table, the
@@ -622,8 +617,7 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
      *  the name returned by getName().  This table is used to compare
      *  current token values against previous token values.
      */
-    private Hashtable<String, Token> _assignedPtalonParametersCopyValues =
-        new Hashtable<String, Token>();
+    private Hashtable<String, Token> _assignedPtalonParametersCopyValues = new Hashtable<String, Token>();
 
     /** The abstract syntax tree for the PtalonActor.
      */
@@ -649,12 +643,10 @@ public class PtalonActor extends TypedCompositeActor implements Configurable {
 
     /** The list of all ptalon parameters for this actor.
      */
-    private List<PtalonParameter> _ptalonParameters =
-        new LinkedList<PtalonParameter>();
+    private List<PtalonParameter> _ptalonParameters = new LinkedList<PtalonParameter>();
 
     /** The list of all ptalon parameters who are not settable by the
      *  user.  This is a subset of _ptalonParameters.
      */
-    private List<PtalonParameter> _unsettablePtalonParameters =
-        new LinkedList<PtalonParameter>();;
+    private List<PtalonParameter> _unsettablePtalonParameters = new LinkedList<PtalonParameter>();;
 }

@@ -133,7 +133,8 @@ public class DistributedUtilities {
 
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
-                print.append(((DistributedSDFReceiver) array[i][j]).getID() + " ");
+                print.append(((DistributedSDFReceiver) array[i][j]).getID()
+                        + " ");
             }
 
             print.append("\n");

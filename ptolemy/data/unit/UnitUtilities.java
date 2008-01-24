@@ -400,10 +400,10 @@ public class UnitUtilities {
                 return positiveUnits.toString();
             } else if (justOneNegative) {
                 return positiveUnits.toString() + " / "
-                    + negativeUnits.toString();
+                        + negativeUnits.toString();
             } else {
                 return positiveUnits.toString() + " / ("
-                    + negativeUnits.toString() + ")";
+                        + negativeUnits.toString() + ")";
             }
         }
     }

@@ -185,8 +185,7 @@ public class StaticSchedulingDirector extends Director {
      *  @return Code for the main loop of an execution.
      *  @exception IllegalActionException If something goes wrong.
      */
-    public String generateMainLoop()
-            throws IllegalActionException {
+    public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         Attribute iterations = _director.getAttribute("iterations");
@@ -246,7 +245,7 @@ public class StaticSchedulingDirector extends Director {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
-        
+
         ptolemy.actor.sched.StaticSchedulingDirector director = (ptolemy.actor.sched.StaticSchedulingDirector) getComponent();
 
         // Force schedule (re)calculation before generating code
@@ -280,7 +279,7 @@ public class StaticSchedulingDirector extends Director {
                 variableDeclarations.append("double _currentTime = 0;" + _eol);
             }
         }
-        
+
         return variableDeclarations.toString();
     }
 }

@@ -76,8 +76,8 @@ public abstract class GraphAnalyzer {
     public NamedObj findFirstChild(CompositeEntity top,
             IndexedLists indexedLists, Collection<Object> excludedObjects) {
 
-        List<Object> children = new LinkedList<Object>(
-                (Collection<?>) top.entityList(ComponentEntity.class));
+        List<Object> children = new LinkedList<Object>((Collection<?>) top
+                .entityList(ComponentEntity.class));
 
         Token collapsingToken = _getAttribute(top, "RelationCollapsing",
                 RelationCollapsingAttribute.class);
@@ -245,8 +245,7 @@ public abstract class GraphAnalyzer {
                             return child;
                         }
                     } else {
-                        CompositeEntity compositeEntity =
-                            (CompositeEntity) child;
+                        CompositeEntity compositeEntity = (CompositeEntity) child;
                         NamedObj childObject = findFirstChild(compositeEntity,
                                 indexedLists, excludedObjects);
                         if (childObject != null) {

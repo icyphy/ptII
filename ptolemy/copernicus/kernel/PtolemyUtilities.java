@@ -42,7 +42,6 @@ import ptolemy.data.FloatToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
-import ptolemy.data.ShortToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
@@ -65,8 +64,8 @@ import soot.ValueBox;
 import soot.jimple.CastExpr;
 import soot.jimple.DefinitionStmt;
 import soot.jimple.DoubleConstant;
-import soot.jimple.FloatConstant;
 import soot.jimple.FieldRef;
+import soot.jimple.FloatConstant;
 import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.IntConstant;
 import soot.jimple.InvokeStmt;
@@ -473,12 +472,11 @@ public class PtolemyUtilities {
                         Jimple.v().newStaticFieldRef(
                                 fixMatrixTypeField.makeRef())), insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.FLOAT)) {
-                units.insertBefore(Jimple.v()
-                        .newAssignStmt(
+                units
+                        .insertBefore(Jimple.v().newAssignStmt(
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
-                                        floatTypeField.makeRef())),
-                        insertPoint);
+                                        floatTypeField.makeRef())), insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.UNSIGNED_BYTE)) {
                 units.insertBefore(Jimple.v().newAssignStmt(typeLocal,
                         Jimple.v().newStaticFieldRef(byteTypeField.makeRef())),
@@ -509,12 +507,11 @@ public class PtolemyUtilities {
                                         objectTypeField.makeRef())),
                         insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.SHORT)) {
-                units.insertBefore(Jimple.v()
-                        .newAssignStmt(
+                units
+                        .insertBefore(Jimple.v().newAssignStmt(
                                 typeLocal,
                                 Jimple.v().newStaticFieldRef(
-                                        shortTypeField.makeRef())),
-                        insertPoint);
+                                        shortTypeField.makeRef())), insertPoint);
             } else if (type.equals(ptolemy.data.type.BaseType.STRING)) {
                 units.insertBefore(Jimple.v()
                         .newAssignStmt(
@@ -2225,8 +2222,7 @@ public class PtolemyUtilities {
 
         floatTokenClass = Scene.v().loadClassAndSupport(
                 "ptolemy.data.FloatToken");
-        floatTokenConstructor = floatTokenClass
-                .getMethod("void <init>(float)");
+        floatTokenConstructor = floatTokenClass.getMethod("void <init>(float)");
         floatValueMethod = scalarTokenClass.getMethod("float floatValue()");
 
         complexTokenClass = Scene.v().loadClassAndSupport(
@@ -2257,8 +2253,7 @@ public class PtolemyUtilities {
 
         shortTokenClass = Scene.v().loadClassAndSupport(
                 "ptolemy.data.ShortToken");
-        shortTokenConstructor = shortTokenClass
-                .getMethod("void <init>(short)");
+        shortTokenConstructor = shortTokenClass.getMethod("void <init>(short)");
         shortValueMethod = scalarTokenClass.getMethod("short shortValue()");
 
         stringTokenClass = Scene.v().loadClassAndSupport(

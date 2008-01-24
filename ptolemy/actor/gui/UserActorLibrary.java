@@ -110,8 +110,8 @@ public class UserActorLibrary {
 
                 if (oldFile.isFile() && oldFile.exists()) {
                     if (!oldFile.renameTo(file)) {
-                        throw new IOException("Failed to rename \""
-                                + oldFile + "\" to \"" + file + "\".");
+                        throw new IOException("Failed to rename \"" + oldFile
+                                + "\" to \"" + file + "\".");
                     }
                 }
             }

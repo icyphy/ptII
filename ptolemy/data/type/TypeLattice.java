@@ -104,10 +104,10 @@ public class TypeLattice {
      */
     public synchronized static int compare(Token token1, Token token2) {
         if ((token1 == null) || (token2 == null)) {
-             throw new IllegalArgumentException(
-                     "TypeLattice.compare(Token, Token): "
-                             + "one or both of the argument tokens is null: "
-                             + " token1 = " + token1 + ", token2 = " + token2);
+            throw new IllegalArgumentException(
+                    "TypeLattice.compare(Token, Token): "
+                            + "one or both of the argument tokens is null: "
+                            + " token1 = " + token1 + ", token2 = " + token2);
         }
 
         return compare(token1.getType(), token2.getType());
@@ -149,7 +149,7 @@ public class TypeLattice {
         if (token == null) {
             throw new IllegalArgumentException(
                     "TypeLattice.compare(Type, Token): "
-                    + "token argument is null");
+                            + "token argument is null");
         }
 
         return compare(type, token.getType());

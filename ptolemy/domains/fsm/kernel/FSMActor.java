@@ -1634,7 +1634,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             if ((port != null) && port instanceof Typeable) {
                 if (name.endsWith("_isPresent")) {
                     return BaseType.BOOLEAN;
-                    
+
                 } else if (name.endsWith("Array")) {
 
                     // We need to explicit return an ArrayType here 

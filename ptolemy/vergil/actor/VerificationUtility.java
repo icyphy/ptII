@@ -1653,8 +1653,6 @@ public class VerificationUtility {
         return returnText;
     }
 
-    
-
     private StringBuffer _recursiveStepGeneratePremiseTransition(
             String currentPremise, int index, int maxIndex,
             String[] keySetArray,
@@ -2456,7 +2454,7 @@ public class VerificationUtility {
     //private final static int USED_GUARD_NOT_IS_PRESENT = 2;
 
     private StringBuffer premiseText;
-    
+
     // /////////////////////////////////////////////////////////////////
     // // inner class ////
     private class VariableInfo {

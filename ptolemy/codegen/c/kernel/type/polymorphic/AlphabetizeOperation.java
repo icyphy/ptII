@@ -45,20 +45,20 @@ public class AlphabetizeOperation {
         // for every file in type/polymorphic/
         try {
             File directory = new File(FileUtilities.nameToURL(
-                    "$CLASSPATH/ptolemy/codegen/c/kernel/type/polymorphic", 
+                    "$CLASSPATH/ptolemy/codegen/c/kernel/type/polymorphic",
                     null, null).getFile());
             for (File file : directory.listFiles()) {
                 String filename = file.getPath();
                 CodeStream stream = new CodeStream(filename, null);
 
-                TreeSet sortedSet = 
-                    new TreeSet(stream.getAllCodeBlockSignatures());
-                
+                TreeSet sortedSet = new TreeSet(stream
+                        .getAllCodeBlockSignatures());
+
                 String code = "";
                 for (Object signature : sortedSet) {
                     code += stream.getCodeBlockTemplate(signature);
                 }
-                
+
                 if (code.trim().length() > 0) {
                     FileWriter writer = new FileWriter(new File(filename));
                     writer.write(code);
@@ -67,6 +67,6 @@ public class AlphabetizeOperation {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }        
+        }
     }
 }

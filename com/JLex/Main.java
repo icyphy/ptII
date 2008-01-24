@@ -170,35 +170,35 @@ class CSpec {
 
     /* Lexical States. */
     Hashtable m_states; /* Hashtable taking state indices (Integer)
-        to state name (String). */
+           to state name (String). */
 
     /* Regular Expression Macros. */
     Hashtable m_macros; /* Hashtable taking macro name (String)
-        to corresponding char buffer that
-        holds macro definition. */
+           to corresponding char buffer that
+           holds macro definition. */
 
     /* NFA Machine. */
     CNfa m_nfa_start; /* Start state of NFA machine. */
 
     Vector m_nfa_states; /* Vector of states, with index
-        corresponding to label. */
+           corresponding to label. */
 
     Vector[] m_state_rules; /* An array of Vectors of Integers.
-        The ith Vector represents the lexical state
-        with index i.  The contents of the ith
-        Vector are the indices of the NFA start
-        states that can be matched while in
-        the ith lexical state. */
+           The ith Vector represents the lexical state
+           with index i.  The contents of the ith
+           Vector are the indices of the NFA start
+           states that can be matched while in
+           the ith lexical state. */
 
     int[] m_state_dtrans;
 
     /* DFA Machine. */
     Vector m_dfa_states; /* Vector of states, with index
-        corresponding to label. */
+           corresponding to label. */
 
     Hashtable m_dfa_sets; /* Hashtable taking set of NFA states
-        to corresponding DFA state,
-        if the latter exists. */
+           to corresponding DFA state,
+           if the latter exists. */
 
     /* Accept States and Corresponding Anchors. */
     Vector m_accept_vector;
@@ -4080,21 +4080,21 @@ class CNfa {
      Member Variables
      *******************************************************/
     int m_edge; /* Label for edge type:
-        character code,
-        CCL (character class),
-        [STATE,
-        SCL (state class),]
-        EMPTY,
-        EPSILON. */
+           character code,
+           CCL (character class),
+           [STATE,
+           SCL (state class),]
+           EMPTY,
+           EPSILON. */
 
     CSet m_set; /* Set to store character classes. */
 
     CNfa m_next; /* Next state (or null if none). */
 
     CNfa m_next2; /* Another state with type == EPSILON
-        and null if not used.
-        The NFA construction should result in two
-        outgoing edges only if both are EPSILON edges. */
+           and null if not used.
+           The NFA construction should result in two
+           outgoing edges only if both are EPSILON edges. */
 
     CAccept m_accept; /* Set to null if nonaccepting state. */
 
@@ -4181,24 +4181,24 @@ class CLexGen {
     private CInput m_input; /* Input buffer class. */
 
     private Hashtable m_tokens; /* Hashtable that maps characters to their
-        corresponding lexical code for
-        the internal lexical analyzer. */
+           corresponding lexical code for
+           the internal lexical analyzer. */
 
     private CSpec m_spec; /* Spec class holds information
-        about the generated lexer. */
+           about the generated lexer. */
 
     private boolean m_init_flag; /* Flag set to true only upon
-        successful initialization. */
+           successful initialization. */
 
     private CMakeNfa m_makeNfa; /* NFA machine generator module. */
 
     private CNfa2Dfa m_nfa2dfa; /* NFA to DFA machine (transition table)
-        conversion module. */
+           conversion module. */
 
     private CMinimize m_minimize; /* Transition table compressor. */
 
     private CEmit m_emit; /* Output module that emits source code
-        into the generated lexer file. */
+           into the generated lexer file. */
 
     /********************************************************
      Constants

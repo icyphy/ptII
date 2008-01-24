@@ -323,7 +323,7 @@ public class UnitLibrary {
      * @Pt.AcceptedRating Red (cxh)
      *
      */
-    private /*static*/ class UnitNameExprPair {
+    private/*static*/class UnitNameExprPair {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
         // However, if this inner class is static, then when we compile:

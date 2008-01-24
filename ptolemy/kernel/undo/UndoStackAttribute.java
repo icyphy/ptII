@@ -152,7 +152,8 @@ public class UndoStackAttribute extends SingletonAttribute {
                 if (_undoEntries.size() > 1) {
                     UndoAction lastUndo = (UndoAction) _undoEntries.pop();
                     UndoAction firstUndo = (UndoAction) _undoEntries.pop();
-                    UndoAction mergedAction = new MergeUndoActions(lastUndo, firstUndo);
+                    UndoAction mergedAction = new MergeUndoActions(lastUndo,
+                            firstUndo);
                     _undoEntries.push(mergedAction);
 
                     if (_debugging) {
@@ -176,7 +177,8 @@ public class UndoStackAttribute extends SingletonAttribute {
 
             if (_inUndo > 1) {
                 UndoAction previousRedo = (UndoAction) _redoEntries.pop();
-                UndoAction mergedAction = new MergeUndoActions(action, previousRedo);
+                UndoAction mergedAction = new MergeUndoActions(action,
+                        previousRedo);
                 _redoEntries.push(mergedAction);
 
                 if (_debugging) {
@@ -195,7 +197,8 @@ public class UndoStackAttribute extends SingletonAttribute {
                 _inUndo++;
             } else if (_inRedo > 1) {
                 UndoAction previousUndo = (UndoAction) _undoEntries.pop();
-                UndoAction mergedAction = new MergeUndoActions(action, previousUndo);
+                UndoAction mergedAction = new MergeUndoActions(action,
+                        previousUndo);
 
                 if (_debugging) {
                     _debug("=======> Merging redo action onto undo stack to get:\n"
@@ -305,8 +308,7 @@ public class UndoStackAttribute extends SingletonAttribute {
         // smaller and avoids leaks.
 
         /** Create an undo action from two actions. */
-        public MergeUndoActions(UndoAction firstAction,
-                UndoAction secondAction) {
+        public MergeUndoActions(UndoAction firstAction, UndoAction secondAction) {
             _firstAction = firstAction;
             _secondAction = secondAction;
         }
@@ -319,7 +321,7 @@ public class UndoStackAttribute extends SingletonAttribute {
 
         public String toString() {
             return "Merged action.\nFirst part:\n" + _firstAction
-                + "\n\nSecond part:\n" + _secondAction;
+                    + "\n\nSecond part:\n" + _secondAction;
         }
 
         private UndoAction _firstAction;

@@ -109,8 +109,8 @@ public class ModelView extends Sink implements WindowListener {
                 synchronized (this) {
                     Entity model = ((ActorToken) input.get(0)).getEntity();
                     Effigy effigy = Configuration.findEffigy(toplevel());
-                    Configuration configuration =
-                        (Configuration) effigy.toplevel();
+                    Configuration configuration = (Configuration) effigy
+                            .toplevel();
                     try {
                         _parser.reset();
                         // Export the model into moml string and then import it

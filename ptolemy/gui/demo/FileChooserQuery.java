@@ -108,25 +108,25 @@ public class FileChooserQuery extends JFrame implements QueryListener {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
-                    public void run() {
-                        try {
-                            JFrame frame = new FileChooserQuery();
+                public void run() {
+                    try {
+                        JFrame frame = new FileChooserQuery();
 
-                            frame.addWindowListener(new WindowAdapter() {
-                                    public void windowClosing(WindowEvent e) {
-                                        System.exit(0);
-                                    }
-                                });
+                        frame.addWindowListener(new WindowAdapter() {
+                            public void windowClosing(WindowEvent e) {
+                                System.exit(0);
+                            }
+                        });
 
-                            frame.pack();
-                            frame.setVisible(true);
-                        } catch (Exception ex) {
-                            System.err.println(ex.toString());
-                            ex.printStackTrace();
-                        }
+                        frame.pack();
+                        frame.setVisible(true);
+                    } catch (Exception ex) {
+                        System.err.println(ex.toString());
+                        ex.printStackTrace();
                     }
-                };
-                SwingUtilities.invokeAndWait(doActions);
+                }
+            };
+            SwingUtilities.invokeAndWait(doActions);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();

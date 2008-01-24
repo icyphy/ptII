@@ -558,8 +558,8 @@ public class GTIngredientsEditor extends PtolemyDialog implements
         JComponent[] components = row.getEditingComponents();
         for (int i = 0; i < checkBoxes.length; i++) {
             if (checkBoxes[i] != null) {
-                ingredient.setEnabled(i, Boolean
-                        .valueOf(checkBoxes[i].isSelected()));
+                ingredient.setEnabled(i, Boolean.valueOf(checkBoxes[i]
+                        .isSelected()));
             }
             JComponent editor = components[i];
             if (editor instanceof JTextField) {
@@ -1093,7 +1093,7 @@ public class GTIngredientsEditor extends PtolemyDialog implements
             GTIngredientElement[] elements = ingredient.getElements();
             _components = new JComponent[elements.length];
             _checkBoxes = new JCheckBox[elements.length];
-            
+
             GridBagConstraints c = new GridBagConstraints();
             for (int i = 0; i < elements.length; i++) {
                 GTIngredientElement element = elements[i];

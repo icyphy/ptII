@@ -131,9 +131,9 @@ public class ConfigureAction extends FigureAction {
 
         //Use the EditorFactory if the alt key is not pressed and the 
         // action command is not "Configure".
-        if (attributeList.size() > 0 && !altKeyPressed 
+        if (attributeList.size() > 0 && !altKeyPressed
                 && !event.getActionCommand().equals("Configure")) {
-            
+
             EditorFactory factory = (EditorFactory) attributeList.get(0);
             factory.createEditor(target, parent);
         } else {

@@ -682,8 +682,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
          * Output a string representation of this symbolic firing.
          */
         public String toString() {
-            return "Fire Actor " + getActor().toString()
-                + "[" + expression() + "] times";
+            return "Fire Actor " + getActor().toString() + "[" + expression()
+                    + "] times";
         }
 
         // The iteration expression. This is stored separately for

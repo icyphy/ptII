@@ -589,11 +589,11 @@ public class InterfaceAutomaton extends FSMActor {
         Set outputNames = outputNameSet();
         Set internalNames = internalTransitionNameSet();
 
-        info.append("  " + entityList().size() + " states\n"
-                + "  " + relationList().size() + " transitions\n"
-                + "  " + inputNames.size() + " input names\n"
-                + "  " + outputNames.size() + " output names\n"
-                + "  " + internalNames.size() + " internal transition names\n"
+        info.append("  " + entityList().size() + " states\n" + "  "
+                + relationList().size() + " transitions\n" + "  "
+                + inputNames.size() + " input names\n" + "  "
+                + outputNames.size() + " output names\n" + "  "
+                + internalNames.size() + " internal transition names\n"
                 + "  Input Names:\n");
 
         Iterator iterator = inputNames.iterator();

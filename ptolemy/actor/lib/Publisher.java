@@ -286,7 +286,7 @@ public class Publisher extends TypedAtomicActor {
                 throw new InternalErrorException(e);
             }
             _relation = null;
-        } 
+        }
 
         super.setContainer(container);
     }

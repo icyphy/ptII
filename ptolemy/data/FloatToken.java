@@ -243,11 +243,11 @@ public class FloatToken extends ScalarToken {
             float mag = Math.abs(_value);
 
             if ((mag == 0.0f) || ((mag < 1000000) && (mag > .001))) {
-                return TokenUtilities.regularFormat.format(_value) 
-                        + "f" + unitString;
+                return TokenUtilities.regularFormat.format(_value) + "f"
+                        + unitString;
             } else {
-                return TokenUtilities.exponentialFormat.format(_value)
-                        + "f" + unitString;
+                return TokenUtilities.exponentialFormat.format(_value) + "f"
+                        + unitString;
             }
         }
     }

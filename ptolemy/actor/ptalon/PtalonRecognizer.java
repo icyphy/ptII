@@ -482,7 +482,7 @@ public class PtalonRecognizer extends antlr.LLkParser implements
                                                             .make((new ASTArray(
                                                                     3))
                                                                     .add(
-                                                                            (PtalonAST) astFactory
+                                                                            astFactory
                                                                                     .create(
                                                                                             DYNAMIC_NAME,
                                                                                             "dynamic"))

@@ -153,44 +153,44 @@ public class PublisherNonStrictTest extends Publisher {
 
         int width = input.getWidth();
 
-//         // If we are in training mode, read the inputs and add to the
-//         // training data.
-//         boolean training = ((BooleanToken) trainingMode.getToken())
-//                 .booleanValue();
+        //         // If we are in training mode, read the inputs and add to the
+        //         // training data.
+        //         boolean training = ((BooleanToken) trainingMode.getToken())
+        //                 .booleanValue();
 
-//         if (training) {
-//             if (_trainingTokens == null) {
-//                 _trainingTokens = new ArrayList();
-//             }
+        //         if (training) {
+        //             if (_trainingTokens == null) {
+        //                 _trainingTokens = new ArrayList();
+        //             }
 
-//             if (width == 1) {
-//                 if (input.hasToken(0)) {
-//                     Token token = input.get(0);
-//                     output.send(0, token);
-//                     if (token instanceof ArrayToken) {
-//                         Token[] innerArrayToken = new Token[1];
-//                         innerArrayToken[0] = token;
-//                         _trainingTokens.add(innerArrayToken);
-//                     } else {
-//                         _trainingTokens.add(token);
-//                     }
-//                 }
-//             } else {
-//                 ArrayList arrayList = new ArrayList();
+        //             if (width == 1) {
+        //                 if (input.hasToken(0)) {
+        //                     Token token = input.get(0);
+        //                     output.send(0, token);
+        //                     if (token instanceof ArrayToken) {
+        //                         Token[] innerArrayToken = new Token[1];
+        //                         innerArrayToken[0] = token;
+        //                         _trainingTokens.add(innerArrayToken);
+        //                     } else {
+        //                         _trainingTokens.add(token);
+        //                     }
+        //                 }
+        //             } else {
+        //                 ArrayList arrayList = new ArrayList();
 
-//                 for (int i = 0; i < width; i++) {
-//                     if (input.hasToken(i)) {
-//                         Token token = input.get(i);
-//                         arrayList.add(token);
-//                         output.send(i, token);
-//                     }
-//                 }
+        //                 for (int i = 0; i < width; i++) {
+        //                     if (input.hasToken(i)) {
+        //                         Token token = input.get(i);
+        //                         arrayList.add(token);
+        //                         output.send(i, token);
+        //                     }
+        //                 }
 
-//                 _trainingTokens.add(arrayList);
-//             }
+        //                 _trainingTokens.add(arrayList);
+        //             }
 
-//             return;
-//         }
+        //             return;
+        //         }
 
         //         for (int i = 0; i < width; i++) {
         //             if (input.hasToken(i)) {

@@ -96,8 +96,8 @@ public class FmvAutomatonGraphTableau extends FSMGraphTableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        FmvAutomatonGraphFrame frame = new FmvAutomatonGraphFrame(
-                model, this, defaultLibrary);
+        FmvAutomatonGraphFrame frame = new FmvAutomatonGraphFrame(model, this,
+                defaultLibrary);
 
         try {
             setFrame(frame);

@@ -911,14 +911,14 @@ public class StringUtilities {
      *  @param numberOfLines The maximum number of lines.
      *  @return The possibly truncated string with ellipsis possibly added.
      */
-    public static String truncateString(
-            String string, int lineLength, int numberOfLines) {
+    public static String truncateString(String string, int lineLength,
+            int numberOfLines) {
 
         // Third argument being true means the delimiters (LINE_SEPARATOR) are
         // included in as tokens in the parsed results.
-        StringTokenizer tokenizer = new StringTokenizer(
-                string, LINE_SEPARATOR, true);
-        
+        StringTokenizer tokenizer = new StringTokenizer(string, LINE_SEPARATOR,
+                true);
+
         StringBuffer results = new StringBuffer();
         // Count the lines + newlines.
         int lineCount = 0;

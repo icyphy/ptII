@@ -435,26 +435,29 @@ public class InlineParameterTransformer extends SceneTransformer implements
                             throw new InternalErrorException(
                                     "Attribute == null?, "
                                             + "this should not be happening! "
-                                            + "\n\tInstanceInvokeExpr: " + r 
-                                            + "\n\tbase: " + r.getBase()
-                                            + "\n\tmethod: " + method
+                                            + "\n\tInstanceInvokeExpr: "
+                                            + r
+                                            + "\n\tbase: "
+                                            + r.getBase()
+                                            + "\n\tmethod: "
+                                            + method
                                             + "\n\treferredObject: "
                                             + referredObject
                                             + "\nGetting 'null' out of the "
                                             + "TypeAnalysis means "
                                             + "'I can't figure "
                                             + "out where this came "
-                                    + "from and hence, I can't tell "
-                                    + "you what the type is' "
-                                    + "The type might be incomparable, "
-                                    + "or maybe not! The type analysis "
-                                    + "is rather hairy to debug because "
-                                    + "it happens multiple times and "
-                                    + "is self dependent...  A bug in "
-                                    + "one place tends to propagate "
-                                    + "to a method inline, which "
-                                    + "propagates to another type "
-                                    + "analysis . . .");
+                                            + "from and hence, I can't tell "
+                                            + "you what the type is' "
+                                            + "The type might be incomparable, "
+                                            + "or maybe not! The type analysis "
+                                            + "is rather hairy to debug because "
+                                            + "it happens multiple times and "
+                                            + "is self dependent...  A bug in "
+                                            + "one place tends to propagate "
+                                            + "to a method inline, which "
+                                            + "propagates to another type "
+                                            + "analysis . . .");
                         }
 
                         Entity container = FieldsForEntitiesTransformer
@@ -688,7 +691,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                 // NonStrictTest.wrapup() requires it.
                                 // To test this, run copernicus on 
                                 // ../../actor/lib/test/auto/Const.xml
-                                
+
                                 // Set Expression is problematic
                                 // because the expression might not be
                                 // known.  We used to assume that this
@@ -810,7 +813,8 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                             "Found unknown "
                                                     + "variable method invocation of method "
                                                     + r.getMethod()
-                                                    + " " + referredObject
+                                                    + " "
+                                                    + referredObject
                                                     + " that cannot be removed!");
                                 }
                             }

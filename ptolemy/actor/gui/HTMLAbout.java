@@ -39,13 +39,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
-
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
@@ -517,7 +513,7 @@ public class HTMLAbout {
     public static URL _expandLibrary(String demosFileName, String regexp,
             Configuration configuration) throws Exception {
         URL demosURL = _getDemoURL(demosFileName);
-                    
+
         // Get the first model and open it
 
         List modelList = _getURLs(demosURL, regexp);
@@ -529,24 +525,22 @@ public class HTMLAbout {
                 .toExternalForm());
         final JFrame jFrame = tableau.getFrame();
         //jFrame.show();
-        
-        String errorMessage = 
-                "Expanding the library <b>should</b> result in expanding "
+
+        String errorMessage = "Expanding the library <b>should</b> result in expanding "
                 + "everything in the left hand tree pane. "
                 + "<p>If the left hand tree pane expands and then contracts, "
                 + "there is a problem with one of the leaves of the tree. "
                 + "<p>The quickest way to find this is to restart vergil "
                 + "and expand each branch in the tree by hand.";
         try {
-            ((ptolemy.vergil.basic.BasicGraphFrame)jFrame).expandAllLibraryRows();
+            ((ptolemy.vergil.basic.BasicGraphFrame) jFrame)
+                    .expandAllLibraryRows();
         } catch (Throwable throwable) {
             throw new IllegalActionException(tableau, throwable,
-                    "Failed to expand library.\n" 
-                    + errorMessage);
+                    "Failed to expand library.\n" + errorMessage);
         }
-        
-        return _temporaryHTMLFile("expandLibrary", ".htm", errorMessage);
 
+        return _temporaryHTMLFile("expandLibrary", ".htm", errorMessage);
 
     }
 

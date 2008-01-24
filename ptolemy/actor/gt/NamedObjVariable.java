@@ -60,9 +60,9 @@ public class NamedObjVariable extends Variable {
         _setTokenWithContainer = true;
         setPersistent(false);
     }
-    
+
     private boolean _setTokenWithContainer = false;
-    
+
     public void setContainer(NamedObj container) throws IllegalActionException,
             NameDuplicationException {
         NamedObj oldContainer = getContainer();

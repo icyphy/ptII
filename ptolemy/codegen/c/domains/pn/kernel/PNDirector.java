@@ -37,16 +37,12 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.lib.LimitedFiringSource;
-import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -89,61 +85,63 @@ public class PNDirector extends Director {
     *  @exception IllegalActionException If thrown while creating
     *  offset variables.
     */
-   public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-       StringBuffer code = new StringBuffer();
-       //code.append(_createOffsetVariablesIfNeeded());
-       code.append(super.createOffsetVariablesIfNeeded());
-       List actorList = 
-           ((CompositeEntity) _director.getContainer()).deepEntityList();
-       
-       Iterator actors = actorList.iterator();
-       while (actors.hasNext()) {
-           Iterator ports = ((Entity) actors.next()).portList().iterator();
-           while (ports.hasNext()) {
-               code.append(_createDynamicOffsetVariables((IOPort) ports.next()));
-           }
-       }
-       return code.toString();
-   }
-   
-   /** Generate the body code that lies between variable declaration
-    *  and wrapup.
-    *  @return The generated body code.
-    *  @exception IllegalActionException If the
-    *  {@link #generateFireCode()} method throws the exceptions.
-    */
-   public String generateFireCode() throws IllegalActionException {
-       StringBuffer code = new StringBuffer();
-       CompositeActor compositeActor = 
-           (CompositeActor) _director.getContainer();       
-       
-       code.append(_codeGenerator.comment("Create a thread for each actor."));
-       code.append(_eol + "pthread_attr_t pthread_custom_attr;" + _eol);
-       code.append("pthread_attr_init(&pthread_custom_attr);" + _eol + _eol);
+    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        //code.append(_createOffsetVariablesIfNeeded());
+        code.append(super.createOffsetVariablesIfNeeded());
+        List actorList = ((CompositeEntity) _director.getContainer())
+                .deepEntityList();
 
-       List actorList = compositeActor.deepEntityList();
-       
-       Iterator actors = actorList.iterator();
-       while (actors.hasNext()) {
-           Actor actor = (Actor) actors.next();
-           
-           code.append("pthread_create(");
-           code.append("&thread_" + _getActorThreadLabel(actor));
-           code.append(", &pthread_custom_attr, ");
-           code.append(_getActorThreadLabel(actor));
-           code.append(", NULL);" + _eol);
-       }
+        Iterator actors = actorList.iterator();
+        while (actors.hasNext()) {
+            Iterator ports = ((Entity) actors.next()).portList().iterator();
+            while (ports.hasNext()) {
+                code
+                        .append(_createDynamicOffsetVariables((IOPort) ports
+                                .next()));
+            }
+        }
+        return code.toString();
+    }
 
-       return code.toString();
-   }
-
-   /** Do nothing in generating fire function code. The fire code is
-     *  wrapped in a for/while loop inside the thread function.
-     *  The thread function is generated in 
-     *  {@link #generatePreinitializeCode()} outside the main function. 
-     *  @return An empty string.
-     *  @exception IllegalActionException Not thrown in this class.
+    /** Generate the body code that lies between variable declaration
+     *  and wrapup.
+     *  @return The generated body code.
+     *  @exception IllegalActionException If the
+     *  {@link #generateFireCode()} method throws the exceptions.
      */
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        CompositeActor compositeActor = (CompositeActor) _director
+                .getContainer();
+
+        code.append(_codeGenerator.comment("Create a thread for each actor."));
+        code.append(_eol + "pthread_attr_t pthread_custom_attr;" + _eol);
+        code.append("pthread_attr_init(&pthread_custom_attr);" + _eol + _eol);
+
+        List actorList = compositeActor.deepEntityList();
+
+        Iterator actors = actorList.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+
+            code.append("pthread_create(");
+            code.append("&thread_" + _getActorThreadLabel(actor));
+            code.append(", &pthread_custom_attr, ");
+            code.append(_getActorThreadLabel(actor));
+            code.append(", NULL);" + _eol);
+        }
+
+        return code.toString();
+    }
+
+    /** Do nothing in generating fire function code. The fire code is
+      *  wrapped in a for/while loop inside the thread function.
+      *  The thread function is generated in 
+      *  {@link #generatePreinitializeCode()} outside the main function. 
+      *  @return An empty string.
+      *  @exception IllegalActionException Not thrown in this class.
+      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
@@ -175,7 +173,7 @@ public class PNDirector extends Director {
         //libraries.add("thread");
         return libraries;
     }
-    
+
     /** Generate the initialize code for the associated PN director.
      *  @return The generated initialize code.
      *  @exception IllegalActionException If the helper associated with
@@ -183,7 +181,7 @@ public class PNDirector extends Director {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         code.append(_codeGenerator
                 .comment("Initialization code of the PNDirector."));
 
@@ -191,24 +189,24 @@ public class PNDirector extends Director {
         //code.append(super.generateInitializeCode());
         return code.toString();
     }
-    
+
     /**
      * 
      */
-    public String generateMainLoop()
-            throws IllegalActionException {
+    public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
+
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-        .booleanValue();
-        
+                .booleanValue();
+
         if (inline) {
             code.append(generateFireCode());
         } else {
             code.append(CodeGeneratorHelper.generateName(_director
-                    .getContainer()) + "();" + _eol);
+                    .getContainer())
+                    + "();" + _eol);
         }
-        
+
         return code.toString();
     }
 
@@ -218,18 +216,17 @@ public class PNDirector extends Director {
      *   an actor throws it while generating preinitialize code for the actor.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = 
-            new StringBuffer(super.generatePreinitializeCode());
-        
+        StringBuffer code = new StringBuffer(super.generatePreinitializeCode());
+
         // Generate the global terminate flag which tells actor
         // whether or not to continue execution.
-        code.append("boolean " + 
-                _generateNotTerminateFlag() + " = true;" + _eol);
-        
+        code.append("boolean " + _generateNotTerminateFlag() + " = true;"
+                + _eol);
+
         if (_codeGenerator.inline.getToken() == BooleanToken.TRUE) {
             _generateThreadFunctionCode(code);
         }
-        
+
         return code.toString();
     }
 
@@ -246,7 +243,7 @@ public class PNDirector extends Director {
             throws IllegalActionException {
         return "";
     }
-    
+
     /** Generate the wrapup code for the associated PN director.
      *  @return The generated preinitialize code.
      *  @exception IllegalActionException If the helper associated with
@@ -260,19 +257,19 @@ public class PNDirector extends Director {
         // Instead, the actor wrapup code resides in the actor 
         // thread function code.
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             // Generate the thread pointer.
             Actor actor = (Actor) actors.next();
-            
+
             code.append("pthread_join(");
             code.append("thread_" + _getActorThreadLabel(actor));
             code.append(", NULL);" + _eol);
         }
         return code.toString();
     }
-    
+
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
@@ -347,14 +344,15 @@ public class PNDirector extends Director {
      * @param code The given code buffer.
      * @exception IllegalActionException
      */
-    private void _generateThreadFunctionCode(StringBuffer code) throws IllegalActionException {
-        List actorList = 
-            ((CompositeActor) _director.getContainer()).deepEntityList();
+    private void _generateThreadFunctionCode(StringBuffer code)
+            throws IllegalActionException {
+        List actorList = ((CompositeActor) _director.getContainer())
+                .deepEntityList();
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
-        .booleanValue();
+                .booleanValue();
 
         String notTerminateFlag = _generateNotTerminateFlag();
-        
+
         Iterator actors = actorList.iterator();
         while (actors.hasNext()) {
             // Generate the thread pointer.
@@ -363,52 +361,52 @@ public class PNDirector extends Director {
             code.append(_getActorThreadLabel(actor));
             code.append(";" + _eol);
         }
-        
+
         // Generate the function for each actor thread.
         actors = actorList.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helper = 
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            
+            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+
             if (!inline) {
                 code.append(helper.generateFireFunctionCode());
-            } 
+            }
 
-            code.append(_eol + "void* " + 
-                    _getActorThreadLabel(actor) + "(void* arg) {" + _eol);
+            code.append(_eol + "void* " + _getActorThreadLabel(actor)
+                    + "(void* arg) {" + _eol);
 
             // init
             code.append(helper.generateInitializeCode());
             code.append(helper.generateVariableInitialization());
-            
+
             // mainLoop
-            
+
             // Check if the actor is an opague CompositeActor. 
             // The actor is guaranteed to be opague from calling deepEntityList(),
             // so all we need to check whether or not it is a CompositeActor.
             if (actor instanceof CompositeActor) {
-                Director directorHelper = (Director) _getHelper(actor.getDirector()); 
+                Director directorHelper = (Director) _getHelper(actor
+                        .getDirector());
 
                 // If so, it should contain a different Director.
                 assert (directorHelper != this);
-                
-                code.append(directorHelper.generateMainLoop());                    
+
+                code.append(directorHelper.generateMainLoop());
             } else {
 
                 // if firingCountLimit exists, generate for loop.
                 if (actor instanceof LimitedFiringSource) {
-                    int firingCount = ((IntToken) ((LimitedFiringSource) actor)
-                            .firingCountLimit.getToken()).intValue();
+                    int firingCount = ((IntToken) ((LimitedFiringSource) actor).firingCountLimit
+                            .getToken()).intValue();
                     code.append("int i = 0;" + _eol);
-                    code.append("for (; i < " + firingCount 
-                            + " && " + notTerminateFlag + "; i++) {" + _eol);
-                    
+                    code.append("for (; i < " + firingCount + " && "
+                            + notTerminateFlag + "; i++) {" + _eol);
+
                 } else {
-                    code.append("while (" + notTerminateFlag + ") {" + _eol);                
+                    code.append("while (" + notTerminateFlag + ") {" + _eol);
                     //code.append("{" + _eol);
                 }
-                
+
                 code.append(helper.generateFireCode());
 
                 // If not inline, generateFireCode() would be a call
@@ -417,14 +415,14 @@ public class PNDirector extends Director {
                 if (inline) {
                     code.append(helper.generateTypeConvertFireCode());
                 }
-                
+
                 code.append(helper.generatePostfireCode());
                 code.append("}" + _eol);
-            }            
+            }
 
             // wrapup
             code.append(helper.generateWrapupCode());
-            
+
             code.append("return NULL;" + _eol);
             code.append("}" + _eol);
         }

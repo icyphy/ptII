@@ -919,7 +919,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                         requestChange(request);
                     }
                 } else /*if (port.isInput() != argument.isInput()
-                                || port.isOutput() != argument.isOutput())*/{
+                                               || port.isOutput() != argument.isOutput())*/{
                     MoMLChangeRequest request = new MoMLChangeRequest(
                             this,
                             this,

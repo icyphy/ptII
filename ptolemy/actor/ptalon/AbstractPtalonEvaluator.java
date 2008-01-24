@@ -73,7 +73,7 @@ public abstract class AbstractPtalonEvaluator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////    
-    
+
     /** Create a new AbstractPtalonEvaluator in the specified
      *  PtalonActor.
      *  @param actor The actor to manage the code for.
@@ -129,7 +129,7 @@ public abstract class AbstractPtalonEvaluator {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                    + "but there is no containing for block.");
+                                            + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -193,7 +193,7 @@ public abstract class AbstractPtalonEvaluator {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                    + "but there is no containing for block.");
+                                            + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -253,7 +253,7 @@ public abstract class AbstractPtalonEvaluator {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                    + "but there is no containing for block.");
+                                            + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -268,8 +268,7 @@ public abstract class AbstractPtalonEvaluator {
         } catch (IllegalActionException ex) {
             throw new PtalonRuntimeException("IllegalActionException", ex);
         } catch (PtalonScopeException ex) {
-            throw new PtalonRuntimeException("Couldn't find symbol " + name,
-                    ex);
+            throw new PtalonRuntimeException("Couldn't find symbol " + name, ex);
         }
     }
 
@@ -314,7 +313,7 @@ public abstract class AbstractPtalonEvaluator {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                    + "but there is no containing for block.");
+                                            + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -329,8 +328,7 @@ public abstract class AbstractPtalonEvaluator {
         } catch (IllegalActionException ex) {
             throw new PtalonRuntimeException("IllegalActionException", ex);
         } catch (PtalonScopeException ex) {
-            throw new PtalonRuntimeException("Couldn't find symbol " + name,
-                    ex);
+            throw new PtalonRuntimeException("Couldn't find symbol " + name, ex);
         }
     }
 
@@ -351,8 +349,7 @@ public abstract class AbstractPtalonEvaluator {
             Attribute attribute = _actor.getAttribute(name);
             if (attribute != null) {
                 if (attribute instanceof PtalonExpressionParameter) {
-                    PtalonExpressionParameter parameter =
-                        (PtalonExpressionParameter) attribute;
+                    PtalonExpressionParameter parameter = (PtalonExpressionParameter) attribute;
                     if (parameter.hasValue()) {
                         uniqueName = name;
                     }
@@ -377,7 +374,7 @@ public abstract class AbstractPtalonEvaluator {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                    + "but there is no containing for block.");
+                                            + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -442,7 +439,7 @@ public abstract class AbstractPtalonEvaluator {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                    + "but there is no containing for block.");
+                                            + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -501,7 +498,7 @@ public abstract class AbstractPtalonEvaluator {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                    + "but there is no containing for block.");
+                                            + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -516,8 +513,7 @@ public abstract class AbstractPtalonEvaluator {
         } catch (IllegalActionException ex) {
             throw new PtalonRuntimeException("IllegalActionException", ex);
         } catch (PtalonScopeException ex) {
-            throw new PtalonRuntimeException("Couldn't find symbol " + name,
-                    ex);
+            throw new PtalonRuntimeException("Couldn't find symbol " + name, ex);
         }
     }
 
@@ -549,7 +545,7 @@ public abstract class AbstractPtalonEvaluator {
                         if (tree == null) {
                             throw new PtalonRuntimeException(
                                     "In a new for iteration, "
-                                    + "but there is no containing for block.");
+                                            + "but there is no containing for block.");
                         }
                     }
                     _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -574,8 +570,7 @@ public abstract class AbstractPtalonEvaluator {
      *  @exception PtalonScopeException If a symbol with this name has
      *  already been added somewhere in the current scope.
      */
-    public void addSymbol(String name, String type)
-            throws PtalonScopeException {
+    public void addSymbol(String name, String type) throws PtalonScopeException {
         List<IfTree> ancestors = _currentIfTree.getAncestors();
         for (IfTree tree : ancestors) {
             for (String symbol : tree.getSymbols()) {
@@ -616,7 +611,7 @@ public abstract class AbstractPtalonEvaluator {
                     if (tree == null) {
                         throw new PtalonRuntimeException(
                                 "In a new for iteration, "
-                                + "but there is no containing for block.");
+                                        + "but there is no containing for block.");
                     }
                 }
                 _currentIfTree.setEnteredIteration(name, tree.entered);
@@ -640,8 +635,7 @@ public abstract class AbstractPtalonEvaluator {
                 parameter.setToken(expression);
             }
         } catch (Exception ex) {
-            throw new PtalonRuntimeException("Trouble assigning parameter",
-                    ex);
+            throw new PtalonRuntimeException("Trouble assigning parameter", ex);
         }
     }
 
@@ -691,8 +685,7 @@ public abstract class AbstractPtalonEvaluator {
     public boolean evaluateBoolean(String expression)
             throws PtalonRuntimeException {
         try {
-            BooleanToken result =
-                (BooleanToken) evaluateExpression(expression);
+            BooleanToken result = (BooleanToken) evaluateExpression(expression);
             return result.booleanValue();
         } catch (ClassCastException ex) {
             throw new PtalonRuntimeException("Not a boolean token.");
@@ -841,7 +834,7 @@ public abstract class AbstractPtalonEvaluator {
                     if (tree == null) {
                         throw new PtalonRuntimeException(
                                 "In a new for iteration, "
-                                + "but there is no containing for block.");
+                                        + "but there is no containing for block.");
                     }
                 }
                 int iteration = tree.getEnteredIteration(symbol);
@@ -1047,7 +1040,7 @@ public abstract class AbstractPtalonEvaluator {
     public void startAtTop() {
         _currentIfTree = _root;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////   
 
@@ -1140,8 +1133,7 @@ public abstract class AbstractPtalonEvaluator {
      *  multiports. A key may map to null if no port has been assigned
      *  to it.
      */
-    protected Map<String, TypedIOPort> _transparentRelations =
-        new Hashtable<String, TypedIOPort>();
+    protected Map<String, TypedIOPort> _transparentRelations = new Hashtable<String, TypedIOPort>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                    ////
@@ -1256,8 +1248,7 @@ public abstract class AbstractPtalonEvaluator {
      *  and the second list are the expressions to assign to the
      *  parameters.
      */
-    private List<PtalonParameter> _unassignedParameters =
-        new LinkedList<PtalonParameter>();
+    private List<PtalonParameter> _unassignedParameters = new LinkedList<PtalonParameter>();
 
     /** _unassignedParameters and _unassignedParameterValues are used
      *  to store parameters which need to be set by Ptalon;
@@ -1265,8 +1256,7 @@ public abstract class AbstractPtalonEvaluator {
      *  and the second list are the expressions to assign to the
      *  parameters.
      */
-    private List<String> _unassignedParameterValues =
-        new LinkedList<String>();
+    private List<String> _unassignedParameterValues = new LinkedList<String>();
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected classes                    ////  
@@ -1595,15 +1585,13 @@ public abstract class AbstractPtalonEvaluator {
                     if (_trueSymbols.get(symbol).endsWith("parameter")) {
                         try {
                             PtalonParameter param = (PtalonParameter) _actor
-                                    .getAttribute(_trueNameMappings.
-                                            get(symbol));
+                                    .getAttribute(_trueNameMappings.get(symbol));
                             if (!param.hasValue()) {
                                 return false;
                             }
                         } catch (Exception ex) {
                             throw new PtalonRuntimeException(
-                                    "Could not access parameter " + symbol,
-                                    ex);
+                                    "Could not access parameter " + symbol, ex);
                         }
                     }
                 }
@@ -1623,8 +1611,7 @@ public abstract class AbstractPtalonEvaluator {
                             }
                         } catch (Exception ex) {
                             throw new PtalonRuntimeException(
-                                    "Could not access parameter " + symbol,
-                                    ex);
+                                    "Could not access parameter " + symbol, ex);
                         }
                     }
                 }
@@ -1791,8 +1778,7 @@ public abstract class AbstractPtalonEvaluator {
         /** The number of iterations (number of times the if/for block
          *  has been entered) for each symbol created.
          */
-        private Hashtable<String, Integer> _createdIteration =
-            new Hashtable<String, Integer>();
+        private Hashtable<String, Integer> _createdIteration = new Hashtable<String, Integer>();
 
         /** Each symbol gets mapped to its unique name in the Ptalon
          *  Actor. This is for the false branch of this if tree.
@@ -1860,8 +1846,7 @@ public abstract class AbstractPtalonEvaluator {
                     return _variables.get(name);
                 }
                 if (!_getTypeForScope(name).equals("parameter")) {
-                    throw new IllegalActionException(name
-                            + " not a parameter.");
+                    throw new IllegalActionException(name + " not a parameter.");
                 }
                 return _getValueOf(name);
             } catch (PtalonScopeException ex) {
@@ -1886,8 +1871,7 @@ public abstract class AbstractPtalonEvaluator {
                     return _variables.get(name).getType();
                 }
                 if (!_getTypeForScope(name).equals("parameter")) {
-                    throw new IllegalActionException(name
-                            + " not a parameter.");
+                    throw new IllegalActionException(name + " not a parameter.");
                 }
                 return _getTypeOf(name);
             } catch (PtalonScopeException ex) {
@@ -1915,8 +1899,7 @@ public abstract class AbstractPtalonEvaluator {
                     return null;
                 }
                 if (!_getTypeForScope(name).equals("parameter")) {
-                    throw new IllegalActionException(name
-                            + " not a parameter.");
+                    throw new IllegalActionException(name + " not a parameter.");
                 }
                 return _getTypeTermOf(name);
             } catch (PtalonScopeException ex) {

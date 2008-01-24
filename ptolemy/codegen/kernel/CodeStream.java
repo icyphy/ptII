@@ -413,20 +413,20 @@ public class CodeStream {
      * Return a set of code block signatures contained by this CodeStream.
      * @return The set of code block signatures contained by this CodeStream.
      */
-    public Set<Signature> getAllCodeBlockSignatures() 
+    public Set<Signature> getAllCodeBlockSignatures()
             throws IllegalActionException {
         if (_doParsing) {
             _constructCodeTable(true);
         }
         return _declarations.keySet();
     }
-    
+
     /** Given a code block name, return the corresponding code block.
      *  @param name The name of the code block.
      *  @return The code block with the name.
      *  @exception IllegalActionException If a code block by that
      *  name cannot be found.
-     */   
+     */
     public String getCodeBlock(String name) throws IllegalActionException {
         StringBuffer result = _declarations.getCode(new Signature(name, 0),
                 new LinkedList());
@@ -437,7 +437,7 @@ public class CodeStream {
         }
         return result.toString();
     }
-    
+
     /** Given a code block signature, return the corresponding code block
      *  template.
      *  @param signature  The signature of the code block.
@@ -446,12 +446,12 @@ public class CodeStream {
      *  be found.   
      *  @exception IllegalActionException If thrown whilegetting a code block
      *  template with the name of the signature.
-     */   
-    public String getCodeBlockTemplate(Object signature) 
+     */
+    public String getCodeBlockTemplate(Object signature)
             throws IllegalActionException {
         if (signature instanceof Signature) {
-            return _declarations.getTemplateCode(
-                    (Signature) signature).toString();
+            return _declarations.getTemplateCode((Signature) signature)
+                    .toString();
         }
         return "";
     }
@@ -1121,18 +1121,18 @@ public class CodeStream {
          * @exception IllegalActionException Thrown if
          *  getCode(Signature, List, List) throws it.
          */
-        public StringBuffer getTemplateCode(Signature signature) 
+        public StringBuffer getTemplateCode(Signature signature)
                 throws IllegalActionException {
-            
+
             StringBuffer result = new StringBuffer();
-            
-            result.append("/*** " + 
-                    _getHeader(signature, _codeTableList) + " ***/\n");
+
+            result.append("/*** " + _getHeader(signature, _codeTableList)
+                    + " ***/\n");
             result.append(_getCode(signature, null, _codeTableList));
             result.append("/**/\n\n");
             return result;
         }
-        
+
         /**
          * Get the list of parameters for the code block with the given
          * signature. This searches the code block from the entire list
@@ -1223,18 +1223,18 @@ public class CodeStream {
                 if (arguments != null) {
                     codeBlock = _substituteParameters(codeBlock, parameters,
                             arguments);
-    
-                    codeBlock = _substituteSuper(signature, 
-                            scopeList, codeObject, codeBlock);
-                }                
+
+                    codeBlock = _substituteSuper(signature, scopeList,
+                            codeObject, codeBlock);
+                }
 
                 return codeBlock;
 
             }
         }
-        
-        private String _getHeader(Signature signature,
-                List scopeList) throws IllegalActionException {
+
+        private String _getHeader(Signature signature, List scopeList)
+                throws IllegalActionException {
             int size = scopeList.size();
 
             if (size == 0) {
@@ -1244,8 +1244,7 @@ public class CodeStream {
             Hashtable table = (Hashtable) scopeList.get(0);
 
             if (!table.containsKey(signature)) {
-                return _getHeader(signature, scopeList
-                        .subList(1, size));
+                return _getHeader(signature, scopeList.subList(1, size));
             } else {
                 Object[] codeObject = (Object[]) table.get(signature);
                 Iterator parameters = ((List) codeObject[2]).iterator();
@@ -1269,10 +1268,10 @@ public class CodeStream {
          * @return
          * @exception IllegalActionException
          */
-        private StringBuffer _substituteSuper(Signature signature, 
-            List scopeList, Object[] codeObject, StringBuffer codeBlock) 
+        private StringBuffer _substituteSuper(Signature signature,
+                List scopeList, Object[] codeObject, StringBuffer codeBlock)
                 throws IllegalActionException {
-            
+
             String callExpression = "(\\$super\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)"
                     + "|(\\$this\\s*\\.\\s*\\w+\\s*\\(.*\\)\\s*;)"
                     + "|(\\$super\\s*\\(.*\\)\\s*;)";
@@ -1298,8 +1297,8 @@ public class CodeStream {
                 boolean isSuper = call.contains("super");
                 boolean isImplicit = dotIndex < 0 || dotIndex > openIndex;
 
-                String blockName = (isImplicit) ? signature.functionName
-                        : call.substring(dotIndex + 1, openIndex).trim();
+                String blockName = (isImplicit) ? signature.functionName : call
+                        .substring(dotIndex + 1, openIndex).trim();
 
                 List callArguments = CodeStream._parseParameterList(
                         new StringBuffer(call), 0, call.length() - 2);
@@ -1310,20 +1309,17 @@ public class CodeStream {
                 if (!isSuper && callSignature.equals(signature)) {
                     throw new IllegalActionException(_helper, callSignature
                             .toString()
-                            + " recursively appends itself in "
-                            + codeObject[0]);
+                            + " recursively appends itself in " + codeObject[0]);
                 }
 
                 StringBuffer callCodeBlock = (!isSuper) ? getCode(
-                        callSignature, callArguments) : _getCode(
-                        callSignature, callArguments, scopeList.subList(1,
-                                scopeList.size()));
+                        callSignature, callArguments) : _getCode(callSignature,
+                        callArguments, scopeList.subList(1, scopeList.size()));
 
                 if (callCodeBlock == null) {
-                    throw new IllegalActionException(_helper,
-                            "Cannot find " + (isSuper ? "super" : "this")
-                                    + " block for " + callSignature
-                                    + " in " + codeObject[0]);
+                    throw new IllegalActionException(_helper, "Cannot find "
+                            + (isSuper ? "super" : "this") + " block for "
+                            + callSignature + " in " + codeObject[0]);
                 }
 
                 //superBlock.insert(0, "///////// Super Block ///////////////\n");
@@ -1366,7 +1362,7 @@ public class CodeStream {
             }
             return signatures;
         }
-        
+
         /**
          * Return all contained signature keys. This method is used for
          * testing purposes.

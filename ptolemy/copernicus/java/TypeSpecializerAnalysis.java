@@ -348,18 +348,17 @@ public class TypeSpecializerAnalysis {
         ptolemy.data.type.Type type1;
         ptolemy.data.type.Type type2;
 
-        String nullTypeMessage = 
-            "One or both of the arguments to TypeLattice.compare is/are "
-            + "null or unknown.  This means we are likely to throw an exception at "
-            + "runtime.  Explanation: \n"
-            + "Getting 'null' out of the TypeAnalysis "
-            + "means 'I can't figure out where this came from and hence, "
-            + "I can't tell you what the type is'  The type might be "
-            + "incomparable, or maybe not! The type analysis is rather "
-            + "hairy to debug because it happens multiple "
-            + "times and is self dependent...  A bug in one place tends "
-            + "to propagate to a method inline, which propagates to another "
-            + "type analysis....";
+        String nullTypeMessage = "One or both of the arguments to TypeLattice.compare is/are "
+                + "null or unknown.  This means we are likely to throw an exception at "
+                + "runtime.  Explanation: \n"
+                + "Getting 'null' out of the TypeAnalysis "
+                + "means 'I can't figure out where this came from and hence, "
+                + "I can't tell you what the type is'  The type might be "
+                + "incomparable, or maybe not! The type analysis is rather "
+                + "hairy to debug because it happens multiple "
+                + "times and is self dependent...  A bug in one place tends "
+                + "to propagate to a method inline, which propagates to another "
+                + "type analysis....";
 
         if (expr.getMethod().equals(tokenTokenCompareMethod)) {
             Local tokenLocal1 = (Local) expr.getArg(0);
@@ -378,13 +377,13 @@ public class TypeSpecializerAnalysis {
             //                     localDefs, localUses);
             type1 = getSpecializedType(typeLocal);
             type2 = getSpecializedType(tokenLocal);
-            if ( type1 == null || type2 == null
-                    || type1 == BaseType.UNKNOWN) {
+            if (type1 == null || type2 == null || type1 == BaseType.UNKNOWN) {
                 System.out.println("Contents of _objectToInequalityTerm");
                 Iterator terms = _objectToInequalityTerm.entrySet().iterator();
                 while (terms.hasNext()) {
-                    Map.Entry pairs = (Map.Entry)terms.next();
-                    System.out.println(pairs.getKey() + " = " + (InequalityTerm) (pairs.getValue()));
+                    Map.Entry pairs = (Map.Entry) terms.next();
+                    System.out.println(pairs.getKey() + " = "
+                            + (InequalityTerm) (pairs.getValue()));
                 }
                 System.out.println(nullTypeMessage
                         + "\n\t typetokenCompare: type1 = " + type1
@@ -396,8 +395,7 @@ public class TypeSpecializerAnalysis {
             Local typeLocal = (Local) expr.getArg(1);
             type1 = getSpecializedType(tokenLocal);
             type2 = getSpecializedType(typeLocal);
-            if ( type1 == null || type2 == null
-                    || type2 == BaseType.UNKNOWN) {
+            if (type1 == null || type2 == null || type2 == BaseType.UNKNOWN) {
                 System.out.println(nullTypeMessage
                         + "\n\t tokentypeCompare: type1 = " + type1
                         + "type2 = " + type2);
@@ -409,11 +407,12 @@ public class TypeSpecializerAnalysis {
             Local typeLocal2 = (Local) expr.getArg(1);
             type1 = getSpecializedType(typeLocal1);
             type2 = getSpecializedType(typeLocal2);
-            if ( type1 == null || type2 == null
-                    || type1 == BaseType.UNKNOWN || type2 == BaseType.UNKNOWN) {
-                System.out.println(nullTypeMessage
-                        + "\n\t typetypeCompare: type1 = "
-                        + "type2 = " + type2);
+            if (type1 == null || type2 == null || type1 == BaseType.UNKNOWN
+                    || type2 == BaseType.UNKNOWN) {
+                System.out
+                        .println(nullTypeMessage
+                                + "\n\t typetypeCompare: type1 = " + "type2 = "
+                                + type2);
             }
             //             type1 = PtolemyUtilities.getTypeValue(method, typeLocal1, unit,
             //                     localDefs, localUses);
@@ -440,14 +439,14 @@ public class TypeSpecializerAnalysis {
 
             if (_debug) {
                 System.out.println("inlineTypeLatticeMethods: LUB Method: "
-                        + typeLocal1 + " " + typeLocal2 + " " + type1
-                        + type2);
+                        + typeLocal1 + " " + typeLocal2 + " " + type1 + type2);
             }
 
             return;
         } else if (expr.getMethod().equals(latticeMethod)) {
             if (_debug) {
-                System.out.println("inlineTypeLatticeMethods: latticeMethod: Do nothing.");
+                System.out
+                        .println("inlineTypeLatticeMethods: latticeMethod: Do nothing.");
             }
             // Do nothing...
             return;
@@ -699,8 +698,7 @@ public class TypeSpecializerAnalysis {
             Map objectToInequalityTerm, Unit unit, LocalDefs localDefs,
             LocalUses localUses) {
         if (debug) {
-            System.out.println("_getInequalityTerm(): " +
-                    method + " " + value);
+            System.out.println("_getInequalityTerm(): " + method + " " + value);
         }
         if (value instanceof StaticInvokeExpr) {
             StaticInvokeExpr r = (StaticInvokeExpr) value;
@@ -1248,8 +1246,8 @@ public class TypeSpecializerAnalysis {
             Type type, Map objectToInequalityTerm) {
         RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
         if (debug) {
-            System.out.println("_createInequalityTerm(): " + object 
-                    + " type: " + type + " tokenType: " + tokenType);
+            System.out.println("_createInequalityTerm(): " + object + " type: "
+                    + type + " tokenType: " + tokenType);
         }
         if (objectToInequalityTerm.get(object) != null) {
             return;
@@ -1284,8 +1282,14 @@ public class TypeSpecializerAnalysis {
                     .getTokenTypeTypeForSootType(typeType), object);
             if (debug) {
                 System.out.println("objectToInequality: typeType: "
-                        + typeType + " object: " + object + " term:" + term
-                        + " gttfst: " + PtolemyUtilities.getTokenTypeTypeForSootType(typeType));
+                        + typeType
+                        + " object: "
+                        + object
+                        + " term:"
+                        + term
+                        + " gttfst: "
+                        + PtolemyUtilities
+                                .getTokenTypeTypeForSootType(typeType));
             }
             objectToInequalityTerm.put(object, term);
             return;

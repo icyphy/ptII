@@ -1127,8 +1127,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
      *
      * see _setupTableModel()
      */
-    static class StringCellRenderer extends JLabel
-        implements TableCellRenderer {
+    static class StringCellRenderer extends JLabel implements TableCellRenderer {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
 

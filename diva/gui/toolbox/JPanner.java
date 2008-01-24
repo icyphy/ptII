@@ -50,7 +50,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
 import diva.canvas.CanvasUtilities;
 import diva.canvas.JCanvas;
 import diva.canvas.TransformContext;
@@ -372,29 +371,31 @@ public class JPanner extends JPanel {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
-                    public void run() {
-                        try {
-                            JFrame f = new JFrame();
-                            String[] data = { "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-                                              "twoooooooooooooooooooooooooooooooooooooooo",
-                                              "threeeeeeeeeeeeeeeee", "fourrrrrrrrrrrrrrrrrrrrrrrrr" };
-                            JList dataList = new JList(data);
-                            JScrollPane p = new JScrollPane(dataList);
-                            p.setSize(200, 200);
+                public void run() {
+                    try {
+                        JFrame f = new JFrame();
+                        String[] data = {
+                                "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                                "twoooooooooooooooooooooooooooooooooooooooo",
+                                "threeeeeeeeeeeeeeeee",
+                                "fourrrrrrrrrrrrrrrrrrrrrrrrr" };
+                        JList dataList = new JList(data);
+                        JScrollPane p = new JScrollPane(dataList);
+                        p.setSize(200, 200);
 
-                            JPanner pan = new JPanner(p.getViewport());
-                            pan.setSize(200, 200);
-                            f.getContentPane().setLayout(new GridLayout(2, 1));
-                            f.getContentPane().add(p);
-                            f.getContentPane().add(pan);
-                            f.setSize(200, 400);
-                            f.setVisible(true);
-                        } catch (Exception ex) {
-                            System.err.println(ex.toString());
-                            ex.printStackTrace();
-                        }
+                        JPanner pan = new JPanner(p.getViewport());
+                        pan.setSize(200, 200);
+                        f.getContentPane().setLayout(new GridLayout(2, 1));
+                        f.getContentPane().add(p);
+                        f.getContentPane().add(pan);
+                        f.setSize(200, 400);
+                        f.setVisible(true);
+                    } catch (Exception ex) {
+                        System.err.println(ex.toString());
+                        ex.printStackTrace();
                     }
-                };
+                }
+            };
             SwingUtilities.invokeAndWait(doActions);
         } catch (Exception ex) {
             System.err.println(ex.toString());

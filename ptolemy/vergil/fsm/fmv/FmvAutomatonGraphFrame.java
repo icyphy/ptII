@@ -35,7 +35,6 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 
 import javax.swing.AbstractAction;
-
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 
@@ -47,10 +46,8 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.util.StringUtilities;
-
 import ptolemy.vergil.fsm.FSMGraphFrame;
 import ptolemy.vergil.fsm.FSMGraphModel;
-
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
 
@@ -371,7 +368,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
          *  @param file The file to be checked.
          *  @return true if the file is a directory or the file name,
          *  when converted to lower case, ends with ".smv".
-         */   
+         */
         public boolean accept(File file) {
             return file.isDirectory()
                     || file.getName().toLowerCase().endsWith(".smv");
@@ -379,7 +376,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
         /** Return the description of this file filter.
          *  @return The description of this file filter.
-         */   
+         */
         public String getDescription() {
             return "Software Model Verification (.smv) files";
         }

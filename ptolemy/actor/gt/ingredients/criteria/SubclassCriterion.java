@@ -141,9 +141,8 @@ public class SubclassCriterion extends Criterion {
         }
     }
 
-    private static final CriterionElement[] _ELEMENTS = {
-        new StringCriterionElement("superclass", false)
-    };
+    private static final CriterionElement[] _ELEMENTS = { new StringCriterionElement(
+            "superclass", false) };
 
     private String _superclass;
 }

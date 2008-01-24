@@ -729,7 +729,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
         if (unscheduledActorList.size() > 0) {
             StringBuffer string = new StringBuffer(
                     "Actors remain that cannot be scheduled!\n"
-                    + "Scheduled actors:\n");
+                            + "Scheduled actors:\n");
 
             List scheduledActorList = new LinkedList();
             scheduledActorList.addAll(actorList);

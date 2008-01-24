@@ -203,27 +203,26 @@ public class SubscriptionAggregator extends Subscriber {
         output.send(0, result);
     }
 
-//     public void preinitialize() throws IllegalActionException {
-//         super.preinitialize();
-//         String pattern = "([^\\\\])\\.";                                   
-//         String replacement=  "$1\\\\.";
-//         String backslashed = channel.stringValue().replaceAll(pattern, replacement);
-//         System.out.println("SubscriptionAgg: old: " 
-//                 + channel.stringValue()
-//                 + " " + backslashed);
+    //     public void preinitialize() throws IllegalActionException {
+    //         super.preinitialize();
+    //         String pattern = "([^\\\\])\\.";                                   
+    //         String replacement=  "$1\\\\.";
+    //         String backslashed = channel.stringValue().replaceAll(pattern, replacement);
+    //         System.out.println("SubscriptionAgg: old: " 
+    //                 + channel.stringValue()
+    //                 + " " + backslashed);
 
-//         pattern = "\\*";
-//         replacement = ".+";
-//         String backslashed2 = backslashed.replaceAll(pattern, replacement);
+    //         pattern = "\\*";
+    //         replacement = ".+";
+    //         String backslashed2 = backslashed.replaceAll(pattern, replacement);
 
-//         System.out.println("SubscriptionAgg: old: " 
-//                 + channel.stringValue()
-//                 + " tmp: " + backslashed
-//                 + " new: " + backslashed2);
+    //         System.out.println("SubscriptionAgg: old: " 
+    //                 + channel.stringValue()
+    //                 + " tmp: " + backslashed
+    //                 + " new: " + backslashed2);
 
-//         channel.setExpression(backslashed2);
-//     }
-
+    //         channel.setExpression(backslashed2);
+    //     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////

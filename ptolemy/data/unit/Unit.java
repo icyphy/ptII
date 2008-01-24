@@ -133,22 +133,25 @@ public class Unit implements UnitPresentation {
             if (numerator.size() == 0) {
                 retv = new StringBuffer("1");
             } else {
-                retv = new StringBuffer(((UnitTerm) (numerator.elementAt(0))).getUnit()
-                        .getPrimaryLabel());
+                retv = new StringBuffer(((UnitTerm) (numerator.elementAt(0)))
+                        .getUnit().getPrimaryLabel());
 
                 for (int i = 1; i < numerator.size(); i++) {
-                    retv.append(" " + ((UnitTerm) (numerator.elementAt(i)))
-                            .getUnit().getPrimaryLabel());
+                    retv.append(" "
+                            + ((UnitTerm) (numerator.elementAt(i))).getUnit()
+                                    .getPrimaryLabel());
                 }
             }
 
             if (denominator.size() > 0) {
-                retv.append("/" + ((UnitTerm) (denominator.elementAt(0)))
-                        .getUnit().getPrimaryLabel());
+                retv.append("/"
+                        + ((UnitTerm) (denominator.elementAt(0))).getUnit()
+                                .getPrimaryLabel());
 
                 for (int i = 1; i < denominator.size(); i++) {
-                    retv.append(" " + ((UnitTerm) (denominator.elementAt(i)))
-                            .getUnit().getPrimaryLabel());
+                    retv.append(" "
+                            + ((UnitTerm) (denominator.elementAt(i))).getUnit()
+                                    .getPrimaryLabel());
                 }
             }
 
@@ -166,7 +169,8 @@ public class Unit implements UnitPresentation {
                     if (_type[i] == 1) {
                         desc.append(" " + baseUnit.getPrimaryLabel());
                     } else {
-                        desc.append(" " + baseUnit.getPrimaryLabel() + "^" + _type[i]);
+                        desc.append(" " + baseUnit.getPrimaryLabel() + "^"
+                                + _type[i]);
                     }
                 }
             }

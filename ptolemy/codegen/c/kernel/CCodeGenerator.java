@@ -200,7 +200,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @param filename The name of the source file or file containing
      *  code blocks.
      *  @return text that is suitable for the C preprocessor.
-     */   
+     */
     public String generateLineInfo(int lineNumber, String filename) {
         return "#line " + lineNumber + " \"" + filename + "\"\n";
     }
@@ -686,7 +686,8 @@ public class CCodeGenerator extends CodeGenerator {
      *  the code parameter.
      *  @exception IOException If thrown will reading the code.
      */
-    public String[] splitLongBody(int linesPerMethod, String prefix, String code) throws IOException {
+    public String[] splitLongBody(int linesPerMethod, String prefix, String code)
+            throws IOException {
         BufferedReader bufferedReader = null;
         StringBuffer bodies = new StringBuffer();
         StringBuffer masterBody = new StringBuffer();
@@ -700,9 +701,7 @@ public class CCodeGenerator extends CodeGenerator {
             while ((line = bufferedReader.readLine()) != null) {
                 String methodName = prefix + "_" + methodNumber++;
                 body = new StringBuffer(line + _eol);
-                for (int i = 0;
-                         (i+1) < linesPerMethod && line != null;
-                     i++) {
+                for (int i = 0; (i + 1) < linesPerMethod && line != null; i++) {
                     lineNumber++;
                     line = bufferedReader.readLine();
                     if (line != null) {
@@ -711,14 +710,14 @@ public class CCodeGenerator extends CodeGenerator {
                 }
 
                 bodies.append("void " + methodName + "(void) {" + _eol
-                            + body.toString() + "}" + _eol);
+                        + body.toString() + "}" + _eol);
                 masterBody.append(methodName + "();" + _eol);
-            }            
+            }
             if (lineNumber < linesPerMethod) {
                 // We must have less than linesPerMethod lines in the body
                 bodies = new StringBuffer();
                 masterBody = new StringBuffer(body);
-            } 
+            }
         } finally {
             if (bufferedReader != null) {
                 try {
@@ -729,7 +728,7 @@ public class CCodeGenerator extends CodeGenerator {
             }
         }
 
-        String [] results = { bodies.toString(), masterBody.toString()};
+        String[] results = { bodies.toString(), masterBody.toString() };
         return results;
     }
 
@@ -1140,21 +1139,21 @@ public class CCodeGenerator extends CodeGenerator {
                 URIAttribute.class);
         if (uriAttribute != null) {
             String uriString = uriAttribute.getURI().toString();
-            templateList.add(uriString.substring(0, uriString
-                    .lastIndexOf("/") + 1)
+            templateList.add(uriString.substring(0,
+                    uriString.lastIndexOf("/") + 1)
                     + _sanitizedModelName + ".mk.in");
         }
         // 2. If the target parameter is set, look for a makefile.
-        String generatorDirectory = generatorPackage.stringValue()
-            .replace('.', '/');
+        String generatorDirectory = generatorPackage.stringValue().replace('.',
+                '/');
         String targetValue = target.getExpression();
-        templateList.add(generatorDirectory
-                + "/targets/" +  targetValue + "/makefile.in");
+        templateList.add(generatorDirectory + "/targets/" + targetValue
+                + "/makefile.in");
 
         // 3. Look for the generic C makefile.in
         // Note this code is repeated in the catch below.
         templateList.add(generatorDirectory
-            + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in"));
+                + (isTopLevel() ? "/makefile.in" : "/jnimakefile.in"));
 
         // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
@@ -1170,18 +1169,18 @@ public class CCodeGenerator extends CodeGenerator {
         try {
             Iterator templates = templateList.iterator();
             while (templates.hasNext()) {
-                makefileTemplateName = (String)templates.next();
+                makefileTemplateName = (String) templates.next();
                 try {
                     makefileTemplateReader = CodeGeneratorUtilities
-                        .openAsFileOrURL(makefileTemplateName);
+                            .openAsFileOrURL(makefileTemplateName);
                 } catch (IOException ex) {
                     errorMessage.append("Failed to open \""
-                            + makefileTemplateName + "\". "); 
+                            + makefileTemplateName + "\". ");
                 }
                 if (makefileTemplateReader != null) {
                     _executeCommands.stdout("Reading \"" + makefileTemplateName
-                            + "\"," + _eol
-                            + "    writing \"" + makefileOutputName + "\"");
+                            + "\"," + _eol + "    writing \""
+                            + makefileOutputName + "\"");
                     CodeGeneratorUtilities.substitute(makefileTemplateReader,
                             substituteMap, makefileOutputName);
                     success = true;
@@ -1202,7 +1201,7 @@ public class CCodeGenerator extends CodeGenerator {
                 }
             }
         }
-        if (! success) {
+        if (!success) {
             throw new IllegalActionException(this, errorMessage.toString());
         }
     }
@@ -1259,11 +1258,11 @@ public class CCodeGenerator extends CodeGenerator {
                 // FIXME: this will add any function, which means that
                 // if the user has Array_foo, foo is added.  Is this right?
                 _tokenFuncUsed.add(name.substring(6));
-            } 
+            }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to mark function called for \"" + name + "\" in \""
-                          + getComponent().getFullName() + "\"");
+                            + getComponent().getFullName() + "\"");
         }
 
     }

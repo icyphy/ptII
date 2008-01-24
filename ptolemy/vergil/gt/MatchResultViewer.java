@@ -232,8 +232,7 @@ public class MatchResultViewer extends AbstractGTFrame {
                     List<?> factoryList = entity
                             .attributeList(MatchResultTableau.Factory.class);
                     for (Object attributeObject : factoryList) {
-                        MatchResultTableau.Factory factory =
-                            (MatchResultTableau.Factory) attributeObject;
+                        MatchResultTableau.Factory factory = (MatchResultTableau.Factory) attributeObject;
                         factory.setPersistent(false);
                     }
                     for (Object subentity : entity
@@ -253,8 +252,7 @@ public class MatchResultViewer extends AbstractGTFrame {
         List<?> factoryList = entity
                 .attributeList(MatchResultTableau.Factory.class);
         for (Object attributeObject : factoryList) {
-            MatchResultTableau.Factory factory =
-                (MatchResultTableau.Factory) attributeObject;
+            MatchResultTableau.Factory factory = (MatchResultTableau.Factory) attributeObject;
             String momlTxt = "<deleteProperty name=\"" + factory.getName()
                     + "\"/>";
             MoMLChangeRequest request = new MoMLChangeRequest(originator,
@@ -574,17 +572,16 @@ public class MatchResultViewer extends AbstractGTFrame {
                 CompositeFigure cf = _getCompositeFigure(nf);
 
                 if (object instanceof NamedObj && cf != null && !_transformed
-                        && _results != null && _results.get(_currentPosition)
-                        .containsValue(object)) {
+                        && _results != null
+                        && _results.get(_currentPosition).containsValue(object)) {
                     Stroke stroke = new BasicStroke(6f, BasicStroke.CAP_SQUARE,
                             BasicStroke.JOIN_MITER, 10.0f);
                     Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
                     float padding = 3.0f;
-                    bounds = new Rectangle2D.Double(
-                            bounds.getX() - padding,
-                            bounds.getY() - padding,
-                            bounds.getWidth() + padding * 2.0,
-                            bounds.getHeight() + padding * 2.0);
+                    bounds = new Rectangle2D.Double(bounds.getX() - padding,
+                            bounds.getY() - padding, bounds.getWidth()
+                                    + padding * 2.0, bounds.getHeight()
+                                    + padding * 2.0);
                     BasicFigure bf = new BasicFigure(bounds);
                     bf.setStroke(stroke);
                     bf.setStrokePaint(_HIGHLIGHT_COLOR);
@@ -606,8 +603,8 @@ public class MatchResultViewer extends AbstractGTFrame {
         }
     }
 
-    private class MatchResultViewerController
-            extends ActorEditorGraphController {
+    private class MatchResultViewerController extends
+            ActorEditorGraphController {
 
         protected void _createControllers() {
             super._createControllers();

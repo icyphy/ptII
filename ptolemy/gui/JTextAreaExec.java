@@ -205,39 +205,39 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
-                    public void run() {
-                        try {
-                            JFrame jFrame = new JFrame("JTextAreaExec Example");
-                            WindowListener windowListener = new WindowAdapter() {
-                                    public void windowClosing(WindowEvent e) {
-                                        System.exit(0);
-                                    }
-                                };
+                public void run() {
+                    try {
+                        JFrame jFrame = new JFrame("JTextAreaExec Example");
+                        WindowListener windowListener = new WindowAdapter() {
+                            public void windowClosing(WindowEvent e) {
+                                System.exit(0);
+                            }
+                        };
 
-                            jFrame.addWindowListener(windowListener);
+                        jFrame.addWindowListener(windowListener);
 
-                            List execCommands = new LinkedList();
-                            execCommands.add("date");
-                            execCommands.add("sleep 5");
-                            execCommands.add("date");
-                            execCommands.add("javac");
+                        List execCommands = new LinkedList();
+                        execCommands.add("date");
+                        execCommands.add("sleep 5");
+                        execCommands.add("date");
+                        execCommands.add("javac");
 
-                            final JTextAreaExec exec = new JTextAreaExec("JTextAreaExec Tester",
-                                    true);
-                            exec.setCommands(execCommands);
-                            jFrame.getContentPane().add(exec);
-                            jFrame.pack();
-                            jFrame.setVisible(true);
+                        final JTextAreaExec exec = new JTextAreaExec(
+                                "JTextAreaExec Tester", true);
+                        exec.setCommands(execCommands);
+                        jFrame.getContentPane().add(exec);
+                        jFrame.pack();
+                        jFrame.setVisible(true);
 
-                            exec.getStartButton().requestFocus();
-                            exec.start();
-                        } catch (Exception ex) {
-                            System.err.println(ex.toString());
-                            ex.printStackTrace();
-                        }
+                        exec.getStartButton().requestFocus();
+                        exec.start();
+                    } catch (Exception ex) {
+                        System.err.println(ex.toString());
+                        ex.printStackTrace();
                     }
-                };
-                SwingUtilities.invokeAndWait(doActions);
+                }
+            };
+            SwingUtilities.invokeAndWait(doActions);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();

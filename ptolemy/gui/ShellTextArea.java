@@ -180,28 +180,28 @@ public class ShellTextArea extends JPanel {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
-                    public void run() {
-                        try {
-                            JFrame jFrame = new JFrame("ShellTextArea Example");
-                            WindowListener windowListener = new WindowAdapter() {
-                                    public void windowClosing(WindowEvent e) {
-                                        System.exit(0);
-                                    }
-                                };
+                public void run() {
+                    try {
+                        JFrame jFrame = new JFrame("ShellTextArea Example");
+                        WindowListener windowListener = new WindowAdapter() {
+                            public void windowClosing(WindowEvent e) {
+                                System.exit(0);
+                            }
+                        };
 
-                            jFrame.addWindowListener(windowListener);
+                        jFrame.addWindowListener(windowListener);
 
-                            final ShellTextArea exec = new ShellTextArea();
-                            jFrame.getContentPane().add(exec);
-                            jFrame.pack();
-                            jFrame.setVisible(true);
-                        } catch (Exception ex) {
-                            System.err.println(ex.toString());
-                            ex.printStackTrace();
-                        }
+                        final ShellTextArea exec = new ShellTextArea();
+                        jFrame.getContentPane().add(exec);
+                        jFrame.pack();
+                        jFrame.setVisible(true);
+                    } catch (Exception ex) {
+                        System.err.println(ex.toString());
+                        ex.printStackTrace();
                     }
-                };
-                SwingUtilities.invokeAndWait(doActions);
+                }
+            };
+            SwingUtilities.invokeAndWait(doActions);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();

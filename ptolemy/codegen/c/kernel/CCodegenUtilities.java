@@ -105,7 +105,7 @@ public class CCodegenUtilities {
                     + ", NULL)";
         }
     }
-    
+
     /** Return a code block to get the jni id of a Java method.
      * @param jniClass The Java class whose method to find.
      * @param name The name of the method to find.
@@ -118,11 +118,11 @@ public class CCodegenUtilities {
     public static String jniGetMethodID(String jniClass, String name,
             String signature, boolean targetCpp) {
         if (targetCpp) {
-            return "env->GetMethodID("
-                    + jniClass + ", \"" + name + "\", \"" + signature + "\")";
+            return "env->GetMethodID(" + jniClass + ", \"" + name + "\", \""
+                    + signature + "\")";
         } else {
-            return "(*env)->GetMethodID(env, "
-                    + jniClass + ", \"" + name + "\", \"" + signature + "\")";
+            return "(*env)->GetMethodID(env, " + jniClass + ", \"" + name
+                    + "\", \"" + signature + "\")";
         }
     }
 
@@ -156,7 +156,7 @@ public class CCodegenUtilities {
             return "(*env)->New" + type + "Array(env, " + size + ")";
         }
     }
-    
+
     /** Return a code block to create a new Java object using jni.
      * @param objectType The type of the object.
      * @param methodID The jni id of the object's constructor.

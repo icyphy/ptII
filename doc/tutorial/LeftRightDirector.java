@@ -57,7 +57,7 @@ public class LeftRightDirector extends StaticSchedulingDirector {
             return schedule;
         }
 
-        public /*static*/ class LeftRightComparator implements Comparator {
+        public/*static*/class LeftRightComparator implements Comparator {
             // FindBugs suggests making this class static so as to decrease
             // the size of instances and avoid dangling references.
             // However, hashCode() calls attributeList() on this,
@@ -103,7 +103,7 @@ public class LeftRightDirector extends StaticSchedulingDirector {
                     location1 = ((Locatable) locations.get(0)).getLocation();
                 }
                 // Return the bitwise xor
-                return (int) location1[0]  ^ (int) location1[1];
+                return (int) location1[0] ^ (int) location1[1];
             }
         }
     }

@@ -109,18 +109,16 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
     public void addActor(String name) throws PtalonRuntimeException {
         try {
             if (_currentActorTree == null) {
-                throw new PtalonRuntimeException(
-                        "Not in an actor declaration.");
+                throw new PtalonRuntimeException("Not in an actor declaration.");
             }
-            
+
             String symbol = _currentActorTree.getSymbol();
-            
+
             if (symbol.equals("this")) {
                 _currentActorTree.created = true;
                 if (_inNewWhileIteration()) {
                     if (_currentIfTree.isForStatement) {
-                        _currentActorTree.createdIteration =
-                            _currentIfTree.entered;
+                        _currentActorTree.createdIteration = _currentIfTree.entered;
                     } else {
                         IfTree tree = _currentIfTree;
                         while (!tree.isForStatement) {
@@ -135,17 +133,16 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         _currentActorTree.createdIteration = tree.entered;
                     }
                 } else {
-                    _currentActorTree.createdIteration =
-                        _currentIfTree.entered;
+                    _currentActorTree.createdIteration = _currentIfTree.entered;
                 }
                 _currentActorTree.assignPtalonParameters(_actor);
                 _currentActorTree.makeThisConnections();
                 _currentActorTree.removeDynamicLeftHandSides();
                 return;
             }
-            
+
             String uniqueName = _actor.uniqueName(symbol);
-            
+
             if (_getType(symbol).equals("import")) {
                 PtalonActor actor = new PtalonActor(_actor, uniqueName);
                 FileParameter location = actor.ptalonCodeLocation;
@@ -263,8 +260,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 _currentActorTree.created = true;
                 if (_inNewWhileIteration()) {
                     if (_currentIfTree.isForStatement) {
-                        _currentActorTree.createdIteration =
-                            _currentIfTree.entered;
+                        _currentActorTree.createdIteration = _currentIfTree.entered;
                     } else {
                         IfTree tree = _currentIfTree;
                         while (!tree.isForStatement) {
@@ -272,21 +268,19 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             if (tree == null) {
                                 throw new PtalonRuntimeException(
                                         "In a new for iteration, but there "
-                                        + "is no containing for block.");
+                                                + "is no containing for block.");
                             }
                         }
                         _currentActorTree.createdIteration = tree.entered;
                     }
                 } else {
-                    _currentActorTree.createdIteration =
-                        _currentIfTree.entered;
+                    _currentActorTree.createdIteration = _currentIfTree.entered;
                 }
             } else { // type of name not "import" or "parameter".
                 throw new PtalonRuntimeException("Invalid type for " + name);
             }
         } catch (Exception ex) {
-            throw new PtalonRuntimeException("Unable to add actor " + name,
-                    ex);
+            throw new PtalonRuntimeException("Unable to add actor " + name, ex);
         }
     }
 
@@ -367,8 +361,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
      *  @exception PtalonScopeException If a symbol with this name has
      *  already been added somewhere in the current scope.
      */
-    public void addSymbol(String name, String type)
-            throws PtalonScopeException {
+    public void addSymbol(String name, String type) throws PtalonScopeException {
         super.addSymbol(name, type);
         if (type.equals("actorparameter")) {
             _instanceNumbers.put(name, -1);
@@ -526,8 +519,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
      *  @exception PtalonScopeException If not inside the scope of an
      *  actor declaration.
      */
-    public void setActorParameter(String paramName)
-            throws PtalonScopeException {
+    public void setActorParameter(String paramName) throws PtalonScopeException {
         if (_currentActorTree == null) {
             throw new PtalonScopeException(
                     "Not inside the scope of an actor declaration.");
@@ -674,7 +666,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
 
     ///////////////////////////////////////////////////////////////////
     ////                        private members                    ////
-    
+
     /** This represents the current point in the scope of a nested
      *  actor declaration. It is null when not inside an actor
      *  declaration.
@@ -759,8 +751,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
          *  @param parameterName The name of the parameter.
          *  @param expression The expression to assign to the parameter.
          */
-        public void addParameterAssign(String parameterName,
-                String expression) {
+        public void addParameterAssign(String parameterName, String expression) {
             _parameters.put(parameterName, expression);
         }
 
@@ -886,8 +877,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             }
             try {
                 PtParser parser = new PtParser();
-                ParseTreeEvaluator _parseTreeEvaluator =
-                    new ParseTreeEvaluator();
+                ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
                 for (String parameterName : _parameters.keySet()) {
                     String expression = _parameters.get(parameterName);
                     if (expression == null) {
@@ -929,15 +919,13 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 throws PtalonRuntimeException {
             try {
                 PtParser parser = new PtParser();
-                ParseTreeEvaluator _parseTreeEvaluator =
-                    new ParseTreeEvaluator();
+                ParseTreeEvaluator _parseTreeEvaluator = new ParseTreeEvaluator();
                 for (String parameterName : _parameters.keySet()) {
                     String expression = _parameters.get(parameterName);
                     if (expression == null) {
                         throw new PtalonRuntimeException(
                                 "Unable to find expression label for "
-                                + "parameter "
-                                + parameterName);
+                                        + "parameter " + parameterName);
                     }
                     ASTPtRootNode parseTree = parser
                             .generateParseTree(expression);
@@ -945,8 +933,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         Parameter parameter = (Parameter) actor
                                 .getAttribute(parameterName);
                         if (parameter == null) {
-                            String uniqueName =
-                                actor.uniqueName(parameterName);
+                            String uniqueName = actor.uniqueName(parameterName);
 
                             // FIXME: Ptalon assumes that any
                             // parameter we give that is not
@@ -976,13 +963,11 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             // is called on the actor.
                             parameter.validate();
                         } catch (IllegalActionException ex) {
-                            ParseTreeFreeVariableCollector collector =
-                                new ParseTreeFreeVariableCollector();
+                            ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
                             Set expressionVariables = collector
                                     .collectFreeVariables(parseTree);
                             Set scopeVariables = _scope.identifierSet();
-                            List<String> excludedVariables =
-                                new LinkedList<String>();
+                            List<String> excludedVariables = new LinkedList<String>();
                             for (Object variable : expressionVariables) {
                                 if (variable instanceof String) {
                                     if (!scopeVariables.contains(variable)) {
@@ -991,8 +976,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                                     }
                                 }
                             }
-                            ParseTreeSpecializer specializer =
-                                new ParseTreeSpecializer();
+                            ParseTreeSpecializer specializer = new ParseTreeSpecializer();
                             parseTree = specializer.specialize(parseTree,
                                     excludedVariables, _scope);
                             ParseTreeWriter writer = new ParseTreeWriter();
@@ -1003,13 +987,11 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                     } catch (ClassCastException ex) {
                         Settable parameter = (Settable) actor
                                 .getAttribute(parameterName);
-                        ParseTreeFreeVariableCollector collector =
-                            new ParseTreeFreeVariableCollector();
+                        ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
                         Set expressionVariables = collector
                                 .collectFreeVariables(parseTree);
                         Set scopeVariables = _scope.identifierSet();
-                        List<String> excludedVariables =
-                            new LinkedList<String>();
+                        List<String> excludedVariables = new LinkedList<String>();
                         for (Object variable : expressionVariables) {
                             if (variable instanceof String) {
                                 if (!scopeVariables.contains(variable)) {
@@ -1017,8 +999,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                                 }
                             }
                         }
-                        ParseTreeSpecializer specializer =
-                            new ParseTreeSpecializer();
+                        ParseTreeSpecializer specializer = new ParseTreeSpecializer();
                         parseTree = specializer.specialize(parseTree,
                                 excludedVariables, _scope);
                         ParseTreeWriter writer = new ParseTreeWriter();
@@ -1027,10 +1008,10 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         parameter.setExpression(outputExpression);
                     }
                 }
-             } catch (Exception ex) {
-                 throw new PtalonRuntimeException("Trouble making connections",
-                         ex);
-             }
+            } catch (Exception ex) {
+                throw new PtalonRuntimeException("Trouble making connections",
+                        ex);
+            }
         }
 
         /** Get the name of the actor parameter, or throw an exception
@@ -1137,8 +1118,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             continue;
                         }
                         if (portType.equals("transparent")) {
-                            if (!_transparentRelations.containsKey(
-                                        evaluation)) {
+                            if (!_transparentRelations.containsKey(evaluation)) {
                                 return false;
                             }
                         }
@@ -1148,8 +1128,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                 }
             }
             for (String portName : _unknownExpressions.keySet()) {
-                if (evaluateString(_unknownExpressions.get(portName))
-                        == null) {
+                if (evaluateString(_unknownExpressions.get(portName)) == null) {
                     return false;
                 }
             }
@@ -1216,8 +1195,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         inner: for (Object connection : relation
                                 .linkedPortList()) {
                             if (connection instanceof TypedIOPort) {
-                                TypedIOPort testPort =
-                                    (TypedIOPort) connection;
+                                TypedIOPort testPort = (TypedIOPort) connection;
                                 if (testPort.getContainer().equals(_actor)) {
                                     if (testPort.isInput()) {
                                         port.setInput(true);
@@ -1254,10 +1232,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             inner: for (Object connection : rel
                                     .linkedPortList()) {
                                 if (connection instanceof TypedIOPort) {
-                                    TypedIOPort testPort =
-                                        (TypedIOPort) connection;
-                                    if (testPort.getContainer().equals(
-                                                _actor)) {
+                                    TypedIOPort testPort = (TypedIOPort) connection;
+                                    if (testPort.getContainer().equals(_actor)) {
                                         if (testPort.isInput()) {
                                             port.setInput(true);
                                         }
@@ -1353,10 +1329,8 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                             inner: for (Object connection : relation
                                     .linkedPortList()) {
                                 if (connection instanceof TypedIOPort) {
-                                    TypedIOPort testPort =
-                                        (TypedIOPort) connection;
-                                    if (testPort.getContainer().equals(
-                                                _actor)) {
+                                    TypedIOPort testPort = (TypedIOPort) connection;
+                                    if (testPort.getContainer().equals(_actor)) {
                                         if (testPort.isInput()) {
                                             port.setInput(true);
                                         }
@@ -1382,8 +1356,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         if (_transparentRelations.containsKey(name)) {
                             TypedIOPort connectionPoint = _transparentRelations
                                     .get(name);
-                            String relationName =
-                                _actor.uniqueName("relation");
+                            String relationName = _actor.uniqueName("relation");
                             TypedIORelation rel = new TypedIORelation(_actor,
                                     relationName);
                             if (port == null) {
@@ -1392,8 +1365,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                                 inner: for (Object connection : rel
                                         .linkedPortList()) {
                                     if (connection instanceof TypedIOPort) {
-                                        TypedIOPort testPort =
-                                            (TypedIOPort) connection;
+                                        TypedIOPort testPort = (TypedIOPort) connection;
                                         if (testPort.getContainer().equals(
                                                 _actor)) {
                                             if (testPort.isInput()) {
@@ -1586,13 +1558,11 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
                         if (_transparentRelations.containsKey(name)) {
                             TypedIOPort connectionPoint = _transparentRelations
                                     .get(name);
-                            String relationName =
-                                _actor.uniqueName("relation");
+                            String relationName = _actor.uniqueName("relation");
                             TypedIORelation rel = new TypedIORelation(_actor,
                                     relationName);
                             if (port == null) {
-                                if (_transparentRelations.containsKey(
-                                            portName)) {
+                                if (_transparentRelations.containsKey(portName)) {
                                     port = _transparentRelations.get(portName);
                                 } else {
                                     throw new PtalonRuntimeException(
@@ -1693,7 +1663,6 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
             output.write(_getIndentPrefix(depth) + "</actor_declaration>\n");
         }
 
-
         ///////////////////////////////////////////////////////////////////
         ////                        public members                    ////
 
@@ -1716,8 +1685,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
         /** Each key is a parameter in this actor declaration, and
          *  each value is an expression to be passed to the parameter.
          */
-        private Map<String, String> _parameters =
-            new Hashtable<String, String>();
+        private Map<String, String> _parameters = new Hashtable<String, String>();
 
         /** Each key is a port in this actor declaration, and each value is a
          *  port in its container to be connected to at runtime.
@@ -1727,8 +1695,7 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
         /** Each key is a port in this actor declaration, and each value is a
          *  relation in its container to be connected to at runtime.
          */
-        private Map<String, String> _relations =
-            new Hashtable<String, String>();
+        private Map<String, String> _relations = new Hashtable<String, String>();
 
         /** This is the symbol stored with the AbstractPtalonEvaluator that this
          *  actor declaration refers to. It's either a
@@ -1740,38 +1707,33 @@ public class PtalonEvaluator extends AbstractPtalonEvaluator {
          *  value is a transparent relation in its container to be
          *  connected to at runtime.
          */
-        private Map<String, String> _transparencies =
-            new Hashtable<String, String>();
+        private Map<String, String> _transparencies = new Hashtable<String, String>();
 
         /** Each member of this set is a transparent relation assigned
          *  a value in a this statement, like
          *    this(transparentRelation := someOtherRelation);
          */
-        private Map<String, String> _transparentLeftHandSides =
-            new Hashtable<String, String>();
+        private Map<String, String> _transparentLeftHandSides = new Hashtable<String, String>();
 
         /** The _unknownPrefixes maps port names in this actor
          *  declaration instance to prefixes of unknown connection
          *  points, and _unknownExpressions maps the same keys to the
          *  expressions for these unknown connection points.
          */
-        private Map<String, String> _unknownPrefixes =
-            new Hashtable<String, String>();
+        private Map<String, String> _unknownPrefixes = new Hashtable<String, String>();
 
         /** The _unknownPrefixes maps port names in this actor
          *  declaration instance to prefixes of unknown connection
          *  points, and _unknownExpressions maps the same keys to the
          *  expressions for these unknown connection points.
          */
-        private Map<String, String> _unknownExpressions =
-            new Hashtable<String, String>();
+        private Map<String, String> _unknownExpressions = new Hashtable<String, String>();
 
         /** Each key is a prefix and value is an expression
          *  corresponding to a left hand side of an assignment which
          *  may change dynamically.
          */
-        private Map<String, String> _unknownLeftSides =
-            new Hashtable<String, String>();
+        private Map<String, String> _unknownLeftSides = new Hashtable<String, String>();
 
     }
 }

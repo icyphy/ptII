@@ -753,7 +753,7 @@ public class CachedMethod {
                         //System.out.println("Found one conversion where "
                         //        + type2 + " is preferable to "
                         //        + type1 + " returning false"); 
-                                
+
                         return false;
                     }
                 } catch (IllegalActionException ex) {

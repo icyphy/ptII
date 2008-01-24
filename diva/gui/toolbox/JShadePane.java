@@ -57,7 +57,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-
 import diva.gui.BasicFrame;
 
 /**
@@ -377,8 +376,8 @@ public class JShadePane extends JPanel {
     /**
      * Borrowed from JTabbedPane.  Holds all the info about each shade.
      */
-    private static class Shade extends AccessibleContext
-        implements Serializable, Accessible, AccessibleComponent {
+    private static class Shade extends AccessibleContext implements
+            Serializable, Accessible, AccessibleComponent {
 
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
@@ -579,98 +578,98 @@ public class JShadePane extends JPanel {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
-                    public void run() {
-                        try {
-                            final JShadePane sp = new JShadePane();
-                            sp.addShade("Foo", new JLabel("foo's component"));
-                            sp.addShade("Bar", new JLabel("bar's component"));
-                            sp.addShade("Baz", new JLabel("baz's component"));
-                            sp.addShade("Moo", new JLabel("moo's component"));
+                public void run() {
+                    try {
+                        final JShadePane sp = new JShadePane();
+                        sp.addShade("Foo", new JLabel("foo's component"));
+                        sp.addShade("Bar", new JLabel("bar's component"));
+                        sp.addShade("Baz", new JLabel("baz's component"));
+                        sp.addShade("Moo", new JLabel("moo's component"));
 
-                            JFrame f = new BasicFrame("Shade test");
-                            f.getContentPane().add("Center", sp);
+                        JFrame f = new BasicFrame("Shade test");
+                        f.getContentPane().add("Center", sp);
 
-                            JPanel btns = new JPanel();
-                            f.getContentPane().add("South", btns);
+                        JPanel btns = new JPanel();
+                        f.getContentPane().add("South", btns);
 
-                            JButton b1 = new JButton("rm sel");
-                            b1.addActionListener(new ActionListener() {
-                                    public void actionPerformed(ActionEvent e) {
-                                        int i = sp.getSelectedIndex();
+                        JButton b1 = new JButton("rm sel");
+                        b1.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                int i = sp.getSelectedIndex();
 
-                                        if (i >= 0) {
-                                            sp.removeShadeAt(i);
-                                        }
-                                    }
-                                });
-                            btns.add(b1);
+                                if (i >= 0) {
+                                    sp.removeShadeAt(i);
+                                }
+                            }
+                        });
+                        btns.add(b1);
 
-                            JButton b2 = new JButton("rm sel-1");
-                            b2.addActionListener(new ActionListener() {
-                                    public void actionPerformed(ActionEvent e) {
-                                        int i = sp.getSelectedIndex() - 1;
+                        JButton b2 = new JButton("rm sel-1");
+                        b2.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                int i = sp.getSelectedIndex() - 1;
 
-                                        if (i >= 0) {
-                                            sp.removeShadeAt(i);
-                                        }
-                                    }
-                                });
-                            btns.add(b2);
+                                if (i >= 0) {
+                                    sp.removeShadeAt(i);
+                                }
+                            }
+                        });
+                        btns.add(b2);
 
-                            JButton b3 = new JButton("rm sel+1");
-                            b3.addActionListener(new ActionListener() {
-                                    public void actionPerformed(ActionEvent e) {
-                                        int i = sp.getSelectedIndex() + 1;
+                        JButton b3 = new JButton("rm sel+1");
+                        b3.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                int i = sp.getSelectedIndex() + 1;
 
-                                        if ((i >= 1) && (i < sp.getShadeCount())) {
-                                            sp.removeShadeAt(i);
-                                        }
-                                    }
-                                });
-                            btns.add(b3);
+                                if ((i >= 1) && (i < sp.getShadeCount())) {
+                                    sp.removeShadeAt(i);
+                                }
+                            }
+                        });
+                        btns.add(b3);
 
-                            JButton b4 = new JButton("rm all");
-                            b4.addActionListener(new ActionListener() {
-                                    public void actionPerformed(ActionEvent e) {
-                                        sp.removeAll();
-                                    }
-                                });
-                            btns.add(b4);
+                        JButton b4 = new JButton("rm all");
+                        b4.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                sp.removeAll();
+                            }
+                        });
+                        btns.add(b4);
 
-                            JButton b5 = new JButton("toggle sel");
-                            b5.addActionListener(new ActionListener() {
-                                    public void actionPerformed(ActionEvent e) {
-                                        int i = sp.getSelectedIndex();
+                        JButton b5 = new JButton("toggle sel");
+                        b5.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                int i = sp.getSelectedIndex();
 
-                                        if (i >= 0) {
-                                            boolean en = sp.isEnabledAt(i);
-                                            sp.setEnabledAt(i, !en);
-                                        }
-                                    }
-                                });
-                            btns.add(b5);
+                                if (i >= 0) {
+                                    boolean en = sp.isEnabledAt(i);
+                                    sp.setEnabledAt(i, !en);
+                                }
+                            }
+                        });
+                        btns.add(b5);
 
-                            JButton b6 = new JButton("toggle sel-1");
-                            b6.addActionListener(new ActionListener() {
-                                    public void actionPerformed(ActionEvent e) {
-                                        int i = sp.getSelectedIndex() - 1;
+                        JButton b6 = new JButton("toggle sel-1");
+                        b6.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                int i = sp.getSelectedIndex() - 1;
 
-                                        if (i >= 0) {
-                                            boolean en = sp.isEnabledAt(i);
-                                            sp.setEnabledAt(i, !en);
-                                        }
-                                    }
-                                });
-                            btns.add(b6);
+                                if (i >= 0) {
+                                    boolean en = sp.isEnabledAt(i);
+                                    sp.setEnabledAt(i, !en);
+                                }
+                            }
+                        });
+                        btns.add(b6);
 
-                            f.setSize(600, 400);
-                            f.setVisible(true);
-                        } catch (Exception ex) {
-                            System.err.println(ex.toString());
-                            ex.printStackTrace();
-                        }
+                        f.setSize(600, 400);
+                        f.setVisible(true);
+                    } catch (Exception ex) {
+                        System.err.println(ex.toString());
+                        ex.printStackTrace();
                     }
-                };
+                }
+            };
             SwingUtilities.invokeAndWait(doActions);
         } catch (Exception ex) {
             System.err.println(ex.toString());

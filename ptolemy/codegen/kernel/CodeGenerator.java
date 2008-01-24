@@ -61,7 +61,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -103,7 +102,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Note: If you add publicly settable parameters, update
         // _commandFlags or _commandOptions.
 
-
         allowDynamicMultiportReference = new Parameter(this,
                 "allowDynamicMultiportReference");
         allowDynamicMultiportReference.setTypeEquals(BaseType.BOOLEAN);
@@ -129,7 +127,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         generateComment = new Parameter(this, "generateComment");
         generateComment.setTypeEquals(BaseType.BOOLEAN);
         generateComment.setExpression("true");
-
 
         generateCpp = new Parameter(this, "generateCpp");
         generateCpp.setTypeEquals(BaseType.BOOLEAN);
@@ -583,11 +580,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         //if (containsCode(variableInitCode)
         //        || containsCode(initializeCode)) {
 
-        String [] splitVariableInitCode = _splitBody("_varinit_",
+        String[] splitVariableInitCode = _splitBody("_varinit_",
                 variableInitCode);
         code.append(splitVariableInitCode[0]);
 
-        String [] splitInitializeCode = _splitBody("_initialize_",
+        String[] splitInitializeCode = _splitBody("_initialize_",
                 initializeCode);
         code.append(splitInitializeCode[0]);
 
@@ -612,9 +609,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             code.append(postfireExitCode);
             //            }
         }
-*/
+        */
         //if (containsCode(wrapupCode)) {
-
         // FIXME: The wrapup code can span multiple lines, so
         // our first attempt will not work.
         //String [] splitWrapupCode = _splitBody("_wrapup_", wrapupCode);
@@ -764,8 +760,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                         // Add a codeGenerator
                         // FIXME: This introduces a dependency to codegen.c
                         // We should fix this by having a way to choose languages.
-                        codeGenerator = new CCodeGenerator(
-                                toplevel, "CodeGenerator_AutoAdded");
+                        codeGenerator = new CCodeGenerator(toplevel,
+                                "CodeGenerator_AutoAdded");
                     } else {
                         // Get the last CodeGenerator in the list, maybe
                         // it was added last?
@@ -1257,8 +1253,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  of the code parameter.
      *  @exception IOException If thrown will reading the code.
      */
-    public String[] splitLongBody(int linesPerMethod, String prefix, String code) throws IOException {
-        String [] results = { "", code};
+    public String[] splitLongBody(int linesPerMethod, String prefix, String code)
+            throws IOException {
+        String[] results = { "", code };
         return results;
     }
 
@@ -1377,7 +1374,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             }
             */
             return directorHelper.generateMainLoop(
-                    /*CodeGenerator.containsCode(_postfireCode)*/);
+            /*CodeGenerator.containsCode(_postfireCode)*/);
 
         } else {
             // Generate JNI code.
@@ -1497,7 +1494,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                             + "substitution of the value of the generatorPackage "
                             + "parameter \"" + packageName + "\" failed?");
         }
-        ActorCodeGenerator castHelperObject =  _instantiateHelper(component,
+        ActorCodeGenerator castHelperObject = _instantiateHelper(component,
                 helperClassName);
         _helperStore.put(component, castHelperObject);
         return castHelperObject;
@@ -1629,9 +1626,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** The command-line options that take arguments. */
     protected static String[][] _commandOptions = {
             { "-allowDynamicMultiportReferences",
-              "        true|false (default: false)" },
-            { "-codeDirectory",
-                "<directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
+                    "        true|false (default: false)" },
+            {
+                    "-codeDirectory",
+                    "<directory in which to put code (default: $HOME/codegen. Other values: $CWD, $HOME, $PTII, $TMPDIR)>" },
             { "-compile", "           true|false (default: true)" },
             { "-generateComment", "   true|false (default: true)" },
             { "-inline", "            true|false (default: false)" },
@@ -1648,7 +1646,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** The default target name. */
     protected static final String _DEFAULT_TARGET = "default";
-
 
     /** End of line character.  Under Unix: "\n", under Windows: "\n\r".
      *  We use a end of line charactor so that the files we generate
@@ -1716,7 +1713,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** A static list of the primitive types supported by the code generator. */
     protected static final List _primitiveTypes = Arrays.asList(new String[] {
-            "Int", "Double", "String", "Long", "Boolean", "UnsignedByte", "Pointer" });
+            "Int", "Double", "String", "Long", "Boolean", "UnsignedByte",
+            "Pointer" });
 
     /** The sanitized model name. */
     protected String _sanitizedModelName;
@@ -1755,11 +1753,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
         String packageName = generatorPackage.stringValue();
 
-        String upcaseTarget = targetValue.substring(0,1).toUpperCase()
-            + targetValue.substring(1);
-        String helperClassName = packageName + ".targets." + targetValue
-            + "." + upcaseTarget + "Target";
-        return  _instantiateHelper(component, helperClassName);
+        String upcaseTarget = targetValue.substring(0, 1).toUpperCase()
+                + targetValue.substring(1);
+        String helperClassName = packageName + ".targets." + targetValue + "."
+                + upcaseTarget + "Target";
+        return _instantiateHelper(component, helperClassName);
     }
 
     /** Instantiate the given code generator helper.
@@ -1769,8 +1767,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception IllegalActionException If the helper class cannot be found.
      */
     private ActorCodeGenerator _instantiateHelper(NamedObj component,
-            String helperClassName)
-            throws IllegalActionException {
+            String helperClassName) throws IllegalActionException {
         Class helperClass = null;
 
         try {
@@ -1841,17 +1838,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     private String[] _splitBody(String prefix, String code) {
         // Split the initialize body into multiple methods
         // so that the compiler has an easier time.
-        String [] results = null;
+        String[] results = null;
         try {
-            results = splitLongBody(_LINES_PER_METHOD,
-                    prefix
-                    + CodeGeneratorHelper.generateName(getContainer()),
-                    code);
+            results = splitLongBody(_LINES_PER_METHOD, prefix
+                    + CodeGeneratorHelper.generateName(getContainer()), code);
         } catch (IOException ex) {
             // Ignore
             System.out.println("Warning: Failed to split code: " + ex);
             ex.printStackTrace();
-            results = new String[] { "", code}; 
+            results = new String[] { "", code };
         }
         return results;
     }
@@ -1927,7 +1922,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     private void _updateTarget() throws IllegalActionException {
         String generatorPackageValue = generatorPackage.stringValue();
-        String generatorPackageDirectoryName= StringUtilities.substitute(generatorPackageValue, ".", "/");
+        String generatorPackageDirectoryName = StringUtilities.substitute(
+                generatorPackageValue, ".", "/");
 
         target.removeAllChoices();
         target.addChoice(_DEFAULT_TARGET);
@@ -1938,10 +1934,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // in a jar file We use a URI here so that we can call
             // File(URI).
 
-            URL generatorPackageURL = FileUtilities.nameToURL(
-                    "$CLASSPATH/" 
-                    + generatorPackageDirectoryName,
-                    null, null);
+            URL generatorPackageURL = FileUtilities.nameToURL("$CLASSPATH/"
+                    + generatorPackageDirectoryName, null, null);
             URI generatorPackageURI = new URI(generatorPackageURL
                     .toExternalForm().replaceAll(" ", "%20"));
             generatorPackageFile = new File(generatorPackageURI);
@@ -1955,7 +1949,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         File targetDirectory = new File(generatorPackageFile, "targets");
         if (targetDirectory.exists()) {
-            String [] targets = targetDirectory.list(new TargetFilter());
+            String[] targets = targetDirectory.list(new TargetFilter());
             for (int i = 0; i < targets.length; i++) {
                 target.addChoice(targets[i]);
             }
@@ -1978,7 +1972,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             }
             File file = new File(dir, name);
             return file.isDirectory();
-        } 
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

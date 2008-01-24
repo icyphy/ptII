@@ -71,7 +71,7 @@ public abstract class IteratorIterator extends IteratorAdapter {
 
     /* Return the next object.
      */
-    public Object next() throws NoSuchElementException{
+    public Object next() throws NoSuchElementException {
         if (_subiterator == null) {
             throw new NoSuchElementException("Ack! No more elements");
         }

@@ -232,15 +232,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     public static String codeGenType(Type ptType) {
         // FIXME: We may need to add more types.
         // FIXME: We have to create separate type for different matrix types.
-        String result = 
-            ptType == BaseType.INT ? "Int" : 
-            ptType == BaseType.LONG ? "Long" : 
-            ptType == BaseType.STRING ? "String" : 
-            ptType == BaseType.DOUBLE ? "Double" : 
-            ptType == BaseType.BOOLEAN ? "Boolean" :
-            ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte" :
-            ptType == PointerToken.POINTER ? "Pointer" :
-            null;
+        String result = ptType == BaseType.INT ? "Int"
+                : ptType == BaseType.LONG ? "Long"
+                        : ptType == BaseType.STRING ? "String"
+                                : ptType == BaseType.DOUBLE ? "Double"
+                                        : ptType == BaseType.BOOLEAN ? "Boolean"
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "UnsignedByte"
+                                                        : ptType == PointerToken.POINTER ? "Pointer"
+                                                                : null;
 
         if (result == null) {
             if (ptType instanceof ArrayType) {
@@ -393,15 +392,13 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      *  @return null if there is not corresponding Ptolemy type.
      */
     public static Type ptolemyType(String cgType) {
-        Type result = 
-            cgType.equals("Int") ? BaseType.INT :
-            cgType.equals("Long") ? BaseType.LONG :
-            cgType.equals("String") ? BaseType.STRING :
-            cgType.equals("Boolean") ? BaseType.BOOLEAN :
-            cgType.equals("Double") ? BaseType.DOUBLE :
-            cgType.equals("Complex") ? BaseType.COMPLEX :
-            cgType.equals("Pointer") ? PointerToken.POINTER :
-            null;
+        Type result = cgType.equals("Int") ? BaseType.INT : cgType
+                .equals("Long") ? BaseType.LONG
+                : cgType.equals("String") ? BaseType.STRING : cgType
+                        .equals("Boolean") ? BaseType.BOOLEAN : cgType
+                        .equals("Double") ? BaseType.DOUBLE : cgType
+                        .equals("Complex") ? BaseType.COMPLEX : cgType
+                        .equals("Pointer") ? PointerToken.POINTER : null;
 
         if (cgType.endsWith("Array")) {
             String elementType = cgType.replace("Array", "");
@@ -429,14 +426,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      */
     public static String targetType(Type ptType) {
         // FIXME: we may need to add more primitive types.
-        return ptType == BaseType.INT ? "int" :
-            ptType == BaseType.STRING ? "char*" :
-            ptType == BaseType.DOUBLE ? "double" :
-            ptType == BaseType.BOOLEAN ? "boolean" :
-            ptType == BaseType.LONG ? "long" :
-            ptType == BaseType.UNSIGNED_BYTE ? "unsigned char" :
-            ptType == PointerToken.POINTER ? "void*" :
-            "Token";
+        return ptType == BaseType.INT ? "int"
+                : ptType == BaseType.STRING ? "char*"
+                        : ptType == BaseType.DOUBLE ? "double"
+                                : ptType == BaseType.BOOLEAN ? "boolean"
+                                        : ptType == BaseType.LONG ? "long"
+                                                : ptType == BaseType.UNSIGNED_BYTE ? "unsigned char"
+                                                        : ptType == PointerToken.POINTER ? "void*"
+                                                                : "Token";
     }
 
     /**
@@ -1907,7 +1904,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException(this, ex,
                         "Failed to replace the parameter \"" + name
-                        + "\" in the macro \"" + macro + "\"");
+                                + "\" in the macro \"" + macro + "\"");
             }
 
             String string = code.substring(closeParenIndex + 1, nextPos);
@@ -2492,7 +2489,7 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
             throws IllegalActionException {
 
         String[] result = { "", "" };
-        
+
         // Given expression of forms:
         //     "port"
         //     "port, offset", or
@@ -2506,12 +2503,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
         }
         if (poundIndex < 0) {
             poundIndex = commaIndex;
-        } 
-        
+        }
+
         if (poundIndex < commaIndex) {
             result[0] = name.substring(poundIndex + 1, commaIndex);
         }
-        
+
         if (commaIndex < name.length()) {
             result[1] = name.substring(commaIndex + 1);
         }
@@ -2530,24 +2527,24 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
      * @throws IllegalActionException Thrown if the given string does not
      *  contain the same number of open and closed parentheses.
      */
-    private static int _indexOf(char ch, String string, int fromIndex) 
+    private static int _indexOf(char ch, String string, int fromIndex)
             throws IllegalActionException {
-        
+
         int parenIndex = fromIndex;
         int result = -1;
 
         do {
             int closedParenIndex = parenIndex;
-            
+
             result = string.indexOf(ch, closedParenIndex);
-            
+
             parenIndex = string.indexOf('(', closedParenIndex);
 
             if (parenIndex >= 0) {
                 closedParenIndex = _findClosedParen(string, parenIndex);
             }
         } while (parenIndex > 0 && result > parenIndex);
-        
+
         return result;
     }
 
@@ -2743,15 +2740,14 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     private static int _findClosedParen(String string, int pos)
             throws IllegalActionException {
         if (pos < 0 || pos >= string.length()) {
-            throw new IllegalActionException("The character index "
-                    + pos + " is past the end of string \"" + string
+            throw new IllegalActionException("The character index " + pos
+                    + " is past the end of string \"" + string
                     + "\", which has a length of " + string.length() + ".");
         }
 
         if (string.charAt(pos) != '(') {
-            throw new IllegalActionException("The character at index "
-                    + pos + " of string: " + string 
-                    + " is not a open parenthesis.");
+            throw new IllegalActionException("The character at index " + pos
+                    + " of string: " + string + " is not a open parenthesis.");
         }
 
         int nextOpenParen = string.indexOf("(", pos + 1);

@@ -99,8 +99,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         _linkBendRadius.setExpression("20.0");
         _linkBendRadius.setDisplayName("Link bend radius");
 
-        backgroundColor = new ColorAttribute(
-                this, "backgroundColor");
+        backgroundColor = new ColorAttribute(this, "backgroundColor");
         backgroundColor.setExpression("{0.9, 0.9, 0.9, 1.0}");
         backgroundColor.setDisplayName("Background Color");
 
@@ -111,7 +110,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         _showParameters.addChoice("All");
         _showParameters.setExpression("None");
         _showParameters.setDisplayName("Show parameters");
-        
+
         // The icon.
         EditorIcon _icon = new EditorIcon(this, "_icon");
         RectangleAttribute rectangle = new RectangleAttribute(_icon,
@@ -131,7 +130,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         _hideName.setToken(BooleanToken.TRUE);
         _hideName.setVisibility(Settable.EXPERT);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       public parameters                   ////
 

@@ -220,32 +220,35 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
      *  there is a preferences attribute.
      */
     private class FSMGraphPane extends GraphPane {
-        public FSMGraphPane(
-                FSMGraphController controller,
-                FSMGraphModel model,
+        public FSMGraphPane(FSMGraphController controller, FSMGraphModel model,
                 NamedObj entity) {
             super(controller, model);
             _entity = entity;
         }
+
         public void repaint() {
             _setBackground();
             super.repaint();
         }
+
         public void repaint(DamageRegion damage) {
             _setBackground();
             super.repaint(damage);
         }
+
         private void _setBackground() {
             if (_entity != null) {
                 List list = _entity.attributeList(PtolemyPreferences.class);
                 if (list.size() > 0) {
                     // Use the last preferences.
-                    PtolemyPreferences preferences
-                            = (PtolemyPreferences)list.get(list.size() - 1);
-                    getCanvas().setBackground(preferences.backgroundColor.asColor());
+                    PtolemyPreferences preferences = (PtolemyPreferences) list
+                            .get(list.size() - 1);
+                    getCanvas().setBackground(
+                            preferences.backgroundColor.asColor());
                 }
             }
         }
+
         private NamedObj _entity;
     }
 

@@ -235,7 +235,6 @@ public class ExternalTextEffigy extends TextEffigy {
             //-    new BufferedInputStream(process.getInputStream());
             process.waitFor();
 
-
             //- byte[] buffer = new byte[result.available()];
             //- result.read(buffer, 0, buffer.length);
             // Delete any linefeeds and carriage returns.
@@ -246,8 +245,8 @@ public class ExternalTextEffigy extends TextEffigy {
 
             if (tmpFile != null) {
                 if (!tmpFile.delete()) {
-                        throw new InternalErrorException("Failed to delete \""
-                                + tmpFile + "\"?");
+                    throw new InternalErrorException("Failed to delete \""
+                            + tmpFile + "\"?");
                 }
             }
         } catch (Throwable throwable) {

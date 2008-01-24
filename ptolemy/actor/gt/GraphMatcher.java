@@ -550,8 +550,8 @@ public class GraphMatcher extends GraphAnalyzer {
             }
 
             IndexedLists hostMarkedList = new IndexedLists();
-            NamedObj hostNextObject = findFirstChild(hostEntity, hostMarkedList,
-                    _match.values());
+            NamedObj hostNextObject = findFirstChild(hostEntity,
+                    hostMarkedList, _match.values());
             ObjectList hostList = new ObjectList();
             while (hostNextObject != null) {
                 hostList.add(hostNextObject);

@@ -229,13 +229,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _rightComponent.setBackground(BACKGROUND_COLOR);
         if (configuration != null) {
             try {
-                PtolemyPreferences preferences
-                        = PtolemyPreferences
-                        .getPtolemyPreferencesWithinConfiguration(
-                        configuration);
+                PtolemyPreferences preferences = PtolemyPreferences
+                        .getPtolemyPreferencesWithinConfiguration(configuration);
                 if (preferences != null) {
-                    _rightComponent.setBackground(
-                            preferences.backgroundColor.asColor());
+                    _rightComponent.setBackground(preferences.backgroundColor
+                            .asColor());
                 }
             } catch (IllegalActionException e1) {
                 // Ignore the exception and use the default color.
@@ -2325,7 +2323,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //// PtolemyLayoutTarget
 
     /** A layout target that translates locatable nodes. */
-    private /*static*/ class PtolemyLayoutTarget extends BasicLayoutTarget {
+    private/*static*/class PtolemyLayoutTarget extends BasicLayoutTarget {
         // FindBugs suggests making this class static so as to decrease
         // the size of instances and avoid dangling references.
         // However, we call getVisibleCanvasRectangle(), which cannot

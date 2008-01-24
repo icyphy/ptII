@@ -78,8 +78,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import ptolemy.util.StringUtilities;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.StringUtilities;
 
 // TO DO:
 //   - Augment getColorByName to support a full complement of colors
@@ -1218,7 +1218,8 @@ public class PlotBox extends JPanel implements Printable {
             try {
                 // FindBugs: Usage of GetResource may be unsafe if
                 // class is extended
-                img = FileUtilities.nameToURL("$CLASSPATH/ptolemy/plot/img/print.gif", null, null);
+                img = FileUtilities.nameToURL(
+                        "$CLASSPATH/ptolemy/plot/img/print.gif", null, null);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -1249,7 +1250,8 @@ public class PlotBox extends JPanel implements Printable {
             try {
                 // FindBugs: Usage of GetResource may be unsafe if
                 // class is extended
-                img = FileUtilities.nameToURL("$CLASSPATH/ptolemy/plot/img/reset.gif", null, null);
+                img = FileUtilities.nameToURL(
+                        "$CLASSPATH/ptolemy/plot/img/reset.gif", null, null);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -1280,7 +1282,8 @@ public class PlotBox extends JPanel implements Printable {
             try {
                 // FindBugs: Usage of GetResource may be unsafe if
                 // class is extended
-                img = FileUtilities.nameToURL("$CLASSPATH/ptolemy/plot/img/format.gif", null, null);
+                img = FileUtilities.nameToURL(
+                        "$CLASSPATH/ptolemy/plot/img/format.gif", null, null);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -1310,7 +1313,8 @@ public class PlotBox extends JPanel implements Printable {
             try {
                 // FindBugs: Usage of GetResource may be unsafe if
                 // class is extended
-                img = FileUtilities.nameToURL("$CLASSPATH/ptolemy/plot/img/fill.gif", null, null);
+                img = FileUtilities.nameToURL(
+                        "$CLASSPATH/ptolemy/plot/img/fill.gif", null, null);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

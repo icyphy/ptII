@@ -424,25 +424,25 @@ public class JTreePane extends JSplitPane {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
-                    public void run() {
-                        try {
-                            final JTreePane sp = new JTreePane();
-                            sp.addEntry(null, "Foo", new JLabel("foo's component"));
-                            sp.addEntry(null, "Bar", new JLabel("bar's component"));
-                            sp.addEntry(null, "Baz", new JLabel("baz's component"));
-                            sp.addEntry(null, "Moo", new JLabel("moo's component"));
+                public void run() {
+                    try {
+                        final JTreePane sp = new JTreePane();
+                        sp.addEntry(null, "Foo", new JLabel("foo's component"));
+                        sp.addEntry(null, "Bar", new JLabel("bar's component"));
+                        sp.addEntry(null, "Baz", new JLabel("baz's component"));
+                        sp.addEntry(null, "Moo", new JLabel("moo's component"));
 
-                            JFrame f = new BasicFrame("Entry test");
-                            f.getContentPane().add("Center", sp);
+                        JFrame f = new BasicFrame("Entry test");
+                        f.getContentPane().add("Center", sp);
 
-                            f.setSize(600, 400);
-                            f.setVisible(true);
-                        } catch (Exception ex) {
-                            System.err.println(ex.toString());
-                            ex.printStackTrace();
-                        }
+                        f.setSize(600, 400);
+                        f.setVisible(true);
+                    } catch (Exception ex) {
+                        System.err.println(ex.toString());
+                        ex.printStackTrace();
                     }
-                };
+                }
+            };
             SwingUtilities.invokeAndWait(doActions);
         } catch (Exception ex) {
             System.err.println(ex.toString());

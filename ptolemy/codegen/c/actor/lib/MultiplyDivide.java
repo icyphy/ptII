@@ -53,7 +53,7 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
     public MultiplyDivide(ptolemy.actor.lib.MultiplyDivide actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method generates code that loops through each
@@ -82,8 +82,8 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
             initArgs.add(multiplyType);
             initArgs.add(outputType);
         }
-        _codeStream.appendCodeBlock(divideOnly ? "divideOnlyInitProduct" : "initProduct",
-                initArgs);
+        _codeStream.appendCodeBlock(divideOnly ? "divideOnlyInitProduct"
+                : "initProduct", initArgs);
 
         args.add("");
         args.add(outputType);

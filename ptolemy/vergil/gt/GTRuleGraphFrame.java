@@ -801,8 +801,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
         try {
             Collection<?> objectCollection;
             if (filter == null) {
-                objectCollection =
-                    GTTools.getChildren(container, true, true, true, true);
+                objectCollection = GTTools.getChildren(container, true, true,
+                        true, true);
             } else {
                 objectCollection = filter;
             }
@@ -998,7 +998,7 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
 
         private DefaultDirectoryAttribute _attribute;
 
-        private /*static*/ class ModelFileFilter implements FilenameFilter {
+        private/*static*/class ModelFileFilter implements FilenameFilter {
             // FindBugs suggests making this class static so as to decrease
             // the size of instances and avoid dangling references.
             // However, jdk1.5.0_11 says: modifier static not allowed here
@@ -1207,28 +1207,28 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
             NamedObj target = getTarget();
             Frame frame = getFrame();
             if (target instanceof GTEntity) {
-                List<?> attributeList =
-                    target.attributeList(EditorFactory.class);
+                List<?> attributeList = target
+                        .attributeList(EditorFactory.class);
                 if (attributeList.size() > 0) {
-                    EditorFactory factory =
-                        (EditorFactory) attributeList.get(0);
+                    EditorFactory factory = (EditorFactory) attributeList
+                            .get(0);
                     factory.createEditor(target, frame);
                 } else {
                     new EditParametersDialog(frame, target);
                 }
             } else {
-                List<?> ingredientsAttributes =
-                    target.attributeList(GTIngredientsAttribute.class);
+                List<?> ingredientsAttributes = target
+                        .attributeList(GTIngredientsAttribute.class);
                 try {
                     if (ingredientsAttributes.isEmpty()) {
-                        Attribute attribute = new GTIngredientsAttribute(target,
-                                target.uniqueName("operations"));
+                        Attribute attribute = new GTIngredientsAttribute(
+                                target, target.uniqueName("operations"));
                         attribute.setPersistent(false);
                     }
 
                     EditorFactory factory = new GTIngredientsEditor.Factory(
-                            target,
-                            target.uniqueName("ingredientsEditorFactory"));
+                            target, target
+                                    .uniqueName("ingredientsEditorFactory"));
                     factory.setPersistent(false);
                     factory.createEditor(target, frame);
                     factory.setContainer(null);
@@ -1304,8 +1304,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
                 _replaceFactory(_menuFactory, _configureMenuFactory, newFactory);
                 _configureMenuFactory = newFactory;
 
-                FigureAction operationsAction =
-                    new ConfigureOperationsAction("Operations");
+                FigureAction operationsAction = new ConfigureOperationsAction(
+                        "Operations");
                 _configureMenuFactory.addAction(operationsAction, "Customize");
             }
         }
@@ -1336,8 +1336,8 @@ public class GTRuleGraphFrame extends AbstractGTFrame implements
                             // menu.
                             item.setEnabled(false);
                         } else if (action instanceof ConfigureOperationsAction
-                                && (!(object instanceof Entity)
-                                        || !GTTools.isInReplacement(object))) {
+                                && (!(object instanceof Entity) || !GTTools
+                                        .isInReplacement(object))) {
                             // Hide the ConfigureOperationsAction from the
                             // context menu.
                             item.setVisible(false);

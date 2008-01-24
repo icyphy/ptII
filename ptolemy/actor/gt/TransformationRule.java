@@ -81,14 +81,15 @@ public class TransformationRule extends MultiCompositeActor implements
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         String modeString = mode.getExpression();
-        boolean singleRunMode = modeString.equals(Mode.REPLACE_FIRST.toString())
+        boolean singleRunMode = modeString
+                .equals(Mode.REPLACE_FIRST.toString())
                 || modeString.equals(Mode.REPLACE_ANY.toString())
                 || modeString.equals(Mode.REPLACE_ALL.toString());
         boolean repeat = ((BooleanToken) repeatUntilFixpoint.getToken())
                 .booleanValue();
         if (repeat && !singleRunMode) {
-            throw new IllegalActionException(
-                    "When the mode is set to \"" + modeString + "\", "
+            throw new IllegalActionException("When the mode is set to \""
+                    + modeString + "\", "
                     + "repeatUntilFixpoint must be false.");
         }
 
@@ -132,8 +133,8 @@ public class TransformationRule extends MultiCompositeActor implements
                                 GraphTransformer.transform(this, result);
                                 break;
                             case REPLACE_ANY:
-                                result = _lastResults.get(_random.nextInt(
-                                        _lastResults.size()));
+                                result = _lastResults.get(_random
+                                        .nextInt(_lastResults.size()));
                                 GraphTransformer.transform(this, result);
                                 break;
                             case REPLACE_ALL:
@@ -243,10 +244,10 @@ public class TransformationRule extends MultiCompositeActor implements
     public void valueChanged(Settable settable) {
         if (settable == mode) {
             String modeString = mode.getExpression();
-            boolean singleRunMode =
-                modeString.equals(Mode.REPLACE_FIRST.toString())
-                        || modeString.equals(Mode.REPLACE_ANY.toString())
-                        || modeString.equals(Mode.REPLACE_ALL.toString());
+            boolean singleRunMode = modeString.equals(Mode.REPLACE_FIRST
+                    .toString())
+                    || modeString.equals(Mode.REPLACE_ANY.toString())
+                    || modeString.equals(Mode.REPLACE_ALL.toString());
             if (singleRunMode) {
                 try {
                     if (matchInput != null) {
@@ -266,8 +267,8 @@ public class TransformationRule extends MultiCompositeActor implements
                         remaining = null;
                     }
                     if (modified == null) {
-                        modified =
-                            new TypedIOPort(this, "modified", false, true);
+                        modified = new TypedIOPort(this, "modified", false,
+                                true);
                         modified.setTypeEquals(BaseType.BOOLEAN);
                         modified.setPersistent(false);
                         new StringAttribute(modified, "_cardinal")
@@ -308,16 +309,15 @@ public class TransformationRule extends MultiCompositeActor implements
                         matchOutput.setPersistent(false);
                     }
                     if (trigger == null) {
-                        trigger =
-                            new TypedIOPort(this, "trigger", true, false);
+                        trigger = new TypedIOPort(this, "trigger", true, false);
                         trigger.setTypeEquals(BaseType.BOOLEAN);
                         trigger.setPersistent(false);
                         new StringAttribute(trigger, "_cardinal")
                                 .setExpression("SOUTH");
                     }
                     if (remaining == null) {
-                        remaining =
-                            new TypedIOPort(this, "remaining", false, true);
+                        remaining = new TypedIOPort(this, "remaining", false,
+                                true);
                         remaining.setTypeEquals(BaseType.INT);
                         remaining.setPersistent(false);
                         new StringAttribute(remaining, "_cardinal")
@@ -446,8 +446,7 @@ public class TransformationRule extends MultiCompositeActor implements
 
     private CompositeEntity _lastModel;
 
-    private LinkedList<MatchResult> _lastResults =
-        new LinkedList<MatchResult>();
+    private LinkedList<MatchResult> _lastResults = new LinkedList<MatchResult>();
 
     private LastResultsOperation _lastResultsOperation;
 

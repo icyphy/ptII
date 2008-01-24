@@ -77,11 +77,11 @@ public class AttributeValueIcon extends XMLIcon {
         super(container, name);
 
         attributeName = new StringAttribute(this, "attributeName");
-        
+
         displayWidth = new Parameter(this, "displayWidth");
         displayWidth.setExpression("6");
         displayWidth.setTypeEquals(BaseType.INT);
-        
+
         displayHeight = new Parameter(this, "displayHeight");
         displayHeight.setExpression("1");
         displayHeight.setTypeEquals(BaseType.INT);
@@ -149,8 +149,10 @@ public class AttributeValueIcon extends XMLIcon {
 
                 try {
                     int width = ((IntToken) displayWidth.getToken()).intValue();
-                    int height = ((IntToken) displayHeight.getToken()).intValue();
-                    truncated = StringUtilities.truncateString(value, width, height);
+                    int height = ((IntToken) displayHeight.getToken())
+                            .intValue();
+                    truncated = StringUtilities.truncateString(value, width,
+                            height);
                 } catch (IllegalActionException ex) {
                     // Ignore... use whole string.
                 }

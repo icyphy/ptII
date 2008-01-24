@@ -55,7 +55,7 @@ public class PointerToken extends Token {
     public PointerToken() {
         super();
     }
-    
+
     /** Construct a token with the specified memory location.
      *  @param value The specified object referred to by this token.
      *  @exception IllegalActionException If the argument is not of
@@ -65,10 +65,10 @@ public class PointerToken extends Token {
     public PointerToken(int pointer) throws IllegalActionException {
         _value = pointer;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the type of this token.
      *  @return {@link #POINTER}, the least upper bound of all the pointer
      *  types.
@@ -76,7 +76,7 @@ public class PointerToken extends Token {
     public Type getType() {
         return POINTER;
     }
-    
+
     /** Return the address of the pointer.
      *  @return The int that this Token was created with.
      */
@@ -97,11 +97,11 @@ public class PointerToken extends Token {
         if (!(rightArgument instanceof PointerToken)) {
             return BooleanToken.FALSE;
         }
-        
+
         if (getValue() != ((PointerToken) rightArgument).getValue()) {
             return BooleanToken.FALSE;
         }
-        
+
         return BooleanToken.TRUE;
     }
 
@@ -159,7 +159,8 @@ public class PointerToken extends Token {
                 return token;
             } else {
                 throw new IllegalActionException("Attempt to convert token "
-                        + token + " into a Pointer token, which is not possible.");
+                        + token
+                        + " into a Pointer token, which is not possible.");
             }
         }
 

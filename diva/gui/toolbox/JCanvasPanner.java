@@ -399,28 +399,28 @@ public class JCanvasPanner extends JPanel {
         try {
             // Run this in the Swing Event Thread.
             Runnable doActions = new Runnable() {
-                    public void run() {
-                        try {
-                            JFrame f = new JFrame();
+                public void run() {
+                    try {
+                        JFrame f = new JFrame();
 
-                            SimplePane rootPane = new SimplePane();
-                            JCanvas canvas = new JCanvas(rootPane);
-                            canvas.setSize(200, 200);
+                        SimplePane rootPane = new SimplePane();
+                        JCanvas canvas = new JCanvas(rootPane);
+                        canvas.setSize(200, 200);
 
-                            JCanvasPanner pan = new JCanvasPanner(canvas);
-                            pan.setSize(50, 50);
-                            pan.setPreferredSize(new Dimension(50, 50));
-                            f.getContentPane().setLayout(new GridLayout(2, 1));
-                            f.getContentPane().add(canvas);
-                            f.getContentPane().add(pan);
-                            f.pack();
-                            f.setVisible(true);
-                        } catch (Exception ex) {
-                            System.err.println(ex.toString());
-                            ex.printStackTrace();
-                        }
+                        JCanvasPanner pan = new JCanvasPanner(canvas);
+                        pan.setSize(50, 50);
+                        pan.setPreferredSize(new Dimension(50, 50));
+                        f.getContentPane().setLayout(new GridLayout(2, 1));
+                        f.getContentPane().add(canvas);
+                        f.getContentPane().add(pan);
+                        f.pack();
+                        f.setVisible(true);
+                    } catch (Exception ex) {
+                        System.err.println(ex.toString());
+                        ex.printStackTrace();
                     }
-                };
+                }
+            };
             SwingUtilities.invokeAndWait(doActions);
         } catch (Exception ex) {
             System.err.println(ex.toString());

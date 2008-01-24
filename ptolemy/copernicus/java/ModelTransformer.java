@@ -1160,13 +1160,15 @@ public class ModelTransformer extends SceneTransformer implements
                         if (isNonVoidMethod && stmt instanceof AssignStmt) {
                             box.setValue(IntConstant.v(1));
                         } else {
-                            System.out.println("mt: executable: removing "  + stmt);
+                            System.out.println("mt: executable: removing "
+                                    + stmt);
                             body.getUnits().remove(stmt);
                         }
                     }
-                    if (PtolemyUtilities.initializableInterface.declaresMethod(r
-                            .getMethod().getSubSignature())) {
-                        System.out.println("mt: initializable: removing "  + stmt);
+                    if (PtolemyUtilities.initializableInterface
+                            .declaresMethod(r.getMethod().getSubSignature())) {
+                        System.out.println("mt: initializable: removing "
+                                + stmt);
                         body.getUnits().remove(stmt);
                     }
                 }
@@ -2282,8 +2284,7 @@ public class ModelTransformer extends SceneTransformer implements
                 || attribute instanceof GeneratorTableauAttribute
                 || attribute.getName().equals("_showName")
                 || attribute.getName().equals("_vergilCenter")
-                || attribute.getName().equals("_vergilZoomFactor"))
-            {
+                || attribute.getName().equals("_vergilZoomFactor")) {
             return true;
         }
 

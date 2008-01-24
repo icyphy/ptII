@@ -36,7 +36,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
 
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
@@ -441,9 +440,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                                 finalChoice = query.getStringValue("choice");
                                 span = new String(query.getStringValue("span"));
                                 VerificationUtility vl = new VerificationUtility();
-                                smvDescritpion.append(vl.generateSmvDescription(
-                                        (CompositeActor) model, pattern,
-                                        finalChoice));
+                                smvDescritpion.append(vl
+                                        .generateSmvDescription(
+                                                (CompositeActor) model,
+                                                pattern, finalChoice));
                                 JFileChooser fileSaveDialog = new JFileChooser();
                                 // SMVFileFilter filter = new SMVFileFilter();
                                 // fileSaveDialog.setFileFilter(filter);
@@ -508,7 +508,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             }
         }
 
-       
         private Director _listeningTo;
     }
 

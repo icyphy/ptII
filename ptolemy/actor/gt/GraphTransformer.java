@@ -268,13 +268,13 @@ public class GraphTransformer extends ChangeRequest {
                     ingredientList = ((GTEntity) replacementEntity)
                             .getOperationsAttribute().getIngredientList();
                 } else {
-                    List<?> attributes = replacementEntity.attributeList(
-                            GTIngredientsAttribute.class);
+                    List<?> attributes = replacementEntity
+                            .attributeList(GTIngredientsAttribute.class);
                     if (attributes.isEmpty()) {
                         continue;
                     } else {
-                        ingredientList = ((GTIngredientsAttribute)
-                                attributes.get(0)).getIngredientList();
+                        ingredientList = ((GTIngredientsAttribute) attributes
+                                .get(0)).getIngredientList();
                     }
                 }
                 for (GTIngredient ingredient : ingredientList) {
@@ -642,28 +642,27 @@ public class GraphTransformer extends ChangeRequest {
     private void _removeLinks(CompositeEntity pattern) {
         Collection<?> relations = GTTools.getChildren(pattern, false, false,
                 false, true);
-        Set<Pair<Relation, Object>> linksToRemove =
-            new HashSet<Pair<Relation, Object>>();
+        Set<Pair<Relation, Object>> linksToRemove = new HashSet<Pair<Relation, Object>>();
         for (Object relationObject : relations) {
             Relation relation = (Relation) relationObject;
-            Relation replacementRelation =
-                (Relation) _patternToReplacement.get(relation);
+            Relation replacementRelation = (Relation) _patternToReplacement
+                    .get(relation);
             if (replacementRelation == null) {
                 continue;
             }
 
             List<?> linkedObjectList = relation.linkedObjectsList();
             for (Object linkedObject : linkedObjectList) {
-                Object replacementLinkedObject =
-                    _patternToReplacement.get(linkedObject);
+                Object replacementLinkedObject = _patternToReplacement
+                        .get(linkedObject);
                 if (replacementLinkedObject == null) {
                     continue;
                 }
 
                 boolean linkRemoved;
                 if (replacementLinkedObject instanceof Port) {
-                    linkRemoved = !((Port) replacementLinkedObject).isLinked(
-                            replacementRelation);
+                    linkRemoved = !((Port) replacementLinkedObject)
+                            .isLinked(replacementRelation);
                 } else {
                     linkRemoved = !replacementRelation.linkedObjectsList()
                             .contains(replacementLinkedObject);
@@ -677,8 +676,8 @@ public class GraphTransformer extends ChangeRequest {
         }
 
         for (Pair<Relation, Object> link : linksToRemove) {
-            Relation hostRelation =
-                (Relation) _matchResult.get(link.getFirst());
+            Relation hostRelation = (Relation) _matchResult
+                    .get(link.getFirst());
             if (hostRelation == null) {
                 continue;
             }
@@ -697,8 +696,8 @@ public class GraphTransformer extends ChangeRequest {
 
             String moml = "<unlink port=\"" + name + "\" relation=\""
                     + hostRelation.getName() + "\"/>";
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(this, hostRelation.getContainer(), moml);
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    hostRelation.getContainer(), moml);
             request.execute();
         }
 

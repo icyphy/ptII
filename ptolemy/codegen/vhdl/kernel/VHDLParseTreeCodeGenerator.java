@@ -1147,14 +1147,14 @@ public class VHDLParseTreeCodeGenerator extends AbstractParseTreeVisitor
         } else if (operator.kind == PtParserConstants.NOTEQUALS) {
             //result = leftToken.isEqualTo(rightToken).not();
         } else { /*
-                if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
-                throw new IllegalActionException("The " + operator.image
-                + " operator can only be applied between scalars.");
-                }
+                       if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
+                       throw new IllegalActionException("The " + operator.image
+                       + " operator can only be applied between scalars.");
+                       }
 
-                ScalarToken leftScalar = (ScalarToken) leftToken;
-                ScalarToken rightScalar = (ScalarToken) rightToken;
-                */
+                       ScalarToken leftScalar = (ScalarToken) leftToken;
+                       ScalarToken rightScalar = (ScalarToken) rightToken;
+                       */
 
             if (operator.kind == PtParserConstants.GTE) {
                 //result = leftScalar.isLessThan(rightScalar).not();

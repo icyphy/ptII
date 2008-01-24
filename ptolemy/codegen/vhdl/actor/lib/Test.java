@@ -91,7 +91,8 @@ public class Test extends VHDLCodeGeneratorHelper {
         int i;
         StringBuffer values = new StringBuffer();
         for (i = 0; i < valueArray.length() - 1; i++) {
-            values.append(((FixToken) valueArray.getElement(i)).convertToDouble()
+            values.append(((FixToken) valueArray.getElement(i))
+                    .convertToDouble()
                     + ", ");
         }
         values.append(((FixToken) valueArray.getElement(i)).convertToDouble());

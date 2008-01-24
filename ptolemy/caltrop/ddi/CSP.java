@@ -483,8 +483,8 @@ public class CSP extends AbstractDDI implements DDI {
                 if (needSoFar == null) {
                     profile.put(chID, Integer.valueOf(numNeeded - numHave));
                 } else {
-                    profile.put(chID, Integer.valueOf(Math.max(numNeeded - numHave,
-                            needSoFar.intValue())));
+                    profile.put(chID, Integer.valueOf(Math.max(numNeeded
+                            - numHave, needSoFar.intValue())));
                 }
             }
         }
