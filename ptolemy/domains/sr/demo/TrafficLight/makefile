@@ -55,6 +55,7 @@ OTHER_FILES_TO_BE_JARED = \
 	TrafficLight_StateCharts.png \
 	WirelessDeployment.xml \
 	WirelessDeployment.htm \
+	SimpleTrafficLight.xml \
 	TrafficLight.htm \
 	TrafficLight.xml
 
