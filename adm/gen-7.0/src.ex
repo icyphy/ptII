@@ -152,12 +152,14 @@ ptolemy/filter/*
 ptolemy/filter
 ptolemy/chic
 ptolemy/codegen/c/domains/pn
+ptolemy/codegen/vhdl
 ptolemy/com
 ptolemy/configs/doc/whatsNew8.0.htm
 ptolemy/configs/fmvEffigyFactory.xml
 ptolemy/configs/fmvTableauFactory.xml
 ptolemy/configs/test/vergilConfigurationNoMatlab.xml
 ptolemy/configs/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
+ptolemy/configs/vhdl
 ptolemy/configs/visualnc
 ptolemy/data/expr/TVariable.java
 ptolemy/gui/JPanelTest.java
