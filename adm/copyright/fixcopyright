@@ -112,7 +112,7 @@ search $@
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\)-200[01234567/Copyright (c) \1-2008/' \
+    sed 's/Copyright (c) \(199[0-9]\)-200[01234567]/Copyright (c) \1-2008/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
