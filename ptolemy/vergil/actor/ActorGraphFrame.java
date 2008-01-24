@@ -1,6 +1,6 @@
 /* A graph editor frame for Ptolemy models.
 
- Copyright (c) 1998-2008 The Regents of the University of California.
+ Copyright (c) 1998-2007 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -55,7 +55,6 @@ import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.actor.gui.UserActorLibrary;
-import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
@@ -411,87 +410,95 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
                         if (model instanceof CompositeActor) {
 
-                            Director director = ((CompositeActor) model)
-                                    .getDirector();
-                            if (!(director instanceof SRDirector)) {
+                            if (VerificationUtility
+                                    .isValidModelForVerification((CompositeActor) model)) {
+                                StringBuffer smvDescritpion = new StringBuffer(
+                                        "");
 
-                            }
+                                Query query = new Query();
 
-                            StringBuffer smvDescritpion = new StringBuffer("");
+                                query.addLine("formula",
+                                        "Input temporal formula", "");
+                                String[] possibleChoice = new String[2];
+                                possibleChoice[0] = new String("CTL");
+                                possibleChoice[1] = new String("LTL");
+                                query.addRadioButtons("choice", "Formula Type",
+                                        possibleChoice, "CTL");
+                                query.addLine("span", "Size of span", "1");
+                                ComponentDialog dialog = new ComponentDialog(
+                                        null, "Input Formula", query);
 
-                            Query query = new Query();
+                                String pattern = "";
+                                String finalChoice = "";
+                                String span = "";
+                                if (dialog.buttonPressed().equals("OK")) {
+                                    pattern = query.getStringValue("formula");
+                                    finalChoice = query
+                                            .getStringValue("choice");
+                                    span = new String(query
+                                            .getStringValue("span"));
 
-                            query.addLine("formula", "Input temporal formula",
-                                    "");
-                            String[] possibleChoice = new String[2];
-                            possibleChoice[0] = new String("CTL");
-                            possibleChoice[1] = new String("LTL");
-                            query.addRadioButtons("choice", "Formula Type",
-                                    possibleChoice, "CTL");
-                            query.addLine("span", "Size of span", "1");
-                            ComponentDialog dialog = new ComponentDialog(null,
-                                    "Input Formula", query);
-
-                            String pattern = "";
-                            String finalChoice = "";
-                            String span = "";
-                            if (dialog.buttonPressed().equals("OK")) {
-                                pattern = query.getStringValue("formula");
-                                finalChoice = query.getStringValue("choice");
-                                span = new String(query.getStringValue("span"));
-                                VerificationUtility vl = new VerificationUtility();
-                                smvDescritpion.append(vl
-                                        .generateSmvDescription(
-                                                (CompositeActor) model,
-                                                pattern, finalChoice));
-                                JFileChooser fileSaveDialog = new JFileChooser();
-                                // SMVFileFilter filter = new SMVFileFilter();
-                                // fileSaveDialog.setFileFilter(filter);
-                                fileSaveDialog
-                                        .setDialogType(JFileChooser.SAVE_DIALOG);
-                                fileSaveDialog
-                                        .setDialogTitle("Convert Ptolemy model into .smv file");
-                                if (_directory != null) {
+                                    smvDescritpion
+                                            .append(VerificationUtility
+                                                    .generateSMVDescription(
+                                                            (CompositeActor) model,
+                                                            pattern,
+                                                            finalChoice, span));
+                                    JFileChooser fileSaveDialog = new JFileChooser();
+                                    // SMVFileFilter filter = new SMVFileFilter();
+                                    // fileSaveDialog.setFileFilter(filter);
                                     fileSaveDialog
-                                            .setCurrentDirectory(_directory);
-                                } else {
-                                    // The default on Windows is to open at
-                                    // user.home, which is typically an absurd
-                                    // directory inside the O/S installation.
-                                    // So we use the current directory instead.
-                                    // FIXME: Could this throw a security
-                                    // exception in an applet?
-                                    String cwd = StringUtilities
-                                            .getProperty("user.dir");
-
-                                    if (cwd != null) {
+                                            .setDialogType(JFileChooser.SAVE_DIALOG);
+                                    fileSaveDialog
+                                            .setDialogTitle("Convert Ptolemy model into .smv file");
+                                    if (_directory != null) {
                                         fileSaveDialog
-                                                .setCurrentDirectory(new File(
-                                                        cwd));
+                                                .setCurrentDirectory(_directory);
+                                    } else {
+                                        // The default on Windows is to open at
+                                        // user.home, which is typically an absurd
+                                        // directory inside the O/S installation.
+                                        // So we use the current directory instead.
+                                        // FIXME: Could this throw a security
+                                        // exception in an applet?
+                                        String cwd = StringUtilities
+                                                .getProperty("user.dir");
+
+                                        if (cwd != null) {
+                                            fileSaveDialog
+                                                    .setCurrentDirectory(new File(
+                                                            cwd));
+                                        }
                                     }
-                                }
 
-                                int returnValue = fileSaveDialog
-                                        .showOpenDialog(ActorGraphFrame.this);
+                                    int returnValue = fileSaveDialog
+                                            .showOpenDialog(ActorGraphFrame.this);
 
-                                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                                    _directory = fileSaveDialog
-                                            .getCurrentDirectory();
+                                    if (returnValue == JFileChooser.APPROVE_OPTION) {
+                                        _directory = fileSaveDialog
+                                                .getCurrentDirectory();
 
-                                    try {
-                                        File smvFile = fileSaveDialog
-                                                .getSelectedFile()
-                                                .getCanonicalFile();
-                                        FileWriter smvFileWriter = new FileWriter(
-                                                smvFile);
-                                        smvFileWriter.write(smvDescritpion
-                                                .toString());
-                                        smvFileWriter.close();
-                                    } catch (Exception ex) {
+                                        try {
+                                            File smvFile = fileSaveDialog
+                                                    .getSelectedFile()
+                                                    .getCanonicalFile();
+                                            FileWriter smvFileWriter = new FileWriter(
+                                                    smvFile);
+                                            smvFileWriter.write(smvDescritpion
+                                                    .toString());
+                                            smvFileWriter.close();
+                                        } catch (Exception ex) {
+                                            MessageHandler
+                                                    .error("Failed to perform file writing process: "
+                                                            + ex);
 
+                                        }
                                     }
-                                }
 
+                                }
+                            } else {
+                                MessageHandler
+                                        .error("The execution director is not SR.\nCurrently it is beyond our scope.");
                             }
 
                         }
