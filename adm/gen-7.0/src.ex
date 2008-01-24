@@ -186,6 +186,7 @@ ptolemy/copernicus/jhdl
 ptolemy/copernicus/shallow/test/codeGenerator.tmp
 ptolemy/copernicus/shallow/ptolemy.giotto
 ptolemy/data/properties
+ptolemy/data/PointerToken.java
 ptolemy/domains/cont
 ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock
 ptolemy/domains/ct/demo/Agilent
@@ -272,10 +273,12 @@ ptolemy/schematic
 ptolemy/system
 ptolemy/vergil/JModelViewer.java
 ptolemy/vergil/VergilApplet.java
+ptolemy/vergil/actor/VerificationUtility.java
 ptolemy/vergil/debugger/demo2
 ptolemy/vergil/fsm/fmv
 ptolemy/vergil/graph
 ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
+
 updateMoMLFiles.xml
 devel
 htmlchek*
