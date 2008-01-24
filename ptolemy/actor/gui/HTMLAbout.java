@@ -529,7 +529,9 @@ public class HTMLAbout {
         String errorMessage = "Expanding the library <b>should</b> result in expanding "
                 + "everything in the left hand tree pane. "
                 + "<p>If the left hand tree pane expands and then contracts, "
-                + "there is a problem with one of the leaves of the tree. "
+                + "there is a problem with one of the leaves of the tree "
+                + "such as invoking a change request in an "
+                + "<i>XXX</i>Icon.xml. "
                 + "<p>The quickest way to find this is to restart vergil "
                 + "and expand each branch in the tree by hand.";
         try {
