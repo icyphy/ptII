@@ -305,7 +305,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
             // As of jdk1.4, the .registerKeyboardAction() method below is
             // considered obsolete.  Docs recommend using these two methods:
             //  .getInputMap().put(aKeyStroke, aCommand);
-            //  .getActionMap().put(aCommmand, anAction);
+            //  .getActionMap().put(aCommand, anAction);
             // with the String aCommand inserted to link them together.
             // See javax.swing.Jcomponent.registerKeyboardAction().
             // Registration of up-arrow call-backs.
