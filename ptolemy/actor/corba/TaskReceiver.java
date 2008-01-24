@@ -65,7 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  where "xyz.eecs.berkeley.edu" is the machine runing name server, and
  "1050" is the port for name service.
 
- Specify the name of the coordiantor with <i>coordinatorName<i>, which is
+ Specify the name of the coordinator with <i>coordinatorName<i>, which is
  registed on the name server.
 
  Specify whether the actor blocks when it haven't receive data with
@@ -332,7 +332,7 @@ public class TaskReceiver extends Source {
     // the Client objecte to commute with the remote Coordinator object.
     private Client _client;
 
-    // the proxy object of the Coordiantor.
+    // the proxy object of the Coordinator.
     private Coordinator _coordinator;
 
     // Cached value of whether blocks when no data.
