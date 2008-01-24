@@ -31,7 +31,7 @@
 ME =		ptolemy/domains/sr/demo
 
 DIRS = 		FeedbackLoop GuardedCount ReflexGame \
-		SimpleTrafficLight TokenRing TrafficLight
+		TokenRing TrafficLight
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -50,7 +50,6 @@ PTCLASSALLJARS = \
 	FeedbackLoop/FeedbackLoop.jar \
 	GuardedCount/GuardedCount.jar \
 	ReflexGame/ReflexGame.jar \
-	SimpleTrafficLight/SimpleTrafficLight.jar \
 	TokenRing/TokenRing.jar \
 	TrafficLight/TrafficLight.jar
 
