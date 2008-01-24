@@ -85,6 +85,7 @@ bin/tiniconverter
 bin/ptmatlab.dll
 brass
 collections
+com/jgoodies
 com/microstar/xml/driver
 com/microstar/xml/SAXDriver.*
 config/*.class
