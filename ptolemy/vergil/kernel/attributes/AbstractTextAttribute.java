@@ -157,7 +157,7 @@ public class AbstractTextAttribute extends VisibleAttribute {
                 && !_inAttributeChanged) {
             try {
                 // Prevent redundant actions here... When we evaluate the
-                // _other_ atribute here (whichever one did _not_ trigger
+                // _other_ attribute here (whichever one did _not_ trigger
                 // this call, it will likely trigger another call to
                 // attributeChanged(), which will result in this action
                 // being performed twice.
