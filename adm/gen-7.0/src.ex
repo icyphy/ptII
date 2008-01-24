@@ -201,6 +201,7 @@ ptolemy/domains/dt/kernel/test/chf
 ptolemy/domains/dfm
 ptolemy/domains/fairdf
 ptolemy/domains/fsm/demo/Hysteresis
+ptolemy/domains/fsm/demo/SystemLevelType
 ptolemy/domains/fsm/kernel/fmv
 ptolemy/domains/generic
 ptolemy/domains/giotto/demo/Helicopter
