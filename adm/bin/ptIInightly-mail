@@ -28,7 +28,7 @@ fi
 # ptII/adm/bin/ptIInightly
 # ptII/adm/gen-xxx/makefile
 # buildmaster/web/adm/makefile
-GENVERSION=gen-6.1
+GENVERSION=gen-7.0
 GENDIR=$ADMDIR/$GENVERSION
 cd $GENDIR
 
