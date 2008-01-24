@@ -44,7 +44,7 @@ public abstract class PropertySolver extends Attribute {
      * Return the property helper for the given object. 
      * @param object The given object.
      * @return The property helper for the object.
-     * @throws IllegalActionException Thrown if the helper cannot
+     * @exception IllegalActionException Thrown if the helper cannot
      *  be found or instantiated.
      */
     public abstract PropertyHelper getHelper(Object object)
@@ -102,7 +102,7 @@ public abstract class PropertySolver extends Attribute {
      * 
      * @param object
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected PropertyHelper _getHelper(Object object)
             throws IllegalActionException {
@@ -196,7 +196,7 @@ public abstract class PropertySolver extends Attribute {
      * @param latticeName The given name of the property lattice. 
      * @return The property constraint solver associated with the
      *  given lattice name. 
-     * @throws IllegalActionException Thrown if no matched solver
+     * @exception IllegalActionException Thrown if no matched solver
      *  is found.
      */
     public static PropertySolver findSolver(String identifier)

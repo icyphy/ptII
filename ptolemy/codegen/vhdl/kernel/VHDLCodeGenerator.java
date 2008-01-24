@@ -477,7 +477,7 @@ public class VHDLCodeGenerator extends CodeGenerator {
 
     /**
      * Write the top level file.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _writeTopLevel() throws IllegalActionException {
         StringBuffer code = new StringBuffer();

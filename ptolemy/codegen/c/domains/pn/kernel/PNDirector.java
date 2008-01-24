@@ -345,7 +345,7 @@ public class PNDirector extends Director {
 
     /** 
      * @param code The given code buffer.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _generateThreadFunctionCode(StringBuffer code) throws IllegalActionException {
         List actorList = 

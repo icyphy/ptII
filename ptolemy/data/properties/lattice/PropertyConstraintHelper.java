@@ -77,7 +77,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * with the given component.
      * @param solver TODO
      * @param component The associated component.
-     * @throws IllegalActionException Thrown if 
+     * @exception IllegalActionException Thrown if 
      *  PropertyConstraintHelper(NamedObj, PropertyLattice, boolean)
      *  throws it. 
      */
@@ -94,7 +94,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @param useDefaultConstraints Indicate whether this helper
      *  uses the default actor constraints. 
      * @param solver The given property lattice.
-     * @throws IllegalActionException Thrown if the helper cannot
+     * @exception IllegalActionException Thrown if the helper cannot
      *  be initialized.
      */
     public PropertyConstraintHelper(PropertySolver solver, Object component,
@@ -244,7 +244,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * Return the property term from the given object.
      * @param object The given object.
      * @return The property term of the given object.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public InequalityTerm getPropertyTerm(Object object)
             throws IllegalActionException {
@@ -298,7 +298,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * 
      * @param attribute
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public ASTPtRootNode getParseTree(Attribute attribute)
             throws IllegalActionException {
@@ -334,7 +334,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @param object1 The first given port.
      * @param object2 The second given port.
      * @param lattice The given lattice.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public Inequality setAtLeast(Object object1, Object object2,
             boolean isPermanent) throws IllegalActionException {
@@ -347,7 +347,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * to be same as the given function term.
      * @param object The given port.
      * @param term The given function term.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public List setSameAs(Object object1, Object object2)
             throws IllegalActionException {
@@ -359,7 +359,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * to be same as the given function term.
      * @param object The given port.
      * @param term The given function term.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public List setSameAs(Object object1, Object object2, boolean isPermanent)
             throws IllegalActionException {
@@ -376,7 +376,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
     /**
      * 
      * @param constraintType
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _setConnectionConstraintType(ConstraintType constraintType,
             ConstraintType compositeConstraintType,
@@ -550,7 +550,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
     /**
      * 
      * @param actorConstraintType
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _changeDefaultConstraints(ConstraintType actorConstraintType)
             throws IllegalActionException {
@@ -588,7 +588,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * @param constraintType
      * @param object
      * @param portList2
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected List _constraintObject(ConstraintType constraintType,
             Object object, List objectList) throws IllegalActionException {
@@ -716,7 +716,7 @@ public class PropertyConstraintHelper extends PropertyHelper {
      * It resets the resolved property of all propertyable objects. This
      * method is called in the beginning of the
      * PropertyConstraintSolver.resolveProperties() method.
-     * @throws IllegalActionException Thrown if 
+     * @exception IllegalActionException Thrown if 
      */
     public void reinitialize() throws IllegalActionException {
         List propertyables = _getPropertyables();

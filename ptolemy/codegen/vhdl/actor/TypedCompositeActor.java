@@ -194,7 +194,7 @@ public class TypedCompositeActor extends VHDLCodeGeneratorHelper {
 
     /**
      * Throw an exception.
-     * @throws IllegalActionException Thrown if a composite is asked
+     * @exception IllegalActionException Thrown if a composite is asked
      *  if it is synthesizable. 
      */
     public boolean isSynthesizable() throws IllegalActionException {

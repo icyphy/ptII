@@ -293,7 +293,7 @@ public class ReduceWorker extends TypedAtomicActor {
 
     /** 
      * @return The base class return value.
-     * @throws IllegalActionException If thrown in the base class.
+     * @exception IllegalActionException If thrown in the base class.
      */
     public boolean postfire() throws IllegalActionException {
         _readMode = false;
@@ -302,7 +302,7 @@ public class ReduceWorker extends TypedAtomicActor {
 
     /**
      * Clean up memory.
-     * @throws IllegalActionException If thrown in the base class.
+     * @exception IllegalActionException If thrown in the base class.
      */
     public void wrapup() throws IllegalActionException {
         _runningAlgorithms = new Hashtable<String, MapReduceAlgorithm>();
@@ -329,7 +329,7 @@ public class ReduceWorker extends TypedAtomicActor {
 
     /**
      * Set the map method using the class specified in <i>classNameForMap<i>. 
-     * @throws IllegalActionException If the map method does not
+     * @exception IllegalActionException If the map method does not
      * exist, has the wrong type signature, or has the wrong
      * access modifiers.
      */

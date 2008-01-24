@@ -56,7 +56,7 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
      * Construct the property constraint helper associated
      * with the given component.
      * @param component The associated component.
-     * @throws IllegalActionException Thrown if 
+     * @exception IllegalActionException Thrown if 
      *  PropertyConstraintHelper(NamedObj, PropertyLattice, boolean)
      *  throws it. 
      */
@@ -72,7 +72,7 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
      * @param lattice The given property lattice.
      * @param useDefaultConstraints Indicate whether this helper
      *  uses the default actor constraints. 
-     * @throws IllegalActionException Thrown if the helper cannot
+     * @exception IllegalActionException Thrown if the helper cannot
      *  be initialized.
      */
     public PropertyConstraintASTNodeHelper(PropertySolver solver,
@@ -118,7 +118,7 @@ public class PropertyConstraintASTNodeHelper extends PropertyConstraintHelper {
      * @param port The given port.
      * @param lattice The given property lattice.
      * @return The property term of the given port.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public InequalityTerm getPropertyTerm(Object object)
             throws IllegalActionException {

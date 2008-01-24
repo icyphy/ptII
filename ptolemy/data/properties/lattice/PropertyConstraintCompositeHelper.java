@@ -58,8 +58,8 @@ public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper 
      *  with the given TypedCompositeActor.
      * @param solver TODO
      * @param component The associated component.
-     *  @throws IllegalActionException 
-     * @throws IllegalActionException 
+     *  @exception IllegalActionException 
+     * @exception IllegalActionException 
      */
     public PropertyConstraintCompositeHelper(PropertySolver solver,
             ptolemy.actor.CompositeActor component)
@@ -130,7 +130,7 @@ public class PropertyConstraintCompositeHelper extends PropertyConstraintHelper 
     /**
      * 
      * @param constraintType
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     protected void _setConnectionConstraintType(ConstraintType constraintType,
             ConstraintType compositeConstraintType,

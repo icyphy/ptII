@@ -51,7 +51,7 @@ public class Expression extends PropertyConstraintHelper {
      * be STATIC, but does not use the default actor constraints.
      * @param actor The given Source actor
      * @param lattice The staticDynamic lattice.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public Expression(PropertySolver solver, ptolemy.actor.lib.Expression actor)
             throws IllegalActionException {

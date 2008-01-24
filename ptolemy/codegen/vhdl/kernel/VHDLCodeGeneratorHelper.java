@@ -90,7 +90,7 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
      *  generate file is the synthesizable code file or if this helper
      *  is non-synthesizable and the current generate file is the 
      *  testbench file; Otherwise, return false. 
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     public boolean doGenerate() throws IllegalActionException {
         if (isSynthesizable()) {
@@ -294,7 +294,7 @@ public class VHDLCodeGeneratorHelper extends CodeGeneratorHelper {
      * @param port The given port.
      * @return The precision of the source port that is connected to the
      * given port.
-     * @throws IllegalActionException If getSourceChannel(IOPort, int) or
+     * @exception IllegalActionException If getSourceChannel(IOPort, int) or
      *  getPrecision(IOPort) throw it.
      */
     protected Precision _getSourcePortPrecision(IOPort port)

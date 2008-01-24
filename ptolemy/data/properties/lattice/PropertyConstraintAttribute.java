@@ -12,8 +12,8 @@ public class PropertyConstraintAttribute extends PropertyAttribute {
      * 
      * @param container
      * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public PropertyConstraintAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {

@@ -47,7 +47,7 @@ public class AtomicActor extends PropertyConstraintHelper {
     /**
      * Construct an AddSubtract helper.
      * @param actor the associated actor
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public AtomicActor(PropertyConstraintSolver solver,
             ptolemy.actor.AtomicActor actor) throws IllegalActionException {

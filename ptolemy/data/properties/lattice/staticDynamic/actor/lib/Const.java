@@ -51,7 +51,7 @@ public class Const extends PropertyConstraintHelper {
      * be STATIC, but does not use the default actor constraints.
      * @param actor The given Source actor
      * @param lattice The staticDynamic lattice.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public Const(PropertySolver solver, ptolemy.actor.lib.Const actor)
             throws IllegalActionException {

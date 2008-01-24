@@ -1267,7 +1267,7 @@ public class CodeStream {
          * @param codeObject
          * @param codeBlock
          * @return
-         * @throws IllegalActionException
+         * @exception IllegalActionException
          */
         private StringBuffer _substituteSuper(Signature signature, 
             List scopeList, Object[] codeObject, StringBuffer codeBlock) 

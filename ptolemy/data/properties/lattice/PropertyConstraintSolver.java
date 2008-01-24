@@ -42,8 +42,8 @@ public class PropertyConstraintSolver extends PropertySolver {
     /**
      * @param container The given container.
      * @param name The given name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public PropertyConstraintSolver(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -417,7 +417,7 @@ public class PropertyConstraintSolver extends PropertySolver {
      * 
      * @param typeValue
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private ConstraintType _getConstraintType(String typeValue)
             throws IllegalActionException {

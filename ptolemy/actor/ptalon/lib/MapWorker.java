@@ -229,7 +229,7 @@ public class MapWorker extends TypedAtomicActor {
 
     /**
      * Set the map method using the class specified in <i>classNameForMap<i>. 
-     * @throws IllegalActionException If the map method does not
+     * @exception IllegalActionException If the map method does not
      * exist, has the wrong type signature, or has the wrong
      * access modifiers.
      */

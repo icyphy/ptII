@@ -52,7 +52,7 @@ public class AtomicActor extends PortValueHelper {
      * are set for this helper. 
      * @param actor The given ActomicActor.
      * @param lattice The staticDynamic lattice.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public AtomicActor(PortValueSolver solver, ptolemy.actor.AtomicActor actor)
             throws IllegalActionException {

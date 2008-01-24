@@ -48,7 +48,7 @@ public class CompositeActor extends PropertyConstraintCompositeHelper {
     /** Construct the property constraint helper associated
      *  with the given TypedCompositeActor.
      *  @param component The associated component.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public CompositeActor(PropertyConstraintSolver solver,
             ptolemy.actor.CompositeActor component)

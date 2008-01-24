@@ -52,7 +52,7 @@ public class Source extends PropertyConstraintHelper {
      * be DYNAMIC, but does not use the default actor constraints.
      * @param actor The given Source actor
      * @param lattice The staticDynamic lattice.
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public Source(PropertyConstraintSolver solver,
             ptolemy.actor.lib.Source actor) throws IllegalActionException {

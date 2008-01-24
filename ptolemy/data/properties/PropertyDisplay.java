@@ -26,8 +26,8 @@ public class PropertyDisplay extends Attribute {
     /**
      * @param container The given container.
      * @param name The given name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public PropertyDisplay(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {

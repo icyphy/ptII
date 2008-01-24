@@ -51,8 +51,8 @@ public abstract class PropertyHelper {
 
     /**
      * Update the property.
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public void updateProperty(boolean isTraining)
             throws IllegalActionException, NameDuplicationException {
@@ -170,7 +170,7 @@ public abstract class PropertyHelper {
 
     /**
      * 
-     * @throws IllegalActionException 
+     * @exception IllegalActionException 
      */
     public abstract void reinitialize() throws IllegalActionException;
 
