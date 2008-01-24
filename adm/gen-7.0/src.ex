@@ -150,6 +150,8 @@ ptolemy/filter
 ptolemy/chic
 ptolemy/com
 ptolemy/configs/doc/whatsNew8.0.htm
+ptolemy/configs/fmvEffigyFactory.xml
+ptolemy/configs/fmvTableauFactory.xml
 ptolemy/configs/test/vergilConfigurationNoMatlab.xml
 ptolemy/configs/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
 ptolemy/configs/visualnc
@@ -196,6 +198,7 @@ ptolemy/domains/dt/kernel/test/chf
 ptolemy/domains/dfm
 ptolemy/domains/fairdf
 ptolemy/domains/fsm/demo/Hysteresis
+ptolemy/domains/fsm/kernel/fmv
 ptolemy/domains/generic
 ptolemy/domains/giotto/demo/Helicopter
 ptolemy/domains/giotto/demo/Legiotto
@@ -262,6 +265,7 @@ ptolemy/system
 ptolemy/vergil/JModelViewer.java
 ptolemy/vergil/VergilApplet.java
 ptolemy/vergil/debugger/demo2
+ptolemy/vergil/fsm/fmv
 ptolemy/vergil/graph
 ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
 updateMoMLFiles.xml
