@@ -53,6 +53,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -750,6 +751,11 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.codegen.c.actor.CompiledCompositeActor");
+        
+        if (!_pointerTypeInitialized) {
+            Constants.add("pointer", new PointerToken());
+            _pointerTypeInitialized = true;
+        }
 
         try {
             generatorPackage = new StringParameter(this, "generatorPackage");
@@ -990,5 +996,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  and set _version to its value.
      */
     private static int _noEffigyVersion = 0;
+    
+    private static boolean _pointerTypeInitialized = false;
 
 }
