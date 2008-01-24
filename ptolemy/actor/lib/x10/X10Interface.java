@@ -61,7 +61,13 @@ import x10.Controller;
  their respective manuals.
  <p>
  This actor requires that the Java comm API be installed.
- The comm API comes from <a href="http://java.sun.com/products/javacomm/" target="_top">http://java.sun.com/products/javacomm/</a>
+<a href="http://java.sun.com/products/javacomm/" target="_top">http://java.sun.com/products/javacomm/</a>
+
+ <p>Unfortunately, Sun has stopped supporting serial ports under Windows.
+ However, as of 1/2008, you could find a download at
+
+<a href="https://sdlc2d.sun.com/ECom/EComActionServlet;jsessionid=58601B73C542B5E2097C6668FADF7AE4" target="_top"><code>https://sdlc2d.sun.com/ECom/EComActionServlet;jsessionid=58601B73C542B5E2097C6668FADF7AE4</code></a>
+
 
  To install the comm API on a Windows machine:
  <ul>
