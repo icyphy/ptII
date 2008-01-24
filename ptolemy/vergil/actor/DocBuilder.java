@@ -99,7 +99,7 @@ public class DocBuilder extends Attribute {
      *  parameter exists it is assumed to name a class that implements
      *  the {@link DocApplicationSpecializer} interface and the
      *  {@link DocApplicationSpecializer#buildCommands(ExecuteCommands)}
-     *  method which returuns the commands to invoke.
+     *  method which returns the commands to invoke.
      *
      *  @return The return value of the last subprocess that was executed.
      *  or -1 if no commands were executed.
