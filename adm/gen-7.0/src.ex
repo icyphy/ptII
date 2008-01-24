@@ -130,6 +130,7 @@ org
 ptjar_tmpdir
 ptolemy/PtolemyII.ptml
 ptolemy/actor/corba
+ptolemy/actor/gui/run
 ptolemy/actor/lib/Broadcast.java
 ptolemy/actor/lib/gui/KeystrokeSensor.java
 ptolemy/actor/lib/hoc/test/auto/ApplyFunction.xml
