@@ -35,6 +35,7 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 
 import javax.swing.AbstractAction;
+
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 
@@ -43,11 +44,17 @@ import ptolemy.domains.fsm.kernel.fmv.FmvAutomaton;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
+
 import ptolemy.kernel.util.NamedObj;
+
 import ptolemy.moml.LibraryAttribute;
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+
 import ptolemy.vergil.fsm.FSMGraphFrame;
 import ptolemy.vergil.fsm.FSMGraphModel;
+
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
 
@@ -125,6 +132,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
         // NOTE: The cast is safe because the constructor accepts
         // only CompositeEntity.
+
         final FSMGraphModel graphModel = new FSMGraphModel(
                 (CompositeEntity) entity);
         return new GraphPane(_controller, graphModel);
@@ -218,46 +226,51 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                 // Retrieve the Fmv Automaton
                 FmvAutomaton model = (FmvAutomaton) getModel();
                 // StringBuffer = model
-                StringBuffer fmvFormat = model.convertToSmvFormat(pattern,
-                        finalChoice, span);
 
-                JFileChooser fileSaveDialog = new JFileChooser();
-                // SMVFileFilter filter = new SMVFileFilter();
-                // fileSaveDialog.setFileFilter(filter);
-                fileSaveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
-                fileSaveDialog
-                        .setDialogTitle("Convert Ptolemy model into .smv file");
-                if (_directory != null) {
-                    fileSaveDialog.setCurrentDirectory(_directory);
-                } else {
-                    // The default on Windows is to open at user.home, which is
-                    // typically an absurd directory inside the O/S
-                    // installation.
-                    // So we use the current directory instead.
-                    // FIXME: Could this throw a security exception in an
-                    // applet?
-                    String cwd = StringUtilities.getProperty("user.dir");
+                StringBuffer fmvFormat = new StringBuffer("");
+                try {
 
-                    if (cwd != null) {
-                        fileSaveDialog.setCurrentDirectory(new File(cwd));
+                    fmvFormat.append(model.convertToSMVFormat(pattern,
+                            finalChoice, span));
+                    JFileChooser fileSaveDialog = new JFileChooser();
+                    // SMVFileFilter filter = new SMVFileFilter();
+                    // fileSaveDialog.setFileFilter(filter);
+                    fileSaveDialog.setDialogType(JFileChooser.SAVE_DIALOG);
+                    fileSaveDialog
+                            .setDialogTitle("Convert Ptolemy model into .smv file");
+                    if (_directory != null) {
+                        fileSaveDialog.setCurrentDirectory(_directory);
+                    } else {
+                        // The default on Windows is to open at user.home, which is
+                        // typically an absurd directory inside the O/S
+                        // installation.
+                        // So we use the current directory instead.
+                        // FIXME: Could this throw a security exception in an
+                        // applet?
+                        String cwd = StringUtilities.getProperty("user.dir");
+
+                        if (cwd != null) {
+                            fileSaveDialog.setCurrentDirectory(new File(cwd));
+                        }
                     }
-                }
 
-                int returnValue = fileSaveDialog
-                        .showOpenDialog(FmvAutomatonGraphFrame.this);
+                    int returnValue = fileSaveDialog
+                            .showOpenDialog(FmvAutomatonGraphFrame.this);
 
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    _directory = fileSaveDialog.getCurrentDirectory();
+                    if (returnValue == JFileChooser.APPROVE_OPTION) {
+                        _directory = fileSaveDialog.getCurrentDirectory();
 
-                    try {
                         File smvFile = fileSaveDialog.getSelectedFile()
                                 .getCanonicalFile();
                         FileWriter smvFileWriter = new FileWriter(smvFile);
                         smvFileWriter.write(fmvFormat.toString());
                         smvFileWriter.close();
-                    } catch (Exception ex) {
 
                     }
+                } catch (Exception ex) {
+                    MessageHandler
+                            .error("Failed to perform the conversion process:\n"
+                                    + ex.getMessage());
                 }
 
             }
@@ -267,7 +280,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// TranslateSmvAction
+    //// InvokeNuSMVAction
 
     /** An action to perform format translation to .smv file. */
     public class InvokeNuSMVAction extends AbstractAction {
@@ -337,7 +350,11 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                     reader.close();
 
                 } catch (Exception ex) {
-
+                    //try {
+                    //    MessageHandler.warning("Failed to create debug listener: "
+                    //            + ex);
+                    //} catch (CancelException exception) {
+                    //}
                 }
 
                 // StringBuffer str stores the information of the verification.
