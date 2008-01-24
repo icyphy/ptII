@@ -117,5 +117,5 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
         frame.setVisible(true);
     }
 
-    // FIXME: Check that the container is an instance of CodeGenenerator.
+    // FIXME: Check that the container is an instance of CodeGenerator.
 }
