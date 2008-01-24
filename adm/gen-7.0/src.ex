@@ -264,6 +264,7 @@ ptolemy/plot/build.xml
 ptolemy/plot/Render
 ptolemy/plot/RenderApplication.*
 ptolemy/plotml/build.xml
+ptolemy/ptp
 ptolemy/schematic
 ptolemy/system
 ptolemy/vergil/JModelViewer.java
