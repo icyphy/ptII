@@ -1,7 +1,7 @@
 /* Implementation of a recursive algorithm to match a pattern to any subgraph of
    a graph.
 
- Copyright (c) 1997-2007 The Regents of the University of California.
+ Copyright (c) 1997-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
