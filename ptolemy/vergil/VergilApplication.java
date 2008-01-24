@@ -429,7 +429,7 @@ public class VergilApplication extends MoMLApplication {
     // in case there are problems with the configuration
     // We use a Throwable here instead of an Exception because
     // we might get an Error or and Exception. For example, if we
-    // are using JNI, then we might get a java.lang.UnsatistifiedLineError,
+    // are using JNI, then we might get a java.lang.UnsatisfiedLinkError,
     // which is an Error, not and Exception.
     private static void _errorAndExit(String message, String[] args,
             Throwable throwable) {
