@@ -22,4 +22,3 @@ awk '{ if ($0 ~ /^package/) {
     }' |
 sed -e 's/\(ptolemy.data.type.BaseType\)\$\([A-Za-z]\)/\1.\2/g' \
     -e 's/append(null)/append("")/g' 
-xs
