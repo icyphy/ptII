@@ -331,7 +331,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements
 
             _transferOutputs();
         } catch (SystemException ex) {
-            throw new InvalidStateException(this, "Comminication Failiar."
+            throw new InvalidStateException(this, "Communication Failiar."
                     + ex.getMessage());
         }
     }
@@ -361,7 +361,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements
 
             _transferOutputs();
         } catch (SystemException ex) {
-            throw new InvalidStateException(this, "Comminication Failiar."
+            throw new InvalidStateException(this, "Communication Failiar."
                     + ex.getMessage());
         }
 
@@ -396,7 +396,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements
 
             _transferOutputs();
         } catch (SystemException ex) {
-            throw new InvalidStateException(this, "Comminication Failiar."
+            throw new InvalidStateException(this, "Communication Failiar."
                     + ex.getMessage());
         }
 
@@ -413,7 +413,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements
                     "remote actor throws IllegalActionException"
                             + ex.getMessage());
         } catch (SystemException ex) {
-            throw new InvalidStateException(this, "Comminication Failiar."
+            throw new InvalidStateException(this, "Communication Failiar."
                     + ex.getMessage());
         }
     }
