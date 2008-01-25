@@ -1,6 +1,6 @@
 /* An action for getting documentation.
 
- Copyright (c) 2006-2007 The Regents of the University of California.
+ Copyright (c) 2006-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,6 +29,7 @@ package ptolemy.vergil.basic;
 
 import java.awt.event.ActionEvent;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -41,6 +42,7 @@ import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.DocBuilderEffigy;
 import ptolemy.vergil.actor.DocBuilderTableau;
@@ -68,7 +70,7 @@ import ptolemy.vergil.toolbox.FigureAction;
 */
 public class GetDocumentationAction extends FigureAction {
 
-    /** construct an instance and give a preference for whether the
+    /** Construct an instance and give a preference for whether the
      * KeplerDocumentationAttribute or the docAttribute should be displayed
      * if both exist.
      * @param docPreference 0 for docAttribute, 1 for
@@ -344,10 +346,38 @@ public class GetDocumentationAction extends FigureAction {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ///////             private methods                   /////////////
+    ////                         private methods                   ////
+
 
     /**
-     * find and show the tableau for a given DocAttribute
+     * Allow optional use of multiple documentation windows when the
+     * _multipleDocumentationAllowed attribute is found in the
+     * Configuration.
+     */
+    private static boolean isMultipleDocumentationAllowed() {
+        // FIXME: This is necessary for Kepler, but not for Ptolemy?
+        // Why?
+    	boolean retVal = false;
+        List configsList = Configuration.configurations();
+        Configuration config = null;
+        Object object = null;
+        for (Iterator it = configsList.iterator(); it.hasNext(); ) {
+        	config = (Configuration)it.next();
+        	if (config != null) {
+        		break;
+        	}
+        }
+        // Look up the attribute (if it exists)
+        StringAttribute multipleDocumentationAllowed = 
+        	(StringAttribute) config.getAttribute("_multipleDocumentationAllowed");
+        if (multipleDocumentationAllowed != null) {
+        	retVal = Boolean.parseBoolean(multipleDocumentationAllowed.getExpression());
+        }
+        return retVal;
+    }
+    
+    /**
+     * Find and show the tableau for a given DocAttribute.
      * @param docAttribute the attribute to show
      * @param taget the target of the documentation viewing
      */
@@ -390,6 +420,26 @@ public class GetDocumentationAction extends FigureAction {
                         + target.getFullName());
             } catch (KernelException exception) {
                 throw new InternalErrorException(exception);
+            }
+        }
+        else {
+            if (isMultipleDocumentationAllowed()) {
+                try {
+                    // FIXME: This is necessary for Kepler, but
+                    // not for Ptolemy?  Why?
+
+                    // Create a new tableau with a unique name
+                    tableau = new DocTableau(
+                            (DocEffigy) effigy,
+                            effigy.uniqueName("DocTableau"));
+                    ((DocTableau) tableau).setTitle(
+                            "Documentation for "
+                            + target.getFullName());
+                } 
+                catch (KernelException exception) {
+                    MessageHandler.error("Failed to display documentation for "
+                            + "\" "+ target.getFullName() + "\".", exception);
+                }
             }
         }
         if (!(tableau instanceof DocTableau)) {
