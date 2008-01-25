@@ -1,6 +1,6 @@
 /* The node controller for objects that offer a configure command.
 
- Copyright (c) 1998-2007 The Regents of the University of California.
+ Copyright (c) 1998-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -26,6 +26,10 @@
 
  */
 package ptolemy.vergil.basic;
+
+import java.util.List;
+import ptolemy.actor.gui.Configuration;
+import java.util.Iterator;
 
 import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -73,6 +77,40 @@ public class ParameterizedNodeController extends NamedObjController {
         // Derived classes can add menu items to it.
         _menuFactory = new PtolemyMenuFactory(controller);
 
+        List configsList = Configuration.configurations();
+
+        Configuration config = null;
+        for (Iterator it = configsList.iterator(); it.hasNext(); ) {
+          config = (Configuration)it.next();
+          if (config!=null) break;
+        }
+
+        //If a MenuFactory has been defined in the configuration, use this
+        //one; otherwise, use the default Ptolemy one:
+        if (config!=null && _contextMenuFactoryCreator == null) {
+          _contextMenuFactoryCreator = (ContextMenuFactoryCreator)
+                       config.getAttribute("contextMenuFactory");
+        }
+        if (_contextMenuFactoryCreator != null) {
+          try {
+            _menuFactory = (PtolemyMenuFactory)
+                _contextMenuFactoryCreator.createContextMenuFactory(controller);
+          } catch (Exception ex) {
+            //do nothing - will default to ptii right-click menus
+            System.out.println("Unable to use the alternative right-click menu "
+                               + "handler that was specified in the "
+                               + "configuration; defaulting to ptii handler. "
+                               + "Exception was: " + ex);
+          }
+
+        }
+
+        // If the above has failed in any way, _menuFactory will still be null,
+        // in which case we should default to ptii context menus
+        if (_menuFactory==null) {
+          _menuFactory = new PtolemyMenuFactory(controller);
+        }
+
         // In this base class, there is only one configure command, so
         // there won't be a submenu. Subclasses convert this to a submenu.
         _configureMenuFactory = new MenuActionFactory(_configureAction);
@@ -111,4 +149,10 @@ public class ParameterizedNodeController extends NamedObjController {
     /** The configure action, which handles edit parameters requests. */
     protected static ConfigureAction _configureAction = new ConfigureAction(
             "Configure");
+
+    /** A configurable object that allows a different MenuFactory
+     * to be specified instead of the default ptII one.
+     * The MenuFactory constructs the right-click context menus.
+     */
+    private static ContextMenuFactoryCreator _contextMenuFactoryCreator;
 }
