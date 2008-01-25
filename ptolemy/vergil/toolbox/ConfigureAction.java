@@ -1,6 +1,6 @@
 /* An action for editing parameters.
 
- Copyright (c) 1999-2007 The Regents of the University of California.
+ Copyright (c) 1999-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -31,6 +31,7 @@ import java.awt.Event;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.Toolkit;
 import java.util.List;
 
 import javax.swing.KeyStroke;
@@ -64,11 +65,16 @@ public class ConfigureAction extends FigureAction {
     public ConfigureAction(String description) {
         super(description);
 
-        // FIXME: For some inexplicable reason, the following line
-        // works for LookInsideAction to define a hotkey for look inside,
+        // FIXME: For some inexplicable reason, the following works
+        // for LookInsideAction to define a hotkey for look inside,
         // but it doesn't work here.
+
+        // Call getMenuShortcutKeyMask() instead of Event.CTRL_MASK
+        // and avoid problems with shortcut keys on the Macintosh.  See
+        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3094
         putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                KeyEvent.VK_E, Event.CTRL_MASK));
+                 KeyEvent.VK_E, 
+                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
     }
 
     ///////////////////////////////////////////////////////////////////
