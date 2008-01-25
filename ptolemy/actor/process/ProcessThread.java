@@ -1,6 +1,6 @@
 /* Thread class for process oriented domains.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -28,8 +28,15 @@
 package ptolemy.actor.process;
 
 import java.io.InterruptedIOException;
+import java.util.Iterator;
+
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.ActorFiringListener;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.FiringEvent;
+import ptolemy.actor.FiringsRecordable;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -67,7 +74,7 @@ import ptolemy.kernel.util.Workspace;
  of this class, and the _decreaseActiveCount() method is called at the
  end of the run() method, just before the thread terminates.
 
- @author Mudit Goel, Neil Smyth, John S. Davis II
+ @author Mudit Goel, Neil Smyth, John S. Davis II, Contributors: Efrat Jaeger, Daniel Crawl
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (mudit)
@@ -181,9 +188,24 @@ public class ProcessThread extends PtolemyThread {
 
                 // container is checked for null to detect the
                 // deletion of the actor from the topology.
+                FiringsRecordable firingsRecordable = null;
                 if (((Entity) _actor).getContainer() != null) {
+                    if (_actor instanceof FiringsRecordable) {
+                        firingsRecordable = (FiringsRecordable)_actor;
+                    }
+
                     if (_actor.prefire()) {
+
+                        if (firingsRecordable != null)  {
+                            firingsRecordable.recordFiring(FiringEvent.BEFORE_FIRE);
+                        }
+
                         _actor.fire();
+
+                        if (firingsRecordable != null) {
+                            firingsRecordable.recordFiring(FiringEvent.AFTER_FIRE);
+                        }
+
                         iterate = _actor.postfire();
                     }
                 }
