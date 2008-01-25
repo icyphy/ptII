@@ -384,7 +384,6 @@ The Ptiny pack is required.
 	    <file src="src/ptII7.0.beta/lib" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.0.beta/makefile" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.0.beta/mk" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII7.0.beta/org" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.0.beta/ptolemy" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.0.beta/thales" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.0.beta/util" targetdir="$INSTALL_PATH"/>
