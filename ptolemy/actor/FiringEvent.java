@@ -154,35 +154,41 @@ public class FiringEvent implements DebugEvent {
 
     /** This type of event is published after a prefire method is called. */
     public static final FiringEventType AFTER_PREFIRE = new FiringEventType(
-            "was prefired");
+            "prefired", false);
 
     /** This type of event is published after a fire method is called. */
     public static final FiringEventType AFTER_FIRE = new FiringEventType(
-            "was fired");
+            "fired", false);
 
     /** This type of event is published after a postfire method is called. */
     public static final FiringEventType AFTER_POSTFIRE = new FiringEventType(
-            "was postfired");
+            "postfired", false);
 
     /** This type of event is published after an iterate method is called. */
     public static final FiringEventType AFTER_ITERATE = new FiringEventType(
-            "was iterated");
+            "iterated", false);
 
     /** This type of event is published before a prefire method is called. */
     public static final FiringEventType BEFORE_PREFIRE = new FiringEventType(
-            "will be prefired");
+            "prefired", true);
 
     /** This type of event is published before a fire method is called. */
     public static final FiringEventType BEFORE_FIRE = new FiringEventType(
-            "will be fired");
+            "fired", true);
 
     /** This type of event is published before a postfire method is called. */
     public static final FiringEventType BEFORE_POSTFIRE = new FiringEventType(
-            "will be postfired");
+            "postfired", true);
 
     /** This type of event is published before an iterate method is called. */
     public static final FiringEventType BEFORE_ITERATE = new FiringEventType(
-            "will be iterated");
+            "iterated", true);
+
+    public static final FiringEventType BEFORE_RW_FIRE = new FiringEventType(
+            "rw fired", true);
+    
+    public static final FiringEventType AFTER_RW_FIRE = new FiringEventType(
+            "rw fired", false);
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -208,7 +214,8 @@ public class FiringEvent implements DebugEvent {
      */
     public static class FiringEventType {
         // Create a new event type with the given name.
-        private FiringEventType(String name) {
+        private FiringEventType(String name, boolean isStart) {
+            _isStart = isStart;
             _name = name;
         }
 
@@ -216,17 +223,32 @@ public class FiringEvent implements DebugEvent {
          *  @return the string name of this event type.
          */
         public String getName() {
-            return _name;
+            if(_isStart) {
+                return "will be " + _name;
+            } else {
+                return "was " + _name;
+            }
         }
 
         /** Return a string description of this event type.
          *  @return a string description of this event type.
          */
         public String toString() {
-            return "FiringEventType(" + _name + ")";
+            return "FiringEventType(" + getName() + ")";
+        }
+
+        public boolean isStart() {
+            return _isStart;
+        }
+
+        public String getTypeName() {
+            return _name;
         }
 
         // The name of this event type.
         private String _name;
+
+        // True if start of this event type.
+        private boolean _isStart;
     }
 }

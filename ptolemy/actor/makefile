@@ -68,6 +68,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AbstractReceiver.java \
 	Actor.java \
+	ActorFiringListener.java \
 	AtomicActor.java \
 	ApplicationConfigurer.java \
 	CompositeActor.java \
@@ -75,6 +76,7 @@ JSRCS = \
 	Executable.java \
 	ExecutionListener.java \
 	FiringEvent.java \
+	FiringRecordable.java \
 	GraphReader.java \
 	Initializable.java \
 	InvariantViolationException.java \

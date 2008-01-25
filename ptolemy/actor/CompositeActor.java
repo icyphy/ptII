@@ -1,6 +1,6 @@
 /* An aggregation of actors.
 
- Copyright (c) 1997-2007 The Regents of the University of California.
+ Copyright (c) 1997-2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -105,7 +105,7 @@ import ptolemy.kernel.util.Workspace;
  may impose further constraints by overriding newPort(), _addPort(),
  newRelation(), _addRelation(), and _addEntity().
 
- @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
+ @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, Contributor: Daniel Crawl
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (cxh)
@@ -116,7 +116,8 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.Director
  @see ptolemy.actor.Manager
  */
-public class CompositeActor extends CompositeEntity implements Actor {
+public class CompositeActor extends CompositeEntity
+    implements Actor, FiringsRecordable {
     /** Construct a CompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
      *  directory.
@@ -166,6 +167,35 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Append a listener to the current set of actor firing listeners.
+     *  If the listener is already in the set, it will not be added again.
+     *  Note that this method is basically the same as addDebugListener
+     *  in the class NamedObj.
+     *  @param listener The listener to which to send actor firing messages.
+     *  @see #removeActorFiringListener(ActorFiringListener)
+     */
+    public void addActorFiringListener(ActorFiringListener listener) {
+        // NOTE: This method needs to be synchronized to prevent two
+        // threads from each creating a new _actorFiringListeners list.
+        synchronized (this) {
+            if (_actorFiringListeners == null) {
+                _actorFiringListeners = new LinkedList();
+            }
+        }
+
+        // NOTE: This has to be synchronized to prevent
+        // concurrent modification exceptions.
+        synchronized (_actorFiringListeners) {
+            if (_actorFiringListeners.contains(listener)) {
+                return;
+            } else {
+                _actorFiringListeners.add(listener);
+            }
+
+            _notifyingActorFiring = true;
+        }
+    }
 
     /** Add the specified object to the list of objects whose
      *  preinitialize(), intialize(), and wrapup()
@@ -742,13 +772,40 @@ public class CompositeActor extends CompositeEntity implements Actor {
         int n = 0;
 
         while ((n++ < count) && !_stopRequested) {
-            if (prefire()) {
-                fire();
 
-                if (!postfire()) {
+            if(_notifyingActorFiring) {
+                _actorFiring(FiringEvent.BEFORE_PREFIRE, n);
+            }
+
+            if (prefire()) {
+
+                if(_notifyingActorFiring) {
+                    _actorFiring(FiringEvent.AFTER_PREFIRE, n);
+                    _actorFiring(FiringEvent.BEFORE_FIRE, n);
+                }
+
+                fire();
+                
+                if(_notifyingActorFiring) {
+                    _actorFiring(FiringEvent.AFTER_FIRE, n);
+                    _actorFiring(FiringEvent.BEFORE_POSTFIRE, n);
+                }
+
+                boolean pfire = postfire();
+
+
+                if(_notifyingActorFiring) {
+                    _actorFiring(FiringEvent.AFTER_POSTFIRE, n);
+                }
+
+                if (!pfire) {
                     return Executable.STOP_ITERATING;
                 }
             } else {
+
+                if(_notifyingActorFiring) {
+                    _actorFiring(FiringEvent.AFTER_PREFIRE, n);
+                }
                 return Executable.NOT_READY;
             }
         }
@@ -1047,6 +1104,39 @@ public class CompositeActor extends CompositeEntity implements Actor {
             getDirector().preinitialize();
         } finally {
             _workspace.doneReading();
+        }
+    }
+
+    /** Record a firing event.
+     *  @param type The firing event to be recorded.
+     */
+    public void recordFiring(FiringEvent.FiringEventType type)
+    {
+        _actorFiring(new FiringEvent(null, this, type));
+    }
+
+    /** Unregister an actor firing listener.  If the specified listener has not
+     *  been previously registered, then do nothing.  Note that this method
+     *  is basically the same as removeDebugListener in the class NamedObj.
+     *  @param listener The listener to remove from the list of listeners
+     *   to which actor firing messages are sent.
+     *  @see #addActorFiringListener(ActorFiringListener)
+     */
+    public void removeActorFiringListener(ActorFiringListener listener) {
+        if (_actorFiringListeners == null) {
+            return;
+        }
+
+        // NOTE: This has to be synchronized to prevent
+        // concurrent modification exceptions.
+        synchronized (_actorFiringListeners) {
+            _actorFiringListeners.remove(listener);
+
+            if (_actorFiringListeners.size() == 0) {
+                _notifyingActorFiring = false;
+            }
+
+            return;
         }
     }
 
@@ -1370,6 +1460,31 @@ public class CompositeActor extends CompositeEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Send an actor firing event to all actor firing listeners that 
+     *  have registered with this actor.
+     *  @param event The event.
+     */
+    protected final void _actorFiring(FiringEvent event) {
+        if (_notifyingActorFiring) {
+            Iterator listeners = _actorFiringListeners.iterator();
+
+            while (listeners.hasNext()) {
+                ((ActorFiringListener) listeners.next()).firingEvent(event);
+            }
+        }
+    }
+
+    /** Send an actor firing event type to all actor firing listeners that 
+     *  have registered with this actor.
+     *  @param type The type.
+     *  @param multiplicity The multiplicity of the firing, that is, 
+     *  the number of times the firing will occur or has occurred.
+     */
+    protected final void _actorFiring(FiringEvent.FiringEventType type,
+        int multiplicity) {
+        _actorFiring(new FiringEvent(null, this, type, multiplicity));
+    }
+
     /** Add an actor to this container with minimal error checking.
      *  This overrides the base-class method to make sure the argument
      *  implements the Actor interface.
@@ -1528,6 +1643,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The list of ActorFiringListeners registered with this object.
+     *  NOTE: Because of the way we synchronize on this object, it should
+     *  never be reset to null after the first list is created.
+     */
+    protected LinkedList _actorFiringListeners = null;
+
     /** The function dependency, if it is present. */
     protected FunctionDependency _functionDependency;
 
@@ -1535,6 +1656,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  should be slaved to these.
      */
     protected transient List<Initializable> _initializables;
+
+    /** Flag that is true if there are actor firing listeners. */
+    protected boolean _notifyingActorFiring = false;
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
