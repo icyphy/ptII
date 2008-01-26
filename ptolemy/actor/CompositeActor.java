@@ -116,8 +116,8 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.Director
  @see ptolemy.actor.Manager
  */
-public class CompositeActor extends CompositeEntity
-    implements Actor, FiringsRecordable {
+public class CompositeActor extends CompositeEntity implements Actor,
+        FiringsRecordable {
     /** Construct a CompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
      *  directory.
@@ -773,28 +773,27 @@ public class CompositeActor extends CompositeEntity
 
         while ((n++ < count) && !_stopRequested) {
 
-            if(_notifyingActorFiring) {
+            if (_notifyingActorFiring) {
                 _actorFiring(FiringEvent.BEFORE_PREFIRE, n);
             }
 
             if (prefire()) {
 
-                if(_notifyingActorFiring) {
+                if (_notifyingActorFiring) {
                     _actorFiring(FiringEvent.AFTER_PREFIRE, n);
                     _actorFiring(FiringEvent.BEFORE_FIRE, n);
                 }
 
                 fire();
 
-                if(_notifyingActorFiring) {
+                if (_notifyingActorFiring) {
                     _actorFiring(FiringEvent.AFTER_FIRE, n);
                     _actorFiring(FiringEvent.BEFORE_POSTFIRE, n);
                 }
 
                 boolean pfire = postfire();
 
-
-                if(_notifyingActorFiring) {
+                if (_notifyingActorFiring) {
                     _actorFiring(FiringEvent.AFTER_POSTFIRE, n);
                 }
 
@@ -803,7 +802,7 @@ public class CompositeActor extends CompositeEntity
                 }
             } else {
 
-                if(_notifyingActorFiring) {
+                if (_notifyingActorFiring) {
                     _actorFiring(FiringEvent.AFTER_PREFIRE, n);
                 }
                 return Executable.NOT_READY;
@@ -1110,8 +1109,7 @@ public class CompositeActor extends CompositeEntity
     /** Record a firing event.
      *  @param type The firing event to be recorded.
      */
-    public void recordFiring(FiringEvent.FiringEventType type)
-    {
+    public void recordFiring(FiringEvent.FiringEventType type) {
         _actorFiring(new FiringEvent(null, this, type));
     }
 
@@ -1481,7 +1479,7 @@ public class CompositeActor extends CompositeEntity
      *  the number of times the firing will occur or has occurred.
      */
     protected final void _actorFiring(FiringEvent.FiringEventType type,
-        int multiplicity) {
+            int multiplicity) {
         _actorFiring(new FiringEvent(null, this, type, multiplicity));
     }
 

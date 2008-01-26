@@ -37,8 +37,7 @@ package ptolemy.actor;
  *
  */
 
-public interface FiringsRecordable
-{
+public interface FiringsRecordable {
     /** Append a listener to the current set of firing event listeners. */
     public void addActorFiringListener(ActorFiringListener listener);
 

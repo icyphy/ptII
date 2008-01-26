@@ -348,7 +348,6 @@ public class GetDocumentationAction extends FigureAction {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
     /**
      * Allow optional use of multiple documentation windows when the
      * _multipleDocumentationAllowed attribute is found in the
@@ -357,21 +356,22 @@ public class GetDocumentationAction extends FigureAction {
     private static boolean isMultipleDocumentationAllowed() {
         // FIXME: This is necessary for Kepler, but not for Ptolemy?
         // Why?
-            boolean retVal = false;
+        boolean retVal = false;
         List configsList = Configuration.configurations();
         Configuration config = null;
         Object object = null;
-        for (Iterator it = configsList.iterator(); it.hasNext(); ) {
-                config = (Configuration)it.next();
-                if (config != null) {
-                        break;
-                }
+        for (Iterator it = configsList.iterator(); it.hasNext();) {
+            config = (Configuration) it.next();
+            if (config != null) {
+                break;
+            }
         }
         // Look up the attribute (if it exists)
-        StringAttribute multipleDocumentationAllowed =
-                (StringAttribute) config.getAttribute("_multipleDocumentationAllowed");
+        StringAttribute multipleDocumentationAllowed = (StringAttribute) config
+                .getAttribute("_multipleDocumentationAllowed");
         if (multipleDocumentationAllowed != null) {
-                retVal = Boolean.parseBoolean(multipleDocumentationAllowed.getExpression());
+            retVal = Boolean.parseBoolean(multipleDocumentationAllowed
+                    .getExpression());
         }
         return retVal;
     }
@@ -421,24 +421,20 @@ public class GetDocumentationAction extends FigureAction {
             } catch (KernelException exception) {
                 throw new InternalErrorException(exception);
             }
-        }
-        else {
+        } else {
             if (isMultipleDocumentationAllowed()) {
                 try {
                     // FIXME: This is necessary for Kepler, but
                     // not for Ptolemy?  Why?
 
                     // Create a new tableau with a unique name
-                    tableau = new DocTableau(
-                            (DocEffigy) effigy,
-                            effigy.uniqueName("DocTableau"));
-                    ((DocTableau) tableau).setTitle(
-                            "Documentation for "
+                    tableau = new DocTableau((DocEffigy) effigy, effigy
+                            .uniqueName("DocTableau"));
+                    ((DocTableau) tableau).setTitle("Documentation for "
                             + target.getFullName());
-                }
-                catch (KernelException exception) {
+                } catch (KernelException exception) {
                     MessageHandler.error("Failed to display documentation for "
-                            + "\" "+ target.getFullName() + "\".", exception);
+                            + "\" " + target.getFullName() + "\".", exception);
                 }
             }
         }

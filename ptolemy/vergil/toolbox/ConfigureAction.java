@@ -27,11 +27,10 @@
  */
 package ptolemy.vergil.toolbox;
 
-import java.awt.Event;
 import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.Toolkit;
 import java.util.List;
 
 import javax.swing.KeyStroke;
@@ -73,8 +72,8 @@ public class ConfigureAction extends FigureAction {
         // and avoid problems with shortcut keys on the Macintosh.  See
         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3094
         putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                 KeyEvent.VK_E,
-                 Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                KeyEvent.VK_E, Toolkit.getDefaultToolkit()
+                        .getMenuShortcutKeyMask()));
     }
 
     ///////////////////////////////////////////////////////////////////

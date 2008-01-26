@@ -63,8 +63,8 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.CompositeActor
  @see ptolemy.actor.IOPort
  */
-public class AtomicActor extends ComponentEntity
-    implements Actor, FiringsRecordable {
+public class AtomicActor extends ComponentEntity implements Actor,
+        FiringsRecordable {
     /** Construct an actor in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
      *  The object is added to the workspace directory.
@@ -385,7 +385,7 @@ public class AtomicActor extends ComponentEntity
 
         while ((n++ < count) && !_stopRequested) {
             if (_notifyingActorFiring) {
-                    _actorFiring(FiringEvent.BEFORE_PREFIRE, n);
+                _actorFiring(FiringEvent.BEFORE_PREFIRE, n);
             }
 
             if (prefire()) {
@@ -414,7 +414,7 @@ public class AtomicActor extends ComponentEntity
 
             } else {
 
-                if(_notifyingActorFiring) {
+                if (_notifyingActorFiring) {
                     _actorFiring(FiringEvent.AFTER_PREFIRE, n);
                 }
                 return Executable.NOT_READY;
@@ -595,8 +595,7 @@ public class AtomicActor extends ComponentEntity
     /** Record a firing event.
      *  @param type The firing event to be recorded.
      */
-    public void recordFiring(FiringEvent.FiringEventType type)
-    {
+    public void recordFiring(FiringEvent.FiringEventType type) {
         _actorFiring(new FiringEvent(null, this, type));
     }
 
@@ -779,10 +778,9 @@ public class AtomicActor extends ComponentEntity
      *  the number of times the firing will occur or has occurred.
      */
     protected final void _actorFiring(FiringEvent.FiringEventType type,
-        int multiplicity) {
+            int multiplicity) {
         _actorFiring(new FiringEvent(null, this, type, multiplicity));
     }
-
 
     /** Override the base class to throw an exception if the added port
      *  is not an instance of IOPort.  This method should not be used

@@ -28,7 +28,6 @@ package ptolemy.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Event;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Toolkit;
@@ -168,7 +167,7 @@ public abstract class Top extends JFrame {
      * @param dir the initial directory to use for file dialogs
      */
     public static void setDirectory(File dir) {
-            _directory = dir;
+        _directory = dir;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -324,8 +323,8 @@ public abstract class Top extends JFrame {
 
                     // Open button = ctrl-o.
                     _fileMenuItems[0].setAccelerator(KeyStroke.getKeyStroke(
-                       KeyEvent.VK_O,
-                       Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                            KeyEvent.VK_O, Toolkit.getDefaultToolkit()
+                                    .getMenuShortcutKeyMask()));
 
                     // The mnemonic isn't set in the static
                     // initializer because JMenu doesn't have an
@@ -337,13 +336,13 @@ public abstract class Top extends JFrame {
 
                     // Save button = ctrl-s.
                     _fileMenuItems[3].setAccelerator(KeyStroke.getKeyStroke(
-                       KeyEvent.VK_S,
-                       Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                            KeyEvent.VK_S, Toolkit.getDefaultToolkit()
+                                    .getMenuShortcutKeyMask()));
 
                     // Print button = ctrl-p.
                     _fileMenuItems[5].setAccelerator(KeyStroke.getKeyStroke(
-                       KeyEvent.VK_P,
-                       Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                            KeyEvent.VK_P, Toolkit.getDefaultToolkit()
+                                    .getMenuShortcutKeyMask()));
 
                     // Print button disabled by default, unless this class implements
                     // one of the JDK1.2 printing interfaces.
@@ -356,8 +355,8 @@ public abstract class Top extends JFrame {
 
                     // Close button = ctrl-w.
                     _fileMenuItems[6].setAccelerator(KeyStroke.getKeyStroke(
-                       KeyEvent.VK_W,
-                       Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                            KeyEvent.VK_W, Toolkit.getDefaultToolkit()
+                                    .getMenuShortcutKeyMask()));
 
                     // Construct the File menu by adding action commands
                     // and action listeners.

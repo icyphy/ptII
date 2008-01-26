@@ -33,8 +33,8 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import diva.gui.toolbox.MenuFactory;
 import diva.graph.GraphController;
+import diva.gui.toolbox.MenuFactory;
 
 /**
  * An object that can create a tableau for a model.
@@ -77,12 +77,12 @@ public class ContextMenuFactoryCreator extends Attribute {
     public MenuFactory createContextMenuFactory(GraphController controller) {
         MenuFactory kcmFactory = null;
 
-        Iterator factories = attributeList(ContextMenuFactoryCreator.class).
-            iterator();
+        Iterator factories = attributeList(ContextMenuFactoryCreator.class)
+                .iterator();
 
         while (factories.hasNext() && kcmFactory == null) {
-            ContextMenuFactoryCreator factory =
-                (ContextMenuFactoryCreator)factories.next();
+            ContextMenuFactoryCreator factory = (ContextMenuFactoryCreator) factories
+                    .next();
             kcmFactory = factory.createContextMenuFactory(controller);
         }
         return kcmFactory;

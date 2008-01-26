@@ -27,10 +27,10 @@
  */
 package ptolemy.vergil.basic;
 
-import java.util.List;
-import ptolemy.actor.gui.Configuration;
 import java.util.Iterator;
+import java.util.List;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
@@ -80,35 +80,37 @@ public class ParameterizedNodeController extends NamedObjController {
         List configsList = Configuration.configurations();
 
         Configuration config = null;
-        for (Iterator it = configsList.iterator(); it.hasNext(); ) {
-          config = (Configuration)it.next();
-          if (config!=null) break;
+        for (Iterator it = configsList.iterator(); it.hasNext();) {
+            config = (Configuration) it.next();
+            if (config != null)
+                break;
         }
 
         //If a MenuFactory has been defined in the configuration, use this
         //one; otherwise, use the default Ptolemy one:
-        if (config!=null && _contextMenuFactoryCreator == null) {
-          _contextMenuFactoryCreator = (ContextMenuFactoryCreator)
-                       config.getAttribute("contextMenuFactory");
+        if (config != null && _contextMenuFactoryCreator == null) {
+            _contextMenuFactoryCreator = (ContextMenuFactoryCreator) config
+                    .getAttribute("contextMenuFactory");
         }
         if (_contextMenuFactoryCreator != null) {
-          try {
-            _menuFactory = (PtolemyMenuFactory)
-                _contextMenuFactoryCreator.createContextMenuFactory(controller);
-          } catch (Exception ex) {
-            //do nothing - will default to ptii right-click menus
-            System.out.println("Unable to use the alternative right-click menu "
-                               + "handler that was specified in the "
-                               + "configuration; defaulting to ptii handler. "
-                               + "Exception was: " + ex);
-          }
+            try {
+                _menuFactory = (PtolemyMenuFactory) _contextMenuFactoryCreator
+                        .createContextMenuFactory(controller);
+            } catch (Exception ex) {
+                //do nothing - will default to ptii right-click menus
+                System.out
+                        .println("Unable to use the alternative right-click menu "
+                                + "handler that was specified in the "
+                                + "configuration; defaulting to ptii handler. "
+                                + "Exception was: " + ex);
+            }
 
         }
 
         // If the above has failed in any way, _menuFactory will still be null,
         // in which case we should default to ptii context menus
-        if (_menuFactory==null) {
-          _menuFactory = new PtolemyMenuFactory(controller);
+        if (_menuFactory == null) {
+            _menuFactory = new PtolemyMenuFactory(controller);
         }
 
         // In this base class, there is only one configure command, so

@@ -223,7 +223,7 @@ public class FiringEvent implements DebugEvent {
          *  @return the string name of this event type.
          */
         public String getName() {
-            if(_isStart) {
+            if (_isStart) {
                 return "will be " + _name;
             } else {
                 return "was " + _name;

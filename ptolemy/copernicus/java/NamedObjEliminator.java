@@ -584,7 +584,7 @@ public class NamedObjEliminator extends SceneTransformer implements
                 //                 }
             }
         } /*
-                       */
+                              */
         // Remove all the interfaces that it implements??
         for (Iterator i = Scene.v().getApplicationClasses().iterator(); i
                 .hasNext();) {

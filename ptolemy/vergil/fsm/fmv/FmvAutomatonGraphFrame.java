@@ -35,7 +35,6 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 
 import javax.swing.AbstractAction;
-
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 
@@ -44,17 +43,12 @@ import ptolemy.domains.fsm.kernel.fmv.FmvAutomaton;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.CompositeEntity;
-
 import ptolemy.kernel.util.NamedObj;
-
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-
 import ptolemy.vergil.fsm.FSMGraphFrame;
 import ptolemy.vergil.fsm.FSMGraphModel;
-
 import diva.graph.GraphPane;
 import diva.gui.GUIUtilities;
 

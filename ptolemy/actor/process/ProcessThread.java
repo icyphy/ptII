@@ -28,13 +28,8 @@
 package ptolemy.actor.process;
 
 import java.io.InterruptedIOException;
-import java.util.Iterator;
-
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.ActorFiringListener;
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.FiringsRecordable;
 import ptolemy.actor.Manager;
@@ -191,19 +186,21 @@ public class ProcessThread extends PtolemyThread {
                 FiringsRecordable firingsRecordable = null;
                 if (((Entity) _actor).getContainer() != null) {
                     if (_actor instanceof FiringsRecordable) {
-                        firingsRecordable = (FiringsRecordable)_actor;
+                        firingsRecordable = (FiringsRecordable) _actor;
                     }
 
                     if (_actor.prefire()) {
 
-                        if (firingsRecordable != null)  {
-                            firingsRecordable.recordFiring(FiringEvent.BEFORE_FIRE);
+                        if (firingsRecordable != null) {
+                            firingsRecordable
+                                    .recordFiring(FiringEvent.BEFORE_FIRE);
                         }
 
                         _actor.fire();
 
                         if (firingsRecordable != null) {
-                            firingsRecordable.recordFiring(FiringEvent.AFTER_FIRE);
+                            firingsRecordable
+                                    .recordFiring(FiringEvent.AFTER_FIRE);
                         }
 
                         iterate = _actor.postfire();
