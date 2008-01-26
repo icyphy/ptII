@@ -1,6 +1,6 @@
 # Makefile to create tar files for distribution
 # Version: $Id$
-# Copyright (c) 1994-2007 The Regents of the University of California.
+# Copyright (c) 1994-2008 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -25,7 +25,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 #
-# Programmer:  Christopher Hylands
+# Programmer:  Christopher Brooks
 
 # Variables
 #  If you change the version number, then edit 
