@@ -23,7 +23,7 @@
   </security> 
   <resources>
          <!-- Bump maximum heap size to 512Mb, use JVM Props. to confirm -->
-   	<j2se version="1.4+" max-heap-size="512m" />
+   	<j2se version="1.5+" max-heap-size="512m" />
 
         <!-- There is a bug under JDK1.4.1 XP with Radeon display cards
         that causes XP to hang when exiting.  For details, see
