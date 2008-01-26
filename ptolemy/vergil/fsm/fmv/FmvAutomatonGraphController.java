@@ -39,7 +39,7 @@ import ptolemy.vergil.fsm.FSMGraphController;
 
 /**
  * A Graph Controller for Fmv automata models. This controller adds the "Invoke NuSMV" menu item to the Graph menu.
- * 
+ *
  * @author Chihhong Patrick Cheng Contributor: Edward A. Lee
  * @version $Id: FmvAutomatonGraphController.java,v 1.00 2007/04/12 03:59:41 cxh
  *          Exp $
@@ -52,7 +52,7 @@ public class FmvAutomatonGraphController extends FSMGraphController {
      * Create a new controller with the specified directory of the current
      * model. The directory is for setting the current directory of the file
      * chooser invoked by the "Compose With" menu item.
-     * 
+     *
      * @param directory
      *        An instance of File that specifies the directory of the current
      *        model.
@@ -69,7 +69,7 @@ public class FmvAutomatonGraphController extends FSMGraphController {
      * Add commands to the specified menu and toolbar, as appropriate for this
      * controller. In this class, commands are added to create ports and
      * relations.
-     * 
+     *
      * @param menu
      *        The menu to add to, or null if none.
      * @param toolbar

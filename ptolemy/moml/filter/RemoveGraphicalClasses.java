@@ -127,7 +127,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
             MoMLParser parser = new MoMLParser();
 
             // The list of filters is static, so we reset it in case there
-            // filters were already added.        
+            // filters were already added.
             MoMLParser.setMoMLFilters(null);
 
             // Add the backward compatibility filters.

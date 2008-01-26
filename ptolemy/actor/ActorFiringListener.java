@@ -31,8 +31,8 @@ package ptolemy.actor;
 //// ActorFiringListener
 
 /**
- A FiringEventListener listens for events that are issued during 
- AtomicActor's iterations. Specifically before and after fire events.  
+ A FiringEventListener listens for events that are issued during
+ AtomicActor's iterations. Specifically before and after fire events.
  The implementation collects firing events during workflow execution.
  <p>
  Currently this class is being used in Kepler by the

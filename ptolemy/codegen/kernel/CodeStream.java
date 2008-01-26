@@ -443,7 +443,7 @@ public class CodeStream {
      *  @param signature  The signature of the code block.
      *  @return The code block template that matches the signature, or
      *  the empty string if a code block with that signature cannot
-     *  be found.   
+     *  be found.
      *  @exception IllegalActionException If thrown whilegetting a code block
      *  template with the name of the signature.
      */
@@ -1114,7 +1114,7 @@ public class CodeStream {
 
         /**
          * Return the code block content of the given signature without
-         * substituting parameters. This searches from the all scopes 
+         * substituting parameters. This searches from the all scopes
          * from the code block table.
          * @param signature The given code block signature.
          * @return The code block content.

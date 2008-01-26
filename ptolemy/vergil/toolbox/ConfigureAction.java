@@ -73,7 +73,7 @@ public class ConfigureAction extends FigureAction {
         // and avoid problems with shortcut keys on the Macintosh.  See
         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=3094
         putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                 KeyEvent.VK_E, 
+                 KeyEvent.VK_E,
                  Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
     }
 
@@ -135,7 +135,7 @@ public class ConfigureAction extends FigureAction {
             altKeyPressed = (event.getModifiers() & ActionEvent.ALT_MASK) != 0;
         }
 
-        //Use the EditorFactory if the alt key is not pressed and the 
+        //Use the EditorFactory if the alt key is not pressed and the
         // action command is not "Configure".
         if (attributeList.size() > 0 && !altKeyPressed
                 && !event.getActionCommand().equals("Configure")) {

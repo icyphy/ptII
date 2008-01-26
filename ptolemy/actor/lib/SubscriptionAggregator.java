@@ -63,7 +63,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  and <code>*</code> instead of <code>.+</code>.
  For example, <code>channel.foo.*</code> might be faster as
  <code>channel\.foo.+</code>.
-  
+
 
  @author Edward A. Lee, Raymond A. Cardillo, contributor: Christopher Brooks
  @version $Id$
@@ -205,10 +205,10 @@ public class SubscriptionAggregator extends Subscriber {
 
     //     public void preinitialize() throws IllegalActionException {
     //         super.preinitialize();
-    //         String pattern = "([^\\\\])\\.";                                   
+    //         String pattern = "([^\\\\])\\.";
     //         String replacement=  "$1\\\\.";
     //         String backslashed = channel.stringValue().replaceAll(pattern, replacement);
-    //         System.out.println("SubscriptionAgg: old: " 
+    //         System.out.println("SubscriptionAgg: old: "
     //                 + channel.stringValue()
     //                 + " " + backslashed);
 
@@ -216,7 +216,7 @@ public class SubscriptionAggregator extends Subscriber {
     //         replacement = ".+";
     //         String backslashed2 = backslashed.replaceAll(pattern, replacement);
 
-    //         System.out.println("SubscriptionAgg: old: " 
+    //         System.out.println("SubscriptionAgg: old: "
     //                 + channel.stringValue()
     //                 + " tmp: " + backslashed
     //                 + " new: " + backslashed2);

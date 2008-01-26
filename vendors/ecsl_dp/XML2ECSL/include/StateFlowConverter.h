@@ -9,7 +9,7 @@
 #include <vector>
 #include <string>
 
-class IHistoryJunctionHandler 
+class IHistoryJunctionHandler
 {
 public:
 	virtual void operator()( const matlab::junction& mj)= 0;
@@ -19,7 +19,7 @@ public:
 class StateflowConverter
 {
 public:
-	StateflowConverter( const ECSL_DP::System& ecsldpRootSystem) 
+	StateflowConverter( const ECSL_DP::System& ecsldpRootSystem)
 		: _ecsldpRootSystem( ecsldpRootSystem)
 	{}
 	void operator()( const matlab::machine& matlabMachine, ECSL_DP::State& ecslDPState) {
@@ -82,7 +82,7 @@ private:
 	//
 	typedef std::map< matlab::junction, ECSL_DP::Junction> JunctionMap_t;
 	JunctionMap_t _juncMap;
-	// 
+	//
 	typedef std::map< matlab::state, ECSL_DP::State> MatlabStateMap_t;
 	MatlabStateMap_t _matlabStateMap;
 	typedef std::map< ECSL_DP::State, matlab::state> EcslDPStateMap_t;

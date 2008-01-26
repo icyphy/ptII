@@ -55,7 +55,7 @@ import ptolemy.util.StringUtilities;
  and the {@link ptolemy.actor.lib.NonStrictTest} actor.  Thus, it has quite
  a bit of duplicated code from the NonStrictTest actor.
 
- <p> Note that in the superclass (Publisher), the input is a multiport, 
+ <p> Note that in the superclass (Publisher), the input is a multiport,
  whereas in this class it is a regular non-multiport.  To use a multiport
  input, use {@link ptolemy.actor.lib.PublisherTest}
 

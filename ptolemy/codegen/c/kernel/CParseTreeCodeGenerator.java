@@ -1389,7 +1389,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                     + " operator requires "
                     + "the right operand to be a scalar.");
         }
-        
+
         // intValue() is used rather than testing for IntToken
         // because any token with an intValue() is OK.  However,
         // we need a try...catch to generate a proper error message.

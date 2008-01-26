@@ -502,7 +502,7 @@ public class HTMLAbout {
 
     /** Expand the left hand library pane.  The first model in the file
      *  named by demosFileName is opened and then the left hand library
-     *  pane is expanded.  
+     *  pane is expanded.
      *  @param demosFileName The name of the demo file.
      *  @param regexp The regular expression of the links we are interested
      *  in.

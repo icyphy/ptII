@@ -66,7 +66,7 @@ import diva.gui.GUIUtilities;
  * composite entity and a tableau, it creates an editor and populates the menus
  * and toolbar. This overrides the base class to associate with the editor an
  * instance of FmvAutomatonGraphController.
- * 
+ *
  * @author Chihhong Patrick Cheng Contributor: Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 6.1
@@ -83,7 +83,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
      * a graph frame that obtains its library either from the model
      * (if it has one) or the default library defined in the
      * configuration.
-     * 
+     *
      * @see Tableau#show()
      * @param entity The model to put in this frame.
      * @param tableau The tableau responsible for this frame.
@@ -101,7 +101,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
      * (if it has one), or the <i>defaultLibrary</i> argument (if it
      * is non-null), or the default library defined in the
      * configuration.
-     * 
+     *
      * @see Tableau#show()
      * @param entity The model to put in this frame.
      * @param tableau The tableau responsible for this frame.
@@ -120,7 +120,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
      * Create a new graph pane. Note that this method is called in
      * constructor of the base class, so it must be careful to not
      * reference local variables that may not have yet been created.
-     * 
+     *
      * @param entity The object to be displayed in the pane (which
      * must be an instance of CompositeEntity).
      * @return The pane that is created.

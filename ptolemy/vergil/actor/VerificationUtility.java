@@ -49,8 +49,8 @@ import ptolemy.kernel.util.InternalErrorException;
 
 /**
  * This is an utility function for ptolemy models. It performs a systematic
- * traversal of the system and generate files for model checking. 
- * 
+ * traversal of the system and generate files for model checking.
+ *
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 6.1
@@ -273,7 +273,7 @@ public class VerificationUtility {
      *  This function decides if the director of the current actor is SR.
      *  If not, return false. This is because our current analysis is only
      *  valid when the director is SR.
-     *  
+     *
      *  @param model Model used for testing.
      *  @return a boolean value indicating if the director is SR.
      */
@@ -290,7 +290,7 @@ public class VerificationUtility {
      * This private function first decides variables that would be used in the
      * Kripke structure. Once when it is decided, it performs step 1 and 2 of
      * the variable domain generation process.
-     * 
+     *
      * @param model
      * @param numSpan
      * @return returnVariableSet
@@ -397,7 +397,7 @@ public class VerificationUtility {
                                                 // Currently not implementing
                                             } else {
                                                 // Second case, place this
-                                                // variable into usage set. 
+                                                // variable into usage set.
                                                 // Retrieve the rvalue
                                                 //
                                                 // Check if the right value
@@ -615,9 +615,9 @@ public class VerificationUtility {
     /**
      * Perform an enumeration of the state in this FmvAutomaton and return a
      * HashSet of states.
-     * 
+     *
      * @param innerModel A FSM which is fed into the function.
-     * @return A HashSet of states of a particular FSMActor 
+     * @return A HashSet of states of a particular FSMActor
      */
     private static HashSet<State> _enumerateStateSet(FSMActor innerModel)
             throws IllegalActionException {
@@ -672,8 +672,8 @@ public class VerificationUtility {
      * FmvAutomaton. For example, this method may generate
      * (Carlight-state=red)&&(Carlight-count=1):{grn}.  This can only be applied when
      * the domain of variable is decided.
-     * 
-     * @param globalVariableSet Set of variables used in the system. 
+     *
+     * @param globalVariableSet Set of variables used in the system.
      * @param model System under analysis.
      */
     private static void _generateAllVariableTransitions(
@@ -729,7 +729,7 @@ public class VerificationUtility {
         // Also we need to apply Rule III: For all variable XX that is used at
         // post-firing rules (transition.outputActions) and also used with
         // XX_isPresent, we need to perform synchronizing techniques.
-        // 
+        //
 
         // Rule IV: outputSetUpSet stores variables used in all
         // transition.outputActions. Hence these variables SHOULD NOT have
@@ -1022,7 +1022,7 @@ public class VerificationUtility {
                             // as variables in precondition and should be
                             // stored in the set "variableUsedInTransitionSet".
 
-                            // FIXME: (2008/01/22) Also, variables used in setAction should 
+                            // FIXME: (2008/01/22) Also, variables used in setAction should
                             // be stored in the set "variableUsedInTransitionSet".
                             HashSet<String> variableUsedInTransitionSet = new HashSet<String>();
 
@@ -2895,12 +2895,12 @@ public class VerificationUtility {
                                         // Integer.parseInt(((VariableInfo)
                                         // _variableInfo.get(lValue))._maxValue)
                                         // < 0
-                                        //  
+                                        //
                                         // Starting from the upper bound + 1,
                                         // +2, +3, +4 ... calculate all possible
                                         // values until the new set-value is
                                         // greater than GT.
-                                        // 
+                                        //
                                         // For example, if upper bound is -5,
                                         // and if the offset is 2, then for
                                         // values in GT that is greater or equal
@@ -3114,7 +3114,7 @@ public class VerificationUtility {
                                         // +2, +3, +4 ...
                                         // calculate all possible values until
                                         // the value is less than LS.
-                                        // 
+                                        //
                                         // For example, if upper bound = 1,
                                         // lower bound = -7, and offset = -2,
                                         // then we might have possible new
@@ -3239,7 +3239,7 @@ public class VerificationUtility {
                                         // -2, -3, -4 ...
                                         // calculate all possible values until
                                         // the value is less than GT.
-                                        // 
+                                        //
                                         // For example, if upper bound = 7,
                                         // lower bound = -1, and offset = -2,
                                         // then we might have possible new

@@ -82,7 +82,7 @@ import diva.gui.GUIUtilities;
  * an instance of ActorGraphTableau, it creates an editor and populates the
  * menus and toolbar. This overrides the base class to associate with the editor
  * an instance of ActorEditorGraphController.
- * 
+ *
  * @see ActorEditorGraphController
  * @author Steve Neuendorffer, Contributor: Edward A. Lee
  * @version $Id$
@@ -98,7 +98,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      * tableau. This constructor results in a graph frame that obtains its
      * library either from the model (if it has one) or the default library
      * defined in the configuration.
-     * 
+     *
      * @see Tableau#show()
      * @param entity
      *        The model to put in this frame.
@@ -117,7 +117,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      * library either from the model (if it has one), or the <i>defaultLibrary</i>
      * argument (if it is non-null), or the default library defined in the
      * configuration.
-     * 
+     *
      * @see Tableau#show()
      * @param entity
      *        The model to put in this frame.
@@ -208,7 +208,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      * actor, use its manager to stop it. Remove the listeners that this frame
      * registered with the ptolemy model. Also remove the listeners our graph
      * model has created.
-     * 
+     *
      * @return True if the close completes, and false otherwise.
      */
     protected boolean _close() {
@@ -231,7 +231,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
      * Create a new graph pane. Note that this method is called in constructor
      * of the base class, so it must be careful to not reference local variables
      * that may not have yet been created.
-     * 
+     *
      * @param entity
      *        The object to be displayed in the pane.
      * @return The pane that is created.

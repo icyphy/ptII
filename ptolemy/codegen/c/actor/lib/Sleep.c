@@ -11,7 +11,7 @@
 #ifndef __AVR__
     $actorSymbol(sleepTime).tv_sec = $ref(sleepTime) / 1000;
     $actorSymbol(sleepTime).tv_nsec = ($ref(sleepTime) % 1000) * 1000000;
-#endif /* __AVR__ */ 
+#endif /* __AVR__ */
 
 /**/
 
@@ -21,7 +21,7 @@
 #else
     nanosleep(&$actorSymbol(sleepTime), &$actorSymbol(remainingTime));
 
-#endif /* __AVR__ */ 
+#endif /* __AVR__ */
 /**/
 
 /***transferBlock($channel)***/

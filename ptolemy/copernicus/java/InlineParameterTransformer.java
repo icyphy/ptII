@@ -689,7 +689,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                 // FIXME: 1/08: This section used to
                                 // never be run, but the change to
                                 // NonStrictTest.wrapup() requires it.
-                                // To test this, run copernicus on 
+                                // To test this, run copernicus on
                                 // ../../actor/lib/test/auto/Const.xml
 
                                 // Set Expression is problematic

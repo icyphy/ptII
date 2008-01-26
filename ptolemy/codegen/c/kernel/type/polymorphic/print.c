@@ -10,19 +10,19 @@ inline void print_Double(boolean b) {
 
 /*** print_Double() ***/
 inline void print_Double(double d) {
-    printf("%g", d);    
+    printf("%g", d);
 }
 /**/
 
 /*** print_Int() ***/
 inline void print_Int(int i) {
-    printf("%d", i);    
+    printf("%d", i);
 }
 /**/
 
 /*** print_Long() ***/
 inline void print_Int(long long l) {
-    printf("%d", l);    
+    printf("%d", l);
 }
 /**/
 

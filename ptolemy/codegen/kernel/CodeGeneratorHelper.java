@@ -2518,12 +2518,12 @@ public class CodeGeneratorHelper extends NamedObj implements ActorCodeGenerator 
     /**
      * Return the index of a specific character in the string starting
      * from the given index. It find the first occurence of the character
-     * that is not embedded inside parentheses "()".  
+     * that is not embedded inside parentheses "()".
      * @param ch The character to search for.
      * @param string The given string to search from.
      * @param fromIndex The index to start the search.
      * @return The first occurence of the character in the string that
-     *  is not embedded in parentheses. 
+     *  is not embedded in parentheses.
      * @throws IllegalActionException Thrown if the given string does not
      *  contain the same number of open and closed parentheses.
      */

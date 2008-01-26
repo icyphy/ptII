@@ -55,7 +55,7 @@ import ptolemy.kernel.util.InternalErrorException;
  signed two's-complement integers, respectively, and
  char, whose values are 16-bit unsigned integers
  representing UTF-16 code units (3.1).
- 
+
  The floating-point types are float, whose values
  include the 32-bit IEEE 754 floating-point numbers,
  and double, whose values include the 64-bit IEEE
@@ -64,12 +64,12 @@ import ptolemy.kernel.util.InternalErrorException;
 
  Thus,
  <menu>
- <li>16-bit shorts are not lossly convertable into  
+ <li>16-bit shorts are not lossly convertable into
  16-bit chars (unsigned integers).
  <li>32-bit ints are not lossly convertable into
- 32-bit floats. 
+ 32-bit floats.
  <li>64-bit longs are not lossly convertable into
- 64-bit doubles.  
+ 64-bit doubles.
  </menu>
 
  @author Yuhong Xiong, Steve Neuendorffer

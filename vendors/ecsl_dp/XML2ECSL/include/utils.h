@@ -44,12 +44,12 @@ extern std::string MakeGMEPosString( int x, int y);
 //
 extern void ParseGMEPosString( const std::string& expr, int& x, int& y);
 //
-extern void ParseMatlabPosString( 
-	const std::string& expr, 
-	const std::string& firstLimiter, 
-	const std::string& secondLimiter, 
+extern void ParseMatlabPosString(
+	const std::string& expr,
+	const std::string& firstLimiter,
+	const std::string& secondLimiter,
 	const std::string& thirdLimiter,
-	int& x, 
+	int& x,
 	int& y
 	);
 // same as the previous with limiters: "[", ",", "]" respectively.

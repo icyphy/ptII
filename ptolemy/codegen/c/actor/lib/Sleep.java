@@ -82,7 +82,7 @@ public class Sleep extends CCodeGeneratorHelper {
      *  If we are generating code under SunOS, we add -lrt to the
      *  list of libraries.
      *  If your platform does not have time.h, then compile with
-     *  <code>-DPT_NO_TIME_H</code>. 
+     *  <code>-DPT_NO_TIME_H</code>.
      *  @return A set of strings that are names of the header files
      *   needed by the code generated for the Sleep actor.
      *  @exception IllegalActionException Not Thrown in this subclass.

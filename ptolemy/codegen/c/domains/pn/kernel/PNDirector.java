@@ -137,8 +137,8 @@ public class PNDirector extends Director {
 
     /** Do nothing in generating fire function code. The fire code is
       *  wrapped in a for/while loop inside the thread function.
-      *  The thread function is generated in 
-      *  {@link #generatePreinitializeCode()} outside the main function. 
+      *  The thread function is generated in
+      *  {@link #generatePreinitializeCode()} outside the main function.
       *  @return An empty string.
       *  @exception IllegalActionException Not thrown in this class.
       */
@@ -191,7 +191,7 @@ public class PNDirector extends Director {
     }
 
     /**
-     * 
+     *
      */
     public String generateMainLoop() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -254,7 +254,7 @@ public class PNDirector extends Director {
 
         // Note: We don't need to call the super class method nor
         // append the wrapup code for each of the containing actor.
-        // Instead, the actor wrapup code resides in the actor 
+        // Instead, the actor wrapup code resides in the actor
         // thread function code.
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -333,14 +333,14 @@ public class PNDirector extends Director {
 
     /** Generate the notTerminate flag variable for the associated PN director.
      * Generating notTerminate instead of terminate saves the negation in checking
-     * the flag (e.g. "while (!terminate) ..."). 
+     * the flag (e.g. "while (!terminate) ...").
      * @return The varaible label of the notTerminate flag.
      */
     protected String _generateNotTerminateFlag() {
         return CodeGeneratorHelper.generateName(_director) + "_notTerminate";
     }
 
-    /** 
+    /**
      * @param code The given code buffer.
      * @exception IllegalActionException
      */
@@ -381,7 +381,7 @@ public class PNDirector extends Director {
 
             // mainLoop
 
-            // Check if the actor is an opague CompositeActor. 
+            // Check if the actor is an opague CompositeActor.
             // The actor is guaranteed to be opague from calling deepEntityList(),
             // so all we need to check whether or not it is a CompositeActor.
             if (actor instanceof CompositeActor) {
@@ -410,7 +410,7 @@ public class PNDirector extends Director {
                 code.append(helper.generateFireCode());
 
                 // If not inline, generateFireCode() would be a call
-                // to the fire function which already includes the 
+                // to the fire function which already includes the
                 // type conversion code.
                 if (inline) {
                     code.append(helper.generateTypeConvertFireCode());

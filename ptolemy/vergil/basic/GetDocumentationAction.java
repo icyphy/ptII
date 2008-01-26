@@ -368,14 +368,14 @@ public class GetDocumentationAction extends FigureAction {
                 }
         }
         // Look up the attribute (if it exists)
-        StringAttribute multipleDocumentationAllowed = 
+        StringAttribute multipleDocumentationAllowed =
                 (StringAttribute) config.getAttribute("_multipleDocumentationAllowed");
         if (multipleDocumentationAllowed != null) {
                 retVal = Boolean.parseBoolean(multipleDocumentationAllowed.getExpression());
         }
         return retVal;
     }
-    
+
     /**
      * Find and show the tableau for a given DocAttribute.
      * @param docAttribute the attribute to show
@@ -435,7 +435,7 @@ public class GetDocumentationAction extends FigureAction {
                     ((DocTableau) tableau).setTitle(
                             "Documentation for "
                             + target.getFullName());
-                } 
+                }
                 catch (KernelException exception) {
                     MessageHandler.error("Failed to display documentation for "
                             + "\" "+ target.getFullName() + "\".", exception);

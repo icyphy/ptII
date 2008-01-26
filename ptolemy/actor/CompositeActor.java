@@ -785,7 +785,7 @@ public class CompositeActor extends CompositeEntity
                 }
 
                 fire();
-                
+
                 if(_notifyingActorFiring) {
                     _actorFiring(FiringEvent.AFTER_FIRE, n);
                     _actorFiring(FiringEvent.BEFORE_POSTFIRE, n);
@@ -1460,7 +1460,7 @@ public class CompositeActor extends CompositeEntity
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Send an actor firing event to all actor firing listeners that 
+    /** Send an actor firing event to all actor firing listeners that
      *  have registered with this actor.
      *  @param event The event.
      */
@@ -1474,10 +1474,10 @@ public class CompositeActor extends CompositeEntity
         }
     }
 
-    /** Send an actor firing event type to all actor firing listeners that 
+    /** Send an actor firing event type to all actor firing listeners that
      *  have registered with this actor.
      *  @param type The type.
-     *  @param multiplicity The multiplicity of the firing, that is, 
+     *  @param multiplicity The multiplicity of the firing, that is,
      *  the number of times the firing will occur or has occurred.
      */
     protected final void _actorFiring(FiringEvent.FiringEventType type,

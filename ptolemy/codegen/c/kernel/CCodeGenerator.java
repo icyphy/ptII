@@ -1235,7 +1235,7 @@ public class CCodeGenerator extends CodeGenerator {
      *  @param helper The corresponding helper that contains the
      *  codeBlock.
      *  @exception IllegalActionException If there is a problem adding
-     *  a function to the set of overloaded functions.   
+     *  a function to the set of overloaded functions.
      */
     public void markFunctionCalled(String name, CCodeGeneratorHelper helper)
             throws IllegalActionException {

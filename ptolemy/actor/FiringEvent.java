@@ -186,7 +186,7 @@ public class FiringEvent implements DebugEvent {
 
     public static final FiringEventType BEFORE_RW_FIRE = new FiringEventType(
             "rw fired", true);
-    
+
     public static final FiringEventType AFTER_RW_FIRE = new FiringEventType(
             "rw fired", false);
 

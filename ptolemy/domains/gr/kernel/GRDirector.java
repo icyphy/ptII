@@ -502,7 +502,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            
+
             if (_disabledActors.contains(actor)) {
                 continue;
             }

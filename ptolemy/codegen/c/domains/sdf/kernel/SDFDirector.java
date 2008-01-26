@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NamedObj;
  @author Ye Zhou, Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Yellow (zgang)  
+ @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Red (eal)
  */
 public class SDFDirector extends StaticSchedulingDirector {
@@ -79,8 +79,8 @@ public class SDFDirector extends StaticSchedulingDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Generate code for declaring read and write offset variables if needed. 
-     * 
+    /** Generate code for declaring read and write offset variables if needed.
+     *
      *  @return The generated code.
      *  @exception IllegalActionException If thrown while creating
      *  offset variables.
@@ -597,7 +597,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             receivers = port.getInsideReceivers();
         } else {
-            // Findbugs: receivers could be null, so we throw an exception. 
+            // Findbugs: receivers could be null, so we throw an exception.
             throw new IllegalActionException(port,
                     "Port is neither an input nor an output.");
         }
@@ -626,7 +626,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
 
         return size;
-        //} 
+        //}
         //catch (ArrayIndexOutOfBoundsException ex) {
         //    throw new IllegalActionException(port, "Channel out of bounds: "
         //            + channelNumber);

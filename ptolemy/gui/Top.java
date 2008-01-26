@@ -160,7 +160,7 @@ public abstract class Top extends JFrame {
         // Make this the default context for modal messages.
         GraphicalMessageHandler.setContext(this);
     }
-    
+
     /**
      * Allows external configuration to determine the initial/default
      * opening/saving directory to use for file dialogs
@@ -324,7 +324,7 @@ public abstract class Top extends JFrame {
 
                     // Open button = ctrl-o.
                     _fileMenuItems[0].setAccelerator(KeyStroke.getKeyStroke(
-                       KeyEvent.VK_O, 
+                       KeyEvent.VK_O,
                        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
                     // The mnemonic isn't set in the static
@@ -337,12 +337,12 @@ public abstract class Top extends JFrame {
 
                     // Save button = ctrl-s.
                     _fileMenuItems[3].setAccelerator(KeyStroke.getKeyStroke(
-                       KeyEvent.VK_S, 
+                       KeyEvent.VK_S,
                        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
                     // Print button = ctrl-p.
                     _fileMenuItems[5].setAccelerator(KeyStroke.getKeyStroke(
-                       KeyEvent.VK_P, 
+                       KeyEvent.VK_P,
                        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
                     // Print button disabled by default, unless this class implements
@@ -356,7 +356,7 @@ public abstract class Top extends JFrame {
 
                     // Close button = ctrl-w.
                     _fileMenuItems[6].setAccelerator(KeyStroke.getKeyStroke(
-                       KeyEvent.VK_W, 
+                       KeyEvent.VK_W,
                        Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 
                     // Construct the File menu by adding action commands

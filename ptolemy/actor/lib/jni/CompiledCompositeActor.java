@@ -85,8 +85,8 @@ import ptolemy.util.StringUtilities;
  */
 
 public class CompiledCompositeActor extends TypedCompositeActor {
-    /** Construct a CodeGenerationCompositeActor in the default workspace 
-     *  with no container and an empty string as its name. Add the actor to 
+    /** Construct a CodeGenerationCompositeActor in the default workspace
+     *  with no container and an empty string as its name. Add the actor to
      *  the workspace directory.
      *  You should set a director before attempting to execute it.
      *  You should set the container before sending data to it.
@@ -98,8 +98,8 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     }
 
     /** Construct a CodeGenerationCompositeActor in the specified workspace
-     *  with no container and an empty string as a name. You can then change 
-     *  the name with setName(). If the workspace argument is null, then use 
+     *  with no container and an empty string as a name. You can then change
+     *  the name with setName(). If the workspace argument is null, then use
      *  the default workspace.
      *  You should set a director before attempting to execute it.
      *  You should set the container before sending data to it.
@@ -117,7 +117,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
      *  Increment the version of the workspace.
-     *  This actor will have no local director initially, and its executive 
+     *  This actor will have no local director initially, and its executive
      *  director will be simply the director of the container.
      *  You should set a director before attempting to execute it.
      *
@@ -150,7 +150,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     public StringParameter generatorPackage;
 
     /** If true, generate file with no functions.  If false, generate
-     *  file with functions. The default value is a parameter with the 
+     *  file with functions. The default value is a parameter with the
      *  value true.
      */
     public Parameter inline;
@@ -160,7 +160,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  The default value is false, which results in this actor
      *  executing like an ordinary composite actor.  Classes like EmbeddedCActor
      *  set invokeJNI to true when there is only C code specifying
-     *  the functionality of an actor.   
+     *  the functionality of an actor.
      */
     public Parameter invokeJNI;
 
@@ -183,7 +183,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  actor.
      *  @exception IllegalActionException If thrown by the super
      *  class, or if there are problems invoking the fire() method of
-     *  wrapper class.   
+     *  wrapper class.
      */
     public void fire() throws IllegalActionException {
 
@@ -430,7 +430,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
     /** Compile the Java code.
      *  The <code>javac</code> and <code>javah</code> commands are
-     *  executed on the the java file.  
+     *  executed on the the java file.
      *  @exception IllegalActionException If there is a problem reading
      *  the <i>codeDirectory</i> parameter.
      */
@@ -473,7 +473,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
     /** Generate and compile the Java code.
      *  @exception IllegalActionException If thrown while getting the path
      *  to the shared object, while writing the Java file, or while
-     *  compiling the Java file.   
+     *  compiling the Java file.
      */
     protected void _generateAndCompileJavaCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -751,7 +751,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         // The base class identifies the class name as TypedCompositeActor
         // irrespective of the actual class name.  We override that here.
         setClassName("ptolemy.codegen.c.actor.CompiledCompositeActor");
-        
+
         if (!_pointerTypeInitialized) {
             Constants.add("pointer", new PointerToken());
             _pointerTypeInitialized = true;
@@ -996,7 +996,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
      *  and set _version to its value.
      */
     private static int _noEffigyVersion = 0;
-    
+
     private static boolean _pointerTypeInitialized = false;
 
 }

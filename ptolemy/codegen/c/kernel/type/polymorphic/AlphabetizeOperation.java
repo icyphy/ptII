@@ -1,4 +1,4 @@
-/* A tool for alphabetizing the code block files under 
+/* A tool for alphabetizing the code block files under
    $CLASSPATH/ptolemy/codegen/c/kernel/type/polymorphic/.
 
  Copyright (c) 2005-2006 The Regents of the University of California.
