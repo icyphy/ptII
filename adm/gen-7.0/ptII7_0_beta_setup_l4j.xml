@@ -1,7 +1,7 @@
 <launch4jConfig>
   <headerType>gui</headerType>
   <dontWrapJar>false</dontWrapJar>
-  <jar>ptII7.0.beta_setup.jar</jar>
+  <jar>ptII7_0_beta_setup.jar</jar>
   <outfile>ptII7.0.beta_setup.exe</outfile>
   <errTitle>ptIIsetup</errTitle>
   <chdir>.</chdir>
