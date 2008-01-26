@@ -512,6 +512,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/python \
 		ptolemy/actor/lib/security \
 		ptolemy/actor/lib/xslt \
+		ptolemy/actor/ptalon \
 		ptolemy/codegen \
 		ptolemy/configs/ptiny \
 		ptolemy/configs/jni \
