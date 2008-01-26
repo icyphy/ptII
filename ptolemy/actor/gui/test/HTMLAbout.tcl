@@ -74,6 +74,7 @@ tag specially.
 <br>The following urls are handled:
 <ul>
 <li><a href="about:configuration"><code>about:configuration</code></a> Expand the configuration (good way to test for missing classes).
+<li><a href="about:expandLibrary"><code>about:expandLibrary</code></a> Open a model and expand library tree (good way to test for missing classes, check standard out).
 <li><a href="about:copyright"><code>about:copyright</code></a>  Display information about the copyrights.
 <li><a href="about:checkCompleteDemos"><code>about:checkCompleteDemos</code></a> Check that each of the demos listed in the individual files is present in <code>ptolemy/configs/doc/completeDemos.htm</code>.
 </ul>
@@ -92,10 +93,10 @@ tag specially.
     <td><a href="about:checkModelSizes#ptolemy/configs/doc/demos.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
-    <code>ptolemy/configs/doc/whatsNew6.1.htm</code>
-    <td><a href="about:demos#ptolemy/configs/doc/whatsNew6.1.htm">&nbsp;Open the .xml&nbsp;</a></td>
-    <td><a href="about:links#ptolemy/configs/doc/whatsNew6.1.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
-    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew6.1.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
+    <code>ptolemy/configs/doc/whatsNew7.0.htm</code>
+    <td><a href="about:demos#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Open the .xml&nbsp;</a></td>
+    <td><a href="about:links#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>
+    <td><a href="about:checkModelSizes#ptolemy/configs/doc/whatsNew7.0.htm">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>
   </tr>
   <tr>
     <code>ptolemy/configs/doc/whatsNew5.1.htm</code>
@@ -169,7 +170,7 @@ tag specially.
 ######################################################################
 ####
 #
-test HTMLAbout-2.0 {generateLinks for testDemos.htm} {
+test HTMLAbout-2.1 {generateLinks for testDemos.htm} {
     set links [java::call ptolemy.actor.gui.HTMLAbout generateLinks \
 		   {ptolemy/actor/gui/test/testDemos.htm} {.*.xml$} \
 		   $configuration]
