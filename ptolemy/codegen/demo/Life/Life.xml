@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Life" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 4, 679, 476}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 4, 679, 474}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[464, 358]">
     </property>
@@ -93,13 +93,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{410, 40}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 15, 1011, 742}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 658]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[796, 626]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{409.9545454545454, 321.2571022727272}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{398.0, 313.0}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -108,7 +108,7 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[780.0, 345.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 355.0]">
             </property>
         </port>
         <entity name="Pulse y" class="ptolemy.actor.lib.Pulse">
@@ -128,7 +128,7 @@
             </property>
             <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 170.0]">
             </property>
         </entity>
         <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
@@ -366,11 +366,11 @@
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 170.0]">
             </property>
         </entity>
         <entity name="Borders y" class="ptolemy.domains.fsm.kernel.FSMActor">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Ok">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
@@ -405,14 +405,20 @@
                 </property>
             </port>
             <entity name="Low" class="ptolemy.domains.fsm.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 320.0]">
                 </property>
             </entity>
             <entity name="High" class="ptolemy.domains.fsm.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 165.0]">
                 </property>
             </entity>
             <entity name="Ok" class="ptolemy.domains.fsm.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 280.0}">
                 </property>
             </entity>
@@ -598,7 +604,7 @@
             <link port="Ok.outgoingPort" relation="relation4"/>
         </entity>
         <entity name="Borders x" class="ptolemy.domains.fsm.kernel.FSMActor">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Ok">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
@@ -633,14 +639,20 @@
                 </property>
             </port>
             <entity name="Low" class="ptolemy.domains.fsm.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 320.0]">
                 </property>
             </entity>
             <entity name="High" class="ptolemy.domains.fsm.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 165.0]">
                 </property>
             </entity>
             <entity name="Ok" class="ptolemy.domains.fsm.kernel.State">
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 280.0}">
                 </property>
             </entity>
@@ -840,7 +852,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 195.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 190.0]">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1286,7 +1298,7 @@
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 490.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 490.0]">
             </property>
             <port name="column" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1313,7 +1325,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 570.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 570.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1324,7 +1336,7 @@
             </property>
             <property name="columns" class="ptolemy.data.expr.Parameter" value="matrixSize">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 350.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 355.0]">
             </property>
         </entity>
         <entity name="Repeat2" class="ptolemy.domains.sdf.lib.Repeat">
@@ -1623,7 +1635,7 @@
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[200.0, 160.0]">
+            <vertex name="vertex1" value="[205.0, 170.0]">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -1653,7 +1665,7 @@
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <vertex name="vertex1" value="[575.0, 350.0]">
+            <vertex name="vertex1" value="[505.0, 355.0]">
             </vertex>
         </relation>
         <relation name="relation13" class="ptolemy.actor.TypedIORelation">

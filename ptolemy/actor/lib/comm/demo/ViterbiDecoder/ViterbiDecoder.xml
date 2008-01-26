@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ViterbiDecoder" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
@@ -14,9 +14,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 50.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 1019, 653}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 1018, 653}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 537]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[803, 537]">
     </property>
     <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="{05, 07, 011}">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -180,7 +180,7 @@ The ViterbiDecoder actor does soft decoding.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{402.0, 268.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{401.5, 268.5}">
     </property>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 185.0]">
@@ -448,7 +448,7 @@ The ViterbiDecoder actor does soft decoding.</text></svg></configure>
         </property>
     </entity>
     <entity name="Count Errors" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 195.0]">
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -472,7 +472,7 @@ the error rate.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 40.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 516}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -604,7 +604,7 @@ the error rate.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 185.0]">
         </property>
     </entity>
     <entity name="Error Rate on Coded Channel" class="ptolemy.actor.lib.MonitorValue">
@@ -617,11 +617,11 @@ the error rate.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 245.0]">
         </property>
     </entity>
     <entity name="Count Errors2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 470.0]">
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -645,7 +645,7 @@ the error rate.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 40.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 516}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -777,7 +777,7 @@ the error rate.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 460.0]">
         </property>
     </entity>
     <entity name="Error Rate on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
@@ -790,7 +790,7 @@ the error rate.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 480.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[665.0, 510.0]">
         </property>
     </entity>
     <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
