@@ -80,7 +80,7 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar 
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-50/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
@@ -122,6 +122,8 @@ PTII_TOPDIR=	.cshrc \
 		lib \
 		makefile \
 		mk \
+		org/makefile \
+		org/mlc \
 		ptolemy \
 		thales \
 		util \
@@ -510,7 +512,6 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/python \
 		ptolemy/actor/lib/security \
 		ptolemy/actor/lib/xslt \
-		ptolemy/actor/ptalon \
 		ptolemy/codegen \
 		ptolemy/configs/ptiny \
 		ptolemy/configs/jni \
@@ -826,11 +827,12 @@ nightly: ptclean ptbuild \
 	glimpse \
 	findchanges \
 	ChangeLog \
-	jnlp \
-	remote4nuke \
-	remote5nuke \
-	remote4 \
-	remote5
+	jnlp
+
+#	remote4nuke \
+#	remote5nuke \
+#	remote4 \
+#	remote5
 
 #	remote2
 #	remote6
@@ -1170,6 +1172,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel/fmv \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel/ia \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/psdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/moml/filter \
@@ -1450,6 +1453,7 @@ remote1ChangeLog:
 	    fi) 
 	@echo "Problems generating ChangeLog from ptolemy/backtrack/automatic/ptolemy"
 	ls -l $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
+	(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy; cvs update )
 	#rm -rf $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
 	#(cd $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic; cvs update ptolemy)
 	#ls -l $(REMOTE1PTIIDIST)/ptolemy/backtrack/automatic/ptolemy
