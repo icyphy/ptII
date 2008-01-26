@@ -142,8 +142,6 @@ ptolemy_makefile:
 	@echo "OPTIONAL_FILES =" >> ptolemy/makefile
 	@echo "JCLASS = \$$(JSRCS:%.java=%.class)" >> ptolemy/makefile
 	@echo "all: jclass" >> ptolemy/makefile
-	@echo "	@echo \"Temp test for nightly build\"" >> ptolemy/makefile
-	@echo "	if [ -f actor/lib/Accumulator.java ]; then cat actor/lib/Accumulator.java; fi"  >> ptolemy/makefile
 	@echo "install: jclass \$$(PTCLASSJAR)" >> ptolemy/makefile
 	@echo "include \$$(ROOT)/mk/ptcommon.mk" >> ptolemy/makefile
 
