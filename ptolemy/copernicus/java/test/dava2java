@@ -2,10 +2,10 @@
 # $Id$
 # Simple conversions to dava output
 awk '{if ($0 ~ /public Main()/) {
-    	    if ($0 !~ /throws IllegalActionException, NameDuplicationException/) {
-	       print $0, "throws IllegalActionException, NameDuplicationException"
+                if ($0 !~ /throws IllegalActionException, NameDuplicationException/) {
+               print $0, "throws IllegalActionException, NameDuplicationException"
             } else {
-	       print $0
+               print $0
             }
         } else {
             print $0

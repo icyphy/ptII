@@ -168,7 +168,7 @@ public abstract class Top extends JFrame {
      * @param dir the initial directory to use for file dialogs
      */
     public static void setDirectory(File dir) {
-    	_directory = dir;
+            _directory = dir;
     }
 
     ///////////////////////////////////////////////////////////////////

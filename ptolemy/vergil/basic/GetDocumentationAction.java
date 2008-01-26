@@ -357,21 +357,21 @@ public class GetDocumentationAction extends FigureAction {
     private static boolean isMultipleDocumentationAllowed() {
         // FIXME: This is necessary for Kepler, but not for Ptolemy?
         // Why?
-    	boolean retVal = false;
+            boolean retVal = false;
         List configsList = Configuration.configurations();
         Configuration config = null;
         Object object = null;
         for (Iterator it = configsList.iterator(); it.hasNext(); ) {
-        	config = (Configuration)it.next();
-        	if (config != null) {
-        		break;
-        	}
+                config = (Configuration)it.next();
+                if (config != null) {
+                        break;
+                }
         }
         // Look up the attribute (if it exists)
         StringAttribute multipleDocumentationAllowed = 
-        	(StringAttribute) config.getAttribute("_multipleDocumentationAllowed");
+                (StringAttribute) config.getAttribute("_multipleDocumentationAllowed");
         if (multipleDocumentationAllowed != null) {
-        	retVal = Boolean.parseBoolean(multipleDocumentationAllowed.getExpression());
+                retVal = Boolean.parseBoolean(multipleDocumentationAllowed.getExpression());
         }
         return retVal;
     }
