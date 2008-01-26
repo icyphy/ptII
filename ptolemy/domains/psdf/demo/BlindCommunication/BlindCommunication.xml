@@ -1427,7 +1427,7 @@
     <entity name="PhaseStatesEstimator" class="ptolemy.actor.TypedCompositeActor">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={229, 114, 795, 650}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={224, 109, 795, 650}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[580, 534]">
         </property>
@@ -1447,7 +1447,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 60.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 30.0]">
             </property>
             <property name="style" class="ptolemy.actor.gui.style.LineStyle">
             </property>
@@ -1466,14 +1466,14 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 80.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 50.0]">
             </property>
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.Attribute">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{376.8131578947368, 306.8052631578947}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.0, 267.0}">
         </property>
         <property name="inputCount" class="ptolemy.actor.parameters.PortParameter" value="127">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1496,22 +1496,22 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 85.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 55.0]">
             </property>
         </property>
         <property name="Parameterized_SDF_Director" class="ptolemy.domains.psdf.kernel.PSDFDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 85.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 55.0]">
             </property>
         </property>
         <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model estimates the number of phase states of the incoming &#10;resampled signal by computing a histogram of the phase differences&#10;and applying some thresholds.  In this model reconfiguration of&#10;the inputCount parameter (and the number of samples consumed by the histogram)&#10;occurs just before the beginning of each execution of the schedule.&#10;Hence, the model is locally synchronous and can be quasi-statically scheduled.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 430.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 400.0]">
             </property>
         </property>
         <port name="inputCount" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 80.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 50.0]">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
@@ -1520,14 +1520,14 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 360.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 330.0]">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
             </property>
         </port>
         <port name="samples" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 135.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 105.0]">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="complex">
             </property>
@@ -1537,7 +1537,7 @@
             </property>
         </port>
         <entity name="ComplexToPolar" class="ptolemy.actor.lib.conversions.ComplexToPolar">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 135.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 105.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1624,7 +1624,7 @@
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="219.5, 285.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[139.5, 255.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1653,11 +1653,11 @@
             </property>
             <property name="scale" class="ptolemy.data.expr.StringParameter" value="relative linear">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 370.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 340.0]">
             </property>
         </entity>
         <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 360.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 330.0]">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -1776,7 +1776,7 @@
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="314.5, 285.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[234.5, 255.0]">
             </property>
         </entity>
         <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
@@ -1874,7 +1874,7 @@
                 <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 365.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 335.0]">
             </property>
         </entity>
         <entity name="MovingAverage" class="ptolemy.domains.sdf.lib.FIR">
@@ -2070,17 +2070,17 @@
                     </property>
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 285.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 255.0]">
             </property>
         </entity>
         <entity name="Differential" class="ptolemy.actor.lib.Differential">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 145.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 115.0]">
             </property>
         </entity>
         <entity name="Wrap" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="((input-lowWrap)%(highWrap-lowWrap) +(highWrap-lowWrap)) % (highWrap-lowWrap) + lowWrap">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 205.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 175.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -2116,7 +2116,7 @@
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="150.0, 230.0">
+            <vertex name="vertex1" value="[70.0, 200.0]">
             </vertex>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
