@@ -118,7 +118,7 @@
 
             <input source="ptolemy/actor/lib/io/io.xml"/>
             <input source="ptolemy/actor/lib/math.xml"/>
-            <input source="ptolemy/actor/lib/random.xml"/>
+            <input source="ptolemy/actor/lib/randomNoColt.xml"/>
             <input source="ptolemy/actor/lib/flowcontrol.xml"/>
             <input source="ptolemy/actor/lib/realtime.xml"/>
             <input source="ptolemy/actor/lib/logic/logic.xml"/>
