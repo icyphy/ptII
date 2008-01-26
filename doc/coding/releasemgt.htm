@@ -141,6 +141,30 @@ cat /tmp/f | egrep '*.tcl' | xargs $PTII/adm/bin/addtrailingnl -n
 cat /tmp/f | egrep '*.xml' | xargs $PTII/adm/bin/addtrailingnl -n
 </pre>
 
+<li> Convert tabs with
+<code>$PTII/adm/bin/rmtabs</code>
+<pre>
+cd $PTII
+# Run rmtabs without actually doing anything:
+cat /tmp/j | xargs $PTII/util/testsuite/rmtabs -n 
+# Run rmtabs with adding the new lines:
+cat /tmp/j | xargs $PTII/util/testsuite/rmtabs 
+# Run with -n and then without:
+cat /tmp/f | egrep '*.[ch]$' | xargs $PTII/util/testsuite/rmtabs -n
+</pre>
+
+<li> Convert tabs with
+<code>$PTII/adm/bin/rmtrailingspaces</code>
+<pre>
+cd $PTII
+# Run rmtrailingspace without actually doing anything:
+cat /tmp/j | xargs $PTII/util/testsuite/rmtrailingspace -n 
+# Run rmtrailingspace with adding the new lines:
+cat /tmp/j | xargs $PTII/util/testsuite/rmtrailingspace 
+# Run with -n and then without:
+cat /tmp/f | egrep '*.[ch]$' | xargs $PTII/util/testsuite/rmtrailingspace -n
+</pre>
+
 <li> Fix common problems in java files:
 <pre>
 cat /tmp/j | xargs $PTII/adm/bin/fix-files -n
