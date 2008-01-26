@@ -44,9 +44,9 @@ import diva.graph.GraphController;
  * A suitable MenuFactory is instantiated and returned by a call to the
  * createContextMenuFactory() method.
  *
- * @Author Matthew Brooke
- * @ProposedRating Red
- * @AcceptedRating Red
+ * @author Matthew Brooke
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  * @version $Id$
  */
 public class ContextMenuFactoryCreator extends Attribute {
