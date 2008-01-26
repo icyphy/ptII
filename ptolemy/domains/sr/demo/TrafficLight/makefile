@@ -50,14 +50,13 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	CarLightNormal.xml \
 	PedestrianLightNormal.xml \
+	SimpleTrafficLight.xml \
 	TrafficLight.xml \
+	TrafficLight.htm \
 	TrafficLight_StateCharts.pdf \
 	TrafficLight_StateCharts.png \
-	WirelessDeployment.xml \
 	WirelessDeployment.htm \
-	SimpleTrafficLight.xml \
-	TrafficLight.htm \
-	TrafficLight.xml
+	WirelessDeployment.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
