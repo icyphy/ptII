@@ -248,6 +248,7 @@ OTHER_FILES_TO_BE_JARED = \
 	math.xml \
 	matrix.xml \
 	random.xml \
+	randomNoColt.xml \
 	realtime.xml \
 	sequencecontrol.xml \
 	SequenceIcon.xml \
