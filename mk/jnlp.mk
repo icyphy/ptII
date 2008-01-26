@@ -225,6 +225,8 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/csp/doc/doc.jar \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/ct/doc/doc.jar \
+	ptolemy/domains/ddf/ddf.jar \
+	ptolemy/domains/ddf/demo/demo.jar \
 	ptolemy/domains/de/demo/demo.jar \
 	ptolemy/domains/de/doc/doc.jar \
 	ptolemy/domains/fsm/demo/demo.jar \
@@ -326,7 +328,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
 	ptolemy/domains/dde/demo/demo.jar \
-	ptolemy/domains/ddf/demo/demo.jar \
 	ptolemy/domains/dt/demo/demo.jar \
 	ptolemy/domains/dt/doc/doc.jar \
 	ptolemy/domains/giotto/demo/demo.jar \
@@ -762,7 +763,6 @@ CODEGEN_DOMAIN_JARS = \
 	ptolemy/domains/ci/ci.jar \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/de/de.jar \
-	ptolemy/domains/ddf/ddf.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/gr/gr.jar \
 	ptolemy/domains/hdf/hdf.jar \
@@ -834,7 +834,7 @@ jnlp_verify:
 	set $(ALL_JNLP_JARS); \
 	for x do \
 		echo "$$x"; \
-		"$(PTJAVA_DIR)/bin/jarsigner" -verify $$x; \
+		"$(PTJAVA_DIR)/bin/jarsigner" -verify -verbose -certs $$x; \
 	done;
 
 # Update a location with the files necessary to download
