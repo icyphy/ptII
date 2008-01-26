@@ -1,6 +1,6 @@
 /* A token that contains the memory location of a C object.
 
- Copyright (c) 1997-2007 The Regents of the University of California.
+ Copyright (c) 2008 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,9 +45,9 @@ Attempts to access the object from Java will raise an IllegalActionException.
 
 @author Teale Fristoe
 @version $Id$
-@since Ptolemy II 0.2
+@since Ptolemy II 7.1
 @Pt.ProposedRating Red (tbf)
-@Pt.AcceptedRating
+@Pt.AcceptedRating Red
 */
 public class PointerToken extends Token {
     /** Construct an empty token.
@@ -57,7 +57,7 @@ public class PointerToken extends Token {
     }
 
     /** Construct a token with the specified memory location.
-     *  @param value The specified object referred to by this token.
+     *  @param pointer The specified object referred to by this token.
      *  @exception IllegalActionException If the argument is not of
      *  the appropriate type
      *  (may be thrown by derived classes, but is not thrown here).
