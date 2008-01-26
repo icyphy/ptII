@@ -154,6 +154,12 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/python/demo"/>
             <file src="../../jar_dist/ptolemy/actor/lib/security/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/security/demo"/>
+            <file src="../../jar_dist/ptolemy/actor/ptalon/ptalon.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/ptalon"/>
+            <file src="../../jar_dist/ptolemy/actor/ptalon/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/ptalon/demo"/>
+            <file src="../../jar_dist/ptolemy/backtrack/backtrack.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/backtrack"/>
             <file src="../../jar_dist/ptolemy/codegen/codegen.jar"
                   targetdir="$INSTALL_PATH/ptolemy/codegen"/>
             <file src="../../jar_dist/ptolemy/data/type/demo/demo.jar"
@@ -164,6 +170,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/csp/demo"/>
             <file src="../../jar_dist/ptolemy/domains/csp/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/csp/doc"/>
+            <file src="../../jar_dist/ptolemy/domains/continuous/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/continuous/demo"/>
             <file src="../../jar_dist/ptolemy/domains/ct/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/ct/demo"/>
             <file src="../../jar_dist/ptolemy/domains/ct/doc/doc.jar"
@@ -324,6 +332,14 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/tm/demo"/>
             <file src="../../jar_dist/ptolemy/domains/tm/doc/doc.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/tm/doc"/>
+            <file src="../../jar_dist/com/jgoodies/jgoodies.jar"
+                  targetdir="$INSTALL_PATH/com/jgoodies"/>
+            <file src="../../jar_dist/lib/bsh-2.0b4.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../../jar_dist/org/mlc/mlc.jar"
+                  targetdir="$INSTALL_PATH/org/mlc"/>
+            <file src="../../jar_dist/ptolemy/actor/gui/run/run.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/actor/gui/run"/>
             <file src="../../jar_dist/ptolemy/domains/wireless/wireless.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/wireless"/>
             <file src="../../jar_dist/ptolemy/domains/wireless/demo/demo.jar"
@@ -384,6 +400,7 @@ The Ptiny pack is required.
 	    <file src="src/ptII7.1.devel/lib" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.1.devel/makefile" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.1.devel/mk" targetdir="$INSTALL_PATH"/>
+	    <file src="src/ptII7.1.devel/org" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.1.devel/ptolemy" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.1.devel/thales" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII7.1.devel/util" targetdir="$INSTALL_PATH"/>
