@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LinkVisualizer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -72,7 +72,7 @@
             </property>
             <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, -20.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[88.0, 50.0]">
             </property>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 89, 902, 498}, maximized=false}">
@@ -81,7 +81,7 @@
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 121.5}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{343.5, 191.0}">
         </property>
         <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -90,7 +90,7 @@
             </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Move the Receiver in a circular pattern around the Sender. ">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 260.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[293.0, 330.0]">
             </property>
         </property>
         <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -111,7 +111,7 @@ and display the received power on a polar plot.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, -55.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[138.0, 15.0]">
             </property>
         </property>
         <property name="stepInRadians" class="ptolemy.data.expr.Parameter" value="PI/30.0">
@@ -130,7 +130,7 @@ and display the received power on a polar plot.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, -40.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[493.0, 30.0]">
             </property>
         </property>
         <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -140,7 +140,7 @@ and display the received power on a polar plot.</text></svg></configure>
             </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Extract the&#10;received power">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 105.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[133.0, 175.0]">
             </property>
         </property>
         <property name="annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -150,7 +150,7 @@ and display the received power on a polar plot.</text></svg></configure>
             </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In a plot, increasing Y moves down.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 170.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[393.0, 240.0]">
             </property>
         </property>
         <property name="annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -160,7 +160,7 @@ and display the received power on a polar plot.</text></svg></configure>
             </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Sweep angles around a circle.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 260.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[28.0, 330.0]">
             </property>
         </property>
         <port name="in" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -173,13 +173,13 @@ and display the received power on a polar plot.</text></svg></configure>
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 80.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[53.0, 150.0]">
             </property>
         </port>
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="_location">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 230.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[578.0, 300.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -190,26 +190,26 @@ and display the received power on a polar plot.</text></svg></configure>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="stepInRadians">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 230.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[148.0, 300.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
         </entity>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0}">
             </property>
             <doc>Create a set of pulses</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 220.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[58.0, 290.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
         </entity>
         <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 60.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[183.0, 130.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -225,7 +225,7 @@ and display the received power on a polar plot.</text></svg></configure>
             </port>
         </entity>
         <entity name="GetProperties" class="ptolemy.domains.wireless.lib.GetProperties">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 80.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[103.0, 150.0]">
             </property>
         </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -237,7 +237,7 @@ and display the received power on a polar plot.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 230.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[378.0, 300.0]">
             </property>
             <port name="theta" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -246,7 +246,7 @@ and display the received power on a polar plot.</text></svg></configure>
             </port>
         </entity>
         <entity name="PolarToCartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 125.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[303.0, 195.0]">
             </property>
         </entity>
         <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
@@ -256,7 +256,7 @@ and display the received power on a polar plot.</text></svg></configure>
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 367]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 125.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[493.0, 195.0]">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -277,7 +277,7 @@ and display the received power on a polar plot.</text></svg></configure>
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 160.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[383.0, 230.0]">
             </property>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -287,13 +287,13 @@ and display the received power on a polar plot.</text></svg></configure>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[165.0, 230.0]">
+            <vertex name="vertex1" value="[213.0, 300.0]">
             </vertex>
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="[475.0, 230.0]">
+            <vertex name="vertex1" value="[523.0, 300.0]">
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -373,7 +373,7 @@ and display the received power on a polar plot.</text></svg></configure>
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="period" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
             </property>

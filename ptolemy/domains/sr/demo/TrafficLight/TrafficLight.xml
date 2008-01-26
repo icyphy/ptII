@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TrafficLight" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 10, 1017, 749}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 658]">
     </property>
@@ -196,7 +196,7 @@
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="40.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 295.0]">
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -216,7 +216,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There is a corresponding WirelessDeployment model that&#10;models the same traffic light control algorithms&#10;with wireless communication between the car light&#10;and the pedestrian light. Changes to the normal&#10;operation logic of either light here will be &#10;reflected automatically in the deployment model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There is a corresponding WirelessDeployment model&#10;that models the same traffic light control algorithms&#10;with wireless communication between the car light&#10;and the pedestrian light. Changes to the normal&#10;operation logic of either light here will be &#10;reflected automatically in the deployment model.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 195.0]">
         </property>
@@ -300,7 +300,7 @@ implementations.</text></svg></configure>
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, -1, 919, 644}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 63, 919, 642}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 526]">
             </property>
@@ -564,13 +564,13 @@ pedestrian lights.</text></svg></configure>
             <link port="YellowOff.outgoingPort" relation="relation3"/>
         </entity>
         <entity name="normal" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 10, 1015, 747}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 658]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 631]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4477793775612">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-15.84375, 24.3695685434517}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-21.7148102815177, 15.044943390453}">
             </property>
             <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-225.0, -175.0]">
@@ -589,7 +589,7 @@ pedestrian lights.</text></svg></configure>
                 </property>
                 <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The CarLightNormal and PedestrianLightNormal actors&#10;here are instances of actor-oriented classes defined &#10;in other files. If you open the actors, you will open&#10;the other files. If you change the design, then all&#10;other instances of this class will see the change.&#10;In particular, the WirelessDeployment example uses&#10;the same instances.">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 45.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 60.0]">
                 </property>
             </property>
             <port name="Sec" class="ptolemy.domains.fsm.modal.RefinementPort">

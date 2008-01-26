@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TransmitAntennaPattern" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -84,12 +84,12 @@
             </property>
             <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, -20.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 50.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 31, 902, 488}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 32, 827, 488}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[687, 372]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[612, 372]">
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -111,12 +111,12 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, -60.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 10.0]">
             </property>
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 116.5}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{306.0, 186.0}">
         </property>
         <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -125,7 +125,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             </property>
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Reverse Y direction (the plotter&#10;has Y increasing upwards, and Vergil&#10;has Y increasing downwards).">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 170.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 240.0]">
             </property>
         </property>
         <port name="in" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -138,15 +138,15 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 80.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 150.0]">
             </property>
         </port>
         <entity name="GetProperties" class="ptolemy.domains.wireless.lib.GetProperties">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 80.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 150.0]">
             </property>
         </entity>
         <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 60.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 130.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -167,7 +167,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-2*PI/100">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 270.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 340.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -175,7 +175,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="_location">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 260.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 330.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -186,20 +186,20 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-2*PI/100">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 195.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 265.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
         </entity>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
             </property>
             <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0}">
             </property>
             <doc>Create a set of pulses</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 185.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 255.0]">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -213,7 +213,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 260.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 330.0]">
             </property>
             <port name="x" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -229,7 +229,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[384, 360]">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 105.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 175.0]">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -245,7 +245,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             </configure>
         </entity>
         <entity name="PolarToCartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 105.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 175.0]">
             </property>
         </entity>
         <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -255,27 +255,27 @@ of this actor relative to the position of the Sender.</text></svg></configure>
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 145.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 215.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="60.0, 80.0">
+            <vertex name="vertex1" value="[100.0, 150.0]">
             </vertex>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="205.0, 195.0">
+            <vertex name="vertex1" value="[245.0, 265.0]">
             </vertex>
         </relation>
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="55.0, 185.0">
+            <vertex name="vertex1" value="[95.0, 255.0]">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="180.0, 270.0">
+            <vertex name="vertex1" value="[220.0, 340.0]">
             </vertex>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
@@ -328,7 +328,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 407, 699, 382}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={225, 384, 699, 377}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 400]">
         </property>
@@ -360,7 +360,7 @@ of this actor relative to the position of the Sender.</text></svg></configure>
             </property>
         </port>
         <entity name="Clock" class="ptolemy.actor.lib.Clock">
-            <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
             </property>
             <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.1}">
             </property>
