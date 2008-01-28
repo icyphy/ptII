@@ -12,12 +12,12 @@
     <!-- that are not relevant. -->
     <property name="_library" class="ptolemy.moml.LibraryAttribute">
       <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity">
-          <input source="ptolemy/configs/annotation.xml"/>
-          <entity name="state" class="ptolemy.domains.fsm.kernel.State">
-            <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
-          </entity>
-        </entity>
+    <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity">
+      <input source="ptolemy/configs/basicUtilities.xml"/>
+      <entity name="State" class="ptolemy.domains.fsm.kernel.State">
+        <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
+      </entity>
+    </entity>
       </configure>
     </property>
   </property>
@@ -26,3 +26,5 @@
   <property name="XML view"
         class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
 </property>
+
+
