@@ -75,7 +75,8 @@ OTHER_FILES_TO_BE_JARED = \
 	CaseIcon.xml \
 	MobileFunctionIcon.xml \
 	MobileModelIcon.xml \
-	hoc.xml
+	hoc.xml \
+	hocSimple.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
