@@ -129,7 +129,9 @@
 <input source="ptolemy/configs/hyvisual/flowcontrol.xml"/>
 
   <input source="ptolemy/domains/gr/gr.xml"/>
-  <input source="ptolemy/actor/lib/hoc/hoc.xml"/>
+
+<!-- Modified library -->
+  <input source="ptolemy/actor/lib/hoc/hocSimple.xml"/>
 
 <!-- Modified library -->
 <input source="ptolemy/configs/hyvisual/io.xml"/>
