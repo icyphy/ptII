@@ -231,7 +231,6 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/actor/lib/python/demo/HelloWorld \
 		ptolemy/actor/lib/python/demo/NotifyFailedTest \
 		ptolemy/actor/lib/security/test/foo.keystore \
-		ptolemy/actor/ptalon \
 		ptolemy/codegen/c/actor/lib/javasound/test/outfile.wav \
 		ptolemy/codegen/c/domains/sdf/kernel/test/foo.c \
 		ptolemy/codegen/kernel/test/substitute.out \
