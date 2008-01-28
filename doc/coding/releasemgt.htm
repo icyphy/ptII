@@ -284,16 +284,16 @@ find . -name "*.xml,v" -exec chmod a-x {} \;
 For more information about CVS, see the
 <a href="http://www.gigascale.org/softdevel/faq/1/" target="_top">Gigascale CVS Pages</a>
 
- <p>To make a branch for 6.0.beta, use the following command:
+ <p>To make a branch for 7.0.beta, use the following command:
 <pre>
 cd $PTII
-cvs tag -b rel-6-0-beta
+cvs tag -b rel-7-0-beta
 </pre>
 Then check out the release branch  with
 <pre>
 cd ~/src
-cvs co -r rel-6-0-beta ptIIC
-mv ptII ptII6.0.beta
+cvs co -r rel-7-0-beta ptIIC
+mv ptII ptII7.0.beta
 
 </pre>
 <I>Note that you should avoid dots in the tag name</I>
@@ -302,7 +302,7 @@ mv ptII ptII6.0.beta
 
 <li> Remove files that are not to be shipped from the release:
 <pre>
-cd ptII6.0.beta
+cd ptII7.0.beta
 export PTII `pwd`
 ./configure
 make cvs_delete_clean_shipping
@@ -315,35 +315,35 @@ set up a new tree for the release tree.
 <li> We build a separate src.tar.gz file under Unix so that the line
 endings are correct. 
 <pre>
-cvs -D :ext:source:/home/cvs co -r rel-6-0-beta ptII
-mv ptII ptII6.0.beta
-cd ptII6.0.beta
+cvs -D :ext:source:/home/cvs co -r rel-7-0-beta ptII
+mv ptII ptII7.0.beta
+cd ptII7.0.beta
 setenv PTII `pwd`
 cvs update -P -d
 ./configure
 make fast install
-cd $PTII/adm/gen-6.0
-make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.beta PTIIADM=/tmp/cxh/ptII6.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar fortytwo_test
+cd $PTII/adm/gen-7.0
+make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta PTIIADM=/tmp/cxh/ptII7.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar fortytwo_test
 
 </pre>
 The resulting file with the .class files gets copied to the website
 and untar'd.  Note that this does not require Java 3D on the build machine.
 Java 3D is needed for the applets, we copy the jars over later.
 <pre>
-make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.beta PTIIADM=/tmp/cxh/ptII6.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar update_ftp
+make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta PTIIADM=/tmp/cxh/ptII7.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar update_ftp
 </pre>
 or
 <pre>
-make USER=cxh PTIIHOME=/tmp/cxh/ptII6.0.beta PTIIADM=/tmp/ptII6.0.abeta/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
+make USER=cxh PTIIHOME=/tmp/cxh/ptII7.0.beta PTIIADM=/tmp/ptII7.0.beta/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
 </pre>
 <ol>
 <li> Fix the links to ptplot downloads:
 <pre>
-cd /export/home/pt0/ptweb/ptolemyII/ptII6.0/ptII6.0.beta/ptolemy/plot
-ln -s ../../../../../java/ptplot5.6/ptolemy/plot/ptplot5.6* .
+cd /export/home/pt0/ptweb/ptolemyII/ptII7.0/ptII7.0.beta/ptolemy/plot
+ln -s ../../../../../java/ptplot5.7/ptolemy/plot/ptplot5.7* .
 cd doc
 rm -rf download
-ln -s ../../../../../../java/ptplot5.6.beta/ptolemy/plot/doc/download .
+ln -s ../../../../../../java/ptplot5.7.beta/ptolemy/plot/doc/download .
 </pre>
 
 <li> Copy gr.jar from a Windows box to <CODE>ptolemy/domains/gr</CODE>
@@ -354,11 +354,11 @@ ln -s ../../../../../../java/ptplot5.6.beta/ptolemy/plot/doc/download .
 
 <li> We build the webstart jar files under Windows
 <pre>
-cvs -d :ext:source:/home/cvs co -r rel-6-0-beta ptII
+cvs -d :ext:source:/home/cvs co -r rel-7-0-beta ptII
 cvs update -P -d
-mv ptII ptII6.0.beta
-cd ptII6.0.beta
-export PTII=c:/tmp/cxh/ptII6.0.beta
+mv ptII ptII7.0.beta
+cd ptII7.0.beta
+export PTII=c:/tmp/cxh/ptII7.0.beta
 
 <I>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</I>
 <I>Use an older javac so that the .class files are compatible.  For
@@ -386,8 +386,8 @@ Look for missing jar files in the output.
 
 <li> Create the src.jar file: 
 <pre>
-cd $PTII/adm/gen-6.0
-make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII6.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
+cd $PTII/adm/gen-7.0
+make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII7.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
 </pre>
 
 
