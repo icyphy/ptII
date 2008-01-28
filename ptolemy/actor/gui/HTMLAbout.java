@@ -47,6 +47,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -346,7 +347,7 @@ public class HTMLAbout {
             newURL = runAllDemos(aboutURI.getFragment(), configuration);
         } else if (event.getDescription().startsWith("about:expandLibrary")) {
             URI aboutURI = new URI(event.getDescription());
-            newURL = _expandLibrary(aboutURI.getFragment(), ".*.xml$",
+            newURL = _expandLibrary(".*.xml$",
                     configuration);
         } else {
             // Display a message about the about: facility
@@ -500,28 +501,66 @@ public class HTMLAbout {
                 + "  </tr>\n";
     }
 
-    /** Expand the left hand library pane.  The first model in the file
-     *  named by demosFileName is opened and then the left hand library
-     *  pane is expanded.
-     *  @param demosFileName The name of the demo file.
+    /** Expand the left hand library pane.  We search for a model,
+     *  first in the intro.htm file, then the complete demos page and
+     *  then on the Ptolemy website.  The model is opened and then the
+     *  left hand library pane is expanded.  This test is useful for
+     *  looking for problem with icons, such as icons that cause
+     *  ChangeRequests.
      *  @param regexp The regular expression of the links we are interested
      *  in.
      *  @param configuration  The configuration to open the files in.
      *  @return the URL of the HTML file that was searched.
      *  @exception Exception If there is a problem opening a model.
      */
-    public static URL _expandLibrary(String demosFileName, String regexp,
+    public static URL _expandLibrary(String regexp,
             Configuration configuration) throws Exception {
-        URL demosURL = _getDemoURL(demosFileName);
+        FileParameter aboutAttribute = (FileParameter) configuration
+            .getAttribute("_about", FileParameter.class);
 
-        // Get the first model and open it
+        URL baseURL = null;
+        URL modelURL = null;
 
-        List modelList = _getURLs(demosURL, regexp);
-        Iterator models = modelList.iterator();
-        String model = (String) models.next();
-        URL modelURL = new URL(demosURL, model);
+        // HyVisual, VisualSense: Search for models in the _about
+        // attribute of the configuration.
+        // If we don't have an _about, or _about returns
+        // no models, then look in the complete demos location
 
-        Tableau tableau = configuration.openModel(demosURL, modelURL, modelURL
+        if (aboutAttribute != null) {
+            baseURL = aboutAttribute.asURL();
+            String aboutURLString = baseURL.toExternalForm();
+            String base = aboutURLString.substring(0,
+                    aboutURLString.lastIndexOf("/"));
+            baseURL = MoMLApplication.specToURL(base + "/intro.htm");
+            System.out.println("HTMLAbout._expandLibrary(): looking in about URL: " + baseURL);
+            List modelList = _getURLs(baseURL, regexp);
+            if (modelList.size() > 0) {
+                // Get the first model and open it
+                String model = (String) modelList.get(0);
+                System.out.println("HTMLAbout._expandLibrary(): looking for model relative to about URL: " + model);
+                modelURL = new URL(baseURL, model);
+            }
+        }
+        if (modelURL == null) {
+            // Get completeDemos.htm
+            baseURL = _getDemoURL(null);
+            System.out.println("HTMLAbout._expandLibrary(): looking in completeDemos URL: " + baseURL);
+            List modelList = _getURLs(baseURL, regexp);
+            if (modelList.size() > 0) {
+                // Get the first model and open it
+                String model = (String) modelList.get(0);
+                System.out.println("HTMLAbout._expandLibrary(): looking for model relative to completeDemos URL: " + model);
+                modelURL = new URL(baseURL, model);
+            } else {
+                String model = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml";
+                System.out.println("HTMLAbout._expandLibrary(): looking for model relative to completeDemos URL: " + model);
+                modelURL = new URL(model);
+            }
+        }
+
+        System.out.println("HTMLAbout._expandLibrary(): baseURL: " + baseURL);
+        System.out.println("HTMLAbout._expandLibrary(): modelURL: " + modelURL);
+        Tableau tableau = configuration.openModel(baseURL, modelURL, modelURL
                 .toExternalForm());
         final JFrame jFrame = tableau.getFrame();
         //jFrame.show();
