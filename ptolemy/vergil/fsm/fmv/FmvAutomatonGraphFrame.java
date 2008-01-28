@@ -202,11 +202,11 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
             Query query = new Query();
             query.addLine("formula", "Temporal formula", "");
             String[] possibleChoice = new String[2];
-            possibleChoice[0] = new String("CTL");
-            possibleChoice[1] = new String("LTL");
+            possibleChoice[0] = "CTL";
+            possibleChoice[1] = "LTL";
             query.addRadioButtons("choice", "Formula Type", possibleChoice,
                     "CTL");
-            query.addLine("span", "Size of span", "1");
+            query.addLine("span", "Size of span", "0");
             ComponentDialog dialog = new ComponentDialog(null, "Input Formula",
                     query);
 
@@ -222,6 +222,7 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
                 // StringBuffer = model
 
                 StringBuffer fmvFormat = new StringBuffer("");
+                FileWriter smvFileWriter = null;
                 try {
 
                     fmvFormat.append(model.convertToSMVFormat(pattern,
@@ -256,15 +257,22 @@ public class FmvAutomatonGraphFrame extends FSMGraphFrame {
 
                         File smvFile = fileSaveDialog.getSelectedFile()
                                 .getCanonicalFile();
-                        FileWriter smvFileWriter = new FileWriter(smvFile);
+                        smvFileWriter = new FileWriter(smvFile);
                         smvFileWriter.write(fmvFormat.toString());
-                        smvFileWriter.close();
 
                     }
                 } catch (Exception ex) {
                     MessageHandler
                             .error("Failed to perform the conversion process:\n"
                                     + ex.getMessage());
+                }
+                try {
+                    if (smvFileWriter != null)
+                        smvFileWriter.close();
+                } catch (Exception ex) {
+                    MessageHandler
+                    .error("Failed to perform the file closing process:\n"
+                            + ex.getMessage());
                 }
 
             }
