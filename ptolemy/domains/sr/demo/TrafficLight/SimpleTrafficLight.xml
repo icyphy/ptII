@@ -2,58 +2,80 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SimpleTrafficLight" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="7.0.beta">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={16, 209, 815, 517}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 84, 827, 532}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[612, 415]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{306.0, 207.5}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Contrary to TrafficLight.xml, SimpleTrafficLight.xml &#10;is a simplified version of traffic control which only &#10;simulates the behavior of normal situation. &#10;&#10;Another difference is that SimpleTrafficLight.xml &#10;only uses FSMActors to represent extended state &#10;machines rather than ModalModels (which are used in &#10;TrafficLight.xml). This enables the use of SMV&#10;code generator.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 180.0]">
+        </property>
+    </property>
+    <property name="SMV CodeGenerator" class="ptolemy.verification.kernel.CodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 230.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In this model, the undesired behavior is to have the &#10;car light and pedestrian light green at the same time.&#10;This would lead to accidents. To avoid this, we use&#10;temporal logic to describe the specification and &#10;generate a file acceptable by model checker NuSMV.&#10;&#10;CTL Specification (Copy the line below when double clicking the SMV CodeGenerator)&#10;! EF (proc.CarLightNormal-state = Cgrn &amp; proc.PedestrianLightNormal-state = Pgreen)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 270.0]">
+        </property>
     </property>
     <port name="Sec" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 90.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="Error" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 130.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="OK" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 170.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="Cred" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 175.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="Cyel" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 210.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </port>
     <port name="Cgrn" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 250.0]">
         </property>
         <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
@@ -78,7 +100,24 @@
     <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 95.0]">
+        </property>
+        <property name="count" class="ptolemy.data.expr.Parameter" value="0">
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 35.0]">
+            </property>
         </property>
         <port name="Sec" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -329,7 +368,7 @@
     <entity name="StateLibrary" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="State" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 85.0]">
         </property>
         <port name="Pgrn" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -460,7 +499,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[95.0, 165.0]">
+        <vertex name="vertex1" value="[95.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
