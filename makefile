@@ -235,6 +235,7 @@ CLEAN_SHIPPING_FILES = \
 		ptolemy/actor/ptalon \
 		ptolemy/codegen/c/actor/lib/javasound/test/outfile.wav \
 		ptolemy/codegen/c/domains/sdf/kernel/test/foo.c \
+		ptolemy/codegen/domains/pn \
 		ptolemy/codegen/kernel/test/substitute.out \
 		ptolemy/codegen/vhdl \
 		ptolemy/copernicus/*/test/codeGenerator.tmp \
