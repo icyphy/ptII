@@ -48,15 +48,15 @@ import ptolemy.kernel.util.Workspace;
 // // FmvAutomaton
 
 /**
- * A Formal Method Verification (FMV) Automaton.
- * FmvAutomaton's are not different from regular FMSs; currently the class
- * FmvAutomaton provides a specialized environment to invoke model checker
+ * A Formal Method Verification (FMV) Automaton. 
+ * FmvAutomaton's are not different from regular FMSs; currently the class 
+ * FmvAutomaton provides a specialized environment to invoke model checker 
  * NuSMV.
- *
+ * 
  * <p> The FMV Automaton is equipped with the ability to convert itself
  * into a file acceptable by NuSMV model checker.
  * <p>
- *
+ * 
  * @author Chihhong Patrick Cheng, Contributor: Edward A. Lee
  * @version $Id$
  * @since Ptolemy II 6.1
@@ -82,7 +82,7 @@ public class FmvAutomaton extends FSMActor {
      * setName(). If the workspace argument is null, then use the
      * default workspace. Add the actor to the workspace
      * directory. Increment the version number of the workspace.
-     *
+     * 
      * @param workspace The workspace that will list the actor.
      */
     public FmvAutomaton(Workspace workspace) {
@@ -94,7 +94,7 @@ public class FmvAutomaton extends FSMActor {
      * specified name. The name must be unique within the container or
      * an exception is thrown. The container argument must not be
      * null, or a NullPointerException will be thrown.
-     *
+     * 
      * @param container The container.
      * @param name The name of this automaton within the container.
      * @exception IllegalActionException If the entity cannot be
@@ -109,9 +109,9 @@ public class FmvAutomaton extends FSMActor {
 
     /**
      * Return an StringBuffer that contains the .smv format of the FmvAutomaton.
-     *
+     * 
      * @param formula The temporal formula used to be attached in the .smv file.
-     * @param choice The type of the formula. It may be either a CTL or LTL
+     * @param choice The type of the formula. It may be either a CTL or LTL 
      * formula.
      * @param span A constant used to expand the size of the rough domain.
      * @return The .smv format of the FmvAutomaton.
@@ -144,7 +144,7 @@ public class FmvAutomaton extends FSMActor {
         returnSmvFormat.append("\t\tstate : {");
 
         // Enumerate all states in the FmvAutomaton
-        HashSet<State> frontier = new HashSet<State>();
+        HashSet<State> frontier; // = new HashSet<State>();
         try {
             frontier = _enumerateStateSet();
         } catch (Exception exception) {
@@ -165,7 +165,7 @@ public class FmvAutomaton extends FSMActor {
         returnSmvFormat.append("};\n");
 
         // Decide variables encoded in the Kripke Structure
-        HashSet<String> variableSet = new HashSet<String>();
+        HashSet<String> variableSet; // = new HashSet<String>();
         try {
             // Enumerate all variables used in the Kripke structure
             int numSpan = Integer.parseInt(span);
@@ -241,7 +241,7 @@ public class FmvAutomaton extends FSMActor {
         returnSmvFormat.append("\t\t\tesac;\n\n");
 
         // Find out initial values for those variables.
-        HashMap<String, String> variableInitialValue = new HashMap<String, String>();
+        HashMap<String, String> variableInitialValue; // = new HashMap<String, String>();
         variableInitialValue = _retrieveVariableInitialValue(variableSet);
 
         // Generate all transitions; run for every variable used in Kripke
@@ -298,7 +298,7 @@ public class FmvAutomaton extends FSMActor {
 
         // iterate
         while (!frontier.isEmpty()) {
-            // pick a state from frontier. It seems that there isn't an
+            // pick a state from frontier. It seems that there isn't an 
             // easy way to pick an arbitrary entry from a HashMap, except
             // through Iterator
             Iterator<String> iterator = frontier.keySet().iterator();
@@ -345,7 +345,7 @@ public class FmvAutomaton extends FSMActor {
                         // do nothing
                     } else {
 
-                        // Rule II. For all variables that are used as
+                        // Rule II. For all variables that are used as 
                         // guards, they would be expanded as AP
 
                         // Separate each guard expression into substring
@@ -374,9 +374,14 @@ public class FmvAutomaton extends FSMActor {
                                     // Check if the right value exists. We
                                     // need to ward off cases like "true".
 
+                                    String rValue = null;
+                                    boolean isTrue = false;
                                     try {
-                                        String rValue = characterOfSubGuard[1]
-                                                .trim();
+                                        rValue = characterOfSubGuard[1].trim();
+                                    } catch (Exception ex) {
+                                        isTrue = true;
+                                    }
+                                    if (isTrue == false) {
                                         int numberRetrival = 0;
                                         boolean rvalueSingleNumber = true;
                                         try {
@@ -431,12 +436,7 @@ public class FmvAutomaton extends FSMActor {
 
                                             }
                                         }
-                                    } catch (Exception ex) {
-                                        // We know that we can not parse the
-                                        // rvalue.
-
                                     }
-
                                 }
 
                             }
@@ -524,7 +524,9 @@ public class FmvAutomaton extends FSMActor {
                 _variableInfo.put(valName, individual);
 
             } catch (Exception ex) {
-
+                throw new IllegalActionException(
+                        "FmvAutomaton._decideVariableSet() clashes: "
+                                + ex.getMessage());
             }
         }
 
@@ -534,7 +536,7 @@ public class FmvAutomaton extends FSMActor {
     /**
      * Perform an enumeration of the state in this FmvAutomaton and return a
      * HashSet of states.
-     *
+     * 
      * @return A HashSet of states of a particular FmvAutomaton
      */
     private HashSet<State> _enumerateStateSet() throws IllegalActionException {
@@ -590,7 +592,7 @@ public class FmvAutomaton extends FSMActor {
             throws IllegalActionException {
 
         HashSet<State> stateSet = new HashSet<State>();
-        try {
+        //try {
             // Initialize
             HashMap<String, State> frontier = new HashMap<String, State>();
 
@@ -652,7 +654,7 @@ public class FmvAutomaton extends FSMActor {
                         // buffer.append(text);
                     }
 
-                    // Retrieve the variable used in the Kripke structure.
+                    // Retrieve the variable used in the Kripke structure. 
                     // Also analyze the guard expression to understand the
                     // possible value domain for the value to execute.
                     //
@@ -663,7 +665,7 @@ public class FmvAutomaton extends FSMActor {
                     // constrain the way that an end user can do for writing
                     // codes. We do "not" expect him to write in the way like
                     // -1<a.
-                    //
+                    // 
                     // Also here we assume that every sub-guard expression is
                     // connected using && but not || operator. But it is easy to
                     // modify the code such that it supports ||.
@@ -678,7 +680,7 @@ public class FmvAutomaton extends FSMActor {
                     // variables in precondition and should be stored in the
                     // set "variableUsedInTransitionSet".
 
-                    // FIXME: (2008/01/22) Also, variables used in setAction should
+                    // FIXME: (2008/01/22) Also, variables used in setAction should 
                     // be stored in the set "variableUsedInTransitionSet".
                     HashSet<String> variableUsedInTransitionSet = new HashSet<String>();
 
@@ -723,15 +725,19 @@ public class FmvAutomaton extends FSMActor {
                                         // Store in the set. Use try-catch to
                                         // capture cases when single "true"
                                         // exists.
-
-                                        try {
-                                            String rValue = characterOfSubGuard[1]
+                                        boolean isTrue = false;
+                                        String rValue = null;
+                                        try{
+                                            rValue = characterOfSubGuard[1]
                                                     .trim();
+                                        }catch(Exception ex){
+                                            isTrue = true;
+                                        }
+                                        if(isTrue == false){
                                             variableUsedInTransitionSet
                                                     .add(lValue);
-                                        } catch (Exception ex) {
-
                                         }
+                                        
 
                                     }
                                 }
@@ -778,7 +784,7 @@ public class FmvAutomaton extends FSMActor {
                             .iterator();
                     while (it.hasNext()) {
                         String val = (String) it.next();
-                        // Retrieve the value in the
+                        // Retrieve the value in the 
                         VariableInfo variableInfo = _variableInfo.get(val);
                         if (variableInfo == null) {
                             throw new IllegalActionException(
@@ -847,11 +853,15 @@ public class FmvAutomaton extends FSMActor {
                                         // This is achieved using try-catch and
                                         // retrieve the rValue from
                                         // characterOfSubGuard[1].
-
+                                        boolean parse = true;
+                                        String rValue = null;
                                         try {
-
-                                            String rValue = characterOfSubGuard[1]
+                                            rValue = characterOfSubGuard[1]
                                                     .trim();
+                                        } catch (Exception ex) {
+                                            parse = false;
+                                        }
+                                        if (parse == true) {
                                             int numberRetrival = 0;
                                             boolean rvalueSingleNumber = true;
                                             try {
@@ -1011,9 +1021,6 @@ public class FmvAutomaton extends FSMActor {
                                                 }
 
                                             }
-                                        } catch (Exception ex) {
-                                            // We know that we can not parse the
-                                            // rvalue. Do nothing.
                                         }
 
                                     }
@@ -1053,25 +1060,26 @@ public class FmvAutomaton extends FSMActor {
 
                                 // Generate all possible conditions that leads
                                 // to this change.
-                                try {
-                                    // set up all possible transitions
-                                    // regarding to this assignment.
+                                //try {
+                                // set up all possible transitions
+                                // regarding to this assignment.
 
-                                    String statePrecondition = new String(
-                                            "state="
-                                                    + stateInThis
-                                                            .getDisplayName());
+                                //String statePrecondition = new String(
+                                //        "state="
+                                //                + stateInThis
+                                //                        .getDisplayName());
+                                String statePrecondition = "state="
+                                        + stateInThis.getDisplayName();
+                                _generatePremiseAndResultEachTransition(
+                                        statePrecondition, valueDomain, lValue,
+                                        rValue, "N");
+                                _generatePremiseAndResultEachTransition(
+                                        statePrecondition, valueDomain,
+                                        "state", destinationInThis
+                                                .getDisplayName(), "S");
+                                //} catch (Exception ex) {
 
-                                    _generatePremiseAndResultEachTransition(
-                                            statePrecondition, valueDomain,
-                                            lValue, rValue, "N");
-                                    _generatePremiseAndResultEachTransition(
-                                            statePrecondition, valueDomain,
-                                            "state", destinationInThis
-                                                    .getDisplayName(), "S");
-                                } catch (Exception ex) {
-
-                                }
+                                //}
 
                             } else {
                                 // The right hand side is actually complicated
@@ -1085,233 +1093,221 @@ public class FmvAutomaton extends FSMActor {
                                 // a = a op constInt; or a = constInt;
 
                                 if (Pattern.matches(".*[*].*", rValue)) {
+                                    //try {
+
+                                    String[] rValueOperends = rValue
+                                            .split("[*]");
+
+                                    String offset = rValueOperends[1].trim();
+
                                     try {
-
-                                        String[] rValueOperends = rValue
-                                                .split("[*]");
-
-                                        String offset = rValueOperends[1]
-                                                .trim();
-
-                                        try {
-                                            int value = Integer
-                                                    .parseInt(rValueOperends[1]
-                                                            .trim());
-                                        } catch (Exception ex) {
-                                            // check if the value is of format
-                                            // (-a)
-                                            if (rValueOperends[1].trim()
-                                                    .endsWith(")")
-                                                    && rValueOperends[1].trim()
-                                                            .startsWith("(")) {
-                                                // retrieve the value
-                                                offset = rValueOperends[1]
-                                                        .trim()
-                                                        .substring(
-                                                                1,
-                                                                rValueOperends[1]
-                                                                        .trim()
-                                                                        .length() - 1);
-                                                try {
-                                                    Integer.parseInt(offset);
-                                                } catch (Exception exInner) {
-                                                    // Return the format is not
-                                                    // supported by the system.
-                                                }
-
+                                        int value = Integer
+                                                .parseInt(rValueOperends[1]
+                                                        .trim());
+                                    } catch (Exception ex) {
+                                        // check if the value is of format
+                                        // (-a)
+                                        if (rValueOperends[1].trim().endsWith(
+                                                ")")
+                                                && rValueOperends[1].trim()
+                                                        .startsWith("(")) {
+                                            // retrieve the value
+                                            offset = rValueOperends[1]
+                                                    .trim()
+                                                    .substring(
+                                                            1,
+                                                            rValueOperends[1]
+                                                                    .trim()
+                                                                    .length() - 1);
+                                            try {
+                                                Integer.parseInt(offset);
+                                            } catch (Exception exInner) {
+                                                // Return the format is not
+                                                // supported by the system.
                                             }
 
                                         }
-                                        // set up all possible transitions
-                                        // regarding to this assignment.
-
-                                        String statePrecondition = new String(
-                                                "state="
-                                                        + stateInThis
-                                                                .getDisplayName());
-
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition, valueDomain,
-                                                lValue, offset, "*");
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition, valueDomain,
-                                                "state", destinationInThis
-                                                        .getDisplayName(), "S");
-                                    } catch (Exception ex) {
 
                                     }
+                                    // set up all possible transitions
+                                    // regarding to this assignment.
+
+                                    String statePrecondition = "state="
+                                            + stateInThis.getDisplayName();
+
+                                    _generatePremiseAndResultEachTransition(
+                                            statePrecondition, valueDomain,
+                                            lValue, offset, "*");
+                                    _generatePremiseAndResultEachTransition(
+                                            statePrecondition, valueDomain,
+                                            "state", destinationInThis
+                                                    .getDisplayName(), "S");
+                                    //} catch (Exception ex) {
+
+                                    //}
 
                                 } else if (Pattern.matches(".*/.*", rValue)) {
+                                    //try {
+                                    String[] rValueOperends = rValue
+                                            .split("[/]");
+
+                                    String offset = rValueOperends[1].trim();
+
                                     try {
-                                        String[] rValueOperends = rValue
-                                                .split("[/]");
-
-                                        String offset = rValueOperends[1]
-                                                .trim();
-
-                                        try {
-                                            int value = Integer
-                                                    .parseInt(rValueOperends[1]
-                                                            .trim());
-                                        } catch (Exception ex) {
-                                            // check if the value is of format
-                                            // (-a)
-                                            if (rValueOperends[1].trim()
-                                                    .endsWith(")")
-                                                    && rValueOperends[1].trim()
-                                                            .startsWith("(")) {
-                                                // retrieve the value
-                                                offset = rValueOperends[1]
-                                                        .trim()
-                                                        .substring(
-                                                                1,
-                                                                rValueOperends[1]
-                                                                        .trim()
-                                                                        .length() - 1);
-                                                try {
-                                                    Integer.parseInt(offset);
-                                                } catch (Exception exInner) {
-                                                    // Return the format is not
-                                                    // supported by the system.
-                                                }
-
+                                        int value = Integer
+                                                .parseInt(rValueOperends[1]
+                                                        .trim());
+                                    } catch (Exception ex) {
+                                        // check if the value is of format
+                                        // (-a)
+                                        if (rValueOperends[1].trim().endsWith(
+                                                ")")
+                                                && rValueOperends[1].trim()
+                                                        .startsWith("(")) {
+                                            // retrieve the value
+                                            offset = rValueOperends[1]
+                                                    .trim()
+                                                    .substring(
+                                                            1,
+                                                            rValueOperends[1]
+                                                                    .trim()
+                                                                    .length() - 1);
+                                            try {
+                                                Integer.parseInt(offset);
+                                            } catch (Exception exInner) {
+                                                // Return the format is not
+                                                // supported by the system.
                                             }
 
                                         }
-                                        // set up all possible transitions
-                                        // regarding to this assignment.
-
-                                        String statePrecondition = new String(
-                                                "state="
-                                                        + stateInThis
-                                                                .getDisplayName());
-
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition, valueDomain,
-                                                lValue, offset, "/");
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition, valueDomain,
-                                                "state", destinationInThis
-                                                        .getDisplayName(), "S");
-                                    } catch (Exception ex) {
 
                                     }
+                                    // set up all possible transitions
+                                    // regarding to this assignment.
+
+                                    String statePrecondition = "state="
+                                            + stateInThis.getDisplayName();
+
+                                    _generatePremiseAndResultEachTransition(
+                                            statePrecondition, valueDomain,
+                                            lValue, offset, "/");
+                                    _generatePremiseAndResultEachTransition(
+                                            statePrecondition, valueDomain,
+                                            "state", destinationInThis
+                                                    .getDisplayName(), "S");
+                                    //} catch (Exception ex) {
+
+                                    //}
 
                                 } else if (Pattern.matches(".*+.*", rValue)) {
+                                    //try {
+                                    String[] rValueOperends = rValue
+                                            .split("[+]");
+
+                                    String offset = rValueOperends[1].trim();
+
                                     try {
-                                        String[] rValueOperends = rValue
-                                                .split("[+]");
-
-                                        String offset = rValueOperends[1]
-                                                .trim();
-
-                                        try {
-                                            int value = Integer
-                                                    .parseInt(rValueOperends[1]
-                                                            .trim());
-                                        } catch (Exception ex) {
-                                            // check if the value is of format
-                                            // (-a)
-                                            if (rValueOperends[1].trim()
-                                                    .endsWith(")")
-                                                    && rValueOperends[1].trim()
-                                                            .startsWith("(")) {
-                                                // retrieve the value
-                                                offset = rValueOperends[1]
-                                                        .trim()
-                                                        .substring(
-                                                                1,
-                                                                rValueOperends[1]
-                                                                        .trim()
-                                                                        .length() - 1);
-                                                try {
-                                                    Integer.parseInt(offset);
-                                                } catch (Exception exInner) {
-                                                    // Return the format is not
-                                                    // supported by the system.
-                                                }
-
+                                        int value = Integer
+                                                .parseInt(rValueOperends[1]
+                                                        .trim());
+                                    } catch (Exception ex) {
+                                        // check if the value is of format
+                                        // (-a)
+                                        if (rValueOperends[1].trim().endsWith(
+                                                ")")
+                                                && rValueOperends[1].trim()
+                                                        .startsWith("(")) {
+                                            // retrieve the value
+                                            offset = rValueOperends[1]
+                                                    .trim()
+                                                    .substring(
+                                                            1,
+                                                            rValueOperends[1]
+                                                                    .trim()
+                                                                    .length() - 1);
+                                            try {
+                                                Integer.parseInt(offset);
+                                            } catch (Exception exInner) {
+                                                // Return the format is not
+                                                // supported by the system.
                                             }
 
                                         }
-                                        // set up all possible transitions
-                                        // regarding to this assignment.
-
-                                        String statePrecondition = new String(
-                                                "state="
-                                                        + stateInThis
-                                                                .getDisplayName());
-                                        // Check if the value is in the maximum.
-                                        // If so, then we need to use "gt".
-
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition, valueDomain,
-                                                lValue, rValueOperends[1]
-                                                        .trim(), "+");
-
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition, valueDomain,
-                                                "state", destinationInThis
-                                                        .getDisplayName(), "S");
-                                    } catch (Exception ex) {
 
                                     }
+                                    // set up all possible transitions
+                                    // regarding to this assignment.
+
+                                    String statePrecondition = "state="
+                                            + stateInThis.getDisplayName();
+                                    // Check if the value is in the maximum.
+                                    // If so, then we need to use "gt".
+
+                                    _generatePremiseAndResultEachTransition(
+                                            statePrecondition, valueDomain,
+                                            lValue, rValueOperends[1].trim(),
+                                            "+");
+
+                                    _generatePremiseAndResultEachTransition(
+                                            statePrecondition, valueDomain,
+                                            "state", destinationInThis
+                                                    .getDisplayName(), "S");
+                                    //} catch (Exception ex) {
+
+                                    //}
                                 } else if (Pattern.matches(".*-.*", rValue)) {
+                                    //try {
+                                    String[] rValueOperends = rValue
+                                            .split("[-]");
+
+                                    String offset = rValueOperends[1].trim();
+
                                     try {
-                                        String[] rValueOperends = rValue
-                                                .split("[-]");
-
-                                        String offset = rValueOperends[1]
-                                                .trim();
-
-                                        try {
-                                            int value = Integer
-                                                    .parseInt(rValueOperends[1]
-                                                            .trim());
-                                        } catch (Exception ex) {
-                                            // check if the value is of format
-                                            // (-a)
-                                            if (rValueOperends[1].trim()
-                                                    .endsWith(")")
-                                                    && rValueOperends[1].trim()
-                                                            .startsWith("(")) {
-                                                // retrieve the value
-                                                offset = rValueOperends[1]
-                                                        .trim()
-                                                        .substring(
-                                                                1,
-                                                                rValueOperends[1]
-                                                                        .trim()
-                                                                        .length() - 1);
-                                                try {
-                                                    Integer.parseInt(offset);
-                                                } catch (Exception exInner) {
-                                                    // Return the format is not
-                                                    // supported by the system.
-                                                }
-
+                                        int value = Integer
+                                                .parseInt(rValueOperends[1]
+                                                        .trim());
+                                    } catch (Exception ex) {
+                                        // check if the value is of format
+                                        // (-a)
+                                        if (rValueOperends[1].trim().endsWith(
+                                                ")")
+                                                && rValueOperends[1].trim()
+                                                        .startsWith("(")) {
+                                            // retrieve the value
+                                            offset = rValueOperends[1]
+                                                    .trim()
+                                                    .substring(
+                                                            1,
+                                                            rValueOperends[1]
+                                                                    .trim()
+                                                                    .length() - 1);
+                                            try {
+                                                Integer.parseInt(offset);
+                                            } catch (Exception exInner) {
+                                                // Return the format is not
+                                                // supported by the system.
                                             }
 
                                         }
-                                        // set up all possible transitions
-                                        // regarding to this assignment.
-
-                                        String statePrecondition = new String(
-                                                "state="
-                                                        + stateInThis
-                                                                .getDisplayName());
-
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition, valueDomain,
-                                                lValue, rValueOperends[1]
-                                                        .trim(), "-");
-                                        _generatePremiseAndResultEachTransition(
-                                                statePrecondition, valueDomain,
-                                                "state", destinationInThis
-                                                        .getDisplayName(), "S");
-                                    } catch (Exception ex) {
 
                                     }
+                                    // set up all possible transitions
+                                    // regarding to this assignment.
+
+                                    String statePrecondition = "state="
+                                            + stateInThis.getDisplayName();
+
+                                    _generatePremiseAndResultEachTransition(
+                                            statePrecondition, valueDomain,
+                                            lValue, rValueOperends[1].trim(),
+                                            "-");
+                                    _generatePremiseAndResultEachTransition(
+                                            statePrecondition, valueDomain,
+                                            "state", destinationInThis
+                                                    .getDisplayName(), "S");
+                                    //} catch (Exception ex) {
+
+                                    //}
                                 }
 
                             }
@@ -1319,8 +1315,8 @@ public class FmvAutomaton extends FSMActor {
                     } else {
                         // Note that there may be no setActions in the
                         // transition.
-                        String statePrecondition = new String("state="
-                                + stateInThis.getDisplayName());
+                        String statePrecondition = "state="
+                                + stateInThis.getDisplayName();
                         _generatePremiseAndResultEachTransition(
                                 statePrecondition, valueDomain, "state",
                                 destinationInThis.getDisplayName(), "S");
@@ -1330,11 +1326,11 @@ public class FmvAutomaton extends FSMActor {
 
             }
 
-        } catch (Exception exception) {
-            throw new InternalErrorException(
-                    "FmvAutomaton._generateAllVariableTransitions() clashes: "
-                            + exception.getMessage());
-        }
+        //} catch (Exception exception) {
+        //    throw new InternalErrorException(
+        //            "FmvAutomaton._generateAllVariableTransitions() clashes: "
+        //                    + exception.getMessage());
+        //}
 
     }
 
@@ -1372,7 +1368,7 @@ public class FmvAutomaton extends FSMActor {
      * function to generate all possible combinations. The function would try to
      * attach correct premise and update correct new value for the variable set
      * by the transition based on the original value.
-     *
+     * 
      * @param currentPremise
      *        Current precondition for the transition. It is not completed
      *        unless parameter index == maxIndex.
@@ -1397,7 +1393,7 @@ public class FmvAutomaton extends FSMActor {
      *        or <i>var = rValue</i>. When operatingSign is S or N, it
      *        represents the rValue of the system.
      * @param operatingSign
-     *
+     * 
      */
     private void _recursiveStepGeneratePremiseAndResultEachTransition(
             String currentPremise, int index, int maxIndex,
@@ -1445,10 +1441,12 @@ public class FmvAutomaton extends FSMActor {
                                 if (vList.get(i).intValue() == DOMAIN_GT) {
 
                                     // newpremise=currentPremise & (var = C)
-                                    String newPremise = new String(
-                                            currentPremise + " & "
-                                                    + keySetArray[index] + "="
-                                                    + "gt");
+                                    //String newPremise = new String(
+                                    //        currentPremise + " & "
+                                    //                + keySetArray[index] + "="
+                                    //                + "gt");
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
 
                                     // When the original value is GT, then
                                     // GT + positive_const = GT
@@ -1465,11 +1463,12 @@ public class FmvAutomaton extends FSMActor {
                                     // min=1, and offset=3, then possible value
                                     // may include LS, 1, 2.
 
-                                    String newPremise = new String(
-                                            currentPremise + " & "
-                                                    + keySetArray[index] + "="
-                                                    + "ls");
-
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
+                                    //String newPremise = new String(
+                                    //        currentPremise + " & "
+                                    //                + keySetArray[index] + "="
+                                    //                + "ls");
                                     // First, LS + positive_const = LS
                                     _recursiveStepGeneratePremiseAndResultEachTransition(
                                             newPremise, index + 1, maxIndex,
@@ -1521,13 +1520,12 @@ public class FmvAutomaton extends FSMActor {
                                     // bound. If so, then use DOMAIN_GT to
                                     // replace the value.
 
-                                    String newPremise = new String(
-                                            currentPremise
-                                                    + " & "
-                                                    + keySetArray[index]
-                                                    + "="
-                                                    + String.valueOf(vList.get(
-                                                            i).intValue()));
+                                    String newPremise = currentPremise
+                                            + " & "
+                                            + keySetArray[index]
+                                            + "="
+                                            + String.valueOf(vList.get(i)
+                                                    .intValue());
 
                                     String updatedVariableValue = String
                                             .valueOf(vList.get(i).intValue()
@@ -1553,10 +1551,8 @@ public class FmvAutomaton extends FSMActor {
 
                                 if (vList.get(i).intValue() == DOMAIN_LS) {
 
-                                    String newPremise = new String(
-                                            currentPremise + " & "
-                                                    + keySetArray[index] + "="
-                                                    + "ls");
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
 
                                     // When the original value is LS, then
                                     // LS + negative_const = LS
@@ -1567,10 +1563,8 @@ public class FmvAutomaton extends FSMActor {
                                             "ls", operatingSign);
 
                                 } else if (vList.get(i).intValue() == DOMAIN_GT) {
-                                    String newPremise = new String(
-                                            currentPremise + " & "
-                                                    + keySetArray[index] + "="
-                                                    + "gt");
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
 
                                     // When the original value is GT, we place
                                     // conservative analysis and assert that it
@@ -1634,13 +1628,12 @@ public class FmvAutomaton extends FSMActor {
                                     // bound. If so, then use DOMAIN_LS to
                                     // replace the value.
 
-                                    String newPremise = new String(
-                                            currentPremise
-                                                    + " & "
-                                                    + keySetArray[index]
-                                                    + "="
-                                                    + String.valueOf(vList.get(
-                                                            i).intValue()));
+                                    String newPremise = currentPremise
+                                            + " & "
+                                            + keySetArray[index]
+                                            + "="
+                                            + String.valueOf(vList.get(i)
+                                                    .intValue());
 
                                     String updatedVariableValue = String
                                             .valueOf(vList.get(i).intValue()
@@ -1689,10 +1682,8 @@ public class FmvAutomaton extends FSMActor {
                                     // When the original value is LS, then
                                     // LS - positive_const = LS
 
-                                    String newPremise = new String(
-                                            currentPremise + " & "
-                                                    + keySetArray[index] + "="
-                                                    + "ls");
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
 
                                     // Hence the updated value remains the same.
                                     _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -1706,10 +1697,8 @@ public class FmvAutomaton extends FSMActor {
                                     // that it might lead to all its possible
                                     // values.
 
-                                    String newPremise = new String(
-                                            currentPremise + " & "
-                                                    + keySetArray[index] + "="
-                                                    + "gt");
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
 
                                     // First, it may keep to be GT
                                     _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -1755,13 +1744,12 @@ public class FmvAutomaton extends FSMActor {
                                     // bound. If so, then use DOMAIN_LS to
                                     // replace the value.
 
-                                    String newPremise = new String(
-                                            currentPremise
-                                                    + " & "
-                                                    + keySetArray[index]
-                                                    + "="
-                                                    + String.valueOf(vList.get(
-                                                            i).intValue()));
+                                    String newPremise = currentPremise
+                                            + " & "
+                                            + keySetArray[index]
+                                            + "="
+                                            + String.valueOf(vList.get(i)
+                                                    .intValue());
 
                                     String updatedVariableValue = String
                                             .valueOf(vList.get(i).intValue()
@@ -1788,10 +1776,8 @@ public class FmvAutomaton extends FSMActor {
                                 if (vList.get(i).intValue() == DOMAIN_GT) {
                                     // GT - negative_const = GT
 
-                                    String newPremise = new String(
-                                            currentPremise + " & "
-                                                    + keySetArray[index] + "="
-                                                    + "gt");
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
 
                                     // Hence the updated value remains the same.
                                     _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -1804,10 +1790,8 @@ public class FmvAutomaton extends FSMActor {
                                     // analysis and assert that it might lead to
                                     // all its possible values
 
-                                    String newPremise = new String(
-                                            currentPremise + " & "
-                                                    + keySetArray[index] + "="
-                                                    + "ls");
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
 
                                     // First, LS - negative_const = LS
                                     _recursiveStepGeneratePremiseAndResultEachTransition(
@@ -1862,13 +1846,12 @@ public class FmvAutomaton extends FSMActor {
                                     // bound. If so, then use DOMAIN_GT to
                                     // replace the value.
 
-                                    String newPremise = new String(
-                                            currentPremise
-                                                    + " & "
-                                                    + keySetArray[index]
-                                                    + "="
-                                                    + String.valueOf(vList.get(
-                                                            i).intValue()));
+                                    String newPremise = currentPremise
+                                            + " & "
+                                            + keySetArray[index]
+                                            + "="
+                                            + String.valueOf(vList.get(i)
+                                                    .intValue());
 
                                     String updatedVariableValue = String
                                             .valueOf(vList.get(i).intValue()
@@ -1914,10 +1897,8 @@ public class FmvAutomaton extends FSMActor {
 
                                     // newpremise = currentPremise & (var =
                                     // const)
-                                    String newPremise = new String(
-                                            currentPremise + " & "
-                                                    + keySetArray[index] + "="
-                                                    + "gt");
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
                                     if (_variableInfo.get(lValue) == null) {
                                         throw new IllegalActionException(
                                                 "Internal error, getting \""
@@ -1939,12 +1920,12 @@ public class FmvAutomaton extends FSMActor {
                                         // Integer.parseInt(((VariableInfo)
                                         // _variableInfo.get(lValue))._maxValue)
                                         // < 0
-                                        //
+                                        //  
                                         // Starting from the upper bound + 1,
                                         // +2, +3, +4 ... calculate all possible
                                         // values until the new set-value is
                                         // greater than GT.
-                                        //
+                                        // 
                                         // For example, if upper bound is -5,
                                         // and if the offset is 2, then for
                                         // values in GT that is greater or equal
@@ -2022,10 +2003,8 @@ public class FmvAutomaton extends FSMActor {
 
                                 } else if (vList.get(i).intValue() == DOMAIN_LS) {
 
-                                    String newPremise = new String(
-                                            currentPremise + " & "
-                                                    + keySetArray[index] + "="
-                                                    + "ls");
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
 
                                     if (_variableInfo.get(lValue) == null) {
                                         throw new IllegalActionException(
@@ -2113,13 +2092,12 @@ public class FmvAutomaton extends FSMActor {
                                     // if the new value would exceed the lower
                                     // or upper bound.
 
-                                    String newPremise = new String(
-                                            currentPremise
-                                                    + " & "
-                                                    + keySetArray[index]
-                                                    + "="
-                                                    + String.valueOf(vList.get(
-                                                            i).intValue()));
+                                    String newPremise = currentPremise
+                                            + " & "
+                                            + keySetArray[index]
+                                            + "="
+                                            + String.valueOf(vList.get(i)
+                                                    .intValue());
 
                                     String updatedVariableValue = String
                                             .valueOf(vList.get(i).intValue()
@@ -2158,10 +2136,8 @@ public class FmvAutomaton extends FSMActor {
 
                                 if (vList.get(i).intValue() == DOMAIN_GT) {
 
-                                    String newPremise = new String(
-                                            currentPremise + " & "
-                                                    + keySetArray[index] + "="
-                                                    + "gt");
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "gt";
 
                                     if (_variableInfo.get(lValue) == null) {
                                         throw new IllegalActionException(
@@ -2177,7 +2153,7 @@ public class FmvAutomaton extends FSMActor {
                                         // +2, +3, +4 ...
                                         // calculate all possible values until
                                         // the value is less than LS.
-                                        //
+                                        // 
                                         // For example, if upper bound = 1,
                                         // lower bound = -7, and offset = -2,
                                         // then we might have possible new
@@ -2290,10 +2266,8 @@ public class FmvAutomaton extends FSMActor {
                                     // (Integer.parseInt(newVariableValue) < 0)
                                     // && original variable value == DOMAIN_LS
 
-                                    String newPremise = new String(
-                                            currentPremise + " & "
-                                                    + keySetArray[index] + "="
-                                                    + "ls");
+                                    String newPremise = currentPremise + " & "
+                                            + keySetArray[index] + "=" + "ls";
 
                                     if (_variableInfo.get(lValue) == null) {
                                         throw new IllegalActionException(
@@ -2308,7 +2282,7 @@ public class FmvAutomaton extends FSMActor {
                                         // -2, -3, -4 ...
                                         // calculate all possible values until
                                         // the value is less than GT.
-                                        //
+                                        // 
                                         // For example, if upper bound = 7,
                                         // lower bound = -1, and offset = -2,
                                         // then we might have possible new
@@ -2423,13 +2397,12 @@ public class FmvAutomaton extends FSMActor {
                                     // bound. If so, then use DOMAIN_GT to
                                     // replace the value.
 
-                                    String newPremise = new String(
-                                            currentPremise
-                                                    + " & "
-                                                    + keySetArray[index]
-                                                    + "="
-                                                    + String.valueOf(vList.get(
-                                                            i).intValue()));
+                                    String newPremise = currentPremise
+                                            + " & "
+                                            + keySetArray[index]
+                                            + "="
+                                            + String.valueOf(vList.get(i)
+                                                    .intValue());
 
                                     String updatedVariableValue = String
                                             .valueOf(vList.get(i).intValue()
@@ -2457,12 +2430,12 @@ public class FmvAutomaton extends FSMActor {
                                 // exceeds the upper bound or is below the lower
                                 // bound.
 
-                                String newPremise = new String(currentPremise
+                                String newPremise = currentPremise
                                         + " & "
                                         + keySetArray[index]
                                         + "="
                                         + String.valueOf(vList.get(i)
-                                                .intValue()));
+                                                .intValue());
 
                                 if (vList.get(i).intValue() == DOMAIN_LS) {
                                     newPremise = new String(currentPremise
@@ -2519,9 +2492,9 @@ public class FmvAutomaton extends FSMActor {
                                     .get(i).intValue()
                                     / (Integer.parseInt(newVariableValue)));
                             // retrieve the string and concatenate
-                            String newPremise = new String(currentPremise
-                                    + " & " + keySetArray[index] + "="
-                                    + String.valueOf(vList.get(i).intValue()));
+                            String newPremise = currentPremise + " & "
+                                    + keySetArray[index] + "="
+                                    + String.valueOf(vList.get(i).intValue());
 
                             if (vList.get(i).intValue() == DOMAIN_LS) {
                                 newPremise = new String(currentPremise + " & "
@@ -2551,9 +2524,9 @@ public class FmvAutomaton extends FSMActor {
                         for (int i = 0; i < vList.size(); i++) {
                             String updatedVariableValue = newVariableValue;
                             // retrieve the string and concatenate
-                            String newPremise = new String(currentPremise
-                                    + " & " + keySetArray[index] + "="
-                                    + String.valueOf(vList.get(i).intValue()));
+                            String newPremise = currentPremise + " & "
+                                    + keySetArray[index] + "="
+                                    + String.valueOf(vList.get(i).intValue());
 
                             if (vList.get(i).intValue() == DOMAIN_LS) {
                                 newPremise = new String(currentPremise + " & "
@@ -2584,9 +2557,9 @@ public class FmvAutomaton extends FSMActor {
                     for (int i = 0; i < vList.size(); i++) {
 
                         // retrieve the string and concatenate
-                        String newPremise = new String(currentPremise + " & "
+                        String newPremise = currentPremise + " & "
                                 + keySetArray[index] + "="
-                                + String.valueOf(vList.get(i).intValue()));
+                                + String.valueOf(vList.get(i).intValue());
 
                         if (vList.get(i).intValue() == DOMAIN_LS) {
                             newPremise = new String(currentPremise + " & "
@@ -2617,13 +2590,23 @@ public class FmvAutomaton extends FSMActor {
      * initial variable set. This is achieved using a scan on all transitions in
      * edges (equalities/ inequalities) and retrieve all integer values in the
      * system. Currently the span is not taken into consideration.
-     *
+     * 
      * @param variableSet
      *        Set of variables that expect to find initial values.
-     *
+     * 
      */
     private HashMap<String, String> _retrieveVariableInitialValue(
             HashSet<String> variableSet) {
+        // FIXME: 
+        //HashMap<String, String> returnMap = new HashMap<String, String>();
+        //Iterator<String> it = variableSet.iterator();
+        //while (it.hasNext()) {
+        //    String attribute = it.next();
+        //    String property = this.getAttribute(attribute).description();
+        //    System.out.print(property);
+        //    returnMap.put(attribute, property);
+        //}
+        //return returnMap;
         HashMap<String, String> returnMap = new HashMap<String, String>();
         try {
 
@@ -2662,7 +2645,6 @@ public class FmvAutomaton extends FSMActor {
         } catch (Exception ex) {
 
         }
-
         return returnMap;
     }
 
